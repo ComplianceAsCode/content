@@ -11,12 +11,13 @@ import ssg.build_yaml
 class ResolvableProfile(ssg.build_yaml.Profile):
     def __init__(self, * args, ** kwargs):
         super(ResolvableProfile, self).__init__(* args, ** kwargs)
-        self.raw_selections = set()
         self.resolved = False
 
     def resolve(self, all_profiles):
         if self.resolved:
             return
+
+        resolved_selections = set(self.selected)
         if self.extends:
             if self.extends not in all_profiles:
                 msg = (
@@ -28,8 +29,8 @@ class ResolvableProfile(ssg.build_yaml.Profile):
             extended_profile = all_profiles[self.extends]
             extended_profile.resolve(all_profiles)
 
-            extended_selects = extended_profile.raw_selections
-            self.raw_selections.update(extended_selects)
+            extended_selects = set(extended_profile.selected)
+            resolved_selections.update(extended_selects)
 
             updated_variables = dict(extended_profile.variables)
             updated_variables.update(self.variables)
@@ -39,9 +40,11 @@ class ResolvableProfile(ssg.build_yaml.Profile):
             updated_refinements.update(self.refine_rules)
             self.refine_rules = updated_refinements
 
-        self.raw_selections.update(set(self.selected))
         for uns in self.unselected:
-            self.raw_selections.discard(uns)
+            resolved_selections.discard(uns)
+
+        self.unselected = []
+        self.selected = sorted(resolved_selections)
 
         self.resolved = True
 
@@ -112,8 +115,6 @@ def main():
         profiles[pname].resolve(profiles)
 
     for name, p in profiles.items():
-        p.selected = sorted(list(p.raw_selections))
-        p.unselected = []
         p.dump_yaml(args.output.format(name=name))
 
 
