@@ -21,6 +21,7 @@ extends: ospp
 selections:
     - login_banner_text=dod_banners
     - dconf_gnome_banner_enabled
+    - dconf_gnome_login_banner_text
     - banner_etc_issue
     - accounts_password_set_min_life_existing
     - accounts_password_set_max_life_existing
