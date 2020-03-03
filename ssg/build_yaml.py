@@ -681,7 +681,7 @@ class Group(object):
         # the firewalld_activation must come before ruleset_modifications, othervise
         # remediations for ruleset_modifications won't work
         # rules from group disabling_ipv6 must precede rules from configuring_ipv6,
-        # othervise the remediation prints error although it is successful
+        # otherwise the remediation prints error although it is successful
         priority_order = ["fips", "crypto", "firewalld_activation",
         "ruleset_modifications", "disabling_ipv6", "configuring_ipv6"]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
