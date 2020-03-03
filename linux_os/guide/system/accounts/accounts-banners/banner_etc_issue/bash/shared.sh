@@ -3,7 +3,7 @@
 populate login_banner_text
 
 # There was a regular-expression matching various banners, needs to be expanded
-expanded=$(echo "$login_banner_text" | sed 's/(\\\\\x27)\*/\\\x27/g;s/(\\\x27)\*//g;s/\^(\(.*\)|.*$/\1/g;s/\[\\s\\n\]+/ /g;s/(?:\[\\n\]+|(?:\\n)+)/\n/g;s/\\//g;')
+expanded=$(echo "$login_banner_text" | sed 's/\^(\(.*\)|.*$/\1/g;s/\[\\s\\n\]+/ /g;s/(?:\[\\n\]+|(?:\\n)+)/\n/g;s/\\//g;')
 formatted=$(echo "$expanded" | fold -sw 80)
 
 cat <<EOF >/etc/issue
