@@ -680,7 +680,10 @@ class Group(object):
         # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
         # the firewalld_activation must come before ruleset_modifications, othervise
         # remediations for ruleset_modifications won't work
-        priority_order = ["fips", "crypto", "firewalld_activation", "ruleset_modifications"]
+        # rules from group disabling_ipv6 must precede rules from configuring_ipv6,
+        # otherwise the remediation prints error although it is successful
+        priority_order = ["fips", "crypto", "firewalld_activation",
+        "ruleset_modifications", "disabling_ipv6", "configuring_ipv6"]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
