@@ -138,7 +138,11 @@ def main():
     if fix_commands:
         msg = (
             "If changes to mentioned profiles are intentional, "
-            "copy those compiled files, so they become the new reference:\n{fixes}"
+            "copy those compiled files, so they become the new reference:\n{fixes}\n"
+            "Please remember that if you change a profile that is extended by other profiles, "
+            "changes propagate to derived profiles. "
+            "If those changes are unwanted, you have to supress them "
+            "using explicit selections or !unselections in derived profiles."
             .format(test_root=args.test_data_root, fixes="\n".join(fix_commands)))
         print(msg, file=sys.stderr)
     sys.exit(bool(fix_commands))
