@@ -52,7 +52,7 @@
       <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,]))).*</value>
   </constant_variable>
   <constant_variable id="var_arufm_{{{ NAME }}}_tail" version="1" datatype="string" comment="audit rule auid and key">
-    <value>[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+    <value>[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)unsuccesful-access[\s]*$</value>
   </constant_variable>
 
   <!-- 32bit EACCES rules -->
