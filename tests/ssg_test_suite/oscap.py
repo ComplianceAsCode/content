@@ -144,7 +144,7 @@ def generate_fixes_remotely(formatting, verbose_path):
 
 def run_stage_remediation_ansible(run_type, formatting, verbose_path):
     """
-       Returns False on error, or True in case of successful bash scripts
+       Returns False on error, or True in case of successful Ansible playbook
        run."""
     formatting['output_template'] = _ANSIBLE_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
@@ -175,7 +175,7 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
 
 def run_stage_remediation_bash(run_type, formatting, verbose_path):
     """
-       Returns False on error, or True in case of successful Ansible playbook
+       Returns False on error, or True in case of successful bash scripts
        run."""
     formatting['output_template'] = _BASH_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
@@ -346,7 +346,7 @@ class GenericRunner(object):
             for fname in tuple(self._filenames_to_clean_afterwards):
                 try:
                     os.remove(fname)
-                except OSError as exc:
+                except OSError:
                     logging.error(
                         "Failed to cleanup file '{0}'"
                         .format(fname))
@@ -411,6 +411,13 @@ class ProfileRunner(GenericRunner):
 
     def _get_results_file(self):
         return '{0}-{1}-results'.format(self.profile, self.stage)
+
+    def final(self):
+        if self.environment.name == 'libvirt-based':
+            logging.info("Rebooting domain '{0}' before final scan."
+                         .format(self.environment.domain_name))
+            self.environment.reboot()
+        GenericRunner.final(self)
 
     def make_oscap_call(self):
         self.prepare_online_scanning_arguments()

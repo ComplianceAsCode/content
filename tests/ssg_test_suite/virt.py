@@ -4,6 +4,7 @@ from __future__ import print_function
 import libvirt
 import logging
 import time
+from socket import create_connection
 
 import xml.etree.ElementTree as ET
 
@@ -158,3 +159,36 @@ def start_domain(domain):
         domain.create()
         logging.debug('Waiting 30s for domain to start')
         time.sleep(30)
+
+
+def reboot_domain(domain, domain_ip, ssh_port):
+    timeout = 120           # Timeout for domain shutdown and boot.
+    connection_timeout = 5  # Timeout on the socket before attempting to connect.
+
+    logging.debug("Shutting down domain '{0}'".format(domain.name()))
+    domain.shutdown()
+
+    # Wait until domain shuts down.
+    logging.debug("Waiting for domain to shutdown")
+    start_time = time.perf_counter()
+    while domain.isActive():
+        time.sleep(1)
+        if time.perf_counter() - start_time >= timeout:
+            raise TimeoutError("Timeout reached: '{0}' domain failed to shutdown."
+                               .format(domain.name()))
+
+    logging.debug("Starting domain '{0}'".format(domain.name()))
+    domain.create()
+
+    # Wait until SSH (on ssh_port) starts accepting TCP connections.
+    logging.debug("Waiting for domain to boot")
+    start_time = time.perf_counter()
+    while True:
+        try:
+            with create_connection((domain_ip, ssh_port), timeout=connection_timeout):
+                break
+        except OSError as exc:
+            time.sleep(1)
+            if time.perf_counter() - start_time >= timeout:
+                raise TimeoutError("Timeout reached: '{0}' ({1}:22) domain does not "
+                                   "accept connections.".format(domain.name(), domain_ip)) from exc

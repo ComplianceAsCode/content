@@ -145,6 +145,15 @@ class VMTestEnv(TestEnv):
 
         self._origin = self._save_state("origin")
 
+    def reboot(self):
+        from ssg_test_suite import virt
+
+        if self.domain is None:
+            self.domain = virt.connect_domain(
+                self.hypervisor, self.domain_name)
+
+        virt.reboot_domain(self.domain, self.domain_ip, self.ssh_port)
+
     def finalize(self):
         self._delete_saved_state(self._origin)
         # self.domain.shutdown()
