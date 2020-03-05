@@ -503,7 +503,7 @@ class RuleRunner(GenericRunner):
 
         if rule_result != self.context:
             local_success = False
-            if rule_result is 'notselected':
+            if rule_result == 'notselected':
                 msg = (
                     'Rule {0} has not been evaluated! '
                     'Wrong profile selected in test scenario?'

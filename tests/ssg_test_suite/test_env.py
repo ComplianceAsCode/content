@@ -45,7 +45,7 @@ class SavedState(object):
         finally:
             try:
                 environment._delete_saved_state(state_handle)
-            except KeyboardInterrupt as exc:
+            except KeyboardInterrupt:
                 print("Hang on for a minute, cleaning up the saved state '{0}'."
                       .format(state_name), file=sys.stderr)
                 environment._delete_saved_state(state_handle)
@@ -122,7 +122,8 @@ class VMTestEnv(TestEnv):
         try:
             import libvirt
         except ImportError:
-            raise RuntimeError("Can't import libvirt module, libvirt backend will therefore not work.")
+            raise RuntimeError("Can't import libvirt module, libvirt backend will "
+                               "therefore not work.")
 
         self.domain = None
 
@@ -306,6 +307,7 @@ class DockerTestEnv(ContainerTestEnv):
             self.client.ping()
         except Exception as exc:
             msg = (
+                "{}\n"
                 "Unable to start the Docker test environment, "
                 "is the Docker service started "
                 "and do you have rights to access it?"
@@ -340,7 +342,7 @@ class DockerTestEnv(ContainerTestEnv):
 
     def _local_oscap_check_base_arguments(self):
         return ['oscap-docker', "container", self.current_container.id,
-                                                            'xccdf', 'eval']
+                'xccdf', 'eval']
 
 
 class PodmanTestEnv(ContainerTestEnv):
@@ -357,7 +359,8 @@ class PodmanTestEnv(ContainerTestEnv):
         try:
             subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+            msg = "Command '{0}' returned {1}:\n{2}".format(
+                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
 
     def _new_container_from_image(self, image_name, container_name):
@@ -368,7 +371,8 @@ class PodmanTestEnv(ContainerTestEnv):
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+            msg = "Command '{0}' returned {1}:\n{2}".format(
+                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
         container_id = podman_output.decode("utf-8").strip()
         return container_id
@@ -378,17 +382,20 @@ class PodmanTestEnv(ContainerTestEnv):
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+            msg = "Command '{0}' returned {1}:\n{2}".format(
+                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
         ip_address = podman_output.decode("utf-8").strip()
         return ip_address
 
     def _get_container_ports(self, container):
-        podman_cmd = ["podman", "inspect", container, "--format", "{{json .NetworkSettings.Ports}}"]
+        podman_cmd = ["podman", "inspect", container, "--format",
+                      "{{json .NetworkSettings.Ports}}"]
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+            msg = "Command '{0}' returned {1}:\n{2}".format(
+                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
         ports = {}
         for pb in json.loads(podman_output):
@@ -402,13 +409,15 @@ class PodmanTestEnv(ContainerTestEnv):
             try:
                 subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
             except subprocess.CalledProcessError as e:
-                msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+                msg = "Command '{0}' returned {1}:\n{2}".format(
+                    " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
                 raise RuntimeError(msg)
             podman_cmd = ["podman", "rm", running_state]
             try:
                 subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
             except subprocess.CalledProcessError as e:
-                msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+                msg = "Command '{0}' returned {1}:\n{2}".format(
+                    " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
                 raise RuntimeError(msg)
 
     def _remove_image(self, image):
@@ -416,7 +425,8 @@ class PodmanTestEnv(ContainerTestEnv):
         try:
             subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+            msg = "Command '{0}' returned {1}:\n{2}".format(
+                " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
 
     def _local_oscap_check_base_arguments(self):
