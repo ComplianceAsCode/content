@@ -38,7 +38,7 @@
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
   lineinfile:
     path: '/etc/dconf/db/gdm.d/locks/00-security-settings-lock'
-    regexp: '^org/gnome/login-screen/banner-message-text$'
-    line: 'org/gnome/login-screen/banner-message-text'
+    regexp: '^/org/gnome/login-screen/banner-message-text$'
+    line: '/org/gnome/login-screen/banner-message-text'
     create: yes
     state: present
