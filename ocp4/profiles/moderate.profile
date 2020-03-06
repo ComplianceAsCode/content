@@ -202,7 +202,6 @@ selections:
     #- package_audispd-plugins_installed
     ####
     #- package_scap-security-guide_installed
-    - package_libreswan_installed
 
     ### Remove Prohibited Packages
     #- package_sendmail_removed
@@ -261,7 +260,6 @@ selections:
     - harden_ssh_client_crypto_policy
     - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
-    - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
 
