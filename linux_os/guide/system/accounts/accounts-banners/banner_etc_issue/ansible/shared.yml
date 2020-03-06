@@ -1,0 +1,12 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- (xccdf-var login_banner_text)
+
+- name: "{{{ rule_title }}}"
+  lineinfile:
+    dest: /etc/issue
+    line: '{{ login_banner_text | regex_replace("\^\((.*)\|.*$", "\1") | regex_replace("\[\\s\\n\]\+"," ") | regex_replace("\(\?:\[\\n\]\+\|\(\?:\\\\n\)\+\)", "\n") | regex_replace("\\", "") | wordwrap() }}'
+    create: yes
