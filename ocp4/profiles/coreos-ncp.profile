@@ -192,7 +192,6 @@ selections:
     ### Install Required Packages
     #- package_sssd-ipa_installed
     - package_aide_installed
-    - package_firewalld_installed
     - package_iptables_installed
     #- package_libcap-ng-utils_installed
     #- package_openscap-scanner_installed
@@ -338,7 +337,7 @@ selections:
 
     ## Enable Host-Based Firewall
     ## SC-7(12) / FMT_MOF_EXT.1
-    - service_firewalld_enabled
+    # TODO (Check for iptables and the kubelet config instead)
 
     ## Configure Name/Addres of Remote Management Server
     ##  From Which to Receive Config Settings
