@@ -190,7 +190,6 @@ selections:
     # We won't check AIDE directly, we'll need to check cluster-wide for the
     # file-integrity-operator
     # package_aide_installed
-    - package_firewalld_installed
     - package_iptables_installed
     #- package_libcap-ng-utils_installed
     #- package_openscap-scanner_installed
@@ -203,7 +202,6 @@ selections:
     #- package_audispd-plugins_installed
     ####
     #- package_scap-security-guide_installed
-    - package_libreswan_installed
 
     ### Remove Prohibited Packages
     #- package_sendmail_removed
@@ -260,9 +258,7 @@ selections:
     - configure_crypto_policy
     - harden_sshd_crypto_policy
     - harden_ssh_client_crypto_policy
-    - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
-    - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
 
@@ -336,7 +332,7 @@ selections:
 
     ## Enable Host-Based Firewall
     ## SC-7(12) / FMT_MOF_EXT.1
-    - service_firewalld_enabled
+    # TODO (Check for iptables and the kubelet config instead)
 
     ## Configure Name/Addres of Remote Management Server
     ##  From Which to Receive Config Settings
