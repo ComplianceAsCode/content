@@ -521,3 +521,28 @@ cat << 'EOF' > {{{ filepath }}}
 {{{ contents|trim() }}}
 EOF
 {{%- endmacro %}}
+
+{{# Strips multibanner regex and keeps only the first banner #}}
+{{% macro bash_deregexify_multiple_banners(banner_var_name) -%}}
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\^(\(.*\)|.*$/\1/g')
+{{%- endmacro %}}
+
+{{# Strips whitespace or newline regex #}}
+{{% macro bash_deregexify_banner_space(banner_var_name) -%}}
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\[\\s\\n\]+/ /g')
+{{%- endmacro %}}
+
+{{# Strips newline or newline escape sequence regex #}}
+{{% macro bash_deregexify_banner_newline(banner_var_name, newline) -%}}
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(?:\[\\n\]+|(?:\\n)+)/{{{ newline }}}/g')
+{{%- endmacro %}}
+
+{{# Strips newline token for a newline escape sequence regex #}}
+{{% macro bash_deregexify_banner_newline_token(banner_var_name) -%}}
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(n)\*/\\n/g')
+{{%- endmacro %}}
+
+{{# Strips backslash regex #}}
+{{% macro bash_deregexify_banner_backslash(banner_var_name) -%}}
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\\//g')
+{{%- endmacro %}}
