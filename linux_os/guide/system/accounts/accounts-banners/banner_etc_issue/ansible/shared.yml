@@ -8,5 +8,5 @@
 - name: "{{{ rule_title }}}"
   lineinfile:
     dest: /etc/issue
-    line: '{{ login_banner_text | regex_replace("\^\((.*)\|.*$", "\1") | regex_replace("\[\\s\\n\]\+"," ") | regex_replace("\(\?:\[\\n\]\+\|\(\?:\\\\n\)\+\)", "\n") | regex_replace("\\", "") | wordwrap() }}'
+    line: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
     create: yes

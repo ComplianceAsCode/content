@@ -32,7 +32,7 @@
     dest: /etc/dconf/db/gdm.d/00-security-settings
     section: org/gnome/login-screen
     option: banner-message-text
-    value: '''{{ login_banner_text | regex_replace("\^\((.*)\|.*$", "\1") | regex_replace("\[\\s\\n\]\+"," ") | regex_replace("\(\?:\[\\n\]\+\|\(\?:\\\\n\)\+\)", "(n)\*") | regex_replace("\\", "") | regex_replace("\(n\)\*", "\\n") }}'''
+    value: '{{{ ansible_deregexify_banner_dconf_gnome("login_banner_text") }}}'
     create: yes
     no_extra_spaces: yes
 
