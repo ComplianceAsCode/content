@@ -71,6 +71,7 @@ def _get_jinja_environment(substitutions_dict):
             loader=AbsolutePathFileSystemLoader(),
             bytecode_cache=bytecode_cache
         )
+        _get_jinja_environment.env.filters['banner_regexify'] = banner_regexify
 
     return _get_jinja_environment.env
 
@@ -112,7 +113,6 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['prodtype_to_name'] = prodtype_to_name
     substitutions_dict['name_to_platform'] = name_to_platform
     substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
-    substitutions_dict['banner_regexify'] = banner_regexify
     substitutions_dict['raise'] = raise_exception
 
 
