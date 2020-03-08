@@ -10,7 +10,12 @@ from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_BASH_DEFINITIONS,
                         JINJA_MACROS_OVAL_DEFINITIONS,
                         )
-from .utils import required_key, prodtype_to_name, name_to_platform, prodtype_to_platform, banner_regexify
+from .utils import (required_key,
+                    prodtype_to_name,
+                    name_to_platform,
+                    prodtype_to_platform,
+                    banner_regexify
+                    )
 
 
 class MacroError(RuntimeError):

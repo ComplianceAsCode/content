@@ -1,6 +1,7 @@
 import argparse
 import ssg.utils
 
+
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--output", help="Path to output regexified banner")

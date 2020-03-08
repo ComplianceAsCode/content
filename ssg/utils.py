@@ -249,10 +249,13 @@ def mkdir_p(path):
         else:
             raise
 
+
 def banner_regexify(banner_text):
     # We could use re.escape(), but it escapes too many characters, including plain white space.
     # In python 3.7 the set of charaters escaped by re.escape is reasonable, so lets mimic it.
     # See https://docs.python.org/3/library/re.html#re.sub
     # '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`" are not escaped.
     banner_text = re.sub(r"([#$&*+-.^`|~:()])", r"\\\1", banner_text)
-    return banner_text.replace("\n", "BFLMPSVZ").replace(" ", "[\s\\n]+").replace("BFLMPSVZ", "(?:[\\n]+|(?:\\\\n)+)")
+    banner_text = banner_text.replace("\n", "BFLMPSVZ")
+    banner_text = banner_text.replace(" ", "[\\s\\n]+")
+    return banner_text.replace("BFLMPSVZ", "(?:[\\n]+|(?:\\\\n)+)")
