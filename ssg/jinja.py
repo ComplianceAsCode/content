@@ -10,7 +10,7 @@ from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_BASH_DEFINITIONS,
                         JINJA_MACROS_OVAL_DEFINITIONS,
                         )
-from .utils import required_key, prodtype_to_name, name_to_platform, prodtype_to_platform
+from .utils import required_key, prodtype_to_name, name_to_platform, prodtype_to_platform, banner_regexify
 
 
 class MacroError(RuntimeError):
@@ -112,6 +112,7 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['prodtype_to_name'] = prodtype_to_name
     substitutions_dict['name_to_platform'] = name_to_platform
     substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
+    substitutions_dict['banner_regexify'] = banner_regexify
     substitutions_dict['raise'] = raise_exception
 
 

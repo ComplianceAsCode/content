@@ -248,3 +248,6 @@ def mkdir_p(path):
             pass
         else:
             raise
+
+def banner_regexify(banner_text):
+    return banner_text.replace("\n", "BFLMPSVZ").replace(" ", "[\s\\n]+").replace("BFLMPSVZ", "(?:[\\n]+|(?:\\\\n)+)")
