@@ -752,6 +752,14 @@ $ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --p
 
 This will result in a new YAML profile containing exclusive rules to the profile pointed by the --profile1 option.
 
+=== Generating login banner regular expressions
+
+Rules like `banner_etc_issue` and `dconf_gnome_login_banner_text` will check for configuration of login banners and remediate them. Both rules source the banner text from the same variable `login_banner_text`, and the banner texts need to be in the form of a regular expression.
+There are a few utilities you can use to transform your text into the appropriate regular expression:
+
+When adding a new banner directly to the `login_banner_text`, use the custom Jinja filter `banner_regexify`. +
+If customizing content via SCAP Workbench, or directly writing your tailoring XML, use `utils/regexify_banner.py` to generate the appropriate regular expression.
+
 == Contributing with XCCDFs, OVALs and remediations
 
 There are three main types of content in the project, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer, puppet and ignition.
@@ -1279,6 +1287,8 @@ Jinja macros for Ansible content are located in `/shared/macros-ansible.jinja`. 
 - `ansible_sshd_set` -- set a parameter in the sshd configuration
 - `ansible_etc_profile_set` -- ensure a command gets executed or a variable gets set in /etc/profile or /etc/profile.d
 - `ansible_tmux_set` -- set a command in tmux configuration
+- `ansible_deregexify_banner_etc_issue` -- Formats a banner regex for use in /etc/issue
+- `ansible_deregexify_banner_dconf_gnome` -- Formats a banner regex for use in dconf
 
 They also include several low-level macros:
 
@@ -1288,6 +1298,14 @@ They also include several low-level macros:
 - `ansible_only_lineinfile` -- ensure that no lines matching the regex are present and add the given line
 - `ansible_set_config_file` -- for configuration files; set the given configuration value and ensure no conflicting values
 - `ansible_set_config_file_dir` -- for configuration files and files in configuration directories; set the given configuration value and ensure no conflicting values
+
+Low level macros to make login banner regular expressions usable in Ansible remediations
+
+- `ansible_deregexify_multiple_banners` -- Strips multibanner regex and keeps only the first banner
+- `ansible_deregexify_banner_space` -- Strips whitespace or newline regex
+- `ansible_deregexify_banner_newline` -- Strips newline or newline escape sequence regex
+- `ansible_deregexify_banner_newline_token` -- Strips newline token for a newline escape sequence regex
+- `ansible_deregexify_banner_backslash` - Strips backslash regex
 
 When `msg` is absent from any of the above macros, rule title will be substituted instead.
 
@@ -1347,6 +1365,14 @@ Available low-level Jinja macros that can be used in Bash remediations:
 
 - `die` - Function to terminate the remediation
 - `set_config_file` - Add an entry to a text configuration file
+
+Low level macros to make login banner regular expressions usable in Bash remediations
+
+- `bash_deregexify_multiple_banners` - Strips multibanner regex and keeps only the first banner
+- `bash_deregexify_banner_space` - Strips whitespace or newline regex
+- `bash_deregexify_banner_newline` - Strips newline or newline escape sequence regex
+- `bash_deregexify_banner_newline_token` - Strips newline token for a newline escape sequence regex
+- `bash_deregexify_banner_backslash` - Strips backslash regex
 
 === Templating
 
