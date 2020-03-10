@@ -1,0 +1,15 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="chronyd_specify_remote_server" version="1">
+    <metadata>
+      <title>Specify Remote NTP chronyd Server for Time Data</title>
+      {{{- oval_affected(products) }}}
+      <description>A remote chronyd NTP Server for time synchronization should be specified (and dependencies are met)</description>
+    </metadata>
+
+    <criteria comment="chronyd enabled and remote server specified" operator="AND">
+      <extend_definition comment="service chronyd enabled" definition_ref="service_chronyd_enabled" />
+      <extend_definition comment="chronyd remote server specified" definition_ref="chronyd_specify_remote_server" />
+    </criteria>
+
+  </definition>
+</def-group>
