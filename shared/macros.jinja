@@ -602,8 +602,8 @@ ocil_clause: "the correct value is not returned"
     run the following command:
     <pre>$ sudo sysctl -w {{{ sysctl }}}={{{ value }}}</pre>
 
-    If this is not the system default value, add the following line to a file in the
-    directory <tt>/etc/sysctl.d</tt>:
+    To make sure that the setting is persistent,
+    add the following line to a file in the directory <tt>/etc/sysctl.d</tt>:
     <pre>{{{ sysctl }}} = {{{ value }}}</pre>
 {{%- endmacro %}}
 
