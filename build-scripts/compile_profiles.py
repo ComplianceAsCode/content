@@ -71,11 +71,11 @@ def create_parser():
     return parser
 
 
-def make_name_to_profile_mapping(profile_files):
+def make_name_to_profile_mapping(profile_files, env_yaml):
     name_to_profile = {}
     for f in profile_files:
         try:
-            p = ResolvableProfile.from_yaml(f)
+            p = ResolvableProfile.from_yaml(f, env_yaml)
             name_to_profile[p.id_] = p
         except Exception as exc:
             # The profile is probably doc-incomplete
@@ -110,7 +110,7 @@ def main():
 
     profile_files = get_profile_files_from_root(env_yaml, args.product_yaml)
     profile_files.extend(args.profile_file)
-    profiles = make_name_to_profile_mapping(profile_files)
+    profiles = make_name_to_profile_mapping(profile_files, env_yaml)
     for pname in profiles:
         profiles[pname].resolve(profiles)
 
