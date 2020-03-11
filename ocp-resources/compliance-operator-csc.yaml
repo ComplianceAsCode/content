@@ -1,0 +1,9 @@
+apiVersion: operators.coreos.com/v1
+kind: CatalogSourceConfig
+metadata:
+  name: compliance-operator
+  namespace: openshift-marketplace
+spec:
+  targetNamespace: openshift-compliance
+  packages: compliance-operator-bundle
+  source: compliance-operator
