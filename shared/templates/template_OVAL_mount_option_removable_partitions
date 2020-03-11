@@ -50,7 +50,7 @@
   </local_variable>
 
   <!-- If specified removable partition represents CD / DVD drive, use all alternative
-       names to check /etc/fstab & runtime settings -->
+       names to check /etc/fstab -->
   <ind:textfilecontent54_test id="test_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" check_existence="any_exist" check="all" comment="'{{{ MOUNTOPTION }}}' mount option used for at least one CD / DVD drive alternative names in /etc/fstab" version="1">
     <ind:object object_ref="object_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" />
     <ind:state state_ref="state_{{{ MOUNTOPTION }}}_etc_fstab_cd_dvd_drive" />
@@ -67,7 +67,7 @@
   </ind:textfilecontent54_state>
 
   <!-- Specified removable partition exists & doesn't represent a CD/DVD drive.
-       Check if configured with '{{{ MOUNTOPTION }}}' mount option in both /etc/fstab & runtime configuration -->
+       Check if configured with '{{{ MOUNTOPTION }}}' mount option in both /etc/fstab -->
   <ind:textfilecontent54_test id="test_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" check="at least one" check_existence="all_exist" comment="Check if removable partition is configured with '{{{ MOUNTOPTION }}}' mount option in /etc/fstab" version="1">
     <ind:object object_ref="object_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" />
     <ind:state state_ref="state_{{{ MOUNTOPTION }}}_etc_fstab_not_cd_dvd_drive" />
