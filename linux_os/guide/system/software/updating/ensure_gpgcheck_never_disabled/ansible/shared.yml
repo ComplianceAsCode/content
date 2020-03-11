@@ -11,8 +11,8 @@
 
 - name: Set gpgcheck=1 for each {{{ pkg_manager }}} repo
   ini_file:
-    path: "{{item[0]}}"
-    section: "{{item[1]}}"
+    path: "{{ item[0] }}"
+    section: "{{ item[1] }}"
     option: gpgcheck
     value: '1'
     no_extra_spaces: True
