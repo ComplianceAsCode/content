@@ -286,7 +286,7 @@ def main():
     elif args.ACTION == 'decode':
         rem_path = resolve_for_decode(args.rule, args.infile)
         try:
-            decode(rem_path)
+            print(decode(rem_path))
         except IOError as e:
             # The rule probably couldn't be loaded
             print(e)
