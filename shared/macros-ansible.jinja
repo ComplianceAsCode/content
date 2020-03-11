@@ -225,6 +225,7 @@
 #}}
 {{% macro ansible_deregexify_banner_etc_issue(banner_var_name) -%}}
 {{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
 {{{ ansible_deregexify_multiple_banners() }}} |
 {{{ ansible_deregexify_banner_space() }}} |
 {{{ ansible_deregexify_banner_newline("\\n") }}} |
@@ -239,6 +240,7 @@ wordwrap() }}
 #}}
 {{% macro ansible_deregexify_banner_dconf_gnome(banner_var_name) -%}}
 ''{{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
 {{{ ansible_deregexify_multiple_banners() }}} |
 {{{ ansible_deregexify_banner_space() }}} |
 {{{ ansible_deregexify_banner_newline("(n)*") }}} |
@@ -246,10 +248,14 @@ wordwrap() }}
 {{{ ansible_deregexify_banner_newline_token()}}} }}''
 {{%- endmacro %}}
 
-    line: '{{ login_banner_text | | regex_replace("\\", "") | wordwrap() }}'
+{{# Strips anchors around the banner #}}
+{{% macro ansible_deregexify_banner_anchors() -%}}
+regex_replace("^\^(.*)\$$", "\1")
+{{%- endmacro %}}
+
 {{# Strips multibanner regex and keeps only the first banner #}}
 {{% macro ansible_deregexify_multiple_banners() -%}}
-regex_replace("\^\((.*)\|.*$", "\1")
+regex_replace("\((.*)\|.*$", "\1")
 {{%- endmacro %}}
 
 {{# Strips whitespace or newline regex #}}

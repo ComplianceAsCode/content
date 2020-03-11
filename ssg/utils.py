@@ -259,3 +259,6 @@ def banner_regexify(banner_text):
     banner_text = banner_text.replace("\n", "BFLMPSVZ")
     banner_text = banner_text.replace(" ", "[\\s\\n]+")
     return banner_text.replace("BFLMPSVZ", "(?:[\\n]+|(?:\\\\n)+)")
+
+def banner_anchor_wrap(banner_text):
+    return "^" + banner_text + "$"

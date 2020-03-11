@@ -522,9 +522,14 @@ cat << 'EOF' > {{{ filepath }}}
 EOF
 {{%- endmacro %}}
 
+{{# Strips anchors regex around the banner text #}}
+{{% macro bash_deregexify_banner_anchors(banner_var_name) -%}}
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/^\^\(.*\)\$$/\1/g')
+{{%- endmacro %}}
+
 {{# Strips multibanner regex and keeps only the first banner #}}
 {{% macro bash_deregexify_multiple_banners(banner_var_name) -%}}
-{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\^(\(.*\)|.*$/\1/g')
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(\(.*\)|.*$/\1/g')
 {{%- endmacro %}}
 
 {{# Strips whitespace or newline regex #}}
