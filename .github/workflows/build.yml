@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Make
         run: |
-          apt-get -qq update \
+          sudo apt-get -qq update \
           && apt-get -qq install cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml \
           && mkdir -p /home/$OSCAP_USERNAME \
           && rm -rf /usr/share/doc /usr/share/doc-base \
