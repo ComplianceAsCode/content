@@ -1,0 +1,10 @@
+name: Build
+on: push
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Make
+        run: |
+          cd build && cmake ../ && make clean all
