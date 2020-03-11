@@ -83,6 +83,7 @@ selections:
 - configure_usbguard_auditbackend
 - coredump_disable_backtraces
 - coredump_disable_storage
+- dconf_db_up_to_date
 - dconf_gnome_banner_enabled
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
