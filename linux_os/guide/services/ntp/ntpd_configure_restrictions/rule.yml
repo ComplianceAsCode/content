@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure server restrictions for ntpd'
+
+description: |-
+    ntp is a daemon which implements the Network Time Protocol (NTP). It is designed to
+    synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on NTP can be found at
+    {{{ weblink(link="http://www.ntp.org")}}}.
+    ntp can be configured to be a client and/or a server.
+    To ensure that ntpd implements correctt server restrictions, make sure that the following lines exist in the file <tt>/etc/ntpd.conf</tt>:
+    <pre>restrict -4 default kod nomodify notrap nopeer noquery</pre>
+    <pre>restrict -6 default kod nomodify notrap nopeer noquery</pre>
+    This recommendation only applies if ntp is in use on the system.
+
+rationale: |-
+    If ntp is in use on the system proper configuration is vital to ensuring time synchronization
+    is working properly.
+
+severity: medium
+
+platform: machine
+
+references:
+    cis@rhel7: 2.2.1.2
+
+identifiers:
+    cce@rhel7: 82735-2
+
+ocil_clause: 'restrictions are not configured for ntpd'
+
+ocil: |-
+    Run the following command and verify output matches:
+    <tt># grep "^restrict" /etc/ntp.conf</tt>
+    <pre>
+    restrict -4 default kod nomodify notrap nopeer noquery
+    restrict -6 default kod nomodify notrap nopeer noquery
+    </pre>
+    The <tt>-4</tt> in the first line is optional and options after <tt>default</tt> can appear in any order.
+    Additional restriction lines may exist.
