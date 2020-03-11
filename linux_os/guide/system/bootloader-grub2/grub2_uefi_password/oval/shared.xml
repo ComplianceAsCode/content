@@ -25,12 +25,12 @@
     <unix:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</unix:filepath>
   </unix:file_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg. Superuser is not root, admin, or administrator" id="test_bootloader_uefi_superuser" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg." id="test_bootloader_uefi_superuser" version="2">
     <ind:object object_ref="object_bootloader_uefi_superuser" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_bootloader_uefi_superuser" version="1">
+  <ind:textfilecontent54_object id="object_bootloader_uefi_superuser" version="2">
     <ind:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=\"(?i)(?!root|admin|administrator)(?-i).*\"$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=\".*\"$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

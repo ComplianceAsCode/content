@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="grub2_uefi_admin_username" version="1">
+    <metadata>
+      <title>Set the UEFI Boot Loader Superuser Username to Unique Value</title>
+      {{{- oval_affected(products) }}}
+      <description>The grub2 boot loader superuser should have a username that is hard to guess.</description>
+    </metadata>
+
+    <criteria operator="OR">
+      <criterion comment="Pass if /boot/efi/EFI/redhat/grub.cfg does not exist" test_ref="test_bootloader_uefi_grub_cfg" />
+      <criterion comment="make sure a superuser is defined in /boot/efi/EFI/redhat/grub.cfg" test_ref="test_bootloader_uefi_unique_superuser"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg. Superuser is not root, admin, or administrator" id="test_bootloader_uefi_unique_superuser" version="1">
+    <ind:object object_ref="object_bootloader_uefi_unique_superuser" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_bootloader_uefi_unique_superuser" version="1">
+    <ind:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=\"(?i)(?!root|admin|administrator)(?-i).*\"$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

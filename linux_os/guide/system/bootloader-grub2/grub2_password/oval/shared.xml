@@ -2,16 +2,10 @@
   <definition class="compliance" id="grub2_password" version="1">
     <metadata>
       <title>Set Boot Loader Password</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The grub2 boot loader should have password protection enabled.</description>
     </metadata>
+
     <criteria operator="OR">
       <criterion comment="Pass if /boot/grub2/grub.cfg does not exist" test_ref="test_bootloader_grub_cfg" />
       <criteria operator="AND">
@@ -31,12 +25,12 @@
     <unix:filepath>/boot/grub2/grub.cfg</unix:filepath>
   </unix:file_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files. Superuser is not root, admin, or administrator" id="test_bootloader_superuser" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files." id="test_bootloader_superuser" version="2">
     <ind:object object_ref="object_bootloader_superuser" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_bootloader_superuser" version="1">
+  <ind:textfilecontent54_object id="object_bootloader_superuser" version="2">
     <ind:filepath>/boot/grub2/grub.cfg</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=\"(?i)(?!root|admin|administrator)(?-i).*\"$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=\".*\"$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -56,7 +50,5 @@
     <ind:filepath>/boot/grub2/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*password_pbkdf2[\s]+.*[\s]+grub\.pbkdf2\.sha512.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>  
-
+  </ind:textfilecontent54_object>
 </def-group>
-

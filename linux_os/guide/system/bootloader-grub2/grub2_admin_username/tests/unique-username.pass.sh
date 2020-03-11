@@ -2,4 +2,4 @@
 
 . grub-passwords.sh
 
-make_grub_password
+set_superusers "koskic"

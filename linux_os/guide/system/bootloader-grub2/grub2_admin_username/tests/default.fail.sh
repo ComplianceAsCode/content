@@ -4,4 +4,4 @@
 
 . grub-passwords.sh
 
-remove_grub_password || true
+set_superusers "root"
