@@ -5,7 +5,12 @@
 # disruption = medium
 - (xccdf-var login_banner_text)
 
-- name: "{{{ rule_title }}}"
+- name: "{{{ rule_title }}} - remove incorrect banner"
+  file:
+    state: absent
+    path: /etc/issue
+
+- name: "{{{ rule_title }}} - add correct banner"
   lineinfile:
     dest: /etc/issue
     line: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
