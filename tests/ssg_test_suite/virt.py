@@ -174,8 +174,9 @@ def reboot_domain(domain, domain_ip, ssh_port):
     while domain.isActive():
         time.sleep(1)
         if time.perf_counter() - start_time >= timeout:
-            raise TimeoutError("Timeout reached: '{0}' domain failed to shutdown."
-                               .format(domain.name()))
+            str_err = "Timeout reached: '{0}' domain failed to shutdown.".format(domain.name())
+            logging.debug(str_err)
+            raise TimeoutError(str_err)
 
     logging.debug("Starting domain '{0}'".format(domain.name()))
     domain.create()
@@ -190,5 +191,7 @@ def reboot_domain(domain, domain_ip, ssh_port):
         except OSError as exc:
             time.sleep(1)
             if time.perf_counter() - start_time >= timeout:
-                raise TimeoutError("Timeout reached: '{0}' ({1}:22) domain does not "
-                                   "accept connections.".format(domain.name(), domain_ip)) from exc
+                str_err = ("Timeout reached: '{0}' ({1}:{2}) domain does not "
+                           "accept connections.".format(domain.name(), domain_ip, ssh_port))
+                logging.debug(str_err)
+                raise TimeoutError(str_err) from exc
