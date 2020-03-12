@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,rhel6,rhel7,rhel8,rhv4,wrlinux1019,wrlinux8
+prodtype: ol7,rhel6,rhel7,rhv4,wrlinux1019,wrlinux8
 
 title: 'Use Only FIPS 140-2 Validated Ciphers'
 
@@ -98,3 +98,13 @@ warnings:
         party review by an accredited lab. While open source software is
         capable of meeting this, it does not meet FIPS-140 unless the vendor
         submits to this process.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: KerberosAuthentication
+        rule_id: sshd_use_approved_ciphers
+        value: 'aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc'
+    backends:
+        oval: 'off'
