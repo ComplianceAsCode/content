@@ -2,14 +2,13 @@ documentation_complete: true
 
 prodtype: fedora,ocp4,ol8,rhel8
 
-title: 'The Chrony package is enabled'
+title: 'The Chrony package is installed'
 
 description: |-
     System time should be synchronized between all systems in an environment. This is
     typically done by establishing an authoritative time server or set of servers and having all
     systems synchronize their clocks to them.
-    You can install the package with the following command:
-    <pre># dnf install chrony</pre>
+    {{{ describe_package_install(package="chrony") }}}
 
 rationale: |-
     Time synchronization is important to support time sensitive security mechanisms like
