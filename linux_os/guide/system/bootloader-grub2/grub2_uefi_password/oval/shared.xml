@@ -30,7 +30,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_bootloader_uefi_superuser" version="2">
     <ind:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=\".*\"$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

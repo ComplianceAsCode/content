@@ -1,5 +1,5 @@
 #!/bin/bash
 
-. grub-passwords.sh
+. $SHARED/grub2.sh
 
 set_superusers "koskic"

@@ -2,6 +2,6 @@
 
 # remediation = none
 
-. grub-passwords.sh
+. $SHARED/grub2.sh
 
-remove_grub_password || true
+rm -f "$GRUB_CFG_ROOT/user.cfg"

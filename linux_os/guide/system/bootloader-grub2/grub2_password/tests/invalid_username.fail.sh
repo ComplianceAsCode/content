@@ -4,4 +4,6 @@
 
 . $SHARED/grub2.sh
 
-set_superusers "root"
+make_grub_password
+
+set_superusers "use r"
