@@ -19,7 +19,7 @@ def main():
         banner_text = file_in.read().rstrip()
 
     banner_regex = ssg.utils.banner_regexify(banner_text)
-    banner_regex = ssg.utils.banner_anchor_wrap(banner_text)
+    banner_regex = ssg.utils.banner_anchor_wrap(banner_regex)
 
     if args.output:
         with open(args.output, "w") as file_out:
