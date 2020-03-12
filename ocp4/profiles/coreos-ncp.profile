@@ -15,7 +15,7 @@ description: |-
 
     - Committee on National Security Systems Instruction No. 1253 (CNSSI 1253)
     - NIST Controlled Unclassified Information (NIST 800-171)
-    - NIST 800-53 control selections for MODERATE impact systems (NIST 800-53)
+    - NIST 800-53 control selections for Moderate-Impact systems (NIST 800-53)
     - U.S. Government Configuration Baseline (USGCB)
     - NIAP Protection Profile for General Purpose Operating Systems v4.2.1 (OSPP v4.2.1)
     - DISA Operating System Security Requirements Guide (OS SRG)
@@ -26,9 +26,9 @@ description: |-
     scap-security-guide-docs package.
 
     This profile reflects U.S. Government consensus content and is developed through
-    the OpenSCAP/SCAP Security Guide initiative, championed by the National
+    the ComplianceAsCode initiative, championed by the National
     Security Agency. Except for differences in formatting to accommodate
-    publishing processes, this profile mirrors OpenSCAP/SCAP Security Guide
+    publishing processes, this profile mirrors ComplianceAsCode
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
