@@ -529,7 +529,7 @@ EOF
 
 {{# Strips multibanner regex and keeps only the first banner #}}
 {{% macro bash_deregexify_multiple_banners(banner_var_name) -%}}
-{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(\(.*\)|.*$/\1/g')
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/^(\(.*\)|.*)$/\1/g')
 {{%- endmacro %}}
 
 {{# Strips whitespace or newline regex #}}
