@@ -169,7 +169,7 @@ def reboot_domain(domain, domain_ip, ssh_port):
     domain.shutdown()
 
     # Wait until domain shuts down.
-    logging.debug("Waiting for domain to shutdown")
+    logging.debug("Waiting for domain to shutdown (max. {0}s)".format(timeout))
     start_time = time.perf_counter()
     while domain.isActive():
         time.sleep(1)
@@ -182,7 +182,7 @@ def reboot_domain(domain, domain_ip, ssh_port):
     domain.create()
 
     # Wait until SSH (on ssh_port) starts accepting TCP connections.
-    logging.debug("Waiting for domain to boot")
+    logging.debug("Waiting for domain to boot (max. {0}s)".format(timeout))
     start_time = time.perf_counter()
     while True:
         try:

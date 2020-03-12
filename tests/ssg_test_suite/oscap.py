@@ -623,6 +623,8 @@ class Checker(object):
             logging.info("Terminating the test run due to keyboard interrupt.")
         except RuntimeError as exc:
             logging.error("Terminating due to error: {msg}.".format(msg=str(exc)))
+        except TimeoutError as exc:
+            logging.error("Terminating due to timeout: {msg}".format(msg=str(exc)))
         finally:
             self.finalize()
 
