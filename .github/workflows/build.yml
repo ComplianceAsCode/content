@@ -4,9 +4,15 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Make
         run: |
           sudo apt-get -qq update
           sudo apt-get -qq install cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml
           cd build && cmake ../ && make clean all
+      - name:
+        uses: ansible/ansible-lint-action@master
+        with: 
+          targets:
+            build/ansible/rhel*.yml
+            
