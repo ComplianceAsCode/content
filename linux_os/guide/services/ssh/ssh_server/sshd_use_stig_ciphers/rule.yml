@@ -1,0 +1,105 @@
+documentation_complete: true
+
+prodtype: ol7,rhel6,rhel7,rhv4,wrlinux1019,wrlinux8
+
+title: 'Use Only STIG FIPS 140-2 Validated Ciphers'
+
+description: |-
+    Limit the ciphers to those algorithms which are FIPS-approved and part of STIG.
+    Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
+    The following line in <tt>/etc/ssh/sshd_config</tt>
+    demonstrates use of FIPS-approved ciphers:
+    <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+    The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+{{% if product in ["rhel7","ol7"] %}}
+    <br /><br />
+    The following ciphers are FIPS 140-2 certified on {{{ full_name }}}:
+    <br />- aes128-ctr
+    <br />- aes192-ctr
+    <br />- aes256-ctr
+    <br /><br />
+    Any combination of the above ciphers will pass this check.
+    Official FIPS 140-2 paperwork for {{{ full_name }}} can be found at
+    {{% if product == "ol7" %}}
+    {{{ weblink(link="https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3028.pdf") }}}
+    {{% else %}}
+    {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf") }}}
+    {{% endif %}}
+{{% endif %}}
+
+rationale: |-
+    Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore
+    cannot be relied upon to provide confidentiality or integrity, and system data may be compromised.
+    <br />
+    Operating systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to
+    cryptographic modules.
+    <br />
+    FIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules
+    utilize authentication that meets industry and government requirements. For government systems, this allows
+    Security Levels 1, 2, 3, or 4 for use on {{{ full_name }}}.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82729-5
+    cce@rhel7: 82730-3
+
+references:
+    stigid@rhel6: "000243"
+    srg@rhel6: SRG-OS-000169
+    disa@rhel6: 1144,1145,1146
+    cis: 5.2.10
+    cjis: 5.5.6
+    cui: 3.1.13,3.13.11,3.13.8
+    disa: 68,366,803
+    hipaa: 164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(ii),164.314(b)(2)(i)
+    nist: CM-6(a),AC-17(a),AC-17(2),SC-13,MA-4(6),IA-5(1)(c),SC-12(2),SC-12(3)
+    nist-csf: PR.AC-1,PR.AC-3,PR.AC-4,PR.AC-6,PR.AC-7,PR.IP-1,PR.PT-1,PR.PT-3,PR.PT-4
+    srg: SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173
+    vmmsrg: SRG-OS-000033-VMM-000140,SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000396-VMM-001590
+    stigid@rhel7: "040110"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.10,SR 2.11,SR 2.12,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 2.8,SR 2.9,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.3.3.2.2,4.3.3.3.9,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    cobit5: APO11.04,APO13.01,BAI03.05,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS01.04,DSS05.02,DSS05.03,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.06,DSS06.10,MEA02.01
+    iso27001-2013: A.11.2.6,A.12.1.2,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.5.1,A.12.6.2,A.12.7.1,A.13.1.1,A.13.2.1,A.14.1.3,A.14.2.2,A.14.2.3,A.14.2.4,A.18.1.4,A.6.1.2,A.6.2.1,A.6.2.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
+    cis-csc: 1,11,12,14,15,16,18,3,5,6,8,9
+
+ocil_clause: 'FIPS ciphers are not configured or the enabled ciphers are not FIPS-approved'
+
+ocil: |-
+    Only FIPS ciphers should be used. To verify that only FIPS-approved
+    ciphers are in use, run the following command:
+    <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
+    The output should contain only those ciphers which are FIPS-approved,
+    i.e. any combination of <code>aes128-ctr</code>, <code>aes192-ctr</code> and <code>aes256-ctr</code>.
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: Ciphers
+        rule_id: sshd_use_stig_ciphers
+        value: 'aes128-ctr,aes192-ctr,aes256-ctr'
+    backends:
+        oval: 'off'

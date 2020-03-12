@@ -151,7 +151,7 @@ selections:
     - sshd_print_last_log
     - sshd_set_idle_timeout
     - sshd_set_keepalive
-    - sshd_use_approved_ciphers
+    - sshd_use_stig_ciphers
     - sshd_use_approved_macs
     - sshd_use_priv_separation
     - sudo_remove_no_authenticate
