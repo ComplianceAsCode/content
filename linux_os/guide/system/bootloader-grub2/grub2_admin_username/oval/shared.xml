@@ -8,7 +8,7 @@
 
     <criteria operator="OR">
       <criterion comment="Pass if /boot/grub2/grub.cfg does not exist" test_ref="test_bootloader_grub_cfg" />
-      <criterion comment="make sure a superuser is defined in /boot/grub2/grub.cfg" test_ref="test_bootloader_unique_superuser"/>
+      <criterion comment="Superuser is defined in /boot/grub2/grub.cfg and it isn't root, admin, or administrator." test_ref="test_bootloader_unique_superuser"/>
     </criteria>
   </definition>
 
