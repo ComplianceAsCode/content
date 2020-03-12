@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure that ntpd is running under ntp user account'
+
+description: |-
+    ntp is a daemon which implements the Network Time Protocol (NTP). It is designed to
+    synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on NTP can be found at
+    {{{ weblink(link="http://www.ntp.org")}}}.
+    ntp can be configured to be a client and/or a server.
+    To ensure that ntpd is running under ntp user account, Add or edit the
+    <tt>OPTIONS</tt> variable in <tt>/etc/sysconfig/ntpd</tt> to include ' -u ntp:ntp ':
+    <pre>OPTIONS="-u ntp:ntp"</pre>
+    This recommendation only applies if ntp is in use on the system.
+
+rationale: |-
+    If ntp is in use on the system proper configuration is vital to ensuring time synchronization
+    is working properly.
+
+severity: medium
+
+platform: ntp
+
+references:
+    cis@rhel7: 2.2.1.2
+
+identifiers:
+    cce@rhel7: 82737-8
+
+ocil_clause: 'ntpd is not running under ntp user account'
+
+ocil: |-
+    Run the following commands and verify that ' -u ntp:ntp ' is included in OPTIONS or
+    ExecStart as listed:
+    <pre># grep "^OPTIONS" /etc/sysconfig/ntpd
+    OPTIONS="-u ntp:ntp"
+    # grep "^ExecStart" /usr/lib/systemd/system/ntpd.service
+    ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS</pre>
