@@ -791,6 +791,10 @@ A rule itself contains these attributes:
 The <tt>/tmp</tt> partition is used as temporary storage by many programs. Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive mount options, which can help protect programs which use it.
 * `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale. For example, description of the `partition_for_tmp` rule states that:
 +
+* `requires`: The `id` of another rule or group that must be selected and enabled in a profile.
++
+* `conflicts`: The `id` of another rule or group that must not be selected and disabled in a profile.
++
 The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary file storage. Ensure it has its own partition or logical volume at installation time, or migrate it using LVM.
 * `severity`: Is used for metrics and tracking. It can have one of the following values: `unknown`, `info`, `low`, `medium`, or `high`.
 +

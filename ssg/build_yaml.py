@@ -90,6 +90,14 @@ def add_warning_elements(element, warnings):
         warning.set("category", list(warning_dict.keys())[0])
 
 
+def add_nondata_subelements(element, subelement, attribute, attr_data):
+    """Add multiple iterations of a sublement that contains an attribute but no data
+       For example, <requires id="my_required_id"/>"""
+    for data in attr_data:
+        req = ET.SubElement(element, subelement)
+        req.set(attribute, data)
+
+
 class Profile(object):
     """Represents XCCDF profile
     """
@@ -600,6 +608,8 @@ class Group(object):
         self.title = ""
         self.description = ""
         self.warnings = []
+        self.requires = []
+        self.conflicts = []
         self.values = {}
         self.groups = {}
         self.rules = {}
@@ -619,6 +629,8 @@ class Group(object):
         group.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         group.warnings = yaml_contents.pop("warnings", [])
+        group.conflicts = yaml_contents.pop("conflicts", [])
+        group.requires = yaml_contents.pop("requires", [])
         group.platform = yaml_contents.pop("platform", None)
 
         for warning_list in group.warnings:
@@ -649,6 +661,8 @@ class Group(object):
         title.text = self.title
         add_sub_element(group, 'description', self.description)
         add_warning_elements(group, self.warnings)
+        add_nondata_subelements(group, "requires", "id", self.requires)
+        add_nondata_subelements(group, "conflicts", "id", self.conflicts)
 
         if self.platform:
             platform_el = ET.SubElement(group, "platform")
@@ -745,6 +759,8 @@ class Rule(object):
         "ocil": lambda: None,
         "oval_external_content": lambda: None,
         "warnings": lambda: list(),
+        "conflicts": lambda: list(),
+        "requires": lambda: list(),
         "platform": lambda: None,
         "template": lambda: None,
     }
@@ -762,6 +778,8 @@ class Rule(object):
         self.ocil = None
         self.oval_external_content = None
         self.warnings = []
+        self.requires = []
+        self.conflicts = []
         self.platform = None
         self.template = None
 
@@ -1038,6 +1056,8 @@ class Rule(object):
                 ocil.set("clause", self.ocil_clause)
 
         add_warning_elements(rule, self.warnings)
+        add_nondata_subelements(rule, "requires", "id", self.requires)
+        add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
 
         if self.platform:
             platform_el = ET.SubElement(rule, "platform")
