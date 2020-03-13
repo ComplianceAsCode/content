@@ -217,3 +217,63 @@
         {{{ contents|trim()|indent(8) }}}
     force: yes
 {{%- endmacro %}}
+
+{{#
+  Formats a banner regex for use in /etc/issue
+  Parameters:
+    - banner_var_name - name of ansible variable with the banner regex
+#}}
+{{% macro ansible_deregexify_banner_etc_issue(banner_var_name) -%}}
+{{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
+{{{ ansible_deregexify_multiple_banners() }}} |
+{{{ ansible_deregexify_banner_space() }}} |
+{{{ ansible_deregexify_banner_newline("\\n") }}} |
+{{{ ansible_deregexify_banner_backslash() }}} |
+wordwrap() }}
+{{%- endmacro %}}
+
+{{#
+  Formats a banner regex for use in dconf
+  Parameters:
+    - banner_var_name - name of ansible variable with the banner regex
+#}}
+{{% macro ansible_deregexify_banner_dconf_gnome(banner_var_name) -%}}
+''{{ {{{ banner_var_name }}} |
+{{{ ansible_deregexify_banner_anchors() }}} |
+{{{ ansible_deregexify_multiple_banners() }}} |
+{{{ ansible_deregexify_banner_space() }}} |
+{{{ ansible_deregexify_banner_newline("(n)*") }}} |
+{{{ ansible_deregexify_banner_backslash() }}} |
+{{{ ansible_deregexify_banner_newline_token()}}} }}''
+{{%- endmacro %}}
+
+{{# Strips anchors around the banner #}}
+{{% macro ansible_deregexify_banner_anchors() -%}}
+regex_replace("^\^(.*)\$$", "\1")
+{{%- endmacro %}}
+
+{{# Strips multibanner regex and keeps only the first banner #}}
+{{% macro ansible_deregexify_multiple_banners() -%}}
+regex_replace("^\((.*)\|.*\)$", "\1")
+{{%- endmacro %}}
+
+{{# Strips whitespace or newline regex #}}
+{{% macro ansible_deregexify_banner_space() -%}}
+regex_replace("\[\\s\\n\]\+"," ")
+{{%- endmacro %}}
+
+{{# Strips newline or newline escape sequence regex #}}
+{{% macro ansible_deregexify_banner_newline(newline) -%}}
+regex_replace("\(\?:\[\\n\]\+\|\(\?:\\\\n\)\+\)", "{{{ newline }}}")
+{{%- endmacro %}}
+
+{{# Strips newline token for a newline escape sequence regex #}}
+{{% macro ansible_deregexify_banner_newline_token() -%}}
+regex_replace("\(n\)\*", "\\n")
+{{%- endmacro %}}
+
+{{# Strips backslash regex #}}
+{{% macro ansible_deregexify_banner_backslash() -%}}
+regex_replace("\\", "")
+{{%- endmacro %}}

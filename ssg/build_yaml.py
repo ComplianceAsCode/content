@@ -327,7 +327,7 @@ class Value(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = open_and_expand(yaml_file, env_yaml)
+        yaml_contents = open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
