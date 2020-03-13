@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import argparse
+import textwrap
 import logging
 import os
 import os.path
@@ -97,6 +98,15 @@ def parse_args():
     subparsers.required = True
 
     parser_profile = subparsers.add_parser("profile",
+                                           formatter_class=argparse.RawDescriptionHelpFormatter,
+                                           epilog=textwrap.dedent("""\
+                    In case that tested profile contains rules which might prevent root ssh access
+                    to the testing VM consider unselecting these rules. To unselect certain rules
+                    from a datastream use `ds_unselect_rules.sh` script. List of such rules already
+                    exists, see `unselect_rules_list` file.
+                    Example usage:
+                        ./ds_unselect_rules.sh ../build/ssg-fedora-ds.xml unselect_rules_list
+                                           """),
                                            help=("Testing profile-based "
                                                  "remediation applied on already "
                                                  "installed machine"),
