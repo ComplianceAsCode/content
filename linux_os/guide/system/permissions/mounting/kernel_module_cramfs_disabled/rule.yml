@@ -8,9 +8,14 @@ description: |-
     {{{ describe_module_disable(module="cramfs") }}}
     This effectively prevents usage of this uncommon filesystem.
 
+    The <tt>cramfs</tt> filesystem type is a compressed read-only
+    Linux filesystem embedded in small footprint systems. A
+    <tt>cramfs</tt> image can be used without having to first
+    decompress the image.
+
 rationale: |-
-    Linux kernel modules which implement filesystems that are not needed by the
-    local system should be disabled.
+    Removing support for unneeded filesystem types reduces the local attack surface
+    of the server.
 
 severity: low
 
@@ -21,7 +26,7 @@ identifiers:
     cce@ocp4: 82514-1
 
 references:
-    cis: 1.1.1.1
+    cis@rhel8: 1.1.1.1
     cui: 3.4.6
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
@@ -33,8 +38,6 @@ references:
     srg: SRG-OS-000095-GPOS-00049
 
 {{{ complete_ocil_entry_module_disable(module="cramfs") }}}
-
-platform: machine
 
 template:
     name: kernel_module_disabled
