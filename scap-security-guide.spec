@@ -38,7 +38,7 @@ present in %{name} package.
 %prep
 %setup -q
 %patch0 -p1
-mkdir build
+mkdir -p build
 
 %build
 cd build
