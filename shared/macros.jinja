@@ -577,15 +577,25 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 
 
 {{% macro ocil_sysctl_option_value(sysctl, value) -%}}
-    The status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
+    The runtime status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
     by running the following command:
     <pre>$ sysctl {{{ sysctl }}}</pre>
     The output of the command should indicate a value of <code>{{{ value }}}</code>.
-    If this value is not the default value, investigate how it could have been
-    adjusted at runtime, and verify it is not set improperly. This has to be checked
-    in all files in the <tt>/etc/sysctl.d</tt> directory and the deprecated
-    <code>/etc/sysctl.conf</code>. You can verify this by running the following command:
+    The preferable way how to assure the runtime compliance is to have
+    correct persistent configuration, and rebooting the system.
+
+    The persistent kernel parameter configuration is performed by specifying the appropriate
+    assignment in any file located in the <pre>/etc/sysctl.d</pre> directory.
+    Verify that there is not any existing incorrect configuration by executing the following command:
+    <pre>$ grep -r '^\s*{{{ sysctl }}}\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
+    If any assignments other than
+    <pre>{{{ sysctl }}} = {{{ value }}}</pre>
+    are found, or the correct assignment is duplicated, remove those offending lines from respective files,
+    and make sure that exactly one file in 
+    <code>/etc/sysctl.d</code> contains <code>{{{ sysctl }}} = {{{ value }}}</code>, and that one assignment
+    is returned when 
     <pre>$ grep -r {{{ sysctl }}} /etc/sysctl.conf /etc/sysctl.d</pre>
+    is executed.
 {{%- endmacro %}}
 
 
@@ -602,8 +612,8 @@ ocil_clause: "the correct value is not returned"
     run the following command:
     <pre>$ sudo sysctl -w {{{ sysctl }}}={{{ value }}}</pre>
 
-    If this is not the system default value, add the following line to a file in the
-    directory <tt>/etc/sysctl.d</tt>:
+    To make sure that the setting is persistent,
+    add the following line to a file in the directory <tt>/etc/sysctl.d</tt>:
     <pre>{{{ sysctl }}} = {{{ value }}}</pre>
 {{%- endmacro %}}
 
