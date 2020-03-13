@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="ntpd_run_as_ntp_user" version="1">
+    <metadata>
+      <title>Check if ntpd is configured to run under ntp user account</title>
+      {{{- oval_affected(products) }}}
+      <description>check two files which can set ntpd command line options for correct values</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="check /etc/sysconfig/ntpd for correct value" test_ref="test_ntpd_run_as_ntp_user_etc_sysconfig_ntpd" />
+      <criterion comment="check /usr/lib/systemd/system/ntpd.service for correct value" test_ref="test_ntpd_run_as_ntp_user_systemd" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_ntpd_run_as_ntp_user_etc_sysconfig_ntpd" version="1" check="all" comment="check /etc/sysconfig/ntpd">
+    <ind:object object_ref="obj_ntpd_run_as_ntp_user_etc_sysconfig_ntpd" />
+  </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_ntpd_run_as_ntp_user_etc_sysconfig_ntpd"
+  version="1" comment="check /etc/sysconfig/ntpd">
+    <ind:filepath>/etc/sysconfig/ntpd</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*OPTIONS=.*-u ntp:ntp.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test id="test_ntpd_run_as_ntp_user_systemd" version="1" check="all" comment="check /usr/lib/systemd/system/ntpd.service">
+    <ind:object object_ref="obj_ntpd_run_as_ntp_user_systemd" />
+  </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_ntpd_run_as_ntp_user_systemd"
+  version="1" comment="check /usr/lib/systemd/system/ntpd.service">
+    <ind:filepath>/usr/lib/systemd/system/ntpd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*ExecStart=.*-u ntp:ntp.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
