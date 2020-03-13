@@ -9,13 +9,13 @@ root_dir=$(git rev-parse --show-toplevel)
 
 # Ensure openshift-compliance namespace exists. If it already exists, this is
 # not a problem.
-oc adm new-project openshift-compliance || true
+oc create -f "$root_dir/ocp-resources/compliance-operator-ns.yaml" || true
 
 # Create buildconfig and ImageStream
 # This enables us to create a configuration so we can build a container
 # with the datastream
 # If they already exist, this is not a problem
-cat ocp-resources/ds-build.yaml | sed "s/\$PRODUCT/$product/" | oc create -f - || true
+cat "$root_dir/ocp-resources/ds-build.yaml" | sed "s/\$PRODUCT/$product/" | oc create -f - || true
 
 # Start build
 oc start-build -n openshift-compliance "openscap-$product-ds" --from-file="build/ssg-$product-ds.xml"
