@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2020-01-15 16:49
+Last Modified: 2020-03-13 09:45
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -82,6 +82,7 @@ The following people have contributed to the SCAP Security Guide project
 * Šimon Lukašík <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
+* Caitlin Macleod <caitelatte@gmail.com>
 * Matus Marhefka <mmarhefk@redhat.com>
 * Jamie Lorwey Martin <jlmartin@redhat.com>
 * Robert McAllister <rmcallis@redhat.com>
@@ -111,6 +112,7 @@ The following people have contributed to the SCAP Security Guide project
 * Frank Lin PIAT <fpiat@klabs.be>
 * Stefan Pietsch <mail.ipv4v6+gh@gmail.com>
 * Vojtech Polasek <vpolasek@redhat.com>
+* Orion Poplawski <orion@nwra.com>
 * Martin Preisler <mpreisle@redhat.com>
 * Wesley Ceraso Prudencio <wcerasop@redhat.com>
 * Raphael Sanchez Prudencio <rsprudencio@redhat.com>
@@ -122,6 +124,8 @@ The following people have contributed to the SCAP Security Guide project
 * rhayes <rhayes@rivierautilities.com>
 * Pat Riehecky <riehecky@fnal.gov>
 * rlucente-se-jboss <rlucente@redhat.com>
+* Juan Antonio Osorio Robles <jaosorior@redhat.com>
+* Matt Rogers <mrogers@redhat.com>
 * Jesse Roland <j.roland277@gmail.com>
 * Joshua Roys <roysjosh@gmail.com>
 * rrenshaw <bofh69@yahoo.com>
