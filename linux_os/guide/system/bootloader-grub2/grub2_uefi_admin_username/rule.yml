@@ -21,8 +21,6 @@ description: |-
     update the
     <tt>grub.cfg</tt> file by running:
     <pre>grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre>
-    NOTE: Do NOT manually add the superuser account and password to the
-    <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
@@ -74,3 +72,6 @@ warnings:
     - general: |-
         To prevent hard-coded admin usernames, automatic remediation of this control is not available. Remediation
         must be automated as a component of machine provisioning, or followed manually as outlined above.
+
+        Also, do NOT manually add the superuser account and password to the
+        <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.

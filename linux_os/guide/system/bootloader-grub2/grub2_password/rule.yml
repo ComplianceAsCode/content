@@ -17,8 +17,6 @@ description: |-
     update the
     <tt>grub.cfg</tt> file by running:
     <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
-    NOTE: Do NOT manually add the superuser account and password to the
-    <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
 rationale: |-
     Password protection on the boot loader configuration ensures
@@ -77,3 +75,6 @@ warnings:
     - general: |-
         To prevent hard-coded passwords, automatic remediation of this control is not available. Remediation
         must be automated as a component of machine provisioning, or followed manually as outlined above.
+
+        Also, do NOT manually add the superuser account and password to the
+        <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
