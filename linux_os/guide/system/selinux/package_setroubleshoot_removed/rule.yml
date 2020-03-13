@@ -12,17 +12,19 @@ description: |-
 
 rationale: |-
     The SETroubleshoot service is an unnecessary daemon to
-    have running on a server
+    have running on a server, especially if
+    X Windows is removed or disabled.
 
-severity: unknown
+severity: low
 
 identifiers:
     cce@rhel6: 27421-7
     cce@rhel7: 80444-3
+    cce@rhel8: 82755-0
 
 references:
     anssi: NT28(R68)
-    cis: 1.6.1.4
+    cis@rhel8: 1.7.1.6
 
 template:
     name: package_removed

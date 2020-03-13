@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8
+prodtype: ol7,ol8,rhel7,rhel8,ocp4
 
 title: 'Ensure /var/tmp Located On Separate Partition'
 
@@ -18,9 +18,11 @@ severity: low
 
 identifiers:
     cce@rhel7: 82353-4
+    cce@rhel8: 82730-3
+    cce@ocp4: 82734-5
 
 references:
-    cis: 1.1.7
+    cis@rhel8: 1.1.7
     anssi: NT28(R12)
 
 {{{ complete_ocil_entry_separate_partition(part="/var/tmp") }}}

@@ -2,15 +2,20 @@ documentation_complete: true
 
 prodtype: fedora,ocp4,rhel6,rhel7,rhel8,rhv4
 
-title: 'Disable Mounting of FAT filesystems'
+title: 'Disable Mounting of vFAT filesystems'
 
 description: |-
     {{{ describe_module_disable(module="vfat") }}}
     This effectively prevents usage of this uncommon filesystem.
 
+    The <tt>vFAT</tt> filesystem format is primarily used on older
+    windows systems and portable USB drives or flash modules. It comes
+    in three types <tt>FAT12</tt>, <tt>FAT16</tt>, and <tt>FAT32</tt>
+    all of which are supported by the <tt>vfat</tt> kernel module.
+
 rationale: |-
-    Linux kernel modules which implement filesystems that are not needed by the
-    local system should be disabled.
+    Removing support for unneeded filesystems reduces the local attack
+    surface of the system.
 
 severity: low
 
@@ -21,7 +26,7 @@ identifiers:
     cce@ocp4: 82720-4
 
 references:
-    cis: 1.1.1.8
+    cis@rhel8: 1.1.1.2
     cui: 3.4.6
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
@@ -30,8 +35,6 @@ references:
     cobit5: BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS06.06
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
     cis-csc: 11,14,3,9
-
-platform: machine
 
 template:
     name: kernel_module_disabled

@@ -10,15 +10,16 @@ rationale: |-
     Running SNMP software provides a network-based avenue of attack, and
     should be disabled if not needed.
 
-severity: unknown
+severity: low
 
 identifiers:
     cce@rhel6: 26906-8
     cce@rhel7: 80274-4
+    cce@rhel8: 82758-4
 
 references:
     vmmsrg: SRG-OS-000480-VMM-002000
-    cis: 2.2.14
+    cis@rhel8: 2.2.5 
 
 ocil: '{{{ ocil_service_disabled(service="snmpd") }}}'
 

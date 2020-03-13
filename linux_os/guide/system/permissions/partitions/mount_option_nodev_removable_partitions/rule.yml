@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,ocp4
 
 title: 'Add nodev Option to Removable Media Partitions'
 
@@ -18,14 +18,16 @@ rationale: |-
     not advised to set <tt>nodev</tt> on partitions which contain their root
     filesystems.
 
-severity: unknown
+severity: low
 
 identifiers:
     cce@rhel6: 26860-7
     cce@rhel7: 80146-4
+    cce@rhel8: 82742-8
+    cce@ocp4: 82865-7
 
 references:
-    cis: 1.1.18
+    cis@rhel8: 1.1.18
     nist: CM-7(a),CM-7(b),CM-6(a),AC-6,AC-6(1),MP-7
     nist-csf: PR.AC-3,PR.AC-6,PR.IP-1,PR.PT-2,PR.PT-3
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'

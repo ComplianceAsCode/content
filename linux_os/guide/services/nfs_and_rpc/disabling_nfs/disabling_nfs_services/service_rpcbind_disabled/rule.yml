@@ -13,16 +13,19 @@ description: |-
     (such as for NFS servers) then this service should be disabled.
     {{{ describe_service_disable(service="rpcbind") }}}
 
-rationale: ""
+rationale: |-
+    If the system does not require rpc based services, it is recommended that
+    rpcbind be disabled to reduce the attack surface.
 
-severity: unknown
+severity: low
 
 identifiers:
     cce@rhel6: 27430-8
     cce@rhel7: 80230-6
+    cce@rhel8: 82858-2
 
 references:
-    cis: 2.2.7
+    cis@rhel8: 2.2.13
 
 template:
     name: service_disabled

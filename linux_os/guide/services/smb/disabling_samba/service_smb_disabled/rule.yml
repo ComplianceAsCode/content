@@ -10,14 +10,15 @@ rationale: |-
     Running a Samba server provides a network-based avenue of attack, and
     should be disabled if not needed.
 
-severity: unknown
+severity: low
 
 identifiers:
     cce@rhel6: 27143-7
     cce@rhel7: 80277-7
+    cce@rhel8: 82759-2
 
 references:
-    cis: 2.2.12
+    cis@rhel8: 2.2.7
     disa: "1436"
 
 ocil: '{{{ ocil_service_disabled(service="smb") }}}'
