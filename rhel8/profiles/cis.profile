@@ -525,7 +525,7 @@ selections:
     ### 4.1.1 Ensure auditing is enabled
 
     #### 4.1.1.1 Ensure auditd is installed (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5261
+    - package_audit_installed
 
     #### 4.1.1.2 Ensure auditd service is enabled (Scored)
     - service_auditd_enabled
