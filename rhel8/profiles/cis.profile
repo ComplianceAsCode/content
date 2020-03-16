@@ -563,11 +563,8 @@ selections:
     - audit_rules_sysadmin_actions
 
     ### 4.1.4 Ensure login and logout events are collected (Scored)
-    # -w /var/log/faillog -p wa -k logins
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5263
-
-    # -w /var/log/lastlog -p wa -k logins
-    - audit_rules_login_events
+    - audit_rules_login_events_faillock
+    - audit_rules_login_events_lastlog
 
     ### 4.1.5 Ensure session initiation information is collected (Scored)
     - audit_rules_session_events
