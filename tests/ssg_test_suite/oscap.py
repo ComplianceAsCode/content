@@ -8,7 +8,8 @@ import collections
 import xml.etree.ElementTree
 import json
 import datetime
-
+import socket
+import sys
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
@@ -17,6 +18,12 @@ from ssg_test_suite import test_env
 from ssg_test_suite import common
 
 from ssg.shims import input_func
+
+# Needed for compatibility as there is no TimeoutError in python2.
+if sys.version_info[0] < 3:
+    TimeoutException = socket.timeout
+else:
+    TimeoutException = TimeoutError
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -623,7 +630,7 @@ class Checker(object):
             logging.info("Terminating the test run due to keyboard interrupt.")
         except RuntimeError as exc:
             logging.error("Terminating due to error: {msg}.".format(msg=str(exc)))
-        except TimeoutError as exc:
+        except TimeoutException as exc:
             logging.error("Terminating due to timeout: {msg}".format(msg=str(exc)))
         finally:
             self.finalize()

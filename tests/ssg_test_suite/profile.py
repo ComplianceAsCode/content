@@ -22,7 +22,6 @@ class ProfileChecker(ssg_test_suite.oscap.Checker):
         self.run_test_for_all_profiles(profiles)
 
     def _run_test(self, profile, test_data):
-        logging.info("Evaluation of profile {0}.".format(profile))
         self.executed_tests += 1
 
         runner_cls = ssg_test_suite.oscap.REMEDIATION_PROFILE_RUNNERS[self.remediate_using]
@@ -30,6 +29,7 @@ class ProfileChecker(ssg_test_suite.oscap.Checker):
             self.test_env, profile, self.datastream, self.benchmark_id)
 
         for stage in ("initial", "remediation", "final"):
+            logging.info("Evaluation of profile {0} ({1} stage).".format(profile, stage))
             result = runner.run_stage(stage)
 
 
