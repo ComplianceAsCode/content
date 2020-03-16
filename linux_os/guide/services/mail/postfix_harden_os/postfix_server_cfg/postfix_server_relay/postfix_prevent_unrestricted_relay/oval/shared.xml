@@ -1,27 +1,13 @@
-<def-group>
-  <definition class="compliance" id="postfix_prevent_unrestricted_relay" version="1">
-    <metadata>
-      <title>Configure Postfix Against Unrestricted Mail Relay</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-		<platform>multi_platform_wrlinux</platform>
-      </affected>
-      <description>Protect against unrestricted relay of mail.</description>
-    </metadata>
-    <criteria operator="AND">
-      <criterion comment="prevent unrestricted mail relay" test_ref="test_prevent_unrestricted_relay" />
-    </criteria>
-  </definition>
-
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="Set banner" id="test_prevent_unrestricted_relay" version="1">
-    <ind:object object_ref="obj_postfix_restrict_relay" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_postfix_restrict_relay" version="1">
-    <ind:filepath>/etc/postfix/main.cf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*smtpd_client_restrictions[\s]*=[\s]*permit_mynetworks,+reject[\s]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-</def-group>
+{{{
+oval_check_config_file(
+	"/etc/postfix/main.cf",
+	prefix_regex="^[ \\t]*",
+	parameter="smtpd_client_restrictions",
+	separator_regex=' = ',
+	value="permit_mynetworks,reject",
+	missing_parameter_pass=false,
+	application="mail",
+	multi_value=false,
+	missing_config_file_fail=true
+	)
+}}}
