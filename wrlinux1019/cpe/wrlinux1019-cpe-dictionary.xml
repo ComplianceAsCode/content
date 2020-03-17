@@ -2,10 +2,10 @@
 <cpe-list xmlns="http://cpe.mitre.org/dictionary/2.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
-      <cpe-item name="cpe:/o:windriver:wrlinux:1019">        
-            <title xml:lang="en-us">Wind River Linux 1019</title>        
+      <cpe-item name="cpe:/o:windriver:wrlinux:1019">
+            <title xml:lang="en-us">Wind River Linux 1019</title>
             <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="filename">installed_OS_is_wrlinux1019</check>
-      </cpe-item>        
+      </cpe-item>
       <cpe-item name="cpe:/a:container">
             <title xml:lang="en-us">Container</title>
             <!-- the check references an OVAL file that contains an inventory definition -->
@@ -15,6 +15,11 @@
             <title xml:lang="en-us">Bare-metal or Virtual Machine</title>
             <!-- the check references an OVAL file that contains an inventory definition -->
             <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="filename">installed_env_is_a_machine</check>
+      </cpe-item>
+      <cpe-item name="cpe:/a:chrony">
+            <title xml:lang="en-us">Package chrony is installed</title>
+            <!-- the check references an OVAL file that contains an inventory definition -->
+            <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="filename">installed_env_has_chrony_package</check>
       </cpe-item>
       <cpe-item name="cpe:/a:gdm">
             <title xml:lang="en-us">Package gdm is installed</title>
@@ -30,6 +35,11 @@
             <title xml:lang="en-us">Package nss-pam-ldapd is installed</title>
             <!-- the check references an OVAL file that contains an inventory definition -->
             <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="filename">installed_env_has_nss-pam-ldapd_package</check>
+      </cpe-item>
+      <cpe-item name="cpe:/a:ntp">
+            <title xml:lang="en-us">Package ntp is installed</title>
+            <!-- the check references an OVAL file that contains an inventory definition -->
+            <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="filename">installed_env_has_ntp_package</check>
       </cpe-item>
       <cpe-item name="cpe:/a:pam">
             <title xml:lang="en-us">Package pam is installed</title>
