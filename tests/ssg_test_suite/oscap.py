@@ -424,7 +424,7 @@ class ProfileRunner(GenericRunner):
             logging.info("Rebooting domain '{0}' before final scan."
                          .format(self.environment.domain_name))
             self.environment.reboot()
-        GenericRunner.final(self)
+        return GenericRunner.final(self)
 
     def make_oscap_call(self):
         self.prepare_online_scanning_arguments()
