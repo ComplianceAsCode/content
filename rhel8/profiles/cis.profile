@@ -845,19 +845,40 @@ selections:
     ## 6.1 System File Permissions
 
     ### 6.1.1 Audit system file permissions (Not Scored)
-
+    - rpm_verify_permissions
+    - rpm_verify_ownership
     
     ### 6.1.2 Ensure permissions on /etc/passwd are configured (Scored)
+    # chown root:root /etc/passwd
+    - file_owner_etc_passwd
+    - file_groupowner_etc_passwd
 
+    # chmod 644 /etc/passwd
+    - file_permissions_etc_passwd
 
     ### 6.1.3 Ensure permissions on /etc/shadow are configured (Scored)
+    # chown root:root /etc/shadow
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
 
+    # chmod o-rwx,g-wx /etc/shadow
+    - file_permissions_etc_shadow
 
     ### 6.1.4 Ensure permissions on /etc/group are configured (Scored)
+    # chown root:root /etc/group
+    - file_owner_etc_group
+    - file_groupowner_etc_group
 
+    # chmod 644 /etc/group
+    - file_permissions_etc_group
 
     ### 6.1.5 Ensure permissions on /etc/gshadow are configured (Scored)
+    # chown root:root /etc/gshadow
+    - file_owner_etc_gshadow
+    - file_groupowner_etc_gshadow
 
+    # chmod o-rwx,g-rw /etc/gshadow
+    - file_permissions_etc_gshadow
 
     ### 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)
 
@@ -866,4 +887,22 @@ selections:
 
 
     ### 6.1.8 Ensure permissions on /etc/group- are configured (Scored)
+
     
+    ### 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)
+
+
+    ### 6.1.10 Ensure no world writable files exist (Scored)
+    - file_permissions_unauthorized_world_writable
+
+    ### 6.1.11 Ensure no unowned files or directories exist (Scored)
+    - no_files_unowned_by_user
+
+    ### 6.1.12 Ensure no ungrouped files or directories exist (Scored)
+    - file_permissions_ungroupowned
+
+    ### 6.1.13 Audit SUID executables (Not Scored)
+    - file_permissions_unauthorized_suid
+
+    ### 6.1.14 Audit SGID executables (Not Scored)
+    - file_permissions_unauthorized_sgid
