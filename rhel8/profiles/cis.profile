@@ -689,7 +689,11 @@ selections:
 
 
     ### 5.1.2 Ensure permissions on /etc/crontab are configured (Scored)
-
+    # chown root:root /etc/crontab
+    - file_owner_crontab
+    - file_groupowner_crontab
+    # chmod og-rwx /etc/crontab
+    - file_permissions_crontab
 
     ### 5.1.3 Ensure permissions on /etc/cron.hourly are configured (Scored)
 
