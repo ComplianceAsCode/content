@@ -7,10 +7,12 @@
     </metadata>
 
     <criteria operator="OR">
-      <criterion comment="Pass if /boot/grub2/grub.cfg does not exist" test_ref="test_bootloader_grub_cfg" />
+      {{{ oval_config_file_absent_criterion("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
       <criterion comment="Superuser is defined in /boot/grub2/grub.cfg and it isn't root, admin, or administrator." test_ref="test_bootloader_unique_superuser"/>
     </criteria>
   </definition>
+
+  {{{ oval_config_file_absent("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files. Superuser is not root, admin, or administrator" id="test_bootloader_unique_superuser" version="1">
     <ind:object object_ref="object_bootloader_unique_superuser" />

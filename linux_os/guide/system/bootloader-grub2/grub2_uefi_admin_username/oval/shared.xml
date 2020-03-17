@@ -7,10 +7,12 @@
     </metadata>
 
     <criteria operator="OR">
-      <criterion comment="Pass if /boot/efi/EFI/redhat/grub.cfg does not exist" test_ref="test_bootloader_uefi_grub_cfg" />
+      {{{ oval_config_file_absent_criterion("/boot/efi/EFI/redhat/grub.cfg", rule_id + "_grub_cfg") }}}
       <criterion comment="make sure a superuser is defined in /boot/efi/EFI/redhat/grub.cfg" test_ref="test_bootloader_uefi_unique_superuser"/>
     </criteria>
   </definition>
+
+  {{{ oval_config_file_absent("/boot/efi/EFI/redhat/grub.cfg", rule_id + "_grub_cfg") }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg. Superuser is not root, admin, or administrator" id="test_bootloader_uefi_unique_superuser" version="1">
     <ind:object object_ref="object_bootloader_uefi_unique_superuser" />

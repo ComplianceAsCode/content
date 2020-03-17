@@ -7,7 +7,7 @@
     </metadata>
 
     <criteria operator="OR">
-      <criterion comment="Pass if /boot/grub2/grub.cfg does not exist" test_ref="test_bootloader_grub_cfg" />
+      {{{ oval_config_file_absent_criterion("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documenation" operator="OR">
           <criterion comment="make sure a password is defined in /boot/grub2/user.cfg" test_ref="test_grub2_password_usercfg" />
@@ -18,12 +18,7 @@
     </criteria>
   </definition>
 
-   <unix:file_test check="all" check_existence="none_exist" comment="/boot/grub2/grub.cfg does not exist" id="test_bootloader_grub_cfg" version="1">
-    <unix:object object_ref="object_bootloader_grub_cfg" />
-  </unix:file_test>
-  <unix:file_object id="object_bootloader_grub_cfg" version="1">
-    <unix:filepath>/boot/grub2/grub.cfg</unix:filepath>
-  </unix:file_object>
+{{{ oval_config_file_absent("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files." id="test_bootloader_superuser" version="2">
     <ind:object object_ref="object_bootloader_superuser" />

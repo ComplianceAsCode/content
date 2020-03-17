@@ -1,3 +1,9 @@
+{{% if product == "fedora" %}}
+{{% set grub_cfg_prefix = "/boot/efi/EFI/fedora" %}}
+{{% else %}}
+{{% set grub_cfg_prefix = "/boot/efi/EFI/redhat" %}}
+{{% endif %}}
+
 <def-group>
   <definition class="compliance" id="grub2_uefi_password" version="1">
     <metadata>
@@ -7,29 +13,31 @@
     </metadata>
 
     <criteria operator="OR">
-      <criterion comment="Pass if /boot/efi/EFI/redhat/grub.cfg does not exist" test_ref="test_bootloader_uefi_grub_cfg" />
+      {{{ oval_config_file_absent_criterion(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documenation" operator="OR">
-          <criterion comment="make sure a password is defined in /boot/efi/EFI/redhat/user.cfg" test_ref="test_grub2_uefi_password_usercfg" />
-          <criterion comment="make sure a password is defined in /boot/efi/EFI/redhat/grub.cfg" test_ref="test_grub2_uefi_password_grubcfg" />
+          <criterion comment="make sure a password is defined in {{{ grub_cfg_prefix }}}/user.cfg" test_ref="test_grub2_uefi_password_usercfg" />
+          <criterion comment="make sure a password is defined in {{{ grub_cfg_prefix }}}/grub.cfg" test_ref="test_grub2_uefi_password_grubcfg" />
         </criteria>
-        <criterion comment="make sure a superuser is defined in /boot/efi/EFI/redhat/grub.cfg" test_ref="test_bootloader_uefi_superuser"/>
+        <criterion comment="make sure a superuser is defined in {{{ grub_cfg_prefix }}}/grub.cfg" test_ref="test_bootloader_uefi_superuser"/>
       </criteria>
     </criteria>
   </definition>
+
+  {{{ oval_config_file_absent(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}
 
    <unix:file_test check="all" check_existence="none_exist" comment="/boot/efi/EFI/redhat/grub.cfg does not exist" id="test_bootloader_uefi_grub_cfg" version="1">
     <unix:object object_ref="object_bootloader_uefi_grub_cfg" />
   </unix:file_test>
   <unix:file_object id="object_bootloader_uefi_grub_cfg" version="1">
-    <unix:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</unix:filepath>
+    <unix:filepath>{{{ grub_cfg_prefix }}}/grub.cfg</unix:filepath>
   </unix:file_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg." id="test_bootloader_uefi_superuser" version="2">
     <ind:object object_ref="object_bootloader_uefi_superuser" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_bootloader_uefi_superuser" version="2">
-    <ind:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</ind:filepath>
+    <ind:filepath>{{{ grub_cfg_prefix }}}/grub.cfg$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -38,7 +46,7 @@
     <ind:object object_ref="object_grub2_uefi_password_usercfg" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_grub2_uefi_password_usercfg" version="1">
-    <ind:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/user.cfg$</ind:filepath>
+    <ind:filepath>{{{ grub_cfg_prefix }}}/user.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -47,7 +55,7 @@
     <ind:object object_ref="object_grub2_uefi_password_grubcfg" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_grub2_uefi_password_grubcfg" version="1">
-    <ind:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</ind:filepath>
+    <ind:filepath>{{{ grub_cfg_prefix }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*password_pbkdf2[\s]+.*[\s]+grub\.pbkdf2\.sha512.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
