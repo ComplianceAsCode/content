@@ -696,7 +696,11 @@ selections:
     - file_permissions_crontab
 
     ### 5.1.3 Ensure permissions on /etc/cron.hourly are configured (Scored)
-
+    # chown root:root /etc/cron.hourly
+    - file_owner_cron_hourly
+    - file_groupowner_cron_hourly
+    # chmod og-rwx /etc/cron.hourly
+    - file_permissions_cron_hourly
 
     ### 5.1.4 Ensure permissions on /etc/cron.daily are configured (Scored)
 
