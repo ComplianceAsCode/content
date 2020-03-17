@@ -724,7 +724,11 @@ selections:
     - file_permissions_cron_monthly
 
     ### 5.1.7 Ensure permissions on /etc/cron.d are configured (Scored)
-
+    # chown root:root /etc/cron.d
+    - file_owner_cron_d
+    - file_groupowner_cron_d
+    # chmod og-rwx /etc/cron.d
+    - file_permissions_cron_d
 
     ### 5.1.8 Ensure at/cron is restricted to authorized users (Scored)
 
