@@ -546,17 +546,16 @@ selections:
     - auditd_data_retention_max_log_file_action
 
     #### 4.1.2.3 Ensure system is disabled when audit logs are full (Scored)
-    ##### space_left_action = email
-    - auditd_data_retention_admin_space_left_action
-    # TO DO: SET TO EMAIL
+    - var_auditd_space_left_action=email
+    - auditd_data_retention_space_left_action
 
     ##### action_mail_acct = root
     - var_auditd_action_mail_acct=root
     - auditd_data_retention_action_mail_acct
 
     ##### admin_space_left_action = halt
+    - var_auditd_admin_space_left_action=halt
     - auditd_data_retention_admin_space_left_action 
-    # TO DO: SET VARIABLE TO HALT
 
     ### 4.1.3 Ensure changes to system administration scope
     ###       (sudoers) is collected (Scored)
