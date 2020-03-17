@@ -4,9 +4,15 @@ from __future__ import print_function
 import libvirt
 import logging
 import time
-from socket import create_connection
-
 import xml.etree.ElementTree as ET
+import sys
+import socket
+
+# Needed for compatibility as there is no TimeoutError in python2.
+if sys.version_info[0] < 3:
+    TimeoutException = socket.timeout
+else:
+    TimeoutException = TimeoutError
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -170,28 +176,31 @@ def reboot_domain(domain, domain_ip, ssh_port):
 
     # Wait until domain shuts down.
     logging.debug("Waiting for domain to shutdown (max. {0}s)".format(timeout))
-    start_time = time.perf_counter()
+    end_time = time.time() + timeout
     while domain.isActive():
         time.sleep(1)
-        if time.perf_counter() - start_time >= timeout:
+        if time.time() >= end_time:
             str_err = "Timeout reached: '{0}' domain failed to shutdown.".format(domain.name())
             logging.debug(str_err)
-            raise TimeoutError(str_err)
+            raise TimeoutException(str_err)
 
     logging.debug("Starting domain '{0}'".format(domain.name()))
     domain.create()
 
     # Wait until SSH (on ssh_port) starts accepting TCP connections.
     logging.debug("Waiting for domain to boot (max. {0}s)".format(timeout))
-    start_time = time.perf_counter()
+    end_time = time.time() + timeout
     while True:
         try:
-            with create_connection((domain_ip, ssh_port), timeout=connection_timeout):
-                break
-        except OSError as exc:
+            ssh_socket = socket.create_connection((domain_ip, ssh_port),
+                                                  timeout=connection_timeout)
+        except (OSError, socket.error):
             time.sleep(1)
-            if time.perf_counter() - start_time >= timeout:
+            if time.time() >= end_time:
                 str_err = ("Timeout reached: '{0}' ({1}:{2}) domain does not "
                            "accept connections.".format(domain.name(), domain_ip, ssh_port))
                 logging.debug(str_err)
-                raise TimeoutError(str_err) from exc
+                raise TimeoutException(str_err)
+        else:
+            ssh_socket.close()
+            break
