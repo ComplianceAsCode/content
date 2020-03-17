@@ -439,9 +439,11 @@ OCILREFATTR_TO_TAG = {
 XCCDF_PLATFORM_TO_CPE = {
     "machine": "cpe:/a:machine",
     "container": "cpe:/a:container",
+    "chrony": "cpe:/a:chrony",
     "gdm": "cpe:/a:gdm",
     "libuser": "cpe:/a:libuser",
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
+    "ntp": "cpe:/a:ntp",
     "pam": "cpe:/a:pam",
     "login_defs": "cpe:/a:login_defs",
     "sssd": "cpe:/a:sssd",
