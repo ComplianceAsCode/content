@@ -5,9 +5,18 @@
 # disruption = low
 - (xccdf-var var_multiple_time_servers)
 
-- name: "Ensure Chrony is installed"
-  package:
-    name: "chrony"
-    state: present
+- name: "Detect if chrony is already configured with pools or servers"
+  find:
+    path: /etc
+    patterns: chrony.conf
+    contains: '^[\s]*(?:server|pool)[\s]+[\w]+'
+  register: chrony_servers
 
-{{{ ansible_lineinfile(msg='Ensure remote servers are specified in chrony.conf', path='/etc/chrony.conf', regex='^[\s]*server[\s]+[\w]+', new_line='server {{ item }}', create='yes', state='present', with_items='{{ var_multiple_time_servers.split(",") }}') }}}
+- name: "Add server configuration if none found in previous task"
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'server {{ item }}'
+    state: present
+    create: True
+  loop: '{{ var_multiple_time_servers.split(",") }}'
+  when: chrony_servers.matched == 0
