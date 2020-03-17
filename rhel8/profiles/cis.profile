@@ -219,7 +219,8 @@ selections:
     - file_permissions_etc_motd
 
     #### 1.8.1.5 Ensure permissions on /etc/issue are configured (Scored)
-    # Previously addressed via 'rpm_verify_permissions' rule
+    # chmod u-x,go-wx /etc/issue
+    - file_permissions_etc_issue
 
     #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Scored)
     # Previously addressed via 'rpm_verify_permissions' rule
