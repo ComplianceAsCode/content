@@ -703,7 +703,11 @@ selections:
     - file_permissions_cron_hourly
 
     ### 5.1.4 Ensure permissions on /etc/cron.daily are configured (Scored)
-
+    # chown root:root /etc/cron.daily
+    - file_owner_cron_daily
+    - file_groupowner_cron_daily
+    # chmod og-rwx /etc/cron.daily
+    - file_permissions_cron_daily
 
     ### 5.1.5 Ensure permissions on /etc/cron.weekly are configured (Scored)
 
