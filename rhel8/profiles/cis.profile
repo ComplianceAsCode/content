@@ -215,7 +215,8 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5225
 
     #### 1.8.1.4 Ensure permissions on /etc/motd are configured (Scored)
-    - rpm_verify_permissions
+    # chmod u-x,go-wx /etc/motd
+    - file_permissions_etc_motd
 
     #### 1.8.1.5 Ensure permissions on /etc/issue are configured (Scored)
     # Previously addressed via 'rpm_verify_permissions' rule
