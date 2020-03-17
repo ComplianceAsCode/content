@@ -1,0 +1,30 @@
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: "detect if file is not empty or missing"
+  find:
+    path: /etc/sysconfig/
+    patterns: chronyd
+    contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+  register: chronyd_file
+
+- name: "replace existing setting or create a new file, rest is handled by different task"
+  lineinfile:
+    path: /etc/sysconfig/chronyd
+    regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
+    line: '\1 -u chrony\2'
+    state: present
+    create: True
+    backrefs: True
+  when: chronyd_file.matched > 0
+
+- name: "put line into file, assume file was empty"
+  lineinfile:
+    path: /etc/sysconfig/chronyd
+    line: 'OPTIONS="-u chrony"'
+    state: present
+    create: True
+  when: chronyd_file.matched == 0
