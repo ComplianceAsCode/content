@@ -4,24 +4,23 @@
 # complexity = low
 # disruption = low
 
-- name: "detect if file is not empty or missing"
+- name: "Detect if file /etc/sysconfig/chronyd is not empty or missing"
   find:
     path: /etc/sysconfig/
     patterns: chronyd
     contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
   register: chronyd_file
 
-- name: "replace existing setting or create a new file, rest is handled by different task"
+- name: "Correct existing in /etc/sysconfig/chronyd to run chronyd as chrony user"
   lineinfile:
     path: /etc/sysconfig/chronyd
     regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
     line: '\1 -u chrony\2'
     state: present
-    create: True
     backrefs: True
-  when: chronyd_file.matched > 0
+  when: chronyd_file is defined and chronyd_file.matched > 0
 
-- name: "put line into file, assume file was empty"
+- name: "Insert correct line into /etc/sysconfig/chronyd ensuring chronyd runs as chrony user"
   lineinfile:
     path: /etc/sysconfig/chronyd
     line: 'OPTIONS="-u chrony"'
