@@ -219,6 +219,31 @@
 {{%- endmacro %}}
 
 {{#
+  Macro to define the OVAL criterion that requires a file not to exist.
+  Parameters:
+    - filepath (String): Path to the file to be checked.
+    - id of the test name - the test will be named test_<id>
+#}}
+{{%- macro oval_file_absent_criterion(filepath, id) -%}}
+	<criterion comment="Pass if {{{ filepath }}} does not exist" test_ref="test_{{{ id }}}" />
+{{%- endmacro %}}
+
+{{#
+  Macro to define the OVAL test to check if the configuration file exists (Test definition).
+  Parameters:
+    - filepath (String): Path to the configuration file to be checked.
+    - id of the test name - the test will be named test_<id>, the respective object object_<id> etc.
+#}}
+{{%- macro oval_file_absent(filepath, id) -%}}
+  <unix:file_test check="all" check_existence="none_exist" comment="{{{ filepath }}} does not exist" id="test_{{{ id }}}" version="1">
+    <unix:object object_ref="object_{{{ id }}}" />
+  </unix:file_test>
+  <unix:file_object id="object_{{{ id }}}" version="1">
+    <unix:filepath>{{{ filepath }}}</unix:filepath>
+  </unix:file_object>
+{{%- endmacro %}}
+
+{{#
   Macro to define the OVAL object to check if the configuration file exists (Object definition).
   This macro can take one parameter:
     - path (String): Path to the configuration file to be checked.

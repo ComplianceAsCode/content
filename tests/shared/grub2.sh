@@ -7,10 +7,10 @@ function make_grub_password {
 
 
 function set_superusers {
-	echo 'set superusers="koskic"' > "$GRUB_CFG_ROOT/grub.cfg"
+	set_superusers_unquoted "\"$1\""
 }
 
 
-function remove_grub_password {
-	rm -f "$GRUB_CFG_ROOT/user.cfg"
+function set_superusers_unquoted {
+	echo "set superusers=$1" > "$GRUB_CFG_ROOT/grub.cfg"
 }

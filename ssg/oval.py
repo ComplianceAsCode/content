@@ -98,7 +98,17 @@ def applicable_platforms(oval_file):
 
     platforms = []
     header = oval_generated_header("applicable_platforms", "5.11", "0.0.1")
-    body = process_file_with_macros(oval_file, {})
+    subst_dict = dict()
+
+    oval_filename_components = oval_file.split(os.path.sep)
+    if len(oval_filename_components) > 3:
+        subst_dict["rule_id"] = oval_filename_components[-3]
+    else:
+        msg = "Unable to get rule ID from OVAL path '{path}'".format(path=oval_file)
+        print(msg, file=sys.stderr)
+
+    body = process_file_with_macros(oval_file, subst_dict)
+
     oval_tree = ET.fromstring(header + body + footer)
 
     element_path = "./{%s}def-group/{%s}definition/{%s}metadata/{%s}affected/{%s}platform"
