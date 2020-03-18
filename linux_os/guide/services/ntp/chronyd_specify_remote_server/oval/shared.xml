@@ -2,9 +2,7 @@
   <definition class="compliance" id="chronyd_specify_remote_server" version="1">
     <metadata>
       <title>Specify a Remote NTP Server for Time Data</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>A remote NTP Server for time synchronization should be
       specified (and dependencies are met)</description>
     </metadata>
@@ -22,7 +20,7 @@
   <ind:textfilecontent54_object comment="Ensure at least one NTP server is set"
   id="object_chronyd_remote_server" version="1">
     <ind:filepath>/etc/chrony.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*server[\s]+.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?:server|pool)[\s]+.+$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+
+title: 'A remote NTP server for Chrony is configured'
+
+description: |-
+    <tt>Chrony</tt> is a daemon which implements the Network Time Protocol (NTP). It is designed to
+    synchronize system clocks across a variety of systems and use a source that is highly
+    accurate. More information on <tt>chrony</tt> can be found at
+    {{{ weblink(link="http://chrony.tuxfamily.org/") }}}.
+    <tt>Chrony</tt> can be configured to be a client and/or a server.
+    Add or edit server or pool lines to <tt>/etc/chrony.conf</tt> as appropriate:
+    <pre>server &lt;remote-server&gt;</pre>
+    Multiple servers may be configured.
+
+rationale: |-
+    If <tt>chrony</tt> is in use on the system proper configuration is vital to ensuring time
+    synchronization is working properly.
+
+severity: medium
+
+platform: chrony
+
+identifiers:
+    cce@rhel8: 82873-1
+
+references:
+    cis@rhel8: 2.2.1.2
+
+ocil_clause: 'a remote time server is not configured'
+
+ocil: |-
+    Run the following command and verify remote server is configured properly:
+    <pre># grep -E "^(server|pool)" /etc/chrony.conf</pre>

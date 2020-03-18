@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'The Chrony package is installed'
+
+description: |-
+    System time should be synchronized between all systems in an environment. This is
+    typically done by establishing an authoritative time server or set of servers and having all
+    systems synchronize their clocks to them.
+    {{{ describe_package_install(package="chrony") }}}
+
+rationale: |-
+    Time synchronization is important to support time sensitive security mechanisms like
+    Kerberos and also ensures log files have consistent time records across the enterprise,
+    which aids in forensic investigations.
+
+severity: medium
+
+platform: machine
+
+identifiers:
+    cce@rhel8: 82874-9
+
+references:
+    cis@rhel8: 2.2.1.1
+
+{{{ complete_ocil_entry_package(package="chrony") }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: chrony

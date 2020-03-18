@@ -1,0 +1,22 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+- (xccdf-var var_multiple_time_servers)
+
+- name: "Detect if chrony is already configured with pools or servers"
+  find:
+    path: /etc
+    patterns: chrony.conf
+    contains: '^[\s]*(?:server|pool)[\s]+[\w]+'
+  register: chrony_servers
+
+- name: "Configure remote time servers"
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'server {{ item }}'
+    state: present
+    create: True
+  loop: '{{ var_multiple_time_servers.split(",") }}'
+  when: chrony_servers.matched == 0
