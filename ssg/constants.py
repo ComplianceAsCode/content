@@ -19,7 +19,7 @@ product_directories = [
     'rhel6', 'rhel7', 'rhel8',
     'rhosp10', 'rhosp13',
     'rhv4',
-    'sle11', 'sle12',
+    'sle11', 'sle12', 'sle15',
     'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
     'wrlinux8', 'wrlinux1019'
 ]
@@ -128,6 +128,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 11": "sle11",
     "SUSE Linux Enterprise 12": "sle12",
+    "SUSE Linux Enterprise 15": "sle15",
     "Ubuntu 14.04": "ubuntu1404",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
@@ -255,6 +256,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "sle12": [
         "cpe:/o:suse:linux_enterprise_server:12",
     ],
+    "sle15": [
+        "cpe:/o:suse:linux_enterprise_server:15",
+    ],
     "ubuntu1404": [
         "cpe:/o:canonical:ubuntu_linux:14.04",
     ],
@@ -302,7 +306,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
-    "multi_platform_sle": ["sle11", "sle12"],
+    "multi_platform_sle": ["sle11", "sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
     "multi_platform_wrlinux": ["wrlinux8", "wrlinux1019"],
 }
