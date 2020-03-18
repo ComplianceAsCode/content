@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_ol
 
 # Install required packages
 if ! rpm --quiet -q pam_pkcs11; then yum -y -d 1 install pam_pkcs11; fi
