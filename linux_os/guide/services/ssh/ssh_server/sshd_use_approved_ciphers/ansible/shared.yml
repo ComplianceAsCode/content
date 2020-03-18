@@ -3,4 +3,6 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{{ ansible_sshd_set(parameter="Ciphers", value="aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc") }}}
+- (xccdf-var sshd_approved_ciphers)
+
+{{{ ansible_sshd_set(parameter="Ciphers", value="{{ sshd_approved_ciphers }}") }}}
