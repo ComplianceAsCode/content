@@ -1,18 +1,26 @@
 name: Build
-on: push
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
 jobs:
-  report:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        os: ubuntu-latest
+        os-version: [7, 8]
     steps:
       - uses: actions/checkout@v2
-      - name: Make
+      - name: Make rhel${{ matrix.go-version }}
         run: |
           sudo apt-get -qq update
           sudo apt-get -qq install cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml
-          cd build && cmake ../ && make clean all
+          cd build && cmake ../ && make clean rhel${{ matrix.go-version }}
       - name:
         uses: ansible/ansible-lint-action@master
         with: 
           targets:
-            build/ansible/rhel*.yml
+            build/ansible/rhel${{ matrix.go-version }}-*.yml
             
