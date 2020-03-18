@@ -2,4 +2,4 @@
 
 yum -y install chrony
 
-rm -f /etc/sysconfig/ntpd
+rm -f /etc/sysconfig/chronyd
