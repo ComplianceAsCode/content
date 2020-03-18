@@ -12,7 +12,7 @@
     contains: '^[\s]*(?:server|pool)[\s]+[\w]+'
   register: chrony_servers
 
-- name: "Add server configuration if none found in previous task"
+- name: "Configure remote time servers"
   lineinfile:
     path: /etc/chrony.conf
     line: 'server {{ item }}'
