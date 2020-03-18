@@ -1,5 +1,5 @@
 #!/bin/bash
 
-yum -y install ntp
+yum -y install chrony
 
 echo "" > /etc/sysconfig/chronyd

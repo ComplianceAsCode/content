@@ -11,7 +11,14 @@
     contains: '^([\s]*OPTIONS=["]?[^"]*)("?)'
   register: chronyd_file
 
-- name: "Correct existing in /etc/sysconfig/chronyd to run chronyd as chrony user"
+- name: "Remove any previous configuration of user used to run chronyd process"
+  replace:
+    path: /etc/sysconfig/chronyd
+    regexp: '\s*-u\s+\w+\s*'
+    replace: ' '
+  when: chronyd_file is defined and chronyd_file.matched > 0
+
+- name: "Correct existing line in /etc/sysconfig/chronyd to run chronyd as chrony user"
   lineinfile:
     path: /etc/sysconfig/chronyd
     regexp: '^([\s]*OPTIONS=["]?[^"]*)("?)'
@@ -26,4 +33,4 @@
     line: 'OPTIONS="-u chrony"'
     state: present
     create: True
-  when: chronyd_file.matched == 0
+  when: chronyd_file is defined and chronyd_file.matched == 0
