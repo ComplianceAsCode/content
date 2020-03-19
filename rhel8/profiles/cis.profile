@@ -179,7 +179,7 @@ selections:
     ### 1.7.1 Configure SELinux
 
     #### 1.7.1.1 Ensure SELinux is installed (Scored)
-    # NEED RULE - https://github.com/ComplianceAsCode/content/issues/5223
+    - package_libselinux_installed
 
     #### 1.7.1.2 Ensure SELinux is not disabled in bootloader configuration (Scored)
     - grub2_enable_selinux
