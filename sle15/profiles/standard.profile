@@ -76,10 +76,31 @@ selections:
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
     - sysctl_kernel_dmesg_restrict
-    - accounts_umask_etc_bashrc
-    - accounts_umask_etc_cshrc
-    - accounts_umask_etc_login_defs
-    - accounts_umask_etc_profile
-    - accounts_umask_interactive_users
+    - accounts_have_homedir_login_defs
+    - accounts_logon_fail_delay
+    - accounts_max_concurrent_login_sessions
     - accounts_tmout
-    - accounts_max_concurrent_sessions
+    - display_login_attempts
+    - inactivity_timeout_value=15_minutes
+    - var_password_pam_minlen=15
+    - accounts_password_pam_minlen
+    - accounts_password_minlen_login_defs
+    - var_password_pam_ocredit=1
+    - accounts_password_pam_ocredit
+    - var_password_pam_dcredit=1
+    - accounts_password_pam_dcredit
+    - var_password_pam_ucredit=1
+    - accounts_password_pam_ucredit
+    - var_password_pam_lcredit=1
+    - accounts_password_pam_lcredit
+    - var_accounts_fail_delay=4
+    - var_accounts_passwords_pam_faillock_deny=3
+    - var_accounts_passwords_pam_faillock_fail_interval=900
+    - var_accounts_passwords_pam_faillock_unlock_time=never
+    - var_password_pam_retry=3
+    - accounts_logon_fail_delay
+    - accounts_password_pam_retry
+    - accounts_passwords_pam_faillock_deny_root
+    - accounts_passwords_pam_faillock_deny
+    - accounts_passwords_pam_faillock_interval
+    - accounts_passwords_pam_faillock_unlock_time
