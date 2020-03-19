@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure LDAP client is not installed'
+
+description: |-
+    The Lightweight Directory Access Protocol (LDAP) is a service that provideso
+    a method for looking up information from a central database.
+    {{{ describe_package_remove("openldap-clients") }}}
+
+rationale:
+    If the system does not need to act as an LDAP client, it is recommended that the software is
+    removed to reduce the potential attack surface.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 82884-8
+    cce@rhel8: 82885-5
+
+references:
+    cis@rhel7: 2.3.5
+    cis@rhel8: 2.3.3
+
+ocil_clause: 'the package is installed'
+
+ocil: |-
+    {{{ ocil_package("openldap-clients") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: openldap-clients
