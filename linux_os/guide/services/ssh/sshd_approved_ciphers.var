@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'SSH Approved ciphers by FIPS'
+
+description: "Specify the FIPS approved ciphers that are used for data integrity protection by the SSH server."
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    stig: aes128-ctr,aes192-ctr,aes256-ctr
+    default: aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se

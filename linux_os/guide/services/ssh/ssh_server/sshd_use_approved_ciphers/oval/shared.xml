@@ -32,14 +32,39 @@
       </criteria>
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+
+  <ind:variable_test check="all" check_existence="all_exist"
   comment="tests the value of Ciphers setting in the /etc/ssh/sshd_config file"
   id="test_sshd_use_approved_ciphers" version="1">
     <ind:object object_ref="obj_sshd_use_approved_ciphers" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_sshd_use_approved_ciphers" version="2">
+    <ind:state state_ref="ste_sshd_use_approved_ciphers" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_sshd_use_approved_ciphers" version="1">
+    <ind:var_ref>var_sshd_config_ciphers</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state comment="approved ciphers" id="ste_sshd_use_approved_ciphers" version="1">
+    <ind:value operation="equals" datatype="string" var_ref="var_sshd_approved_ciphers" var_check="at least one" />
+  </ind:variable_state>
+
+  <ind:textfilecontent54_object id="obj_sshd_config_ciphers" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+((aes128-ctr|aes192-ctr|aes256-ctr|aes128-cbc|aes192-cbc|aes256-cbc|3des-cbc|rijndael-cbc@lysator\.liu\.se),?)+[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+([\w,-@]+)+[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <local_variable id="var_sshd_config_ciphers" datatype="string" version="1" comment="Ciphers values splitted on comma">
+    <split delimiter=",">
+      <object_component item_field="subexpression" object_ref="obj_sshd_config_ciphers" />
+    </split>
+  </local_variable>
+
+  <local_variable id="var_sshd_approved_ciphers" datatype="string" version="1" comment="approved ciphers values splitted on comma">
+    <split delimiter=",">
+      <variable_component var_ref="sshd_approved_ciphers" />
+    </split>
+  </local_variable>
+
+  <external_variable comment="SSH Approved Ciphers by FIPS" datatype="string" id="sshd_approved_ciphers" version="1" />
 </def-group>

@@ -35,6 +35,11 @@ ocil_clause: "the {{{ option }}} is not present in the output line, or there is 
 {{%- endmacro %}}
 
 
+{{% macro sub_var_value(varname) -%}}
+<sub idref="{{{ varname }}}" />
+{{%- endmacro %}}
+
+
 {{% macro complete_ocil_entry_mount_option(point, option) -%}}
 ocil: |
     {{{ ocil_mount_option(point, option) | indent(4) }}}
