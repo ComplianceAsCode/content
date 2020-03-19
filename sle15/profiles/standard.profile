@@ -76,3 +76,10 @@ selections:
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
     - sysctl_kernel_dmesg_restrict
+    - accounts_umask_etc_bashrc
+    - accounts_umask_etc_cshrc
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
+    - accounts_umask_interactive_users
+    - accounts_tmout
+    - accounts_max_concurrent_sessions
