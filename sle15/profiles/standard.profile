@@ -4,8 +4,9 @@ title: 'Standard System Security Profile for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains rules to ensure standard security baseline
-    of a SUSE Linux Enterprise 15 system. Includes recommendations based on SUSE
-    Hardening Guide
+    of a SUSE Linux Enterprise 15 system based off of the SUSE
+    Hardening Guide. Regardless of your system's workload all of
+    these checks should pass.
 
 selections:
     - partition_for_tmp
