@@ -27,3 +27,5 @@ selections:
     - sysctl_net_ipv4_conf_all_send_redirects
     - sysctl_net_ipv4_conf_default_send_redirects
     - sysctl_net_ipv4_ip_forward
+    - sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
