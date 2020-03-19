@@ -22,7 +22,6 @@ selections:
     - var_screensaver_lock_delay=5_seconds
     - sshd_idle_timeout_value=10_minutes
     - sshd_approved_macs=stig
-    - var_sshd_disable_compression=no
     - var_accounts_fail_delay=4
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
