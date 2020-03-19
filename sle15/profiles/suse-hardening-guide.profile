@@ -29,3 +29,4 @@ selections:
     - sysctl_net_ipv4_ip_forward
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
+    - sysctl_kernel_dmesg_restrict
