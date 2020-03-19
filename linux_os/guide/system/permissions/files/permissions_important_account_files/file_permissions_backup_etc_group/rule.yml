@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Verify Permissions on Backup group File'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/group-", perms="0644") }}}
+
+rationale: |-
+    The <tt>/etc/group-</tt> file is a backup file of the <tt>/etc/group</tt>, and as such
+    it also contains information regarding groups that are configured on the system.
+    Protection of this file is important for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83482-0
+    cce@rhel8: 83483-8
+
+references:
+    cis@rhel7: 6.1.8
+    cis@rhel8: 6.1.8
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/group-", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/passwd", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/group-
+        filemode: '0644'
+        missing_file_pass: 'true'
