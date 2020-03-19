@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,ubuntu1404,ubuntu1604,ubuntu1804
+prodtype: ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,sle15,ubuntu1404,ubuntu1604,ubuntu1804
 
 title: 'Ensure Software Patches Installed'
 
@@ -17,7 +17,7 @@ description: |-
     <pre>$ sudo yum update</pre>
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded from the ULN and installed using <tt>rpm</tt>.
-{{% elif product in ["sle12"] %}}
+{{% elif product in ["sle12", "sle15"] %}}
     If the system is configured for online updates, invoking the following command will list available
     security updates:
     <pre>$ sudo zypper refresh &amp;&amp; sudo zypper list-patches -g security</pre>
@@ -80,7 +80,8 @@ oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.u
 oval_external_content: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
 {{% elif product == "sle12" %}}
 oval_external_content: "https://support.novell.com/security/oval/suse.linux.enterprise.12.xml"
+{{% elif product == "sle15" %}}
+oval_external_content: "https://support.novell.com/security/oval/suse.linux.enterprise.15.xml"
 {{% else %}}
 {{# The rule will be "notchecked" #}}
 {{% endif %}}
-
