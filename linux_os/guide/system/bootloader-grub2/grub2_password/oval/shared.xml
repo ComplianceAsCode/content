@@ -1,3 +1,4 @@
+{{% set grub_cfg_prefix = "/boot/grub2" %}}
 <def-group>
   <definition class="compliance" id="grub2_password" version="1">
     <metadata>
@@ -7,7 +8,7 @@
     </metadata>
 
     <criteria operator="OR">
-      {{{ oval_file_absent_criterion("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
+      {{{ oval_file_absent_criterion(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documenation" operator="OR">
           <criterion comment="make sure a password is defined in /boot/grub2/user.cfg" test_ref="test_grub2_password_usercfg" />
@@ -18,13 +19,13 @@
     </criteria>
   </definition>
 
-{{{ oval_file_absent("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
+  {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files." id="test_bootloader_superuser" version="2">
     <ind:object object_ref="object_bootloader_superuser" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_bootloader_superuser" version="2">
-    <ind:filepath>/boot/grub2/grub.cfg</ind:filepath>
+    <ind:filepath>{{{ grub_cfg_prefix }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -33,7 +34,7 @@
     <ind:object object_ref="object_grub2_password_usercfg" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_grub2_password_usercfg" version="1">
-    <ind:filepath>/boot/grub2/user.cfg</ind:filepath>
+    <ind:filepath>{{{ grub_cfg_prefix }}}/user.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*GRUB2_PASSWORD=grub\.pbkdf2\.sha512.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -42,7 +43,7 @@
     <ind:object object_ref="object_grub2_password_grubcfg" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_grub2_password_grubcfg" version="1">
-    <ind:filepath>/boot/grub2/grub.cfg</ind:filepath>
+    <ind:filepath>{{{ grub_cfg_prefix }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*password_pbkdf2[\s]+.*[\s]+grub\.pbkdf2\.sha512.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
