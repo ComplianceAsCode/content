@@ -709,52 +709,67 @@ selections:
     ## 5.2 SSH Server Configuration
 
     ### 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)
+    # chown root:root /etc/ssh/sshd_config
+    - file_owner_sshd_config
+    - file_groupowner_sshd_config
 
+    # chmod og-rwx /etc/ssh/sshd_config
+    - file_permissions_sshd_config
 
     ### 5.2.2 Ensure SSH access is limited (Scored) 
 
 
     ### 5.2.3 Ensure permissions on SSH private host key files are
     ###       configured (Scored)
+    # TO DO: The rule sets to 640, but benchmark wants 600
+    - file_permissions_sshd_private_key
+    # TO DO: check owner of private keys in /etc/ssh is root:root
 
-
-    ### 5.2. Ensure permissions on SSH public host key files are configured
+    ### 5.2.4 Ensure permissions on SSH public host key files are configured
     ###      (Scored)
-
+    - file_permissions_sshd_pub_key
+    # TO DO: check owner of pub keys in /etc/ssh is root:root
 
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Scored)
-
+    - sshd_set_loglevel_info
 
     ### 5.2.6 Ensure SSH X11 forward is diabled (Scored)
 
 
     ### 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
-
+    - sshd_max_auth_tries_value=4
+    - sshd_set_max_auth_tries
 
     ### 5.2.8 Ensure SSH IgnoreRhosts is enabled (Scored)
-
+    - sshd_disable_rhosts
 
     ### 5.2.9 Ensure SSH HostbasedAuthentication is disabled (Scored)
-
+    - disable_host_auth
 
     ### 5.2.10 Ensure SSH root login is disabled (Scored)
-
+    - sshd_disable_root_login
 
     ### 5.2.11 Ensure SSH PermitEmptyPasswords is disabled (Scored)
-
+    - sshd_disable_empty_passwords
 
     ### 5.2.12 Ensure SSH PermitUserEnvironment is disabled (Scored)
-
+    - sshd_do_not_permit_user_env
 
     ### 5.2.13 Ensure SSH Idle Timeout Interval is configured (Scored)
+    # ClientAliveInterval 300
+    - sshd_idle_timeout_value=5_minutes
+    - sshd_set_idle_timeout
 
+    # ClientAliveCountMax 0
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive
 
     ### 5.2.14 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)
 
 
     ### 5.2.15 Ensure SSH warning banner is configured (Scored)
-
+    - sshd_enable_warning_banner
 
     ### 5.2.16 Ensure SSH PAM is enabled (Scored)
 
@@ -769,7 +784,7 @@ selections:
 
 
     ### 5.2.20 Ensure system-wide crypto policy is not over-ridden (Scored)
-
+    - configure_ssh_crypto_policy
 
     ## 5.3 Configure authselect
 
