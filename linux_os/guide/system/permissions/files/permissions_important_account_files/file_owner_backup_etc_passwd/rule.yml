@@ -5,8 +5,8 @@ title: 'Verify User Who Owns Backup passwd File'
 description: '{{{ describe_file_owner(file="/etc/passwd-", owner="root") }}}'
 
 rationale: |-
-    The <tt>/etc/passwd-</tt> file is a backup file of the <tt>/etc/passwd</tt> file and as such
-    it also contains information about the users that are configured on the system.
+    The <tt>/etc/passwd-</tt> file is a backup file of <tt>/etc/passwd</tt>, and as such,
+    it contains information about the users that are configured on the system.
     Protection of this file is critical for system security.
 
 severity: medium

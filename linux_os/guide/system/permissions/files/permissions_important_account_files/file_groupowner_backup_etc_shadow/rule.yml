@@ -5,8 +5,8 @@ title: 'Verify User Who Owns Backup shadow File'
 description: '{{{ describe_file_group_owner(file="/etc/shadow-", group="root") }}}'
 
 rationale: |-
-    The <tt>/etc/shadow-</tt> file is a backup file of the <tt>/etc/shadow</tt> file, and as such
-    it also contains the list of local system accounts and password hashes.
+    The <tt>/etc/shadow-</tt> file is a backup file of <tt>/etc/shadow</tt>, and as such,
+    it contains the list of local system accounts and password hashes.
     Protection of this file is critical for system security.
 
 severity: medium
