@@ -50,7 +50,7 @@ references:
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
+        missing_parameter_pass: 'false'
         parameter: HostbasedAuthentication
         rule_id: disable_host_auth
         value: 'no'
