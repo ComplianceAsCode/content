@@ -5122,7 +5122,7 @@ By using this IS (which includes any device attached to this IS), you consent to
 
 -This IS includes security measures (e.g., authentication and access controls) to protect USG interests- -not for your personal benefit or privacy.
 
--Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details. 
 
 OR
 
@@ -5144,7 +5144,7 @@ By using this IS (which includes any device attached to this IS), you consent to
 
 -This IS includes security measures (e.g., authentication and access controls) to protect USG interests- -not for your personal benefit or privacy.
 
--Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details. 
 
 OR
 
@@ -5181,10 +5181,10 @@ If there are no unsuccessful logins being returned from the "lastb" command, cre
 
 Procedure:
 Verify successful logins are being logged:
-# last -R | more
+# last -R | more 
 If the command does not return successful logins, this is a finding.
 
-Verify if unsuccessful logons are being logged:
+Verify if unsuccessful logons are being logged: 
 # lastb -R | more
 If the command does not return unsuccessful logins, this is a finding.</check-content>
 			</check>
@@ -5252,7 +5252,7 @@ auth optional pam_faildelay.so</fixtext>
 				<check-content>Check the value of the FAIL_DELAY variable and the ability to use it
 
 Procedure:.
-# grep FAIL_DELAY /etc/login.defs
+# grep FAIL_DELAY /etc/login.defs 
 If the value does not exist, or is less than 4, this is a finding.
 
 Check for the use of pam_faildelay.
@@ -5371,7 +5371,7 @@ Procedure:
 # chmod 700 /rootdir
 # cp -r /.??* /rootdir/.
 
-Then, edit the passwd file and change the root home directory to /rootdir. The cp -r /.??* command copies all files and subdirectories of file names beginning with "." into the new root directory, which preserves the previous root environment. Ensure you are in the "/" directory when executing the "cp" command.
+Then, edit the passwd file and change the root home directory to /rootdir. The cp -r /.??* command copies all files and subdirectories of file names beginning with "." into the new root directory, which preserves the previous root environment. Ensure you are in the "/" directory when executing the "cp" command.   
 _ OR
 
 Use the YaST ‘Security and Users’ &gt; ‘User and Group Management’ module to update the home directory for root.</fixtext>
@@ -5402,7 +5402,7 @@ If the root user home directory is /, this is a finding.</check-content>
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-38334r1_fix">The root home directory will have permissions of 0700. Do not change the protections of the / directory. Use the following command to change protections for the root home directory:
+			<fixtext fixref="F-38334r1_fix">The root home directory will have permissions of 0700. Do not change the protections of the / directory. Use the following command to change protections for the root home directory: 
 # chmod 0700 /rootdir.</fixtext>
 			<fix id="F-38334r1_fix"/>
 			<check system="C-42342r1_chk">
@@ -5532,7 +5532,7 @@ If the file does not exist, or contains more than "console" or a single "tty" de
 			<fix id="F-38265r1_fix"/>
 			<check system="C-42298r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Confirm all accounts with a GID of 499 and below are used by a system account.
+				<check-content>Confirm all accounts with a GID of 499 and below are used by a system account. 
 
 Procedure:
 List all the users with a GID of 0-499.
@@ -5589,7 +5589,7 @@ If GIDs referenced in /etc/passwd are not defined in /etc/group are returned, th
 			<fix id="F-39291r1_fix"/>
 			<check system="C-43221r2_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Ask the SA or IAO if a host-based intrusion detection application is loaded on the system. The preferred intrusion detection system is McAfee HBSS available through Cybercom.  If another host-based intrusion detection application, such as SELinux, is used on the system, this is not a finding.
+				<check-content>Ask the SA or IAO if a host-based intrusion detection application is loaded on the system. The preferred intrusion detection system is McAfee HBSS available through Cybercom.  If another host-based intrusion detection application, such as SELinux, is used on the system, this is not a finding. 
 
 Procedure:
 Examine the system to see if the Host Intrusion Prevention System (HIPS) is installed
@@ -5600,14 +5600,14 @@ If the MFEhiplsm package is installed, HBSS is being used on the system.
 
 If another host-based intrusion detection system is loaded on the system
 
-# find / -name &lt;daemon name&gt;
+# find / -name &lt;daemon name&gt; 
 
-Where &lt;daemon name&gt; is the name of the primary application daemon to determine if the application is loaded on the system.
+Where &lt;daemon name&gt; is the name of the primary application daemon to determine if the application is loaded on the system. 
 
 Determine if the application is active on the system.
 
 Procedure:
-# ps -ef | grep &lt;daemon name&gt;
+# ps -ef | grep &lt;daemon name&gt; 
 
 If no host-based intrusion detection system is installed on the system, this is a finding.</check-content>
 			</check>
@@ -5692,7 +5692,7 @@ Uneven file permissions exist if the file owner has less permissions than the gr
 				<check-content>Check the system for files with no assigned owner.
 
 Procedure:
-# find / -nouser
+# find / -nouser 
 
 If any files have no assigned owner, this is a finding.
 
@@ -5805,7 +5805,7 @@ If a skeleton file has a mode more permissive than 0644, this is a finding.</che
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-38378r1_fix">Change the ownership of NIS/NIS+/yp files to root, sys or bin.
+			<fixtext fixref="F-38378r1_fix">Change the ownership of NIS/NIS+/yp files to root, sys or bin. 
 
 Procedure (example):
 # chown root &lt;filename&gt;</fixtext>
@@ -5835,7 +5835,7 @@ If the file ownership is not root, sys, or bin, this is a finding.</check-conten
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
 			<fixtext fixref="F-39430r1_fix">Perform the following to change the group ownership of NIS files:
 
-
+ 
 
 # chgrp root /var/yp/*  </fixtext>
 			<fix id="F-39430r1_fix"/>
@@ -5843,11 +5843,11 @@ If the file ownership is not root, sys, or bin, this is a finding.</check-conten
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Perform the following to check the group ownership of NIS files:
 
-
+ 
 
 # ls -la /var/yp/*
 
-
+ 
 
 If the file group ownership is not root, sys, or bin, this is a finding.</check-content>
 			</check>
@@ -6363,13 +6363,13 @@ If any public directory is not owned by root or an application user, this is a f
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check global initialization files for the configured umask value.
 Procedure:
-# grep umask /etc/*
+# grep umask /etc/* 
 
 Check local initialization files for the configured umask value.
-Procedure:
+Procedure: 
 # cut -d: -f6 /etc/passwd |xargs -n1 -IDIR find DIR -name ".*" -type f -maxdepth 1 -exec grep umask {} \;
 
-If the system and user default umask is not 077, this a finding.
+If the system and user default umask is not 077, this a finding. 
 
 Note: If the default umask is 000 or allows for the creation of world-writable files this becomes a Severity Code I finding.</check-content>
 			</check>
@@ -6424,7 +6424,7 @@ If there are any unlocked default system accounts this is a finding.</check-cont
 			<check system="C-42555r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Determine if auditing is enabled.
-# ps -ef |grep auditd
+# ps -ef |grep auditd 
 If the auditd process is not found, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -6614,7 +6614,7 @@ If no results are returned, or the line does not start with "-w", this is a find
 			</reference>
 			<ident system="http://cce.mitre.org">CCE-14904-7</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-000126</ident>
-			<fixtext fixref="F-38736r1_fix">Ensure logins
+			<fixtext fixref="F-38736r1_fix">Ensure logins 
 
 Procedure:
 Modify /etc/audit/audit.rules to contain:
@@ -6629,7 +6629,7 @@ Restart the auditd service.
 			<fix id="F-38736r1_fix"/>
 			<check system="C-42690r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>The message types that are always recorded to /var/log/audit/audit.log include LOGIN,USER_LOGIN,USER_START,USER_END among others and do not need to be added to audit_rules.
+				<check-content>The message types that are always recorded to /var/log/audit/audit.log include LOGIN,USER_LOGIN,USER_START,USER_END among others and do not need to be added to audit_rules. 
 
 The log files /var/log/faillog and /var/log/lastlog must be protected from tampering of the login records.
 
@@ -6704,7 +6704,7 @@ If "-S chmod" is not in the result, this is a finding</check-content>
 				<check-content>Check the owner of the xinetd configuration files.
 
 Procedure:
-# ls -lL /etc/xinetd.conf
+# ls -lL /etc/xinetd.conf 
 # ls -laL /etc/xinetd.d
 This is a finding if any of the above files or directories are not owned by root or bin.</check-content>
 			</check>
@@ -6733,7 +6733,7 @@ This is a finding if any of the above files or directories are not owned by root
 				<check-content>Check the mode of the xinetd configuration files.
 
 Procedure:
-# ls -lL /etc/xinetd.conf
+# ls -lL /etc/xinetd.conf 
 # ls -lL /etc/xinetd.d
 If the mode of the file(s) is more permissive than 0640, this is a finding.</check-content>
 			</check>
@@ -6849,9 +6849,9 @@ If no global initialization files contain "mesg -n" or "mesg n", this is a findi
 
 Configure cups to use only the localhost or specified remote hosts.
 
-Procedure:
+Procedure: 
 Modify the /etc/cups/cupsd.conf file to "Listen" only to the local machine or a known set of hosts (i.e., Listen localhost:631).
-Modify the /etc/cups/cupsd.conf file "&lt;Location /&gt;" element to "Deny From All" and "Allow from 127.0.0.1" or allowed host addresses.
+Modify the /etc/cups/cupsd.conf file "&lt;Location /&gt;" element to "Deny From All" and "Allow from 127.0.0.1" or allowed host addresses. 
 
 Restart cups:
 # rccups restart</fixtext>
@@ -6862,10 +6862,10 @@ Restart cups:
 
 Procedure:
 # find /etc -name hosts.lpd -print
-# find /etc -name Systems -print
+# find /etc -name Systems -print  
 # find /etc -name printers.conf
 
-If none of the files are found, this check should be marked Not Applicable.
+If none of the files are found, this check should be marked Not Applicable.  
 
 Otherwise, examine the configuration file.
 
@@ -6876,11 +6876,11 @@ Check for entries that contain a ‘+’ or ‘_’ character.  If any are found
 For the "cups" print service, verify remote host access is limited.
 
 
-# grep -i Listen /etc/cups/cupsd.conf
+# grep -i Listen /etc/cups/cupsd.conf 
 The /etc/cups/cupsd.conf file must not contain a Listen *:&lt;port&gt; or equivalent line.
 If the network address of the "Listen" line is unrestricted. This is a finding.
 
-# grep -i "Allow From" /etc/cups/cupsd.conf
+# grep -i "Allow From" /etc/cups/cupsd.conf 
 The "Allow From" line within the "&lt;Location /&gt;" element should limit access to the printers to @LOCAL and specific hosts.
 If the "Allow From" line contains "All" this is a finding.</check-content>
 			</check>
@@ -6913,7 +6913,7 @@ Procedure:
 Procedure:
 # find /etc -name hosts.lpd -print
 # find /etc -name Systems –print
-# find /etc –name printers.conf -print
+# find /etc –name printers.conf -print  
 
 If no print service configuration file is found, this is not applicable.
 
@@ -6952,7 +6952,7 @@ Procedure:
 Procedure:
 # find /etc -name hosts.lpd -print
 # find /etc -name Systems –print
-# find /etc -name printers.conf -print
+# find /etc -name printers.conf -print  
 
 
 Check the mode of the print service configuration file.
@@ -7088,7 +7088,7 @@ Procedure:
 Examine the aliases file for any utilized directories or paths.
 
 # ls -lL &lt;directory or file path&gt;
-Check the owner for any paths referenced.
+Check the owner for any paths referenced. 
 Check if the file or parent directory is owned by root. If not, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -7108,7 +7108,7 @@ Check if the file or parent directory is owned by root. If not, this is a findin
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-39237r1_fix">Use the chmod command to change the access permissions for files executed from the alias file.
+			<fixtext fixref="F-39237r1_fix">Use the chmod command to change the access permissions for files executed from the alias file. 
 For example:
 # chmod 0755 filename.</fixtext>
 			<fix id="F-39237r1_fix"/>
@@ -7123,7 +7123,7 @@ Procedure:
 Examine the aliases file for any utilized directories or paths.
 
 # ls -lL &lt;file referenced from aliases&gt;
-Check the permissions for any paths referenced.
+Check the permissions for any paths referenced. 
 If any file referenced from the aliases file has a mode more permissive than 0755, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -7193,7 +7193,7 @@ mail.*             -/var/log/mail;RSYSLOG_TraditionalFileFormat</fixtext>
 				<check-content>Check the syslog configuration file for mail.crit logging configuration.
 
 Procedure:
-# grep "mail\." /etc/rsyslog.conf
+# grep "mail\." /etc/rsyslog.conf 
 
 If syslog is not configured to log critical sendmail messages ("mail.crit" or "mail.*"), this is a finding.</check-content>
 			</check>
@@ -7227,7 +7227,7 @@ The fix procedure is the same for both sendmail and Postfix.
 Procedure:
 # more /etc/rsyslog.conf
 The check procedure is the same for both sendmail and Postfix.
-Identify any log files configured for the "mail" service (excluding mail.none) at any severity level and check the ownership
+Identify any log files configured for the "mail" service (excluding mail.none) at any severity level and check the ownership 
 
 Procedure:
 # ls -lL &lt;file location&gt;
@@ -7267,7 +7267,7 @@ Check the configuration to determine which log files contain logs for mail.crit,
 Procedure:
 # ls -lL &lt;file location&gt;
 The check procedure is the same for both sendmail and Postfix.
-Identify any log files configured for the "mail" service (excluding mail.none) at any severity level and check the permissions
+Identify any log files configured for the "mail" service (excluding mail.none) at any severity level and check the permissions 
 
 
 If the log file permissions are greater than 0644, this is a finding.</check-content>
@@ -7334,7 +7334,7 @@ Add accounts not allowed to use FTP to the /etc/vfsftpd.ftpusers or /etc/vfsftpd
 			<fix id="F-39258r1_fix"/>
 			<check system="C-43197r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check the contents of the ftpusers file.
+				<check-content>Check the contents of the ftpusers file. 
 For gssftp:
 # more /etc/ftpusers
 
@@ -7436,9 +7436,9 @@ If the ftpusers file has a mode more permissive than 0640, this is a finding.</c
 			<fixtext fixref="F-39263r1_fix">Enable logging by changing ftpd startup or config files.
 
 Procedure:
-The procedure depends on the implementation of ftpd used by the system.
+The procedure depends on the implementation of ftpd used by the system. 
 
-For vsftpd:
+For vsftpd: 
 
 Ensure the server settings in "/etc/vsftpd.conf" (or other configuration file specified by the vaftpd xinetd.d startup file) contains:
 
@@ -7448,7 +7448,7 @@ For gssftp:
 If the "disable" server setting is missing or set to "no" in "/etc/xinetd.d/gssftp" then
 ensure the server settings in "/etc/xinetd.d/gssftp" contains:
 
-server_args = -l
+server_args = -l 
 
 The -l option may be added up to three times. Each -l will provide increasing verbosity on the log. Refer to the main page for ftpd for more information.
 
@@ -7463,18 +7463,18 @@ log_on_failure += HOST USERID</fixtext>
 			<fix id="F-39263r1_fix"/>
 			<check system="C-43202r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Find if logging is applied to the ftp daemon. The procedure depends on the implementation of ftpd used by the system.
+				<check-content>Find if logging is applied to the ftp daemon. The procedure depends on the implementation of ftpd used by the system. 
 
 Procedures:
 
-For vsftpd:
+For vsftpd: 
 If vsftpd is started by xinetd:
 
 #grep vsftpd /etc/xinetd.d/*
 This will indicate the xinetd.d startup file
 
 #grep server_args &lt;vsftpd xinetd.d startup file&gt;
-This will indicate the vsftpd config file used when starting through xinetd.
+This will indicate the vsftpd config file used when starting through xinetd. 
 If the line is missing then "/etc/vsftpd.conf", the default config file, is used.
 
 #grep xferlog_enable &lt;vsftpd config file&gt;
@@ -7571,7 +7571,7 @@ Procedure:
 
 Procedure:
 # grep "server " /etc/xinetd.d/tftp
-# ls -lL &lt;in.tftpd binary&gt;
+# ls -lL &lt;in.tftpd binary&gt; 
 
 If the mode of the file is more permissive than 0755, this is a finding.</check-content>
 			</check>
@@ -7654,9 +7654,9 @@ If the xorg-x11 package is not installed this finding does not apply.
 Check for .Xauthority or .xauth files being utilized by looking for such files in the home directory of a user.
 
 Procedure:
-Verify Xwindows is used on the system.
+Verify Xwindows is used on the system. 
 # egrep "^x:5.*X11" /etc/inittab
-If no line is returned the boot process does not start Xwindows. If Xwindows is not configured to run, this rule is not applicable.
+If no line is returned the boot process does not start Xwindows. If Xwindows is not configured to run, this rule is not applicable. 
 
 Look for xauthority files in user home directory.
 # cd ~someuser
@@ -7740,7 +7740,7 @@ For example:
    (&lt;select user&gt; &gt; Edit &gt; Details)
 
   OR
-# mkdir &lt;/home/directory&gt;
+# mkdir &lt;/home/directory&gt;  
 # for i in $(ls -A /etc/skel); do cp -rp /etc/skel/$i &lt;/home/directory&gt;; done
 # chown -R &lt;user&gt;:&lt;group&gt; &lt;/home/directory&gt;
 Document all changes.</fixtext>
@@ -7814,7 +7814,7 @@ Procedure:
 				<check-content>Check the ownership of each user home directory listed in the /etc/passwd file.
 
 Procedure:
-# cut -d : -f 6 /etc/passwd | xargs -n1 ls -ld
+# cut -d : -f 6 /etc/passwd | xargs -n1 ls -ld 
 
 If any user home directory is not owned by the assigned user, this is a finding.</check-content>
 			</check>
@@ -7849,7 +7849,7 @@ Document all changes.   </fixtext>
 				<check-content>Check the group ownership for each user in the /etc/passwd file.
 
 Procedure:
-# cut -d : -f 6 /etc/passwd | xargs -n1 ls -ld
+# cut -d : -f 6 /etc/passwd | xargs -n1 ls -ld 
 
 If any user home directory is not group-owned by the assigned user's primary group, this is a finding. Home directories for application accounts requiring different group ownership must be documented using site-defined procedures.</check-content>
 			</check>
@@ -7870,7 +7870,7 @@ If any user home directory is not group-owned by the assigned user's primary gro
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-38547r1_fix">Change the ownership of the startup and login files in the user’s directory to the user or root, as appropriate. Examine each user’s home directory and verify all filenames beginning with “.” are owned by the owner of the directory or root. If they are not, use the chown command to change the owner to the user and research the reasons why the owners were not assigned as required.
+			<fixtext fixref="F-38547r1_fix">Change the ownership of the startup and login files in the user’s directory to the user or root, as appropriate. Examine each user’s home directory and verify all filenames beginning with “.” are owned by the owner of the directory or root. If they are not, use the chown command to change the owner to the user and research the reasons why the owners were not assigned as required. 
 
 Procedure:
 # chown username .filename
@@ -7902,12 +7902,12 @@ If local initialization files are not owned by the home directory's user, this i
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-38550r1_fix">Ensure user startup files have permissions of 0740 or more restrictive. Examine each user’s home directory and verify all file names beginning with “.” have access permissions of 0740 or more restrictive. If they do not, use the chmod command to correct the vulnerability.
+			<fixtext fixref="F-38550r1_fix">Ensure user startup files have permissions of 0740 or more restrictive. Examine each user’s home directory and verify all file names beginning with “.” have access permissions of 0740 or more restrictive. If they do not, use the chmod command to correct the vulnerability. 
 
-Procedure:
-# chmod 0740 .filename
+Procedure: 
+# chmod 0740 .filename 
 
-Note: The period is part of the file name and is required.
+Note: The period is part of the file name and is required.   
      OR
 # for HOMEDIR in $(cut -d: -f6 /etc/passwd); do FILES=$(find ${HOMEDIR} ! -fstype nfs -type f -name '\.*' \( -perm -0002 -o -perm -0020 \) ); for INIFILE in ${FILES}; do chmod 600 ${INIFILE}; done; done</fixtext>
 			<fix id="F-38550r1_fix"/>
@@ -7939,7 +7939,7 @@ If local initialization files are more permissive than 0740 or the .dt directory
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
 			<fixtext fixref="F-38454r1_fix">Ensure all system startup files have mode 0755 or less permissive. Examine the "rc" files, and all files in the rc1.d (rc2.d, and so on) directories, and in the /etc/init.d directory to ensure they are not world-writable. If they are world-writable, use the chmod command to correct the vulnerability and research why they are world-writable.
 
-Procedure:
+Procedure: 
 # chmod 755 &lt;startup file&gt;</fixtext>
 			<fix id="F-38454r1_fix"/>
 			<check system="C-42424r1_chk">
@@ -8061,7 +8061,7 @@ If any .netrc file exists, this is a finding.</check-content>
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-38449r1_fix">Change the ownership of files and directories in user home directories to the owner of the home directory.
+			<fixtext fixref="F-38449r1_fix">Change the ownership of files and directories in user home directories to the owner of the home directory. 
 
 Procedure:
 # chown accountowner filename</fixtext>
@@ -8344,7 +8344,7 @@ Check the permissions on the directories above subdirectories containing device 
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-38576r1_fix">Use the chmod command to remove the world-writable bit from the backup device files.
+			<fixtext fixref="F-38576r1_fix">Use the chmod command to remove the world-writable bit from the backup device files. 
 
 Procedure:
 # chmod o-w &lt;back device filename&gt;
@@ -8478,7 +8478,7 @@ If the files and directories are not owned by root, this is a finding.</check-co
 
 If the package is not installed, this check does not apply. If it is installed, check if the 'anonuid' and 'anongid' options are set correctly for exported file systems.
 List exported filesystems:
-# exportfs -v
+# exportfs -v 
 
 Each of the exported file systems should include an entry for the 'anonuid=' and 'anongid=' options set to "-1" or an equivalent (60001, 65534, or 65535). If appropriate values for 'anonuid' or 'anongid' are not set, this is a finding.</check-content>
 			</check>
@@ -8589,7 +8589,7 @@ If the mounted file systems do not have the "nosuid" option, this is a finding.<
 			<fix id="F-39305r1_fix"/>
 			<check system="C-43233r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>The tcp_wrappers package is provided with the SLES mainframe distribution. Other access control programs may be available but will need to be checked manually.
+				<check-content>The tcp_wrappers package is provided with the SLES mainframe distribution. Other access control programs may be available but will need to be checked manually. 
 
 Determine if tcp_wrappers (i.e. TCPd) is installed.
 # rpm -qa | grep tcpd
@@ -8712,13 +8712,13 @@ If the file has a mode more permissive than 0600, this is a finding.</check-cont
 			<fix id="F-38973r1_fix"/>
 			<check system="C-42929r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>List all cronjobs on the system.
+				<check-content>List all cronjobs on the system. 
 Procedure:
 
 # ls /var/spool/cron /var/spool/cron/tabs
 
 # ls /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls /etc/cron*|grep -v deny
 
 If cron jobs exist under any of the above directories, use the following command to search for programs executed by cron:
@@ -8755,14 +8755,14 @@ Procedure:
 			<fix id="F-38977r1_fix"/>
 			<check system="C-42933r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>List all cronjobs on the system.
+				<check-content>List all cronjobs on the system. 
 Procedure:
 
 # ls /var/spool/cron /var/spool/cron/tabs
 
 
 # ls /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls /etc/cron*|grep -v deny
 
 
@@ -8834,7 +8834,7 @@ Procedure:
 
 
 ls -ld /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls -ld /etc/cron*|grep -v deny
 
 If the mode of any of the crontab directories is more permissive than 0755, this is a finding.</check-content>
@@ -8868,7 +8868,7 @@ Procedure:
 
 
 ls -ld /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls -ld /etc/cron*|grep -v deny
 
 
@@ -8903,7 +8903,7 @@ Procedure:
 
 
 ls -ld /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls -ld /etc/cron*|grep -v deny
 
 
@@ -9184,8 +9184,8 @@ If "at" executes programs in world-writable directories, this is a finding.</che
 Procedure:
 Examine the default install location /etc/snmp/snmpd.conf
 or:
-# find / -name snmpd.conf
-# more &lt;snmpd.conf file&gt;
+# find / -name snmpd.conf 
+# more &lt;snmpd.conf file&gt; 
 
 Identify any community names or user password configuration. If any community name or password is set to a default value such as "public", "private", "snmp-trap", or "password", or any value which does not meet DISA password requirements, this is a finding.</check-content>
 			</check>
@@ -9206,7 +9206,7 @@ Identify any community names or user password configuration. If any community na
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-39321r1_fix">Change the mode of the SNMP daemon configuration file to 0600.
+			<fixtext fixref="F-39321r1_fix">Change the mode of the SNMP daemon configuration file to 0600. 
 
 Procedure:
 # chmod 0600 &lt;snmpd.conf&gt;</fixtext>
@@ -9316,7 +9316,7 @@ The /etc/xinetd.conf file contains default values that will hold true for all se
 			<fix id="F-39178r1_fix"/>
 			<check system="C-43121r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>The /etc/xinetd.conf file and each file in the /etc/xinetd.d directory file should be examined for the following:
+				<check-content>The /etc/xinetd.conf file and each file in the /etc/xinetd.d directory file should be examined for the following: 
 
 Procedure:
 log_type = SYSLOG authpriv
@@ -9371,7 +9371,7 @@ If an Internet Network News server is running, this is a finding.
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-000366</ident>
-			<fixtext fixref="F-38107r1_fix">Follow the correct configuration parameters for access configuration file. Use the chown command to configure it properly.
+			<fixtext fixref="F-38107r1_fix">Follow the correct configuration parameters for access configuration file. Use the chown command to configure it properly. 
 (for example:
 # chown root /etc/security/access.conf).   </fixtext>
 			<fix id="F-38107r1_fix"/>
@@ -9440,7 +9440,7 @@ If the value of the "only_from" line in the "xinetd.d" file which starts with "/
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-39473r1_fix">Change the ownership of the smb.conf file.
+			<fixtext fixref="F-39473r1_fix">Change the ownership of the smb.conf file. 
 
 Procedure:
 # chown root smb.conf</fixtext>
@@ -9685,11 +9685,11 @@ If this file exists and has a group-owner that is not a privileged user, this is
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check access configuration mode:
 
-
+ 
 
 # ls -lL /etc/security/access.conf
 
-
+ 
 
 If this file exists and has a mode more permissive than 0640, this is a finding.</check-content>
 			</check>
@@ -9741,7 +9741,7 @@ If the "smb.conf" file is not group-owned by root, bin, sys, or system, this is 
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-39478r1_fix">Use the chgrp command to ensure that the group owner of the smbpasswd file is root.
+			<fixtext fixref="F-39478r1_fix">Use the chgrp command to ensure that the group owner of the smbpasswd file is root. 
 For instance:
 # chgrp root /etc/samba/passdb.tdb /etc/samba/secrets.tdb</fixtext>
 			<fix id="F-39478r1_fix"/>
@@ -9802,7 +9802,7 @@ If a "smbpasswd" maintained file has a mode more permissive than 0600, this is a
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000366</ident>
-			<fixtext fixref="F-38350r1_fix">Change the root account's shell to one present on the / file system.
+			<fixtext fixref="F-38350r1_fix">Change the root account's shell to one present on the / file system. 
 
 Procedure:
 Edit /etc/passwd and change the shell for the root account to one present on the / file system (such as /bin/sh, assuming /bin is not on a separate file system). If the system does not store shell configuration in the /etc/passwd file, consult vendor documentation for the correct procedure for the system.</fixtext>
@@ -9981,7 +9981,7 @@ If any run control script is not group-owned by root, sys, bin, or other system 
 			<fix id="F-38495r1_fix"/>
 			<check system="C-42453r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Determine the programs executed by system start-up files. Determine the ownership of the executed programs.
+				<check-content>Determine the programs executed by system start-up files. Determine the ownership of the executed programs. 
 
 # cat /etc/rc*/* /etc/init.d/* | more
 # ls -l &lt;executed program&gt;
@@ -10075,10 +10075,10 @@ If any unnecessary privileged accounts exist this is a finding.
 			<fix id="F-38251r1_fix"/>
 			<check system="C-42293r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check the system for unnecessary user accounts.
+				<check-content>Check the system for unnecessary user accounts. 
 
 Procedure:
- # more /etc/passwd
+ # more /etc/passwd 
 
 If any unnecessary accounts are found, this is a finding.</check-content>
 			</check>
@@ -10280,7 +10280,7 @@ If "/etc/news" files are not group-owned by root or news, this is a finding.
 			</reference>
 			<ident system="http://cce.mitre.org">CCE-4325-7</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-001436</ident>
-			<fixtext fixref="F-39363r4_fix">Edit the sshd_config file and set the "Protocol" setting to "2".
+			<fixtext fixref="F-39363r4_fix">Edit the sshd_config file and set the "Protocol" setting to "2". 
 
 Restart the SSH daemon.
 # /sbin/service sshd restart
@@ -10288,7 +10288,7 @@ Restart the SSH daemon.
 			<fix id="F-39363r4_fix"/>
 			<check system="C-43280r3_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Locate the sshd_config file:
+				<check-content>Locate the sshd_config file: 
 # more /etc/ssh/sshd_config
 
 Examine the file. If the variables 'Protocol 2,1’ or ‘Protocol 1’ are defined on a line without a leading comment, this is a finding.
@@ -10314,7 +10314,7 @@ Examine the file. If the variables 'Protocol 2,1’ or ‘Protocol 1’ are defi
 			<ident system="http://iase.disa.mil/cci">CCI-000070</ident>
 			<fixtext fixref="F-38346r1_fix">Create if needed and set the contents of /etc/securetty to a "console" or "tty" device.
 # echo console &gt; /etc/securetty
-or
+or 
 # echo ttyS0 &gt; /etc/securetty</fixtext>
 			<fix id="F-38346r1_fix"/>
 			<check system="C-42355r1_chk">
@@ -10392,7 +10392,7 @@ If a non-local/non-authoritative time-server is used, this is a finding.
 			<fix id="F-39152r1_fix"/>
 			<check system="C-43106r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Logging should be enabled for those types of file systems not turning on logging by default.
+				<check-content>Logging should be enabled for those types of file systems not turning on logging by default. 
 
 Procedure:
 # mount
@@ -10458,7 +10458,7 @@ If the Samba server is running, ask the SA if the Samba server is operationally 
 			<check system="C-42159r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check /etc/sysctl.conf ownership.
-# ls -lL /etc/sysctl.conf
+# ls -lL /etc/sysctl.conf 
 If /etc/sysctl.conf is not owned by root, this is a finding.
 </check-content>
 			</check>
@@ -10484,8 +10484,8 @@ If /etc/sysctl.conf is not owned by root, this is a finding.
 			<fix id="F-38111r1_fix"/>
 			<check system="C-42160r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check /etc/sysctl.conf group ownership:
-# ls -lL /etc/sysctl.conf
+				<check-content>Check /etc/sysctl.conf group ownership: 
+# ls -lL /etc/sysctl.conf 
 If /etc/sysctl.conf is not group-owned by root, this is a finding.
 </check-content>
 			</check>
@@ -10673,7 +10673,7 @@ Procedure:
 
 
 # ls -lL /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls -lL /etc/cron.*|grep -v deny
 
 # cat &lt;crontab file&gt;
@@ -11026,10 +11026,10 @@ Remove all .forward files on the system
 			<fix id="F-39246r1_fix"/>
 			<check system="C-43176r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Determine if sendmail is installed
+				<check-content>Determine if sendmail is installed 
 # rpm -qa | grep -i sendmail
 
-This check only applies to systems that have the sendmail package installed.
+This check only applies to systems that have the sendmail package installed.  
 Check forwarding capability from sendmail.
 
 Procedure:
@@ -11149,7 +11149,7 @@ The FTP anonymous user is, by default, chrooted to the ftp users home directory 
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check /etc/rsyslog.conf ownership:
 
-# ls –lL /etc/rsyslog*
+# ls –lL /etc/rsyslog* 
 
 If any rsyslog configuration file is not owned by root, this is a finding.</check-content>
 			</check>
@@ -11627,7 +11627,7 @@ If nothing is returned or the returned line does not contain "noexpn", this is a
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000366</ident>
 			<fixtext fixref="F-39251r1_fix">For sendmail:
-Add the "novrfy" flag to your sendmail in /etc/mail/sendmail.cf.
+Add the "novrfy" flag to your sendmail in /etc/mail/sendmail.cf. 
 
 Procedure:
 Edit the definition of "confPRIVACY_FLAGS" in /etc/mail/sendmail.mc to include "novrfy".
@@ -11803,7 +11803,7 @@ Procedure:
 # xhost
 If the output reports access control is enabled (and possibly lists the hosts able to receive X window logins), this is not a finding. If the xhost command returns a line indicating access control is disabled, this is a finding.
 
-Note: It may be necessary to define the display if the command reports it cannot open the display.
+Note: It may be necessary to define the display if the command reports it cannot open the display. 
 
 Procedure:
 $ DISPLAY=MachineName:0.0; export DISPLAY
@@ -11918,7 +11918,7 @@ NOTE: For MAC I systems, increase the frequency to daily.&lt;/VulnDiscussion&gt;
 			<fix id="F-38215r1_fix"/>
 			<check system="C-42270r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Determine if there is an automated job, scheduled to run weekly or more frequently, to run the file integrity tool to check for unauthorized additions to system libraries. The check can be done using Advanced Intrusion Detection Environment (AIDE) which is part of the SUSE Linux Enterprise Server (SLES) distribution. Other file integrity software may be used but must be checked manually.
+				<check-content>Determine if there is an automated job, scheduled to run weekly or more frequently, to run the file integrity tool to check for unauthorized additions to system libraries. The check can be done using Advanced Intrusion Detection Environment (AIDE) which is part of the SUSE Linux Enterprise Server (SLES) distribution. Other file integrity software may be used but must be checked manually. 
 
 Procedure:
 Check the root crontab (crontab -l) and the global crontabs in /etc/crontab, /etc/cron.d/* for the presence of an "aide" job to run at least weekly, which should have asterisks (*) in columns 3, 4, and 5.
@@ -11970,7 +11970,7 @@ Confirm all accounts with a UID of 499 and below are used by a system account. I
 			</reference>
 			<ident system="http://cce.mitre.org">CCE-4154-1</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-000205</ident>
-			<fixtext fixref="F-39526r6_fix">Edit /etc/pam.d/common-password and add or edit a pam_cracklib.so entry with a minlen parameter set equal to or greater than 15.
+			<fixtext fixref="F-39526r6_fix">Edit /etc/pam.d/common-password and add or edit a pam_cracklib.so entry with a minlen parameter set equal to or greater than 15.  
 
 NOTE: /etc/pam.d/common-password is normally a symbolic link that points to common-password-pc or common-password-local, a file to be ‘included’ by other pam configuration files.  </fixtext>
 			<fix id="F-39526r6_fix"/>
@@ -12119,7 +12119,7 @@ password required pam_cracklib.so maxrepeat=3
 
 There may be other options on the line. If no such line is found, or the maxrepeat option is more than 3 this is a finding.  A setting of zero disables this option.
 
-NOTE:  This option was not available in SLES 11 until service pack 2(SP2).
+NOTE:  This option was not available in SLES 11 until service pack 2(SP2).  
 </check-content>
 			</check>
 		</Rule>
@@ -12226,7 +12226,7 @@ There remove any entries that correspond to:
 -a exclude,never -Fmsgtype=USER_LOGIN
 -a exclude,never -Fmsgtype=USER_AUTH
 -a exclude,never -Fmsgtype=USER_END
--a exclude,never -Fmsgtype=USER_ACCT
+-a exclude,never -Fmsgtype=USER_ACCT  
 
 NOTE:  The rsyslogd process is protected by an AppArmor profile.  If the /var/log/secure file needs to be created, the AppArmor profile will need to be updated for the new log file to be used.  The profile is stored in /etc/apparmor.d/sbin.rsyslogd and it can be updated manually or by using the YaST AppArmor profile editor.  An entry like ‘/var/log/secure w,’ allows write access.  A system restart is recommended after updating an AppArmor profile.</fixtext>
 			<fix id="F-38348r1_fix"/>
@@ -12388,7 +12388,7 @@ If any global initialization file is not group-owned by root, sys, bin, other, s
 			<fixtext fixref="F-38532r1_fix">Change the ownership of skeleton files with incorrect mode:
 # chown root &lt;skeleton file&gt;
 or
-# ls -L /etc/skel| awk '{ print "/etc/skel/"$1 }' |xargs stat -L -c %U:%n|egrep -v "^(root|bin):"|cut -d: -f2|xargs chown root
+# ls -L /etc/skel| awk '{ print "/etc/skel/"$1 }' |xargs stat -L -c %U:%n|egrep -v "^(root|bin):"|cut -d: -f2|xargs chown root 
 will change all files not owned by root or bin to root. </fixtext>
 			<fix id="F-38532r1_fix"/>
 			<check system="C-42480r2_chk">
@@ -12616,18 +12616,18 @@ If any public directory is not group-owned by root, sys, bin, or an application 
 			<fixtext fixref="F-38981r1_fix">Change the crontab owner to root or the crontab creator.
 
 # chown root &lt;crontab file&gt;
-or
+or 
 # chown &lt;user&gt; &lt;crontab file&gt;</fixtext>
 			<fix id="F-38981r1_fix"/>
 			<check system="C-42938r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>List all crontabs on the system.
+				<check-content>List all crontabs on the system. 
 
 # ls -lL /var/spool/cron /var/spool/cron/tabs
 
 
 # ls -lL /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls -lL /etc/cron*|grep -v deny
 
 If any crontab is not owned by root or the creating user, this is a finding</check-content>
@@ -12700,7 +12700,7 @@ If the above command does not return 0 and the enabling of core dumps has not be
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-39102r1_fix">Change the owner of the kernel core dump data directory to root.
+			<fixtext fixref="F-39102r1_fix">Change the owner of the kernel core dump data directory to root. 
 # chown root /var/crash</fixtext>
 			<fix id="F-39102r1_fix"/>
 			<check system="C-43069r1_chk">
@@ -12738,7 +12738,7 @@ Examine /etc/sysctl.conf for the "kernel.randomize_va_space" entry and if found 
 				<check-content>The stock kernel has support for non-executable program stacks compiled in by default.  The kernel build options can be found in the /boot/config-&lt;kernel version&gt;-default file.  Verify that the option was specified when the kernel was built:
 # grep –i CONFIG_S390_EXEC /boot/config-&lt;kernel version&gt;-default
 
-The value “CONFIG_S390_EXEC_PROTECT=y” should be returned.
+The value “CONFIG_S390_EXEC_PROTECT=y” should be returned.  
 
 To activate this support, the “noexec=on” kernel parameter must be specified at boot time.  The message: “Execute protection active, mvcos available” will be written in the boot log when this feature has been configured successfully.  Check for the message with the following command:
 # grep –i “execute protect” /var/log/boot.msg
@@ -12750,7 +12750,7 @@ Procedure:
 
 
 #sysctl kernel.randomize_va_space
-If the return value is not:
+If the return value is not: 
 kernel.randomize_va_space = 1
 this is a finding.</check-content>
 			</check>
@@ -12773,7 +12773,7 @@ this is a finding.</check-content>
 			<ident system="http://cce.mitre.org">CCE-4236-6</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-001551</ident>
 			<fixtext fixref="F-39117r1_fix">Configure the system to not accept source-routed IPv4 packets.
-Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.accept_source_route=0" and "net.ipv4.conf.default.accept_source_route=0".
+Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.accept_source_route=0" and "net.ipv4.conf.default.accept_source_route=0". 
 
 Reload the sysctls.
 Procedure:
@@ -12863,7 +12863,7 @@ If auth.* is not found, and either auth.notice or auth.info is not found, this i
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000305</ident>
 			<fixtext fixref="F-39155r1_fix"># rcxinetd stop; insserv -r xinetd
-     OR
+     OR 
 
 # service xinetd stop ; chkconfig xinetd off</fixtext>
 			<fix id="F-39155r1_fix"/>
@@ -12901,7 +12901,7 @@ If no active services are found, and the inetd daemon is running, this is a find
 				<check-content>Check if the sendmail package is installed:
 # rpm –q sendmail
 
-If sendmail is not installed, this check is not applicable.
+If sendmail is not installed, this check is not applicable.  
 Check if Help is disabled.  This rule is for “sendmail” only and not applicable to “Postfix”.
 
 Procedure:
@@ -13028,7 +13028,7 @@ Procedure:
 Procedure:
 Find the snmpd.conf file. The default install location is /etc/snmp/snmpd.conf but may be different depending on the SNMP agent installed.
 
-# find / -name snmpd.conf
+# find / -name snmpd.conf 
 # ls -lL &lt;snmpd.conf&gt;
 
 If the snmpd.conf file is not owned by root, this is a finding.</check-content>
@@ -13452,7 +13452,7 @@ If any network analysis tools are found, this is a finding.</check-content>
 		<Rule id="SV-45967r1_rule" severity="medium" weight="10.0">
 			<version>GEN006640</version>
 			<title>The system must use and update a DoD-approved virus scan program.</title>
-			<description>&lt;VulnDiscussion&gt;Virus scanning software can be used to protect a system from penetration from computer viruses and to limit their spread through intermediate systems.
+			<description>&lt;VulnDiscussion&gt;Virus scanning software can be used to protect a system from penetration from computer viruses and to limit their spread through intermediate systems.  
 
 The virus scanning software should be configured to perform scans dynamically on accessed files.  If this capability is not available, the system must be configured to scan, at a minimum, all altered files on the system on a daily basis.
 
@@ -13469,7 +13469,7 @@ If the system processes inbound SMTP mail, the virus scanner must be configured 
 			<fix id="F-39332r1_fix"/>
 			<check system="C-43249r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check for the existence of a cron job to execute the McAfee command line scan tool (uvscan) daily. Other tools may be available but will have to be manually reviewed if they are installed. In addition, the definitions files should not be older than 7 days.
+				<check-content>Check for the existence of a cron job to execute the McAfee command line scan tool (uvscan) daily. Other tools may be available but will have to be manually reviewed if they are installed. In addition, the definitions files should not be older than 7 days. 
 
 Check if uvscan scheduled to run:
 # grep uvscan /var/spool/cron/*
@@ -13537,7 +13537,7 @@ If none of the above checks are successful, this is a finding.
 		<Rule id="SV-44773r1_rule" severity="medium" weight="10.0">
 			<version>GEN000242</version>
 			<title>The system must use at least two time sources for clock synchronization.</title>
-			<description>&lt;VulnDiscussion&gt;A synchronized system clock is critical for the enforcement of time-based policies and the correlation of logs and audit records with other systems.  For redundancy, two time sources are required so synchronization continues to function if one source fails.
+			<description>&lt;VulnDiscussion&gt;A synchronized system clock is critical for the enforcement of time-based policies and the correlation of logs and audit records with other systems.  For redundancy, two time sources are required so synchronization continues to function if one source fails.  
 
 If the system is completely isolated (i.e., it has no connections to networks or other systems), time synchronization is not required as no correlation of events or operation of time-dependent protocols between systems will be necessary.  If the system is completely isolated, this requirement is not applicable.
 
@@ -13794,7 +13794,7 @@ If PrintLastLog is not enabled in the configuration either explicitly or by defa
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000205</ident>
-			<fixtext fixref="F-38295r1_fix">Change the passwords for all accounts using non-compliant password hashes.
+			<fixtext fixref="F-38295r1_fix">Change the passwords for all accounts using non-compliant password hashes. 
 
 (This requires GEN000590 is already met.) </fixtext>
 			<fix id="F-38295r1_fix"/>
@@ -13827,14 +13827,14 @@ If any password hash is present that does not have an initial underscore (_) or 
 			<ident system="http://iase.disa.mil/cci">CCI-000803</ident>
 			<fixtext fixref="F-38297r1_fix">Edit the /etc/default/passwd file and add or change the CRYPT_FILES variable setting so that it contains:
    CRYPT_FILES=sha256
-             OR
+             OR 
    CRYPT_FILES=sha512
 
 In SLES 11 SP2 this option can also be configured with the YaST ‘Security and Users’ module.  Run the ‘Security Center and Hardening’ application, then select ‘Password Settings’.  Use the ‘Password Encryption Method’ drop-down to select either ‘SHA-256’ or ‘SHA-512’.</fixtext>
 			<fix id="F-38297r1_fix"/>
 			<check system="C-42326r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check the /etc/default/passwd file for the CRYPT_FILES variable setting.
+				<check-content>Check the /etc/default/passwd file for the CRYPT_FILES variable setting.  
 Procedure:
 # grep -v '^#' /etc/default/passwd | grep -i crypt_files
 
@@ -13857,7 +13857,7 @@ CRYPT_FILES must be set to SHA256 or SHA512.  If it is not set, or it is set to 
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000196</ident>
-			<fixtext fixref="F-38298r1_fix">Change the passwords for all accounts using non-compliant password hashes.
+			<fixtext fixref="F-38298r1_fix">Change the passwords for all accounts using non-compliant password hashes. 
 
 (This requires GEN000590 is already met.) </fixtext>
 			<fix id="F-38298r1_fix"/>
@@ -13929,7 +13929,7 @@ There may be other options on the line. If no such line is found, or the lcredit
 			<fix id="F-38313r3_fix"/>
 			<check system="C-42335r3_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check /etc/pam.d/common-{auth,account,password,session} for a ‘difok’ parameter on the pam_cracklib.so line.
+				<check-content>Check /etc/pam.d/common-{auth,account,password,session} for a ‘difok’ parameter on the pam_cracklib.so line. 
 
 Procedure:
 # grep difok /etc/pam.d/common-{auth,account,password,session}
@@ -13939,7 +13939,7 @@ Check for common-password inclusions.
 # grep -c common-password /etc/pam.d/*
 
 If the common-password file is included anywhere
-# grep difok /etc/pam.d/common-password
+# grep difok /etc/pam.d/common-password 
 
 If common-password is included anywhere and difok is not present, or has a value less than 8, this is a finding.
 
@@ -13998,7 +13998,7 @@ If a line "password include common-password" is not found then the password chec
 			</reference>
 			<ident system="http://cce.mitre.org">CCE-15047-4</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-000009</ident>
-			<fixtext fixref="F-38331r1_fix">Edit /etc/pam.d/su and /etc/pam.d/su-l
+			<fixtext fixref="F-38331r1_fix">Edit /etc/pam.d/su and /etc/pam.d/su-l 
 Uncomment or add a line such as "auth required pam_wheel.so".  If necessary, create a "wheel" group and add administrative users to the group.</fixtext>
 			<fix id="F-38331r1_fix"/>
 			<check system="C-42339r1_chk">
@@ -14110,7 +14110,7 @@ If a path list is returned, this is a finding.</check-content>
 			<check system="C-42366r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Search the system for files without a valid group-owner.
-# find / -nogroup
+# find / -nogroup 
 If any files are found, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -14221,7 +14221,7 @@ If the permissions include a '+', the file has an extended ACL. If an extended A
 			<check system="C-42376r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Verify all manual page files have no extended ACLs.
-# ls -lL /usr/share/man /usr/share/man/man* /usr/share/info
+# ls -lL /usr/share/man /usr/share/man/man* /usr/share/info 
 If the permissions include a '+', the file has an extended ACL this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -14962,7 +14962,7 @@ If any password hashes are returned, this is a finding.</check-content>
 			<check system="C-42415r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Verify user home directories have no extended ACLs.
-# cut -d : -f 6 /etc/passwd | xargs -n1 ls -ld
+# cut -d : -f 6 /etc/passwd | xargs -n1 ls -ld 
 If the permissions include a '+', the file has an extended ACL this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -15175,7 +15175,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
-			<fixtext fixref="F-38535r3_fix">Change the group-owner of the skeleton file to root, bin or sys.
+			<fixtext fixref="F-38535r3_fix">Change the group-owner of the skeleton file to root, bin or sys. 
 
 Procedure:
 # chgrp &lt;group&gt; /etc/skel/&lt;skeleton file&gt;
@@ -15464,7 +15464,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000163</ident>
-			<fixtext fixref="F-38607r1_fix">Remove the extended ACL from the system audit file(s).
+			<fixtext fixref="F-38607r1_fix">Remove the extended ACL from the system audit file(s).   
 
 # setfacl --remove-all [audit file]</fixtext>
 			<fix id="F-38607r1_fix"/>
@@ -15500,7 +15500,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 			<check system="C-42619r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Verify the audit tool executables are owned by root.
-# ls -l /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd
+# ls -l /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd 
 If any listed file is not owned by root, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -15530,7 +15530,7 @@ Procedure:
 				<check-content>Verify the audit tool executables are group-owned by root, bin, sys, or system.
 
 Procedure:
-# ls -lL /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd
+# ls -lL /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd 
 
 If any listed file is not group-owned by root, bin, sys, or system, this is a finding.</check-content>
 			</check>
@@ -15557,7 +15557,7 @@ If any listed file is not group-owned by root, bin, sys, or system, this is a fi
 			<check system="C-42624r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the mode of audit tool executables.
-# ls -l /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd
+# ls -l /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd 
 If any listed file has a mode more permissive than 0750, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -15583,7 +15583,7 @@ If any listed file has a mode more permissive than 0750, this is a finding.</che
 			<check system="C-42626r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the permissions of audit tool executables.
-# ls -l /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd
+# ls -l /sbin/auditctl /sbin/auditd /sbin/ausearch /sbin/aureport /sbin/autrace /sbin/audispd 
 If the permissions include a '+' the file has an extended ACL, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -15683,7 +15683,7 @@ Configure append auditing of the passwd, shadow, group, and gshadow files. Add t
 -w /etc/shadow -p a -k shadow
 -w /etc/group -p a -k group
 -w /etc/gshadow -p a -k gshadow
-Restart the auditd service.
+Restart the auditd service.   
 # rcauditd restart
           OR
 # service auditd restart</fixtext>
@@ -15722,7 +15722,7 @@ Configure append auditing of the passwd, shadow, group, and gshadow files. Add t
 -w /etc/shadow -p w -k shadow
 -w /etc/group -p w -k group
 -w /etc/gshadow -p w -k gshadow
-Restart the auditd service.
+Restart the auditd service.   
 # rcauditd restart
           OR
 # service auditd restart</fixtext>
@@ -15756,7 +15756,7 @@ If any of these are not listed with a permissions filter of at least 'w', this i
 			<fixtext fixref="F-38715r1_fix">Configure execute auditing of the passwd executable. Add the following to the audit.rules file:
 -w /usr/sbin/passwd -p x -k passwd
 
-Restart the auditd service.
+Restart the auditd service.   
 # rcauditd restart
           OR
 # service auditd restart</fixtext>
@@ -15785,7 +15785,7 @@ If passwd is not listed with a permissions filter of at least 'x', this is a fin
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-001405</ident>
 			<fixtext fixref="F-38719r1_fix">Configure execute auditing of the userdel and groupdel executables. Add the following to the audit.rules file:
--w /usr/sbin/userdel -p x
+-w /usr/sbin/userdel -p x 
 -w /usr/sbin/groupdel -p x
 
 Restart the auditd service.
@@ -15894,7 +15894,7 @@ Procedure:
 
 
 # ls -lL /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls -lL /etc/cron*|grep -v deny
 
 If the group owner is not root or the crontab owner's primary group, this is a finding.
@@ -15929,7 +15929,7 @@ Procedure:
 
 ls –lL /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
 
-or
+or 
 # ls -lL /etc/cron*|grep -v deny
 
 If the permissions include a '+', the file has an extended ACL. If the file has an extended ACL and it has not been documented with the IAO, this is a finding.</check-content>
@@ -15961,7 +15961,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 Procedure:
 # ls -ld /var/spool/cron /var/spool/cron/tabs
 ls -ld /etc/crontab /etc/cron.{d,daily,hourly,monthly,weekly}
-or
+or 
 # ls -ld /etc/cron*|grep -v deny
 
 If the permissions include a '+' the directory has an extended ACL. If the file has an extended ACL and it has not been documented with the IAO, this is a finding</check-content>
@@ -16611,7 +16611,7 @@ Procedure:
 
 
 This should return the following entries for "timestamp-reply" and "timestamp_request":
-DROP       icmp --  anywhere             anywhere            icmp timestamp-request
+DROP       icmp --  anywhere             anywhere            icmp timestamp-request 
 DROP       icmp --  anywhere             anywhere            icmp timestamp-reply
 
 If either does not exist or does not "DROP" the message, this is a finding.</check-content>
@@ -16767,7 +16767,7 @@ If either setting has a value other than zero, this is a finding.</check-content
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-001551</ident>
 			<fixtext fixref="F-39122r1_fix">Configure the system to not accept source-routed IPv4 packets.
-Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.accept_source_route=0" and "net.ipv4.conf.default.accept_source_route=0".
+Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.accept_source_route=0" and "net.ipv4.conf.default.accept_source_route=0". 
 
 Reload the sysctls.
 Procedure:
@@ -16862,7 +16862,7 @@ If all of the resulting lines do not end with "0", this is a finding.</check-con
 			<ident system="http://cce.mitre.org">CCE-4155-8</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-001551</ident>
 			<fixtext fixref="F-39125r1_fix">Configure the system to not send IPv4 ICMP redirect messages.
-Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.send_redirects=0" and "net.ipv4.conf.default.send_redirects=0".
+Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.send_redirects=0" and "net.ipv4.conf.default.send_redirects=0". 
 # sysctl -p</fixtext>
 			<fix id="F-39125r1_fix"/>
 			<check system="C-43094r1_chk">
@@ -16892,7 +16892,7 @@ If all of the resulting lines do not end with "0", this is a finding.</check-con
 			<ident system="http://cce.mitre.org">CCE-4320-8</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-000126</ident>
 			<fixtext fixref="F-39126r1_fix">Configure the system to log martian packets.
-Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.log_martians=1" and "net.ipv4.conf.default.log_martians=1".
+Edit /etc/sysctl.conf and add a setting for "net.ipv4.conf.all.log_martians=1" and "net.ipv4.conf.default.log_martians=1". 
 
 Reload the sysctls.
 Procedure:
@@ -16925,7 +16925,7 @@ If all of the resulting lines do not end with "1", this is a finding.</check-con
 			<ident system="http://cce.mitre.org">CCE-4265-5</ident>
 			<ident system="http://iase.disa.mil/cci">CCI-001092</ident>
 			<fixtext fixref="F-31670r1_fix">Configure the system to use TCP syncookies when experiencing a TCP SYN flood.
-Edit /etc/sysctl.conf and add a setting for "net.ipv4.tcp_syncookies=1".
+Edit /etc/sysctl.conf and add a setting for "net.ipv4.tcp_syncookies=1". 
 # sysctl -p   </fixtext>
 			<fix id="F-31670r1_fix"/>
 			<check system="C-36832r1_chk">
@@ -17042,7 +17042,7 @@ If a file or directory is not group-owned by root, bin, sys, or system, this is 
 			<fix id="F-39160r1_fix"/>
 			<check system="C-43114r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check the permissions of the xinetd configuration files.
+				<check-content>Check the permissions of the xinetd configuration files. 
 
 Procedure:
 # ls -alL /etc/xinetd.conf
@@ -17235,7 +17235,7 @@ If a package is found, this is a finding.</check-content>
 			<fixtext fixref="F-39184r1_fix">Remove the rsh-server package.
 
 Procedure:
-# rpm -e rsh-server
+# rpm -e rsh-server  
 #SuSEconfig</fixtext>
 			<fix id="F-39184r1_fix"/>
 			<check system="C-43125r1_chk">
@@ -17294,7 +17294,7 @@ If the file exists and does not contain "disable = yes" this is a finding.</chec
 			<fixtext fixref="F-39196r1_fix">Remove the rsh-server package.
 
 Procedure:
-# rpm -e rsh-server
+# rpm -e rsh-server  
 # SuSEconfig</fixtext>
 			<fix id="F-39196r1_fix"/>
 			<check system="C-43127r1_chk">
@@ -17326,7 +17326,7 @@ If a package is found, this is a finding.</check-content>
 			<fixtext fixref="F-39198r1_fix">Remove the rsh-server package.
 
 Procedure:
-# rpm -e rsh-server
+# rpm -e rsh-server  
 # SuSEconfig</fixtext>
 			<fix id="F-39198r1_fix"/>
 			<check system="C-43129r1_chk">
@@ -17404,7 +17404,7 @@ If the file is not group-owned by lp, this is a finding.</check-content>
 				<check-content>Check the permissions of the /etc/hosts.lpd (or equivalent) file.
 # find /etc -name hosts.lpd -print
 # find /etc -name Systems –print
-# find /etc -name printers.conf -print
+# find /etc -name printers.conf -print  
 
 # ls -lL &lt;print service file&gt;
 
@@ -17566,7 +17566,7 @@ Procedure:
 Examine the aliases file for any utilized directories or paths.
 
 # ls -lL &lt;file referenced from aliases&gt;
-Check the permissions for any paths referenced.
+Check the permissions for any paths referenced. 
 If the group owner of any file is not root, bin, sys, or system, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -17598,7 +17598,7 @@ Procedure:
 Examine the aliases file for any utilized directories or paths.
 
 # ls -lL &lt;file referenced from aliases&gt;
-Check the permissions for any paths referenced.
+Check the permissions for any paths referenced. 
 If the permissions include a '+', the file has an extended ACL. If the file has an extended ACL and it has not been documented with the IAO, this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -17684,7 +17684,7 @@ If the file is not group-owned by root, bin, sys, or system, this is a finding.<
 			<fix id="F-39262r1_fix"/>
 			<check system="C-43201r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check the permissions of the /etc/ftpusers file.
+				<check-content>Check the permissions of the /etc/ftpusers file. 
 # ls -lL /etc/ftpusers /etc/vsftpd.ftpusers /etc/vsftpd/ftpusers
 If the permissions include a '+', the file has an extended ACL. If the file has an extended ACL and it has not been documented with the IAO, this is a finding.</check-content>
 			</check>
@@ -17733,7 +17733,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-001435</ident>
-			<fixtext fixref="F-39314r1_fix">Edit /etc/snmp/snmpd.conf and remove references to the "v1", "v2c", "community", or "com2sec".
+			<fixtext fixref="F-39314r1_fix">Edit /etc/snmp/snmpd.conf and remove references to the "v1", "v2c", "community", or "com2sec". 
 Restart the SNMP service.
 # service snmpd restart</fixtext>
 			<fix id="F-39314r1_fix"/>
@@ -17744,7 +17744,7 @@ Restart the SNMP service.
 Procedure:
 Examine the default install location /etc/snmp/snmpd.conf
 or:
-# find / -name snmpd.conf
+# find / -name snmpd.conf 
 
 # grep -E '(v1|v2c|community|com2sec)' &lt;snmp.conf file&gt; | grep -v '^#'
 If any configuration is found, this is a finding.</check-content>
@@ -17777,7 +17777,7 @@ Restart the SNMP service.
 Procedure:
 Examine the default install location /etc/snmp/snmpd.conf
 or:
-# find / -name snmpd.conf
+# find / -name snmpd.conf 
 
 # grep -v '^#' &lt;snmpd.conf file&gt; | grep -i createuser | grep -vi SHA
 If any line is present this is a finding.</check-content>
@@ -17810,7 +17810,7 @@ Restart the SNMP service.
 Procedure:
 Examine the default install location /etc/snmp/snmpd.conf
 or:
-# find / -name snmpd.conf
+# find / -name snmpd.conf 
 
 
 # grep -v '^#' &lt;snmpd.conf file&gt; | grep -i createuser | grep -vi AES
@@ -17872,7 +17872,7 @@ Procedure:
 Procedure:
 Examine the default install location /etc/snmp/snmpd.conf
 or:
-# find / -name snmpd.conf
+# find / -name snmpd.conf 
 
 # ls -lL &lt;snmpd.conf&gt;
 
@@ -17905,7 +17905,7 @@ If the file is not group-owned by root, bin, sys, or system, this is a finding.<
 Procedure:
 Examine the default install location /etc/snmp/snmpd.conf
 or:
-# find / -name snmpd.conf
+# find / -name snmpd.conf 
 
 # ls -lL &lt;snmpd.conf&gt;
 
@@ -17929,7 +17929,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000225</ident>
 			<fixtext fixref="F-39337r1_fix">Change the permissions of the rsyslog configuration file(s).
-# chmod 0640 /etc/rsyslog.conf
+# chmod 0640 /etc/rsyslog.conf 
 # chmod 0640 /etc/rsyslog.d/*.conf</fixtext>
 			<fix id="F-39337r1_fix"/>
 			<check system="C-43254r1_chk">
@@ -18016,7 +18016,7 @@ If no line is returned, this is a finding.</check-content>
 			<check system="C-43282r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH client configuration for allowed protocol versions.
-# grep -i protocol /etc/ssh/ssh_config | grep -v '^#'
+# grep -i protocol /etc/ssh/ssh_config | grep -v '^#' 
 If the returned protocol configuration allows versions less than 2, this is a finding</check-content>
 			</check>
 		</Rule>
@@ -18077,7 +18077,7 @@ Restart the SSH daemon.
 			<check system="C-43286r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH daemon configuration for allowed ciphers.
-# grep -i ciphers /etc/ssh/sshd_config | grep -v '^#'
+# grep -i ciphers /etc/ssh/sshd_config | grep -v '^#' 
 If no lines are returned, or the returned ciphers list contains any cipher not starting with "3des" or "aes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18108,7 +18108,7 @@ Restart the SSH daemon.
 			<check system="C-43291r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH daemon configuration for allowed ciphers.
-# grep -i ciphers /etc/ssh/sshd_config | grep -v '^#'
+# grep -i ciphers /etc/ssh/sshd_config | grep -v '^#' 
 If no lines are returned, or the returned ciphers list contains any cipher ending with "cbc", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18139,7 +18139,7 @@ Restart the SSH daemon.
 				<check-content>Check the SSH daemon configuration for allowed MACs.
 
 Procedure:
-# grep -i macs /etc/ssh/sshd_config | grep -v '^#'
+# grep -i macs /etc/ssh/sshd_config | grep -v '^#' 
 
 If no lines are returned, or the returned MACs list contains any MAC less than "hmac-sha1", this is a finding.</check-content>
 			</check>
@@ -18165,7 +18165,7 @@ If no lines are returned, or the returned MACs list contains any MAC less than "
 			<check system="C-43293r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH client configuration for allowed ciphers.
-# grep -i ciphers /etc/ssh/ssh_config | grep -v '^#'
+# grep -i ciphers /etc/ssh/ssh_config | grep -v '^#' 
 If no lines are returned, or the returned ciphers list contains any cipher not starting with "3des" or "aes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18191,7 +18191,7 @@ If no lines are returned, or the returned ciphers list contains any cipher not s
 			<check system="C-43294r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH client configuration for allowed ciphers.
-# grep -i ciphers /etc/ssh/ssh_config | grep -v '^#'
+# grep -i ciphers /etc/ssh/ssh_config | grep -v '^#' 
 If no lines are returned, or the returned ciphers list contains any cipher ending with "cbc", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18216,7 +18216,7 @@ If no lines are returned, or the returned ciphers list contains any cipher endin
 			<check system="C-43296r2_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH client configuration for allowed MACs.
-# grep -i macs /etc/ssh/ssh_config | grep -v '^#'
+# grep -i macs /etc/ssh/ssh_config | grep -v '^#' 
 If no lines are returned, or the returned MACs list contains any MAC less than "hmac-sha1", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18242,7 +18242,7 @@ Restart the SSH daemon.
 # /sbin/service sshd restart
 
 
-Alternatively, modify the /etc/pam.d/sshd file to include the line
+Alternatively, modify the /etc/pam.d/sshd file to include the line 
 
 account required pam_access.so accessfile=&lt;path to access.conf for sshd&gt;
 
@@ -18253,11 +18253,11 @@ If the "accessfile" option is not specified the default "access.conf" file will 
 				<check-content>There are two ways in which access to SSH may restrict users or groups.
 
 Check if /etc/pam.d/sshd is configured to require daemon style login control.
-# grep pam_access.so /etc/pam.d/sshd|grep "required"|grep "account"| grep -v '^#'
+# grep pam_access.so /etc/pam.d/sshd|grep "required"|grep "account"| grep -v '^#' 
 If no lines are returned, sshd is not configured to use pam_access.
 
 Check the SSH daemon configuration for the AllowGroups setting.
-# egrep -i "AllowGroups|AllowUsers" /etc/ssh/sshd_config | grep -v '^#'
+# egrep -i "AllowGroups|AllowUsers" /etc/ssh/sshd_config | grep -v '^#' 
 If no lines are returned, sshd is not configured to limit access to users/groups.
 
 If sshd is not configured to limit access either through pam_access or the use "AllowUsers" or "Allowgroups", this is a finding.</check-content>
@@ -18342,7 +18342,7 @@ Restart the SSH daemon.
 				<check-content>Ask the SA if GSSAPI authentication is used for SSH authentication to the system. If so, this is not applicable.
 
 Check the SSH daemon configuration for the GSSAPIAuthentication setting.
-# grep -i GSSAPIAuthentication /etc/ssh/sshd_config | grep -v '^#'
+# grep -i GSSAPIAuthentication /etc/ssh/sshd_config | grep -v '^#' 
 If no lines are returned, or the setting is set to "yes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18367,7 +18367,7 @@ If no lines are returned, or the setting is set to "yes", this is a finding.</ch
 			<check system="C-43324r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH clients configuration for the GSSAPIAuthentication setting.
-# grep -i GSSAPIAuthentication /etc/ssh/ssh_config | grep -v '^#'
+# grep -i GSSAPIAuthentication /etc/ssh/ssh_config | grep -v '^#' 
 If no lines are returned, or the setting is set to "yes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18399,7 +18399,7 @@ Restart the SSH daemon.
 				<check-content>Ask the SA if Kerberos authentication is used by the system. If it is, this is not applicable.
 
 Check the SSH daemon configuration for the KerberosAuthentication setting.
-# grep -i KerberosAuthentication /etc/ssh/sshd_config | grep -v '^#'
+# grep -i KerberosAuthentication /etc/ssh/sshd_config | grep -v '^#' 
 If no lines are returned, or the setting is set to "yes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18426,7 +18426,7 @@ Alternate per-connection session limits may be documented if needed for a valid 
 			<check system="C-43354r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH daemon configuration for the MaxSessions setting.
-# grep -i MaxSessions /etc/ssh/sshd_config | grep -v '^#'
+# grep -i MaxSessions /etc/ssh/sshd_config | grep -v '^#' 
 If the setting is not present, or not set to "1", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18455,7 +18455,7 @@ Restart the SSH daemon.
 			<check system="C-43355r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH daemon configuration for the StrictModes setting.
-# grep -i StrictModes /etc/ssh/sshd_config | grep -v '^#'
+# grep -i StrictModes /etc/ssh/sshd_config | grep -v '^#' 
 If the setting is not present, or not set to "yes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18484,7 +18484,7 @@ Restart the SSH daemon.
 			<check system="C-43357r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH daemon configuration for the UsePrivilegeSeparation setting.
-# grep -i UsePrivilegeSeparation /etc/ssh/sshd_config | grep -v '^#'
+# grep -i UsePrivilegeSeparation /etc/ssh/sshd_config | grep -v '^#' 
 If the setting is not present, or not set to "yes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18515,7 +18515,7 @@ Restart the SSH daemon.
 			<check system="C-43361r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the SSH daemon configuration for the RhostsRSAAuthentication setting.
-# grep -i RhostsRSAAuthentication /etc/ssh/sshd_config | grep -v '^#'
+# grep -i RhostsRSAAuthentication /etc/ssh/sshd_config | grep -v '^#' 
 If the setting is set to "yes", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18850,7 +18850,7 @@ If the permissions include a '+', the file has an extended ACL. If the file has 
 			<check system="C-43399r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the security mode of the Samba configuration.
-# grep -i security /etc/samba/smb.conf
+# grep -i security /etc/samba/smb.conf 
 If the security mode is "share", this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18877,7 +18877,7 @@ If the security mode is "share", this is a finding.</check-content>
 				<check-content>If the "samba-common" package is not installed, this is not applicable.
 
 Check the encryption setting of Samba.
-# grep -i 'encrypt passwords' /etc/samba/smb.conf
+# grep -i 'encrypt passwords' /etc/samba/smb.conf 
 If the setting is not present, or not set to 'yes', this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -18902,7 +18902,7 @@ If the setting is not present, or not set to 'yes', this is a finding.</check-co
 			<check system="C-43401r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check the access to shares for Samba.
-# grep -i 'guest ok' /etc/samba/smb.conf
+# grep -i 'guest ok' /etc/samba/smb.conf 
 If the setting exists and is set to 'yes', this is a finding.</check-content>
 			</check>
 		</Rule>
@@ -19593,7 +19593,7 @@ Procedure:
 Verify the DHCP client is configured to not send dynamic DNS updates.
 
 Procedure:
-# rpm –q dhcp-client
+# rpm –q dhcp-client   
 If DHCP client is found then issue following command to determine if the DHCP client sends dynamic DNS updates:
 
 # grep do-forward-updates /etc/dhclient.conf
@@ -19618,7 +19618,7 @@ If the DHCP client is installed and the configuration file is not present, or co
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-001551</ident>
 			<fixtext fixref="F-39355r1_fix">Configure the system to ignore IPv6 ICMP redirect messages.
-Edit "/etc/sysctl.conf" and add a settings for "net.ipv6.conf.default.accept_redirects=0" and "net.ipv6.conf.all.accept_redirects=0".
+Edit "/etc/sysctl.conf" and add a settings for "net.ipv6.conf.default.accept_redirects=0" and "net.ipv6.conf.all.accept_redirects=0". 
 Restart the system for the setting to take effect.   </fixtext>
 			<fix id="F-39355r1_fix"/>
 			<check system="C-43272r2_chk">
@@ -19735,7 +19735,7 @@ If any value of the entries is not = "0", this is a finding.
 			<fix id="F-39362r1_fix"/>
 			<check system="C-43279r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>Check if the system is using NSS LDAP.
+				<check-content>Check if the system is using NSS LDAP. 
 # grep -v '^#' /etc/nsswitch.conf | grep ldap
 If no lines are returned, this vulnerability is not applicable.
 Check if NSS LDAP is using TLS.
@@ -20031,7 +20031,7 @@ If the group-owner of any file or directory is not root, bin, sys, or system, th
 			<fixtext fixref="F-39437r1_fix">Change the mode of the file or directory.
 
 File Procedure:
-# chmod 0644 &lt;certpath&gt;
+# chmod 0644 &lt;certpath&gt; 
 
 Directory Procedure:
 # chmod 0755 &lt;certpath&gt;  </fixtext>
@@ -20587,7 +20587,7 @@ If the /usr/lib/rpm/gnupg/suse-build-key.gpg file does not exist or CHECK_SIGNAT
 			<fixtext fixref="F-39429r1_fix">Disable the Automatic Online Update option using YaST.
 # /sbin/yast2 online_update_configuration
 Uncheck the “Automatic Online Update” selection.
-Select “Finish” to exit
+Select “Finish” to exit  
 If /etc/&lt;cron directory&gt;/opensuse.org-online_update still exists, remove it manually
 rm /etc/&lt;cron directory&gt;/opensuse.org-online_update</fixtext>
 			<fix id="F-39429r1_fix"/>
@@ -20756,7 +20756,7 @@ By using this IS (which includes any device attached to this IS), you consent to
 
 -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
 
--Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details. 
 
 OR
 
@@ -20764,7 +20764,7 @@ I've read &amp; consent to terms in IS user agreem't.</fixtext>
 			<fix id="F-38267r1_fix"/>
 			<check system="C-42301r1_chk">
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
-				<check-content>FTP to the system.
+				<check-content>FTP to the system. 
 # ftp localhost
 Check for either of the following login banners based on the character limitations imposed by the system. An exact match is required. If one of these banners is not displayed, this is a finding. If the system does not run the FTP service, this is not applicable.
 
@@ -20782,7 +20782,7 @@ By using this IS (which includes any device attached to this IS), you consent to
 
 -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
 
--Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details. 
 
 OR
 
@@ -20947,7 +20947,7 @@ Otherwise, determine if Postfix is configured to restrict clients permitted to r
 Procedure:
 # grep smtpd_client_restrictions &lt;/path/to/main.cf&gt;
 
-If the “smtpd_client_restrictions” line is missing, or does not contain “reject”, this is a finding. If the line contains “permit” before “reject”, this is a finding.
+If the “smtpd_client_restrictions” line is missing, or does not contain “reject”, this is a finding. If the line contains “permit” before “reject”, this is a finding. 
 
 If the system is using other SMTP software, consult the software’s documentation for procedures to verify mail relaying is restricted.</check-content>
 			</check>
@@ -20959,7 +20959,7 @@ If the system is using other SMTP software, consult the software’s documentati
 		<Rule id="SV-46283r1_rule" severity="medium" weight="10.0">
 			<version>GEN007960</version>
 			<title>The ldd command must be disabled unless it protects against the execution of untrusted files.</title>
-			<description>&lt;VulnDiscussion&gt;The 'ldd' command provides a list of dependent libraries needed by a given binary, which is useful for troubleshooting software.  Instead of parsing the binary file, some 'ldd' implementations invoke the program with a special environment variable set, which causes the system dynamic linker to display the list of libraries.  Specially crafted binaries can specify an alternate dynamic linker which may cause a program to be executed instead of examined.  If the program is from an untrusted source, such as in a user home directory, or a file suspected of involvement in a system compromise, unauthorized software may be executed with the rights of the user running 'ldd'.
+			<description>&lt;VulnDiscussion&gt;The 'ldd' command provides a list of dependent libraries needed by a given binary, which is useful for troubleshooting software.  Instead of parsing the binary file, some 'ldd' implementations invoke the program with a special environment variable set, which causes the system dynamic linker to display the list of libraries.  Specially crafted binaries can specify an alternate dynamic linker which may cause a program to be executed instead of examined.  If the program is from an untrusted source, such as in a user home directory, or a file suspected of involvement in a system compromise, unauthorized software may be executed with the rights of the user running 'ldd'.  
 
 Some 'ldd' implementations include protections that prevent the execution of untrusted files.  If such protections exist, this requirement is not applicable.
 
@@ -21042,18 +21042,18 @@ If such a rule does not exist, this is a finding.</check-content>
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000136</ident>
-			<fixtext fixref="F-38961r2_fix">Configure the system to send audit records to a remote server.
+			<fixtext fixref="F-38961r2_fix">Configure the system to send audit records to a remote server. 
 
 Procedure:
 These instructions assume a known remote audit server is available to this system.
 
  Add ‘audit=1’ to parameters line for the active kernel in the /etc/zipl.conf file.
-OR
+OR 
 Add ‘audit=1’ as a line in the file referenced by the parmfile option for the active kernel in the /etc/zipl.conf file.
 An update to the boot configuration parameters requires a system restart to activate the change.
 Edit the "active" line in /etc/audisp/plugins.d/syslog.conf so it shows "active = yes".
 
-Modify /etc/rsyslog.conf to contain a line sending all audit records to a remote audit server. The server is specified by placing an "@" before the DNS name or IP address in the line.
+Modify /etc/rsyslog.conf to contain a line sending all audit records to a remote audit server. The server is specified by placing an "@" before the DNS name or IP address in the line. 
 
 *.* @&lt;remote audit server&gt;
 
@@ -21185,7 +21185,7 @@ If the telnet daemon is running, this is a finding.</check-content>
 				<dc:identifier>2123</dc:identifier>
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000293</ident>
-			<fixtext fixref="F-38213r2_fix">Use AIDE to create a file integrity baseline, including cryptographic hashes, for the system.
+			<fixtext fixref="F-38213r2_fix">Use AIDE to create a file integrity baseline, including cryptographic hashes, for the system. 
 
 Configure the /etc/aide.conf file to ensure some form of cryptographic hash (e.g., md5,rmd160,sha256) is used for files. In the default /etc/aide.conf the "NORMAL" or "LSPP" rules which are used for virtually all files DO include some form of cryptographic hash.</fixtext>
 			<fix id="F-38213r2_fix"/>
@@ -21198,7 +21198,7 @@ Procedure:
 
 If /etc/aide.conf does not exist AIDE has not been installed. Unless another HIDS is used on the system, this is a finding.
 
-Examine the response for "database".  This indicates the location of the system integrity baseline database used as input to a comparison.
+Examine the response for "database".  This indicates the location of the system integrity baseline database used as input to a comparison. 
 # ls -la &lt;DBDIR&gt;
 
 If no "database" file as defined in /etc/aide.conf exists, a system integrity baseline has not been created.This is a finding.
@@ -21249,7 +21249,7 @@ Procedure:
 
 If /etc/aide.conf does not exist AIDE has not been installed. Unless another HIDS is used on the system, this is a finding.
 
-Examine the response for "database".  This indicates the location of the system integrity baseline database used as input to a comparison.
+Examine the response for "database".  This indicates the location of the system integrity baseline database used as input to a comparison. 
 # ls -la &lt;DB&gt;
 
 If no "database" file as defined in /etc/aide.conf exists, a system integrity baseline has not been created. This is a finding.
@@ -21539,7 +21539,7 @@ If an "-S ftruncate" audit rule with "-F success" does not exist and no separate
 			</reference>
 			<ident system="http://iase.disa.mil/cci">CCI-000126</ident>
 			<fixtext fixref="F-38696r1_fix">Edit the audit.rules file and add the following line to enable auditing of deletions:
--a exit,always -S rmdir
+-a exit,always -S rmdir 
 
 Restart the auditd service.
 # rcauditd restart
@@ -22635,7 +22635,7 @@ If the symlinks point to "/etc/pam.d/common-{account,auth,password,session}-pc" 
 				<check-content-ref name="M" href="DPMS_XCCDF_Benchmark_SuSe zLinux.xml"/>
 				<check-content>Check /etc/rsyslog.conf ownership:
 
-# ls –lL /etc/rsyslog*
+# ls –lL /etc/rsyslog* 
 
 If any rsyslog configuration file is not owned by root, this is a finding.</check-content>
 			</check>
