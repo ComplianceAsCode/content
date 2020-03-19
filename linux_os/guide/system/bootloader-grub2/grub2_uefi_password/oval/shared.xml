@@ -26,18 +26,11 @@
 
   {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}
 
-   <unix:file_test check="all" check_existence="none_exist" comment="/boot/efi/EFI/redhat/grub.cfg does not exist" id="test_bootloader_uefi_grub_cfg" version="1">
-    <unix:object object_ref="object_bootloader_uefi_grub_cfg" />
-  </unix:file_test>
-  <unix:file_object id="object_bootloader_uefi_grub_cfg" version="1">
-    <unix:filepath>{{{ grub_cfg_prefix }}}/grub.cfg</unix:filepath>
-  </unix:file_object>
-
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg." id="test_bootloader_uefi_superuser" version="2">
     <ind:object object_ref="object_bootloader_uefi_superuser" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_bootloader_uefi_superuser" version="2">
-    <ind:filepath>{{{ grub_cfg_prefix }}}/grub.cfg$</ind:filepath>
+    <ind:filepath>{{{ grub_cfg_prefix }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
