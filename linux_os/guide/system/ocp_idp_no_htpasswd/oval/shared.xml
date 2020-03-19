@@ -1,0 +1,33 @@
+{{% set YAML_TEST_OVAL_VERSION = [5, 11] %}}
+
+{{% if target_oval_version >= YAML_TEST_OVAL_VERSION %}}
+<def-group>
+	<definition class="compliance" version="1" id="{{{ rule_id }}}">
+      <metadata>
+        <title></title>
+        {{{- oval_affected(products) }}}
+        <description>Test correct authentication type of identity providers</description>
+      </metadata>
+      <criteria operator="AND">
+        <criterion comment="Make sure that no element of spec.identityProviders has type htpasswd" negate="true" test_ref="test_{{{ rule_id }}}"/>
+      </criteria>
+    </definition>
+
+    <ind:yamlfilecontent_test id="test_{{{ rule_id }}}" check="at least one" comment="Find at least one match of type: httpasswd among all identity providers." version="1">
+	    <ind:object object_ref="object_{{{ rule_id }}}"/>
+	    <ind:state state_ref="state_{{{ rule_id }}}"/>
+    </ind:yamlfilecontent_test>
+
+    <ind:yamlfilecontent_object id="object_{{{ rule_id }}}" version="1">
+      <ind:path var_ref="ocp_data_root"/>
+      <ind:filename operation="pattern match">^idp.(yaml|yml)$</ind:filename>
+      <ind:yamlpath>.spec.identityProviders[:].type</ind:yamlpath>
+    </ind:yamlfilecontent_object>
+
+    <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
+	    <ind:value_of entity_check="at least one">htpasswd</ind:value_of>
+    </ind:yamlfilecontent_state>
+
+   <external_variable comment="Root of downloaded stuff" datatype="string" id="ocp_data_root" version="1" />
+</def-group>
+{{% endif  %}}
