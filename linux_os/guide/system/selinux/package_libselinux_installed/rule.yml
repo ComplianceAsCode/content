@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,ocp4
+
+title: 'Install libselinux Package'
+
+description: |-
+    {{{ describe_package_install(package="libselinux") }}}
+
+rationale: |-
+    Security-enhanced Linux is a feature of the Linux kernel and a number of utilities
+    with enhanced security functionality designed to add mandatory access controls to Linux.
+    The Security-enhanced Linux kernel contains new architectural components originally
+    developed to improve security of the Flask operating system. These architectural components
+    provide general support for the enforcement of many kinds of mandatory access control
+    policies, including those based on the concepts of Type Enforcement, Role-based Access
+    Control, and Multi-level Security. 
+
+    The <tt>libselinux</tt> package contains the core library of the Security-enhanced Linux system.  
+
+severity: high
+
+identifiers:
+    cce@rhel7: 82876-4
+    cce@rhel8: 82877-2
+
+references:
+    cis@rhel7: 1.6.2
+    cis@rhel8: 1.7.1.1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="libselinux") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libselinux
