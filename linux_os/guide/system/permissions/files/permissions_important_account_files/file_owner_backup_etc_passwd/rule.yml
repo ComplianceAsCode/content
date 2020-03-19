@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns Backup passwd File'
+
+description: '{{{ describe_file_owner(file="/etc/passwd-", owner="root") }}}'
+
+rationale: |-
+    The <tt>/etc/passwd-</tt> file is a backup file of the <tt>/etc/passwd</tt> file and as such
+    it also contains information about the users that are configured on the system.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83325-1
+    cce@rhel8: 83326-9
+
+references:
+    cis@rhel7: 6.1.6
+    cis@rhel8: 6.1.6
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/passwd-", owner="root") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/etc/passwd-", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/passwd-
+        fileuid: '0'
+        missing_file_pass: 'true'
