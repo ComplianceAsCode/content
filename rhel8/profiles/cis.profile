@@ -735,7 +735,7 @@ selections:
     - sshd_set_loglevel_info
 
     ### 5.2.6 Ensure SSH X11 forward is diabled (Scored)
-    - sshd_enable_x11_forwarding
+
 
     ### 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
     - sshd_max_auth_tries_value=4
