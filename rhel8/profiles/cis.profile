@@ -261,7 +261,7 @@ selections:
     - package_xorg-x11-server-common_removed
 
     ### 2.2.3 Ensure rsync service is not enabled (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5230
+    - service_rsyncd_disabled
 
     ### 2.2.4 Ensure Avahi Server is not enabled (Scored)
     - service_avahi-daemon_disabled
