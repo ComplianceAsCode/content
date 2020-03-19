@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,ol7,rhel8,ol8,fedora,rhv4,ocp4
+
+title: 'Ensure rsyncd service is diabled'
+
+description: |-
+    {{{ describe_service_disable("rsyncd") }}}
+
+rationale: |-
+    The rsyncd service presents a security risk as it uses unencrypted protocols for
+    communication.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83334-3
+    cce@rhel8: 83335-0
+
+references:
+    cis@rhel7: 2.2.21
+    cis@rhel8: 2.2.3
+
+ocil_clause: 'the service is not disabled'
+
+ocil: |-
+    {{{ ocil_service_disabled("rsyncd") }}}
+
+template:
+    name: service_disabled
+    vars:
+        servicename: rsyncd
+        packagename: rsync
