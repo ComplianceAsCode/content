@@ -10,14 +10,15 @@ description: |-
     accurate. More information on NTP can be found at
     {{{ weblink(link="http://www.ntp.org")}}}.
     ntp can be configured to be a client and/or a server.
-    To ensure that ntpd is running under ntp user account, Add or edit the
+    To ensure that ntpd is running as ntp user, Add or edit the
     <tt>OPTIONS</tt> variable in <tt>/etc/sysconfig/ntpd</tt> to include ' -u ntp:ntp ':
     <pre>OPTIONS="-u ntp:ntp"</pre>
     This recommendation only applies if ntp is in use on the system.
 
 rationale: |-
     If ntp is in use on the system proper configuration is vital to ensuring time synchronization
-    is working properly.
+    is working properly. Running ntpd under dedicated user accounts limits the attack surface for
+    potential attacker exploiting security flaws in the daemon or the protocol.
 
 severity: medium
 
