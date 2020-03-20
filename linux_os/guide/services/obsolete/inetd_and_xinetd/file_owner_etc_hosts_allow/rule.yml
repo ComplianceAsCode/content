@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: ol7,rhel6,rhel7
+
+title: 'Verify User Who Owns /etc/hosts.allow'
+
+description: |-
+    {{{ describe_file_owner(file="/etc/hosts.allow", owner="root") }}}
+
+rationale: |-
+    The <tt>/etc/hosts.allow</tt> file is used to control access of clients to daemons in the
+    server. Insecure groupownership of this file could allow users to grant clients unrestricted
+    access or no access at all to services in the server.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83825-0
+    cce@rhel8: 83826-8
+
+references:
+    cis@rhel7: 3.4.4
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/hosts.allow", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/hosts.allow", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/hosts.allow
+        fileuid: '0'
+        missing_file_pass: 'true'

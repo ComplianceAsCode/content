@@ -353,6 +353,10 @@ selections:
     ### 3.4.2 Ensure /etc/hosts.allow is configured (Scored)
     ### 3.4.3 Ensure /etc/hosts.deny is configured (Scored)
     ### 3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)
+    - file_owner_etc_hosts_allow
+    - file_groupowner_etc_hosts_allow
+    - file_permissions_etc_hosts_allow
+
     ### 3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)
 
     ## 3.5 Uncommon Network Protocols
