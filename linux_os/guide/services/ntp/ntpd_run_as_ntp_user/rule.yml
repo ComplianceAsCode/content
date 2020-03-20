@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel7,fedora
 
-title: 'Ensure that ntpd is running under ntp user account'
+title: 'Configure ntpd To Run As ntp User'
 
 description: |-
     ntp is a daemon which implements the Network Time Protocol (NTP). It is designed to
@@ -32,9 +32,11 @@ identifiers:
 ocil_clause: 'ntpd is not running under ntp user account'
 
 ocil: |-
-    Run the following commands and verify that ' -u ntp:ntp ' is included in OPTIONS or
-    ExecStart as listed:
-    <pre># grep "^OPTIONS" /etc/sysconfig/ntpd
-    OPTIONS="-u ntp:ntp"
-    # grep "^ExecStart" /usr/lib/systemd/system/ntpd.service
-    ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS</pre>
+    To verify that <tt>ntpd</tt> is configured to correctly run under the <tt>ntp</tt> user,
+    run the following commands:
+    <pre>$ sudo grep "^OPTIONS" /etc/sysconfig/ntpd</pre>
+    The output should contain
+    <pre>OPTIONS="-u ntp:ntp"</pre>
+    <pre>$ sudo grep "^ExecStart" /usr/lib/systemd/system/ntpd.service</pre>
+    The output should contain
+    <pre>ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS</pre>
