@@ -215,10 +215,12 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5225
 
     #### 1.8.1.4 Ensure permissions on /etc/motd are configured (Scored)
-    - rpm_verify_permissions
+    # chmod u-x,go-wx /etc/motd
+    - file_permissions_etc_motd
 
     #### 1.8.1.5 Ensure permissions on /etc/issue are configured (Scored)
-    # Previously addressed via 'rpm_verify_permissions' rule
+    # chmod u-x,go-wx /etc/issue
+    - file_permissions_etc_issue
 
     #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Scored)
     # Previously addressed via 'rpm_verify_permissions' rule
@@ -683,22 +685,46 @@ selections:
 
 
     ### 5.1.2 Ensure permissions on /etc/crontab are configured (Scored)
-
+    # chown root:root /etc/crontab
+    - file_owner_crontab
+    - file_groupowner_crontab
+    # chmod og-rwx /etc/crontab
+    - file_permissions_crontab
 
     ### 5.1.3 Ensure permissions on /etc/cron.hourly are configured (Scored)
-
+    # chown root:root /etc/cron.hourly
+    - file_owner_cron_hourly
+    - file_groupowner_cron_hourly
+    # chmod og-rwx /etc/cron.hourly
+    - file_permissions_cron_hourly
 
     ### 5.1.4 Ensure permissions on /etc/cron.daily are configured (Scored)
-
+    # chown root:root /etc/cron.daily
+    - file_owner_cron_daily
+    - file_groupowner_cron_daily
+    # chmod og-rwx /etc/cron.daily
+    - file_permissions_cron_daily
 
     ### 5.1.5 Ensure permissions on /etc/cron.weekly are configured (Scored)
-
+    # chown root:root /etc/cron.weekly
+    - file_owner_cron_weekly
+    - file_groupowner_cron_weekly
+    # chmod og-rwx /etc/cron.weekly
+    - file_permissions_cron_weekly
 
     ### 5.1.6 Ensure permissions on /etc/cron.monthly are configured (Scored)
-
+    # chown root:root /etc/cron.monthly
+    - file_owner_cron_monthly
+    - file_groupowner_cron_monthly
+    # chmod og-rwx /etc/cron.monthly
+    - file_permissions_cron_monthly
 
     ### 5.1.7 Ensure permissions on /etc/cron.d are configured (Scored)
-
+    # chown root:root /etc/cron.d
+    - file_owner_cron_d
+    - file_groupowner_cron_d
+    # chmod og-rwx /etc/cron.d
+    - file_permissions_cron_d
 
     ### 5.1.8 Ensure at/cron is restricted to authorized users (Scored)
 
