@@ -46,7 +46,7 @@ ocil: |-
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'false'
+        missing_parameter_pass: 'true'
         parameter: StrictModes
         rule_id: sshd_enable_strictmodes
         value: 'yes'
