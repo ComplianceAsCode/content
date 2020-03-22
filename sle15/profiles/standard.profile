@@ -83,16 +83,16 @@ selections:
     - accounts_tmout
     - display_login_attempts
     - inactivity_timeout_value=15_minutes
-    - var_password_pam_minlen=15
+    - var_password_pam_minlen=8
     - accounts_password_pam_minlen
     - accounts_password_minlen_login_defs
-    - var_password_pam_ocredit=1
+    - var_password_pam_ocredit=-1
     - accounts_password_pam_ocredit
-    - var_password_pam_dcredit=1
+    - var_password_pam_dcredit=-1
     - accounts_password_pam_dcredit
-    - var_password_pam_ucredit=1
+    - var_password_pam_ucredit=-1
     - accounts_password_pam_ucredit
-    - var_password_pam_lcredit=1
+    - var_password_pam_lcredit=-1
     - accounts_password_pam_lcredit
     - var_accounts_fail_delay=4
     - var_accounts_passwords_pam_faillock_deny=3
