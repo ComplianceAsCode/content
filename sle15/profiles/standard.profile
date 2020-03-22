@@ -106,4 +106,4 @@ selections:
     - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_unlock_time
     - package_firewalld_installed
-    - service_firewalld_enabled
+    - sshd_enable_x11_forwarding
