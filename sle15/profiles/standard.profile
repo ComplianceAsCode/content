@@ -105,3 +105,5 @@ selections:
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_unlock_time
+    - pacakge_firewalld_installed
+    - service_firewalld_enabled
