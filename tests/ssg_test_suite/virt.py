@@ -168,7 +168,7 @@ def start_domain(domain):
 
 
 def reboot_domain(domain, domain_ip, ssh_port):
-    timeout = 120           # Timeout for domain shutdown and boot.
+    timeout = 300           # Timeout for domain shutdown and boot.
     connection_timeout = 5  # Timeout on the socket before attempting to connect.
 
     logging.debug("Shutting down domain '{0}'".format(domain.name()))
