@@ -689,9 +689,24 @@ selections:
     - file_permissions_etc_gshadow
 
     ### 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)
+    - file_owner_backup_etc_passwd
+    - file_groupowner_backup_etc_passwd
+    - file_permissions_backup_etc_passwd
+
     ### 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)
+    - file_owner_backup_etc_shadow
+    - file_groupowner_backup_etc_shadow
+    - file_permissions_backup_etc_shadow
+
     ### 6.1.8 Ensure permissions on /etc/group- are configured (Scored)
+    - file_owner_backup_etc_group
+    - file_groupowner_backup_etc_group
+    - file_permissions_backup_etc_group
+
     ### 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)
+    - file_owner_backup_etc_gshadow
+    - file_groupowner_backup_etc_gshadow
+    - file_permissions_backup_etc_gshadow
 
     ### 6.1.10 Ensure no world writable files exist (Scored)
     - file_permissions_unauthorized_world_writable
