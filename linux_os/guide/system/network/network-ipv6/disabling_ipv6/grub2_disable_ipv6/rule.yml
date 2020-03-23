@@ -7,7 +7,7 @@ title: 'Ensure IPv6 is disabled through kernel boot parameter'
 description: |-
     To disable IPv6 protocol support in the Linux kernel,
     add the argument <tt>ipv6.disable=1</tt> to the default
-    GRUB 2 command line for the Linux operating system in
+    GRUB2 command line for the Linux operating system in
 {{% if product in ["rhel7", "ol7", "rhv4"] %}}
     <tt>/etc/default/grub</tt>, so that the line looks similar to
     <pre>GRUB_CMDLINE_LINUX="... ipv6.disable=1 ..."</pre>
@@ -19,7 +19,7 @@ description: |-
     
 
 rationale: |-
-    Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
+    Any unnecessary network stacks, including IPv6, should be disabled to reduce
     the vulnerability to exploitation.
 
 severity: medium
@@ -36,7 +36,7 @@ ocil_clause: 'IPv6 is not disabled'
 
 ocil: |-
     {{% if product in ["rhel7", "ol7", "rhv4"] %}}
-    Inspect the form of default GRUB 2 command line for the Linux operating system
+    Inspect the form of default GRUB2 command line for the Linux operating system
     in <tt>/etc/default/grub</tt>. If it includes <tt>ipv6.disable=1</tt>, then IPv6
     is disabled at boot time.
     First check if the GRUB recovery is enabled:
@@ -45,7 +45,7 @@ ocil: |-
     <pre>$ grep 'GRUB_CMDLINE_LINUX_DEFAULT.*ipv6.disable=1.*' /etc/default/grub</pre>
     If the recovery is disabled, check the line with
     <pre>$ grep 'GRUB_CMDLINE_LINUX.*ipv6.disable=1.*' /etc/default/grub</pre>.
-    Moreover, current Grub2 config file in <tt>/etc/grub2/grub.cfg</tt> must be checked.
+    Moreover, current GRUB2 config file in <tt>/etc/grub2/grub.cfg</tt> must be checked.
     <pre># grep vmlinuz /boot/grub2/grub.cfg | grep -v 'ipv6.disable=1'</pre>
     This command should not return any output. If it does, update the configuration with
     <pre># grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
@@ -56,7 +56,7 @@ ocil: |-
     <pre>$ sudo /sbin/grubby --update-kernel=ALL --args="ipv6.disable=1"</pre>
     <br />
 {{% else %}}
-    Inspect the form of default GRUB 2 command line for the Linux operating system
+    Inspect the form of default GRUB2 command line for the Linux operating system
     in <tt>/boot/grub2/grubenv</tt>. If they include <tt>ipv6.disable=1</tt>, then IPv6
     is disabled at boot time.
     <pre># grep 'kernelopts.*ipv6.disable=1.*' /boot/grub2/grubenv</pre>
