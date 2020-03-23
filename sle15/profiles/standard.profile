@@ -47,6 +47,7 @@ selections:
     - file_permissions_etc_group
     - file_owner_etc_group
     - file_groupowner_etc_group
+    - "!Kernel Options"
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
     - sysctl_fs_suid_dumpable
