@@ -1,0 +1,7 @@
+# platform = Red Hat Enterprise Linux 7,Oracle Linux 7
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = medium
+
+{{{ ansible_lineinfile(msg='', path='/etc/hosts.deny', regex='', new_line='ALL: ALL', create='true', state='present') }}}
