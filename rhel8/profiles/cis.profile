@@ -318,7 +318,7 @@ selections:
     - package_telnet_removed
 
     ### Ensure LDAP client is not installed
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5233
+    - package_openldap-clients_removed
 
     # 3 Network Configuration
 
