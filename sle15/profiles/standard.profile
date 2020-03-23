@@ -105,5 +105,9 @@ selections:
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_unlock_time
+    - service_httpd_disabled
+    - package_httpd_removed
     - package_firewalld_installed
+    - package_openssh_installed
+    - service_sshd_enabled
     - sshd_enable_x11_forwarding
