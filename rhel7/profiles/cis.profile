@@ -352,6 +352,8 @@ selections:
 
     ### 3.4.2 Ensure /etc/hosts.allow is configured (Scored)
     ### 3.4.3 Ensure /etc/hosts.deny is configured (Scored)
+    - configure_etc_hosts_deny
+
     ### 3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)
     ### 3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)
 
