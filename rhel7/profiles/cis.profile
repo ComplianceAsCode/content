@@ -213,13 +213,16 @@ selections:
 
     ## 2.2 Special Purpose Services
     #### 2.2.1.1 Ensure time synchronization is in use (Not Scored)
-    - service_chronyd_or_ntpd_enabled
+    - package_chrony_installed
 
     #### 2.2.1.2 Ensure ntp is configured (Scored)
     # restrict is not checkec by rules below
     - chronyd_or_ntpd_specify_remote_server
 
     #### 2.2.1.3 Ensure chrony is configured (Scored)
+    - service_chronyd_enabled
+    - chronyd_specify_remote_server
+    - chronyd_run_as_chrony_user
 
     ### 2.2.2 Ensure X Window System is not installed (Scored)
     - package_xorg-x11-server-common_removed
