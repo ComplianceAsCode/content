@@ -4,6 +4,8 @@ product=$1
 
 root_dir=$(git rev-parse --show-toplevel)
 
+pushd $root_dir
+
 # build the product's content
 "$root_dir/build_product" "$product"
 
@@ -21,6 +23,8 @@ cat "$root_dir/ocp-resources/ds-build.yaml" | sed "s/\$PRODUCT/$product/" | oc c
 oc start-build -n openshift-compliance "openscap-$product-ds" --from-file="build/ssg-$product-ds.xml"
 
 latest_build=$(oc get --no-headers buildconfigs "openscap-$product-ds" | awk '{print $4}')
+
+popd
 
 while true; do
     build_status=$(oc get builds --no-headers "openscap-$product-ds-$latest_build" | awk '{print $4}')
