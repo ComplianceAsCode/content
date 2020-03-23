@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_macos1015" version="1">
+    <metadata>
+      <title>Apple macOS 10.15</title>
+      <affected family="unix">
+        <platform>Apple macOS 10.15</platform>
+      </affected>
+      <reference ref_id="cpe:/o:apple:macos:10.15"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Apple macOS 10.15</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Installed operating system is part of the unix family"
+      test_ref="test_macos1015_macos_family" />
+      <criterion comment="macOS 10.15 is installed" test_ref="test_macos1015" />
+    </criteria>
+  </definition>
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of macos family" id="test_macos1015_macos_family" version="1">
+    <ind:object object_ref="obj_macos1015_macos_family" />
+    <ind:state state_ref="state_macos1015_macos_family" />
+  </ind:family_test>
+  <ind:family_state id="state_macos1015_macos_family" version="1">
+    <ind:family>macos</ind:family>
+  </ind:family_state>
+  <ind:family_object id="obj_macos1015_macos_family" version="1" />
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="redhat-release is version 8" id="test_macos1015" version="1">
+    <ind:object object_ref="obj_macos1015" />
+    <ind:state state_ref="state_macos1015" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state id="state_macos1015" version="1">
+    <ind:subexpression operation="pattern match">10.15</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_object id="obj_macos1015" version="1">
+    <ind:filepath>/System/Library/CoreServices/SystemVersion.plist</ind:filepath>
+    <ind:pattern operation="pattern match">^.*&lt;string\&gt;(\d+\.\d+).*$</ind:pattern>
+    <ind:instance operation="equals" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
