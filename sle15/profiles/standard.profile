@@ -27,12 +27,6 @@ selections:
     - service_cron_enabled
     - service_ntp_enabled
     - service_rsyslog_enabled
-    - sshd_idle_timeout_value=5_minutes
-    - sshd_set_idle_timeout
-    - sshd_disable_root_login
-    - sshd_disable_empty_passwords
-    - sshd_allow_only_protocol2
-    - sshd_set_keepalive
     - file_owner_logfiles_value=adm
     - rsyslog_files_ownership
     - file_groupowner_logfiles_value=adm
@@ -108,6 +102,13 @@ selections:
     - service_httpd_disabled
     - package_httpd_removed
     - package_firewalld_installed
+    - "!Secure Shell Options"
     - package_openssh_installed
     - service_sshd_enabled
     - sshd_enable_x11_forwarding
+    - sshd_allow_only_protocol2
+    - sshd_idle_timeout_value=5_minutes
+    - sshd_set_idle_timeout
+    - sshd_disable_root_login
+    - sshd_disable_empty_passwords
+    - sshd_set_keepalive
