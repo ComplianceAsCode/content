@@ -172,6 +172,7 @@ selections:
     - selinux_confinement_of_daemons
 
     ### 1.6.2 Ensure SELinux is installed (Scored)
+    - package_libselinux_installed
 
     ## 1.7 Warning Banners
     #### 1.7.1.1 Ensure message of the day is configured properly (Scored)
@@ -205,6 +206,7 @@ selections:
     ### 2.1.4 Ensure echo services are not enabled (Scored)
     ### 2.1.5 Ensure time services are not enabled (Scored)
     ### 2.1.6 Ensure tftp server is not enabled (Scored)
+    - service_tftp_disabled
 
     ### 2.1.7 Ensure xinetd is not enabled (Scored)
     - service_xinetd_disabled
@@ -363,6 +365,7 @@ selections:
     - kernel_module_sctp_disabled
 
     ### 3.5.3 Ensure RDS is disabled (Not Scored)
+    - kernel_module_rds_disabled
 
     ### 3.5.4 Ensure TIPC is disabled (Not Scored)
     - kernel_module_tipc_disabled
