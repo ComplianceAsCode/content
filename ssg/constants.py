@@ -13,6 +13,7 @@ product_directories = [
     'firefox',
     'fuse6',
     'jre',
+    'macos1015',
     'ocp3', 'ocp4',
     'ol7', 'ol8',
     'opensuse',
@@ -115,6 +116,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Firefox": "firefox",
     "JBoss Fuse 6": "fuse6",
     "Java Runtime Environment": "jre",
+    "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 3": "ocp3",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "Oracle Linux 7": "ol7",
@@ -207,6 +209,9 @@ PRODUCT_TO_CPE_MAPPING = {
         "cpe:/a:sun:jre:",
         "cpe:/a:redhat:openjdk:",
         "cpe:/a:ibm:jre:",
+    ],
+    "macos1015": [
+        "cpe:/o:apple:macos:10.15",
     ],
     "ocp3": [
         "cpe:/a:redhat:openshift_container_platform:3.10",
@@ -461,6 +466,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'jre': 'Java Runtime Environment',
+    'macos': 'Apple macOS',
     'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
     'rhv': 'Red Hat Virtualization',
