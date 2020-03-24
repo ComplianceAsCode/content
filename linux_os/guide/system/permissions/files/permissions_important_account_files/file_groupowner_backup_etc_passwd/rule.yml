@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns Backup passwd File'
+
+description: '{{{ describe_file_group_owner(file="/etc/passwd-", group="root") }}}'
+
+rationale: |-
+    The <tt>/etc/passwd-</tt> file is a backup file of <tt>/etc/passwd</tt>, and as such,
+    it contains information about the users that are configured on the system.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83323-6
+    cce@rhel8: 83324-4
+
+references:
+    cis@rhel7: 6.1.6
+    cis@rhel8: 6.1.6
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/passwd-", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/etc/passwd-", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/passwd-
+        filegid: '0'
+        missing_file_pass: 'true'

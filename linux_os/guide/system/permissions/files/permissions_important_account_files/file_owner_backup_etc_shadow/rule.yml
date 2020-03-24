@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns Backup shadow File'
+
+description: '{{{ describe_file_owner(file="/etc/shadow-", owner="root") }}}'
+
+rationale: |-
+    The <tt>/etc/shadow-</tt> file is a backup file of <tt>/etc/shadow</tt>, and as such,
+    it contains the list of local system accounts and password hashes.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83412-7
+    cce@rhel8: 83413-5
+
+references:
+    cis@rhel7: 6.1.7
+    cis@rhel8: 6.1.7
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/shadow-", owner="root") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/etc/shadow-", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/shadow-
+        fileuid: '0'
+        missing_file_pass: 'true'

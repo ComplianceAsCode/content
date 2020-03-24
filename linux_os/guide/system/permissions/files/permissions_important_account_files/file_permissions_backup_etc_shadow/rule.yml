@@ -1,0 +1,47 @@
+documentation_complete: true
+
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set target_perms_octal="0640" %}}
+    {{% set target_perms="-rw-r-----" %}}
+{{% else %}}
+    {{% set target_perms_octal="0000" %}}
+    {{% set target_perms="----------" %}}
+{{% endif %}}
+
+title: 'Verify Permissions on Backup shadow File'
+
+description:  |-
+    {{{ describe_file_permissions(file="/etc/shadow-", perms=target_perms_octal) }}}
+
+rationale: |-
+    The <tt>/etc/shadow-</tt> file is a backup file of <tt>/etc/shadow</tt>, and as such,
+    it contains the list of local system accounts and password hashes.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83416-8
+    cce@rhel8: 83417-6
+
+references:
+    cis@rhel7: 6.1.7
+    cis@rhel8: 6.1.7
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow-", perms=target_perms) }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/shadow-", perms=target_perms) }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/shadow-
+        filemode: '0000'
+        filemode@debian8: '0640'
+        filemode@debian9: '0640'
+        filemode@debian10: '0640'
+        filemode@ubuntu1404: '0640'
+        filemode@ubuntu1604: '0640'
+        filemode@ubuntu1804: '0640'
+        missing_file_pass: 'true'
