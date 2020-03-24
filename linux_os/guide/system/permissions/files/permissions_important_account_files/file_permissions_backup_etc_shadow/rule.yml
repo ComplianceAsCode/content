@@ -1,9 +1,17 @@
 documentation_complete: true
 
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set target_perms_octal="0640" %}}
+    {{% set target_perms="-rw-r-----" %}}
+{{% else %}}
+    {{% set target_perms_octal="0000" %}}
+    {{% set target_perms="----------" %}}
+{{% endif %}}
+
 title: 'Verify Permissions on Backup shadow File'
 
 description:  |-
-    {{{ describe_file_permissions(file="/etc/shadow-", perms="0000") }}}
+    {{{ describe_file_permissions(file="/etc/shadow-", perms=target_perms_octal) }}}
 
 rationale: |-
     The <tt>/etc/shadow-</tt> file is a backup file of <tt>/etc/shadow</tt>, and as such,
@@ -20,10 +28,10 @@ references:
     cis@rhel7: 6.1.7
     cis@rhel8: 6.1.7
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow-", perms="----------") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow-", perms=target_perms) }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/shadow-", perms="----------") }}}
+    {{{ ocil_file_permissions(file="/etc/shadow-", perms=target_perms) }}}
 
 template:
     name: file_permissions

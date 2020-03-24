@@ -2,8 +2,16 @@ documentation_complete: true
 
 title: 'Verify Permissions on Backup gshadow File'
 
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set target_perms_octal="0640" %}}
+    {{% set target_perms="-rw-r-----" %}}
+{{% else %}}
+    {{% set target_perms_octal="0000" %}}
+    {{% set target_perms="----------" %}}
+{{% endif %}}
+
 description: |-
-    {{{ describe_file_permissions(file="/etc/gshadow-", perms="0000") }}}
+    {{{ describe_file_permissions(file="/etc/gshadow-", perms=target_perms_octal) }}}
 
 rationale: |-
     The <tt>/etc/gshadow-</tt> file is a backup of <tt>/etc/gshadow</tt>, and as such,
@@ -19,10 +27,10 @@ references:
     cis@rhel7: 6.1.9
     cis@rhel8: 6.1.9
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/gshadow-", perms="----------") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/gshadow-", perms=target_perms) }}}'
 
-ocil: |-
-    {{{ ocil_file_permissions(file="/etc/gshadow-", perms="----------") }}}
+ocil: -
+    {{{ ocil_file_permissions(file="/etc/gshadow-", perms=target_perms) }}}
 
 template:
     name: file_permissions
