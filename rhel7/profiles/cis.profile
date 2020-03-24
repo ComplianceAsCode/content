@@ -172,6 +172,7 @@ selections:
     - selinux_confinement_of_daemons
 
     ### 1.6.2 Ensure SELinux is installed (Scored)
+    - package_libselinux_installed
 
     ## 1.7 Warning Banners
     #### 1.7.1.1 Ensure message of the day is configured properly (Scored)
@@ -205,19 +206,23 @@ selections:
     ### 2.1.4 Ensure echo services are not enabled (Scored)
     ### 2.1.5 Ensure time services are not enabled (Scored)
     ### 2.1.6 Ensure tftp server is not enabled (Scored)
+    - service_tftp_disabled
 
     ### 2.1.7 Ensure xinetd is not enabled (Scored)
     - service_xinetd_disabled
 
     ## 2.2 Special Purpose Services
     #### 2.2.1.1 Ensure time synchronization is in use (Not Scored)
-    - service_chronyd_or_ntpd_enabled
+    - package_chrony_installed
 
     #### 2.2.1.2 Ensure ntp is configured (Scored)
     # restrict is not checkec by rules below
     - chronyd_or_ntpd_specify_remote_server
 
     #### 2.2.1.3 Ensure chrony is configured (Scored)
+    - service_chronyd_enabled
+    - chronyd_specify_remote_server
+    - chronyd_run_as_chrony_user
 
     ### 2.2.2 Ensure X Window System is not installed (Scored)
     - package_xorg-x11-server-common_removed
@@ -363,6 +368,7 @@ selections:
     - kernel_module_sctp_disabled
 
     ### 3.5.3 Ensure RDS is disabled (Not Scored)
+    - kernel_module_rds_disabled
 
     ### 3.5.4 Ensure TIPC is disabled (Not Scored)
     - kernel_module_tipc_disabled
@@ -558,7 +564,6 @@ selections:
     - sshd_set_loglevel_info
 
     ### 5.2.4 Ensure SSH X11 forwarding is disabled (Scored)
-    - sshd_enable_x11_forwarding
 
     ### 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
     - sshd_set_max_auth_tries
@@ -684,9 +689,24 @@ selections:
     - file_permissions_etc_gshadow
 
     ### 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)
+    - file_owner_backup_etc_passwd
+    - file_groupowner_backup_etc_passwd
+    - file_permissions_backup_etc_passwd
+
     ### 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)
+    - file_owner_backup_etc_shadow
+    - file_groupowner_backup_etc_shadow
+    - file_permissions_backup_etc_shadow
+
     ### 6.1.8 Ensure permissions on /etc/group- are configured (Scored)
+    - file_owner_backup_etc_group
+    - file_groupowner_backup_etc_group
+    - file_permissions_backup_etc_group
+
     ### 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)
+    - file_owner_backup_etc_gshadow
+    - file_groupowner_backup_etc_gshadow
+    - file_permissions_backup_etc_gshadow
 
     ### 6.1.10 Ensure no world writable files exist (Scored)
     - file_permissions_unauthorized_world_writable
