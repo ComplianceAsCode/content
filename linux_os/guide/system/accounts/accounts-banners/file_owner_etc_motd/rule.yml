@@ -2,34 +2,34 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
 
-title: 'Verify permissions on Message of the Day Banner'
+title: 'Verify ownership of Message of the Day Banner'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/motd", perms="0644") }}}
+    {{{ describe_file_owner(file="/etc/motd", owner="root") }}}
 
 rationale: |-
     Display of a standardized and approved use notification before granting
     access to the operating system ensures privacy and security notification
     verbiage used is consistent with applicable federal laws, Executive Orders,
     directives, policies, regulations, standards, and guidance.<br />
-    Proper permissions will ensure that only root user can modify the banner.
+    Proper ownerhip will ensure that only root user can modify the banner.
 
 severity: medium
 
 identifiers:
-    cce@rhel7: 83337-6
-    cce@rhel8: 83338-4
+    cce@rhel7: 83737-7
+    cce@rhel8: 83738-5
 
 references:
     cis@rhel7: 1.7.1.4
     cis@rhel8: 1.8.1.4
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/motd", owner="root") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}'
+ocil: '{{{ ocil_file_owner(file="/etc/motd", owner="root") }}}'
 
 template:
-    name: file_permissions
+    name: file_owner
     vars:
         filepath: /etc/motd
-        filemode: '0644'
+        fileuid: '0'
