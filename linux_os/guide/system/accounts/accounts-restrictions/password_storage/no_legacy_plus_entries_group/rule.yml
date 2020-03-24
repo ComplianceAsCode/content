@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4
+
+title: 'Ensure there are no legacy + NIS entries in /etc/group'
+
+description: |-
+    The <tt>+</tt> character in <tt>/etc/group</tt> file marks a place where
+    entries from a network information service (NIS) should be directly inserted.
+
+rationale: |-
+    Using this method to include entries into <tt>/etc/group</tt> is considered legacy
+    and should be avoided. These entries may provide a way for an attacker
+    to gain access to the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 83388-9
+    cce@rhel8: 83389-7
+
+references:
+    cis@rhel7: 6.2.4
+    cis@rhel8: 6.2.5
+
+ocil_clause: 'the file contains legacy lines'
+
+ocil: |-
+    To check for legacy lines in <tt>/etc/group</tt>, run the following command:
+    <pre> grep '^\+' /etc/group</pre>
+    The command should not return any output.
