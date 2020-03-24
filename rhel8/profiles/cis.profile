@@ -963,3 +963,14 @@ selections:
 
     ### 6.1.14 Audit SGID executables (Not Scored)
     - file_permissions_unauthorized_sgid
+
+    ## 6.2 User and Group Settings
+
+    ### 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)
+    - no_legacy_plus_entries_passwd
+
+    ## 6.2.4 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
+    - no_legacy_plus_entries_shadow
+
+    ###6.2.5 Ensure no legacy "+" entries exist in /etc/group (Scored)
+    - no_legacy_plus_entries_group
