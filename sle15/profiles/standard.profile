@@ -142,3 +142,4 @@ selections:
     - audit_rules_file_deletion_events
     - audit_rules_sysadmin_actions
     - audit_rules_kernel_module_loading
+    - audit_rules_successful_file_modification_chmod
