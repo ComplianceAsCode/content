@@ -2,7 +2,13 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns Backup gshadow File'
 
-description: '{{{ describe_file_group_owner(file="/etc/gshadow-", group="root") }}}'
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set target_group="shadow" %}}
+{{% else %}}
+    {{% set target_group="root" %}}
+{{% endif %}}
+
+description: '{{{ describe_file_group_owner(file="/etc/gshadow-", group=target_group) }}}'
 
 rationale: |-
     The <tt>/etc/gshadow-</tt> file is a backup of <tt>/etc/gshadow</tt>, and as such,
@@ -18,9 +24,9 @@ references:
     cis@rhel7: 6.1.9
     cis@rhel8: 6.1.9
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/gshadow-", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/gshadow-", group=target_group) }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/gshadow-", group="root") }}}'
+ocil: '{{{ ocil_file_group_owner(file="/etc/gshadow-", group=target_group) }}}'
 
 template:
     name: file_groupowner

@@ -2,7 +2,13 @@ documentation_complete: true
 
 title: 'Verify User Who Owns Backup shadow File'
 
-description: '{{{ describe_file_group_owner(file="/etc/shadow-", group="root") }}}'
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set target_group="shadow" %}}
+{{% else %}}
+    {{% set target_group="root" %}}
+{{% endif %}}
+
+description: '{{{ describe_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
 
 rationale: |-
     The <tt>/etc/shadow-</tt> file is a backup file of <tt>/etc/shadow</tt>, and as such,
@@ -19,9 +25,9 @@ references:
     cis@rhel7: 6.1.7
     cis@rhel8: 6.1.7
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shadow-", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/shadow-", group="root") }}}'
+ocil: '{{{ ocil_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
 
 template:
     name: file_groupowner
