@@ -16,7 +16,11 @@ e2e: image-to-cluster ## Run the e2e tests. This requires that the PROFILE envir
 
 .PHONY: image-to-cluster
 image-to-cluster: ## Upload a content image to the cluster. The SKIP_CONTAINER_PUSH environment variable skips this step; the CONTENT_IMAGE environment variable takes a pre-uploaded image into use.
-ifeq ($(SKIP_CONTAINER_PUSH), true)
+ifdef IMAGE_FORMAT
+	$(eval component = ocp4-content-ds)
+	$(eval CONTENT_IMAGE = $(IMAGE_FORMAT))
+	@echo "IMAGE_FORMAT variable detected. Using image '$(CONTENT_IMAGE)'"
+else ifeq ($(SKIP_CONTAINER_PUSH), true)
 	@echo "Skipping content image upload, will use '$(CONTENT_IMAGE)'"
 else
 	@echo "Building content image"
