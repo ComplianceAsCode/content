@@ -2,34 +2,34 @@ documentation_complete: true
 
 prodtype: fedora,ocp4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
 
-title: 'Verify permissions on System Login Banner'
+title: 'Verify Group Ownership of System Login Banner'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/issue", perms="0644") }}}
+    {{{ describe_file_group_owner(file="/etc/issue", group="root") }}}
 
 rationale: |-
     Display of a standardized and approved use notification before granting
     access to the operating system ensures privacy and security notification
     verbiage used is consistent with applicable federal laws, Executive Orders,
     directives, policies, regulations, standards, and guidance.<br />
-    Proper permissions will ensure that only root user can modify the banner.
+    Proper group ownership will ensure that only root user can modify the banner.
 
 severity: medium
 
 identifiers:
-    cce@rhel7: 83347-5
-    cce@rhel8: 83348-3
+    cce@rhel7: 83707-0
+    cce@rhel8: 83708-8
 
 references:
     cis@rhel7: 1.7.1.5
     cis@rhel8: 1.8.1.5
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/issue", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/issue", group="root") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/issue", perms="-rw-r--r--") }}}'
+ocil: '{{{ ocil_file_group_owner(file="/etc/issue", group="root") }}}'
 
 template:
-    name: file_permissions
+    name: file_groupowner
     vars:
         filepath: /etc/issue
-        filemode: '0644'
+        filegid: '0'
