@@ -28,7 +28,7 @@
     <metadata>
       <title>{{{ rule_title }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Look for parameter '{{{ parameter }}}' with value '{{{ value }}}' {{% if section -%}} in section '{{{ section }}}' {{% endif -%}} in '{{{ path }}}'</description>
+      <description>Ensure '{{{ parameter }}}' is configured with value '{{{ value | replace("(?i)", "") | replace("(?-i)", "")}}}' {{% if section -%}} in section '{{{ section }}}' {{% endif -%}} in '{{{ path }}}'</description>
     </metadata>
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
@@ -487,9 +487,9 @@
       <metadata>
         <title>Check that contents of {{{ filepath }}} are as expected</title>
         {{{- oval_affected(products) }}}
-        <description>Inspects the contents of {{{ filepath }}}</description>
+        <description>Inspect the contents of {{{ filepath }}}</description>
       </metadata>
-      <criteria operator="AND">
+      <criteria>
           <criterion comment="Check contents of file" test_ref="test_whole_file_contents_{{{ filepath_id }}}" />
       </criteria>
     </definition>
