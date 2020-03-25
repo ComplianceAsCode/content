@@ -735,13 +735,13 @@ selections:
     ## 6.2 User and Group Settings
     ### 6.2.1 Ensure password fields are not empty (Scored)
     ### 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)
-    - no_legacy_plus_entries_passwd
+    - no_legacy_plus_entries_etc_passwd
 
     ### 6.2.3 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
-    - no_legacy_plus_entries_shadow
+    - no_legacy_plus_entries_etc_shadow
 
     ### 6.2.4 Ensure no legacy "+" entries exist in /etc/group (Scored)
-    - no_legacy_plus_entries_group
+    - no_legacy_plus_entries_etc_group
 
     ### 6.2.5 Ensure root is the only UID 0 account (Scored)
     - accounts_no_uid_except_zero
