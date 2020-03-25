@@ -20,6 +20,7 @@ func TestE2e(t *testing.T) {
 		ctx.ensureOperatorGroupExists()
 		ctx.ensureSubscriptionExists()
 		ctx.waitForOperatorToBeReady()
+		ctx.resetClientMappings()
 	})
 
 	t.Run("Run compliance scan", func(t *testing.T) {
