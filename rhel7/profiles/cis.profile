@@ -216,8 +216,8 @@ selections:
     - package_chrony_installed
 
     #### 2.2.1.2 Ensure ntp is configured (Scored)
-    # restrict is not checkec by rules below
-    - chronyd_or_ntpd_specify_remote_server
+    # This requirement is not applicable
+    # This profile opts to use chrony rather than ntp
 
     #### 2.2.1.3 Ensure chrony is configured (Scored)
     - service_chronyd_enabled
@@ -517,6 +517,8 @@ selections:
     #### 4.2.2.3 Ensure syslog-ng default file permissions configured (Scored)
     #### 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)
     #### 4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)
+    # Whole section 4.2.2.X is not applicable
+    # This profile opts to use rsyslog rather than syslog-ng
 
     ### 4.2.3 Ensure rsyslog or syslog-ng is installed (Scored)
     - package_rsyslog_installed
