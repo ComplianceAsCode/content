@@ -393,6 +393,7 @@ selections:
     ### 3.6.4 Ensure outbound and established connections are configured (Not Scored)
     ### 3.6.5 Ensure firewall rules exist for all open ports (Scored)
     ## 3.7 Ensure wireless interfaces are disabled (Not Scored)
+    - wireless_disable_interfaces
 
     # 4 Logging and Auditing
     ## 4.1 Configure System Accounting (auditd)
