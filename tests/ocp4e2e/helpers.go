@@ -53,6 +53,7 @@ type e2econtext struct {
 	profilepath   string
 	resourcespath string
 	dynclient     dynclient.Client
+	restMapper    *restmapper.DeferredDiscoveryRESTMapper
 	t             *testing.T
 }
 
@@ -143,13 +144,17 @@ func (ctx *e2econtext) assertKubeClient() {
 	}
 
 	cachedDiscoveryClient := cached.NewMemCacheClient(kubeclient.Discovery())
-	restMapper := restmapper.NewDeferredDiscoveryRESTMapper(cachedDiscoveryClient)
-	restMapper.Reset()
+	ctx.restMapper = restmapper.NewDeferredDiscoveryRESTMapper(cachedDiscoveryClient)
+	ctx.restMapper.Reset()
 
-	ctx.dynclient, err = dynclient.New(cfg, dynclient.Options{Scheme: scheme, Mapper: restMapper})
+	ctx.dynclient, err = dynclient.New(cfg, dynclient.Options{Scheme: scheme, Mapper: ctx.restMapper})
 	if err != nil {
 		ctx.t.Fatalf("failed to build the dynamic client: %s", err)
 	}
+}
+
+func (ctx *e2econtext) resetClientMappings() {
+	ctx.restMapper.Reset()
 }
 
 // Makes sure that the namespace where the test will run exists. Doesn't fail
@@ -267,7 +272,12 @@ func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string) *cmpv1alph
 		},
 	}
 
-	err := ctx.dynclient.Create(goctx.TODO(), suite)
+	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
+	err := backoff.RetryNotify(func() error {
+		return ctx.dynclient.Create(goctx.TODO(), suite)
+	}, bo, func(err error, d time.Duration) {
+		fmt.Printf("Couldn't create compliance suite after %s: %s\n", d.String(), err)
+	})
 	if err != nil {
 		ctx.t.Fatalf("failed to create compliance-suite: %s", err)
 	}
