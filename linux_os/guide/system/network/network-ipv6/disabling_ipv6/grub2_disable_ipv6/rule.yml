@@ -1,0 +1,93 @@
+documentation_complete: true
+
+prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4
+
+title: 'Ensure IPv6 is disabled through kernel boot parameter'
+
+description: |-
+    To disable IPv6 protocol support in the Linux kernel,
+    add the argument <tt>ipv6.disable=1</tt> to the default
+    GRUB2 command line for the Linux operating system in
+{{% if product in ["rhel7", "ol7", "rhv4"] %}}
+    <tt>/etc/default/grub</tt>, so that the line looks similar to
+    <pre>GRUB_CMDLINE_LINUX="... ipv6.disable=1 ..."</pre>
+    In case the <tt>GRUB_DISABLE_RECOVERY</tt> is set to true, then the parameter should be added to the <tt>GRUB_CMDLINE_LINUX_DEFAULT</tt> instead.
+    Run one of following command to ensure that the configuration is applied when booting currently installed kernels:
+    <pre>sudo grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+    or
+    <pre>sudo /sbin/grubby --update-kernel=ALL --args="ipv6.disable=1"</pre>
+{{% else %}}
+    <tt>/boot/grub2/grubenv</tt>, in the manner below:
+    <pre>sudo  grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) ipv6.disable=1"</pre>
+{{% endif %}}
+    
+
+rationale: |-
+    Any unnecessary network stacks, including IPv6, should be disabled to reduce
+    the vulnerability to exploitation.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 82886-3
+    cce@rhel8: 82887-1
+
+references:
+    cis@rhel7: 3.3.3
+    cis@rhel8: "3.6"
+
+ocil_clause: 'IPv6 is not disabled'
+
+ocil: |-
+    {{% if product in ["rhel7", "ol7", "rhv4"] %}}
+    Inspect the form of default GRUB2 command line for the Linux operating system
+    in <tt>/etc/default/grub</tt>. Check if it includes <tt>ipv6.disable=1</tt>.
+    First check if the GRUB recovery is enabled:
+    <pre>grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
+    If this option is set to true, then check that the following line is output by the following command:
+    <pre>grep 'GRUB_CMDLINE_LINUX_DEFAULT.*ipv6.disable=1.*' /etc/default/grub</pre>
+    If the recovery is disabled, check the line with
+    <pre>grep 'GRUB_CMDLINE_LINUX.*ipv6.disable=1.*' /etc/default/grub</pre>.
+    Moreover, current GRUB2 config file in <tt>/etc/grub2/grub.cfg</tt> must be checked.
+    <pre>sudo grep vmlinuz /boot/grub2/grub.cfg | grep -v 'ipv6.disable=1'</pre>
+    This command should not return any output. If it does, update the configuration with one of following commands:
+    <pre>sudo grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+    or
+    <pre>sudo /sbin/grubby --update-kernel=ALL --args="ipv6.disable=1"</pre>
+    <br />
+{{% else %}}
+    Inspect the form of default GRUB2 command line for the Linux operating system
+    in <tt>/boot/grub2/grubenv</tt>. Check if it includes <tt>ipv6.disable=1</tt>. 
+    <pre>sudo grep 'kernelopts.*ipv6.disable=1.*' /boot/grub2/grubenv</pre>
+    <br /><br />
+    To ensure <tt>ipv6.disable=1</tt> is configured on all installed kernels, the
+    following command may be used:
+    <br />
+    <pre>sudo grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) ipv6.disable=1"</pre>
+    <br />
+{{% endif %}}
+
+
+warnings:
+    - management: |-
+        The GRUB 2 configuration file, <tt>grub.cfg</tt>,
+        is automatically updated each time a new kernel is installed. Note that any
+        changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
+        file. To update the GRUB 2 configuration file manually, use the
+        <pre>grub2-mkconfig -o</pre> command as follows:
+        <ul>
+        <li>On BIOS-based machines, issue the following command:
+        <pre>sudo grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+        <li>On UEFI-based machines, issue the following command:
+{{% if product in ["rhel7", "ol7", "rhel8", "ol8"] %}}
+        <pre>sudo grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+{{% else %}}
+        <pre>sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre></li>
+{{% endif %}}
+        </ul>
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: ipv6.disable
+        arg_value: '1'

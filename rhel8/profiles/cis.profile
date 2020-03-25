@@ -518,7 +518,7 @@ selections:
     - wireless_disable_interfaces
 
     ## 3.6 Disable IPv6 (Not Scored)
-    - kernel_module_ipv6_option_disabled
+    - grub2_disable_ipv6
 
     # Logging and Auditing
 

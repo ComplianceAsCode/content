@@ -350,6 +350,7 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_redirects
 
     ### 3.3.3 Ensure IPv6 is disabled (Not Scored)
+    - grub2_disable_ipv6
 
     ## 3.4 TCP Wrappers
     ### 3.4.1 Ensure TCP Wrappers is installed (Scored)
