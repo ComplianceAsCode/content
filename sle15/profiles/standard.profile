@@ -32,7 +32,6 @@ selections:
     - file_groupowner_logfiles_value=adm
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
-    - "!rsyslog_remote_loghost"
     - ensure_logrotate_activated
     - file_permissions_systemmap
     - file_permissions_etc_shadow
@@ -47,7 +46,6 @@ selections:
     - file_permissions_etc_group
     - file_owner_etc_group
     - file_groupowner_etc_group
-    - "!Kernel Options"
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
     - sysctl_fs_suid_dumpable
@@ -72,7 +70,6 @@ selections:
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
     - sysctl_kernel_dmesg_restrict
-    - "!Acount Options"
     - accounts_have_homedir_login_defs
     - accounts_logon_fail_delay
     - accounts_max_concurrent_login_sessions
@@ -104,7 +101,6 @@ selections:
     - service_httpd_disabled
     - package_httpd_removed
     - package_firewalld_installed
-    - "!Secure Shell Options"
     - package_openssh_installed
     - service_sshd_enabled
     - sshd_enable_x11_forwarding
@@ -114,7 +110,6 @@ selections:
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
     - sshd_set_keepalive
-    - "!Audit Rules"
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime
