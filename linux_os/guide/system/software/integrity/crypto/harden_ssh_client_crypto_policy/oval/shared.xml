@@ -134,7 +134,7 @@
     <metadata>
       <title>Harden SSH client Crypto Policy</title>
       {{{- oval_affected(products) }}}
-      <description>Look for specific parameters in /etc/ssh/ssh_config.d/02-ospp.conf</description>
+      <description>Ensure the ssh client ciphers are configured correctly in /etc/ssh/ssh_config.d/02-ospp.conf</description>
     </metadata>
     <criteria comment="SSH client is configured correctly"
     operator="AND">

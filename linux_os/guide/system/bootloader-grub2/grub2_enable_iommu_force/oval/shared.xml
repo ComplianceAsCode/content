@@ -5,7 +5,7 @@
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <description>Look for argument iommu=force in the kernel line in /etc/default/grub.</description>
+      <description>Ensure iommu=force is configured in the kernel line in /etc/default/grub.</description>
     </metadata>
     <criteria operator="AND">
       <extend_definition definition_ref="grub2_default_exists" comment="check for GRUB_CMDLINE_LINUX_DEFAULT exists in /etc/default/grub" />

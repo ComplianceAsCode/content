@@ -3,7 +3,7 @@
     <metadata>
       <title>Ensure GRUB 2 is configured to run Linux operating system with argument {{{ ARG_NAME_VALUE }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Look for argument {{{ ARG_NAME_VALUE }}} in the kernel line in /etc/default/grub.</description>
+      <description>Ensure {{{ ARG_NAME_VALUE }}} is configured in the kernel line in /etc/default/grub.</description>
     </metadata>
     <criteria operator="AND">
       {{% if product in ["rhel7", "ol7", "rhv4"] %}}
