@@ -118,6 +118,8 @@ def is_applicable_for_product(platform, product):
     product_name = ""
     # Get official name for product
     if product_version is not None:
+        if product == "ubuntu" or product == "macos":
+            product_version = product_version[:2] + "." + product_version[2:]
         product_name = map_name(product) + ' ' + product_version
     else:
         product_name = map_name(product)

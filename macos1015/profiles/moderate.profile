@@ -29,3 +29,4 @@ description: |-
 
 selections:
     - service_auditd_enabled
+    - audit_failure_halt
