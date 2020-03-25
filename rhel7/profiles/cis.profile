@@ -300,6 +300,7 @@ selections:
     - package_telnet_removed
 
     ### 2.3.5 Ensure LDAP client is not installed (Scored)
+    - package_openldap-clients_removed
 
     # 3 Network Configuration
     ## 3.1 Network Parameters (Host Only)
