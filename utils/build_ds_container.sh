@@ -11,16 +11,20 @@ pushd $root_dir
 
 # Ensure openshift-compliance namespace exists. If it already exists, this is
 # not a problem.
-oc create -f "$root_dir/ocp-resources/compliance-operator-ns.yaml" || true
+oc apply -f "$root_dir/ocp-resources/compliance-operator-ns.yaml"
 
 # Create buildconfig and ImageStream
 # This enables us to create a configuration so we can build a container
 # with the datastream
 # If they already exist, this is not a problem
-cat "$root_dir/ocp-resources/ds-build.yaml" | sed "s/\$PRODUCT/$product/" | oc create -f - || true
+cat "$root_dir/ocp-resources/ds-build.yaml" | sed "s/\$PRODUCT/$product/" | oc apply -f -
 
 # Start build
-oc start-build -n openshift-compliance "openscap-$product-ds" --from-file="build/ssg-$product-ds.xml"
+oc start-build -n openshift-compliance "openscap-$product-ds" \
+    --from-file="$root_dir/build/ssg-$product-ds.xml"
+
+# Wait a couple of seconds until the object gets persisted
+sleep 3
 
 latest_build=$(oc get --no-headers buildconfigs "openscap-$product-ds" | awk '{print $4}')
 
