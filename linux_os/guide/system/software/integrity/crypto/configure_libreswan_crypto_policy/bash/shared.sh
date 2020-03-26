@@ -1,4 +1,4 @@
-# platform =  multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# platform =  multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8,Red Hat Virtualization 4
 
 function remediate_libreswan_crypto_policy() {
     CONFIG_FILE="/etc/ipsec.conf"

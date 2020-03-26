@@ -62,11 +62,9 @@ selections:
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
     - disable_host_auth
-    - sshd_allow_only_protocol2
     - sshd_disable_compression
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
-    - sshd_disable_rhosts_rsa
     - sshd_disable_root_login
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
@@ -75,10 +73,12 @@ selections:
     - sshd_set_idle_timeout
     - sshd_set_keepalive
     - sshd_set_loglevel_info
-    - sshd_use_approved_ciphers
-    - sshd_use_approved_macs
     - sshd_use_priv_separation
     - sshd_disable_empty_passwords
+    - var_system_crypto_policy=fips_ospp
+    - configure_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_openssl_crypto_policy
 
     # AU -5(b)
     - audit_rules_system_shutdown
@@ -204,6 +204,11 @@ selections:
     - kernel_module_usb-storage_disabled
     - kernel_module_bluetooth_disabled
     - service_bluetooth_disabled
+
+    # SC-13
+    - configure_bind_crypto_policy
+    - configure_kerberos_crypto_policy
+    - configure_libreswan_crypto_policy
 
     # SC-39
     - sysctl_kernel_exec_shield

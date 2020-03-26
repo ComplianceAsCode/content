@@ -1,4 +1,4 @@
-# platform =  multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# platform =  multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8,Red Hat Virtualization 4
 
 OPENSSL_CRYPTO_POLICY_SECTION='[ crypto_policy ]'
 OPENSSL_CRYPTO_POLICY_SECTION_REGEX='\[\s*crypto_policy\s*\]'

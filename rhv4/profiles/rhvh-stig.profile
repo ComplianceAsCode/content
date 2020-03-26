@@ -202,19 +202,22 @@ selections:
     - service_zebra_disabled
     - use_kerberos_security_all_exports
     - disable_host_auth
-    - sshd_allow_only_protocol2
     - sshd_disable_compression
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
-    - sshd_disable_rhosts_rsa
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - var_sshd_set_keepalive=3
     - sshd_set_keepalive
-    - sshd_use_approved_ciphers
-    - sshd_use_approved_macs
     - sshd_use_priv_separation
+    - var_system_crypto_policy=fips_ospp
+    - configure_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_kerberos_crypto_policy
+    - configure_libreswan_crypto_policy
     - var_accounts_user_umask=077
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
