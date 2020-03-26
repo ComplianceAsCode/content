@@ -311,12 +311,12 @@ selections:
     - aide_verify_acls
     - aide_verify_ext_attributes
     - disable_prelink
-    - grub2_enable_fips_mode
+    - enable_fips_mode
     - install_antivirus
     - install_hids
     - ldap_client_start_tls
     - package_aide_installed
-    - package_dracut-fips_installed
+    - enable_dracut_fips_module
     - rpm_verify_hashes
     - install_PAE_kernel_on_x86-32
     - service_kdump_disabled
