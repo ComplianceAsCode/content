@@ -257,8 +257,8 @@ PRODUCT_TO_CPE_MAPPING = {
         "cpe:/o:suse:linux_enterprise_server:12",
     ],
     "sle15": [
-        "cpe:/o:suse:sles:15",
-        "cpe:/o:suse:sled:15",
+        "cpe:2.3:o:suse:suse_linux_enterprise_server:15:*:*:*:*:*:*:*",
+        "cpe:2.3:o:suse:suse_linux_enterprise_desktop:15:*:*:*:*:*:*:*",
     ],
     "ubuntu1404": [
         "cpe:/o:canonical:ubuntu_linux:14.04",
