@@ -216,8 +216,8 @@ selections:
     - package_chrony_installed
 
     #### 2.2.1.2 Ensure ntp is configured (Scored)
-    # restrict is not checkec by rules below
-    - chronyd_or_ntpd_specify_remote_server
+    # This requirement is not applicable
+    # This profile opts to use chrony rather than ntp
 
     #### 2.2.1.3 Ensure chrony is configured (Scored)
     - service_chronyd_enabled
@@ -300,6 +300,7 @@ selections:
     - package_telnet_removed
 
     ### 2.3.5 Ensure LDAP client is not installed (Scored)
+    - package_openldap-clients_removed
 
     # 3 Network Configuration
     ## 3.1 Network Parameters (Host Only)
@@ -392,6 +393,7 @@ selections:
     ### 3.6.4 Ensure outbound and established connections are configured (Not Scored)
     ### 3.6.5 Ensure firewall rules exist for all open ports (Scored)
     ## 3.7 Ensure wireless interfaces are disabled (Not Scored)
+    - wireless_disable_interfaces
 
     # 4 Logging and Auditing
     ## 4.1 Configure System Accounting (auditd)
@@ -515,6 +517,8 @@ selections:
     #### 4.2.2.3 Ensure syslog-ng default file permissions configured (Scored)
     #### 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)
     #### 4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)
+    # Whole section 4.2.2.X is not applicable
+    # This profile opts to use rsyslog rather than syslog-ng
 
     ### 4.2.3 Ensure rsyslog or syslog-ng is installed (Scored)
     - package_rsyslog_installed
