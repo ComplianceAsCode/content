@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-106-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-107-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -437,6 +437,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/gregelin"><img src="https://avatars0.githubusercontent.com/u/24979?v=4" width="100px;" alt=""/><br /><sub><b>Greg Elin</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=gregelin" title="Code">💻</a> <a href="#talk-gregelin" title="Talks">📢</a> <a href="#video-gregelin" title="Videos">📹</a></td>
+    <td align="center"><a href="https://github.com/fcaviggia"><img src="https://avatars3.githubusercontent.com/u/6098307?v=4" width="100px;" alt=""/><br /><sub><b>Frank Caviggia</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=fcaviggia" title="Code">💻</a></td>
   </tr>
 </table>
 
