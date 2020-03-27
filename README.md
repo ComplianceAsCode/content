@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-100-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-101-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -429,6 +429,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/ghylock"><img src="https://avatars2.githubusercontent.com/u/10871129?v=4" width="100px;" alt=""/><br /><sub><b>ghylock</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=ghylock" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/angystardust"><img src="https://avatars1.githubusercontent.com/u/1568397?v=4" width="100px;" alt=""/><br /><sub><b>angystardust</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=angystardust" title="Code">💻</a></td>
+    <td align="center"><a href="https://klaas.is"><img src="https://avatars0.githubusercontent.com/u/320967?v=4" width="100px;" alt=""/><br /><sub><b>Klaas</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=Klaas" title="Code">💻</a></td>
   </tr>
 </table>
 
