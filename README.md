@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -303,6 +303,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/redhatrises"><img src="https://avatars2.githubusercontent.com/u/8398836?v=4" width="100px;" alt=""/><br /><sub><b>Gabe Alford</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=redhatrises" title="Code">💻</a></td>
     <td align="center"><a href="http://isimluk.com"><img src="https://avatars1.githubusercontent.com/u/6666052?v=4" width="100px;" alt=""/><br /><sub><b>Šimon Lukašík</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=isimluk" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=isimluk" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/ggbecker"><img src="https://avatars3.githubusercontent.com/u/18730394?v=4" width="100px;" alt=""/><br /><sub><b>Gabriel Gaspar Becker</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=ggbecker" title="Code">💻</a></td>
   </tr>
 </table>
 
