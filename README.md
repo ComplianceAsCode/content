@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-55-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-56-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -370,6 +370,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://portfolio.secureagc.com/"><img src="https://avatars3.githubusercontent.com/u/23314594?v=4" width="100px;" alt=""/><br /><sub><b>Alijohn Ghassemlouei</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=aghassemlouei" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Mixer9"><img src="https://avatars0.githubusercontent.com/u/35545791?v=4" width="100px;" alt=""/><br /><sub><b>Mixer9</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=Mixer9" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/roysjosh"><img src="https://avatars3.githubusercontent.com/u/601535?v=4" width="100px;" alt=""/><br /><sub><b>Joshua Roys</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=roysjosh" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/hex2a"><img src="https://avatars2.githubusercontent.com/u/8384544?v=4" width="100px;" alt=""/><br /><sub><b>hex2a</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=hex2a" title="Code">💻</a></td>
   </tr>
 </table>
 
