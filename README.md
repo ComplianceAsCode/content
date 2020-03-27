@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-50-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-51-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -365,6 +365,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/cyarbrough76"><img src="https://avatars0.githubusercontent.com/u/42849651?v=4" width="100px;" alt=""/><br /><sub><b>cyarbrough76</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=cyarbrough76" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lfisher47"><img src="https://avatars2.githubusercontent.com/u/4379348?v=4" width="100px;" alt=""/><br /><sub><b>lfisher47</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=lfisher47" title="Code">💻</a></td>
   </tr>
 </table>
 
