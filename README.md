@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-18-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -322,6 +322,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/vojtapolasek"><img src="https://avatars0.githubusercontent.com/u/1188069?v=4" width="100px;" alt=""/><br /><sub><b>vojtapolasek</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=vojtapolasek" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=vojtapolasek" title="Tests">⚠️</a> <a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Avojtapolasek" title="Bug reports">🐛</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3Avojtapolasek" title="Reviewed Pull Requests">👀</a> <a href="#question-vojtapolasek" title="Answering Questions">💬</a></td>
     <td align="center"><a href="https://github.com/dahaic"><img src="https://avatars0.githubusercontent.com/u/1931718?v=4" width="100px;" alt=""/><br /><sub><b>Marek Haičman</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Adahaic" title="Bug reports">🐛</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=dahaic" title="Code">💻</a> <a href="#projectManagement-dahaic" title="Project Management">📆</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=dahaic" title="Tests">⚠️</a> <a href="#talk-dahaic" title="Talks">📢</a></td>
     <td align="center"><a href="https://www.adelton.com/"><img src="https://avatars2.githubusercontent.com/u/2536912?v=4" width="100px;" alt=""/><br /><sub><b>Jan Pazdziora</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=adelton" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/matusmarhefka"><img src="https://avatars0.githubusercontent.com/u/3180425?v=4" width="100px;" alt=""/><br /><sub><b>Matus Marhefka</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=matusmarhefka" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=matusmarhefka" title="Tests">⚠️</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3Amatusmarhefka" title="Reviewed Pull Requests">👀</a> <a href="#question-matusmarhefka" title="Answering Questions">💬</a></td>
   </tr>
 </table>
 
