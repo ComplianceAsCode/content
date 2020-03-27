@@ -20,7 +20,7 @@
 
     <ind:yamlfilecontent_object id="object_{{{ rule_id }}}" version="1">
       <ind:path var_ref="ocp_data_root"/>
-      <ind:filename operation="pattern match">^idp.(yaml|yml)$</ind:filename>
+      <ind:filename operation="pattern match">^idp.yml$</ind:filename>
       <ind:yamlpath>.spec.identityProviders[:].type</ind:yamlpath>
     </ind:yamlfilecontent_object>
 
