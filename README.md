@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-102-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-103-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -431,6 +431,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/angystardust"><img src="https://avatars1.githubusercontent.com/u/1568397?v=4" width="100px;" alt=""/><br /><sub><b>angystardust</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=angystardust" title="Code">💻</a></td>
     <td align="center"><a href="https://klaas.is"><img src="https://avatars0.githubusercontent.com/u/320967?v=4" width="100px;" alt=""/><br /><sub><b>Klaas</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=Klaas" title="Code">💻</a></td>
     <td align="center"><a href="http://noslzzp.com/"><img src="https://avatars1.githubusercontent.com/u/1154653?v=4" width="100px;" alt=""/><br /><sub><b>NoSLZZP</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=noslzzp" title="Code">💻</a> <a href="#business-noslzzp" title="Business development">💼</a> <a href="#ideas-noslzzp" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://termlen0.github.io"><img src="https://avatars3.githubusercontent.com/u/18330662?v=4" width="100px;" alt=""/><br /><sub><b>Ajay Chenampara</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=termlen0" title="Code">💻</a></td>
   </tr>
 </table>
 
