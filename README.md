@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-76-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-77-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -397,6 +397,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Cooper-ORNL"><img src="https://avatars0.githubusercontent.com/u/32870287?v=4" width="100px;" alt=""/><br /><sub><b>cooper-ornl</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=cooper-ornl" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/rodneymercer"><img src="https://avatars2.githubusercontent.com/u/8418659?v=4" width="100px;" alt=""/><br /><sub><b>rodneymercer</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=rodneymercer" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/joenall"><img src="https://avatars0.githubusercontent.com/u/51613?v=4" width="100px;" alt=""/><br /><sub><b>Joe Nall</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=joenall" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=joenall" title="Tests">⚠️</a> <a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Ajoenall" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/agilmore2"><img src="https://avatars2.githubusercontent.com/u/6852298?v=4" width="100px;" alt=""/><br /><sub><b>agilmore2</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=agilmore2" title="Code">💻</a></td>
   </tr>
 </table>
 
