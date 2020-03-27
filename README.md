@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-36-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-37-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -347,6 +347,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/davesmith2"><img src="https://avatars1.githubusercontent.com/u/6530077?v=4" width="100px;" alt=""/><br /><sub><b>Dave Smith</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Adavesmith2" title="Bug reports">🐛</a> <a href="#blog-davesmith2" title="Blogposts">📝</a> <a href="#business-davesmith2" title="Business development">💼</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=davesmith2" title="Code">💻</a> <a href="#content-davesmith2" title="Content">🖋</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=davesmith2" title="Documentation">📖</a> <a href="#design-davesmith2" title="Design">🎨</a> <a href="#example-davesmith2" title="Examples">💡</a> <a href="#eventOrganizing-davesmith2" title="Event Organizing">📋</a> <a href="#fundingFinding-davesmith2" title="Funding Finding">🔍</a> <a href="#ideas-davesmith2" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-davesmith2" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-davesmith2" title="Maintenance">🚧</a> <a href="#platform-davesmith2" title="Packaging/porting to new platform">📦</a> <a href="#projectManagement-davesmith2" title="Project Management">📆</a> <a href="#question-davesmith2" title="Answering Questions">💬</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3Adavesmith2" title="Reviewed Pull Requests">👀</a> <a href="#tool-davesmith2" title="Tools">🔧</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=davesmith2" title="Tests">⚠️</a> <a href="#tutorial-davesmith2" title="Tutorials">✅</a> <a href="#talk-davesmith2" title="Talks">📢</a> <a href="#userTesting-davesmith2" title="User Testing">📓</a> <a href="#video-davesmith2" title="Videos">📹</a></td>
+    <td align="center"><a href="https://github.com/thenefield"><img src="https://avatars1.githubusercontent.com/u/10131401?v=4" width="100px;" alt=""/><br /><sub><b>Trey Henefield</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=thenefield" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=thenefield" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
