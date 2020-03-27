@@ -416,6 +416,7 @@ selections:
     - partition_for_var_log_audit
     - partition_for_tmp
     - grub2_no_removeable_media
+    - package_audispd-plugins_installed
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
