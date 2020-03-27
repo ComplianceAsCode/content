@@ -1,4 +1,5 @@
 {{% macro ocil_package(package) -%}}
+  {{% if pkg_system is defined %}}
     {{%- if pkg_system == "rpm" -%}}
         {{{ rpm_ocil_package(package) }}}
     {{%- elif pkg_system == "dpkg" -%}}
@@ -6,10 +7,12 @@
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro complete_ocil_entry_package(package) -%}}
+  {{% if pkg_system is defined %}}
     {{%- if pkg_system == "rpm" %}}
         {{{ rpm_complete_ocil_entry_package(package) }}}
     {{%- elif pkg_system == "dpkg" %}}
@@ -18,6 +21,7 @@ JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
 ocil: |-
     JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 {{%- macro describe_package_install(package) -%}}
@@ -26,6 +30,7 @@ ocil: |-
 {{%- endmacro %}}
 
 {{%- macro package_install(package) -%}}
+  {{% if pkg_manager is defined %}}
     {{%- if pkg_manager == "apt_get" -%}}
         {{{ apt_get_package_install(package) }}}
     {{%- elif pkg_manager == "zypper" -%}}
@@ -37,6 +42,7 @@ ocil: |-
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 {{%- macro describe_package_remove(package) -%}}
@@ -45,6 +51,7 @@ JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
 {{%- endmacro %}}
 
 {{%- macro package_remove(package) -%}}
+  {{% if pkg_manager is defined %}}
     {{%- if pkg_manager == "apt_get" -%}}
         {{{ apt_get_package_remove(package) }}}
     {{%- elif pkg_manager == "zypper" -%}}
@@ -56,10 +63,12 @@ JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro describe_service_enable(service) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_service_enable(service) }}}
     {{%- elif init_system == "upstart" -%}}
@@ -67,10 +76,12 @@ JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro describe_service_disable(service) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_service_disable(service) }}}
     {{%- elif init_system == "upstart" -%}}
@@ -78,10 +89,12 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro ocil_service_enabled(service) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_ocil_service_enabled(service) }}}
     {{%- elif init_system == "upstart" -%}}
@@ -89,10 +102,12 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro ocil_service_disabled(service) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_ocil_service_disabled(service) }}}
     {{%- elif init_system == "upstart" -%}}
@@ -100,10 +115,12 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro describe_socket_enable(socket) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_socket_enable(socket) }}}
     {{%- elif init_system == "upstart" -%}}
@@ -111,10 +128,12 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro describe_socket_disable(socket) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_socket_disable(socket) }}}
     {{%- elif init_system == "upstart" -%}}
@@ -122,10 +141,12 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 
 {{% macro complete_ocil_entry_socket_and_service_disabled(service) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_complete_ocil_entry_socket_and_service_disabled(service) }}}
     {{%- elif init_system == "upstart" -%}}
@@ -134,22 +155,27 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 ocil: |-
     JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 {{% macro describe_timer_enable(timer) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_timer_enable(timer) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 {{% macro ocil_timer_enabled(timer) -%}}
+  {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_ocil_timer_enabled(timer) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
+  {{%- endif -%}}
 {{%- endmacro %}}
 
 {{%- macro oval_affected(products) %}}
