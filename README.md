@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -308,6 +308,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/abergmann"><img src="https://avatars3.githubusercontent.com/u/4102163?v=4" width="100px;" alt=""/><br /><sub><b>Alexander Bergmann</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=abergmann" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/70k10"><img src="https://avatars3.githubusercontent.com/u/1051437?v=4" width="100px;" alt=""/><br /><sub><b>Jayson Cofell</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=70k10" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/yuumasato"><img src="https://avatars0.githubusercontent.com/u/7460169?v=4" width="100px;" alt=""/><br /><sub><b>Watson Yuuma Sato</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=yuumasato" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/iankko"><img src="https://avatars2.githubusercontent.com/u/8414918?v=4" width="100px;" alt=""/><br /><sub><b>Jan Lieskovsky</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=iankko" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Aiankko" title="Bug reports">🐛</a> <a href="#content-iankko" title="Content">🖋</a></td>
   </tr>
 </table>
 
