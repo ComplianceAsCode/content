@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-42-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-43-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -353,6 +353,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/jamescassell"><img src="https://avatars1.githubusercontent.com/u/5522890?v=4" width="100px;" alt=""/><br /><sub><b>James Cassell</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=jamescassell" title="Code">💻</a></td>
     <td align="center"><a href="https://d0m.tech"><img src="https://avatars2.githubusercontent.com/u/24304777?v=4" width="100px;" alt=""/><br /><sub><b>Dominique Blaze</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=DominiqueDevinci" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/justin-stephenson"><img src="https://avatars3.githubusercontent.com/u/13416969?v=4" width="100px;" alt=""/><br /><sub><b>Justin Stephenson</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=justin-stephenson" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/evgenyz"><img src="https://avatars2.githubusercontent.com/u/429134?v=4" width="100px;" alt=""/><br /><sub><b>Evgeny Kolesnikov</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=evgenyz" title="Code">💻</a> <a href="#ideas-evgenyz" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
