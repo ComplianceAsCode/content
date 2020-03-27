@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-19-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -324,6 +324,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.adelton.com/"><img src="https://avatars2.githubusercontent.com/u/2536912?v=4" width="100px;" alt=""/><br /><sub><b>Jan Pazdziora</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=adelton" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/matusmarhefka"><img src="https://avatars0.githubusercontent.com/u/3180425?v=4" width="100px;" alt=""/><br /><sub><b>Matus Marhefka</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=matusmarhefka" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=matusmarhefka" title="Tests">⚠️</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3Amatusmarhefka" title="Reviewed Pull Requests">👀</a> <a href="#question-matusmarhefka" title="Answering Questions">💬</a></td>
     <td align="center"><a href="https://github.com/diastelo"><img src="https://avatars2.githubusercontent.com/u/7083369?v=4" width="100px;" alt=""/><br /><sub><b>Maura Dailey</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=diastelo" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.reseau-libre.net"><img src="https://avatars0.githubusercontent.com/u/1446563?v=4" width="100px;" alt=""/><br /><sub><b>Philippe Thierry</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=PThierry" title="Code">💻</a></td>
   </tr>
 </table>
 
