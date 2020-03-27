@@ -304,6 +304,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/redhatrises"><img src="https://avatars2.githubusercontent.com/u/8398836?v=4" width="100px;" alt=""/><br /><sub><b>Gabe Alford</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=redhatrises" title="Code">💻</a></td>
     <td align="center"><a href="http://isimluk.com"><img src="https://avatars1.githubusercontent.com/u/6666052?v=4" width="100px;" alt=""/><br /><sub><b>Šimon Lukašík</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=isimluk" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=isimluk" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/abergmann"><img src="https://avatars3.githubusercontent.com/u/4102163?v=4" width="100px;" alt=""/><br /><sub><b>Alexander Bergmann</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=abergmann" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/70k10"><img src="https://avatars3.githubusercontent.com/u/1051437?v=4" width="100px;" alt=""/><br /><sub><b>Jayson Cofell</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=70k10" title="Code">💻</a></td>
   </tr>
 </table>
 
