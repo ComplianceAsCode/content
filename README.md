@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-94-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-95-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -421,6 +421,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/dhanushkar-wso2"><img src="https://avatars3.githubusercontent.com/u/5975012?v=4" width="100px;" alt=""/><br /><sub><b>dhanushkar-wso2</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=dhanushkar-wso2" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/VadimDor"><img src="https://avatars1.githubusercontent.com/u/29509093?v=4" width="100px;" alt=""/><br /><sub><b>VadimDor</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=VadimDor" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/OnceUponALoop"><img src="https://avatars1.githubusercontent.com/u/3958336?v=4" width="100px;" alt=""/><br /><sub><b>Firas AlShafei</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=OnceUponALoop" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/yasirimam1980"><img src="https://avatars0.githubusercontent.com/u/29631706?v=4" width="100px;" alt=""/><br /><sub><b>Yasir Imam</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=yasirimam1980" title="Code">💻</a> <a href="#business-yasirimam1980" title="Business development">💼</a> <a href="#talk-yasirimam1980" title="Talks">📢</a></td>
   </tr>
 </table>
 
