@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-78-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-79-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -401,6 +401,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/Jibzzz"><img src="https://avatars1.githubusercontent.com/u/9675277?v=4" width="100px;" alt=""/><br /><sub><b>Jibzzz</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=Jibzzz" title="Code">💻</a></td>
+    <td align="center"><a href="http://security-plus-data-science.blogspot.com/"><img src="https://avatars2.githubusercontent.com/u/18726848?v=4" width="100px;" alt=""/><br /><sub><b>Steve Grubb</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=stevegrubb" title="Code">💻</a></td>
   </tr>
 </table>
 
