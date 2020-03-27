@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-62-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-63-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -379,6 +379,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://kenyonralph.com/"><img src="https://avatars3.githubusercontent.com/u/68514?v=4" width="100px;" alt=""/><br /><sub><b>Kenyon Ralph</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=kenyon" title="Code">💻</a></td>
     <td align="center"><a href="http://www.kitware.com/company/team/atkins.html"><img src="https://avatars0.githubusercontent.com/u/320135?v=4" width="100px;" alt=""/><br /><sub><b>Chuck Atkins</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=chuckatkins" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/chrisruffalo"><img src="https://avatars3.githubusercontent.com/u/2073493?v=4" width="100px;" alt=""/><br /><sub><b>Chris Ruffalo</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=chrisruffalo" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/carbonin"><img src="https://avatars0.githubusercontent.com/u/12697904?v=4" width="100px;" alt=""/><br /><sub><b>Nick Carboni</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=carbonin" title="Code">💻</a></td>
   </tr>
 </table>
 
