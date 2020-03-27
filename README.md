@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-48-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-49-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -361,6 +361,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/csreynolds"><img src="https://avatars2.githubusercontent.com/u/7391197?v=4" width="100px;" alt=""/><br /><sub><b>Chris Reynolds</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=csreynolds" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/dehuo0"><img src="https://avatars2.githubusercontent.com/u/25168768?v=4" width="100px;" alt=""/><br /><sub><b>dehuo0</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=dehuo0" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/brianmillett"><img src="https://avatars3.githubusercontent.com/u/20796164?v=4" width="100px;" alt=""/><br /><sub><b>brianmillett</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=brianmillett" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/GautamSatish"><img src="https://avatars3.githubusercontent.com/u/16253354?v=4" width="100px;" alt=""/><br /><sub><b>Gautam Satish</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/issues?q=author%3AGautamSatish" title="Bug reports">🐛</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=GautamSatish" title="Code">💻</a></td>
   </tr>
 </table>
 
