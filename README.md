@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-113-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-114-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -446,6 +446,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/bhirsch70"><img src="https://avatars1.githubusercontent.com/u/17462822?v=4" width="100px;" alt=""/><br /><sub><b>Bill Hirsch</b></sub></a><br /><a href="#ideas-bhirsch70" title="Ideas, Planning, & Feedback">🤔</a> <a href="#talk-bhirsch70" title="Talks">📢</a> <a href="#tutorial-bhirsch70" title="Tutorials">✅</a> <a href="#video-bhirsch70" title="Videos">📹</a></td>
+    <td align="center"><a href="https://github.com/rlucente-se-jboss"><img src="https://avatars2.githubusercontent.com/u/794078?v=4" width="100px;" alt=""/><br /><sub><b>rlucente-se-jboss</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=rlucente-se-jboss" title="Code">💻</a> <a href="#ideas-rlucente-se-jboss" title="Ideas, Planning, & Feedback">🤔</a> <a href="#talk-rlucente-se-jboss" title="Talks">📢</a> <a href="#tutorial-rlucente-se-jboss" title="Tutorials">✅</a></td>
   </tr>
 </table>
 
