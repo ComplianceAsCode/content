@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-97-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-98-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -424,6 +424,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/yasirimam1980"><img src="https://avatars0.githubusercontent.com/u/29631706?v=4" width="100px;" alt=""/><br /><sub><b>Yasir Imam</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=yasirimam1980" title="Code">💻</a> <a href="#business-yasirimam1980" title="Business development">💼</a> <a href="#talk-yasirimam1980" title="Talks">📢</a></td>
     <td align="center"><a href="https://github.com/rchayes"><img src="https://avatars2.githubusercontent.com/u/27025189?v=4" width="100px;" alt=""/><br /><sub><b>RCHAYES</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=rchayes" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/mshoger"><img src="https://avatars3.githubusercontent.com/u/14096981?v=4" width="100px;" alt=""/><br /><sub><b>Mark Shoger</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=mshoger" title="Code">💻</a> <a href="#business-mshoger" title="Business development">💼</a></td>
+    <td align="center"><a href="https://github.com/jstookey"><img src="https://avatars3.githubusercontent.com/u/2437590?v=4" width="100px;" alt=""/><br /><sub><b>jstookey</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=jstookey" title="Code">💻</a></td>
   </tr>
 </table>
 
