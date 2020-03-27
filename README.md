@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-39-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-40-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -350,6 +350,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/thenefield"><img src="https://avatars1.githubusercontent.com/u/10131401?v=4" width="100px;" alt=""/><br /><sub><b>Trey Henefield</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=thenefield" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=thenefield" title="Tests">⚠️</a></td>
     <td align="center"><a href="http://www.scientificlinux.org/"><img src="https://avatars0.githubusercontent.com/u/3534830?v=4" width="100px;" alt=""/><br /><sub><b>Pat Riehecky</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=jcpunk" title="Code">💻</a></td>
     <td align="center"><a href="https://twitter.com/LucyCloudBling"><img src="https://avatars0.githubusercontent.com/u/8429622?v=4" width="100px;" alt=""/><br /><sub><b>Lucy Kerner</b></sub></a><br /><a href="#blog-lkerner" title="Blogposts">📝</a> <a href="#business-lkerner" title="Business development">💼</a> <a href="#eventOrganizing-lkerner" title="Event Organizing">📋</a> <a href="#fundingFinding-lkerner" title="Funding Finding">🔍</a> <a href="#ideas-lkerner" title="Ideas, Planning, & Feedback">🤔</a> <a href="#tutorial-lkerner" title="Tutorials">✅</a> <a href="#talk-lkerner" title="Talks">📢</a> <a href="#video-lkerner" title="Videos">📹</a></td>
+    <td align="center"><a href="https://github.com/jamescassell"><img src="https://avatars1.githubusercontent.com/u/5522890?v=4" width="100px;" alt=""/><br /><sub><b>James Cassell</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=jamescassell" title="Code">💻</a></td>
   </tr>
 </table>
 
