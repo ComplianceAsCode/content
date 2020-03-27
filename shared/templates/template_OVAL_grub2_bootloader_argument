@@ -6,7 +6,7 @@
       <description>Ensure {{{ ARG_NAME_VALUE }}} is configured in the kernel line in /etc/default/grub.</description>
     </metadata>
     <criteria operator="AND">
-      {{% if product in ["rhel7", "ol7", "rhv4"] %}}
+      {{% if product in ["rhel7", "ol7"] %}}
         <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
         comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/grub2/grub.cfg for all kernels" />
         <criteria operator="OR">
@@ -26,7 +26,7 @@
     </criteria>
   </definition>
 
-{{% if product in ["rhel7", "ol7", "rhv4"] %}}
+{{% if product in ["rhel7", "ol7"] %}}
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX"
   check="all" check_existence="all_exist" version="1">
