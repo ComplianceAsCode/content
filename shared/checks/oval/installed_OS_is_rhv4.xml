@@ -11,7 +11,8 @@
       <description>The operating system installed on the system is
       Red Hat Virtualization Host 4.4+ or Red Hat Enterprise Host.</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="RHEL8 OS installed" definition_ref="installed_OS_is_rhel8" />
       <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
     </criteria>
   </definition>
