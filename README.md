@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -311,6 +311,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/iankko"><img src="https://avatars2.githubusercontent.com/u/8414918?v=4" width="100px;" alt=""/><br /><sub><b>Jan Lieskovsky</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=iankko" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Aiankko" title="Bug reports">🐛</a> <a href="#content-iankko" title="Content">🖋</a> <a href="#blog-iankko" title="Blogposts">📝</a> <a href="#example-iankko" title="Examples">💡</a> <a href="#eventOrganizing-iankko" title="Event Organizing">📋</a> <a href="#ideas-iankko" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-iankko" title="Maintenance">🚧</a> <a href="#platform-iankko" title="Packaging/porting to new platform">📦</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3Aiankko" title="Reviewed Pull Requests">👀</a> <a href="#tool-iankko" title="Tools">🔧</a> <a href="#talk-iankko" title="Talks">📢</a></td>
+    <td align="center"><a href="https://github.com/jan-cerny"><img src="https://avatars3.githubusercontent.com/u/9050916?v=4" width="100px;" alt=""/><br /><sub><b>Jan Černý</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Ajan-cerny" title="Bug reports">🐛</a> <a href="#blog-jan-cerny" title="Blogposts">📝</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=jan-cerny" title="Code">💻</a> <a href="#content-jan-cerny" title="Content">🖋</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=jan-cerny" title="Documentation">📖</a> <a href="#example-jan-cerny" title="Examples">💡</a> <a href="#ideas-jan-cerny" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-jan-cerny" title="Maintenance">🚧</a> <a href="#platform-jan-cerny" title="Packaging/porting to new platform">📦</a> <a href="#question-jan-cerny" title="Answering Questions">💬</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3Ajan-cerny" title="Reviewed Pull Requests">👀</a> <a href="#tool-jan-cerny" title="Tools">🔧</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=jan-cerny" title="Tests">⚠️</a> <a href="#talk-jan-cerny" title="Talks">📢</a></td>
   </tr>
 </table>
 
