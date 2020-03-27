@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-60-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-61-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -377,6 +377,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/pcactr"><img src="https://avatars3.githubusercontent.com/u/11899921?v=4" width="100px;" alt=""/><br /><sub><b>Paul</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=pcactr" title="Code">💻</a></td>
     <td align="center"><a href="http://www.cyberrange.live"><img src="https://avatars1.githubusercontent.com/u/1019703?v=4" width="100px;" alt=""/><br /><sub><b>Kenneth Peeples</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=kpeeples" title="Code">💻</a></td>
     <td align="center"><a href="https://kenyonralph.com/"><img src="https://avatars3.githubusercontent.com/u/68514?v=4" width="100px;" alt=""/><br /><sub><b>Kenyon Ralph</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=kenyon" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.kitware.com/company/team/atkins.html"><img src="https://avatars0.githubusercontent.com/u/320135?v=4" width="100px;" alt=""/><br /><sub><b>Chuck Atkins</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=chuckatkins" title="Code">💻</a></td>
   </tr>
 </table>
 
