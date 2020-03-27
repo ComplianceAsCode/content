@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-109-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-110-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -440,6 +440,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/fcaviggia"><img src="https://avatars3.githubusercontent.com/u/6098307?v=4" width="100px;" alt=""/><br /><sub><b>Frank Caviggia</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=fcaviggia" title="Code">💻</a></td>
     <td align="center"><a href="https://jaredhocutt.com/"><img src="https://avatars2.githubusercontent.com/u/203993?v=4" width="100px;" alt=""/><br /><sub><b>Jared Hocutt</b></sub></a><br /><a href="#business-jaredhocutt" title="Business development">💼</a> <a href="#blog-jaredhocutt" title="Blogposts">📝</a> <a href="#ideas-jaredhocutt" title="Ideas, Planning, & Feedback">🤔</a> <a href="#talk-jaredhocutt" title="Talks">📢</a> <a href="#video-jaredhocutt" title="Videos">📹</a></td>
     <td align="center"><a href="https://www.redhat.com"><img src="https://avatars3.githubusercontent.com/u/2224957?v=4" width="100px;" alt=""/><br /><sub><b>Brad</b></sub></a><br /><a href="#business-dischord01" title="Business development">💼</a> <a href="#ideas-dischord01" title="Ideas, Planning, & Feedback">🤔</a> <a href="#talk-dischord01" title="Talks">📢</a> <a href="#video-dischord01" title="Videos">📹</a> <a href="#tutorial-dischord01" title="Tutorials">✅</a></td>
+    <td align="center"><a href="https://github.com/matmille"><img src="https://avatars2.githubusercontent.com/u/22505310?v=4" width="100px;" alt=""/><br /><sub><b>matmille</b></sub></a><br /><a href="#business-matmille" title="Business development">💼</a> <a href="#ideas-matmille" title="Ideas, Planning, & Feedback">🤔</a> <a href="#talk-matmille" title="Talks">📢</a> <a href="#tutorial-matmille" title="Tutorials">✅</a></td>
   </tr>
 </table>
 
