@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-26-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-27-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -333,6 +333,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/xiruiyang"><img src="https://avatars0.githubusercontent.com/u/37544436?v=4" width="100px;" alt=""/><br /><sub><b>Xirui Yang</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=xiruiyang" title="Code">💻</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/thosjo"><img src="https://avatars1.githubusercontent.com/u/7956715?v=4" width="100px;" alt=""/><br /><sub><b>Thomas Sjögren</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=konstruktoid" title="Code">💻</a></td>
     <td align="center"><a href="https://maltekraus.de/"><img src="https://avatars1.githubusercontent.com/u/1694194?v=4" width="100px;" alt=""/><br /><sub><b>maltek</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=maltek" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/keithkjackson"><img src="https://avatars0.githubusercontent.com/u/49038158?v=4" width="100px;" alt=""/><br /><sub><b>Keith Jackson</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=keithkjackson" title="Code">💻</a></td>
   </tr>
 </table>
 
