@@ -9,7 +9,7 @@
       <reference ref_id="cpe:/o:redhat:virtualization:4"
       source="CPE" />
       <description>The operating system installed on the system is
-      Red Hat Virtualization Host 4 or Red Hat Enterprise Host.</description>
+      Red Hat Virtualization Host 4.4+ or Red Hat Enterprise Host.</description>
     </metadata>
     <criteria>
       <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
@@ -24,7 +24,7 @@
     <linux:name>redhat-release-virtualization-host</linux:name>
   </linux:rpminfo_object>
     <linux:rpminfo_state id="state_rhvh4_version" version="1">
-    <linux:version operation="pattern match">^4.*$</linux:version>
+    <linux:evr datatype="evr_string" operation="greater than or equal">0:4.4</linux:evr>
   </linux:rpminfo_state>
 
 </def-group>
