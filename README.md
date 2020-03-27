@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -339,6 +339,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/eradot4027"><img src="https://avatars3.githubusercontent.com/u/26237898?v=4" width="100px;" alt=""/><br /><sub><b>Jon Thompson</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=eradot4027" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/electrosenpai"><img src="https://avatars2.githubusercontent.com/u/15051509?v=4" width="100px;" alt=""/><br /><sub><b>Jean-Baptiste DONNETTE</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=electrosenpai" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.twitter.com/jaosorior"><img src="https://avatars3.githubusercontent.com/u/145564?v=4" width="100px;" alt=""/><br /><sub><b>Juan Osorio Robles</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=JAORMX" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=JAORMX" title="Tests">⚠️</a> <a href="#ideas-JAORMX" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3AJAORMX" title="Reviewed Pull Requests">👀</a> <a href="#talk-JAORMX" title="Talks">📢</a></td>
   </tr>
 </table>
 
