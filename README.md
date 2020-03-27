@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-45-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-46-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -358,6 +358,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/evgenyz"><img src="https://avatars2.githubusercontent.com/u/429134?v=4" width="100px;" alt=""/><br /><sub><b>Evgeny Kolesnikov</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=evgenyz" title="Code">💻</a> <a href="#ideas-evgenyz" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/tedbrunell"><img src="https://avatars1.githubusercontent.com/u/17598873?v=4" width="100px;" alt=""/><br /><sub><b>tedbrunell</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=tedbrunell" title="Code">💻</a> <a href="#business-tedbrunell" title="Business development">💼</a> <a href="#fundingFinding-tedbrunell" title="Funding Finding">🔍</a> <a href="#tutorial-tedbrunell" title="Tutorials">✅</a> <a href="#talk-tedbrunell" title="Talks">📢</a> <a href="#video-tedbrunell" title="Videos">📹</a></td>
     <td align="center"><a href="https://github.com/mpalmi"><img src="https://avatars0.githubusercontent.com/u/7817675?v=4" width="100px;" alt=""/><br /><sub><b>Mike Palmiotto</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=mpalmi" title="Code">💻</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=mpalmi" title="Tests">⚠️</a> <a href="#tool-mpalmi" title="Tools">🔧</a> <a href="#platform-mpalmi" title="Packaging/porting to new platform">📦</a></td>
+    <td align="center"><a href="https://github.com/csreynolds"><img src="https://avatars2.githubusercontent.com/u/7391197?v=4" width="100px;" alt=""/><br /><sub><b>Chris Reynolds</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=csreynolds" title="Code">💻</a></td>
   </tr>
 </table>
 
