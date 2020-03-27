@@ -24,15 +24,6 @@ type ComplianceScanStatusWrapper struct {
 	Name string `json:"name,omitempty"`
 }
 
-// +k8s:openapi-gen=true
-type ComplianceRemediationNameStatus struct {
-	ComplianceRemediationSpecMeta `json:",inline"`
-	// Contains a human readable name for the remediation.
-	RemediationName string `json:"remediationName"`
-	// Contains the name of the scan that generated the remediation
-	ScanName string `json:"scanName"`
-}
-
 // ComplianceSuiteSpec defines the desired state of ComplianceSuite
 // +k8s:openapi-gen=true
 type ComplianceSuiteSpec struct {
@@ -47,10 +38,9 @@ type ComplianceSuiteSpec struct {
 // +k8s:openapi-gen=true
 type ComplianceSuiteStatus struct {
 	// +listType=atomic
-	ScanStatuses []ComplianceScanStatusWrapper `json:"scanStatuses"`
-	// +listType=atomic
-	// +optional
-	RemediationOverview []ComplianceRemediationNameStatus `json:"remediationOverview,omitempty"`
+	ScanStatuses     []ComplianceScanStatusWrapper `json:"scanStatuses"`
+	AggregatedPhase  ComplianceScanStatusPhase     `json:"aggregatedPhase,omitempty"`
+	AggregatedResult ComplianceScanStatusResult    `json:"aggregatedResult,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -60,6 +50,8 @@ type ComplianceSuiteStatus struct {
 // +k8s:openapi-gen=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=compliancesuites,scope=Namespaced
+// +kubebuilder:printcolumn:name="Phase",type="string",JSONPath=`.status.aggregatedPhase`
+// +kubebuilder:printcolumn:name="Result",type="string",JSONPath=`.status.aggregatedResult`
 type ComplianceSuite struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -81,4 +73,46 @@ type ComplianceSuiteList struct {
 
 func init() {
 	SchemeBuilder.Register(&ComplianceSuite{}, &ComplianceSuiteList{})
+}
+
+// ScanStatusWrapperFromScan returns a ComplianceScanStatusWrapper object
+// (used by the ComplianceSuite object) in order to display the status of
+// a scan
+func ScanStatusWrapperFromScan(s *ComplianceScan) ComplianceScanStatusWrapper {
+	return ComplianceScanStatusWrapper{
+		Name:                 s.Name,
+		ComplianceScanStatus: s.Status,
+	}
+}
+
+// ComplianceScanFromWrapper returns a ComplianceScan from the wrapper that's given
+// to a ComplianceSuite. This will return all the values that are derivable from the
+// wrapper in order to build a scan. Anything missing must be added separately.
+func ComplianceScanFromWrapper(sw *ComplianceScanSpecWrapper) *ComplianceScan {
+	return &ComplianceScan{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: sw.Name,
+		},
+		Spec: sw.ComplianceScanSpec,
+	}
+}
+
+func (s *ComplianceSuite) LowestCommonState() ComplianceScanStatusPhase {
+	lowestCommonState := PhaseDone
+
+	for _, scanStatusWrap := range s.Status.ScanStatuses {
+		lowestCommonState = stateCompare(lowestCommonState, scanStatusWrap.Phase)
+	}
+
+	return lowestCommonState
+}
+
+func (s *ComplianceSuite) LowestCommonResult() ComplianceScanStatusResult {
+	lowestCommonResult := ResultCompliant
+
+	for _, scanStatusWrap := range s.Status.ScanStatuses {
+		lowestCommonResult = resultCompare(lowestCommonResult, scanStatusWrap.Result)
+	}
+
+	return lowestCommonResult
 }

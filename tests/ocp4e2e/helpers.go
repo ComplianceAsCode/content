@@ -15,11 +15,14 @@ import (
 	cmpapis "github.com/openshift/compliance-operator/pkg/apis"
 	cmpv1alpha1 "github.com/openshift/compliance-operator/pkg/apis/compliance/v1alpha1"
 	mcfg "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
+	mcfgconst "github.com/openshift/machine-config-operator/pkg/daemon/constants"
 	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	extscheme "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	k8syaml "k8s.io/apimachinery/pkg/util/yaml"
@@ -27,6 +30,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	cgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/restmapper"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	dynclient "sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 )
@@ -242,14 +246,14 @@ func (ctx *e2econtext) waitForOperatorToBeReady() {
 	}
 }
 
-func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string) *cmpv1alpha1.ComplianceSuite {
+func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply bool) *cmpv1alpha1.ComplianceSuite {
 	suite := &cmpv1alpha1.ComplianceSuite{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      ctx.Profile + "-suite-" + suffix,
 			Namespace: ctx.OperatorNamespacedName.Namespace,
 		},
 		Spec: cmpv1alpha1.ComplianceSuiteSpec{
-			AutoApplyRemediations: false,
+			AutoApplyRemediations: autoApply,
 			Scans: []cmpv1alpha1.ComplianceScanSpecWrapper{
 				{
 					Name: ctx.Profile + "-master-scan-" + suffix,
@@ -319,6 +323,60 @@ func (ctx *e2econtext) waitForComplianceSuite(suite *cmpv1alpha1.ComplianceSuite
 	if err != nil {
 		ctx.t.Fatalf("The Compliance Suite '%s' didn't get to DONE phase: %s", key.Name, err)
 	}
+}
+
+func (ctx *e2econtext) waitForNodesToBeReady() {
+	nodeList := &corev1.NodeList{}
+	// A long time...
+	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(15*time.Second), 360)
+
+	err := backoff.RetryNotify(
+		func() error {
+			err := ctx.dynclient.List(goctx.TODO(), nodeList)
+			if err != nil {
+				// Returning an error merely makes this retry after the interval
+				return err
+			}
+			for _, node := range nodeList.Items {
+				if isNodeReady(node) {
+					continue
+				}
+				return fmt.Errorf("The node '%s' is not ready yet", node.Name)
+			}
+			return nil
+		},
+		bo,
+		func(err error, d time.Duration) {
+			// TODO(jaosorior): Change this for a log call
+			fmt.Printf("Nodes not ready yet after %s: %s\n", d.String(), err)
+		})
+	if err != nil {
+		ctx.t.Fatalf("The nodes were never ready: %s", err)
+	}
+}
+
+func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite) int {
+	remList := &cmpv1alpha1.ComplianceRemediationList{}
+	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s.Name)
+	opts := &client.ListOptions{
+		LabelSelector: labelSelector,
+	}
+	err := ctx.dynclient.List(goctx.TODO(), remList, opts)
+	if err != nil {
+		ctx.t.Fatalf("Couldn't get remediation list")
+	}
+	return len(remList.Items)
+}
+
+func isNodeReady(node corev1.Node) bool {
+	for _, condition := range node.Status.Conditions {
+		if condition.Type == corev1.NodeReady &&
+			condition.Status == corev1.ConditionTrue &&
+			node.Annotations[mcfgconst.MachineConfigDaemonStateAnnotationKey] == mcfgconst.MachineConfigDaemonStateDone {
+			return true
+		}
+	}
+	return false
 }
 
 // Reads a YAML file and returns an unstructured object from it. This object
