@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-104-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-105-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -433,6 +433,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://noslzzp.com/"><img src="https://avatars1.githubusercontent.com/u/1154653?v=4" width="100px;" alt=""/><br /><sub><b>NoSLZZP</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=noslzzp" title="Code">💻</a> <a href="#business-noslzzp" title="Business development">💼</a> <a href="#ideas-noslzzp" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="http://termlen0.github.io"><img src="https://avatars3.githubusercontent.com/u/18330662?v=4" width="100px;" alt=""/><br /><sub><b>Ajay Chenampara</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=termlen0" title="Code">💻</a></td>
     <td align="center"><a href="http://www.secureoss.jp"><img src="https://avatars1.githubusercontent.com/u/18388388?v=4" width="100px;" alt=""/><br /><sub><b>Kazuki Omo</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=omok314159" title="Code">💻</a></td>
+    <td align="center"><a href="http://he-insanity.blogspot.com/"><img src="https://avatars3.githubusercontent.com/u/22501234?v=4" width="100px;" alt=""/><br /><sub><b>J. Alexander Jacocks</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=ajacocks" title="Code">💻</a> <a href="#business-ajacocks" title="Business development">💼</a> <a href="#talk-ajacocks" title="Talks">📢</a> <a href="#video-ajacocks" title="Videos">📹</a> <a href="#tutorial-ajacocks" title="Tutorials">✅</a></td>
   </tr>
 </table>
 
