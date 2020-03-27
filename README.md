@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-83-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-84-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -406,6 +406,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/sdunne"><img src="https://avatars1.githubusercontent.com/u/7119497?v=4" width="100px;" alt=""/><br /><sub><b>sdunne</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=sdunne" title="Code">💻</a> <a href="#business-sdunne" title="Business development">💼</a></td>
     <td align="center"><a href="https://github.com/rrenshaw"><img src="https://avatars0.githubusercontent.com/u/10158660?v=4" width="100px;" alt=""/><br /><sub><b>Rick Renshaw</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=rrenshaw" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/pvrabec"><img src="https://avatars1.githubusercontent.com/u/8696003?v=4" width="100px;" alt=""/><br /><sub><b>Peter Vrabec</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/issues?q=author%3Apvrabec" title="Bug reports">🐛</a> <a href="#blog-pvrabec" title="Blogposts">📝</a> <a href="#business-pvrabec" title="Business development">💼</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=pvrabec" title="Code">💻</a> <a href="#fundingFinding-pvrabec" title="Funding Finding">🔍</a> <a href="#ideas-pvrabec" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-pvrabec" title="Project Management">📆</a> <a href="#question-pvrabec" title="Answering Questions">💬</a> <a href="https://github.com/ComplianceAsCode/content/pulls?q=is%3Apr+reviewed-by%3Apvrabec" title="Reviewed Pull Requests">👀</a> <a href="#tool-pvrabec" title="Tools">🔧</a> <a href="https://github.com/ComplianceAsCode/content/commits?author=pvrabec" title="Tests">⚠️</a> <a href="#tutorial-pvrabec" title="Tutorials">✅</a> <a href="#talk-pvrabec" title="Talks">📢</a> <a href="#video-pvrabec" title="Videos">📹</a></td>
+    <td align="center"><a href="https://github.com/pschneiders"><img src="https://avatars2.githubusercontent.com/u/57761736?v=4" width="100px;" alt=""/><br /><sub><b>Bryan Schneiders</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=pschneiders" title="Code">💻</a></td>
   </tr>
 </table>
 
