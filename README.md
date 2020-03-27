@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-69-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-70-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -388,6 +388,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/robinpriceii"><img src="https://avatars3.githubusercontent.com/u/33264661?v=4" width="100px;" alt=""/><br /><sub><b>rprice</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=rprice" title="Code">💻</a> <a href="#talk-rprice" title="Talks">📢</a> <a href="#business-rprice" title="Business development">💼</a></td>
     <td align="center"><a href="https://github.com/robinpriceii"><img src="https://avatars1.githubusercontent.com/u/969440?v=4" width="100px;" alt=""/><br /><sub><b>Robin Price II</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=robinpriceii" title="Code">💻</a> <a href="#talk-robinpriceii" title="Talks">📢</a> <a href="#video-robinpriceii" title="Videos">📹</a> <a href="#tutorial-robinpriceii" title="Tutorials">✅</a></td>
     <td align="center"><a href="https://github.com/nkinder"><img src="https://avatars3.githubusercontent.com/u/2062339?v=4" width="100px;" alt=""/><br /><sub><b>Nathan Kinder</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=nkinder" title="Code">💻</a> <a href="#business-nkinder" title="Business development">💼</a></td>
+    <td align="center"><a href="https://github.com/neo-aeon"><img src="https://avatars3.githubusercontent.com/u/8938489?v=4" width="100px;" alt=""/><br /><sub><b>neo-aeon</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=neo-aeon" title="Code">💻</a></td>
   </tr>
 </table>
 
