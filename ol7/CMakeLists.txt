@@ -16,5 +16,4 @@ ssg_build_html_table_by_ref(${PRODUCT} "ospp")
 ssg_build_html_nistrefs_table(${PRODUCT} "standard")
 ssg_build_html_nistrefs_table(${PRODUCT} "stig")
 
-# Uncomment when stig-overlay.xml added
-#ssg_build_html_stig_tables(${PRODUCT} "stig")
+ssg_build_html_stig_tables(${PRODUCT} "stig")
