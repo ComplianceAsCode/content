@@ -78,14 +78,15 @@ selections:
     - accounts_password_pam_minlen
     - no_empty_passwords
     - sshd_disable_empty_passwords
+    - sshd_disable_user_known_hosts
     - account_disable_post_pw_expiration
     - accounts_passwords_pam_faillock_unlock_time
     - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_deny_root
     - sudo_remove_nopasswd
-    - sudo_remove_no_authenticate
     - accounts_logon_fail_delay
+    - accounts_logon_fail_delay.severity=medium
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
     - sshd_do_not_permit_user_env
@@ -93,6 +94,7 @@ selections:
     - grub2_password
     - require_singleuser_auth
     - grub2_uefi_password
+    - grub2_uefi_password.severity=high
     - smartcard_auth
     - package_rsh-server_removed
     - package_ypserv_removed
@@ -107,7 +109,6 @@ selections:
     - service_autofs_disabled
     - clean_components_post_updating
     - selinux_state
-    - selinux_policytype
     - disable_ctrlaltdel_reboot
     - accounts_umask_etc_login_defs
     - installed_OS_is_vendor_supported
@@ -134,6 +135,12 @@ selections:
     - mount_option_home_nosuid
     - mount_option_nosuid_removable_partitions
     - mount_option_nosuid_remote_filesystems
+    - mount_option_dev_shm_nodev
+    - mount_option_dev_shm_nodev.severity=low
+    - mount_option_dev_shm_noexec
+    - mount_option_dev_shm_noexec.severity=low
+    - mount_option_dev_shm_nosuid
+    - mount_option_dev_shm_nosuid.severity=low
     - dir_perms_world_writable_system_owned
     - accounts_umask_interactive_users
     - rsyslog_cron_logging
@@ -147,14 +154,18 @@ selections:
     - grub2_enable_fips_mode
     - aide_verify_acls
     - aide_verify_ext_attributes
+    - aide_verify_ext_attributes.severity=low
     - aide_use_fips_hashes
     - grub2_no_removeable_media
     - package_telnet-server_removed
     - service_auditd_enabled
+    - file_permissions_var_log_audit
+    - file_ownership_var_log_audit
     - audit_rules_system_shutdown
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
+    - auditd_name_format
     - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
@@ -182,7 +193,6 @@ selections:
     - audit_rules_execution_setsebool
     - audit_rules_execution_chcon
     - audit_rules_execution_setfiles
-    - audit_rules_login_events_tallylog
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
     - audit_rules_privileged_commands_passwd
@@ -195,7 +205,6 @@ selections:
     - audit_rules_sysadmin_actions
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_chsh
-    - audit_rules_privileged_commands_sudoedit
     - audit_rules_media_export
     - audit_rules_privileged_commands_umount
     - audit_rules_privileged_commands_postdrop
@@ -221,6 +230,7 @@ selections:
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
+    - sssd_ldap_start_tls.severity=medium
     - sssd_ldap_configure_tls_ca_dir
     - sssd_ldap_configure_tls_ca
     - sysctl_kernel_randomize_va_space
@@ -228,6 +238,7 @@ selections:
     - sshd_required=yes
     - service_sshd_enabled
     - sshd_set_idle_timeout
+    - sshd_disable_rhosts
     - sshd_disable_rhosts_rsa
     - sshd_set_keepalive
     - sshd_print_last_log
@@ -254,9 +265,12 @@ selections:
     - sysctl_net_ipv4_conf_default_accept_redirects
     - sysctl_net_ipv4_conf_default_send_redirects
     - sysctl_net_ipv4_conf_all_send_redirects
+    - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_default_rp_filter
     - network_sniffer_disabled
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
+    - package_vsftpd_removed.severity=high
     - package_tftp-server_removed
     - sshd_enable_x11_forwarding
     - tftpd_uses_secure_mode
