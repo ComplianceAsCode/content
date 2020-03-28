@@ -4,7 +4,7 @@
       <title>Require Authentication for Emergency Mode</title>
       <affected family="unix">
         <platform>multi_platform_fedora</platform>
-	<platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
         <platform>multi_platform_rhv</platform>
         <platform>multi_platform_ol</platform>
@@ -22,7 +22,7 @@
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that
-    {{% if product in ["fedora", "rhel8"] -%}}
+    {{% if product in ["fedora", "rhel8", "ol8"] -%}}
     /usr/lib/systemd/systemd-sulogin-shell
     {{%- else -%}}
     /sbin/sulogin
@@ -34,7 +34,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_emergency_service" version="1">
     <ind:filepath>/usr/lib/systemd/system/emergency.service</ind:filepath>
-    {{%- if product in ["fedora", "rhel8"] -%}}
+    {{%- if product in ["fedora", "rhel8", "ol8"] -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/usr/lib/systemd/systemd-sulogin-shell[\s]+emergency</ind:pattern>
     {{%- else -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-/bin/sh[\s]+-c[\s]+\"(/usr)?/sbin/sulogin;[\s]+/usr/bin/systemctl[\s]+--fail[\s]+--no-block[\s]+default\"</ind:pattern>

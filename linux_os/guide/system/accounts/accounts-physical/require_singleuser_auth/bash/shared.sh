@@ -4,7 +4,7 @@
 
 service_file="/usr/lib/systemd/system/rescue.service"
 
-{{% if product in ["fedora", "rhel8"] -%}}
+{{% if product in ["fedora", "rhel8", "ol8"] -%}}
 sulogin="/usr/lib/systemd/systemd-sulogin-shell rescue"
 {{%- else -%}}
 sulogin='/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
