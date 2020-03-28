@@ -3,4 +3,18 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the developer_guide.adoc for more details!")
 endif()
 
-ssg_build_product("ol7")
+set(PRODUCT "ol7")
+
+ssg_build_product(${PRODUCT})
+
+ssg_build_html_table_by_ref(${PRODUCT} "nist")
+ssg_build_html_table_by_ref(${PRODUCT} "cui")
+ssg_build_html_table_by_ref(${PRODUCT} "pcidss")
+ssg_build_html_table_by_ref(${PRODUCT} "anssi")
+ssg_build_html_table_by_ref(${PRODUCT} "ospp")
+
+ssg_build_html_nistrefs_table(${PRODUCT} "standard")
+ssg_build_html_nistrefs_table(${PRODUCT} "stig")
+
+# Uncomment when stig-overlay.xml added
+#ssg_build_html_stig_tables(${PRODUCT} "stig")
