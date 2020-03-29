@@ -12,9 +12,9 @@ description: |-
     <pre>$ rm ~/.rhosts</pre>
 
 rationale: |-
-    Trust files are convenient, but when
-    used in conjunction with the R-services, they can allow
-    unauthenticated access to a system.
+    This action is only meaningful if <tt>.rhosts</tt> support is permitted
+    through PAM. Trust files are convenient, but when used in conjunction with
+    the R-services, they can allow unauthenticated access to a system.
 
 severity: high
 
@@ -26,7 +26,7 @@ identifiers:
 references:
     stigid@rhel6: "000019"
     srg@rhel6: SRG-OS-000248
-    cis: 6.2.14
+    cis@rhel8: 6.2.13
     disa: "1436"
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
     nist: CM-7(a),CM-7(b),CM-6(a)

@@ -602,87 +602,88 @@ selections:
 
     ### 4.1.9 Ensure discretionary access control permission modification
     ###       events are collected (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5509
     
     ### 4.1.10 Ensure unsuccessful unauthorized file access attempts are
     ###        collected (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5510
 
     ### 4.1.11 Ensure events that modify user/group information are
     ###        collected (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5511
 
     ### 4.1.12 Ensure successful file system mounts are collected (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5512
 
     ### 4.1.13 Ensure use of privileged commands is collected (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5513
 
     ### 4.1.14 Ensure file deletion events by users are collected
     ###        (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5514
 
     ### 4.1.15 Ensure kernel module loading and unloading is collected
     ###        (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5515
 
     ### 4.1.16 Ensure system administrator actions (sudolog) are
     ###        collected (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5516
 
     ### 4.1.17 Ensure the audit configuration is immutable (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5517
 
     ## 4.2 Configure Logging
 
     ### 4.2.1 Configure rsyslog
 
     #### 4.2.1.1 Ensure rsyslog is installed (Scored)
-
+    - package_rsyslog_installed
 
     #### 4.2.1.2 Ensure rsyslog Service is enabled (Scored)
-
+    - service_rsyslog_enabled
 
     #### 4.2.1.3 Ensure rsyslog default file permissions configured (Scored)
-
+    - rsyslog_files_permissions
 
     #### 4.2.1.4 Ensure logging is configured (Not Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5519
 
     #### 4.2.1.5 Ensure rsyslog is configured to send logs to a remote
     ####         log host (Scored)   
-
+    - rsyslog_remote_loghost
 
     #### 4.2.1.6 Ensure remote rsyslog messages are only accepted on
     ####         designated log hosts (Not Scored)
-
+    - rsyslog_nolisten
 
     ### 4.2.2 Configure journald
 
     #### 4.2.2.1 Ensure journald is configured to send logs to
     ####         rsyslog (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5520
 
     #### 4.2.2.2 Ensure journald is configured to compress large
     ####         log files (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5521
 
 
     #### 4.2.2.3 Ensure journald is configured to write logfiles to
     ####         persistent disk (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5522
 
     ### 4.2.3 Ensure permissions on all logfiles are configured (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5523
 
     ## 4.3 Ensure logrotate is conifgured (Not Scored)
-
+    - ensure_logrotate_activated
 
     # 5 Access, Authentication and Authorization
 
     ## 5.1 Configure cron
 
-
     ### 5.1.1 Ensure cron daemon is enabled (Scored)
+    - service_crond_enabled
 
 
     ### 5.1.2 Ensure permissions on /etc/crontab are configured (Scored)
@@ -790,19 +791,19 @@ selections:
 
     ### 5.2.14 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5525
 
     ### 5.2.15 Ensure SSH warning banner is configured (Scored)
     - sshd_enable_warning_banner
 
     ### 5.2.16 Ensure SSH PAM is enabled (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5526
 
     ### 5.2.17 Ensure SSH AllowTcpForwarding is disabled (Scored)
     - sshd_disable_tcp_forwarding
 
     ### 5.2.18 Ensure SSH MaxStarups is configured (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5528
 
     ### 5.2.19 Ensure SSH MaxSessions is set to 4 or less (Scored)
     - sshd_set_max_sessions
@@ -815,69 +816,75 @@ selections:
 
 
     ### 5.3.1 Create custom authselectet profile (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5530
 
     ### 5.3.2 Select authselect profile (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5531
 
     ### 5.3.3 Ensure authselect includes with-faillock (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5532
 
     ## 5.4 Configure PAM
 
     ### 5.4.1 Ensure password creation requirements are configured (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5533
 
     ### 5.4.2 Ensure lockout for failed password attempts is
     ###       configured (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5534
 
     ### 5.4.3 Ensure password reuse is limited (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5535
 
     ### 5.4.4 Ensure password hashing algorithm is SHA-512 (Scored)
-
+    - set_password_hashing_algorithm_systemauth
 
     ## 5.5 User Accounts and Environment
 
     ### 5.5.1 Set Shadow Password Suite Parameters
 
     #### 5.5.1 Ensure password expiration is 365 days or less (Scored)
-
+    - var_accounts_maximum_age_login_defs=365
+    - accounts_maximum_age_login_defs
 
     #### 5.5.1.2 Ensure minimum days between password changes is 7
     ####         or more (Scored)
-
+    - var_accounts_minimum_age_login_defs=7
+    - accounts_minimum_age_login_defs
 
     #### 5.5.1.3 Ensure password expiration warning days is
     ####         7 or more (Scored)
-
+    - var_accounts_password_warn_age_login_defs=7
+    - accounts_password_warn_age_login_defs
 
     #### 5.5.1.4 Ensure inactive password lock is 30 days or less (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5536
 
     #### 5.5.1.5 Ensure all users last password change date is
     ####         in the past (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5537
 
     ### 5.5.2 Ensure system accounts are secured (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5538
 
     ### 5.5.3 Ensure default user shell timeout is 900 seconds
     ###       or less (Scored)
-
+    - var_accounts_tmout=15_min
+    - accounts_tmout
 
     ### 5.5.4 Ensure default group for the root account is
     ###       GID 0 (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5539
 
     ### 5.5.5 Ensure default user mask is 027 or more restrictive (Scored)
-
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5540
 
     ## 5.6 Ensure root login is restricted to system console (Not Scored)
-
+    - securetty_root_login_console_only
+    - no_direct_root_logins
 
     ## 5.7 Ensure access to the su command is restricted (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5541
 
     # System Maintenance
 
@@ -971,8 +978,58 @@ selections:
     ### 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)
     - no_legacy_plus_entries_etc_passwd
 
-    ## 6.2.4 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
+    ### 6.2.4 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
     - no_legacy_plus_entries_etc_shadow
 
-    ###6.2.5 Ensure no legacy "+" entries exist in /etc/group (Scored)
+    ### 6.2.5 Ensure no legacy "+" entries exist in /etc/group (Scored)
     - no_legacy_plus_entries_etc_group
+
+    ### 6.2.6 Ensure root is the only UID 0 account (Scored)
+    - accounts_no_uid_except_zero
+
+    ### 6.2.7 Ensure users' home directories permissions are 750
+    ###       or more restrictive (Scored)
+    - file_permissions_home_dirs
+
+    ### 6.2.8 Ensure users own their home directories (Scored)
+    # NEEDS RULE for user owner @ https://github.com/ComplianceAsCode/content/issues/5507
+    - file_groupownership_home_directories
+
+    ### 6.2.9 Ensure users' dot files are not group or world
+    ###       writable (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5506
+
+    ### 6.2.10 Ensure no users have .forward files (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5505
+
+    ### 6.2.11 Ensure no users have .netrc files (Scored)
+    - no_netrc_files
+
+    ### 6.2.12 Ensure users' .netrc Files are not group or
+    ###        world accessible (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5504
+
+    ### 6.2.13 Ensure no users have .rhosts files (Scored)
+    - no_rsh_trust_files
+
+    ### 6.2.14 Ensure all groups in /etc/passwd exist in
+    ###        /etc/group (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5503
+
+    ### 6.2.15 Ensure no duplicate UIDs exist (Scored)
+    # NEEDS RULE -  https://github.com/ComplianceAsCode/content/issues/5502
+
+    ### 6.2.16 Ensure no duplicate GIDs exist (Scored)
+    # NEEDS RULE -  https://github.com/ComplianceAsCode/content/issues/5501
+
+    ### 6.2.17 Ensure no duplicate user names exist (Scored)
+    - account_unique_name
+
+    ### 6.2.18 Ensure no duplicate group names exist (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5500
+
+    ### 6.2.19 Ensure shadow group is empty (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5499
+
+    ### 6.2.20 Ensure all users' home directories exist (Scored)
+    - accounts_user_interactive_home_directory_exists
