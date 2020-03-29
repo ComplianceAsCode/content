@@ -2,9 +2,15 @@ documentation_complete: true
 
 title: 'Ensure All Accounts on the System Have Unique Names'
 
-description: 'Change usernames, or delete accounts, so each has a unique name.'
+description: |-
+    Although the <tt>useradd</tt> utility prevents creation of duplicate user
+    names, it is possible for a malicious administrator to manually edit the
+    <tt>/etc/passwd</tt> file and change the user name.
 
-rationale: 'Unique usernames allow for accountability on the system.'
+rationale: |-
+    If a user is assigned a duplicate user name, the new user will be able to
+    create and have access to files with the first UID for that username as
+    defined in <tt>/etc/passwd</tt>.
 
 severity: medium
 
@@ -19,6 +25,7 @@ references:
     cjis: 5.5.2
     disa: 770,804
     pcidss: Req-8.1.1
+    cis@rhel8: 6.2.17
 
 ocil_clause: 'a line is returned'
 
