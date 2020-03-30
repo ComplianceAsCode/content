@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="ntpd_configure_restrictions" version="2">
+    <metadata>
+      <title>Specify server restrictions for ntpd</title>
+      {{{- oval_affected(products) }}}
+      <description>Certain restrictions are imposed on ntp servers configured to be used by ntpd</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="test ipv6 configuration" test_ref="test_ntpd_configure_restrictions_ipv6" />
+      <criterion comment="test ipv4 configuration" test_ref="test_ntpd_configure_restrictions_ipv4" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="ensure ipv4 restrictions" id="test_ntpd_configure_restrictions_ipv4"
+  version="1">
+    <ind:object object_ref="obj_ntpd_configure_restrictions_ipv4" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="ensure ipv4 restrictions"
+  id="obj_ntpd_configure_restrictions_ipv4" version="1">
+    <ind:filepath>/etc/ntp.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*restrict[\s]+(-4[\s]*)?default(?=.*kod)(?=.*nomodify)(?=.*notrap)(?=.*nopeer)(?=.*noquery).*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+<ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="ensure ipv6 restrictions" id="test_ntpd_configure_restrictions_ipv6"
+  version="1">
+    <ind:object object_ref="obj_ntpd_configure_restrictions_ipv6" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object comment="ensure ipv6 restrictions"
+  id="obj_ntpd_configure_restrictions_ipv6" version="1">
+    <ind:filepath>/etc/ntp.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*restrict[\s]+-6[\s]+default(?=.*kod)(?=.*nomodify)(?=.*notrap)(?=.*nopeer)(?=.*noquery).*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
