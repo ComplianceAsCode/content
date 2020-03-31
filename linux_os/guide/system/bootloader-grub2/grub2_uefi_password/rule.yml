@@ -31,7 +31,11 @@ rationale: |-
     </ul>
     {{% endif %}}
 
-severity: medium
+severity: {{% if product == "ol7" -%}}
+high
+{{%- else -%}}
+medium
+{{%- endif %}}
 
 identifiers:
     cce@rhel7: 80354-4

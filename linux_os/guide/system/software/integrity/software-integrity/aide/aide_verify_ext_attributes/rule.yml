@@ -17,7 +17,11 @@ rationale: |-
     Extended attributes in file systems are used to contain arbitrary data and file metadata
     with security implications.
 
-severity: medium
+severity: {{% if product == "ol7" -%}}
+low
+{{%- else -%}}
+medium
+{{%- endif %}}
 
 identifiers:
     cce@rhel7: 80376-7

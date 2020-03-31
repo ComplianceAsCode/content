@@ -11,7 +11,11 @@ rationale: |-
     Increasing the time between a failed authentication attempt and re-prompting to
     enter credentials helps to slow a single-threaded brute force attack.
 
-severity: low
+severity: {{% if product == "ol7" -%}}
+medium
+{{%- else -%}}
+low
+{{%- endif %}}
 
 identifiers:
     cce@rhel7: 80352-8

@@ -22,7 +22,11 @@ rationale: |-
     failure of security functions requiring name resolution, which may include
     time synchronization, centralized authentication, and remote system logging.
 
-severity: unknown
+severity: {{% if product == "ol7" -%}}
+low
+{{%- else -%}}
+unknown
+{{%- endif %}}
 
 identifiers:
     cce@rhel7: 80438-5

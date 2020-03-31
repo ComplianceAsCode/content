@@ -33,7 +33,11 @@ rationale: |-
     users may take advantage of weaknesses in the unpatched software. The
     lack of prompt attention to patching could result in a system compromise.
 
-severity: high
+severity: {{% if product == "ol7" -%}}
+medium
+{{%- else -%}}
+high
+{{%- endif %}}
 
 identifiers:
     cce@rhel6: 27635-2
