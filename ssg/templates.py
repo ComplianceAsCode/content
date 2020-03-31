@@ -200,10 +200,10 @@ def file_permissions(data, lang):
 
 @template(["ansible", "bash", "oval"])
 def grub2_bootloader_argument(data, lang):
+    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
     if lang == "oval":
         # solve the case where argument contains dot
-        data["arg_name"].replace(".", "\\.")
-    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+        data["arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
     return data
 
 
