@@ -47,7 +47,7 @@ ocil: |-
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'false'
+        missing_parameter_pass: 'true'
         parameter: KerberosAuthentication
         rule_id: sshd_disable_kerb_auth
         value: 'no'
