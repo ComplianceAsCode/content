@@ -20,6 +20,9 @@ SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'
 LINUX_OS_GUIDE = re.sub(r'ssg/.*', 'linux_os', __file__) + '/guide/'
 
 
+ASSUMED_OVAL_VERSION_STRING = "5.11"
+
+
 # globals, to make recursion easier in case we encounter extend_definition
 try:
     ET.register_namespace("oval", ovalns)
@@ -91,14 +94,19 @@ def _add_elements(body, header):
     return defname
 
 
-def applicable_platforms(oval_file):
+def applicable_platforms(oval_file, oval_version_string=None):
     """
     Returns the applicable platforms for a given oval file
     """
 
     platforms = []
-    header = oval_generated_header("applicable_platforms", "5.11", "0.0.1")
-    subst_dict = dict()
+
+    if not oval_version_string:
+        oval_version_string = ASSUMED_OVAL_VERSION_STRING
+    header = oval_generated_header("applicable_platforms", oval_version_string, "0.0.1")
+
+    oval_version_list = [int(num) for num in oval_version_string.split(".")]
+    subst_dict = dict(target_oval_version=oval_version_list)
 
     oval_filename_components = oval_file.split(os.path.sep)
     if len(oval_filename_components) > 3:
