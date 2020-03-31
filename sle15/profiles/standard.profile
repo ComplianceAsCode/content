@@ -139,3 +139,6 @@ selections:
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
     - audit_rules_successful_file_modification_chmod
+    - audit_rules_file_deletion_events_rmdir
+    - audit_rules_file_deletion_events_unlink
+    - audit_rules_file_deletion_events_unlinkat
