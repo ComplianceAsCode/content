@@ -42,6 +42,7 @@ const (
 
 var profile string
 var contentImage string
+var installOperator bool
 
 type e2econtext struct {
 	// These are public because they're needed in the template
@@ -49,17 +50,20 @@ type e2econtext struct {
 	ContentImage           string
 	OperatorNamespacedName types.NamespacedName
 	// These are only needed for the test and will only be used in this package
-	rootdir       string
-	profilepath   string
-	resourcespath string
-	dynclient     dynclient.Client
-	restMapper    *restmapper.DeferredDiscoveryRESTMapper
-	t             *testing.T
+	rootdir         string
+	profilepath     string
+	resourcespath   string
+	installOperator bool
+	dynclient       dynclient.Client
+	restMapper      *restmapper.DeferredDiscoveryRESTMapper
+	t               *testing.T
 }
 
 func init() {
 	flag.StringVar(&profile, "profile", "", "The profile to check")
 	flag.StringVar(&contentImage, "content-image", "", "The path to the image with the content to test")
+	flag.BoolVar(&installOperator, "install-operator", true, "Should the test-code install the operator or not? "+
+		"This is useful if you need to test with your own deployment of the operator")
 }
 
 func newE2EContext(t *testing.T) *e2econtext {
@@ -79,6 +83,7 @@ func newE2EContext(t *testing.T) *e2econtext {
 		rootdir:                rootdir,
 		profilepath:            profilepath,
 		resourcespath:          resourcespath,
+		installOperator:        installOperator,
 		t:                      t,
 	}
 }
