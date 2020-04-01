@@ -15,11 +15,15 @@ func TestE2e(t *testing.T) {
 
 	t.Run("Operator setup", func(t *testing.T) {
 		ctx.ensureNamespaceExistsAndSet()
-		ctx.ensureOperatorSourceExists()
-		ctx.ensureCatalogSourceConfigExists()
-		ctx.ensureOperatorGroupExists()
-		ctx.ensureSubscriptionExists()
-		ctx.waitForOperatorToBeReady()
+		if ctx.installOperator {
+			ctx.ensureOperatorSourceExists()
+			ctx.ensureCatalogSourceConfigExists()
+			ctx.ensureOperatorGroupExists()
+			ctx.ensureSubscriptionExists()
+			ctx.waitForOperatorToBeReady()
+		} else {
+			t.Logf("Skipping operator install as requested")
+		}
 		ctx.resetClientMappings()
 	})
 

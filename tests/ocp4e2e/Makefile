@@ -5,6 +5,8 @@ TEST_DIR=$(ROOT_DIR)/tests/ocp4e2e
 TEST_FLAGS?=-v -timeout 120m
 # Skip pushing the container to your cluster
 SKIP_CONTAINER_PUSH?=false
+# Should the test attempt to install the operator?
+INSTALL_OPERATOR?=true
 
 .PHONY: all
 all: e2e
@@ -12,7 +14,7 @@ all: e2e
 .PHONY: e2e
 e2e: image-to-cluster ## Run the e2e tests. This requires that the PROFILE environment variable be set. This will upload images to the cluster as part of the run with the `image-to-cluster` target.
 	pushd $(TEST_DIR) && \
-	go test $(TEST_FLAGS) . -profile="$(PROFILE)" -content-image="$(CONTENT_IMAGE)"
+	go test $(TEST_FLAGS) . -profile="$(PROFILE)" -content-image="$(CONTENT_IMAGE)" -install-operator=$(INSTALL_OPERATOR)
 
 .PHONY: image-to-cluster
 image-to-cluster: ## Upload a content image to the cluster. The SKIP_CONTAINER_PUSH environment variable skips this step; the CONTENT_IMAGE environment variable takes a pre-uploaded image into use.
