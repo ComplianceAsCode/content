@@ -202,8 +202,10 @@ def file_permissions(data, lang):
 def grub2_bootloader_argument(data, lang):
     data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
     if lang == "oval":
-        # solve the case where argument contains dot
-        data["arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
+        # escape dot, this is used in oval regex
+        data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
+        # replace . with _, this is used in test / object / state ids
+        data["sanitized_arg_name"] = data["arg_name"].replace(".", "_")
     return data
 
 
