@@ -10,6 +10,8 @@ import time
 import sys
 from glob import glob
 import re
+import contextlib
+import tempfile
 
 ssg_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(ssg_dir)
@@ -50,6 +52,21 @@ def parse_args():
                                help=("Path to the Source DataStream on this "
                                      "machine which is going to be tested"))
     benchmarks = common_parser.add_mutually_exclusive_group()
+    benchmarks.add_argument(
+            "--add-platform",
+            metavar="<CPE REGEX>",
+            default=None,
+            help="Find all CPEs in the datastream that match the provided regex, "
+            "and add them as platforms to all datastream benchmarks. "
+            "If the regex doesn't match anything, it will be treated "
+            "as a literal CPE, and added as a platform. "
+            "For example, use 'cpe:/o:fedoraproject:fedora:30' or 'enterprise_linux'.")
+    benchmarks.add_argument(
+            "--keep-machine-only",
+            default=False,
+            action="store_true",
+            help="Whether to keep machine-only platform in rules which is stripped by default "
+            "to increase usefulness of the container backend.")
     benchmarks.add_argument("--xccdf-id",
                                dest="xccdf_id",
                                metavar="REF-ID",
@@ -252,6 +269,14 @@ def get_unique_datastream():
         "e.g. {1}".format(len(datastreams), datastreams))
 
 
+@contextlib.contextmanager
+def datastream_in_stash(current_location):
+    tfile = tempfile.NamedTemporaryFile(prefix="ssgts-ds-")
+
+    tfile.write(open(current_location, "rb").read())
+    yield tfile.name
+
+
 def normalize_passed_arguments(options):
     if 'ALL' in options.target:
         options.target = ['ALL']
@@ -326,7 +351,16 @@ def main():
 
     LogHelper.add_logging_dir(log, logging_dir)
 
-    options.func(options)
+    with datastream_in_stash(options.datastream) as stashed_datastream:
+        options.datastream = stashed_datastream
+
+        with xml_operations.datastream_root(stashed_datastream, stashed_datastream) as root:
+            if not options.keep_machine_only:
+                xml_operations.remove_machine_platform(root)
+            if options.add_platform:
+                xml_operations.add_platform_to_benchmark(root, options.add_platform)
+
+        options.func(options)
 
 
 if __name__ == "__main__":

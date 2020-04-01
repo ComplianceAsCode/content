@@ -2,12 +2,14 @@
 import xml.etree.cElementTree as ET
 
 import logging
+import contextlib
+import re
 
 from ssg.constants import OSCAP_RULE
 from ssg.constants import XCCDF12_NS as xccdf_ns
 from ssg.constants import datastream_namespace
 from ssg.constants import xlink_namespace
-from ssg.constants import oval_namespace as oval_ns
+from ssg.constants import oval_namespace
 from ssg.constants import bash_system as bash_rem_system
 from ssg.constants import ansible_system as ansible_rem_system
 from ssg.constants import puppet_system as puppet_rem_system
@@ -26,6 +28,7 @@ NAMESPACES = {
     'xccdf': xccdf_ns,
     'ds': datastream_namespace,
     'xlink': xlink_namespace,
+    'oval': oval_namespace,
 }
 
 
@@ -69,6 +72,71 @@ def infer_benchmark_id_from_component_ref_id(datastream, ref_id):
         raise RuntimeError(msg)
 
     return benchmark_node.get('id')
+
+
+@contextlib.contextmanager
+def datastream_root(ds_location, save_location=None):
+    try:
+        tree = ET.parse(ds_location)
+        for prefix, uri in NAMESPACES.items():
+            ET.register_namespace(prefix, uri)
+        root = tree.getroot()
+        yield root
+    finally:
+        if save_location:
+            tree.write(save_location)
+
+
+def remove_machine_platform(root):
+    remove_machine_only_from_element(root, "xccdf:Rule")
+    remove_machine_only_from_element(root, "xccdf:Group")
+
+
+def remove_machine_only_from_element(root, element_spec):
+    query = ".//ds:component/xccdf:Benchmark//{0}".format(element_spec)
+    elements = root.findall(query, NAMESPACES)
+    for el in elements:
+        platforms = el.findall("./xccdf:platform", NAMESPACES)
+        for p in platforms:
+            if p.get("idref") == "cpe:/a:machine":
+                el.remove(p)
+
+
+def get_all_cpe_refs(root):
+    query = ".//ds:component/oval:oval_definitions/oval:definitions/oval:definition[@class='inventory']/oval:metadata/oval:reference[@source='CPE']"
+    references = root.findall(query, NAMESPACES)
+    cpes = set()
+    for ref in references:
+        cpes.add(ref.get("ref_id"))
+    return cpes
+
+
+def add_platform_to_benchmark(root, cpe_regex):
+    benchmark_query = ".//ds:component/xccdf:Benchmark"
+    benchmarks = root.findall(benchmark_query, NAMESPACES)
+    if not benchmarks:
+        msg = (
+            "No benchmarks found in the datastream"
+        )
+        raise RuntimeError(msg)
+
+    all_cpes = get_all_cpe_refs(root)
+    regex = re.compile(cpe_regex)
+
+    cpes_to_add = []
+    for cpe_str in all_cpes:
+        if regex.search(cpe_str):
+            cpes_to_add.append(cpe_str)
+
+    if not cpes_to_add:
+        cpes_to_add = [cpe_regex]
+
+    for benchmark in benchmarks:
+        existing_platform_element = benchmark.find("xccdf:platform", NAMESPACES)
+        platform_index = benchmark.getchildren().index(existing_platform_element)
+        for cpe_str in cpes_to_add:
+            e = ET.Element("xccdf:platform", idref=cpe_str)
+            benchmark.insert(platform_index, e)
 
 
 def _get_benchmark_node(datastream, benchmark_id, logging):
