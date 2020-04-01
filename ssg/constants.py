@@ -103,6 +103,7 @@ PKG_MANAGER_TO_SYSTEM = {
 PKG_MANAGER_TO_CONFIG_FILE = {
     "yum": "/etc/yum.conf",
     "dnf": "/etc/dnf/dnf.conf",
+    "zypper": "/etc/zypp/zypper.conf",
 }
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
@@ -263,6 +264,7 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "sle15": [
         "cpe:/o:suse:linux_enterprise_server:15",
+        "cpe:/o:suse:linux_enterprise_desktop:15",
     ],
     "ubuntu1404": [
         "cpe:/o:canonical:ubuntu_linux:14.04",

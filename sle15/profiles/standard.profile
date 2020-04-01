@@ -27,18 +27,11 @@ selections:
     - service_cron_enabled
     - service_ntp_enabled
     - service_rsyslog_enabled
-    - sshd_idle_timeout_value=5_minutes
-    - sshd_set_idle_timeout
-    - sshd_disable_root_login
-    - sshd_disable_empty_passwords
-    - sshd_allow_only_protocol2
-    - sshd_set_keepalive
     - file_owner_logfiles_value=adm
     - rsyslog_files_ownership
     - file_groupowner_logfiles_value=adm
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
-    - "!rsyslog_remote_loghost"
     - ensure_logrotate_activated
     - file_permissions_systemmap
     - file_permissions_etc_shadow
@@ -83,7 +76,7 @@ selections:
     - accounts_tmout
     - display_login_attempts
     - inactivity_timeout_value=15_minutes
-    - var_password_pam_minlen=15
+    - var_password_pam_minlen=8
     - accounts_password_pam_minlen
     - accounts_password_minlen_login_defs
     - var_password_pam_ocredit=1
@@ -105,3 +98,47 @@ selections:
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_unlock_time
+    - service_httpd_disabled
+    - package_httpd_removed
+    - package_firewalld_installed
+    - package_openssh_installed
+    - service_sshd_enabled
+    - sshd_enable_x11_forwarding
+    - sshd_allow_only_protocol2
+    - sshd_idle_timeout_value=5_minutes
+    - sshd_set_idle_timeout
+    - sshd_disable_root_login
+    - sshd_disable_empty_passwords
+    - sshd_set_keepalive
+    - audit_rules_time_adjtimex
+    - audit_rules_time_settimeofday
+    - audit_rules_time_stime
+    - audit_rules_time_clock_settime
+    - audit_rules_time_watch_localtime
+    - audit_rules_usergroup_modification
+    - audit_rules_networkconfig_modification
+    - audit_rules_mac_modification
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_setxattr
+    - audit_rules_unsuccessful_file_modification
+    - audit_rules_privileged_commands
+    - audit_rules_media_export
+    - audit_rules_file_deletion_events
+    - audit_rules_sysadmin_actions
+    - audit_rules_kernel_module_loading_finit
+    - audit_rules_kernel_module_loading_init
+    - audit_rules_successful_file_modification_chmod
+    - audit_rules_file_deletion_events_rmdir
+    - audit_rules_file_deletion_events_unlink
+    - audit_rules_file_deletion_events_unlinkat
