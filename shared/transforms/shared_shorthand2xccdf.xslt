@@ -73,6 +73,7 @@
           <xsl:apply-templates select="description[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="warning[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="ref[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
+          <xsl:apply-templates select="metadata[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="platform[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="requires[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
@@ -80,7 +81,7 @@
           <xsl:apply-templates select="ident[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
           <xsl:apply-templates select="oval[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval|self::prodtype)]"/>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::metadata|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval|self::prodtype)]"/>
         </Rule>
       </xsl:when>
     </xsl:choose>
@@ -101,6 +102,7 @@
       <xsl:apply-templates select="description"/>
       <xsl:apply-templates select="warning"/>
       <xsl:apply-templates select="ref"/>
+      <xsl:apply-templates select="metadata"/>
       <xsl:apply-templates select="rationale"/>
       <xsl:apply-templates select="platform"/>
       <xsl:apply-templates select="requires"/>
@@ -108,7 +110,7 @@
       <xsl:apply-templates select="ident"/>
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval)]"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::metadata|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval)]"/>
     </Rule>
   </xsl:template>
 
