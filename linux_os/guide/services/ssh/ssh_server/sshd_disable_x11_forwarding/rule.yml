@@ -21,7 +21,9 @@ rationale: |-
 
 severity: low
 
-{{{ complete_ocil_entry_sshd_option(default="no", option="X11Forwarding", value="no") }}}
+ocil_clause: "that the X11Forwarding option exists and is enabled"
+
+ocil: '{{{ ocil_sshd_option(default="no", option="X11Forwarding", value="no") }}}'
 
 references:
   cis@rhel7: 5.2.5
@@ -32,7 +34,7 @@ references:
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'false'
+        missing_parameter_pass: 'true'
         parameter: X11Forwarding
         rule_id: sshd_disable_x11_forwarding
         value: 'no'
