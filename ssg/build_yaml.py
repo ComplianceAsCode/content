@@ -25,7 +25,7 @@ from .xml import ElementTree as ET
 from .shims import unicode_func
 
 
-def add_sub_element(parent, tag, data):
+def add_sub_element(parent, tag, data=''):
     """
     Creates a new child element under parent with tag tag, and sets
     data as the content under the tag. In particular, data is a string
@@ -781,6 +781,7 @@ class Rule(object):
         "conflicts": lambda: list(),
         "requires": lambda: list(),
         "platform": lambda: None,
+        "metadata": lambda: dict(),
         "template": lambda: None,
     }
 
@@ -800,6 +801,7 @@ class Rule(object):
         self.requires = []
         self.conflicts = []
         self.platform = None
+        self.metadata = dict()
         self.template = None
 
     @classmethod
@@ -1022,6 +1024,12 @@ class Rule(object):
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)
         add_sub_element(rule, 'rationale', self.rationale)
+
+        if self.metadata:
+            meta = add_sub_element(rule, 'metadata')
+            for meta_tag, meta_text in self.metadata.items():
+                meta_tag_with_ns = "xml:{tag}".format(tag=meta_tag)
+                add_sub_element(meta, meta_tag_with_ns, str(meta_text))
 
         main_ident = ET.Element('ident')
         for ident_type, ident_val in self.identifiers.items():
