@@ -23,19 +23,19 @@ cat "$root_dir/ocp-resources/ds-build.yaml" | sed "s/\$PRODUCT/$product/" | oc a
 oc start-build -n openshift-compliance "openscap-$product-ds" \
     --from-file="$root_dir/build/ssg-$product-ds.xml"
 
-# Wait a couple of seconds until the object gets persisted
-sleep 3
+# Wait some seconds until the object gets persisted
+sleep 5
 
-latest_build=$(oc get --no-headers buildconfigs "openscap-$product-ds" | awk '{print $4}')
+latest_build=$(oc get -n openshift-compliance --no-headers buildconfigs "openscap-$product-ds" | awk '{print $4}')
 
 popd
 
 while true; do
-    build_status=$(oc get builds --no-headers "openscap-$product-ds-$latest_build" | awk '{print $4}')
+    build_status=$(oc get builds -n openshift-compliance --no-headers "openscap-$product-ds-$latest_build" | awk '{print $4}')
 
     if [ "$build_status" == "Complete" ]; then
         # Get built image
-        image=$(oc get imagestreams --no-headers | awk '{printf "%s:%s",$2, $3}')
+        image=$(oc get imagestreams -n openshift-compliance --no-headers "openscap-$product-ds" | awk '{printf "%s:%s",$2, $3}')
 
         echo "Success!"
         echo "********"
