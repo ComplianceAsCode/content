@@ -404,14 +404,14 @@ selections:
     - configure_etc_hosts_deny
 
     ### 3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)
-    - file_owner_etc_hosts_allow
-    - file_groupowner_etc_hosts_allow
-    - file_permissions_etc_hosts_allow
+    # - file_owner_etc_hosts_allow
+    # - file_groupowner_etc_hosts_allow
+    # - file_permissions_etc_hosts_allow
 
     ### 3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)
-    - file_owner_etc_hosts_deny
-    - file_groupowner_etc_hosts_deny
-    - file_permissions_etc_hosts_deny
+    # - file_owner_etc_hosts_deny
+    # - file_groupowner_etc_hosts_deny
+    # - file_permissions_etc_hosts_deny
 
     ## 3.5 Uncommon Network Protocols
     ### 3.5.1 Ensure DCCP is disabled (Not Scored)
