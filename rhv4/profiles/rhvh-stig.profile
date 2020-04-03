@@ -21,7 +21,7 @@ selections:
     - accounts_password_pam_ucredit
     - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
-    - package_screen_installed
+    - package_tmux_installed
     - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
     - accounts_password_all_shadowed
@@ -180,41 +180,39 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
     - libreswan_approved_tunnels
-    - no_rsh_trust_files
-    - package_rsh_removed
     - package_rsh-server_removed
     - package_talk_removed
     - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
     - package_xinetd_removed
-    - package_ypbind_removed
     - package_ypserv_removed
     - service_crond_enabled
     - service_rexec_disabled
     - service_rlogin_disabled
-    - service_rsh_disabled
     - sshd_required=yes
     - service_sshd_enabled
     - service_telnet_disabled
     - service_xinetd_disabled
-    - service_ypbind_disabled
     - service_zebra_disabled
     - use_kerberos_security_all_exports
     - disable_host_auth
-    - sshd_allow_only_protocol2
     - sshd_disable_compression
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
-    - sshd_disable_rhosts_rsa
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - var_sshd_set_keepalive=3
     - sshd_set_keepalive
-    - sshd_use_approved_ciphers
-    - sshd_use_approved_macs
     - sshd_use_priv_separation
+    - var_system_crypto_policy=fips_ospp
+    - configure_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_kerberos_crypto_policy
+    - configure_libreswan_crypto_policy
     - var_accounts_user_umask=077
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
@@ -311,12 +309,12 @@ selections:
     - aide_verify_acls
     - aide_verify_ext_attributes
     - disable_prelink
-    - grub2_enable_fips_mode
+    - enable_fips_mode
     - install_antivirus
     - install_hids
     - ldap_client_start_tls
     - package_aide_installed
-    - package_dracut-fips_installed
+    - enable_dracut_fips_module
     - rpm_verify_hashes
     - install_PAE_kernel_on_x86-32
     - service_kdump_disabled
@@ -353,7 +351,6 @@ selections:
     - set_password_hashing_algorithm_systemauth
     - package_opensc_installed
     - var_smartcard_drivers=cac
-    - configure_opensc_nss_db
     - configure_opensc_card_drivers
     - force_opensc_card_drivers
     - package_pcsc-lite_installed
@@ -413,6 +410,7 @@ selections:
     - partition_for_var_log_audit
     - partition_for_tmp
     - grub2_no_removeable_media
+    - package_audispd-plugins_installed
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action

@@ -254,7 +254,7 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "rhv4": [
         "cpe:/a:redhat:enterprise_virtualization_manager:4",
-        "cpe:/o:redhat:enterprise_linux:7::hypervisor",
+        "cpe:/o:redhat:enterprise_linux:8::hypervisor",
     ],
     "sle11": [
         "cpe:/o:suse:linux_enterprise_server:11",

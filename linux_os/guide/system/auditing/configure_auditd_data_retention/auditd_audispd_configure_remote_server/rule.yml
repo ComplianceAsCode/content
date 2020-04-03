@@ -8,7 +8,7 @@ description: |-
     Configure the audispd plugin to off-load audit records onto a different
     system or media from the system being audited.
     Set the <tt>remote_server</tt> option in <pre>
-{{%- if product in ["rhel8", "fedora", "ol8"] -%}}
+{{%- if product in ["rhel8", "fedora", "ol8", "rhv4"] -%}}
     /etc/audit/audisp-remote.conf
 {{%- else -%}}
     /etc/audisp/audisp-remote.conf
@@ -41,7 +41,7 @@ ocil_clause: 'audispd is not sending logs to a remote system'
 ocil: |-
     To verify the audispd plugin off-loads audit records onto a different system or
     media from the system being audited, run the following command:
-{{% if product in ["rhel8", "fedora", "ol8"] %}}
+{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
     <pre>$ sudo grep -i remote_server /etc/audit/audisp-remote.conf</pre>
 {{% else %}}
     <pre>$ sudo grep -i remote_server /etc/audisp/audisp-remote.conf</pre>

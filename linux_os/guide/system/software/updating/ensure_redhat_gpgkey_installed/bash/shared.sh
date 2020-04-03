@@ -13,7 +13,7 @@ if [ "${RPM_GPG_DIR_PERMS}" -le "755" ]
 then
   # If they are safe, try to obtain fingerprints from the key file
   # (to ensure there won't be e.g. CRC error).
-{{% if product == "rhel8" %}}
+{{% if product in ["rhel8", "rhv4"] %}}
   readarray -t GPG_OUT < <(gpg --show-keys --with-fingerprint --with-colons "$REDHAT_RELEASE_KEY" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10)
 {{% else %}}
   readarray -t GPG_OUT < <(gpg --with-fingerprint --with-colons "$REDHAT_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10)
