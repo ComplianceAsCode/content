@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora
+prodtype: rhel7,rhel8,fedora,sle15
 
 title: 'Ensure that chronyd is running under chrony user account'
 
@@ -37,4 +37,3 @@ ocil: |-
     Run the following command and verify that <tt>-u chrony</tt> is included in <tt>OPTIONS</tt>:
     <pre># grep "^OPTIONS" /etc/sysconfig/chronyd
     OPTIONS="-u chrony"</pre>
-    
