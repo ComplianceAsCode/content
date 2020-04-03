@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4
+prodtype: fedora,ocp4,ol7,ol8,rhel7,rhel8,rhv4,sle15
 
 title: 'Ensure IPv6 is disabled through kernel boot parameter'
 
@@ -20,7 +20,7 @@ description: |-
     <tt>/boot/grub2/grubenv</tt>, in the manner below:
     <pre>sudo  grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) ipv6.disable=1"</pre>
 {{% endif %}}
-    
+
 
 rationale: |-
     Any unnecessary network stacks, including IPv6, should be disabled to reduce
@@ -57,7 +57,7 @@ ocil: |-
     <br />
 {{% else %}}
     Inspect the form of default GRUB2 command line for the Linux operating system
-    in <tt>/boot/grub2/grubenv</tt>. Check if it includes <tt>ipv6.disable=1</tt>. 
+    in <tt>/boot/grub2/grubenv</tt>. Check if it includes <tt>ipv6.disable=1</tt>.
     <pre>sudo grep 'kernelopts.*ipv6.disable=1.*' /boot/grub2/grubenv</pre>
     <br /><br />
     To ensure <tt>ipv6.disable=1</tt> is configured on all installed kernels, the
