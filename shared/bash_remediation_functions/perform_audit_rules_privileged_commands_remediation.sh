@@ -99,7 +99,7 @@ do
 		# * existing rule contains all arguments from expected rule form (though can contain
 		#   them in arbitrary order)
 	
-		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'/!d'		\
+		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'[^[:graph:]]/!d'		\
 				-e '/-F path=[^[:space:]]\+/!d'   -e '/-F perm=.*/!d'						\
 				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=\(4294967295\|unset\)/!d'	\
 				-e '/-k \|-F key=/!d' "$afile")
