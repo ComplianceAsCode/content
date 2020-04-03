@@ -67,11 +67,11 @@ references:
 
 # SCAP 1.3 content should reference flat non compressed xml files
 {{% if product == "rhel6" %}}
-oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL6.xml"
+oval_external_content: "https://www.redhat.com/security/data/oval/v2/RHEL6/rhel-6.oval.xml.bz2"
 {{% elif product == "rhel7" %}}
-oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml"
+oval_external_content: "https://www.redhat.com/security/data/oval/v2/RHEL7/rhel-7.oval.xml.bz2"
 {{% elif product == "rhel8" %}}
-oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL8.xml"
+oval_external_content: "https://www.redhat.com/security/data/oval/v2/RHEL8/rhel-8.oval.xml.bz2"
 {{% elif product == "ubuntu1404" %}}
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.trusty.cve.oval.xml"
 {{% elif product == "ubuntu1604" %}}
