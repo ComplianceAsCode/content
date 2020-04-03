@@ -102,7 +102,7 @@ selections:
     - service_rhnsd_disabled
 
     ### 1.2.3 Ensure GPG keys are configured (Not Scored)
-    - ensure_redhat_gpgkey_installed
+    # NEEDS RULE FOR SUSE
 
     ### 1.2.4 Ensure gpgcheck is globally activated (Scored)
     - ensure_gpgcheck_globally_activated
