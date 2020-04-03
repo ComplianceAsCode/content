@@ -92,6 +92,7 @@ ALL_NS = {
     "xccdf-1.2": XCCDF12_NS,
     "xlink": xlink_namespace,
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
+    "cat": "urn:oasis:names:tc:entity:xmlns:xml:catalog",
 }
 
 
