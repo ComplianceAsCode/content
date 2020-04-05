@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: debian10,debian9,rhel6,rhel7,rhel8
+prodtype: debian10,debian9,rhel6,rhel7,rhel8,sle15
 
 title: 'Disable snmpd Service'
 
@@ -19,7 +19,7 @@ identifiers:
 
 references:
     vmmsrg: SRG-OS-000480-VMM-002000
-    cis@rhel8: 2.2.5 
+    cis@rhel8: 2.2.5
 
 ocil: '{{{ ocil_service_disabled(service="snmpd") }}}'
 
@@ -32,4 +32,3 @@ template:
         packagename@debian9: snmpd
         packagename@debian10: snmpd
         packagename: net-snmp
-

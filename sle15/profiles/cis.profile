@@ -99,7 +99,7 @@ selections:
     # NEEDS RULE -
 
     ### 1.2.2 Disable the rhnsd Daemon (Not Scored)
-    - service_rhnsd_disabled
+    # NEED TO LOOKUP SUSE SERVICE
 
     ### 1.2.3 Ensure GPG keys are configured (Not Scored)
     # NEEDS RULE FOR SUSE
@@ -673,7 +673,7 @@ selections:
     - sshd_set_loglevel_info
 
     ### 5.2.6 Ensure SSH X11 forward is diabled (Scored)
-    - sshd_disble_x11_x11_forwarding
+    # - sshd_disable_x11_forwarding waiting until my pull request is merged
 
     ### 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
     - sshd_max_auth_tries_value=4
