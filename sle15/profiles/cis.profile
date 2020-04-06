@@ -396,7 +396,7 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_redirects
 
     ## 3.4 TCP Wrappers
-    ### 3.4.1 Ensure TCP Wrappers is installed (Scored)
+    ### 3.4.1 Ensure TCP Wrappers is installed (Not Scored)
     - package_tcp_wrappers_installed
 
     ### 3.4.2 Ensure /etc/hosts.allow is configured (Scored)
