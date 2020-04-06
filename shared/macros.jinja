@@ -3,6 +3,12 @@ ocil_clause: "the required value is not set"
 {{%- endmacro %}}
 
 
+{{% macro openshif_cluster_setting(endpoint, filename) -%}}
+    This rule's check operates on the cluster configuration dump.
+    Therefore, you need to use a tool that can query the OCP API, retreive the <code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ sub_var_value("ocp_data_root") }}}/{{{ filename }}}</code> file.
+{{%- endmacro %}}
+
+
 {{# Example usage: ocil_sshd_option(default="no", option="Banner", value="/etc/issue") #}}
 {{% macro ocil_sshd_option(default, option, value) -%}}
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
