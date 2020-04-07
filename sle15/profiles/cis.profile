@@ -18,14 +18,26 @@ selections:
     #### 1.1.1.1 Ensure mounting cramfs filesystems is disabled (Scored)
     - kernel_module_cramfs_disabled
 
-    #### 1.1.1.2 Ensure mounting of vFAT flesystems is limited (Not Scored)
-    - kernel_module_vfat_disabled
+    #### 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Scored)
+    - kernel_module_freevxfs_disabled
 
-    #### 1.1.1.3 Ensure mounting of squashfs filesystems is disabled (Scored)
+    #### 1.1.1.3 Ensure mounting of jiffs2 filesystems is disabled (Scored)
+    - kernel_module_jiffs2_disabled
+
+    #### 1.1.1.4 Ensure mounting of hfs filesystems is disabled (Scored)
+    - kernel_module_hfs_disabled
+
+    #### 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled (Scored)
+    - kernel_module_hfsplus_disabled
+
+    #### 1.1.1.6 Ensure mounting of squashfs filesystems is disabled (Scored)
     - kernel_module_squashfs_disabled
 
-    #### 1.1.1.4 Ensure mounting of udf filesystems is disabled (Scored)
+    #### 1.1.1.7 Ensure mounting of udf filesystems is disabled (Scored)
     - kernel_module_udf_disabled
+
+    #### 1.1.1.8 Ensure mounting of vFAT flesystems is limited (Not Scored)
+    - kernel_module_vfat_disabled
 
     ### 1.1.2 Ensure /tmp is configured (Scored)
     - partition_for_tmp
