@@ -69,40 +69,40 @@ selections:
     ### 1.1.11 Ensure noexec option set on /var/tmp partition (Scored)
     - mount_option_var_tmp_noexec
 
-    ### 1.1.11 Ensure separate partition exists for /var/log (Scored)
+    ### 1.1.12 Ensure separate partition exists for /var/log (Scored)
     - partition_for_var_log
 
-    ### 1.1.12 Ensure separate partition exists for /var/log/audit (Scored)
+    ### 1.1.13 Ensure separate partition exists for /var/log/audit (Scored)
     - partition_for_var_log_audit
 
-    ### 1.1.13 Ensure separate partition exists for /home (Scored)
+    ### 1.1.14 Ensure separate partition exists for /home (Scored)
     - partition_for_home
 
-    ### 1.1.14 Ensure nodev option set on /home partition (Scored)
+    ### 1.1.15 Ensure nodev option set on /home partition (Scored)
     - mount_option_home_nodev
 
-    ### 1.1.15 Ensure nodev option set on /dev/shm partition (Scored)
+    ### 1.1.16 Ensure nodev option set on /dev/shm partition (Scored)
     - mount_option_dev_shm_nodev
 
-    ### 1.1.16 Ensure nosuid option set on /dev/shm partition (Scored)
+    ### 1.1.17 Ensure nosuid option set on /dev/shm partition (Scored)
     - mount_option_dev_shm_nosuid
 
-    ### 1.1.17 Ensure noexec option set on /dev/shm partition (Scored)
+    ### 1.1.18 Ensure noexec option set on /dev/shm partition (Scored)
     - mount_option_dev_shm_noexec
 
-    ### 1.1.18 Ensure nodev option set on removable media partitions (Not Scored)
+    ### 1.1.19 Ensure nodev option set on removable media partitions (Not Scored)
     - mount_option_nodev_removable_partitions
 
-    ### 1.1.19 Ensure nosuid option set on removable media partitions (Not Scored)
+    ### 1.1.20 Ensure nosuid option set on removable media partitions (Not Scored)
     - mount_option_nosuid_removable_partitions
 
-    ### 1.1.20 Ensure noexec option set on removable media partitions (Not Scored)
+    ### 1.1.21 Ensure noexec option set on removable media partitions (Not Scored)
     - mount_option_noexec_removable_partitions
 
-    ### 1.1.21 Ensure sticky bit is set on all world-writable directories (Scored)
+    ### 1.1.22 Ensure sticky bit is set on all world-writable directories (Scored)
     - dir_perms_world_writable_sticky_bits
 
-    ### 1.1.22 Disable Automounting (Scored)
+    ### 1.1.23 Disable Automounting (Scored)
     - service_autofs_disabled
 
 
