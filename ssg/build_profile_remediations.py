@@ -69,6 +69,10 @@ def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
     paths = []
 
     for benchmark_id, profile_id, _ in benchmark_profile_pairs:
+        # profile (default) is not applicable when generating remediation
+        if profile_id == "":
+            continue
+
         if _is_blacklisted_profile(profile_id):
             continue
 
@@ -92,6 +96,10 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
                                'extension', 'remediation_path', 'template'])
 
     for benchmark_id, profile_id, _ in benchmark_profile_pairs:
+        # profile (default) is not applicable when generating remediation
+        if profile_id == "":
+            continue
+
         if _is_blacklisted_profile(profile_id):
             continue
 
