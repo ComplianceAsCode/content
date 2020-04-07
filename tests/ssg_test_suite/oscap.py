@@ -10,6 +10,7 @@ import json
 import datetime
 import socket
 import sys
+import time
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
@@ -424,6 +425,8 @@ class ProfileRunner(GenericRunner):
             logging.info("Rebooting domain '{0}' before final scan."
                          .format(self.environment.domain_name))
             self.environment.reboot()
+            logging.info("Sleeping for 60 seconds.")
+            time.sleep(60)
         return GenericRunner.final(self)
 
     def make_oscap_call(self):
