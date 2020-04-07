@@ -94,6 +94,8 @@ option(SSG_PRODUCT_WRLINUX1019 "If enabled, the WRLinux1019 SCAP content will be
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
 
+option(VALIDATE_EVERYTHING "If enabled, include all validation tests regardless of oscap version requirements" FALSE)
+
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
