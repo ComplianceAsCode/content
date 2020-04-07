@@ -21,8 +21,8 @@ selections:
     #### 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Scored)
     - kernel_module_freevxfs_disabled
 
-    #### 1.1.1.3 Ensure mounting of jiffs2 filesystems is disabled (Scored)
-    - kernel_module_jiffs2_disabled
+    #### 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled (Scored)
+    - kernel_module_jffs2_disabled
 
     #### 1.1.1.4 Ensure mounting of hfs filesystems is disabled (Scored)
     - kernel_module_hfs_disabled
