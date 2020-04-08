@@ -405,10 +405,6 @@ selections:
     - sysctl_net_ipv6_conf_all_accept_ra
     - sysctl_net_ipv6_conf_default_accept_ra
 
-    ### 3.3.2 Ensure IPv6 redirects are not accepted (Not Scored)
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_redirects
-
     ## 3.4 TCP Wrappers
     ### 3.4.1 Ensure TCP Wrappers is installed (Not Scored)
     - package_tcp_wrappers_installed
