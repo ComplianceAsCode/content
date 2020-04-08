@@ -187,7 +187,7 @@ selections:
     #### 1.7.1.3 Ensure SELinux policy is configured (Scored)
     - var_selinux_policy_name=targeted
     - selinux_policytype
-
+ 
     #### 1.7.1.4 Ensure the SELinux state is enforcing (Scored)
     - var_selinux_state=enforcing
     - selinux_state
@@ -391,7 +391,7 @@ selections:
     ### 3.2.7 Ensure Reverse Path Filtering is enabled (Scored)
     #### net.ipv4.conf.all.rp_filter = 1
     - sysctl_net_ipv4_conf_all_rp_filter
-
+    
     #### net.ipv4.conf.default.rp_filter = 1
     - sysctl_net_ipv4_conf_default_rp_filter
 
@@ -557,7 +557,7 @@ selections:
 
     ##### admin_space_left_action = halt
     - var_auditd_admin_space_left_action=halt
-    - auditd_data_retention_admin_space_left_action
+    - auditd_data_retention_admin_space_left_action 
 
     ### 4.1.3 Ensure changes to system administration scope
     ###       (sudoers) is collected (Scored)
@@ -602,7 +602,7 @@ selections:
     ### 4.1.9 Ensure discretionary access control permission modification
     ###       events are collected (Scored)
 
-
+    
     ### 4.1.10 Ensure unsuccessful unauthorized file access attempts are
     ###        collected (Scored)
 
@@ -649,7 +649,7 @@ selections:
 
 
     #### 4.2.1.5 Ensure rsyslog is configured to send logs to a remote
-    ####         log host (Scored)
+    ####         log host (Scored)   
 
 
     #### 4.2.1.6 Ensure remote rsyslog messages are only accepted on
@@ -739,7 +739,7 @@ selections:
     # chmod og-rwx /etc/ssh/sshd_config
     - file_permissions_sshd_config
 
-    ### 5.2.2 Ensure SSH access is limited (Scored)
+    ### 5.2.2 Ensure SSH access is limited (Scored) 
 
 
     ### 5.2.3 Ensure permissions on SSH private host key files are
@@ -756,7 +756,7 @@ selections:
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Scored)
     - sshd_set_loglevel_info
 
-    ### 5.2.6 Ensure SSH X11 forward is diabled (Scored)
+    ### 5.2.6 Ensure SSH X11 forward is disabled (Scored)
     - sshd_disable_x11_forwarding
 
     ### 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
@@ -884,7 +884,7 @@ selections:
     ### 6.1.1 Audit system file permissions (Not Scored)
     - rpm_verify_permissions
     - rpm_verify_ownership
-
+    
     ### 6.1.2 Ensure permissions on /etc/passwd are configured (Scored)
     # chown root:root /etc/passwd
     - file_owner_etc_passwd
@@ -940,7 +940,7 @@ selections:
 
     # chmod 644 /etc/group-
     - file_permissions_backup_etc_group
-
+    
     ### 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)
     # chown root:root /etc/gshadow-
     - file_owner_backup_etc_gshadow
