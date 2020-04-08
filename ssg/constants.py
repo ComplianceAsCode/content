@@ -83,7 +83,7 @@ OVAL_SUB_NS = dict(
 )
 
 
-ALL_NS = {
+PREFIX_TO_NS = {
     "oval-def": oval_namespace,
     "oval": "http://oval.mitre.org/XMLSchema/oval-common-5",
     "ds": datastream_namespace,
@@ -92,14 +92,14 @@ ALL_NS = {
     "xccdf-1.2": XCCDF12_NS,
     "xlink": xlink_namespace,
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
-    "cat": "urn:oasis:names:tc:entity:xmlns:xml:catalog",
+    "cat": cat_namespace,
 }
 
 
 for prefix, url_part in OVAL_SUB_NS.items():
-    assert prefix not in ALL_NS, \
+    assert prefix not in PREFIX_TO_NS, \
         "Conflict between a namespace and OVAL sub-namespace '{prefix}'".format(prefix=prefix)
-    ALL_NS[prefix] = "{oval_ns}#{suffix}".format(oval_ns=ALL_NS["oval-def"], suffix=url_part)
+    PREFIX_TO_NS[prefix] = "{oval_ns}#{suffix}".format(oval_ns=PREFIX_TO_NS["oval-def"], suffix=url_part)
 
 
 oval_header = (

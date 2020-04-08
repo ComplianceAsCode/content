@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import platform
 
-from .constants import xml_version, oval_header, timestamp, ALL_NS
+from .constants import xml_version, oval_header, timestamp, PREFIX_TO_NS
 
 
 try:
@@ -29,7 +29,7 @@ def open_xml(filename):
     Given a filename, register all possible namespaces, and return the XML tree.
     """
     try:
-        for prefix, uri in ALL_NS.items():
+        for prefix, uri in PREFIX_TO_NS.items():
             ElementTree.register_namespace(prefix, uri)
     except Exception:
         # Probably an old version of Python
