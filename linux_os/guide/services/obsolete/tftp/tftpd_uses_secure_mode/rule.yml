@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
 
 title: 'Ensure tftp Daemon Uses Secure Mode'
 
@@ -16,7 +16,7 @@ rationale: |-
     given directory. Serving files from an intentionally-specified directory
     reduces the risk of sharing files which should remain private.
 
-severity: {{% if product == "rhel7" -%}}
+severity: {{% if product in ["rhel7","ol7"] -%}}
 medium
 {{%- else -%}}
 high

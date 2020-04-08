@@ -77,8 +77,7 @@ def main():
         warning = SL_WARNING
         derivative = "Scientific Linux"
 
-    tree = ssg.xml.ElementTree.ElementTree()
-    tree.parse(options.input_content)
+    tree = ssg.xml.open_xml(options.input_content)
     root = tree.getroot()
 
     benchmarks = []

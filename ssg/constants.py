@@ -75,6 +75,33 @@ ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
 
+
+OVAL_SUB_NS = dict(
+    ind="independent",
+    unix="unix",
+    linux="linux",
+)
+
+
+PREFIX_TO_NS = {
+    "oval-def": oval_namespace,
+    "oval": "http://oval.mitre.org/XMLSchema/oval-common-5",
+    "ds": datastream_namespace,
+    "ocil": ocil_namespace,
+    "xccdf-1.1": XCCDF11_NS,
+    "xccdf-1.2": XCCDF12_NS,
+    "xlink": xlink_namespace,
+    "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
+    "cat": cat_namespace,
+}
+
+
+for prefix, url_part in OVAL_SUB_NS.items():
+    assert prefix not in PREFIX_TO_NS, \
+        "Conflict between a namespace and OVAL sub-namespace '{prefix}'".format(prefix=prefix)
+    PREFIX_TO_NS[prefix] = "{oval_ns}#{suffix}".format(oval_ns=PREFIX_TO_NS["oval-def"], suffix=url_part)
+
+
 oval_header = (
     """
 <oval_definitions
@@ -284,6 +311,7 @@ PRODUCT_TO_CPE_MAPPING = {
 }
 
 STIG_PLATFORM_ID_MAP = {
+    "ol7": "OL07-00",
     "rhel6": "RHEL-06",
     "rhel7": "RHEL-07",
     "rhel8": "RHEL-08",
