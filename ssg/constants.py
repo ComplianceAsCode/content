@@ -284,6 +284,7 @@ PRODUCT_TO_CPE_MAPPING = {
 }
 
 STIG_PLATFORM_ID_MAP = {
+    "ol7": "OL07-00",
     "rhel6": "RHEL-06",
     "rhel7": "RHEL-07",
     "rhel8": "RHEL-08",
