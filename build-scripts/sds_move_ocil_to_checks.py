@@ -166,7 +166,7 @@ def main():
     # Output datastream file
     outdatastreamfile = sys.argv[2]
     # Datastream element tree
-    datastreamtree = ssg.xml.ElementTree.parse(indatastreamfile)
+    datastreamtree = ssg.xml.open_xml(indatastreamfile)
 
     # Locate <ds:extended-components> element in datastream
     extendedcomps = datastreamtree.getroot().find("./{%s}extended-components" % datastream_ns)

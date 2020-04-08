@@ -86,7 +86,7 @@ def main():
         parser.print_help()
         raise RuntimeError("Please specify output with --output.")
 
-    input_tree = ssg.xml.ElementTree.parse(options.input_content)
+    input_tree = ssg.xml.open_xml(options.input_content)
     root_element = input_tree.getroot()
     if root_element.tag != "{%s}Benchmark" % (XCCDF11_NS):
         raise RuntimeError(

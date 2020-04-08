@@ -120,7 +120,7 @@ def main():
     args = parse_args()
 
     # Datastream element tree
-    datastreamtree = ssg.xml.ElementTree.parse(args.input).getroot()
+    datastreamtree = ssg.xml.parse_file(args.input)
 
     if args.version == "1.3":
         # Set SCAP version to 1.3

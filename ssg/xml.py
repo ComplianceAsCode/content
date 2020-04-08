@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import platform
 
-from .constants import xml_version, oval_header, timestamp
+from .constants import xml_version, oval_header, timestamp, PREFIX_TO_NS
 
 
 try:
@@ -24,11 +24,26 @@ def oval_generated_header(product_name, schema_version, ssg_version):
                        schema_version, timestamp)
 
 
+def open_xml(filename):
+    """
+    Given a filename, register all possible namespaces, and return the XML tree.
+    """
+    try:
+        for prefix, uri in PREFIX_TO_NS.items():
+            ElementTree.register_namespace(prefix, uri)
+    except Exception:
+        # Probably an old version of Python
+        # Doesn't matter, as this is non-essential.
+        pass
+    return ElementTree.parse(filename)
+
+
 def parse_file(filename):
     """
     Given a filename, return the root of the ElementTree
     """
-    return ElementTree.parse(filename).getroot()
+    tree = open_xml(filename)
+    return tree.getroot()
 
 
 def map_elements_to_their_ids(tree, xpath_expr):
