@@ -1,7 +1,7 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # remediation = bash
-# platform = Red Hat Enterprise Linux 7,Fedora
+# platform = Fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
 
 mkdir -p /etc/audit/rules.d
 ./generate_privileged_commands_rule.sh 1000 privileged /etc/audit/rules.d/privileged.rules
