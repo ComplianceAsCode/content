@@ -698,15 +698,12 @@ class Group(object):
         # The account group has to precede audit group because
         # the rul package_screen_installed is desired to be executed before the rule
         # audit_rules_privileged_commands
-        # for similar reason, the group policy_rules has to precede
-        # group auditd_configure_rules
         # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
         # the firewalld_activation must come before ruleset_modifications, othervise
         # remediations for ruleset_modifications won't work
         # rules from group disabling_ipv6 must precede rules from configuring_ipv6,
         # otherwise the remediation prints error although it is successful
         priority_order = ["accounts", "auditing",
-        "policy_rules", "auditd_configure_rules",
         "fips", "crypto", "firewalld_activation",
         "ruleset_modifications", "disabling_ipv6", "configuring_ipv6"]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
