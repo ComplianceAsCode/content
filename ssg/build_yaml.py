@@ -700,6 +700,10 @@ class Group(object):
         # audit_rules_privileged_commands, othervise the rule
         # does not catch newly installed screeen binary during remediation
         # and report fail
+        # the policy_rules has to precede the auditd_configure_rules
+        # group because policy_rules group contains audit_rules_for_ospp rule
+        # which configures system with hardcoded audit configuration and requires exact file content
+        # and rules in auditd_configure_rules can dynamically react to it
         # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
         # the firewalld_activation must come before ruleset_modifications, othervise
         # remediations for ruleset_modifications won't work
@@ -707,6 +711,7 @@ class Group(object):
         # otherwise the remediation prints error although it is successful
         priority_order = [
             "accounts", "auditing",
+            "policy_rules", "auditd_configure_rules",
             "fips", "crypto",
             "firewalld_activation", "ruleset_modifications",
             "disabling_ipv6", "configuring_ipv6"
