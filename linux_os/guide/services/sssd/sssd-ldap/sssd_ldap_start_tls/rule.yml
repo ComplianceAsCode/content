@@ -22,11 +22,7 @@ rationale: |-
     whether to use TLS or not. If not specified it will default to no.
     It should be set to start_tls rather than doing LDAP over SSL.
 
-severity: {{% if product == "ol7" -%}}
-medium
-{{%- else -%}}
-high
-{{%- endif %}}
+severity: high
 
 identifiers:
     cce@rhel7: 80546-5

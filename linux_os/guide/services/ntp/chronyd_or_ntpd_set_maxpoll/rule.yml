@@ -19,11 +19,7 @@ rationale: |-
     forensic analysis and investigating system events. Sources outside the
     configured acceptable allowance (drift) may be inaccurate.
 
-severity: {{% if product == "ol7" -%}}
-medium
-{{%- else -%}}
-unknown
-{{%- endif %}}
+severity: medium
 
 platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
 

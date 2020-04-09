@@ -17,11 +17,7 @@ rationale: |-
     users to introduce SUID or SGID binaries from partitions mounted off of
     removable media would allow them to introduce their own highly-privileged programs.
 
-severity: {{% if product == "ol7" -%}}
-medium
-{{%- else -%}}
-unknown
-{{%- endif %}}
+severity: medium
 
 identifiers:
     cce@rhel6: 27056-1
