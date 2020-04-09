@@ -631,5 +631,4 @@ selections:
     - kernel_module_vfat_disabled
 
     # UNSORTED
-    - ocp_data_root=default
     - ocp_idp_no_htpasswd
