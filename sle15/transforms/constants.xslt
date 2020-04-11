@@ -3,13 +3,13 @@
 <xsl:include href="../../shared/transforms/shared_constants.xslt"/>
 
 <xsl:variable name="product_long_name">SUSE Linux Enterprise 15</xsl:variable>
-<xsl:variable name="product_short_name">sle15</xsl:variable>
-<xsl:variable name="product_stig_id_name">SLE_STIG</xsl:variable>
+<xsl:variable name="product_short_name">SLE 15</xsl:variable>
+<xsl:variable name="product_stig_id_name">SUSE_Linux_Enterprise_15_STIG</xsl:variable>
 <xsl:variable name="product_guide_id_name">SLE-15</xsl:variable>
 <xsl:variable name="prod_type">sle15</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for SUSE Linux Enterprise 15 -->
-<xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_SUSE Linux Enterprise_Benchmark_v1.0.pdf</xsl:variable>
+<xsl:variable name="cisuri" />
 <xsl:variable name="disa-stigs-uri" select="-stigs-os-unix-linux-uri"/>
 <xsl:variable name="os-stigid-concat" />
 

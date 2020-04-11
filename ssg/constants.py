@@ -316,6 +316,7 @@ STIG_PLATFORM_ID_MAP = {
     "rhel7": "RHEL-07",
     "rhel8": "RHEL-08",
     "sle12": "SLES-12",
+    "sle15": "SLES-15",
 }
 
 # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
