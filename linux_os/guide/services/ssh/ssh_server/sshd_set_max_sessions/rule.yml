@@ -21,15 +21,10 @@ references:
   cis@rhel8: 5.2.19
   cis@sle15: 5.2.23
 
-ocil_clause: "that the MaxSessions option exists and is enabled"
+ocil_clause: 'it is commented out or not configured properly'
 
 ocil: |-
-    {{{ ocil_sshd_option(default="10", option="MaxSessions", value="4") }}}
-
-template:
-    name: sshd_lineinfile
-    vars:
-        missing_parameter_pass: 'false'
-        parameter: MaxSessions
-        rule_id: sshd_set_max_sessions
-        value: '4'
+    Run the following command to see what the max sessions number is:
+    <pre>$ sudo grep MaxSessions /etc/ssh/sshd_config</pre>
+    If properly configured, the output should be:
+    <pre>MaxSessions <sub idref="sshd_max_sessions" /></pre>
