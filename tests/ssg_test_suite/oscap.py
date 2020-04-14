@@ -281,7 +281,6 @@ class GenericRunner(object):
         # the system to finish startup, there were problems with
         # temporary files created by Dracut during image generation interfering
         # with the scan
-        # expressed in seconds
         self.time_to_finish_startup = 30
 
     def _make_arf_path(self):
@@ -431,7 +430,7 @@ class ProfileRunner(GenericRunner):
             logging.info("Rebooting domain '{0}' before final scan."
                          .format(self.environment.domain_name))
             self.environment.reboot()
-            logging.info("Waiting for {0} seconds to let the system finish startup and delete possible Dracut temporary files"
+            logging.info("Waiting for {0} seconds to let the system finish startup."
                          .format(self.time_to_finish_startup))
             time.sleep(self.time_to_finish_startup)
         return GenericRunner.final(self)
