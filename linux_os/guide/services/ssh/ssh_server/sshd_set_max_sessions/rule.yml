@@ -18,10 +18,10 @@ references:
   cis@rhel8: 5.2.19
   cis@sle15: 5.2.23
 
-ocil_clause: "MaxSessions is configured to the default of 10"
+ocil_clause: "MaxSessions is not configured or not configured correctly"
 
 ocil: |-
     Run the following command to see what the max sessions number is:
     <pre>$ sudo grep MaxSessions /etc/ssh/sshd_config</pre>
     If properly configured, the output should be:
-    <pre>MaxSessions <sub idref="sshd_max_sessions" /></pre>
+    <pre>MaxSessions <sub idref="var_sshd_max_sessions" /></pre>
