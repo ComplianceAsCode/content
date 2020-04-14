@@ -355,7 +355,7 @@ func (ctx *e2econtext) waitForNodesToBeReady() {
 	}
 }
 
-func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite) int {
+func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
 	remList := &cmpv1alpha1.ComplianceRemediationList{}
 	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s.Name)
 	opts := &client.ListOptions{
@@ -364,6 +364,14 @@ func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite) i
 	err := ctx.dynclient.List(goctx.TODO(), remList, opts)
 	if err != nil {
 		ctx.t.Fatalf("Couldn't get remediation list")
+	}
+	if display {
+		if len(remList.Items) > 0 {
+			ctx.t.Logf("Remediations from ComplianceSuite: %s", s.Name)
+		}
+		for _, rem := range remList.Items {
+			ctx.t.Logf("- %s", rem.Name)
+		}
 	}
 	return len(remList.Items)
 }

@@ -35,7 +35,7 @@ func TestE2e(t *testing.T) {
 		// Create suite and auto-apply remediations
 		suite := ctx.createComplianceSuiteForProfile("1", true)
 		ctx.waitForComplianceSuite(suite)
-		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite)
+		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite, false)
 	})
 
 	t.Run("Wait for Remediations to apply", func(t *testing.T) {
@@ -48,7 +48,7 @@ func TestE2e(t *testing.T) {
 		// Create suite and auto-apply remediations
 		suite := ctx.createComplianceSuiteForProfile("2", false)
 		ctx.waitForComplianceSuite(suite)
-		numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite)
+		numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite, true)
 	})
 
 	t.Run("We should have less remediations to apply", func(t *testing.T) {
