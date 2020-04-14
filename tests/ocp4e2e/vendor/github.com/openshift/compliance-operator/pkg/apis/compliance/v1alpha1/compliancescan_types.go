@@ -22,10 +22,26 @@ const (
 	PhaseDone ComplianceScanStatusPhase = "DONE"
 )
 
+func stateCompare(lowPhase ComplianceScanStatusPhase, scanPhase ComplianceScanStatusPhase) ComplianceScanStatusPhase {
+	orderedStates := make(map[ComplianceScanStatusPhase]int)
+	orderedStates[PhasePending] = 0
+	orderedStates[PhaseLaunching] = 1
+	orderedStates[PhaseRunning] = 2
+	orderedStates[PhaseAggregating] = 3
+	orderedStates[PhaseDone] = 4
+
+	if orderedStates[lowPhase] > orderedStates[scanPhase] {
+		return scanPhase
+	}
+	return lowPhase
+}
+
 // Represents the result of the compliance scan
 type ComplianceScanStatusResult string
 
 const (
+	// ResultCompliant represents the compliance scan having succeeded
+	ResultNotAvailable ComplianceScanStatusResult = "NOT-AVAILABLE"
 	// ResultCompliant represents the compliance scan having succeeded
 	ResultCompliant ComplianceScanStatusResult = "COMPLIANT"
 	// ResultError represents a compliance scan pod having failed to run the scan or encountered an error
@@ -33,6 +49,19 @@ const (
 	// ResultNonCompliant represents the compliance scan having found a gap
 	ResultNonCompliant ComplianceScanStatusResult = "NON-COMPLIANT"
 )
+
+func resultCompare(lowResult ComplianceScanStatusResult, scanResult ComplianceScanStatusResult) ComplianceScanStatusResult {
+	orderedResults := make(map[ComplianceScanStatusResult]int)
+	orderedResults[ResultNotAvailable] = 0
+	orderedResults[ResultError] = 1
+	orderedResults[ResultNonCompliant] = 2
+	orderedResults[ResultCompliant] = 3
+
+	if orderedResults[lowResult] > orderedResults[scanResult] {
+		return scanResult
+	}
+	return lowResult
+}
 
 // ComplianceScanSpec defines the desired state of ComplianceScan
 // +k8s:openapi-gen=true
@@ -83,6 +112,8 @@ type ComplianceScanStatus struct {
 // that apply to a certain nodeSelector, or the cluster itself.
 // +k8s:openapi-gen=true
 // +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Phase",type="string",JSONPath=`.status.phase`
+// +kubebuilder:printcolumn:name="Result",type="string",JSONPath=`.status.result`
 type ComplianceScan struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

@@ -11,8 +11,8 @@ import (
 type RemediationApplicationState string
 
 const (
-	RemediationNotSelected RemediationApplicationState = "NotSelected"
-	RemediationApplied     RemediationApplicationState = "Applied"
+	RemediationNotApplied RemediationApplicationState = "NotApplied"
+	RemediationApplied    RemediationApplicationState = "Applied"
 )
 
 type RemediationType string
@@ -58,6 +58,7 @@ type ComplianceRemediationStatus struct {
 // +k8s:openapi-gen=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=complianceremediations,scope=Namespaced
+// +kubebuilder:printcolumn:name="State",type="string",JSONPath=`.status.applicationState`
 type ComplianceRemediation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

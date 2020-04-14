@@ -79,27 +79,27 @@ selections:
     - chronyd_no_chronyc_network
 
     ### Network Settings
-    - sysctl_net_ipv6_conf_all_accept_ra
-    - sysctl_net_ipv6_conf_default_accept_ra
-    - sysctl_net_ipv4_conf_all_accept_redirects
-    - sysctl_net_ipv4_conf_default_accept_redirects
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_redirects
-    - sysctl_net_ipv4_conf_all_accept_source_route
-    - sysctl_net_ipv4_conf_default_accept_source_route
-    - sysctl_net_ipv6_conf_all_accept_source_route
-    - sysctl_net_ipv6_conf_default_accept_source_route
-    - sysctl_net_ipv4_conf_all_secure_redirects
-    - sysctl_net_ipv4_conf_default_secure_redirects
-    - sysctl_net_ipv4_conf_all_send_redirects
-    - sysctl_net_ipv4_conf_default_send_redirects
-    - sysctl_net_ipv4_conf_all_log_martians
-    - sysctl_net_ipv4_conf_default_log_martians
-    - sysctl_net_ipv4_conf_all_rp_filter
-    - sysctl_net_ipv4_conf_default_rp_filter
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_tcp_syncookies
+    #- sysctl_net_ipv6_conf_all_accept_ra
+    #- sysctl_net_ipv6_conf_default_accept_ra
+    #- sysctl_net_ipv4_conf_all_accept_redirects
+    #- sysctl_net_ipv4_conf_default_accept_redirects
+    #- sysctl_net_ipv6_conf_all_accept_redirects
+    #- sysctl_net_ipv6_conf_default_accept_redirects
+    #- sysctl_net_ipv4_conf_all_accept_source_route
+    #- sysctl_net_ipv4_conf_default_accept_source_route
+    #- sysctl_net_ipv6_conf_all_accept_source_route
+    #- sysctl_net_ipv6_conf_default_accept_source_route
+    #- sysctl_net_ipv4_conf_all_secure_redirects
+    #- sysctl_net_ipv4_conf_default_secure_redirects
+    #- sysctl_net_ipv4_conf_all_send_redirects
+    #- sysctl_net_ipv4_conf_default_send_redirects
+    #- sysctl_net_ipv4_conf_all_log_martians
+    #- sysctl_net_ipv4_conf_default_log_martians
+    #- sysctl_net_ipv4_conf_all_rp_filter
+    #- sysctl_net_ipv4_conf_default_rp_filter
+    #- sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    #- sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    #- sysctl_net_ipv4_tcp_syncookies
 
     ### systemd
     - disable_ctrlaltdel_reboot
@@ -133,17 +133,17 @@ selections:
     - grub2_pti_argument
 
     ## Security Settings
-    - sysctl_kernel_kptr_restrict
-    - sysctl_kernel_dmesg_restrict
-    - sysctl_kernel_kexec_load_disabled
-    - sysctl_kernel_yama_ptrace_scope
-    - sysctl_kernel_perf_event_paranoid
-    - sysctl_kernel_unprivileged_bpf_disabled
-    - sysctl_net_core_bpf_jit_harden
+    #- sysctl_kernel_kptr_restrict
+    #- sysctl_kernel_dmesg_restrict
+    #- sysctl_kernel_kexec_load_disabled
+    #- sysctl_kernel_yama_ptrace_scope
+    #- sysctl_kernel_perf_event_paranoid
+    #- sysctl_kernel_unprivileged_bpf_disabled
+    #- sysctl_net_core_bpf_jit_harden
 
     ## File System Settings
-    - sysctl_fs_protected_hardlinks
-    - sysctl_fs_protected_symlinks
+    #- sysctl_fs_protected_hardlinks
+    #- sysctl_fs_protected_symlinks
 
     ### Audit
     # AC-2(4) and others
@@ -213,7 +213,7 @@ selections:
 
     ### Login
     - disable_users_coredumps
-    - sysctl_kernel_core_pattern
+    #- sysctl_kernel_core_pattern
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
@@ -539,7 +539,7 @@ selections:
     - package_audit_installed
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
-    - grub2_slub_debug_argument
+    #- grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
 

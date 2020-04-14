@@ -2,6 +2,7 @@ package ocp4e2e
 
 import (
 	"testing"
+	"time"
 )
 
 func TestE2e(t *testing.T) {
@@ -27,8 +28,36 @@ func TestE2e(t *testing.T) {
 		ctx.resetClientMappings()
 	})
 
-	t.Run("Run compliance scan", func(t *testing.T) {
-		suite := ctx.createComplianceSuiteForProfile("1")
+	var numberOfRemediationsInit int
+	var numberOfRemediationsEnd int
+
+	t.Run("Run first compliance scan", func(t *testing.T) {
+		// Create suite and auto-apply remediations
+		suite := ctx.createComplianceSuiteForProfile("1", true)
 		ctx.waitForComplianceSuite(suite)
+		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite)
+	})
+
+	t.Run("Wait for Remediations to apply", func(t *testing.T) {
+		// Lets wait for the MachineConfigs to start applying
+		time.Sleep(30 * time.Second)
+		ctx.waitForNodesToBeReady()
+	})
+
+	t.Run("Run second compliance scan", func(t *testing.T) {
+		// Create suite and auto-apply remediations
+		suite := ctx.createComplianceSuiteForProfile("2", false)
+		ctx.waitForComplianceSuite(suite)
+		numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite)
+	})
+
+	t.Run("We should have less remediations to apply", func(t *testing.T) {
+		if numberOfRemediationsInit <= numberOfRemediationsEnd {
+			t.Errorf("The remediations didn't diminish: init -> %d  end %d",
+				numberOfRemediationsInit, numberOfRemediationsEnd)
+		} else {
+			t.Logf("There are less remediations now: init -> %d  end %d",
+				numberOfRemediationsInit, numberOfRemediationsEnd)
+		}
 	})
 }
