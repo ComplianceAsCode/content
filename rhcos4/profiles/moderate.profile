@@ -550,7 +550,7 @@ selections:
     - package_audit_installed
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
-    #- grub2_slub_debug_argument
+    - grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
 
