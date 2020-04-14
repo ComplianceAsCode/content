@@ -44,6 +44,8 @@ class ResolvableProfile(ssg.build_yaml.Profile):
             resolved_selections.discard(uns)
 
         self.unselected = []
+        self.extends = None
+
         self.selected = sorted(resolved_selections)
 
         self.resolved = True
