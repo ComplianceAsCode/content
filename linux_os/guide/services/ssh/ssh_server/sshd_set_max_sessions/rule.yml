@@ -4,10 +4,7 @@ title: 'Set SSH MaxSessions limit'
 
 description: |-
     The <tt>MaxSessions</tt> parameter specifies the maximum number of open sessions permitted
-    from a given connection.  Setting MaxSessions to 1 will effectively disable
-    session multiplexing, whereas setting it to 0 will prevent all
-    shell, login and subsystem sessions while still permitting forwarding.  The default is 10.
-    Add or correct the following lines to 4 or less. To set MaxSessions edit
+    from a given connection. To set MaxSessions edit
     <tt>/etc/ssh/sshd_config</tt> as follows: <pre>MaxSessions <b>sessions</b></pre>
 
 rationale: |-
@@ -21,7 +18,7 @@ references:
   cis@rhel8: 5.2.19
   cis@sle15: 5.2.23
 
-ocil_clause: 'it is commented out or not configured properly'
+ocil_clause: "MaxSessions is configured to the default of 10"
 
 ocil: |-
     Run the following command to see what the max sessions number is:
