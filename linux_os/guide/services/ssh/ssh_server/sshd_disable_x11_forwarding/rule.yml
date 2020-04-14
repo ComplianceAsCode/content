@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Disable X11 Forwarding'
+
+description: |-
+    The X11Forwarding parameter provides the ability to tunnel X11 traffic
+    through the connection to enable remote graphic connections.
+    SSH has the capability to encrypt remote X11 connections when SSH's
+    <tt>X11Forwarding</tt> option is enabled.
+    <br /><br />
+    To disable X11 Forwarding, add or correct the
+    following line in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>X11Forwarding no</pre>
+
+rationale: |-
+    Disable X11 forwarding unless there is an operational requirement to use X11
+    applications directly. There is a small risk that the remote X11 servers of
+    users who are logged in via SSH with X11 forwarding could be compromised by
+    other users on the X11 server. Note that even if X11 forwarding is disabled,
+    users can always install their own forwarders.
+
+severity: low
+
+ocil_clause: "that the X11Forwarding option exists and is enabled"
+
+ocil: |-
+    {{{ ocil_sshd_option(default="no", option="X11Forwarding", value="no") }}}
+
+
+references:
+  cis@rhel7: 5.2.5
+  cis@rhel8: 5.2.6
+  cis@sle12: 5.2.4
+  cis@sle15: 5.2.6
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: X11Forwarding
+        rule_id: sshd_disable_x11_forwarding
+        value: 'no'
