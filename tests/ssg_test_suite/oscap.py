@@ -10,6 +10,7 @@ import json
 import datetime
 import socket
 import sys
+import time
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
@@ -276,6 +277,11 @@ class GenericRunner(object):
         self.command_base = []
         self.command_options = []
         self.command_operands = []
+        # number of seconds to sleep after reboot of vm to let
+        # the system to finish startup, there were problems with
+        # temporary files created by Dracut during image generation interfering
+        # with the scan
+        self.time_to_finish_startup = 30
 
     def _make_arf_path(self):
         self.arf_file = self._get_arf_file()
@@ -424,6 +430,9 @@ class ProfileRunner(GenericRunner):
             logging.info("Rebooting domain '{0}' before final scan."
                          .format(self.environment.domain_name))
             self.environment.reboot()
+            logging.info("Waiting for {0} seconds to let the system finish startup."
+                         .format(self.time_to_finish_startup))
+            time.sleep(self.time_to_finish_startup)
         return GenericRunner.final(self)
 
     def make_oscap_call(self):
