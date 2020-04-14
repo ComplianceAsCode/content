@@ -110,7 +110,7 @@ selections:
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
     - sshd_set_keepalive
-    - sshd_set_max_sessions
+    - sshd_set_max_sessions=4
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime
