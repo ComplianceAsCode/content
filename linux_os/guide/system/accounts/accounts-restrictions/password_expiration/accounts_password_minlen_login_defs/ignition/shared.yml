@@ -1,0 +1,13 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files: 
+      - contents: data:,PASS_MIN_LEN%20{{ var_accounts_password_minlen_login_defs }}%0A 
+        mode: 644
+        path: /etc/login.defs.d/accounts_max_concurrent_login_sessions.conf        
+        filesystem: root 
