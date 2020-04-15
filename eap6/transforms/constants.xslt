@@ -11,7 +11,6 @@
 <xsl:variable name="product_guide_id_name">Jboss-EAP-6</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-appserver-uri"/>
 <xsl:variable name="disa-srguri" select="$disa-appsrguri"/>
-<xsl:variable name="os-stigid-concat" />
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
 <!--xsl:variable name="custom-cce-uri">https://www.example.org</xsl:variable-->

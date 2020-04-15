@@ -73,7 +73,7 @@ xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 http://nvd.nist.gov/sch
 			<dc:identifier>2400</dc:identifier>
 		</reference>
 		<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
-			<ident system="{$disa-cciuri}">CCI-<xsl:value-of select="format-number(text(),'000000')"/></ident>
+			<ident system="{$disa-cciuri}">CCI-<xsl:value-of select="ext()"/></ident>
 		</xsl:for-each>
 		<xsl:for-each select="cdf:reference[@href=$disa-ossrguri]">
 			<ident system="{$disa-ossrguri}"><xsl:value-of select="text()"/></ident>

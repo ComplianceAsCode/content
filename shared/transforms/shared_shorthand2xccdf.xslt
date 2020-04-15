@@ -343,7 +343,7 @@
         </xsl:attribute>
         <xsl:choose>
           <xsl:when test="name() = 'disa'">
-            <xsl:value-of select='format-number($refitem, "CCI-000000")' />
+            <xsl:value-of select='$refitem' />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="normalize-space($refitem)" />
