@@ -9,7 +9,8 @@ description: |-
     usage of digits in a password. When set to a negative number, any password will be required to
     contain that many digits. When set to a positive number, pam_pwquality will grant +1 additional
     length credit for each digit. Modify the <tt>dcredit</tt> setting in
-    <tt>/etc/security/pwquality.conf</tt> to require the use of a digit in passwords.
+    <tt>/etc/security/pwquality.conf</tt> to require the use of
+    <sub idref="var_password_pam_dcredit"/> digits in passwords.
 
 rationale: |-
     Use of a complex password helps to increase the time and resources required
@@ -51,7 +52,7 @@ ocil: |-
     To check how many digits are required in a password, run the following command:
     <pre>$ grep dcredit /etc/security/pwquality.conf</pre>
     The <tt>dcredit</tt> parameter (as a negative number) will indicate how many digits are required.
-    The DoD requires at least one digit in a password. This would appear as <tt>dcredit = -1</tt>.
+    This security profile requires <sub idref="var_password_pam_dcredit"/> minimum digits.
 
 platform: pam
 
