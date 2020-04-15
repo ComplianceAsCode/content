@@ -8,6 +8,7 @@ from .constants import XCCDF11_NS as xccdf_ns
 from .constants import oval_namespace as oval_ns
 from .constants import bash_system as bash_rem_system
 from .constants import ansible_system as ansible_rem_system
+from .constants import ignition_system as ignition_rem_system
 from .constants import puppet_system as puppet_rem_system
 from .constants import anaconda_system as anaconda_rem_system
 from .constants import cce_uri
@@ -23,13 +24,15 @@ class RuleStats(object):
     """
     def __init__(self, rid=None, roval=None,
                  rbash_fix=None, ransible_fix=None,
-                 rpuppet_fix=None, ranaconda_fix=None,
-                 rcce=None, stig_id=None):
+                 rignition_fix=None, rpuppet_fix=None,
+                 ranaconda_fix=None, rcce=None,
+                 stig_id=None):
         self.dict = {
             'id': rid,
             'oval': roval,
             'bash_fix': rbash_fix,
             'ansible_fix': ransible_fix,
+            'ignition_fix': rignition_fix,
             'puppet_fix': rpuppet_fix,
             'anaconda_fix': ranaconda_fix,
             'cce': rcce,
@@ -81,12 +84,15 @@ class XCCDFBenchmark(object):
             'implemented_bash_fixes_pct': 0,
             'implemented_ansible_fixes': [],
             'implemented_ansible_fixes_pct': 0,
+            'implemented_ignition_fixes': [],
+            'implemented_ignition_fixes_pct': 0,
             'implemented_puppet_fixes': [],
             'implemented_puppet_fixes_pct': 0,
             'implemented_anaconda_fixes': [],
             'implemented_anaconda_fixes_pct': 0,
             'missing_bash_fixes': [],
             'missing_ansible_fixes': [],
+            'missing_ignition_fixes': [],
             'missing_puppet_fixes': [],
             'missing_anaconda_fixes': [],
             'assigned_cces': [],
@@ -137,6 +143,8 @@ class XCCDFBenchmark(object):
                                      (xccdf_ns, bash_rem_system))
                 ansible_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
                                         (xccdf_ns, ansible_rem_system))
+                ignition_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
+                                        (xccdf_ns, ignition_rem_system))
                 puppet_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
                                        (xccdf_ns, puppet_rem_system))
                 anaconda_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
@@ -148,7 +156,7 @@ class XCCDFBenchmark(object):
 
                 rule_stats.append(
                     RuleStats(rule.get("id"), oval,
-                              bash_fix, ansible_fix, puppet_fix, anaconda_fix,
+                              bash_fix, ansible_fix, ignition_fix, puppet_fix, anaconda_fix,
                               cce, stig_id)
                 )
 
@@ -190,6 +198,14 @@ class XCCDFBenchmark(object):
         profile_stats['missing_ansible_fixes'] = \
             [x.dict['id'] for x in rule_stats if x.dict['ansible_fix'] is None]
 
+        profile_stats['implemented_ignition_fixes'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['ignition_fix'] is not None]
+        profile_stats['implemented_ignition_fixes_pct'] = \
+            float(len(profile_stats['implemented_ignition_fixes'])) / \
+            profile_stats['rules_count'] * 100
+        profile_stats['missing_ignition_fixes'] = \
+            [x.dict['id'] for x in rule_stats if x.dict['ignition_fix'] is None]
+
         profile_stats['implemented_puppet_fixes'] = \
             [x.dict['id'] for x in rule_stats if x.dict['puppet_fix'] is not None]
         profile_stats['implemented_puppet_fixes_pct'] = \
@@ -230,6 +246,7 @@ class XCCDFBenchmark(object):
         impl_ovals_count = len(profile_stats['implemented_ovals'])
         impl_bash_fixes_count = len(profile_stats['implemented_bash_fixes'])
         impl_ansible_fixes_count = len(profile_stats['implemented_ansible_fixes'])
+        impl_ignition_fixes_count = len(profile_stats['implemented_ignition_fixes'])
         impl_puppet_fixes_count = len(profile_stats['implemented_puppet_fixes'])
         impl_anaconda_fixes_count = len(profile_stats['implemented_anaconda_fixes'])
         missing_stig_ids_count = len(profile_stats['missing_stig_ids'])
@@ -248,6 +265,9 @@ class XCCDFBenchmark(object):
             print("* fixes (ansible):  %d\t[%d%% complete]" %
                   (impl_ansible_fixes_count,
                    profile_stats['implemented_ansible_fixes_pct']))
+            print("* fixes (ignition):  %d\t[%d%% complete]" %
+                  (impl_ignition_fixes_count,
+                   profile_stats['implemented_ignition_fixes_pct']))
             print("* fixes (puppet):   %d\t[%d%% complete]" %
                   (impl_puppet_fixes_count,
                    profile_stats['implemented_puppet_fixes_pct']))
@@ -284,6 +304,15 @@ class XCCDFBenchmark(object):
                              profile_stats['implemented_ansible_fixes_pct']))
                     self.console_print(
                         profile_stats['implemented_ansible_fixes'],
+                        console_width)
+
+                if profile_stats['implemented_ignition_fixes']:
+                    print("*** Rules of '%s' profile having "
+                          "a ignition fix script: %d of %d [%d%% complete]"
+                          % (profile, impl_ignition_fixes_count, rules_count,
+                             profile_stats['implemented_ignition_fixes_pct']))
+                    self.console_print(
+                        profile_stats['implemented_ignition_fixes'],
                         console_width)
 
                 if profile_stats['implemented_puppet_fixes']:
@@ -340,6 +369,15 @@ class XCCDFBenchmark(object):
                     self.console_print(profile_stats['missing_ansible_fixes'],
                                        console_width)
 
+                if profile_stats['missing_ignition_fixes']:
+                    print("*** rules of '%s' profile missing "
+                          "a ignition fix script: %d of %d [%d%% complete]"
+                          % (profile, rules_count - impl_ignition_fixes_count,
+                             rules_count,
+                             profile_stats['implemented_ignition_fixes_pct']))
+                    self.console_print(profile_stats['missing_ignition_fixes'],
+                                       console_width)
+
                 if profile_stats['missing_puppet_fixes']:
                     print("*** rules of '%s' profile missing "
                           "a puppet fix script: %d of %d [%d%% complete]"
@@ -379,6 +417,7 @@ class XCCDFBenchmark(object):
             del profile_stats['implemented_ovals']
             del profile_stats['implemented_bash_fixes']
             del profile_stats['implemented_ansible_fixes']
+            del profile_stats['implemented_ignition_fixes']
             del profile_stats['implemented_puppet_fixes']
             del profile_stats['implemented_anaconda_fixes']
             del profile_stats['assigned_cces']
@@ -387,6 +426,7 @@ class XCCDFBenchmark(object):
             profile_stats['missing_ovals_count'] = len(profile_stats['missing_ovals'])
             profile_stats['missing_bash_fixes_count'] = len(profile_stats['missing_bash_fixes'])
             profile_stats['missing_ansible_fixes_count'] = len(profile_stats['missing_ansible_fixes'])
+            profile_stats['missing_ignition_fixes_count'] = len(profile_stats['missing_ignition_fixes'])
             profile_stats['missing_puppet_fixes_count'] = len(profile_stats['missing_puppet_fixes'])
             profile_stats['missing_anaconda_fixes_count'] = len(profile_stats['missing_anaconda_fixes'])
             profile_stats['missing_cces_count'] = len(profile_stats['missing_cces'])
@@ -394,6 +434,7 @@ class XCCDFBenchmark(object):
             del profile_stats['implemented_ovals_pct']
             del profile_stats['implemented_bash_fixes_pct']
             del profile_stats['implemented_ansible_fixes_pct']
+            del profile_stats['implemented_ignition_fixes_pct']
             del profile_stats['implemented_puppet_fixes_pct']
             del profile_stats['implemented_anaconda_fixes_pct']
             del profile_stats['assigned_cces_pct']
@@ -407,6 +448,7 @@ class XCCDFBenchmark(object):
             if not options.missing_fixes:
                 del profile_stats['missing_bash_fixes']
                 del profile_stats['missing_ansible_fixes']
+                del profile_stats['missing_ignition_fixes']
                 del profile_stats['missing_puppet_fixes']
                 del profile_stats['missing_anaconda_fixes']
                 del profile_stats['missing_stig_ids']
@@ -417,6 +459,7 @@ class XCCDFBenchmark(object):
             if not options.implemented_fixes:
                 del profile_stats['implemented_bash_fixes']
                 del profile_stats['implemented_ansible_fixes']
+                del profile_stats['implemented_ignition_fixes']
                 del profile_stats['implemented_puppet_fixes']
                 del profile_stats['implemented_anaconda_fixes']
             if not options.assigned_cces:
