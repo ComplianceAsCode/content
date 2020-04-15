@@ -5,7 +5,7 @@ title: 'Set SSH MaxSessions limit'
 description: |-
     The <tt>MaxSessions</tt> parameter specifies the maximum number of open sessions permitted
     from a given connection. To set MaxSessions edit
-    <tt>/etc/ssh/sshd_config</tt> as follows: <pre>MaxSessions <b>sessions</b></pre>
+    <tt>/etc/ssh/sshd_config</tt> as follows: <pre>MaxSessions <sub idref="var_sshd_max_sessions" /></pre>
 
 rationale: |-
     To protect a system from denial of service due to a large number of concurrent
