@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019
 
 title: 'The Installed Operating System Is Vendor Supported'
 
@@ -9,7 +9,7 @@ description: |-
 {{% if product in ["ol7", "ol8"] %}}
     Oracle Linux is supported by Oracle Corporation. As the Oracle
     Linux vendor, Oracle Corporation is responsible for providing security patches.
-{{% elif product == "sle12" %}}
+{{% elif product == "sle12", "sle15" %}}
     SUSE Linux Enterprise is supported by SUSE. As the SUSE Linux Enterprise
     vendor, SUSE is responsible for providing security patches.
 {{% else %}}
@@ -56,7 +56,7 @@ ocil: |-
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
 {{% elif product in ["ol7", "ol8"] %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
-{{% elif product in ["sle12"] %}}
+{{% elif product in ["sle12", "sle15"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
 {{% endif %}}
     The output should contain something similar to:

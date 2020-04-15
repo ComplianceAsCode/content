@@ -9,6 +9,8 @@ description: |-
     these checks should pass.
 
 selections:
+    - installed_OS_is_vendor_supported
+    - security_patches_up_to_date
     - partition_for_tmp
     - partition_for_var
     - partition_for_var_log
