@@ -213,7 +213,7 @@ selections:
 
     ### Login
     - disable_users_coredumps
-    #- sysctl_kernel_core_pattern
+    - sysctl_kernel_core_pattern
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
