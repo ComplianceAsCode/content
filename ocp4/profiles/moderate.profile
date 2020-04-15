@@ -142,8 +142,8 @@ selections:
     #- sysctl_net_core_bpf_jit_harden
 
     ## File System Settings
-    #- sysctl_fs_protected_hardlinks
-    #- sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
+    - sysctl_fs_protected_symlinks
 
     ### Audit
     # AC-2(4) and others
