@@ -31,6 +31,8 @@ JINJA_MACROS_HIGHLEVEL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirnam
     __file__)), "shared", "macros-highlevel.jinja")
 JINJA_MACROS_ANSIBLE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-ansible.jinja")
+JINJA_MACROS_IGNITION_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros-ignition.jinja")
 JINJA_MACROS_OVAL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-oval.jinja")
 JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
@@ -49,9 +51,9 @@ xccdf_header = xml_version + "<xccdf>"
 xccdf_footer = "</xccdf>"
 bash_system = "urn:xccdf:fix:script:sh"
 ansible_system = "urn:xccdf:fix:script:ansible"
+ignition_system = "urn:xccdf:fix:script:ignition"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
-ignition_system = "urn:xccdf:fix:script:ignition"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
 stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
 stig_refs = 'https://public.cyber.mil/stigs/'
