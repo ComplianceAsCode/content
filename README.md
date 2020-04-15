@@ -1,6 +1,6 @@
 # Welcome!
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-118-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-119-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
@@ -451,6 +451,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/mmsrubar"><img src="https://avatars0.githubusercontent.com/u/4816654?v=4" width="100px;" alt=""/><br /><sub><b>Michal Šrubař</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=mmsrubar" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/lamawithonel"><img src="https://avatars3.githubusercontent.com/u/532659?v=4" width="100px;" alt=""/><br /><sub><b>Lucas Yamanishi</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=lamawithonel" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/pekramp"><img src="https://avatars2.githubusercontent.com/u/44277487?v=4" width="100px;" alt=""/><br /><sub><b>pekramp</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=pekramp" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/npoyant"><img src="https://avatars1.githubusercontent.com/u/16897713?v=4" width="100px;" alt=""/><br /><sub><b>Nick</b></sub></a><br /><a href="https://github.com/ComplianceAsCode/content/commits?author=npoyant" title="Code">💻</a></td>
   </tr>
 </table>
 
