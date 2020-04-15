@@ -6,7 +6,7 @@ description: |-
     The <tt>MaxAuthTries</tt> parameter specifies the maximum number of authentication attempts
     permitted per connection. Once the number of failures reaches half this value, additional failures are logged.
     to set MaxAUthTries edit <tt>/etc/ssh/sshd_config</tt> as follows:
-    <pre>MaxAuthTries <b>tries</b></pre>
+    <pre>MaxAuthTries <sub idref="sshd_max_auth_tries_value"/></pre>
 
 rationale: |-
     Setting the MaxAuthTries parameter to a low number will minimize the risk of successful
@@ -30,4 +30,4 @@ ocil: |-
     To ensure the <tt>MaxAuthTries</tt> parameter is set, run the following command:
     <pre>$ sudo grep MaxAuthTries /etc/ssh/sshd_config</pre>
     If properly configured, output should be:
-    <pre>MaxAuthTries <b>tries</b></pre>
+    <pre>MaxAuthTries <sub idref="sshd_max_auth_tries_value"/></pre>
