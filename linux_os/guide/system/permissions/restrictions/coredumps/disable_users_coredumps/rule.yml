@@ -6,7 +6,8 @@ title: 'Disable Core Dumps for All Users'
 
 description: |-
     To disable core dumps for all users, add the following line to
-    <tt>/etc/security/limits.conf</tt>:
+    <tt>/etc/security/limits.conf</tt>, or to a file within the
+    <tt>/etc/security/limits.d/</tt> directory:
     <pre>*     hard   core    0</pre>
 
 rationale: |-
