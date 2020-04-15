@@ -133,13 +133,13 @@ selections:
     - grub2_pti_argument
 
     ## Security Settings
-    #- sysctl_kernel_kptr_restrict
-    #- sysctl_kernel_dmesg_restrict
-    #- sysctl_kernel_kexec_load_disabled
-    #- sysctl_kernel_yama_ptrace_scope
-    #- sysctl_kernel_perf_event_paranoid
-    #- sysctl_kernel_unprivileged_bpf_disabled
-    #- sysctl_net_core_bpf_jit_harden
+    - sysctl_kernel_kptr_restrict
+    - sysctl_kernel_dmesg_restrict
+    - sysctl_kernel_kexec_load_disabled
+    - sysctl_kernel_yama_ptrace_scope
+    - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_unprivileged_bpf_disabled
+    - sysctl_net_core_bpf_jit_harden
 
     ## File System Settings
     #- sysctl_fs_protected_hardlinks
