@@ -8,4 +8,4 @@ sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/sys
 rm -f /etc/audit/rules.d/*
 
 # cut out irrelevant rules for this test
-sed '1,14d' test_audit.rules > /etc/audit/audit.rules
+sed '1,13d' test_audit.rules > /etc/audit/audit.rules
