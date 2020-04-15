@@ -79,27 +79,28 @@ selections:
     - chronyd_no_chronyc_network
 
     ### Network Settings
-    #- sysctl_net_ipv6_conf_all_accept_ra
-    #- sysctl_net_ipv6_conf_default_accept_ra
-    #- sysctl_net_ipv4_conf_all_accept_redirects
-    #- sysctl_net_ipv4_conf_default_accept_redirects
-    #- sysctl_net_ipv6_conf_all_accept_redirects
-    #- sysctl_net_ipv6_conf_default_accept_redirects
-    #- sysctl_net_ipv4_conf_all_accept_source_route
-    #- sysctl_net_ipv4_conf_default_accept_source_route
-    #- sysctl_net_ipv6_conf_all_accept_source_route
-    #- sysctl_net_ipv6_conf_default_accept_source_route
-    #- sysctl_net_ipv4_conf_all_secure_redirects
-    #- sysctl_net_ipv4_conf_default_secure_redirects
-    #- sysctl_net_ipv4_conf_all_send_redirects
-    #- sysctl_net_ipv4_conf_default_send_redirects
-    #- sysctl_net_ipv4_conf_all_log_martians
-    #- sysctl_net_ipv4_conf_default_log_martians
-    #- sysctl_net_ipv4_conf_all_rp_filter
-    #- sysctl_net_ipv4_conf_default_rp_filter
-    #- sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-    #- sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    #- sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv6_conf_all_accept_ra
+    - sysctl_net_ipv6_conf_default_accept_ra
+    - sysctl_net_ipv4_conf_all_accept_redirects
+    - sysctl_net_ipv4_conf_default_accept_redirects
+    - sysctl_net_ipv6_conf_all_accept_redirects
+    - sysctl_net_ipv6_conf_default_accept_redirects
+    - sysctl_net_ipv4_conf_all_accept_source_route
+    - sysctl_net_ipv4_conf_default_accept_source_route
+    - sysctl_net_ipv6_conf_all_accept_source_route
+    - sysctl_net_ipv6_conf_default_accept_source_route
+    - sysctl_net_ipv4_conf_all_secure_redirects
+    - sysctl_net_ipv4_conf_default_secure_redirects
+    - sysctl_net_ipv4_conf_all_send_redirects
+    - sysctl_net_ipv4_conf_default_send_redirects
+    - sysctl_net_ipv4_conf_all_log_martians
+    - sysctl_net_ipv4_conf_default_log_martians
+    - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_default_rp_filter
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    - sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv4_ip_forward
 
     ### systemd
     - disable_ctrlaltdel_reboot
@@ -131,6 +132,7 @@ selections:
     - grub2_vsyscall_argument.role=unscored
     - grub2_vsyscall_argument.severity=info
     - grub2_pti_argument
+    - sysctl_user_max_user_namespaces
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
