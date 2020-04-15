@@ -62,6 +62,7 @@ selections:
 
     ### Services
     # sshd
+    - service_sshd_disabled
     #- sshd_disable_root_login
     #- sshd_enable_strictmodes
     #- disable_host_auth
@@ -70,7 +71,7 @@ selections:
     #- sshd_disable_gssapi_auth
     #- var_sshd_set_keepalive=0
     # AC-2(5)
-    - sshd_set_keepalive
+    #- sshd_set_keepalive
     #- sshd_enable_warning_banner
     #- sshd_rekey_limit
 
@@ -248,7 +249,7 @@ selections:
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
-    - harden_sshd_crypto_policy
+    #- harden_sshd_crypto_policy
     - harden_ssh_client_crypto_policy
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
@@ -302,7 +303,7 @@ selections:
     ## AC-11(a) / FMT_MOF_EXT.1
     #- sshd_idle_timeout_value=10_minutes
     # AC-2(5)
-    - sshd_set_idle_timeout
+    #- sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_AFL.1
@@ -525,8 +526,8 @@ selections:
     #- mount_option_noexec_removable_partitions
 
     # AC-3
-    - sshd_limit_user_access
-    - sshd_disable_rhosts
+    #- sshd_limit_user_access
+    #- sshd_disable_rhosts
     #- xwindows_runlevel_target
     - grub2_enable_selinux
     #- require_emergency_target_auth
