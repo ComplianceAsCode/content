@@ -1,0 +1,14 @@
+# platform = multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:,%23%20This%20file%20controls%20the%20state%20of%20SELinux%20on%20the%20system.%0A%23%20SELINUX%3D%20can%20take%20one%20of%20these%20three%20values%3A%0A%23%20%20%20%20%20enforcing%20-%20SELinux%20security%20policy%20is%20enforced.%0A%23%20%20%20%20%20permissive%20-%20SELinux%20prints%20warnings%20instead%20of%20enforcing.%0A%23%20%20%20%20%20disabled%20-%20No%20SELinux%20policy%20is%20loaded.%0ASELINUX%3Denforcing%0A%23%20SELINUXTYPE%3D%20can%20take%20one%20of%20these%20three%20values%3A%0A%23%20%20%20%20%20targeted%20-%20Targeted%20processes%20are%20protected%2C%0A%23%20%20%20%20%20minimum%20-%20Modification%20of%20targeted%20policy.%20Only%20selected%20processes%20are%20protected.%20%0A%23%20%20%20%20%20mls%20-%20Multi%20Level%20Security%20protection.%0ASELINUXTYPE%3Dtargeted%0A%0A
+        filesystem: root
+        mode: 0644
+        path: /etc/selinux/config
