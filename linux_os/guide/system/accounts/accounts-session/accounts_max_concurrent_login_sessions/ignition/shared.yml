@@ -1,0 +1,13 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files: 
+      - contents: data:,%2A%20hard%20maxlogins%20{{ var_accounts_max_concurrent_login_sessions }}%0A
+        mode: 644
+        path: /etc/security/limits.d/accounts_max_concurrent_login_sessions.conf        
+        filesystem: root
