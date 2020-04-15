@@ -214,6 +214,8 @@ class Remediation(object):
 
         self.local_env_yaml["rule_title"] = self.associated_rule.title
         self.local_env_yaml["rule_id"] = self.associated_rule.id_
+        if self.associated_rule.identifiers.get("cce", None):
+            self.local_env_yaml["has_cce"] = True
 
     def parse_from_file_with_jinja(self, env_yaml):
         return parse_from_file_with_jinja(self.file_path, env_yaml)
@@ -229,7 +231,11 @@ def process(remediation, env_yaml, fixes, rule_id):
     if not is_supported_filename(remediation.remediation_type, remediation.file_path):
         return
 
-    result = remediation.parse_from_file_with_jinja(env_yaml)
+    local_env_yaml = dict()
+    local_env_yaml.update(remediation.local_env_yaml)
+    local_env_yaml.update(env_yaml)
+
+    result = remediation.parse_from_file_with_jinja(local_env_yaml)
     platforms = result.config['platform']
 
     if not platforms:

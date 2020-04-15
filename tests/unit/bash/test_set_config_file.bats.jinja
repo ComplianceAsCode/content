@@ -130,7 +130,7 @@ function call_set_config_file {
 @test "Basic Bash remediation" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=foo" > "$tmp_file"
-    expected_output="something='va lue'\n"
+    expected_output="# Per CCE: Set something='va lue' in $tmp_file\nsomething='va lue'\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", "va lue") | indent(4) }}}
 
@@ -144,7 +144,7 @@ function call_set_config_file {
 @test "Variable remediation - preserve dollar and use double quotes" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=bar" > "$tmp_file"
-    expected_output='something="$value"'"\n"
+    expected_output='# Per CCE: Set something="$value" in '"$tmp_file"'\nsomething="$value"'"\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", '$value') | indent(4) }}}
 
@@ -158,7 +158,7 @@ function call_set_config_file {
 @test "Basic Bash remediation - don't quote" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=foo" > "$tmp_file"
-    expected_output="something=va lue\n"
+    expected_output="# Per CCE: Set something=va lue in $tmp_file\nsomething=va lue\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", "va lue", no_quotes=true) | indent(4) }}}
 
@@ -172,7 +172,7 @@ function call_set_config_file {
 @test "Variable remediation - don't quote" {
     tmp_file="$(mktemp)"
     printf "%s\n" "something=bar" > "$tmp_file"
-    expected_output='something=$value'"\n"
+    expected_output='# Per CCE: Set something=$value in '"$tmp_file\nsomething="'$value'"\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", '$value', no_quotes=true) | indent(4) }}}
 

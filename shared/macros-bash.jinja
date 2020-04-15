@@ -443,6 +443,7 @@ line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_A
 if [ -z "$line_number" ]; then
     # There was no match of '{{{ insert_after }}}', insert at
     # the end of the file.
+    printf '# Per %s: Set %s in %s\n' "{{{ "@CCENUM" if has_cce else 'CCE' }}}" "{{{ line }}}" "{{{ path }}}" >> "{{{ path }}}"
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
 else
     head -n "$(( line_number ))" "{{{ path }}}.bak" > "{{{ path }}}"
@@ -455,6 +456,7 @@ line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_
 if [ -z "$line_number" ]; then
     # There was no match of '{{{ insert_before }}}', insert at
     # the end of the file.
+    printf '# Per %s: Set %s in %s\n' "{{{ "@CCENUM" if has_cce else 'CCE' }}}" "{{{ line }}}" "{{{ path }}}" >> "{{{ path }}}"
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
 else
     head -n "$(( line_number - 1 ))" "{{{ path }}}.bak" > "{{{ path }}}"
