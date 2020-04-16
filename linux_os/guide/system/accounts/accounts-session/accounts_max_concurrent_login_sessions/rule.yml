@@ -6,7 +6,8 @@ description: |-
     Limiting the number of allowed users and sessions per user can limit risks related to Denial of
     Service attacks. This addresses concurrent sessions for a single account and does not address
     concurrent sessions by a single user via multiple accounts. To set the number of concurrent
-    sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
+    sessions per user add the following line in <tt>/etc/security/limits.conf</tt> or
+    a file under <tt>/etc/security/limits.d/</tt>:
     <pre>* hard maxlogins <sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
 
 rationale: |-
