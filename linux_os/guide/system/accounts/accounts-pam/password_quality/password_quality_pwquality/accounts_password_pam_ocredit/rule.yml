@@ -51,8 +51,7 @@ ocil: |-
     To check how many special characters are required in a password, run the following command:
     <pre>$ grep ocredit /etc/security/pwquality.conf</pre>
     The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
-    The DoD and FISMA require at least one special character in a password.
-    This would appear as <tt>ocredit = -1</tt>.
+    This security profile requires <sub idref="var_password_pam_ocredit" /> special characters in a password. 
 
 platform: pam
 
