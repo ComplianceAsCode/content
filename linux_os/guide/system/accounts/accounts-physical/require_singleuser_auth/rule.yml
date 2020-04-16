@@ -67,7 +67,7 @@ ocil: |-
 {{% else %}}
     <pre>$ grep sulogin /usr/lib/systemd/system/rescue.service</pre>
     The output should be similar to the following, and the line must begin with
-    {{% if product in ["fedora", "rhel8", "ol8"] -%}}
+    {{% if product in ["fedora", "rhel8", "ocp4", "ol8"] -%}}
         ExecStart and /usr/lib/systemd/systemd-sulogin-shell.
         <pre>ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
     {{%- else -%}}

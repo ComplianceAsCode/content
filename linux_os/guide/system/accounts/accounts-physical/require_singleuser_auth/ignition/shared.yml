@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:,%23%20%20SPDX-License-Identifier%3A%20LGPL-2.1%2B%0A%23%0A%23%20%20This%20file%20is%20part%20of%20systemd.%0A%23%0A%23%20%20systemd%20is%20free%20software%3B%20you%20can%20redistribute%20it%20and/or%20modify%20it%0A%23%20%20under%20the%20terms%20of%20the%20GNU%20Lesser%20General%20Public%20License%20as%20published%20by%0A%23%20%20the%20Free%20Software%20Foundation%3B%20either%20version%202.1%20of%20the%20License%2C%20or%0A%23%20%20%28at%20your%20option%29%20any%20later%20version.%0A%0A%5BUnit%5D%0ADescription%3DRescue%20Shell%0ADocumentation%3Dman%3Asulogin%288%29%0ADefaultDependencies%3Dno%0AConflicts%3Dshutdown.target%0AAfter%3Dsysinit.target%20plymouth-start.service%0ABefore%3Dshutdown.target%0A%0A%5BService%5D%0AEnvironment%3DHOME%3D/root%0AWorkingDirectory%3D-/root%0AExecStartPre%3D-/bin/plymouth%20--wait%20quit%0AExecStart%3D-/usr/lib/systemd/systemd-sulogin-shell%20rescue%0AType%3Didle%0AStandardInput%3Dtty-force%0AStandardOutput%3Dinherit%0AStandardError%3Dinherit%0AKillMode%3Dprocess%0AIgnoreSIGPIPE%3Dno%0ASendSIGHUP%3Dyes%0A
+        filesystem: root
+        mode: 0644
+        path: /usr/lib/systemd/system/rescue.service
