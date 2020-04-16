@@ -70,7 +70,7 @@ selections:
     #- sshd_disable_gssapi_auth
     #- var_sshd_set_keepalive=0
     # AC-2(5)
-    - sshd_set_keepalive
+    # - sshd_set_keepalive
     #- sshd_enable_warning_banner
     #- sshd_rekey_limit
 
@@ -181,14 +181,15 @@ selections:
     #- package_sssd-ipa_installed
     # We won't check AIDE directly, we'll need to check cluster-wide for the
     # file-integrity-operator
-    # package_aide_installed
+    #- package_aide_installed
     - package_iptables_installed
     #- package_libcap-ng-utils_installed
     #- package_openscap-scanner_installed
-    #- package_policycoreutils_installed
+    - package_policycoreutils_installed
+    - package_policycoreutils-python-utils_installed
     #- package_rng-tools_installed
     - package_sudo_installed
-    - package_usbguard_installed
+    #- package_usbguard_installed
     ####
     # Need to replace with fluentd checks
     #- package_audispd-plugins_installed
@@ -197,10 +198,10 @@ selections:
 
     ### Remove Prohibited Packages
     #- package_sendmail_removed
-    #- package_iprutils_removed
-    #- package_gssproxy_removed
-    #- package_nfs-utils_removed
-    #- package_krb5-workstation_removed
+    - package_iprutils_removed
+    - package_gssproxy_removed
+    - package_nfs-utils_removed
+    - package_krb5-workstation_removed
     #- package_abrt-addon-kerneloops_removed
     #- package_abrt-addon-python_removed
     #- package_abrt-addon-ccpp_removed
@@ -230,19 +231,19 @@ selections:
     - selinux_policytype
 
     ### Application Whitelisting (RHEL 8)
-    - package_fapolicyd_installed
-    - service_fapolicyd_enabled
+    #- package_fapolicyd_installed
+    #- service_fapolicyd_enabled
 
     ### Enable the Hardware RNG Entropy Gatherer Service
-    - service_rngd_enabled
+    #- service_rngd_enabled
 
     ### Configure SSSD
     - sssd_run_as_sssd_user
 
     ### Configure USBGuard
-    - service_usbguard_enabled
-    - configure_usbguard_auditbackend
-    - usbguard_allow_hid_and_hub
+    #- service_usbguard_enabled
+    #- configure_usbguard_auditbackend
+    #- usbguard_allow_hid_and_hub
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -253,6 +254,7 @@ selections:
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
+    - package_crypto-policies_installed
 
     #######################################################
     ### CONFIGURATION ANNEX TO THE PROTECTION PROFILE
@@ -292,7 +294,7 @@ selections:
 
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1
-    #- package_tmux_installed
+    - package_tmux_installed
     #- configure_bashrc_exec_tmux
     #- no_tmux_in_shells
     #- configure_tmux_lock_command
@@ -302,7 +304,7 @@ selections:
     ## AC-11(a) / FMT_MOF_EXT.1
     #- sshd_idle_timeout_value=10_minutes
     # AC-2(5)
-    - sshd_set_idle_timeout
+    #- sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_AFL.1
