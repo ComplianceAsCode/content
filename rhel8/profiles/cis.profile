@@ -798,7 +798,7 @@ selections:
 
 
     ### 5.2.17 Ensure SSH AllowTcpForwarding is disabled (Scored)
-    - sshd_disable_allow_tcp_forwarding
+    - sshd_disable_tcp_forwarding
 
     ### 5.2.18 Ensure SSH MaxStarups is configured (Scored)
 

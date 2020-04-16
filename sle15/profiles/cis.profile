@@ -732,7 +732,7 @@ selections:
     ### 5.2.20 Ensure SSH PAM is enabled (Scored)
 
     ### 5.2.21 Ensure SSH AllowTcpForwarding is disabled (Scored)
-    - sshd_disable_allow_tcp_forwarding
+    - sshd_disable_tcp_forwarding
     
     ### 5.2.22 Ensure SSH MaxStartups is configured (Scored)
 
