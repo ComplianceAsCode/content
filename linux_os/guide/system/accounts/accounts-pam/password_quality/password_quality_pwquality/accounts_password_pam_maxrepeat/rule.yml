@@ -45,8 +45,8 @@ ocil_clause: 'maxrepeat is not found or not greater than or equal to the require
 ocil: |-
     To check the maximum value for consecutive repeating characters, run the following command:
     <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-    Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3, which would appear as
-    <tt>maxrepeat=3</tt>.
+    Look for the value of the <tt>maxrepeat</tt> parameter.
+    This security profile allows for a maximum of <sub idref="var_password_pam_maxrepeat" /> repeating characters in a password.
 
 platform: pam
 
