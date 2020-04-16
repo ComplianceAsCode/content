@@ -9,7 +9,8 @@ description: |-
     usage of lowercase letters in a password. When set to a negative number, any password will be required to
     contain that many lowercase characters. When set to a positive number, pam_pwquality will grant +1 additional
     length credit for each lowercase character. Modify the <tt>lcredit</tt> setting in
-    <tt>/etc/security/pwquality.conf</tt> to require the use of a lowercase character in passwords.
+    <tt>/etc/security/pwquality.conf</tt> to require the use of <sub idref="var_password_pam_lcredit.var"/> 
+    lowercase characters in passwords.
 
 rationale: |-
     Use of a complex password helps to increase the time and resources required
@@ -50,7 +51,7 @@ ocil: |-
     To check how many lowercase characters are required in a password, run the following command:
     <pre>$ grep lcredit /etc/security/pwquality.conf</pre>
     The <tt>lcredit</tt> parameter (as a negative number) will indicate how many special characters are required.
-    The DoD and FISMA require at least one lowercase character in a password. This would appear as <tt>lcredit = -1</tt>.
+    This security profile requires <sub idref="var_password_pam_lcredit.var"/> lowercase characters in a password.
 
 platform: pam
 
