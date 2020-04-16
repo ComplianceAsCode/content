@@ -581,6 +581,7 @@ selections:
     - sshd_disable_x11_forwarding
     
     ### 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
+    - sshd_max_auth_tries_value=4
     - sshd_set_max_auth_tries
 
     ### 5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored)

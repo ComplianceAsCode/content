@@ -28,6 +28,7 @@ references:
     srg@rhel6: SRG-OS-000112
     disa@rhel6: 1436,774,776
     cis: 5.2.2
+    cis@sle15: 5.2.4
     cjis: 5.5.6
     cui: 3.1.13,3.5.4
     disa: 197,366
@@ -62,11 +63,3 @@ warnings:
         As of <tt>openssh-server</tt> version <tt>7.4</tt> and above, the only protocol
         supported is version 2, and line <pre>Protocol 2</pre> in
         <tt>/etc/ssh/sshd_config</tt> is not necessary.
-
-template:
-    name: sshd_lineinfile
-    vars:
-        missing_parameter_pass: 'false'
-        parameter: Protocol
-        rule_id: sshd_allow_only_protocol2
-        value: '2'

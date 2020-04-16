@@ -56,6 +56,7 @@ fi
 
 # Obtain the list of SUID/SGID binaries on the particular system (split by newline)
 # into privileged_binaries array
+privileged_binaries=()
 readarray -t privileged_binaries < <(find / -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null)
 
 # Keep list of SUID/SGID binaries that have been already handled within some previous iteration

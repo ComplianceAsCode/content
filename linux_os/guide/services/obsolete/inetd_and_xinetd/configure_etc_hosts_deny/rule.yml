@@ -1,18 +1,18 @@
 documentation_complete: true
 
-prodtype: ol7,rhel7
+prodtype: ol7,rhel7,sle15
 
 title: 'Ensure /etc/hosts.deny is configured'
 
 description: |-
     The file <tt>/etc/hosts.deny</tt> together with <tt>/etc/hosts.allow</tt> provides a
-    simple access control mechanism for network services supporting TCP wrappers. 
+    simple access control mechanism for network services supporting TCP wrappers.
     The following line in the file ensures that access to services supporting this mechanism is denied to any clients
     not mentioned in <tt>/etc/hosts.allow</tt>:
     <pre>ALL: ALL</pre>
 
 rationale: |-
-    Correct configuration in <tt>/etc/hosts.deny</tt> ensures that no explicitly mentioned clients will be able to connect to services supporting this access control mechanism. 
+    Correct configuration in <tt>/etc/hosts.deny</tt> ensures that no explicitly mentioned clients will be able to connect to services supporting this access control mechanism.
 
 severity: medium
 

@@ -133,17 +133,17 @@ selections:
     - grub2_pti_argument
 
     ## Security Settings
-    #- sysctl_kernel_kptr_restrict
-    #- sysctl_kernel_dmesg_restrict
-    #- sysctl_kernel_kexec_load_disabled
-    #- sysctl_kernel_yama_ptrace_scope
-    #- sysctl_kernel_perf_event_paranoid
-    #- sysctl_kernel_unprivileged_bpf_disabled
-    #- sysctl_net_core_bpf_jit_harden
+    - sysctl_kernel_kptr_restrict
+    - sysctl_kernel_dmesg_restrict
+    - sysctl_kernel_kexec_load_disabled
+    - sysctl_kernel_yama_ptrace_scope
+    - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_unprivileged_bpf_disabled
+    - sysctl_net_core_bpf_jit_harden
 
     ## File System Settings
-    #- sysctl_fs_protected_hardlinks
-    #- sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
+    - sysctl_fs_protected_symlinks
 
     ### Audit
     # AC-2(4) and others
@@ -213,7 +213,7 @@ selections:
 
     ### Login
     - disable_users_coredumps
-    #- sysctl_kernel_core_pattern
+    - sysctl_kernel_core_pattern
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled

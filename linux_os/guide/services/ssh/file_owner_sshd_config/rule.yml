@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,rhv4
+prodtype: rhel6,rhel7,rhel8,rhv4,sle15
 
 title: 'Verify Owner on SSH Server config file'
 
@@ -8,7 +8,7 @@ description: |-
     {{{ describe_file_owner(file="/etc/ssh/sshd_config", owner="root") }}}
 
 rationale: |-
-    Service configuration files enable or disable features of their respective 
+    Service configuration files enable or disable features of their respective
     services that if configured incorrectly can lead to insecure and vulnerable
     configurations. Therefore, service configuration files should be owned by the
     correct group to prevent unauthorized changes.
