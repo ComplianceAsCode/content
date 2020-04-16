@@ -62,6 +62,7 @@ selections:
 
     ### Services
     # sshd
+    - service_sshd_disabled
     #- sshd_disable_root_login
     #- sshd_enable_strictmodes
     #- disable_host_auth
@@ -70,7 +71,7 @@ selections:
     #- sshd_disable_gssapi_auth
     #- var_sshd_set_keepalive=0
     # AC-2(5)
-    - sshd_set_keepalive
+    #- sshd_set_keepalive
     #- sshd_enable_warning_banner
     #- sshd_rekey_limit
 
@@ -79,11 +80,11 @@ selections:
     - chronyd_no_chronyc_network
 
     ### Network Settings
-    #- sysctl_net_ipv6_conf_all_accept_ra
+    - sysctl_net_ipv6_conf_all_accept_ra
     #- sysctl_net_ipv6_conf_default_accept_ra
     #- sysctl_net_ipv4_conf_all_accept_redirects
     #- sysctl_net_ipv4_conf_default_accept_redirects
-    #- sysctl_net_ipv6_conf_all_accept_redirects
+    - sysctl_net_ipv6_conf_all_accept_redirects
     #- sysctl_net_ipv6_conf_default_accept_redirects
     #- sysctl_net_ipv4_conf_all_accept_source_route
     #- sysctl_net_ipv4_conf_default_accept_source_route
@@ -133,17 +134,17 @@ selections:
     - grub2_pti_argument
 
     ## Security Settings
-    #- sysctl_kernel_kptr_restrict
-    #- sysctl_kernel_dmesg_restrict
-    #- sysctl_kernel_kexec_load_disabled
-    #- sysctl_kernel_yama_ptrace_scope
-    #- sysctl_kernel_perf_event_paranoid
-    #- sysctl_kernel_unprivileged_bpf_disabled
-    #- sysctl_net_core_bpf_jit_harden
+    - sysctl_kernel_kptr_restrict
+    - sysctl_kernel_dmesg_restrict
+    - sysctl_kernel_kexec_load_disabled
+    - sysctl_kernel_yama_ptrace_scope
+    - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_unprivileged_bpf_disabled
+    - sysctl_net_core_bpf_jit_harden
 
     ## File System Settings
-    #- sysctl_fs_protected_hardlinks
-    #- sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
+    - sysctl_fs_protected_symlinks
 
     ### Audit
     # AC-2(4) and others
@@ -213,7 +214,7 @@ selections:
 
     ### Login
     - disable_users_coredumps
-    #- sysctl_kernel_core_pattern
+    - sysctl_kernel_core_pattern
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
@@ -248,7 +249,7 @@ selections:
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
-    - harden_sshd_crypto_policy
+    #- harden_sshd_crypto_policy
     - harden_ssh_client_crypto_policy
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
@@ -302,7 +303,7 @@ selections:
     ## AC-11(a) / FMT_MOF_EXT.1
     #- sshd_idle_timeout_value=10_minutes
     # AC-2(5)
-    - sshd_set_idle_timeout
+    #- sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_AFL.1
@@ -525,8 +526,8 @@ selections:
     #- mount_option_noexec_removable_partitions
 
     # AC-3
-    - sshd_limit_user_access
-    - sshd_disable_rhosts
+    #- sshd_limit_user_access
+    #- sshd_disable_rhosts
     #- xwindows_runlevel_target
     - grub2_enable_selinux
     #- require_emergency_target_auth
@@ -618,3 +619,4 @@ selections:
     - kernel_module_udf_disabled
     - kernel_module_usb-storage_disabled
     - kernel_module_vfat_disabled
+
