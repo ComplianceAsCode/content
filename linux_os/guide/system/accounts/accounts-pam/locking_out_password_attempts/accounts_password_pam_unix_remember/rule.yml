@@ -56,5 +56,7 @@ ocil: |-
     <pre>$ grep remember /etc/pam.d/system-auth</pre>
     The output should show the following at the end of the line:
     <pre>remember=<sub idref="var_password_pam_unix_remember" /></pre>
+    This security profile does not allow the user to resue the most 
+    recent <sub idref="var_password_pam_unix_remember" /> passwords. 
 
 platform: pam
