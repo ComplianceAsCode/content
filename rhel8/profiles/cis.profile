@@ -804,7 +804,8 @@ selections:
 
 
     ### 5.2.19 Ensure SSH MaxSessions is set to 4 or less (Scored)
-
+    - sshd_set_max_sessions
+    - var_sshd_max_sessions=4
 
     ### 5.2.20 Ensure system-wide crypto policy is not over-ridden (Scored)
     - configure_ssh_crypto_policy
