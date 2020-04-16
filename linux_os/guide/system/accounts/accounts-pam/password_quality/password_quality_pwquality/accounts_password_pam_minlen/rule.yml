@@ -6,8 +6,9 @@ title: 'Ensure PAM Enforces Password Requirements - Minimum Length'
 
 description: |-
     The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
-    minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
-    after pam_pwquality to set minimum password length requirements.
+    minimum characters required in a password. Modify the <tt>minlen</tt> setting 
+    in <tt>/etc/security/pwquality.conf</tt> to set minimun password length
+    requirements to <sub idref="var_password_pam_minlen"/>.
 
 rationale: |-
     The shorter the password, the lower the number of possible combinations
@@ -49,7 +50,8 @@ ocil: |-
     To check how many characters are required in a password, run the following command:
     <pre>$ grep minlen /etc/security/pwquality.conf</pre>
     Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /></tt>
-
+    This security profile set minimum password lenght to <sub idref="var_password_pam_minlen"/>
+   
 platform: pam
 
 template:
