@@ -40,7 +40,7 @@ func TestE2e(t *testing.T) {
 
 	t.Run("Wait for Remediations to apply", func(t *testing.T) {
 		// Lets wait for the MachineConfigs to start applying
-		time.Sleep(30 * time.Second)
+		time.Sleep(60 * time.Second)
 		ctx.waitForNodesToBeReady()
 	})
 
