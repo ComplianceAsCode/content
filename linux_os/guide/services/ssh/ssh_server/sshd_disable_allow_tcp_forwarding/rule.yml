@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Disable AllowTcpForwarding'
 
 description: |-
-    The <tt>AllowTcpForarding</tt> parameter specifies the maximum number of open sessions permitted
+    The <tt>AllowTcpForwarding</tt> parameter specifies the maximum number of open sessions permitted
     from a given connection. To disable AllowTcpForwarding, add or correct the
     following line in <tt>/etc/ssh/sshd_config</tt>:
     <pre>AllowTcpForwarding no</pre>
@@ -17,7 +17,7 @@ references:
   cis@rhel8: 5.2.16
   cis@sle15: 5.2.21
 
-ocil_clause: "That the AllowTcpForwading option exists and is disabled"
+ocil_clause: "That the AllowTcpForwarding option exists and is disabled"
 
 ocil: |-
     {{{ ocil_sshd_option(default="yes", option="AllowTcpForwarding", value="no") }}}
