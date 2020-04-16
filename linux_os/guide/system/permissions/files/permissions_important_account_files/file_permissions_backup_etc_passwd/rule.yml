@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on Backup passwd File'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/passwd-", perms="0600") }}}
+    {{{ describe_file_permissions(file="/etc/passwd-", perms="0644") }}}
 
 rationale: |-
     The <tt>/etc/passwd-</tt> file is a backup file of <tt>/etc/passwd</tt>, and as such,
@@ -21,14 +21,14 @@ references:
     cis@rhel8: 6.1.6
     cis@sle15: 6.1.7
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/passwd-", perms="-rw-------") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/passwd-", perms="-rw-r--r--") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/passwd-", perms="-rw-------") }}}
+    {{{ ocil_file_permissions(file="/etc/passwd-", perms="-rw-r--r--") }}}
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/passwd-
-        filemode: '0600'
+        filemode: '0644'
         missing_file_pass: 'true'
