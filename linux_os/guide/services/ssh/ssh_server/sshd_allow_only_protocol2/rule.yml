@@ -63,11 +63,3 @@ warnings:
         As of <tt>openssh-server</tt> version <tt>7.4</tt> and above, the only protocol
         supported is version 2, and line <pre>Protocol 2</pre> in
         <tt>/etc/ssh/sshd_config</tt> is not necessary.
-
-template:
-    name: sshd_lineinfile
-    vars:
-        missing_parameter_pass: 'false'
-        parameter: Protocol
-        rule_id: sshd_allow_only_protocol2
-        value: '2'
