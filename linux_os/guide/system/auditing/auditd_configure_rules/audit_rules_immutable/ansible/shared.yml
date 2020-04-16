@@ -1,0 +1,45 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: add /etc/audit/audit.rules to the list of files to be searched
+  set_fact:
+    files_to_search:
+      - /etc/audit/audit.rules
+
+- name: Search /etc/audit/rules.d  for files containing the -e option
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: true
+    contains: "-e[\\s]+.*"
+    patterns: "*.rules"
+  register: find_immutable
+
+- name: add found files to the list of files to be searched
+  set_fact:
+    files_to_search: "{{ files_to_search + [item.path] }}"
+  with_items: "{{ find_immutable.files }}"
+  when: find_immutable.matched is defined and find_immutable.matched >= 1
+
+- name: remove the config line from /etc/audit/audit.rules and any file in /etc/audit/rules.d directory
+  lineinfile:
+    path: "{{ item }}"
+    regexp: "-e[\\s]+.*"
+    state: absent
+  with_items: "{{ files_to_search }}"
+
+- name: insert lines at the end of /etc/audit/audit.rules and /etc/audit/rules.d/immutable.rules
+  blockinfile:
+    path: "{{ item }}"
+    create: True
+    marker: ""
+    block: |+
+      # Set the audit.rules configuration immutable per security requirements
+      # Reboot is required to change audit rules once this setting is applied
+      
+      -e 2
+  with_items:
+    - /etc/audit/audit.rules
+    - /etc/audit/rules.d/immutable.rules
