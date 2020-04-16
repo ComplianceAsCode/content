@@ -923,7 +923,7 @@ selections:
     - file_owner_backup_etc_passwd
     - file_groupowner_backup_etc_passwd
 
-    # chmod 600 /etc/passwd-
+    # chmod 644 /etc/passwd-
     - file_permissions_backup_etc_passwd
 
     ### 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)
