@@ -1,0 +1,20 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents: data:,auth%20%20%20%20%20%20%20%20required%20%20%20%20%20%20pam_env.so%0Aauth%20%20%20%20%20%20%20%20required%20%20%20%20%20%20pam_faillock.so%20preauth%20silent%20deny%3D{{{ var_accounts_passwords_pam_faillock_deny }}}%20unlock_time%3D{{{ var_accounts_passwords_pam_faillock_unlock_time }}}%20fail_interval%3D{{{ var_accounts_passwords_pam_faillock_fail_interval }}}%20%0Aauth%20%20%20%20%20%20%20%20sufficient%20%20%20%20pam_unix.so%20try_first_pass%20nullok%0Aauth%20%20%20%20%20%20%20%20%5Bdefault%3Ddie%5D%20pam_faillock.so%20authfail%20deny%3D{{{ var_accounts_passwords_pam_faillock_deny }}}%20unlock_time%3D{{{var_accounts_passwords_pam_faillock_unlock_time }}}%20fail_interval%3D{{{ var_accounts_passwords_pam_faillock_fail_interval }}} %0Aauth%20%20%20%20%20%20%20%20required%20%20%20%20%20%20pam_deny.so%0Aaccount%20%20%20%20%20required%20%20%20%20%20%20pam_faillock.so%0Aaccount%20%20%20%20%20required%20%20%20%20%20%20pam_unix.so%0A%0Apassword%20%20%20%20requisite%20%20%20%20%20pam_pwquality.so%20try_first_pass%20local_users_only%20retry%3D3%20authtok_type%3D%0Apassword%20%20%20%20sufficient%20%20%20%20pam_unix.so%20try_first_pass%20use_authtok%20nullok%20sha512%20shadow%0Apassword%20%20%20%20required%20%20%20%20%20%20pam_deny.so%0A%0Asession%20%20%20%20%20optional%20%20%20%20%20%20pam_keyinit.so%20revoke%0Asession%20%20%20%20%20required%20%20%20%20%20%20pam_limits.so%0A-session%20%20%20%20%20optional%20%20%20%20%20%20pam_systemd.so%0Asession%20%20%20%20%20%5Bsuccess%3D1%20default%3Dignore%5D%20pam_succeed_if.so%20service%20in%20crond%20quiet%20use_uid%0Asession%20%20%20%20%20required%20%20%20%20%20%20pam_unix.so%0A
+        mode: 644
+        path: /etc/pam.d/system-auth  
+        filesystem: root
+        
+      - contents: data:,auth%20%20%20%20%20%20%20%20required%20%20%20%20%20%20pam_env.so%0Aauth%20%20%20%20%20%20%20%20required%20%20%20%20%20%20pam_faillock.so%20preauth%20silent%20deny%3D{{{ var_accounts_passwords_pam_faillock_deny }}}%20unlock_time%3D{{{ var_accounts_passwords_pam_faillock_unlock_time }}}%20fail_interval%3D{{{ var_accounts_passwords_pam_faillock_fail_interval }}}%20%0Aauth%20%20%20%20%20%20%20%20sufficient%20%20%20%20pam_unix.so%20try_first_pass%20nullok%0Aauth%20%20%20%20%20%20%20%20%5Bdefault%3Ddie%5D%20pam_faillock.so%20authfail%20deny%3D{{{ var_accounts_passwords_pam_faillock_deny }}}%20unlock_time%3D{{{var_accounts_passwords_pam_faillock_unlock_time }}}%20fail_interval%3D{{{ var_accounts_passwords_pam_faillock_fail_interval }}} %0Aauth%20%20%20%20%20%20%20%20required%20%20%20%20%20%20pam_deny.so%0Aaccount%20%20%20%20%20required%20%20%20%20%20%20pam_faillock.so%0Aaccount%20%20%20%20%20required%20%20%20%20%20%20pam_unix.so%0A%0Apassword%20%20%20%20requisite%20%20%20%20%20pam_pwquality.so%20try_first_pass%20local_users_only%20retry%3D3%20authtok_type%3D%0Apassword%20%20%20%20sufficient%20%20%20%20pam_unix.so%20try_first_pass%20use_authtok%20nullok%20sha512%20shadow%0Apassword%20%20%20%20required%20%20%20%20%20%20pam_deny.so%
+0A%0Asession%20%20%20%20%20optional%20%20%20%20%20%20pam_keyinit.so%20revoke%0Asession%20%20%20%20%20required%20%20%20%20%20%20pam_limits.so%0A-session%20%20%20%20%20optional%20%20%20%20%20%20pam_systemd.so%0Asession%20%20%20%20%20%5Bsuccess%3D1%20default%3Dignore%5D%20pam_succeed_if.so%20service%20in%20crond%20quiet%20use_uid%0Asession%20%20%20%20%20required%20%20%20%20%20%20pam_unix.so%0A
+        mode: 644
+        path: /etc/pam.d/password-auth
+        filesystem: root
+
