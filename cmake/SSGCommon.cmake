@@ -282,8 +282,8 @@ macro(ssg_build_ansible_playbooks PRODUCT)
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
-    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda and ignition)...")
-    _ssg_build_remediations_for_language(${PRODUCT} "bash;ansible;puppet;anaconda;ignition")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition and kubernetes)...")
+    _ssg_build_remediations_for_language(${PRODUCT} "bash;ansible;puppet;anaconda;ignition;kubernetes")
 
     # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
     # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
@@ -314,7 +314,7 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-fixes.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-fixes.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-fixes.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-fixes.xml" --stringparam ignition_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ignition-fixes.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-fixes.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-fixes.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-fixes.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-fixes.xml" --stringparam ignition_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ignition-fixes.xml" --stringparam kubernetes_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/kubernetes-fixes.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
@@ -328,6 +328,8 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/anaconda-fixes.xml"
         DEPENDS generate-internal-${PRODUCT}-ignition-fixes.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ignition-fixes.xml"
+        DEPENDS generate-internal-${PRODUCT}-kubernetes-fixes.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/kubernetes-fixes.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt"
         COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )
