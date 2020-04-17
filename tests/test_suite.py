@@ -52,21 +52,6 @@ def parse_args():
                                help=("Path to the Source DataStream on this "
                                      "machine which is going to be tested"))
     benchmarks = common_parser.add_mutually_exclusive_group()
-    benchmarks.add_argument(
-            "--add-platform",
-            metavar="<CPE REGEX>",
-            default=None,
-            help="Find all CPEs in the datastream that match the provided regex, "
-            "and add them as platforms to all datastream benchmarks. "
-            "If the regex doesn't match anything, it will be treated "
-            "as a literal CPE, and added as a platform. "
-            "For example, use 'cpe:/o:fedoraproject:fedora:30' or 'enterprise_linux'.")
-    benchmarks.add_argument(
-            "--keep-machine-only",
-            default=False,
-            action="store_true",
-            help="Whether to keep machine-only platform in rules which is stripped by default "
-            "to increase usefulness of the container backend.")
     benchmarks.add_argument("--xccdf-id",
                                dest="xccdf_id",
                                metavar="REF-ID",
@@ -80,6 +65,21 @@ def parse_args():
                                default=0,
                                help="Selection number of reference ID related "
                                     "to benchmark to be used.")
+    common_parser.add_argument(
+            "--add-platform",
+            metavar="<CPE REGEX>",
+            default=None,
+            help="Find all CPEs in the datastream that match the provided regex, "
+            "and add them as platforms to all datastream benchmarks. "
+            "If the regex doesn't match anything, it will be treated "
+            "as a literal CPE, and added as a platform. "
+            "For example, use 'cpe:/o:fedoraproject:fedora:30' or 'enterprise_linux'.")
+    common_parser.add_argument(
+            "--remove-machine-only",
+            default=False,
+            action="store_true",
+            help="Whether to remove machine-only platform in rules "
+            "to increase usefulness of the container backend.")
     common_parser.add_argument("--loglevel",
                                dest="loglevel",
                                metavar="LOGLEVEL",
@@ -355,7 +355,7 @@ def main():
         options.datastream = stashed_datastream
 
         with xml_operations.datastream_root(stashed_datastream, stashed_datastream) as root:
-            if not options.keep_machine_only:
+            if options.remove_machine_only:
                 xml_operations.remove_machine_platform(root)
             if options.add_platform:
                 xml_operations.add_platform_to_benchmark(root, options.add_platform)

@@ -4,6 +4,7 @@ import xml.etree.cElementTree as ET
 import logging
 import contextlib
 import re
+import subprocess
 
 from ssg.constants import OSCAP_RULE
 from ssg.constants import PREFIX_TO_NS
@@ -92,16 +93,31 @@ def remove_machine_only_from_element(root, element_spec):
                 el.remove(p)
 
 
-def get_all_cpe_refs(root):
-    query = (
-            ".//ds:component/oval-def:oval_definitions/oval-def:definitions"
-            "/oval-def:definition[@class='inventory']/oval-def:metadata"
-            "/oval-def:reference[@source='CPE']")
-    references = root.findall(query, PREFIX_TO_NS)
-    cpes = set()
-    for ref in references:
-        cpes.add(ref.get("ref_id"))
-    return cpes
+def get_oscap_supported_cpes():
+    """
+    Obtain a list of CPEs that the scanner supports
+    """
+    result = []
+    proc = subprocess.Popen(
+            ("oscap", "--version"), text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        outs, errs = proc.communicate(timeout=3)
+    except subprocess.TimeoutExpired:
+        logging.warn("Scanner timeouted when asked about supported CPEs")
+        proc.kill()
+        return []
+
+    if proc.returncode != 0:
+        first_error_line = errs.split("\n")[0]
+        logging.warn("Error getting CPEs from the scanner: {msg}".format(msg=first_error_line))
+
+    cpe_regex = re.compile(r'\bcpe:\S+$')
+    for line in outs.split("\n"):
+        match = cpe_regex.search(line)
+        if match:
+            result.append(match.group(0))
+    return result
 
 
 def add_platform_to_benchmark(root, cpe_regex):
@@ -113,7 +129,7 @@ def add_platform_to_benchmark(root, cpe_regex):
         )
         raise RuntimeError(msg)
 
-    all_cpes = get_all_cpe_refs(root)
+    all_cpes = get_oscap_supported_cpes()
     regex = re.compile(cpe_regex)
 
     cpes_to_add = []
