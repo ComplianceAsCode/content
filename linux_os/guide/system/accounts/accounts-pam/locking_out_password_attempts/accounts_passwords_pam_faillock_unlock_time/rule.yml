@@ -60,5 +60,5 @@ ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
     <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
     The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt> or <tt>0</tt> for <tt>never</tt>.
-
+    This security profile sets the lockout time for failed password attempts
 platform: pam
