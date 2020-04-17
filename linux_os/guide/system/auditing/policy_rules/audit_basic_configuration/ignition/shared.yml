@@ -7,7 +7,8 @@ spec:
       version: 2.2.0
     storage:
       files:
-      - contents: source: data:,%23%23%20First%20rule%20-%20delete%20all%0A-D%0A%0A%23%23%20Increase%20the%20buffers%20to%20survive%20stress%20events.%0A%23%23%20Make%20this%20bigger%20for%20busy%20systems%0A-b%208192%0A%0A%23%23%20This%20determine%20how%20long%20to%20wait%20in%20burst%20of%20events%0A--backlog_wait_time%2060000%0A%0A%23%23%20Set%20failure%20mode%20to%20syslog%0A-f%201%0A%0A
+      - contents:
+          source: data:,%23%23%20First%20rule%20-%20delete%20all%0A-D%0A%0A%23%23%20Increase%20the%20buffers%20to%20survive%20stress%20events.%0A%23%23%20Make%20this%20bigger%20for%20busy%20systems%0A-b%208192%0A%0A%23%23%20This%20determine%20how%20long%20to%20wait%20in%20burst%20of%20events%0A--backlog_wait_time%2060000%0A%0A%23%23%20Set%20failure%20mode%20to%20syslog%0A-f%201%0A%0A
         filesystem: root
         mode: 0600
         path: /etc/audit/rules.d/10-base-config.rules
