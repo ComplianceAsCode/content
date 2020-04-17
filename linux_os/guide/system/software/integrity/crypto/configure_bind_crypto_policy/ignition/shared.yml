@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:,%5B%20crypto_policy%20%5D%0A.include%20/etc/crypto-policies/back-ends/openssl.config%0A
+        filesystem: root
+        mode: 0644
+        path: /etc/pki/tls/openssl.cnf
