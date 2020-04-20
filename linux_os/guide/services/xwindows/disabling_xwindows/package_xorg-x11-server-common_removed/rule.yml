@@ -9,8 +9,8 @@ description: |-
     installed. If X Windows is not installed then the system cannot boot into graphical user mode.
     This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
     mode. To do so, run the following command:
-    <pre>$ sudo yum groupremove "X Window System"</pre>
-    <pre>$ sudo yum remove xorg-x11-server-common</pre>
+    <pre>$ sudo {{{ pkg_manager }}} groupremove "X Window System"</pre>
+    <pre>$ sudo {{{ pkg_manager }}} remove xorg-x11-server-common</pre>
 
 rationale: |-
     Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
@@ -46,6 +46,14 @@ ocil: |-
     <pre>$ rpm -qi xorg-x11-server-common</pre>
     The output should be:
     <pre>package xorg-x11-server-common is not installed</pre>
+
+warnings:
+    - functionality: |-
+        The installation and use of a Graphical User Interface (GUI) increases your attack vector and decreases your
+        overall security posture. Removing the package xorg-x11-server-common package can
+        potentially remove the graphical target which might bring your system to an inconsistent state requiring
+        additional configuration to access the system again. If a GUI is an operational requirement, a tailored profile
+        that removes this rule should used before continuing installation.
 
 template:
     name: package_removed
