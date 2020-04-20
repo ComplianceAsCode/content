@@ -18,7 +18,6 @@ func TestE2e(t *testing.T) {
 		ctx.ensureNamespaceExistsAndSet()
 		if ctx.installOperator {
 			ctx.ensureOperatorSourceExists()
-			ctx.ensureCatalogSourceConfigExists()
 			ctx.ensureOperatorGroupExists()
 			ctx.ensureSubscriptionExists()
 			ctx.waitForOperatorToBeReady()
