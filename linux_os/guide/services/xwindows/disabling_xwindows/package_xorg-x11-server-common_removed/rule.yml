@@ -9,7 +9,9 @@ description: |-
     installed. If X Windows is not installed then the system cannot boot into graphical user mode.
     This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
     mode. To do so, run the following command:
+    {{%- if product != "rhel8" and product != "rhv4" -%}}
     <pre>$ sudo {{{ pkg_manager }}} groupremove "X Window System"</pre>
+    {{%- endif %}}
     <pre>$ sudo {{{ pkg_manager }}} remove xorg-x11-server-common</pre>
 
 rationale: |-
