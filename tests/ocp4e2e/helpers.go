@@ -36,12 +36,11 @@ import (
 )
 
 const (
-	namespacePath           = "compliance-operator-ns.yaml"
-	operatorSourcePath      = "compliance-operator-source.yaml"
-	catalogSourceConfigPath = "compliance-operator-csc.yaml"
-	operatorGroupPath       = "compliance-operator-operator-group.yaml"
-	subscriptionPath        = "compliance-operator-alpha-subscription.yaml"
-	apiPollInterval         = 5 * time.Second
+	namespacePath      = "compliance-operator-ns.yaml"
+	operatorSourcePath = "compliance-operator-source.yaml"
+	operatorGroupPath  = "compliance-operator-operator-group.yaml"
+	subscriptionPath   = "compliance-operator-alpha-subscription.yaml"
+	apiPollInterval    = 5 * time.Second
 )
 
 var profile string
@@ -179,11 +178,6 @@ func (ctx *e2econtext) ensureNamespaceExistsAndSet() {
 
 func (ctx *e2econtext) ensureOperatorSourceExists() {
 	path := path.Join(ctx.resourcespath, operatorSourcePath)
-	ctx.ensureObjectExists(path)
-}
-
-func (ctx *e2econtext) ensureCatalogSourceConfigExists() {
-	path := path.Join(ctx.resourcespath, catalogSourceConfigPath)
 	ctx.ensureObjectExists(path)
 }
 
