@@ -24,7 +24,8 @@ REMEDIATION_TO_EXT_MAP = {
     'ansible': '.yml',
     'bash': '.sh',
     'puppet': '.pp',
-    'ignition': '.yml'
+    'ignition': '.yml',
+    'kubernetes': '.yml'
 }
 
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
@@ -102,6 +103,12 @@ def get_fixgroup_for_type(fixcontent, remediation_type):
         return ElementTree.SubElement(
             fixcontent, "fix-group", id="ignition",
             system="urn:xccdf:fix:script:ignition",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
+
+    elif remediation_type == 'kubernetes':
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="kubernetes",
+            system="urn:xccdf:fix:script:kubernetes",
             xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
@@ -386,12 +393,19 @@ class IgnitionRemediation(Remediation):
             file_path, "ignition")
 
 
+class KubernetesRemediation(Remediation):
+    def __init__(self, file_path):
+        super(KubernetesRemediation, self).__init__(
+              file_path, "kubernetes")
+
+
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
     'ansible': AnsibleRemediation,
     'bash': BashRemediation,
     'puppet': PuppetRemediation,
     'ignition': IgnitionRemediation,
+    'kubernetes': KubernetesRemediation,
 }
 
 
@@ -515,6 +529,8 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """
 
     if remediation_type == "ignition":
+        return
+    if remediation_type == "kubernetes":
         return
     elif remediation_type == "ansible":
         fix_text = fix.text

@@ -8,7 +8,7 @@ from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
 
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -16,7 +16,8 @@ lang_to_ext_map = {
     "bash": ".sh",
     "oval": ".xml",
     "puppet": ".pp",
-    "ignition": ".yml"
+    "ignition": ".yml",
+    "kubernetes": ".yml"
 }
 
 def sanitize_input(string):

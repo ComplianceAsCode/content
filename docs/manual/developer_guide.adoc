@@ -762,7 +762,7 @@ If customizing content via SCAP Workbench, or directly writing your tailoring XM
 
 == Contributing with XCCDFs, OVALs and remediations
 
-There are three main types of content in the project, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer, puppet and ignition.
+There are three main types of content in the project, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer, puppet, ignition and kubernetes.
 ComplianceAsCode also has its own templating mechanism, allowing content writers to create models and use it to generate a number of checks and remediations.
 
 === Contributing
@@ -1005,6 +1005,7 @@ contain the following subdirectories:
  - `oval` -- for OVAL check content, ending in `.xml`
  - `puppet` -- for Puppet remediation content, ending in `.pp`
  - `ignition` -- for Ignition remediation content, ending in `.yml`
+ - `kubernetes` -- for Kubernetes remediation content, ending in `.yml`
 
 In each of these subdirectories, a file named `shared.ext` will apply to all
 products and be included in all builds, but `{{{ product }}}.ext` will
@@ -1201,7 +1202,7 @@ This ensures consistent, high quality OVAL checks that we can edit in one place 
 
 === Remediations
 
-Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda, Puppet and Ignition.
+Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda, Puppet, Ignition and Kubernetes.
 They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly.
 Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
 
@@ -1386,10 +1387,11 @@ used for the new rule you only need to specify the template name and its paramet
 `rule.yml` and the content will be generated during the build.
 
 The templating system currently supports generating OVAL checks and Ansible,
-Bash, Anaconda, Puppet and Ignition remediations.  All templates can be found in
-`link:{rootdir}/shared/templates[shared/templates]` directory. The files are
-named `template_<TYPE>_<NAME>`, where `<TYPE>` should be OVAL, ANSIBLE, BASH,
-ANACONDA, PUPPET or IGNITION and `<NAME>` is the template name.
+Bash, Anaconda, Puppet, Ignition and Kubernetes remediations.  All templates
+can be found in `link:{rootdir}/shared/templates[shared/templates]` directory.
+The files are named `template_<TYPE>_<NAME>`, where `<TYPE>` should be OVAL,
+ANSIBLE, BASH, ANACONDA, PUPPET, IGNITION and KUBERNETES and `<NAME>` is the
+template name.
 
 ==== Using Templates
 
@@ -1746,7 +1748,7 @@ name that is used in `rule.yml` in `name:` key, for example
 The callback must have 2 parameters:
 
 - `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
-- `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`
+- `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`, `"kubernetes"`
 
 The callback function is executed for every supported language, so it can process the data differently for each language.
 
@@ -1759,8 +1761,8 @@ In that situation the function just returns `data` parameter.
 will register the template in the templating engine. The decorator has a single
 parameter which is a list of languages that the template provides. The list can
 contain the following values: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`,
-`"puppet"`, `"ignition"`. The decorator parameter is mandatory. Insert the `@template`
-decorator on the line before the callback function definition.
+`"puppet"`, `"ignition"`, `"kubernetes"`. The decorator parameter is mandatory.
+Insert the `@template` decorator on the line before the callback function definition.
 
 For example, if the template name is `package_installed` and it provides
 Ansible template in `shared/templates/template_ANSIBLE_package_installed` and
