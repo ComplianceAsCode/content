@@ -1,0 +1,81 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+#
+# What architecture are we on?
+#
+- name: Set architecture for audit modules tasks
+  set_fact:
+    audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+
+#
+# Inserts/replaces the rule in /etc/audit/rules.d
+#
+- name: Search /etc/audit/rules.d for other kernel module loading audit rules
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: "-F key=modules$"
+    patterns: "*.rules"
+  register: find_modules
+
+- name: If existing kernel module loading ruleset not found, use /etc/audit/rules.d/modules.rules as the recipient for the rule
+  set_fact:
+    all_files:
+      - /etc/audit/rules.d/modules.rules
+  when: find_modules.matched is defined and find_modules.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+      - "{{ find_modules.files | map(attribute='path') | list | first }}"
+  when: find_modules.matched is defined and find_modules.matched > 0
+
+- name: Inserts/replaces the modules rule in rules.d when on x86
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    {{% if product == "rhel6" %}}
+    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -k modules"
+    {{% else %}}
+    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -S finit_module -k modules"
+    {{% endif %}}
+    create: yes
+
+- name: Inserts/replaces the modules rule in rules.d when on x86_64
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    {{% if product == "rhel6" %}}
+    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -k modules"
+    {{% else %}}
+    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -S finit_module -k modules"
+    {{% endif %}}
+    create: yes
+  when: audit_arch is defined and audit_arch == 'b64'
+#   
+# Inserts/replaces the rule in /etc/audit/audit.rules
+#
+- name: Inserts/replaces the modules rule in /etc/audit/audit.rules when on x86
+  lineinfile:
+    {{% if product == "rhel6" %}}
+    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -k modules"
+    {{% else %}}
+    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -S finit_module -k modules"
+    {{% endif %}}
+    state: present
+    dest: /etc/audit/audit.rules
+    create: yes
+
+- name: Inserts/replaces the modules rule in audit.rules when on x86_64
+  lineinfile:
+    {{% if product == "rhel6" %}}
+    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -k modules"
+    {{% else %}}
+    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -S finit_module -k modules"
+    {{% endif %}}
+    state: present
+    dest: /etc/audit/audit.rules
+    create: yes
+  when: audit_arch is defined and audit_arch == 'b64'
