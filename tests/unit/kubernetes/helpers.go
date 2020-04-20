@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	mcfgapi "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
 	mcfgv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -74,10 +75,8 @@ func (ctx *unitTestContext) assertWithRelevantFiles(assertion func(path string))
 }
 
 func isMachineConfig(obj *unstructured.Unstructured) bool {
-	mcfg := &mcfgv1.MachineConfig{}
-	mcfggvk := mcfg.GroupVersionKind()
 	objgvk := obj.GroupVersionKind()
-	return mcfggvk.Kind == objgvk.Kind && mcfggvk.Group == objgvk.Group
+	return "MachineConfig" == objgvk.Kind && mcfgapi.GroupName == objgvk.Group
 }
 
 func isRelevantDir(path string, info os.FileInfo) bool {
