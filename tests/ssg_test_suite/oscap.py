@@ -170,7 +170,7 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
     # Appends output of ansible-playbook to the verbose_path file.
     with open(verbose_path, 'a') as f:
         f.write('Stdout of "{}":'.format(command_string))
-        f.write(output)
+        f.write(output.encode("utf-8"))
     if returncode != 0:
         msg = (
             'Ansible playbook remediation run has '
@@ -199,7 +199,7 @@ def run_stage_remediation_bash(run_type, formatting, verbose_path):
     # Appends output of script execution to the verbose_path file.
     with open(verbose_path, 'a') as f:
         f.write('Stdout of "{}":'.format(command_string))
-        f.write(output)
+        f.write(output.encode("utf-8"))
     if returncode != 0:
         msg = (
             'Bash script remediation run has exited with return code {} '
