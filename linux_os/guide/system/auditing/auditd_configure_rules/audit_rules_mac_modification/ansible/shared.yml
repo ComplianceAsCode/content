@@ -4,35 +4,52 @@
 # complexity = low
 # disruption = low
 
+- name: detect if rule does not already exist in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: '-w\s+/etc/selinux/\s+-p\s+wa(\s|$)+'
+    patterns: "*.rules"
+  register: find_existing_rules_d
+
+- name: detect if rule does not already exist in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '-w\s+/etc/selinux/\s+-p\s+wa(\s|$)+'
+    patterns: "audit.rules"
+  register: find_existing_audit_rules
+
 
 #
 # Inserts/replaces the rule in /etc/audit/rules.d
 #
-- name: Search /etc/audit/rules.d for other MAC modification audit rules
+- name: Search /etc/audit/rules.d for other rules with MAC-policy key
   find:
     paths: "/etc/audit/rules.d"
     recurse: no
     contains: "-k MAC-policy$"
     patterns: "*.rules"
   register: find_mac
+  when: find_existing_rules_d.matched is defined and find_existing_rules_d.matched == 0
 
 - name: If existing MAC modification ruleset not found, use /etc/audit/rules.d/MAC-policy.rules as the recipient for the rule
   set_fact:
     all_files:
       - /etc/audit/rules.d/MAC-policy.rules
-  when: find_mac.matched is defined and find_mac.matched == 0
+  when: find_mac.matched is defined and find_mac.matched == 0 and find_existing_rules_d.matched is defined and find_existing_rules_d.matched == 0
 
 - name: Use matched file as the recipient for the rule
   set_fact:
     all_files:
       - "{{ find_mac.files | map(attribute='path') | list | first }}"
-  when: find_mac.matched is defined and find_mac.matched > 0
+  when: find_mac.matched is defined and find_mac.matched > 0 and find_existing_rules_d.matched is defined and find_existing_rules_d.matched == 0
 
 - name: Inserts/replaces the MAC modification rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
     line: "-w /etc/selinux/ -p wa -k MAC-policy"
     create: yes
+  when: find_existing_rules_d.matched is defined and find_existing_rules_d.matched == 0
 
 
 #   
@@ -44,3 +61,4 @@
     state: present
     dest: /etc/audit/audit.rules
     create: yes
+  when: find_existing_audit_rules.matched is defined and find_existing_audit_rules.matched == 0
