@@ -42,8 +42,6 @@ platform: machine
 template:
     name: mount_option_removable_partitions
     vars:
-        mount_has_to_exist: 'yes'
         mountoption: nodev
-        mountpoint: var_removable_partition
     backends:
         anaconda: 'off'

@@ -1587,12 +1587,9 @@ mount_option_remote_filesystems::
 * Languages: Ansible, Bash, OVAL
 
 mount_option_removable_partitions::
-* Checks if all removable media mounts are mounted with a specific option.
+* Checks if all removable media mounts are mounted with a specific option. Unlike other mount option templates, this template doesn't use the mount point, but the block device. The block device path (eg. `/dev/cdrom`) is always set to `var_removable_partition`. This is an XCCDF Value, defined in `link:{rootdir}/linux_os/guide/system/permissions/partitions/var_removable_partition.var[var_removable_partition.var]`
 * Parameters:
-** *mountpoint* - always set to `var_removable_partition`. This is an XCCDF Value, defined in `link:{rootdir}/linux_os/guide/system/permissions/partitions/var_removable_partition.var[var_removable_partition.var]`
 ** *mountoption* - mount option, eg. `nodev`
-** *filesystem* - filesystem of new mount point (used when adding new entry in `/etc/fstab`), eg. `tmpfs`. Used only in Bash remediation.
-** *mount_has_to_exist* - Used only in Bash remediation. Specifies if the *mountpoint* entry has to exist in `/etc/fstab` before the remediation is executed. If set to `yes` and the *mountpoint* entry is not present in `/etc/fstab` the Bash remediation terminates. If set to `no` the *mountpoint* entry will be created in `/etc/fstab`.
 * Languages: Anaconda, Ansible, Bash, OVAL
 
 package_installed::

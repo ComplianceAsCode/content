@@ -243,7 +243,7 @@ def mount_option_remote_filesystems(data, lang):
 
 @template(["anaconda", "ansible", "bash", "oval"])
 def mount_option_removable_partitions(data, lang):
-    return _mount_option(data, lang)
+    return data
 
 
 @template(["anaconda", "ansible", "bash", "oval", "puppet"])
