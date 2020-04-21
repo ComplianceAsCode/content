@@ -4,7 +4,11 @@
 # complexity = low
 # disruption = low
 
-- name: Check if rule does not already exist in /etc/audit/rules.d/*
+#
+# check if rules already exist
+#
+
+- name: Check if rule already exists in /etc/audit/rules.d/*
   find:
     paths: "/etc/audit/rules.d"
     recurse: no
@@ -12,7 +16,7 @@
     patterns: "*.rules"
   register: find_existing_mac_rules_d
 
-- name: Check if rule does not already exist in /etc/audit/audit.rules
+- name: Check if rule already exists in /etc/audit/audit.rules
   find:
     paths: "/etc/audit/"
     contains: '^\s*-w\s+/etc/selinux/\s+-p\s+wa(\s|$)+'
