@@ -12,6 +12,95 @@
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
 #
+# check if rules don't exist already
+#
+
+- name: Check if rule for x86 init_module already exists in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+init_module[\s$]+'
+    patterns: "*.rules"
+  register: find_existing_kernel_init_module_32_rules_d
+
+- name: Check if rule for x86 delete_module already exists in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+delete_module[\s$]+'
+    patterns: "*.rules"
+  register: find_existing_kernel_delete_module_32_rules_d
+
+- name: Check if rule for x86 finit_module already exists in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+finit_module[\s$]+'
+    patterns: "*.rules"
+  register: find_existing_kernel_finit_module_32_rules_d
+
+- name: Check if rule for x86_64 init_module already exists in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+init_module[\s$]+'
+    patterns: "*.rules"
+  register: find_existing_kernel_init_module_64_rules_d
+
+- name: Check if rule for x86_64 delete_module already exists in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+delete_module[\s$]+'
+    patterns: "*.rules"
+  register: find_existing_kernel_delete_module_64_rules_d
+
+- name: Check if rule for x86_64 finit_module already exists in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+finit_module[\s$]+'
+    patterns: "*.rules"
+  register: find_existing_kernel_finit_module_64_rules_d
+
+- name: Check if rule for x86 init_module already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+init_module[\s$]+'
+    patterns: "audit.rules"
+  register: find_existing_kernel_init_module_32_audit_rules
+
+- name: Check if rule for x86 delete_module already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+delete_module[\s$]+'
+    patterns: "audit.rules"
+  register: find_existing_kernel_delete_module_32_audit_rules
+
+- name: Check if rule for x86 finit_module already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/audit.rules"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+finit_module[\s$]+'
+    patterns: "audit.rules"
+  register: find_existing_kernel_finit_module_32_audit_rules
+
+- name: Check if rule for x86_64 init_module already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+init_module[\s$]+'
+    patterns: "audit.rules"
+  register: find_existing_kernel_init_module_64_audit_rules
+
+- name: Check if rule for x86_64 delete_module already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+delete_module[\s$]+'
+    patterns: "audit.rules"
+  register: find_existing_kernel_delete_module_64_audit_rules
+
+- name: Check if rule for x86_64 finit_module already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+finit_module[\s$]+'
+    patterns: "audit.rules"
+  register: find_existing_kernel_finit_module_64_audit_rules
+
+
+#
 # Inserts/replaces the rule in /etc/audit/rules.d
 #
 - name: Search /etc/audit/rules.d for other kernel module loading audit rules
@@ -34,48 +123,197 @@
       - "{{ find_modules.files | map(attribute='path') | list | first }}"
   when: find_modules.matched is defined and find_modules.matched > 0
 
+#
+# create resulting lines to be inserted into appropriate files
+#
+
+- name: Start creating remediation line for 32 bit rule in /etc/audit/rules.d
+  set_fact:
+    audit_kernel_line_32_rules_d = "-a always,exit -F arch=b32 "
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_32_rules_d is defined and find_existing_kernel_init_module_32_rules_d.matched == 0) or (find_existing_kernel_delete_module_32_rules_d is defined and find_existing_kernel_delete_module_32_rules_d.matched == 0)
+  {{% else %}}
+  when: (find_existing_kernel_init_module_32_rules_d is defined and find_existing_kernel_init_module_32_rules_d.matched == 0) or (find_existing_kernel_delete_module_32_rules_d is defined and find_existing_kernel_delete_module_32_rules_d.matched == 0) or (find_existing_kernel_finit_module_32_rules_d is defined and find_existing_kernel_finit_module_32_rules_d.matched == 0)
+  {{% endif %}}
+
+- name: add init_module into line for 32 bit rules.d
+  set_fact:
+    audit_kernel_line_32_rules_d= {{ audit_kernel_line_32_rules_d + '-S init_module ' }}
+  when: find_existing_kernel_init_module_32_rules_d is defined and find_existing_kernel_init_module_32_rules_d.matched == 0 and audit_kernel_line_32_rules_d is defined
+
+- name: add delete_module into line for 32 bit rules.d
+  set_fact:
+    audit_kernel_line_32_rules_d= {{ audit_kernel_line_32_rules_d + '-S delete_module ' }}
+  when: find_existing_kernel_delete_module_32_rules_d is defined and find_existing_kernel_delete_module_32_rules_d.matched == 0 and audit_kernel_line_32_rules_d is defined
+
+{{% if product != "rhel6" %}}
+- name: add finit_module into line for 32 bit rules.d
+  set_fact:
+    audit_kernel_line_32_rules_d= {{ audit_kernel_line_32_rules_d + '-S finit_module ' }}
+  when: find_existing_kernel_finit_module_32_rules_d is defined and find_existing_finit_delete_module_32_rules_d.matched == 0 and audit_kernel_line_32_rules_d is defined
+{{% endif %}}
+
+- name: Finish creating remediation line for 32 bit rule in /etc/audit/rules.d
+  set_fact:
+    audit_kernel_line_32_rules_d= {{ audit_kernel_line_32_rules_d + '-k modules' }}
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_32_rules_d is defined and find_existing_kernel_init_module_32_rules_d.matched == 0) or (find_existing_kernel_delete_module_32_rules_d is defined and find_existing_kernel_delete_module_32_rules_d.matched == 0) and audit_kernel_line_32_rules_d is defined
+  {{% else %}}
+  when: (find_existing_kernel_init_module_32_rules_d is defined and find_existing_kernel_init_module_32_rules_d.matched == 0) or (find_existing_kernel_delete_module_32_rules_d is defined and find_existing_kernel_delete_module_32_rules_d.matched == 0) or (find_existing_kernel_finit_module_32_rules_d is defined and find_existing_kernel_finit_module_32_rules_d.matched == 0) and audit_kernel_line_32_rules_d is defined
+  {{% endif %}}
+
+- name: Start creating remediation line for 64 bit rule in /etc/audit/rules.d
+  set_fact:
+    audit_kernel_line_64_rules_d = "-a always,exit -F arch=b64 "
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_64_rules_d is defined and find_existing_kernel_init_module_64_rules_d.matched == 0) or (find_existing_kernel_delete_module_64_rules_d is defined and find_existing_kernel_delete_module_64_rules_d.matched == 0)
+  {{% else %}}
+  when: (find_existing_kernel_init_module_64_rules_d is defined and find_existing_kernel_init_module_64_rules_d.matched == 0) or (find_existing_kernel_delete_module_64_rules_d is defined and find_existing_kernel_delete_module_64_rules_d.matched == 0) or (find_existing_kernel_finit_module_64_rules_d is defined and find_existing_kernel_finit_module_64_rules_d.matched == 0)
+  {{% endif %}}
+
+- name: add init_module into line for 64 bit rules.d
+  set_fact:
+    audit_kernel_line_64_rules_d= {{ audit_kernel_line_64_rules_d + '-S init_module ' }}
+  when: find_existing_kernel_init_module_64_rules_d is defined and find_existing_kernel_init_module_64_rules_d.matched == 0 and audit_kernel_line_64_rules_d is defined
+
+- name: add delete_module into line for 64 bit rules.d
+  set_fact:
+    audit_kernel_line_64_rules_d= {{ audit_kernel_line_64_rules_d + '-S delete_module ' }}
+  when: find_existing_kernel_delete_module_64_rules_d is defined and find_existing_kernel_delete_module_64_rules_d.matched == 0 and audit_kernel_line_64_rules_d is defined
+
+{{% if product != "rhel6" %}}
+- name: add finit_module into line for 64 bit rules.d
+  set_fact:
+    audit_kernel_line_64_rules_d= {{ audit_kernel_line_64_rules_d + '-S finit_module ' }}
+  when: find_existing_kernel_finit_module_64_rules_d is defined and find_existing_finit_delete_module_64_rules_d.matched == 0 and audit_kernel_line_64_rules_d is defined
+{{% endif %}}
+
+- name: Finish creating remediation line for 64 bit rule in /etc/audit/rules.d
+  set_fact:
+    audit_kernel_line_64_rules_d= {{ audit_kernel_line_64_rules_d + '-k modules' }}
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_64_rules_d is defined and find_existing_kernel_init_module_64_rules_d.matched == 0) or (find_existing_kernel_delete_module_64_rules_d is defined and find_existing_kernel_delete_module_64_rules_d.matched == 0) and audit_kernel_line_64_rules_d is defined
+  {{% else %}}
+  when: (find_existing_kernel_init_module_64_rules_d is defined and find_existing_kernel_init_module_64_rules_d.matched == 0) or (find_existing_kernel_delete_module_64_rules_d is defined and find_existing_kernel_delete_module_64_rules_d.matched == 0) or (find_existing_kernel_finit_module_64_rules_d is defined and find_existing_kernel_finit_module_64_rules_d.matched == 0) and audit_kernel_line_64_rules_d is defined
+  {{% endif %}}
+
+- name: Start creating remediation line for 32 bit rule in /etc/audit/audit.rules
+  set_fact:
+    audit_kernel_line_32_audit_rules = "-a always,exit -F arch=b32 "
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_32_audit_rules is defined and find_existing_kernel_init_module_32_audit_rules.matched == 0) or (find_existing_kernel_delete_module_32_audit_rules is defined and find_existing_kernel_delete_module_32_audit_rules.matched == 0)
+  {{% else %}}
+  when: (find_existing_kernel_init_module_32_audit_rules is defined and find_existing_kernel_init_module_32_audit_rules.matched == 0) or (find_existing_kernel_delete_module_32_audit_rules is defined and find_existing_kernel_delete_module_32_audit_rules.matched == 0) or (find_existing_kernel_finit_module_32_audit_rules is defined and find_existing_kernel_finit_module_32_audit_rules.matched == 0)
+  {{% endif %}}
+
+- name: add init_module into line for 32 bit rules.d
+  set_fact:
+    audit_kernel_line_32_audit_rules= {{ audit_kernel_line_32_audit_rules + '-S init_module ' }}
+  when: find_existing_kernel_init_module_32_audit_rules is defined and find_existing_kernel_init_module_32_audit_rules.matched == 0 and audit_kernel_line_32_audit_rules is defined
+
+- name: add delete_module into line for 32 bit rules.d
+  set_fact:
+    audit_kernel_line_32_audit_rules= {{ audit_kernel_line_32_audit_rules + '-S delete_module ' }}
+  when: find_existing_kernel_delete_module_32_audit_rules is defined and find_existing_kernel_delete_module_32_audit_rules.matched == 0 and audit_kernel_line_32_audit_rules is defined
+
+{{% if product != "rhel6" %}}
+- name: add finit_module into line for 32 bit rules.d
+  set_fact:
+    audit_kernel_line_32_audit_rules= {{ audit_kernel_line_32_audit_rules + '-S finit_module ' }}
+  when: find_existing_kernel_finit_module_32_audit_rules is defined and find_existing_finit_delete_module_32_audit_rules.matched == 0 and audit_kernel_line_32_audit_rules is defined
+{{% endif %}}
+
+- name: Finish creating remediation line for 32 bit rule in /etc/audit/audit.rules
+  set_fact:
+    audit_kernel_line_32_audit_rules= {{ audit_kernel_line_32_audit_rules + '-k modules' }}
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_32_audit_rules is defined and find_existing_kernel_init_module_32_audit_rules.matched == 0) or (find_existing_kernel_delete_module_32_audit_rules is defined and find_existing_kernel_delete_module_32_audit_rules.matched == 0) and audit_kernel_line_32_audit_rules is defined
+  {{% else %}}
+  when: (find_existing_kernel_init_module_32_audit_rules is defined and find_existing_kernel_init_module_32_audit_rules.matched == 0) or (find_existing_kernel_delete_module_32_audit_rules is defined and find_existing_kernel_delete_module_32_audit_rules.matched == 0) or (find_existing_kernel_finit_module_32_audit_rules is defined and find_existing_kernel_finit_module_32_audit_rules.matched == 0) and audit_kernel_line_32_audit_rules is defined
+  {{% endif %}}
+
+- name: Start creating remediation line for 64 bit rule in /etc/audit/audit.rules
+  set_fact:
+    audit_kernel_line_64_audit_rules = "-a always,exit -F arch=b64 "
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_64_audit_rules is defined and find_existing_kernel_init_module_64_audit_rules.matched == 0) or (find_existing_kernel_delete_module_64_audit_rules is defined and find_existing_kernel_delete_module_64_audit_rules.matched == 0)
+  {{% else %}}
+  when: (find_existing_kernel_init_module_64_audit_rules is defined and find_existing_kernel_init_module_64_audit_rules.matched == 0) or (find_existing_kernel_delete_module_64_audit_rules is defined and find_existing_kernel_delete_module_64_audit_rules.matched == 0) or (find_existing_kernel_finit_module_64_audit_rules is defined and find_existing_kernel_finit_module_64_audit_rules.matched == 0)
+  {{% endif %}}
+
+- name: add init_module into line for 64 bit rules.d
+  set_fact:
+    audit_kernel_line_64_audit_rules= {{ audit_kernel_line_64_audit_rules + '-S init_module ' }}
+  when: find_existing_kernel_init_module_64_audit_rules is defined and find_existing_kernel_init_module_64_audit_rules.matched == 0 and audit_kernel_line_64_audit_rules is defined
+
+- name: add delete_module into line for 64 bit rules.d
+  set_fact:
+    audit_kernel_line_64_audit_rules= {{ audit_kernel_line_64_audit_rules + '-S delete_module ' }}
+  when: find_existing_kernel_delete_module_64_audit_rules is defined and find_existing_kernel_delete_module_64_audit_rules.matched == 0 and audit_kernel_line_64_audit_rules is defined
+
+{{% if product != "rhel6" %}}
+- name: add finit_module into line for 64 bit rules.d
+  set_fact:
+    audit_kernel_line_64_audit_rules= {{ audit_kernel_line_64_audit_rules + '-S finit_module ' }}
+  when: find_existing_kernel_finit_module_64_audit_rules is defined and find_existing_finit_delete_module_64_audit_rules.matched == 0 and audit_kernel_line_64_audit_rules is defined
+{{% endif %}}
+
+- name: Finish creating remediation line for 64 bit rule in /etc/audit/audit.rules
+  set_fact:
+    audit_kernel_line_64_audit_rules= {{ audit_kernel_line_64_audit_rules + '-k modules' }}
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_64_audit_rules is defined and find_existing_kernel_init_module_64_audit_rules.matched == 0) or (find_existing_kernel_delete_module_64_audit_rules is defined and find_existing_kernel_delete_module_64_audit_rules.matched == 0) and audit_kernel_line_64_audit_rules is defined
+  {{% else %}}
+  when: (find_existing_kernel_init_module_64_audit_rules is defined and find_existing_kernel_init_module_64_audit_rules.matched == 0) or (find_existing_kernel_delete_module_64_audit_rules is defined and find_existing_kernel_delete_module_64_audit_rules.matched == 0) or (find_existing_kernel_finit_module_64_audit_rules is defined and find_existing_kernel_finit_module_64_audit_rules.matched == 0) and audit_kernel_line_64_audit_rules is defined
+  {{% endif %}}
+
+
+
 - name: Inserts/replaces the modules rule in rules.d when on x86
   lineinfile:
     path: "{{ all_files[0] }}"
-    {{% if product == "rhel6" %}}
-    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -k modules"
-    {{% else %}}
-    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -S finit_module -k modules"
-    {{% endif %}}
+    line: "{{ audit_kernel_line_32_rules_d }}"
     create: yes
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_32_rules_d is defined and find_existing_kernel_init_module_32_rules_d.matched == 0) or (find_existing_kernel_delete_module_32_rules_d is defined and find_existing_kernel_delete_module_32_rules_d.matched == 0) and audit_kernel_line_32_rules_d is defined
+  {{% else %}}
+  when: (find_existing_kernel_init_module_32_rules_d is defined and find_existing_kernel_init_module_32_rules_d.matched == 0) or (find_existing_kernel_delete_module_32_rules_d is defined and find_existing_kernel_delete_module_32_rules_d.matched == 0) or (find_existing_kernel_finit_module_32_rules_d is defined and find_existing_kernel_finit_module_32_rules_d.matched == 0) and audit_kernel_line_32_rules_d is defined
+  {{% endif %}}
 
 - name: Inserts/replaces the modules rule in rules.d when on x86_64
   lineinfile:
     path: "{{ all_files[0] }}"
-    {{% if product == "rhel6" %}}
-    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -k modules"
-    {{% else %}}
-    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -S finit_module -k modules"
-    {{% endif %}}
+    line: "{{ audit_kernel_line_32_rules_d }}"
     create: yes
-  when: audit_arch is defined and audit_arch == 'b64'
+  {{% if product == "rhel6" %}}
+  when: audit_arch is defined and audit_arch == 'b64' and (find_existing_kernel_init_module_64_rules_d is defined and find_existing_kernel_init_module_64_rules_d.matched == 0) or (find_existing_kernel_delete_module_64_rules_d is defined and find_existing_kernel_delete_module_64_rules_d.matched == 0) and audit_kernel_line_64_rules_d is defined
+  {{% else %}}
+  when: audit_arch is defined and audit_arch == 'b64' and (find_existing_kernel_init_module_64_rules_d is defined and find_existing_kernel_init_module_64_rules_d.matched == 0) or (find_existing_kernel_delete_module_64_rules_d is defined and find_existing_kernel_delete_module_64_rules_d.matched == 0) or (find_existing_kernel_finit_module_64_rules_d is defined and find_existing_kernel_finit_module_64_rules_d.matched == 0) and audit_kernel_line_64_rules_d is defined
+  {{% endif %}}
+
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
 - name: Inserts/replaces the modules rule in /etc/audit/audit.rules when on x86
   lineinfile:
-    {{% if product == "rhel6" %}}
-    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -k modules"
-    {{% else %}}
-    line: "-a always,exit -F arch=b32 -S init_module -S delete_module -S finit_module -k modules"
-    {{% endif %}}
+    line: "{{ audit_kernel_line_32_audit_rules }}"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
+  {{% if product == "rhel6" %}}
+  when: (find_existing_kernel_init_module_32_audit_rules is defined and find_existing_kernel_init_module_32_audit_rules.matched == 0) or (find_existing_kernel_delete_module_32_audit_rules is defined and find_existing_kernel_delete_module_32_audit_rules.matched == 0) and audit_kernel_line_32_audit_rules is defined
+  {{% else %}}
+  when: (find_existing_kernel_init_module_32_audit_rules is defined and find_existing_kernel_init_module_32_audit_rules.matched == 0) or (find_existing_kernel_delete_module_32_audit_rules is defined and find_existing_kernel_delete_module_32_audit_rules.matched == 0) or (find_existing_kernel_finit_module_32_audit_rules is defined and find_existing_kernel_finit_module_32_audit_rules.matched == 0) and audit_kernel_line_32_audit_rules is defined
+  {{% endif %}}
 
 - name: Inserts/replaces the modules rule in audit.rules when on x86_64
   lineinfile:
-    {{% if product == "rhel6" %}}
-    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -k modules"
-    {{% else %}}
-    line: "-a always,exit -F arch=b64 -S init_module -S delete_module -S finit_module -k modules"
-    {{% endif %}}
+    line: "{{ audit_kernel_line_64_audit_rules }}"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
-  when: audit_arch is defined and audit_arch == 'b64'
+  {{% if product == "rhel6" %}}
+  when: audit_arch is defined and audit_arch == 'b64' and (find_existing_kernel_init_module_64_audit_rules is defined and find_existing_kernel_init_module_64_audit_rules.matched == 0) or (find_existing_kernel_delete_module_64_audit_rules is defined and find_existing_kernel_delete_module_64_audit_rules.matched == 0) and audit_kernel_line_64_audit_rules is defined
+  {{% else %}}
+  when: audit_arch is defined and audit_arch == 'b64' and (find_existing_kernel_init_module_64_audit_rules is defined and find_existing_kernel_init_module_64_audit_rules.matched == 0) or (find_existing_kernel_delete_module_64_audit_rules is defined and find_existing_kernel_delete_module_64_audit_rules.matched == 0) or (find_existing_kernel_finit_module_64_audit_rules is defined and find_existing_kernel_finit_module_64_audit_rules.matched == 0) and audit_kernel_line_64_audit_rules is defined
+  {{% endif %}}
