@@ -1,0 +1,68 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+#
+# check if rules already exist
+#
+
+- name: Check if rule already exists in /etc/audit/rules.d/*
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: '^\s*-w\s+/etc/selinux/\s+-p\s+wa(\s|$)+'
+    patterns: "*.rules"
+  register: find_existing_mac_rules_d
+
+- name: Check if rule already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-w\s+/etc/selinux/\s+-p\s+wa(\s|$)+'
+    patterns: "audit.rules"
+  register: find_existing_mac_audit_rules
+
+
+#
+# Inserts/replaces the rule in /etc/audit/rules.d
+#
+- name: Search /etc/audit/rules.d for other rules with MAC-policy key
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: "-k MAC-policy$"
+    patterns: "*.rules"
+  register: find_mac_key
+  when: find_existing_mac_rules_d.matched is defined and find_existing_mac_rules_d.matched == 0
+
+- name: If existing MAC modification ruleset not found, use /etc/audit/rules.d/MAC-policy.rules as the recipient for the rule
+  set_fact:
+    all_files:
+      - /etc/audit/rules.d/MAC-policy.rules
+  when: find_mac_key.matched is defined and find_mac_key.matched == 0 and find_existing_mac_rules_d.matched is defined and find_existing_mac_rules_d.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+      - "{{ find_mac_key.files | map(attribute='path') | list | first }}"
+  when: find_mac_key.matched is defined and find_mac_key.matched > 0 and find_existing_mac_rules_d.matched is defined and find_existing_mac_rules_d.matched == 0
+
+- name: Inserts/replaces the MAC modification rule in rules.d
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    line: "-w /etc/selinux/ -p wa -k MAC-policy"
+    create: yes
+  when: find_existing_mac_rules_d.matched is defined and find_existing_mac_rules_d.matched == 0
+
+
+#   
+# Inserts/replaces the rule in /etc/audit/audit.rules
+#
+- name: Inserts/replaces the MAC modifications rule in /etc/audit/audit.rules
+  lineinfile:
+    line: "-w /etc/selinux/ -p wa -k MAC-policy"
+    state: present
+    dest: /etc/audit/audit.rules
+    create: yes
+  when: find_existing_mac_audit_rules.matched is defined and find_existing_mac_audit_rules.matched == 0
