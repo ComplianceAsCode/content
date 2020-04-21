@@ -94,7 +94,7 @@ def _benchmark_profile_pair_sort_key(benchmark_id, profile_id, profile_title):
         benchmark_id = "AAA" + benchmark_id
 
     # The default profile comes last
-    if profile_id == "":
+    if not profile_id:
         profile_title = "zzz(default)"
 
     return (benchmark_id, profile_title)
