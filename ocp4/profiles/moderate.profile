@@ -497,6 +497,8 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    
+    - audit_create_success
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1
