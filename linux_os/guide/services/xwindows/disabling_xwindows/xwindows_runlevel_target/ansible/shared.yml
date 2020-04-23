@@ -4,10 +4,9 @@
 # complexity = low
 # disruption = low
 
-- name: get default target
-  command: systemctl get-default
-  register: default_target
-
 - name: Switch to multi-user runlevel
-  command: systemctl set-default multi-user.target
-  when: default_target.stdout != "multi-user.target"
+  file:
+    src: /usr/lib/systemd/system/multi-user.target
+    dest: /etc/systemd/system/default.target
+    state: link
+    force: yes
