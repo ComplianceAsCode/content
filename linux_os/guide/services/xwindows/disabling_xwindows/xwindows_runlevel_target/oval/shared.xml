@@ -21,7 +21,7 @@
   </unix:symlink_object>
   <unix:symlink_state comment="default.target is linked to multi-user.target" id="state_disable_xwindows_runlevel_target" version="1">
     <unix:filepath>/etc/systemd/system/default.target</unix:filepath>
-    <unix:canonical_path operation="pattern match">^/usr/lib/systemd/system/multi-user.target$</unix:canonical_path>
+    <unix:canonical_path operation="pattern match">^(/usr)?/lib/systemd/system/multi-user.target$</unix:canonical_path>
   </unix:symlink_state>
 </def-group>
 {{%- endif -%}}
