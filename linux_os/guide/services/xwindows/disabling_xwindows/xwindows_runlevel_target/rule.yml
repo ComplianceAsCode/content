@@ -11,8 +11,8 @@ description: |-
     <tt>multi-user.target</tt> will prevent automatic startup of the X server. To do so, run:
     <pre>$ systemctl set-default multi-user.target</pre>
     You should see the following output:
-    <pre>rm '/etc/systemd/system/default.target'
-    ln -s '/usr/lib/systemd/system/multi-user.target' '/etc/systemd/system/default.target'</pre>
+    <pre>Removed symlink /etc/systemd/system/default.target.
+    Created symlink from /etc/systemd/system/default.target to /usr/lib/systemd/system/multi-user.target.</pre>
 
 rationale: |-
     Services that are not required for system and application processes
