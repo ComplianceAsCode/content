@@ -36,8 +36,7 @@ ocil: |-
 
 warnings:
     - functionality: |-
-        This rule affects all access to serviceswhich honor <tt>/etc/hosts.allow</tt> and <tt>/etc/hosts.deny</tt> files.
+        This rule affects all access to services which honor <tt>/etc/hosts.allow</tt> and <tt>/etc/hosts.deny</tt> files.
         Connections to services originating from hosts not explicitly mentioned in <tt>/etc/hosts.allow</tt> will be rejected.
-        As the <tt>/etc/hosts.allow</tt> is empty by default, make sure it is appropriately configured before applying remediation for this rule.
         To avoid locking down all network access to the system, this rule doesn't perform automated remediation.
         For information about manual process of remediation see the rule description.
