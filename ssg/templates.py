@@ -297,7 +297,7 @@ def service_disabled(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval", "puppet"])
+@template(["ansible", "bash", "oval", "puppet", "ignition"])
 def service_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]
