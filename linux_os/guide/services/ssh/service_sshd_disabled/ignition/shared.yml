@@ -1,0 +1,11 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    systemd:
+      units:
+      - name: sshd.service
+        enabled: false
