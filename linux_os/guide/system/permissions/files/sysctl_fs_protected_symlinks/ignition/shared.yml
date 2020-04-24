@@ -1,4 +1,4 @@
-# platform = multi_platform_ocp
+# platform = multi_platform_ocp,multi_platform_rhel,multi_platform_fedora
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 spec:
@@ -8,7 +8,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,fs.protected_symlinks%3D1%0A
+          source: data:,fs.protected_symlinks%3D1
         filesystem: root
         mode: 0644
         path: /etc/sysctl.d/75-sysctl_fs_protected_symlinks.conf
