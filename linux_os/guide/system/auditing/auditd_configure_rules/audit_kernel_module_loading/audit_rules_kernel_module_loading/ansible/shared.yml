@@ -23,6 +23,9 @@
 - name: declare number of syscalls
   set_fact: audit_kernel_number_of_syscalls="{{ syscalls|length|int }}"
 
+#
+#rules in /etc/audit/rules.d/*
+#
 
 - name: Check existence of syscalls for 32 bit architecture in /etc/audit/rules.d/*
   find:
@@ -45,33 +48,6 @@
 
 - name: get number of matched 64 bit syscalls in /etc/audit/rules.d/*
   set_fact: audit_kernel_matched_64_rules_d="{{audit_kernel_found_64_rules_d.results|sum(attribute='matched')|int }}"
-
-- name: Check existence of syscalls for 32 bit architecture in /etc/audit/audit.rules
-  find:
-    paths: "/etc/audit"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
-    patterns: "audit.rules"
-  register: audit_kernel_found_32_audit_rules
-  loop: "{{ syscalls }}"
-
-- name: get number of matched 32 bit syscalls in /etc/audit/audit.rules
-  set_fact: audit_kernel_matched_32_audit_rules="{{audit_kernel_found_32_audit_rules.results|sum(attribute='matched')|int }}"
-
-- name: Check existence of syscalls for 64 bit architecture in /etc/audit/audit.rules
-  find:
-    paths: "/etc/audit"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
-    patterns: "audit.rules"
-  register: audit_kernel_found_64_audit_rules
-  loop: "{{ syscalls }}"
-
-- name: get number of matched 64 bit syscalls in /etc/audit/rules.d/*
-  set_fact: audit_kernel_matched_64_audit_rules="{{audit_kernel_found_64_audit_rules.results|sum(attribute='matched')|int }}"
-
-
-#
-# Inserts the rule in /etc/audit/rules.d
-#
 
 - name: Search /etc/audit/rules.d for other kernel module loading audit rules
   find:
@@ -131,8 +107,30 @@
 
 
 #   
-# Inserts the rule in /etc/audit/audit.rules
+# rules in /etc/audit/audit.rules
 #
+
+- name: Check existence of syscalls for 32 bit architecture in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
+    patterns: "audit.rules"
+  register: audit_kernel_found_32_audit_rules
+  loop: "{{ syscalls }}"
+
+- name: get number of matched 32 bit syscalls in /etc/audit/audit.rules
+  set_fact: audit_kernel_matched_32_audit_rules="{{audit_kernel_found_32_audit_rules.results|sum(attribute='matched')|int }}"
+
+- name: Check existence of syscalls for 64 bit architecture in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit"
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
+    patterns: "audit.rules"
+  register: audit_kernel_found_64_audit_rules
+  loop: "{{ syscalls }}"
+
+- name: get number of matched 64 bit syscalls in /etc/audit/rules.d/*
+  set_fact: audit_kernel_matched_64_audit_rules="{{audit_kernel_found_64_audit_rules.results|sum(attribute='matched')|int }}"
 
 - name: Inserts the modules rule in audit.rules when on x86
   block:
