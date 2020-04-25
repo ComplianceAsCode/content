@@ -54,3 +54,8 @@ ocil: |-
     valid user, or assign a valid user to all unowned files and directories on
     the system with the <tt>chown</tt> command:
     <pre>$ sudo chown <tt>user</tt> <tt>file</tt></pre>
+
+warnings:
+    - general: |-
+        This rule only considers local users.
+        If you have your users defined outside <code>/etc/passwd</code>, the rule won't consider those.
