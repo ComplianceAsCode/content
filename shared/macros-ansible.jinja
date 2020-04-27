@@ -277,3 +277,72 @@ regex_replace("\(n\)\*", "\\n")
 {{% macro ansible_deregexify_banner_backslash() -%}}
 regex_replace("\\", "")
 {{%- endmacro %}}
+{{#
+The following macro remediates one audit watch rule in /etc/audit/rules.d directory.
+The macro requires following parameters:
+- path: path to watch
+- permissions: permissions changes to watch for
+- key: key to use as identifier. Note that if there exists any other rule with the same find_mac_key
+in some file within /etc/audit/rules.d/, the new rule will be appended to this file.
+#}}
+{{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='') -%}}
+- name: Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+    patterns: "*.rules"
+  register: find_existing_watch_rules_d
+
+- name: Search /etc/audit/rules.d for other rules with specified key {{{ key }}}
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: "^.*(-F key=)(|-k ){{{ key }}}$"
+    patterns: "*.rules"
+  register: find_watch_key
+  when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+
+- name: Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
+  set_fact:
+    all_files:
+      - /etc/audit/rules.d/{{{ key }}}.rules
+  when: find_watch_key.matched is defined and find_watch_key.matched == 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+      - "{{ find_watch_key.files | map(attribute='path') | list | first }}"
+  when: find_watch_key.matched is defined and find_watch_key.matched > 0 and find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+
+- name: Add watch rule for {{{ path }}} in /etc/audit/rules.d/
+  lineinfile:
+    path: "{{ all_files[0] }}"
+    line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
+    create: yes
+  when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
+{{%- endmacro %}}
+
+{{#
+The following macro remediates one audit watch rule in /etc/audit/audit.rules.
+The macro requires following parameters:
+- path: path to watch
+- permissions: permissions changes to watch for
+- key: key to use as identifier. 
+#}}
+{{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='') -%}}
+- name: Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
+  find:
+    paths: "/etc/audit/"
+    contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
+    patterns: "audit.rules"
+  register: find_existing_watch_audit_rules
+
+- name: Add watch rule for {{{ path }}} in /etc/audit/audit.rules
+  lineinfile:
+    line: "-w {{{ path }}} -p {{{ permissions }}} -k {{{ key }}}"
+    state: present
+    dest: /etc/audit/audit.rules
+    create: yes
+  when: find_existing_watch_audit_rules.matched is defined and find_existing_watch_audit_rules.matched == 0
+{{%- endmacro %}}
