@@ -261,6 +261,7 @@ selections:
 
     ### 2.2.2 Ensure X Window System is not installed (Scored)
     - package_xorg-x11-server-common_removed
+    - xwindows_runlevel_target
 
     ### 2.2.3 Ensure rsync service is not enabled (Scored)
     - service_rsyncd_disabled
