@@ -3,7 +3,9 @@
 PARTITION="/root/new_partition"
 
 create_partition() {
-	dd if=/dev/zero of=$PARTITION bs=1M count=50
+	# Some scenarios re-mount this device as '/tmp', therefore its size
+	# needs to be enough for the produced logs.
+	dd if=/dev/zero of=$PARTITION bs=1M count=200
 	mkfs.ext2 -F $PARTITION
 }
 
