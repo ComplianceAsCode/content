@@ -30,7 +30,7 @@
 - name: Check existence of syscalls for 32 bit architecture in /etc/audit/rules.d/
   find:
     paths: "/etc/audit/rules.d"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
+    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
     patterns: "*.rules"
   register: audit_kernel_found_32_rules_d
   loop: "{{ syscalls }}"
@@ -41,7 +41,7 @@
 - name: Check existence of syscalls for 64 bit architecture in /etc/audit/rules.d/
   find:
     paths: "/etc/audit/rules.d"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
+    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
     patterns: "*.rules"
   register: audit_kernel_found_64_rules_d
   loop: "{{ syscalls }}"
@@ -113,7 +113,7 @@
 - name: Check existence of syscalls for 32 bit architecture in /etc/audit/audit.rules
   find:
     paths: "/etc/audit"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
+    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
     patterns: "audit.rules"
   register: audit_kernel_found_32_audit_rules
   loop: "{{ syscalls }}"
@@ -124,7 +124,7 @@
 - name: Check existence of syscalls for 64 bit architecture in /etc/audit/audit.rules
   find:
     paths: "/etc/audit"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+.*-S\s+.*[\s,]+{{ item }}[\s,]+.*$'
+    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
     patterns: "audit.rules"
   register: audit_kernel_found_64_audit_rules
   loop: "{{ syscalls }}"
