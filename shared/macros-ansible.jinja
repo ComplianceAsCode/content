@@ -347,6 +347,15 @@ The macro requires following parameters:
   when: find_existing_watch_audit_rules.matched is defined and find_existing_watch_audit_rules.matched == 0
 {{%- endmacro %}}
 
+{{#
+The following macro remediates Audit syscall rule in /etc/audit/rules.d directory.
+The macro requires following parameters:
+- arch: must be 32 or 64, this distinguishes the architecture (32 bit or 64 bit). Rules for appropriate architecture will be used.
+- syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
+- key: a key to use as rule identifier.
+Note that if there  already exists a rule wit the same key in the /etc/audit/rules.d directory, the rule will be placed in the same file.
+#}}
+
 {{% macro ansible_audit_augenrules_add_syscall_rule(arch="", syscalls=[], key="") -%}}
 #
 # What architecture are we on?
@@ -406,7 +415,7 @@ The macro requires following parameters:
       - "{{ find_syscalls_files.files | map(attribute='path') | list | first }}"
   when: find_syscalls_files.matched is defined and find_syscalls_files.matched > 0
 
-- name: "Insert the modules rule in {{ all_files[0] }} when on x86"
+- name: "Insert the syscall rule in {{ all_files[0] }} when on x86"
   block:
     - name: "Construct rule: add rule list, action and arch"
       set_fact: tmpline="-a always,exit -F arch=b32 "
@@ -425,7 +434,7 @@ The macro requires following parameters:
   when: audit_syscalls_matched_32_rules_d < audit_syscalls_number_of_syscalls
 
 {{% if arch == "64" %}}
-- name: "Insert the modules rule in {{ all_files[0] }} when on x86_64"
+- name: "Insert the syscall rule in {{ all_files[0] }} when on x86_64"
   block:
     - name: "Construct rule: add rule list, action and arch"
       set_fact: tmpline="-a always,exit -F arch=b64 "
@@ -445,6 +454,13 @@ The macro requires following parameters:
 {{% endif %}}
 {{%- endmacro %}}
 
+{{#
+The following macro remediates Audit syscall rule in /etc/audit/audit.rules file.
+The macro requires following parameters:
+- arch: must be 32 or 64, this distinguishes the architecture (32 bit or 64 bit). Rules for appropriate architecture will be used.
+- syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
+- key: a key to use as rule identifier.
+#}}
 {{% macro ansible_audit_auditctl_add_syscall_rule(arch="", syscalls=[], key="") -%}}
 #
 # What architecture are we on?
@@ -484,7 +500,7 @@ The macro requires following parameters:
   set_fact: audit_syscalls_matched_64_audit_rules="{{audit_syscalls_found_64_audit_rules.results|sum(attribute='matched')|int }}"
 {{% endif %}}
 
-- name: Insert the modules rule in /etc/audit/audit.rules when on x86
+- name: Insert the syscall rule in /etc/audit/audit.rules when on x86
   block:
     - name: "Construct rule: add rule list, action and arch"
       set_fact: tmpline="-a always,exit -F arch=b32 "
@@ -503,7 +519,7 @@ The macro requires following parameters:
   when: audit_syscalls_matched_32_audit_rules < audit_syscalls_number_of_syscalls
 
 {{% if arch == "64" %}}
-- name: Insert the modules rule in /etc/audit/rules.d when on x86_64
+- name: Insert the syscall rule in /etc/audit/rules.d when on x86_64
   block:
     - name: "Construct rule: add rule list, action and arch"
       set_fact: tmpline="-a always,exit -F arch=b64 "
