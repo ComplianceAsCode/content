@@ -168,8 +168,8 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
     command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
-    with open(verbose_path, 'a') as f:
-        f.write('Stdout of "{}":'.format(command_string))
+    with open(verbose_path, 'ab') as f:
+        f.write('Stdout of "{}":'.format(command_string).encode("utf-8"))
         f.write(output.encode("utf-8"))
     if returncode != 0:
         msg = (
@@ -197,8 +197,8 @@ def run_stage_remediation_bash(run_type, formatting, verbose_path):
     returncode, output = common.run_cmd_remote(
         command_string, formatting['domain_ip'], verbose_path)
     # Appends output of script execution to the verbose_path file.
-    with open(verbose_path, 'a') as f:
-        f.write('Stdout of "{}":'.format(command_string))
+    with open(verbose_path, 'ab') as f:
+        f.write('Stdout of "{}":'.format(command_string).encode("utf-8"))
         f.write(output.encode("utf-8"))
     if returncode != 0:
         msg = (
