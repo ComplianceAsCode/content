@@ -350,13 +350,14 @@ The macro requires following parameters:
 {{#
 The following macro remediates Audit syscall rule in /etc/audit/rules.d directory.
 The macro requires following parameters:
-- arch: must be 32 or 64, this distinguishes the architecture (32 bit or 64 bit). Rules for appropriate architecture will be used.
 - syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
 - key: a key to use as rule identifier.
 Note that if there  already exists a rule wit the same key in the /etc/audit/rules.d directory, the rule will be placed in the same file.
+The rule determines the architecture of the system and apply appropriate remediations.
+It utilizes b32 for X86 architecture and both b32 and b64 for x86_64 architecture.
 #}}
 
-{{% macro ansible_audit_augenrules_add_syscall_rule(arch="", syscalls=[], key="") -%}}
+{{% macro ansible_audit_augenrules_add_syscall_rule(syscalls=[], key="") -%}}
 #
 # What architecture are we on?
 #
@@ -382,7 +383,6 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
 - name: Get number of matched 32 bit syscalls in /etc/audit/rules.d/
   set_fact: audit_syscalls_matched_32_rules_d="{{audit_syscalls_found_32_rules_d.results|sum(attribute='matched')|int }}"
 
-{{% if arch == "64" %}}
 - name: Check existence of syscalls for 64 bit architecture in /etc/audit/rules.d/
   find:
     paths: "/etc/audit/rules.d"
@@ -393,7 +393,6 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
 
 - name: Get number of matched 64 bit syscalls in /etc/audit/rules.d/
   set_fact: audit_syscalls_matched_64_rules_d="{{audit_syscalls_found_64_rules_d.results|sum(attribute='matched')|int }}"
-{{% endif %}}
 
 - name: Search /etc/audit/rules.d for other rules with the key {{{ key }}}
   find:
@@ -433,7 +432,6 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
         state: present
   when: audit_syscalls_matched_32_rules_d < audit_syscalls_number_of_syscalls
 
-{{% if arch == "64" %}}
 - name: "Insert the syscall rule in {{ all_files[0] }} when on x86_64"
   block:
     - name: "Construct rule: add rule list, action and arch"
@@ -451,17 +449,17 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
         create: true
         state: present
   when: audit_syscalls_matched_64_rules_d < audit_syscalls_number_of_syscalls and audit_arch is defined and audit_arch == 'b64'
-{{% endif %}}
 {{%- endmacro %}}
 
 {{#
 The following macro remediates Audit syscall rule in /etc/audit/audit.rules file.
 The macro requires following parameters:
-- arch: must be 32 or 64, this distinguishes the architecture (32 bit or 64 bit). Rules for appropriate architecture will be used.
 - syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
 - key: a key to use as rule identifier.
+The rule determines the architecture of the system and apply appropriate remediations.
+It utilizes b32 for X86 architecture and both b32 and b64 for x86_64 architecture.
 #}}
-{{% macro ansible_audit_auditctl_add_syscall_rule(arch="", syscalls=[], key="") -%}}
+{{% macro ansible_audit_auditctl_add_syscall_rule(syscalls=[], key="") -%}}
 #
 # What architecture are we on?
 #
@@ -487,7 +485,6 @@ The macro requires following parameters:
 - name: Get number of matched 32 bit syscalls in /etc/audit/audit.rules
   set_fact: audit_syscalls_matched_32_audit_rules="{{audit_syscalls_found_32_audit_rules.results|sum(attribute='matched')|int }}"
 
-{{% if arch == "64" %}}
 - name: Check existence of syscalls for 64 bit architecture in /etc/audit/audit.rules
   find:
     paths: "/etc/audit"
@@ -498,7 +495,6 @@ The macro requires following parameters:
 
 - name: Get number of matched 64 bit syscalls in /etc/audit/rules.d/*
   set_fact: audit_syscalls_matched_64_audit_rules="{{audit_syscalls_found_64_audit_rules.results|sum(attribute='matched')|int }}"
-{{% endif %}}
 
 - name: Insert the syscall rule in /etc/audit/audit.rules when on x86
   block:
@@ -518,7 +514,6 @@ The macro requires following parameters:
         state: present
   when: audit_syscalls_matched_32_audit_rules < audit_syscalls_number_of_syscalls
 
-{{% if arch == "64" %}}
 - name: Insert the syscall rule in /etc/audit/rules.d when on x86_64
   block:
     - name: "Construct rule: add rule list, action and arch"
@@ -536,5 +531,4 @@ The macro requires following parameters:
         create: true
         state: present
   when: audit_syscalls_matched_64_audit_rules < audit_syscalls_number_of_syscalls and audit_arch is defined and audit_arch == 'b64'
-{{% endif %}}
 {{%- endmacro %}}

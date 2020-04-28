@@ -4,7 +4,10 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_audit_augenrules_add_syscall_rule(arch="32", syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
-{{{ ansible_audit_augenrules_add_syscall_rule(arch="64", syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
-{{{ ansible_audit_auditctl_add_syscall_rule(arch="32", syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
-{{{ ansible_audit_auditctl_add_syscall_rule(arch="64", syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
+{{% if product == "rhel6" %}}
+{{{ ansible_audit_augenrules_add_syscall_rule(syscalls=["init_module", "delete_module"], key="modules") }}}
+{{{ ansible_audit_auditctl_add_syscall_rule(syscalls=["init_module", "delete_module"], key="modules") }}}
+{{% else %}}
+{{{ ansible_audit_augenrules_add_syscall_rule(syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
+{{{ ansible_audit_auditctl_add_syscall_rule(syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
+{{% endif %}}
