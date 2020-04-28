@@ -397,8 +397,7 @@ It utilizes b32 for X86 architecture and both b32 and b64 for x86_64 architectur
 - name: Search /etc/audit/rules.d for other rules with the key {{{ key }}}
   find:
     paths: "/etc/audit/rules.d"
-    recurse: no
-    contains: '(-F key=)|(-k\s+){{{ key }}}$'
+    contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
     patterns: "*.rules"
   register: find_syscalls_files
 
