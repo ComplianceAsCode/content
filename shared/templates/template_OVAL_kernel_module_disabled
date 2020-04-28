@@ -8,7 +8,10 @@
     </metadata>
     <criteria operator="OR">
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.d" />
+
+{{% if product != "ubuntu1804" %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
+{{% endif %}}
 
 {{% if product != "rhel6" %}}
 
