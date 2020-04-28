@@ -142,7 +142,12 @@ def add_platform_to_benchmark(root, cpe_regex):
 
     for benchmark in benchmarks:
         existing_platform_element = benchmark.find("xccdf-1.2:platform", PREFIX_TO_NS)
-        platform_index = benchmark.getchildren().index(existing_platform_element)
+        if existing_platform_element is None:
+            logging.warn(
+                "Couldn't find platform element in a benchmark, "
+                "not adding any additional platforms as a result.")
+            continue
+        platform_index = list(benchmark).index(existing_platform_element)
         for cpe_str in cpes_to_add:
             e = ET.Element("xccdf-1.2:platform", idref=cpe_str)
             benchmark.insert(platform_index, e)

@@ -69,7 +69,8 @@ def parse_args():
             "--add-platform",
             metavar="<CPE REGEX>",
             default=None,
-            help="Find all CPEs in the datastream that match the provided regex, "
+            help="Find all CPEs that are present in local OpenSCAP's CPE dictionary "
+            "that match the provided regex, "
             "and add them as platforms to all datastream benchmarks. "
             "If the regex doesn't match anything, it will be treated "
             "as a literal CPE, and added as a platform. "
