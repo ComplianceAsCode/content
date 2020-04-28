@@ -361,7 +361,7 @@ It utilizes b32 for X86 architecture and both b32 and b64 for x86_64 architectur
 #
 # What architecture are we on?
 #
-- name: Set architecture for audit modules tasks
+- name: Set architecture for audit tasks
   set_fact:
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
@@ -462,7 +462,7 @@ It utilizes b32 for X86 architecture and both b32 and b64 for x86_64 architectur
 #
 # What architecture are we on?
 #
-- name: Set architecture for audit modules tasks
+- name: Set architecture for audit tasks
   set_fact:
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
