@@ -78,8 +78,8 @@ def parse_args():
             "--remove-machine-only",
             default=False,
             action="store_true",
-            help="Whether to remove machine-only platform in rules "
-            "to increase usefulness of the container backend.")
+            help="Removes machine-only platform constraint from rules "
+            "to enable testing these rules on container backends.")
     common_parser.add_argument("--loglevel",
                                dest="loglevel",
                                metavar="LOGLEVEL",
