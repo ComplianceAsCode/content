@@ -277,6 +277,7 @@ regex_replace("\(n\)\*", "\\n")
 {{% macro ansible_deregexify_banner_backslash() -%}}
 regex_replace("\\", "")
 {{%- endmacro %}}
+
 {{#
 The following macro remediates one audit watch rule in /etc/audit/rules.d directory.
 The macro requires following parameters:
@@ -289,7 +290,6 @@ in some file within /etc/audit/rules.d/, the new rule will be appended to this f
 - name: Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
   find:
     paths: "/etc/audit/rules.d"
-    recurse: no
     contains: '^\s*-w\s+{{{ path }}}\s+-p\s+{{{ permissions }}}(\s|$)+'
     patterns: "*.rules"
   register: find_existing_watch_rules_d
@@ -297,8 +297,7 @@ in some file within /etc/audit/rules.d/, the new rule will be appended to this f
 - name: Search /etc/audit/rules.d for other rules with specified key {{{ key }}}
   find:
     paths: "/etc/audit/rules.d"
-    recurse: no
-    contains: "^.*(-F key=)(|-k ){{{ key }}}$"
+    contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
     patterns: "*.rules"
   register: find_watch_key
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
