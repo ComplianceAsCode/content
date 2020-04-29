@@ -3,11 +3,31 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+#
+# What architecture are we on?
+#
+- name: Set architecture for audit tasks
+  set_fact:
+    audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
-{{% if product == "rhel6" %}}
-{{{ ansible_audit_augenrules_add_syscall_rule(syscalls=["init_module", "delete_module"], key="modules") }}}
-{{{ ansible_audit_auditctl_add_syscall_rule(syscalls=["init_module", "delete_module"], key="modules") }}}
-{{% else %}}
-{{{ ansible_audit_augenrules_add_syscall_rule(syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
-{{{ ansible_audit_auditctl_add_syscall_rule(syscalls=["init_module", "finit_module", "delete_module"], key="modules") }}}
-{{% endif %}}
+
+- name: perform remediation of Audit rules for kernel module loading for x86 platform
+  block:
+  {{% if product == "rhel6" %}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b32", syscalls=["init_module", "delete_module"], key="modules")|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(arch="b32", syscalls=["init_module", "delete_module"], key="modules")|indent(4) }}}
+  {{% else %}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b32", syscalls=["init_module", "finit_module", "delete_module"], key="modules")|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(arch="b32", syscalls=["init_module", "finit_module", "delete_module"], key="modules")|indent(4) }}}
+  {{% endif %}}
+
+- name: perform remediation of Audit rules for kernel module loading for x86_64 platform
+  block:
+  {{% if product == "rhel6" %}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b64", syscalls=["init_module", "delete_module"], key="modules")|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(arch="b64", syscalls=["init_module", "delete_module"], key="modules")|indent(4) }}}
+  {{% else %}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b64", syscalls=["init_module", "finit_module", "delete_module"], key="modules")|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(arch="b64", syscalls=["init_module", "finit_module", "delete_module"], key="modules")|indent(4) }}}
+  {{% endif %}}
+  when: audit_arch == "b64"
