@@ -13,7 +13,7 @@
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
 
-{{% if product != "rhel6" %}}
+{{% if (product != "rhel6") and (product != "ubuntu1804") %}}
 
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d" />
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modules-load.d" />
