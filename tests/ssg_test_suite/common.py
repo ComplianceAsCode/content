@@ -21,7 +21,11 @@ Scenario_conditions = namedtuple(
 Rule = namedtuple(
     "Rule", ["directory", "id", "short_id", "files"])
 
-_BENCHMARK_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../linux_os/guide'))
+_BENCHMARK_DIRS = [
+        os.path.abspath(os.path.join(os.path.dirname(__file__), '../../linux_os/guide')),
+        os.path.abspath(os.path.join(os.path.dirname(__file__), '../../applications')),
+        ]
+
 _SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared'))
 
 REMOTE_USER = "root"
@@ -38,6 +42,12 @@ SSH_ADDITIONAL_OPTS = (
     "-o", "StrictHostKeyChecking=no",
     "-o", "UserKnownHostsFile=/dev/null",
 ) + SSH_ADDITIONAL_OPTS
+
+
+def walk_through_benchmark_dirs():
+    for dirname in _BENCHMARK_DIRS:
+        for dirpath, dirnames, filenames in os.walk(dirname):
+            yield dirpath, dirnames, filenames
 
 
 class Stage(object):
@@ -221,7 +231,7 @@ def create_tarball():
             "wb", suffix=".tar.gz", delete=False) as fp:
         with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
             tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
-            for dirpath, dirnames, _ in os.walk(_BENCHMARK_DIR):
+            for dirpath, dirnames, _ in walk_through_benchmark_dirs():
                 rule_id = os.path.basename(dirpath)
                 if "tests" in dirnames:
                     tests_dir_path = os.path.join(dirpath, "tests")
@@ -284,7 +294,7 @@ def iterate_over_rules():
                         containing the test scenarios in Bash
             files -- list of executable .sh files in the "tests" directory
     """
-    for dirpath, dirnames, filenames in os.walk(_BENCHMARK_DIR):
+    for dirpath, dirnames, filenames in walk_through_benchmark_dirs():
         if "rule.yml" in filenames and "tests" in dirnames:
             short_rule_id = os.path.basename(dirpath)
             tests_dir = os.path.join(dirpath, "tests")
