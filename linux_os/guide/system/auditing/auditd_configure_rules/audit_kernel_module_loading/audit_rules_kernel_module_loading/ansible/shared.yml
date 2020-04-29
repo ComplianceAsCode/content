@@ -11,7 +11,7 @@
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
 
-- name: perform remediation of Audit rules for kernel module loading for x86 platform
+- name: Perform remediation of Audit rules for kernel module loading for x86 platform
   block:
   {{% if product == "rhel6" %}}
     {{{ ansible_audit_augenrules_add_syscall_rule(arch="b32", syscalls=["init_module", "delete_module"], key="modules")|indent(4) }}}
@@ -21,7 +21,7 @@
     {{{ ansible_audit_auditctl_add_syscall_rule(arch="b32", syscalls=["init_module", "finit_module", "delete_module"], key="modules")|indent(4) }}}
   {{% endif %}}
 
-- name: perform remediation of Audit rules for kernel module loading for x86_64 platform
+- name: Perform remediation of Audit rules for kernel module loading for x86_64 platform
   block:
   {{% if product == "rhel6" %}}
     {{{ ansible_audit_augenrules_add_syscall_rule(arch="b64", syscalls=["init_module", "delete_module"], key="modules")|indent(4) }}}
