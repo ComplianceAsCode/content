@@ -520,6 +520,21 @@ selections:
     #- mount_option_nodev_removable_partitions
     #- mount_option_noexec_removable_partitions
 
+    # AC-1
+    - configure_ssh_crypto_policy
+    - service_bluetooth_disabled
+    #- sshd_use_approved_macs
+    #- sshd_use_approved_ciphers
+    #- sshd_set_loglevel_verbose
+    #- sshd_set_loglevel_info
+    #- sshd_disable_compression
+    #- sshd_allow_only_protocol2
+    - file_permissions_sshd_pub_key
+    - file_permissions_sshd_private_key
+    - file_permissions_sshd_config
+    - file_owner_sshd_config
+    - file_groupowner_sshd_config
+
     # AC-3
     - sshd_limit_user_access
     - sshd_disable_rhosts
