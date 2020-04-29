@@ -404,12 +404,12 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
 - name: "Insert the syscall rule in {{ all_files[0] }}"
   block:
     - name: "Construct rule: add rule list, action and arch"
-      set_fact: tmpline="-a always,exit -F arch={{{ arch }}} "
+      set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
     - name: "Construct rule: add syscalls"
-      set_fact: tmpline="{{tmpline + '-S ' + item.item + ' ' }}"
+      set_fact: tmpline="{{tmpline + ' -S ' + item.item }}"
       loop: "{{ audit_syscalls_found_{{{ arch }}}_rules_d.results }}"
       when: item.matched is defined and item.matched == 0
-    - name: "Construct rule: add key"
+    - name: "Construct rule: add fields and key"
       set_fact: tmpline="{{ tmpline + '{{{ fields_data.list }}} -k {{{ key }}}' }}"
     - name: "Insert the line in {{ all_files[0] }}"
       lineinfile:
@@ -458,9 +458,9 @@ The macro requires following parameters:
 - name: Insert the syscall rule in /etc/audit/audit.rules
   block:
     - name: "Construct rule: add rule list, action and arch"
-      set_fact: tmpline="-a always,exit -F arch={{{ arch }}} "
+      set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
     - name: "Construct rule: add syscalls"
-      set_fact: tmpline="{{tmpline + '-S ' + item.item + ' ' }}"
+      set_fact: tmpline="{{tmpline + ' -S ' + item.item }}"
       loop: "{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results }}"
       when: item.matched is defined and item.matched == 0
     - name: "Construct rule: add fields and key"
