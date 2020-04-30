@@ -10,11 +10,11 @@
 
 - name: Perform remediation of Audit rules for settimeofday for x86 platform
   block:
-    {{{ ansible_audit_augenrules_add_syscall_rule(arch=b32, syscalls=["settimeofday"], key="audit_time_rules")|indent(4) }}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b32", syscalls=["settimeofday"], key="audit_time_rules")|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(arch="b32", syscalls=["settimeofday"], key="audit_time_rules")|indent(4) }}}
 
 - name: Perform remediation of Audit rules for settimeofday for x86_64 platform
   block:
-    {{{ ansible_audit_augenrules_add_syscall_rule(arch=b64, syscalls=["settimeofday"], key="audit_time_rules")|indent(4) }}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b64", syscalls=["settimeofday"], key="audit_time_rules")|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(arch="b64", syscalls=["settimeofday"], key="audit_time_rules")|indent(4) }}}
   when: audit_arch == "b64"
