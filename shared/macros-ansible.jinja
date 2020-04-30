@@ -370,7 +370,7 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
   register: audit_syscalls_found_{{{ arch }}}_rules_d
   loop: "{{ syscalls }}"
 
-- name: Get number of matched syscalls for architecture {{{ arch }}}in /etc/audit/rules.d/
+- name: Get number of matched syscalls for architecture {{{ arch }}} in /etc/audit/rules.d/
   set_fact: audit_syscalls_matched_{{{ arch }}}_rules_d="{{audit_syscalls_found_{{{ arch }}}_rules_d.results|sum(attribute='matched')|int }}"
 
 - name: Search /etc/audit/rules.d for other rules with the key {{{ key }}}
