@@ -367,7 +367,7 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
 {{# This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope #}}
 {{% set fields_data = { 'regex' : "", 'list': "" } %}}
 {{% for field in fields %}}
-    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F\s+' + field + ')'}) %}}
+    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
     {{% set not_used = fields_data.update({'list': fields_data.list+ ' -F ' + field }) %}}
 {{% endfor %}}
 
@@ -440,7 +440,7 @@ The macro requires following parameters:
 {{# This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope #}}
 {{% set fields_data = { 'regex' : "", 'list': "" } %}}
 {{% for field in fields %}}
-    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F\s+' + field + ')'}) %}}
+    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
     {{% set not_used = fields_data.update({'list': fields_data.list + ' -F ' + field }) %}}
 {{% endfor %}}
 
