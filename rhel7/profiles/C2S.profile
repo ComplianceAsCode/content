@@ -78,7 +78,6 @@ selections:
     - service_xinetd_disabled
     - service_chronyd_or_ntpd_enabled
     - package_xorg-x11-server-common_removed
-    - xwindows_runlevel_target
     - service_avahi-daemon_disabled
     - service_cups_disabled
     - service_dhcpd_disabled
