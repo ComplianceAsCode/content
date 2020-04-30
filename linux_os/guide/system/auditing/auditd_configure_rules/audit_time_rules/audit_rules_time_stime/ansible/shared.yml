@@ -1,0 +1,10 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Perform remediation of Audit rules for stime syscall for x86 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b32", syscalls=["stime"], key="audit_time_rules")|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(arch="b32", syscalls=["stime"], key="audit_time_rules")|indent(4) }}}
