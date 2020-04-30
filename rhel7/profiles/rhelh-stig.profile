@@ -430,7 +430,6 @@ selections:
     - package_tftp-server_removed
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
-    - xwindows_runlevel_target
     - sssd_enable_pam_services
     - mount_option_noexec_remote_filesystems
     - auditd_audispd_network_failure_action

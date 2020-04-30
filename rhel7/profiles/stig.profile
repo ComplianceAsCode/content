@@ -273,7 +273,6 @@ selections:
     - sshd_enable_x11_forwarding
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
-    - xwindows_runlevel_target
     - sysctl_net_ipv4_ip_forward
     - mount_option_krb_sec_remote_filesystems
     - snmpd_not_default_password
