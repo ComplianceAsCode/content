@@ -383,7 +383,7 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
   loop: "{{ syscalls }}"
 
 - name: Get number of matched syscalls for architecture {{{ arch }}} in /etc/audit/rules.d/
-  set_fact: audit_syscalls_matched_{{{ arch }}}_rules_d="{{audit_syscalls_found_{{{ arch }}}_rules_d.results|sum(attribute='matched')|int }}"
+  set_fact: audit_syscalls_matched_{{{ arch }}}_rules_d="{{ audit_syscalls_found_{{{ arch }}}_rules_d.results|sum(attribute='matched')|int }}"
 
 - name: Search /etc/audit/rules.d for other rules with the key {{{ key }}}
   find:
@@ -409,7 +409,7 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
     - name: "Construct rule: add rule list, action and arch"
       set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
     - name: "Construct rule: add syscalls"
-      set_fact: tmpline="{{tmpline + ' -S ' + item.item }}"
+      set_fact: tmpline="{{ tmpline + ' -S ' + item.item }}"
       loop: "{{ audit_syscalls_found_{{{ arch }}}_rules_d.results }}"
       when: item.matched is defined and item.matched == 0
     - name: "Construct rule: add fields and key"
@@ -459,14 +459,14 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
   loop: "{{ syscalls }}"
 
 - name: Get number of matched syscalls for architecture {{{ arch }}} in /etc/audit/audit.rules
-  set_fact: audit_syscalls_matched_{{{ arch }}}_audit_rules="{{audit_syscalls_found_{{{ arch }}}_audit_rules.results|sum(attribute='matched')|int }}"
+  set_fact: audit_syscalls_matched_{{{ arch }}}_audit_rules="{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results|sum(attribute='matched')|int }}"
 
 - name: Insert the syscall rule in /etc/audit/audit.rules
   block:
     - name: "Construct rule: add rule list, action and arch"
       set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
     - name: "Construct rule: add syscalls"
-      set_fact: tmpline="{{tmpline + ' -S ' + item.item }}"
+      set_fact: tmpline="{{ tmpline + ' -S ' + item.item }}"
       loop: "{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results }}"
       when: item.matched is defined and item.matched == 0
     - name: "Construct rule: add fields and key"
