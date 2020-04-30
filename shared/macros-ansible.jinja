@@ -364,11 +364,14 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
 - name: Declare number of syscalls
   set_fact: audit_syscalls_number_of_syscalls="{{ syscalls|length|int }}"
 
-{{# This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope #}}
-{{% set fields_data = { 'regex' : "", 'list': "" } %}}
+{{#
+This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope.
+See official documentation: https://jinja.palletsprojects.com/en/2.11.x/templates/#assignments
+#}}
+{{% set fields_data = { 'regex' : "", 'plain_text': "" } %}}
 {{% for field in fields %}}
     {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
-    {{% set not_used = fields_data.update({'list': fields_data.list+ ' -F ' + field }) %}}
+    {{% set not_used = fields_data.update({'plain_text': fields_data.plain_text + ' -F ' + field }) %}}
 {{% endfor %}}
 
 - name: Check existence of syscalls for architecture {{{ arch }}} in /etc/audit/rules.d/
@@ -410,7 +413,7 @@ Note that if there  already exists a rule wit the same key in the /etc/audit/rul
       loop: "{{ audit_syscalls_found_{{{ arch }}}_rules_d.results }}"
       when: item.matched is defined and item.matched == 0
     - name: "Construct rule: add fields and key"
-      set_fact: tmpline="{{ tmpline + '{{{ fields_data.list }}} -k {{{ key }}}' }}"
+      set_fact: tmpline="{{ tmpline + '{{{ fields_data.plain_text }}} -k {{{ key }}}' }}"
     - name: "Insert the line in {{ all_files[0] }}"
       lineinfile:
         path: "{{ all_files[0] }}"
@@ -437,11 +440,14 @@ The macro requires following parameters:
 - name: Declare number of syscalls
   set_fact: audit_syscalls_number_of_syscalls="{{ syscalls|length|int }}"
 
-{{# This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope #}}
-{{% set fields_data = { 'regex' : "", 'list': "" } %}}
+{{#
+This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope.
+See official documentation: https://jinja.palletsprojects.com/en/2.11.x/templates/#assignments
+#}}
+{{% set fields_data = { 'regex' : "", 'plain_text': "" } %}}
 {{% for field in fields %}}
     {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
-    {{% set not_used = fields_data.update({'list': fields_data.list + ' -F ' + field }) %}}
+    {{% set not_used = fields_data.update({'plain_text': fields_data.plain_text + ' -F ' + field }) %}}
 {{% endfor %}}
 
 - name: Check existence of syscalls for architecture {{{ arch }}} in /etc/audit/audit.rules
@@ -464,7 +470,7 @@ The macro requires following parameters:
       loop: "{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results }}"
       when: item.matched is defined and item.matched == 0
     - name: "Construct rule: add fields and key"
-      set_fact: tmpline="{{ tmpline + '{{{ fields_data.list }}} -k {{{ key }}}' }}"
+      set_fact: tmpline="{{ tmpline + '{{{ fields_data.plain_text }}} -k {{{ key }}}' }}"
     - name: Insert the line in /etc/audit/audit.rules
       lineinfile:
         path: "/etc/audit/audit.rules"
