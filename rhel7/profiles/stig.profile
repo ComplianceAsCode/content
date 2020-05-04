@@ -16,6 +16,16 @@ description: |-
     - Red Hat Storage
     - Red Hat Containers with a Red Hat Enterprise Linux 7 image
 
+    Warning: This profile is not compatible with GUI systems out of the box.
+    As per Finding ID  V-72307, the profile makes sure that the X11 server package is not present in the system.
+    If the system was installed using the <code>Server With GUI</code> Software Selection, it won't be able to boot into the GUI.
+
+    If you would like to have a GUI setup, then authorize the usage of the X server, and tailor the profile and deselect the <code>package_xorg-x11-server-common_removed</code> rule.
+    If you don't need GUI, then either
+      - make sure you don't use the <code>Server With GUI</code> Software Selection (e.g. choose the <code>Basic Web Server</code> instead), or
+      - tailor the profile, so it selects the <code>xwindows_runlevel_target</code> rule that modifies the default boot target.
+
+
 selections:
     - login_banner_text=dod_banners
     - inactivity_timeout_value=15_minutes
