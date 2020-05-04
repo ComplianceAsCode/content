@@ -1619,7 +1619,7 @@ service_disabled::
 ** *packagename* - name of the package that provides this service. This argument is optional. If *packagename* is not specified it means the name of the package is the same as the name of service.
 ** *daemonname* - name of the daemon. This argument is optional. If *daemonname* is not specified it means the name of the daemon is the same as the name of service.
 ** *mask_service* - Check if the service should be masked to prevent it from running. This argument is optional. Implicit value is "true".
-* Languages: Ansible, Bash, OVAL, Puppet
+* Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes
 
 service_enabled::
 * Checks if a system service is enabled. Uses either systemd or SysV init based on the product configuration in `product.yml`.
