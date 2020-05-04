@@ -256,19 +256,23 @@ class Role(object):
 
         return description
 
-    def _update_tasks_content_if_needed(self):
-        tasks_remote_content = self.remote_repo.get_contents("tasks/main.yml")
+    def _local_content(self, filepath):
+        if filepath == 'tasks/main.yml':
+            return self.tasks_local_content
 
-        if self.tasks_local_content != tasks_remote_content.decoded_content:
+    def _update_content_if_needed(self, filepath):
+        remote_content = self.remote_repo.get_contents(filepath)
+
+        if self._local_content(filepath) != remote_content.decoded_content:
             self.remote_repo.update_file(
-                "/tasks/main.yml",
-                "Updates tasks/main.yml",
-                self.tasks_local_content,
-                tasks_remote_content.sha,
+                "/" + filepath,
+                "Updates " + filepath,
+                self._local_content(filepath),
+                remote_content.sha,
                 author=InputGitAuthor(
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
-            print("Updating tasks/main.yml in %s" % self.remote_repo.name)
+            print("Updating %s in %s" % (filepath, self.remote_repo.name))
 
     def _update_vars_content_if_needed(self):
         if len(self.vars_data) < 1:
@@ -398,7 +402,7 @@ class Role(object):
         # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
-        self._update_tasks_content_if_needed()
+        self._update_content_if_needed('tasks/main.yml')
         self._update_vars_content_if_needed()
         self._update_readme_content_if_needed(repo_status)
         self._update_meta_content_if_needed(repo_status)
