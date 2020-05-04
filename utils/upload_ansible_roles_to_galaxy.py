@@ -265,11 +265,28 @@ class Role(object):
             else:
                  return yaml.dump(self.vars_data, width=120, indent=4,
                                   default_flow_style=False)
+        elif filepath == 'README.md':
+            remote_readme_file = self._remote_content("README.md")
+            if not remote_readme_file:
+                return self._generate_readme_content()
+
+            local_readme_content = re.sub(r'Ansible version (\d*\.\d+|\d+)',
+                                          "Ansible version %s" % ssg.ansible.min_ansible_version,
+                                          remote_readme_file)
+            return re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
+                          "%s.%s" % (ORGANIZATION_NAME, self.role_name),
+                          local_readme_content)
+
+    def _remote_content(self, filepath):
+        content = self.remote_repo.get_contents(filepath).decoded_content
+        if filepath == 'README.md':
+            content =  content.decode("utf-8")
+        return content
 
     def _update_content_if_needed(self, filepath):
-        remote_content = self.remote_repo.get_contents(filepath)
+        remote_content = self._remote_content(filepath)
 
-        if self._local_content(filepath) != remote_content.decoded_content:
+        if self._local_content(filepath) != remote_content:
             self.remote_repo.update_file(
                 "/" + filepath,
                 "Updates " + filepath,
@@ -296,31 +313,6 @@ class Role(object):
         local_readme_content = local_readme_content.replace(
             "@ROLE_NAME@", self.role_name)
         return local_readme_content
-
-    def _update_readme_content_if_needed(self, repo_status):
-        local_readme_content = self._generate_readme_content()
-        remote_readme_file = self.remote_repo.get_contents("README.md")
-
-        if repo_status == "update":
-            local_readme_content = remote_readme_file.decoded_content.decode("utf-8")
-            local_readme_content = re.sub(r'Ansible version (\d*\.\d+|\d+)',
-                                          "Ansible version %s" % ssg.ansible.min_ansible_version,
-                                          local_readme_content)
-            local_readme_content = re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
-                                          "%s.%s" % (ORGANIZATION_NAME, self.role_name),
-                                          local_readme_content)
-
-        if local_readme_content != remote_readme_file.decoded_content.decode("utf-8"):
-            print("Updating README.md in %s" % self.remote_repo.name)
-
-            self.remote_repo.update_file(
-                "/README.md",
-                "Updates README.md",
-                local_readme_content,
-                remote_readme_file.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
 
     def _update_meta_content_if_needed(self, repo_status):
         remote_meta_file = self.remote_repo.get_contents("meta/main.yml")
@@ -386,9 +378,8 @@ class Role(object):
         # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
-        for path in ('tasks/main.yml', 'vars/main.yml'):
+        for path in ('tasks/main.yml', 'vars/main.yml', 'README.md'):
             self._update_content_if_needed(path)
-        self._update_readme_content_if_needed(repo_status)
         self._update_meta_content_if_needed(repo_status)
         self.add_task_variables_to_default_variables_if_needed()
 
