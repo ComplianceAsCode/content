@@ -156,7 +156,7 @@ def _file_owner_groupowner_permissions_regex(data):
             "'file_regex' key.".format(data["_rule_id"], data["filepath"]))
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "ignition", "kubernetes"])
 def file_groupowner(data, lang):
     _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
@@ -164,7 +164,7 @@ def file_groupowner(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "ignition", "kubernetes"])
 def file_owner(data, lang):
     _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":

@@ -1,0 +1,32 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = configure
+# complexity = low
+# disruption = medium
+{{% if IS_DIRECTORY %}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      directories:
+      - filesystem: root
+        group:
+          id: {{{ FILEGID }}}
+        path: {{{ FILEPATH }}}
+{{% else %}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - filesystem: root
+        group:
+          id: {{{ FILEGID }}}
+        path: {{{ FILEPATH }}}
+{{% endif %}}
