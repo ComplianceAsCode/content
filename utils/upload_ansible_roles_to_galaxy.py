@@ -501,7 +501,7 @@ def main():
     github_repositories = [repo.name for repo in github_org.get_repos()]
 
     # Create empty repositories
-    github_new_repos = sorted(list(set(selected_roles.keys()) - set(github_repositories)))
+    github_new_repos = sorted(list(set(map(str.lower, selected_roles.keys())) - set(map(unicode.lower, github_repositories))))
     if github_new_repos:
         create_empty_repositories(github_new_repos, github_org)
 
