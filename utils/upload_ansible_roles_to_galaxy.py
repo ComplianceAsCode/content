@@ -259,6 +259,12 @@ class Role(object):
     def _local_content(self, filepath):
         if filepath == 'tasks/main.yml':
             return self.tasks_local_content
+        elif filepath == 'vars/main.yml':
+            if len(self.vars_data) < 1:
+                return "---\n# defaults file for {role_name}\n".format(role_name=self.role_name)
+            else:
+                 return yaml.dump(self.vars_data, width=120, indent=4,
+                                  default_flow_style=False)
 
     def _update_content_if_needed(self, filepath):
         remote_content = self.remote_repo.get_contents(filepath)
@@ -273,28 +279,6 @@ class Role(object):
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
             print("Updating %s in %s" % (filepath, self.remote_repo.name))
-
-    def _update_vars_content_if_needed(self):
-        if len(self.vars_data) < 1:
-            vars_local_content = "---\n# defaults file for {role_name}\n".format(role_name=self.role_name)
-        else:
-             vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
-                                            default_flow_style=False)
-
-        vars_remote_content = self.remote_repo.get_contents("vars/main.yml")
-
-        if vars_local_content != vars_remote_content.decoded_content and \
-           vars_local_content.splitlines()[0] != "null":
-            self.remote_repo.update_file(
-                "/vars/main.yml",
-                "Updates vars/main.yml",
-                vars_local_content,
-                vars_remote_content.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
-
-            print("Updating vars/main.yml in %s" % self.remote_repo.name)
 
     def _generate_readme_content(self):
         with io.open(README_TEMPLATE_PATH, 'r',  encoding="utf-8") as f:
@@ -402,8 +386,8 @@ class Role(object):
         # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
-        self._update_content_if_needed('tasks/main.yml')
-        self._update_vars_content_if_needed()
+        for path in ('tasks/main.yml', 'vars/main.yml'):
+            self._update_content_if_needed(path)
         self._update_readme_content_if_needed(repo_status)
         self._update_meta_content_if_needed(repo_status)
         self.add_task_variables_to_default_variables_if_needed()
