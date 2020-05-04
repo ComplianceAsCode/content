@@ -172,7 +172,7 @@ def file_owner(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "ignition", "kubernetes"])
 def file_permissions(data, lang):
     _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
