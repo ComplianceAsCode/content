@@ -1,0 +1,22 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+
+- name: Disable IPv6 Networking kernel module
+  lineinfile:
+    create: yes
+    dest: "/etc/modprobe.d/ipv6.conf"
+    regexp: "^options\\s+ipv6\\s+disable=\\d"
+    line: "options ipv6 disable=1"
+
+- name: Ensure disable_ipv6 (all and default) is set to 1
+  sysctl:
+    name: "{{ item }}"
+    value: "1"
+    state: present
+    reload: yes
+  with_items:
+    - "net.ipv6.conf.all.disable_ipv6"
+    - "net.ipv6.conf.default.disable_ipv6"
