@@ -211,7 +211,7 @@ class Role(object):
         default_vars_remote_content = self.remote_repo.get_contents("defaults/main.yml")
         if default_vars_local_content != default_vars_remote_content.decoded_content:
             self.remote_repo.update_file(
-                "defaults/main.yml",
+                "/defaults/main.yml",
                 "Updates defaults/main.yml",
                 default_vars_local_content,
                 default_vars_remote_content.sha,
@@ -261,7 +261,7 @@ class Role(object):
 
         if self.tasks_local_content != tasks_remote_content.decoded_content:
             self.remote_repo.update_file(
-                "tasks/main.yml",
+                "/tasks/main.yml",
                 "Updates tasks/main.yml",
                 self.tasks_local_content,
                 tasks_remote_content.sha,
@@ -282,7 +282,7 @@ class Role(object):
         if vars_local_content != vars_remote_content.decoded_content and \
            vars_local_content.splitlines()[0] != "null":
             self.remote_repo.update_file(
-                "vars/main.yml",
+                "/vars/main.yml",
                 "Updates vars/main.yml",
                 vars_local_content,
                 vars_remote_content.sha,
@@ -326,7 +326,7 @@ class Role(object):
             print("Updating README.md in %s" % self.remote_repo.name)
 
             self.remote_repo.update_file(
-                "README.md",
+                "/README.md",
                 "Updates README.md",
                 local_readme_content,
                 remote_readme_file.sha,
@@ -370,7 +370,7 @@ class Role(object):
         if local_meta_content != remote_meta_file.decoded_content:
             print("Updating meta/main.yml in %s" % self.remote_repo.name)
             self.remote_repo.update_file(
-                "meta/main.yml",
+                "/meta/main.yml",
                 "Updates meta/main.yml",
                 local_meta_content,
                 remote_meta_file.sha,
