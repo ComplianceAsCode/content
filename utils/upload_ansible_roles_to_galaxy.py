@@ -121,49 +121,14 @@ def update_repo_release(github, repo):
     repo.create_git_tag_and_release(new_tag, '', '', '', commits[0].sha, 'commit')
 
 
-class Role(object):
-    def __init__(self, repo, local_playbook_filename):
-        self.remote_repo = repo
-        self.local_playbook_filename = local_playbook_filename
-
-        self.role_data = None
-        self.vars_data = []
-        self.default_vars_data = []
-        self.tasks_data = []
-        self.pre_tasks_data = []
-        self.added_variables = set()
-
-        self.tasks_local_content = None
-
-        self.description = None
-        self.title = None
-        self.role_name = None
-        self._init()
-
-    def _init(self):
-        self.gather_data()
-        self.add_variables_to_tasks()
-        self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, default_flow_style=False)
-
-        self._reformat_local_content()
-        try:
-            self.title = re.search(
-                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
-        except AttributeError:
-            self.title = re.search(
-                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
-
-    def gather_data(self):
-        with io.open(self.local_playbook_filename, 'r', encoding="utf-8") as f:
+class PlaybookToRoleConverter():
+    def __init__(self, local_playbook_filename):
+        with io.open(local_playbook_filename, 'r', encoding="utf-8") as f:
             filedata = f.read()
 
         self.role_data = ssg.yaml.ordered_load(filedata)
-        if "vars" in self.role_data[0]:
-            self.default_vars_data = self.role_data[0]["vars"]
-
-        if "tasks" in self.role_data[0]:
-            self.tasks_data = self.role_data[0]["tasks"]
+        self.default_vars_data = self.role_data[0]["vars"] if "vars" in self.role_data[0] else []
+        self.tasks_data = self.role_data[0]["tasks"] if "tasks" in self.role_data[0] else []
 
         # ansible language doesn't allow pre_tasks for roles, if the only pre task
         # is the ansible version check we can ignore it because the minimal version
@@ -180,9 +145,58 @@ class Role(object):
                     "pre_tasks are not supported for ansible roles and "
                     "will be skipped!.\n")
 
-        description = self.get_description_from_filedata(filedata)
+        description = self._get_description_from_filedata(filedata)
+        self.description = description
+
+    def _get_description_from_filedata(self, filedata):
+        separator = "#" * 79
+        offset_from_separator = 3
+
+        first_separator_pos = filedata.find(
+            separator)
+        second_separator_pos = filedata.find(
+            separator, first_separator_pos + len(separator))
+
+        description_start = first_separator_pos + len(separator) + offset_from_separator
+        description_stop = second_separator_pos - offset_from_separator
+        return filedata[description_start:description_stop]
+
+
+class Role(object):
+    def __init__(self, repo, local_playbook_filename):
+        self.remote_repo = repo
+        self.role = PlaybookToRoleConverter(local_playbook_filename)
+        self.local_playbook_filename = local_playbook_filename
+
+        self.role_data = self.role.role_data
+        self.vars_data = []
+        self.default_vars_data = self.role.default_vars_data
+        self.tasks_data = self.role.tasks_data
+        self.pre_tasks_data = []
+        self.added_variables = set()
+
+        self.tasks_local_content = None
+
+        self.description = self.role.description
+        self.title = None
+        self.role_name = None
+        self._init()
+
+    def _init(self):
+        self.add_variables_to_tasks()
+        self.tasks_local_content = yaml.dump(
+            self.tasks_data, width=120, default_flow_style=False)
+
+        self._reformat_local_content()
+        try:
+            self.title = re.search(
+                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
+        except AttributeError:
+            self.title = re.search(
+                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
+
         # Fix the description format for markdown so that it looks pretty
-        self.description = description.replace('\n', '  \n')
+        self.description = self.description.replace('\n', '  \n')
 
     def add_variables_to_tasks(self):
         for task in self.tasks_data:
@@ -230,21 +244,6 @@ class Role(object):
         self.role_name = self.remote_repo.name.replace("-", "_")
         # Don't include role in role_name for simplicity
         self.role_name = self.role_name.replace('ansible_role_', '')
-
-    def get_description_from_filedata(self, filedata):
-        separator = "#" * 79
-        offset_from_separator = 3
-
-        first_separator_pos = filedata.find(
-            separator)
-        second_separator_pos = filedata.find(
-            separator, first_separator_pos + len(separator))
-
-        description_start = first_separator_pos + len(separator) + offset_from_separator
-        description_stop = second_separator_pos - offset_from_separator
-        description = filedata[description_start:description_stop]
-
-        return description
 
     def _local_content(self, filepath):
         if filepath == 'tasks/main.yml':
