@@ -138,6 +138,24 @@ class Role(object):
         self.description = None
         self.title = None
         self.role_name = None
+        self._init()
+
+    def _init(self):
+        self.gather_data()
+        self.add_variables_to_tasks()
+        self.tasks_local_content = yaml.dump(
+            self.tasks_data, width=120, default_flow_style=False)
+
+        self._reformat_local_content()
+        try:
+            self.title = re.search(
+                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
+        except AttributeError:
+            self.title = re.search(
+                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
+
+        # Fix the description format for markdown so that it looks pretty
+        self.description = self.description.replace('\n', '  \n')
 
     def gather_data(self):
         with io.open(self.local_playbook_filename, 'r', encoding="utf-8") as f:
@@ -337,23 +355,6 @@ class Role(object):
 
     def update_repository(self):
         print("Processing %s..." % self.remote_repo.name)
-
-        self.gather_data()
-
-        self.add_variables_to_tasks()
-        self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, default_flow_style=False)
-
-        self._reformat_local_content()
-        try:
-            self.title = re.search(
-                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
-        except AttributeError:
-            self.title = re.search(
-                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
-
-        # Fix the description format for markdown so that it looks pretty
-        self.description = self.description.replace('\n', '  \n')
 
         for path in ('defaults/main.yml', 'meta/main.yml', 'tasks/main.yml', 'vars/main.yml', 'README.md'):
             self._update_content_if_needed(path)
