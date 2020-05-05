@@ -180,6 +180,8 @@ def main():
             'missing_ovals',
             'missing_bash_fixes',
             'missing_ansible_fixes',
+            'missing_ignition_fixes',
+            'missing_kubernetes_fixes',
             'missing_puppet_fixes',
             'missing_anaconda_fixes',
             'missing_cces'
