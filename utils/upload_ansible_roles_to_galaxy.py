@@ -194,32 +194,6 @@ class Role(object):
         task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
         self.added_variables.update(variables_to_add)
 
-    def add_task_variables_to_default_variables_if_needed(self):
-        default_vars_to_add = sorted(self.added_variables)
-        default_vars_local_content = yaml.dump(self.default_vars_data, width=120, indent=4,
-                                               default_flow_style=False)
-        header = [
-            "---", "# defaults file for {role_name}\n".format(role_name=self.role_name),
-        ]
-        lines = ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
-        lines.append("")
-
-        default_vars_local_content = ("%s%s%s" % ("\n".join(header),
-                                                  default_vars_local_content,
-                                                  "\n".join(lines)))
-
-        default_vars_remote_content = self.remote_repo.get_contents("defaults/main.yml")
-        if default_vars_local_content != default_vars_remote_content.decoded_content:
-            self.remote_repo.update_file(
-                "/defaults/main.yml",
-                "Updates defaults/main.yml",
-                default_vars_local_content,
-                default_vars_remote_content.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
-            print("Updating defaults/main.yml in %s" % self.remote_repo.name)
-
     def _reformat_local_content(self):
         description = ""
         # Add \n in between tasks to increase readability
@@ -276,6 +250,8 @@ class Role(object):
             return re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
                           "%s.%s" % (ORGANIZATION_NAME, self.role_name),
                           local_readme_content)
+        elif filepath == 'defaults/main.yml':
+            return self._generate_defaults_content()
         elif filepath == 'meta/main.yml':
             remote_meta_file = self._remote_content(filepath)
             if not remote_meta_file:
@@ -347,6 +323,18 @@ class Role(object):
         local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
         return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
+    def _generate_defaults_content(self):
+        default_vars_to_add = sorted(self.added_variables)
+        default_vars_local_content = yaml.dump(self.default_vars_data, width=120, indent=4,
+                                               default_flow_style=False)
+        header = [
+            "---", "# defaults file for {role_name}\n".format(role_name=self.role_name),
+        ]
+        lines = ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
+        lines.append("")
+
+        return ("%s%s%s" % ("\n".join(header), default_vars_local_content, "\n".join(lines)))
+
     def update_repository(self):
         print("Processing %s..." % self.remote_repo.name)
 
@@ -367,9 +355,8 @@ class Role(object):
         # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
-        for path in ('meta/main.yml', 'tasks/main.yml', 'vars/main.yml', 'README.md'):
+        for path in ('defaults/main.yml', 'meta/main.yml', 'tasks/main.yml', 'vars/main.yml', 'README.md'):
             self._update_content_if_needed(path)
-        self.add_task_variables_to_default_variables_if_needed()
 
         repo_description = (
             "{title} - Ansible role generated from ComplianceAsCode Project"
