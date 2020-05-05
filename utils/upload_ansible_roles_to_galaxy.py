@@ -347,7 +347,7 @@ class Role(object):
         local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
         return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
-    def update_repository(self, repo_status):
+    def update_repository(self):
         print("Processing %s..." % self.remote_repo.name)
 
         self.gather_data()
@@ -476,16 +476,11 @@ def main():
 
     # Update repositories
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
-        if repo.name in github_new_repos:
-            repo_status = "new"
-        else:
-            repo_status = "update"
-
         if repo.name in selected_roles:
             playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
             playbook_full_path = os.path.join(
                 args.build_playbooks_dir, playbook_filename)
-            Role(repo, playbook_full_path).update_repository(repo_status)
+            Role(repo, playbook_full_path).update_repository()
             if args.tag_release:
                 update_repo_release(github, repo)
         elif repo.name not in potential_roles:
