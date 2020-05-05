@@ -154,9 +154,6 @@ class Role(object):
             self.title = re.search(
                 r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
 
-        # Fix the description format for markdown so that it looks pretty
-        self.description = self.description.replace('\n', '  \n')
-
     def gather_data(self):
         with io.open(self.local_playbook_filename, 'r', encoding="utf-8") as f:
             filedata = f.read()
@@ -184,7 +181,8 @@ class Role(object):
                     "will be skipped!.\n")
 
         description = self.get_description_from_filedata(filedata)
-        self.description = description
+        # Fix the description format for markdown so that it looks pretty
+        self.description = description.replace('\n', '  \n')
 
     def add_variables_to_tasks(self):
         for task in self.tasks_data:
