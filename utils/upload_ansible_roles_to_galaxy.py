@@ -150,6 +150,11 @@ class PlaybookToRoleConverter():
         self.description = description
         self._add_variables_to_tasks()
 
+        self.tasks_local_content = yaml.dump(
+            self.tasks_data, width=120, default_flow_style=False)
+        # Add \n in between tasks to increase readability
+        self.tasks_local_content = self.tasks_local_content.replace('\n- ', '\n\n- ')
+
     def _get_description_from_filedata(self, filedata):
         separator = "#" * 79
         offset_from_separator = 3
@@ -198,17 +203,12 @@ class Role(object):
         self.tasks_data = self.role.tasks_data
         self.added_variables = self.role.added_variables
 
-        self.tasks_local_content = None
-
         self.description = self.role.description
         self.title = None
         self.role_name = None
         self._init()
 
     def _init(self):
-        self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, default_flow_style=False)
-
         self._reformat_local_content()
         try:
             self.title = re.search(
@@ -222,8 +222,6 @@ class Role(object):
 
     def _reformat_local_content(self):
         description = ""
-        # Add \n in between tasks to increase readability
-        self.tasks_local_content = self.tasks_local_content.replace('\n- ', '\n\n- ')
 
         self.description = self.description.replace('# ', '')
         self.description = self.description.replace('#', '')
@@ -243,7 +241,7 @@ class Role(object):
 
     def _local_content(self, filepath):
         if filepath == 'tasks/main.yml':
-            return self.tasks_local_content
+            return self.role.tasks_local_content
         elif filepath == 'vars/main.yml':
             if len(self.vars_data) < 1:
                 return "---\n# defaults file for {role_name}\n".format(role_name=self.role_name)
