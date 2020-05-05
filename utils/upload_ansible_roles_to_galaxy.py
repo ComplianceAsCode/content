@@ -172,7 +172,6 @@ class Role(object):
         self.vars_data = []
         self.default_vars_data = self.role.default_vars_data
         self.tasks_data = self.role.tasks_data
-        self.pre_tasks_data = []
         self.added_variables = set()
 
         self.tasks_local_content = None
