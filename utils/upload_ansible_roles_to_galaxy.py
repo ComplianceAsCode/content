@@ -123,6 +123,7 @@ def update_repo_release(github, repo):
 
 class PlaybookToRoleConverter():
     def __init__(self, local_playbook_filename):
+        self._local_playbook_filename = local_playbook_filename
         with io.open(local_playbook_filename, 'r', encoding="utf-8") as f:
             filedata = f.read()
 
@@ -154,6 +155,39 @@ class PlaybookToRoleConverter():
             self.tasks_data, width=120, default_flow_style=False)
         # Add \n in between tasks to increase readability
         self.tasks_local_content = self.tasks_local_content.replace('\n- ', '\n\n- ')
+
+        self._reformat_local_content()
+        try:
+            self.title = re.search(
+                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
+        except AttributeError:
+            self.title = re.search(
+                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
+
+        # Fix the description format for markdown so that it looks pretty
+        self.description = self.description.replace('\n', '  \n')
+
+    def _reformat_local_content(self):
+        description = ""
+
+        self.description = self.description.replace('# ', '')
+        self.description = self.description.replace('#', '')
+
+        # Remove SCAP and Playbook examples from description as they don't belong in roles.
+        for line in self.description.split("\n"):
+            if line.startswith("Profile ID:"):
+                break
+            else:
+                description += (line + "\n")
+        self.description = description.strip("\n\n")
+
+        root, _ = os.path.splitext(os.path.basename(self._local_playbook_filename))
+        product, _, profile = root.split("-", 2)
+        repo_name = "ansible-role-%s-%s" % (product, profile)
+
+        self.name = repo_name.replace("-", "_")
+        # Don't include role in role_name for simplicity
+        self.name = self.name.replace('ansible_role_', '')
 
     def _get_description_from_filedata(self, filedata):
         separator = "#" * 79
@@ -204,47 +238,14 @@ class Role(object):
         self.added_variables = self.role.added_variables
 
         self.description = self.role.description
-        self.title = None
-        self.role_name = None
-        self._init()
-
-    def _init(self):
-        self._reformat_local_content()
-        try:
-            self.title = re.search(
-                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
-        except AttributeError:
-            self.title = re.search(
-                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
-
-        # Fix the description format for markdown so that it looks pretty
-        self.description = self.description.replace('\n', '  \n')
-
-    def _reformat_local_content(self):
-        description = ""
-
-        self.description = self.description.replace('# ', '')
-        self.description = self.description.replace('#', '')
-
-        # Remove SCAP and Playbook examples from description as they don't belong in roles.
-        for line in self.description.split("\n"):
-            if line.startswith("Profile ID:"):
-                break
-            else:
-                description += (line + "\n")
-        self.description = description.strip("\n\n")
-
-        # Ansible prefers underscores
-        self.role_name = self.remote_repo.name.replace("-", "_")
-        # Don't include role in role_name for simplicity
-        self.role_name = self.role_name.replace('ansible_role_', '')
+        self.title = self.role.title
 
     def _local_content(self, filepath):
         if filepath == 'tasks/main.yml':
             return self.role.tasks_local_content
         elif filepath == 'vars/main.yml':
             if len(self.vars_data) < 1:
-                return "---\n# defaults file for {role_name}\n".format(role_name=self.role_name)
+                return "---\n# defaults file for {role_name}\n".format(role_name=self.role.name)
             else:
                  return yaml.dump(self.vars_data, width=120, indent=4,
                                   default_flow_style=False)
@@ -257,7 +258,7 @@ class Role(object):
                                           "Ansible version %s" % ssg.ansible.min_ansible_version,
                                           remote_readme_file)
             return re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
-                          "%s.%s" % (ORGANIZATION_NAME, self.role_name),
+                          "%s.%s" % (ORGANIZATION_NAME, self.role.name),
                           local_readme_content)
         elif filepath == 'defaults/main.yml':
             return self._generate_defaults_content()
@@ -272,7 +273,7 @@ class Role(object):
             issue_tracker_url = re.search(r'issue_tracker_url:.*', meta_template).group(0)
             local_meta_content = remote_meta_file
             local_meta_content = re.sub(r'role_name:.*',
-                                        "role_name: %s" % self.role_name,
+                                        "role_name: %s" % self.role.name,
                                         local_meta_content)
             local_meta_content = re.sub(r'author:.*',
                                         author,
@@ -321,14 +322,14 @@ class Role(object):
         local_readme_content = local_readme_content.replace(
             "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
         local_readme_content = local_readme_content.replace(
-            "@ROLE_NAME@", self.role_name)
+            "@ROLE_NAME@", self.role.name)
         return local_readme_content
 
     def _generate_meta_content(self):
         with open(META_TEMPLATE_PATH, 'r') as f:
             meta_template = f.read()
         local_meta_content = meta_template.replace("@ROLE_NAME@",
-                                                   self.role_name)
+                                                   self.role.name)
         local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
         return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
@@ -337,7 +338,7 @@ class Role(object):
         default_vars_local_content = yaml.dump(self.default_vars_data, width=120, indent=4,
                                                default_flow_style=False)
         header = [
-            "---", "# defaults file for {role_name}\n".format(role_name=self.role_name),
+            "---", "# defaults file for {role_name}\n".format(role_name=self.role.name),
         ]
         lines = ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
         lines.append("")
