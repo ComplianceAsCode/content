@@ -276,6 +276,31 @@ class Role(object):
             return re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
                           "%s.%s" % (ORGANIZATION_NAME, self.role_name),
                           local_readme_content)
+        elif filepath == 'meta/main.yml':
+            remote_meta_file = self._remote_content(filepath)
+            if not remote_meta_file:
+                return self._generate_meta_content()
+            with open(META_TEMPLATE_PATH, 'r') as f:
+                meta_template = f.read()
+            author = re.search(r'author:.*', meta_template).group(0)
+            description = re.search(r'description:.*', meta_template).group(0)
+            issue_tracker_url = re.search(r'issue_tracker_url:.*', meta_template).group(0)
+            local_meta_content = remote_meta_file
+            local_meta_content = re.sub(r'role_name:.*',
+                                        "role_name: %s" % self.role_name,
+                                        local_meta_content)
+            local_meta_content = re.sub(r'author:.*',
+                                        author,
+                                        local_meta_content)
+            local_meta_content = re.sub(r'min_ansible_version: (\d*\.\d+|\d+)',
+                                        "min_ansible_version: %s" % ssg.ansible.min_ansible_version,
+                                        local_meta_content)
+            local_meta_content = re.sub(r'description:.*',
+                                        "description: %s" % self.title,
+                                        local_meta_content)
+            return re.sub(r'issue_tracker_url:.*',
+                          issue_tracker_url,
+                          local_meta_content)
 
     def _remote_content(self, filepath):
         content = self.remote_repo.get_contents(filepath).decoded_content
@@ -314,49 +339,13 @@ class Role(object):
             "@ROLE_NAME@", self.role_name)
         return local_readme_content
 
-    def _update_meta_content_if_needed(self, repo_status):
-        remote_meta_file = self.remote_repo.get_contents("meta/main.yml")
-
+    def _generate_meta_content(self):
         with open(META_TEMPLATE_PATH, 'r') as f:
             meta_template = f.read()
-
-        if repo_status == "new":
-            local_meta_content = meta_template.replace("@ROLE_NAME@",
-                                                       self.role_name)
-            local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
-            local_meta_content = local_meta_content.replace(
-                "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
-        else:
-            author = re.search(r'author:.*', meta_template).group(0)
-            description = re.search(r'description:.*', meta_template).group(0)
-            issue_tracker_url = re.search(r'issue_tracker_url:.*', meta_template).group(0)
-            local_meta_content = remote_meta_file.decoded_content
-            local_meta_content = re.sub(r'role_name:.*',
-                                        "role_name: %s" % self.role_name,
-                                        local_meta_content)
-            local_meta_content = re.sub(r'author:.*',
-                                        author,
-                                        local_meta_content)
-            local_meta_content = re.sub(r'min_ansible_version: (\d*\.\d+|\d+)',
-                                        "min_ansible_version: %s" % ssg.ansible.min_ansible_version,
-                                        local_meta_content)
-            local_meta_content = re.sub(r'description:.*',
-                                        "description: %s" % self.title,
-                                        local_meta_content)
-            local_meta_content = re.sub(r'issue_tracker_url:.*',
-                                        issue_tracker_url,
-                                        local_meta_content)
-
-        if local_meta_content != remote_meta_file.decoded_content:
-            print("Updating meta/main.yml in %s" % self.remote_repo.name)
-            self.remote_repo.update_file(
-                "/meta/main.yml",
-                "Updates meta/main.yml",
-                local_meta_content,
-                remote_meta_file.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
+        local_meta_content = meta_template.replace("@ROLE_NAME@",
+                                                   self.role_name)
+        local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
+        return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
     def update_repository(self, repo_status):
         print("Processing %s..." % self.remote_repo.name)
@@ -378,9 +367,8 @@ class Role(object):
         # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
-        for path in ('tasks/main.yml', 'vars/main.yml', 'README.md'):
+        for path in ('meta/main.yml', 'tasks/main.yml', 'vars/main.yml', 'README.md'):
             self._update_content_if_needed(path)
-        self._update_meta_content_if_needed(repo_status)
         self.add_task_variables_to_default_variables_if_needed()
 
         repo_description = (
