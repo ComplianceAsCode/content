@@ -183,11 +183,7 @@ class PlaybookToRoleConverter():
         self.added_variables.update(variables_to_add)
 
     def _tag_is_valid_variable(self, tag):
-        if "-" in tag:
-            return False
-        if tag == "always":
-            return False
-        return True
+        return '-' not in tag and tag != 'always'
 
 
 class Role(object):
