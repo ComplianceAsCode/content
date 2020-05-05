@@ -129,6 +129,7 @@ class PlaybookToRoleConverter():
         self.role_data = ssg.yaml.ordered_load(filedata)
         self.default_vars_data = self.role_data[0]["vars"] if "vars" in self.role_data[0] else []
         self.tasks_data = self.role_data[0]["tasks"] if "tasks" in self.role_data[0] else []
+        self.added_variables = set()
 
         # ansible language doesn't allow pre_tasks for roles, if the only pre task
         # is the ansible version check we can ignore it because the minimal version
@@ -147,6 +148,7 @@ class PlaybookToRoleConverter():
 
         description = self._get_description_from_filedata(filedata)
         self.description = description
+        self._add_variables_to_tasks()
 
     def _get_description_from_filedata(self, filedata):
         separator = "#" * 79
@@ -161,6 +163,32 @@ class PlaybookToRoleConverter():
         description_stop = second_separator_pos - offset_from_separator
         return filedata[description_start:description_stop]
 
+    def _add_variables_to_tasks(self):
+        for task in self.tasks_data:
+            if "when" not in task:
+                task["when"] = []
+            elif isinstance(task["when"], str):
+                task["when"] = [task["when"]]
+
+            self._add_variables_to_task(task)
+
+            if not task["when"]:
+                del task["when"]
+
+    def _add_variables_to_task(self, task):
+        if "tags" not in task:
+            return
+        variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
+        task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
+        self.added_variables.update(variables_to_add)
+
+    def _tag_is_valid_variable(self, tag):
+        if "-" in tag:
+            return False
+        if tag == "always":
+            return False
+        return True
+
 
 class Role(object):
     def __init__(self, repo, local_playbook_filename):
@@ -172,7 +200,7 @@ class Role(object):
         self.vars_data = []
         self.default_vars_data = self.role.default_vars_data
         self.tasks_data = self.role.tasks_data
-        self.added_variables = set()
+        self.added_variables = self.role.added_variables
 
         self.tasks_local_content = None
 
@@ -182,7 +210,6 @@ class Role(object):
         self._init()
 
     def _init(self):
-        self.add_variables_to_tasks()
         self.tasks_local_content = yaml.dump(
             self.tasks_data, width=120, default_flow_style=False)
 
@@ -196,32 +223,6 @@ class Role(object):
 
         # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
-
-    def add_variables_to_tasks(self):
-        for task in self.tasks_data:
-            if "when" not in task:
-                task["when"] = []
-            elif isinstance(task["when"], str):
-                task["when"] = [task["when"]]
-
-            self.add_variables_to_task(task)
-
-            if not task["when"]:
-                del task["when"]
-
-    def tag_is_valid_variable(self, tag):
-        if "-" in tag:
-            return False
-        if tag == "always":
-            return False
-        return True
-
-    def add_variables_to_task(self, task):
-        if "tags" not in task:
-            return
-        variables_to_add = {tag for tag in task["tags"] if self.tag_is_valid_variable(tag)}
-        task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
-        self.added_variables.update(variables_to_add)
 
     def _reformat_local_content(self):
         description = ""
