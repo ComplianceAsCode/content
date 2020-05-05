@@ -4,42 +4,18 @@
 # complexity = low
 # disruption = low
 
-- name: Check if the file /etc/audit/audit.rules contains the -e option
+- name: Collect all files from /etc/audit/rules.d with .rules extension
   find:
-    paths: "/etc/audit"
-    contains: '^\s*-e\s+.*$'
-    patterns: "audit.rules"
-  register: find_immutable_audit_rules
-
-- name: Search /etc/audit/rules.d  for files containing the -e option
-  find:
-    paths: "/etc/audit/rules.d"
-    contains: '^\s*-e\s+.*$'
+    paths: "/etc/audit/rules.d/"
     patterns: "*.rules"
-  register: find_immutable_rules_d
-
-- name: Construct list of Audit config files containing the -e option
-  block:
-    - name: Initialize empty list for files to be edited
-      set_fact:
-        files_to_edit: []
-    - name: Add matched files from /etc/audit/rules.d
-      set_fact:
-        files_to_edit: "{{ files_to_edit + [item.path] }}"
-      loop: "{{ find_immutable_rules_d.files }}"
-    - name: Add /etc/audit/audit.rules to the list of files
-      set_fact:
-        files_to_edit: "{{ files_to_edit + ['/etc/audit/audit.rules'] }}"
-      when: find_immutable_audit_rules is defined and find_immutable_audit_rules.matched >= 1
-  when: (find_immutable_rules_d.matched is defined and find_immutable_rules_d.matched >= 1) or (find_immutable_audit_rules.matched is defined and find_immutable_audit_rules.matched >= 1)
+  register: find_rules_d
 
 - name: Remove the -e option from all Audit config files
   lineinfile:
     path: "{{ item }}"
-    regexp: "-e[\\s]+.*"
+    regexp: '^\s*(?:-e)\s+.*$'
     state: absent
-  loop: "{{ files_to_edit }}"
-  when: (find_immutable_rules_d.matched is defined and find_immutable_rules_d.matched >= 1) or (find_immutable_audit_rules.matched is defined and find_immutable_audit_rules.matched >= 1)
+  loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
 
 - name: Insert configuration into /etc/audit/rules.d/immutable.rules and /etc/audit/audit.rules
   lineinfile:
