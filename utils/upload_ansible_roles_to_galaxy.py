@@ -159,14 +159,7 @@ class PlaybookToRoleConverter():
         description = self._get_description_from_filedata(filedata)
         self.description = description
         self._add_variables_to_tasks()
-
         self._reformat_local_content()
-        try:
-            self.title = re.search(
-                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
-        except AttributeError:
-            self.title = re.search(
-                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
 
     @property
     @memoize
@@ -185,6 +178,14 @@ class PlaybookToRoleConverter():
     def tasks_local_content(self):
         return yaml.dump(self.tasks_data, width=120, default_flow_style=False) \
             .replace('\n- ', '\n\n- ')
+
+    @property
+    @memoize
+    def title(self):
+        try:
+            return re.search(r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
+        except AttributeError:
+            return re.search(r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
 
     @property
     @memoize
