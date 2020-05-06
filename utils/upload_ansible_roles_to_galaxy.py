@@ -168,9 +168,6 @@ class PlaybookToRoleConverter():
             self.title = re.search(
                 r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
 
-        # Fix the description format for markdown so that it looks pretty
-        self.description = self.description.replace('\n', '  \n')
-
     @property
     @memoize
     def name(self):
@@ -188,6 +185,15 @@ class PlaybookToRoleConverter():
     def tasks_local_content(self):
         return yaml.dump(self.tasks_data, width=120, default_flow_style=False) \
             .replace('\n- ', '\n\n- ')
+
+    @property
+    @memoize
+    def description_md(self):
+        # This is for a role and not a playbook
+        description = re.sub(r'Playbook', "Role", self.description)
+
+        # Fix the description format for markdown so that it looks pretty
+        return description.replace('\n', '  \n')
 
     def _reformat_local_content(self):
         description = ""
@@ -250,7 +256,6 @@ class Role(object):
         self.default_vars_data = self.role.default_vars_data
         self.added_variables = self.role.added_variables
 
-        self.description = self.role.description
         self.title = self.role.title
 
     def _local_content(self, filepath):
@@ -325,11 +330,8 @@ class Role(object):
         with io.open(README_TEMPLATE_PATH, 'r',  encoding="utf-8") as f:
             readme_template = f.read()
 
-        # This is for a role and not a playbook
-        self.description = re.sub(r'Playbook', "Role", self.description)
-
         local_readme_content = readme_template.replace(
-            "@DESCRIPTION@", self.description)
+            "@DESCRIPTION@", self.description_md)
         local_readme_content = local_readme_content.replace(
             "@TITLE@", self.title)
         local_readme_content = local_readme_content.replace(
