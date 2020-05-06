@@ -139,7 +139,6 @@ class PlaybookToRoleConverter():
 
         self.role_data = ssg.yaml.ordered_load(filedata)
         self.default_vars_data = self.role_data[0]["vars"] if "vars" in self.role_data[0] else []
-        self.tasks_data = self.role_data[0]["tasks"] if "tasks" in self.role_data[0] else []
         self.added_variables = set()
 
         # ansible language doesn't allow pre_tasks for roles, if the only pre task
@@ -183,6 +182,11 @@ class PlaybookToRoleConverter():
         root, _ = os.path.splitext(os.path.basename(self._local_playbook_filename))
         product, _, profile = root.split("-", 2)
         return "%s_%s" % (product, profile.replace("-", "_"))
+
+    @property
+    @memoize
+    def tasks_data(self):
+        return self.role_data[0]["tasks"] if "tasks" in self.role_data[0] else []
 
     def _reformat_local_content(self):
         description = ""
