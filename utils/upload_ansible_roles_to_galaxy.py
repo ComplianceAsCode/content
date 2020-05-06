@@ -194,6 +194,10 @@ class PlaybookToRoleConverter():
         return variables
 
     @property
+    def vars_data(self):
+        return []
+
+    @property
     @memoize
     def title(self):
         try:
@@ -259,20 +263,15 @@ class Role(object):
     def __init__(self, repo, local_playbook_filename):
         self.remote_repo = repo
         self.role = PlaybookToRoleConverter(local_playbook_filename)
-        self.local_playbook_filename = local_playbook_filename
-
-        self.vars_data = []
-
-        self.title = self.role.title
 
     def _local_content(self, filepath):
         if filepath == 'tasks/main.yml':
             return self.role.tasks_local_content
         elif filepath == 'vars/main.yml':
-            if len(self.vars_data) < 1:
+            if len(self.role.vars_data) < 1:
                 return "---\n# defaults file for {role_name}\n".format(role_name=self.role.name)
             else:
-                 return yaml.dump(self.vars_data, width=120, indent=4,
+                 return yaml.dump(self.role.vars_data, width=120, indent=4,
                                   default_flow_style=False)
         elif filepath == 'README.md':
             remote_readme_file = self._remote_content("README.md")
@@ -307,7 +306,7 @@ class Role(object):
                                         "min_ansible_version: %s" % ssg.ansible.min_ansible_version,
                                         local_meta_content)
             local_meta_content = re.sub(r'description:.*',
-                                        "description: %s" % self.title,
+                                        "description: %s" % self.role.title,
                                         local_meta_content)
             return re.sub(r'issue_tracker_url:.*',
                           issue_tracker_url,
@@ -340,7 +339,7 @@ class Role(object):
         local_readme_content = readme_template.replace(
             "@DESCRIPTION@", self.description_md)
         local_readme_content = local_readme_content.replace(
-            "@TITLE@", self.title)
+            "@TITLE@", self.role.title)
         local_readme_content = local_readme_content.replace(
             "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
         local_readme_content = local_readme_content.replace(
@@ -352,7 +351,7 @@ class Role(object):
             meta_template = f.read()
         local_meta_content = meta_template.replace("@ROLE_NAME@",
                                                    self.role.name)
-        local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
+        local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.role.title)
         return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
     def _generate_defaults_content(self):
@@ -375,7 +374,7 @@ class Role(object):
 
         repo_description = (
             "{title} - Ansible role generated from ComplianceAsCode Project"
-            .format(title=self.title))
+            .format(title=self.role.title))
         self.remote_repo.edit(
             self.remote_repo.name,
             description=repo_description,
