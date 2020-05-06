@@ -132,6 +132,9 @@ def update_repo_release(github, repo):
 
 
 class PlaybookToRoleConverter():
+    PRODUCED_FILES = ('defaults/main.yml', 'meta/main.yml', 'tasks/main.yml', 'vars/main.yml',
+                      'README.md')
+
     def __init__(self, local_playbook_filename):
         self._local_playbook_filename = local_playbook_filename
 
@@ -363,7 +366,7 @@ class Role(object):
     def update_repository(self):
         print("Processing %s..." % self.remote_repo.name)
 
-        for path in ('defaults/main.yml', 'meta/main.yml', 'tasks/main.yml', 'vars/main.yml', 'README.md'):
+        for path in PlaybookToRoleConverter.PRODUCED_FILES:
             self._update_content_if_needed(path)
 
         repo_description = (
