@@ -135,8 +135,6 @@ class PlaybookToRoleConverter():
     def __init__(self, local_playbook_filename):
         self._local_playbook_filename = local_playbook_filename
 
-        self.added_variables = set()
-
         # ansible language doesn't allow pre_tasks for roles, if the only pre task
         # is the ansible version check we can ignore it because the minimal version
         # is in role metadata
@@ -151,7 +149,6 @@ class PlaybookToRoleConverter():
                     "%s contains pre_tasks other than the version check. "
                     "pre_tasks are not supported for ansible roles and "
                     "will be skipped!.\n")
-        self._add_variables_to_tasks()
 
     @property
     @memoize
@@ -175,6 +172,26 @@ class PlaybookToRoleConverter():
     @memoize
     def default_vars_data(self):
         return self._playbook[0]["vars"] if "vars" in self._playbook[0] else []
+
+    @property
+    @memoize
+    def added_variables(self):
+        variables = set()
+        for task in self.tasks_data:
+            if "tags" not in task:
+                next
+            if "when" not in task:
+                task["when"] = []
+            elif isinstance(task["when"], str):
+                task["when"] = [task["when"]]
+
+            variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
+            task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
+            variables.update(variables_to_add)
+
+            if not task["when"]:
+                del task["when"]
+        return variables
 
     @property
     @memoize
@@ -234,25 +251,6 @@ class PlaybookToRoleConverter():
         description_stop = second_separator_pos - offset_from_separator
         return filedata[description_start:description_stop]
 
-    def _add_variables_to_tasks(self):
-        for task in self.tasks_data:
-            if "when" not in task:
-                task["when"] = []
-            elif isinstance(task["when"], str):
-                task["when"] = [task["when"]]
-
-            self._add_variables_to_task(task)
-
-            if not task["when"]:
-                del task["when"]
-
-    def _add_variables_to_task(self, task):
-        if "tags" not in task:
-            return
-        variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
-        task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
-        self.added_variables.update(variables_to_add)
-
     def _tag_is_valid_variable(self, tag):
         return '-' not in tag and tag != 'always'
 
@@ -264,7 +262,6 @@ class Role(object):
         self.local_playbook_filename = local_playbook_filename
 
         self.vars_data = []
-        self.added_variables = self.role.added_variables
 
         self.title = self.role.title
 
@@ -359,7 +356,7 @@ class Role(object):
         return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
     def _generate_defaults_content(self):
-        default_vars_to_add = sorted(self.added_variables)
+        default_vars_to_add = sorted(self.role.added_variables)
         default_vars_local_content = yaml.dump(self.role.default_vars_data, width=120, indent=4,
                                                default_flow_style=False)
         header = [
