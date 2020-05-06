@@ -134,10 +134,8 @@ def update_repo_release(github, repo):
 class PlaybookToRoleConverter():
     def __init__(self, local_playbook_filename):
         self._local_playbook_filename = local_playbook_filename
-        with io.open(local_playbook_filename, 'r', encoding="utf-8") as f:
-            filedata = f.read()
 
-        self.role_data = ssg.yaml.ordered_load(filedata)
+        self.role_data = ssg.yaml.ordered_load(self._raw_playbook)
         self.default_vars_data = self.role_data[0]["vars"] if "vars" in self.role_data[0] else []
         self.added_variables = set()
 
@@ -156,7 +154,7 @@ class PlaybookToRoleConverter():
                     "pre_tasks are not supported for ansible roles and "
                     "will be skipped!.\n")
 
-        description = self._get_description_from_filedata(filedata)
+        description = self._get_description_from_filedata(self._raw_playbook)
         self.description = description
         self._add_variables_to_tasks()
         self._reformat_local_content()
@@ -195,6 +193,12 @@ class PlaybookToRoleConverter():
 
         # Fix the description format for markdown so that it looks pretty
         return description.replace('\n', '  \n')
+
+    @property
+    @memoize
+    def _raw_playbook(self):
+        with io.open(self._local_playbook_filename, 'r', encoding="utf-8") as f:
+            return f.read()
 
     def _reformat_local_content(self):
         description = ""
