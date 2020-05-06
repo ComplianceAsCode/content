@@ -256,7 +256,7 @@ class PlaybookToRoleConverter():
         return '-' not in tag and tag != 'always'
 
 
-class Role(object):
+class RoleGithubUpdater(object):
     def __init__(self, repo, local_playbook_filename):
         self.remote_repo = repo
         self.role = PlaybookToRoleConverter(local_playbook_filename)
@@ -478,7 +478,7 @@ def main():
             playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
             playbook_full_path = os.path.join(
                 args.build_playbooks_dir, playbook_filename)
-            Role(repo, playbook_full_path).update_repository()
+            RoleGithubUpdater(repo, playbook_full_path).update_repository()
             if args.tag_release:
                 update_repo_release(github, repo)
         elif repo.name not in potential_roles:
