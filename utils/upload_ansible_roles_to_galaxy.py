@@ -229,7 +229,14 @@ class PlaybookToRoleConverter():
     @property
     @memoize
     def _description(self):
-        description = self._get_description_from_filedata(self._raw_playbook)
+        separator = "#" * 79
+        offset_from_separator = 3
+        first_separator_pos = self._raw_playbook.find(separator)
+        second_separator_pos = self._raw_playbook.find(separator,
+                                                       first_separator_pos + len(separator))
+        description_start = first_separator_pos + len(separator) + offset_from_separator
+        description_stop = second_separator_pos - offset_from_separator
+        description = self._raw_playbook[description_start:description_stop]
         description = description.replace('# ', '')
         description = description.replace('#', '')
 
@@ -241,19 +248,6 @@ class PlaybookToRoleConverter():
             else:
                 desc += (line + "\n")
         return desc.strip("\n\n")
-
-    def _get_description_from_filedata(self, filedata):
-        separator = "#" * 79
-        offset_from_separator = 3
-
-        first_separator_pos = filedata.find(
-            separator)
-        second_separator_pos = filedata.find(
-            separator, first_separator_pos + len(separator))
-
-        description_start = first_separator_pos + len(separator) + offset_from_separator
-        description_stop = second_separator_pos - offset_from_separator
-        return filedata[description_start:description_stop]
 
     def _tag_is_valid_variable(self, tag):
         return '-' not in tag and tag != 'always'
