@@ -135,14 +135,13 @@ class PlaybookToRoleConverter():
     def __init__(self, local_playbook_filename):
         self._local_playbook_filename = local_playbook_filename
 
-        self.role_data = ssg.yaml.ordered_load(self._raw_playbook)
         self.added_variables = set()
 
         # ansible language doesn't allow pre_tasks for roles, if the only pre task
         # is the ansible version check we can ignore it because the minimal version
         # is in role metadata
-        if "pre_tasks" in self.role_data[0]:
-            pre_tasks_data = self.role_data[0]["pre_tasks"]
+        if "pre_tasks" in self._playbook[0]:
+            pre_tasks_data = self._playbook[0]["pre_tasks"]
             if len(pre_tasks_data) == 1 and \
                     pre_tasks_data[0]["name"] == \
                     ssg.ansible.ansible_version_requirement_pre_task_name:
@@ -164,7 +163,7 @@ class PlaybookToRoleConverter():
     @property
     @memoize
     def tasks_data(self):
-        return self.role_data[0]["tasks"] if "tasks" in self.role_data[0] else []
+        return self._playbook[0]["tasks"] if "tasks" in self._playbook[0] else []
 
     @property
     @memoize
@@ -175,7 +174,7 @@ class PlaybookToRoleConverter():
     @property
     @memoize
     def default_vars_data(self):
-        return self.role_data[0]["vars"] if "vars" in self.role_data[0] else []
+        return self._playbook[0]["vars"] if "vars" in self._playbook[0] else []
 
     @property
     @memoize
@@ -194,6 +193,11 @@ class PlaybookToRoleConverter():
 
         # Fix the description format for markdown so that it looks pretty
         return description.replace('\n', '  \n')
+
+    @property
+    @memoize
+    def _playbook(self):
+        return ssg.yaml.ordered_load(self._raw_playbook)
 
     @property
     @memoize
