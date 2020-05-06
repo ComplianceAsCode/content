@@ -26,6 +26,16 @@ except ImportError:
 import ssg.ansible
 import ssg.yaml
 
+
+def memoize(f):
+    memo = {}
+
+    def helper(x):
+        if x not in memo:
+            memo[x] = f(x)
+        return memo[x]
+    return helper
+
 # The following code preserves ansible yaml order
 # code from arcaduf's gist
 # https://gist.github.com/arcaduf/8edbe5900372f0dd30aa037272dfe826
@@ -121,40 +131,18 @@ def update_repo_release(github, repo):
     repo.create_git_tag_and_release(new_tag, '', '', '', commits[0].sha, 'commit')
 
 
-class Role(object):
-    def __init__(self, repo, local_playbook_filename):
-        self.remote_repo = repo
-        self.local_playbook_filename = local_playbook_filename
+class PlaybookToRoleConverter():
+    PRODUCED_FILES = ('defaults/main.yml', 'meta/main.yml', 'tasks/main.yml', 'vars/main.yml',
+                      'README.md')
 
-        self.role_data = None
-        self.vars_data = []
-        self.default_vars_data = []
-        self.tasks_data = []
-        self.pre_tasks_data = []
-        self.added_variables = set()
-
-        self.tasks_local_content = None
-
-        self.description = None
-        self.title = None
-        self.role_name = None
-
-    def gather_data(self):
-        with io.open(self.local_playbook_filename, 'r', encoding="utf-8") as f:
-            filedata = f.read()
-
-        self.role_data = ssg.yaml.ordered_load(filedata)
-        if "vars" in self.role_data[0]:
-            self.default_vars_data = self.role_data[0]["vars"]
-
-        if "tasks" in self.role_data[0]:
-            self.tasks_data = self.role_data[0]["tasks"]
+    def __init__(self, local_playbook_filename):
+        self._local_playbook_filename = local_playbook_filename
 
         # ansible language doesn't allow pre_tasks for roles, if the only pre task
         # is the ansible version check we can ignore it because the minimal version
         # is in role metadata
-        if "pre_tasks" in self.role_data[0]:
-            pre_tasks_data = self.role_data[0]["pre_tasks"]
+        if "pre_tasks" in self._playbook[0]:
+            pre_tasks_data = self._playbook[0]["pre_tasks"]
             if len(pre_tasks_data) == 1 and \
                     pre_tasks_data[0]["name"] == \
                     ssg.ansible.ansible_version_requirement_pre_task_name:
@@ -165,194 +153,190 @@ class Role(object):
                     "pre_tasks are not supported for ansible roles and "
                     "will be skipped!.\n")
 
-        description = self.get_description_from_filedata(filedata)
-        self.description = description
+    @property
+    @memoize
+    def name(self):
+        root, _ = os.path.splitext(os.path.basename(self._local_playbook_filename))
+        product, _, profile = root.split("-", 2)
+        return "%s_%s" % (product, profile.replace("-", "_"))
 
-    def add_variables_to_tasks(self):
+    @property
+    @memoize
+    def tasks_data(self):
+        return self._playbook[0]["tasks"] if "tasks" in self._playbook[0] else []
+
+    @property
+    @memoize
+    def tasks_local_content(self):
+        return yaml.dump(self.tasks_data, width=120, default_flow_style=False) \
+            .replace('\n- ', '\n\n- ')
+
+    @property
+    @memoize
+    def default_vars_data(self):
+        return self._playbook[0]["vars"] if "vars" in self._playbook[0] else []
+
+    @property
+    @memoize
+    def added_variables(self):
+        variables = set()
         for task in self.tasks_data:
+            if "tags" not in task:
+                next
             if "when" not in task:
                 task["when"] = []
             elif isinstance(task["when"], str):
                 task["when"] = [task["when"]]
 
-            self.add_variables_to_task(task)
+            variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
+            task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
+            variables.update(variables_to_add)
 
             if not task["when"]:
                 del task["when"]
+        return variables
 
-    def tag_is_valid_variable(self, tag):
-        if "-" in tag:
-            return False
-        if tag == "always":
-            return False
-        return True
+    @property
+    def vars_data(self):
+        return []
 
-    def add_variables_to_task(self, task):
-        if "tags" not in task:
-            return
-        variables_to_add = {tag for tag in task["tags"] if self.tag_is_valid_variable(tag)}
-        task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
-        self.added_variables.update(variables_to_add)
+    @property
+    @memoize
+    def title(self):
+        try:
+            return re.search(r'Profile Title:\s+(.+)$', self._description, re.MULTILINE).group(1)
+        except AttributeError:
+            return re.search(r'Ansible Playbook for\s+(.+)$', self._description, re.MULTILINE) \
+                     .group(1)
 
-    def add_task_variables_to_default_variables_if_needed(self):
-        default_vars_to_add = sorted(self.added_variables)
-        default_vars_local_content = yaml.dump(self.default_vars_data, width=120, indent=4,
-                                               default_flow_style=False)
-        header = [
-            "---", "# defaults file for {role_name}\n".format(role_name=self.role_name),
-        ]
-        lines = ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
-        lines.append("")
+    @property
+    @memoize
+    def description_md(self):
+        # This is for a role and not a playbook
+        description = re.sub(r'Playbook', "Role", self._description)
 
-        default_vars_local_content = ("%s%s%s" % ("\n".join(header),
-                                                  default_vars_local_content,
-                                                  "\n".join(lines)))
+        # Fix the description format for markdown so that it looks pretty
+        return description.replace('\n', '  \n')
 
-        default_vars_remote_content = self.remote_repo.get_contents("defaults/main.yml")
-        if default_vars_local_content != default_vars_remote_content.decoded_content:
-            self.remote_repo.update_file(
-                "/defaults/main.yml",
-                "Updates defaults/main.yml",
-                default_vars_local_content,
-                default_vars_remote_content.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
-            print("Updating defaults/main.yml in %s" % self.remote_repo.name)
+    @property
+    @memoize
+    def _playbook(self):
+        return ssg.yaml.ordered_load(self._raw_playbook)
 
-    def _reformat_local_content(self):
-        description = ""
-        # Add \n in between tasks to increase readability
-        self.tasks_local_content = self.tasks_local_content.replace('\n- ', '\n\n- ')
+    @property
+    @memoize
+    def _raw_playbook(self):
+        with io.open(self._local_playbook_filename, 'r', encoding="utf-8") as f:
+            return f.read()
 
-        self.description = self.description.replace('# ', '')
-        self.description = self.description.replace('#', '')
+    @property
+    @memoize
+    def _description(self):
+        separator = "#" * 79
+        offset_from_separator = 3
+        first_separator_pos = self._raw_playbook.find(separator)
+        second_separator_pos = self._raw_playbook.find(separator,
+                                                       first_separator_pos + len(separator))
+        description_start = first_separator_pos + len(separator) + offset_from_separator
+        description_stop = second_separator_pos - offset_from_separator
+        description = self._raw_playbook[description_start:description_stop]
+        description = description.replace('# ', '')
+        description = description.replace('#', '')
 
+        desc = ""
         # Remove SCAP and Playbook examples from description as they don't belong in roles.
-        for line in self.description.split("\n"):
+        for line in description.split("\n"):
             if line.startswith("Profile ID:"):
                 break
             else:
-                description += (line + "\n")
-        self.description = description.strip("\n\n")
+                desc += (line + "\n")
+        return desc.strip("\n\n")
 
-        # Ansible prefers underscores
-        self.role_name = self.remote_repo.name.replace("-", "_")
-        # Don't include role in role_name for simplicity
-        self.role_name = self.role_name.replace('ansible_role_', '')
+    def _tag_is_valid_variable(self, tag):
+        return '-' not in tag and tag != 'always'
 
-    def get_description_from_filedata(self, filedata):
-        separator = "#" * 79
-        offset_from_separator = 3
-
-        first_separator_pos = filedata.find(
-            separator)
-        second_separator_pos = filedata.find(
-            separator, first_separator_pos + len(separator))
-
-        description_start = first_separator_pos + len(separator) + offset_from_separator
-        description_stop = second_separator_pos - offset_from_separator
-        description = filedata[description_start:description_stop]
-
-        return description
-
-    def _update_tasks_content_if_needed(self):
-        tasks_remote_content = self.remote_repo.get_contents("tasks/main.yml")
-
-        if self.tasks_local_content != tasks_remote_content.decoded_content:
-            self.remote_repo.update_file(
-                "/tasks/main.yml",
-                "Updates tasks/main.yml",
-                self.tasks_local_content,
-                tasks_remote_content.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
-            print("Updating tasks/main.yml in %s" % self.remote_repo.name)
-
-    def _update_vars_content_if_needed(self):
-        if len(self.vars_data) < 1:
-            vars_local_content = "---\n# defaults file for {role_name}\n".format(role_name=self.role_name)
-        else:
-             vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
-                                            default_flow_style=False)
-
-        vars_remote_content = self.remote_repo.get_contents("vars/main.yml")
-
-        if vars_local_content != vars_remote_content.decoded_content and \
-           vars_local_content.splitlines()[0] != "null":
-            self.remote_repo.update_file(
-                "/vars/main.yml",
-                "Updates vars/main.yml",
-                vars_local_content,
-                vars_remote_content.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
-
-            print("Updating vars/main.yml in %s" % self.remote_repo.name)
+    def file(self, filepath):
+        if filepath == 'tasks/main.yml':
+            return self.tasks_local_content
+        elif filepath == 'vars/main.yml':
+            if len(self.vars_data) < 1:
+                return "---\n# defaults file for {role_name}\n".format(role_name=self.name)
+            else:
+                return yaml.dump(self.vars_data, width=120, indent=4, default_flow_style=False)
+        elif filepath == 'README.md':
+            return self._generate_readme_content()
+        elif filepath == 'defaults/main.yml':
+            return self._generate_defaults_content()
+        elif filepath == 'meta/main.yml':
+            return self._generate_meta_content()
 
     def _generate_readme_content(self):
         with io.open(README_TEMPLATE_PATH, 'r',  encoding="utf-8") as f:
             readme_template = f.read()
 
-        # This is for a role and not a playbook
-        self.description = re.sub(r'Playbook', "Role", self.description)
-
         local_readme_content = readme_template.replace(
-            "@DESCRIPTION@", self.description)
+            "@DESCRIPTION@", self.description_md)
         local_readme_content = local_readme_content.replace(
             "@TITLE@", self.title)
         local_readme_content = local_readme_content.replace(
             "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
         local_readme_content = local_readme_content.replace(
-            "@ROLE_NAME@", self.role_name)
+            "@ROLE_NAME@", self.name)
         return local_readme_content
 
-    def _update_readme_content_if_needed(self, repo_status):
-        local_readme_content = self._generate_readme_content()
-        remote_readme_file = self.remote_repo.get_contents("README.md")
-
-        if repo_status == "update":
-            local_readme_content = remote_readme_file.decoded_content.decode("utf-8")
-            local_readme_content = re.sub(r'Ansible version (\d*\.\d+|\d+)',
-                                          "Ansible version %s" % ssg.ansible.min_ansible_version,
-                                          local_readme_content)
-            local_readme_content = re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
-                                          "%s.%s" % (ORGANIZATION_NAME, self.role_name),
-                                          local_readme_content)
-
-        if local_readme_content != remote_readme_file.decoded_content.decode("utf-8"):
-            print("Updating README.md in %s" % self.remote_repo.name)
-
-            self.remote_repo.update_file(
-                "/README.md",
-                "Updates README.md",
-                local_readme_content,
-                remote_readme_file.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
-
-    def _update_meta_content_if_needed(self, repo_status):
-        remote_meta_file = self.remote_repo.get_contents("meta/main.yml")
-
+    def _generate_meta_content(self):
         with open(META_TEMPLATE_PATH, 'r') as f:
             meta_template = f.read()
+        local_meta_content = meta_template.replace("@ROLE_NAME@",
+                                                   self.name)
+        local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
+        return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
-        if repo_status == "new":
-            local_meta_content = meta_template.replace("@ROLE_NAME@",
-                                                       self.role_name)
-            local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
-            local_meta_content = local_meta_content.replace(
-                "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
-        else:
+    def _generate_defaults_content(self):
+        default_vars_to_add = sorted(self.added_variables)
+        default_vars_local_content = yaml.dump(self.default_vars_data, width=120, indent=4,
+                                               default_flow_style=False)
+        header = [
+            "---", "# defaults file for {role_name}\n".format(role_name=self.name),
+        ]
+        lines = ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
+        lines.append("")
+
+        return ("%s%s%s" % ("\n".join(header), default_vars_local_content, "\n".join(lines)))
+
+
+class RoleGithubUpdater(object):
+    def __init__(self, repo, local_playbook_filename):
+        self.remote_repo = repo
+        self.role = PlaybookToRoleConverter(local_playbook_filename)
+
+    def _local_content(self, filepath):
+        new_content = self.role.file(filepath)
+
+        if filepath == 'README.md':
+            remote_readme_file, _ = self._remote_content("README.md")
+            if not remote_readme_file:
+                return new_content
+
+            local_readme_content = re.sub(r'Ansible version (\d*\.\d+|\d+)',
+                                          "Ansible version %s" % ssg.ansible.min_ansible_version,
+                                          remote_readme_file)
+            return re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
+                          "%s.%s" % (ORGANIZATION_NAME, self.role.name),
+                          local_readme_content)
+        elif filepath == 'meta/main.yml':
+            remote_meta_file, _ = self._remote_content(filepath)
+            if not remote_meta_file:
+                return new_content
+
+            with open(META_TEMPLATE_PATH, 'r') as f:
+                meta_template = f.read()
             author = re.search(r'author:.*', meta_template).group(0)
             description = re.search(r'description:.*', meta_template).group(0)
             issue_tracker_url = re.search(r'issue_tracker_url:.*', meta_template).group(0)
-            local_meta_content = remote_meta_file.decoded_content
+            local_meta_content = remote_meta_file
             local_meta_content = re.sub(r'role_name:.*',
-                                        "role_name: %s" % self.role_name,
+                                        "role_name: %s" % self.role.name,
                                         local_meta_content)
             local_meta_content = re.sub(r'author:.*',
                                         author,
@@ -361,52 +345,43 @@ class Role(object):
                                         "min_ansible_version: %s" % ssg.ansible.min_ansible_version,
                                         local_meta_content)
             local_meta_content = re.sub(r'description:.*',
-                                        "description: %s" % self.title,
+                                        "description: %s" % self.role.title,
                                         local_meta_content)
-            local_meta_content = re.sub(r'issue_tracker_url:.*',
-                                        issue_tracker_url,
-                                        local_meta_content)
+            return re.sub(r'issue_tracker_url:.*',
+                          issue_tracker_url,
+                          local_meta_content)
+        return new_content
 
-        if local_meta_content != remote_meta_file.decoded_content:
-            print("Updating meta/main.yml in %s" % self.remote_repo.name)
+    def _remote_content(self, filepath):
+        remote = self.remote_repo.get_contents(filepath)
+        content = remote.decoded_content
+        if filepath == 'README.md':
+            content = content.decode("utf-8")
+        return content, remote.sha
+
+    def _update_content_if_needed(self, filepath):
+        remote_content, sha = self._remote_content(filepath)
+
+        if self._local_content(filepath) != remote_content:
             self.remote_repo.update_file(
-                "/meta/main.yml",
-                "Updates meta/main.yml",
-                local_meta_content,
-                remote_meta_file.sha,
+                "/" + filepath,
+                "Updates " + filepath,
+                self._local_content(filepath),
+                sha,
                 author=InputGitAuthor(
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
+            print("Updating %s in %s" % (filepath, self.remote_repo.name))
 
-    def update_repository(self, repo_status):
+    def update_repository(self):
         print("Processing %s..." % self.remote_repo.name)
 
-        self.gather_data()
-
-        self.add_variables_to_tasks()
-        self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, default_flow_style=False)
-
-        self._reformat_local_content()
-        try:
-            self.title = re.search(
-                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
-        except AttributeError:
-            self.title = re.search(
-                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
-
-        # Fix the description format for markdown so that it looks pretty
-        self.description = self.description.replace('\n', '  \n')
-
-        self._update_tasks_content_if_needed()
-        self._update_vars_content_if_needed()
-        self._update_readme_content_if_needed(repo_status)
-        self._update_meta_content_if_needed(repo_status)
-        self.add_task_variables_to_default_variables_if_needed()
+        for path in PlaybookToRoleConverter.PRODUCED_FILES:
+            self._update_content_if_needed(path)
 
         repo_description = (
             "{title} - Ansible role generated from ComplianceAsCode Project"
-            .format(title=self.title))
+            .format(title=self.role.title))
         self.remote_repo.edit(
             self.remote_repo.name,
             description=repo_description,
@@ -509,16 +484,11 @@ def main():
 
     # Update repositories
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
-        if repo.name in github_new_repos:
-            repo_status = "new"
-        else:
-            repo_status = "update"
-
         if repo.name in selected_roles:
             playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
             playbook_full_path = os.path.join(
                 args.build_playbooks_dir, playbook_filename)
-            Role(repo, playbook_full_path).update_repository(repo_status)
+            RoleGithubUpdater(repo, playbook_full_path).update_repository()
             if args.tag_release:
                 update_repo_release(github, repo)
         elif repo.name not in potential_roles:
