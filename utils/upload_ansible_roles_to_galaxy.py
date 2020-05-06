@@ -136,7 +136,6 @@ class PlaybookToRoleConverter():
         self._local_playbook_filename = local_playbook_filename
 
         self.role_data = ssg.yaml.ordered_load(self._raw_playbook)
-        self.default_vars_data = self.role_data[0]["vars"] if "vars" in self.role_data[0] else []
         self.added_variables = set()
 
         # ansible language doesn't allow pre_tasks for roles, if the only pre task
@@ -172,6 +171,11 @@ class PlaybookToRoleConverter():
     def tasks_local_content(self):
         return yaml.dump(self.tasks_data, width=120, default_flow_style=False) \
             .replace('\n- ', '\n\n- ')
+
+    @property
+    @memoize
+    def default_vars_data(self):
+        return self.role_data[0]["vars"] if "vars" in self.role_data[0] else []
 
     @property
     @memoize
@@ -256,7 +260,6 @@ class Role(object):
         self.local_playbook_filename = local_playbook_filename
 
         self.vars_data = []
-        self.default_vars_data = self.role.default_vars_data
         self.added_variables = self.role.added_variables
 
         self.title = self.role.title
@@ -353,7 +356,7 @@ class Role(object):
 
     def _generate_defaults_content(self):
         default_vars_to_add = sorted(self.added_variables)
-        default_vars_local_content = yaml.dump(self.default_vars_data, width=120, indent=4,
+        default_vars_local_content = yaml.dump(self.role.default_vars_data, width=120, indent=4,
                                                default_flow_style=False)
         header = [
             "---", "# defaults file for {role_name}\n".format(role_name=self.role.name),
