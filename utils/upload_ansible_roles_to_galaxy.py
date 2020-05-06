@@ -314,7 +314,7 @@ class RoleGithubUpdater(object):
         new_content = self.role.file(filepath)
 
         if filepath == 'README.md':
-            remote_readme_file = self._remote_content("README.md")
+            remote_readme_file, _ = self._remote_content("README.md")
             if not remote_readme_file:
                 return new_content
 
@@ -325,7 +325,7 @@ class RoleGithubUpdater(object):
                           "%s.%s" % (ORGANIZATION_NAME, self.role.name),
                           local_readme_content)
         elif filepath == 'meta/main.yml':
-            remote_meta_file = self._remote_content(filepath)
+            remote_meta_file, _ = self._remote_content(filepath)
             if not remote_meta_file:
                 return new_content
 
@@ -353,20 +353,21 @@ class RoleGithubUpdater(object):
         return new_content
 
     def _remote_content(self, filepath):
-        content = self.remote_repo.get_contents(filepath).decoded_content
+        remote = self.remote_repo.get_contents(filepath)
+        content = remote.decoded_content
         if filepath == 'README.md':
-            content =  content.decode("utf-8")
-        return content
+            content = content.decode("utf-8")
+        return content, remote.sha
 
     def _update_content_if_needed(self, filepath):
-        remote_content = self._remote_content(filepath)
+        remote_content, sha = self._remote_content(filepath)
 
         if self._local_content(filepath) != remote_content:
             self.remote_repo.update_file(
                 "/" + filepath,
                 "Updates " + filepath,
                 self._local_content(filepath),
-                remote_content.sha,
+                sha,
                 author=InputGitAuthor(
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
