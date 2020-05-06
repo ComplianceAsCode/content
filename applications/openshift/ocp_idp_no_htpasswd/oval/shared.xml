@@ -9,7 +9,7 @@
         <description>Test correct authentication type of identity providers</description>
       </metadata>
       <criteria operator="AND">
-        <criterion comment="Make sure that no element of spec.identityProviders has type htpasswd" negate="true" test_ref="test_{{{ rule_id }}}"/>
+        <criterion comment="Make sure that no element of spec.identityProviders has type HTPasswd" negate="true" test_ref="test_{{{ rule_id }}}"/>
       </criteria>
     </definition>
 
@@ -18,14 +18,21 @@
 	    <ind:state state_ref="state_{{{ rule_id }}}"/>
     </ind:yamlfilecontent_test>
 
+
+    <local_variable id="{{{ rule_id }}}_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
+       <concat>
+	       <variable_component var_ref="ocp_data_root"/>
+	       <literal_component>/apis/config.openshift.io/v1/oauths/cluster</literal_component>
+       </concat>
+    </local_variable>
+
     <ind:yamlfilecontent_object id="object_{{{ rule_id }}}" version="1">
-      <ind:path var_ref="ocp_data_root"/>
-      <ind:filename operation="pattern match">^idp.yml$</ind:filename>
+      <ind:filepath var_ref="{{{ rule_id }}}_dump_location"/>
       <ind:yamlpath>.spec.identityProviders[:].type</ind:yamlpath>
     </ind:yamlfilecontent_object>
 
     <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
-	    <ind:value_of entity_check="at least one">htpasswd</ind:value_of>
+	    <ind:value_of entity_check="at least one">HTPasswd</ind:value_of>
     </ind:yamlfilecontent_state>
 
    <external_variable comment="Root of downloaded stuff" datatype="string" id="ocp_data_root" version="1" />

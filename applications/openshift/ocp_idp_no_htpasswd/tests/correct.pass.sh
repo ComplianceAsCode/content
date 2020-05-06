@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat << EOF > /tmp/idp.yaml
+mkdir -p /tmp/apis/config.openshift.io/v1/oauths
+
+cat << EOF > /tmp/apis/config.openshift.io/v1/oauths/cluster
 spec:
   identityProviders:
   - foo: bar
