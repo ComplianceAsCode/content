@@ -160,11 +160,6 @@ class PlaybookToRoleConverter():
         self.description = description
         self._add_variables_to_tasks()
 
-        self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, default_flow_style=False)
-        # Add \n in between tasks to increase readability
-        self.tasks_local_content = self.tasks_local_content.replace('\n- ', '\n\n- ')
-
         self._reformat_local_content()
         try:
             self.title = re.search(
@@ -187,6 +182,12 @@ class PlaybookToRoleConverter():
     @memoize
     def tasks_data(self):
         return self.role_data[0]["tasks"] if "tasks" in self.role_data[0] else []
+
+    @property
+    @memoize
+    def tasks_local_content(self):
+        return yaml.dump(self.tasks_data, width=120, default_flow_style=False) \
+            .replace('\n- ', '\n\n- ')
 
     def _reformat_local_content(self):
         description = ""
