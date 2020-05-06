@@ -26,6 +26,16 @@ except ImportError:
 import ssg.ansible
 import ssg.yaml
 
+
+def memoize(f):
+    memo = {}
+
+    def helper(x):
+        if x not in memo:
+            memo[x] = f(x)
+        return memo[x]
+    return helper
+
 # The following code preserves ansible yaml order
 # code from arcaduf's gist
 # https://gist.github.com/arcaduf/8edbe5900372f0dd30aa037272dfe826
@@ -167,6 +177,13 @@ class PlaybookToRoleConverter():
         # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
+    @property
+    @memoize
+    def name(self):
+        root, _ = os.path.splitext(os.path.basename(self._local_playbook_filename))
+        product, _, profile = root.split("-", 2)
+        return "%s_%s" % (product, profile.replace("-", "_"))
+
     def _reformat_local_content(self):
         description = ""
 
@@ -181,13 +198,6 @@ class PlaybookToRoleConverter():
                 description += (line + "\n")
         self.description = description.strip("\n\n")
 
-        root, _ = os.path.splitext(os.path.basename(self._local_playbook_filename))
-        product, _, profile = root.split("-", 2)
-        repo_name = "ansible-role-%s-%s" % (product, profile)
-
-        self.name = repo_name.replace("-", "_")
-        # Don't include role in role_name for simplicity
-        self.name = self.name.replace('ansible_role_', '')
 
     def _get_description_from_filedata(self, filedata):
         separator = "#" * 79
