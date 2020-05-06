@@ -153,11 +153,7 @@ class PlaybookToRoleConverter():
                     "%s contains pre_tasks other than the version check. "
                     "pre_tasks are not supported for ansible roles and "
                     "will be skipped!.\n")
-
-        description = self._get_description_from_filedata(self._raw_playbook)
-        self.description = description
         self._add_variables_to_tasks()
-        self._reformat_local_content()
 
     @property
     @memoize
@@ -181,15 +177,16 @@ class PlaybookToRoleConverter():
     @memoize
     def title(self):
         try:
-            return re.search(r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
+            return re.search(r'Profile Title:\s+(.+)$', self._description, re.MULTILINE).group(1)
         except AttributeError:
-            return re.search(r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
+            return re.search(r'Ansible Playbook for\s+(.+)$', self._description, re.MULTILINE) \
+                     .group(1)
 
     @property
     @memoize
     def description_md(self):
         # This is for a role and not a playbook
-        description = re.sub(r'Playbook', "Role", self.description)
+        description = re.sub(r'Playbook', "Role", self._description)
 
         # Fix the description format for markdown so that it looks pretty
         return description.replace('\n', '  \n')
@@ -200,20 +197,21 @@ class PlaybookToRoleConverter():
         with io.open(self._local_playbook_filename, 'r', encoding="utf-8") as f:
             return f.read()
 
-    def _reformat_local_content(self):
-        description = ""
+    @property
+    @memoize
+    def _description(self):
+        description = self._get_description_from_filedata(self._raw_playbook)
+        description = description.replace('# ', '')
+        description = description.replace('#', '')
 
-        self.description = self.description.replace('# ', '')
-        self.description = self.description.replace('#', '')
-
+        desc = ""
         # Remove SCAP and Playbook examples from description as they don't belong in roles.
-        for line in self.description.split("\n"):
+        for line in description.split("\n"):
             if line.startswith("Profile ID:"):
                 break
             else:
-                description += (line + "\n")
-        self.description = description.strip("\n\n")
-
+                desc += (line + "\n")
+        return desc.strip("\n\n")
 
     def _get_description_from_filedata(self, filedata):
         separator = "#" * 79
