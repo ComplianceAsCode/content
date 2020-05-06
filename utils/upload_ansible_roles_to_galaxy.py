@@ -241,10 +241,8 @@ class Role(object):
         self.role = PlaybookToRoleConverter(local_playbook_filename)
         self.local_playbook_filename = local_playbook_filename
 
-        self.role_data = self.role.role_data
         self.vars_data = []
         self.default_vars_data = self.role.default_vars_data
-        self.tasks_data = self.role.tasks_data
         self.added_variables = self.role.added_variables
 
         self.description = self.role.description
