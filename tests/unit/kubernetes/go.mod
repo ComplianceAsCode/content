@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/ajeddeloh/go-json v0.0.0-20200220154158-5ae607161559 // indirect
-	github.com/coreos/ignition v0.35.0 // indirect
+	github.com/coreos/ignition v0.35.0
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/openshift/machine-config-operator v4.2.0-alpha.0.0.20190917115525-033375cbe820+incompatible
 	github.com/vincent-petithory/dataurl v0.0.0-20191104211930-d1553a71de50 // indirect

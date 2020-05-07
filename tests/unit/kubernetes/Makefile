@@ -1,6 +1,7 @@
 PROFILE?=
 CONTENT_IMAGE?=
 export ROOT_DIR=$(shell git rev-parse --show-toplevel)
+export GOFLAGS=-mod=vendor
 TEST_DIR=$(ROOT_DIR)/tests/unit/kubernetes
 TEST_FLAGS?=-v
 
