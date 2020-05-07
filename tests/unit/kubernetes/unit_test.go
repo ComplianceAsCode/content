@@ -7,11 +7,15 @@ import (
 func TestUnit(t *testing.T) {
 	ctx := newUnitTestContext(t)
 	t.Run("Verify kubernetes files are correct", func(t *testing.T) {
+		filesTouchedByMCs := make(map[string]fileTracker)
 		ctx.assertWithRelevantContentFiles(func(path string) {
 			obj := ctx.assertObjectIsValid(path)
 
 			if isMachineConfig(obj) {
-				ctx.assertMachineConfigIsValid(obj, path)
+				mcfg := ctx.assertMachineConfigIsValid(obj, path)
+				if mcfgChangesFile(mcfg, ctx.t) {
+					ctx.assertFileDoesntDiffer(mcfg, path, filesTouchedByMCs)
+				}
 			}
 		})
 	})
