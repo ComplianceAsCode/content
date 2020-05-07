@@ -304,6 +304,13 @@ class PlaybookToRoleConverter():
 
         return ("%s%s%s" % ("\n".join(header), default_vars_local_content, "\n".join(lines)))
 
+    def save_to_disk(self, directory):
+        print("Converting Ansible Playbook {} to Ansible Role {}".format(self._local_playbook_filename, os.path.join(directory, self.name)))
+        for filename in self.PRODUCED_FILES:
+            abs_path = os.path.join(directory, self.name, filename)
+            ssg.utils.mkdir_p(os.path.dirname(abs_path))
+            open(abs_path, 'w').write(self.file(filename).encode("utf-8"))
+
 
 class RoleGithubUpdater(object):
     def __init__(self, repo, local_playbook_filename):
@@ -391,12 +398,16 @@ class RoleGithubUpdater(object):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Updates Galaxy Ansible Roles')
+        description='Generates Ansible Roles and pushes them to Github')
     parser.add_argument(
         "--build-playbooks-dir", required=True,
         help="Path to directory containing the generated Ansible Playbooks. "
         "Most likely this is going to be ./build/ansible",
         dest="build_playbooks_dir")
+    parser.add_argument(
+        "--dry-run", "-d", dest="dry_run",
+        help="Do not push Ansible Roles to the Github, store them only to local directory"
+    )
     parser.add_argument(
         "--organization", "-o", default=ORGANIZATION_NAME,
         help="Name of the Github organization")
@@ -463,38 +474,45 @@ def main():
         product_whitelist, profile_whitelist, args.build_playbooks_dir
     )
 
-    if not args.token:
-        print("Input your GitHub credentials:")
-        username = raw_input("username or token: ")
-        password = getpass.getpass("password (or empty for token): ")
-    else:
-        username = args.token
-        password = ""
-
-    github = Github(username, password)
-    github_org = github.get_organization(args.organization)
-    github_repositories = [repo.name for repo in github_org.get_repos()]
-
-    # Create empty repositories
-    github_new_repos = sorted(list(set(map(str.lower, selected_roles.keys())) - set(map(unicode.lower, github_repositories))))
-    if github_new_repos:
-        create_empty_repositories(github_new_repos, github_org)
-
-        locally_clone_and_init_repositories(args.organization, github_new_repos)
-
-    # Update repositories
-    for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
-        if repo.name in selected_roles:
-            playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
+    if args.dry_run:
+        for product_profile in selected_roles.values():
+            playbook_filename = "%s-playbook-%s.yml" % product_profile
             playbook_full_path = os.path.join(
                 args.build_playbooks_dir, playbook_filename)
-            RoleGithubUpdater(repo, playbook_full_path).update_repository()
-            if args.tag_release:
-                update_repo_release(github, repo)
-        elif repo.name not in potential_roles:
-            print("Repo '%s' is not managed by this script. "
-                  "It may need to be deleted, please verify and do that "
-                  "manually!" % repo.name)
+            PlaybookToRoleConverter(playbook_full_path).save_to_disk(args.dry_run)
+    else:
+        if not args.token:
+            print("Input your GitHub credentials:")
+            username = raw_input("username or token: ")
+            password = getpass.getpass("password (or empty for token): ")
+        else:
+            username = args.token
+            password = ""
+
+        github = Github(username, password)
+        github_org = github.get_organization(args.organization)
+        github_repositories = [repo.name for repo in github_org.get_repos()]
+
+        # Create empty repositories
+        github_new_repos = sorted(list(set(map(str.lower, selected_roles.keys())) - set(map(unicode.lower, github_repositories))))
+        if github_new_repos:
+            create_empty_repositories(github_new_repos, github_org)
+
+            locally_clone_and_init_repositories(args.organization, github_new_repos)
+
+        # Update repositories
+        for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
+            if repo.name in selected_roles:
+                playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
+                playbook_full_path = os.path.join(
+                    args.build_playbooks_dir, playbook_filename)
+                RoleGithubUpdater(repo, playbook_full_path).update_repository()
+                if args.tag_release:
+                    update_repo_release(github, repo)
+            elif repo.name not in potential_roles:
+                print("Repo '%s' is not managed by this script. "
+                      "It may need to be deleted, please verify and do that "
+                      "manually!" % repo.name)
 
 
 if __name__ == "__main__":
