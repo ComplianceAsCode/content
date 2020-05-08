@@ -169,148 +169,179 @@ selections:
 
     ### 1.7.1 Configure SELinux
 
-    #### 1.7.1.1 Ensure SELinux is installed (Scored)
+    #### 1.6.1.1 Ensure SELinux is installed (Scored)
     # NEEDS RULE - package_libselinux_installed
 
-    #### 1.7.1.2 Ensure SELinux is not disabled in bootloader configuration (Scored)
-    # NEEDS RULE - grub2_enable_selinux
-
-    #### 1.7.1.3 Ensure SELinux policy is configured (Scored)
-    # NEEDS RULE - var_selinux_policy_name=targeted
-    # NEEDS RULE - selinux_policytype
-
-    #### 1.7.1.4 Ensure the SELinux state is enforcing (Scored)
+    #### 1.6.1.2 Ensure the SELinux state is enforcing (Scored)
     # NEEDS RULE - var_selinux_state=enforcing
     # NEEDS RULE - selinux_state
 
-    #### 1.7.1.5 Ensure no unconfied services exist (Scored)
+    #### 1.6.1.3 Ensure SELinux policy is configured (Scored)
+    # NEEDS RULE - var_selinux_policy_name=targeted
+    # NEEDS RULE - selinux_policytype
+
+    #### 1.6.1.4 Ensure no unconfied daemons exist (Scored)
     # NEEDS RULE - selinux_confinement_of_daemons
 
-    #### 1.7.1.6 Ensure SETroubleshoot is not installed (Scored)
-    # NEEDS RULE - package_setroubleshoot_removed
+    ### 1.6.2 Configure AppArmor
 
-    #### 1.7.1.7 Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
-    # NEEDS RULE - package_mcstrans_removed
+    #### 1.6.2.1 Ensure AppArmor is not disabled in bootloader configuration (Scored)
+    # NEEDS RULE
 
-    ## Warning Banners
+    #### 1.6.2.2 Ensure AppArmor profiles are enforcing (Scored)
+    # NEEDS RULE
 
-    ### 1.8.1 Command Line Warning Baners
+    ### 1.6.3 Ensure SELinux or AppArmor are installed (Scored)
+    # NEEDS RULE
 
-    #### 1.8.1.1 Ensure message of the day is configured properly (Scored)
+    ## 1.7 Warning Banners
+
+    ### 1.7.1 Command Line Warning Baners
+
+    #### 1.7.1.1 Ensure message of the day is configured properly (Scored)
     # NEEDS RULE - banner_etc_motd
 
-    #### 1.8.1.2 Ensure local login warning banner is configured properly (Scored)
+    #### 1.7.1.2 Ensure local login warning banner is configured properly (Scored)
     # NEEDS RULE : - banner_etc_issue
 
-    #### 1.8.1.3 Ensure remote login warning banner is configured properly (Scored)
+    #### 1.7.1.3 Ensure remote login warning banner is configured properly (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5225
 
-    #### 1.8.1.4 Ensure permissions on /etc/motd are configured (Scored)
+    #### 1.7.1.4 Ensure permissions on /etc/motd are configured (Scored)
     # chmod u-x,go-wx /etc/motd
     # NEEDS RULE - file_permissions_etc_motd
 
-    #### 1.8.1.5 Ensure permissions on /etc/issue are configured (Scored)
+    #### 1.7.1.5 Ensure permissions on /etc/issue are configured (Scored)
     # chmod u-x,go-wx /etc/issue
     # NEEDS RULE - file_permissions_etc_issue
 
-    #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Scored)
+    #### 1.7.1.6 Ensure permissions on /etc/issue.net are configured (Scored)
     # Previously addressed via 'rpm_verify_permissions' rule
 
-    ### 1.8.2 Ensure GDM login banner is configured (Scored)
+    ### 1.7.2 Ensure GDM login banner is configured (Scored)
     #### banner-message-enable=true
     # NEEDS RULE - dconf_gnome_banner_enabled
 
     #### banner-message-text='<banner message>'
     # NEEDS RULE - dconf_gnome_login_banner_text
 
-    ## 1.9 Ensure updates, patches, and additional security software are installed (Scored)
+    ## 1.8 Ensure updates, patches, and additional security software are installed (Scored)
     - security_patches_up_to_date
 
-    ## 1.10 Ensure system-wide crypto policy is not legacy (Scored)
-    #- var_system_crypto_policy
-    # NEEDS RULE - configure_crypto_policy
-
-    ## 1.11 Ensure system-wide crytpo policy is FUTURE or FIPS (Scored)
-    # Previously addressed via 'configure_crypto_policy' rule
-
-    # Services
+    # 2 Services
 
     ## 2.1 inetd Services
 
-    ### 2.1.1 Ensure xinetd is not installed (Scored)
-    # NEEDS RULE - package_xinetd_removed
+    ### 2.1.1 Ensure chargen is not installed (Scored)
+    # NEEDS RULE
+
+    ### 2.1.2 Ensure daytime services are not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.3 Ensured discard services are not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.4 Ensure echo services are not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.5 Ensure time services are not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.6 Ensure rsh server is not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.7 Ensure talk server is not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.8 Ensure telnet server is not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.9 Ensure tftp server is not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.10 Ensure xinetd is not enabled (Scored)
+    # NEEDS RULE
+
+    ### 2.1.11 Ensure openbsd-inetd is not installed (Scored)
+    # NEEDS RULE
 
     ## 2.2 Special Purpose Services
 
-    ### 2.2.1 Time Synchronization
+    ### 2.2.1 Time synchronization
 
     #### 2.2.1.1 Ensure time synchronization is in use (Not Scored)
     # NEEDS RULE - service_chronyd_or_ntpd_enabled
 
-    #### 2.2.1.2 Ensure chrony is configured (Scored)
+    #### 2.2.1.2 Ensure ntp is configured (Scored)
+    # NEEDS RULE
+
+    #### 2.2.1.3 Ensure chrony is configured (Scored)
     # NEEDS RULE - chronyd_or_ntpd_specify_remote_server
 
     ### 2.2.2 Ensure X Window System is not installed (Scored)
     # NEEDS RULE - package_xorg-x11-server-common_removed
 
-    ### 2.2.3 Ensure rsync service is not enabled (Scored)
-    # NEEDS RULE - service_rsyncd_disabled
-
-    ### 2.2.4 Ensure Avahi Server is not enabled (Scored)
+    ### 2.2.3 Ensure Avahi Server is not enabled (Scored)
     # NEEDS RULE - service_avahi-daemon_disabled
 
-    ### 2.2.5 Ensure SNMP Server is not enabled (Scored)
-    # NEEDS RULE - service_snmpd_disabled
+    ### 2.2.4 Ensure CUPS is not enabled (Scored)
+    # NEEDS RULE - service_cups_disabled
 
-    ### 2.2.6 Ensure HTTP Proxy Server is not enabled (Scored)
-    # NEEDS RULE - package_squid_removed
-
-    ### 2.2.7 Ensure Samba is not enabled (Scored)
-    # NEEDS RULE - service_smb_disabled
-
-    ### 2.2.8 Ensure IMAP and POP3 server is not enabled (Scored)
-    # NEEDS RULE - service_dovecot_disabled
-
-    ### 2.2.9 Ensure HTTP server is not enabled (Scored)
-    # NEEDS RULE - service_httpd_disabled
-
-    ### 2.2.10 Ensure FTP Server is not enabled (Scored)
-    # NEEDS RULE - service_vsftpd_disabled
-
-    ### 2.2.11 Ensure DNS Server is not enabled (Scored)
-    # NEEDS RULE - service_named_disabled
-
-    ### 2.2.12 Ensure NFS is not enabled (Scored)
-    # NEEDS RULE - service_nfs_disabled
-
-    ### 2.2.13 Ensure RPC is not enabled (Scored)
-    # NEEDS RULE - service_rpcbind_disabled
-
-    ### 2.2.14 Ensure LDAP service is not enabled (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5231
-
-    ### 2.2.15 Ensure DHCP Server is not enabled (Scored)
+    ### 2.2.5 Ensure DHCP Server is not enabled (Scored)
     # NEEDS RULE - service_dhcpd_disabled
 
-    ### 2.2.16 Ensure CUPS is not enabled (Scored)
-    # NEEDS RULE - service_cups_disabled
+    ### 2.2.6 Ensure LDAP server is not enabled (Scored)
+    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5231
+
+    ### 2.2.7 Ensure NFS is not enabled (Scored)
+    # NEEDS RULE - service_nfs_disabled
+
+    ### 2.2.8 Ensure DNS Server is not enabled (Scored)
+    # NEEDS RULE - service_named_disabled
+
+    ### 2.2.9 Ensure FTP Server is not enabled (Scored)
+    # NEEDS RULE - service_vsftpd_disabled
+
+    ### 2.2.10 Ensure HTTP server is not enabled (Scored)
+    # NEEDS RULE - service_httpd_disabled
+
+    ### 2.2.11 Ensure IMAP and POP3 server is not enabled (Scored)
+    # NEEDS RULE - service_dovecot_disabled
+
+    ### 2.2.12 Ensure Samba is not enabled (Scored)
+    # NEEDS RULE - service_smb_disabled
+
+    ### 2.2.13 Ensure HTTP Proxy Server is not enabled (Scored)
+    # NEEDS RULE - package_squid_removed
+
+    ### 2.2.14 Ensure SNMP Server is not enabled (Scored)
+    # NEEDS RULE - service_snmpd_disabled
+
+    ### 2.2.15 Ensure mail transfer agent is configured for
+    ###        local-only mode (Scored)
+    # NEEDS RULE - postfix_network_listening_disabled
+
+    ### 2.2.16 Ensure rsync service is not enabled (Scored)
+    # NEEDS RULE - service_rsyncd_disabled
 
     ### 2.2.17 Ensure NIS Server is not enabled (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5232
-
-    ### 2.2.18 Ensure mail transfer agent is configured for
-    ###        local-only mode (Scored)
-    # NEEDS RULE - postfix_network_listening_disabled
 
     ## 2.3 Service Clients
 
     ### 2.3.1 Ensure NIS Client is not installed (Scored)
     # NEEDS RULE - package_ypbind_removed
 
-    ### 2.3.2 Ensure telnet client is not installed (Scored)
+    ### 2.3.2 Ensure rsh client is not installed (Scored)
+    # NEEDS RULE - package_rsh_removed
+
+    ### 2.3.3 Ensure talk client is not installed (Scored)
+    # NEEDS RULE - package_talk_removed
+
+    ### 2.3.4 Ensure telnet client is not installed (Scored)
     # NEEDS RULE - package_telnet_removed
 
-    ### Ensure LDAP client is not installed
+    ### 2.3.5 Ensure LDAP client is not installed (Scored)
     # NEEDS RULE - package_openldap-clients_removed
 
     # 3 Network Configuration
@@ -389,156 +420,86 @@ selections:
     ### 3.2.8 Ensure TCP SYN Cookies is enabled (Scored)
     # NEEDS RULE - sysctl_net_ipv4_tcp_syncookies
 
-    ### 3.2.9 Ensure IPv6 router advertisements are not accepted (Scored)
+    ## 3.3 IPv6
+
+    ### 3.3.1 Ensure IPv6 router advertisements are not accepted (Scored)
     #### net.ipv6.conf.all.accept_ra = 0
     # NEEDS RULE - sysctl_net_ipv6_conf_all_accept_ra
 
     #### net.ipv6.conf.default.accept_ra = 0
     # NEEDS RULE - sysctl_net_ipv6_conf_default_accept_ra
 
-    ## 3.3 Uncommon Network Protocols
+    ### 3.3.2 Ensure IPv6 redirects are not accepted (Scored)
+    # NEEDS RULE
 
-    ### 3.3.1 Ensure DCCP is disabled (Scored)
+    ### 3.3.3 Ensure IPv6 is disabled (not Scored)
+    # NEEDS RULE
+
+    ## 3.4 TCP Wrappers
+
+    ### 3.4.1 Ensure TCP Wrappers is installed (Scored)
+    # NEEDS RULE
+
+    ### 3.4.2 Ensure /etc/host.allow is configured (Scored)
+    # NEEDS RULE
+
+    ### 3.4.3 Ensure /etc/host.deny is configured (Scored)
+    # NEEDS RULE
+
+    ### 3.4.4 Ensure permissios on /etc/host.allow are configured (Scored)
+    # NEEDS RULE
+
+    ### 3.4.5 Ensure permissios on /etc/host.deny are configured (Scored)
+    # NEEDS RULE
+
+    ## 3.5 Uncommon Network Protocols
+
+    ### 3.5.1 Ensure DCCP is disabled (Not Scored)
     # NEEDS RULE - kernel_module_dccp_disabled
 
-    ### Ensure SCTP is disabled (Scored)
+    ### 3.5.2 Ensure SCTP is disabled (Not Scored)
     # NEEDS RULE - kernel_module_sctp_disabled
 
-    ### 3.3.3 Ensure RDS is disabled (Scored)
+    ### 3.5.3 Ensure RDS is disabled (Not Scored)
     - kernel_module_rds_disabled
 
-    ### 3.3.4 Ensure TIPC is disabled (Scored)
+    ### 3.5.4 Ensure TIPC is disabled (Scored)
     - kernel_module_tipc_disabled
 
-    ## 3.4 Firewall Configuration
+    ## 3.6 Firewall Configuration
 
-    ### 3.4.1 Ensure Firewall software is installed
-
-    #### 3.4.1.1 Ensure a Firewall package is installed (Scored)
-    ##### firewalld
-    # NEEDS RULE - package_firewalld_installed
-
-    ##### nftables
-    #NEED RULE - https://github.com/ComplianceAsCode/content/issues/5237
-
+    ### 3.6.1 Ensure iptables is installed
+    # NEEDS RULE
     ##### iptables
     #- package_iptables_installed
 
-    ### 3.4.2 Configure firewalld
 
-    #### 3.4.2.1 Ensure firewalld service is enabled and running (Scored)
-    # NEEDS RULE - service_firewalld_enabled
+    ### 3.6.2 Ensure default deny firewall policy (Scored)
+    # NEEDS RULE
 
-    #### 3.4.2.2 Ensure iptables is not enabled (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5238
-
-    #### 3.4.2.3 Ensure nftables is not enabled (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5239
-
-    #### 3.4.2.4 Ensure default zone is set (Scored)
-    # NEEDS RULE - set_firewalld_default_zone
-
-    #### 3.4.2.5 Ensure network interfaces are assigned to
-    ####         appropriate zone (Not Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5240
-
-    #### 3.4.2.6 Ensure unnecessary services and ports are not
-    ####         accepted (Not Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5241
-
-    ### 3.4.3 Configure nftables
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5242
-
-    #### 3.4.3.1 Ensure iptables are flushed (Not Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5243
-
-    #### 3.4.3.2 Ensure a table exists (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5244
-
-    #### 3.4.3.3 Ensure base chains exist (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5245
-
-    #### 3.4.3.4 Ensure loopback traffic is configured (Scored)
+    ### 3.6.3 Ensure loopback traffic is configured (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5246
 
-    #### 3.4.3.5 Ensure outbound and established connections are
-    ####         configured (Not Scored)
+    ### 3.6.4 Ensure outband and established connections are configured
+    #         (Not Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5247
 
-    #### 3.4.3.6 Ensure default deny firewall policy (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5248
-
-    #### 3.4.3.7 Ensure nftables service is enabled (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5249
-
-    #### 3.4.3.8 Ensure nftables rules are permanent (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5250
-
-    ### 3.4.4 Configure iptables
-
-    #### 3.4.4.1 Configure IPv4 iptables
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5251
-
-    ##### 3.4.4.1.1 Ensure default deny firewall policy (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5252
-
-    ##### 3.4.4.1.2 Ensure loopback traffic is configured (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5253
-
-    ##### 3.4.4.1.3 Ensure outbound and established connections are
-    #####           configured (Not Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5254
-
-    ##### 3.4.4.1.4 Ensure firewall rules exist for all open ports (Scored)
+    ##### 3.6.5 Ensure firewall rules exist for all open ports (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5255
 
-    #### 3.4.4.2 Configure IPv6 ip6tables
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5256
-
-    ##### 3.4.4.2.1 Ensure IPv6 default deny firewall policy (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5257
-
-    ##### 3.4.4.2.2 Ensure IPv6 loopback traffic is configured (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5258
-
-    ##### 3.4.4.2.3 Ensure IPv6 outbound and established connections are
-    #####           configured (Not Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5260
-
-    ## 3.5 Ensure wireless interfaces are disabled (Scored)
+    ## 3.7 Ensure wireless interfaces are disabled (Scored)
     # NEEDS RULE - wireless_disable_interfaces
 
-    ## 3.6 Disable IPv6 (Not Scored)
-    # NEEDS RULE - grub2_ipv6_disable_argument
-
-    # Logging and Auditing
+    # 4 Logging and Auditing
 
     ## 4.1 Configure System Accounting (auditd)
 
-    ### 4.1.1 Ensure auditing is enabled
+    ### 4.1.1 Configure Data Retention
 
-    #### 4.1.1.1 Ensure auditd is installed (Scored)
-    - package_audit_installed
-
-    #### 4.1.1.2 Ensure auditd service is enabled (Scored)
-    - service_auditd_enabled
-
-    #### 4.1.1.3 Ensure auditing for processes that start prior to audit
-    ####         is enabled (Scored)
-    # NEEDS RULE - grub2_audit_argument
-
-    #### 4.1.1.4 Ensure audit_backlog_limit is sufficient (Scored)
-    # NEEDS RULE - grub2_audit_backlog_limit_argument
-
-    ### 4.1.2 Configure Data Retention
-
-    #### 4.1.2.1 Ensure audit log storage size is configured (Scored)
+    #### 4.1.1.1 Ensure audit log storage size is configured (Scored)
     - auditd_data_retention_max_log_file
 
-    #### 4.1.2.2 Ensure audit logs are not automatically deleted (Scored)
-    - auditd_data_retention_max_log_file_action
-
-    #### 4.1.2.3 Ensure system is disabled when audit logs are full (Scored)
+    #### 4.1.1.2 Ensure system is disabled when audit logs are full (Scored)
     - var_auditd_space_left_action=email
     - auditd_data_retention_space_left_action
 
@@ -550,119 +511,101 @@ selections:
     - var_auditd_admin_space_left_action=halt
     - auditd_data_retention_admin_space_left_action
 
-    ### 4.1.3 Ensure changes to system administration scope
-    ###       (sudoers) is collected (Scored)
-    - audit_rules_sysadmin_actions
+    #### 4.1.1.3 Ensure audit logs are not automatically deleted (Scored)
+    - auditd_data_retention_max_log_file_action
 
-    ### 4.1.4 Ensure login and logout events are collected (Scored)
-    # NEEDS RULE - audit_rules_login_events_faillock
-    # NEEDS RULE - audit_rules_login_events_lastlog
+    #### 4.1.2 Ensure auditd service is enabled (Scored)
+    - service_auditd_enabled
 
-    ### 4.1.5 Ensure session initiation information is collected (Scored)
-    - audit_rules_session_events
+    #### 4.1.3 Ensure auditing for processes that start prior to audit
+    ####         is enabled (Scored)
+    # NEEDS RULE - grub2_audit_argument
 
-    ### 4.1.6 Ensure events that modify date and time information
+    ### 4.1.4 Ensure events that modify date and time information
     ###       are collected (Scored)
     #### adjtimex
     - audit_rules_time_adjtimex
 
-    #### settimeofday
-    - audit_rules_time_settimeofday
+    ### 4.1.5 Ensure events that modify user/group information are
+    ###        collected (Scored)
 
-    #### stime
-    - audit_rules_time_stime
-
-    #### clock_settime
-    - audit_rules_time_clock_settime
-
-    #### -w /etc/localtime -p wa
-    - audit_rules_time_watch_localtime
+    ### 4.1.6 Ensure events that modify the system's network
+    ###       enironment are collected (Scored)
+    - audit_rules_networkconfig_modification
 
     ### 4.1.7 Ensure events that modify the system's Mandatory
     ###       Access Control are collected (Scored)
     #### -w /etc/selinux/ -p wa
     - audit_rules_mac_modification
 
-    #### -w /usr/share/selinux/ -p wa
-    # NEED RULE - https://github.com/ComplianceAsCode/content/issues/5264
+    ### 4.1.8 Ensure login and logout events are collected (Scored)
+    # NEEDS RULE - audit_rules_login_events_faillock
+    # NEEDS RULE - audit_rules_login_events_lastlog
 
-    ### 4.1.8 Ensure events that modify the system's network
-    ###       enironment are collected (Scored)
-    - audit_rules_networkconfig_modification
+    ### 4.1.9 Ensure session initiation information is collected (Scored)
+    - audit_rules_session_events
 
-    ### 4.1.9 Ensure discretionary access control permission modification
-    ###       events are collected (Scored)
+    ### 4.1.10 Ensure discretionary access control permission modification
+    ###        events are collected (Scored)
 
-
-    ### 4.1.10 Ensure unsuccessful unauthorized file access attempts are
+    ### 4.1.11 Ensure unsuccessful unauthorized file access attempts are
     ###        collected (Scored)
 
+    ### 4.1.12 Ensure use of privileged commands is collected (Scored)
 
-    ### 4.1.11 Ensure events that modify user/group information are
-    ###        collected (Scored)
-
-
-    ### 4.1.12 Ensure successful file system mounts are collected (Scored)
-
-
-    ### 4.1.13 Ensure use of privileged commands is collected (Scored)
-
+    ### 4.1.13 Ensure successful file system mounts are collected (Scored)
 
     ### 4.1.14 Ensure file deletion events by users are collected
     ###        (Scored)
 
-
-    ### 4.1.15 Ensure kernel module loading and unloading is collected
-    ###        (Scored)
-
+    ### 4.1.15 Ensure changes to system administration scope
+    ###        (sudoers) is collected (Scored)
+    - audit_rules_sysadmin_actions
 
     ### 4.1.16 Ensure system administrator actions (sudolog) are
     ###        collected (Scored)
 
+    ### 4.1.17 Ensure kernel module loading and unloading is collected
+    ###        (Scored)
 
-    ### 4.1.17 Ensure the audit configuration is immutable (Scored)
-
+    ### 4.1.18 Ensure the audit configuration is immutable (Scored)
 
     ## 4.2 Configure Logging
 
     ### 4.2.1 Configure rsyslog
 
-    #### 4.2.1.1 Ensure rsyslog is installed (Scored)
+    #### 4.2.1.1 Ensure rsyslog Service is enabled (Scored)
 
-
-    #### 4.2.1.2 Ensure rsyslog Service is enabled (Scored)
-
+    #### 4.2.1.2 Ensure logging is configured (Not Scored)
 
     #### 4.2.1.3 Ensure rsyslog default file permissions configured (Scored)
 
 
-    #### 4.2.1.4 Ensure logging is configured (Not Scored)
-
-
-    #### 4.2.1.5 Ensure rsyslog is configured to send logs to a remote
+    #### 4.2.1.4 Ensure rsyslog is configured to send logs to a remote
     ####         log host (Scored)
 
 
-    #### 4.2.1.6 Ensure remote rsyslog messages are only accepted on
+    #### 4.2.1.5 Ensure remote rsyslog messages are only accepted on
     ####         designated log hosts (Not Scored)
 
+    ### 4.2.2 Configure syslog-ng
 
-    ### 4.2.2 Configure journald
+    #### 4.2.2.1 Ensure syslog-ng is enabled (Scored)
 
-    #### 4.2.2.1 Ensure journald is configured to send logs to
-    ####         rsyslog (Scored)
+    #### 4.2.2.2 Ensure logging is configured (Not Scored)
 
+    #### 4.2.2.3 Ensure syslog-ng default file permissions configured
+    #            (Scored)
 
-    #### 4.2.2.2 Ensure journald is configured to compress large
-    ####         log files (Scored)
+    #### 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote
+    #            log host (Not Scored)
 
+    #### 4.2.2.5 Ensure remote syslog-ng message are only accepted on
+    #            designated hosts (Not Scored)
 
-    #### 4.2.2.3 Ensure journald is configured to write logfiles to
-    ####         persistent disk (Scored)
+    ### 4.2.3 Ensure syslog or syslog-ng is installed (Scored)
 
-
-    ### 4.2.3 Ensure permissions on all logfiles are configured (Scored)
-
+    ### 4.2.4 Ensure permissions on all logfiles are configured (Scored)
 
     ## 4.3 Ensure logrotate is conifgured (Not Scored)
 
@@ -730,46 +673,37 @@ selections:
     # chmod og-rwx /etc/ssh/sshd_config
     # NEEDS RULE - file_permissions_sshd_config
 
+    ### 5.2.2 Ensure SSH protocol is set to 2 (Scored)
+
     ### 5.2.2 Ensure SSH access is limited (Scored)
 
-
-    ### 5.2.3 Ensure permissions on SSH private host key files are
-    ###       configured (Scored)
-    # TO DO: The rule sets to 640, but benchmark wants 600
-    - file_permissions_sshd_private_key
-    # TO DO: check owner of private keys in /etc/ssh is root:root
-
-    ### 5.2.4 Ensure permissions on SSH public host key files are configured
-    ###      (Scored)
-    - file_permissions_sshd_pub_key
-    # TO DO: check owner of pub keys in /etc/ssh is root:root
-
-    ### 5.2.5 Ensure SSH LogLevel is appropriate (Scored)
+    ### 5.2.3 Ensure SSH LogLevel is set to INFO (Scored)
     - sshd_set_loglevel_info
 
-    ### 5.2.6 Ensure SSH X11 forward is diabled (Scored)
+    ### 5.2.4 Ensure SSH X11 forwarding is diabled (Scored)
 
-
-    ### 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
+    ### 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored)
     - sshd_max_auth_tries_value=4
     - sshd_set_max_auth_tries
 
-    ### 5.2.8 Ensure SSH IgnoreRhosts is enabled (Scored)
+    ### 5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored)
     - sshd_disable_rhosts
 
-    ### 5.2.9 Ensure SSH HostbasedAuthentication is disabled (Scored)
+    ### 5.2.7 Ensure SSH HostbasedAuthentication is disabled (Scored)
     - disable_host_auth
 
-    ### 5.2.10 Ensure SSH root login is disabled (Scored)
+    ### 5.2.8 Ensure SSH root login is disabled (Scored)
     - sshd_disable_root_login
 
-    ### 5.2.11 Ensure SSH PermitEmptyPasswords is disabled (Scored)
+    ### 5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Scored)
     - sshd_disable_empty_passwords
 
-    ### 5.2.12 Ensure SSH PermitUserEnvironment is disabled (Scored)
+    ### 5.2.10 Ensure SSH PermitUserEnvironment is disabled (Scored)
     - sshd_do_not_permit_user_env
 
-    ### 5.2.13 Ensure SSH Idle Timeout Interval is configured (Scored)
+    ### 5.2.11 Ensure only approved MAC algorithm are used (Scored)
+
+    ### 5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)
     # ClientAliveInterval 300
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
@@ -778,95 +712,67 @@ selections:
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive
 
-    ### 5.2.14 Ensure SSH LoginGraceTime is set to one minute
+    ### 5.2.13 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)
 
+    ### 5.2.14 Ensure SSH access is limited (Scored)
 
     ### 5.2.15 Ensure SSH warning banner is configured (Scored)
     - sshd_enable_warning_banner
 
-    ### 5.2.16 Ensure SSH PAM is enabled (Scored)
+    ## 5.3 Configure PAM
+
+    ### 5.3.1 Ensure password creation requirements are configured (Scored)
 
 
-    ### 5.2.17 Ensure SSH AllowTcpForwarding is disabled (Scored)
-
-
-    ### 5.2.18 Ensure SSH MaxStarups is configured (Scored)
-
-
-    ### 5.2.19 Ensure SSH MaxSessions is set to 4 or less (Scored)
-
-
-    ### 5.2.20 Ensure system-wide crypto policy is not over-ridden (Scored)
-    # NEEDS RULE - configure_ssh_crypto_policy
-
-    ## 5.3 Configure authselect
-
-
-    ### 5.3.1 Create custom authselectet profile (Scored)
-
-
-    ### 5.3.2 Select authselect profile (Scored)
-
-
-    ### 5.3.3 Ensure authselect includes with-faillock (Scored)
-
-
-    ## 5.4 Configure PAM
-
-    ### 5.4.1 Ensure password creation requirements are configured (Scored)
-
-
-    ### 5.4.2 Ensure lockout for failed password attempts is
+    ### 5.3.2 Ensure lockout for failed password attempts is
     ###       configured (Scored)
 
 
-    ### 5.4.3 Ensure password reuse is limited (Scored)
+    ### 5.3.3 Ensure password reuse is limited (Scored)
 
 
-    ### 5.4.4 Ensure password hashing algorithm is SHA-512 (Scored)
+    ### 5.3.4 Ensure password hashing algorithm is SHA-512 (Scored)
 
 
-    ## 5.5 User Accounts and Environment
+    ## 5.4 User Accounts and Environment
 
-    ### 5.5.1 Set Shadow Password Suite Parameters
+    ### 5.4.1 Set Shadow Password Suite Parameters
 
-    #### 5.5.1 Ensure password expiration is 365 days or less (Scored)
+    #### 5.4.1 Ensure password expiration is 365 days or less (Scored)
 
 
-    #### 5.5.1.2 Ensure minimum days between password changes is 7
+    #### 5.4.1.2 Ensure minimum days between password changes is 7
     ####         or more (Scored)
 
 
-    #### 5.5.1.3 Ensure password expiration warning days is
+    #### 5.4.1.3 Ensure password expiration warning days is
     ####         7 or more (Scored)
 
 
-    #### 5.5.1.4 Ensure inactive password lock is 30 days or less (Scored)
+    #### 5.4.1.4 Ensure inactive password lock is 30 days or less (Scored)
 
 
-    #### 5.5.1.5 Ensure all users last password change date is
+    #### 5.4.1.5 Ensure all users last password change date is
     ####         in the past (Scored)
 
 
-    ### 5.5.2 Ensure system accounts are secured (Scored)
+    ### 5.4.2 Ensure system accounts are non-login (Scored)
+
+    ### 5.4.3 Ensure default group for the root account is
+    ###       GID 0 (Scored)
+
+    ### 5.4.4 Ensure default user mask is 027 or more restrictive (Scored)
 
 
-    ### 5.5.3 Ensure default user shell timeout is 900 seconds
+    ### 5.4.5 Ensure default user shell timeout is 900 seconds
     ###       or less (Scored)
 
 
-    ### 5.5.4 Ensure default group for the root account is
-    ###       GID 0 (Scored)
+    ## 5.5 Ensure root login is restricted to system console (Not Scored)
 
 
-    ### 5.5.5 Ensure default user mask is 027 or more restrictive (Scored)
-
-
-    ## 5.6 Ensure root login is restricted to system console (Not Scored)
-
-
-    ## 5.7 Ensure access to the su command is restricted (Scored)
+    ## 5.6 Ensure access to the su command is restricted (Scored)
 
     # System Maintenance
 
@@ -957,11 +863,48 @@ selections:
 
     ## 6.2 User and Group Settings
 
+    ### 6.2.1 Ensure password fields are not empty (Scored)
+
     ### 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)
     # NEEDS RULE - no_legacy_plus_entries_etc_passwd
 
-    ## 6.2.4 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
+    ## 6.2.3 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
     # NEEDS RULE - no_legacy_plus_entries_etc_shadow
 
-    ###6.2.5 Ensure no legacy "+" entries exist in /etc/group (Scored)
+    ###6.2.4 Ensure no legacy "+" entries exist in /etc/group (Scored)
     # NEEDS RULE - no_legacy_plus_entries_etc_group
+
+    ### 6.2.5 Ensure root is the only UID 0 account (Scored)
+
+    ### 6.2.6 Ensure root PATH Integrity (Scored)
+
+    ### 6.2.7 Ensure all users' home directory exist (Scored)
+
+    ### 6.2.8 Ensure users home directory permissions are 750 or more
+    # restrictive (Scored)
+
+    ### 6.2.9 Ensure users own their own home directories (Scored)
+
+    ### 6.2.10 Ensure users dot files are not group or world writable
+    # (Scored)
+
+    ### 6.2.11 Ensure no users have .forward files (Scored)
+
+    ### 6.2.12 Ensure no users have .netrc files (Scored)
+
+    ### 6.2.13 Ensure users .netrc files are not group or world accessible
+    # (Scored)
+
+    ### 6.2.14 Ensure no users have .rhosts files (Scored)
+
+    ### 6.2.15 Ensure all groups in /etc/passwd exists in /etc/group (Scored)
+
+    ### 6.2.16 Ensure no duplicate UIDs exist (Scored)
+
+    ### 6.2.17 Ensure no duplicate GIDs exists (Scored)
+
+    ### 6.2.18 Ensure no duplicate user names exists (Scored)
+
+    ### 6.2.19 Ensure no duplicate group names exists (Scored)
+
+    ### 6.2.20 Ensure shadow group is empty (Scored)
