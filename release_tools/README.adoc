@@ -21,13 +21,14 @@ authentication tokens for these services.
 * Your Jenkins user - your User ID is probably the same as your GitHub handle, to be sure,
   check your *profile page* in Jenkins.
 * A Jenkins token - generate a token on *Configure page* in Jenkins
-  While generating the token, make sure that your Jenkins user has build permissions in Jenkins.
 
 * Create `.env.yml` file in `release_tools` directory, to hold your tokens:
 +
    github_token: '<your github token here>'
    jenkins_user: '<you jenkins user ID>'
    jenkins_token: '<you jenkins token here>'
+
+Your Jenkins user needs to have a special permission to perform the build successfully. This permission is not granted automatically to all users. If you want to perform build and you don't have this permission, please contact one of link:https://github.com/orgs/ComplianceAsCode/teams/trusted-developers[trusted developers].
 
 [NOTE]
 ====
