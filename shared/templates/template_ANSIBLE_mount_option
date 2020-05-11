@@ -27,5 +27,6 @@
     state: "mounted"
     fstype: "{{ mount_info.fstype }}"
   when:
+    - mount_info is defined and "{{{ MOUNTOPTION }}}" not in mount_info.options
     - device_name.stdout is defined
     - (device_name.stdout | length > 0)
