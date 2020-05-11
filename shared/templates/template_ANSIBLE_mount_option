@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = high
-- name: get back mount information associated to mountpoint
+- name: Check fstab information associated to mountpoint
   command: findmnt --fstab '{{{ MOUNTPOINT }}}'
   register: device_name
   failed_when: device_name.rc > 1
@@ -19,7 +19,7 @@
     - device_name.stdout is defined and device_name.stdout == ""
 {{% endif %}}
 
-- name: create mount_info dictionary variable
+- name: Create mount_info dictionary variable
   set_fact:
     mount_info: "{{ mount_info|default({})|combine({item.0: item.1}) }}"
   with_together:
