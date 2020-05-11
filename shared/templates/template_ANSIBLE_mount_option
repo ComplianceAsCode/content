@@ -9,6 +9,16 @@
   failed_when: device_name.rc > 1
   changed_when: False
 
+{{% if MOUNT_HAS_TO_EXIST == "no" %}}
+- name: Check mtab information associated to mountpoint
+  command: findmnt --mtab '{{{ MOUNTPOINT }}}'
+  register: device_name
+  failed_when: device_name.rc > 1
+  changed_when: False
+  when:
+    - device_name.stdout is defined and device_name.stdout == ""
+{{% endif %}}
+
 - name: create mount_info dictionary variable
   set_fact:
     mount_info: "{{ mount_info|default({})|combine({item.0: item.1}) }}"
