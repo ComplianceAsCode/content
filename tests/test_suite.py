@@ -275,6 +275,7 @@ def datastream_in_stash(current_location):
     tfile = tempfile.NamedTemporaryFile(prefix="ssgts-ds-")
 
     tfile.write(open(current_location, "rb").read())
+    tfile.flush()
     yield tfile.name
 
 
