@@ -58,8 +58,10 @@ ocil: |-
     is expected by the RPM database:
     <pre>$ rpm -Va | rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
 
-{{% if product == "rhel6" %}}
 warnings:
+    - general: |-
+        Profiles may require that specific files be owned by root while the default owner defined by the vendor is different. Such files will be reported as a finding and need to be evaluated according to your policy and deployment environment.
+{{% if product == "rhel6" %}}
     - general: |-
         <b>Note: Due to a bug in the <tt>gdm</tt> package,
         the RPM verify command may continue to fail even after file permissions have
