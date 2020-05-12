@@ -69,7 +69,10 @@ ocil: |-
 
 warnings:
     - general: |-
-        Profiles may require that specific files have stricter file permissions than defined by the vendor. Such files will be reported as a finding and need to be evaluated according to your policy and deployment environment.
+        Profiles may require that specific files have stricter file permissions than defined by the
+        vendor.
+        Such files will be reported as a finding and need to be evaluated according to your policy
+        and deployment environment.
 {{% if product == "rhel6" %}}
     - general: |-
         <b>Note: Due to a bug in the <tt>gdm</tt> package,
