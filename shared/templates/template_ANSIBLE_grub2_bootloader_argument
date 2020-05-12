@@ -40,5 +40,6 @@
   when:
     - kernelopts.stdout_lines is defined
     - kernelopts.stdout_lines | length > 0
+    - kernelopts.stdout | regex_search('^kernelopts=.*{{{ ARG_NAME_VALUE }}}.*$', multiline=True) is none
 
 {{% endif %}}
