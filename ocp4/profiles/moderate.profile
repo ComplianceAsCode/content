@@ -630,5 +630,3 @@ selections:
     - kernel_module_usb-storage_disabled
     - kernel_module_vfat_disabled
 
-    # UNSORTED
-    - ocp_idp_no_htpasswd
