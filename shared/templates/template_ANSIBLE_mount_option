@@ -3,21 +3,18 @@
 # strategy = configure
 # complexity = low
 # disruption = high
-- name: Check fstab information associated to mountpoint
-  command: findmnt --fstab '{{{ MOUNTPOINT }}}'
-  register: device_name
-  failed_when: device_name.rc > 1
-  changed_when: False
 
 {{% if MOUNT_HAS_TO_EXIST == "no" %}}
-- name: Check mtab information associated to mountpoint
-  command: findmnt --mtab '{{{ MOUNTPOINT }}}'
+   {{% set TABFILE="" %}}
+{{% else %}}
+   {{% set TABFILE="--fstab" %}}
+{{% endif %}}
+
+- name: Check information associated to mountpoint
+  command: findmnt {{{ TABFILE }}} '{{{ MOUNTPOINT }}}'
   register: device_name
   failed_when: device_name.rc > 1
   changed_when: False
-  when:
-    - device_name.stdout is defined and device_name.stdout == ""
-{{% endif %}}
 
 - name: Create mount_info dictionary variable
   set_fact:
