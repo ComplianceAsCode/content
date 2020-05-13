@@ -7,5 +7,5 @@ SSHD_CONFIG="/etc/ssh/sshd_config"
 if grep -q "^MaxSessions" $SSHD_CONFIG; then
         sed -i "s/^MaxSessions.*/MaxSessions 10/" $SSHD_CONFIG
     else
-            echo "MaxSessions 10" >> $SSHD_CONFIG
+        echo "MaxSessions 10" >> $SSHD_CONFIG
 fi
