@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'CIS Ubuntu 19.08 LTS Benchmark'
+title: 'CIS Ubuntu 18.04 LTS Benchmark'
 
 description: |-
     This baseline aligns to the Center for Internet Security
