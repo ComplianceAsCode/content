@@ -67,8 +67,13 @@ ocil: |-
     is expected by the RPM database:
     <pre>$ rpm -Va | awk '{ if (substr($0,2,1)=="M") print $NF }'</pre>
 
-{{% if product == "rhel6" %}}
 warnings:
+    - general: |-
+        Profiles may require that specific files have stricter file permissions than defined by the
+        vendor.
+        Such files will be reported as a finding and need to be evaluated according to your policy
+        and deployment environment.
+{{% if product == "rhel6" %}}
     - general: |-
         <b>Note: Due to a bug in the <tt>gdm</tt> package,
         the RPM verify command may continue to fail even after file permissions have
