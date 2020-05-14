@@ -10,6 +10,7 @@
       </metadata>
       <criteria operator="AND">
         <criterion comment="Make sure that no element of spec.identityProviders has type HTPasswd" negate="true" test_ref="test_{{{ rule_id }}}"/>
+        <criterion comment="Make sure that there is the actual file to scan" test_ref="test_file_for_{{{ rule_id }}}"/>
       </criteria>
     </definition>
 
@@ -18,13 +19,20 @@
 	    <ind:state state_ref="state_{{{ rule_id }}}"/>
     </ind:yamlfilecontent_test>
 
-
     <local_variable id="{{{ rule_id }}}_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
        <concat>
 	       <variable_component var_ref="ocp_data_root"/>
 	       <literal_component>/apis/config.openshift.io/v1/oauths/cluster</literal_component>
        </concat>
     </local_variable>
+
+    <unix:file_test id="test_file_for_{{{ rule_id }}}" check="only one" comment="Find the actual file to be scanned." version="1">
+	    <unix:object object_ref="object_file_for_{{{ rule_id }}}"/>
+    </unix:file_test>
+
+    <unix:file_object id="object_file_for_{{{ rule_id }}}" version="1">
+      <unix:filepath var_ref="{{{ rule_id }}}_dump_location"/>
+    </unix:file_object>
 
     <ind:yamlfilecontent_object id="object_{{{ rule_id }}}" version="1">
       <ind:filepath var_ref="{{{ rule_id }}}_dump_location"/>
