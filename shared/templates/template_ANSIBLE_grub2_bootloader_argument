@@ -13,7 +13,7 @@
 - name: replace existing {{{ ARG_NAME }}} argument
   replace:
       path: /etc/default/grub
-      regexp: '{{{ ARG_NAME }}}=.'
+      regexp: '{{{ ARG_NAME }}}=\w+'
       replace: '{{{ ARG_NAME_VALUE }}}'
   when: argcheck.rc == 0
 
@@ -40,5 +40,6 @@
   when:
     - kernelopts.stdout_lines is defined
     - kernelopts.stdout_lines | length > 0
+    - kernelopts.stdout | regex_search('^kernelopts=(?:.*\s)?{{{ ARG_NAME_VALUE }}}(?:\s.*)?$', multiline=True) is none
 
 {{% endif %}}
