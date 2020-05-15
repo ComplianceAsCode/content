@@ -87,10 +87,10 @@
     -->
     <ind:pattern operation="pattern match">^[^\s#\$]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-    <filter action="exclude">state_ignore_include_paths</filter>
+    <filter action="exclude">state_permissions_ignore_include_paths</filter>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_ignore_include_paths" comment="ignore" version="1">
+  <ind:textfilecontent54_state id="state_permissions_ignore_include_paths" comment="ignore" version="1">
     <!-- Among the paths matched in object_rfp_log_files_paths there can be paths from
          include() or $IncludeConfig statements.
          These paths are conf files, not log files. Their permissions don't need to be as
