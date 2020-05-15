@@ -347,6 +347,11 @@ def timer_enabled(data, lang):
     return data
 
 
+@template(["oval"])
+def yamlfile_value(data, lang):
+    return data
+
+
 class Builder(object):
     """
     Class for building all templated content for a given product.

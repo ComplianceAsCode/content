@@ -1,0 +1,58 @@
+{{% if target_oval_version >= [5, 11] %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    <metadata>
+      <title>Check the value(s) of '{{{ YAMLPATH }}}' in the file "{{{ FILE }}}" (located in "{{{ PATH }}}")</title>
+      {{{- oval_affected(products) }}}
+      <description>The file "{{{ FILE }}}" in "{{{ PATH }}}" should {{% if NEGATE %}}not {{% endif %}}contain value "{{{ VALUE }}}" of type {{{ TYPE }}} at '{{{ YAMLPATH }}}'.</description>
+    </metadata>
+    <criteria>
+        <criterion comment="Make sure that {{% if NEGATE %}}no {{% endif %}}{{% if ENTITY_CHECK %}}({{{ ENTITY_CHECK }}}) {{% endif %}} element(s) of '{{{ YAMLPATH }}}' contain value '{{{ VALUE }}}'' of type '{{{ TYPE }}}''."{{% if NEGATE %}} negate="true"{{% endif %}} test_ref="test_{{{ rule_id }}}"/>
+        {{% if NEGATE %}}
+        <criterion comment="Make sure that there is the file '{{{ FILE }}}' exists in '{{{ PATH }}}'." test_ref="test_file_for_{{{ rule_id }}}"/>
+        {{% endif %}}
+    </criteria>
+  </definition>
+
+  <local_variable id="{{{ rule_id }}}_file_location" datatype="string" comment="The actual path of the file to scan." version="1">
+      {{% if OCP_DATA %}}
+      <concat>
+        <variable_component var_ref="ocp_data_root"/>
+        <literal_component>{{{ PATH }}}</literal_component>
+      </concat>
+      {{% else %}}
+      <literal_component>{{{ PATH }}}</literal_component>
+      {{% endif %}}
+  </local_variable>
+
+  <ind:yamlfilecontent_test id="test_{{{ rule_id }}}" check="only one" check_existence="only_one_exists" comment="Find only one '{{{ FILE }}}' with '{{{ VALUE }}}' at '{{{ YAMLPATH }}}'." version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}"/>
+    <ind:state state_ref="state_{{{ rule_id }}}"/>
+  </ind:yamlfilecontent_test>
+
+  {{% if NEGATE %}}
+  <unix:file_test id="test_file_for_{{{ rule_id }}}" check="only one" check_existence="only_one_exists" comment="Find the file to be checked ('{{{ FILE }}}' in '{{{ PATH }}}')." version="1">
+    <unix:object object_ref="object_file_for_{{{ rule_id }}}"/>
+  </unix:file_test>
+  {{% endif %}}
+
+  <unix:file_object id="object_file_for_{{{ rule_id }}}" version="1">
+    <unix:path var_ref="{{{ rule_id }}}_file_location"/>
+    <unix:filename>{{{ FILE }}}</unix:filename>
+  </unix:file_object>
+
+  <ind:yamlfilecontent_object id="object_{{{ rule_id }}}" version="1">
+    <ind:path var_ref="{{{ rule_id }}}_file_location"/>
+    <ind:filename>{{{ FILE }}}</ind:filename>
+    <ind:yamlpath>{{{ YAMLPATH }}}</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
+  <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
+    <ind:value_of{{% if TYPE %}} datatype="{{{ TYPE }}}"{{% endif %}}{{% if ENTITY_CHECK %}} entity_check="{{{ ENTITY_CHECK }}}"{{% endif %}}>{{{ VALUE }}}</ind:value_of>
+  </ind:yamlfilecontent_state>
+
+  {{% if OCP_DATA %}}
+  <external_variable comment="Root of OCP data dump" datatype="string" id="ocp_data_root" version="1" />
+  {{% endif %}}
+</def-group>
+{{% endif %}}
