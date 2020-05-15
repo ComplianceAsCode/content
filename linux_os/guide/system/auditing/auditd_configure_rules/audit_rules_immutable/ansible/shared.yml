@@ -17,7 +17,7 @@
     state: absent
   loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
 
-- name: Insert configuration into /etc/audit/rules.d/immutable.rules and /etc/audit/audit.rules
+- name: Add Audit -e option into /etc/audit/rules.d/immutable.rules and /etc/audit/audit.rules
   lineinfile:
     path: "{{ item }}"
     create: True
