@@ -1,6 +1,9 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
+# Remediating would mount /tmp, which would break the test environment.
+# remediation = none
+
 . $SHARED/partition.sh
 
 umount /home || true  # no problem if not mounted
