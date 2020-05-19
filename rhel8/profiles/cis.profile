@@ -639,7 +639,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
 
     ### 4.1.12 Ensure successful file system mounts are collected (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5512
+    - audit_rules_media_export
 
     ### 4.1.13 Ensure use of privileged commands is collected (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5513
