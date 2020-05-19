@@ -662,7 +662,7 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5516
 
     ### 4.1.17 Ensure the audit configuration is immutable (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5517
+    - audit_rules_immutable
 
     ## 4.2 Configure Logging
 
