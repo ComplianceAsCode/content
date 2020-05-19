@@ -908,7 +908,7 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5537
 
     ### 5.5.2 Ensure system accounts are secured (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5538
+    - no_shelllogin_for_systemaccounts
 
     ### 5.5.3 Ensure default user shell timeout is 900 seconds
     ###       or less (Scored)
