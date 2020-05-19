@@ -1,0 +1,43 @@
+{{% set filepath = "/etc/ssh/sshd_config" %}}
+{{% set parameter = "RekeyLimit" %}}
+
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    <metadata>
+      <title>{{{ rule_title }}}</title>
+      {{{- oval_affected(products) }}}
+      <description>Ensure '{{{ RekeyLimit }}}' is configured with the correct value in '{{{ filepath }}}'</description>
+    </metadata>
+    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+        {{{- application_not_required_or_requirement_unset() }}}
+        {{{- application_required_or_requirement_unset() }}}
+        {{{- oval_line_in_file_criterion(filepath, "RekeyLimit") }}}
+    </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in the  file" id="test_sshd_rekey_limit" version="1">
+     <ind:object object_ref="obj_sshd_rekey_limit"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sshd_rekey_limit" version="1">
+     <ind:filepath>{{{ filepath }}}</ind:filepath>
+     <ind:pattern var_ref="sshd_line_regex" operation="pattern match"></ind:pattern>
+     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="sshd_line_regex" datatype="string" comment="The regex of the directive" version="1">
+    <concat>
+      <literal_component>^[\s]*RekeyLimit[\s]+</literal_component>
+      <variable_component var_ref="var_rekey_limit_size"/>
+      <literal_component>[\s]+</literal_component>
+      <variable_component var_ref="var_rekey_limit_time"/>
+      <literal_component>[\s]*$</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="Size component of the rekey limit" datatype="string" id="var_rekey_limit_size" version="1" />
+  <external_variable comment="Time component of the rekey limit" datatype="string" id="var_rekey_limit_time" version="1" />
+</def-group>
+
