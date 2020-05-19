@@ -873,7 +873,8 @@ selections:
     - accounts_passwords_pam_faillock_deny
 
     ### 5.4.3 Ensure password reuse is limited (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5535
+    - var_password_pam_unix_remember=5
+    - accounts_password_pam_unix_remember
 
     ### 5.4.4 Ensure password hashing algorithm is SHA-512 (Scored)
     - set_password_hashing_algorithm_systemauth
