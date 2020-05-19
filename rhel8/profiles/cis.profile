@@ -371,14 +371,14 @@ selections:
     - sysctl_net_ipv6_conf_all_accept_redirects
 
     #### net.ipv6.conf.defaults.accept_redirects = 0
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5234
+    - sysctl_net_ipv6_conf_default_accept_redirects
 
     ### 3.2.3 Ensure secure ICMP redirects are not accepted (Scored)
     #### net.ipv4.conf.all.secure_redirects = 0
     - sysctl_net_ipv4_conf_all_secure_redirects
 
     #### net.ipv4.cof.default.secure_redirects = 0
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5235
+    - sysctl_net_ipv4_conf_default_secure_redirects
 
     ### 3.2.4 Ensure suspicious packets are logged (Scored)
     #### net.ipv4.conf.all.log_martians = 1
