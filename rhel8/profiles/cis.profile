@@ -867,7 +867,10 @@ selections:
 
     ### 5.4.2 Ensure lockout for failed password attempts is
     ###       configured (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5534
+    - var_accounts_passwords_pam_faillock_unlock_time=900
+    - var_accounts_passwords_pam_faillock_deny=5
+    - accounts_passwords_pam_faillock_unlock_time
+    - accounts_passwords_pam_faillock_deny
 
     ### 5.4.3 Ensure password reuse is limited (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5535
