@@ -622,7 +622,13 @@ selections:
     
     ### 4.1.10 Ensure unsuccessful unauthorized file access attempts are
     ###        collected (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5510
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_ftruncate
+    # Opinionated selection
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
 
     ### 4.1.11 Ensure events that modify user/group information are
     ###        collected (Scored)
