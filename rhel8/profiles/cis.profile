@@ -920,7 +920,9 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5539
 
     ### 5.5.5 Ensure default user mask is 027 or more restrictive (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5540
+    - var_accounts_user_umask=027
+    - accounts_umask_etc_bashrc
+    - accounts_umask_etc_profile
 
     ## 5.6 Ensure root login is restricted to system console (Not Scored)
     - securetty_root_login_console_only
