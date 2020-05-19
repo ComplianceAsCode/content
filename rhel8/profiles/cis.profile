@@ -606,7 +606,19 @@ selections:
 
     ### 4.1.9 Ensure discretionary access control permission modification
     ###       events are collected (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5509
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_setxattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_fremovexattr
     
     ### 4.1.10 Ensure unsuccessful unauthorized file access attempts are
     ###        collected (Scored)
