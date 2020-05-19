@@ -898,7 +898,10 @@ selections:
     - accounts_password_warn_age_login_defs
 
     #### 5.5.1.4 Ensure inactive password lock is 30 days or less (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5536
+    # TODO: Rule doesn't check list of users
+    # https://github.com/ComplianceAsCode/content/issues/5536
+    - var_account_disable_post_pw_expiration=30
+    - account_disable_post_pw_expiration
 
     #### 5.5.1.5 Ensure all users last password change date is
     ####         in the past (Scored)
