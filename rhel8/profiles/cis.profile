@@ -646,7 +646,12 @@ selections:
 
     ### 4.1.14 Ensure file deletion events by users are collected
     ###        (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5514
+    - audit_rules_file_deletion_events_unlink
+    - audit_rules_file_deletion_events_unlinkat
+    - audit_rules_file_deletion_events_rename
+    - audit_rules_file_deletion_events_renameat
+    # Opinionated selection
+    - audit_rules_file_deletion_events_rmdir
 
     ### 4.1.15 Ensure kernel module loading and unloading is collected
     ###        (Scored)
