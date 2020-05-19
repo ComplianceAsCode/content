@@ -8,6 +8,8 @@ description: |-
     09-30-2019.
 
 selections:
+    # Necessary for dconf rules
+    - dconf_db_up_to_date
 
     ### Partitioning
     - mount_option_home_nodev
