@@ -256,10 +256,12 @@ selections:
     ### 2.2.1 Time Synchronization
 
     #### 2.2.1.1 Ensure time synchronization is in use (Not Scored)
-    - service_chronyd_or_ntpd_enabled
+    - package_chrony_installed
 
     #### 2.2.1.2 Ensure chrony is configured (Scored)
-    - chronyd_or_ntpd_specify_remote_server
+    - service_chronyd_enabled
+    - chronyd_specify_remote_server
+    - chronyd_run_as_chrony_user
 
     ### 2.2.2 Ensure X Window System is not installed (Scored)
     - package_xorg-x11-server-common_removed
