@@ -642,7 +642,7 @@ selections:
     - audit_rules_media_export
 
     ### 4.1.13 Ensure use of privileged commands is collected (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5513
+    - audit_rules_privileged_commands
 
     ### 4.1.14 Ensure file deletion events by users are collected
     ###        (Scored)
