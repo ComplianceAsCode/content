@@ -858,7 +858,12 @@ selections:
     ## 5.4 Configure PAM
 
     ### 5.4.1 Ensure password creation requirements are configured (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5533
+    # NEEDS RULE: try_first_pass - https://github.com/ComplianceAsCode/content/issues/5533
+    - accounts_password_pam_retry
+    - var_password_pam_minlen=14
+    - accounts_password_pam_minlen
+    - var_password_pam_minclass=4
+    - accounts_password_pam_minclass
 
     ### 5.4.2 Ensure lockout for failed password attempts is
     ###       configured (Scored)
