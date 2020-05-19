@@ -632,7 +632,11 @@ selections:
 
     ### 4.1.11 Ensure events that modify user/group information are
     ###        collected (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5511
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_shadow
+    - audit_rules_usergroup_modification_opasswd
 
     ### 4.1.12 Ensure successful file system mounts are collected (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5512
