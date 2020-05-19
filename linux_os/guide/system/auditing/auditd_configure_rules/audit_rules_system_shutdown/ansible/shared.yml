@@ -10,18 +10,19 @@
     patterns: "*.rules"
   register: find_rules_d
 
-- name: Remove the -e option from all Audit config files
+- name: Remove the -f option from all Audit config files
   lineinfile:
     path: "{{ item }}"
-    regexp: '^\s*(?:-e)\s+.*$'
+    regexp: '^\s*(?:-f)\s+.*$'
     state: absent
   loop: "{{ find_rules_d.files | map(attribute='path') | list + ['/etc/audit/audit.rules'] }}"
 
-- name: Add Audit -e option into /etc/audit/rules.d/immutable.rules and /etc/audit/audit.rules
+- name: Add Audit -f option into /etc/audit/rules.d/immutable.rules and /etc/audit/audit.rules
   lineinfile:
     path: "{{ item }}"
     create: True
-    line: "-e 2"
+    line: "-f 2"
   loop:
     - "/etc/audit/audit.rules"
     - "/etc/audit/rules.d/immutable.rules"
+
