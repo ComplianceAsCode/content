@@ -655,7 +655,7 @@ selections:
 
     ### 4.1.15 Ensure kernel module loading and unloading is collected
     ###        (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5515
+    - audit_rules_kernel_module_loading
 
     ### 4.1.16 Ensure system administrator actions (sudolog) are
     ###        collected (Scored)
