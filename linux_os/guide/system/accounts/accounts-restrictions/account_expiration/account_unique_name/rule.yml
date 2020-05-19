@@ -3,14 +3,13 @@ documentation_complete: true
 title: 'Ensure All Accounts on the System Have Unique Names'
 
 description: |-
-    Although the <tt>useradd</tt> utility prevents creation of duplicate user
-    names, it is possible for a malicious administrator to manually edit the
-    <tt>/etc/passwd</tt> file and change the user name.
+    Ensure accounts on the system have unique names.
 
-rationale: |-
-    If a user is assigned a duplicate user name, the new user will be able to
-    create and have access to files with the first UID for that username as
-    defined in <tt>/etc/passwd</tt>.
+    To ensure all accounts have unique names, run the following command:
+    <pre>$ sudo getent passwd | awk -F: '{ print $1}' | uniq -d</pre>
+    If a username is returned, change or delete the username.
+
+rationale: 'Unique usernames allow for accountability on the system.'
 
 severity: medium
 
@@ -30,6 +29,6 @@ references:
 ocil_clause: 'a line is returned'
 
 ocil: |-
-    Run the following command to check for duplicate account names:
-    <pre>$ sudo pwck -qr</pre>
-    If there are no duplicate names, no line will be returned.
+    To verify all accounts have unique names, run the following command:
+    <pre>$ sudo getent passwd | awk -F: '{ print $1}' | uniq -d</pre>
+    No output should be returned.
