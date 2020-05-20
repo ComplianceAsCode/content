@@ -15,6 +15,7 @@ product_directories = [
     'jre',
     'macos1015',
     'ocp3', 'ocp4',
+    'rhcos4',
     'ol7', 'ol8',
     'opensuse',
     'rhel6', 'rhel7', 'rhel8',
@@ -152,6 +153,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 3": "ocp3",
     "Red Hat OpenShift Container Platform 4": "ocp4",
+    "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
     "openSUSE": "opensuse",
@@ -253,6 +255,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "ocp4": [
         "cpe:/a:redhat:openshift_container_platform:4.1",
     ],
+    "rhcos4": [
+        "cpe:/a:redhat:enterprise_linux_coreos:4",
+    ],
     "ol7": [
         "cpe:/o:oracle:linux:7",
     ],
@@ -335,7 +340,7 @@ REF_PREFIX_MAP = {
 }
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
+                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_debian": ["debian8", "debian9", "debian10"],
@@ -344,6 +349,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8"],
     "multi_platform_ocp": ["ocp3", "ocp4"],
+    "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
@@ -516,6 +522,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'example': 'Example Linux Content',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
+    'rhcos': 'Red Hat Enterprise Linux CoreOS',
 }
 
 

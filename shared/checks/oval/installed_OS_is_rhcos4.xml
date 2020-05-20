@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_rhcos4" version="1">
+    <metadata>
+      <title>Red Hat Enterprise Linux CoreOS</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:enterprise_linux_coreos:4" source="CPE" />
+      <description>The operating system installed on the system is
+      Red Hat Enterprise Linux CoreOS</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="RHEL8 OS installed" definition_ref="installed_OS_is_rhel8" />
+    </criteria>
+  </definition>
+</def-group>
