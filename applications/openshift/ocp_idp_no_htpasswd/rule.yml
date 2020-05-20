@@ -1,0 +1,16 @@
+prodtype: ocp4
+
+title: "The Identity Providers don't use the htpasswd-based authentication"
+
+description: TBD
+
+rationale: TBD
+
+identifiers:
+    cce@ocp4: 84209-6
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(8) }}}

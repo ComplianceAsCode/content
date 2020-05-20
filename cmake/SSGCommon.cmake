@@ -60,6 +60,18 @@ endif()
 set(SSG_HTML_GUIDE_FILE_LIST "")
 set(SSG_HTML_TABLE_FILE_LIST "")
 
+# Define VALIDATE_PRODUCT to FALSE if a successful product validation is known to require newer oscap
+# that the one that is picked by the build system.
+function(define_validate_product PRODUCT)
+    set(VALIDATE_PRODUCT, TRUE)
+    if ("${OSCAP_VERSION}" VERSION_LESS "1.3.3")
+	    if ("${PRODUCT}" MATCHES "^(ocp4|ANOTHER_PROBLEMATIC_PRODUCT)$")
+            message(STATUS "Won't validate ${PRODUCT}, as it requires at least oscap 1.3.3")
+            set(VALIDATE_PRODUCT, FALSE)
+        endif ()
+    endif ()
+endfunction()
+
 macro(ssg_build_bash_remediation_functions)
     file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
 
@@ -376,14 +388,17 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
     )
-    add_test(
-        NAME "validate-ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-    )
-    add_test(
-        NAME "validate-ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-    )
+    define_validate_product("${PRODUCT}")
+    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+        add_test(
+            NAME "validate-ssg-${PRODUCT}-cpe-dictionary.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+        )
+        add_test(
+            NAME "validate-ssg-${PRODUCT}-cpe-oval.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
@@ -429,10 +444,13 @@ macro(ssg_build_xccdf_final PRODUCT)
         generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
-    add_test(
-        NAME "validate-ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-    )
+    define_validate_product("${PRODUCT}")
+    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+        add_test(
+            NAME "validate-ssg-${PRODUCT}-xccdf.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        )
+    endif()
     add_test(
         NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
@@ -480,10 +498,13 @@ macro(ssg_build_oval_final PRODUCT)
         generate-ssg-${PRODUCT}-oval.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
     )
-    add_test(
-        NAME "validate-ssg-${PRODUCT}-oval.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-    )
+    define_validate_product("${PRODUCT}")
+    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+        add_test(
+            NAME "validate-ssg-${PRODUCT}-oval.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_ocil_final PRODUCT)
@@ -577,14 +598,17 @@ macro(ssg_build_sds PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
     )
 
-    add_test(
-        NAME "validate-ssg-${PRODUCT}-ds.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-    )
-    add_test(
-        NAME "validate-ssg-${PRODUCT}-ds-1.2.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
-    )
+    define_validate_product("${PRODUCT}")
+    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+        add_test(
+            NAME "validate-ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        )
+        add_test(
+            NAME "validate-ssg-${PRODUCT}-ds-1.2.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_html_guides PRODUCT)
@@ -839,10 +863,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
     )
-    add_test(
-        NAME "validate-ssg-${DERIVATIVE}-xccdf.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
-    )
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
@@ -860,14 +880,21 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
     )
-    add_test(
-        NAME "validate-ssg-${DERIVATIVE}-ds.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
-    )
-    add_test(
-        NAME "validate-ssg-${DERIVATIVE}-ds-1.2.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
-    )
+    define_validate_product("${PRODUCT}")
+    if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
+        add_test(
+            NAME "validate-ssg-${DERIVATIVE}-xccdf.xml"
+            COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
+        )
+        add_test(
+            NAME "validate-ssg-${DERIVATIVE}-ds.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        )
+        add_test(
+            NAME "validate-ssg-${DERIVATIVE}-ds-1.2.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
+        )
+    endif()
 
     add_custom_target(${DERIVATIVE} ALL)
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-content)
