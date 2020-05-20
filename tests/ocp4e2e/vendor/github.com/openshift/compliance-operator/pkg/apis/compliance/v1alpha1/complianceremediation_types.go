@@ -4,8 +4,7 @@ import (
 	"fmt"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	mcfgv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type RemediationApplicationState string
@@ -13,6 +12,7 @@ type RemediationApplicationState string
 const (
 	RemediationNotApplied RemediationApplicationState = "NotApplied"
 	RemediationApplied    RemediationApplicationState = "Applied"
+	RemediationError      RemediationApplicationState = "Error"
 )
 
 type RemediationType string
@@ -23,8 +23,6 @@ const (
 )
 
 const (
-	// SuiteLabel defines the label that associates the Remediation with the suite
-	SuiteLabel = "complianceoperator.openshift.io/suite"
 	// ScanLabel defines the label that associates the Remediation with the scan
 	ScanLabel = "complianceoperator.openshift.io/scan"
 )
@@ -40,8 +38,11 @@ type ComplianceRemediationSpecMeta struct {
 // +k8s:openapi-gen=true
 type ComplianceRemediationSpec struct {
 	ComplianceRemediationSpecMeta `json:",inline"`
-	// The actual remediation payload
-	MachineConfigContents mcfgv1.MachineConfig `json:"machineConfigContents,omitempty"`
+	// The actual MachineConfig remediation payload
+	MachineConfigContents *unstructured.Unstructured `json:"machineConfigContents,omitempty"`
+	// The remediation payload. This would normally be a full Kubernetes
+	// object.
+	Object *unstructured.Unstructured `json:"object,omitempty"`
 }
 
 // ComplianceRemediationStatus defines the observed state of ComplianceRemediation
@@ -49,6 +50,7 @@ type ComplianceRemediationSpec struct {
 type ComplianceRemediationStatus struct {
 	// Whether the remediation is already applied or not
 	ApplicationState RemediationApplicationState `json:"applicationState,omitempty"`
+	ErrorMessage     string                      `json:"errorMessage,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
