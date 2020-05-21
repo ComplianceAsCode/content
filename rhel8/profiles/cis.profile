@@ -3,9 +3,11 @@ documentation_complete: true
 title: 'CIS Red Hat Enterprise Linux 8 Benchmark'
 
 description: |-
-    This baseline aligns to the Center for Internet Security
-    Red Hat Enterprise Linux 8 Benchmark, v1.0.0, released
-    09-30-2019.
+    This profile defines a baseline that aligns to the Center for Internet Security®
+    Red Hat Enterprise Linux 8 Benchmark™, v1.0.0, released 09-30-2019.
+
+    This profile includes Center for Internet Security®
+    Red Hat Enterprise Linux 8 CIS Benchmarks™ content.
 
 selections:
     # Necessary for dconf rules

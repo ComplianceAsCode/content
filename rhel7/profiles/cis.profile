@@ -3,9 +3,11 @@ documentation_complete: true
 title: 'CIS Red Hat Enterprise Linux 7 Benchmark'
 
 description: |-
-    This baseline aligns to the Center for Internet Security
-    Red Hat Enterprise Linux 7 Benchmark, v2.2.0, released
-    12-27-2017.
+    This profile defines a baseline that aligns to the Center for Internet Security®
+    Red Hat Enterprise Linux 7 Benchmark, v2.2.0, released 12-27-2017.
+
+    This profile includes Center for Internet Security®
+    Red Hat Enterprise Linux 7 CIS Benchmarks™ content.
 
 selections:
     # Necessary for dconf rules
