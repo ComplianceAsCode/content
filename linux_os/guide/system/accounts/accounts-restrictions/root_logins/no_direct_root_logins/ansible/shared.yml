@@ -3,13 +3,9 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Test for existence of /etc/securetty
-  stat:
-    path: /etc/securetty
-  register: securetty_empty
+
 
 - name: "Direct root Logins Not Allowed"
   copy:
     dest: /etc/securetty
     content: ""
-  when: securetty_empty.stat.size > 1
