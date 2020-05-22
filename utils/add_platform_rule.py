@@ -1,0 +1,383 @@
+#!/usr/bin/python3
+
+import argparse
+import subprocess
+import pathlib
+import sys
+import textwrap
+import os
+import time
+
+PROG_DESC = (''' Create and test content files for Kubernetes API checks.
+
+This script is intended to help content writers create a new application check
+for OCP4/Kubernetes.
+
+- The 'create' subcommand creates the initial files for a new rule and fetches
+  the raw URL of the object in question (unless you specify the URL).
+
+- The 'test' subcommand builds your content locally and tests directly using an
+  openscap podman container. The scan container will test against yaml files
+  staged under --objectdir.
+
+- The 'cluster-test' subcommand pushes the content to your cluster, and then
+  runs a Platform scan for your rule with compliance-operator.
+
+Example workflow:
+
+$ utils/add_platform_rule.py create --rule=ocp_proxy_has_ca \
+  --type="proxies.config" --name="cluster" \
+  --yamlpath=".spec.trustedCA.name" --match="[a-zA-Z0-9]*"
+creating check for "/apis/config.openshift.io/v1/proxies/cluster" with yamlpath ".spec.trustedCA.name" satisfying match of "[a-zA-Z0-9]*"
+wrote applications/openshift/ocp_proxy_has_ca/rule.yml
+wrote applications/openshift/ocp_proxy_has_ca/oval/shared.xml
+
+$ mkdir -p /tmp/apis/config.openshift.io/v1/proxies/
+$ oc get proxies.config/cluster -o yaml > /tmp/apis/config.openshift.io/v1/proxies/cluster
+$ utils/add_platform_rule.py test --rule=ocp_proxy_has_ca
+testing rule ocp_proxy_has_ca locally
+Title
+        None
+Rule
+        xccdf_org.ssgproject.content_rule_ocp_proxy_has_ca
+Ident
+        CCE-84209-6
+Result
+        pass
+
+$ utils/add_platform_rule.py cluster-test --rule=ocp_proxy_has_ca
+testing rule ocp_proxy_has_ca in-cluster
+deploying compliance-operator
+pushing image build to cluster
+waiting for cleanup from previous test run
+output from last phase check: LAUNCHING NOT-AVAILABLE
+output from last phase check: RUNNING NOT-AVAILABLE
+output from last phase check: AGGREGATING NOT-AVAILABLE
+output from last phase check: DONE COMPLIANT
+COMPLIANT
+
+''')
+
+PLATFORM_RULE_DIR = 'applications/openshift'
+OSCAP_TEST_IMAGE = 'quay.io/compliance-operator/openscap-ocp:1.3.3'
+OSCAP_CMD_OPTS = 'oscap xccdf eval --verbose INFO --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_test --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
+PROFILE_PATH = 'ocp4/profiles/test.profile'
+
+RULE_TEMPLATE = ('''prodtype: ocp4
+
+title: {TITLE}
+
+description: TBD
+
+rationale: TBD
+
+identifiers: {{}}
+
+severity: {SEV}
+
+warnings:
+    - general: |-
+        {{{{{{ openshift_cluster_setting("{URL}") | indent(8) }}}}}}
+''')
+
+
+OVAL_TEMPLATE = ('''{{{{% set YAML_TEST_OVAL_VERSION = [5, 11] %}}}}
+
+{{{{% if target_oval_version >= YAML_TEST_OVAL_VERSION %}}}}
+<def-group>
+      <definition class="compliance" version="1" id="{{{{{{ rule_id }}}}}}">
+      <metadata>
+        <title>{TITLE}</title>
+        {{{{{{- oval_affected(products) }}}}}}
+        <description>{DESC}</description>
+      </metadata>
+      <criteria operator="AND">
+        <criterion comment="{DESC}" negate="{NEGATE}" test_ref="test_{{{{{{ rule_id }}}}}}"/>
+        <criterion comment="Make sure that there is the actual file to scan" test_ref="test_file_for_{{{{{{ rule_id }}}}}}"/>
+      </criteria>
+    </definition>
+
+    <ind:yamlfilecontent_test id="test_{{{{{{ rule_id }}}}}}" check="at least one" comment="Find one match" version="1">
+            <ind:object object_ref="object_{{{{{{ rule_id }}}}}}"/>
+            <ind:state state_ref="state_{{{{{{ rule_id }}}}}}"/>
+    </ind:yamlfilecontent_test>
+
+    <local_variable id="{{{{{{ rule_id }}}}}}_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
+       <concat>
+              <variable_component var_ref="ocp_data_root"/>
+              <literal_component>{URL}</literal_component>
+       </concat>
+    </local_variable>
+
+    <unix:file_test id="test_file_for_{{{{{{ rule_id }}}}}}" check="only one" comment="Find the actual file to be scanned." version="1">
+            <unix:object object_ref="object_file_for_{{{{{{ rule_id }}}}}}"/>
+    </unix:file_test>
+
+    <unix:file_object id="object_file_for_{{{{{{ rule_id }}}}}}" version="1">
+      <unix:filepath var_ref="{{{{{{ rule_id }}}}}}_dump_location"/>
+    </unix:file_object>
+
+    <ind:yamlfilecontent_object id="object_{{{{{{ rule_id }}}}}}" version="1">
+      <ind:filepath var_ref="{{{{{{ rule_id }}}}}}_dump_location"/>
+      <ind:yamlpath>{YAMLPATH}</ind:yamlpath>
+    </ind:yamlfilecontent_object>
+
+    <ind:yamlfilecontent_state id="state_{{{{{{ rule_id }}}}}}" version="1">
+            <ind:value_of datatype="string" operation="pattern match">{MATCH}</ind:value_of>
+    </ind:yamlfilecontent_state>
+
+   <external_variable comment="Root of downloaded stuff" datatype="string" id="ocp_data_root" version="1" />
+</def-group>
+{{{{% endif  %}}}}
+''')
+
+PROFILE_TEMPLATE = ('''documentation_complete: true
+
+title: 'Test Profile for {RULE_NAME}'
+
+description: |-
+    Test Profile
+selections:
+
+    - {RULE_NAME}
+''')
+
+
+TEST_SCAN_TEMPLATE = ('''apiVersion: compliance.openshift.io/v1alpha1
+kind: ComplianceScan
+metadata:
+  name: test
+spec:
+    scanType: Platform
+    profile: {PROFILE}
+    content: ssg-ocp4-ds.xml
+    contentImage: image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest
+    debug: True
+''')
+
+
+def which(program):
+    fpath, fname = os.path.split(program)
+    if fpath:
+        if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            exe_file = os.path.join(path, program)
+            if os.path.isfile(exe_file) and os.access(exe_file, os.X_OK):
+                return exe_file
+
+    return None
+
+
+def createFunc(args):
+    url = args.url
+    retries = 0
+    namespace_flag = ''
+    if args.namespace is not None:
+        namespace_flag = '-n ' + args.namespace
+
+    if args.url is not None:
+        if which('oc') is None:
+            print('oc is required if --url is not provided.')
+            return 1
+
+    while url is None and retries < 5:
+        retries += 1
+        ret_code, output = subprocess.getstatusoutput(
+            'oc get %s/%s -o template="{{.metadata.selfLink}}" %s' % (args.type, args.name, namespace_flag))
+        if ret_code != 0:
+            print('error running oc, check connection to the cluster: %d\n %s' % (
+                ret_code, output))
+            continue
+        if len(output) > 0 and '/api' in output:
+            url = output
+
+    if url == None:
+        print('there was a problem finding the URL from the oc debug output. Hint: override this automatic check with --url')
+        return 1
+
+    print('creating check for "%s" with yamlpath "%s" satisfying match of "%s"' % (
+        url, args.yamlpath, args.match))
+    rule_path = PLATFORM_RULE_DIR + '/' + args.rule
+    oval_path = rule_path + '/oval'
+    shared_xml_path = oval_path + '/shared.xml'
+    rule_yaml_path = rule_path + '/rule.yml'
+
+    pathlib.Path(oval_path).mkdir(parents=True, exist_ok=True)
+    with open(rule_yaml_path, 'w') as f:
+        f.write(RULE_TEMPLATE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers))
+    print('wrote ' + rule_yaml_path)
+    with open(shared_xml_path, 'w') as f:
+        f.write(OVAL_TEMPLATE.format(TITLE=args.title, DESC=args.description,
+                                        URL=url, YAMLPATH=args.yamlpath, MATCH=args.match, NEGATE=str(args.negate).lower()))
+    print('wrote ' + shared_xml_path)
+
+    return 0
+
+
+def createTestProfile(rule):
+    # create a solo profile for rule
+    with open(PROFILE_PATH, 'w') as f:
+        f.write(PROFILE_TEMPLATE.format(RULE_NAME=rule))
+
+
+def clusterTestFunc(args):
+    build_cmd = 'utils/build_ds_container.sh ocp4'
+
+    if which('oc') is None:
+        print('oc is required to test a rule in-cluster.')
+        return 1
+
+    print('testing rule %s in-cluster' % args.rule)
+
+    if not os.path.exists(PLATFORM_RULE_DIR + '/' + args.rule):
+        print('no rule for %s, run "create" first' % args.rule)
+        return 1
+
+    if not args.skip_deploy:
+        print('deploying compliance-operator')
+        subprocess.getstatusoutput("utils/deploy_compliance_operator.sh")
+
+    if not args.skip_build:
+        createTestProfile(args.rule)
+        print('pushing image build to cluster')
+        # execute the build_ds_container script
+        ret_code, output = subprocess.getstatusoutput(build_cmd)
+        if ret_code != 0:
+            print(output)
+            try:
+                os.remove(profile_path)
+            except OSError:
+                pass
+            return 1
+
+    ret_code, output = subprocess.getstatusoutput(
+        'oc delete compliancescans/test')
+    if ret_code == 0:
+        # if previous compliancescans were actually deleted, wait a bit to allow resources to clean up.
+        print('waiting for cleanup from a previous test run')
+        time.sleep(20)
+
+    # create a single-rule scan
+    profile = 'xccdf_org.ssgproject.content_profile_test'
+    apply_cmd = ['oc', 'apply', '-f', '-']
+    with subprocess.Popen(apply_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as proc:
+        out, err = proc.communicate(
+            input=TEST_SCAN_TEMPLATE.format(PROFILE=profile).encode())
+        if proc.returncode != 0:
+            print('error applying scan object: %s' % err)
+            try:
+                os.remove(profile_path)
+            except OSError:
+                pass
+            return 1
+
+    # poll for the DONE result
+    timeout = time.time() + 60   # A minute is generous for the platform scan.
+    scan_result = None
+    while True:
+        ret_code, output = subprocess.getstatusoutput(
+            'oc get compliancescans/test -o template="{{.status.phase}} {{.status.result}}"')
+        if output is not None:
+            print('output from last phase check: %s' % output)
+        if output.startswith('DONE'):
+            scan_result = output[5:]
+            break
+        if time.time() >= timeout:
+            break
+        time.sleep(2)
+
+    if scan_result == None:
+        print('timeout waiting for scan to finish')
+        return 1
+
+    print(scan_result)
+    return 0
+
+
+def testFunc(args):
+    if which('podman') is None:
+        print('podman is required')
+        return 1
+
+    print('testing rule %s locally' % args.rule)
+
+    if not args.skip_build:
+        createTestProfile(args.rule)
+        ret_code, out = subprocess.getstatusoutput('./build_product ocp4')
+        if ret_code != 0:
+            print('build failed: %s' % out)
+            return 1
+
+    pod_cmd = 'podman run -it --security-opt label=disable -v "%s:/content" -v "%s:/tmp" %s %s' % (args.contentdir, args.objectdir, OSCAP_TEST_IMAGE, OSCAP_CMD_OPTS)
+    print(subprocess.getoutput(pod_cmd))
+
+
+def main():
+    if os.getenv('KUBECONFIG') == None:
+        print('export KUBECONFIG needed')
+        return 1
+
+    parser = argparse.ArgumentParser(
+        prog="add_platform_rule.py",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(PROG_DESC))
+    subparser = parser.add_subparsers(
+        dest='subcommand', title='subcommands', help='pick one', required=True)
+    create_parser = subparser.add_parser(
+        'create', help='Bootstrap the XML and YML files under %s for a new check.' % PLATFORM_RULE_DIR)
+    create_parser.add_argument(
+        '--rule', required=True, help='The name of the rule to create. Required.')
+    create_parser.add_argument(
+        '--name', required=True, help='The name of the Kubernetes object to check. Required.')
+    create_parser.add_argument(
+        '--type', required=True, help='The type of Kubernetes object, e.g., configmap. Required.')
+    create_parser.add_argument('--yamlpath', required=True,
+                               help='The yaml-path of the element to match against.')
+    create_parser.add_argument(
+        '--match', required=True, help='A string value or regex providing the matching criteria. Required')
+    create_parser.add_argument(
+        '--namespace', help='The namespace of the Kubernetes object (optional for cluster-scoped objects)', default=None)
+    create_parser.add_argument(
+        '--title', help='A short description of the check.')
+    create_parser.add_argument(
+        '--url', help='The direct api path (metadata.selfLink) of the object, which overrides --type --name and --namespace options.')
+    create_parser.add_argument(
+        '--description', help='A human-readable description of the provided matching criteria.')
+    create_parser.add_argument(
+        '--negate', default=False, action="store_true", help='negate the given matching criteria (does NOT match). Default is false.')
+    create_parser.add_argument(
+        '--identifiers', default="TBD", help='an identifier for the rule (CCE number)')
+    create_parser.add_argument(
+        '--severity', default="unknown", help='the severity of the rule.')
+    create_parser.set_defaults(func=createFunc)
+
+    cluster_test_parser = subparser.add_parser(
+        'cluster-test', help='Test a rule on a running OCP cluster using the compliance-operator.')
+    cluster_test_parser.add_argument(
+        '--rule', required=True, help='The name of the rule to test. Required.')
+    cluster_test_parser.add_argument(
+        '--skip-deploy', default=False, action="store_true", help='Skip deploying the compliance-operator. Default is to deploy.')
+    cluster_test_parser.add_argument(
+        '--skip-build', default=False, action="store_true", help='Skip building and pushing the datastream. Default is true.')
+    cluster_test_parser.set_defaults(func=clusterTestFunc)
+
+    test_parser = subparser.add_parser(
+        'test', help='Test a rule locally against a directory of mocked object files using podman and an oscap container.')
+    test_parser.add_argument('--rule', required=True,
+                             help='The name of the rule to test.')
+    test_parser.add_argument(
+        '--contentdir', default="./build", help='The path to the directory containing the datastream')
+    test_parser.add_argument(
+        '--skip-build', default=False, action="store_true", help='Skip building the datastream. Default is false.')
+    test_parser.add_argument('--objectdir', default="/tmp",
+                             help='The path to a directory structure of yaml objects to test against.')
+    test_parser.set_defaults(func=testFunc)
+
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
