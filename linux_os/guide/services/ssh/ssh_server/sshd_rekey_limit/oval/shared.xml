@@ -1,5 +1,4 @@
-{{% set filepath = "/etc/ssh/sshd_config" %}}
-{{% set parameter = "RekeyLimit" %}}
+{{% set filepath = "/etc/ssh/sshd_config" -%}}
 
 
 <def-group>
@@ -7,7 +6,7 @@
     <metadata>
       <title>{{{ rule_title }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Ensure '{{{ RekeyLimit }}}' is configured with the correct value in '{{{ filepath }}}'</description>
+      <description>Ensure 'RekeyLimit' is configured with the correct value in '{{{ filepath }}}'</description>
     </metadata>
     <criteria comment="sshd is configured correctly or is not installed" operator="OR">
         {{{- application_not_required_or_requirement_unset() }}}
