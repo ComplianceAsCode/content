@@ -1,5 +1,20 @@
 {{# ##### High level macros ##### #}}
 
+{{#
+Pass strings that correspond to XCCDF value names as arguments to this macro:
+bash_instantiate_variables("varname1", "varname2")
+
+Then, assume that variables of that names are defined and contain the correct value, e.g.
+echo "Setting=$varname1" >> config_file
+
+#}}
+{{%- macro bash_instantiate_variables() -%}}
+{{%- for name in varargs -%}}
+populate {{{ name }}}
+{{# this line is intentionally left blank #}}
+{{% endfor -%}}
+{{%- endmacro -%}}
+
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}

@@ -1,4 +1,18 @@
 {{#
+Pass strings that correspond to XCCDF value names as arguments to this macro:
+ansible_instantiate_variables("varname1", "varname2")
+
+Then, assume that the task that follows can work with the variable by referencing it, e.g.
+value: "Setting={{ varname1 }}"
+
+#}}
+{{%- macro ansible_instantiate_variables() -%}}
+{{%- for name in varargs -%}}
+- (xccdf-var {{{ name }}})
+{{% endfor -%}}
+{{%- endmacro -%}}
+
+{{#
   A wrapper over the Ansible lineinfile module. This handles the most common
   options for us. regex is optional and when blank, it won't be included in
   the Ansible script; this allows arbitrary additions to files. new_line will
