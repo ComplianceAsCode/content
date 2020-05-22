@@ -21,7 +21,6 @@ description: 'This profile contains configuration checks that align to the
 
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 documentation_complete: true
-extends: ospp
 selections:
 - account_disable_post_pw_expiration
 - account_temp_expire_date
@@ -243,6 +242,8 @@ selections:
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
 - var_sshd_set_keepalive=0
+- var_rekey_limit_size=512M
+- var_rekey_limit_time=1hour
 - var_accounts_user_umask=027
 - var_password_pam_difok=4
 - var_password_pam_maxrepeat=3
