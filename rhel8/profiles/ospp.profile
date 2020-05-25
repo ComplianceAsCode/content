@@ -58,7 +58,7 @@ selections:
     - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_rekey_limit
-    - var_rekey_limit_size=512M
+    - var_rekey_limit_size=1G
     - var_rekey_limit_time=1hour
     - sshd_use_strong_rng
     - openssl_use_strong_entropy
