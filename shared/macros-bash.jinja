@@ -86,6 +86,21 @@ populate {{{ name }}}
     }}}
 {{%- endmacro -%}}
 
+{{%- macro bash_selinux_config_set(parameter, value) -%}}
+{{{ set_config_file(
+        path="/etc/selinux/config",
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="",
+        insensitive=true,
+        separator="=",
+        separator_regex="\s*=\s*",
+        prefix_regex="^\s*")
+    }}}
+{{%- endmacro -%}}
+
 {{#
 # Install a package
 # Uses the right command based on pkg_manger proprerty defined in product.yaml.
