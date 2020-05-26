@@ -1432,6 +1432,9 @@ template:
         bash: "off"
 ----
 
+
+IMPORTANT: The build system does not support implicit conversion of bool strings when *Python 2* is used, so `bash: True` argument in the example above would cause a *build error*. One should always use quoted strings as arguments until *Python 2* is completely removed from the list of supported interpreters.
+
 ==== List of available templates
 
 accounts_password::
@@ -1676,14 +1679,13 @@ timer_enabled::
 yamlfile_value::
 * Check if value(s) of certain type is (are) present in a YAML (or JSON) file at a given path.
 * Parameters:
-** *path* - path of the file to check.
-** *file* - name of the file to check.
+** *filepath* - full path to the file to check
 ** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
 ** *value* - the value to check.
-** *type* (string/SimpleDatatypeEnumeration) - datatype for state's value_of, optional.
-** *check* (string/CheckEnumeration) - entity_check value for state's value_of, optional.
-** *negate* (boolean) - invert the meaning of the value check criterion, optional (default: false).
-** *ocp_data* (boolean) - the file is the part of the dump of OCP configuration, take into account the 'ocp_data_root', optional (default: false).
+** *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional.
+** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional.
+** *negate* - if set to `"true"` the meaning of the value check criterion would be inverted, optional.
+** *ocp_data* - if set to `"true"` then the filepath would be treated as a part of the dump of OCP configuration with the `ocp_data_root` prefix; optional.
 * Languages: OVAL
 
 

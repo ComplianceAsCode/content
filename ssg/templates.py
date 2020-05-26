@@ -349,6 +349,8 @@ def timer_enabled(data, lang):
 
 @template(["oval"])
 def yamlfile_value(data, lang):
+    data["negate"] = data.get("negate", "false") == "true"
+    data["ocp_data"] = data.get("ocp_data", "false") == "true"
     return data
 
 
