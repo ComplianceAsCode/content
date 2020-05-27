@@ -85,7 +85,7 @@ def audit_rules_path_syscall(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_privileged_commands(data, lang):
     path = data["path"]
     name = re.sub(r"[-\./]", "_", os.path.basename(path))
@@ -94,6 +94,11 @@ def audit_rules_privileged_commands(data, lang):
         data["id"] = data["_rule_id"]
         data["title"] = "Record Any Attempts to Run " + name
         data["path"] = path.replace("/", "\\/")
+    elif lang == "kubernetes":
+        npath = path.replace("/", "_")
+        if npath[0] == '_':
+            npath = npath[1:]
+        data["normalized_path"] = npath
     return data
 
 @template(["ansible", "bash", "oval"])
