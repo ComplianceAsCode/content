@@ -13,7 +13,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,{{{ URLENCODEDPREFIX }}}(kubernetes-populate sysctl_{{{ SYSCTLID }}}_value)
+          source: data:,{{{ URL_ENCODED_SYSCTLVAR }}}%20%3D%20(kubernetes-populate sysctl_{{{ SYSCTLID }}}_value)
         filesystem: root
         mode: 0644
         path: /etc/sysctl.d/75-sysctl_{{{ SYSCTLID }}}.conf
@@ -27,7 +27,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,{{{ URLENCODEDCONTENT }}}
+          source: data:,{{{ URL_ENCODED_SYSCTLVAR }}}%20%3D%20{{{ URL_ENCODED_SYSCTLVAL }}}
         filesystem: root
         mode: 0644
         path: /etc/sysctl.d/75-sysctl_{{{ SYSCTLID }}}.conf

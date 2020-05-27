@@ -277,12 +277,9 @@ def sysctl(data, lang):
         ipv6_flag = "I"
     data["flags"] = "SR" + ipv6_flag
     if lang == "kubernetes":
+        data["url_encoded_sysctlvar"] = quote(data["sysctlvar"])
         if data["sysctlval"] != "":
-            filecontent = data["sysctlvar"] + " = " + data.get("sysctlval")
-            data["urlencodedcontent"] = quote(filecontent)
-        else:
-            filecontent = data["sysctlvar"] + " = "
-            data["urlencodedprefix"] = quote(filecontent)
+            data["url_encoded_sysctlval"] = quote(data.get("sysctlval"))
     return data
 
 
