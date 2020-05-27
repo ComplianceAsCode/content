@@ -1,0 +1,34 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+{{%- if SYSCTLVAL == "" %}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:,{{{ URLENCODEDPREFIX }}}(kubernetes-populate sysctl_{{{ SYSCTLID }}}_value)
+        filesystem: root
+        mode: 0644
+        path: /etc/sysctl.d/75-sysctl_{{{ SYSCTLID }}}.conf
+{{%- else %}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:,{{{ URLENCODEDCONTENT }}}
+        filesystem: root
+        mode: 0644
+        path: /etc/sysctl.d/75-sysctl_{{{ SYSCTLID }}}.conf
+{{%- endif %}}

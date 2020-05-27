@@ -5,6 +5,10 @@ import os
 import sys
 import re
 from xml.sax.saxutils import unescape
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote
 
 import ssg.build_yaml
 
@@ -263,7 +267,7 @@ def package_installed(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def sysctl(data, lang):
     data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
     if not data.get("sysctlval"):
@@ -272,6 +276,13 @@ def sysctl(data, lang):
     if data["sysctlid"].find("ipv6") >= 0:
         ipv6_flag = "I"
     data["flags"] = "SR" + ipv6_flag
+    if lang == "kubernetes":
+        if data["sysctlval"] != "":
+            filecontent = data["sysctlvar"] + " = " + data.get("sysctlval")
+            data["urlencodedcontent"] = quote(filecontent)
+        else:
+            filecontent = data["sysctlvar"] + " = "
+            data["urlencodedprefix"] = quote(filecontent)
     return data
 
 
