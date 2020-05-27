@@ -269,4 +269,7 @@ selections:
 - grub2_vsyscall_argument.severity=info
 - sysctl_user_max_user_namespaces.role=unscored
 - sysctl_user_max_user_namespaces.severity=info
+- ssh_client_rekey_limit
+- var_ssh_client_rekey_limit_size=1G
+- var_ssh_client_rekey_limit_time=1hour
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 8'
