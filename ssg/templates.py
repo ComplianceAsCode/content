@@ -65,7 +65,7 @@ def audit_rules_file_deletion_events(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_login_events(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
