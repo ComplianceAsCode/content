@@ -55,7 +55,7 @@ def auditd_lineinfile(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_dac_modification(data, lang):
     return data
 
