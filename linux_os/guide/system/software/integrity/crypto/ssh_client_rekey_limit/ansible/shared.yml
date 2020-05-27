@@ -1,0 +1,8 @@
+# platform = multi_platform_all                                                                                                                                                                                                                                                                                        [0/453]
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_ssh_client_rekey_limit_size", "var_ssh_client_rekey_limit_time") }}}
+
+{{{ ansible_lineinfile(msg='Ensure that rekey limit is set to {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }} in /etc/ssh/ssh_config.d/02-rekey-limit.conf', path='/etc/ssh/ssh_config.d/02-rekey-limit.conf', regex='^\s*RekeyLimit.*$', new_line='RekeyLimit {{ var_ssh_client_rekey_limit_size }} {{ var_ssh_client_rekey_limit_time }}', create='yes', state='present') }}}
