@@ -30,8 +30,8 @@ selections:
     ### 1.1.2 Ensure /tmp is configured (Scored)
     - partition_for_tmp
 
-    ### 1.1.3 Disable USB Storage (Scored)
-    - kernel_module_usb-storage_disabled
+    ### 1.1.3 Ensure noexec option set on /tmp partition (Scored)
+    - mount_option_tmp_noexec
 
     ### 1.1.4 Ensure nodev option set on /tmp partition (Scored)
     - mount_option_tmp_nodev
@@ -39,8 +39,10 @@ selections:
     ### 1.1.5 Ensure nosuid option set on /tmp partition (Scored)
     - mount_option_tmp_nosuid
 
-    ### 1.1.6 Ensure noexec option set on /tmp partition (Scored)
-    - mount_option_tmp_noexec
+    ### 1.1.6 Ensure /dev/shm is configured (Scored)
+    - mount_option_dev_shm_noexec
+    - mount_option_dev_shm_nodev
+    - mount_option_dev_shm_nosuid
 
     ### 1.1.7 Ensure separate partition exists for /var (Scored)
     - partition_for_var
