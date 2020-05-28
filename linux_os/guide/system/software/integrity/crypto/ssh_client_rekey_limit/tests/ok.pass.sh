@@ -1,4 +1,5 @@
 # platform = multi_platform_all
 
-sed -e '/RekeyLimit/d' /etc/ssh/sshd_config
-echo "RekeyLimit 512M 1h" >> /etc/ssh/sshd_config
+
+rm -f /etc/ssh/ssh_config.d/02-rekey-limit.conf
+echo "RekeyLimit 1G 1h" >> /etc/ssh/ssh_config.d/02-rekey-limit.conf

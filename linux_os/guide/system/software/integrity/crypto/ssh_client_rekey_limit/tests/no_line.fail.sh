@@ -1,3 +1,3 @@
 # platform = multi_platform_all
 
-sed -e '/RekeyLimit/d' /etc/ssh/sshd_config
+echo "some line" > /etc/ssh/ssh_config.d/02-rekey-limit.conf
