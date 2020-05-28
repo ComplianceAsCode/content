@@ -1527,6 +1527,14 @@ audit_rules_usergroup_modification::
 ** *path* - path that should be part of the audit rule as a value of `-w` argument, eg. `/etc/group`.
 * Languages: Ansible, Bash, OVAL
 
+audit_add_watch_rule::
+* Ensure there is an audit rule that records access to particular files or directories
+* Parameters:
+** *files* - an array of files to set up audit rules for
+** *key* - the key field to identify the meaning of the audit rule
+** *permissions* - the permissions to watch for, please see `man 7 audit.rules` for an example
+* Languages: Kubernetes
+
 file_groupowner::
 * Check group that owns the given file.
 * Parameters:

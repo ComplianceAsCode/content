@@ -55,3 +55,10 @@ ocil: |-
     configuration, a line should be returned (including
     <tt>perm=wa</tt> indicating permissions that are watched).
 
+template:
+  name: audit_add_watch_rule
+  vars:
+    key: MAC-policy
+    permissions: wa
+    files:
+      - /etc/selinux/

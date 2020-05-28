@@ -58,3 +58,10 @@ ocil: |-
     <pre>$ sudo auditctl -l | grep "watch=/etc/localtime"</pre>
     If the system is configured to audit this activity, it will return a line.
 
+template:
+  name: audit_add_watch_rule
+  vars:
+     permissions: wa
+     key: audit_time_rules
+     files:
+      - /etc/localtime
