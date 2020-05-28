@@ -40,45 +40,42 @@ selections:
     - mount_option_tmp_nosuid
 
     ### 1.1.6 Ensure /dev/shm is configured (Scored)
+
+    ### 1.1.7 Ensure noexec option set on /dev/shm (Scored)
     - mount_option_dev_shm_noexec
+
+    ### 1.1.8 Ensure nodev option set on /dev/shm (Scored)
     - mount_option_dev_shm_nodev
+
+    ### 1.1.9 Ensure nosuid option set on /dev/shm (Scored)
     - mount_option_dev_shm_nosuid
 
-    ### 1.1.7 Ensure separate partition exists for /var (Scored)
+    ### 1.1.10 Ensure separate partition exists for /var (Scored)
     - partition_for_var
 
-    ### 1.1.8 Ensure separate partition exists for /var/tmp (Scored)
+    ### 1.1.11 Ensure separate partition exists for /var/tmp (Scored)
     - partition_for_var_tmp
 
-    ### 1.1.9 Ensure nodev option set on /var/tmp partition (Scored)
+    ### 1.1.12 Ensure nodev option set on /var/tmp partition (Scored)
     - mount_option_var_tmp_nodev
 
-    ### 1.1.10 Ensure nosuid option set on /var/tmp partition (Scored)
+    ### 1.1.13 Ensure nosuid option set on /var/tmp partition (Scored)
     - mount_option_var_tmp_nosuid
 
-    ### 1.1.11 Ensure noexec option set on /var/tmp partition (Scored)
+    ### 1.1.14 Ensure noexec option set on /var/tmp partition (Scored)
     - mount_option_var_tmp_noexec
 
-    ### 1.1.12 Ensure separate partition exists for /var/log (Scored)
+    ### 1.1.15 Ensure separate partition exists for /var/log (Scored)
     - partition_for_var_log
 
-    ### 1.1.13 Ensure separate partition exists for /var/log/audit (Scored)
+    ### 1.1.16 Ensure separate partition exists for /var/log/audit (Scored)
     - partition_for_var_log_audit
 
-    ### 1.1.14 Ensure separate partition exists for /home (Scored)
+    ### 1.1.17 Ensure separate partition exists for /home (Scored)
     - partition_for_home
 
-    ### 1.1.15 Ensure nodev option set on /home partition (Scored)
+    ### 1.1.18 Ensure nodev option set on /home partition (Scored)
     - mount_option_home_nodev
-
-    ### 1.1.16 Ensure nodev option set on /dev/shm partition (Scored)
-    - mount_option_dev_shm_nodev
-
-    ### 1.1.17 Ensure nosuid option set on /dev/shm partition (Scored)
-    - mount_option_dev_shm_nosuid
-
-    ### 1.1.18 Ensure noexec option set on /dev/shm partition (Scored)
-    - mount_option_dev_shm_noexec
 
     ### 1.1.19 Ensure nodev option set on removable media partitions (Not Scored)
     - mount_option_nodev_removable_partitions
@@ -95,7 +92,8 @@ selections:
     ### 1.1.23 Disable Automounting (Scored)
     - service_autofs_disabled
 
-
+    ### 1.1.24 Disable USB Storage (Scored)
+    - kernel_module_usb-storage_disabled
 
     ## 1.2 Configure Software Updates
 
