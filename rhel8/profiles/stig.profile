@@ -44,6 +44,3 @@ selections:
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
-    - sshd_rekey_limit
-    - var_rekey_limit_size=512M
-    - var_rekey_limit_time=1hour
