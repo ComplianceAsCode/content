@@ -218,6 +218,17 @@ value: "Setting={{ varname1 }}"
 {{%- endmacro %}}
 
 {{#
+  High level macro to set a parameter in /etc/selinux/config.
+  Parameters:
+  - msg: the name for the Ansible task
+  - parameter: parameter to be set in the configuration file
+  - value: value of the parameter
+#}}
+{{%- macro ansible_selinux_config_set(msg='', parameter='', value='') %}}
+{{{ ansible_set_config_file(msg, "/etc/selinux/config", parameter=parameter, value=value, create="yes", separator="=", separator_regex="=", prefix_regex='^') }}}
+{{%- endmacro %}}
+
+{{#
   Generates an Ansible task that puts 'contents' into a file at 'filepath'
   Parameters:
     - filepath - filepath of the file to check
