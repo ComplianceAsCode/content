@@ -365,6 +365,17 @@ def yamlfile_value(data, lang):
     return data
 
 
+@template(["oval"])
+def bls_entries_option(data, lang):
+    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+    if lang == "oval":
+        # escape dot, this is used in oval regex
+        data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
+        # replace . with _, this is used in test / object / state ids
+        data["sanitized_arg_name"] = data["arg_name"].replace(".", "_")
+    return data
+
+
 class Builder(object):
     """
     Class for building all templated content for a given product.
