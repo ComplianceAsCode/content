@@ -150,6 +150,11 @@ def audit_file_contents(data, lang):
     return data
 
 
+@template(["kubernetes"])
+def audit_rules_time(data, lang):
+    return data
+
+
 def _file_owner_groupowner_permissions_regex(data):
     data["is_directory"] = data["filepath"].endswith("/")
     if "missing_file_pass" not in data:

@@ -59,3 +59,7 @@ ocil_clause: 'the system is not configured to audit time changes'
 
 {{{ complete_ocil_entry_audit_syscall(syscall="settimeofday") }}}
 
+template:
+  name: audit_rules_time
+  vars:
+      syscall: settimeofday

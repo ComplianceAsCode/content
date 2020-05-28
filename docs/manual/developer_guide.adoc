@@ -1488,6 +1488,12 @@ audit_file_contents::
 ** *contents* - expected contents of the file
 * Languages: Ansible, Bash, OVAL
 
+audit_rules_time::
+* Ensure there is an audit rule that records time-related syscalls. The syscall would be logged using the `audit_time_rules` key
+* Parameters:
+** *syscall* - name of the system call, e.g. `settimeofday`
+* Languages: Kubernetes
+
 audit_rules_unsuccessful_file_modification::
 * Ensure there is an Audit rule to record unsuccessful attempts to access files
 * Parameters:
