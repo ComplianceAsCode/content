@@ -179,38 +179,17 @@ selections:
 
     ### 1.7.1 Ensure Mandatory Access Control Software is Installed
 
-    #### 1.7.1.1 Ensure SELinux is installed (Scored)
-    - package_libselinux_installed
+    #### 1.7.1.1 Ensure AppArmor is installed (Scored)
+    #### Need Rule
 
-    #### 1.7.1.2 Ensure SELinux is not disabled in bootloader configuration (Scored)
-    - grub2_enable_selinux
+    #### 1.7.1.2 Ensure AppArmor is not disabled in bootloader configuration (Scored)
+    #### Need Rule
 
-    ### 1.7.2 Configure SELinux
+    #### 1.7.1.3 Ensure all AppArmor Profiles are in enforce or complain (Scored)
+    #### Need Rule
 
-    #### 1.7.2.1 Ensure SELinux policy is configured (Scored)
-    - var_selinux_policy_name=targeted
-    - selinux_policytype
-
-    #### 1.7.2.2, 1.7.2.3 Ensure the SELinux state is enforcing (Scored)
-    - var_selinux_state=enforcing
-    - selinux_state
-
-    #### 1.7.2.4 Ensure SETroubleshoot is not installed (Scored)
-    - package_setroubleshoot_removed
-
-    #### 1.7.2.5 Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
-    - package_mcstrans_removed
-
-    #### 1.7.2.6 Ensure no unconfied services exist (Scored)
-    - selinux_confinement_of_daemons
-
-    ### 1.7.3 Configure AppArmor
-
-    #### 1.7.3.1 Ensure AppArmor is not disabled in bootloader configuration
-    # NEEDS RULE
-
-    #### 1.7.3.2 Ensure all AppArmor Profiles are enforcing
-    # NEEDS RULE
+    #### 1.7.1.4 Ensure all AppArmor Profiles are enforcing (Scored)
+    #### Need Rule
 
     ## 1.8 Warning Banners
 
