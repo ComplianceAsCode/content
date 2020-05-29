@@ -97,20 +97,14 @@ selections:
 
     ## 1.2 Configure Software Updates
 
-    ### 1.2.1 Ensure SUSE Subscription Manager connection is configured (Not Scored)
-    # NEEDS RULE -
-
-    ### 1.2.2 Disable the rhnsd Daemon (Not Scored)
-    # NEED TO LOOKUP SUSE SERVICE
-
-    ### 1.2.3 Ensure GPG keys are configured (Not Scored)
+    ### 1.2.1 Ensure GPG keys are configured (Not Scored)
     # NEEDS RULE FOR SUSE
 
-    ### 1.2.4 Ensure gpgcheck is globally activated (Scored)
-    - ensure_gpgcheck_globally_activated
-
-    ### 1.2.5 Ensure package manager repositories are configured (Scored)
+    ### 1.2.2 Ensure package manager repositories are configured (Scored)
     # NEEDS RULE -
+   
+    ### 1.2.3 Ensure gpgcheck is globally activated (Scored)
+    - ensure_gpgcheck_globally_activated  
 
     ## 1.3 Configure sudo
 
