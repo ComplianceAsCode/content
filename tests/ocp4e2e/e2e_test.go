@@ -28,13 +28,16 @@ func TestE2e(t *testing.T) {
 	})
 
 	var numberOfRemediationsInit int
+	var numberOfFailuresInit int
 	var numberOfRemediationsEnd int
+	var numberOfFailuresEnd int
 
 	t.Run("Run first compliance scan", func(t *testing.T) {
 		// Create suite and auto-apply remediations
 		suite := ctx.createComplianceSuiteForProfile("1", true)
 		ctx.waitForComplianceSuite(suite)
 		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite, false)
+		numberOfFailuresInit = ctx.getFailuresForSuite(suite, false)
 	})
 
 	t.Run("Wait for Remediations to apply", func(t *testing.T) {
@@ -48,6 +51,7 @@ func TestE2e(t *testing.T) {
 		suite := ctx.createComplianceSuiteForProfile("2", false)
 		ctx.waitForComplianceSuite(suite)
 		numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite, true)
+		numberOfFailuresEnd = ctx.getFailuresForSuite(suite, true)
 	})
 
 	t.Run("We should have less remediations to apply", func(t *testing.T) {
@@ -57,6 +61,13 @@ func TestE2e(t *testing.T) {
 		} else {
 			t.Logf("There are less remediations now: init -> %d  end %d",
 				numberOfRemediationsInit, numberOfRemediationsEnd)
+		}
+		if numberOfFailuresInit <= numberOfFailuresEnd {
+			t.Errorf("The failures didn't diminish: init -> %d  end %d",
+				numberOfFailuresInit, numberOfFailuresEnd)
+		} else {
+			t.Logf("There are less failures now: init -> %d  end %d",
+				numberOfFailuresInit, numberOfFailuresEnd)
 		}
 	})
 }
