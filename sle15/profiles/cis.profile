@@ -232,19 +232,8 @@ selections:
 
     ## 2.1 inetd Services
 
-    ### 2.1.1 Ensure chargen services are not enabled (Scored)
-    ### 2.1.2 Ensure daytime services are not enabled (Scored)
-    ### 2.1.3 Ensure discard services are not enabled (Scored)
-    ### 2.1.4 Ensure echo services are not enabled (Scored)
-    ### 2.1.5 Ensure time services are not enabled (Scored)
-    ### 2.1.6 Ensure rsh services are not enabled (Scored)
-    ### 2.1.7 Ensure talk services are not enabled (Scored)
-    ### 2.1.8 Ensure telnet services are not enabled (Scored)
-    ### 2.1.9 Ensure tftp server is not enabled (Scored)
-    - service_tftp_disabled
-
-    ### 2.1.10 Ensure xinetd is not enabled (Scored)
-    - service_xinetd_disabled
+    ### 2.1.1 Ensure xinetd is not enabled (Scored)
+    - service_xinetd_disabled 
 
     ## 2.2 Special Purpose Services
     ### 2.2.1 Time Synchronization
