@@ -368,6 +368,19 @@ class GenericRunner(object):
 
         if result:
             LogHelper.log_preloaded('pass')
+            if self.clean_files:
+                files_to_remove = [self.verbose_path]
+                if stage in ['initial', 'final']:
+                    files_to_remove.append(self.results_path)
+
+                for fname in tuple(files_to_remove):
+                    try:
+                        if os.path.exists(fname):
+                            os.remove(fname)
+                    except OSError:
+                        logging.error(
+                            "Failed to cleanup file '{0}'"
+                            .format(fname))
         else:
             LogHelper.log_preloaded('fail')
             if self.manual_debug:
