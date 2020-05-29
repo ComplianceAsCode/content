@@ -125,9 +125,12 @@ selections:
     ### 1.4.2 Ensure filesystem integrity is regularly checked (Scored)
     - aide_periodic_cron_checking
 
-    ## Secure Boot Settings
+    ## 1.5 Secure Boot Settings
 
-    ### 1.5.1 Ensure permissions on bootloader config are configured (Scored)
+    ### 1.5.1 Ensure bootloader password is set (Scored)
+    - grub2_password
+    
+    ### 1.5.2 Ensure permissions on bootloader config are configured (Scored)
     #### chown root:root /boot/grub2/grub.cfg
     - file_owner_grub2_cfg
     - file_groupowner_grub2_cfg
@@ -140,9 +143,6 @@ selections:
 
     #### chmod og-rwx /boot/grub2/grubenv
     # NEED RULE -
-
-    ### 1.5.2 Ensure bootloader password is set (Scored)
-    - grub2_password
 
     ### 1.5.3 Ensure authentication required for single user mode (Scored)
     #### ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
@@ -166,8 +166,14 @@ selections:
     #### Storage=none
     - coredump_disable_storage
 
-    ### 1.6.2 Ensure address space layout randomization (ASLR) is enabled
+    ### 1.6.2 Ensure XD/NS support is enabled (Scored)
+    #### No configuration required for 64-bit systems
+
+    ### 1.6.3 Ensure address space layout randomization (ASLR) is enabled
     - sysctl_kernel_randomize_va_space
+
+    ### 1.6.4 Ensure prelink is disabled (Scored)
+    - disable_prelink
 
     ## 1.7 Mandatory Access Control
 
