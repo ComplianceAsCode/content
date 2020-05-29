@@ -237,17 +237,17 @@ selections:
 
     ## 2.2 Special Purpose Services
     ### 2.2.1 Time Synchronization
-    #### 2.2.1.1 Ensure time synchronization is in use (Not Scored)
+    #### 2.2.1.1 Ensure time synchronization is in use (Unscored)
     - package_chrony_installed
 
-    #### 2.2.1.2 Ensure ntp is configured (Scored)
-    # This requirement is not applicable
-    # This profile opts to use chrony rather than ntp
-
-    #### 2.2.1.3, 2.2.1.4, 2.2.1.5 Ensure chrony is configured (Scored)
+    #### 2.2.1.2 Ensure chrony is configured (Scored)
     - service_chronyd_enabled
     - chronyd_specify_remote_server
     - chronyd_run_as_chrony_user
+
+    #### 2.2.1.3 Ensure ntp is configured (Scored)
+    # This requirement is not applicable
+    # This profile opts to use chrony rather than ntp
 
     ### 2.2.2 Ensure X Window System is not installed (Scored)
     - package_xorg-x11-server-common_removed
