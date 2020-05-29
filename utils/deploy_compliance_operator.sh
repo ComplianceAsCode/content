@@ -6,6 +6,10 @@ echo "Ensuring openshift-compliance namespace exists."
 # If it already exists, this is not a problem.
 oc apply -f "$root_dir/ocp-resources/compliance-operator-ns.yaml"
 
+# Some clusters may be slow... so let's wait til Kubernetes persists the new
+# namespace
+sleep 5
+
 echo "Creating OperatorSource"
 # Create operator source so we can install the latest available release which
 # is available from an "external datastore"; meaning, it's our upstream release
