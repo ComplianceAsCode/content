@@ -267,37 +267,42 @@ selections:
 
     ### 2.2.7 Ensure NFS and RPC are not enabled (Scored)
     - service_nfs_disabled
+
+    ### 2.2.8 Ensure rpcbind is not enabled (Scored)
     - service_rpcbind_disabled
 
-    ### 2.2.8 Ensure DNS Server is not enabled (Scored)
+    ### 2.2.9 Ensure DNS Server is not enabled (Scored)
     - service_named_disabled
 
-    ### 2.2.9 Ensure FTP Server is not enabled (Scored)
+    ### 2.2.10 Ensure FTP Server is not enabled (Scored)
     - service_vsftpd_disabled
 
-    ### 2.2.10 Ensure HTTP server is not enabled (Scored)
+    ### 2.2.11 Ensure HTTP server is not enabled (Scored)
     - service_httpd_disabled
 
-    ### 2.2.11 Ensure IMAP and POP3 server is not enabled (Scored)
+    ### 2.2.12 Ensure IMAP and POP3 server is not enabled (Scored)
     - service_dovecot_disabled
 
-    ### 2.2.12 Ensure Samba is not enabled (Scored)
+    ### 2.2.13 Ensure Samba is not enabled (Scored)
     - service_smb_disabled
 
-    ### 2.2.13 Ensure HTTP Proxy Server is not enabled (Scored)
+    ### 2.2.14 Ensure HTTP Proxy Server is not enabled (Scored)
     - service_squid_disabled
 
-    ### 2.2.14 Ensure SNMP Server is not enabled (Scored)
+    ### 2.2.15 Ensure SNMP Server is not enabled (Scored)
     - service_snmpd_disabled
 
-    ### 2.2.15 Ensure mail transfer agent is configured for local-only mode (Scored)
+    ### 2.2.16 Ensure mail transfer agent is configured for local-only mode (Scored)
     - postfix_network_listening_disabled
 
-    ### 2.2.16 Ensure rsync service is not enabled (Scored)
+    ### 2.2.17 Ensure rsync service is not enabled (Scored)
     # NEEDS rule
 
-    ### 2.2.17 Ensure NIS Server is not enabled (Scored)
+    ### 2.2.18 Ensure NIS Server is not enabled (Scored)
     - package_ypserv_removed
+
+    ### 2.2.19 Ensure telnet-server is not installed (Scored)
+    ### Need Rule
 
     ## 2.3 Service Clients
     ### 2.3.1 Ensure NIS Client is not installed (Scored)
