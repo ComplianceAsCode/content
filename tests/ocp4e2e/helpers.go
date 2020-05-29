@@ -370,6 +370,27 @@ func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite, d
 	return len(remList.Items)
 }
 
+func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
+	failList := &cmpv1alpha1.ComplianceCheckResultList{}
+	matchLabels := dynclient.MatchingLabels{
+		cmpv1alpha1.SuiteLabel:                               s.Name,
+		string(cmpv1alpha1.ComplianceCheckResultStatusLabel): string(cmpv1alpha1.CheckResultFail),
+	}
+	err := ctx.dynclient.List(goctx.TODO(), failList, matchLabels)
+	if err != nil {
+		ctx.t.Fatalf("Couldn't get remediation list")
+	}
+	if display {
+		if len(failList.Items) > 0 {
+			ctx.t.Logf("Failures from ComplianceSuite: %s", s.Name)
+		}
+		for _, rem := range failList.Items {
+			ctx.t.Logf("- %s", rem.Name)
+		}
+	}
+	return len(failList.Items)
+}
+
 func isNodeReady(node corev1.Node) bool {
 	for _, condition := range node.Status.Conditions {
 		if condition.Type == corev1.NodeReady &&
