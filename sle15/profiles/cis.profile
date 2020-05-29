@@ -222,8 +222,11 @@ selections:
     #### banner-message-text='<banner message>'
     - dconf_gnome_login_banner_text
 
-    ## 1.9 Ensure updates, patches, and additional security software are installed (Scored)
+    ## 1.9 Ensure updates, patches, and additional security software are installed (Unscored)
     - security_patches_up_to_date
+
+    ## 1.10 Ensure GDM is removed or login is configured (Scored)
+    ## Need Rule
 
     # 2 Services
 
