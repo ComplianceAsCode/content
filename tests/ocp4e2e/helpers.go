@@ -255,6 +255,7 @@ func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply 
 						ContentImage: ctx.ContentImage,
 						Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
 						Content:      "ssg-ocp4-ds.xml",
+						Debug:        true,
 						NodeSelector: map[string]string{
 							"node-role.kubernetes.io/master": "",
 						},
@@ -266,6 +267,7 @@ func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply 
 						ContentImage: ctx.ContentImage,
 						Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
 						Content:      "ssg-ocp4-ds.xml",
+						Debug:        true,
 						NodeSelector: map[string]string{
 							"node-role.kubernetes.io/worker": "",
 						},
