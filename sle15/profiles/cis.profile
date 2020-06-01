@@ -377,8 +377,8 @@ selections:
     ### 3.4.2 Ensure SCTP is disabled (Not Scored)
     - kernel_module_sctp_disabled
 
-    ## 3.6 Firewall Configuration
-    ### 3.6.1 Ensure Firewall software is installed
+    ## 3.5 Configure firewalld
+    ### 3.5.1 Ensure FirewallD is installed
     ### 3.6.2 Configure nftables
     #### 3.6.2.1 Ensure iptables are flushed
     #### 3.6.2.2 Ensure default deny firewall policy
