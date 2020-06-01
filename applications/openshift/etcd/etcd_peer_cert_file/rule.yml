@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp3
 
 title: 'Ensure That The etcd Peer Client Certificate Is Correctly Set'
 
@@ -9,11 +9,7 @@ description: |-
     edit the <tt>etcd</tt> configuration file
     <tt>/etc/etcd/etcd.conf</tt> on the master and adding a certificate
     to <tt>ETCD_PEER_CERT_FILE</tt>:
-{{%- if product == "ocp4" %}}
-    <pre>ETCD_PEER_CERT_FILE=/etc/ssl/etcd/system:etcd-peer:<i>etcd_dns_name</i>.crt</pre>
-{{% else %}}
     <pre>ETCD_PEER_CERT_FILE=/etc/etcd/peer.crt</pre>
-{{%- endif %}}
 
 rationale: |-
     Without cryptographic integrity protections, information can be
