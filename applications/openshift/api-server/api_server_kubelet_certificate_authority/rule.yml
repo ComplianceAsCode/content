@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp3
 
 title: 'Configure the kubelet Certificate Authority for the API Server'
 
@@ -10,23 +10,12 @@ description: |-
     between the API Server and kubelets. Then, verify
     that <tt>kubeletClientInfo</tt> has the <tt>ca</tt> configured in 
     the API Server pod specification file
-{{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
-    node(s) to something similar to:
-    <pre>
-    "kubeletClientInfo":{
-      ...
-      "ca":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",
-      ...
-    </pre>
-{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>kubeletClientInfo:
       ca: ca-bundle.crt
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
-{{%- endif %}}
 
 rationale: |-
     Connections from the API Server to the kubelet are used for fetching logs
@@ -45,15 +34,9 @@ ocil_clause: '<tt>ca</tt> is not set as appropriate for <tt>kubeletClientInfo</t
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A3 kubeletClientInfo /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-    The output should contain something similar to:
-    <pre>"ca":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",</pre>
-{{% else %}}
     <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:
     <pre>kubeletClientInfo:
       ca: ca-bundle.crt
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
-{{%- endif %}}

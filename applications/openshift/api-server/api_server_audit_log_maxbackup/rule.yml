@@ -1,22 +1,11 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp3
 
 title: 'Configure the Maximum Retained Audit Logs'
 
 description: |-
     To configure how many rotations of audit logs are retained, edit the API Server
-{{%- if product == "ocp4" %}}
-    pod specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>
-    on the master node(s) and set the <tt>maximumRetainedFiles</tt> parameter to
-    <tt>10</tt> or to an organizationally appropriate value:
-       <pre>
-    "auditConfig":{
-      ...
-      "maximumRetainedFiles":10,
-      ...
-     </pre>
-{{% else %}}
     pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
     on the master node(s) and set the <tt>maximumRetainedFiles</tt> parameter to
     <tt>10</tt> or to an organizationally appropriate value:
@@ -26,7 +15,6 @@ description: |-
       maximumFileRetentionDays: 30
       maximumFileSizeMegabytes: 10
       maximumRetainedFiles: 10</pre>
-{{%- endif %}}
 
 rationale: |-
     OpenShift automatically rotates the log files. Retaining old log files ensures
@@ -44,9 +32,5 @@ ocil_clause: '<tt>maximumRetainedFiles</tt> is set to <tt>10</tt> or as appropri
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
-    <pre>$ sudo grep maximumRetainedFiles /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-{{% else %}}
     <pre>$ sudo grep maximumRetainedFiles /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should return a value of <pre>10</pre> or as appropriate.

@@ -1,25 +1,11 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp3
 
 title: 'Enable the Secure Port for the API Server'
 
 description: |-
     To ensure traffic is served over HTTPS, edit the API Server pod specification
-{{%- if product == "ocp4" %}}
-    file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s)
-    and either remove the <tt>secure-port</tt>  or set it to a different
-    (non-zero) desired port.
-        in <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>:
-    <pre>
-    "apiServerArguments":{
-      ...
-      "secure-port":[
-        "8443"
-      ],
-      ...
-    </pre>
-{{% else %}}
     file <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and either remove the <tt>secure-port</tt>  or set it to a different
     (non-zero) desired port.
@@ -27,7 +13,6 @@ description: |-
       apiServerArguments:
         secure-port:
         - 8443</pre>
-{{%- endif %}}
 
 rationale: |-
     The secure port is used to serve HTTPS with authentication and authorization.
@@ -43,9 +28,5 @@ ocil_clause: '<tt>secure-port</tt> is set with a value greater than <tt>0</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A2 secure-port /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-{{% else %}}
     <pre>$ sudo grep -A2 secure-port /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should not return <pre>0</pre>.

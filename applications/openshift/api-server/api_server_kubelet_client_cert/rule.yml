@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp3
 
 title: 'Configure the kubelet Certificate File for the API Server'
 
@@ -10,23 +10,12 @@ description: |-
     kubelets. Then, verify
     that <tt>kubeletClientInfo</tt> has the <tt>certFile</tt> configured in 
     the API Server pod specification file
-{{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
-    node(s) to something similar to:
-    <pre>
-    "kubeletClientInfo":{
-      ...
-      "certFile":"/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt",
-      ...
-    </pre>
-{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>kubeletClientInfo:
       ca: ca-bundle.crt
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
-{{%- endif %}}
 
 rationale: |-
     By default the API Server does not authenticate itself to the kublet's
@@ -43,15 +32,9 @@ ocil_clause: '<tt>certFile</tt> is not set as appropriate for <tt>kubeletClientI
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A3 kubeletClientInfo /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-    The output should contain something similar to:
-    <pre>"certFile":"/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt",</pre>
-{{% else %}}
     <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:
     <pre>kubeletClientInfo:
       ca: ca-bundle.crt
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
-{{%- endif %}}

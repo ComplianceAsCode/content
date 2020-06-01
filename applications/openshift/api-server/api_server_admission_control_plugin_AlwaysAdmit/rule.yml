@@ -1,17 +1,13 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp3
 
 title: 'Disable the AlwaysAdmit Admission Control Plugin'
 
 description: |-
     To ensure OpenShift only responses to requests explicitly allowed by the
     admissions control plugin, edit the API Server pod specification file
-{{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s)
-{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
-{{%- endif %}}
     and ensure the <tt>admissionConfig</tt> is not configured to include <tt>AlwaysAdmit</tt>.
 
 rationale: |-
@@ -27,9 +23,5 @@ ocil_clause: '<tt>admissionConfig</tt> is not set'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A4 AlwaysAdmit /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-{{% else %}}
     <pre>$ sudo grep -A4 AlwaysAdmit /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should return no output.
