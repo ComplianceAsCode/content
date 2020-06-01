@@ -370,36 +370,12 @@ selections:
     - sysctl_net_ipv6_conf_all_accept_ra
     - sysctl_net_ipv6_conf_default_accept_ra
 
-    ## 3.4 TCP Wrappers
-    ### 3.4.1 Ensure TCP Wrappers is installed (Not Scored)
-    - package_tcp_wrappers_installed
-
-    ### 3.4.2 Ensure /etc/hosts.allow is configured (Scored)
-    ### 3.4.3 Ensure /etc/hosts.deny is configured (Scored)
-    - configure_etc_hosts_deny
-
-    ### 3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored)
-    # - file_owner_etc_hosts_allow
-    # - file_groupowner_etc_hosts_allow
-    # - file_permissions_etc_hosts_allow
-
-    ### 3.4.5 Ensure permissions on /etc/hosts.deny are configured (Scored)
-    # - file_owner_etc_hosts_deny
-    # - file_groupowner_etc_hosts_deny
-    # - file_permissions_etc_hosts_deny
-
-    ## 3.5 Uncommon Network Protocols
-    ### 3.5.1 Ensure DCCP is disabled (Not Scored)
+    ## 3.4 Uncommon Network Protocols
+    ### 3.4.1 Ensure DCCP is disabled (Not Scored)
     - kernel_module_dccp_disabled
 
-    ### 3.5.2 Ensure SCTP is disabled (Not Scored)
+    ### 3.4.2 Ensure SCTP is disabled (Not Scored)
     - kernel_module_sctp_disabled
-
-    ### 3.5.3 Ensure RDS is disabled (Not Scored)
-    - kernel_module_rds_disabled
-
-    ### 3.5.4 Ensure TIPC is disabled (Not Scored)
-    - kernel_module_tipc_disabled
 
     ## 3.6 Firewall Configuration
     ### 3.6.1 Ensure Firewall software is installed
