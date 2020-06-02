@@ -1453,7 +1453,7 @@ audit_rules_dac_modification::
 * Checks Audit Discretionary Access Control rules
 * Parameters:
 ** *attr* - value of `-S` argument in Audit rule, eg. `chmod`
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 audit_rules_file_deletion_events::
 * Ensure auditd Collects file deletion events
@@ -1465,7 +1465,7 @@ audit_rules_login_events::
 * Checks if there are Audit rules that record attempts to alter logon and logout events.
 * Parameters:
 ** *path* - value of `-w` in the Audit rule, eg. `/var/run/faillock`
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 audit_rules_path_syscall::
 * Check if there are Audit rules to record events that modify user/group information via a syscall on a specific file.
@@ -1479,7 +1479,7 @@ audit_rules_privileged_commands::
 * Ensure Auditd collects information on the use of specified privileged command.
 * Parameters:
 ** *path* - the path of the privileged command - eg. `/usr/bin/mount`
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 audit_file_contents::
 * Ensure that audit `.rules` file specified by parameter `filepath` contains the contents specified in parameter `contents`.
