@@ -7,13 +7,13 @@ title: 'Enable SLUB/SLAB allocator poisoning in zIPL'
 description: |-
     To enable poisoning of SLUB/SLAB objects,
     check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>slub_debug=P</tt>
-    included in its options.
-    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <pre>image = </pre> setting,
-    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).
-    And run <pre>zipl</pre> command so that <tt>/boot/bootmap</tt> is updated.
+    included in its options.<br />
+    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <tt>image = </tt> setting,
+    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).<br />
+    And run <tt>zipl</tt> command so that <tt>/boot/bootmap</tt> is updated.<br /><br />
 
     To ensure that new kernels and boot entries continue to extend the audit log events queue,
-    add <pre>slub_debug=P</pre> to <tt>/etc/kernel/cmdline</tt>.
+    add <tt>slub_debug=P</tt> to <tt>/etc/kernel/cmdline</tt>.
 
 rationale: |-
     Poisoning writes an arbitrary value to freed objects, so any modification or

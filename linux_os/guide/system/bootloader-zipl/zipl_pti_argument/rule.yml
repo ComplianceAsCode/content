@@ -7,13 +7,13 @@ title: 'Enable Kernel Page-Table Isolation (KPTI) in zIPL'
 description: |-
     To enable Kernel page-table isolation,
     check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>pti=on</tt>
-    included in its options.
-    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <pre>image = </pre> setting,
-    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).
-    And run <pre>zipl</pre> command so that <tt>/boot/bootmap</tt> is updated.
+    included in its options.<br />
+    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <tt>image = </tt> setting,
+    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).<br />
+    And run <tt>zipl</tt> command so that <tt>/boot/bootmap</tt> is updated.<br /><br />
 
     To ensure that new kernels and boot entries continue to enable page-table isolation,
-    add <pre>pti=on</pre> to <tt>/etc/kernel/cmdline</tt>.
+    add <tt>pti=on</tt> to <tt>/etc/kernel/cmdline</tt>.
 
 rationale: |-
     Kernel page-table isolation is a kernel feature that mitigates

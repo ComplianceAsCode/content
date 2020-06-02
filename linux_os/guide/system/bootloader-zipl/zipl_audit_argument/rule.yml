@@ -7,13 +7,13 @@ title: 'Enable Auditing to Start Prior to the Audit Daemon in zIPL'
 description: |-
     To ensure all processes can be audited, even those which start prior to the audit daemon,
     check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>audit=1</tt>
-    included in its options.
-    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <pre>image = </pre> setting,
-    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).
-    And run <pre>zipl</pre> command so that <tt>/boot/bootmap</tt> is updated.
+    included in its options.<br />
+    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <tt>image = </tt> setting,
+    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).<br />
+    And run <tt>zipl</tt> command so that <tt>/boot/bootmap</tt> is updated.<br /><br />
 
     To ensure that new kernels and boot entries continue to enable audit,
-    add <pre>audit=1</pre> to <tt>/etc/kernel/cmdline</tt>.
+    add <tt>audit=1</tt> to <tt>/etc/kernel/cmdline</tt>.
 
 rationale: |-
     Each process on the system carries an "auditable" flag which indicates whether
