@@ -753,23 +753,7 @@ selections:
     - rpm_verify_permissions
     - rpm_verify_ownership
 
-    ### 6.1.2 Ensure permissions on /etc/gshadow are configured (Scored)
-    # chown root:root /etc/gshadow
-    - file_owner_etc_gshadow
-    - file_groupowner_etc_gshadow
-
-    # chmod o-rwx,g-rw /etc/gshadow
-    - file_permissions_etc_gshadow
-
-    ### 6.1.3 Ensure permissions on /etc/gshadow- are configured (Scored)
-    # chown root:root /etc/gshadow-
-    - file_owner_backup_etc_gshadow
-    - file_groupowner_backup_etc_gshadow
-
-    # chmod 0000 /etc/gshadow-
-    - file_permissions_backup_etc_gshadow
-
-    ### 6.1.4 Ensure permissions on /etc/passwd are configured (Scored)
+    ### 6.1.2 Ensure permissions on /etc/passwd are configured (Scored)
     # chown root:root /etc/passwd
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
@@ -777,7 +761,7 @@ selections:
     # chmod 644 /etc/passwd
     - file_permissions_etc_passwd
 
-    ### 6.1.5 Ensure permissions on /etc/shadow are configured (Scored)
+    ### 6.1.3 Ensure permissions on /etc/shadow are configured (Scored)
     # chown root:root /etc/shadow
     - file_owner_etc_shadow
     - file_groupowner_etc_shadow
@@ -785,7 +769,7 @@ selections:
     # chmod o-rwx,g-wx /etc/shadow
     - file_permissions_etc_shadow
 
-    ### 6.1.6 Ensure permissions on /etc/group are configured (Scored)
+    ### 6.1.4 Ensure permissions on /etc/group are configured (Scored)
     # chown root:root /etc/group
     - file_owner_etc_group
     - file_groupowner_etc_group
@@ -793,7 +777,15 @@ selections:
     # chmod 644 /etc/group
     - file_permissions_etc_group
 
-    ### 6.1.7 Ensure permissions on /etc/passwd- are configured (Scored)
+    ### 6.1.5 Ensure permissions on /etc/gshadow are configured (Scored)
+    # chown root:root /etc/gshadow
+    - file_owner_etc_gshadow
+    - file_groupowner_etc_gshadow
+
+    # chmod o-rwx,g-rw /etc/gshadow
+    - file_permissions_etc_gshadow
+
+    ### 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)
     # chown root:root /etc/passwd-
     - file_owner_backup_etc_passwd
     - file_groupowner_backup_etc_passwd
@@ -801,7 +793,7 @@ selections:
     # chmod 600 /etc/passwd-
     - file_permissions_backup_etc_passwd
 
-    ### 6.1.8 Ensure permissions on /etc/shadow- are configured (Scored)
+    ### 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)
     # chown root:root /etc/shadow-
     - file_owner_backup_etc_shadow
     - file_groupowner_backup_etc_shadow
@@ -809,13 +801,21 @@ selections:
     # chmod 0000 /etc/shadow-
     - file_permissions_backup_etc_shadow
 
-    ### 6.1.9 Ensure permissions on /etc/group- are configured (Scored)
+    ### 6.1.8 Ensure permissions on /etc/group- are configured (Scored)
     # chown root:root /etc/group-
     - file_owner_backup_etc_group
     - file_groupowner_backup_etc_group
 
     # chmod 644 /etc/group-
     - file_permissions_backup_etc_group
+
+    ### 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)
+    # chown root:root /etc/gshadow-
+    - file_owner_backup_etc_gshadow
+    - file_groupowner_backup_etc_gshadow
+
+    # chmod 0000 /etc/gshadow-
+    - file_permissions_backup_etc_gshadow
 
     ### 6.1.10 Ensure no world writable files exist (Scored)
     - file_permissions_unauthorized_world_writable
