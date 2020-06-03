@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Extend Audit Backlog Limit for the Audit Daemon in zIPL'
+
+description: |-
+    To improve the kernel capacity to queue all log events, even those which start prior to the audit daemon,
+    check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>audit_backlog_limit=8192</tt>
+    included in its options.<br />
+    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <tt>image = </tt> setting,
+    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).<br />
+    And run <tt>zipl</tt> command so that <tt>/boot/bootmap</tt> is updated.<br /><br />
+
+    To ensure that new kernels and boot entries continue to extend the audit log events queue,
+    add <tt>audit_backlog_limit=8192</tt> to <tt>/etc/kernel/cmdline</tt>.
+
+rationale: |-
+    audit_backlog_limit sets the queue length for audit events awaiting transfer
+    to the audit daemon. Until the audit daemon is up and running, all log messages
+    are stored in this queue.  If the queue is overrun during boot process, the action
+    defined by audit failure flag is taken.
+
+severity: medium
+
+ocil_clause: 'audit backlog limit is not configured'
+
+ocil: |-
+  To check that all boot entries extend the backlog limit;
+  Check that all boot entries extend the log events queue:
+  <pre>sudo grep -L "^options\s+.*\baudit_backlog_limit=0\b" /boot/loader/entries/*.conf</pre>
+  No line should be returned, each line returned is a boot entry that does not extend the log events queue.
+
+  Check that no image file is specified in <tt>/etc/zipl.conf</tt>:
+  <pre>grep -R "^image\s*=" /etc/zipl.conf</pre>
+  No line should be returned, if a line is returned zipl may load a different kernel than intended.
+
+  And make sure that <tt>/boot/bootmap</tt> is newer than <tt>/boot/loader/entries/*.conf</tt>
+  and <tt>/etc/zipl.conf</tt>:
+  <pre>find /boot/loader/entries/*.conf /etc/zipl.conf -newer /boot/bootmap</pre>
+  No line should be returned, if a line is returned <tt>/boot/bootmap</tt> needs to be regenerated.
