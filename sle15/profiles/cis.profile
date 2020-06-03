@@ -474,9 +474,7 @@ selections:
    #### 4.1.2.4 Ensure audit_backlog_limit is sufficient (Scored)
     - grub2_audit_backlog_limit_argument
 
-
-
-    ### 4.1.5 Ensure events that modify date and time information
+    ### 4.1.3 Ensure events that modify date and time information
     ###       are collected (Scored)
     #### adjtimex
     - audit_rules_time_adjtimex
@@ -493,14 +491,14 @@ selections:
     #### -w /etc/localtime -p wa
     - audit_rules_time_watch_localtime
 
-    ### 4.1.6 Ensure events that modify user/group information are
+    ### 4.1.4 Ensure events that modify user/group information are
     ###        collected (Scored)
 
-    ### 4.1.7 Ensure events that modify the system's network
+    ### 4.1.5 Ensure events that modify the system's network
     ###       enironment are collected (Scored)
     - audit_rules_networkconfig_modification
 
-    ### 4.1.8 Ensure events that modify the system's Mandatory
+    ### 4.1.6 Ensure events that modify the system's Mandatory
     ###       Access Control are collected (Scored)
     #### -w /etc/selinux/ -p wa
     - audit_rules_mac_modification
@@ -508,37 +506,37 @@ selections:
     #### -w /usr/share/selinux/ -p wa
     # NEED RULE - https://github.com/ComplianceAsCode/content/issues/5264
 
-    ### 4.1.9 Ensure login and logout events are collected (Scored)
+    ### 4.1.7 Ensure login and logout events are collected (Scored)
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
 
-    ### 4.1.10 Ensure session initiation information is collected (Scored)
+    ### 4.1.8 Ensure session initiation information is collected (Scored)
     - audit_rules_session_events
 
-    ### 4.1.11 Ensure discretionary access control permission modification
+    ### 4.1.9 Ensure discretionary access control permission modification
     ###       events are collected (Scored)
 
-    ### 4.1.12 Ensure unsuccessful unauthorized file access attempts are
+    ### 4.1.10 Ensure unsuccessful unauthorized file access attempts are
     ###        collected (Scored)
 
-    ### 4.1.13 Ensure use of privileged commands is collected (Scored)
+    ### 4.1.11 Ensure use of privileged commands is collected (Scored)
 
-    ### 4.1.14 Ensure successful file system mounts are collected (Scored)
+    ### 4.1.12 Ensure successful file system mounts are collected (Scored)
 
-    ### 4.1.15 Ensure file deletion events by users are collected
+    ### 4.1.13 Ensure file deletion events by users are collected
     ###        (Scored)
 
-    ### 4.1.16 Ensure changes to system administration scope
+    ### 4.1.14 Ensure changes to system administration scope
     ###       (sudoers) is collected (Scored)
     - audit_rules_sysadmin_actions
 
-    ### 4.1.17 Ensure system administrator actions (sudolog) are
+    ### 4.1.15 Ensure system administrator actions (sudolog) are
     ###        collected (Scored)
 
-    ### 4.1.18 Ensure kernel module loading and unloading is collected
+    ### 4.1.16 Ensure kernel module loading and unloading is collected
     ###        (Scored)
 
-    ### 4.1.19 Ensure the audit configuration is immutable (Scored)
+    ### 4.1.17 Ensure the audit configuration is immutable (Scored)
 
     ## 4.2 Configure Logging
 
