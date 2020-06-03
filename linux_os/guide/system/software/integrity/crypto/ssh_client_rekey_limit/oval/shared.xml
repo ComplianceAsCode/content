@@ -1,27 +1,16 @@
-{{% set filepath = "/etc/ssh/ssh_config.d/02-rekey-limit.conf" -%}}
-
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
       <title>{{{ rule_title }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Ensure 'RekeyLimit' is configured with the correct value in '{{{ filepath }}}'</description>
+      <description>Ensure 'RekeyLimit' is configured with the correct value in /etc/ssh/ssh_config and /etc/ssh/ssh_config.d/*.conf</description>
     </metadata>
-    <criteria comment="RekeyLimit is correctly configured for ssh client">
-      {{{- oval_line_in_file_criterion(filepath, "RekeyLimit") }}}
+    <criteria comment="RekeyLimit is correctly configured for ssh client" operator="AND">
+      <criterion comment="check that RekeyLimit is not configured in /etc/ssh/ssh_config" test_ref="test_ssh_client_rekey_limit_main_config" negate="true" />
+      <criterion comment="check correct RekeyLimit configuration in /etc/ssh/ssh_config.d/*.conf" test_ref="test_ssh_client_rekey_limit_include_configs" />
     </criteria>
   </definition>
-
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in the  file" id="test_ssh_client_rekey_limit" version="1">
-     <ind:object object_ref="obj_ssh_client_rekey_limit"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_ssh_client_rekey_limit" version="1">
-     <ind:filepath>{{{ filepath }}}</ind:filepath>
-     <ind:pattern var_ref="ssh_client_line_regex" operation="pattern match"></ind:pattern>
-     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   <local_variable id="ssh_client_line_regex" datatype="string" comment="The regex of the directive" version="1">
     <concat>
@@ -35,5 +24,26 @@
 
   <external_variable comment="Size component of the rekey limit" datatype="string" id="var_ssh_client_rekey_limit_size" version="1" />
   <external_variable comment="Time component of the rekey limit" datatype="string" id="var_ssh_client_rekey_limit_time" version="1" />
-</def-group>
 
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in /etc/ssh/ssh_config file" id="test_ssh_client_rekey_limit_main_config" version="1">
+     <ind:object object_ref="obj_ssh_client_rekey_limit_main_config"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_ssh_client_rekey_limit_main_config" version="1">
+     <ind:filepath>/etc/ssh/ssh_config</ind:filepath>
+     <ind:pattern operation="pattern match">^[\s]*RekeyLimit.*$</ind:pattern>
+     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in /etc/ssh/ssh_config.d/*.conf" id="test_ssh_client_rekey_limit_include_configs" version="1">
+     <ind:object object_ref="obj_ssh_client_rekey_limit_include_configs"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_ssh_client_rekey_limit_include_configs" version="1">
+     <ind:filepath operation="pattern match">^/etc/ssh/ssh_config\.d/.*\.conf$</ind:filepath>
+     <ind:pattern var_ref="ssh_client_line_regex" operation="pattern match"></ind:pattern>
+     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
