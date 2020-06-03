@@ -380,7 +380,7 @@ selections:
     ## 3.5 Firewall Configuration
     ### 3.5.1 Configure FirewallD
     #### 3.5.1.1 Ensure FirewallD is installed (Scored)
-    - package_firewalld_installed
+    ##- package_firewalld_installed
     - package_iptables_installed
     
     #### 3.5.1.2 Ensure iptables-services package is not installed (Scored)
