@@ -377,35 +377,67 @@ selections:
     ### 3.4.2 Ensure SCTP is disabled (Not Scored)
     - kernel_module_sctp_disabled
 
-    ## 3.5 Configure firewalld
-    ### 3.5.1 Ensure FirewallD is installed
-    ### 3.6.2 Configure nftables
-    #### 3.6.2.1 Ensure iptables are flushed
-    #### 3.6.2.2 Ensure default deny firewall policy
-    #### 3.6.2.3 Ensure nftables rules are permanent
-    #### 3.6.2.4 Ensure a table exists
-    #### 3.6.2.5 Ensure base chains exist
-    #### 3.6.2.6 Ensure loopback traffic is configured
-    #### 3.6.2.7 Ensure outbound and established connections are configured
-    #### 3.6.2.8 Ensure nftables service is enabled
-
-    ### 3.6.3 Configure iptables
-    #### 3.6.3.1 Configure IPv4 iptables (Scored)
-    ##### 3.6.3.1.1 Ensure default deny firewall policy
-    ##### 3.6.3.1.2 Ensure loopback traffic is configured
-    ##### 3.6.3.1.3 Ensure outbound and established connections are configured
-    ##### 3.6.3.1.4 Ensure firewall rules exist for all open ports
-
-    #### 3.6.3.2 Configure IPv6 iptables (Scored)
-    ##### 3.6.3.2.1 Ensure IPv6 default deny firewall policy
-    ##### 3.6.3.2.2 Ensure IPv6 loopback traffic is configured
-    ##### 3.6.3.2.3 Ensure IPv6 outbound and established connections are configured
-    ##### 3.6.3.2.4 Ensure IPv6 firewall rules exist for all open ports
-
-    ### 3.6.4 Ensure iptables is installed (Scored)
+    ## 3.5 Firewall Configuration
+    ### 3.5.1 Configure FirewallD
+    #### 3.5.1.1 Ensure FirewallD is installed (Scored)
+    - package_firewalld_installed
     - package_iptables_installed
+    
+    #### 3.5.1.2 Ensure iptables-services package is not installed (Scored)
+    #### NEED RULE
 
-    # Logging and Auditing
+    #### 3.5.1.3 Ensure nftables is not installed (Scored)
+    #### Need rule
+
+    #### 3.5.1.4 Ensure firewalld service is enabled (Scored)
+    - service_firewalld_enabled
+
+    #### 3.5.1.5 Ensure default zone is set (Scored)
+    - set_firewalld_default_zone
+
+    #### 3.5.1.6 Ensure network interfaces are assigned to appropriate zone (Unscored)
+    #### Need rule
+
+    #### 3.5.1.7 Ensure unnecessary services and ports are not accepted (Unscored)
+    #### NEED RULE
+
+    ### 3.5.2 Configure nftables
+    #### 3.5.2.1 Ensure nftables is installed (Scored)
+    #### 3.5.2.2 Ensure firewalld is not installed (Scored)
+    #### 3.5.2.3 Ensure iptables-services package is not installed (Scored)
+    #### 3.5.2.4 Ensure iptables are flushed (Unscored)
+    #### 3.5.2.5 Ensure a table exists (Scored)
+    #### 3.5.2.6 Ensure a base chain exists (Scored)
+    #### 3.5.2.7 Ensure loopback traffic is configured (Scored)
+    #### 3.5.2.8 Ensure outbound and established connections are configured (Scored)
+    #### 3.5.2.9 Ensure default deny firewall policy
+    #### 3.5.2.10 Ensure nftables is enabled (Scored)
+    #### 3.5.2.11 Ensure nftables rules are permanent
+ 
+    ### 3.5.3 Configure iptables
+    #### 3.5.3.1 Configure software
+    ##### 3.5.3.1.1 Ensure iptables is installed (Scored)
+    - package_iptables_installed
+    ##### 3.5.3.1.2 Ensure nftables is not installed (Scored)
+    ##### 3.5.3.1.3 Ensure firewalld is not installed (Scored)
+
+    #### 3.5.3.2 Configure IPv4 iptables
+    ##### 3.5.3.2.1 Ensure default deny firewall policy (Scored)
+    ##### 3.5.3.2.2 Ensure loopback traffic is configured (Scored)
+    ##### 3.5.3.2.3 Ensure outbound and established connections are configured (Scored)
+    ##### 3.5.3.2.4 Ensure firewall rules exist for all open ports (Scored)
+    ##### 3.5.3.2.5 Ensure iptables rules are saved (Scored)
+    ##### 3.5.3.2.6 Ensure iptables is enabled and running (Scored) 
+
+    #### 3.5.3.3 Configure IPv6 iptables
+    ##### 3.5.3.3.1 Ensure IPv6 default deny firewall policy (Scored)
+    ##### 3.5.3.3.2 Ensure IPv6 loopback traffic is configured (Scored)
+    ##### 3.5.3.3.3 Ensure IPv6 outbound and established connections are configured (Scored)
+    ##### 3.5.3.3.4 Ensure IPv6 firewall rules exist for all open ports (Scored)
+    ##### 3.5.3.3.5 Ensure ip6tables rules are saved (Score)
+    ##### 3.5.3.3.6 Ensure ip6tables is enabled and running (Scored)
+
+    # 4 Logging and Auditing
 
     ## 4.1 Configure System Accounting (auditd)
     ### 4.1.1 Configure Data Retention
