@@ -26,7 +26,7 @@ else ifeq ($(SKIP_CONTAINER_PUSH), true)
 	@echo "Skipping content image upload, will use '$(CONTENT_IMAGE)'"
 else
 	@echo "Building content image"
-	$(ROOT_DIR)/utils/build_ds_container.sh ocp4
+	$(ROOT_DIR)/utils/build_ds_container.sh
 	$(eval CONTENT_IMAGE = image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest)
 	@echo "Content image built and available through: $(CONTENT_IMAGE)"
 endif

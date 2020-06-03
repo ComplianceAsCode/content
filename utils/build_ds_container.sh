@@ -1,17 +1,18 @@
 #!/bin/bash
 
-product=$1
-
 # Build container in specified namespace. Else default to
 # "openshift-compliance"
-namespace=${2:-"openshift-compliance"}
+namespace=${1:-"openshift-compliance"}
+
+echo "* Pushing datastream content image to namespace: $namespace"
 
 root_dir=$(git rev-parse --show-toplevel)
 
 pushd $root_dir
 
+echo "* Building ocp4, rhel7, rhel8, rhcos4 products"
 # build the product's content
-"$root_dir/build_product" "$product"
+"$root_dir/build_product" ocp4 rhel7 rhel8 rhcos4
 
 if [ "$namespace" == "openshift-compliance" ]; then
     # Ensure openshift-compliance namespace exists. If it already exists, this
@@ -23,26 +24,33 @@ fi
 # This enables us to create a configuration so we can build a container
 # with the datastream
 # If they already exist, this is not a problem
-cat "$root_dir/ocp-resources/ds-build.yaml" | sed "s/\$PRODUCT/$product/" | \
-    oc apply -n "$namespace" -f -
+oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-build.yaml"
+
+# Create output directory
+ds_dir=$(mktemp -d)
+
+# Copy datastream files to output directory
+cp "$root_dir/build/"*-ds.xml "$ds_dir"
 
 # Start build
-oc start-build -n "$namespace" "openscap-$product-ds" \
-    --from-file="$root_dir/build/ssg-$product-ds.xml"
+oc start-build -n "$namespace" "openscap-ocp4-ds" --from-dir="$ds_dir"
+
+# Clean output directory
+rm -rf "$ds_dir"
 
 # Wait some seconds until the object gets persisted
 sleep 5
 
-latest_build=$(oc get -n "$namespace" --no-headers buildconfigs "openscap-$product-ds" | awk '{print $4}')
+latest_build=$(oc get -n "$namespace" --no-headers buildconfigs "openscap-ocp4-ds" | awk '{print $4}')
 
 popd
 
 while true; do
-    build_status=$(oc get builds -n "$namespace" --no-headers "openscap-$product-ds-$latest_build" | awk '{print $4}')
+    build_status=$(oc get builds -n "$namespace" --no-headers "openscap-ocp4-ds-$latest_build" | awk '{print $4}')
 
     if [ "$build_status" == "Complete" ]; then
         # Get built image
-        image=$(oc get imagestreams -n "$namespace" --no-headers "openscap-$product-ds" | awk '{printf "%s:%s",$2, $3}')
+        image=$(oc get imagestreams -n "$namespace" --no-headers "openscap-ocp4-ds" | awk '{printf "%s:%s",$2, $3}')
 
         echo "Success!"
         echo "********"
