@@ -573,11 +573,9 @@ selections:
 
     # 5 Access, Authentication and Authorization
 
-    ## 5.1 Configure cron
-
+    ## 5.1 Configure time-based job schedulers
 
     ### 5.1.1 Ensure cron daemon is enabled (Scored)
-
 
     ### 5.1.2 Ensure permissions on /etc/crontab are configured (Scored)
     # chown root:root /etc/crontab
@@ -623,6 +621,7 @@ selections:
 
     ### 5.1.8 Ensure at/cron is restricted to authorized users (Scored)
 
+    ### 5.1.9 Ensure at is restricted to authorized users (Scored)
 
     ## 5.2 SSH Server Configuration
 
@@ -645,8 +644,7 @@ selections:
     - file_permissions_sshd_pub_key
     # TO DO: check owner of pub keys in /etc/ssh is root:root
 
-    ### 5.2.4 Ensure SSH Protocol is set to 2
-    - sshd_allow_only_protocol2
+    ### 5.2.4 Ensure SSH access is limited (Scored)
 
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Scored)
     - sshd_set_loglevel_info
@@ -691,21 +689,19 @@ selections:
     - sshd_set_keepalive
 
     ### 5.2.17 Ensure SSH LoginGraceTime is set to one minute
-    ###        or less (Scored)
+    ###        or less (Scored)    
 
-    ### 5.2.18 Ensure SSH access is limited (Scored)
-
-    ### 5.2.19 Ensure SSH warning banner is configured (Scored)
+    ### 5.2.18 Ensure SSH warning banner is configured (Scored)
     - sshd_enable_warning_banner
 
-    ### 5.2.20 Ensure SSH PAM is enabled (Scored)
+    ### 5.2.19 Ensure SSH PAM is enabled (Scored)
 
-    ### 5.2.21 Ensure SSH AllowTcpForwarding is disabled (Scored)
+    ### 5.2.20 Ensure SSH AllowTcpForwarding is disabled (Scored)
     - sshd_disable_tcp_forwarding
     
-    ### 5.2.22 Ensure SSH MaxStartups is configured (Scored)
+    ### 5.2.21 Ensure SSH MaxStartups is configured (Scored)
 
-    ### 5.2.23 Ensure SSH MaxSessions is set to 4 or less (Scored)
+    ### 5.2.22 Ensure SSH MaxSessions is set to 4 or less (Scored)
 
     ## 5.3 Configure PAM
 
