@@ -390,10 +390,10 @@ selections:
     #### Need rule
 
     #### 3.5.1.4 Ensure firewalld service is enabled (Scored)
-    - service_firewalld_enabled
+    #- service_firewalld_enabled
 
     #### 3.5.1.5 Ensure default zone is set (Scored)
-    - set_firewalld_default_zone
+    #- set_firewalld_default_zone
 
     #### 3.5.1.6 Ensure network interfaces are assigned to appropriate zone (Unscored)
     #### Need rule
