@@ -440,15 +440,26 @@ selections:
     # 4 Logging and Auditing
 
     ## 4.1 Configure System Accounting (auditd)
-    ### 4.1.1 Configure Data Retention
+    ### 4.1.1 Ensure Auditing is enabled
+    ###  4.1.1.1 Ensure auditd is installed (Scored)
+    - package_audit_installed
 
-    #### 4.1.1.1 Ensure audit log storage size is configured (Scored)
+    #### 4.1.1.2 Ensure auditd service is enabled (Scored)
+    - service_auditd_enabled
+
+    #### 4.1.1.3 Ensure auditing for processes that start prior to audit
+    ####         is enabled (Scored)
+    - grub2_audit_argument
+
+    ### 4.1.2 Configure Data Retention
+
+    #### 4.1.2.1 Ensure audit log storage size is configured (Scored)
     - auditd_data_retention_max_log_file
 
-    #### 4.1.1.2 Ensure audit logs are not automatically deleted (Scored)
+    #### 4.1.2.2 Ensure audit logs are not automatically deleted (Scored)
     - auditd_data_retention_max_log_file_action
 
-    #### 4.1.1.3 Ensure system is disabled when audit logs are full (Scored)
+    #### 4.1.2.3 Ensure system is disabled when audit logs are full (Scored)
     - var_auditd_space_left_action=email
     - auditd_data_retention_space_left_action
 
@@ -460,18 +471,10 @@ selections:
     - var_auditd_admin_space_left_action=halt
     - auditd_data_retention_admin_space_left_action
 
-    ### 4.1.2 Ensure auditd is installed (Scored)
-    - package_audit_installed
-
-    ### 4.1.3 Ensure auditd service is enabled (Scored)
-    - service_auditd_enabled
-
-    ### 4.1.4 Ensure auditing for processes that start prior to audit
-    ###        is enabled (Scored)
-    - grub2_audit_argument
-
-    #### 4.1.1.4 Ensure audit_backlog_limit is sufficient (Scored)
+   #### 4.1.2.4 Ensure audit_backlog_limit is sufficient (Scored)
     - grub2_audit_backlog_limit_argument
+
+
 
     ### 4.1.5 Ensure events that modify date and time information
     ###       are collected (Scored)
