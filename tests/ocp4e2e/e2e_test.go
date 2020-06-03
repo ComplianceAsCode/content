@@ -27,10 +27,17 @@ func TestE2e(t *testing.T) {
 		ctx.resetClientMappings()
 	})
 
+	// Remediations
 	var numberOfRemediationsInit int
-	var numberOfFailuresInit int
 	var numberOfRemediationsEnd int
+
+	// Failures
+	var numberOfFailuresInit int
 	var numberOfFailuresEnd int
+
+	// Check Results
+	var numberOfCheckResultsInit int
+	var numberOfCheckResultsEnd int
 
 	t.Run("Run first compliance scan", func(t *testing.T) {
 		// Create suite and auto-apply remediations
@@ -38,6 +45,7 @@ func TestE2e(t *testing.T) {
 		ctx.waitForComplianceSuite(suite)
 		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite, false)
 		numberOfFailuresInit = ctx.getFailuresForSuite(suite, false)
+		numberOfCheckResultsInit = ctx.getCheckResultsForSuite(suite)
 	})
 
 	t.Run("Wait for Remediations to apply", func(t *testing.T) {
@@ -52,6 +60,17 @@ func TestE2e(t *testing.T) {
 		ctx.waitForComplianceSuite(suite)
 		numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite, true)
 		numberOfFailuresEnd = ctx.getFailuresForSuite(suite, true)
+		numberOfCheckResultsEnd = ctx.getCheckResultsForSuite(suite)
+	})
+
+	t.Run("We should have the same number of check results in each scan", func(t *testing.T) {
+		if numberOfCheckResultsInit != numberOfCheckResultsEnd {
+			t.Errorf("The amount of check results are NOT the same: init -> %d  end %d",
+				numberOfCheckResultsInit, numberOfCheckResultsEnd)
+		} else {
+			t.Logf("There amount of check results are the same: init -> %d  end %d",
+				numberOfCheckResultsInit, numberOfCheckResultsEnd)
+		}
 	})
 
 	t.Run("We should have less remediations to apply", func(t *testing.T) {
