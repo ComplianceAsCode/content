@@ -16,11 +16,8 @@ description: |-
     add <tt>vsyscall=none</tt> to <tt>/etc/kernel/cmdline</tt>.
 
 rationale: |-
-    Poisoning writes an arbitrary value to freed pages, so any modification or
-    reference to that page after being freed or before being initialized will be
-    detected and prevented.
-    This prevents many types of use-after-free vulnerabilities at little performance cost.
-    Also prevents leak of data and detection of corrupted memory.
+    Virtual Syscalls provide an opportunity of attack for a user who has control
+    of the return instruction pointer.
 
 severity: medium
 
