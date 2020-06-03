@@ -707,16 +707,12 @@ selections:
 
     ### 5.3.1 Ensure password creation requirements are configured (Scored)
 
-
     ### 5.3.2 Ensure lockout for failed password attempts is
     ###       configured (Scored)
 
-
-    ### 5.3.3 Ensure password reuse is limited (Scored)
-
-
     ### 5.3.4 Ensure password hashing algorithm is SHA-512 (Scored)
-
+    
+    ### 5.3.3 Ensure password reuse is limited (Scored)
 
     ## 5.4 User Accounts and Environment
 
