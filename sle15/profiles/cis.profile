@@ -834,46 +834,39 @@ selections:
 
     ## 6.2 User and Group Settings
 
-    ### 6.2.1 Ensure password fields are not empty (Scored)
+    ### 6.2.1 Ensure accounts in /etc/passwd use shadowed passwords (Scored)
 
-    ### 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)
-    - no_legacy_plus_entries_etc_passwd
+    ### 6.2.2 Ensure /etc/shadow password fields are not empty (Scored)
 
-    ### 6.2.3 Ensure all users' home directories exist (Scored)
+    ### 6.2.3 Ensure root is the only UID 0 account (Scored)
 
-    ### 6.2.4 Ensure no legacy "+" entries exist in /etc/shadow (Scored)
-    - no_legacy_plus_entries_etc_shadow
+    ### 6.2.4 Ensure root PATH Integrity (Scored)
 
-    ### 6.2.5 Ensure no legacy "+" entries exist in /etc/group (Scored)
-    - no_legacy_plus_entries_etc_group
+    ### 6.2.5 Ensure all users' home directories exist (Scored) 
 
-    ### 6.2.6 Ensure root is the only UID 0 account (Scored)
-
-    ### 6.2.7 Ensure root PATH Integrity (Scored)
-
-    ### 6.2.8 Ensure users' home directories permissions are 750 or more
+    ### 6.2.6 Ensure users' home directories permissions are 750 or more
     ### restrictive (Scored)
 
-    ### 6.2.9 Ensure users own their home directories (Scored)
+    ### 6.2.7 Ensure users own their home directories (Scored)
 
-    ### 6.2.10 Ensure users' dot files are not group or world writable (Scored)
+    ### 6.2.8 Ensure users' dot files are not group or world writable (Scored)
 
-    ### 6.2.11 Ensure no users have .forward files (Scored)
+    ### 6.2.9 Ensure no users have .forward files (Scored)
 
-    ### 6.2.12 Ensure no users have .netrc files (Scored)
+    ### 6.2.10 Ensure no users have .netrc files (Scored)
 
-    ### 6.2.13 Ensure users' .netrc Files are not group or world accessible (Scored)
+    ### 6.2.11 Ensure users' .netrc Files are not group or world accessible (Scored)
 
-    ### 6.2.14 Ensure no users have .rhosts files (Scored)
+    ### 6.2.12 Ensure no users have .rhosts files (Scored)
 
-    ### 6.2.15 Ensure all groups in /etc/passwd exist in /etc/group (Scored)
+    ### 6.2.13 Ensure all groups in /etc/passwd exist in /etc/group (Scored)
 
-    ### 6.2.16 Ensure no duplicate UIDs exist (Scored)
+    ### 6.2.14 Ensure no duplicate UIDs exist (Scored)
 
-    ### 6.2.17 Ensure no duplicate GIDs exist (Scored)
+    ### 6.2.15 Ensure no duplicate GIDs exist (Scored)
 
-    ### 6.2.18 Ensure no duplicate user names exist (Scored)
+    ### 6.2.16 Ensure no duplicate user names exist (Scored)
 
-    ### 6.2.19 Ensure no duplicate group names exist (Scored)
+    ### 6.2.17 Ensure no duplicate group names exist (Scored)
 
-    ### 6.2.20 Ensure shadow group is empty (Scored)
+    ### 6.2.18 Ensure shadow group is empty (Scored)
