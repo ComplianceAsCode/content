@@ -711,7 +711,7 @@ selections:
     ###       configured (Scored)
 
     ### 5.3.4 Ensure password hashing algorithm is SHA-512 (Scored)
-    
+
     ### 5.3.3 Ensure password reuse is limited (Scored)
 
     ## 5.4 User Accounts and Environment
@@ -720,38 +720,28 @@ selections:
 
     #### 5.4.1.1 Ensure password expiration is 365 days or less (Scored)
 
-
     #### 5.4.1.2 Ensure minimum days between password changes is 7
     ####         or more (Scored)
-
 
     #### 5.4.1.3 Ensure password expiration warning days is
     ####         7 or more (Scored)
 
-
     #### 5.4.1.4 Ensure inactive password lock is 30 days or less (Scored)
-
 
     #### 5.4.1.5 Ensure all users last password change date is
     ####         in the past (Scored)
 
-
     ### 5.4.2 Ensure system accounts are secured (Scored)
 
-
-    ### 5.4.3 Ensure default user shell timeout is 900 seconds
-    ###       or less (Scored)
-
-
-    ### 5.4.4 Ensure default group for the root account is
+    ### 5.4.3 Ensure default group for the root account is
     ###       GID 0 (Scored)
 
+    ### 5.4.4 Ensure default user shell timeout is 900 seconds
+    ###       or less (Scored)
 
     ### 5.4.5 Ensure default user mask is 027 or more restrictive (Scored)
 
-
     ## 5.5 Ensure root login is restricted to system console (Not Scored)
-
 
     ## 5.6 Ensure access to the su command is restricted (Scored)
 
