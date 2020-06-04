@@ -1,4 +1,4 @@
+#!/bin/bash
 # remediation = none
 
-#!/bin/bash
 true
