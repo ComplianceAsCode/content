@@ -10,6 +10,12 @@ description: |-
     amount of data that may be transmitted and the time
     elapsed. To decrease the default limits, put line
     <tt>RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{ sub_var_value("var_ssh_client_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/ssh_config.d/02-rekey-limit.conf</tt>.
+    Make sure that there is no other <tt>RekeyLimit</tt> configuration preceding
+    the <tt>include</tt> directive in the main config file
+    <tt>/etc/ssh/ssh_config</tt>. Check also other files in
+    <tt>/etc/ssh/ssh_config.d</tt> directory. Files are processed according to
+    their names. Make sure that there is no file processed before
+    <tt>02-rekey-limit.conf</tt> containing definition of <tt>RekeyLimit</tt>.
 
 rationale: |-
     By decreasing the limit based on the amount of data and enabling
@@ -27,8 +33,11 @@ references:
 ocil_clause: 'it is commented out or is not set'
 
 ocil: |-
-    To check if RekeyLimit is set correctly, run the
-    following command:
-    <pre>$ sudo grep RekeyLimit /etc/ssh/ssh_config.d/02-rekey-limit.conf</pre>
-    If configured properly, output should be
-    <pre>RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{ sub_var_value("var_ssh_client_rekey_limit_time") }}}</pre>
+    To check if RekeyLimit is set correctly, run the following command: <pre>$
+    sudo grep RekeyLimit /etc/ssh/ssh_config.d/*.conf</pre> If configured
+    properly, output should be <pre>/etc/ssh/ssh_config.d/02-rekey-limit.conf:
+    RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{
+    sub_var_value("var_ssh_client_rekey_limit_time") }}}</pre> Check also the
+    main configuration file with the following command: <pre>sudo grep
+    RekeyLimit /etc/ssh/ssh_config</pre> The command should not return any
+    output.
