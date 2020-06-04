@@ -39,7 +39,6 @@
         <xsl:for-each select="$relevantRules">
           <xsl:call-template name="copyProductRule">
             <xsl:with-param name="rule" select="."/>
-            <xsl:with-param name="cci" select="$disaRule/xccdf:ident/text()"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
@@ -84,7 +83,6 @@
 
   <xsl:template name="copyProductRule">
     <xsl:param name="rule"/>
-    <xsl:param name="cci"/>
     <xsl:copy-of select="$rule"/>
   </xsl:template>
 
