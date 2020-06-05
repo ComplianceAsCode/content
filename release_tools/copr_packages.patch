@@ -1,0 +1,13 @@
+diff --git a/scap-security-guide.spec b/scap-security-guide.spec
+index 55bddbc..b9667b0 100644
+--- a/scap-security-guide.spec
++++ b/scap-security-guide.spec
+@@ -7,7 +7,7 @@ URL:		https://github.com/ComplianceAsCode/content/
+ Source0:	https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
+ BuildArch:	noarch
+ 
+-BuildRequires:	libxslt, expat, python3, openscap-scanner >= 1.2.5, cmake >= 3.8, python3-jinja2, python3-PyYAML
++BuildRequires:	libxslt, expat, python, openscap-scanner >= 1.2.5, cmake >= 2.8, python-jinja2, PyYAML, python-argparse
+ Requires:	xml-common, openscap-scanner >= 1.2.5
+ Obsoletes:	openscap-content < 0:0.9.13
+ Provides:	openscap-content
