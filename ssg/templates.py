@@ -8,6 +8,11 @@ from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote
+
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
 
 lang_to_ext_map = {
@@ -351,6 +356,10 @@ def timer_enabled(data, lang):
         data["packagename"] = data["timername"]
     return data
 
+@template(["kubernetes"])
+def machine_config_ignition_file(data, lang):
+    data["urlencoded_source"] = quote(data["source"])
+    return data
 
 class Builder(object):
     """
