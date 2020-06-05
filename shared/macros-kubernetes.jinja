@@ -158,7 +158,7 @@ UsePrivilegeSeparation sandbox
     - file_permissions_mode (String): File permissions to be applied to the file represented by path argument
     - source_content (String): The source of the content to be applied.
 #}}
-{{%- macro kubernetes_machine_config(path='', file_permissions_mode='', source='') -%}}
+{{%- macro kubernetes_machine_config_file(path='', file_permissions_mode='', source='') -%}}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 spec:
@@ -179,5 +179,5 @@ spec:
   High level macro to generate Kubernetes remediation to set the ssh daemon configuration file.
 #}}
 {{%- macro kubernetes_sshd_set() -%}}
-{{{ kubernetes_machine_config(path='/etc/ssh/sshd_config', file_permissions_mode='0600', source=sshd_config_source()) }}}
+{{{ kubernetes_machine_config_file(path='/etc/ssh/sshd_config', file_permissions_mode='0600', source=sshd_config_source()) }}}
 {{%- endmacro -%}}
