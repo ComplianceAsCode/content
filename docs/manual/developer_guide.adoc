@@ -1656,7 +1656,7 @@ sshd_lineinfile::
 ** *parameter* - name of the SSH configuration option, eg. `KerberosAuthentication`
 ** *value* - value of the SSH configuration option specified by *parameter*, eg. `"no"`.
 ** *missing_parameter_pass* - If set to `"true"` the OVAL check will pass if the parameter is not present in `/etc/ssh/sshd_config`.
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 sysctl::
 * Checks sysctl parameters. The OVAL definition checks both configuration and runtime settings and require both of them to be set to the desired value to return true.
