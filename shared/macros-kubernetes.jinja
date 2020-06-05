@@ -1,9 +1,4 @@
-# platform = multi_platform_all
-# reboot = true
-# strategy = disable
-# complexity = low
-# disruption = medium
-
+{{%- macro kubernetes_machine_config(PATH='', MODE='') -%}}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 spec:
@@ -13,7 +8,8 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,{{{ URLENCODED_SOURCE }}}
+          source: data:,{{{ url_encode() }}}
         filesystem: root
         mode: {{{ MODE }}}
         path: {{{ PATH }}}
+{{%- endmacro -%}}

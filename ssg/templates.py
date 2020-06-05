@@ -316,7 +316,7 @@ def service_enabled(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def sshd_lineinfile(data, lang):
     missing_parameter_pass = data["missing_parameter_pass"]
     if missing_parameter_pass == "true":
@@ -356,10 +356,6 @@ def timer_enabled(data, lang):
         data["packagename"] = data["timername"]
     return data
 
-@template(["kubernetes"])
-def machine_config_ignition_file(data, lang):
-    data["urlencoded_source"] = quote(data["source"])
-    return data
 
 class Builder(object):
     """
