@@ -410,3 +410,8 @@ selections:
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
+
+    # set ssh client rekey limit
+    - ssh_client_rekey_limit
+    - var_ssh_client_rekey_limit_size=1G
+    - var_ssh_client_rekey_limit_time=1hour

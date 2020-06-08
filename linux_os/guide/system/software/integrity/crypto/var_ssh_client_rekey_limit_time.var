@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'SSH client RekeyLimit - time'
+
+description: |-
+    Specify the time component of the rekey limit. The session key is
+    renegotiated after the defined amount of time passes. The number is followed
+    by units such as H or M for hours or minutes. Note that the RekeyLimit can
+    be also configured according to amount of transfered data.
+
+interactive: true
+
+type: string
+
+operator: equals
+
+options:
+    default: "1h"
+    "1hour": "1h"
