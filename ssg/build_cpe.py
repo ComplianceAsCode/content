@@ -17,7 +17,7 @@ def extract_subelement(objects, sub_elem_type):
     """
 
     for obj in objects:
-        for subelement in obj.getiterator():
+        for subelement in obj.iter():
             if subelement.get(sub_elem_type):
                 sub_element = subelement.get(sub_elem_type)
                 return sub_element
@@ -44,12 +44,12 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     reflist = []
     elementlist = []
 
-    for element in tree_with_refs.getiterator():
+    for element in tree_with_refs.iter():
         value = element.get(attrname)
         if value is not None:
             reflist.append(value)
 
-    for element in tree_with_ids.getiterator():
+    for element in tree_with_ids.iter():
         if element.get("id") in reflist:
             elementlist.append(element)
 

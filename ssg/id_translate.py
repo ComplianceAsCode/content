@@ -64,7 +64,7 @@ class IDTranslator(object):
         )
 
     def translate(self, tree, store_defname=False):
-        for element in tree.getiterator():
+        for element in tree.iter():
             idname = element.get("id")
             if idname:
                 # store the old name if requested (for OVAL definitions)
