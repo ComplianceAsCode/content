@@ -14,8 +14,9 @@ description: |-
     the <tt>include</tt> directive in the main config file
     <tt>/etc/ssh/ssh_config</tt>. Check also other files in
     <tt>/etc/ssh/ssh_config.d</tt> directory. Files are processed according to
-    their names. Make sure that there is no file processed before
-    <tt>02-rekey-limit.conf</tt> containing definition of <tt>RekeyLimit</tt>.
+    lexicographical order of file names. Make sure that there is no file
+    processed before <tt>02-rekey-limit.conf</tt> containing definition of
+    <tt>RekeyLimit</tt>.
 
 rationale: |-
     By decreasing the limit based on the amount of data and enabling
