@@ -56,6 +56,11 @@ ocil: |-
     <pre>$ sudo chown <tt>user</tt> <tt>file</tt></pre>
 
 warnings:
-    - general: |-
-        This rule only considers local users.
-        If you have your users defined outside <code>/etc/passwd</code>, the rule won't consider those.
+    - functionality: |-
+        For this rule to evaluate centralized user accounts, <tt>getent</tt> must be working properly
+        so that running the command <pre>getent passwd</pre> returns a list of all users in your organization.
+        If using the System Security Services Daemon (SSSD), <pre>enumerate = true</pre> must be configured
+        in your organization's domain to return a complete list of users
+    - performance: |-
+        Enabling this rule will result in slower scan times depending on the size of your organization
+        and number of centralized users.
