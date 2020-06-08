@@ -96,6 +96,9 @@ def main():
     for worker in workers:
         worker.join()
 
+    if queue.unfinished_tasks > 0:
+        raise RuntimeError("Some of the guides were not exported successfully")
+
     index_source = ssg.build_guides.build_index(benchmarks, input_basename,
                                                 index_links, index_options,
                                                 index_initial_src)
