@@ -223,7 +223,7 @@ def createTestProfile(rule):
 
 
 def clusterTestFunc(args):
-    build_cmd = 'utils/build_ds_container.sh ocp4'
+    build_cmd = 'utils/build_ds_container.sh'
 
     if which('oc') is None:
         print('oc is required to test a rule in-cluster.')
