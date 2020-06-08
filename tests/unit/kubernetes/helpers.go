@@ -152,6 +152,15 @@ func (ctx *unitTestContext) asssertSelectionsNotInOCPProfile(selections []string
 	}
 }
 
+func isRuleException(path string) bool {
+	for _, rule := range ruleExceptions {
+		if strings.Contains(path, rule) {
+			return true
+		}
+	}
+	return false
+}
+
 func isRelevantContentDir(path string, info os.FileInfo) bool {
 	// We don't care about e2e tests
 	if strings.Contains(path, "ocp4e2e/") {
