@@ -111,7 +111,7 @@ def main():
             benchmark.findall(".//{%s}Value" % (XCCDF_NAMESPACE)):
         values.append(value)
 
-    parent_map = dict((c, p) for p in benchmark.getiterator() for c in p)
+    parent_map = dict((c, p) for p in benchmark.iter() for c in p)
     for rule in \
             benchmark.findall(".//{%s}Rule" % (XCCDF_NAMESPACE)):
         parent_map[rule].remove(rule)

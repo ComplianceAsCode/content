@@ -179,7 +179,7 @@ def main():
     check_content_refs = xccdftree.findall(".//{%s}check-content-ref"
                                            % xccdf_ns)
 
-    xccdf_parent_map = dict((c, p) for p in xccdftree.getiterator() for c in p)
+    xccdf_parent_map = dict((c, p) for p in xccdftree.iter() for c in p)
     # now we can actually do the verification work here
     if options.rules_with_invalid_checks or options.all_checks:
         for check_content_ref in check_content_refs:

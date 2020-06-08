@@ -106,7 +106,7 @@ def move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree,
     timestamp = extendedcomp.get('timestamp')
 
     # Get children elements of <ds:extended-component> containing OCIL content
-    extchildren = extendedcomp.getchildren()
+    extchildren = list(extendedcomp)
     # There should be just one OCIL subcomponent in <ds:extended-component>
     if len(extchildren) != 1:
         sys.stderr.write("ds:extended-component contains more than one element!"
