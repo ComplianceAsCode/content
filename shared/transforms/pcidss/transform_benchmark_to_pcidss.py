@@ -20,7 +20,10 @@
 #      Martin Preisler <mpreisle@redhat.com>
 
 import logging
-from xml.etree import cElementTree as ElementTree
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    from xml.etree import ElementTree as ElementTree
 import json
 import sys
 import os
