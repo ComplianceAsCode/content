@@ -1,0 +1,48 @@
+{{% set YAML_TEST_OVAL_VERSION = [5, 11] %}}
+
+{{% if target_oval_version >= YAML_TEST_OVAL_VERSION %}}
+<def-group>
+      <definition class="compliance" version="1" id="{{{ rule_id }}}">
+      <metadata>
+        <title>None</title>
+        {{{- oval_affected(products) }}}
+        <description>None</description>
+      </metadata>
+      <criteria operator="AND">
+        <criterion comment="None" negate="false" test_ref="test_{{{ rule_id }}}"/>
+        <criterion comment="Make sure that there is the actual file to scan" test_ref="test_file_for_{{{ rule_id }}}"/>
+      </criteria>
+    </definition>
+
+    <ind:yamlfilecontent_test id="test_{{{ rule_id }}}" check="at least one" comment="Find one match" version="1">
+            <ind:object object_ref="object_{{{ rule_id }}}"/>
+            <ind:state state_ref="state_{{{ rule_id }}}"/>
+    </ind:yamlfilecontent_test>
+
+    <local_variable id="{{{ rule_id }}}_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
+       <concat>
+              <variable_component var_ref="ocp_data_root"/>
+              <literal_component>/apis/config.openshift.io/v1/clusteroperators/openshift-apiserver</literal_component>
+       </concat>
+    </local_variable>
+
+    <unix:file_test id="test_file_for_{{{ rule_id }}}" check="only one" comment="Find the actual file to be scanned." version="1">
+            <unix:object object_ref="object_file_for_{{{ rule_id }}}"/>
+    </unix:file_test>
+
+    <unix:file_object id="object_file_for_{{{ rule_id }}}" version="1">
+      <unix:filepath var_ref="{{{ rule_id }}}_dump_location"/>
+    </unix:file_object>
+
+    <ind:yamlfilecontent_object id="object_{{{ rule_id }}}" version="1">
+      <ind:filepath var_ref="{{{ rule_id }}}_dump_location"/>
+      <ind:yamlpath>.status.conditions[type=Upgradeable].status</ind:yamlpath>
+    </ind:yamlfilecontent_object>
+
+    <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
+            <ind:value_of datatype="string" operation="pattern match">True</ind:value_of>
+    </ind:yamlfilecontent_state>
+
+   <external_variable comment="Root of downloaded stuff" datatype="string" id="ocp_data_root" version="1" />
+</def-group>
+{{% endif  %}}

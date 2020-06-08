@@ -1,0 +1,19 @@
+prodtype: ocp4
+
+title: The cluster is in an Upgradeable state
+
+description: |-
+  When a cluster is in an Upgradeable state it's able to receive the latest
+  security patches from the vendor.
+
+rationale: |-
+  The cluster has to be in an upgradeable state because that ensures that the
+  vendor can apply the latest security patches.
+
+identifiers: {}
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/clusteroperators/openshift-apiserver") | indent(8) }}}
