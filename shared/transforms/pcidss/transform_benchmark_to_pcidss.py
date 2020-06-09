@@ -111,7 +111,13 @@ def main():
             benchmark.findall(".//{%s}Value" % (XCCDF_NAMESPACE)):
         values.append(value)
 
-    parent_map = dict((c, p) for p in benchmark.iter() for c in p)
+    # decide on usage of .iter or .getiterator method of elementtree class.
+    # getiterator is deprecated in Python 3.9, but iter is not available in
+    # older versions
+    if getattr(benchmark, "iter", None) == None:
+        parent_map = dict((c, p) for p in benchmark.getiterator() for c in p)
+    else:
+        parent_map = dict((c, p) for p in benchmark.iter() for c in p)
     for rule in \
             benchmark.findall(".//{%s}Rule" % (XCCDF_NAMESPACE)):
         parent_map[rule].remove(rule)
