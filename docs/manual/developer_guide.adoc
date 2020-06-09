@@ -1119,6 +1119,36 @@ with the following commands:
 
 This utility requires an up to date JSON tree created by `rule_dir_json.py`.
 
+===== `utils/add_platform_rule.py`
+
+This utility can be used to bootstrap and test Kubernetes/OpenShift application
+checks. See the help output for more detailed usage examples of each of the
+supported subcommands:
+
+   - `utils/add_platform_rule.py create --rule=<rule_name> <options>` - creates
+     files for a new rule.
+   - `utils/add_platform_rule.py test --rule=<rule_name> <options>` - tests a
+     rule against local files using an oscap container.
+   - `utils/add_platform_rule.py cluster-test --rule=<rule_name> <options>` -
+     tests a rule against a running OCP4 cluster using compliance-operator.
+
+This utility requires the following:
+
+   - KUBECONFIG env set to a kubeconfig file for a running OCP4 cluster.
+   - `oc` and `podman` in PATH.
+
+Tips:
+
+   - The --yamlpath option requires a specialized format to specify the
+     resource element to check. See
+     https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition for
+     documentation.
+   - To use the local `test` subcommand, first create a yaml file under a
+     directory structure under /tmp that mirrors the API path. For example, if
+     the resource's full path is /api/v1/foo, save the yaml to /tmp/api/v1/foo.
+     Running `test` will then check the rule against the local file by
+     launching an openscap-1.3.3 container using podman.
+
 ==== Checks
 
 Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
