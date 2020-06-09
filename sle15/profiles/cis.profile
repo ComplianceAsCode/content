@@ -296,7 +296,7 @@ selections:
     - postfix_network_listening_disabled
 
     ### 2.2.17 Ensure rsync service is not enabled (Scored)
-    # NEEDS rule
+    - service_rsyncd_disabled
 
     ### 2.2.18 Ensure NIS Server is not enabled (Scored)
     - package_ypserv_removed
@@ -390,10 +390,10 @@ selections:
     #### Need rule
 
     #### 3.5.1.4 Ensure firewalld service is enabled (Scored)
-    #- service_firewalld_enabled
+    - service_firewalld_enabled
 
     #### 3.5.1.5 Ensure default zone is set (Scored)
-    #- set_firewalld_default_zone
+    - set_firewalld_default_zone
 
     #### 3.5.1.6 Ensure network interfaces are assigned to appropriate zone (Unscored)
     #### Need rule
@@ -423,19 +423,23 @@ selections:
 
     #### 3.5.3.2 Configure IPv4 iptables
     ##### 3.5.3.2.1 Ensure default deny firewall policy (Scored)
+    - set_iptables_default_rule
     ##### 3.5.3.2.2 Ensure loopback traffic is configured (Scored)
     ##### 3.5.3.2.3 Ensure outbound and established connections are configured (Scored)
     ##### 3.5.3.2.4 Ensure firewall rules exist for all open ports (Scored)
     ##### 3.5.3.2.5 Ensure iptables rules are saved (Scored)
-    ##### 3.5.3.2.6 Ensure iptables is enabled and running (Scored) 
+    ##### 3.5.3.2.6 Ensure iptables is enabled and running (Scored)
+    - service_iptables_enabled 
 
     #### 3.5.3.3 Configure IPv6 iptables
     ##### 3.5.3.3.1 Ensure IPv6 default deny firewall policy (Scored)
+    - set_ip6tables_default_rule
     ##### 3.5.3.3.2 Ensure IPv6 loopback traffic is configured (Scored)
     ##### 3.5.3.3.3 Ensure IPv6 outbound and established connections are configured (Scored)
     ##### 3.5.3.3.4 Ensure IPv6 firewall rules exist for all open ports (Scored)
     ##### 3.5.3.3.5 Ensure ip6tables rules are saved (Score)
     ##### 3.5.3.3.6 Ensure ip6tables is enabled and running (Scored)
+    - service_ip6tables_enabled
 
     # 4 Logging and Auditing
 
