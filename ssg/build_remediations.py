@@ -305,7 +305,7 @@ class AnsibleRemediation(Remediation):
             else:
                 reboot_tag = "no_reboot_needed"
             tags.append(reboot_tag)
-        to_update["tags"] = tags
+        to_update["tags"] = sorted(tags)
 
     def update_tags_from_rule(self, to_update):
         if not self.associated_rule:
@@ -321,7 +321,7 @@ class AnsibleRemediation(Remediation):
 
         refs = self.get_references()
         tags.extend(refs)
-        to_update["tags"] = tags
+        to_update["tags"] = sorted(tags)
 
     def _get_cce(self):
         return self.associated_rule.identifiers.get("cce", None)

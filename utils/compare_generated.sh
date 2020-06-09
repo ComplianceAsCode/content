@@ -199,7 +199,7 @@ function save_find_results_to_filenames_array() {
 # $1: First build directory
 function operate_on_builddirs() {
 	local first_directory="$1" second_directory="$2" first_file second_file rc
-	save_find_results_to_filenames_array "$first_directory" "*-ds.xml"
+	save_find_results_to_filenames_array "$first_directory" "ssg-*-ds*.xml"
 
 	for first_file in "${filenames[@]}"; do
 		second_file="$(same_file_in_second_directory "$first_file" "$first_directory" "$second_directory")"
