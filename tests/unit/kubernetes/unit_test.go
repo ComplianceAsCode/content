@@ -4,11 +4,20 @@ import (
 	"testing"
 )
 
+var ruleExceptions = []string{
+	"sshd_disable_compression",
+	"sshd_set_idle_timeout",
+	"sshd_set_keepalive",
+}
+
 func TestUnit(t *testing.T) {
 	ctx := newUnitTestContext(t)
 	t.Run("Verify kubernetes files are correct", func(t *testing.T) {
 		filesTouchedByMCs := make(map[string]fileTracker)
 		ctx.assertWithRelevantContentFiles(func(path string) {
+			if isRuleException(path) {
+				return
+			}
 			obj := ctx.assertObjectIsValid(path)
 
 			if isMachineConfig(obj) {

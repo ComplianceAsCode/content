@@ -8,6 +8,11 @@ from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote
+
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
 
 lang_to_ext_map = {
@@ -311,7 +316,7 @@ def service_enabled(data, lang):
     return data
 
 
-@template(["ansible", "bash", "oval"])
+@template(["ansible", "bash", "oval", "kubernetes"])
 def sshd_lineinfile(data, lang):
     missing_parameter_pass = data["missing_parameter_pass"]
     if missing_parameter_pass == "true":

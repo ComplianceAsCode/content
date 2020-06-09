@@ -1379,6 +1379,16 @@ Low level macros to make login banner regular expressions usable in Bash remedia
 - `bash_deregexify_banner_newline_token` - Strips newline token for a newline escape sequence regex
 - `bash_deregexify_banner_backslash` - Strips backslash regex
 
+==== Kubernetes
+
+Jinja macros for Kubernetes content are located in `/shared/macros-kubernetes.jinja`. These currently include the following high-level macros:
+
+- `kubernetes_sshd_set` - Set SSH Daemon configuration file in `/etc/ssh/sshd_config`.
+
+Available low-level Jinja macros that can be used in Kubernetes remediations:
+
+- `kubernetes_machine_config_file` - Set a configuration file to a given path
+
 === Templating
 
 Writing OVAL checks, Bash, or any other content can be tedious work. For
@@ -1656,7 +1666,7 @@ sshd_lineinfile::
 ** *parameter* - name of the SSH configuration option, eg. `KerberosAuthentication`
 ** *value* - value of the SSH configuration option specified by *parameter*, eg. `"no"`.
 ** *missing_parameter_pass* - If set to `"true"` the OVAL check will pass if the parameter is not present in `/etc/ssh/sshd_config`.
-* Languages: Ansible, Bash, OVAL
+* Languages: Ansible, Bash, OVAL, Kubernetes
 
 sysctl::
 * Checks sysctl parameters. The OVAL definition checks both configuration and runtime settings and require both of them to be set to the desired value to return true.
