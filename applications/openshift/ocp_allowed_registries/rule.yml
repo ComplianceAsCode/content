@@ -1,0 +1,16 @@
+prodtype: ocp4
+
+title: "Allowed registries for import are configured"
+
+description: TBD
+
+rationale: TBD
+
+identifiers:
+    cce@ocp4: 84209-6
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
