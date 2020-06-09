@@ -296,31 +296,31 @@ endmacro()
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition and kubernetes)...")
 
-    if(NOT DEFINED PRODUCT_REMEDIATION_LANGUAGES)
-        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes")
-    endif()
     _ssg_build_remediations_for_language(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
-    # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
-    # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
-    if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
-        add_test(
-            NAME "ansible-playbook-syntax-check-${PRODUCT}"
-            COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
-        )
-    endif()
-    if (ANSIBLE_CHECKS)
-        if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
+    if (${_index} GREATER -1)
+        # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
+        # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
+        if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
-                NAME "ansible-playbook-ansible-lint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                NAME "ansible-playbook-syntax-check-${PRODUCT}"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
             )
         endif()
-        if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
-            add_test(
-                NAME "ansible-playbook-yamllint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
-            )
+        if (ANSIBLE_CHECKS)
+            if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+                add_test(
+                    NAME "ansible-playbook-ansible-lint-check-${PRODUCT}"
+                    COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                )
+            endif()
+            if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+                add_test(
+                    NAME "ansible-playbook-yamllint-check-${PRODUCT}"
+                    COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+                )
+            endif()
         endif()
     endif()
 endmacro()
@@ -707,12 +707,20 @@ macro(ssg_build_product PRODUCT)
 
     add_custom_target(${PRODUCT}-content)
 
+    if(NOT DEFINED PRODUCT_REMEDIATION_LANGUAGES)
+        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes")
+    endif()
+
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
-    ssg_build_ansible_playbooks(${PRODUCT})
+    # With older CMake, this is the way how to find string in a list
+    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
+    if (${_index} GREATER -1)
+        ssg_build_ansible_playbooks(${PRODUCT})
+    endif()
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
@@ -736,13 +744,26 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-ocil.xml
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
-        generate-${PRODUCT}-ansible-playbooks
     )
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
+    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
+    if (${_index} GREATER -1)
+        add_dependencies(
+            ${PRODUCT}-content
+            generate-${PRODUCT}-ansible-playbooks
+        )
+        ssg_build_profile_playbooks(${PRODUCT})
+        add_custom_target(
+            ${PRODUCT}-profile-playbooks
+            DEPENDS generate-all-profile-playbooks-${PRODUCT}
+        )
+        add_dependencies(${PRODUCT} ${PRODUCT}-profile-playbooks)
+        add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
+    endif()
+
     ssg_build_html_guides(${PRODUCT})
-    ssg_build_profile_playbooks(${PRODUCT})
     ssg_build_profile_bash_scripts(${PRODUCT})
 
     add_custom_target(
@@ -763,14 +784,8 @@ macro(ssg_build_product PRODUCT)
         ${PRODUCT}-profile-bash-scripts
         DEPENDS generate-all-profile-bash-scripts-${PRODUCT}
     )
-    add_custom_target(
-        ${PRODUCT}-profile-playbooks
-        DEPENDS generate-all-profile-playbooks-${PRODUCT}
-    )
     add_dependencies(${PRODUCT} ${PRODUCT}-profile-bash-scripts)
-    add_dependencies(${PRODUCT} ${PRODUCT}-profile-playbooks)
     add_dependencies(zipfile ${PRODUCT}-profile-bash-scripts)
-    add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
 
     ssg_make_stats_for_product(${PRODUCT})
     add_dependencies(stats ${PRODUCT}-stats)
@@ -908,8 +923,17 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
 
     ssg_build_html_guides(${DERIVATIVE})
-    ssg_build_profile_playbooks(${DERIVATIVE})
     ssg_build_profile_bash_scripts(${DERIVATIVE})
+
+    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
+    if (${_index} GREATER -1)
+        ssg_build_profile_playbooks(${DERIVATIVE})
+        add_custom_target(
+            ${DERIVATIVE}-profile-playbooks
+            DEPENDS generate-all-profile-playbooks-${DERIVATIVE}
+        )
+        add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-playbooks)
+    endif()
 
     add_custom_target(
         ${DERIVATIVE}-guides
@@ -921,12 +945,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         ${DERIVATIVE}-profile-bash-scripts
         DEPENDS generate-all-profile-bash-scripts-${DERIVATIVE}
     )
-    add_custom_target(
-        ${DERIVATIVE}-profile-playbooks
-        DEPENDS generate-all-profile-playbooks-${DERIVATIVE}
-    )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-bash-scripts)
-    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-playbooks)
 
     if (SSG_SEPARATE_SCAP_FILES_ENABLED)
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
