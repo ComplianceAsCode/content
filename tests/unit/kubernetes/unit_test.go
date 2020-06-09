@@ -6,6 +6,7 @@ import (
 
 var ruleExceptions = []string{
 	"sshd_disable_compression",
+	"sshd_set_idle_timeout",
 	"sshd_set_keepalive",
 }
 
