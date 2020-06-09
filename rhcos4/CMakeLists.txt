@@ -5,5 +5,6 @@ endif()
 
 set(PRODUCT "rhcos4")
 set(DISA_SRG_TYPE "os")
+set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
 
 ssg_build_product(${PRODUCT})
