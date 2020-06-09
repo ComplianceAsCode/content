@@ -295,7 +295,11 @@ endmacro()
 
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition and kubernetes)...")
-    _ssg_build_remediations_for_language(${PRODUCT} "bash;ansible;puppet;anaconda;ignition;kubernetes")
+
+    if(NOT DEFINED PRODUCT_REMEDIATION_LANGUAGES)
+        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes")
+    endif()
+    _ssg_build_remediations_for_language(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
     # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
     # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
