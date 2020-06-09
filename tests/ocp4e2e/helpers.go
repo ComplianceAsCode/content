@@ -43,6 +43,7 @@ const (
 	apiPollInterval    = 5 * time.Second
 )
 
+var testType string
 var profile string
 var contentImage string
 var installOperator bool
@@ -55,6 +56,7 @@ type e2econtext struct {
 	// These are only needed for the test and will only be used in this package
 	rootdir         string
 	profilepath     string
+	testtype        string
 	resourcespath   string
 	installOperator bool
 	dynclient       dynclient.Client
@@ -64,6 +66,7 @@ type e2econtext struct {
 
 func init() {
 	flag.StringVar(&profile, "profile", "", "The profile to check")
+	flag.StringVar(&testType, "type", "", "The type of scan this profile is for - 'rhcos4' or 'ocp4'")
 	flag.StringVar(&contentImage, "content-image", "", "The path to the image with the content to test")
 	flag.BoolVar(&installOperator, "install-operator", true, "Should the test-code install the operator or not? "+
 		"This is useful if you need to test with your own deployment of the operator")
@@ -75,20 +78,27 @@ func newE2EContext(t *testing.T) *e2econtext {
 		rootdir = "../../"
 	}
 
-	profilefile := fmt.Sprintf("%s.profile", profile)
-	profilepath := path.Join(rootdir, "ocp4", "profiles", profilefile)
-	resourcespath := path.Join(rootdir, "ocp-resources")
-
-	return &e2econtext{
+	context := &e2econtext{
 		Profile:                profile,
 		ContentImage:           contentImage,
 		OperatorNamespacedName: types.NamespacedName{Name: "compliance-operator"},
-		rootdir:                rootdir,
-		profilepath:            profilepath,
-		resourcespath:          resourcespath,
+		testtype:               testType,
 		installOperator:        installOperator,
 		t:                      t,
+		rootdir:                rootdir,
 	}
+
+	switch testType {
+	case "rhcos4":
+		context.profilepath = path.Join(rootdir, "rhcos4", "profiles", fmt.Sprintf("%s.profile", profile))
+	case "ocp4":
+		context.profilepath = path.Join(rootdir, "ocp4", "profiles", fmt.Sprintf("%s.profile", profile))
+	default:
+		t.Fatal("-type must specify 'rhcos4' or 'ocp4'")
+	}
+
+	context.resourcespath = path.Join(context.rootdir, "ocp-resources")
+	return context
 }
 
 func (ctx *e2econtext) assertRootdir() {
@@ -289,6 +299,41 @@ func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply 
 	return suite
 }
 
+func (ctx *e2econtext) createComplianceSuiteForPlatformProfile(suffix string) *cmpv1alpha1.ComplianceSuite {
+	suite := &cmpv1alpha1.ComplianceSuite{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      ctx.Profile + "-platform-suite-" + suffix,
+			Namespace: ctx.OperatorNamespacedName.Namespace,
+		},
+		Spec: cmpv1alpha1.ComplianceSuiteSpec{
+			AutoApplyRemediations: false,
+			Scans: []cmpv1alpha1.ComplianceScanSpecWrapper{
+				{
+					Name: ctx.Profile + "-platform-scan-" + suffix,
+					ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
+						ScanType:     cmpv1alpha1.ScanTypePlatform,
+						ContentImage: ctx.ContentImage,
+						Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
+						Content:      "ssg-ocp4-ds.xml",
+						Debug:        true,
+					},
+				},
+			},
+		},
+	}
+
+	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
+	err := backoff.RetryNotify(func() error {
+		return ctx.dynclient.Create(goctx.TODO(), suite)
+	}, bo, func(err error, d time.Duration) {
+		fmt.Printf("Couldn't create compliance suite after %s: %s\n", d.String(), err)
+	})
+	if err != nil {
+		ctx.t.Fatalf("failed to create compliance-suite: %s", err)
+	}
+	return suite
+}
+
 func (ctx *e2econtext) waitForComplianceSuite(suite *cmpv1alpha1.ComplianceSuite) {
 	key := types.NamespacedName{Name: suite.Name, Namespace: suite.Namespace}
 	// aprox. 15 min
@@ -380,7 +425,7 @@ func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite, displ
 	}
 	err := ctx.dynclient.List(goctx.TODO(), failList, matchLabels)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get remediation list")
+		ctx.t.Fatalf("Couldn't get check result list")
 	}
 	if display {
 		if len(failList.Items) > 0 {
@@ -391,6 +436,49 @@ func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite, displ
 		}
 	}
 	return len(failList.Items)
+}
+
+// This returns the number of results that are either CheckResultError or CheckResultNoResult
+func (ctx *e2econtext) getBadResultsFromSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
+	ret := 0
+	errList := &cmpv1alpha1.ComplianceCheckResultList{}
+	matchLabels := dynclient.MatchingLabels{
+		cmpv1alpha1.SuiteLabel:                               s.Name,
+		string(cmpv1alpha1.ComplianceCheckResultStatusLabel): string(cmpv1alpha1.CheckResultError),
+	}
+	err := ctx.dynclient.List(goctx.TODO(), errList, matchLabels)
+	if err != nil {
+		ctx.t.Fatalf("Couldn't get result list")
+	}
+	if display {
+		if len(errList.Items) > 0 {
+			ctx.t.Logf("Errors from ComplianceSuite: %s", s.Name)
+		}
+		for _, check := range errList.Items {
+			ctx.t.Logf("unexpected Error result - %s", check.Name)
+		}
+	}
+	ret = len(errList.Items)
+
+	noneList := &cmpv1alpha1.ComplianceCheckResultList{}
+	matchLabels = dynclient.MatchingLabels{
+		cmpv1alpha1.SuiteLabel:                               s.Name,
+		string(cmpv1alpha1.ComplianceCheckResultStatusLabel): string(cmpv1alpha1.CheckResultNoResult),
+	}
+	err = ctx.dynclient.List(goctx.TODO(), noneList, matchLabels)
+	if err != nil {
+		ctx.t.Fatalf("Couldn't get result list")
+	}
+	if display {
+		if len(noneList.Items) > 0 {
+			ctx.t.Logf("None result from ComplianceSuite: %s", s.Name)
+		}
+		for _, check := range noneList.Items {
+			ctx.t.Logf("unexpected None result - %s", check.Name)
+		}
+	}
+
+	return ret + len(noneList.Items)
 }
 
 func (ctx *e2econtext) getCheckResultsForSuite(s *cmpv1alpha1.ComplianceSuite) int {
