@@ -597,9 +597,6 @@ selections:
     #- sshd_print_last_log
     #- sshd_use_priv_separation
 
-    # AC-18(4)
-    - network_nmcli_permissions
-
     # AC-6(5)
     - no_shelllogin_for_systemaccounts
     - no_direct_root_logins
