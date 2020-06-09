@@ -302,7 +302,7 @@ selections:
     - package_ypserv_removed
 
     ### 2.2.19 Ensure telnet-server is not installed (Scored)
-    ### Need Rule
+    - package_telnetd_removed
 
     ## 2.3 Service Clients
     ### 2.3.1 Ensure NIS Client is not installed (Scored)
@@ -547,15 +547,21 @@ selections:
     ### 4.2.1 Configure rsyslog
 
     #### 4.2.1.1 Ensure rsyslog is installed (Scored)
+    - package_rsyslog_installed
 
     #### 4.2.1.2 Ensure rsyslog Service is enabled (Scored)
+    - service_rsyslog_enabled
 
     #### 4.2.1.3 Ensure rsyslog default file permissions configured (Scored)
+    - rsyslog_files_groupownership
+    - rsyslog_files_ownership
+    - rsyslog_files_permissions
 
     #### 4.2.1.4 Ensure logging is configured (Not Scored)
 
     #### 4.2.1.5 Ensure rsyslog is configured to send logs to a remote
     ####         log host (Scored)
+    - rsyslog_remote_loghost
 
     #### 4.2.1.6 Ensure remote rsyslog messages are only accepted on
     ####         designated log hosts (Not Scored) 
@@ -574,6 +580,7 @@ selections:
     ### 4.2.3 Ensure permissions on all logfiles are configured (Scored)
 
     ### 4.2.4 Ensure logrotate is conifgured (Not Scored)
+    - ensure_logrotate_activated
 
     # 5 Access, Authentication and Authorization
 
