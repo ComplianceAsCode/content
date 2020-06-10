@@ -735,7 +735,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         # First concat output form of modified fix text (including text appended
         # to all children of the fix)
         modfix = [fix.text]
-        for child in fix.getchildren():
+        for child in list(fix):
             if child is not None and child.text is not None:
                 modfix.append(child.text)
         modfixtext = "".join(modfix)

@@ -9,7 +9,7 @@ from .constants import xml_version, oval_header, timestamp, PREFIX_TO_NS
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
-    import cElementTree as ElementTree
+    from xml.etree import ElementTree as ElementTree
 
 
 def oval_generated_header(product_name, schema_version, ssg_version):

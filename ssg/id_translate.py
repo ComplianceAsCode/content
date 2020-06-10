@@ -64,7 +64,14 @@ class IDTranslator(object):
         )
 
     def translate(self, tree, store_defname=False):
-        for element in tree.getiterator():
+        # decide on usage of .iter or .getiterator method of elementtree class.
+        # getiterator is deprecated in Python 3.9, but iter is not available in
+        # older versions
+        if getattr(tree, "iter", None) == None:
+            tree_iterator = tree.getiterator()
+        else:
+            tree_iterator = tree.iter()
+        for element in tree_iterator:
             idname = element.get("id")
             if idname:
                 # store the old name if requested (for OVAL definitions)
