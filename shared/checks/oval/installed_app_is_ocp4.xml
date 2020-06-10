@@ -20,11 +20,7 @@
   </ind:yamlfilecontent_test>
 
   <local_variable id="ocp4_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
-      <concat>
-              <!--<variable_component var_ref="ocp_data_root"/>-->
-          <variable_component var_ref="ocp_data_root"/>
-          <literal_component>/apis/config.openshift.io/v1/clusteroperators/openshift-apiserver</literal_component>
-      </concat>
+      <literal_component>/kubernetes-api-resources/apis/config.openshift.io/v1/clusteroperators/openshift-apiserver</literal_component>
   </local_variable>
 
   <unix:file_test id="test_file_for_ocp4" check="only one" comment="Find the actual file to be scanned." version="1">
@@ -43,6 +39,4 @@
   <ind:yamlfilecontent_state id="state_ocp4" version="1">
       <ind:value_of datatype="string" operation="pattern match">4\..*</ind:value_of>
   </ind:yamlfilecontent_state>
-
-  <external_variable comment="Root of downloaded API objects" datatype="string" id="ocp_data_root" version="1" />
 </def-group>
