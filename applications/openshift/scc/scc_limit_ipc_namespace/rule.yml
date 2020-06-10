@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Access to the Host IPC Namespace'
+
+description: |-
+    Containers should not be allowed access to the host's Interprocess Commication (IPC)
+    namespace. To prevent containers from getting access to a host's
+    IPC namespace, the appropriate Security Context Constraints (SCCs)
+    should set <tt>allowHostIPC</tt> to <tt>false</tt>.
+
+rationale: |-
+    A container running in the host's IPC namespace can use IPC
+    to interact with processes outside the container potentially
+    allowing an attacker to exploit a host process thereby enabling an
+    attacker to exploit other services.
+
+severity: medium
+
+references:
+    cis: 5.2.3
+
+ocil_clause: 'allowHostIPC is set to true or too many SCCs have allowHostIPC enabled'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC and determine that <tt>allowHostIPC</tt> is either
+    completely disabled, or that <tt>allowHostIPC</tt> is only enabled to
+    a small set of containers and SCCs.

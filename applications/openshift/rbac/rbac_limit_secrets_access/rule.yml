@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Access to Kubernetes Secrets'
+
+description: |-
+    The Kubernetes API stores secrets, which may be service
+    account tokens for the Kubernetes API or credentials used
+    by workloads in the cluster. Access to these secrets should
+    be restricted to the smallest possible group of users to
+    reduce the risk of privilege escalation. To restict users from
+    secrets, remove <tt>get</tt>, <tt>list</tt>, and <tt>watch</tt>
+    access to unauthorized users to secret objects in the cluster.
+
+rationale: |-
+    Inappropriate access to secrets stored within the Kubernetes
+    cluster can allow for an attacker to gain additional access to
+    the Kubernetes cluster or external resources whose credentials
+    are stored as secrets.
+
+severity: medium
+
+references:
+    cis: 5.1.2
+
+#ocil_clause: 'cluster-admin role is in use by more personnel than necessary'
+#
+#ocil: |-
+#    To review the <tt>cluster-admin</tt> role, run the following command:
+#    <pre>$ oc get clusterrolebinding -o json | jq '.items[] | select(.metadata.name |  startswith("cluster-admin"))'</pre>
+#    Review the output and ensure that authorized users have
+#    the <tt>cluster-admin</tt> role.

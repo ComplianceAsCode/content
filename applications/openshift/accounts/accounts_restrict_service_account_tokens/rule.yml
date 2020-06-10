@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Restrict Automounting of Service Account Tokens'
+
+description: |-
+    Service accounts tokens should not be mounted in pods except where the workload
+    running in the pod explicitly needs to communicate with the API server.
+    To ensure pods do not automatically mount tokens, set
+    <tt>automountServiceAccountToken</tt> to <tt>false</tt>.
+
+rationale: |-
+    Mounting service account tokens inside pods can provide an avenue
+    for privilege escalation attacks where an attacker is able to
+    compromise a single pod in the cluster.
+
+severity: medium
+
+references:
+    cis: 5.1.6
+
+#ocil_clause: 'service account tokens are mounted in pods in the cluster'
+#
+#ocil: |-
+#    Run the following command on the worker node(s):
+#    <pre>$ sudo grep -A1 anonymous /etc/kubernetes/kubernetes.conf</pre>
+#    The output should return <pre>enabled: false</pre>.
