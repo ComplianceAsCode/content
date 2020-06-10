@@ -32,4 +32,5 @@ description: |-
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
-selections: []
+selections:
+    - ocp_idp_no_htpasswd

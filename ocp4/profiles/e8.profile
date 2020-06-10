@@ -11,4 +11,5 @@ description: |-
 
     https://www.cyber.gov.au/publications/essential-eight-in-linux-environments
 
-selections: []
+selections:
+    - ocp_idp_no_htpasswd
