@@ -183,10 +183,19 @@ selections:
 ----
 
 Finally, when we build the content we will automatically get a SCAP profile
-which contains all XCCDF rules from all controls selected in profile YAML. The
-relevant rules are not selected automatically. In our example, the generated
-profile will contain rules `sshd_set_idle_timeout`, `accounts_tmout` and
-`security_patches_uptodate`. The profile will be compiled to a canonical form.
+which contains XCCDF rules and variables from all controls selected in profile
+YAML.
+
+It adds all XCCDF rules listed under `rules` key. The rules listed under
+`related_rules` key are not be added. Also, the selections from `selection` key
+in profile file are included.
+
+In our example, the generated profile will contain rules
+`sshd_set_idle_timeout`, `accounts_tmout`, `var_accounts_tmout=10_min` and
+`security_patches_uptodate`. The profile will not contain
+`systemd_target_multi_user` even if control `R2` is selected because that is
+listed under `related_rules`.  The profile will be compiled to a canonical
+form.
 
 Example of a compiled profile:
 
