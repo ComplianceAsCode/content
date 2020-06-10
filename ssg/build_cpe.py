@@ -27,12 +27,19 @@ def extract_env_obj(objects, local_var):
     """
     From a collection of objects, return the object with id matching
     the object_ref of the local variable.
+
+    NOTE: This assumes that a local variable can only reference one object.
+    Which is not true, variables can reference multiple objects.
+    But this assumption should work for OVAL checks for CPEs,
+    as they are not that complicated.
     """
 
     for obj in objects:
         env_id = extract_subelement(local_var, 'object_ref')
         if env_id == obj.get('id'):
             return obj
+
+    return None
 
 
 def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
