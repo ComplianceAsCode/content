@@ -58,7 +58,6 @@ selections:
     - etcd_peer_client_cert_auth
     - etcd_peer_key_file
     - etcd_unique_ca
-    - etcd_wal_dir
 
     #### Need documentation to complete the following commmented rules
     #- api_server_admission_control_plugin_AlwaysAdmit
