@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Configure the Service Account Certificate Authority Key for the Controller Manager'
+
+description: |-
+    To ensure the API Server utilizes its own key pair, set the <tt>masterCA</tt>
+    parameter to the public key file for service accounts in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "root-ca-file": [
+        "/etc/kubernetes/static-pod-resources/configmaps/serviceaccount-ca/ca-bundle.crt"
+      ],
+    ...
+    </pre>
+
+rationale: |-
+    Service accounts authenticate to the API using tokens signed by a private RSA
+    key. The authentication layer verifies the signature using a matching public RSA key.
+    Configuring the certificate authority file ensures that the API server's signing
+    certificates are validated.
+
+severity: medium
+
+references:
+    cis: 1.3.5
+
+ocil_clause: '<tt>root-ca-file</tt> is not configured</tt>'
+
+ocil: |-
+    To verify that <tt>root-ca-file</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["root-ca-file"]'</pre>
+    The output should return a configured certificate authority file.
