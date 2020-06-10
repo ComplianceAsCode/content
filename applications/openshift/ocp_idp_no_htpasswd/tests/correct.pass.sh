@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mkdir -p /tmp/apis/config.openshift.io/v1/oauths
+mkdir -p /kubernetes-api-resources/apis/config.openshift.io/v1/oauths
 
-cat << EOF > /tmp/apis/config.openshift.io/v1/oauths/cluster
+cat << EOF > /kubernetes-api-resources/apis/config.openshift.io/v1/oauths/cluster
 spec:
   identityProviders:
   - foo: bar
