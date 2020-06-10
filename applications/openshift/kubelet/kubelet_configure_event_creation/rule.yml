@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'kubelet - Do Not Limit Event Creation'
 
@@ -9,11 +9,17 @@ description: |-
     reconstucting the chain-of-events.
 
     To prevent log creation limiting, edit the kubelet configuration
+{{%- if product == "ocp4" %}}
+    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>eventRecordQPS: 0</pre>
+{{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>kubeletArguments:
       event-qps:
       - '0'</pre>
+{{%- endif %}}
 
 rationale: |-
     All events should be captured and not restricted as this helps in
@@ -25,11 +31,16 @@ ocil_clause: 'events are limited'
 
 ocil: |-
     Run the following command on the kubelet node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep eventRecordQPS /etc/kubernetes/kubernetes.conf</pre>
+{{% else %}}
     <pre>$ sudo grep -A1 event-qps /etc/origin/node/node-config.yaml</pre>
+{{%- endif %}}
     The output should return <tt>0</tt>.
 
 identifiers:
     cce@ocp3: 80595-2
 
 references:
-    cis: 2.1.11
+    cis@ocp3: 2.1.11
+    cis@ocp4: 4.2.9

@@ -9,17 +9,24 @@ description: |-
     the containers required ports and connections to networking resources and destinations
     parameters potentially creating a security incident.
     To allow the kubelet to modify the firewall, edit the kubelet configuration
+{{%- if product == "ocp4" %}}
+    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>makeIPTablesUtilChains: true<pre>
+{{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>kubeletArguments:
       make-iptables-util-chains:
       - 'true'</pre>
 
+{{%- endif %}}
+
 rationale: |-
     The kubelet should automatically configure the firewall settings to allow access and
     networking traffic through. This ensures that when a pod or container is running that
     the correct ports are configured as well as removing the ports when a pod or
-    container is no longer in existence. 
+    container is no longer in existence.
 
 severity: medium
 
@@ -27,7 +34,11 @@ ocil_clause: 'the kubelet cannot modify the firewall settings'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 make-iptables-util-chains /etc/origin/node/node-config.yaml</pre>
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep makeIPTablesUtilChains /etc/origin/node/node-config.yaml</pre>
+{{% else %}}
+    <pre>$ sudo grep readOnlyPort /etc/kubernetes/kubernetes.conf</pre>
+{{%- endif %}}
     The output should return <tt>true</tt>.
 
 identifiers:
@@ -35,6 +46,7 @@ identifiers:
 
 references:
     cis: 2.1.8
+    cis@ocp4: 4.2.7
 
 warnings:
     - management: |-
