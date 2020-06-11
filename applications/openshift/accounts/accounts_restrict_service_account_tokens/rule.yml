@@ -20,9 +20,10 @@ severity: medium
 references:
     cis: 5.1.6
 
-#ocil_clause: 'service account tokens are mounted in pods in the cluster'
-#
-#ocil: |-
-#    Run the following command on the worker node(s):
-#    <pre>$ sudo grep -A1 anonymous /etc/kubernetes/kubernetes.conf</pre>
-#    The output should return <pre>enabled: false</pre>.
+ocil_clause: 'service account tokens are automounting'
+
+ocil: |-
+    For each pod in the cluster, review the pod specification and
+    ensure that pods that do not need to explicitly communicate with
+    the API server have <tt>automountServiceAccountToken</tt>
+    configured to <tt>false</tt>.
