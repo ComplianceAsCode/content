@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify User Who Owns The Kube Scheduler Pod Specification File'
+
+description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml", owner="root") }}}'
+
+rationale: |-
+    The Kube specification file contains information about the configuration of the
+    OpenShift scheduler that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4:
+
+references:
+    cis: 1.1.6
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml", owner="root") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml", owner="root") }}}'
+
+#template:
+#    name: file_owner
+#    vars:
+#        filepath: /etc/kubernetes/static-pod-resources/kube-scheduler-pod.yaml
+#        fileuid: '0'

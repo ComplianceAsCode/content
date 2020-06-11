@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Group Who Owns The OpenShift Node Service File'
+
+description: '{{{ describe_file_group_owner(file="/etc/systemd/system/atomic-openshift-node.service", group="root") }}}'
+
+rationale: |-
+    The <tt>/etc/systemd/system/atomic-openshift-node.service</tt> file contains information about the configuration of the
+    OpenShift node service that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4: 80620-8
+
+references:
+    cis: 4.1.2
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/systemd/system/atomic-openshift-node.service", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/etc/systemd/system/atomic-openshift-node.service", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/systemd/system/atomic-openshift-node.service
+        filegid: '0'
