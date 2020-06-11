@@ -6,6 +6,7 @@ require (
 	github.com/cenkalti/backoff/v3 v3.2.2
 	github.com/openshift/compliance-operator v0.1.9
 	github.com/openshift/machine-config-operator v4.2.0-alpha.0.0.20190917115525-033375cbe820+incompatible
+	gopkg.in/yaml.v2 v2.2.8
 	k8s.io/api v0.17.2
 	k8s.io/apiextensions-apiserver v0.17.1
 	k8s.io/apimachinery v0.17.2

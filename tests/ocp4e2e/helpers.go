@@ -6,8 +6,10 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path"
+	"strings"
 	"testing"
 	"time"
 
@@ -16,6 +18,7 @@ import (
 	cmpv1alpha1 "github.com/openshift/compliance-operator/pkg/apis/compliance/v1alpha1"
 	mcfg "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
 	mcfgconst "github.com/openshift/machine-config-operator/pkg/daemon/constants"
+	"gopkg.in/yaml.v2"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	extscheme "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme"
@@ -43,7 +46,7 @@ const (
 	apiPollInterval    = 5 * time.Second
 )
 
-var testType string
+var product string
 var profile string
 var contentImage string
 var installOperator bool
@@ -56,8 +59,9 @@ type e2econtext struct {
 	// These are only needed for the test and will only be used in this package
 	rootdir         string
 	profilepath     string
-	testtype        string
+	product         string
 	resourcespath   string
+	scanType        cmpv1alpha1.ComplianceScanType
 	installOperator bool
 	dynclient       dynclient.Client
 	restMapper      *restmapper.DeferredDiscoveryRESTMapper
@@ -66,7 +70,7 @@ type e2econtext struct {
 
 func init() {
 	flag.StringVar(&profile, "profile", "", "The profile to check")
-	flag.StringVar(&testType, "type", "", "The type of scan this profile is for - 'rhcos4' or 'ocp4'")
+	flag.StringVar(&product, "product", "", "The product this profile is for - e.g. 'rhcos4', 'ocp4'")
 	flag.StringVar(&contentImage, "content-image", "", "The path to the image with the content to test")
 	flag.BoolVar(&installOperator, "install-operator", true, "Should the test-code install the operator or not? "+
 		"This is useful if you need to test with your own deployment of the operator")
@@ -78,27 +82,21 @@ func newE2EContext(t *testing.T) *e2econtext {
 		rootdir = "../../"
 	}
 
-	context := &e2econtext{
+	profilefile := fmt.Sprintf("%s.profile", profile)
+	profilepath := path.Join(rootdir, product, "profiles", profilefile)
+	resourcespath := path.Join(rootdir, "ocp-resources")
+
+	return &e2econtext{
 		Profile:                profile,
 		ContentImage:           contentImage,
 		OperatorNamespacedName: types.NamespacedName{Name: "compliance-operator"},
-		testtype:               testType,
+		rootdir:                rootdir,
+		profilepath:            profilepath,
+		resourcespath:          resourcespath,
+		product:                product,
 		installOperator:        installOperator,
 		t:                      t,
-		rootdir:                rootdir,
 	}
-
-	switch testType {
-	case "rhcos4":
-		context.profilepath = path.Join(rootdir, "rhcos4", "profiles", fmt.Sprintf("%s.profile", profile))
-	case "ocp4":
-		context.profilepath = path.Join(rootdir, "ocp4", "profiles", fmt.Sprintf("%s.profile", profile))
-	default:
-		t.Fatal("-type must specify 'rhcos4' or 'ocp4'")
-	}
-
-	context.resourcespath = path.Join(context.rootdir, "ocp-resources")
-	return context
 }
 
 func (ctx *e2econtext) assertRootdir() {
@@ -173,6 +171,42 @@ func (ctx *e2econtext) assertKubeClient() {
 
 func (ctx *e2econtext) resetClientMappings() {
 	ctx.restMapper.Reset()
+}
+
+func (ctx *e2econtext) assertScanType() {
+	scanType, err := ctx.getScanType()
+	if err != nil {
+		ctx.t.Fatalf("Couldn't get scan type: %s", err)
+	}
+	ctx.scanType = scanType
+}
+
+func (ctx *e2econtext) getScanType() (cmpv1alpha1.ComplianceScanType, error) {
+	profileInfo := &struct {
+		BenchmarkRoot string `yaml:"benchmark_root"`
+	}{}
+
+	file, err := ioutil.ReadFile(path.Join(ctx.rootdir, ctx.product, "product.yml"))
+
+	if err != nil {
+		return "", fmt.Errorf("Can't open product definition: %s", err)
+	}
+
+	err = yaml.Unmarshal(file, profileInfo)
+
+	if err != nil {
+		return "", fmt.Errorf("Can't read product definition: %s", err)
+	}
+
+	if strings.HasSuffix(profileInfo.BenchmarkRoot, "applications") {
+		return cmpv1alpha1.ScanTypePlatform, nil
+	}
+
+	if strings.HasSuffix(profileInfo.BenchmarkRoot, "linux_os/guide") {
+		return cmpv1alpha1.ScanTypeNode, nil
+	}
+
+	return "", fmt.Errorf("Unkown platform type. It has to be either `linux_os/type` or `application`")
 }
 
 // Makes sure that the namespace where the test will run exists. Doesn't fail
@@ -258,32 +292,7 @@ func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply 
 		},
 		Spec: cmpv1alpha1.ComplianceSuiteSpec{
 			AutoApplyRemediations: autoApply,
-			Scans: []cmpv1alpha1.ComplianceScanSpecWrapper{
-				{
-					Name: ctx.Profile + "-master-scan-" + suffix,
-					ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
-						ContentImage: ctx.ContentImage,
-						Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
-						Content:      "ssg-rhcos4-ds.xml",
-						Debug:        true,
-						NodeSelector: map[string]string{
-							"node-role.kubernetes.io/master": "",
-						},
-					},
-				},
-				{
-					Name: ctx.Profile + "-worker-scan-" + suffix,
-					ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
-						ContentImage: ctx.ContentImage,
-						Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
-						Content:      "ssg-rhcos4-ds.xml",
-						Debug:        true,
-						NodeSelector: map[string]string{
-							"node-role.kubernetes.io/worker": "",
-						},
-					},
-				},
-			},
+			Scans:                 ctx.getScansForSuite(suffix),
 		},
 	}
 
@@ -299,39 +308,52 @@ func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply 
 	return suite
 }
 
-func (ctx *e2econtext) createComplianceSuiteForPlatformProfile(suffix string) *cmpv1alpha1.ComplianceSuite {
-	suite := &cmpv1alpha1.ComplianceSuite{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      ctx.Profile + "-platform-suite-" + suffix,
-			Namespace: ctx.OperatorNamespacedName.Namespace,
-		},
-		Spec: cmpv1alpha1.ComplianceSuiteSpec{
-			AutoApplyRemediations: false,
-			Scans: []cmpv1alpha1.ComplianceScanSpecWrapper{
-				{
-					Name: ctx.Profile + "-platform-scan-" + suffix,
-					ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
-						ScanType:     cmpv1alpha1.ScanTypePlatform,
-						ContentImage: ctx.ContentImage,
-						Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
-						Content:      "ssg-ocp4-ds.xml",
-						Debug:        true,
+func (ctx *e2econtext) getScansForSuite(suffix string) []cmpv1alpha1.ComplianceScanSpecWrapper {
+	switch ctx.scanType {
+	case cmpv1alpha1.ScanTypePlatform:
+		return []cmpv1alpha1.ComplianceScanSpecWrapper{
+			{
+				Name: ctx.Profile + "-platform-scan-" + suffix,
+				ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
+					ScanType:     cmpv1alpha1.ScanTypePlatform,
+					ContentImage: ctx.ContentImage,
+					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
+					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
+					Debug:        true,
+				},
+			},
+		}
+	case cmpv1alpha1.ScanTypeNode:
+		return []cmpv1alpha1.ComplianceScanSpecWrapper{
+			{
+				Name: ctx.Profile + "-master-scan-" + suffix,
+				ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
+					ContentImage: ctx.ContentImage,
+					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
+					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
+					Debug:        true,
+					NodeSelector: map[string]string{
+						"node-role.kubernetes.io/master": "",
 					},
 				},
 			},
-		},
+			{
+				Name: ctx.Profile + "-worker-scan-" + suffix,
+				ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
+					ContentImage: ctx.ContentImage,
+					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
+					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
+					Debug:        true,
+					NodeSelector: map[string]string{
+						"node-role.kubernetes.io/worker": "",
+					},
+				},
+			},
+		}
 	}
 
-	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
-	err := backoff.RetryNotify(func() error {
-		return ctx.dynclient.Create(goctx.TODO(), suite)
-	}, bo, func(err error, d time.Duration) {
-		fmt.Printf("Couldn't create compliance suite after %s: %s\n", d.String(), err)
-	})
-	if err != nil {
-		ctx.t.Fatalf("failed to create compliance-suite: %s", err)
-	}
-	return suite
+	// We shouldn't get here.
+	return nil
 }
 
 func (ctx *e2econtext) waitForComplianceSuite(suite *cmpv1alpha1.ComplianceSuite) {
@@ -439,7 +461,7 @@ func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite, displ
 }
 
 // This returns the number of results that are either CheckResultError or CheckResultNoResult
-func (ctx *e2econtext) getBadResultsFromSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
+func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
 	ret := 0
 	errList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{

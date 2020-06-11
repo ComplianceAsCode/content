@@ -1,5 +1,7 @@
 PROFILE?=
-TEST_TYPE?=
+# Defines the product that the test aims to test
+# Since we already have test for RHCOS4, this is the default for now.
+PRODUCT?=rhcos4
 CONTENT_IMAGE?=
 export ROOT_DIR=$(shell git rev-parse --show-toplevel)
 TEST_DIR=$(ROOT_DIR)/tests/ocp4e2e
@@ -13,9 +15,9 @@ INSTALL_OPERATOR?=true
 all: e2e
 
 .PHONY: e2e
-e2e: image-to-cluster ## Run the e2e tests. This requires that the PROFILE environment variable be set. This will upload images to the cluster as part of the run with the `image-to-cluster` target.
+e2e: image-to-cluster ## Run the e2e tests. This requires that the PROFILE and PRODUCT environment variables be set. This will upload images to the cluster as part of the run with the `image-to-cluster` target.
 	pushd $(TEST_DIR) && \
-	go test $(TEST_FLAGS) . -profile="$(PROFILE)" -type="$(TEST_TYPE)" -content-image="$(CONTENT_IMAGE)" -install-operator=$(INSTALL_OPERATOR)
+	go test $(TEST_FLAGS) . -profile="$(PROFILE)" -product="$(PRODUCT)" -content-image="$(CONTENT_IMAGE)" -install-operator=$(INSTALL_OPERATOR)
 
 .PHONY: image-to-cluster
 image-to-cluster: ## Upload a content image to the cluster. The SKIP_CONTAINER_PUSH environment variable skips this step; the CONTENT_IMAGE environment variable takes a pre-uploaded image into use.
