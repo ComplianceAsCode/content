@@ -1,18 +1,13 @@
 documentation_complete: true
 
-title: 'Open Computing Information Security Profile for OpenShift Master Node'
+title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 description: |-
-    This baseline was inspired by the Center for Internet Security
-    (CIS) Kubernetes Benchmark, v1.5.0 - 10-14-2019.
+    This profile defines a baseline that aligns to the Center for Internet Security®
+    Red Hat OpenShift Container Platform 4 Benchmark™, v1.0.0, currently unreleased.
 
-    For the ComplianceAsCode project to remain in compliance with
-    CIS' terms and conditions, specifically Restrictions(8), note
-    there is no representation or claim that the OpenCIS profile will
-    ensure a system is in compliance or consistency with the CIS
-    baseline.
-
-#extends: opencis-node
+    This profile includes Center for Internet Security®
+    Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.
 
 selections:
     #- file_groupowner_etc_origin
