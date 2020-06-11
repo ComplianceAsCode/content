@@ -518,9 +518,21 @@ func (ctx *e2econtext) getCheckResultsForSuite(s *cmpv1alpha1.ComplianceSuite) i
 func isNodeReady(node corev1.Node) bool {
 	for _, condition := range node.Status.Conditions {
 		if condition.Type == corev1.NodeReady &&
-			condition.Status == corev1.ConditionTrue &&
-			node.Annotations[mcfgconst.MachineConfigDaemonStateAnnotationKey] == mcfgconst.MachineConfigDaemonStateDone {
-			return true
+			condition.Status == corev1.ConditionTrue {
+			daemonState, ok := node.Annotations[mcfgconst.MachineConfigDaemonStateAnnotationKey]
+			// This is not managed by MCO, so the node is ready
+			if !ok {
+				return true
+			}
+			// This is managed by MCO. The node is ready if the daemon says so
+			if daemonState == mcfgconst.MachineConfigDaemonStateDone {
+				currentConf := node.Annotations[mcfgconst.CurrentMachineConfigAnnotationKey]
+				desiredConf := node.Annotations[mcfgconst.DesiredMachineConfigAnnotationKey]
+				// reconciliation happened and the configs match
+				if currentConf == desiredConf {
+					return true
+				}
+			}
 		}
 	}
 	return false
