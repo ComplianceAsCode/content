@@ -9,9 +9,8 @@ description: |-
     authentication. To ensure the API Server utilizes its own TLS certificates, the
     <tt>clientCA</tt> must be configured. Verify
     that <tt>servingInfo</tt> has the <tt>clientCA</tt> configured in 
-    the API Server pod specification file
 {{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) to something similar to:
     <pre>
     "servingInfo":{
@@ -20,6 +19,7 @@ description: |-
       ...
     </pre>
 {{% else %}}
+    the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>servingInfo:
@@ -49,9 +49,8 @@ ocil_clause: '<tt>clientCA</tt> is not set as appropriate for <tt>servingInfo</t
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep clientCA /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-    The output should contain something similar to:
-    <pre>"clientCA":"/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt",</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.servingInfo["clientCA"]'</pre>
+    The output should return a configured TLS CA certificate file.
 {{% else %}}
     <pre>$ sudo grep clientCA /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:

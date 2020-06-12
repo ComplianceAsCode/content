@@ -7,12 +7,11 @@ title: 'Configure the kubelet Certificate Authority for the API Server'
 description: |-
     To ensure OpenShift verifies kubelet certificates before establishing
     connections, follow the OpenShift documentation and setup the TLS connection
-    between the API Server and kubelets. Then, verify
-    that <tt>kubeletClientInfo</tt> has the <tt>ca</tt> configured in 
-    the API Server pod specification file
+    between the API Server and kubelets.
+
 {{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
-    node(s) to something similar to:
+    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    and set the below parameter if it is not already configured:
     <pre>
     "kubeletClientInfo":{
       ...
@@ -20,6 +19,8 @@ description: |-
       ...
     </pre>
 {{% else %}}
+    Ensure that <tt>kubeletClientInfo</tt> has the <tt>ca</tt> configured in 
+    the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>kubeletClientInfo:
@@ -46,9 +47,8 @@ ocil_clause: '<tt>ca</tt> is not set as appropriate for <tt>kubeletClientInfo</t
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A3 kubeletClientInfo /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-    The output should contain something similar to:
-    <pre>"ca":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.kubeletClientInfo["ca"]'</pre>
+    The output should return a configured certificate.
 {{% else %}}
     <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:

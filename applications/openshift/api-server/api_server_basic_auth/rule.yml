@@ -6,10 +6,10 @@ title: 'Disable basic-auth-file for the API Server'
 
 description: |-
     Basic Authentication should not be used. Follow the OpenShift documentation
-    and configure alternate mechanisms for authentication. Then, edit API
+    and configure alternate mechanisms for authentication. If needed, edit API
 {{%- if product == "ocp4" %}}
-    server pod specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>
-    on the master node and remove the <tt>basic-auth-file</tt> parameter.
+    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    and remove the <tt>basic-auth-file</tt> parameter:
     <pre>
     "apiServerArguments":{
       ...
@@ -47,7 +47,8 @@ ocil_clause: 'basic-auth-file is configured and enabled on the master node'
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A2 basic-auth-file /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["basic-auth-file"]'</pre>
+    The output should return <pre>false</pre>.
 {{% else %}}
     <pre>$ sudo grep -A2 basic-auth-file /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}

@@ -9,17 +9,18 @@ description: |-
     follow the OpenShift documentation and configure alternate mechanisms for
     authentication. Then, edit the API Server pod specification file
 {{%- if product == "ocp4" %}}
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) and remove the <tt>token-auth-file</tt> setting.
+    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    and remove the <tt>token-auth-file</tt> parameter:
     <pre>
     "apiServerArguments":{
       ...
       "token-auth-file":[
-        "/path/to/file"
+        "/path/to/any/file"
       ],
       ...
     </pre>
 {{% else %}}
+    Then, edit the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) and remove the <tt>token-auth-file</tt> setting.
     <pre>kubernetesMasterConfig:
@@ -44,7 +45,7 @@ ocil_clause: '<tt>token-auth-file</tt> argument is configured'
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A2 token-auth-file /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["token-"]'</pre>
 {{% else %}}
     <pre>$ sudo grep -A2 token-auth-file /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}
