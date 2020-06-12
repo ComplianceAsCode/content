@@ -6,11 +6,10 @@ title: 'Configure the Certificate Key for the API Server'
 
 description: |-
     To ensure the API Server utilizes its own TLS certificates, the
-    <tt>keyFile</tt> must be configured. To, verify
+    <tt>keyFile</tt> must be configured. Verify
     that <tt>servingInfo</tt> has the <tt>keyFile</tt> configured in 
-    the API Server pod specification file
 {{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) to something similar to:
     <pre>
     "servingInfo":{
@@ -19,6 +18,7 @@ description: |-
       ...
     </pre>
 {{% else %}}
+    the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>servingInfo:
@@ -42,6 +42,8 @@ ocil_clause: '<tt>keyFile</tt> is not set as appropriate for <tt>servingInfo</tt
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.servingInfo["keyFile"]'</pre>
+    The output should return a configured TLS certificate file.
 {{% else %}}
     <pre>$ sudo grep -A7 servingInfo /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
     The output should contain something similar to:

@@ -5,11 +5,11 @@ prodtype: ocp3,ocp4
 title: 'Disable Use of the Insecure Bind Address'
 
 description: |-
-    OpenShift should not bind to non-loopback insecure addresses. Edit the API
+    OpenShift should not bind to non-loopback insecure addresses.
+
 {{%- if product == "ocp4" %}}
-    Server pod specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>
-    on the master node(s) and remove the <tt>insecure-bind-address</tt>
-    parameter.
+    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    and remove the <tt>insecure-bind-address</tt> if it exists:
     <pre>
     "apiServerArguments":{
       ...
@@ -19,7 +19,7 @@ description: |-
       ...
     </pre>
 {{% else %}}
-    Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
+    Edit the API Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
     on the master node(s) and remove the <tt>insecure-bind-address</tt>
     parameter.
     <pre>kubernetesMasterConfig:
@@ -44,7 +44,8 @@ ocil_clause: 'insecure-bind-address is exists and has not been removed</tt>'
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A2 insecure-bind-address /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-bind-address"]'</pre>
+    The output should return <pre>false</pre>.
 {{% else %}}
     <pre>$ sudo grep -A2 insecure-bind-address /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}
