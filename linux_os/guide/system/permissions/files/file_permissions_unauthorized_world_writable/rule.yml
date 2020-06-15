@@ -11,6 +11,9 @@ description: |-
     this applies to real files and not virtual files that are a part of
     pseudo file systems such as <tt>sysfs</tt> or <tt>procfs</tt>.
 
+    You can use the <code>var_blacklisted_paths</code> XCCDF value to specify a colon-separated list of directories to avoid.
+    For this profile, that would be: {{{ sub_var_value("var_blacklisted_paths") }}}
+
 rationale: |-
     Data in world-writable files can be modified by any
     user on the system. In almost all circumstances, files can be

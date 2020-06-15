@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Blacklisted paths'
+
+description: |-
+    Colon-separated list of paths not to scan.
+    Some rules that scan the whole filesystem may use this variable - refer to individual rule description.
+
+type: string
+
+interactive: false
+
+options:
+    default: "/sys:/tmp:/proc"
+
