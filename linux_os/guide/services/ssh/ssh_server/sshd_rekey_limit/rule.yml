@@ -4,10 +4,11 @@ title: 'Force frequent session key renegotiation'
 
 description: |-
     The <tt>RekeyLimit</tt> parameter specifies how often
-    the session key of the is renegotiated, both in terms of
+    the session key is renegotiated, both in terms of
     amount of data that may be transmitted and the time
-    elapsed. To decrease the default limits, put line
-    <tt>RekeyLimit {{{ sub_var_value("var_rekey_limit_size") }}} {{{ sub_var_value("var_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/sshd_config</tt>.
+    elapsed. To decrease the default limits, configure the
+    <tt>RekeyLimit</tt> in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>RekeyLimit {{{ sub_var_value("var_rekey_limit_size") }}} {{{ sub_var_value("var_rekey_limit_time") }}}</pre>
 
 rationale: |-
     By decreasing the limit based on the amount of data and enabling
@@ -26,8 +27,8 @@ references:
 ocil_clause: 'it is commented out or is not set'
 
 ocil: |-
-    To check if RekeyLimit is set correctly, run the
+    To verify that <tt>RekeyLimit</tt> is set correctly, run the
     following command:
     <pre>$ sudo grep RekeyLimit /etc/ssh/sshd_config</pre>
-    If configured properly, output should be
+    If configured properly, output returned should be
     <pre>RekeyLimit {{{ sub_var_value("var_rekey_limit_size") }}} {{{ sub_var_value("var_rekey_limit_time") }}}</pre>

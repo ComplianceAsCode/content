@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure session renegotiation for the SSH client'
+
+description: |-
+    The <tt>RekeyLimit</tt> parameter specifies how often
+    the session key is renegotiated, both in terms of
+    amount of data that may be transmitted and the time
+    elapsed. To decrease the default limits, configure the
+    <tt>RekeyLimit</tt> in <tt>/etc/ssh/ssh_config</tt>:
+    <pre>RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{ sub_var_value("var_ssh_client_rekey_limit_time") }}}</pre>
+
+    Alternatively, an <tt>ssh_config</tt> includes file can be created
+    to configure <tt>RekeyLimit</tt>. To configure <tt>RekeyLimit</tt>
+    using an includes file, configure the <tt>/etc/ssh/ssh_config.d/02-rekey-limit.conf</tt>
+    file by adding the following to the file:
+    <pre>RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{ sub_var_value("var_ssh_client_rekey_limit_time") }}}</pre>
+
+rationale: |-
+    By decreasing the limit based on the amount of data and enabling
+    time-based limit, effects of potential attacks against
+    encryption keys are limited.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82880-6
+
+references:
+    ospp: FCS_SSHS_EXT.1
+
+ocil_clause: 'it is commented out or is not set'
+
+ocil: |-
+    To verify that <tt>RekeyLimit</tt> is set correctly, run the following command:
+    <pre>$ sudo grep RekeyLimit /etc/ssh/ssh_config /etc/ssh/ssh_config.d/*.conf</pre>
+    If configured properly, the output should contain something similar to
+    <pre>RekeyLimit {{{ sub_var_value("var_ssh_client_rekey_limit_size") }}} {{{
+    sub_var_value("var_ssh_client_rekey_limit_time") }}}</pre>
+
+warnings:
+    - functionality: |-
+        When using the <tt>ssh_client</tt> include configuration files,
+        ensure that there is no other <tt>RekeyLimit</tt> configuration preceding
+        the <tt>include</tt> directive in the <tt>/etc/ssh/ssh_config</tt>
+        configuration file.
+    - functionality: |-
+        When using the <tt>ssh_client</tt> include configuration files,
+        configuration files are processed according to
+        lexicographical order of file names. Make sure that there are no files
+        processed before <tt>02-rekey-limit.conf</tt> that also contain the
+        <tt>RekeyLimit</tt> configuration option.

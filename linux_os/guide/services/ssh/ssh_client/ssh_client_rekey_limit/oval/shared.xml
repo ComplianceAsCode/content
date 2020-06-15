@@ -4,11 +4,14 @@
     <metadata>
       <title>{{{ rule_title }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Ensure 'RekeyLimit' is configured with the correct value in /etc/ssh/ssh_config and /etc/ssh/ssh_config.d/*.conf</description>
+      <description>Ensure 'RekeyLimit' is configured with the correct value in /etc/ssh/ssh_config or /etc/ssh/ssh_config.d/*.conf</description>
     </metadata>
-    <criteria comment="RekeyLimit is correctly configured for ssh client" operator="AND">
-      <criterion comment="check that RekeyLimit is not configured in /etc/ssh/ssh_config" test_ref="test_ssh_client_rekey_limit_main_config" negate="true" />
-      <criterion comment="check correct RekeyLimit configuration in /etc/ssh/ssh_config.d/*.conf" test_ref="test_ssh_client_rekey_limit_include_configs" />
+    <criteria comment="RekeyLimit is correctly configured for ssh client" operator="OR">
+      <criterion comment="check correct RekeyLimit is configured in /etc/ssh/ssh_config" test_ref="test_ssh_client_rekey_limit_main_config" />
+      <criteria comment="RekeyLimit is correctly configured for ssh client in included configuration file" operator="AND">
+        <criterion comment="check /etc/ssh/ssh_config.d/ is configured in /etc/ssh/ssh_config" test_ref="test_ssh_client_rekey_limit_include" />
+        <criterion comment="check correct RekeyLimit configuration in /etc/ssh/ssh_config.d/*.conf" test_ref="test_ssh_client_rekey_limit_include_configs" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -25,21 +28,27 @@
   <external_variable comment="Size component of the rekey limit" datatype="string" id="var_ssh_client_rekey_limit_size" version="1" />
   <external_variable comment="Time component of the rekey limit" datatype="string" id="var_ssh_client_rekey_limit_time" version="1" />
 
-
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in /etc/ssh/ssh_config file" id="test_ssh_client_rekey_limit_main_config" version="1">
      <ind:object object_ref="obj_ssh_client_rekey_limit_main_config"/>
   </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object id="obj_ssh_client_rekey_limit_main_config" version="1">
      <ind:filepath>/etc/ssh/ssh_config</ind:filepath>
      <ind:pattern operation="pattern match">^[\s]*RekeyLimit.*$</ind:pattern>
      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests /etc/ssh/ssh_config.d is configured in /etc/ssh/ssh_config" id="test_ssh_client_rekey_limit_include" version="1">
+     <ind:object object_ref="obj_ssh_client_rekey_limit_include"/>
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ssh_client_rekey_limit_include" version="1">
+     <ind:filepath>/etc/ssh/ssh_config</ind:filepath>
+     <ind:pattern operation="pattern match">^[\s]*Include[\s]+\/etc\/ssh\/ssh_config\.d\/\*\.conf</ind:pattern>
+     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in /etc/ssh/ssh_config.d/*.conf" id="test_ssh_client_rekey_limit_include_configs" version="1">
      <ind:object object_ref="obj_ssh_client_rekey_limit_include_configs"/>
   </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object id="obj_ssh_client_rekey_limit_include_configs" version="1">
      <ind:filepath operation="pattern match">^/etc/ssh/ssh_config\.d/.*\.conf$</ind:filepath>
      <ind:pattern var_ref="ssh_client_line_regex" operation="pattern match"></ind:pattern>
