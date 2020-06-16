@@ -298,8 +298,7 @@ macro(ssg_build_remediations PRODUCT)
 
     _ssg_build_remediations_for_language(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
-    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
-    if (${_index} GREATER -1)
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
         # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
         if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
@@ -710,15 +709,18 @@ macro(ssg_build_product PRODUCT)
     if(NOT DEFINED PRODUCT_REMEDIATION_LANGUAGES)
         set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes")
     endif()
+    # Define variables for each language to facilitate assesment of specific remediation languages
+    foreach(LANGUAGE ${PRODUCT_REMEDIATION_LANGUAGES})
+        string(TOUPPER ${LANGUAGE} _LANGUAGE)
+        set(PRODUCT_${_LANGUAGE}_REMEDIATION_ENABLED TRUE)
+    endforeach()
 
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
-    # With older CMake, this is the way how to find string in a list
-    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
-    if (${_index} GREATER -1)
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         ssg_build_ansible_playbooks(${PRODUCT})
     endif()
     ssg_build_xccdf_with_remediations(${PRODUCT})
@@ -748,8 +750,7 @@ macro(ssg_build_product PRODUCT)
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
-    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
-    if (${_index} GREATER -1)
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         add_dependencies(
             ${PRODUCT}-content
             generate-${PRODUCT}-ansible-playbooks
@@ -925,8 +926,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     ssg_build_html_guides(${DERIVATIVE})
     ssg_build_profile_bash_scripts(${DERIVATIVE})
 
-    list(FIND PRODUCT_REMEDIATION_LANGUAGES "ansible" _index)
-    if (${_index} GREATER -1)
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         ssg_build_profile_playbooks(${DERIVATIVE})
         add_custom_target(
             ${DERIVATIVE}-profile-playbooks
