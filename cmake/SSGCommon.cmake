@@ -102,8 +102,15 @@ macro(ssg_build_man_page)
 endmacro()
 
 macro(ssg_build_shorthand_xml PRODUCT)
+    set(BASH_REMEDIATION_FNS "")
+    set(BASH_REMEDIATION_FNS_DEPENDS "")
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+        list(APPEND BASH_REMEDIATION_FNS "--bash-remediation-fns" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
+        list(APPEND BASH_REMEDIATION_FNS_DEPENDS "generate-internal-bash-remediation-functions.xml" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
+    endif()
+
     execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
         OUTPUT_VARIABLE SHORTHAND_INPUTS_STR
     )
     string(REPLACE "\n" ";" SHORTHAND_INPUTS "${SHORTHAND_INPUTS_STR}")
@@ -120,15 +127,15 @@ macro(ssg_build_shorthand_xml PRODUCT)
         # The command also produces the directory with rules, but this is done before the the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${SHORTHAND_INPUTS}
-        DEPENDS generate-internal-bash-remediation-functions.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
+
     add_custom_target(
         generate-internal-${PRODUCT}-shorthand.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
@@ -764,8 +771,17 @@ macro(ssg_build_product PRODUCT)
         add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
     endif()
 
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+        ssg_build_profile_bash_scripts(${PRODUCT})
+        add_custom_target(
+            ${PRODUCT}-profile-bash-scripts
+            DEPENDS generate-all-profile-bash-scripts-${PRODUCT}
+        )
+        add_dependencies(${PRODUCT} ${PRODUCT}-profile-bash-scripts)
+        add_dependencies(zipfile ${PRODUCT}-profile-bash-scripts)
+    endif()
+
     ssg_build_html_guides(${PRODUCT})
-    ssg_build_profile_bash_scripts(${PRODUCT})
 
     add_custom_target(
         ${PRODUCT}-guides
@@ -780,13 +796,6 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-tables)
     add_dependencies(zipfile ${PRODUCT}-tables)
-
-    add_custom_target(
-        ${PRODUCT}-profile-bash-scripts
-        DEPENDS generate-all-profile-bash-scripts-${PRODUCT}
-    )
-    add_dependencies(${PRODUCT} ${PRODUCT}-profile-bash-scripts)
-    add_dependencies(zipfile ${PRODUCT}-profile-bash-scripts)
 
     ssg_make_stats_for_product(${PRODUCT})
     add_dependencies(stats ${PRODUCT}-stats)
@@ -924,7 +933,15 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
 
     ssg_build_html_guides(${DERIVATIVE})
-    ssg_build_profile_bash_scripts(${DERIVATIVE})
+
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+        ssg_build_profile_bash_scripts(${DERIVATIVE})
+        add_custom_target(
+            ${DERIVATIVE}-profile-bash-scripts
+            DEPENDS generate-all-profile-bash-scripts-${DERIVATIVE}
+        )
+        add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-bash-scripts)
+    endif()
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         ssg_build_profile_playbooks(${DERIVATIVE})
@@ -940,12 +957,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS generate-ssg-${DERIVATIVE}-guide-index.html
     )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-guides)
-
-    add_custom_target(
-        ${DERIVATIVE}-profile-bash-scripts
-        DEPENDS generate-all-profile-bash-scripts-${DERIVATIVE}
-    )
-    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-bash-scripts)
 
     if (SSG_SEPARATE_SCAP_FILES_ENABLED)
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
