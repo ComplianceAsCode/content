@@ -7,10 +7,10 @@ title: 'Disable Anonymous Authentication to the API Server'
 description: |-
     By default, anonymous access to the OpenShift API is enabled. This
     configuration check ensures that anonymous requests to the OpenShift
-    API server are disabled. 
+    API server are disabled.
 {{%- if product == "ocp4" %}}
-    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
-    and set the below parameter:
+    Verify the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    has set the below parameter:
     <pre>
     "apiServerArguments":{
       ...
@@ -33,7 +33,7 @@ rationale: |-
     authentication methods are treated as anonymous requests. These
     requests are then served by the API server. OpenShift Operators should
     rely on authentication to authorize access and disallow anonymous
-    requests as it allows an attacker to discover information about 
+    requests as it allows an attacker to discover information about
     the system and/or network in use.
 
 severity: medium

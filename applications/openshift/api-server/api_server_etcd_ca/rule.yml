@@ -9,7 +9,7 @@ description: |-
     connections, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, verify
 {{%- if product == "ocp4" %}}
-    that <tt>storageConfig</tt> has the <tt>ca</tt> configured in 
+    that <tt>storageConfig</tt> has the <tt>ca</tt> configured in
     the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) to something similar to:
     <pre>
@@ -19,7 +19,7 @@ description: |-
       ...
     </pre>
 {{% else %}}
-    that <tt>etcdClientInfo</tt> has the <tt>ca</tt> configured in 
+    that <tt>etcdClientInfo</tt> has the <tt>ca</tt> configured in
     the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
