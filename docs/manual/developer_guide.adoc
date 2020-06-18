@@ -1480,6 +1480,9 @@ template:
         bash: "off"
 ----
 
+
+IMPORTANT: The build system does not support implicit conversion of bool strings when *Python 2* is used, so `bash: True` argument in the example above would cause a *build error*. One should always use quoted strings as arguments until *Python 2* is completely removed from the list of supported interpreters.
+
 ==== List of available templates
 
 accounts_password::
@@ -1720,6 +1723,18 @@ timer_enabled::
 ** *timername* - name of the SystemD timer unit, without the `timer` suffix, eg. `dnf-automatic`.
 ** *packagename* - name of the RPM package which provides the SystemD timer unit. This parameter is optional, if it is not provided it is assumed that the name of the RPM package is the same as the name of the SystemD timer unit.
 * Languages: Ansible, Bash, OVAL
+
+yamlfile_value::
+* Check if value(s) of certain type is (are) present in a YAML (or JSON) file at a given path.
+* Parameters:
+** *filepath* - full path to the file to check
+** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
+** *value* - the value to check.
+** *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional.
+** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional.
+** *negate* - if set to `"true"` the meaning of the value check criterion would be inverted, optional.
+** *ocp_data* - if set to `"true"` then the filepath would be treated as a part of the dump of OCP configuration with the `ocp_data_root` prefix; optional.
+* Languages: OVAL
 
 
 ==== Creating Templates

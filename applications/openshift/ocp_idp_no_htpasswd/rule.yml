@@ -14,3 +14,13 @@ severity: medium
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /apis/config.openshift.io/v1/oauths/cluster
+        yamlpath: ".spec.identityProviders[:].type"
+        value: "HTPasswd"
+        entity_check: "at least one"
+        negate: 'true'
+        ocp_data: 'true'
