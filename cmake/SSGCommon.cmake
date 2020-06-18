@@ -102,8 +102,15 @@ macro(ssg_build_man_page)
 endmacro()
 
 macro(ssg_build_shorthand_xml PRODUCT)
+    set(BASH_REMEDIATION_FNS "")
+    set(BASH_REMEDIATION_FNS_DEPENDS "")
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+        list(APPEND BASH_REMEDIATION_FNS "--bash-remediation-fns" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
+        list(APPEND BASH_REMEDIATION_FNS_DEPENDS "generate-internal-bash-remediation-functions.xml" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
+    endif()
+
     execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
         OUTPUT_VARIABLE SHORTHAND_INPUTS_STR
     )
     string(REPLACE "\n" ";" SHORTHAND_INPUTS "${SHORTHAND_INPUTS_STR}")
@@ -120,15 +127,15 @@ macro(ssg_build_shorthand_xml PRODUCT)
         # The command also produces the directory with rules, but this is done before the the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${SHORTHAND_INPUTS}
-        DEPENDS generate-internal-bash-remediation-functions.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
+
     add_custom_target(
         generate-internal-${PRODUCT}-shorthand.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
@@ -295,28 +302,31 @@ endmacro()
 
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition and kubernetes)...")
-    _ssg_build_remediations_for_language(${PRODUCT} "bash;ansible;puppet;anaconda;ignition;kubernetes")
 
-    # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
-    # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
-    if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
-        add_test(
-            NAME "ansible-playbook-syntax-check-${PRODUCT}"
-            COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
-        )
-    endif()
-    if (ANSIBLE_CHECKS)
-        if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+    _ssg_build_remediations_for_language(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
+
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
+        # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
+        # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
+        if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
-                NAME "ansible-playbook-ansible-lint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                NAME "ansible-playbook-syntax-check-${PRODUCT}"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
             )
         endif()
-        if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
-            add_test(
-                NAME "ansible-playbook-yamllint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
-            )
+        if (ANSIBLE_CHECKS)
+            if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+                add_test(
+                    NAME "ansible-playbook-ansible-lint-check-${PRODUCT}"
+                    COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                )
+            endif()
+            if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+                add_test(
+                    NAME "ansible-playbook-yamllint-check-${PRODUCT}"
+                    COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+                )
+            endif()
         endif()
     endif()
 endmacro()
@@ -324,24 +334,19 @@ endmacro()
 macro(ssg_build_xccdf_with_remediations PRODUCT)
     # we have to encode spaces in paths before passing them as stringparams to xsltproc
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
+    set(PRODUCT_XSLT_LANGUAGE_PARAMS "")
+    set(PRODUCT_LANGUAGE_DEPENDS "")
+    foreach(LANGUAGE ${PRODUCT_REMEDIATION_LANGUAGES})
+        list(APPEND PRODUCT_XSLT_LANGUAGE_PARAMS --stringparam ${LANGUAGE}_remediations ${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/${LANGUAGE}-fixes.xml )
+        list(APPEND PRODUCT_LANGUAGE_DEPENDS generate-internal-${PRODUCT}-${LANGUAGE}-fixes.xml ${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml )
+    endforeach()
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-fixes.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-fixes.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-fixes.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-fixes.xml" --stringparam ignition_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ignition-fixes.xml" --stringparam kubernetes_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/kubernetes-fixes.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
-        DEPENDS generate-internal-${PRODUCT}-bash-fixes.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/bash-fixes.xml"
-        DEPENDS generate-internal-${PRODUCT}-ansible-fixes.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ansible-fixes.xml"
-        DEPENDS generate-internal-${PRODUCT}-puppet-fixes.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/puppet-fixes.xml"
-        DEPENDS generate-internal-${PRODUCT}-anaconda-fixes.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/anaconda-fixes.xml"
-        DEPENDS generate-internal-${PRODUCT}-ignition-fixes.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ignition-fixes.xml"
-        DEPENDS generate-internal-${PRODUCT}-kubernetes-fixes.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/kubernetes-fixes.xml"
+        DEPENDS ${PRODUCT_LANGUAGE_DEPENDS}
         DEPENDS "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt"
         COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )
@@ -708,12 +713,23 @@ macro(ssg_build_product PRODUCT)
 
     add_custom_target(${PRODUCT}-content)
 
+    if(NOT DEFINED PRODUCT_REMEDIATION_LANGUAGES)
+        set(PRODUCT_REMEDIATION_LANGUAGES "bash;ansible;puppet;anaconda;ignition;kubernetes")
+    endif()
+    # Define variables for each language to facilitate assesment of specific remediation languages
+    foreach(LANGUAGE ${PRODUCT_REMEDIATION_LANGUAGES})
+        string(TOUPPER ${LANGUAGE} _LANGUAGE)
+        set(PRODUCT_${_LANGUAGE}_REMEDIATION_ENABLED TRUE)
+    endforeach()
+
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
-    ssg_build_ansible_playbooks(${PRODUCT})
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
+        ssg_build_ansible_playbooks(${PRODUCT})
+    endif()
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
@@ -737,14 +753,35 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-ocil.xml
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
-        generate-${PRODUCT}-ansible-playbooks
     )
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
+        add_dependencies(
+            ${PRODUCT}-content
+            generate-${PRODUCT}-ansible-playbooks
+        )
+        ssg_build_profile_playbooks(${PRODUCT})
+        add_custom_target(
+            ${PRODUCT}-profile-playbooks
+            DEPENDS generate-all-profile-playbooks-${PRODUCT}
+        )
+        add_dependencies(${PRODUCT} ${PRODUCT}-profile-playbooks)
+        add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
+    endif()
+
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+        ssg_build_profile_bash_scripts(${PRODUCT})
+        add_custom_target(
+            ${PRODUCT}-profile-bash-scripts
+            DEPENDS generate-all-profile-bash-scripts-${PRODUCT}
+        )
+        add_dependencies(${PRODUCT} ${PRODUCT}-profile-bash-scripts)
+        add_dependencies(zipfile ${PRODUCT}-profile-bash-scripts)
+    endif()
+
     ssg_build_html_guides(${PRODUCT})
-    ssg_build_profile_playbooks(${PRODUCT})
-    ssg_build_profile_bash_scripts(${PRODUCT})
 
     add_custom_target(
         ${PRODUCT}-guides
@@ -759,19 +796,6 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-tables)
     add_dependencies(zipfile ${PRODUCT}-tables)
-
-    add_custom_target(
-        ${PRODUCT}-profile-bash-scripts
-        DEPENDS generate-all-profile-bash-scripts-${PRODUCT}
-    )
-    add_custom_target(
-        ${PRODUCT}-profile-playbooks
-        DEPENDS generate-all-profile-playbooks-${PRODUCT}
-    )
-    add_dependencies(${PRODUCT} ${PRODUCT}-profile-bash-scripts)
-    add_dependencies(${PRODUCT} ${PRODUCT}-profile-playbooks)
-    add_dependencies(zipfile ${PRODUCT}-profile-bash-scripts)
-    add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
 
     ssg_make_stats_for_product(${PRODUCT})
     add_dependencies(stats ${PRODUCT}-stats)
@@ -909,25 +933,30 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
 
     ssg_build_html_guides(${DERIVATIVE})
-    ssg_build_profile_playbooks(${DERIVATIVE})
-    ssg_build_profile_bash_scripts(${DERIVATIVE})
+
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+        ssg_build_profile_bash_scripts(${DERIVATIVE})
+        add_custom_target(
+            ${DERIVATIVE}-profile-bash-scripts
+            DEPENDS generate-all-profile-bash-scripts-${DERIVATIVE}
+        )
+        add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-bash-scripts)
+    endif()
+
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
+        ssg_build_profile_playbooks(${DERIVATIVE})
+        add_custom_target(
+            ${DERIVATIVE}-profile-playbooks
+            DEPENDS generate-all-profile-playbooks-${DERIVATIVE}
+        )
+        add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-playbooks)
+    endif()
 
     add_custom_target(
         ${DERIVATIVE}-guides
         DEPENDS generate-ssg-${DERIVATIVE}-guide-index.html
     )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-guides)
-
-    add_custom_target(
-        ${DERIVATIVE}-profile-bash-scripts
-        DEPENDS generate-all-profile-bash-scripts-${DERIVATIVE}
-    )
-    add_custom_target(
-        ${DERIVATIVE}-profile-playbooks
-        DEPENDS generate-all-profile-playbooks-${DERIVATIVE}
-    )
-    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-bash-scripts)
-    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-playbooks)
 
     if (SSG_SEPARATE_SCAP_FILES_ENABLED)
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"

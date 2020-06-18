@@ -130,29 +130,6 @@
 </xsl:template>
 
 <xsl:template match="xccdf:Benchmark">
-  <xsl:if test="$bash_remediations='' or not($bash_remediations_doc)">
-    <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$bash_remediations"/>".</xsl:message>
-  </xsl:if>
-
-  <xsl:if test="$ansible_remediations='' or not($ansible_remediations_doc)">
-    <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$ansible_remediations"/>".</xsl:message>
-  </xsl:if>
-
-  <xsl:if test="$anaconda_remediations='' or not($anaconda_remediations_doc)">
-    <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$anaconda_remediations"/>".</xsl:message>
-  </xsl:if>
-
-  <xsl:if test="$puppet_remediations='' or not($puppet_remediations_doc)">
-    <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$puppet_remediations"/>".</xsl:message>
-  </xsl:if>
-
-  <xsl:if test="$ignition_remediations='' or not($ignition_remediations_doc)">
-    <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$ignition_remediations"/>".</xsl:message>
-  </xsl:if>
-
-  <xsl:if test="$kubernetes_remediations='' or not($kubernetes_remediations_doc)">
-    <xsl:message terminate="yes">Fatal error while loading "<xsl:value-of select="$kubernetes_remediations"/>".</xsl:message>
-  </xsl:if>
 
   <xsl:copy>
     <!-- plain-text elements must appear in sequence -->

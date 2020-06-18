@@ -1232,7 +1232,15 @@ This ensures consistent, high quality OVAL checks that we can edit in one place 
 
 === Remediations
 
-Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda, Puppet, Ignition and Kubernetes.
+Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda, Puppet, Ignition and Kubernetes. By default all remediation languages are built and included in the DataStream.
+
+But each product can specify its own set of remediation to include in the DataStream via a CMake Variable in the product's `CMakeLists.txt`.
+See example below, from OCP4 product, `ocp4/CMakeLists.txt`:
+
+----
+set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
+----
+
 They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly.
 Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
 

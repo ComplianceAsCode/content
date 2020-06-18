@@ -27,7 +27,7 @@ def parse_args():
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
-    parser.add_argument("--bash-remediation-fns", required=True,
+    parser.add_argument("--bash-remediation-fns",
                         help="XML with the XCCDF Group containing all bash "
                         "remediation functions stored as values."
                         "e.g.: build/bash-remediation-functions.xml")

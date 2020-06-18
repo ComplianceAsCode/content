@@ -506,6 +506,10 @@ class Benchmark(object):
                 print(dir_item_path)
 
     def add_bash_remediation_fns_from_file(self, action, file_):
+        if not file_:
+            # bash-remediation-functions.xml doens't exist
+            return
+
         if action == "list-inputs":
             print(file_)
         else:
