@@ -1,5 +1,20 @@
 {{# ##### High level macros ##### #}}
 
+{{#
+Pass strings that correspond to XCCDF value names as arguments to this macro:
+bash_instantiate_variables("varname1", "varname2")
+
+Then, assume that variables of that names are defined and contain the correct value, e.g.
+echo "Setting=$varname1" >> config_file
+
+#}}
+{{%- macro bash_instantiate_variables() -%}}
+{{%- for name in varargs -%}}
+populate {{{ name }}}
+{{# this line is intentionally left blank #}}
+{{% endfor -%}}
+{{%- endmacro -%}}
+
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}
@@ -68,6 +83,21 @@
         separator="=",
         separator_regex="\s*=\s*",
         prefix_regex="^\s*")
+    }}}
+{{%- endmacro -%}}
+
+{{%- macro bash_selinux_config_set(parameter, value) -%}}
+{{{ set_config_file(
+        path="/etc/selinux/config",
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="",
+        insensitive=true,
+        separator="=",
+        separator_regex="=",
+        prefix_regex="^")
     }}}
 {{%- endmacro -%}}
 
