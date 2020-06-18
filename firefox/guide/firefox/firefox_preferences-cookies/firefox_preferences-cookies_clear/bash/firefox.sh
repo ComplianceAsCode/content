@@ -1,3 +1,3 @@
 # platform = Mozilla Firefox
 
-{{{ bash_firefox_cfg_setting("stig.cfg", "privacy.sanitize.sanitizeOnShutdown", "true") }}}
+{{{ bash_firefox_cfg_setting("mozilla.cfg", "privacy.sanitize.sanitizeOnShutdown", value="true") }}}

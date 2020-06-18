@@ -24,25 +24,21 @@ selections:
     - firefox_preferences-auto-download_actions
     - firefox_preferences-autofill_forms
     - firefox_preferences-autofill_passwords
-    - firefox_preferences-auto-update_of_firefox
-    - firefox_preferences-cookies_clear
-    - firefox_preferences-cookies_user_notice
+    - firefox_preferences-background_data
+    - firefox_preferences-development_tools
+    - firefox_preferences-dod_root_certificate_installed
+    - firefox_preferences-enable_ca_trust
+    - firefox_preferences-install_extensions
+    - firefox_preferences-javascript_context_menus
+    - firefox_preferences-javascript_window_changes
+    - firefox_preferences-javascript_window_resizing
     - firefox_preferences-lock_settings_obscure
     - firefox_preferences-lock_settings_config_file
     - firefox_preferences-open_confirmation
     - firefox_preferences-password_store
+    - firefox_preferences-pop-up_windows
     - firefox_preferences-search_update
     - firefox_preferences-shell_protocol
-    - firefox_preferences-ssl_version_2
     - firefox_preferences-ssl_protocol_tls
     - firefox_preferences-verification
-    - firefox_preferences-ssl_version_3
-    - firefox_preferences-home_page
     - installed_firefox_version_supported
-    - firefox_preferences-javascript_status_bar_text
-    - firefox_preferences-javascript_context_menus
-    - firefox_preferences-javascript_status_bar_changes
-    - firefox_preferences-javascript_window_resizing
-    - firefox_preferences-javascript_window_changes
-    - firefox_preferences-non-secure_page_warning
-    - firefox_preferences-pop-up_windows
