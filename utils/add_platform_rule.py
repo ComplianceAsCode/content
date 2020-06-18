@@ -30,7 +30,6 @@ $ utils/add_platform_rule.py create --rule=ocp_proxy_has_ca \
   --yamlpath=".spec.trustedCA.name" --match="[a-zA-Z0-9]*"
 creating check for "/apis/config.openshift.io/v1/proxies/cluster" with yamlpath ".spec.trustedCA.name" satisfying match of "[a-zA-Z0-9]*"
 wrote applications/openshift/ocp_proxy_has_ca/rule.yml
-wrote applications/openshift/ocp_proxy_has_ca/oval/shared.xml
 
 $ mkdir -p /tmp/apis/config.openshift.io/v1/proxies/
 $ oc get proxies.config/cluster -o yaml > /tmp/apis/config.openshift.io/v1/proxies/cluster
@@ -63,11 +62,19 @@ OSCAP_TEST_IMAGE = 'quay.io/compliance-operator/openscap-ocp:1.3.3'
 OSCAP_CMD_OPTS = 'oscap xccdf eval --verbose INFO --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_test --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
 PROFILE_PATH = 'ocp4/profiles/test.profile'
 
+MOCK_VERSION = ('''status:
+  versions:
+  - name: operator
+    version: 4.5.0-0.ci-2020-06-15-112708
+  - name: openshift-apiserver
+    version: 4.5.0-0.ci-2020-06-15-112708
+''')
+
 RULE_TEMPLATE = ('''prodtype: ocp4
 
 title: {TITLE}
 
-description: TBD
+description: {DESC}
 
 rationale: TBD
 
@@ -78,58 +85,32 @@ severity: {SEV}
 warnings:
     - general: |-
         {{{{{{ openshift_cluster_setting("{URL}") | indent(8) }}}}}}
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: {URL}
+        yamlpath: "{YAMLPATH}"
+        value: "{MATCH}"
+        negate: "{NEGATE}"
+        ocp_data: "true"{CHECK_TYPE}{ENTITY_CHECK}
+
 ''')
 
 
-OVAL_TEMPLATE = ('''{{{{% set YAML_TEST_OVAL_VERSION = [5, 11] %}}}}
+def check_value(value):
+    if value:
+        return '\n        pattern_check: "true"\n        type: "string"'
+    else:
+        return ''
 
-{{{{% if target_oval_version >= YAML_TEST_OVAL_VERSION %}}}}
-<def-group>
-      <definition class="compliance" version="1" id="{{{{{{ rule_id }}}}}}">
-      <metadata>
-        <title>{TITLE}</title>
-        {{{{{{- oval_affected(products) }}}}}}
-        <description>{DESC}</description>
-      </metadata>
-      <criteria operator="AND">
-        <criterion comment="{DESC}" negate="{NEGATE}" test_ref="test_{{{{{{ rule_id }}}}}}"/>
-        <criterion comment="Make sure that there is the actual file to scan" test_ref="test_file_for_{{{{{{ rule_id }}}}}}"/>
-      </criteria>
-    </definition>
 
-    <ind:yamlfilecontent_test id="test_{{{{{{ rule_id }}}}}}" check="at least one" comment="Find one match" version="1">
-            <ind:object object_ref="object_{{{{{{ rule_id }}}}}}"/>
-            <ind:state state_ref="state_{{{{{{ rule_id }}}}}}"/>
-    </ind:yamlfilecontent_test>
+def entity_value(value):
+    if value is not None:
+        return '\n        entity_check: "%s"' % value
+    else:
+        return ''
 
-    <local_variable id="{{{{{{ rule_id }}}}}}_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
-       <concat>
-              <variable_component var_ref="ocp_data_root"/>
-              <literal_component>{URL}</literal_component>
-       </concat>
-    </local_variable>
-
-    <unix:file_test id="test_file_for_{{{{{{ rule_id }}}}}}" check="only one" comment="Find the actual file to be scanned." version="1">
-            <unix:object object_ref="object_file_for_{{{{{{ rule_id }}}}}}"/>
-    </unix:file_test>
-
-    <unix:file_object id="object_file_for_{{{{{{ rule_id }}}}}}" version="1">
-      <unix:filepath var_ref="{{{{{{ rule_id }}}}}}_dump_location"/>
-    </unix:file_object>
-
-    <ind:yamlfilecontent_object id="object_{{{{{{ rule_id }}}}}}" version="1">
-      <ind:filepath var_ref="{{{{{{ rule_id }}}}}}_dump_location"/>
-      <ind:yamlpath>{YAMLPATH}</ind:yamlpath>
-    </ind:yamlfilecontent_object>
-
-    <ind:yamlfilecontent_state id="state_{{{{{{ rule_id }}}}}}" version="1">
-            <ind:value_of datatype="string" operation="pattern match">{MATCH}</ind:value_of>
-    </ind:yamlfilecontent_state>
-
-   <external_variable comment="Root of downloaded stuff" datatype="string" id="ocp_data_root" version="1" />
-</def-group>
-{{{{% endif  %}}}}
-''')
 
 PROFILE_TEMPLATE = ('''documentation_complete: true
 
@@ -200,18 +181,15 @@ def createFunc(args):
     print('creating check for "%s" with yamlpath "%s" satisfying match of "%s"' % (
         url, args.yamlpath, args.match))
     rule_path = PLATFORM_RULE_DIR + '/' + args.rule
-    oval_path = rule_path + '/oval'
-    shared_xml_path = oval_path + '/shared.xml'
     rule_yaml_path = rule_path + '/rule.yml'
 
-    pathlib.Path(oval_path).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(rule_path).mkdir(parents=True, exist_ok=True)
     with open(rule_yaml_path, 'w') as f:
-        f.write(RULE_TEMPLATE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers))
+        f.write(RULE_TEMPLATE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
+                                     DESC=args.description, YAMLPATH=args.yamlpath, MATCH=args.match,
+                                     NEGATE=str(args.negate).lower(), CHECK_TYPE=check_value(args.regex),
+                                     ENTITY_CHECK=entity_value(args.match_entity)))
     print('wrote ' + rule_yaml_path)
-    with open(shared_xml_path, 'w') as f:
-        f.write(OVAL_TEMPLATE.format(TITLE=args.title, DESC=args.description,
-                                        URL=url, YAMLPATH=args.yamlpath, MATCH=args.match, NEGATE=str(args.negate).lower()))
-    print('wrote ' + shared_xml_path)
 
     return 0
 
@@ -310,7 +288,15 @@ def testFunc(args):
             print('build failed: %s' % out)
             return 1
 
-    pod_cmd = 'podman run -it --security-opt label=disable -v "%s:/content" -v "%s:/tmp" %s %s' % (args.contentdir, args.objectdir, OSCAP_TEST_IMAGE, OSCAP_CMD_OPTS)
+    # mock a passing result for the implicit ocp4 version check
+    version_dir = args.objectdir + '/apis/config.openshift.io/v1/clusteroperators'
+    if not os.path.exists(version_dir):
+        pathlib.Path(version_dir).mkdir(parents=True, exist_ok=True)
+        with open(version_dir + '/openshift-apiserver', 'w') as f:
+            f.write(MOCK_VERSION)
+
+    pod_cmd = 'podman run -it --security-opt label=disable -v "%s:/content" -v "%s:/kubernetes-api-resources" %s %s' % (args.contentdir,
+                                                                                                                        args.objectdir, OSCAP_TEST_IMAGE, OSCAP_CMD_OPTS)
     print(subprocess.getoutput(pod_cmd))
 
 
@@ -345,6 +331,10 @@ def main():
         '--url', help='The direct api path (metadata.selfLink) of the object, which overrides --type --name and --namespace options.')
     create_parser.add_argument(
         '--description', help='A human-readable description of the provided matching criteria.')
+    create_parser.add_argument(
+        '--regex', default=False, action="store_true", help='treat the --match value as a regex')
+    create_parser.add_argument(
+        '--match-entity', help='the entity_check value to apply, i.e., "all", "at least one", "none exist"')
     create_parser.add_argument(
         '--negate', default=False, action="store_true", help='negate the given matching criteria (does NOT match). Default is false.')
     create_parser.add_argument(
