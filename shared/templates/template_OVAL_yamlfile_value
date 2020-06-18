@@ -48,7 +48,7 @@
   </ind:yamlfilecontent_object>
 
   <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
-    <ind:value_of{{% if TYPE %}} datatype="{{{ TYPE }}}"{{% endif %}}{{% if ENTITY_CHECK %}} entity_check="{{{ ENTITY_CHECK }}}"{{% endif %}}>{{{ VALUE }}}</ind:value_of>
+    <ind:value_of{{% if TYPE %}} datatype="{{{ TYPE }}}"{{% endif %}}{{% if PATTERN_CHECK %}} operation="pattern match"{{% endif %}}{{% if ENTITY_CHECK %}} entity_check="{{{ ENTITY_CHECK }}}"{{% endif %}}>{{{ VALUE }}}</ind:value_of>
   </ind:yamlfilecontent_state>
 
   {{% if OCP_DATA %}}
