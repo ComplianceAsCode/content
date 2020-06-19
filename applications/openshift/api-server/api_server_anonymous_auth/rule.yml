@@ -22,9 +22,10 @@ description: |-
 {{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the below parameter:
-    <pre>apiServerArguments:
-      anonymous-auth:
-      - 'false'</pre>
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        anonymous-auth:
+        - 'false'</pre>
 {{%- endif %}}
 
 rationale: |-
