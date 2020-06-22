@@ -64,6 +64,10 @@ def parse_args():
                         action="store_true",
                         help="Equivalent of --missing-ovals, --missing-fixes"
                         " and --missing-cces all being set.")
+    parser_stats.add_argument("--ansible-parity",
+                        action="store_true",
+                        help="Show IDs of rules with Bash fix which miss Ansible fix."
+                        " Rules missing both Bash and Ansible are not shown.")
     parser_stats.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
