@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Use of the CAP_NET_RAW'
+
+description: |-
+    Containers should not enable more capabilites than needed as this
+    opens the door for malicious use. <tt>CAP_NET_RAW</tt> enables a container
+    to launch a network attack on another container or cluster. To disable the
+    <tt>CAP_NET_RAW</tt> capability, the appropriate Security Context Constraints (SCCs)
+    should set <tt>NET_RAW</tt> in <tt>requiredDropCapabilities</tt>.
+
+rationale: |-
+    By default, containers run with a default set of capabilities as assigned
+    by the Container Runtime which can include dangerous or highly privileged
+    capabilities. If the CAP_NET_RAW is enabled, it may be misused
+    by malicious containers or attackers.
+
+severity: medium
+
+references:
+    cis: 5.2.7
+
+ocil_clause: 'NET_RAW does not exist or is configured in defaultAddCapabilities or allowedCapabilities'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC and determine that <tt>NET_RAW</tt> is either
+    completely disabled as a list entry under <tt>requiredDropCapabilities</tt>,
+    or that <tt>NET_RAW</tt> is only enabled to a small set of
+    containers and SCCs.

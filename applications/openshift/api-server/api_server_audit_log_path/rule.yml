@@ -8,19 +8,20 @@ description: |-
     To enable auditing on the OpenShift API Server, the audit log path
     must be set. Edit the API Server pod specification file
 {{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s)
+    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and set the <tt>audit-log-path</tt> to a suitable path and file
-    where you would like audit logs to be written. For example:
+    where audit logs should be written. For example:
     <pre>
     "auditConfig":{
       ...
       "auditFilePath":"/var/log/kube-apiserver/audit.log",
       ...
-     </pre>
+    </pre>
 {{% else %}}
+    Edit the API server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the <tt>audit-log-path</tt> to a suitable path and file
-    where you would like audit logs to be written. For example:
+    where audit logs should be written. For example:
     <pre>auditConfig:
       auditFilePath: "/etc/origin/master/audit-ocp.log"
       enabled: true
@@ -45,7 +46,7 @@ ocil_clause: '<tt>audit-log-path</tt> does not contain a valid audit file path'
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep auditFilePath /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.auditConfig["auditFilePath"]'</pre>
 {{% else %}}
     <pre>$ sudo grep auditFilePath /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}

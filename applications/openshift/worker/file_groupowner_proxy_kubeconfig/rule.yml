@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Group Who Owns The Worker Proxy Kubeconfig File'
+
+description: '{{{ describe_file_group_owner(file="/config/kube-proxy-config.yaml", group="root") }}}'
+
+rationale: |-
+    The worker proxy kubeconfig file contains information about the administrative configuration of the
+    OpenShift cluster that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4: 80633-1
+
+references:
+    cis: 4.1.4
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/config/kube-proxy-config.yaml", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/config/kube-proxy-config.yaml", group="root") }}}'
+
+#template:
+#    name: file_groupowner
+#    vars:
+#        filepath: /config/kube-proxy-config.yaml
+#        filegid: '0'

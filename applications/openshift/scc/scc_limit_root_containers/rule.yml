@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Limit Container Running As Root User'
+
+description: |-
+    Containers should be limited to only the privileges required
+    to run and should very rarely be run as root user. To prevent
+    containers from running as root user,
+    the appropriate Security Context Constraints (SCCs) should set
+    <tt>allowPrivilegedContainer</tt> to <tt>false</tt>.
+
+rationale: |-
+    Privileged containers have access to all Linux Kernel
+    capabilities and devices. If a privileged container were
+    compromised, an attacker would have full access to the container
+    and host.
+
+severity: medium
+
+references:
+    cis: 5.2.6
+
+ocil_clause: 'allowPrivilegedContainer is set to true or too many SCCs have allowPrivilegedContainer enabled'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC and determine that <tt>allowPrivilegedContainer</tt> is either
+    completely disabled, or that <tt>allowPrivilegedContainer</tt> is only enabled to
+    a small set of containers and SCCs.

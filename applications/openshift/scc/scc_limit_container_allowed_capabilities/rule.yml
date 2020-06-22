@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Drop Container Capabilities'
+
+description: |-
+    Containers should not enable more capabilites than needed as this
+    opens the door for malicious use. To disable the
+    capabilities, the appropriate Security Context Constraints (SCCs)
+    should set all capabilities as <tt>*</tt> or a list of capabilities in
+    <tt>requiredDropCapabilities</tt>.
+
+rationale: |-
+    By default, containers run with a default set of capabilities as assigned
+    by the Container Runtime which can include dangerous or highly privileged
+    capabilities. Capabilities should be dropped unless absolutely critical for
+    the container to run software as added capabilities that are not required
+    allow for malicious containers or attackers.
+
+severity: medium
+
+references:
+    cis: 5.2.9
+
+ocil_clause: 'requiredDropCapabilities are not configured or configured correctly'
+
+ocil: |-
+    Inspect each SCC returned from running the following command:
+    <pre>$ oc get scc</pre>
+    Review each SCC and determine that all capabilities are either
+    completely disabled as a list entry under <tt>requiredDropCapabilities</tt>,
+    or that all the un-required capabilities are dropped for containers and SCCs.

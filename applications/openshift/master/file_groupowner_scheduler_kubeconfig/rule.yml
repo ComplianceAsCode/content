@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Group Who Owns The OpenShift Scheduler Kubeconfig File'
+
+description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
+
+rationale: |-
+    The Scheduler Kubeconfig file contains information about the configuration of the
+    OpenShift scheduler that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4: 80639-8
+
+references:
+    cis: 1.1.16
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
+
+#template:
+#    name: file_groupowner
+#    vars:
+#        filepath: /etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig
+#        filegid: '0'

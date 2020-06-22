@@ -9,9 +9,8 @@ description: |-
     communications, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, verify
 {{%- if product == "ocp4" %}}
-    that <tt>storageConfig</tt> has the <tt>certFile</tt> configured in 
-    the API Server pod specification file
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    that <tt>storageConfig</tt> has the <tt>certFile</tt> configured in
+    the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) to something similar to:
     <pre>
     "storageConfig":{
@@ -20,7 +19,7 @@ description: |-
       ...
     </pre>
 {{% else %}}
-    that <tt>etcdClientInfo</tt> has the <tt>ca</tt> configured in 
+    that <tt>etcdClientInfo</tt> has the <tt>ca</tt> configured in
     the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
@@ -47,9 +46,8 @@ ocil_clause: '<tt>certFile</tt> does not exist or is not configured to valid cer
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep certFile /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
-    The output should contain something similar to:
-    <pre>"certFile":"/etc/kubernetes/static-pod-resources/secrets/etcd-client/tls.crt",</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.storageConfig["certFile"]'</pre>
+    The output should return a configured certificate file.
 {{% else %}}
     <pre>$ sudo grep -A3 etcdClientInfo /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:

@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Group Who Owns The OpenShift Admin Kubeconfig File'
+
+description: '{{{ describe_file_group_owner(file="/etc/kubernetes/kubeconfig", group="root") }}}'
+
+rationale: |-
+    The <tt>/etc/kubernetes/kubeconfig</tt> file contains information about the administrative configuration of the
+    OpenShift cluster that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4: 80633-1
+
+references:
+    cis: 1.1.14
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/kubeconfig", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/kubeconfig", group="root") }}}'
+
+#template:
+#    name: file_groupowner
+#    vars:
+#        filepath: /etc/kubernetes/kubeconfig
+#        filegid: '0'

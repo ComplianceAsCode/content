@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Manage Image Provenance Using ImagePolicyWebhook Adminission'
 
@@ -10,19 +10,24 @@ description: |-
     restrict image origins to known external registries; and (2) ImagePolicy Admission plug-in which lets
     administrators specify specific images which are allowed to run on the OpenShift cluster.
 
-    Configure Image Provenance using the <tt>ImagePolicyWebhook</tt> admission controller per
-    the Image Policy chapter in the Cluster Administration documentation:
-
-    https://docs.openshift.com/container-platform/3.11/admin_guide/image_policy.html
+    Configure an Image policy per the Image Policy chapter in the OpenShift documentation:
+{{%- if product == "ocp4" %}}
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.4/openshift_images/image-configuration.html") }}}
+{{% else %}}
+    {{{ weblink(link="https://docs.openshift.com/container-platform/3.11/admin_guide/image_policy.html") }}}
+{{%- endif %}}
 
 rationale: |-
     Image Policy ensures that only approved container images are allowed to be ran on the OpenShift platform.
 
 severity: medium
 
-ocil_clause: 'an image provenance policy is not configured'
+ocil_clause: 'an image policy is not configured'
 
 ocil: |-
+{{%- if product == "ocp4" %}}
+    <pre>$ oc get image.config.openshift.io/cluster -o yaml</pre>
+{{% else %}}
     Review <tt>ImagePolicyConfig</tt> in <tt>/etc/origin/master/master-config.yaml</tt>:
     <pre>$ grep admissionConfig /etc/origin/master/master-config.yaml</pre>
 
@@ -30,9 +35,11 @@ ocil: |-
     <pre>admissionConfig:
       pluginConfig:
         openshift.io/ImagePolicy</pre>
+{{%- endif %}}
 
 identifiers:
     cce@ocp3: 81001-0
 
 references:
-    cis: 1.6.7
+    cis@ocp3: 1.6.7
+    cis@ocp4: 5.5.1

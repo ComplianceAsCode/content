@@ -1,16 +1,27 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'kubelet - Enable Client Certificate Rotation'
 
 description: |-
     To enable the kubelet to rotate client certificates, edit the kubelet configuration
+{{%- if product == "ocp4" %}}
+    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>
+    featureGates:
+    ...
+      RotateKubeletClientCertificate: true
+    ...
+    </pre>
+{{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>kubeletArguments:
       feature-gates:
         - RotateKubeletClientCertificate=true</pre>
+{{%- endif %}}
 
 rationale: |-
     Allowing the kubelet to auto-update the certificates ensure that there is no downtime
@@ -22,11 +33,16 @@ ocil_clause: 'the kubelet cannot rotate client certificate'
 
 ocil: |-
     Run the following command on the kubelet node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep RotateKubeletClientCertificate /etc/kubernetes/kubernetes.conf</pre>
+{{% else %}}
     <pre>$ sudo grep RotateKubeletClientCertificate /etc/origin/node/node-config.yaml</pre>
+{{%- endif %}}
     The output should return <tt>true</tt>.
 
 identifiers:
     cce@ocp3: 80603-4
 
 references:
-    cis: 2.1.14
+    cis@ocp3: 2.1.14
+    cis@ocp4: 4.2.11
