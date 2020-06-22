@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Configure the UserAdmin Webmin module to display last login information for all users'
+
+description: |-
+    Webmin must display the last login date and time of a user, once the user has authenticated.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>last_show=1</tt>,
+    a user is displayed the last login information.
+
+rationale: |-
+    Displaying the last login information enables the user to identify a potential compromise,
+    in the event an authentication with their account had occured that was not performed by the user.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>last_show=1</pre> line
+
+ocil: |-
+    To verify that Webmin displays the last login information, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>last_show=1</pre> line:
+    <pre>grep 'last_show=1' /etc/webmin/useradmin/config</pre>.

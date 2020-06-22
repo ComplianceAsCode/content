@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Log actions performed by users'
+
+description: |-
+    Webmin must enable logging of user actions in the Web interface.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/config</tt>.
+    If this config file contains the line <tt>log=1</tt>,
+    user actions are being recorded.
+
+rationale: |-
+    User actions need to be recorded to identify any malicious use of the software by a user.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>log=1</pre> line
+
+ocil: |-
+    To verify that Webmin records user actions, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/config</pre> contains the <pre>log=1</pre> line:
+    <pre>grep 'log=1' /etc/webmin/config</pre>.

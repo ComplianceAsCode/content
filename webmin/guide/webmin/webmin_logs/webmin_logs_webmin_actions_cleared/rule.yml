@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Prevent users from covering their actions performed'
+
+description: |-
+    Webmin must prevent users from clearing the log.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/config</tt>.
+    If this config file contains the line <tt>logclear=0</tt>,
+    a user is prevented from clearing the log.
+
+rationale: |-
+    Users can cover their tracks by removing logs that record their actions within the system.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>logclear=0</pre> line
+
+ocil: |-
+    To verify that Webmin prevents users from clearing the log, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/config</pre> contains the <pre>logclear=0</pre> line:
+    <pre>grep 'logclear=0' /etc/webmin/config</pre>.

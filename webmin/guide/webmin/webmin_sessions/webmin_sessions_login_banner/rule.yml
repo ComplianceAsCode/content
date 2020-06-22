@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Display approved login banner prior to login'
+
+description: |-
+    Webmin must present a login banner prior to allowing authentication. This informs the end user
+    of any legal and organizational requirements enforced by accessing the system and provides them 
+    an opportunity to exit or agree to the requirements and proceed with authentication.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/config</tt>.
+    If this config file contains the line <tt>loginbanner=/etc/webmin/login_banner</tt>,
+    a user is prompted with a login banner.
+
+rationale: |-
+    Organizations must convey access requirements to the end user prior to allowing authentication.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>loginbanner=/etc/webmin/login_banner</pre> line
+
+ocil: |-
+    To verify that Webmin prompts a user to change their password when it expires, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/miniserv.conf</pre> contains the <pre>passwd_mode=2</pre> line:
+    <pre>grep 'passwd_mode=2' /etc/webmin/miniserv.conf</pre>.

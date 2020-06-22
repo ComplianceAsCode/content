@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Sessions are closed after idling a specified period of time'
+
+description: |-
+    Webmin must close inactive sessions after remaining idle for a specified period of time.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/miniserv.conf</tt>.
+    If this config file contains the line <tt>logouttime=15</tt>,
+    a user's session expires after being idle for 15 minutes.
+
+rationale: |-
+    Inactive sessions can enable to an attacker gain access to the system through a stored cookie.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>miniserv.conf</pre> doesn't contain the <pre>logouttime=15</pre> line
+
+ocil: |-
+    To verify that Webmin expires inactive sessions, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/miniserv.conf</pre> contains the <pre>logouttime=15</pre> line:
+    <pre>grep 'logouttime=15' /etc/webmin/miniserv.conf</pre>.

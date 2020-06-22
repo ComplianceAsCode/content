@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Enable the ability for a user to change an expired password'
+
+description: |-
+    Webmin must enable a user to change their password when	it has expired.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/miniserv.conf</tt>.
+    If this config file contains the line <tt>passwd_mode=2</tt>,
+    a user is prompted to change their password when it expires.
+
+rationale: |-
+    Users need the ability to be prompted to change their password when it expires.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>miniserv.conf</pre> doesn't contain the <pre>passwd_mode=2</pre> line
+
+ocil: |-
+    To verify that Webmin prompts a user to change their password when it expires, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/miniserv.conf</pre> contains the <pre>passwd_mode=2</pre> line:
+    <pre>grep 'passwd_mode=2' /etc/webmin/miniserv.conf</pre>.

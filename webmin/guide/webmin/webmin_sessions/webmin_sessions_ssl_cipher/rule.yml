@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Use approved ciphers for encryption'
+
+description: |-
+    Webmin must use approved ciphers for encrypted connections.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/miniserv.conf</tt>.
+    If this config file contains the lines <tt>ssl_honorcipherorder=1</tt>, <tt>no_ssl2=1</tt>, <tt>no_ssl3=1</tt>, and
+    <tt>ssl_cipher_list=ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:+TLSv1.2:+TLSv1:!MD5:!SSLv2:SSLv3:!ADH:!aNULL:!eNULL:!NULL:!DH:!EDH:!AESGCM</tt>
+    a user is prompted to change their password when it expires.
+
+rationale: |-
+    Weak encryption algorithms can lead to insecured communications and authentication credentials being compromised.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>miniserv.conf</pre> doesn't contain the <pre>passwd_mode=2</pre> line
+
+ocil: |-
+    To verify that Webmin prompts a user to change their password when it expires, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/miniserv.conf</pre> contains the lines <tt>ssl_honorcipherorder=1</tt>, <tt>no_ssl2=1</tt>, <tt>no_ssl3=1</tt>, and
+    <tt>ssl_cipher_list=ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:+TLSv1.2:+TLSv1:!MD5:!SSLv2:SSLv3:!ADH:!aNULL:!eNULL:!NULL:!DH:!EDH:!AESGCM</tt>
+    <pre>grep 'ssl_honorcipherorder=1' /etc/webmin/miniserv.conf</pre>.
+    <pre>grep 'no_ssl2=1' /etc/webmin/miniserv.conf</pre>.
+    <pre>grep 'no_ssl3=1' /etc/webmin/miniserv.conf</pre>.
+    <pre>grep 'ssl_cipher_list=ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:+TLSv1.2:+TLSv1:!MD5:!SSLv2:SSLv3:!ADH:!aNULL:!eNULL:!NULL:!DH:!EDH:!AESGCM' /etc/webmin/miniserv.conf</pre>.

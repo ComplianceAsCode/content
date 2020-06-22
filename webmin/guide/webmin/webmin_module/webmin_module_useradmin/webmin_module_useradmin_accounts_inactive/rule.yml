@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure new accounts to lock out after a number of days of no activity'
+
+description: |-
+    New users created through the UserAdmin Webmin module must include required account expiration criteria.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>default_inactive=35</tt>,
+    new accounts are created with properties to expire the account after 35 days of no activity.
+
+rationale: |-
+    Inactive accounts can increase the risk of the system being compromised, as account credentials are not frequently changed.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>default_inactive=35</pre> line
+
+ocil: |-
+    To verify that Webmin expires inactive accounts, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>default_inactive=35</pre> line:
+    <pre>grep 'default_inactive=35' /etc/webmin/useradmin/config</pre>.

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure new accounts to prevent changing passwords more than once per the minimum number of days defined'
+
+description: |-
+    New users created through the UserAdmin Webmin module must include required minimum password life criteria.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>default_min=1</tt>,
+    a user is prevented from changing their password more than once a day.
+
+rationale: |-
+    User passwords need to meet organizational requirements for complexity.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>default_min=1</pre> line
+
+ocil: |-
+    To verify that Webmin prevents users from changing their password more than once a day, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>default_min=1</pre> line:
+    <pre>grep 'default_min=1' /etc/webmin/useradmin/config</pre>.

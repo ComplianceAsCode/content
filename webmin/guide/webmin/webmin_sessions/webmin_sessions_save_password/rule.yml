@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Prevent the ability for a user to save their login credentials for future access'
+
+description: |-
+    Webmin must prevent users from saving their credentials in the browser.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/config</tt>.
+    If this config file contains the line <tt>noremember=1</tt>,
+    a user is prevented from selecting the checkbox to save their password.
+
+rationale: |-
+    Passwords saved in the browser are susceptible to being disclosed by an attacker.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>noremember=1</pre> line
+
+ocil: |-
+    To verify that Webmin prevent users from saving their credentials in the browser, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/config</pre> contains the <pre>noremember=1</pre> line:
+    <pre>grep 'noremember=1' /etc/webmin/config</pre>.

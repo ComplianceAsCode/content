@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure new accounts to warn the user about their password expiring'
+
+description: |-
+    New users created through the UserAdmin Webmin module must include required account password expiration warning criteria.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>default_warn=7</tt>,
+    a user is warned about their password expiring 7 days prior to expiration.
+
+rationale: |-
+    User passwords need to meet organizational requirements for complexity.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>default_warn=7</pre> line
+
+ocil: |-
+    To verify that Webmin configures accounts to warn users 7 days prior to their password expiring, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>default_warn=7</pre> line:
+    <pre>grep 'default_warn=7' /etc/webmin/useradmin/config</pre>.

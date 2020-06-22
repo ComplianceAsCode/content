@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure the UserAdmin Webmin module to require a minimum number of characters in passwords defined'
+
+description: |-
+    Passwords created through the UserAdmin Webmin module must include the minimum defined number of characters in the password.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>passwd_min=14</tt>,
+    a user is required to have at least 14 characters in their password.
+
+rationale: |-
+    User passwords need to meet organizational requirements for complexity.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>passwd_min=14</pre> line
+
+ocil: |-
+    To verify that Webmin requires users to have a minimum of 14 characters in their password, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>passwd_min=14</pre> line:
+    <pre>grep 'passwd_min=14' /etc/webmin/useradmin/config</pre>.

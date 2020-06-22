@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Encryption is enabled and enforced'
+
+description: |-
+    Webmin must enable session encryption and force redirection from an unencrypted connection to an encrypted connection.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/miniserv.conf</tt>.
+    If this config file contains the lines <tt>ssl=1</tt> and <tt>ssl_redirect=1</tt>,
+    a user is prompted to change their password when it expires.
+
+rationale: |-
+    Session encryption ensures the authentication credentials and actions performed are protected from being revealed to attackers.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>miniserv.conf</pre> doesn't contain the <pre>passwd_mode=2</pre> line
+
+ocil: |-
+    To verify that Webmin enforces session encryption, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/miniserv.conf</pre> contains the <tt>ssl=1</tt> and <tt>ssl_redirect=1</tt> lines:
+    <pre>grep 'ssl=1' /etc/webmin/miniserv.conf</pre>.
+    <pre>grep 'ssl_redirect=1' /etc/webmin/miniserv.conf</pre>.

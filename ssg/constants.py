@@ -24,6 +24,7 @@ product_directories = [
     'sle11', 'sle12', 'sle15',
     'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
     'vsel',
+    'webmin',
     'wrlinux8', 'wrlinux1019'
 ]
 
@@ -171,6 +172,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 14.04": "ubuntu1404",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
+    "Webmin": "webmin",
     "WRLinux 8": "wrlinux8",
     "WRLinux 1019": "wrlinux1019",
 }
@@ -317,6 +319,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "vsel": [
         "cpe:/a:mcafee:virusscan_enterprise_for_linux:1.9",
         "cpe:/a:mcafee:virusscan_enterprise_for_linux:2.0",
+    ],
+    "webmin": [
+        "cpe:/a:webmin:webmin:",
     ],
     "wrlinux8": [
         "cpe:/o:windriver:wrlinux:8",
@@ -525,6 +530,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'vsel': 'McAfee VirusScan Enterprise for Linux',
+    'webmin': 'Webmin',
     'wrlinux': 'WRLinux',
     'example': 'Example Linux Content',
     'ol': 'Oracle Linux',

@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Logs must not be accessible to unauthorized users'
+
+description: |-
+    Webmin must only allow access to the logs by authorized administrators.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/config</tt>.
+    If this config file contains the line <tt>logperms=640</tt>,
+    logs are restricted to read/write access by its owner and read-only access by its group.
+    All other access is denied.
+
+rationale: |-
+    Logs need to be protected from unauthorized access.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>logperms=640</pre> line
+
+ocil: |-
+    To verify that Webmin protects the logs from unauthorized access, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/config</pre> contains the <pre>logperms=640</pre> line:
+    <pre>grep 'logperms=640' /etc/webmin/config</pre>.

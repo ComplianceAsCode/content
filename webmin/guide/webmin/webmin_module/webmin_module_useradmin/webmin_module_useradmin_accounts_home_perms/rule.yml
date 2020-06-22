@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Configure new accounts to create their home directory with a default permission setting of 750'
+
+description: |-
+    New users created through the UserAdmin Webmin module must have the default permissions of 750 
+    applied to their home directory when created.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>homedir_perms=0750</tt>,
+    a user's home directory will be created with the default permissions of 750.
+
+rationale: |-
+    User home directories should be created with permissions that prevent other users on the system from accessing their data.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>homedir_perms=0750</pre> line
+
+ocil: |-
+    To verify that user home directories are created with the required permissions, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>homedir_perms=0750</pre> line:
+    <pre>grep 'homedir_perms=0750' /etc/webmin/useradmin/config</pre>.

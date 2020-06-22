@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Use passwd for changing passwords'
+
+description: |-
+    Webmin must use passwd for password changes so that password requirements configured in the operating system are 
+    enforced on new password selections.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/config</tt>.
+    If this config file contains the line <tt>passwd_cmd=/usr/bin/passwd</tt>,
+    password changes will be enforced through the passwd utility.
+
+rationale: |-
+    The default mechanism for changing a user's password does not enforce password restricitions consistent with those 
+    provided by the operating system.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>passwd_cmd=/usr/bin/passwd</pre> line
+
+ocil: |-
+    To verify that Webmin uses passwd, check the respective Webmin config file
+    <pre>/etc/webmin/config</pre> contains the <pre>passwd_cmd=/usr/bin/passwd</pre> line:
+    <pre>grep 'passwd_cmd=/usr/bin/passwd' /etc/webmin/config</pre>.

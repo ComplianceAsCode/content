@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure the UserAdmin Webmin module to require passwords to not include dictionary words'
+
+description: |-
+    Passwords created through the UserAdmin Webmin module must not include dictionary words.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>passwd_dict=1</tt>,
+    passwords are checked against a dictionary to prevent simple known passwords from being used.
+
+rationale: |-
+    User passwords need to meet organizational requirements for complexity.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>passwd_dict=1</pre> line
+
+ocil: |-
+    To verify that Webmin requires users passwords to not include words from a dictionary, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>passwd_dict=1</pre> line:
+    <pre>grep 'passwd_dict=1' /etc/webmin/useradmin/config</pre>.

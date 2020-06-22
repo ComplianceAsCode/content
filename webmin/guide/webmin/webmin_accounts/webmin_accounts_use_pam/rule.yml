@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Use PAM for authentication'
+
+description: |-
+    Webmin must use the OS-provided Password Authentication Module for validating passwords.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/miniserv.conf</tt>.
+    If this config file contains the line <tt>no_pam=0</tt>,
+    PAM will be used to validate passwords.
+
+rationale: |-
+    Password validation needs to be enforced by an approved password vaildation mechanism.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>miniserv.conf</pre> doesn't contain the <pre>passwd_mode=2</pre> line
+
+ocil: |-
+    To verify that Webmin uses PAM for password validation, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/miniserv.conf</pre> contains the <pre>no_pam=0</pre> line:
+    <pre>grep 'no_pam=0' /etc/webmin/miniserv.conf</pre>.

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure new accounts to expire their password after a maximum number days'
+
+description: |-
+    New users created through the UserAdmin Webmin module must include required maximum password life criteria.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>default_max=60</tt>,
+    new user accounts will be created with a password expiration of 60 days.
+
+rationale: |-
+    User passwords need to meet organizational requirements for complexity.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>default_max=60</pre> line
+
+ocil: |-
+    To verify that Webmin requires user passwords to expire, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>default_max=60</pre> line:
+    <pre>grep 'default_max=60' /etc/webmin/useradmin/config</pre>.

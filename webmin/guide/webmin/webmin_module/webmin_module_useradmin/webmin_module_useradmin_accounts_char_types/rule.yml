@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Configure the UserAdmin Webmin module to require at least 1 upper-case, lower-case, numeric, and special character'
+
+description: |-
+    Webmin must require passwords defined for new users to include at least 1 upper-case character, 
+    1 lower-case character, 1 numeric character, and 1 special character.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>passwd_re=^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W]).*$</tt>,
+    a user is required to have a password that includes at least 1 character of each required type.
+
+rationale: |-
+    User passwords need to meet organizational requirements for complexity.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>passwd_re=^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W]).*$</pre> line
+
+ocil: |-
+    To verify that Webmin requires users to have a password that includes at least 1 character of each required type, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>passwd_re=^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W]).*$</pre> line:
+    <pre>grep 'passwd_re=^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W]).*$' /etc/webmin/useradmin/config</pre>.

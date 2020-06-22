@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Configure the UserAdmin Webmin module to mask the password characters entered with stars'
+
+description: |-
+    The UserAdmin Webmin module must not display the characters entered for the password in clear text.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/useradmin/config</tt>.
+    If this config file contains the line <tt>passwd_stars=1</tt>,
+    a user's password will not be displayed in clear text, when typed.
+
+rationale: |-
+    User passwords should not be displayed when typed in the browser.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>config</pre> doesn't contain the <pre>passwd_stars=1</pre> line
+
+ocil: |-
+    To verify that Webmin does not display user passwords in clear text, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/useradmin/config</pre> contains the <pre>passwd_stars=1</pre> line:
+    <pre>grep 'passwd_stars=1' /etc/webmin/useradmin/config</pre>.

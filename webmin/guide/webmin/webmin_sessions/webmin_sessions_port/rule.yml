@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Configure approved webmin port'
+
+description: |-
+    Webmin must be configured with the port that is authorized. The DoD PPSM currently defines
+    port 15000 as the authorized port for connecting to Webmin.
+
+    To check that Webmin settings are configured correctly, you have to examine the config file
+    available under <tt>/etc/webmin/miniserv.conf</tt>.
+    If this config file contains the line <tt>listen=15000</tt> and the line <tt>port=15000</tt>,
+    Webmin will be configured to listen on port 15000.
+
+rationale: |-
+    Webmin needs to utilize ports authorized for connections.
+
+severity: unknown
+
+ocil_clause: |-
+    the <pre>miniserv.conf</pre> doesn't contain the <tt>listen=15000</tt> line and the <tt>port=15000</tt> line
+
+ocil: |-
+    To verify that Webmin is configured with an authorized port, 
+    check the respective Webmin config file
+    <pre>/etc/webmin/miniserv.conf</pre> contains the <tt>listen=15000</tt> line and the <tt>port=15000</tt> line:
+    <pre>grep 'listen=15000' /etc/webmin/miniserv.conf</pre>.
+    <pre>grep 'port=15000' /etc/webmin/miniserv.conf</pre>.
