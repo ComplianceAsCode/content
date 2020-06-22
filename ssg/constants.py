@@ -23,6 +23,7 @@ product_directories = [
     'rhv4',
     'sle11', 'sle12', 'sle15',
     'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
+    'vsel',
     'wrlinux8', 'wrlinux1019'
 ]
 
@@ -153,6 +154,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Apple macOS 10.15": "macos1015",
     "Red Hat OpenShift Container Platform 3": "ocp3",
     "Red Hat OpenShift Container Platform 4": "ocp4",
+    "McAfee VirusScan Enterprise for Linux": "vsel",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
@@ -311,6 +313,10 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "ubuntu1804": [
         "cpe:/o:canonical:ubuntu_linux:18.04",
+    ],
+    "vsel": [
+        "cpe:/a:mcafee:virusscan_enterprise_for_linux:1.9",
+        "cpe:/a:mcafee:virusscan_enterprise_for_linux:2.0",
     ],
     "wrlinux8": [
         "cpe:/o:windriver:wrlinux:8",
@@ -518,6 +524,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'fuse': 'JBoss Fuse',
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
+    'vsel': 'McAfee VirusScan Enterprise for Linux',
     'wrlinux': 'WRLinux',
     'example': 'Example Linux Content',
     'ol': 'Oracle Linux',

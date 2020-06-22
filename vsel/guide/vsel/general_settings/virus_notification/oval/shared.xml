@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="virus_notification" version="1">
+    <metadata>
+      <title>The McAfee VirusScan Enterprise for Linux  Web interface must be disabled unless the system is on a segregated network.</title>
+      <affected family="unix">
+        <product>McAfee VirusScan Enterprise for Linux</product>
+      </affected>
+      <description></description>
+    </metadata>
+    <!-- notifications.virusDetected.active is configured ... -->
+    <criteria>
+	  <criterion comment="Check notifications.virusDetected.active" test_ref="test_virus_notification" />
+	</criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check notifications.virusDetected.active" id="test_virus_notification" version="1">
+    <ind:object object_ref="object_virus_notification" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_virus_notification" version="1">
+    <ind:filepath>/var/opt/NAI/LinuxShield/etc/nailsd.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^notifications.virusDetected.active: true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+</def-group>
