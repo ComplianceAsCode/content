@@ -17,3 +17,13 @@ severity: medium
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/images/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /apis/config.openshift.io/v1/images/cluster
+        yamlpath: ".spec.allowedRegistriesForImport[:].domainName"
+        value: ".*"
+        entity_check: "at least one"
+        operation: "pattern match"
+        ocp_data: 'true'
