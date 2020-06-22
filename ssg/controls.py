@@ -17,8 +17,9 @@ class Control():
 
 
 class Policy():
-    def __init__(self, filepath):
+    def __init__(self, filepath, env_yaml=None):
         self.id = None
+        self.env_yaml = env_yaml
         self.filepath = filepath
         self.controls = {}
     
@@ -34,7 +35,7 @@ class Policy():
 
     
     def load(self):
-        yaml_contents = ssg.yaml.open_and_expand(self.filepath)
+        yaml_contents = ssg.yaml.open_and_expand(self.filepath, self.env_yaml)
         self.id = ssg.utils.required_key(yaml_contents, "id")
         controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         self.controls = {
@@ -52,15 +53,16 @@ class Policy():
 
 
 class ControlsManager():
-    def __init__(self, controls_dir):
+    def __init__(self, controls_dir, env_yaml=None):
         self.controls_dir = os.path.abspath(controls_dir)
+        self.env_yaml = env_yaml
         self.policies = {}
 
     def load(self):
         for filename in os.listdir(self.controls_dir):
             logging.info("Found file %s" % (filename))
             filepath = os.path.join(self.controls_dir, filename)
-            policy = Policy(filepath)
+            policy = Policy(filepath, self.env_yaml)
             policy.load()
             self.policies[policy.id] = policy
 

@@ -35,3 +35,20 @@ def test_controls_load():
     assert "accounts_password_pam_minlen" in c_r4.rules
     assert "accounts_password_pam_ocredit" in c_r4.rules
     #logging.info(c.rules)
+
+def test_controls_load_product():
+    env_yaml = {"product": "rhel9"}
+    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
+    controls_manager.load()
+
+    c_r1 = controls_manager.get_control("abcd", "R1")
+    assert c_r1.title == "User session timeout"
+    assert c_r1.description == "Remote user sessions must be closed after " \
+        "a certain period of inactivity."
+    assert c_r1.automated == "yes"
+    assert "sshd_set_idle_timeout" in c_r1.rules
+    assert "accounts_tmout" in c_r1.rules
+    assert "var_accounts_tmout=10_min" in c_r1.rules
+    # The rule cockpit_session_timeout is guarded by Jinja macro
+    # that allows it only on rhel9 product.
+    assert "cockpit_session_timeout" in c_r1.rules
