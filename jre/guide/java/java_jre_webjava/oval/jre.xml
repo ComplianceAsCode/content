@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="java_jre_webjava" version="1">
+    <metadata>
+      <title>Enable Java Web Start (JWS) Applications</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <description>The option enables users to allow Java Web Start (JWS) applications.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check deployment.webjava.enabled" test_ref="test_java_jre_webjava" />
+      <criterion comment="Check deployment.webjava.enabled.locked" test_ref="test_java_jre_webjava_locked" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.webjava.enabled" id="test_java_jre_webjava" version="1">
+    <ind:object object_ref="object_java_jre_webjava" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_java_jre_webjava" version="1">
+    <ind:filepath>/etc/.java/deployment/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.webjava.enabled=true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.webjava.enabled.locked" id="test_java_jre_webjava_locked" version="1">
+    <ind:object object_ref="object_java_jre_webjava_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_java_jre_webjava_locked" version="1">
+    <ind:filepath>/etc/.java/deployment/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.webjava.enabled.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

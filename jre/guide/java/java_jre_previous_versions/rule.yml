@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Oracle JRE 8 must remove previous versions when the latest version is installed'
+
+description: |-
+    Open a terminal window and type the command:
+    <pre>$ rpm -qa | egrep '(java|jre)'</pre>
+    
+    The return value should only identify the current version of java in use.
+    
+    For each previous version of java identified, perform the following command:
+    <pre>$ yum remove PACKAGE</pre>
+
+rationale: |-
+    Running an older version of the JRE can introduce security
+    vulnerabilities to the system.
+
+severity: high
+
+references:
+    nist: SI-2
+    stigid: JRE8-UX-000190
+
+ocil_clause: 'it is not updated'
+
+ocil: |-
+    Open a terminal window and type the command:
+    <pre>$ rpm -qa | egrep '(java|jre)'</pre>
+    
+    The return value should only identify the current version of java in use.
+    
+    For each previous version of java identified, perform the following command:
+    <pre>$ yum remove PACKAGE</pre>

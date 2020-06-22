@@ -16,12 +16,17 @@ description: |-
 selections:
     - java_jre_deployment_config_exists
     - java_jre_deployment_config_properties
-    - java_jre_deployment_config_mandatory
     - java_jre_deployment_properties_exists
-    - java_jre_untrusted_sources
-    - java_jre_untrusted_sources_locked
-    - java_jre_validation_crl
-    - java_jre_validation_crl_locked
+    - java_jre_security_level
+    - java_jre_webjava
+    - java_jre_askgrantdialog_notinca
+    - java_jre_askgrantdialog_show
     - java_jre_validation_ocsp
-    - java_jre_validation_ocsp_locked
+    - java_jre_blacklist
+    - java_jre_exception_sites_enabled
+    - java_jre_exception_sites_exists
+    - java_jre_validation_crl
+    - java_jre_revocation_check
+    - java_jre_insecure_jres
     - java_jre_updated
+    - java_jre_previous_versions

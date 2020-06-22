@@ -6,3 +6,9 @@ sed -i "s/deployment.security.validation.ocsp=.*/deployment.security.validation.
 if ! [ $? -eq 0 ] ; then
   echo "deployment.security.validation.ocsp=true" >> ${JAVA_PROPERTIES}
 fi
+
+grep -q "^deployment.security.validation.ocsp.locked$" ${JAVA_PROPERTIES} && \
+sed -i "s/deployment.security.validation.ocsp\..*/deployment.security.validation.ocsp.locked/g" ${JAVA_PROPERTIES}
+if ! [ $? -eq 0 ] ; then
+  echo "deployment.security.validation.ocsp.locked" >> ${JAVA_PROPERTIES}
+fi

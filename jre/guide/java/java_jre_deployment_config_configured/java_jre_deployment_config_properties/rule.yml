@@ -1,12 +1,15 @@
 documentation_complete: true
 
-title: 'Configure the deployment.properties File Path'
+title: 'Oracle JRE 8 deployment.config file must contain proper keys and values'
 
 description: |-
     To ensure that the Java properties file is set in
     <tt>/etc/.java/deployment/deployment.config</tt>, add or modify
     <tt>deployment.system.config</tt> to equal
-    <tt>file:///etc/.java/deployment/deployment.properties</tt>.
+    <tt>/etc/.java/deployment/deployment.properties</tt>.
+    To ensure that the Java properties file is mandatory, add or modify
+    <tt>deployment.system.config.mandatory</tt> to equal <tt>true</tt>
+    in <tt>/etc/.java/deployment/deployment.config</tt>.
 
 rationale: |-
     Without a proper path for the properties file, deployment would not be possible.
@@ -26,6 +29,7 @@ ocil_clause: 'it is not configured'
 ocil: |-
     To verify that <tt>deployment.config</tt> is configured properly,
     run the following command:
-    <pre>$ grep 'deployment.system.config=file' /etc/.java/deployment/deployment.config</pre>
+    <pre>$ grep 'deployment.system.config' /etc/.java/deployment/deployment.config</pre>
     If properly configured, the output should return:
-    <pre>deployment.system.config=file:///etc/.java/deployment/deployment.properties</pre>
+    <pre>deployment.system.config=/etc/.java/deployment/deployment.properties</pre>
+    <pre>deployment.system.config.mandatory=true</pre>

@@ -10,6 +10,7 @@
     </metadata>
     <criteria>
       <criterion comment="Check deployment.system.config" test_ref="test_java_jre_deployment_system_config" />
+      <criterion comment="Check deployment.system.config.mandatory" test_ref="test_java_jre_deployment_system_config_mandatory" />
     </criteria>
   </definition>
 
@@ -18,7 +19,20 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_java_jre_deployment_system_config" version="1">
     <ind:filepath>/etc/.java/deployment/deployment.config</ind:filepath>
-   <ind:pattern operation="pattern match">^deployment.system.config=file:///etc/.java/deployment/deployment.properties$</ind:pattern>
+   <ind:pattern operation="pattern match">^deployment.system.config=/etc/.java/deployment/deployment.properties$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.system.config.mandatory" id="test_java_jre_deployment_system_config_mandatory" version="1">
+    <ind:object object_ref="object_java_jre_deployment_system_config_mandatory" />
+    <ind:state state_ref="state_java_jre_deployment_system_config_mandatory" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_java_jre_deployment_system_config_mandatory" version="1">
+    <ind:filepath>/etc/.java/deployment/deployment.config</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.system.config.mandatory=(.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_java_jre_deployment_system_config_mandatory" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^.*true.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>

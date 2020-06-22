@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Oracle JRE 8 must prompt the user for action prior to executing mobile code'
+
+description: |-
+    To ensure that Java prompts the user for action prior to executing mobile code, set
+    <tt>deployment.insecure.jres</tt> to equal <tt>PROMPT</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+    
+    To ensure the setting cannot be modified by a user, additionally set
+    <tt>deployment.insecure.jres.locked</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Mobile code can cause damage to the system. It can execute without explicit action from, 
+    or notification to, a user. 
+
+severity: medium
+
+references:
+    nist: SC-18(4)
+    stigid: JRE8-UX-000170
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java prompts the user for action prior to executing mobile code,
+    run the following command:
+    <pre>$ grep 'deployment.insecure.jres=PROMPT' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.insecure.jres=PROMPT</pre>
+    
+    To verify that the Java setting is locked, run the following command:
+    <pre>$ grep 'deployment.insecure.jres.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.insecure.jres.locked</pre>
+    

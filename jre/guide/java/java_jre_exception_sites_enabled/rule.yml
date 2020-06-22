@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Oracle JRE 8 must enable the option to use an accepted sites list'
+
+description: |-
+    To ensure that Java enables the use of an accepted sites list, set
+    <tt>deployment.user.security.exception.sites</tt> to equal <tt>/etc/.java/deployment/exception.sites</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Utilizing a whitelist provides a configuration management method for allowing the execution of only 
+    authorized software. Using only authorized software decreases risk by limiting the number of potential 
+    vulnerabilities.
+
+severity: medium
+
+references:
+    nist: CM-7(5)
+    stigid: JRE8-UX-000120
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java prevents the download of prohibited mobile code,
+    run the following command:
+    <pre>$ grep 'deployment.user.security.exception.sites' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.user.security.exception.sites=/etc/.java/deployment/exception.sites</pre>

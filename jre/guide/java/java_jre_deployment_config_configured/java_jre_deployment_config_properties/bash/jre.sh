@@ -2,8 +2,8 @@
 JAVA_CONFIG="/etc/.java/deployment/deployment.config"
 JAVA_PROPERTIES="/etc/.java/deployment/deployment.properties"
 
-grep -q "^deployment.system.config=file://${JAVA_CONFIG}$" ${JAVA_CONFIG} && \
-sed -i "s;deployment.system.config=.*;deployment.system.config=file:\/\/${JAVA_PROPERTIES};g" ${JAVA_CONFIG}
-if ! [ $? -eq 0 ] ; then
-  echo "deployment.system.config=file://${JAVA_PROPERTIES}" >> ${JAVA_CONFIG}
-fi
+sed -i "/deployment.system.config=.*/d" ${JAVA_CONFIG}
+echo "deployment.system.config=${JAVA_PROPERTIES}" >> ${JAVA_CONFIG}
+
+sed -i "/deployment.system.config.mandatory=.*/d" ${JAVA_CONFIG}
+echo "deployment.system.config.mandatory=true" >> ${JAVA_CONFIG}

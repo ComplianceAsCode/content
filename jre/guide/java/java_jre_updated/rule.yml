@@ -1,11 +1,21 @@
 documentation_complete: true
 
-title: 'Ensure Java Patches Installed'
+title: 'The version of Oracle JRE 8 running on the system must be the most current available'
 
 description: |-
+    Open a terminal window and type the command:
+    <pre>$ java -version</pre>
+    
+    The return value should contain Java build information:
+    <pre>Java (TM) SE Runtime Environment (build x.x.x.x)</pre>
+    
+    Cross reference the build information on the system with the Oracle Java site 
+    to identify the most recent build available.
+    
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
     or a yum server, run the following command to install updates:
     <pre>$ sudo yum update</pre>
+    
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded and installed using <tt>rpm</tt>.
 
@@ -13,15 +23,22 @@ rationale: |-
     Running an older version of the JRE can introduce security
     vulnerabilities to the system.
 
-severity: medium
+severity: high
 
 references:
-    nist: DCBP-1
-    stigid: JRE0090-UX
+    nist: SI-2
+    stigid: JRE8-UX-000180
 
 ocil_clause: 'it is not updated'
 
 ocil: |-
+    Open a terminal window and type the command:
+    <pre>$ java -version</pre>
+    The return value should contain Java build information:
+    <pre>Java (TM) SE Runtime Environment (build x.x.x.x)</pre>
+    Cross reference the build information on the system with the Oracle Java site 
+    to identify the most recent build availableat
+    {{{ weblink(link="http://www.oracle.com/technetwork/java/javase/8u-relnotes-2225394.html") }}}.
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
     a yum server which provides updates, invoking the following command will
     indicate if updates are available:

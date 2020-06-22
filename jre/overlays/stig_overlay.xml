@@ -1,43 +1,67 @@
 <?xml version="1.0"?>
 <overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
-	<overlay owner="disastig" ruleid="java_jre_untrusted_sources" ownerid="JRE0001-UX" disa="612" severity="medium">
-		<VMSinfo VKey="32828" SVKey="43596" VRelease="2" />
-		<title>The dialog to enable users to grant permissions to execute signed content from an un-trusted authority must be disabled.</title>
+	<overlay owner="disastig" ruleid="java_jre_deployment_config_exists" ownerid="JRE8-UX-000010" disa="366" severity="medium">
+		<VMSinfo VKey="66721" SVKey="81211" VRelease="1" />
+		<title>Oracle JRE 8 must have a deployment.config file present.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_untrusted_sources_locked" ownerid="JRE0010-UX" disa="" severity="medium">
-		<VMSinfo VKey="32829" SVKey="43601" VRelease="2" />
-		<title>The dialog enabling users to grant permissions to execute signed content from an un-trusted authority must be locked.</title>
+	<overlay owner="disastig" ruleid="java_jre_deployment_config_properties" ownerid="JRE8-UX-000020" disa="366" severity="medium">
+		<VMSinfo VKey="66909" SVKey="81399" VRelease="2" />
+		<title>Oracle JRE 8 deployment.config file must contain proper keys and values.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_validation_crl" ownerid="JRE0020-UX" disa="" severity="medium">
-		<VMSinfo VKey="32830" SVKey="43604" VRelease="2" />
-		<title>The setting for users to check publisher certificates for revocation must be enabled.</title>
+	<overlay owner="disastig" ruleid="java_jre_deployment_properties_exists" ownerid="JRE8-UX-000030" disa="366" severity="medium">
+		<VMSinfo VKey="66911" SVKey="81401" VRelease="1" />
+		<title>Oracle JRE 8 must have a deployment.properties file present.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_validation_crl_locked" ownerid="JRE0030-UX" disa="" severity="medium">
-		<VMSinfo VKey="32831" SVKey="43617" VRelease="3" />
-		<title>The setting enabling users to configure the check publisher certificates for revocation must be locked.</title>
+	<overlay owner="disastig" ruleid="java_jre_security_level" ownerid="JRE8-UX-000060" disa="366" severity="low">
+		<VMSinfo VKey="66913" SVKey="81403" VRelease="1" />
+		<title>Oracle JRE 8 must default to the most secure built-in setting.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_validation_ocsp" ownerid="JRE0040-UX" disa="" severity="medium">
-		<VMSinfo VKey="32832" SVKey="43618" VRelease="2" />
-		<title>The option to enable online certificate validation must be enabled.</title>
+	<overlay owner="disastig" ruleid="java_jre_webjava" ownerid="JRE8-UX-000070" disa="366" severity="medium">
+		<VMSinfo VKey="66915" SVKey="81405" VRelease="1" />
+		<title>Oracle JRE 8 must be set to allow Java Web Start (JWS) applications.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_validation_ocsp_locked" ownerid="JRE0050-UX" disa="" severity="medium">
-		<VMSinfo VKey="32833" SVKey="43619" VRelease="2" />
-		<title>The option to enable online certificate validation must be locked.</title>
+	<overlay owner="disastig" ruleid="java_jre_askgrantdialog_notinca" ownerid="JRE8-UX-000080" disa="1695" severity="medium">
+		<VMSinfo VKey="66917" SVKey="81407" VRelease="1" />
+		<title>Oracle JRE 8 must disable the dialog enabling users to grant permissions to execute signed content from an untrusted authority.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_deployment_config_configured" ownerid="JRE0060-UX" disa="" severity="medium">
-		<VMSinfo VKey="32842" SVKey="43649" VRelease="1" />
-		<title>The configuration file must contain proper keys and values to deploy settings correctly.</title>
+	<overlay owner="disastig" ruleid="java_jre_askgrantdialog_show" ownerid="JRE8-UX-000090" disa="1695" severity="medium">
+		<VMSinfo VKey="66919" SVKey="81409" VRelease="1" />
+		<title>Oracle JRE 8 must lock the dialog enabling users to grant permissions to execute signed content from an untrusted authority.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_deployment_config_exists" ownerid="JRE0070-UX" disa="" severity="medium">
-		<VMSinfo VKey="32901" SVKey="43621" VRelease="1" />
-		<title>A configuration file must be present to deploy properties for JRE.</title>
+	<overlay owner="disastig" ruleid="java_jre_validation_ocsp" ownerid="JRE8-UX-000100" disa="185" severity="medium">
+		<VMSinfo VKey="66921" SVKey="81411" VRelease="1" />
+		<title>Oracle JRE 8 must set the option to enable online certificate validation.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_deployment_properties_exists" ownerid="JRE0080-UX" disa="" severity="medium">
-		<VMSinfo VKey="32902" SVKey="43620" VRelease="2" />
-		<title>A properties file must be present to hold all the keys that establish properties within the Java control panel.</title>
+	<overlay owner="disastig" ruleid="java_jre_blacklist" ownerid="JRE8-UX-000110" disa="1169" severity="medium">
+		<VMSinfo VKey="66923" SVKey="81413" VRelease="1" />
+		<title>Oracle JRE 8 must prevent the download of prohibited mobile code.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="java_jre_updated" ownerid="JRE0090-UX" disa="" severity="medium">
-		<VMSinfo VKey="39239" SVKey="51133" VRelease="1" />
-		<title>The version of the JRE running on the system must be the most current available.</title>
+	<overlay owner="disastig" ruleid="java_jre_exception_sites_enabled" ownerid="JRE8-UX-000120" disa="1774" severity="medium">
+		<VMSinfo VKey="66925" SVKey="81415" VRelease="2" />
+		<title>Oracle JRE 8 must enable the option to use an accepted sites list.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_exception_sites_exists" ownerid="JRE8-UX-000130" disa="1774" severity="medium">
+		<VMSinfo VKey="66927" SVKey="81417" VRelease="1" />
+		<title>Oracle JRE 8 must have an exception.sites file present.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_validation_crl" ownerid="JRE8-UX-000150" disa="1991" severity="medium">
+		<VMSinfo VKey="66929" SVKey="81419" VRelease="1" />
+		<title>Oracle JRE 8 must enable the dialog to enable users to check publisher certificates for revocation.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_revocation_check" ownerid="JRE8-UX-000160" disa="1991" severity="medium">
+		<VMSinfo VKey="66931" SVKey="81421" VRelease="1" />
+		<title>Oracle JRE 8 must lock the option to enable users to check publisher certificates for revocation.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_insecure_jres" ownerid="JRE8-UX-000170" disa="2460" severity="medium">
+		<VMSinfo VKey="66933" SVKey="81423" VRelease="1" />
+		<title>Oracle JRE 8 must prompt the user for action prior to executing mobile code.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_updated" ownerid="JRE8-UX-000180" disa="2605" severity="high">
+		<VMSinfo VKey="66937" SVKey="81427" VRelease="1" />
+		<title>The version of Oracle JRE 8 running on the system must be the most current available.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="java_jre_previous_versions" ownerid="JRE8-UX-000190" disa="2617" severity="medium">
+		<VMSinfo VKey="66935" SVKey="81425" VRelease="1" />
+		<title>Oracle JRE 8 must remove previous versions when the latest version is installed.</title>
 	</overlay>
 </overlays>

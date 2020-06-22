@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Oracle JRE 8 must lock the dialog enabling users to grant permissions to execute signed content from an untrusted authority'
+
+description: |-
+    To ensure that Java locks the dialog enabling users to grant permissions, set
+    <tt>deployment.security.askgrantdialog.show</tt> to equal <tt>false</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+    
+    To ensure the setting cannot be modified by a user, additionally set
+    <tt>deployment.security.askgrantdialog.show.locked</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Java applets exist both signed and unsigned. Even for signed applets, there can be many sources, 
+    some of which may be purveyors of malware. Applet sources considered trusted can have their 
+    information populated into the browser, enabling Java to validate applets against trusted sources. 
+    Permitting execution of signed Java applets from untrusted sources may result in acquiring malware, 
+    and risks system modification, invasion of privacy, or denial of service.
+
+severity: medium
+
+references:
+    nist: SC-18(3)
+    stigid: JRE8-UX-000090
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java locks the dialog enabling users to grant permissions,
+    run the following command:
+    <pre>$ grep 'deployment.security.askgrantdialog.show=false' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.askgrantdialog.show=false</pre>
+    
+    To verify that the Java setting is locked, run the following command:
+    <pre>$ grep 'deployment.security.askgrantdialog.show.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.askgrantdialog.show.locked</pre>
+    

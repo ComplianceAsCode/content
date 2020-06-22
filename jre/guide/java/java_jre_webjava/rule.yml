@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Oracle JRE 8 must be set to allow Java Web Start (JWS) applications'
+
+description: |-
+    To ensure that Java allows Java Web Start (JWS) applications, set
+    <tt>deployment.webjava.enabled</tt> to equal <tt>true</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+    
+    To ensure the setting cannot be modified by a user, additionally set
+    <tt>deployment.webjava.enabled.locked</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Java Web Start (JWS) applications are the most commonly used. Denying these 
+    applications could be detrimental to the user experience. Whitelisting, blacklisting, 
+    and signing of applications help mitigate the risk of running JWS applications.
+
+severity: medium
+
+references:
+    nist: CM-6
+    stigid: JRE8-UX-000070
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java allows Java Web Start (JWS) applications,
+    run the following command:
+    <pre>$ grep 'deployment.webjava.enabled=true' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.webjava.enabled=true</pre>
+    
+    To verify that the Java setting is locked, run the following command:
+    <pre>$ grep 'deployment.webjava.enabled.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.webjava.enabled.locked</pre>
+    

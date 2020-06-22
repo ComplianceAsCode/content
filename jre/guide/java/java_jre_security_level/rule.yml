@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Oracle JRE 8 must default to the most secure built-in setting'
+
+description: |-
+    To ensure that Java is configured with the most secure built-in setting, set
+    <tt>deployment.security.level</tt> to equal <tt>VERY_HIGH</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+    
+    To ensure the setting cannot be modified by a user, additionally set
+    <tt>deployment.security.level.locked</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Applications that are signed with a valid certificate and include 
+    the permissions attribute in the manifest for the main JAR file are 
+    allowed to run with security prompts. All other applications are blocked.
+
+severity: low
+
+references:
+    nist: CM-6
+    stigid: JRE8-UX-000060
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java is configured with the most secure built-in setting,
+    run the following command:
+    <pre>$ grep 'deployment.security.level=VERY_HIGH' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.level=VERY_HIGH</pre>
+    
+    To verify that the Java setting is locked, run the following command:
+    <pre>$ grep 'deployment.security.level.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.level.locked</pre>
+    

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Oracle JRE 8 must prevent the download of prohibited mobile code'
+
+description: |-
+    To ensure that Java prevents the download of prohibited mobile code, set
+    <tt>deployment.security.blacklist.check</tt> to equal <tt>true</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+    
+    To ensure the setting cannot be modified by a user, additionally set
+    <tt>deployment.security.blacklist.check.locked</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Preventing the download of prohibited mobile code reduces the the potential 
+    for the code to cause damage to the system if used maliciously.
+
+severity: medium
+
+references:
+    nist: SC-18(3)
+    stigid: JRE8-UX-000110
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java prevents the download of prohibited mobile code,
+    run the following command:
+    <pre>$ grep 'deployment.security.blacklist.check=true' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.blacklist.check=true</pre>
+    
+    To verify that the Java setting is locked, run the following command:
+    <pre>$ grep 'deployment.security.blacklist.check.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.blacklist.check.locked</pre>
+    

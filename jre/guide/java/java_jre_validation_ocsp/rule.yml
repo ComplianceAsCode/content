@@ -1,29 +1,41 @@
 documentation_complete: true
 
-title: 'Enable Online Certificate Validation'
+title: 'Oracle JRE 8 must set the option to enable online certificate validation'
 
 description: |-
-    To ensure that online certificate verification is enabled, set
+    To ensure that Java enables online certificate validation, set
     <tt>deployment.security.validation.ocsp</tt> to equal <tt>true</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+    
+    To ensure the setting cannot be modified by a user, additionally set
+    <tt>deployment.security.validation.ocsp.locked</tt>
     in <tt>/etc/.java/deployment/deployment.properties</tt>.
 
 rationale: |-
-    Online certificate validation provides a greater degree of validation of certificates
-    when running a signed Java applet. Permitting execution of an applet with an invalid
-    certificate may result in malware execution , system modification, invasion of privacy,
-    and denial of service.
+    Online certificate validation provides a real-time option to validate a certificate. 
+    When enabled, if a certificate is presented, the status of the certificate is requested. 
+    The status is sent back as “current”, “expired”, or “unknown”. Online certificate validation 
+    provides a greater degree of validation of certificates when running a signed Java applet. 
+    Permitting execution of an applet with an invalid certificate may result in malware, system 
+    modification, invasion of privacy, and denial of service.
 
 severity: medium
 
 references:
-    nist: DCBP-1
-    stigid: JRE0040-UX
+    nist: IA-5(2)
+    stigid: JRE8-UX-000100
 
 ocil_clause: 'it does not exist or is not configured properly'
 
 ocil: |-
-    To verify that online certificate verification is enabled,
+    To verify that Java enables online certificate validation,
     run the following command:
-    <pre>$ grep 'validation.ocsp=true' /etc/.java/deployment/deployment.properties</pre>
+    <pre>$ grep 'deployment.security.validation.ocsp=true' /etc/.java/deployment/deployment.properties</pre>
     If properly configured, the output should return:
     <pre>deployment.security.validation.ocsp=true</pre>
+    
+    To verify that the Java setting is locked, run the following command:
+    <pre>$ grep 'deployment.security.validation.ocsp.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.validation.ocsp.locked</pre>
+    
