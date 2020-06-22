@@ -460,8 +460,8 @@ class XCCDFBenchmark(object):
                                    console_width)
 
             if options.ansible_parity:
-                print("*** rules of '%s' profile with bash fix which miss "
-                      "ansible fix scripts: %d of %d [%d%% complete]"
+                print("*** rules of '%s' profile with bash fix that implement "
+                      "ansible fix scripts: %d out of %d [%d%% complete]"
                       % (profile, impl_bash_fixes_count - len(profile_stats['ansible_parity']),
                          impl_bash_fixes_count,
                          profile_stats['ansible_parity_pct']))
@@ -498,6 +498,7 @@ class XCCDFBenchmark(object):
             del profile_stats['implemented_anaconda_fixes_pct']
             del profile_stats['assigned_cces_pct']
             del profile_stats['ssg_version']
+            del profile_stats['ansible_parity_pct']
 
             return profile_stats
         else:

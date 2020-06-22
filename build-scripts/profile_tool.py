@@ -188,16 +188,21 @@ def main():
             'missing_kubernetes_fixes',
             'missing_puppet_fixes',
             'missing_anaconda_fixes',
-            'missing_cces'
+            'missing_cces',
+            'ansible_parity'
             ]
         link = """<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
 
         for profile in ret:
+            bash_fixes_count = profile['rules_count'] - profile['missing_bash_fixes_count']
             for content in content_list:
                 content_file = "{}_{}.txt".format(profile['profile_id'], content)
                 content_filepath = os.path.join("content", content_file)
                 count = len(profile[content])
                 if count > 0:
+                    if content == "ansible_parity":
+                        #custom text link for ansible parity
+                        count = link.format(content_filepath, "{} out of {} ({}%)".format(bash_fixes_count-count, bash_fixes_count, int(((bash_fixes_count-count)/bash_fixes_count)*100)))
                     count_href_element = link.format(content_filepath, count)
                     profile['{}_count'.format(content)] = count_href_element
                     with open(os.path.join(content_path, content_file), 'w+') as f:
