@@ -361,6 +361,7 @@ def timer_enabled(data, lang):
 def yamlfile_value(data, lang):
     data["negate"] = data.get("negate", "false") == "true"
     data["ocp_data"] = data.get("ocp_data", "false") == "true"
+    data["pattern_check"] = data.get("pattern_check", "false") == "true"
     return data
 
 
