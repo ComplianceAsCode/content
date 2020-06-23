@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
+	<overlay owner="disastig" ruleid="web_client_disabled" ownerid="DTAVSEL-000" disa="1813" severity="medium">
+		<VMSinfo VKey="62791" SVKey="77281" VRelease="1" />
+		<title>The McAfee VirusScan Enterprise for Linux  Web interface must be disabled unless the system is on a segregated network.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="dats_updated" ownerid="DTAVSEL-001" disa="1240" severity="high">
+		<VMSinfo VKey="63071" SVKey="77561" VRelease="1" />
+		<title>The anti-virus signature file age must not exceed 7 days.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="dats_auto_update" ownerid="DTAVSEL-002" disa="1240" severity="medium">
+		<VMSinfo VKey="63073" SVKey="77563" VRelease="1" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x must be configured to receive automatic updates.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_enabled" ownerid="DTAVSEL-003" disa="1243" severity="high">
+		<VMSinfo VKey="63075" SVKey="77565" VRelease="1" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x must be configured to enable On-Access scanning.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_decompArchive" ownerid="DTAVSEL-004" disa="1243" severity="medium">
+		<VMSinfo VKey="63077" SVKey="77567" VRelease="1" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to decompress archives when scanning.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_heuristicAnalysis" ownerid="DTAVSEL-005" disa="1243" severity="medium">
+		<VMSinfo VKey="63079" SVKey="77569" VRelease="1" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to find unknown program viruses.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_macroAnalysis" ownerid="DTAVSEL-006" disa="1243" severity="medium">
+		<VMSinfo VKey="63081" SVKey="77571" VRelease="1" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to find unknown macro viruses.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_program" ownerid="DTAVSEL-007" disa="1243" severity="medium">
+		<VMSinfo VKey="63083" SVKey="77573" VRelease="1" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to find potentially unwanted programs.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_scanOnWrite" ownerid="DTAVSEL-008" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to scan files when being written to disk.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_scanOnRead" ownerid="DTAVSEL-009" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to scan files when being read from disk.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_allFiles" ownerid="DTAVSEL-010" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to scan all file types.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_scanMaxTmo" ownerid="DTAVSEL-011" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner maximum scan time must not be less than 45 seconds.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_exclusions" ownerid="DTAVSEL-012" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must only be configured with exclusions that are documented and approved by the ISSO/ISSM/AO.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_action_app_primary" ownerid="DTAVSEL-013" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to Clean as first action when a virus or Trojan is detected.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_action_app_secondary" ownerid="DTAVSEL-014" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to Quarantine if first action fails when a virus or Trojan is detected.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_action_default_primary" ownerid="DTAVSEL-015" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to Clean as first action when programs and jokes are found.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_action_default_secondary" ownerid="DTAVSEL-016" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to Quarantine if first action fails when programs and jokes are found.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_action_error" ownerid="DTAVSEL-017" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to deny access to the file if an error occurs during scanning.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_action_timeout" ownerid="DTAVSEL-018" disa="1243" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be configured to allow access to files if scanning times out.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="oas_scanNWFiles" ownerid="DTAVSEL-019" disa="1242" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Access scanner must be enabled to scan mounted volumes when mounted volumes point to a network server without an anti-virus solution installed.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_enabled" ownerid="DTAVSEL-100" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x must be configured to run a scheduled On-Demand scan at least once a week.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_decompArchive" ownerid="DTAVSEL-101" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to decompress archives when scanning.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_heuristicAnalysis" ownerid="DTAVSEL-102" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to find unknown program viruses.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_macroAnalysis" ownerid="DTAVSEL-103" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to find unknown macro viruses.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_program" ownerid="DTAVSEL-104" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to find potentially unwanted programs.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_allFiles" ownerid="DTAVSEL-105" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to scan all file types.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_action_app_primary" ownerid="DTAVSEL-106" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to Clean infected files automatically as first action when a virus or Trojan is detected.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_action_app_secondary" ownerid="DTAVSEL-107" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to Move infected files to the quarantine directory if first action fails when a virus or Trojan is detected.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_exclusions" ownerid="DTAVSEL-108" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must only be configured with exclusions that are documented and approved by the ISSO/ISSM/AO.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_action_default_primary" ownerid="DTAVSEL-110" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to Clean infected files automatically as first action when programs and jokes are found.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_action_default_secondary" ownerid="DTAVSEL-111" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to Move infected files to the quarantine directory if first action fails when programs and jokes are found.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_mime" ownerid="DTAVSEL-112" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to decode MIME encoded files.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_scanNWFiles_local" ownerid="DTAVSEL-113" disa="1241" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be configured to include all local drives and their sub-directories.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="ods_scanNWFiles" ownerid="DTAVSEL-114" disa="1242" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x On-Demand scanner must be enabled to scan mounted volumes when mounted volumes point to a network server without an anti-virus solution installed.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="scanned_media" ownerid="DTAVSEL-200" disa="870" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x must scan all media used for system maintenance prior to use.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="updates_source" ownerid="DTAVSEL-201" disa="1749" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The McAfee VirusScan Enterprise must be configured to receive all patches, service packs and updates from a DoD-managed source.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="restricted_user" ownerid="DTAVSEL-202" disa="2235" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>The nails user and nailsgroup group must be restricted to the least privilege access required for the intended role.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="virus_notification" ownerid="DTAVSEL-205" disa="1240" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>SMTP email notification must be enabled to ensure administrators are notified of out of date DAT, detected malware and error codes.</title>
+	</overlay>
+	<overlay owner="disastig" ruleid="web_client_firewalled" ownerid="DTAVSEL-301" disa="1813" severity="medium">
+		<VMSinfo VKey="" SVKey="" VRelease="" />
+		<title>Access to the McAfee VirusScan Enterprise for Linux 1.9.x/2.0.x Web UI must be enforced by firewall rules.</title>
+	</overlay>
+</overlays>

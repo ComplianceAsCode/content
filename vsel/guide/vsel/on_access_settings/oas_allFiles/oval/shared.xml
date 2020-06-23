@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="oas_allFiles" version="1">
+    <metadata>
+      <title>The McAfee VirusScan Enterprise for Linux  Web interface must be disabled unless the system is on a segregated network.</title>
+      <affected family="unix">
+        <product>McAfee VirusScan Enterprise for Linux</product>
+      </affected>
+      <description></description>
+    </metadata>
+    <!-- nailsd.profile.OAS.allFiles is configured ... -->
+    <criteria>
+	  <criterion comment="Check nailsd.profile.OAS.allFiles" test_ref="test_oas_allFiles" />
+	</criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check nailsd.profile.OAS.allFiles" id="test_oas_allFiles" version="1">
+    <ind:object object_ref="object_oas_allFiles" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_oas_allFiles" version="1">
+    <ind:filepath>/var/opt/NAI/LinuxShield/etc/nailsd.cfg</ind:filepath>
+    <ind:pattern operation="pattern match">^nailsd.profile.OAS.allFiles: true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+</def-group>
