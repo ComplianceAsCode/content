@@ -97,6 +97,7 @@ def parse_args():
         if args.all:
             args.implemented = True
             args.missing = True
+            args.ansible_parity = True
 
         if args.implemented:
             args.implemented_ovals = True
