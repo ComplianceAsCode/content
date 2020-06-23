@@ -498,6 +498,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "container": "cpe:/a:container",
     "chrony": "cpe:/a:chrony",
     "gdm": "cpe:/a:gdm",
+    "grub2": "cpe:/a:grub2",
     "libuser": "cpe:/a:libuser",
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
     "ntp": "cpe:/a:ntp",

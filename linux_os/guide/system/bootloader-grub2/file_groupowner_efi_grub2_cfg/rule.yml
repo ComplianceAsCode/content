@@ -51,6 +51,8 @@ ocil: |-
     {{{ ocil_file_group_owner(file="/boot/efi/EFI/redhat/grub.cfg", group="root") }}}
 {{%- endif %}}
 
+platform: machine
+
 template:
     name: file_groupowner
     vars:
