@@ -84,9 +84,13 @@ selections:
   ## System administration & MFA
   ## Identifiers 1382 / 1384 / 1386
   - package_sudo_installed
+  - package_opensc_installed
+  - var_smartcard_drivers=cac
   - configure_opensc_card_drivers
   - force_opensc_card_drivers
-  - sebool_authlogin_yubikey
+  - package_pcsc-lite_installed
+  - service_pcscd_enabled
+  - sssd_enable_smartcards
 
   ## System patching & Applicatoin versions
   ## Identifiers 1493 / 1144 / 0940 / 1472 / 1494 / 1495 / 1467 / 1483 
