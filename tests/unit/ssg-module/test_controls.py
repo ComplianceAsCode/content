@@ -3,9 +3,11 @@ import logging
 import os
 
 import ssg.controls
+import ssg.build_yaml
 
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 controls_dir = os.path.join(data_dir, "controls_dir")
+profiles_dir = os.path.join(data_dir, "profiles_dir")
 
 def test_controls_load():
     controls_manager = ssg.controls.ControlsManager(controls_dir)
@@ -58,3 +60,8 @@ def test_controls_load_product():
     # The rule cockpit_session_timeout is guarded by Jinja macro
     # that allows it only on rhel9 product.
     assert "cockpit_session_timeout" in c_r1.rules
+
+def test_profile_resolution():
+    high_profile_path = os.path.join(profiles_dir, "abcd-high.profile")
+    profile = ssg.build_yaml.Profile.from_yaml(high_profile_path)
+    logging.info(profile)
