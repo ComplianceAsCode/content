@@ -41,6 +41,11 @@ selections:
     - gid_passwd_group_same
     - account_unique_name
     - account_temp_expire_date
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_difok
     - cracklib_accounts_password_pam_maxrepeat
     - no_files_unowned_by_user
     - file_permissions_ungroupowned
@@ -97,6 +102,7 @@ selections:
     - var_password_pam_ucredit=1
     - var_password_pam_ocredit=1
     - var_password_pam_lcredit=1
+    - var_password_pam_dcredit=1
     - sshd_idle_timeout_value=15_minutes
     - gconf_gnome_disable_ctrlaltdel_reboot
     - postfix_client_configure_mail_alias
