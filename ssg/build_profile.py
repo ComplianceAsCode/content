@@ -255,10 +255,12 @@ class XCCDFBenchmark(object):
 
         profile_stats['ansible_parity'] = \
             [rule_id for rule_id in profile_stats["missing_ansible_fixes"] if rule_id not in profile_stats["missing_bash_fixes"]]
-        profile_stats['ansible_parity_pct'] = \
-            float(len(profile_stats['implemented_bash_fixes']) -
-                  len(profile_stats['ansible_parity'])) / \
-            len(profile_stats['implemented_bash_fixes']) * 100
+        profile_stats['ansible_parity_pct'] = 0
+        if len(profile_stats['implemented_bash_fixes']):
+            profile_stats['ansible_parity_pct'] = \
+                float(len(profile_stats['implemented_bash_fixes']) -
+                      len(profile_stats['ansible_parity'])) / \
+                len(profile_stats['implemented_bash_fixes']) * 100
 
         return profile_stats
 
