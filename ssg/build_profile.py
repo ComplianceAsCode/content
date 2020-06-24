@@ -104,6 +104,7 @@ class XCCDFBenchmark(object):
             'assigned_cces_pct': 0,
             'missing_cces': [],
             'missing_stig_ids': [],
+            'ansible_parity': [],
         }
 
         rule_stats = []
@@ -251,6 +252,13 @@ class XCCDFBenchmark(object):
             profile_stats['rules_count'] * 100
         profile_stats['missing_cces'] = \
             [x.dict['id'] for x in rule_stats if x.dict['cce'] is None]
+
+        profile_stats['ansible_parity'] = \
+            [rule_id for rule_id in profile_stats["missing_ansible_fixes"] if rule_id not in profile_stats["missing_bash_fixes"]]
+        profile_stats['ansible_parity_pct'] = \
+            float(len(profile_stats['implemented_bash_fixes']) -
+                  len(profile_stats['ansible_parity'])) / \
+            len(profile_stats['implemented_bash_fixes']) * 100
 
         return profile_stats
 
@@ -451,6 +459,15 @@ class XCCDFBenchmark(object):
                 self.console_print(profile_stats['missing_cces'],
                                    console_width)
 
+            if options.ansible_parity:
+                print("*** rules of '%s' profile with bash fix that implement "
+                      "ansible fix scripts: %d out of %d [%d%% complete]"
+                      % (profile, impl_bash_fixes_count - len(profile_stats['ansible_parity']),
+                         impl_bash_fixes_count,
+                         profile_stats['ansible_parity_pct']))
+                self.console_print(profile_stats['ansible_parity'],
+                                   console_width)
+
         elif options.format == "html":
             del profile_stats['implemented_ovals']
             del profile_stats['implemented_bash_fixes']
@@ -481,6 +498,7 @@ class XCCDFBenchmark(object):
             del profile_stats['implemented_anaconda_fixes_pct']
             del profile_stats['assigned_cces_pct']
             del profile_stats['ssg_version']
+            del profile_stats['ansible_parity_pct']
 
             return profile_stats
         else:

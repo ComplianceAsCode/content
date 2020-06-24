@@ -64,6 +64,10 @@ def parse_args():
                         action="store_true",
                         help="Equivalent of --missing-ovals, --missing-fixes"
                         " and --missing-cces all being set.")
+    parser_stats.add_argument("--ansible-parity",
+                        action="store_true",
+                        help="Show IDs of rules with Bash fix which miss Ansible fix."
+                        " Rules missing both Bash and Ansible are not shown.")
     parser_stats.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
@@ -93,6 +97,7 @@ def parse_args():
         if args.all:
             args.implemented = True
             args.missing = True
+            args.ansible_parity = True
 
         if args.implemented:
             args.implemented_ovals = True
@@ -184,16 +189,21 @@ def main():
             'missing_kubernetes_fixes',
             'missing_puppet_fixes',
             'missing_anaconda_fixes',
-            'missing_cces'
+            'missing_cces',
+            'ansible_parity'
             ]
         link = """<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
 
         for profile in ret:
+            bash_fixes_count = profile['rules_count'] - profile['missing_bash_fixes_count']
             for content in content_list:
                 content_file = "{}_{}.txt".format(profile['profile_id'], content)
                 content_filepath = os.path.join("content", content_file)
                 count = len(profile[content])
                 if count > 0:
+                    if content == "ansible_parity":
+                        #custom text link for ansible parity
+                        count = link.format(content_filepath, "{} out of {} ({}%)".format(bash_fixes_count-count, bash_fixes_count, int(((bash_fixes_count-count)/bash_fixes_count)*100)))
                     count_href_element = link.format(content_filepath, count)
                     profile['{}_count'.format(content)] = count_href_element
                     with open(os.path.join(content_path, content_file), 'w+') as f:
