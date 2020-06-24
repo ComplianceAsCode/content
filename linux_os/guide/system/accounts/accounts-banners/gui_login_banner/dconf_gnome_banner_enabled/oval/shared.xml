@@ -14,18 +14,19 @@
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Enable GUI banner and prevent user from changing it" operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
-        <criterion comment="Enable GUI banner" test_ref="test_banner_gui_enabled" />
+        <criteria operator="OR">
+          <criterion comment="Enable GUI banner" test_ref="test_banner_gui_enabled_gdm" />
+          <criterion comment="Enable GUI banner" test_ref="test_banner_gui_enabled_distro" />
+        </criteria>
         <criterion comment="Prevent user from disabling banner" test_ref="test_prevent_user_banner_gui_enabled_change" />
       </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="GUI banner is enabled"
-  id="test_banner_gui_enabled" version="1">
-    <ind:object object_ref="obj_banner_gui_enabled" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="GUI banner is enabled" id="test_banner_gui_enabled_gdm" version="1">
+    <ind:object object_ref="obj_banner_gui_enabled_gdm" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_banner_gui_enabled"
+  <ind:textfilecontent54_object id="obj_banner_gui_enabled_gdm"
   version="1">
     <ind:path>/etc/dconf/db/gdm.d/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
@@ -33,9 +34,18 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="GUI banner cannot be changed by user"
-  id="test_prevent_user_banner_gui_enabled_change" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="GUI banner is enabled" id="test_banner_gui_enabled_distro" version="1">
+    <ind:object object_ref="obj_banner_gui_enabled_distro" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_banner_gui_enabled_distro"
+  version="1">
+    <ind:path>/etc/dconf/db/distro.d/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^\[org/gnome/login-screen]([^\n]*\n+)+?banner-message-enable=true$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="GUI banner cannot be changed by user" id="test_prevent_user_banner_gui_enabled_change" version="1">
     <ind:object object_ref="obj_prevent_user_banner_gui_enabled_change" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_prevent_user_banner_gui_enabled_change"

@@ -168,7 +168,7 @@ fi
 # Check for setting in any of the DConf db directories
 # If files contain ibus or distro, ignore them.
 # The assignment assumes that individual filenames don't contain :
-readarray -t SETTINGSFILES < <(grep -r "\\[{{{ path }}}\\]" "/etc/dconf/db/" | grep -v 'distro\|ibus' | cut -d":" -f1)
+readarray -t SETTINGSFILES < <(grep -r "\\[{{{ path }}}\\]" "/etc/dconf/db/" | grep -v 'ibus' | cut -d":" -f1)
 DCONFFILE="/etc/dconf/db/{{{ db }}}/{{{ setting_file }}}"
 DBDIR="/etc/dconf/db/{{{ db }}}"
 
