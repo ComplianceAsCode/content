@@ -129,7 +129,7 @@ selections:
     - kernel_module_usb-storage_disabled
     - ldap_client_start_tls
     - ldap_client_tls_cacertpath
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid

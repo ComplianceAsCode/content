@@ -189,7 +189,7 @@ selections:
     - accounts_password_pam_lcredit
     - accounts_maximum_age_login_defs
     - accounts_minimum_age_login_defs
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_libuserconf

@@ -37,7 +37,7 @@ selections:
     - xwindows_runlevel_setting
     - package_xorg-x11-server-common_removed
     - sysconfig_networking_bootproto_ifcfg
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_pwhistory_remember
     - gid_passwd_group_same
     - account_unique_name
     - account_temp_expire_date
@@ -90,7 +90,7 @@ selections:
     - var_accounts_passwords_pam_faillock_unlock_time=604800
     - accounts_passwords_pam_faillock_interval
     - var_accounts_passwords_pam_faillock_fail_interval=900
-    - var_password_pam_unix_remember=5
+    - var_accounts_passwords_remember=5
     - var_accounts_maximum_age_login_defs=60
     - var_accounts_minimum_age_login_defs=1
     - var_accounts_passwords_pam_faillock_deny=3

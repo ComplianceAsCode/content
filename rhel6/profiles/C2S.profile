@@ -168,7 +168,7 @@ selections:
     - sshd_limit_user_access
     - sshd_enable_warning_banner
     - accounts_passwords_pam_faillock_deny
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - no_direct_root_logins
     - accounts_maximum_age_login_defs
     - accounts_minimum_age_login_defs

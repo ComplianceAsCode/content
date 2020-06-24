@@ -210,7 +210,7 @@ selections:
     - accounts_passwords_pam_faillock_unlock_time
     - accounts_passwords_pam_faillock_deny
     - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - set_password_hashing_algorithm_systemauth
     - var_accounts_maximum_age_login_defs=90
     - accounts_maximum_age_login_defs

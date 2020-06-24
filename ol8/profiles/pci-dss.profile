@@ -125,7 +125,7 @@ selections:
     - accounts_password_pam_lcredit
     - accounts_password_pam_minlen
     - accounts_password_pam_ucredit
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
     - account_unique_name

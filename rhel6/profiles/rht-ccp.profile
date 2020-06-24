@@ -36,7 +36,7 @@ selections:
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
     - package_aide_installed
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - no_shelllogin_for_systemaccounts
     - no_empty_passwords
     - accounts_password_all_shadowed

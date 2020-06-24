@@ -92,7 +92,7 @@ selections:
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - var_password_pam_unix_remember=24
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - root_path_no_dot
     - accounts_root_path_dirs_no_write
     - file_permissions_home_dirs

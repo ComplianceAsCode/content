@@ -16,7 +16,7 @@ selections:
     - cracklib_accounts_password_pam_ocredit
     - cracklib_accounts_password_pam_lcredit
     - cracklib_accounts_password_pam_difok
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - var_password_pam_unix_remember=10
     - accounts_password_warn_age_login_defs
     - account_disable_post_pw_expiration

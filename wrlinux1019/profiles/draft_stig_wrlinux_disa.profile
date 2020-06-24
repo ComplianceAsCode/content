@@ -63,7 +63,7 @@ selections:
     - accounts_password_set_min_life_existing
     - accounts_maximum_age_login_defs
     - accounts_password_set_max_life_existing
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - require_singleuser_auth
     - accounts_logon_fail_delay
     - no_empty_passwords

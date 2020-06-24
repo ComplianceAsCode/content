@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
 title: 'Limit Password Reuse'
 
@@ -9,14 +9,14 @@ description: |-
     accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt>
     or <tt>pam_pwhistory</tt> PAM modules.
     <br /><br />
-    In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_password_pam_unix_remember" /></tt>
+    In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_accounts_passwords_remember" /></tt>
     to the line which refers to the <tt>pam_unix.so</tt> or <tt>pam_pwhistory.so</tt>module, as shown below:
     <ul>
     <li>for the <tt>pam_unix.so</tt> case:
-    <pre>password sufficient pam_unix.so <i>...existing_options...</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
+    <pre>password sufficient pam_unix.so <i>...existing_options...</i> remember=<sub idref="var_accounts_passwords_remember" /></pre>
     </li>
     <li>for the <tt>pam_pwhistory.so</tt> case:
-    <pre>password requisite pam_pwhistory.so <i>...existing_options...</i> remember=<sub idref="var_password_pam_unix_remember" /></pre>
+    <pre>password requisite pam_pwhistory.so <i>...existing_options...</i> remember=<sub idref="var_accounts_passwords_remember" /></pre>
     </li>
     </ul>
     The DoD STIG requirement is 5 passwords.
@@ -31,7 +31,6 @@ identifiers:
     cce@rhel8: 80666-1
 
 references:
-    stigid@ol7: "010270"
     stigid@rhel6: "000274"
     srg@rhel6: SRG-OS-000077
     cis: 5.3.3
@@ -56,6 +55,6 @@ ocil: |-
     To verify the password reuse setting is compliant, run the following command:
     <pre>$ grep remember /etc/pam.d/system-auth</pre>
     The output should show the following at the end of the line:
-    <pre>remember=<sub idref="var_password_pam_unix_remember" /></pre>
+    <pre>remember=<sub idref="var_accounts_passwords_remember" /></pre>
 
 platform: pam

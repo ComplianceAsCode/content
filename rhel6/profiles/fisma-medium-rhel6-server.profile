@@ -213,7 +213,7 @@ selections:
     - cracklib_accounts_password_pam_ocredit
     - cracklib_accounts_password_pam_lcredit
     - var_password_pam_unix_remember=24
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf

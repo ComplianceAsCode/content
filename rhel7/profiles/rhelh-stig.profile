@@ -343,7 +343,7 @@ selections:
     - accounts_password_pam_difok
     - accounts_password_pam_maxclassrepeat
     - accounts_password_pam_minclass
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - accounts_password_warn_age_login_defs
     - accounts_tmout
     - banner_etc_issue

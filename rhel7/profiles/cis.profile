@@ -640,7 +640,7 @@ selections:
 
     ### 5.3.3 Ensure password reuse is limited (Scored)
     - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
 
     ### 5.3.4 Ensure password hashing algorithm is SHA-512 (Scored)
     - set_password_hashing_algorithm_systemauth

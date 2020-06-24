@@ -210,7 +210,7 @@ selections:
     - accounts_max_concurrent_login_sessions
     - securetty_root_login_console_only
     - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
 
     ### SELinux Configuration
     - var_selinux_state=enforcing

@@ -1,0 +1,20 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+- (xccdf-var var_accounts_passwords_remember)
+
+- name: "Do not allow users to reuse recent passwords - system-auth (change)"
+  replace:
+    dest: /etc/pam.d/system-auth
+    follow: yes
+    regexp: '^(password\s+sufficient\s+pam_unix\.so\s.*remember\s*=\s*)(\S+)(.*)$'
+    replace: '\g<1>{{ var_accounts_passwords_remember }}\g<3>'
+
+- name: "Do not allow users to reuse recent passwords - system-auth (add)"
+  replace:
+    dest: /etc/pam.d/system-auth
+    follow: yes
+    regexp: '^password\s+sufficient\s+pam_unix\.so\s(?!.*remember\s*=\s*).*$'
+    replace: '\g<0> remember={{ var_accounts_passwords_remember }}'

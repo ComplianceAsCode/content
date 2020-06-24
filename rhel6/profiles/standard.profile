@@ -190,7 +190,7 @@ selections:
     - mount_option_noexec_removable_partitions
     - require_smb_client_signing
     - mount_option_smb_client_signing
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - var_umask_for_daemons=027
     - var_accounts_password_minlen_login_defs=15
     - var_accounts_maximum_age_login_defs=90

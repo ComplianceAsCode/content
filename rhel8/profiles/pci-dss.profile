@@ -105,7 +105,7 @@ selections:
     - accounts_password_pam_dcredit
     - accounts_password_pam_ucredit
     - accounts_password_pam_lcredit
-    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_unix_remember
     - accounts_maximum_age_login_defs
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
