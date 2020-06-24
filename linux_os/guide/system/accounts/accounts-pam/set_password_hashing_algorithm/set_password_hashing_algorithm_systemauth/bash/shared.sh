@@ -8,4 +8,7 @@ do
 	if ! grep -q "^password.*sufficient.*pam_unix.so.*sha512" $pamFile; then
 		sed -i --follow-symlinks "/^password.*sufficient.*pam_unix.so/ s/$/ sha512/" $pamFile
 	fi
+	if grep -q "^password.*sufficient.*pam_unix.so.*\(md5\|sha256\|bigcrypt\|blowfish\)" $pamFile; then
+		sed -i --follow-symlinks "/^password.*sufficient.*pam_unix.so/ s/ \(md5\|sha256\|bigcrypt\|blowfish\)//g" $pamFile
+	fi
 done

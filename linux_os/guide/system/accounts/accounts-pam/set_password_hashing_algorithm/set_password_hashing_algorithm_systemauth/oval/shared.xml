@@ -13,17 +13,49 @@
     </metadata>
     <criteria operator="AND">
       <criterion test_ref="test_pam_unix_sha512" />
+	  <criterion test_ref="test_pam_unix_noncompliant_hash" negate="true" />
+	  <criterion test_ref="test_password_auth_pam_unix_sha512" />
+	  <criterion test_ref="test_password_auth_pam_unix_noncompliant_hash" negate="true" />
     </criteria>
   </definition>
 
+<!-- test system-auth -->
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="check /etc/pam.d/system-auth for correct settings" id="test_pam_unix_sha512" version="1">
     <ind:object object_ref="object_pam_unix_sha512" />
+    <ind:state state_ref="state_pam_unix_sha512" />
   </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object comment="check /etc/pam.d/system-auth for correct settings" id="object_pam_unix_sha512" version="1">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+.*sha512.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+(.*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_pam_unix_sha512" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^.*sha512.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="check /etc/pam.d/system-auth for correct settings" id="test_pam_unix_noncompliant_hash" version="1">
+    <ind:object object_ref="object_pam_unix_sha512" />
+    <ind:state state_ref="state_pam_unix_noncompliant_hash" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state id="state_pam_unix_noncompliant_hash" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^.*(?:md5|sha256|bigcrypt|blowfish)(?:\s|$)</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+<!-- duplicate tests for password-auth -->
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="check /etc/pam.d/password-auth for correct settings" id="test_password_auth_pam_unix_sha512" version="1">
+    <ind:object object_ref="object_password_auth_pam_unix_sha512" />
+    <ind:state state_ref="state_pam_unix_sha512" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="check /etc/pam.d/password-auth for correct settings" id="object_password_auth_pam_unix_sha512" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*password[\s]+(?:(?:required)|(?:sufficient))[\s]+pam_unix\.so[\s]+(.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="check /etc/pam.d/password-auth for correct settings" id="test_password_auth_pam_unix_noncompliant_hash" version="1">
+    <ind:object object_ref="object_password_auth_pam_unix_sha512" />
+    <ind:state state_ref="state_pam_unix_noncompliant_hash" />
+  </ind:textfilecontent54_test>
+  
 
 </def-group>
