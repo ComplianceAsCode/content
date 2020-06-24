@@ -138,7 +138,7 @@ selections:
   ## Identifiers 1446
   - enable_dracut_fips_module
   - enable_fips_mode
-  - var_system_crypto_policy=fips
+  - var_system_crypto_policy=default_nosha1
   - configure_crypto_policy
 
   ## Secure Shell access
