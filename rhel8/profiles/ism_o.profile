@@ -138,6 +138,8 @@ selections:
   ## Identifiers 1446
   - enable_dracut_fips_module
   - enable_fips_mode
+  - var_system_crypto_policy=fips
+  - configure_crypto_policy
 
   ## Secure Shell access
   ## Identifiers 1506 / 1449 / 0487 
