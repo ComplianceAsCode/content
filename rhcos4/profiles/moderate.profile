@@ -548,7 +548,7 @@ selections:
 
     # AU-3
     - package_audit_installed
-    - grub2_audit_argument
+    - bls_audit_option
     - grub2_audit_backlog_limit_argument
     #- grub2_slub_debug_argument
     - grub2_page_poison_argument

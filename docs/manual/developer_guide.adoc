@@ -1572,6 +1572,13 @@ audit_rules_usergroup_modification::
 ** *path* - path that should be part of the audit rule as a value of `-w` argument, eg. `/etc/group`.
 * Languages: Ansible, Bash, OVAL
 
+bls_bootloader_option::
+* Checks kernel command line arguments in BLS-compatible (Boot Loader Specification) boot loader configuration.
+* Parameters:
+** *arg_name* - argument name, eg. `audit`
+** *arg_value* - argument value, eg. `'1'`
+* Languages: OVAL
+
 file_groupowner::
 * Check group that owns the given file.
 * Parameters:
