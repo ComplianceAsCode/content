@@ -133,6 +133,7 @@ class Profile(object):
         if selection_entries:
             profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
+        policies = yaml_contents.pop("policies", None)
 
         profile.reference = yaml_contents.pop("reference", None)
 
