@@ -8,8 +8,6 @@ description: |-
     To ensure SELinux is not disabled at boot time,
     check that no boot entry in <tt>/boot/loader/entries/*.conf</tt> has <tt>selinux=0</tt>
     included in its options.<br />
-    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <tt>image = </tt> setting,
-    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).<br />
     And run <tt>zipl</tt> command so that <tt>/boot/bootmap</tt> is updated.<br /><br />
 
 rationale: |-
@@ -26,10 +24,6 @@ ocil: |-
     Check that no boot entry disables selinux:
     <pre>sudo grep -L "^options\s+.*\bselinux=0\b" /boot/loader/entries/*.conf</pre>
     No line should be returned, each line returned is a boot entry that disables SELinux.
-
-    Check that no image file is specified in <tt>/etc/zipl.conf</tt>:
-    <pre>grep -R "^image\s*=" /etc/zipl.conf</pre>
-    No line should be returned, if a line is returned zipl may load a different kernel than intended.
 
     And make sure that <tt>/boot/bootmap</tt> is newer than <tt>/boot/loader/entries/*.conf</tt>
     and <tt>/etc/zipl.conf</tt>:

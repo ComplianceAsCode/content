@@ -8,8 +8,6 @@ description: |-
     To enable Kernel page-table isolation,
     check that all boot entries in <tt>/boot/loader/entries/*.conf</tt> have <tt>pti=on</tt>
     included in its options.<br />
-    Make sure <tt>/etc/zipl.conf</tt> doesn't contain <tt>image = </tt> setting,
-    as {{{ full_name }}} adheres to Boot Loader Specification (BLS).<br />
     And run <tt>zipl</tt> command so that <tt>/boot/bootmap</tt> is updated.<br /><br />
 
     To ensure that new kernels and boot entries continue to enable page-table isolation,
@@ -29,10 +27,6 @@ ocil: |-
   To check that page-table isolation is enabled at boot time, check all boot entries with following command:
   <pre>sudo grep -L "^options\s+.*\bpti=on\b" /boot/loader/entries/*.conf</pre>
   No line should be returned, each line returned is a boot entry that doesn't enable page-table isolation .
-
-  Check that no image file is specified in <tt>/etc/zipl.conf</tt>:
-  <pre>grep -R "^image\s*=" /etc/zipl.conf</pre>
-  No line should be returned, if a line is returned zipl may load a different kernel than intended.
 
   And make sure that <tt>/boot/bootmap</tt> is newer than <tt>/boot/loader/entries/*.conf</tt>
   and <tt>/etc/zipl.conf</tt>:
