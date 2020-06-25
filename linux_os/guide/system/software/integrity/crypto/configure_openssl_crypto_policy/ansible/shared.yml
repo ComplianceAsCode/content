@@ -11,7 +11,7 @@
   changed_when: False
   check_mode: no
 
-- name: "Add .include for openssl.config to crypto_policy section"
+- name: "Add .include for opensslcnf.config to crypto_policy section"
   lineinfile:
     create: yes
     insertafter: '^\s*\[\s*crypto_policy\s*]\s*'
@@ -21,7 +21,7 @@
     - test_crypto_policy_group.stdout is defined
     - test_crypto_policy_group.stdout | length > 0
 
-- name: "Add crypto_policy group and set include openssl.config"
+- name: "Add crypto_policy group and set include opensslcnf.config"
   lineinfile:
     create: yes
     line: "[crypto_policy]\n.include /etc/crypto-policies/back-ends/opensslcnf.config"
