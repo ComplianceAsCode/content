@@ -15,7 +15,7 @@
   lineinfile:
     create: yes
     insertafter: '^\s*\[\s*crypto_policy\s*]\s*'
-    line: ".include /etc/crypto-policies/back-ends/openssl.config"
+    line: ".include /etc/crypto-policies/back-ends/opensslcnf.config"
     path: /etc/pki/tls/openssl.cnf
   when:
     - test_crypto_policy_group.stdout is defined
@@ -24,7 +24,7 @@
 - name: "Add crypto_policy group and set include openssl.config"
   lineinfile:
     create: yes
-    line: "[crypto_policy]\n.include /etc/crypto-policies/back-ends/openssl.config"
+    line: "[crypto_policy]\n.include /etc/crypto-policies/back-ends/opensslcnf.config"
     path: /etc/pki/tls/openssl.cnf
   when:
     - test_crypto_policy_group.stdout is defined

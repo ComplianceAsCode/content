@@ -11,7 +11,7 @@ description: |-
     To check that Crypto Policies settings are configured correctly, you have to examine the OpenSSL config file
     available under <tt>/etc/pki/tls/openssl.cnf</tt>.
     This file has the <tt>ini</tt> format, and it enables crypto policy support
-    if there is a <tt>[ crypto_policy ]</tt> section that contains the <tt>.include /etc/crypto-policies/back-ends/openssl.config</tt> directive.
+    if there is a <tt>[ crypto_policy ]</tt> section that contains the <tt>.include /etc/crypto-policies/back-ends/opensslcnf.config</tt> directive.
 
 rationale: |-
     Overriding the system crypto policy makes the behavior of the Java runtime violates expectations,
@@ -29,11 +29,11 @@ references:
 
 ocil_clause: |-
     the OpenSSL config file doesn't contain the whole section,
-    or that the section doesn't have the <pre>.include /etc/crypto-policies/back-ends/openssl.config</pre> directive
+    or that the section doesn't have the <pre>.include /etc/crypto-policies/back-ends/opensslcnf.config</pre> directive
 
 ocil: |-
-    To verify that OpenSSL uses the system crypro policy, check out that the OpenSSL config file
+    To verify that OpenSSL uses the system crypto policy, check out that the OpenSSL config file
     <pre>/etc/pki/tls/openssl.cnf</pre> contains the <pre>[ crypto_policy ]</pre> section with the
-    <pre>.include /etc/crypto-policies/back-ends/openssl.config</pre> directive:
-    <pre>grep '\.include\s* /etc/crypto-policies/back-ends/openssl.config$' /etc/pki/tls/openssl.cnf</pre>.
+    <pre>.include /etc/crypto-policies/back-ends/opensslcnf.config</pre> directive:
+    <pre>grep '\.include\s* /etc/crypto-policies/back-ends/opensslcnf.config$' /etc/pki/tls/openssl.cnf</pre>.
 
