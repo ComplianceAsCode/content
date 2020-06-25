@@ -8,6 +8,8 @@
     <criteria operator="AND">
         <criterion test_ref="test_bls_{{{ SANITIZED_ARG_NAME }}}_options"
         comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/*" />
+        <criterion test_ref="test_runtime_{{{ SANITIZED_ARG_NAME }}}_option"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the /proc/cmdline" />
     </criteria>
   </definition>
 
@@ -15,9 +17,8 @@
   comment="check for kernel option {{{ ARG_NAME_VALUE }}} for all snippets in /boot/loader/entries"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_bls_{{{ SANITIZED_ARG_NAME }}}_options" />
-    <ind:state state_ref="state_bls_{{{ SANITIZED_ARG_NAME }}}_option" />
+    <ind:state state_ref="state_{{{ SANITIZED_ARG_NAME }}}_option" />
   </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object id="object_bls_{{{ SANITIZED_ARG_NAME }}}_options"
   version="1">
     <ind:filepath operation="pattern match">^/boot/loader/entries/.*\.conf$</ind:filepath>
@@ -25,7 +26,20 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_bls_{{{ SANITIZED_ARG_NAME }}}_option"
+  <ind:textfilecontent54_test id="test_runtime_{{{ SANITIZED_ARG_NAME }}}_option"
+  comment="check for kernel runtime option {{{ ARG_NAME_VALUE }}} in /proc/cmdline"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_runtime_{{{ SANITIZED_ARG_NAME }}}_option" />
+    <ind:state state_ref="state_{{{ SANITIZED_ARG_NAME }}}_option" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_runtime_{{{ SANITIZED_ARG_NAME }}}_option"
+  version="1">
+    <ind:filepath operation="pattern match">^/proc/cmdline$</ind:filepath>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ SANITIZED_ARG_NAME }}}_option"
   version="1">
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
