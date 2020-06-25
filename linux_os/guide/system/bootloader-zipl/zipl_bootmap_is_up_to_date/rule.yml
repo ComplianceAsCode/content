@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Ensure zIPL bootmap is up to date'
+
+description: |-
+    Make sure that <tt>/boot/bootmap</tt> is up to date.<br />
+    Every time a boot entry or zIPL configuration is changed <tt>/boot/bootmap</tt> needs to
+    be updated to reflect the changes.<br />
+    Run <tt>zipl</tt> command to generate an updated <tt>/boot/bootmap</tt>.
+
+rationale: |-
+    The file <tt>/boot/bootmap</tt> contains all boot data, keeping it up to date is crucial to
+    boot correct kernel and options.
+
+severity: medium
+
+ocil_clause: 'the bootmap is outdated'
+
+ocil: |-
+  Make sure that <tt>/boot/bootmap</tt> is newer than <tt>/boot/loader/entries/*.conf</tt>
+  and <tt>/etc/zipl.conf</tt>:
+  <pre>find /boot/loader/entries/*.conf /etc/zipl.conf -newer /boot/bootmap</pre>
+  No line should be returned, if a line is returned <tt>/boot/bootmap</tt> is outdated and needs to be regenerated.
+
+platform: machine
