@@ -6,23 +6,59 @@
       <description>Ensure {{{ ARG_NAME_VALUE }}} option is configured in the 'options' line in /boot/loader/entries/*.conf.</description>
     </metadata>
     <criteria operator="AND">
-        <criterion test_ref="test_bls_{{{ SANITIZED_ARG_NAME }}}_options"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/*" />
-        <criterion test_ref="test_runtime_{{{ SANITIZED_ARG_NAME }}}_option"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the /proc/cmdline" />
+      <criteria operator="OR" comment="Check if BLS entries are configured with {{{ SANITIZED_ARG_NAME }}} option">
+        <criterion test_ref="test_bls_all_entries_{{{ SANITIZED_ARG_NAME }}}_options"
+        comment="Check that all boot entries have {{{ SANITIZED_ARG_NAME }}}" />
+        <criteria operator="AND">
+          <criterion test_ref="test_bls_entries_without_{{{ SANITIZED_ARG_NAME }}}_option"
+          comment="Check that entries wihout option {{{ ARG_NAME_VALUE }}} have $kernelopts" />
+          <criterion test_ref="test_grubenv_{{{ SANITIZED_ARG_NAME }}}_option"
+          comment="Check if /boot/grub2/grubenv contains {{{ SANITIZED_ARG_NAME }}} option" />
+        </criteria>
+      </criteria>
+      <criterion test_ref="test_runtime_{{{ SANITIZED_ARG_NAME }}}_option"
+      comment="Check if {{{ ARG_NAME_VALUE }}} is present in the /proc/cmdline" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_bls_{{{ SANITIZED_ARG_NAME }}}_options"
-  comment="check for kernel option {{{ ARG_NAME_VALUE }}} for all snippets in /boot/loader/entries"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_bls_{{{ SANITIZED_ARG_NAME }}}_options" />
+  <ind:textfilecontent54_test id="test_bls_all_entries_{{{ SANITIZED_ARG_NAME }}}_options"
+  comment="Check that entries with option {{{ ARG_NAME_VALUE }}} exist"
+  check="all" version="1">
+    <ind:object object_ref="object_bls_all_entries_{{{ SANITIZED_ARG_NAME }}}_options" />
     <ind:state state_ref="state_{{{ SANITIZED_ARG_NAME }}}_option" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_bls_{{{ SANITIZED_ARG_NAME }}}_options"
+
+  <ind:textfilecontent54_object id="object_bls_all_entries_{{{ SANITIZED_ARG_NAME }}}_options"
   version="1">
     <ind:filepath operation="pattern match">^/boot/loader/entries/.*\.conf$</ind:filepath>
     <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_bls_entries_without_{{{ SANITIZED_ARG_NAME }}}_option"
+  comment="Check that entries wihout option {{{ ARG_NAME_VALUE }}} have $kernelopts"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_bls_entries_without_{{{ SANITIZED_ARG_NAME }}}_option" />
+    <ind:state state_ref="state_kernelopts_option" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_bls_entries_without_{{{ SANITIZED_ARG_NAME }}}_option"
+  version="1">
+    <ind:filepath operation="pattern match">^/boot/loader/entries/.*\.conf$</ind:filepath>
+    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_{{{ SANITIZED_ARG_NAME }}}_option</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_grubenv_{{{ SANITIZED_ARG_NAME }}}_option"
+  comment="Make sure kernel updates retain {{{ ARG_NAME_VALUE }}} option"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_grubenv_{{{ SANITIZED_ARG_NAME }}}_option" />
+    <ind:state state_ref="state_{{{ SANITIZED_ARG_NAME }}}_option" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_grubenv_{{{ SANITIZED_ARG_NAME }}}_option"
+  version="1">
+    <ind:filepath operation="pattern match">^/boot/grub2/grubenv$</ind:filepath>
+    <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -42,5 +78,10 @@
   <ind:textfilecontent54_state id="state_{{{ SANITIZED_ARG_NAME }}}_option"
   version="1">
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_kernelopts_option"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?\$kernelopts(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
