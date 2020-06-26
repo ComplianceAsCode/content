@@ -18,6 +18,11 @@
       </criteria>
       <criterion test_ref="test_runtime_{{{ SANITIZED_ARG_NAME }}}_option"
       comment="Check if {{{ ARG_NAME_VALUE }}} is present in the /proc/cmdline" />
+{{% if product in ["rhel8", "fedora"] %}}
+      <!-- This ensures that running grub2-mkconfig won't remove any required options from /boot/grub2/grubenv -->
+      <criterion test_ref="test_kernel_update_{{{ SANITIZED_ARG_NAME }}}_option"
+      comment="Make sure kernel updates will retain {{{ ARG_NAME_VALUE }}} option" />
+{{% endif %}}
     </criteria>
   </definition>
 
@@ -74,6 +79,21 @@
     <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+{{% if product in ["rhel8", "fedora"] %}}
+  <ind:textfilecontent54_test id="test_kernel_update_{{{ SANITIZED_ARG_NAME }}}_option"
+  comment="Check for option {{{ ARG_NAME_VALUE }}} in /etc/default/grub"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_kernel_update_{{{ SANITIZED_ARG_NAME }}}_option" />
+    <ind:state state_ref="state_{{{ SANITIZED_ARG_NAME }}}_option" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_kernel_update_{{{ SANITIZED_ARG_NAME }}}_option"
+  version="1">
+    <ind:filepath>/etc/default/grub</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 
   <ind:textfilecontent54_state id="state_{{{ SANITIZED_ARG_NAME }}}_option"
   version="1">
