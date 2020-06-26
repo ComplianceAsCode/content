@@ -90,7 +90,7 @@ option(SSG_PRODUCT_UBUNTU1404 "If enabled, the Ubuntu 14.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU1604 "If enabled, the Ubuntu 16.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_VSEL "If enabled, the McAfee VSEL SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_WEBMIN "If enabled, the Webmin SCAP content will be built" TRUE)
+option(SSG_PRODUCT_WEBMIN "If enabled, the Webmin SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_WRLINUX8 "If enabled, the WRLinux8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_WRLINUX1019 "If enabled, the WRLinux1019 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
