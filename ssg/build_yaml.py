@@ -355,7 +355,7 @@ class ResolvableProfile(Profile):
         super(ResolvableProfile, self).__init__(* args, ** kwargs)
         self.resolved = False
 
-    def resolve(self, all_profiles):
+    def resolve(self, all_profiles, controls_manager=None):
         if self.resolved:
             return
 
@@ -369,7 +369,7 @@ class ResolvableProfile(Profile):
                             profiles=list(all_profiles.keys())))
                 raise RuntimeError(msg)
             extended_profile = all_profiles[self.extends]
-            extended_profile.resolve(all_profiles)
+            extended_profile.resolve(all_profiles, controls_manager)
 
             extended_selects = set(extended_profile.selected)
             resolved_selections.update(extended_selects)

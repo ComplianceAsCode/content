@@ -62,10 +62,13 @@ def test_controls_load_product():
     assert "cockpit_session_timeout" in c_r1.rules
 
 def test_profile_resolution():
+    env_yaml = {"product": "rhel9"}
+    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
+    controls_manager.load()
     high_profile_path = os.path.join(profiles_dir, "abcd-high.profile")
     profile = ssg.build_yaml.ResolvableProfile.from_yaml(high_profile_path)
     logging.info(profile.selected)
     assert "security_patches_uptodate" in profile.selected
     all_profiles = {"abcd-high": profile}
-    profile.resolve(all_profiles)
+    profile.resolve(all_profiles, controls_manager=controls_manager)
     logging.info(profile.selected)
