@@ -360,6 +360,13 @@ class ResolvableProfile(Profile):
             return
 
         resolved_selections = set(self.selected)
+
+        if self.policies:
+            for policy_id, controls_list in self.policies.items():
+                for control_id in controls_list:
+                    control = controls_manager.get_control(policy_id, control_id)
+                    resolved_selections |= set(control.rules)
+
         if self.extends:
             if self.extends not in all_profiles:
                 msg = (

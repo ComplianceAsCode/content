@@ -67,8 +67,16 @@ def test_profile_resolution():
     controls_manager.load()
     high_profile_path = os.path.join(profiles_dir, "abcd-high.profile")
     profile = ssg.build_yaml.ResolvableProfile.from_yaml(high_profile_path)
-    logging.info(profile.selected)
-    assert "security_patches_uptodate" in profile.selected
     all_profiles = {"abcd-high": profile}
     profile.resolve(all_profiles, controls_manager=controls_manager)
-    logging.info(profile.selected)
+
+    # Profile 'abcd-high' selects controls R1, R2, R3 from 'abcd' policy,
+    # which should add the following rules to the profile:
+    assert "sshd_set_idle_timeout" in profile.selected
+    assert "accounts_tmout" in profile.selected
+    assert "cockpit_session_timeout" in profile.selected
+
+    # The rule "security_patches_uptodate" has been selected directly by profile
+    # selections, not by using controls, so it should be in the resolved profile
+    # as well.
+    assert "security_patches_uptodate" in profile.selected
