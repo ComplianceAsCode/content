@@ -114,6 +114,7 @@ class Profile(object):
         self.metadata = None
         self.reference = None
         self.platform = None
+        self.policies = {}
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -134,6 +135,8 @@ class Profile(object):
             profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
         policies = yaml_contents.pop("policies", None)
+        if policies:
+            profile._parse_policies(policies)
 
         profile.reference = yaml_contents.pop("reference", None)
         profile.platform = yaml_contents.pop("platform", None)
@@ -199,6 +202,17 @@ class Profile(object):
                 self.unselected.append(item[1:])
             else:
                 self.selected.append(item)
+
+    def _parse_policies(self, policies_yaml):
+        for item in policies_yaml:
+            id_ = required_key(item, "id")
+            controls = required_key(item, "controls")
+            if not isinstance(controls, list):
+                msg = ("Policy {id_} contains invalid controls list {controls}."
+                    .format(id_=id_, controls=str(controls))
+                    )
+                raise ValueError(msg)
+            self.policies[id_] = controls
 
     def to_xml_element(self, product_cpes):
         element = ET.Element('Profile')
