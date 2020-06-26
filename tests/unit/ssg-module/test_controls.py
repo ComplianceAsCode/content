@@ -63,5 +63,9 @@ def test_controls_load_product():
 
 def test_profile_resolution():
     high_profile_path = os.path.join(profiles_dir, "abcd-high.profile")
-    profile = ssg.build_yaml.Profile.from_yaml(high_profile_path)
-    logging.info(profile)
+    profile = ssg.build_yaml.ResolvableProfile.from_yaml(high_profile_path)
+    logging.info(profile.selected)
+    assert "security_patches_uptodate" in profile.selected
+    all_profiles = {"abcd-high": profile}
+    profile.resolve(all_profiles)
+    logging.info(profile.selected)
