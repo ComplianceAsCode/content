@@ -258,7 +258,7 @@ PRODUCT_TO_CPE_MAPPING = {
         "cpe:/a:redhat:openshift_container_platform:4.1",
     ],
     "rhcos4": [
-        "cpe:/a:redhat:enterprise_linux_coreos:4",
+        "cpe:/o:redhat:enterprise_linux_coreos:4",
     ],
     "ol7": [
         "cpe:/o:oracle:linux:7",
