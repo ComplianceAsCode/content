@@ -77,6 +77,8 @@ class ControlsManager():
         self.policies = {}
 
     def load(self):
+        if not os.path.exists(self.controls_dir):
+            return
         for filename in os.listdir(self.controls_dir):
             logging.info("Found file %s" % (filename))
             filepath = os.path.join(self.controls_dir, filename)

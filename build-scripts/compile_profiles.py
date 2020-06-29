@@ -6,6 +6,7 @@ import os.path
 from glob import glob
 
 import ssg.build_yaml
+import ssg.controls
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -25,6 +26,11 @@ def create_parser():
     parser.add_argument(
         "--output", "-o", default="{name}.profile",
         help="The template for saving processed profile files."
+    )
+    parser.add_argument(
+        "--controls-dir",
+        help="Directory that contains control files with policy controls. "
+        "e.g.: ~/scap-security-guide/controls",
     )
     return parser
 
@@ -66,11 +72,15 @@ def main():
     args = parser.parse_args()
     env_yaml = get_env_yaml(args.build_config_yaml, args.product_yaml)
 
+    if args.controls_dir:
+        controls_manager = ssg.controls.ControlsManager(args.controls_dir, env_yaml)
+        controls_manager.load()
+
     profile_files = get_profile_files_from_root(env_yaml, args.product_yaml)
     profile_files.extend(args.profile_file)
     profiles = make_name_to_profile_mapping(profile_files, env_yaml)
     for pname in profiles:
-        profiles[pname].resolve(profiles)
+        profiles[pname].resolve(profiles, controls_manager)
 
     for name, p in profiles.items():
         p.dump_yaml(args.output.format(name=name))
