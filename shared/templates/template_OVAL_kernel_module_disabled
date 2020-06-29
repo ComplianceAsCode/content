@@ -6,20 +6,37 @@
       {{{- oval_affected(products) }}}
       <description>The kernel module {{{ KERNMODULE }}} should be disabled.</description>
     </metadata>
-    <criteria operator="OR">
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.d" />
+    <criteria operator="AND">
+      <criteria operator="OR">
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.d" />
 
 {{% if product != "ubuntu1804" %}}
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
 
 {{% if (product != "rhel6") and (product != "ubuntu1804") %}}
 
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d" />
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modules-load.d" />
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modules-load.d" />
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodprobed" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modprobe.d" />
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodprobed" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modprobe.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modules-load.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modules-load.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodprobed" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modprobe.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodprobed" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modprobe.d" />
+
+{{% endif %}}
+
+      </criteria>
+
+{{% if product in ["rhel7"] %}}
+
+      <criteria operator="OR">
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted" comment="kernel module {{{ KERNMODULE }}} blacklisted in /etc/modprobe.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf_blacklisted" comment="kernel module {{{ KERNMODULE }}} blacklisted in /etc/modprobe.conf" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load_blacklisted" comment="kernel module {{{ KERNMODULE }}} blacklisted in /etc/modules-load.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodules-load_blacklisted" comment="kernel module {{{ KERNMODULE }}} blacklisted in /run/modules-load.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodules-load_blacklisted" comment="kernel module {{{ KERNMODULE }}} blacklisted in /usr/lib/modules-load.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodprobed_blacklisted" comment="kernel module {{{ KERNMODULE }}} blacklisted in /run/modprobe.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodprobed_blacklisted" comment="kernel module {{{ KERNMODULE }}} blacklisted in /usr/lib/modprobe.d" />
+      </criteria>
 
 {{% endif %}}
 
@@ -119,6 +136,100 @@
     <ind:path>/usr/lib/modprobe.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+{{% endif %}}
+
+{{% if product in ["rhel7"] %}}
+
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_blacklisted" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_modprobeconf_blacklisted" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf_blacklisted" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load_blacklisted" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_etcmodules-load_blacklisted" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_runmodules-load_blacklisted" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled in /run/modules-load.d">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_runmodules-load_blacklisted" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_libmodules-load_blacklisted" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modules-load.d">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_libmodules-load_blacklisted" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_runmodprobed_blacklisted" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled in /run/modprobe.d">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_runmodprobed_blacklisted" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_libmodprobed_blacklisted" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modprobe.d">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_libmodprobed_blacklisted" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_blacklisted"
+  version="1" comment="kernel module {{{ KERNMODULE }}} disabled">
+    <ind:path>/etc/modprobe.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE }}}\s+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf_blacklisted"
+  version="1" comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}">
+    <ind:filepath>/etc/modprobe.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE }}}\s+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_etcmodules-load_blacklisted"
+  version="1" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d">
+    <ind:path>/etc/modules-load.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE }}}\s+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_runmodules-load_blacklisted"
+  version="1" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modules-load.d">
+    <ind:path>/run/modules-load.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE }}}\s+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_libmodules-load_blacklisted"
+  version="1" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modules-load.d">
+    <ind:path>/usr/lib/modules-load.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE }}}\s+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_runmodprobed_blacklisted"
+  version="1" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modprobe.d">
+    <ind:path>/run/modprobe.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE }}}\s+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_libmodprobed_blacklisted"
+  version="1" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modprobe.d">
+    <ind:path>/usr/lib/modprobe.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^\s*blacklist\s+{{{ KERNMODULE }}}\s+$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

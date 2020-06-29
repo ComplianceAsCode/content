@@ -14,11 +14,11 @@ description: |-
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file.
-    <pre>-a always,exit -F arch=b32 -S removexattr -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change
-    -a always,exit -F arch=b32 -S removexattr -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change</pre>
+    <pre>-a always,exit -F arch=b32 -S removexattr -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-perm-change
+    -a always,exit -F arch=b32 -S removexattr -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-perm-change</pre>
     If the system is 64 bit then also add the following lines:
-    <pre>-a always,exit -F arch=b64 -S removexattr -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change
-    -a always,exit -F arch=b64 -S removexattr -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change</pre>
+    <pre>-a always,exit -F arch=b64 -S removexattr -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-perm-change
+    -a always,exit -F arch=b64 -S removexattr -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-perm-change</pre>
 
 
 rationale: |-
@@ -46,7 +46,7 @@ warnings:
         number of ways while still achieving the desired effect. Here the audit rule checks a
         system call independently of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
-        <pre>-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change</pre>
+        <pre>-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-perm-change</pre>
 
 template:
     name: audit_rules_unsuccessful_file_modification

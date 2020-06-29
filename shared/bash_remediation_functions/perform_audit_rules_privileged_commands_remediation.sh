@@ -79,7 +79,7 @@ do
 	local count_of_inspected_files=0
 
 	# Define expected rule form for this binary
-	expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=unset -k privileged"
+	expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=4294967295 -k privileged"
 
 	# If list of audit rules files to be inspected is empty, just add new rule and move on to next binary
 	if [[ ${#files_to_inspect[@]} -eq 0 ]]; then

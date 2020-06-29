@@ -9,7 +9,8 @@ description: |-
 {{% if product == "rhel6" %}}
     -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
 {{% else %}}
-    -a always,exit -F arch=<i>ARCH</i> -S init_module,finit_module,delete_module -F key=modules
+    -a always,exit -F arch=<i>ARCH</i> -S create_module,init_module,finit_module,delete_module -F key=modules
+    -w /usr/bin/kmod -p x -F auid!=4294967295 -k module-change
 {{% endif %}}
     </pre>
 

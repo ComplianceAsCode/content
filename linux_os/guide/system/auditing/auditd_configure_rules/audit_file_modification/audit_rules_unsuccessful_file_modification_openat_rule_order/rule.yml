@@ -21,21 +21,21 @@ description: |-
     utility to read audit rules during daemon startup, check the order of rules below in
     <tt>/etc/audit/audit.rules</tt> file.
     <pre>
-    -a always,exit -F arch=b32 -S openat -F a2&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b32 -S openat -F a2&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b32 -S openat -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b32 -S openat -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
-    -a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b32 -S openat -F a2&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S openat -F a2&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S openat -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S openat -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-access
+    -a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-access
     </pre>
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S openat -F a2&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b64 -S openat -F a2&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b64 -S openat -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b64 -S openat -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
-    -a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b64 -S openat -F a2&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S openat -F a2&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S openat -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S openat -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-access
+    -a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-access
     </pre>
 
 rationale: |-

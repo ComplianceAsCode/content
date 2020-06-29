@@ -8,21 +8,21 @@ description: |-
     to use the <tt>augenrules</tt> program to read audit rules during daemon
     startup (the default), add the following lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    <pre>-a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access
+    -a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access</pre>
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access
+    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    <pre>-a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access
+    -a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access</pre>
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access
+    -a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=access</pre>
 
 rationale: |-
     Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing

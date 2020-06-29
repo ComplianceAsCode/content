@@ -21,14 +21,14 @@ description: |-
     utility to read audit rules during daemon startup, add the rules below to
     <tt>/etc/audit/audit.rules</tt> file.
     <pre>
-    -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
     </pre>
 
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b64 -S open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification
     </pre>
 
 rationale: |-
@@ -68,7 +68,7 @@ warnings:
         number of ways while still achieving the desired effect. Here the system calls
         have been placed independent of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
-        <pre>-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-modification</pre>
+        <pre>-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-modification</pre>
 
 template:
     vars:

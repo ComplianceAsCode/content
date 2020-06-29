@@ -9,12 +9,12 @@ description: |-
     default), add the following line to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
     appropriate for your system:
-    <pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
+    <pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=delete</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
     appropriate for your system:
-    <pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;={{{ auid }}} -F auid!=unset -F key=delete</pre>
+    <pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=delete</pre>
 
 rationale: |-
     Auditing file deletions will create an audit trail for files that are removed

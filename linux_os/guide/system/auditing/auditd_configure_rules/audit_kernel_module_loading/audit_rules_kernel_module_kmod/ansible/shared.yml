@@ -1,0 +1,42 @@
+# platform = multi_platform_rhel,multi_platform_rhv
+# reboot = false
+# complexity = low
+# disruption = low
+# strategy = configure
+
+# Inserts/replaces the rule in /etc/audit/rules.d
+
+- name: Search /etc/audit/rules.d for audit rule entries
+  find:
+    paths: /etc/audit/rules.d
+    recurse: false
+    contains: ^.*/usr/bin/kmod.*$
+    patterns: '*.rules'
+  register: find_kmod
+
+- name: Use /etc/audit/rules.d/privileged.rules as the recipient for the rule
+  set_fact:
+    all_files:
+    - /etc/audit/rules.d/privileged.rules
+  when: find_kmod.matched is defined and find_kmod.matched == 0
+
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+    - '{{ find_/usr/bin/kmod.files | map(attribute=''path'') | list | first }}'
+  when: find_kmod.matched is defined and find_kmod.matched > 0
+
+- name: Inserts/replaces the kmod rule in rules.d
+  lineinfile:
+    path: '{{ all_files[0] }}'
+    line: '-w /usr/bin/kmod -p x -F auid!=4294967295 -k module-change'
+    state: present
+    create: true
+
+# Inserts/replaces the init_modules rule in /etc/audit/audit.rules
+
+- name: Inserts/replaces the kmod rule in audit.rules
+  lineinfile:
+    path: /etc/audit/audit.rules
+    line: '-w /usr/bin/kmod -p x -F auid!=4294967295 -k module-change'
+    create: true

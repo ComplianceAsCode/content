@@ -37,13 +37,13 @@
 - name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
+    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     create: yes
 
 - name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86_64
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
+    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     create: yes
   when: audit_arch is defined and audit_arch == 'b64'
 #   
@@ -51,14 +51,14 @@
 #
 - name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/audit.rules when on x86
   lineinfile:
-    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
+    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
 
 - name: Inserts/replaces the {{{ ATTR }}} rule in audit.rules when on x86_64
   lineinfile:
-    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
+    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=perm_mod"
     state: present
     dest: /etc/audit/audit.rules
     create: yes

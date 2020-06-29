@@ -18,8 +18,8 @@ do
         PATTERN="-a always,exit -F arch=$ARCH -S init_module -S delete_module \(-F key=\|-k \).*"
         FULL_RULE="-a always,exit -F arch=$ARCH -S init_module -S delete_module -k modules"
 {{% else %}}
-        PATTERN="-a always,exit -F arch=$ARCH -S init_module -S delete_module -S finit_module \(-F key=\|-k \).*"
-        FULL_RULE="-a always,exit -F arch=$ARCH -S init_module -S delete_module -S finit_module -k modules"
+        PATTERN="-a always,exit -F arch=$ARCH -S create_module -S init_module -S delete_module -S finit_module \(-F key=\|-k \).*"
+        FULL_RULE="-a always,exit -F arch=$ARCH -S create_module -S delete_module -S init_module -S finit_module -k modules"
 {{% endif %}}
         # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
         fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"

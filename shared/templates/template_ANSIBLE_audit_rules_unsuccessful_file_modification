@@ -40,8 +40,8 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
 
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86_64
   lineinfile:
@@ -49,8 +49,8 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
   when: audit_arch is defined and audit_arch == 'b64'
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
@@ -62,8 +62,8 @@
     dest: /etc/audit/audit.rules
     create: yes
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
   lineinfile:
@@ -72,6 +72,6 @@
     dest: /etc/audit/audit.rules
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access"
   when: audit_arch is defined and audit_arch == 'b64'

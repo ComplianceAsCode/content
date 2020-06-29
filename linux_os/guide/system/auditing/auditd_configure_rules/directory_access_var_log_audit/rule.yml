@@ -6,7 +6,7 @@ description: |-
     The audit system should collect access events to read audit log directory.
     The following audit rule will assure that access to audit log directory are
     collected.
-    <pre>-a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=unset -F key=access-audit-trail</pre>
+    <pre>-a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=4294967295 -F key=access-audit-trail</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
     program to read audit rules during daemon startup (the default), add the
     rule to a file with suffix <tt>.rules</tt> in the directory

@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Ensure auditd Collects All Executions Of Privileged Functions'
+
+description: |-
+    At a minimum the audit system should collect privileged function events
+    for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+    appropriate for your system:
+    <pre>-a always,exit -F arch=ARCH -S execve -C uid!=euid -F euid=0 -k setuid
+    -a always,exit -F arch=ARCH -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
+    appropriate for your system:
+    <pre>-a always,exit -F arch=ARCH -S execve -C uid!=euid -F euid=0 -k setuid
+    -a always,exit -F arch=ARCH -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally 
+    by authorized users, or by unauthorized external entities that have compromised 
+    information system accounts, is a serious and ongoing concern and can have 
+    significant adverse impacts on organizations. Auditing the use of privileged 
+    functions is one way to detect such misuse and identify the risk from insider 
+    threats and the advanced persistent threat.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27206-2
+
+references:
+    disa@rhel7: "2234"
+    nist@rhel7: AC-6(9)
+    stigid@rhel7: "030360"
+
+ocil: |-
+    {{{ ocil_audit_syscall(syscall="execve") }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}

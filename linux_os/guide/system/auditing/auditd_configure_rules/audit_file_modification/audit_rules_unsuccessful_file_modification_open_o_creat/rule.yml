@@ -22,14 +22,14 @@ description: |-
     utility to read audit rules during daemon startup, add the rules below to
     <tt>/etc/audit/audit.rules</tt> file.
     <pre>
-    -a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
     </pre>
 
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create
     </pre>
 
 rationale: |-
@@ -69,7 +69,7 @@ warnings:
         number of ways while still achieving the desired effect. Here the system calls
         have been placed independent of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
-        <pre>-a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create</pre>
+        <pre>-a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=4294967295 -F key=unsuccesful-create</pre>
 
 template:
     vars:

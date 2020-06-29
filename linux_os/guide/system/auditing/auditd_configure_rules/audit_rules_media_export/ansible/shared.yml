@@ -18,28 +18,28 @@
 - name: Check if the rule for x86_64 is already present in /etc/audit/rules.d/*
   find:
     paths: "/etc/audit/rules.d/"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=unset(\s|$)+'
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=4294967295(\s|$)+'
     patterns: "*.rules"
   register: find_existing_media_export_64_rules_d
 
 - name: Check if the rule for x86 is already present in /etc/audit/rules.d/*
   find:
     paths: "/etc/audit/rules.d/"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=unset(\s|$)+'
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=4294967295(\s|$)+'
     patterns: "*.rules"
   register: find_existing_media_export_32_rules_d
 
 - name: Check if the rule for x86_64 is already present in /etc/audit/audit.rules
   find:
     paths: "/etc/audit/"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=unset(\s|$)+'
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b64\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=4294967295(\s|$)+'
     patterns: "audit.rules"
   register: find_existing_media_export_64_audit_rules
 
 - name: Check if the rule for x86 is already present in /etc/audit/rules.d/*
   find:
     paths: "/etc/audit/"
-    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=unset(\s|$)+'
+    contains: '^\s*-a\s+always,exit\s+-F\s+arch=b32\s+-S\s+mount\s+-F\s+auid>={{{ auid }}}\s+-F\s+auid!=4294967295(\s|$)+'
     patterns: "audit.rules"
   register: find_existing_media_export_32_audit_rules
 
@@ -71,14 +71,14 @@
 - name: Inserts/replaces the media export rule in rules.d when on x86
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b32 -S mount -F auid>={{{ auid }}} -F auid!=unset -F key=export"
+    line: "-a always,exit -F arch=b32 -S mount -F auid>={{{ auid }}} -F auid!=4294967295 -F key=export"
     create: yes
   when: find_existing_media_export_32_rules_d is defined and find_existing_media_export_32_rules_d.matched == 0
 
 - name: Inserts/replaces the media export rule in rules.d when on x86_64
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b64 -S mount -F auid>={{{ auid }}} -F auid!=unset -F key=export"
+    line: "-a always,exit -F arch=b64 -S mount -F auid>={{{ auid }}} -F auid!=4294967295 -F key=export"
     create: yes
   when: audit_arch is defined and audit_arch == 'b64' and find_existing_media_export_64_rules_d is defined and find_existing_media_export_64_rules_d.matched == 0
 #   
@@ -86,7 +86,7 @@
 #
 - name: Inserts/replaces the media export rule in /etc/audit/audit.rules when on x86
   lineinfile:
-    line: "-a always,exit -F arch=b32 -S mount -F auid>={{{ auid }}} -F auid!=unset -F key=export"
+    line: "-a always,exit -F arch=b32 -S mount -F auid>={{{ auid }}} -F auid!=4294967295 -F key=export"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
@@ -94,7 +94,7 @@
 
 - name: Inserts/replaces the media export rule in audit.rules when on x86_64
   lineinfile:
-    line: "-a always,exit -F arch=b64 -S mount -F auid>={{{ auid }}} -F auid!=unset -F key=export"
+    line: "-a always,exit -F arch=b64 -S mount -F auid>={{{ auid }}} -F auid!=4294967295 -F key=export"
     state: present
     dest: /etc/audit/audit.rules
     create: yes

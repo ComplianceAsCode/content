@@ -3,13 +3,11 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-{{%- if init_system == "systemd" %}}
-
+{{% if init_system == "systemd" %}}
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" start '{{{ DAEMONNAME }}}.service'
 "$SYSTEMCTL_EXEC" enable '{{{ DAEMONNAME }}}.service'
 {{% elif init_system == "upstart" %}}
-
 /sbin/service '{{{ DAEMONNAME }}}' start
 /sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' on
 {{% else %}}

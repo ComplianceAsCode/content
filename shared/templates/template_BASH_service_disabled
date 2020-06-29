@@ -3,9 +3,7 @@
 # strategy = disable
 # complexity = low
 # disruption = low
-{{%- if init_system == "systemd" %}}
-
-
+{{% if init_system == "systemd" %}}
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
 "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.service'

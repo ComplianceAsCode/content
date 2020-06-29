@@ -26,13 +26,13 @@
 - name: Inserts/replaces the /var/log/audit/ rule in rules.d
   lineinfile:
     path: '{{ all_files[0] }}'
-    line: -a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=unset
+    line: -a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=4294967295
       -F key=access-audit-trail
     create: true
 
 - name: Inserts/replaces the /var/log/audit/ rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: -a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=unset
+    line: -a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=4294967295
       -F key=access-audit-trail
     create: true

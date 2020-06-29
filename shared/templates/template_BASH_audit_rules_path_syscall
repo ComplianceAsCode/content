@@ -11,7 +11,7 @@ for ARCH in "${RULE_ARCHS[@]}"
 do
 	PATTERN="-a always,exit -F arch=$ARCH -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}}.*"
 	GROUP="modify"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
+	FULL_RULE="-a always,exit -F arch=$ARCH -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=modify"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"

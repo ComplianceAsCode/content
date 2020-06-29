@@ -10,11 +10,11 @@ description: |-
     daemon is configured to use the <tt>augenrules</tt> program to read audit rules
     during daemon startup (the default), add the following lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-priv_change</pre>
+    <pre>-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=privileged-priv_change</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-priv_change</pre>
+    <pre>-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=privileged-priv_change</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -45,7 +45,7 @@ ocil: |-
     To verify that execution of the command is being audited, run the following command:
     <pre>$ sudo grep "path=/usr/sbin/seunshare" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     The output should return something similar to:
-    <pre>-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-priv_change</pre>
+    <pre>-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid&gt;={{{ auid }}} -F auid!=4294967295 -F key=privileged-priv_change</pre>
 
 template:
     name: audit_rules_privileged_commands
