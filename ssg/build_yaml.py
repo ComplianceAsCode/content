@@ -366,7 +366,9 @@ class ResolvableProfile(Profile):
                 for control_id in controls_list:
                     control = controls_manager.get_control(policy_id, control_id)
                     resolved_selections |= set(control.rules)
-                    self.variables.update(control.variables)
+                    for varname, value in control.variables.items():
+                        if varname not in self.variables:
+                            self.variables[varname] = value
 
         if self.extends:
             if self.extends not in all_profiles:
