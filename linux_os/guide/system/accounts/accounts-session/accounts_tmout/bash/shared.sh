@@ -2,9 +2,11 @@
 . /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_tmout
 
-if grep --silent ^TMOUT /etc/profile ; then
-        sed -i "s/^TMOUT.*/TMOUT=$var_accounts_tmout/g" /etc/profile
+if grep --silent ^TMOUT /etc/profile.d/tmout.sh ; then
+        sed -i "s/^TMOUT.*/TMOUT=$var_accounts_tmout/g" /etc/profile.d/tmout.sh
 else
-        echo -e "\n# Set TMOUT to $var_accounts_tmout per security requirements" >> /etc/profile
-        echo "TMOUT=$var_accounts_tmout" >> /etc/profile
+        echo -e "\n# Set TMOUT to $var_accounts_tmout per security requirements" >> /etc/profile.d/tmout.sh
+        echo "TMOUT=$var_accounts_tmout" >> /etc/profile.d/tmout.sh
+        echo "readonly TMOUT" >> /etc/profile.d/tmout.sh
+        echo "export TMOUT" >> /etc/profile.d/tmout.sh
 fi
