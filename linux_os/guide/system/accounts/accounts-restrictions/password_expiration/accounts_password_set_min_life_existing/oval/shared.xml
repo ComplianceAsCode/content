@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="accounts_password_set_min_life_existing" version="3">
+    <metadata>
+      <title>Set Password Expiration Parameters</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The minimum password age policy should meet minimum requirements.</description>
+    </metadata>
+    <criteria comment="The minimum password age should be set appropriately for each existing account">
+      <criterion test_ref="test_accounts_password_set_min_life_existing" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_accounts_password_set_min_life_existing" comment="User Accounts" datatype="string" version="1">
+	<object_component item_field="username" object_ref="object_accounts_password_set_min_life_existing_var" />
+  </local_variable>
+  <unix:password_object id="object_accounts_password_set_min_life_existing_var" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+  </unix:password_object>
+
+  <unix:shadow_test check="all" check_existence="all_exist" comment="Testing password age" id="test_accounts_password_set_min_life_existing" version="1">
+    <unix:object object_ref="object_accounts_password_set_min_life_existing" />
+    <unix:state state_ref="state_accounts_password_set_min_life_existing" />
+  </unix:shadow_test>
+  <unix:shadow_object comment="Users" id="object_accounts_password_set_min_life_existing" version="1">
+    <unix:username var_ref="var_accounts_password_set_min_life_existing" var_check="at least one" />
+  </unix:shadow_object>
+  <unix:shadow_state comment="Users" id="state_accounts_password_set_min_life_existing" version="1">
+    <unix:chg_allow operation="greater than or equal" var_ref="var_accounts_minimum_age_login_defs" datatype="int" />
+  </unix:shadow_state>
+    
+  <external_variable comment="minimum password age" datatype="int" id="var_accounts_minimum_age_login_defs" version="1" />
+
+</def-group>
