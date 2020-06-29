@@ -75,6 +75,7 @@ def test_profile_resolution():
     assert "sshd_set_idle_timeout" in profile.selected
     assert "accounts_tmout" in profile.selected
     assert "cockpit_session_timeout" in profile.selected
+    assert "var_accounts_tmout" in profile.variables
 
     # The rule "security_patches_uptodate" has been selected directly by profile
     # selections, not by using controls, so it should be in the resolved profile
