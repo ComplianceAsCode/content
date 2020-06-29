@@ -18,7 +18,9 @@ def test_controls_load():
     assert c_r1.automated == "yes"
     assert "sshd_set_idle_timeout" in c_r1.rules
     assert "accounts_tmout" in c_r1.rules
-    assert "var_accounts_tmout=10_min" in c_r1.rules
+    assert "var_accounts_tmout=10_min" not in c_r1.rules
+    assert "var_accounts_tmout" in c_r1.variables
+    assert c_r1.variables["var_accounts_tmout"] == "10_min"
     # we haven't specified product but this rule should appear
     # only if product is rhel9
     assert "cockpit_session_timeout" not in c_r1.rules
@@ -34,6 +36,8 @@ def test_controls_load():
     assert "accounts_passwords_pam_faillock_deny_root" in c_r4.rules
     assert "accounts_password_pam_minlen" in c_r4.rules
     assert "accounts_password_pam_ocredit" in c_r4.rules
+    assert "var_password_pam_ocredit" in c_r4.variables
+    assert c_r4.variables["var_password_pam_ocredit"] == "1"
     #logging.info(c.rules)
 
 def test_controls_load_product():
@@ -48,7 +52,9 @@ def test_controls_load_product():
     assert c_r1.automated == "yes"
     assert "sshd_set_idle_timeout" in c_r1.rules
     assert "accounts_tmout" in c_r1.rules
-    assert "var_accounts_tmout=10_min" in c_r1.rules
+    assert "var_accounts_tmout=10_min" not in c_r1.rules
+    assert "var_accounts_tmout" in c_r1.variables
+    assert c_r1.variables["var_accounts_tmout"] == "10_min"
     # The rule cockpit_session_timeout is guarded by Jinja macro
     # that allows it only on rhel9 product.
     assert "cockpit_session_timeout" in c_r1.rules

@@ -8,6 +8,8 @@ import ssg.utils
 class Control():
     def __init__(self):
         self.id = None
+        self.rules = []
+        self.variables = {}
 
     @classmethod
     def from_control_dict(cls, control_dict):
@@ -15,7 +17,13 @@ class Control():
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
         control.automated = control_dict.get("automated", False)
-        control.rules = control_dict.get("rules", [])
+        selections = control_dict.get("rules", [])
+        for item in selections:
+            if "=" in item:
+                varname, value = item.split("=", 1)
+                control.variables[varname] = value
+            else:
+                control.rules.append(item)
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
         control.id = ssg.utils.required_key(control_dict, "id")
@@ -39,6 +47,7 @@ class Policy():
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
                     control.rules.extend(sc.rules)
+                    control.variables.update(sc.variables)
                     control.related_rules.extend(sc.related_rules)
             yield control
 
