@@ -112,3 +112,33 @@ def test_profile_resolution_extends():
     assert "accounts_password_pam_ocredit" in high_profile.selected
     assert "var_password_pam_ocredit" in high_profile.variables
     assert high_profile.variables["var_password_pam_ocredit"] == "2"
+
+def test_profile_resolution_all():
+    env_yaml = {"product": "rhel9"}
+    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
+    controls_manager.load()
+    profile_path = os.path.join(profiles_dir, "abcd-all.profile")
+    profile = ssg.build_yaml.ResolvableProfile.from_yaml(profile_path)
+    all_profiles = {"abcd-all": profile}
+    profile.resolve(all_profiles, controls_manager=controls_manager)
+
+    # Profile 'abcd-all' selects all controls from 'abcd' policy,
+    # which should add the following rules and variables to the profile:
+    assert "sshd_set_idle_timeout" in profile.selected
+    assert "accounts_tmout" in profile.selected
+    assert "var_accounts_tmout" in profile.variables
+    assert profile.variables["var_accounts_tmout"] == "10_min"
+    assert "cockpit_session_timeout" in profile.selected
+    # Rule "systemd_target_multi_user" is only "related_rules"
+    # therefore it should not appear in the resolved profile.
+    assert "systemd_target_multi_user" not in profile.selected
+    assert "accounts_passwords_pam_faillock_deny_root" in profile.selected
+    assert "accounts_password_pam_minlen" in profile.selected
+    assert "accounts_password_pam_ocredit" in profile.selected
+    assert "var_password_pam_ocredit" in profile.variables
+    assert profile.variables["var_password_pam_ocredit"] == "1"
+
+    # The rule "security_patches_uptodate" has been selected directly by profile
+    # selections, not by using controls, so it should be in the resolved profile
+    # as well.
+    assert "security_patches_uptodate" in profile.selected
