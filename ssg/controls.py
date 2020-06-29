@@ -94,3 +94,11 @@ class ControlsManager():
             raise ValueError(msg)
         control = policy.get_control(control_id)
         return control
+
+    def get_all_controls(self, policy_id):
+        try:
+            policy = self.policies[policy_id]
+        except KeyError:
+            msg = "policy '%s' doesn't exist" % (policy_id)
+            raise ValueError(msg)
+        return policy.controls.values()

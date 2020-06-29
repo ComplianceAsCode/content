@@ -204,10 +204,11 @@ class Profile(object):
             id_ = required_key(item, "id")
             controls = required_key(item, "controls")
             if not isinstance(controls, list):
-                msg = ("Policy {id_} contains invalid controls list {controls}."
-                    .format(id_=id_, controls=str(controls))
-                    )
-                raise ValueError(msg)
+                if controls != "all":
+                    msg = ("Policy {id_} contains invalid controls list {controls}."
+                        .format(id_=id_, controls=str(controls))
+                        )
+                    raise ValueError(msg)
             self.policies[id_] = controls
 
     def to_xml_element(self):
@@ -362,9 +363,15 @@ class ResolvableProfile(Profile):
         resolved_selections = set(self.selected)
 
         if self.policies:
-            for policy_id, controls_list in self.policies.items():
-                for control_id in controls_list:
-                    control = controls_manager.get_control(policy_id, control_id)
+            for policy_id, controls in self.policies.items():
+                if isinstance(controls, list):
+                    controls_list = [controls_manager.get_control(policy_id, control_id) for control_id in controls]
+                elif controls == "all":
+                    controls_list = controls_manager.get_all_controls(policy_id)
+                else:
+                    msg = "Unknown policy content {content} in profile {profile_id}".format(content=controls, profile_id=self.id_)
+                    raise ValueError(msg)
+                for control in controls_list:
                     resolved_selections |= set(control.rules)
                     for varname, value in control.variables.items():
                         if varname not in self.variables:
