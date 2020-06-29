@@ -356,26 +356,29 @@ class ResolvableProfile(Profile):
         super(ResolvableProfile, self).__init__(* args, ** kwargs)
         self.resolved = False
 
+    def resolve_controls(self, controls_manager):
+        for policy_id, controls in self.policies.items():
+            if isinstance(controls, list):
+                controls_list = [controls_manager.get_control(policy_id, control_id) for control_id in controls]
+            elif controls == "all":
+                controls_list = controls_manager.get_all_controls(policy_id)
+            else:
+                msg = "Unknown policy content {content} in profile {profile_id}".format(content=controls, profile_id=self.id_)
+                raise ValueError(msg)
+            for control in controls_list:
+                self.selected.extend(control.rules)
+                for varname, value in control.variables.items():
+                    if varname not in self.variables:
+                        self.variables[varname] = value
+
     def resolve(self, all_profiles, controls_manager=None):
         if self.resolved:
             return
 
-        resolved_selections = set(self.selected)
-
         if self.policies:
-            for policy_id, controls in self.policies.items():
-                if isinstance(controls, list):
-                    controls_list = [controls_manager.get_control(policy_id, control_id) for control_id in controls]
-                elif controls == "all":
-                    controls_list = controls_manager.get_all_controls(policy_id)
-                else:
-                    msg = "Unknown policy content {content} in profile {profile_id}".format(content=controls, profile_id=self.id_)
-                    raise ValueError(msg)
-                for control in controls_list:
-                    resolved_selections |= set(control.rules)
-                    for varname, value in control.variables.items():
-                        if varname not in self.variables:
-                            self.variables[varname] = value
+            self.resolve_controls(controls_manager)
+
+        resolved_selections = set(self.selected)
 
         if self.extends:
             if self.extends not in all_profiles:
