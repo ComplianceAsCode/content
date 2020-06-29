@@ -6,14 +6,23 @@ import ssg.yaml
 import ssg.utils
 
 class Control():
-    def __init__(self, control_dict):
-        self.id = ssg.utils.required_key(control_dict, "id")
-        self.title = control_dict.get("title")
-        self.description = control_dict.get("description")
-        self.automated = control_dict.get("automated", False)
-        self.rules = control_dict.get("rules", [])
-        self.related_rules = control_dict.get("related_rules", [])
-        self.note = control_dict.get("note")
+    def __init__(self):
+        self.id = None
+
+    @classmethod
+    def from_control_dict(cls, control_dict):
+        control = cls()
+        control.title = control_dict.get("title")
+        control.description = control_dict.get("description")
+        control.automated = control_dict.get("automated", False)
+        control.rules = control_dict.get("rules", [])
+        control.related_rules = control_dict.get("related_rules", [])
+        control.note = control_dict.get("note")
+        control.id = ssg.utils.required_key(control_dict, "id")
+        control.title = control_dict.get("title")
+        control.description = control_dict.get("description")
+        control.automated = control_dict.get("automated", False)
+        return control
 
 
 class Policy():
@@ -25,7 +34,7 @@ class Policy():
     
     def _parse_controls_tree(self, tree):
         for node in tree:
-            control = Control(node)
+            control = Control.from_control_dict(node)
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
