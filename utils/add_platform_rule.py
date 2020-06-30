@@ -98,9 +98,9 @@ template:
 ''')
 
 
-def check_value(value):
+def operation_value(value):
     if value:
-        return '\n        pattern_check: "true"\n        type: "string"'
+        return '\n        operation: "pattern match"\n        type: "string"'
     else:
         return ''
 
@@ -187,7 +187,8 @@ def createFunc(args):
     with open(rule_yaml_path, 'w') as f:
         f.write(RULE_TEMPLATE.format(URL=url, TITLE=args.title, SEV=args.severity, IDENT=args.identifiers,
                                      DESC=args.description, YAMLPATH=args.yamlpath, MATCH=args.match,
-                                     NEGATE=str(args.negate).lower(), CHECK_TYPE=check_value(args.regex),
+                                     NEGATE=str(args.negate).lower(),
+                                     CHECK_TYPE=operation_value(args.regex),
                                      ENTITY_CHECK=entity_value(args.match_entity)))
     print('wrote ' + rule_yaml_path)
 

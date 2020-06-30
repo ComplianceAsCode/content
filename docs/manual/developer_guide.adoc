@@ -1737,9 +1737,9 @@ yamlfile_value::
 ** *filepath* - full path to the file to check
 ** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
 ** *value* - the value to check.
-** *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional.
-** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional.
-** *pattern_check* - if set to `"true"`, the value is handled as a pattern match for state's value_of, optional.
+** *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional. If omitted, datatype would be treated as OVAL's default 'string'.
+** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'.
+** *operation* (OperationEnumeration) - operation value for state's value_of, optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'.
 ** *negate* - if set to `"true"` the meaning of the value check criterion would be inverted, optional.
 ** *ocp_data* - if set to `"true"` then the filepath would be treated as a part of the dump of OCP configuration with the `ocp_data_root` prefix; optional.
 * Languages: OVAL
