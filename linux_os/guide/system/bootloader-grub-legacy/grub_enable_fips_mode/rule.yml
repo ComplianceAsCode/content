@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel6
+
+title: 'Set Boot Loader FIPS Encryption in grub.conf'
+
+description: |-
+    The grub boot loader should have FIPS encryption
+    enabled to protect boot-time settings.
+    To do so, install dracut-fips by running the following command:
+    <pre>$ yum install dracut-fips</pre>
+    Undo existing prelinking, if necessary, on all system files using the following command:
+    <pre>$ prelink -u -a</pre>
+    Recreate the "initramfs" file with the following command:
+    <pre>$ dracut -f</pre>
+    Add the following option to the "grub.conf" file to modify the kernel command line of 
+    the current kernel in the "grub.conf" file:
+    <pre>fips=1</pre>
+    Reboot the system for the changes to take effect.
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of using encryption 
+    to protect data. The operating system must implement cryptographic modules adhering to the 
+    higher standards approved by the federal government to ensure the algorithms have been tested 
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@rhel6: 26911-8
+
+references:
+    disa@rhel6: "68,1199,2450,2476"
+    nist: 'AC-17(2),SC-13,SC-28,SC-28(1)'
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
+    srg@rhel6: SRG-OS-000033-GPOS-00014
+    stigid@rhel6: "000534"
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To verify the kernel is configured to use FIPS mode, run the following command:
+    <pre>$ sudo cat /proc/sys/crypto/fips_enabled</pre>
+    The output should show the following:
+    <pre>1</pre>
