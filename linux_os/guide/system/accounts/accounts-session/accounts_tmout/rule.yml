@@ -9,6 +9,8 @@ description: |-
     all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
     setting in <tt>/etc/profile.d/tmout.sh</tt> should read as follows:
     <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>readonly TMOUT" /></pre>
+    <pre>export TMOUT" /></pre>
 
 rationale: |-
     Terminating an idle session within a short time period reduces
@@ -46,6 +48,8 @@ ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
 ocil: |-
     Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
     on the system:
-    <pre>$ sudo grep TMOUT /etc/profile.d/tmout.sh</pre>
+    <pre>$ sudo grep TMOUT /etc/profile /etc/profile.d/*</pre>
     The output should return the following:
     <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>readonly TMOUT" /></pre>
+    <pre>export TMOUT" /></pre>
