@@ -106,3 +106,4 @@ selections:
     - configure_user_data_backups
     - var_postfix_inet_interfaces=localhost
     - postfix_network_listening_disabled
+    - sshd_approved_ciphers=stig
