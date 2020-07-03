@@ -24,7 +24,7 @@ ocil_clause: 'audit backlog limit is not configured'
 ocil: |-
   To check that all boot entries extend the backlog limit;
   Check that all boot entries extend the log events queue:
-  <pre>sudo grep -L "^options\s+.*\baudit_backlog_limit=0\b" /boot/loader/entries/*.conf</pre>
+  <pre>sudo grep -L "^options\s+.*\baudit_backlog_limit=8192\b" /boot/loader/entries/*.conf</pre>
   No line should be returned, each line returned is a boot entry that does not extend the log events queue.
 
 platform: machine
