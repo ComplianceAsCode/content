@@ -28,3 +28,9 @@ ocil: |-
   No line should be returned, each line returned is a boot entry that does not extend the log events queue.
 
 platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: audit_backlog_limit
+    arg_value: '8192'

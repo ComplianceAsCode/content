@@ -28,3 +28,9 @@ ocil: |-
   No line should be returned, each line returned is a boot entry that doesn't enable page poisoning.
 
 platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: page_poison
+    arg_value: '1'

@@ -28,3 +28,9 @@ ocil: |-
   No line should be returned, each line returned is a boot entry that does not enable poisoning.
 
 platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: slub_debug
+    arg_value: 'P'
