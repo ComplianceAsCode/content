@@ -30,3 +30,4 @@ description: |-
 selections:
     - ocp_idp_no_htpasswd
     - ocp_allowed_registries_for_import
+    - ocp_allowed_registries
