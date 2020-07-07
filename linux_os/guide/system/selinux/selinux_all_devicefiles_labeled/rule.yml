@@ -6,18 +6,20 @@ title: 'Ensure No Device Files are Unlabeled by SELinux'
 
 description: |-
     Device files, which are used for communication with important system
-    resources, should be labeled with proper SELinux types. If any device
-    files do not carry the SELinux type <tt>device_t</tt>, report the bug so
-    that policy can be corrected. Supply information about what the device is
-    and what programs use it.
+    resources, should be labeled with proper SELinux types. If any device files
+    carry the SELinux type <tt>device_t</tt> or <tt>unlabeled_t</tt>, report the
+    bug so that policy can be corrected. Supply information about what the
+    device is and what programs use it.
     <br /><br />
-    To check for unlabeled device files, run the following command:
+    To check for incorrectly labeled device files, run following commands:
     <pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
+    <pre>$ sudo find /dev -context *:unlabeled_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
     It should produce no output in a well-configured system.
 
 rationale: |-
-    If a device file carries the SELinux type <tt>device_t</tt>, then SELinux
-    cannot properly restrict access to the device file.
+    If a device file carries the SELinux type <tt>device_t</tt> or
+    <tt>unlabeled_t</tt>, then SELinux cannot properly restrict access to the
+    device file.
 
 severity: medium
 
@@ -45,8 +47,9 @@ references:
 ocil_clause: 'there is output'
 
 ocil: |-
-    To check for unlabeled device files, run the following command:
+    To check for incorrectly labeled device files, run following commands:
     <pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
+    <pre>$ sudo find /dev -context *:unlabeled_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
     It should produce no output in a well-configured system.
 
 warnings:
