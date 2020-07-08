@@ -2,32 +2,54 @@
   <definition class="compliance" id="selinux_all_devicefiles_labeled" version="1">
     <metadata>
       <title>Device Files Have Proper SELinux Context</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
-      <description>All device files in /dev should be assigned an SELinux security context other than 'device_t'.</description>
+      {{{- oval_affected(products) }}}
+      <description>All device files in /dev should be assigned an SELinux security context other than 'device_t' and 'unlabeled_t'.</description>
     </metadata>
-    <criteria>
-      <criterion comment="device_t in /dev" test_ref="test_selinux_all_devicefiles_labeled" />
+    <criteria operator="AND">
+      <criterion comment="device_t in /dev" test_ref="test_selinux_dev_device_t" />
+      <criterion comment="unlabeled_t in /dev" test_ref="test_selinux_dev_unlabeled_t" />
     </criteria>
   </definition>
-  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="device_t in /dev" id="test_selinux_all_devicefiles_labeled" version="2">
-    <linux:object object_ref="object_selinux_all_devicefiles_labeled" />
-    <linux:state state_ref="state_selinux_all_devicefiles_labeled" />
+
+  <!-- collect all special files from /dev directory -->
+  <unix:file_object id="object_dev_device_files" comment="device files within /dev directory" version="1">
+    <unix:behaviors recurse_direction="down" />
+    <unix:path operation="equals">/dev</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_block_or_char_device_file</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_block_or_char_device_file" version="1" comment="device files" >
+    <unix:type operation="pattern match">^(block|character) special$</unix:type>
+  </unix:file_state>
+
+  <local_variable id="variable_dev_device_files" comment="all device files within /dev directory" datatype="string" version="1">
+    <object_component object_ref="object_dev_device_files" item_field="filepath" />
+  </local_variable>
+
+
+  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="device_t in /dev" id="test_selinux_dev_device_t" version="2">
+    <linux:object object_ref="object_selinux_dev_device_t" />
+    <linux:state state_ref="state_selinux_dev_device_t" />
   </linux:selinuxsecuritycontext_test>
-  <linux:selinuxsecuritycontext_object comment="device_t in /dev" id="object_selinux_all_devicefiles_labeled" version="1">
-    <linux:behaviors recurse_direction="down" />
-    <linux:path>/dev</linux:path>
-    <linux:filename operation="pattern match">^.*$</linux:filename>
-    <filter action="include">state_selinux_all_devicefiles_labeled</filter>
+  <linux:selinuxsecuritycontext_object comment="device_t in /dev" id="object_selinux_dev_device_t" version="1">
+    <linux:filepath operation="equals" var_ref="variable_dev_device_files"  var_check="at least one"/>
+    <filter action="include">state_selinux_dev_device_t</filter>
   </linux:selinuxsecuritycontext_object>
-  <linux:selinuxsecuritycontext_state comment="do it" id="state_selinux_all_devicefiles_labeled" version="1">
+  <linux:selinuxsecuritycontext_state comment="device_t label" id="state_selinux_dev_device_t" version="1">
     <linux:type datatype="string" operation="equals">device_t</linux:type>
   </linux:selinuxsecuritycontext_state>
+
+  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="unlabeled_t in /dev" id="test_selinux_dev_unlabeled_t" version="2">
+    <linux:object object_ref="object_selinux_dev_unlabeled_t" />
+    <linux:state state_ref="state_selinux_dev_unlabeled_t" />
+  </linux:selinuxsecuritycontext_test>
+  <linux:selinuxsecuritycontext_object comment="unlabeled_t in /dev" id="object_selinux_dev_unlabeled_t" version="1">
+    <linux:filepath operation="equals" var_ref="variable_dev_device_files"  var_check="at least one"/>
+    <filter action="include">state_selinux_dev_unlabeled_t</filter>
+  </linux:selinuxsecuritycontext_object>
+  <linux:selinuxsecuritycontext_state comment="unlabeled_t label" id="state_selinux_dev_unlabeled_t" version="1">
+    <linux:type datatype="string" operation="equals">unlabeled_t</linux:type>
+  </linux:selinuxsecuritycontext_state>
+
 </def-group>
