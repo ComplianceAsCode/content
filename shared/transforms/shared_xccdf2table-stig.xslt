@@ -52,6 +52,7 @@
 				<td>Description</td>
 				<td>Check Procedures</td>
 				<td>Fixtext</td>
+				<td>Version</td>
 			<xsl:if test='$notes'>
 				<td>Notes</td>
 			</xsl:if>
@@ -87,6 +88,7 @@
 			<td> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="cdf:Rule/cdf:description"/></xsl:call-template> </td>
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:check/cdf:check-content/node()"/> </td>
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:fixtext/node()"/> </td>
+			<td> <xsl:apply-templates select="cdf:Rule/cdf:version/node()"/> </td>
 			<xsl:if test='$notes'>
 				<td> <table><xsl:call-template name="print-notes"><xsl:with-param name="vulnid" select="@id"/></xsl:call-template> </table> </td>
 			</xsl:if>
