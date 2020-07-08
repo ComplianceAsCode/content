@@ -170,7 +170,11 @@ def main():
     if data.libvirt == "qemu:///system":
         print("  sudo virsh domifaddr {0}\n".format(data.domain))
     else:
-        print("  arp -n | grep $(virsh -q domiflist {0} | awk '{{print $5}}')\n".format(data.domain))
+        # command evaluation in fish shell is simply surrounded by
+        # parenthesis for example: (echo foo). In other shells you
+        # need to prepend the $ symbol as: $(echo foo)
+        from os import environ
+        print("  arp -n | grep {0}(virsh -q domiflist {1} | awk '{{print $5}}')\n".format('' if 'fish' == environ['SHELL'][-4:] else '$', data.domain))
 
     print("To connect to the {0} VM use:\n  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP\n".format(data.domain))
     print("To connect to the VM serial console, use:\n  virsh console {0}\n".format(data.domain))
