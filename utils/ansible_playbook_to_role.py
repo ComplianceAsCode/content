@@ -43,7 +43,7 @@ _mapping_tag = yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG
 
 
 def dict_representer(dumper, data):
-    return dumper.represent_mapping(_mapping_tag, data.iteritems())
+    return dumper.represent_mapping(_mapping_tag, data.items())
 
 
 def dict_constructor(loader, node):
@@ -309,7 +309,7 @@ class PlaybookToRoleConverter():
         for filename in self.PRODUCED_FILES:
             abs_path = os.path.join(directory, self.name, filename)
             ssg.utils.mkdir_p(os.path.dirname(abs_path))
-            open(abs_path, 'w').write(self.file(filename).encode("utf-8"))
+            open(abs_path, 'wb').write(self.file(filename).encode("utf-8"))
 
 
 class RoleGithubUpdater(object):
