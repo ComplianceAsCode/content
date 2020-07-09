@@ -342,7 +342,86 @@ class Profile(object):
         return profile
 
 
-class ProfileWithSeparatePolicies(Profile):
+class ResolvableProfile(Profile):
+    def __init__(self, * args, ** kwargs):
+        super(ResolvableProfile, self).__init__(* args, ** kwargs)
+        self.resolved = False
+        self.resolved_selections = set()
+
+    def _controls_to_items(self, controls_manager, policy_id, control_id_list):
+        items = Control()
+        for control_id in control_id_list:
+            new_control = controls_manager.get_control(policy_id, control_id)
+            items.rules.extend(new_control.rules)
+            items.variables.update(new_control.variables)
+        items.rules = list(set(items.rules))
+        return items
+
+    def _policy_to_items(self, controls_manager, policy_id):
+        control_id_list = [c.id for c in controls_manager.get_all_controls(policy_id)]
+        return self._controls_to_items(controls_manager, policy_id, control_id_list)
+
+    def resolve_controls(self, controls_manager):
+        pass
+
+    def extend_by(self, extended_profile):
+        extended_selects = set(extended_profile.selected)
+        self.resolved_selections.update(extended_selects)
+
+        updated_variables = dict(extended_profile.variables)
+        updated_variables.update(self.variables)
+        self.variables = updated_variables
+
+        extended_refinements = deepcopy(extended_profile.refine_rules)
+        updated_refinements = self._subtract_refinements(extended_refinements)
+        updated_refinements.update(self.refine_rules)
+        self.refine_rules = updated_refinements
+
+    def resolve(self, all_profiles, controls_manager=None):
+        if self.resolved:
+            return
+
+        self.resolve_controls(controls_manager)
+
+        self.resolved_selections = set(self.selected)
+
+        if self.extends:
+            if self.extends not in all_profiles:
+                msg = (
+                    "Profile {name} extends profile {extended}, but "
+                    "only profiles {known_profiles} are available for resolution."
+                    .format(name=self.id_, extended=self.extends,
+                            known_profiles=list(all_profiles.keys())))
+                raise RuntimeError(msg)
+            extended_profile = all_profiles[self.extends]
+            extended_profile.resolve(all_profiles, controls_manager)
+
+            self.extend_by(extended_profile)
+
+        for uns in self.unselected:
+            self.resolved_selections.discard(uns)
+
+        self.unselected = []
+        self.extends = None
+
+        self.selected = sorted(self.resolved_selections)
+
+        self.resolved = True
+
+    def _subtract_refinements(self, extended_refinements):
+        """
+        Given a dict of rule refinements from the extended profile,
+        "undo" every refinement prefixed with '!' in this profile.
+        """
+        for rule, refinements in list(self.refine_rules.items()):
+            if rule.startswith("!"):
+                for prop, val in refinements:
+                    extended_refinements[rule[1:]].remove((prop, val))
+                del self.refine_rules[rule]
+        return extended_refinements
+
+
+class ProfileWithSeparatePolicies(ResolvableProfile):
     def __init__(self, * args, ** kwargs):
         super(ProfileWithSeparatePolicies, self).__init__(* args, ** kwargs)
         self.policies = {}
@@ -387,7 +466,7 @@ class ProfileWithSeparatePolicies(Profile):
         super(ProfileWithSeparatePolicies, self).extend_by(extended_profile)
 
 
-class ProfileWithInlinePolicies(Profile):
+class ProfileWithInlinePolicies(ResolvableProfile):
     def __init__(self, * args, ** kwargs):
         super(ProfileWithInlinePolicies, self).__init__(* args, ** kwargs)
         self.controls_by_policy = defaultdict(list)
@@ -410,86 +489,6 @@ class ProfileWithInlinePolicies(Profile):
             for varname, value in to_expand.variables.items():
                 if varname not in self.variables:
                     self.variables[varname] = value
-
-
-class ResolvableProfile(Profile):
-    def __init__(self, * args, ** kwargs):
-        super(ResolvableProfile, self).__init__(* args, ** kwargs)
-        self.resolved = False
-        self.resolved_selections = set()
-
-    def _control_to_items(self, controls_manager, policy_id, control_id):
-        return controls_manager.get_control(policy_id, control_id)
-
-    def _controls_to_items(self, controls_manager, policy_id, control_id_list):
-        items = Control()
-        for control_id in control_id_list:
-            new_control = self._control_to_items(controls_manager, policy_id, control_id)
-            items.rules.extend(new_control.rules)
-            items.variables.update(new_control.variables)
-        items.rules = list(set(items.rules))
-        return items
-
-    def _policy_to_items(self, controls_manager, policy_id):
-        control_id_list = controls_manager.get_all_controls(policy_id)
-        return self._controls_to_items(controls_manager, policy_id, control_id_list)
-
-    def resolve_controls(self, controls_manager):
-        pass
-
-    def extend_by(self, extended_profile):
-        extended_selects = set(extended_profile.selected)
-        self.resolved_selections.update(extended_selects)
-
-        updated_variables = dict(extended_profile.variables)
-        updated_variables.update(self.variables)
-        self.variables = updated_variables
-
-        extended_refinements = deepcopy(extended_profile.refine_rules)
-        updated_refinements = self._subtract_refinements(extended_refinements)
-        updated_refinements.update(self.refine_rules)
-        self.refine_rules = updated_refinements
-
-    def resolve(self, all_profiles, controls_manager=None):
-        if self.resolved:
-            return
-
-        self.resolve_controls(controls_manager)
-
-        self.resolved_selections = set(self.selected)
-
-        if self.extends:
-            if self.extends not in all_profiles:
-                msg = (
-                    "Profile {name} extends profile {extended}, but "
-                    "only profiles {known_profiles} are available for resolution."
-                    .format(name=self.id_, extended=self.extends,
-                            known_profiles=list(all_profiles.keys())))
-                raise RuntimeError(msg)
-            extended_profile = all_profiles[self.extends]
-            extended_profile.resolve(all_profiles, controls_manager)
-
-        for uns in self.unselected:
-            self.resolved_selections.discard(uns)
-
-        self.unselected = []
-        self.extends = None
-
-        self.selected = sorted(self.resolved_selections)
-
-        self.resolved = True
-
-    def _subtract_refinements(self, extended_refinements):
-        """
-        Given a dict of rule refinements from the extended profile,
-        "undo" every refinement prefixed with '!' in this profile.
-        """
-        for rule, refinements in list(self.refine_rules.items()):
-            if rule.startswith("!"):
-                for prop, val in refinements:
-                    extended_refinements[rule[1:]].remove((prop, val))
-                del self.refine_rules[rule]
-        return extended_refinements
 
 
 class Value(object):
