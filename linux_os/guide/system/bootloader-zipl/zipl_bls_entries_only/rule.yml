@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Ensure all zIPL boot entries are BLS compliant'
+
+description: |-
+    Ensure that zIPL boot entries fully adheres to Boot Loader Specification (BLS)
+    by checking that <tt>/etc/zipl.conf</tt> doesn't contain <tt>image = </tt>.
+
+rationale: |-
+    {{{ full_name }}} adheres to Boot Loader Specification (BLS) and is the prefered method of
+    configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 83485-3
+
+ocil_clause: 'a non BLS boot entry is configured'
+
+ocil: |-
+  Check that no boot image file is specified in <tt>/etc/zipl.conf</tt>:
+  <pre>grep -R "^image\s*=" /etc/zipl.conf</pre>
+  No line should be returned, if a line is returned non BLS compliant boot entries are configured for zIPL.
+
+platform: machine
+
+warnings:
+  - general: |-
+      To prevent breakage or removal of all boot entries oconfigured in /etc/zipl.conf
+      automated remediation for this rule is not available.

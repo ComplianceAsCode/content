@@ -415,3 +415,7 @@ selections:
     - ssh_client_rekey_limit
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
+
+    # zIPl specific rules
+    - zipl_bls_entries_only
+    - zipl_bootmap_is_up_to_date
