@@ -1,0 +1,12 @@
+# platform = Red Hat Enterprise Linux 8
+
+# Correct BLS option using grubby, which is a thin wrapper around BLS operations
+grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
+
+# Ensure new kernels and boot entries retain the boot option
+if [ ! -f /etc/kernel/cmdline ]; then
+    echo "{{{ ARG_NAME_VALUE }}}" >> /etc/kernel/cmdline
+elif ! grep -q '^(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$' /etc/kernel/cmdline; then
+    echo " audit=1" >> /etc/kernel/cmdline
+    sed -Ei 's/^(.*)$/\1 audit=1/' /etc/kernel/cmdline
+fi

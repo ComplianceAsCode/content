@@ -375,7 +375,7 @@ def bls_entries_option(data, lang):
     return data
 
 
-@template(["oval"])
+@template(["ansible", "bash", "oval"])
 def zipl_bls_entries_option(data, lang):
     return bls_entries_option(data, lang)
 

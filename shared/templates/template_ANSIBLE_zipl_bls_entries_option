@@ -1,0 +1,48 @@
+# platform = Red Hat Enterprise Linux 8
+# reboot = true
+# strategy = configure
+# complexity = medium
+# disruption = low
+
+- name: "Ensure BLS boot entries options contain {{{ ARG_NAME_VALUE }}}"
+  block:
+    - name: "Check if any boot entry misses {{{ ARG_NAME_VALUE }}}"
+      find:
+        paths: "/boot/loader/entries/"
+        contains: "^options .*{{{ ARG_NAME_VALUE }}}.*$"
+        patterns: "*.conf"
+      register: entries_options
+
+    - name: "Update boot entries options"
+      command: grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
+      when: entries_options is defined and entries_options.examined != entries_options.matched
+      # The conditional above assumes that only *.conf files are present in /boot/loader/entries
+      # Then, the number of conf files is the same as examined files
+
+    - name: "Check if /etc/kernel/cmdline exists"
+      stat:
+        path: /etc/kernel/cmdline
+      register: cmdline_stat
+
+    - name: "Check if /etc/kernel/cmdline contains {{{ ARG_NAME_VALUE }}}"
+      find:
+        paths: "/etc/kernel/"
+        patterns: "cmdline"
+        contains: "^.*{{{ ARG_NAME_VALUE }}}.*$"
+      register: cmdline_find
+
+    - name: "Add /etc/kernel/cmdline contains {{{ ARG_NAME_VALUE }}}"
+      lineinfile:
+        create: yes
+        path: "/etc/kernel/cmdline"
+        line: '{{{ ARG_NAME_VALUE }}}'
+      when: cmdline_stat is defined and not cmdline_stat.stat.exists
+
+    - name: "Append /etc/kernel/cmdline contains {{{ ARG_NAME_VALUE }}}"
+      lineinfile:
+        path: "/etc/kernel/cmdline"
+        backrefs: yes
+        regexp: "^(.*)$"
+        line: '\1 {{{ ARG_NAME_VALUE }}}'
+      when: cmdline_stat is defined and cmdline_stat.stat.exists and cmdline_find is defined and cmdline_find.matched == 0
+
