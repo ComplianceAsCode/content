@@ -61,12 +61,37 @@ def test_controls_load_product():
     # that allows it only on rhel9 product.
     assert "cockpit_session_timeout" in c_r1.rules
 
-def test_profile_resolution():
+
+class SeparateResolvableProfile(ssg.build_yaml.ProfileWithSeparatePolicies, ssg.build_yaml.ResolvableProfile):
+    pass
+
+
+class InlineResolvableProfile(ssg.build_yaml.ProfileWithInlinePolicies, ssg.build_yaml.ResolvableProfile):
+    pass
+
+
+def test_profile_resolution_separate():
+    profile_resolution(SeparateResolvableProfile, "abcd-low")
+
+
+def test_profile_resolution_extends_separate():
+    profile_resolution_extends(SeparateResolvableProfile, "abcd-low", "abcd-high")
+
+
+def test_profile_resolution_inline():
+    profile_resolution(InlineResolvableProfile, "abcd-low-inline")
+
+
+def test_profile_resolution_extends_inline():
+    profile_resolution_extends(InlineResolvableProfile, "abcd-low-inline", "abcd-high-inline")
+
+
+def profile_resolution(cls, profile_low):
     env_yaml = {"product": "rhel9"}
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
-    low_profile_path = os.path.join(profiles_dir, "abcd-low.profile")
-    profile = ssg.build_yaml.ResolvableProfile.from_yaml(low_profile_path)
+    low_profile_path = os.path.join(profiles_dir, profile_low + ".profile")
+    profile = cls.from_yaml(low_profile_path)
     all_profiles = {"abcd-low": profile}
     profile.resolve(all_profiles, controls_manager=controls_manager)
 
@@ -82,17 +107,18 @@ def test_profile_resolution():
     # as well.
     assert "security_patches_uptodate" in profile.selected
 
-def test_profile_resolution_extends():
+
+def profile_resolution_extends(cls, profile_low, profile_high):
     # tests ABCD High profile which is defined as an extension of ABCD Low
     env_yaml = {"product": "rhel9"}
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
 
-    low_profile_path = os.path.join(profiles_dir, "abcd-low.profile")
-    low_profile = ssg.build_yaml.ResolvableProfile.from_yaml(low_profile_path)
-    high_profile_path = os.path.join(profiles_dir, "abcd-high.profile")
-    high_profile = ssg.build_yaml.ResolvableProfile.from_yaml(high_profile_path)
-    all_profiles = {"abcd-low": low_profile, "abcd-high": high_profile}
+    low_profile_path = os.path.join(profiles_dir, profile_low + ".profile")
+    low_profile = cls.from_yaml(low_profile_path)
+    high_profile_path = os.path.join(profiles_dir, profile_high + ".profile")
+    high_profile = cls.from_yaml(high_profile_path)
+    all_profiles = {profile_low: low_profile, profile_high: high_profile}
     high_profile.resolve(all_profiles, controls_manager=controls_manager)
 
     # Profile 'abcd-high' selects controls R1, R2, R3 from 'abcd' policy,
@@ -113,6 +139,8 @@ def test_profile_resolution_extends():
     assert "var_password_pam_ocredit" in high_profile.variables
     assert high_profile.variables["var_password_pam_ocredit"] == "2"
 
+
+@pytest.mark.skip
 def test_profile_resolution_all():
     env_yaml = {"product": "rhel9"}
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
