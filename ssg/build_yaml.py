@@ -348,18 +348,15 @@ class ResolvableProfile(Profile):
         self.resolved = False
         self.resolved_selections = set()
 
-    def _controls_to_items(self, controls_manager, policy_id, control_id_list):
-        items = Control()
-        for control_id in control_id_list:
-            new_control = controls_manager.get_control(policy_id, control_id)
-            items.rules.extend(new_control.rules)
-            items.variables.update(new_control.variables)
-        items.rules = list(set(items.rules))
+    def _controls_ids_to_controls(self, controls_manager, policy_id, control_id_list):
+        items = [controls_manager.get_control(policy_id, cid) for cid in control_id_list]
         return items
 
-    def _policy_to_items(self, controls_manager, policy_id):
-        control_id_list = [c.id for c in controls_manager.get_all_controls(policy_id)]
-        return self._controls_to_items(controls_manager, policy_id, control_id_list)
+    def _merge_control(self, control):
+        self.selected.extend(control.rules)
+        for varname, value in control.variables.items():
+            if varname not in self.variables:
+                self.variables[varname] = value
 
     def resolve_controls(self, controls_manager):
         pass
@@ -435,31 +432,29 @@ class ProfileWithSeparatePolicies(ResolvableProfile):
     def _parse_policies(self, policies_yaml):
         for item in policies_yaml:
             id_ = required_key(item, "id")
-            controls = required_key(item, "controls")
-            if not isinstance(controls, list):
-                if controls != "all":
+            controls_ids = required_key(item, "controls")
+            if not isinstance(controls_ids, list):
+                if controls_ids != "all":
                     msg = ("Policy {id_} contains invalid controls list {controls}."
-                        .format(id_=id_, controls=str(controls))
+                        .format(id_=id_, controls=str(controls_ids))
                         )
                     raise ValueError(msg)
-            self.policies[id_] = controls
+            self.policies[id_] = controls_ids
 
     def resolve_controls(self, controls_manager):
-        for policy_id, controls in self.policies.items():
-            to_expand = Control()
+        for policy_id, controls_ids in self.policies.items():
+            controls = []
 
-            if isinstance(controls, list):
-                to_expand = self._controls_to_items(controls_manager, policy_id, controls)
-            elif controls == "all":
-                to_expand = self._policy_to_items(controls_manager, policy_id)
+            if isinstance(controls_ids, list):
+                controls = self._controls_ids_to_controls(controls_manager, policy_id, controls_ids)
+            elif controls_ids == "all":
+                controls = controls_manager.get_all_controls(policy_id)
             else:
-                msg = "Unknown policy content {content} in profile {profile_id}".format(content=controls, profile_id=self.id_)
+                msg = "Unknown policy content {content} in profile {profile_id}".format(content=controls_ids, profile_id=self.id_)
                 raise ValueError(msg)
 
-            self.selected.extend(to_expand.rules)
-            for varname, value in to_expand.variables.items():
-                if varname not in self.variables:
-                    self.variables[varname] = value
+            for c in controls:
+                self._merge_control(c)
 
     def extend_by(self, extended_profile):
         self.policies.update(extended_profile.policies)
@@ -479,16 +474,16 @@ class ProfileWithInlinePolicies(ResolvableProfile):
             super(ProfileWithInlinePolicies, self).apply_selection(item)
 
     def resolve_controls(self, controls_manager):
-        for policy_id, controls in self.controls_by_policy.items():
-            if "all" in controls:
-                to_expand = self._policy_to_items(controls_manager, policy_id)
-            else:
-                to_expand = self._controls_to_items(controls_manager, policy_id, controls)
+        for policy_id, controls_ids in self.controls_by_policy.items():
+            controls = []
 
-            self.selected.extend(to_expand.rules)
-            for varname, value in to_expand.variables.items():
-                if varname not in self.variables:
-                    self.variables[varname] = value
+            if "all" in controls_ids:
+                controls = controls_manager.get_all_controls(policy_id)
+            else:
+                controls = self._controls_ids_to_controls(controls_manager, policy_id, controls_ids)
+
+            for c in controls:
+                self._merge_control(c)
 
 
 class Value(object):
