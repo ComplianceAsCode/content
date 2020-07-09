@@ -55,3 +55,5 @@ selections:
     - "!zipl_pti_argument"
     - "!zipl_slub_debug_argument"
     - "!zipl_vsyscall_argument"
+    - "!zipl_vsyscall_argument.role=unscored"
+    - "!zipl_vsyscall_argument.severity=info"
