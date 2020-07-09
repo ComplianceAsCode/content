@@ -62,28 +62,28 @@ def test_controls_load_product():
     assert "cockpit_session_timeout" in c_r1.rules
 
 
-class SeparateResolvableProfile(ssg.build_yaml.ProfileWithSeparatePolicies, ssg.build_yaml.ResolvableProfile):
-    pass
-
-
-class InlineResolvableProfile(ssg.build_yaml.ProfileWithInlinePolicies, ssg.build_yaml.ResolvableProfile):
-    pass
-
-
 def test_profile_resolution_separate():
-    profile_resolution(SeparateResolvableProfile, "abcd-low")
+    profile_resolution(ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-low")
 
 
 def test_profile_resolution_extends_separate():
-    profile_resolution_extends(SeparateResolvableProfile, "abcd-low", "abcd-high")
+    profile_resolution_extends(ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-low", "abcd-high")
+
+
+def test_profile_resolution_all_separate():
+    profile_resolution_all(ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-all")
 
 
 def test_profile_resolution_inline():
-    profile_resolution(InlineResolvableProfile, "abcd-low-inline")
+    profile_resolution(ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
 
 
 def test_profile_resolution_extends_inline():
-    profile_resolution_extends(InlineResolvableProfile, "abcd-low-inline", "abcd-high-inline")
+    profile_resolution_extends(ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline", "abcd-high-inline")
+
+
+def test_profile_resolution_all_inline():
+    profile_resolution_all(ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
 
 
 def profile_resolution(cls, profile_low):
@@ -140,14 +140,13 @@ def profile_resolution_extends(cls, profile_low, profile_high):
     assert high_profile.variables["var_password_pam_ocredit"] == "2"
 
 
-@pytest.mark.skip
-def test_profile_resolution_all():
+def profile_resolution_all(cls, profile_all):
     env_yaml = {"product": "rhel9"}
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
-    profile_path = os.path.join(profiles_dir, "abcd-all.profile")
-    profile = ssg.build_yaml.ResolvableProfile.from_yaml(profile_path)
-    all_profiles = {"abcd-all": profile}
+    profile_path = os.path.join(profiles_dir, profile_all + ".profile")
+    profile = cls.from_yaml(profile_path)
+    all_profiles = {profile_all: profile}
     profile.resolve(all_profiles, controls_manager=controls_manager)
 
     # Profile 'abcd-all' selects all controls from 'abcd' policy,
