@@ -3,7 +3,6 @@
 cp="Ciphersuites = TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256"
 file=/etc/crypto-policies/local.d/opensslcnf-ospp.config
 
-#blank line at the begining to ease later readibility
-echo '' > "$file"
+
 echo "$cp" >> "$file"
 update-crypto-policies
