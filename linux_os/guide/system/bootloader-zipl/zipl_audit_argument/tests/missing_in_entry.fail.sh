@@ -1,6 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8
-# remediation = none
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 
 # Remove audit=1 from all boot entries
 sed -Ei 's/(^options.*\s)audit=1(.*?)$/\1\2/' /boot/loader/entries/*

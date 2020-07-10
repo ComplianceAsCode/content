@@ -1,6 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8
-# remediation = none
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 
 # Make sure boot loader entries contain audit=1
 for file in /boot/loader/entries/*.conf
