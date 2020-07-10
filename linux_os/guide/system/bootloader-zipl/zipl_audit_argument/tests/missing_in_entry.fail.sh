@@ -8,6 +8,6 @@ sed -i '/^options / s/$/ audit=1/' /boot/loader/entries/*rescue.conf
 sed -Ei 's/(^options.*\s)\$kernelopts(.*?)$/\1\2/' /boot/loader/entries/*rescue.conf
 
 # Make sure /etc/kernel/cmdline contains audit=1
-if ! grep -q '^(.*\s)?audit=1(\s.*)?$' /etc/kernel/cmdline ; then
+if ! grep -qs '^(.*\s)?audit=1(\s.*)?$' /etc/kernel/cmdline ; then
     echo "audit=1" >> /etc/kernel/cmdline
 fi
