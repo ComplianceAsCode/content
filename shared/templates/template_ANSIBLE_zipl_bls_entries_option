@@ -6,18 +6,22 @@
 
 - name: "Ensure BLS boot entries options contain {{{ ARG_NAME_VALUE }}}"
   block:
-    - name: "Check if any boot entry misses {{{ ARG_NAME_VALUE }}}"
+    - name: "Check how many boot entries exist "
+      find:
+        paths: "/boot/loader/entries/"
+        patterns: "*.conf"
+      register: n_entries
+
+    - name: "Check how many boot entries set {{{ ARG_NAME_VALUE }}}"
       find:
         paths: "/boot/loader/entries/"
         contains: "^options .*{{{ ARG_NAME_VALUE }}}.*$"
         patterns: "*.conf"
-      register: entries_options
+      register: n_entries_options
 
     - name: "Update boot entries options"
       command: grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
-      when: entries_options is defined and entries_options.examined != entries_options.matched
-      # The conditional above assumes that only *.conf files are present in /boot/loader/entries
-      # Then, the number of conf files is the same as examined files
+      when: n_entries is defined and n_entries_options is defined and n_entries.matched != n_entries_options.matched
 
     - name: "Check if /etc/kernel/cmdline exists"
       stat:
