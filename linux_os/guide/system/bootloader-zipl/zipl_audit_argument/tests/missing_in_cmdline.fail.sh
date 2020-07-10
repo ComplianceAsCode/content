@@ -6,7 +6,7 @@
 for file in /boot/loader/entries/*.conf
 do
     if ! grep -q '^options.*audit=1.*$' "$file" ; then
-        sed -i '/^options / s/$/audit=1/' "$file"
+        sed -i '/^options / s/$/ audit=1/' "$file"
     fi
 done
 
