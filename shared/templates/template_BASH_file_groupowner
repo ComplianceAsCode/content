@@ -5,7 +5,12 @@
 # disruption = low
 
 {{% if IS_DIRECTORY and FILE_REGEX %}}
-find {{{ FILEPATH }}} -regex '{{{ FILE_REGEX }}}' -exec chgrp {{{ FILEGID }}} {} \;
+readarray -t files < <(find {{{ FILEPATH }}})
+for file in ${files[@]}; do
+    if basename $file | grep -q '{{{ FILE_REGEX }}}'; then
+        chgrp {{{ FILEGID }}} $file
+    fi
+done
 {{% else %}}
 chgrp {{{ FILEGID }}} {{{ FILEPATH }}}
 {{% endif %}}

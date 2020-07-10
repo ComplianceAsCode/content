@@ -5,7 +5,12 @@
 # disruption = low
 
 {{% if IS_DIRECTORY and FILE_REGEX %}}
-find {{{ FILEPATH }}} -regex '{{{ FILE_REGEX }}}' -exec chown {{{ FILEUID }}} {} \;
+readarray -t files < <(find {{{ FILEPATH }}})
+for file in ${files[@]}; do
+    if basename $file | grep -q '{{{ FILE_REGEX }}}'; then
+        chown {{{ FILEUID }}} $file
+    fi
+done
 {{% else %}}
 chown {{{ FILEUID }}} {{{ FILEPATH }}}
 {{% endif %}}
