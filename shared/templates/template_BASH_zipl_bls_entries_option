@@ -7,6 +7,5 @@ grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
 if [ ! -f /etc/kernel/cmdline ]; then
     echo "{{{ ARG_NAME_VALUE }}}" >> /etc/kernel/cmdline
 elif ! grep -q '^(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$' /etc/kernel/cmdline; then
-    echo " audit=1" >> /etc/kernel/cmdline
-    sed -Ei 's/^(.*)$/\1 audit=1/' /etc/kernel/cmdline
+    sed -Ei 's/^(.*)$/\1 {{{ ARG_NAME_VALUE }}}/' /etc/kernel/cmdline
 fi
