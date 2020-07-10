@@ -30,5 +30,7 @@ template:
     name: file_permissions
     vars:
         filepath: /etc/origin/openvswitch/
-        file_regex: ^[^\.].*$
+        file_regex: ^[^.].*$
         filemode: '0644'
+    backends:
+        bash: 'off'
