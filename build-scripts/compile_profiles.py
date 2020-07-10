@@ -39,7 +39,7 @@ def make_name_to_profile_mapping(profile_files, env_yaml):
     name_to_profile = {}
     for f in profile_files:
         try:
-            p = ssg.build_yaml.ResolvableProfile.from_yaml(f, env_yaml)
+            p = ssg.build_yaml.ProfileWithInlinePolicies.from_yaml(f, env_yaml)
             name_to_profile[p.id_] = p
         except Exception as exc:
             # The profile is probably doc-incomplete

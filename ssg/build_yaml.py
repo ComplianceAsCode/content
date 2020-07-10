@@ -658,7 +658,7 @@ class Benchmark(object):
                 continue
 
             try:
-                new_profile = Profile.from_yaml(dir_item_path, env_yaml)
+                new_profile = ProfileWithInlinePolicies.from_yaml(dir_item_path, env_yaml)
             except DocumentationNotComplete:
                 continue
             except Exception as exc:
