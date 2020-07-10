@@ -7,7 +7,7 @@
     </metadata>
     <criteria operator="AND">
       <criterion test_ref="test_bls_{{{ SANITIZED_ARG_NAME }}}_options"
-      comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/*" />
+      comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/*.conf" />
       <criterion test_ref="test_kernel_update_{{{ SANITIZED_ARG_NAME }}}_option"
       comment="Make sure that newly installed kernels will retain {{{ ARG_NAME_VALUE }}} option" />
     </criteria>
