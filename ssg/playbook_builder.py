@@ -33,33 +33,6 @@ class PlaybookBuilder():
         additional_content_directories = product_yaml.get("additional_content_directories", [])
         self.add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
 
-    def get_profile_selections(self, profile):
-        """
-        Provides a tuple (rules, variables) where rules is a list of rules
-        selected in the profile and variables is a dictionary of
-        variables and their values in the profile. The method can handle
-        profiles which extend other profiles.
-        """
-        rules = []
-        variables = dict()
-        if profile.extends:
-            extended_profile_path = os.path.join(
-                self.profiles_dir, profile.extends + ".profile")
-            try:
-                extended_profile = ssg.build_yaml.Profile.from_yaml(
-                    extended_profile_path)
-            except ssg.yaml.DocumentationNotComplete:
-                sys.stderr.write("Skipping incomplete profile %s.\n" % extended_profile_path)
-                return None
-            if not profile:
-                sys.stderr.write(
-                    "Could not parse profile %s.\n" % extended_profile_path)
-                return None
-            rules, variables = self.get_profile_selections(extended_profile)
-        rules.extend(profile.get_rule_selectors())
-        variables.update(profile.get_variable_selectors())
-        return rules, variables
-
     def choose_variable_value(self, var_id, variables, refinements):
         """
         Determine value of variable based on profile refinements.
@@ -203,7 +176,7 @@ class PlaybookBuilder():
                 % (profile_path, ext)
             )
 
-        profile = ssg.build_yaml.Profile.from_yaml(profile_path)
+        profile = ssg.build_yaml.ResolvableProfile.from_yaml(profile_path)
         if not profile:
             raise RuntimeError("Could not parse profile %s.\n" % profile_path)
         return profile
@@ -215,7 +188,8 @@ class PlaybookBuilder():
         variables according to profile selection. Playbooks are written into
         a new subdirectory in output_dir.
         """
-        profile_rules, profile_refines = self.get_profile_selections(profile)
+        profile_rules = profile.get_rule_selectors()
+        profile_refines = profile.get_variable_selectors()
 
         profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
         os.makedirs(profile_playbooks_dir)
@@ -234,7 +208,8 @@ class PlaybookBuilder():
         Playbooks are parametrized by variables according to profile selection.
         Playbooks are written into a new subdirectory in output_dir.
         """
-        profile_rules, profile_refines = self.get_profile_selections(profile)
+        profile_rules = profile.get_rule_selectors()
+        profile_refines = profile.get_variable_selectors()
         profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
         os.makedirs(profile_playbooks_dir)
         snippet_path = os.path.join(self.input_dir, rule_id + ".yml")
@@ -268,36 +243,37 @@ class PlaybookBuilder():
         If the rule_id is not given, Playbooks are created for every rule.
         """
         variables = self.get_benchmark_variables()
+        profiles = {}
+        for profile_file in os.listdir(self.profiles_dir):
+            profile_path = os.path.join(self.profiles_dir, profile_file)
+            try:
+                profile = self.open_profile(profile_path)
+            except ssg.yaml.DocumentationNotComplete as e:
+                msg = "Skipping incomplete profile {0}. To include incomplete " + \
+                    "profiles, build in debug mode.\n"
+                sys.stderr.write(msg.format(profile_path))
+                continue
+            except RuntimeError as e:
+                sys.stderr.write(str(e))
+                continue
+            profiles[profile.id_] = profile
+
         if profile_id:
-            profile_path = os.path.join(
-                self.profiles_dir, profile_id + ".profile")
-            profile = self.open_profile(profile_path)
+            to_process = [profile_id]
+        else:
+            to_process = list(profiles.keys())
+
+        for p in to_process:
+            profile = profiles[p]
+            profile.resolve(profiles)
             if rule_id:
                 self.create_playbook_for_single_rule(profile, rule_id,
                                                      variables)
             else:
                 self.create_playbooks_for_all_rules_in_profile(
                     profile, variables)
-        else:
-            # run for all profiles
-            for profile_file in os.listdir(self.profiles_dir):
-                profile_path = os.path.join(self.profiles_dir, profile_file)
-                try:
-                    profile = self.open_profile(profile_path)
-                except ssg.yaml.DocumentationNotComplete as e:
-                    msg = "Skipping incomplete profile {0}. To include incomplete " + \
-                          "profiles, build in debug mode.\n"
-                    sys.stderr.write(msg.format(profile_path))
-                    continue
-                except RuntimeError as e:
-                    sys.stderr.write(str(e))
-                    continue
-                if rule_id:
-                    self.create_playbook_for_single_rule(profile, rule_id,
-                                                         variables)
-                else:
-                    self.create_playbooks_for_all_rules_in_profile(
-                        profile, variables)
+
+        if not profile_id:
             # build playbooks for virtual '(all)' profile
             # this virtual profile contains all rules in the product
             self.create_playbooks_for_all_rules(variables)
