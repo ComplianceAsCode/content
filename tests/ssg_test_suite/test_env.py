@@ -397,10 +397,18 @@ class PodmanTestEnv(ContainerTestEnv):
             msg = "Command '{0}' returned {1}:\n{2}".format(
                 " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
-        ports = {}
-        for pb in json.loads(podman_output):
-            ports[pb['containerPort']] = pb['hostPort']
-        return ports
+        return self.extract_port_map(json.loads(podman_output))
+
+    def extract_port_map(self, podman_network_data):
+        if 'containerPort' in podman_network_data:
+            container_port = podman_network_data['containerPort']
+            host_port = podman_network_data['hostPort']
+        else:
+            container_port_with_protocol, host_data = podman_network_data.popitem()
+            container_port = container_port_with_protocol.split("/")[0]
+            host_port = host_data[0]['HostPort']
+        port_map = {int(container_port): int(host_port)}
+        return port_map
 
     def _terminate_current_running_container_if_applicable(self):
         if self.containers:
