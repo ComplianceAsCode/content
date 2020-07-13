@@ -17,6 +17,9 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: 83381-4
+
 ocil_clause: 'vsyscalls are enabled'
 
 ocil: |-
@@ -25,3 +28,9 @@ ocil: |-
   No line should be returned, each line returned is a boot entry that doesn't disable virtual syscalls.
 
 platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: vsyscall
+    arg_value: 'none'

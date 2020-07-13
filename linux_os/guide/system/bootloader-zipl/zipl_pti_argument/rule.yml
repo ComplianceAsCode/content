@@ -19,6 +19,9 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: 83361-6
+
 ocil_clause: 'Kernel page-table isolation is not enabled'
 
 ocil: |-
@@ -27,3 +30,9 @@ ocil: |-
   No line should be returned, each line returned is a boot entry that doesn't enable page-table isolation .
 
 platform: machine
+
+template:
+  name: zipl_bls_entries_option
+  vars:
+    arg_name: pti
+    arg_value: 'on'
