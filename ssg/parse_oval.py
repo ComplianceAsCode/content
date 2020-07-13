@@ -9,6 +9,7 @@ REFERENCE_TO_GROUP = dict(
     test_ref="tests",
     object_ref="objects",
     state_ref="states",
+    filter="states",
 )
 
 
