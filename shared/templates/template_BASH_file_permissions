@@ -3,8 +3,14 @@
 # strategy = configure
 # complexity = low
 # disruption = low
+
 {{% if IS_DIRECTORY and FILE_REGEX %}}
-find {{{ FILEPATH }}} -regex '{{{ FILE_REGEX }}}' -exec chmod {{{ FILEMODE }}} {} \;
+readarray -t files < <(find {{{ FILEPATH }}})
+for file in "${files[@]}"; do
+    if basename $file | grep -q '{{{ FILE_REGEX }}}'; then
+        chmod {{{ FILEMODE }}} $file
+    fi    
+done
 {{% else %}}
 chmod {{{ FILEMODE }}} {{{ FILEPATH }}}
 {{% endif %}}
