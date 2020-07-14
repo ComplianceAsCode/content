@@ -1584,7 +1584,7 @@ file_groupowner::
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
-** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory.
+** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *filegid* - group ID (GID)
 * Languages: Ansible, Bash, OVAL
 
@@ -1593,7 +1593,7 @@ file_owner::
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
-** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory.
+** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *fileuid* - user ID (UID)
 * Languages: Ansible, Bash, OVAL
 
@@ -1602,7 +1602,7 @@ file_permissions::
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
-** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory.
+** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *filemode* - File permissions in a hexadecimal format, eg. `'0640'`.
 * Languages: Ansible, Bash, OVAL
 
