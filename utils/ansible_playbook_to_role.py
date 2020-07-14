@@ -204,7 +204,8 @@ class PlaybookToRoleConverter():
     @memoize
     def title(self):
         try:
-            return re.search(r'Profile Title:\s+(.+)$', self._description, re.MULTILINE).group(1)
+            title = re.search(r'Profile Title:\s+(.+)$', self._description, re.MULTILINE).group(1)
+            return '"' + title + '"'
         except AttributeError:
             return re.search(r'Ansible Playbook for\s+(.+)$', self._description, re.MULTILINE) \
                      .group(1)
