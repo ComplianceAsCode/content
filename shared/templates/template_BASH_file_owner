@@ -6,7 +6,7 @@
 
 {{% if IS_DIRECTORY and FILE_REGEX %}}
 readarray -t files < <(find {{{ FILEPATH }}})
-for file in ${files[@]}; do
+for file in "${files[@]}"; do
     if basename $file | grep -q '{{{ FILE_REGEX }}}'; then
         chown {{{ FILEUID }}} $file
     fi
