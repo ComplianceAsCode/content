@@ -17,7 +17,7 @@
 The purpose of this project is to create *security policy content* for various
 platforms -- *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, ... --
 as well as products -- *Firefox*, *Chromium*, *JRE*, ...
-Our aim is to make it as easy as possible to write new and maintain existing
+We aim to make it as easy as possible to write new and maintain existing
 security content in all the commonly used formats.
 
 ## We build security content in various formats
@@ -27,7 +27,7 @@ security content in all the commonly used formats.
 *"SCAP content"* refers to documents  in the *XCCDF*, *OVAL* and
 *Source DataStream* formats.  These documents can be presented
 in different forms and by different organizations to meet their security
-automation and technical implementation needs.  For general use we
+automation and technical implementation needs.  For general use, we
 recommend *Source DataStreams* because they contain all the data you
 need to evaluate and put machines into compliance. The datastreams are
 part of our release ZIP archives.
@@ -37,7 +37,7 @@ profiles.  These can be used both in check-mode to evaluate compliance,
 as well as run-mode to put machines into compliance.  We publish these
 on *Ansible Galaxy* as well as in release ZIP archives.
 
-*"Bash fix files"* refers to *Bash* scripts generate from security
+*"Bash fix files"* refers to *Bash* scripts generated from security
 profiles.  These are meant to be run on machines to put them into
 compliance.  We recommend using other formats but understand that for
 some deployment scenarios bash is the only option.
@@ -49,7 +49,7 @@ content. By taking advantage of the powerful build system of this project,
 we avoid as much redundancy as possible.
 
 The build system combines the easy-to-edit YAML rule files with OVAL checks,
-Ansible task snippets, Bash fixes and other files. Templating is provided
+Ansible task snippets, Bash fixes, and other files. Templating is provided
 at every step to avoid boilerplate. Security identifiers
 (CCE, NIST ID, STIG, ...) appear in all of our output formats but are all
 sourced from the YAML rule files.
@@ -61,7 +61,7 @@ to use a specific security content format. We let you choose.
 
 ---
 We use an OpenControl-inspired YAML rule format for input. Write once and
-generate security content in XCCDF, Ansible and others.
+generate security content in XCCDF, Ansible, and others.
 
 ```YAML
 prodtype: rhel7
@@ -93,7 +93,7 @@ identifiers:
 ### Scan targets
 
 Our security content can be used to scan bare-metal machines, virtual machines,
-virtual machine images (qcow2 and others), containers (including Docker) and
+virtual machine images (qcow2 and others), containers (including Docker), and
 container images.
 
 We use platform checks to detect whether we should or should not evaluate some
@@ -129,7 +129,7 @@ Each zip file is an archive with ready-made SCAP source datastreams.
 ### From COPR
 
 We maintain a COPR repository that provides unofficial builds of latest versions
-of openscap, scap-security-guide, scap-workbench and openscap-daemon.
+of openscap, scap-security-guide, scap-workbench, and openscap-daemon.
 The packages are suitable for use on Red Hat Enterprise Linux 6 and 7 and CentOS 6 and 7.
 
 See https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/ for
@@ -190,8 +190,8 @@ for more info.
 `oscap-ssh` comes bundled with OpenSCAP 1.2.3 and later. It allows scanning
 a remote machine via SSH with an interface resembling the `oscap` tool.
 
-The following command evaluates machine with IP `192.168.1.123` with content
-stored on local machine. Keep in mind that `oscap` has to be installed on the
+The following command evaluates a machine with IP `192.168.1.123` with content
+stored on the local machine. Keep in mind that `oscap` has to be installed on the
 remote machine but the SSG content doesn't need to be.
 
 ```bash
@@ -225,7 +225,7 @@ To apply the playbook on your local machine run:
 ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/rhel7-playbook-rht-ccp.yml
 ```
 
-Each of the Ansible Playbooks contain instructions on how to deploy them. Here
+Each of the Ansible Playbooks contains instructions on how to deploy them. Here
 is a snippet of the instructions:
 
 ```YAML
@@ -275,8 +275,8 @@ biggest open-source beyond-SCAP content project.
 The next few years saw the introduction of not just government-specific security
 profiles but also commercial, such as PCI-DSS.
 
-Later, the industry starting moving towards different security content formats,
-such as Ansible, Puppet and Chef InSpec. The community reacted by evolving the
+Later, the industry starts moving towards different security content formats,
+such as Ansible, Puppet, and Chef InSpec. The community reacted by evolving the
 tooling and helped transform SSG into a more general-purpose security content
 project. This change happened over time in 2017 and 2018. In September 2018, we
 decided to change the name of the project to avoid confusion.
