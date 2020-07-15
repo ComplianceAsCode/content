@@ -5,4 +5,4 @@ description: >-
   the ABCD benchmark.
 selections:
   - abcd:all
-  - security_patches_uptodate
+  - security_patches_up_to_date

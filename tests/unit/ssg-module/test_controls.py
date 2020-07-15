@@ -102,10 +102,10 @@ def profile_resolution(cls, profile_low):
     assert "cockpit_session_timeout" in profile.selected
     assert "var_accounts_tmout" in profile.variables
 
-    # The rule "security_patches_uptodate" has been selected directly by profile
+    # The rule "security_patches_up_to_date" has been selected directly by profile
     # selections, not by using controls, so it should be in the resolved profile
     # as well.
-    assert "security_patches_uptodate" in profile.selected
+    assert "security_patches_up_to_date" in profile.selected
 
 
 def profile_resolution_extends(cls, profile_low, profile_high):
@@ -128,10 +128,10 @@ def profile_resolution_extends(cls, profile_low, profile_high):
     assert "cockpit_session_timeout" in high_profile.selected
     assert "var_accounts_tmout" in high_profile.variables
 
-    # The rule "security_patches_uptodate" has been selected directly by the
+    # The rule "security_patches_up_to_date" has been selected directly by the
     # abcd-low profile selections, not by using controls, so it should be in the
     # resolved profile as well.
-    assert "security_patches_uptodate" in high_profile.selected
+    assert "security_patches_up_to_date" in high_profile.selected
 
     assert "accounts_passwords_pam_faillock_deny_root" in high_profile.selected
     assert "accounts_password_pam_minlen" in high_profile.selected
@@ -165,7 +165,7 @@ def profile_resolution_all(cls, profile_all):
     assert "var_password_pam_ocredit" in profile.variables
     assert profile.variables["var_password_pam_ocredit"] == "1"
 
-    # The rule "security_patches_uptodate" has been selected directly by profile
+    # The rule "security_patches_up_to_date" has been selected directly by profile
     # selections, not by using controls, so it should be in the resolved profile
     # as well.
-    assert "security_patches_uptodate" in profile.selected
+    assert "security_patches_up_to_date" in profile.selected

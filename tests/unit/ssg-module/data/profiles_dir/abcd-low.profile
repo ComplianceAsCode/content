@@ -10,4 +10,4 @@ policies:
   - R2
   - R3
 selections:
-  - security_patches_uptodate
+  - security_patches_up_to_date
