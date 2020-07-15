@@ -6,10 +6,10 @@ title: 'Harden OpenSSL Crypto Policy'
 
 description: |-
     Crypto Policies are means of enforcing certain cryptographic settings for
-    selected applications including OpenSSL. OPenSSL is by default configured to
-    modify its configuration based on currently configured Crypto-Policy.
+    selected applications including OpenSSL. OpenSSL is by default configured to
+    modify its configuration based on currently configured Crypto Policy.
     However, in certain cases it might be needed to override the Crypto Policy
-    specific to OpenSSL r and leave rest of the Crypto Policy intact. This can
+    specific to OpenSSL and leave rest of the Crypto Policy intact. This can
     be done by dropping a file named <tt>opensslcnf-xxx.config</tt>, replacing
     <tt>xxx</tt> with arbitrary identifier, into
     <tt>/etc/crypto-policies/local.d</tt>. This has to be followed by running
