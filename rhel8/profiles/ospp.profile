@@ -299,7 +299,7 @@ selections:
     - no_empty_passwords
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes
-    ## AC-7(a) / FMT_MOF_EXT.1
+    ## AC-7 / FIA_AFL.1
     - var_accounts_passwords_pam_faillock_deny=3
     - accounts_passwords_pam_faillock_deny
     - var_accounts_passwords_pam_faillock_fail_interval=900
