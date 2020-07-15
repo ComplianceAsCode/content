@@ -7,4 +7,4 @@ policies:
 - id: abcd
   controls: all
 selections:
-  - security_patches_uptodate
+  - security_patches_up_to_date
