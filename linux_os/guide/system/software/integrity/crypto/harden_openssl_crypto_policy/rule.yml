@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhel8,rhcos4
+
+title: 'Harden OpenSSL Crypto Policy'
+
+description: |-
+    Crypto Policies are means of enforcing certain cryptographic settings for
+    selected applications including OpenSSL. OpenSSL is by default configured to
+    modify its configuration based on currently configured Crypto Policy.
+    However, in certain cases it might be needed to override the Crypto Policy
+    specific to OpenSSL and leave rest of the Crypto Policy intact. This can
+    be done by dropping a file named <tt>opensslcnf-xxx.config</tt>, replacing
+    <tt>xxx</tt> with arbitrary identifier, into
+    <tt>/etc/crypto-policies/local.d</tt>. This has to be followed by running
+    <tt>update-crypto-policies</tt> so that changes are applied. Changes are
+    propagated into <tt>/etc/crypto-policies/back-ends/opensslcnf.config</tt>.
+    This rule checks if this file contains predefined <tt>Ciphersuites</tt>
+    variable configured with predefined value.
+
+rationale: |-
+    The Common Criteria requirements specify that certain parameters for OpenSSL
+    are configured e.g. cipher suites. Currently particular requirements
+    specified by CC are stricter compared to any existing Crypto Policy.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 84286-4
+    cce@rhcos4: 84285-6
+
+references:
+    nist: SC-8(1),SC-13
+    ospp: FCS_TLSC_EXT.1.1
+    srg: SRG-OS-000396-GPOS-00176,SRG-OS-000424-GPOS-00188,SRG-OS-000478-GPOS-00223
+
+ocil_clause: 'Crypto Policy for OpenSSL is not configured according to CC requirements'
+
+ocil: |-
+    To verify if the OpenSSL uses defined Crypto Policy, run:
+    <pre>$ grep 'Ciphersuites' /etc/crypto-policies/back-ends/opensslcnf.config | tail -n 1</pre>
+    and verify that the line matches
+    <pre>Ciphersuites = TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256</pre>
