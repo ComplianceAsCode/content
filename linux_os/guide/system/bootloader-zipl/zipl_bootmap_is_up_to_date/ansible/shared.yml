@@ -21,4 +21,4 @@
     - name: "Update zIPL bootmap"
       command: /usr/sbin/zipl
       changed_when: True
-      when: boot_bootmap.stat.mtime is defined and  boot_bootmap.stat.mtime < zipl_conf.stat.mtime
+      when: boot_bootmap.stat.mtime is defined and zipl_conf.stat.mtime is defined and  boot_bootmap.stat.mtime < zipl_conf.stat.mtime
