@@ -312,7 +312,7 @@ selections:
     #- sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
-    ## FIA_AFL.1
+    ## FIA_UAU.1
     - require_singleuser_auth
     - grub2_disable_interactive_boot
     - grub2_uefi_password
