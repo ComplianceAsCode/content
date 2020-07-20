@@ -700,6 +700,18 @@ macro(ssg_make_html_stats_for_product PRODUCT)
     )
 endmacro()
 
+macro(ssg_make_all_tables PRODUCT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/tables-${PRODUCT}-all.html"
+	COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_tables.py" --build-dir "${CMAKE_BINARY_DIR}" --output-type html --output "${CMAKE_BINARY_DIR}/tables-${PRODUCT}-all.html" "${PRODUCT}"
+        # Actually we mean that it depends on resolved rules - see also ssg_build_templated_content
+        DEPENDS generate-internal-${PRODUCT}-shorthand.xml
+    )
+    add_custom_target(generate-ssg-tables-${PRODUCT}-all
+        DEPENDS "${CMAKE_BINARY_DIR}/tables-${PRODUCT}-all.html"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     # Enforce folder naming rules, we require SSG contributors to use
     # scap-security-guide/${PRODUCT}/ for all products. This makes it easier
@@ -723,6 +735,7 @@ macro(ssg_build_product PRODUCT)
     endforeach()
 
     ssg_build_shorthand_xml(${PRODUCT})
+    ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
@@ -753,6 +766,7 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-ocil.xml
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
+        generate-ssg-tables-${PRODUCT}-all
     )
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")

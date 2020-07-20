@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 7px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+} 
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 2;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<h2>References for product {{{ product }}}</h2>
+
+<ul>
+{{% for family in all_refs -%}}
+  <li class="collapsible">{{{ family }}}</li>
+  <ul class="content">
+  {{% for refid in all_refs[family] -%}}
+    <li class="collapsible">{{{ refid }}}</li>
+    <ul class="content">
+    {{% for rulid in all_refs[family][refid] -%}}
+      <li><div class="tooltip">{{{ rulid }}}<span class="tooltiptext">{{{ rules[rulid].title }}}</span></div></li>
+    {{% endfor -%}}
+    </ul>
+  {{% endfor -%}}
+  </ul>
+{{% endfor -%}}
+</ul>  
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+} 
+</script>
+</body>
+</html>
