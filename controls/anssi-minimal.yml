@@ -1,10 +1,11 @@
-policy: 'ANSSI-BP-028-minimal'
-title: 'ANSSI-BP-028-minimal'
-id: anssi-minimal
+policy: 'ANSSI-BP-028'
+title: 'ANSSI-BP-028'
+id: anssi
 version: '1.2'
 source: https://www.ssi.gouv.fr/uploads/2019/03/linux_configuration-en-v1.2.pdf
 controls:
   - id: R1
+    title: Minimization of installed services
     automated: partially  # The list of essential services is not objective.
     rules:
     - package_dhcp_removed
@@ -12,16 +13,19 @@ controls:
     - package_telnetd_removed
 
   - id: R5
+    title: In-depth defense principle
     rules:
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
     - service_rsyslog_enabled
 
   - id: R8
+    title: Regular updates
     rules:
     - security_patches_up_to_date
 
   - id: R15
+    title: Package repositories selection
     rules:
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_never_disabled
@@ -29,23 +33,29 @@ controls:
     - ensure_gpgcheck_local_packages
 
   - id: R18
+    title: Administrator password robustness
     # rules: TBD
 
   - id: R30
+    title: Applications using PAM
     # rules: TBD
 
   - id: R32
+    title: Protecting stored passwords
     rules:
     - set_password_hashing_algorithm_logindefs
     # ENCRYPT_METHOD SHA512
     # SHA_CRYPT_MIN_ROUNDS 65536
 
   - id: R37
+    title: Executables with setuid and/or setgid bits
     # rules: TBD
 
   - id: R42
+    title: In memory services and daemons
     # rules: TBD
 
   - id: R59
+    title: User authentication running sudo
     rules:
     - sudo_remove_nopasswd
