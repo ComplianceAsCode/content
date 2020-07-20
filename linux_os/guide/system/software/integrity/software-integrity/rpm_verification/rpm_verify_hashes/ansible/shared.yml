@@ -14,7 +14,7 @@
   when: (ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux")
 
 - name: "Read files with incorrect hash"
-  command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noconfig --noghost
+  command: rpm -Va --nodeps --nosize --nomtime --nordev --nocaps --nolinkto --nouser --nogroup --nomode --noghost {{{ "--noconfig" if product != "rhel6" }}}
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect hash using rpm module
   register: files_with_incorrect_hash
