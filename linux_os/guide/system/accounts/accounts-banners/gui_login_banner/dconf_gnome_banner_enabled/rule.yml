@@ -10,11 +10,11 @@ description: |-
     screen by setting <tt>banner-message-enable</tt> to <tt>true</tt>.
     <br /><br />
     To enable, add or edit <tt>banner-message-enable</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     banner-message-enable=true</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/login-screen/banner-message-enable</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -54,8 +54,8 @@ ocil_clause: 'it is not'
 
 ocil: |-
     To ensure a login warning banner is enabled, run the following:
-    <pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep banner-message-enable /etc/dconf/db/local.d/*</pre>
     If properly configured, the output should be <tt>true</tt>.
     To ensure a login warning banner is locked and cannot be changed by a user, run the following:
-    <pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep banner-message-enable /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-enable</tt>.
