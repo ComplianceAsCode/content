@@ -1,0 +1,18 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_wrlinux
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+- (xccdf-var var_audispd_remote_server)
+
+- name: Make sure that a remote server is configured for Audispd
+  lineinfile:
+    {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+    path: "/etc/audit/audisp-remote.conf"
+    {{% else %}}
+    path: "/etc/audisp/audisp-remote.conf"
+    {{% endif %}}
+    line: "remote_server = {{ var_audispd_remote_server }}"
+    regexp: '^\s*remote_server\s*=.*$'
+    create: true
+    state: present
