@@ -2,9 +2,7 @@
   <definition class="compliance" id="auditd_audispd_configure_remote_server" version="1">
     <metadata>
       <title>Configure audispd Plugin Remote Server IP address or Hostname</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
 {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
       <description>remote_server setting in /etc/audit/audisp-remote.conf is set to a certain IP address or hostname</description>
 {{% else %}}
