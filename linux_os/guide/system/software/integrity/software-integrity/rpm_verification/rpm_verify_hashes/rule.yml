@@ -14,7 +14,7 @@ description: |-
     To verify that the cryptographic hash of system files and commands matches vendor
     values, run the following command to list which files on the system
     have hashes that differ from what is expected by the RPM database:
-    <pre>$ rpm -Va --noconfig | grep '^..5'</pre>
+    <pre>$ rpm -Va{{{ " --noconfig" if product != "rhel6" }}} | grep '^..5'</pre>
     A "c" in the second column indicates that a file is a configuration file, which
     may appropriately be expected to change. If the file was not expected to
     change, investigate the cause of the change using audit logs or other means.
@@ -64,4 +64,4 @@ ocil_clause: 'there is output'
 ocil: |-
     The following command will list which files on the system
     have file hashes different from what is expected by the RPM database.
-    <pre>$ rpm -Va --noconfig | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre>
+    <pre>$ rpm -Va{{{ " --noconfig" if product != "rhel6" }}} | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre>
