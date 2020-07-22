@@ -1,3 +1,8 @@
+{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+{{% set audisp_config_file_path = "/etc/audit/audisp-remote.conf" %}}
+{{% else %}}
+{{% set audisp_config_file_path = "/etc/audisp/audisp-remote.conf" %}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="auditd_audispd_configure_remote_server" version="1">
     <metadata>
@@ -20,11 +25,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_auditd_audispd_configure_remote_server" version="1">
-{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-    <ind:filepath>/etc/audit/audisp-remote.conf</ind:filepath>
-{{% else %}}
-    <ind:filepath>/etc/audisp/audisp-remote.conf</ind:filepath>
-{{% endif %}}
+    <ind:filepath>{{{ audisp_config_file_path }}}</ind:filepath>
     <!-- Allow only space (exactly) as delimiter -->
     <!-- Require at least one space before and after the equal sign -->
     <ind:pattern operation="pattern match">^[ ]*remote_server[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
