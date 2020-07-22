@@ -893,13 +893,6 @@ class Rule(object):
             return
         if "," in stig_id:
             raise ValueError("Rules can not have multiple STIG IDs.")
-        stig_ex = re.compile(r'^[A-Z0-9]{4}-[0-9]{2}-[0-9]{6}$')
-        if stig_ex.match(stig_id):
-            self.references["stigid"] = stig_id
-        else:
-            raise ValueError("STIG ID '{}' is in the wrong format! "
-                             "Format should be similar to: "
-                             "XXXX-XX-XXXXXX".format(stig_id))
 
     def _verify_disa_cci_format(self):
         cci_id = self.references.get("disa", None)
