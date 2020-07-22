@@ -81,7 +81,7 @@
 
 			<td> 
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
-            	<xsl:variable name="cci_formatted" select='self::node()[text()])' />
+            	<xsl:variable name="cci_formatted" select='self::node()[text()]' />
 				<xsl:variable name="cci_expanded" select="$cci_formatted"  />
 				<xsl:for-each select="$os_srg/cdf:Group/cdf:Rule" >
 					<xsl:if test="cdf:ident=$cci_expanded">
