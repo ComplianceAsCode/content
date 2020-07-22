@@ -1043,7 +1043,7 @@ class Rule(object):
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
-                if not is_cce_format_valid("CCE-" + ident_val):
+                if not is_cce_format_valid(ident_val):
                     raise ValueError("CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
                                      " in file '%s'" % (ident_val, ident_type, yaml_file))
                 if not is_cce_value_valid("CCE-" + ident_val):

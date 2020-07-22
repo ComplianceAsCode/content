@@ -554,7 +554,7 @@
                 <xsl:when test='. != ""'>
                   <xsl:choose>
                     <xsl:when test='./@href = "https://public.cyber.mil/stigs/cci/"'>
-                      <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
+                      <a href="{@href}">DISA <xsl:value-of select="text()"/></a>
                     </xsl:when>
                     <xsl:when test='./@href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"'>
                       <a href="{@href}">NIST <xsl:value-of select="text()"/></a>
@@ -662,7 +662,7 @@
                 <xsl:when test='. != ""'>
                   <xsl:choose>
                     <xsl:when test='./@href = "https://public.cyber.mil/stigs/cci/"'>
-                      <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
+                      <a href="{@href}">DISA <xsl:value-of select="text()"/></a>
                     </xsl:when>
                     <xsl:when test='./@href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"'>
                       <a href="{@href}">NIST <xsl:value-of select="text()"/></a>
