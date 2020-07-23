@@ -702,13 +702,14 @@ endmacro()
 
 macro(ssg_make_all_tables PRODUCT)
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/tables-${PRODUCT}-all.html"
-	COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_tables.py" --build-dir "${CMAKE_BINARY_DIR}" --output-type html --output "${CMAKE_BINARY_DIR}/tables-${PRODUCT}-all.html" "${PRODUCT}"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_tables.py" --build-dir "${CMAKE_BINARY_DIR}" --output-type html --output "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html" "${PRODUCT}"
         # Actually we mean that it depends on resolved rules - see also ssg_build_templated_content
         DEPENDS generate-internal-${PRODUCT}-shorthand.xml
     )
     add_custom_target(generate-ssg-tables-${PRODUCT}-all
-        DEPENDS "${CMAKE_BINARY_DIR}/tables-${PRODUCT}-all.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html"
     )
 endmacro()
 
