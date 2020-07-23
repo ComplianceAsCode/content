@@ -5,13 +5,15 @@
 # disruption = low
 - (xccdf-var var_audispd_remote_server)
 
+{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+{{% set audisp_config_file_path = "/etc/audit/audisp-remote.conf" %}}
+{{% else %}}
+{{% set audisp_config_file_path = "/etc/audisp/audisp-remote.conf" %}}
+{{% endif %}}
+
 - name: Make sure that a remote server is configured for Audispd
   lineinfile:
-    {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-    path: "/etc/audit/audisp-remote.conf"
-    {{% else %}}
-    path: "/etc/audisp/audisp-remote.conf"
-    {{% endif %}}
+    path: "{{{ audisp_config_file_path }}}"
     line: "remote_server = {{ var_audispd_remote_server }}"
     regexp: '^\s*remote_server\s*=.*$'
     create: true
