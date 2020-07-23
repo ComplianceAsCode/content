@@ -169,7 +169,7 @@
                     <xsl:value-of select="." />
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="concat('CCE-', .)" />
+                    <xsl:value-of select="." />
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
