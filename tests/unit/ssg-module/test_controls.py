@@ -27,6 +27,9 @@ def test_controls_load():
     # only if product is rhel9
     assert "cockpit_session_timeout" not in c_r1.rules
 
+    # abcd is a level-less policy
+    assert c_r1.level == "default"
+
     c_r2 = controls_manager.get_control("abcd", "R2")
     assert c_r2.automated == "no"
     assert c_r2.note == "This is individual depending on the system " \
@@ -41,6 +44,41 @@ def test_controls_load():
     assert "var_password_pam_ocredit" in c_r4.variables
     assert c_r4.variables["var_password_pam_ocredit"] == "1"
     #logging.info(c.rules)
+
+
+def test_controls_levels():
+    controls_manager = ssg.controls.ControlsManager(controls_dir)
+    controls_manager.load()
+
+    # Default level is the lowest level
+    c_1 = controls_manager.get_control("abcd-levels", "S1")
+    assert c_1.level == "low"
+    c_4 = controls_manager.get_control("abcd-levels", "S4")
+    assert c_4.level == "low"
+
+    # Explicit levels
+    c_2 = controls_manager.get_control("abcd-levels", "S2")
+    assert c_2.level == "low"
+
+    c_3 = controls_manager.get_control("abcd-levels", "S3")
+    assert c_3.level == "high"
+
+    c_4a = controls_manager.get_control("abcd-levels", "S4.a")
+    assert c_4a.level == "low"
+
+    c_4a = controls_manager.get_control("abcd-levels", "S4.b")
+    assert c_4a.level == "high"
+
+    # just the essential controls
+    low_controls = controls_manager.get_all_controls_of_level_at_least("abcd-levels", "low")
+    # essential and more advanced together
+    high_controls = controls_manager.get_all_controls_of_level_at_least("abcd-levels", "high")
+    all_controls = controls_manager.get_all_controls("abcd-levels")
+
+    assert len(high_controls) == len(all_controls)
+    assert len(low_controls) <= len(high_controls)
+    assert len(low_controls) == 4
+
 
 def test_controls_load_product():
     env_yaml = {"product": "rhel9"}

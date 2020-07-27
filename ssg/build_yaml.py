@@ -441,14 +441,26 @@ class ProfileWithSeparatePolicies(ResolvableProfile):
                     raise ValueError(msg)
             self.policies[id_] = controls_ids
 
+    def _process_controls_ids_into_controls(self, controls_manager, policy_id, controls_ids):
+        controls = []
+        for cid in controls_ids:
+            if not cid.startswith("all"):
+                controls.extend(self._controls_ids_to_controls(controls_manager, policy_id, [cid]))
+            elif ":" in cid:
+                _, level_id = cid.split(":", 1)
+                controls.extend(controls_manager.get_all_controls_of_level_at_least(policy_id, level_id))
+            else:
+                controls.extend(controls_manager.get_all_controls(policy_id))
+        return controls
+
     def resolve_controls(self, controls_manager):
         for policy_id, controls_ids in self.policies.items():
             controls = []
 
             if isinstance(controls_ids, list):
-                controls = self._controls_ids_to_controls(controls_manager, policy_id, controls_ids)
-            elif controls_ids == "all":
-                controls = controls_manager.get_all_controls(policy_id)
+                controls = self._process_controls_ids_into_controls(controls_manager, policy_id, controls_ids)
+            elif controls_ids.startswith("all"):
+                controls = self._process_controls_ids_into_controls(controls_manager, policy_id, [controls_ids])
             else:
                 msg = "Unknown policy content {content} in profile {profile_id}".format(content=controls_ids, profile_id=self.id_)
                 raise ValueError(msg)
@@ -473,14 +485,21 @@ class ProfileWithInlinePolicies(ResolvableProfile):
         else:
             super(ProfileWithInlinePolicies, self).apply_selection(item)
 
+    def _process_controls_ids_into_controls(self, controls_manager, policy_id, controls_ids):
+        controls = []
+        for cid in controls_ids:
+            if not cid.startswith("all"):
+                controls.extend(self._controls_ids_to_controls(controls_manager, policy_id, [cid]))
+            elif ":" in cid:
+                _, level_id = cid.split(":", 1)
+                controls.extend(controls_manager.get_all_controls_of_level_at_least(policy_id, level_id))
+            else:
+                controls.extend(controls_manager.get_all_controls(policy_id))
+        return controls
+
     def resolve_controls(self, controls_manager):
         for policy_id, controls_ids in self.controls_by_policy.items():
-            controls = []
-
-            if "all" in controls_ids:
-                controls = controls_manager.get_all_controls(policy_id)
-            else:
-                controls = self._controls_ids_to_controls(controls_manager, policy_id, controls_ids)
+            controls = self._process_controls_ids_into_controls(controls_manager, policy_id, controls_ids)
 
             for c in controls:
                 self._merge_control(c)
