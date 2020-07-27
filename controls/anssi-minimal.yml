@@ -3,8 +3,15 @@ title: 'ANSSI-BP-028'
 id: anssi
 version: '1.2'
 source: https://www.ssi.gouv.fr/uploads/2019/03/linux_configuration-en-v1.2.pdf
+levels:
+  - minimal
+  - intermediary
+  - enhanced
+  - high
+
 controls:
   - id: R1
+    level: minimal
     title: Minimization of installed services
     automated: partially  # The list of essential services is not objective.
     rules:
@@ -12,7 +19,13 @@ controls:
     - package_sendmail_removed
     - package_telnetd_removed
 
+  - id: R2
+    level: intermediary
+    title: Minimization of configuration
+    # rules: TBD
+
   - id: R5
+    level: minimal
     title: In-depth defense principle
     rules:
     - sudo_remove_no_authenticate
@@ -20,11 +33,57 @@ controls:
     - service_rsyslog_enabled
 
   - id: R8
+    level: minimal
     title: Regular updates
     rules:
     - security_patches_up_to_date
 
+  - id: R9
+    level: intermediary
+    title: Hardware configuration
+    # rules: TBD
+
+  - id: R10
+    level: intermediary
+    title: 32 and 64 bit architecture
+    # rules: TBD
+
+  - id: R12
+    level: intermediary
+    title: Partitioning type
+    rules:
+    # The recommended partitioning type is as follows:
+    # / <without option> Root partition, contains the rest of the tree
+    # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader. No access required once the boot finished (except update)
+    # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
+    # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
+    - partition_for_tmp
+    - mount_option_tmp_nosuid
+    - mount_option_tmp_nodev
+    - mount_option_tmp_noexec
+
+    # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
+    # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
+    - partition_for_home
+    - mount_option_home_nosuid
+    - mount_option_home_nodev
+
+    # /proc hidepid = 1 Contains process information and the system
+    # /usr nodev Contains the majority of utilities and system files
+    # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
+    - partition_for_var
+
+    # /var/log nosuid, nodev, noexec Contains system logs
+    - partition_for_var_log
+
+    # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
+    - partition_for_var_tmp
+    - mount_option_var_tmp_nosuid
+    - mount_option_var_tmp_nodev
+    - mount_option_var_tmp_noexec
+
   - id: R15
+    level: minimal
     title: Package repositories selection
     rules:
     - ensure_redhat_gpgkey_installed
@@ -32,30 +91,314 @@ controls:
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_local_packages
 
+  - id: R14
+    level: intermediary
+    title: Installation of packages reduced to the bare necessities
+    # rules: TBD
+
   - id: R18
+    level: minimal
     title: Administrator password robustness
     # rules: TBD
 
+  - id: R19
+    level: intermediary
+    title: Accountability of administration
+    rules:
+    # Change of privilege operations must be based on executables to monitor the activities
+    # performed (for example sudo).
+    - no_direct_root_logins
+    - sshd_disable_root_login
+
+  - id: R21
+    level: intermediary
+    title: Hardening and monitoring of services subject to arbitrary flows
+    # rules: TBD
+
+  - id: R22
+    level: intermediary
+    title: Setting up network sysctl
+    rules:
+    # No routing between interfaces
+    # net.ipv4.ip_forward = 0
+    - sysctl_net_ipv4_ip_forward
+
+    # Reverse path filtering
+    # net.ipv4.conf.all.rp_filter = 1
+    - sysctl_net_ipv4_conf_all_rp_filter
+
+    # net.ipv4.conf.default.rp_filter = 1
+    - sysctl_net_ipv4_conf_default_rp_filter
+
+    # Do not send ICMP redirects
+    # net.ipv4.conf.all.send_redirects = 0
+    - sysctl_net_ipv4_conf_all_send_redirects
+
+    # net.ipv4.conf.default.send_redirects = 0
+    - sysctl_net_ipv4_conf_default_send_redirects
+
+    # Deny source routing packets
+    # net.ipv4.conf.all.accept_source_route = 0
+    - sysctl_net_ipv4_conf_all_accept_source_route
+
+    # net.ipv4.conf.default.accept_source_route = 0
+    - sysctl_net_ipv4_conf_default_accept_source_route
+
+    # Do not accept ICMPs of redirect type
+    # net.ipv4.conf.all.accept_redirects = 0
+    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_all_accept_redirects
+
+    # net.ipv4.conf.all.secure_redirects = 0
+    - sysctl_net_ipv4_conf_all_secure_redirects
+
+    # net.ipv4.conf.default.accept_redirects = 0
+    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_redirects
+
+    # net.ipv4.conf.default.secure_redirects = 0
+    - sysctl_net_ipv4_conf_default_secure_redirects
+
+    # Log packets with abnormal IPs
+    # net.ipv4.conf.all.log_martians = 1
+    - sysctl_net_ipv4_conf_all_log_martians
+
+    # RFC 1337
+    # net.ipv4.tcp_rfc1337 = 1
+
+    # Ignore responses that do not comply with RFC 1122
+    # net.ipv4.icmp_ignore_bogus_error_responses = 1
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+
+    # Increase the range for ephemeral ports
+    # net.ipv4.ip_local_port_ranges = 32768 65535
+
+    # Use SYN cookies
+    # net.ipv4.tcp_syncookies = 1
+    - sysctl_net_ipv4_tcp_syncookies
+
+    # Disable support for "router solicitations"
+    # net.ipv6.conf.all.router_solicitations = 0
+    # net.ipv6.conf.default.router_solicitations = 0
+
+    # Do not accept "router preferences" by "router advertisements"
+    # net.ipv6.conf.all.accept_ra_rtr_pref = 0
+    # net.ipv6.conf.default.accept_ra_rtr_pref = 0
+
+    # No auto configuration of prefixes by router advertisements
+    # net.ipv6.conf.all.accept_ra_pinfo = 0
+    # net.ipv6.conf.default.accept_ra_pinfo = 0
+
+    # No default router learning by router advertisements
+    # net.ipv6.conf.all.accept_ra_defrtr = 0
+    # net.ipv6.conf.default.accept_ra_defrtr = 0
+
+    # No auto configuration of addresses from "routers" advertisements
+    # net.ipv6.conf.all.autoconf = 0
+    # net.ipv6.conf.default.autoconf = 0
+
+    # Do not accept ICMPs of redirect type
+    # net.ipv6.conf.all_accept_redirects = 0
+    - sysctl_net_ipv6_conf_all_accept_redirects
+
+    # net.ipv6.conf.default.accept_redirects = 0
+    - sysctl_net_ipv6_conf_default_accept_redirects
+
+    # Deny routing source packets
+    # net.ipv6.conf.all.accept_source_route = 0
+    - sysctl_net_ipv6_conf_all_accept_source_route
+
+    # net.ipv6.conf.default.accept_source_route = 0
+    - sysctl_net_ipv6_conf_default_accept_source_route
+
+    # Maximum number of autoconfigured addresses per interface
+    # net.ipv6.conf.all.max_addresses = 1
+    # net.ipv6.conf.default.max_addresses = 1
+
+  - id: R23
+    level: intermediary
+    title: Setting up system sysctl
+    rules:
+    # Disabling SysReq
+    # kernel. sysrq = 0
+
+    # No core dump of executable setuid
+    - sysctl_fs_suid_dumpable
+
+    # Prohibit links to find links to files
+    # the current user is not the owner
+    # Can prevent some programs from working properly
+    - sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
+
+    # Activation of the ASLR
+    - sysctl_kernel_randomize_va_space
+
+    # Prohibit mapping of memory in low addresses (0)
+    # vm.mmap_min_addr = 65536
+
+    # Larger choice space for PID values
+    # kernel.pid_max = 65536
+
+    # Obfuscation of addresses memory kernel
+    - sysctl_kernel_kptr_restrict
+
+    # Access restriction to the dmesg buffer
+    - sysctl_kernel_dmesg_restrict
+
+    # Disallow kernel profiling by unprivileged users
+    - sysctl_kernel_perf_event_paranoid
+
+    # Restricts the use of the perf system
+    # kernel.perf_event_paranoid = 2
+    # kernel.perf_event_max_sample_rate = 1
+    # kernel.perf_cpu_time_max_percent = 1
+
+  - id: R27
+    title: Disabling service accounts
+    level: intermediary
+    # rules: TBD
+
   - id: R30
+    level: minimal
     title: Applications using PAM
     # rules: TBD
 
+  - id: R31
+    title: Securing PAM Authentication Network Services
+    level: intermediary
+    # rules: TBD
+
   - id: R32
+    level: minimal
     title: Protecting stored passwords
     rules:
     - set_password_hashing_algorithm_logindefs
     # ENCRYPT_METHOD SHA512
     # SHA_CRYPT_MIN_ROUNDS 65536
 
+  - id: R33
+    title: Securing access to remote user databases
+    level: intermediary
+    # rules: TBD
+
+  - id: R34
+    title: Separation of System Accounts and Directory Administrator
+    level: intermediary
+    # rules: TBD
+
+  - id: R36
+    title: Rights to access sensitive content files
+    level: intermediary
+    rules:
+    - file_owner_etc_shadow
+    - file_permissions_etc_shadow
+    - file_owner_etc_gshadow
+    - file_permissions_etc_gshadow
+    - file_permissions_etc_passwd
+    - file_permissions_etc_group
+
   - id: R37
+    level: minimal
     title: Executables with setuid and/or setgid bits
     # rules: TBD
 
+  - id: R39
+    level: intermediary
+    title: Temporary directories dedicated to accounts
+    # rules: TBD
+
+  - id: R40
+    level: intermediary
+    title: Sticky bit and write access rights
+    # rules: TBD
+
+  - id: R41
+    level: intermediary
+    title: Securing access for named sockets and pipes
+    # rules: TBD
+
   - id: R42
+    level: minimal
     title: In memory services and daemons
     # rules: TBD
 
+  - id: R43
+    title: Hardening and configuring the syslog
+    level: intermediary
+    rules:
+    - rsyslog_files_ownership
+    - rsyslog_files_groupownership
+    - rsyslog_files_permissions
+    - ensure_logrotate_activated
+    - rsyslog_remote_loghost
+
+  - id: R44
+    level: intermediary
+    title: Partitioning the syslog service by chroot
+    # rules: TBD
+
+  - id: R46
+    level: intermediary
+    title: Service Activity Logs
+    # rules: TBD
+
+  - id: R47
+    level: intermediary
+    title: Dedicated partition for logs
+
+  - id: R48
+    level: intermediary
+    title: Configuring the local messaging service
+    # rules: TBD
+
+  - id: R49
+    level: intermediary
+    title: Messaging Aliases for Service Accounts
+    # rules: TBD
+
+  - id: R55
+    level: intermediary
+    title: chroot jail and access right for partitioned service
+    # rules: TBD
+
+  - id: R56
+    level: intermediary
+    title: Enablement and usage of chroot by a service
+    # rules: TBD
+
+  - id: R57
+    level: intermediary
+    title: Group dedicated to the use of sudo
+    # rules: TBD
+
+  - id: R58
+    level: intermediary
+    title: Sudo configuration guidelines
+    # rules: TBD
+
   - id: R59
+    level: minimal
     title: User authentication running sudo
     rules:
     - sudo_remove_nopasswd
+
+  - id: R60
+    level: intermediary
+    title: Privileges of target sudo users
+    # rules: TBD
+
+  - id: R62
+    level: intermediary
+    title: Good use of negation in a sudoers file
+    # rules: TBD
+
+  - id: R63
+    level: intermediary
+    title: Explicit arguments in sudo specifications
+    # rules: TBD
+
+  - id: R64
+    level: intermediary
+    title: Good use of sudoedit
+    # rules: TBD
