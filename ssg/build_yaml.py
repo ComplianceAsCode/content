@@ -13,7 +13,6 @@ import yaml
 
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
-from .constants import STIG_PLATFORM_ID_MAP
 from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
@@ -888,16 +887,24 @@ class Rule(object):
         rule.validate_references(yaml_file)
         return rule
 
-    def _make_stigid_product_specific(self, product):
+    def _verify_stigid_format(self, product):
         stig_id = self.references.get("stigid", None)
         if not stig_id:
             return
         if "," in stig_id:
             raise ValueError("Rules can not have multiple STIG IDs.")
-        stig_platform_id = STIG_PLATFORM_ID_MAP.get(product, product.upper())
-        product_specific_stig_id = "{platform_id}-{stig_id}".format(
-            platform_id=stig_platform_id, stig_id=stig_id)
-        self.references["stigid"] = product_specific_stig_id
+
+    def _verify_disa_cci_format(self):
+        cci_id = self.references.get("disa", None)
+        if not cci_id:
+            return
+        cci_ex = re.compile(r'^CCI-[0-9]{6}$')
+        for cci in cci_id.split(","):
+            if not cci_ex.match(cci):
+                raise ValueError("CCI '{}' is in the wrong format! "
+                                 "Format should be similar to: "
+                                 "CCI-XXXXXX".format(cci))
+        self.references["disa"] = cci_id
 
     def normalize(self, product):
         try:
@@ -965,9 +972,10 @@ class Rule(object):
             dic.update(new_items)
 
         self.references = general_references
+        self._verify_disa_cci_format()
         self.references.update(product_references)
 
-        self._make_stigid_product_specific(product)
+        self._verify_stigid_format(product)
 
     def _make_items_product_specific(self, items_dict, product_suffix, allow_overwrites=False):
         new_items = dict()
@@ -1028,7 +1036,7 @@ class Rule(object):
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
-                if not is_cce_format_valid("CCE-" + ident_val):
+                if not is_cce_format_valid(ident_val):
                     raise ValueError("CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
                                      " in file '%s'" % (ident_val, ident_type, yaml_file))
                 if not is_cce_value_valid("CCE-" + ident_val):

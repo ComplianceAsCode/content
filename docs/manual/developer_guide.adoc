@@ -880,7 +880,7 @@ A rule may contain those reference-type attributes:
 |US-CERT technical cyber security alerts –the identifier value SHOULD be a technical cyber security alert ID (e.g., “TA05-189A”)
 |===
 +
-When the rule is related to RHEL, it should have a CCE. A CEE (e.g. cce@rhel7: 80328-8) is used as a global identifier that maps the rule to the product over the lifetime of a rule. There should only be one CCE mapped to a rule as a global identifier. Any other usage of CCE is no longer considered a best practice. CCEs are also product dependent which means that a different CCE must be used for each different product and product version. For example if `cce@rhel7: 80328-8` exists in a rule, that CCE cannot be used for another product or version (e.g. rhel6), and the CCE MUST be retired with the rule.
+When the rule is related to RHEL, it should have a CCE. A CEE (e.g. cce@rhel7: CCE-80328-8) is used as a global identifier that maps the rule to the product over the lifetime of a rule. There should only be one CCE mapped to a rule as a global identifier. Any other usage of CCE is no longer considered a best practice. CCEs are also product dependent which means that a different CCE must be used for each different product and product version. For example if `cce@rhel7: 80328-8` exists in a rule, that CCE cannot be used for another product or version (e.g. rhel6), and the CCE MUST be retired with the rule.
 Available CCEs that can be assigned to new rules are listed in the `shared/references/cce-rhel-avail.txt` file.
 +
 * `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stigid`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stigid@rhel6`) to restrict what products a reference identifier applies to. Depending on the type of reference (e.g. catalog, rulei, etc.) will depend on how many can be added to a single rule. In addition, certain references in a rule such as `stigid` only apply to a certain product and product version; they cannot be used for multiple products and versions
@@ -906,7 +906,7 @@ Available CCEs that can be assigned to new rules are listed in the `shared/refer
 |disa
 |DISA Control Correlation Identifiers (catalog identifier)
 |0-to-many
-|18,172,1403
+|CCI-000018,CCI-000172,CCI-001403
 
 |srg, vmmsrg, etc.
 |DISA Security Requirements Guide (catalog identifier)
@@ -916,7 +916,7 @@ Available CCEs that can be assigned to new rules are listed in the `shared/refer
 |stigid@<product><product_version>
 |DISA STIG identifier (rule identifier)
 |0-to-1
-|030874
+|RHEL-07-030874
 
 |hipaa
 |Health Insurance Portability and Accountability Act of 1996 (HIPAA) (catalog identifier)
@@ -935,7 +935,7 @@ Available CCEs that can be assigned to new rules are listed in the `shared/refer
 
 |ospp
 |National Information Assurance Partnership (selected control identifier)
-|0-to-1
+|0-to-many
 |FMT_MOF_EXT.1
 
 |pcidss

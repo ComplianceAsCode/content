@@ -317,7 +317,7 @@ class AnsibleRemediation(Remediation):
 
         cce_num = self._get_cce()
         if cce_num:
-            tags.append("CCE-{0}".format(cce_num))
+            tags.append("{0}".format(cce_num))
 
         refs = self.get_references()
         tags.extend(refs)
