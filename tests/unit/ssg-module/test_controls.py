@@ -30,11 +30,15 @@ def test_controls_load():
     # abcd is a level-less policy
     assert c_r1.level == "default"
 
+    assert "vague" in c_r1.notes
+
     c_r2 = controls_manager.get_control("abcd", "R2")
     assert c_r2.automated == "no"
     assert c_r2.note == "This is individual depending on the system " \
         "workload therefore needs to be audited manually."
     assert len(c_r2.rules) == 0
+
+    assert not c_r2.notes
 
     c_r4 = controls_manager.get_control("abcd", "R4")
     assert len(c_r4.rules) == 3
