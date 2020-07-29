@@ -12,6 +12,7 @@ class Control():
         self.rules = []
         self.variables = {}
         self.level = ""
+        self.notes = ""
 
     @classmethod
     def from_control_dict(cls, control_dict, default_level=""):
@@ -20,6 +21,7 @@ class Control():
         control.description = control_dict.get("description")
         control.level = control_dict.get("level", default_level)
         control.automated = control_dict.get("automated", False)
+        control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", [])
         for item in selections:
             if "=" in item:
