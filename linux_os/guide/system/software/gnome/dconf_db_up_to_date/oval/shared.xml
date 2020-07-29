@@ -61,7 +61,7 @@
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="check that all DBs in question are up-to-date" operator="AND">
-        {{% if product == 'rhel7' %}}
+        {{% if product == 'rhel7' or product == 'rhel8' %}}
           {{{ check_db_criterion("gdm") }}}
         {{% endif %}}
         {{{ check_db_criterion("local") }}}
@@ -69,7 +69,7 @@
     </criteria>
   </definition>
 
-  {{% if product == 'rhel7' %}}
+  {{% if product == 'rhel7' or product == 'rhel8' %}}
     {{{ check_db_is_up_to_date("gdm") }}}
   {{% endif %}}
   {{{ check_db_is_up_to_date("local") }}}
