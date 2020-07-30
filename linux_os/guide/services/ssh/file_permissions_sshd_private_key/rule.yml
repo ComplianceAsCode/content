@@ -43,7 +43,7 @@ ocil: '{{{ ocil_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}'
 template:
     name: file_permissions
     vars:
-        filepath: /etc/ssh/
+        filepath: /
         missing_file_pass: 'true'
         file_regex: ^.*_key$
         filemode: '0640'
