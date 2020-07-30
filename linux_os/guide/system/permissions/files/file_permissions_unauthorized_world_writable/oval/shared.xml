@@ -37,23 +37,5 @@
     <unix:filepath operation="pattern match">^/sys/.*$</unix:filepath>
   </unix:file_state>
 
-  <linux:rpmverifyfile_state id="state_files_in_blacklisted_dirs" version="1">
-    <linux:filepath operation="pattern match" var_ref="var_blacklisted_dirs_patterns" var_check="at least one"/>
-  </linux:rpmverifyfile_state>
-
-  <local_variable id="var_blacklisted_dirs_patterns" datatype="string" version="1" comment="Blacklisted directories as filepath regexes">
-    <concat>
-      <literal_component>^</literal_component>
-      <variable_component var_ref="var_blacklisted_dirs"/>
-      <literal_component>.*</literal_component>
-    </concat>
-  </local_variable>
-
-  <local_variable id="var_blacklisted_dirs" datatype="string" version="1" comment="Blacklisted directories">
-    <split delimiter=":">
-      <variable_component var_ref="var_blacklisted_paths"/>
-    </split>
-  </local_variable>
-
-  <external_variable comment="List of blacklisted paths" datatype="string" id="var_blacklisted_paths" version="1" />
+  {{{ add_nonlocal_state("state_files_in_blacklisted_dirs", "linux", "rpmverifyfile_state") }}}
 </def-group>

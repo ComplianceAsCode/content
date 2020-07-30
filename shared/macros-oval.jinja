@@ -610,3 +610,38 @@
         <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
 {{%- endmacro %}}
+
+
+{{#
+  Macro which generates an OVAL state that is primarily intended for filtering.
+
+  Args:
+    id: The ID of the generated state
+    namespace: Namespace of the state element
+    element: The state element type without the namespace.
+
+  For example:
+  ``add_nonlocal_state("state_files_in_nonlocal_dirs", "linux", "rpmverifyfile_state")``
+  generates a state that can be used to filter out objects of type ``linux:rpmverifyfile_object``
+#}}
+{{%- macro add_nonlocal_state(state_id, namespace, state_element) -%}}
+  <{{{ namespace }}}:{{{ state_element }}} id="{{{ state_id }}}" version="1">
+    <{{{ namespace }}}:filepath operation="pattern match" var_ref="{{{ rule_id }}}_var_nonlocal_dirs_patterns" var_check="at least one"/>
+  </{{{ namespace }}}:{{{ state_element }}}>
+
+  <local_variable id="{{{ rule_id }}}_var_nonlocal_dirs_patterns" datatype="string" version="1" comment="Explicit non-local directories as filepath regexes">
+    <concat>
+      <literal_component>^</literal_component>
+      <variable_component var_ref="{{{ rule_id }}}_var_nonlocal_dirs"/>
+      <literal_component>.*</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="{{{ rule_id }}}_var_nonlocal_dirs" datatype="string" version="1" comment="Explicit non-local directories">
+    <split delimiter=":">
+      <variable_component var_ref="var_nonlocal_paths"/>
+    </split>
+  </local_variable>
+
+  <external_variable comment="List of explicit non-local paths" datatype="string" id="var_nonlocal_paths" version="1" />
+{{%- endmacro -%}}

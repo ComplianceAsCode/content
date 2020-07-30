@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Explicit non-local paths'
+
+description: |-
+    Colon-separated list of paths that are not local and shouldn't be scanned if the OVAL check specifies <code>recurse_file_system="local"</code>
+    In some cases, the scanner may not detect local filesystems correctly, and this variable is meant to be used as a user-friendly way to designate paths as non-local.
+    This variable is supposed to be used in rules that use the concept of local filesystems in their checks.
+
+type: string
+
+interactive: false
+
+options:
+    default: "/sys:/tmp:/proc"
+
