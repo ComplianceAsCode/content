@@ -32,5 +32,5 @@ ocil_clause: 'files are executing world-writable programs'
 ocil: |-
     To verify that local initialization files do not execute world-writable programs,
     execute the following command:
-    <pre>$ sudo find /home -perm -002 -type f -exec ls -ld {} -name ".[^.]*"\;</pre>
+    <pre>$ sudo find /home -perm -002 -type f -exec ls -ld {} -name ".[^.]*" \;</pre>
     There should be no output.
