@@ -193,7 +193,6 @@ selections:
     - audit_rules_execution_setsebool
     - audit_rules_execution_chcon
     - audit_rules_execution_setfiles
-    - audit_rules_login_events_tallylog
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
     - audit_rules_privileged_commands_passwd
@@ -206,7 +205,6 @@ selections:
     - audit_rules_sysadmin_actions
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_chsh
-    - audit_rules_privileged_commands_sudoedit
     - audit_rules_media_export
     - audit_rules_privileged_commands_umount
     - audit_rules_privileged_commands_postdrop
@@ -254,7 +252,6 @@ selections:
     - sshd_use_priv_separation
     - sshd_disable_compression
     - chronyd_or_ntpd_set_maxpoll
-    - configure_firewalld_rate_limiting
     - service_firewalld_enabled
     - display_login_attempts
     - no_user_host_based_files
