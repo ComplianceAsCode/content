@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8
+
+title: 'Install rear Package'
+
+description: |-
+    {{{ describe_package_install(package="rear") }}}
+
+rationale: |-
+    <tt>rear</tt> contains the Relax-and-Recover (ReaR) utility. ReaR produces a bootable
+    image of a system and restores from backup using this image.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-82882-2
+    cce@rhel8: CCE-82883-0
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="rear") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: rear
