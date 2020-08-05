@@ -140,3 +140,5 @@ selections:
   - package_fapolicyd_installed
   - service_fapolicyd_enabled
 
+  ### Backup
+  - package_rear_installed
