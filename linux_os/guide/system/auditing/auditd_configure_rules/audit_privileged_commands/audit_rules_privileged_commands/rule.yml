@@ -14,20 +14,20 @@ description: |-
     <tt>/etc/audit/rules.d</tt> for each setuid / setgid program on the system,
     replacing the <i>SETUID_PROG_PATH</i> part with the full path of that setuid /
     setgid program in the list:
-    <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=special-config-changes</pre>
+    <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt> for each setuid / setgid program on the
     system, replacing the <i>SETUID_PROG_PATH</i> part with the full path of that
     setuid / setgid program in the list:
-    <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=special-config-changes</pre>
+    <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
     authorized users, or by unauthorized external entities that have compromised system accounts,
     is a serious and ongoing concern and can have significant adverse impacts on organizations.
     Auditing the use of privileged functions is one way to detect such misuse and identify
-    the risk from insider and advanced persistent threast.
+    the risk from insider and advanced persistent threats.
     <br /><br />
     Privileged programs are subject to escalation-of-privilege attacks,
     which attempt to subvert their normal role of providing some necessary but
