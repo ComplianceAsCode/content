@@ -2,20 +2,20 @@ documentation_complete: true
 
 prodtype: fedora,rhel7,rhel8
 
-title: 'Disable GNOME3 Automounting'
+title: 'Disable GNOME3 Automount Opening'
 
 description: |-
     The system's default desktop environment, GNOME3, will mount
     devices and removable media (such as DVDs, CDs and USB flash drives) whenever
-    they are inserted into the system. To disable automount within GNOME3, add or set
-    <tt>automount</tt> to <tt>false</tt> in <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    they are inserted into the system. To disable automount-open within GNOME3, add or set
+    <tt>automount-open</tt> to <tt>false</tt> in <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
     For example:
     <pre>[org/gnome/desktop/media-handling]
-    automount=false</pre>
+    automount-open=false</pre>
     Once the settings have been added, add a lock to
     <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
-    <pre>/org/gnome/desktop/media-handling/automount</pre>
+    <pre>/org/gnome/desktop/media-handling/automount-open</pre>
     After the settings have been set, run <tt>dconf update</tt>.
 
 rationale: |-
@@ -24,10 +24,11 @@ rationale: |-
     It will, however, also prevent desktop users from legitimate use
     of removable media.
 
-severity: unknown
+severity: medium
 
 identifiers:
-    cce@rhel7: CCE-80122-5
+    cce@rhel7: CCE-83692-4
+    cce@rhel8: CCE-83693-2
 
 references:
     cui: 3.1.7
@@ -38,15 +39,19 @@ references:
     cobit5: APO13.01,DSS01.04,DSS05.03,DSS05.04,DSS05.05,DSS05.07,DSS06.03
     iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.6.2.1,A.6.2.2,A.7.1.1,A.9.2.1
     cis-csc: 12,16
+    stig@rhel7: RHEL-07-020111
+    disa: CCI-001958
+    srg: SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227
+
 
 ocil_clause: 'GNOME automounting is not disabled'
 
 ocil: |-
     These settings can be verified by running the following:
-    <pre>$ gsettings get org.gnome.desktop.media-handling automount</pre>
-    If properly configured, the output for <tt>automount</tt> should be <tt>false</tt>.
-    To ensure that users cannot enable automount in GNOME3, run the following:
-    <pre>$ grep 'automount' /etc/dconf/db/local.d/locks/*</pre>
-    If properly configured, the output for <tt>automount</tt> should be <tt>/org/gnome/desktop/media-handling/automount</tt>
+    <pre>$ gsettings get org.gnome.desktop.media-handling automount-open</pre>
+    If properly configured, the output for <tt>automount-open</tt>should be <tt>false</tt>.
+    To ensure that users cannot enable automount opening in GNOME3, run the following:
+    <pre>$ grep 'automount-open' /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output for <tt>automount-open</tt> should be <tt>/org/gnome/desktop/media-handling/automount-open</tt>
 
 platform: machine
