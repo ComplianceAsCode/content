@@ -1,5 +1,11 @@
 documentation_complete: true
 
+metadata:
+    policy_hub: https://www.cyber.gov.au/acsc/view-all-content/essential-eight
+    current_version: N/A
+    maintainers:
+        - shaneboulden
+
 title: 'Australian Cyber Security Centre (ACSC) Essential Eight'
 
 description: |-

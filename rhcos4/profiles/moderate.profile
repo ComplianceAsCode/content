@@ -1,5 +1,11 @@
 documentation_complete: true
 
+metadata:
+    policy_hub: https://www.fedramp.gov/documents/
+    current_version: N/A
+    maintainers:
+        - mrogers950
+
 title: 'NIST 800-53 Moderate-Impact Baseline for Red Hat Enterprise Linux CoreOS'
 
 description: |-
