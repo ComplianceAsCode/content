@@ -1,0 +1,19 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable GNOME3 Ctrl-Alt-Delete Logout"
+  ini_file:
+    dest: "/etc/dconf/db/local.d/00-security-settings"
+    section: "org/gnome/settings-daemon/plugins/media-keys"
+    option: logout
+    value: "''"
+    create: yes
+
+- name: "Prevent user modification of GNOME logout"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/settings-daemon/plugins/media-keys/logout'
+    line: '/org/gnome/settings-daemon/plugins/media-keys/logout'
+    create: yes

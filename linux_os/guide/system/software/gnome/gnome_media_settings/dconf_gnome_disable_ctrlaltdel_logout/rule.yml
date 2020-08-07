@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8
+
+title: 'Disable GNOME3 Ctrl-Alt-Delete Logout'
+
+description: |-
+    To disable Ctrl-Alt-Delete logout in the GNOME3 desktop,
+    add or set <tt>logout</tt> to <tt>''</tt> in
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/settings-daemon/plugins/media-keys]
+    logout=''
+    </pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings</tt> to prevent user modification.
+    For example:
+    <pre>org/gnome/settings-daemon/plugins/media-keys</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    A locally logged-on user who presses Ctrl-Alt-Delete, when at the console, can reboot the system. If accidentally pressed, this can
+    create the risk of short-term loss of availability of systems due to unintentional reboot. In the graphical environment, risk of
+    unintentional reboot from the Ctrl-Alt-Delete sequence is reduced because the user will be prompted before any action is taken.
+
+severity: high
+
+identifiers:
+    cce@rhel7: CCE-84200-5
+    cce@rhel8: CCE-84201-3
+
+references:
+    disa: CCI-000336
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: RHEL-07-020231
+
+ocil_clause: 'Ctrl-Alt-Delete logout is enabled'
+
+ocil: |-
+    To check the status of Ctrl-Alt-Delete logout, run the following command:
+    <pre>$ gsettings get org.gnome.settings-daemon.plugins.media-keys logout</pre>
+    If properly configured, the output should be <tt>''</tt>.
+    To ensure that users cannot change use Ctrl-Alt-Delete to logout, run the following:
+    <pre>$ grep logout /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output for <tt>logout</tt> should be <tt>/org/gnome/settings-daemon/plugins/media-keys</tt>
+
+platform: machine
