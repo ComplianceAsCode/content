@@ -131,6 +131,11 @@ class Profile(object):
             profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
+        # Delete metadata keyword, at the moment this is not be included in the built profiles
+        # The goal for now is to provides development and tracking information
+        if "metadata" in yaml_contents:
+            del yaml_contents["metadata"]
+
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
