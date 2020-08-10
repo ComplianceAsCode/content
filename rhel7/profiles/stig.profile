@@ -70,6 +70,7 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_activation_locked
     - dconf_gnome_screensaver_lock_delay
+    - dconf_gnome_disable_ctrlaltdel_reboot
     - accounts_password_pam_ucredit
     - accounts_password_pam_lcredit
     - accounts_password_pam_dcredit
