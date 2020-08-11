@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Disable XDMCP in GDM'
+
+description: |-
+    XDMCP is an unencrypted protocol, and therefore presents a security risK, see e.g.
+    {{{ weblink("https://help.gnome.org/admin/gdm/stable/security.html.en_GB#xdmcpsecurity", "XDMCP Gnome docs") }}}.
+
+    To disable XDMCP support in GDM, follow {{{ weblink("https://help.gnome.org/admin/gdm/stable/configuration.html.en#xdmcpsection", "GDM docs") }}},
+    and therefore make sure that there is the <code>Enable=false</code> line under the <code>[xdmcp]</code> configuration section in <code>/etc/gdm/custom.conf</code>
+
+rationale: |-
+    Even though your display is protected by cookies, XEvents and keystrokes typed when entering passwords
+    will still go over the network in clear text. It is trivial to capture these.
+
+    XDMCP is primarily useful for running thin clients such as in terminal labs.
+    Those thin clients will only ever need the network to access the server, and so it seems like the best security policy
+    to have those thin clients on a separate network that cannot be accessed by the outside world, and can only connect to the server.
+    The only point from which you need to access outside is the server. This type of set up should never use an unmanaged hub or other sniffable network.
+
+severity: medium
+
+ocil_clause: 'the Enable=false setting is missing in the xdmcp section of the /etc/gdm/custom.conf gdm configuration file'
+
+ocil: |-
+    Check whether there is the xdmcp section in the gdm configuration - run <code>grep '^\s*\[xdmcp\]' /etc/gdm/custom.conf</code>
+    If no results are returned, the whole section is missing, in which case you can add it to the file
+    using printf - <code>printf '%\n' "" "[xdmcp]" "Enable=false" >> /etc/gdm/custom.conf</code>
+
+    If grep returned results, you have to open the custom.conf file in a text editor,
+    and make sure that there is only one assignment to Enable,
+    namely Enable=false between the beginning of the [xdmcp] section
+    and another section or the end of the file.
+
+# There is a gdm platform implied by the parent group.
+# platform: machine
