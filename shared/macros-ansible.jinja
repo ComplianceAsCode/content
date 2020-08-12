@@ -547,3 +547,15 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
     - test_id_provider.stdout is defined
     - test_id_provider.stdout | length < 1
 {{%- endmacro %}}
+
+
+{{% macro ansible_ini_file_set(filename, section, key, value, description="") -%}}
+- name: "{{{ description if description else ("Set '" + key + "' to '" + value + "' in the [" + section + "] section of '" + filename + "'") }}}"
+  ini_file:
+    path: "{{{ filename }}}"
+    section: "{{{ section }}}"
+    option: "{{{ key }}}"
+    value: "{{{ value }}}"
+    create: yes
+    mode: 0644
+{{%- endmacro %}}

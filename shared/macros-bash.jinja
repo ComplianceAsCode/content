@@ -583,3 +583,16 @@ EOF
 {{% macro bash_deregexify_banner_backslash(banner_var_name) -%}}
 {{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/\\//g')
 {{%- endmacro %}}
+
+{{% macro bash_ini_file_set(filename, section, key, value) -%}}
+# Try find '[{{{ section }}}]' and '{{{ key }}}' in '{{{ filename }}}', if it exists, set
+# to '{{{ value }}}', if it isn't here, add it, if '[{{{ section }}}]' doesn't exist, add it there
+if grep -qzosP '[[:space:]]*\[{{{ section }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}' '{{{ filename }}}'; then
+    sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/' '{{{ filename }}}'
+elif grep -qs '[[:space:]]*\[{{{ section }}}]' '{{{ filename }}}'; then
+    sed -i '/[[:space:]]*\[{{{ section }}}]/a {{{ key }}}={{{ value }}}' '{{{ filename }}}'
+else
+    mkdir -p {{{ "/".join(filename.split("/")[:-1]) }}}
+    printf '%s\n' '[{{{ section }}}]' '{{{ key }}}={{{ value }}}' >> '{{{ filename }}}'
+fi
+{{%- endmacro %}}
