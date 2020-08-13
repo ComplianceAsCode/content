@@ -20,22 +20,22 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_unlock_time_system-auth" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_system-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_system-auth" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check authfail maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_system-auth" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check authfail maximum failed login attempts allowed in /etc/pam.d/password-auth" id="test_accounts_passwords_pam_faillock_unlock_time_password-auth" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_password-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_password-auth" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/password-auth" id="test_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_faillock_unlock_time_password-auth" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_unlock_time_system-auth" version="2">
@@ -62,11 +62,7 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_accounts_passwords_pam_faillock_unlock_time_system-auth" version="2">
-    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
-  </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_state id="state_accounts_passwords_pam_faillock_unlock_time_password-auth" version="2">
+  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_var" version="2">
     <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
   </ind:textfilecontent54_state>
 
