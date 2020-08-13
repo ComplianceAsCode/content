@@ -297,3 +297,4 @@ selections:
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
+    - audit_rules_privileged_commands_mount
