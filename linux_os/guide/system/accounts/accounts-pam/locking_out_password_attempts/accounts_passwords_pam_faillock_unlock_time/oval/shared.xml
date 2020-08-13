@@ -63,11 +63,11 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_accounts_passwords_pam_faillock_unlock_time_system-auth" version="2">
-    <ind:subexpression datatype="int" operation="less than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_state id="state_accounts_passwords_pam_faillock_unlock_time_password-auth" version="2">
-    <ind:subexpression datatype="int" operation="less than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
   </ind:textfilecontent54_state>
 
   <external_variable comment="number of failed login attempts allowed" datatype="int" id="var_accounts_passwords_pam_faillock_unlock_time" version="2" />
