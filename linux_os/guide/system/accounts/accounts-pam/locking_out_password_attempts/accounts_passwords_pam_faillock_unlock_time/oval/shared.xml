@@ -10,33 +10,53 @@
       </affected>
       <description>The number of allowed failed logins should be set correctly.</description>
     </metadata>
-    <criteria>
-      <criterion comment="preauth default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_unlock_time_system-auth" />
-      <criterion comment="authfail default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth" />
-      <criterion comment="authfail default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_unlock_time_password-auth" />
-      <criterion comment="preauth default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth" />
+    <criteria operator="OR">
+        <!-- We divide the checking domain space in two,
+        1. when the target unlock_time is zero, we are only looking for zero or never in the config files,
+        2. When the target unlock_time is not zero, the unlock_time in the config files can be zero or never (as it is the most secure value), or greater than or equal the target_unlock time -->
+      <criteria comment="When target unlock_time is zero, all configs must be zero or never">
+        <criterion comment="Is target unlock time zero?" test_ref="test_var_faillock_unlock_time_is_never" />
+        <criterion comment="Test if config is zero or never" test_ref="test_accounts_passwords_pam_faillock_unlock_time_is_never" />
+      </criteria>
+      <criteria comment="When target unlock_time is not zero, configs should be zero or never, or greater than or equal the policy target">
+        <criterion comment="Is target unlock time zero?" test_ref="test_var_faillock_unlock_time_is_never" negate="true"/>
+        <criterion comment="Test if config is greater than or equals the target unlock time" test_ref="test_accounts_passwords_pam_faillock_unlock_time_greater_or_equal_policy_target" />
+      </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_unlock_time_system-auth" version="2">
-    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_system-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_unlock_time_greater_or_equal_policy_target" state_operator="OR" version="3">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_greater_or_equal_than_target" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_never" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check authfail maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth" version="2">
-    <ind:object object_ref="object_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_unlock_time_is_never" version="3">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_never" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check authfail maximum failed login attempts allowed in /etc/pam.d/password-auth" id="test_accounts_passwords_pam_faillock_unlock_time_password-auth" version="2">
-    <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time_password-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
-  </ind:textfilecontent54_test>
+  <!-- OVAL allows only two reference objects in a set, so we create the set in two stages -->
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_unlock_time" version="2">
+    <set>
+      <object_reference>object_accounts_passwords_pam_faillock_unlock_time_system-auth</object_reference>
+      <object_reference>object_accounts_passwords_pam_faillock_unlock_time_password-auth</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/password-auth" id="test_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth" version="2">
-    <ind:object object_ref="object_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth" />
-    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
-  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_unlock_time_system-auth" version="2">
+    <set>
+      <object_reference>object_accounts_passwords_pam_faillock_preauth_unlock_time_system-auth</object_reference>
+      <object_reference>object_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_unlock_time_password-auth" version="2">
+    <set>
+      <object_reference>object_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth</object_reference>
+      <object_reference>object_accounts_passwords_pam_faillock_authfail_unlock_time_password-auth</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_preauth_unlock_time_system-auth" version="2">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
@@ -62,9 +82,27 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_var" version="2">
+  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_greater_or_equal_than_target" version="2">
     <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
   </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_never" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^0$|^never$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:variable_test id="test_var_faillock_unlock_time_is_never" version="1" check="all"
+  comment="Check if policy target unlock time to be never">
+    <ind:object object_ref="object_var_faillock_unlock_time" />
+    <ind:state state_ref="state_var_faillock_unlock_time_is_never" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_var_faillock_unlock_time" version="1">
+    <ind:var_ref>var_accounts_passwords_pam_faillock_unlock_time</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_var_faillock_unlock_time_is_never" version="1">
+    <ind:value datatype="int" operation="equals">0</ind:value>
+  </ind:variable_state>
 
   <external_variable comment="number of failed login attempts allowed" datatype="int" id="var_accounts_passwords_pam_faillock_unlock_time" version="2" />
 </def-group>
