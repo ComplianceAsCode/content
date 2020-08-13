@@ -38,7 +38,7 @@
     <ind:state state_ref="state_accounts_passwords_pam_unlock_time_var" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_unlock_time_system-auth" version="2">
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_preauth_unlock_time_system-auth" version="2">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
     <ind:pattern operation="pattern match">^\s*auth\s+(?:(?:required))\s+pam_faillock\.so\s+preauth.*unlock_time=(\w*).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
@@ -50,7 +50,7 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_unlock_time_password-auth" version="2">
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_authfail_unlock_time_password-auth" version="2">
     <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
     <ind:pattern operation="pattern match">^\s*auth\s+(?:(?:sufficient)|(?:\[default=die\]))\s+pam_faillock\.so\s+authfail.*unlock_time=(\w*).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
