@@ -516,6 +516,9 @@ func (ctx *e2econtext) getCheckResultsForSuite(s *cmpv1alpha1.ComplianceSuite) i
 }
 
 func isNodeReady(node corev1.Node) bool {
+	if node.Spec.Unschedulable {
+		return false
+	}
 	for _, condition := range node.Status.Conditions {
 		if condition.Type == corev1.NodeReady &&
 			condition.Status == corev1.ConditionTrue &&
