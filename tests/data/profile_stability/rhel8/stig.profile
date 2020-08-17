@@ -77,6 +77,7 @@ selections:
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_openssl_crypto_policy
+- configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
 - configure_usbguard_auditbackend
@@ -264,11 +265,11 @@ selections:
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never
+- var_ssh_client_rekey_limit_size=1G
+- var_ssh_client_rekey_limit_time=1hour
 - login_banner_text=dod_banners
 - grub2_vsyscall_argument.role=unscored
 - grub2_vsyscall_argument.severity=info
 - sysctl_user_max_user_namespaces.role=unscored
 - sysctl_user_max_user_namespaces.severity=info
-- var_ssh_client_rekey_limit_size=1G
-- var_ssh_client_rekey_limit_time=1hour
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 8'
