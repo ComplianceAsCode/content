@@ -12,31 +12,38 @@
     </metadata>
     <criteria operator="OR">
         <!-- We divide the checking domain space in two,
-        1. when the target unlock_time is zero, we are only looking for zero or never in the config files,
-        2. When the target unlock_time is not zero, the unlock_time in the config files can be zero or never (as it is the most secure value), or greater than or equal the target_unlock time -->
-      <criteria comment="When target unlock_time is zero, all configs must be zero or never">
-        <criterion comment="Is target unlock time zero?" test_ref="test_var_faillock_unlock_time_is_never" />
+        1. when the ext var unlock_time is zero, we are only looking for zero or never in the config files,
+        2. When the ext var unlock_time is not zero, the unlock_time in the config files can be zero or never
+           (as it is the most secure value), or greater than or equal the ext var unlock time -->
+      <criteria comment="When ext var unlock_time is zero, all configs must be zero or never">
+        <criterion comment="Is ext var unlock time zero?" test_ref="test_var_faillock_unlock_time_is_never" />
         <criterion comment="Test if config is zero or never" test_ref="test_accounts_passwords_pam_faillock_unlock_time_is_never" />
       </criteria>
-      <criteria comment="When target unlock_time is not zero, configs should be zero or never, or greater than or equal the policy target">
-        <criterion comment="Is target unlock time zero?" test_ref="test_var_faillock_unlock_time_is_never" negate="true"/>
-        <criterion comment="Test if config is greater than or equals the target unlock time" test_ref="test_accounts_passwords_pam_faillock_unlock_time_greater_or_equal_policy_target" />
+      <criteria comment="When ext var unlock_time is not zero, configs should be zero or never, or greater than or equal the external variable">
+        <criterion comment="Is ext var unlock time different than zero?" test_ref="test_var_faillock_unlock_time_is_never" negate="true"/>
+        <criterion comment="Test if config is greater than or equals the ext var unlock time" test_ref="test_accounts_passwords_pam_faillock_unlock_time_greater_or_equal_ext_var" />
       </criteria>
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_unlock_time_greater_or_equal_policy_target" state_operator="OR" version="3">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="Check if unlock time is never, or greater than or equal external variable"
+      id="test_accounts_passwords_pam_faillock_unlock_time_greater_or_equal_ext_var"
+      state_operator="OR" version="3">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time" />
-    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_greater_or_equal_than_target" />
-    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_never" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_greater_or_equal_than_ext_var" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_is_never" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check preauth maximum failed login attempts allowed in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_unlock_time_is_never" version="3">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="Check if unlock time is never"
+      id="test_accounts_passwords_pam_faillock_unlock_time_is_never" version="3">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_unlock_time" />
-    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_never" />
+    <ind:state state_ref="state_accounts_passwords_pam_unlock_time_is_never" />
   </ind:textfilecontent54_test>
 
   <!-- OVAL allows only two reference objects in a set, so we create the set in two stages -->
+  <!-- The collected object is always the same, the value of unlock_time -->
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_unlock_time" version="2">
     <set>
       <object_reference>object_accounts_passwords_pam_faillock_unlock_time_system-auth</object_reference>
@@ -82,16 +89,16 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_greater_or_equal_than_target" version="2">
+  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_greater_or_equal_than_ext_var" version="2">
     <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_accounts_passwords_pam_faillock_unlock_time" />
   </ind:textfilecontent54_state>
 
-  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_never" version="1">
+  <ind:textfilecontent54_state id="state_accounts_passwords_pam_unlock_time_is_never" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^0$|^never$</ind:subexpression>
   </ind:textfilecontent54_state>
 
   <ind:variable_test id="test_var_faillock_unlock_time_is_never" version="1" check="all"
-  comment="Check if policy target unlock time to be never">
+  comment="Check if external variable unlock time is never">
     <ind:object object_ref="object_var_faillock_unlock_time" />
     <ind:state state_ref="state_var_faillock_unlock_time_is_never" />
   </ind:variable_test>
