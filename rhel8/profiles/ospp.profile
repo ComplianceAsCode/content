@@ -1,8 +1,8 @@
 documentation_complete: true
 
 metadata:
-    policy_hub: https://www.niap-ccevs.org/Profile/PP.cfm
-    current_version: 4.2.1
+    reference: https://www.niap-ccevs.org/Profile/PP.cfm
+    version: 4.2.1
     maintainers:
         - stevegrubb
 

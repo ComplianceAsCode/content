@@ -1,8 +1,8 @@
 documentation_complete: true
 
 metadata:
-    policy_hub: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
-    current_version: V1R0.1-Draft
+    reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+    version: V1R0.1-Draft
     maintainers:
         - redhatrises
         - tedbrunell

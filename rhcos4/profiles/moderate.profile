@@ -1,8 +1,7 @@
 documentation_complete: true
 
 metadata:
-    policy_hub: https://www.fedramp.gov/documents/
-    current_version: N/A
+    reference: https://www.fedramp.gov/documents/
     maintainers:
         - mrogers950
 

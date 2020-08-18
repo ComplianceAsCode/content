@@ -1,8 +1,7 @@
 documentation_complete: true
 
 metadata:
-    policy_hub: https://www.cyber.gov.au/acsc/view-all-content/essential-eight
-    current_version: N/A
+    reference: https://www.cyber.gov.au/acsc/view-all-content/essential-eight
     maintainers:
         - shaneboulden
 
