@@ -11,5 +11,10 @@ operator: equals
 interactive: false
 
 options:
+    {{#- STIG is product-dependent, so the selector has to be made available for individual products selectively -#}}
+    {{%- if product in ("rhel7", "ol7") %}}
     stig: aes128-ctr,aes192-ctr,aes256-ctr
+    {{%- elif product in ("rhel6", "ol6") %}}
+    stig: aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
+    {{%- endif %}}
     default: aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se

@@ -11,5 +11,8 @@ operator: equals
 interactive: false
 
 options:
+    {{#- STIG is product-dependent, so the selector has to be made available for individual products selectively -#}}
+    {{%- if product in ("rhel6", "rhel7", "ol6", "ol7") %}}
     stig: hmac-sha2-512,hmac-sha2-256
+    {{%- endif %}}
     default: hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-sha1-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
