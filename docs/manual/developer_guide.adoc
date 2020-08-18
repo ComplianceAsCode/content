@@ -656,6 +656,29 @@ For any of the `[red]#Required#` directories that may not yet add content,
 add a `.gitkeep` file for any empty directories.
 ====
 
+=== Profiles
+
+Profiles define the set of rules and variables aligned to a compliance standard.
+
+Structurally, a profile is a YAML file that represents a dictionary.
+A profile YAML file has one implied attribute:
+
+* `id`: The primary identifier for the profile, to be referenced during evaluations. This is inferred from the file name.
+
+A profile YAML file can, optionally, include metadata about its maintainers and the implemented policy:
+
+* `metadata`: Dictionary for profile metadata.
+  * `policy_hub`: URL pointing to page or organization that publishes the policy.
+  * `current_version`: Version of the policy implemented by the profile.
+  * `maintainers`: List of people maintaining, responsible or experienced in the profile.
+
+A profile should define these attributes:
+
+* `title`: Human-readable title of the profile.
+* `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale.
+* `extends`: The `id` of a profile to be extended. A profile can make incremental changes based on another profile, via `extends` attribute. The extendee can then, via the `selections` attribute, select/unselect rules and change XCCDF Value selectors.
+* `selections`: List of rule `id`s to be included in the profile, or changes to XCCDF Value selectors.
+
 == Updating Reference and Overlay Content
 
 === Reference Content
