@@ -3,7 +3,7 @@
 
 . $SHARED/dconf_test_functions.sh
 
-yum -y install dconf
+install_dconf_and_gdm_if_needed
 clean_dconf_settings
 
 add_dconf_setting "org/gnome/desktop/media-handling" "automount-open" "false" "local.d" "00-security-settings"
