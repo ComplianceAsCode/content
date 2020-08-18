@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    reference: https://www.fedramp.gov/documents/
+    reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
     maintainers:
         - mrogers950
 
