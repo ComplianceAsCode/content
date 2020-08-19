@@ -2,28 +2,29 @@
   <definition class="compliance" id="sssd_enable_pam_services" version="1">
     <metadata>
       <title>Configure PAM in SSSD Services</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>SSSD should be configured to run SSSD PAM services.
       </description>
     </metadata>
     <criteria>
-      <criterion comment="check if pam is configured in the services setting of the sssd section"
-      test_ref="test_sssd_enable_pam_services" />
+        <criterion comment="check if pam is configured in the services setting of the sssd section"
+        test_ref="test_sssd_enable_pam_services" />
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  <ind:textfilecontent54_test check="all" check_existence="any_exist"
   comment="check if pam is configured in the services setting of the sssd section"
   id="test_sssd_enable_pam_services" version="1">
     <ind:object object_ref="obj_sssd_enable_pam_services" />
+    <ind:state state_ref="state_sssd_enable_pam_services" />
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="obj_sssd_enable_pam_services" version="1">
-    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[sssd]([^\n\[\]]*\n+)+?[\s]*services.*pam.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:filepath operation="pattern match">^/etc/sssd/(sssd|conf\.d/.*)\.conf$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*\[sssd\].*(?:\n\s*[^[\s].*)*\n\s*services[ \t]*=[ \t]*(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_sssd_enable_pam_services" version="1">
+    <ind:subexpression operation="pattern match">^.*pam.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>

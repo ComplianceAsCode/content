@@ -3,17 +3,16 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-SSSD_SERVICES_PAM_REGEX="^[[:space:]]*\[sssd]([^\n]*\n+)+?[[:space:]]*services.*pam.*$"
-SSSD_SERVICES_REGEX="^[[:space:]]*\[sssd]([^\n]*\n+)+?[[:space:]]*services.*$"
-SSSD_PAM_SERVICES="[sssd]
-services = pam"
 SSSD_CONF="/etc/sssd/sssd.conf"
+SSSD_CONF_DIR="/etc/sssd/conf.d/*.conf"
 
-# If there is services line with pam, good
-# If there is services line without pam, append pam
-# If not echo services line with pam
-grep -q "$SSSD_SERVICES_PAM_REGEX" $SSSD_CONF || \
-	grep -q "$SSSD_SERVICES_REGEX" $SSSD_CONF && \
-	sed -i "s/$SSSD_SERVICES_REGEX/&, pam/" $SSSD_CONF || \
-	echo "$SSSD_PAM_SERVICES" >> $SSSD_CONF
+for f in $( ls $SSSD_CONF $SSSD_CONF_DIR 2> /dev/null ) ; do
+	# finds all services entries under [sssd] configuration category, get a unique list so it doesn't add redundant fix
+	services_list=$( awk '/^\s*\[/{f=0} /^\s*\[sssd\]/{f=1}f' $f | grep -P '^services[ \t]*=' | uniq )
 
+	while IFS= read -r services; do
+		if [[ ! $services =~ "pam" ]]; then
+			sed -i "s/$services$/&, pam/" $f
+		fi
+	done <<< "$services_list"
+done
