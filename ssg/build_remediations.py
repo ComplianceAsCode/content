@@ -346,8 +346,7 @@ class AnsibleRemediation(Remediation):
     def update_when_from_rule(self, to_update):
         additional_when = ""
         if self.associated_rule.platform == "machine":
-            additional_when = ('ansible_virtualization_role != "guest" '
-                               'or ansible_virtualization_type != "docker"')
+            additional_when = 'ansible_virtualization_type not in ["docker", "lxc", "openvz"]'
         to_update.setdefault("when", "")
         new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
         if not new_when:
