@@ -285,6 +285,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
         NAME "${PRODUCT}-ansible-playbooks-generated-for-all-rules"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/ansible_playbooks_generated_for_all_rules.py" --build-dir "${CMAKE_BINARY_DIR}" --product "${PRODUCT}"
     )
+    set_tests_properties("${PRODUCT}-ansible-playbooks-generated-for-all-rules" PROPERTIES LABELS quick)
     if("${PRODUCT}" MATCHES "rhel")
         add_test(
             NAME "${PRODUCT}-ansible-assert-playbooks-schema"
@@ -453,14 +454,17 @@ macro(ssg_build_xccdf_final PRODUCT)
         NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    set_tests_properties("verify-references-ssg-${PRODUCT}-xccdf.xml" PROPERTIES LABELS quick)
     add_test(
         NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles"
         COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"title\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    set_tests_properties("verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles" PROPERTIES LABELS quick)
     add_test(
         NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions"
         COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"description\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    set_tests_properties("verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions" PROPERTIES LABELS quick)
     # Sets WILL_FAIL property for all '*-override-true-all-profile-*' tests to
     # true as it is expected that XPath of a passing test will be empty (and
     # non-zero exit code is returned in such case).
@@ -1251,6 +1255,7 @@ macro(ssg_define_guide_and_table_tests)
             NAME "unique-cces"
 	    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_cces_unique.sh"
         )
+        set_tests_properties("unique-cces" PROPERTIES LABELS quick)
     endif()
 endmacro()
 

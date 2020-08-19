@@ -311,14 +311,15 @@ bash/rhel7-script-pci-dss.sh
 ### Testing
 
 To ensure validity of built artifacts prior to installation, we recommend
-running our test suite against the build output. This is done with CTest:
+running our test suite against the build output. This is done with CTest.
+It is a good idea to execute quick tests first using the `-L quick` option passed to `ctest`.
 
 ```bash
 cd content/
-cd build/
-cmake ../
-make -j4
-ctest -j4
+./build_product
+cd build
+ctest -L quick
+ctest -LE quick -j4
 ```
 
 Note: CTest does not run link:https://github.com/ComplianceAsCode/content/tree/master/tests[SSG Test Suite] which provides simple system of test scenarios for testing profiles and rule remediations.
