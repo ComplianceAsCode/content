@@ -16,7 +16,7 @@
         <unix:filename operation="pattern match">^.*$</unix:filename>
         <filter action="include">state_file_permissions_unauthorized_sgid_sgid_set</filter>
         <filter action="exclude">state_file_permissions_unauthorized_sgid_filepaths</filter>
-        <filter action="exclude">state_file_in_nonlocal_dir</filter>
+        <filter action="exclude">state_file_in_remote_dir</filter>
     </unix:file_object>
 
     <linux:rpmverifyfile_object id="obj_file_permissions_unauthorized_sgid_rpms" version="1" comment="all files with sgid set that come from a RPM package">
@@ -52,5 +52,5 @@
         <object_component item_field="filepath" object_ref="obj_file_permissions_unauthorized_sgid_files" />
     </local_variable>
 
-    {{{ add_nonlocal_state("state_file_in_nonlocal_dir", "unix", "file_state") }}}
+    {{{ add_remote_state("state_file_in_remote_dir", "unix", "file_state") }}}
 </def-group>

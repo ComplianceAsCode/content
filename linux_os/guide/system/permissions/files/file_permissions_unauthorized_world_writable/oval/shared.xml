@@ -21,7 +21,7 @@
     <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_special_selinux_files</filter>
     <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_proc</filter>
     <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_sys</filter>
-    <filter action="exclude">state_files_in_blacklisted_dirs</filter>
+    <filter action="exclude">state_files_in_remote_dirs</filter>
   </unix:file_object>
   <unix:file_state id="state_file_permissions_unauthorized_world_write" version="1">
     <unix:type operation="equals">regular</unix:type>
@@ -37,5 +37,5 @@
     <unix:filepath operation="pattern match">^/sys/.*$</unix:filepath>
   </unix:file_state>
 
-  {{{ add_nonlocal_state("state_files_in_blacklisted_dirs", "linux", "rpmverifyfile_state") }}}
+  {{{ add_remote_state("state_files_in_remote_dirs", "linux", "rpmverifyfile_state") }}}
 </def-group>
