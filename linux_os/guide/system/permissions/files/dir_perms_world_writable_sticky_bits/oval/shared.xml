@@ -14,12 +14,12 @@
     <unix:path operation="equals">/</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_world_writable_and_not_sticky</filter>
-    <filter action="exclude">state_file_in_remote_dir</filter>
+    <filter action="exclude">state_file_in_remote_dir_{{{ rule_id }}}</filter>
   </unix:file_object>
   <unix:file_state id="state_world_writable_and_not_sticky" version="1">
     <unix:sticky datatype="boolean">false</unix:sticky>
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
 
-  {{{ add_remote_state("state_file_in_remote_dir", "unix", "file_state") }}}
+  {{{ add_remote_state("state_file_in_remote_dir_" + rule_id, "unix", "file_state") }}}
 </def-group>

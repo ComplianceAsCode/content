@@ -23,7 +23,7 @@
     <unix:path>/</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
     <filter action="exclude">file_permissions_unowned_userid_list_match</filter>
-    <filter action="exclude">state_files_in_remote_dirs</filter>
+    <filter action="exclude">state_file_in_remote_dir_{{{ rule_id }}}</filter>
   </unix:file_object>
   
   <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
@@ -32,5 +32,5 @@
     <unix:object object_ref="file_permissions_unowned_object" />
   </unix:file_test>
 
-  {{{ add_remote_state("state_files_in_remote_dirs", "unix", "file_state") }}}
+  {{{ add_remote_state("state_file_in_remote_dir_" + rule_id, "unix", "file_state") }}}
 </def-group>
