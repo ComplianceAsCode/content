@@ -10,6 +10,9 @@ description: |-
     Following this, the files should be deleted or assigned to an
     appropriate user.
 
+    You can use the <code>var_remote_paths</code> XCCDF value to specify a colon-separated list of directories that you are sure that are remote.
+    For this profile, that would be: {{{ sub_var_value("var_remote_paths") }}}
+
 rationale: |-
     Unowned files do not directly imply a security problem, but they are generally
     a sign that something is amiss. They may

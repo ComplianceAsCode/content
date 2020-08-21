@@ -12,6 +12,9 @@ description: |-
     Following this, the files should be deleted or assigned to an
     appropriate group.
 
+    You can use the <code>var_remote_paths</code> XCCDF value to specify a colon-separated list of directories that you are sure that are remote.
+    For this profile, that would be: {{{ sub_var_value("var_remote_paths") }}}
+
 rationale: |-
     Allowing a user account to own a world-writable directory is
     undesirable because it allows the owner of that directory to remove

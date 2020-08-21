@@ -14,9 +14,12 @@
     <unix:path operation="equals">/</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_gid_is_user_and_world_writable</filter>
+    <filter action="exclude">state_file_in_remote_dir</filter>
   </unix:file_object>
   <unix:file_state comment="uid greater than or equal to {{{ auid }}} and world writable" id="state_gid_is_user_and_world_writable" version="1">
     <unix:user_id datatype="int" operation="greater than or equal">{{{ auid }}}</unix:user_id>
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
+
+  {{{ add_remote_state("state_file_in_remote_dir", "unix", "file_state") }}}
 </def-group>

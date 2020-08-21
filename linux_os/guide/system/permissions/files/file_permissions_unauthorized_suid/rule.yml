@@ -16,6 +16,9 @@ description: |-
     the software should be considered an approved package on the system.
     Any SUID file not deployed through an RPM will be flagged for further review.
 
+    You can use the <code>var_remote_paths</code> XCCDF value to specify a colon-separated list of directories that you are sure that are remote.
+    For this profile, that would be: {{{ sub_var_value("var_remote_paths") }}}
+
 rationale: |-
     Executable files with the SUID permission run with the privileges of
     the owner of the file. SUID files of uncertain provenance could allow for

@@ -18,6 +18,9 @@ description: |-
     following command:
     <pre>$ sudo chmod +t <i>DIR</i></pre>
 
+    You can use the <code>var_remote_paths</code> XCCDF value to specify a colon-separated list of directories that you are sure that are remote.
+    For this profile, that would be: {{{ sub_var_value("var_remote_paths") }}}
+
 rationale: |-
     Failing to set the sticky bit on public directories allows unauthorized
     users to delete files in the directory structure.
