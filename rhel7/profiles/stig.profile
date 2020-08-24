@@ -19,7 +19,6 @@ description: |-
 selections:
     - login_banner_text=dod_banners
     - inactivity_timeout_value=15_minutes
-    - var_screensaver_lock_delay=5_seconds
     - sshd_idle_timeout_value=10_minutes
     - sshd_approved_macs=stig
     - var_accounts_fail_delay=4
@@ -66,6 +65,7 @@ selections:
     - dconf_gnome_screensaver_lock_locked
     - dconf_gnome_enable_smartcard_auth
     - dconf_gnome_screensaver_idle_delay
+    - var_screensaver_lock_delay=15_minutes
     - package_screen_installed
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_activation_locked
