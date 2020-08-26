@@ -13,16 +13,54 @@ controls:
   - id: R1
     level: minimal
     title: Minimization of installed services
+    description: >-
+      Only the components strictly necessary to the service provided by the system should
+      be installed.
+      Those whose presence can not be justified should be disabled, removed or deleted.
     automated: partially  # The list of essential services is not objective.
+    notes: >-
+      Use of obsolete or insecure services is not recommended.
+      The minimal install is a good starting point, but this doesn't provide any assurante over any packages installed later.
     rules:
     - package_dhcp_removed
+    - package_rsh_removed
+    - package_rsh-server_removed
     - package_sendmail_removed
-    - package_telnetd_removed
+    - package_talk_removed
+    - package_talk-server_removed
+    - package_telnet_removed
+    - package_telnet-server_removed
+    - package_tftp_removed
+    - package_tftp-server_removed
+    - package_xinetd_removed
+    - package_ypbind_removed
+    - package_ypserv_removed
 
   - id: R2
     level: intermediary
     title: Minimization of configuration
+    description: >-
+      Services are ofen installed with default configurations that enable features potentially
+      problematic from a security point of view.
+      The features configured at the level of launched services should be limited to the strict
+      minimum.
+    notes: >-
+      Define a list of most problematic components or features to be hardened or restricted.
+      # potential components: sshd, pam, chrony?
     # rules: TBD
+
+  - id: R3
+    level: enhanced
+    title: Principle of least privilege
+    description: >-
+      The services and executables available on the system must be analyzed in order to
+      know the privileges they require, and must then be configured and integrated to use
+      the, bare necessities.
+    automated: partially # The system can be restricted even more with selinux-booleans or other technologies
+    notes: >-
+      SELinux policies limit the privileges of services and daemons to only what they require.
+    rules:
+    - selinux_state
 
   - id: R5
     level: minimal
