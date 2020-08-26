@@ -161,6 +161,7 @@ selections:
     - aide_verify_ext_attributes
     - aide_use_fips_hashes
     - grub2_no_removeable_media
+    - uefi_no_removeable_media
     - package_telnet-server_removed
     - service_auditd_enabled
     - audit_rules_system_shutdown
