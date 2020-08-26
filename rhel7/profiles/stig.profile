@@ -241,6 +241,7 @@ selections:
     - sshd_required=yes
     - service_sshd_enabled
     - sshd_set_idle_timeout
+    - sshd_disable_rhosts
     - sshd_disable_rhosts_rsa
     - sshd_set_keepalive
     - sshd_print_last_log
