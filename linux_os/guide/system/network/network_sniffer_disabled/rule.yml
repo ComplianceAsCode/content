@@ -46,4 +46,6 @@ ocil_clause: 'any network device is in promiscuous mode'
 
 ocil: |-
     Promiscuous mode of an interface can be disabled with the following command:
-    <pre>$ sudo ip link set dev <tt>device_name</tt> multicast off promisc off</pre>
+    To verify that Promiscuous mode of an interface is disabled, run the following command:
+    <pre>$ ip link | grep PROMISC</pre>
+    The output returned should not return any network device containing <tt>PROMISC</tt>.
