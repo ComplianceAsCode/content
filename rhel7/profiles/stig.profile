@@ -255,6 +255,7 @@ selections:
     - sshd_enable_strictmodes
     - sshd_use_priv_separation
     - sshd_disable_compression
+    - sshd_disable_user_known_hosts
     - chronyd_or_ntpd_set_maxpoll
     - configure_firewalld_rate_limiting
     - service_firewalld_enabled
