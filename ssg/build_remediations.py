@@ -358,8 +358,13 @@ class AnsibleRemediation(Remediation):
             if "package_facts" in p_task:
                 has_package_facts_task = True
 
-            if "ansible_facts.packages" in p_task.get("when", ""):
-                has_ansible_facts_packages_clause = True
+            # When clause of the task can be string or a list, lets normalize to list
+            task_when = p_task.get("when", "")
+            if type(task_when) is str:
+                task_when = [ task_when ]
+            for when in task_when:
+                if "ansible_facts.packages" in when:
+                    has_ansible_facts_packages_clause = True
 
         if has_ansible_facts_packages_clause and not has_package_facts_task:
             facts_task = OrderedDict({'name': 'Gather the package facts',
@@ -367,21 +372,26 @@ class AnsibleRemediation(Remediation):
             parsed_snippet.insert(0, facts_task)
 
     def update_when_from_rule(self, to_update):
-        additional_when = ""
-        rule_platform = self.associated_rule.platform
-        if rule_platform == "machine":
-            additional_when = 'ansible_virtualization_type not in ["docker", "lxc", "openvz"]'
-        elif rule_platform is not None:
-            # Assume any other platform is a Package CPE
+        additional_when = []
 
-            # It doesn't make sense to add a conditional on the task that
-            # gathers data for the conditional
-            if "package_facts" in to_update:
-                return
+        rule_platforms = set([self.associated_rule.platform] +
+                              self.associated_rule.inherited_platforms)
 
-            additional_when = '"' + rule_platform + '" in ansible_facts.packages'
-            # After adding the conditional, we need to make sure package_facts are collected.
-            # This is done via inject_package_facts_task()
+        for platform in rule_platforms:
+            if platform == "machine":
+                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz"]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
+
+                # It doesn't make sense to add a conditional on the task that
+                # gathers data for the conditional
+                if "package_facts" in to_update:
+                    continue
+
+                additional_when.append('"' + platform + '" in ansible_facts.packages')
+                # After adding the conditional, we need to make sure package_facts are collected.
+                # This is done via inject_package_facts_task()
+
         to_update.setdefault("when", "")
         new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
         if not new_when:
