@@ -1,6 +1,8 @@
 package v1alpha1
 
 import (
+	"strings"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -11,6 +13,26 @@ type ComplianceCheckStatus string
 // way.
 const ComplianceCheckResultStatusLabel = "compliance.openshift.io/check-status"
 const ComplianceCheckResultSeverityLabel = "compliance.openshift.io/check-severity"
+
+// ComplianceCheckInconsistentLabel signifies that the check's results were not consistent
+// across the target nodes
+const ComplianceCheckInconsistentLabel = "compliance.openshift.io/inconsistent-check"
+
+// ComplianceCheckResultRuleAnnotation exposes the DNS-friendly name of a rule as a label.
+// This provides a way to link a result to a Rule object.
+const ComplianceCheckResultRuleAnnotation = "compliance.openshift.io/rule"
+
+// ComplianceCheckResultInconsistentSourceAnnotation is only used with an Inconsistent check result
+// It either lists statuses of nodes that differ from ComplianceCheckResultMostCommonAnnotation or,
+// if the most common state does not exist, just lists all sources of all nodes.
+const ComplianceCheckResultInconsistentSourceAnnotation = "compliance.openshift.io/inconsistent-source"
+
+// ComplianceCheckResultMostCommonAnnotation stores the most common ComplianceCheckStatus value
+// in an inconsistent check. In order for the result to be most common, at least 60% of the nodes
+// must report the same result. The nodes that differ from the most common status are listed using
+// ComplianceCheckResultInconsistentSourceAnnotation
+const ComplianceCheckResultMostCommonAnnotation = "compliance.openshift.io/most-common-status"
+const ComplianceCheckResultErrorAnnotation = "compliance.openshift.io/error-msg"
 
 const (
 	// The check ran to completion and passed
@@ -23,6 +45,8 @@ const (
 	CheckResultError ComplianceCheckStatus = "ERROR"
 	// The check didn't run because it is not applicable or not selected
 	CheckResultSkipped ComplianceCheckStatus = "SKIP"
+	// The check reports different results from different sources, typically cluster nodes
+	CheckResultInconsistent ComplianceCheckStatus = "INCONSISTENT"
 	// The check didn't yield a usable result
 	CheckResultNoResult ComplianceCheckStatus = ""
 )
@@ -55,6 +79,15 @@ type ComplianceCheckResult struct {
 	Severity ComplianceCheckResultSeverity `json:"severity"`
 	// A human-readable check description, what and why it does
 	Description string `json:"description,omitempty"`
+}
+
+// IDToDNSFriendlyName gets the ID from the scan and returns a DNS
+// friendly name
+func (ccr *ComplianceCheckResult) IDToDNSFriendlyName() string {
+	const rulePrefix = "xccdf_org.ssgproject.content_rule_"
+	ruleName := strings.TrimPrefix(ccr.ID, rulePrefix)
+	dnsFriendlyFixID := strings.ReplaceAll(ruleName, "_", "-")
+	return strings.ToLower(dnsFriendlyFixID)
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
