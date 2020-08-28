@@ -39,11 +39,11 @@ import (
 )
 
 const (
-	namespacePath      = "compliance-operator-ns.yaml"
-	operatorSourcePath = "compliance-operator-source.yaml"
-	operatorGroupPath  = "compliance-operator-operator-group.yaml"
-	subscriptionPath   = "compliance-operator-alpha-subscription.yaml"
-	apiPollInterval    = 5 * time.Second
+	namespacePath     = "compliance-operator-ns.yaml"
+	catalogSourcePath = "compliance-operator-catalog-source.yaml"
+	operatorGroupPath = "compliance-operator-operator-group.yaml"
+	subscriptionPath  = "compliance-operator-alpha-subscription.yaml"
+	apiPollInterval   = 5 * time.Second
 )
 
 var product string
@@ -220,8 +220,8 @@ func (ctx *e2econtext) ensureNamespaceExistsAndSet() {
 	ctx.OperatorNamespacedName.Namespace = obj.GetName()
 }
 
-func (ctx *e2econtext) ensureOperatorSourceExists() {
-	path := path.Join(ctx.resourcespath, operatorSourcePath)
+func (ctx *e2econtext) ensureCatalogSourceExists() {
+	path := path.Join(ctx.resourcespath, catalogSourcePath)
 	ctx.ensureObjectExists(path)
 }
 
