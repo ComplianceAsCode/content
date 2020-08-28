@@ -391,7 +391,7 @@ func (ctx *e2econtext) waitForComplianceSuite(suite *cmpv1alpha1.ComplianceSuite
 func (ctx *e2econtext) waitForNodesToBeReady() {
 	nodeList := &corev1.NodeList{}
 	// A long time...
-	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(15*time.Second), 360)
+	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(15*time.Second), 480)
 
 	err := backoff.RetryNotify(
 		func() error {
@@ -516,6 +516,9 @@ func (ctx *e2econtext) getCheckResultsForSuite(s *cmpv1alpha1.ComplianceSuite) i
 }
 
 func isNodeReady(node corev1.Node) bool {
+	if node.Spec.Unschedulable {
+		return false
+	}
 	for _, condition := range node.Status.Conditions {
 		if condition.Type == corev1.NodeReady &&
 			condition.Status == corev1.ConditionTrue &&
