@@ -39,11 +39,11 @@ import (
 )
 
 const (
-	namespacePath      = "compliance-operator-ns.yaml"
-	operatorSourcePath = "compliance-operator-source.yaml"
-	operatorGroupPath  = "compliance-operator-operator-group.yaml"
-	subscriptionPath   = "compliance-operator-alpha-subscription.yaml"
-	apiPollInterval    = 5 * time.Second
+	namespacePath     = "compliance-operator-ns.yaml"
+	catalogSourcePath = "compliance-operator-catalog-source.yaml"
+	operatorGroupPath = "compliance-operator-operator-group.yaml"
+	subscriptionPath  = "compliance-operator-alpha-subscription.yaml"
+	apiPollInterval   = 5 * time.Second
 )
 
 var product string
@@ -220,8 +220,8 @@ func (ctx *e2econtext) ensureNamespaceExistsAndSet() {
 	ctx.OperatorNamespacedName.Namespace = obj.GetName()
 }
 
-func (ctx *e2econtext) ensureOperatorSourceExists() {
-	path := path.Join(ctx.resourcespath, operatorSourcePath)
+func (ctx *e2econtext) ensureCatalogSourceExists() {
+	path := path.Join(ctx.resourcespath, catalogSourcePath)
 	ctx.ensureObjectExists(path)
 }
 
@@ -291,8 +291,10 @@ func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply 
 			Namespace: ctx.OperatorNamespacedName.Namespace,
 		},
 		Spec: cmpv1alpha1.ComplianceSuiteSpec{
-			AutoApplyRemediations: autoApply,
-			Scans:                 ctx.getScansForSuite(suffix),
+			ComplianceSuiteSettings: cmpv1alpha1.ComplianceSuiteSettings{
+				AutoApplyRemediations: autoApply,
+			},
+			Scans: ctx.getScansForSuite(suffix),
 		},
 	}
 
@@ -319,7 +321,9 @@ func (ctx *e2econtext) getScansForSuite(suffix string) []cmpv1alpha1.ComplianceS
 					ContentImage: ctx.ContentImage,
 					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
 					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
-					Debug:        true,
+					ComplianceScanSettings: cmpv1alpha1.ComplianceScanSettings{
+						Debug: true,
+					},
 				},
 			},
 		}
@@ -331,9 +335,11 @@ func (ctx *e2econtext) getScansForSuite(suffix string) []cmpv1alpha1.ComplianceS
 					ContentImage: ctx.ContentImage,
 					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
 					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
-					Debug:        true,
 					NodeSelector: map[string]string{
 						"node-role.kubernetes.io/master": "",
+					},
+					ComplianceScanSettings: cmpv1alpha1.ComplianceScanSettings{
+						Debug: true,
 					},
 				},
 			},
@@ -343,9 +349,11 @@ func (ctx *e2econtext) getScansForSuite(suffix string) []cmpv1alpha1.ComplianceS
 					ContentImage: ctx.ContentImage,
 					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
 					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
-					Debug:        true,
 					NodeSelector: map[string]string{
 						"node-role.kubernetes.io/worker": "",
+					},
+					ComplianceScanSettings: cmpv1alpha1.ComplianceScanSettings{
+						Debug: true,
 					},
 				},
 			},

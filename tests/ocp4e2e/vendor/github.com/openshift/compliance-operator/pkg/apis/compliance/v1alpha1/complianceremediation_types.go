@@ -2,9 +2,11 @@ package v1alpha1
 
 import (
 	"fmt"
+	"reflect"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type RemediationApplicationState string
@@ -12,6 +14,7 @@ type RemediationApplicationState string
 const (
 	RemediationNotApplied RemediationApplicationState = "NotApplied"
 	RemediationApplied    RemediationApplicationState = "Applied"
+	RemediationOutdated   RemediationApplicationState = "Outdated"
 	RemediationError      RemediationApplicationState = "Error"
 )
 
@@ -23,32 +26,37 @@ const (
 )
 
 const (
-	// ScanLabel defines the label that associates the Remediation with the scan
-	ScanLabel = "complianceoperator.openshift.io/scan"
+	// OutdatedRemediationLabel specifies that the remediation has been superseded by a newer version
+	OutdatedRemediationLabel = "complianceoperator.openshift.io/outdated-remediation"
 )
 
 type ComplianceRemediationSpecMeta struct {
-	// Remediation type specifies the artifact the remediation is based on. For now, only MachineConfig is supported
-	Type RemediationType `json:"type,omitempty"`
 	// Whether the remediation should be picked up and applied by the operator
 	Apply bool `json:"apply"`
+}
+
+type ComplianceRemediationPayload struct {
+	// The remediation payload. This would normally be a full Kubernetes
+	// object.
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:EmbeddedResource
+	// +kubebuilder:validation:nullable
+	Object *unstructured.Unstructured `json:"object,omitempty"`
 }
 
 // ComplianceRemediationSpec defines the desired state of ComplianceRemediation
 // +k8s:openapi-gen=true
 type ComplianceRemediationSpec struct {
 	ComplianceRemediationSpecMeta `json:",inline"`
-	// The actual MachineConfig remediation payload
-	MachineConfigContents *unstructured.Unstructured `json:"machineConfigContents,omitempty"`
-	// The remediation payload. This would normally be a full Kubernetes
-	// object.
-	Object *unstructured.Unstructured `json:"object,omitempty"`
+	Current                       ComplianceRemediationPayload `json:"current,omitempty"`
+	Outdated                      ComplianceRemediationPayload `json:"outdated,omitempty"`
 }
 
 // ComplianceRemediationStatus defines the observed state of ComplianceRemediation
 // +k8s:openapi-gen=true
 type ComplianceRemediationStatus struct {
 	// Whether the remediation is already applied or not
+	// +kubebuilder:default="NotApplied"
 	ApplicationState RemediationApplicationState `json:"applicationState,omitempty"`
 	ErrorMessage     string                      `json:"errorMessage,omitempty"`
 }
@@ -71,19 +79,29 @@ type ComplianceRemediation struct {
 	Status ComplianceRemediationStatus `json:"status,omitempty"`
 }
 
+func (r *ComplianceRemediation) RemediationPayloadDiffers(other *ComplianceRemediation) bool {
+	return !reflect.DeepEqual(r.Spec.Current, other.Spec.Current)
+}
+
 func (r *ComplianceRemediation) GetSuite() string {
 	return r.Labels[SuiteLabel]
 }
 
 func (r *ComplianceRemediation) GetScan() string {
-	return r.Labels[ScanLabel]
+	return r.Labels[ComplianceScanLabel]
 }
 
 func (r *ComplianceRemediation) GetMcName() string {
-	if r.GetScan() == "" || r.GetSuite() == "" {
+	if r.GetScan() == "" {
 		return ""
 	}
-	return fmt.Sprintf("75-%s-%s", r.GetScan(), r.GetSuite())
+
+	mcName := fmt.Sprintf("75-%s", r.GetScan())
+	if r.GetSuite() != "" {
+		mcName += "-" + r.GetSuite()
+	}
+
+	return mcName
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

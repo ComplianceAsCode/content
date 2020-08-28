@@ -9,8 +9,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Network holds cluster-wide information about Network. The canonical name is `cluster`. It is used to configure the desired network configuration, such as: IP address pools for services/pod IPs, network plugin, etc.
 // Please view network.spec for an explanation on what applies when configuring this resource.
 type Network struct {
-	metav1.TypeMeta `json:",inline"`
-	// Standard object's metadata.
+	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec holds user settable values for configuration.
@@ -77,6 +76,7 @@ type ClusterNetworkEntry struct {
 	CIDR string `json:"cidr"`
 
 	// The size (prefix) of block to allocate to each node.
+	// +kubebuilder:validation:Minimum=0
 	HostPrefix uint32 `json:"hostPrefix"`
 }
 
@@ -116,7 +116,7 @@ type ExternalIPPolicy struct {
 
 type NetworkList struct {
 	metav1.TypeMeta `json:",inline"`
-	// Standard object's metadata.
 	metav1.ListMeta `json:"metadata"`
-	Items           []Network `json:"items"`
+
+	Items []Network `json:"items"`
 }
