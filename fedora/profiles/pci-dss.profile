@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'PCI-DSS v3 Control Baseline for Fedora'
+title: 'PCI-DSS v3.2.1 Control Baseline for Fedora'
 
 description: |-
-    Ensures PCI-DSS v3 related security configuration settings are applied.
+    Ensures PCI-DSS v3.2.1 related security configuration settings are applied.
 
 selections:
     - var_password_pam_unix_remember=4
@@ -23,6 +23,7 @@ selections:
     - auditd_data_retention_space_left_action
     - auditd_data_retention_admin_space_left_action
     - auditd_data_retention_action_mail_acct
+    - package_audispd-plugins_installed
     - auditd_audispd_syslog_plugin_activated
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
@@ -109,7 +110,14 @@ selections:
     - ensure_fedora_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
-    - smartcard_auth
+    - security_patches_up_to_date
+    - package_opensc_installed
+    - var_smartcard_drivers=cac
+    - configure_opensc_card_drivers
+    - force_opensc_card_drivers
+    - package_pcsc-lite_installed
+    - service_pcscd_enabled
+    - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
@@ -125,3 +133,9 @@ selections:
     - file_owner_grub2_cfg
     - file_groupowner_grub2_cfg
     - package_libreswan_installed
+    - configure_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_kerberos_crypto_policy
