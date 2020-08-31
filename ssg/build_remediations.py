@@ -345,7 +345,7 @@ class AnsibleRemediation(Remediation):
     def inject_package_facts_task(self, parsed_snippet):
         """ Injects a package_facts task only if
             the snippet has a task with a when clause with ansible_facts.packages,
-            and the snippet doesn't already have an package_facts task
+            and the snippet doesn't already have a package_facts task
         """
         has_package_facts_task = False
         has_ansible_facts_packages_clause = False
@@ -361,7 +361,7 @@ class AnsibleRemediation(Remediation):
             # When clause of the task can be string or a list, lets normalize to list
             task_when = p_task.get("when", "")
             if type(task_when) is str:
-                task_when = [ task_when ]
+                task_when = [task_when]
             for when in task_when:
                 if "ansible_facts.packages" in when:
                     has_ansible_facts_packages_clause = True
