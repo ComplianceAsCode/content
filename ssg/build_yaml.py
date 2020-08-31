@@ -111,6 +111,7 @@ class Profile(object):
         self.unselected = []
         self.variables = dict()
         self.refine_rules = defaultdict(list)
+        self.metadata = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -131,10 +132,7 @@ class Profile(object):
             profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
-        # Delete metadata keyword, at the moment this is not be included in the built profiles
-        # The goal for now is to provides development and tracking information
-        if "metadata" in yaml_contents:
-            del yaml_contents["metadata"]
+        profile.metadata = yaml_contents.pop("metadata", None)
 
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
@@ -147,6 +145,9 @@ class Profile(object):
         to_dump["documentation_complete"] = documentation_complete
         to_dump["title"] = self.title
         to_dump["description"] = self.description
+        if self.metadata is not None:
+            to_dump["metadata"] = self.metadata
+
         if self.extends is not None:
             to_dump["extends"] = self.extends
 
@@ -196,6 +197,12 @@ class Profile(object):
         title.set("override", "true")
         desc = add_sub_element(element, "description", self.description)
         desc.set("override", "true")
+
+        if self.metadata:
+            reference = self.metadata.pop("reference", None)
+            # At the moment, only 'reference' is included in the Profile XML
+            if reference is not None:
+                add_sub_element(element, "reference", reference)
 
         for selection in self.selected:
             select = ET.Element("select")
