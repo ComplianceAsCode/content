@@ -2,7 +2,7 @@ documentation_complete: true
 
 metadata:
     reference: https://www.cyber.gov.au/acsc/view-all-content/essential-eight
-    maintainers:
+    SMEs:
         - shaneboulden
 
 title: 'Australian Cyber Security Centre (ACSC) Essential Eight'

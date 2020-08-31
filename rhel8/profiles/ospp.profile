@@ -3,7 +3,7 @@ documentation_complete: true
 metadata:
     reference: https://www.niap-ccevs.org/Profile/PP.cfm
     version: 4.2.1
-    maintainers:
+    SMEs:
         - stevegrubb
 
 title: 'Protection Profile for General Purpose Operating Systems'

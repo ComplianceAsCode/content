@@ -665,12 +665,12 @@ A profile YAML file has one implied attribute:
 
 * `id`: The primary identifier for the profile, to be referenced during evaluations. This is inferred from the file name.
 
-A profile YAML file can, optionally, include metadata about its maintainers and the implemented policy:
+A profile YAML file can, optionally, include metadata about the implemented policy and experts in the field, called Subject Matter Experts (SMEs). The SMEs usually are people familiar with the policy requirements or how it is applied.
 
 * `metadata`: Dictionary for profile metadata.
   * `reference`: URL pointing to page or organization that publishes the policy.
   * `version`: Version of the policy implemented by the profile.
-  * `maintainers`: List of people maintaining, responsible or experienced in the profile. The prefered method is the GitHub handle, but email is also accepted.
+  * `SMEs`: List of people experienced with the profile, or how they are applied. The prefered method is the GitHub handle, but email is also accepted.
 
 A profile should define these attributes:
 
