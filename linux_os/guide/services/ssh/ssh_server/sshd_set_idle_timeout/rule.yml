@@ -62,3 +62,11 @@ ocil: |-
     <pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
     If properly configured, the output should be:
     <pre>ClientAliveInterval {{{ xccdf_value("sshd_idle_timeout_value") }}}</pre>
+
+warnings:
+    - general: |-
+        The configuration wil not have desired effect without configuring
+        additional SSH option. To ensure that SSH disconnects idle clients
+        precisely after the timeout configured in this rule, the following line
+        has to exist in the SSHD configuration:
+        <pre>ClientAliveCountMax 0</pre>
