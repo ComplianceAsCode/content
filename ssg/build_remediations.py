@@ -374,8 +374,9 @@ class AnsibleRemediation(Remediation):
     def update_when_from_rule(self, to_update):
         additional_when = []
 
-        rule_platforms = set([self.associated_rule.platform] +
-                              self.associated_rule.inherited_platforms)
+        # There can be repeated inherited platforms and rule platforms
+        rule_platforms = set(self.associated_rule.inherited_platforms)
+        rule_platforms.add(self.associated_rule.platform)
 
         for platform in rule_platforms:
             if platform == "machine":
