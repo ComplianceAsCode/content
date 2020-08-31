@@ -2,23 +2,19 @@
   <definition class="compliance" id="sssd_ldap_start_tls" version="1">
     <metadata>
       <title>Configure SSSD LDAP Backend to Use TLS For All Transactions</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>LDAP should be used for authentication and use STARTTLS</description>
     </metadata>
-    <criteria operator="AND">
-      <criterion comment="Using LDAP for authentication set within /etc/sysconfig/authconfig" test_ref="test_use_ldap_authentication" />
+    <criteria operator="OR">
+      <criterion comment="Identification provider is set to ad within /etc/sssd/sssd.conf" test_ref="test_id_provider_is_ad"/>
       <criterion comment="LDAP uses STARTTLS set within /etc/sssd/sssd.conf" test_ref="test_use_starttls" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Ensures that LDAP is being used for authentication"
-  id="test_use_ldap_authentication" version="1">
-    <ind:object object_ref="object_use_ldap_authentication_authconfig" />
+  id="test_id_provider_is_ad" version="1">
+    <ind:object object_ref="object_id_provider_is_ad" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -27,15 +23,15 @@
     <ind:object object_ref="object_use_starttls_sssd_conf" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_use_ldap_authentication_authconfig" version="1">
-    <ind:filepath>/etc/sysconfig/authconfig</ind:filepath>
-    <ind:pattern operation="pattern match">^USELDAPAUTH=((?i)yes)[ ]*$</ind:pattern>
+  <ind:textfilecontent54_object id="object_id_provider_is_ad" version="1">
+    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*id_provider[ \t]*=[ \t]*((?i)ad)[ \t]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_use_starttls_sssd_conf" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*ldap_id_use_start_tls[ ]*=[ ]*((?i)true)[ ]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*ldap_id_use_start_tls[ \t]*=[ \t]*((?i)true)[ \t]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

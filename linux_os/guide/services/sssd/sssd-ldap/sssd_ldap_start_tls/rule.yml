@@ -10,10 +10,10 @@ description: |-
     <br /><br />
     To determine if LDAP is being used for authentication, use the following
     command:
-    <pre>$ sudo grep -i useldapauth /etc/sysconfig/authconfig</pre>
+    <pre>$ sudo systemctl status sssd.service</pre>
     <br /><br />
-    If <tt>USELDAPAUTH=yes</tt>, then LDAP is being used. To check if LDAP is
-    configured to use TLS, use the following command:
+    If the <tt>sssd.service</tt> is <tt>active</tt>, then LDAP is being used.
+    To check if LDAP is configured to use TLS, use the following command:
     <pre>$ sudo grep -i ldap_id_use_start_tls /etc/sssd/sssd.conf</pre>
 
 rationale: |-

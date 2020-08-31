@@ -4,12 +4,12 @@
 # complexity = low
 # disruption = medium
 
-- name: "Set LDAP to be used for authentication"
-  lineinfile:
-    path: /etc/sysconfig/authconfig
-    regexp: '^USELDAPAUTH='
-    line: 'USELDAPAUTH=yes'
-    create: yes
+- name: "Test for id_provider different than Active Directory (ad)"
+  command: grep -qzosP '[[:space:]]*\[domain\/[^]]*]([^(\n)]*(\n)+)+?[[:space:]]*id_provider[[:space:]]*=[[:space:]]*((?i)ad)[[:space:]]*$' /etc/sssd/sssd.conf
+  register: test_id_provider
+  ignore_errors: yes
+  changed_when: False
+  check_mode: no
 
 - name: "Test for domain group"
   command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
@@ -28,11 +28,12 @@
     mode: 0600
   with_items:
     - { section: sssd, option: domains, value: default}
-    - { section: domain/default, option: id_provider, value: files }
     - { section: domain/default, option: ldap_id_use_start_tls, value: true}
   when:
     - test_grep_domain.stdout is defined
     - test_grep_domain.stdout | length < 1
+    - test_id_provider.stdout is defined
+    - test_id_provider.stdout | length < 1
 
 - name: "Configure LDAP to use STARTTLS"
   ini_file:
@@ -45,3 +46,5 @@
   when:
     - test_grep_domain.stdout is defined
     - test_grep_domain.stdout | length > 0
+    - test_id_provider.stdout is defined
+    - test_id_provider.stdout | length < 1
