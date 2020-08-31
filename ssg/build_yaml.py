@@ -337,8 +337,8 @@ class ResolvableProfile(Profile):
         if self.extends:
             if self.extends not in all_profiles:
                 msg = (
-                    "Profile {name} extends profile {extended}, but"
-                    "only profiles {known_profiles} are available for resolution."
+                    "Profile {name} extends profile {extended}, but "
+                    "only profiles {profiles} are available for resolution."
                     .format(name=self.id_, extended=self.extends,
                             profiles=list(all_profiles.keys())))
                 raise RuntimeError(msg)
