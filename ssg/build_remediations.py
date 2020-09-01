@@ -6,8 +6,7 @@ import os
 import os.path
 import re
 import codecs
-from collections import defaultdict, namedtuple
-
+from collections import defaultdict, namedtuple, OrderedDict
 
 import ssg.yaml
 from . import build_yaml
@@ -343,10 +342,57 @@ class AnsibleRemediation(Remediation):
         else:
             return []
 
+    def inject_package_facts_task(self, parsed_snippet):
+        """ Injects a package_facts task only if
+            the snippet has a task with a when clause with ansible_facts.packages,
+            and the snippet doesn't already have a package_facts task
+        """
+        has_package_facts_task = False
+        has_ansible_facts_packages_clause = False
+
+        for p_task in parsed_snippet:
+            # We are only interested in the OrderedDicts, which represent Ansible tasks
+            if not isinstance(p_task, dict):
+                continue
+
+            if "package_facts" in p_task:
+                has_package_facts_task = True
+
+            # When clause of the task can be string or a list, lets normalize to list
+            task_when = p_task.get("when", "")
+            if type(task_when) is str:
+                task_when = [task_when]
+            for when in task_when:
+                if "ansible_facts.packages" in when:
+                    has_ansible_facts_packages_clause = True
+
+        if has_ansible_facts_packages_clause and not has_package_facts_task:
+            facts_task = OrderedDict({'name': 'Gather the package facts',
+                                      'package_facts': {'manager': 'auto'}})
+            parsed_snippet.insert(0, facts_task)
+
     def update_when_from_rule(self, to_update):
-        additional_when = ""
-        if self.associated_rule.platform == "machine":
-            additional_when = 'ansible_virtualization_type not in ["docker", "lxc", "openvz"]'
+        additional_when = []
+
+        # There can be repeated inherited platforms and rule platforms
+        rule_platforms = set(self.associated_rule.inherited_platforms)
+        rule_platforms.add(self.associated_rule.platform)
+
+        for platform in rule_platforms:
+            if platform == "machine":
+                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz"]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
+
+                # It doesn't make sense to add a conditional on the task that
+                # gathers data for the conditional
+                if "package_facts" in to_update:
+                    continue
+
+                additional_when.append('"' + platform + '" in ansible_facts.packages')
+                # After adding the conditional, we need to make sure package_facts are collected.
+                # This is done via inject_package_facts_task()
+
         to_update.setdefault("when", "")
         new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
         if not new_when:
@@ -355,10 +401,21 @@ class AnsibleRemediation(Remediation):
             to_update["when"] = new_when
 
     def update(self, parsed, config):
+        # We split the remediation update in three steps
+
+        # 1. Update the when clause
         for p in parsed:
             if not isinstance(p, dict):
                 continue
             self.update_when_from_rule(p)
+
+        # 2. Inject any extra task necessary
+        self.inject_package_facts_task(parsed)
+
+        # 3. Add tags to all tasks, including the ones we have injected
+        for p in parsed:
+            if not isinstance(p, dict):
+                continue
             self.update_tags_from_config(p, config)
             self.update_tags_from_rule(p)
 

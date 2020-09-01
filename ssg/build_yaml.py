@@ -832,6 +832,7 @@ class Rule(object):
         "conflicts": lambda: list(),
         "requires": lambda: list(),
         "platform": lambda: None,
+        "inherited_platforms": lambda: list(),
         "template": lambda: None,
     }
 
@@ -851,6 +852,7 @@ class Rule(object):
         self.requires = []
         self.conflicts = []
         self.platform = None
+        self.inherited_platforms = [] # platforms inherited from the group
         self.template = None
 
     @classmethod
@@ -1293,6 +1295,9 @@ class BuildLoader(DirectoryLoader):
                 continue
             self.all_rules.add(rule)
             self.loaded_group.add_rule(rule)
+
+            rule.inherited_platforms.append(self.loaded_group.platform)
+
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
