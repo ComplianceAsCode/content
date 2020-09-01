@@ -49,6 +49,6 @@ ocil: |-
     To verify that <tt><sub idref="var_smartcard_drivers" /></tt> is configured
     as the smart card driver, run the following command changing <i>ARCH</i> for
     the architecture of your operating system:
-    <pre>$ grep card_drivers /etc/opensc-<i>ARCH</i></pre>
+    <pre>$ grep force_card_driver /etc/opensc-<i>ARCH</i></pre>
     The output should return something similar to:
-    <pre>card_drivers = <sub idref="var_smartcard_drivers" />;</pre>
+    <pre>force_card_drivers = <sub idref="var_smartcard_drivers" />;</pre>
