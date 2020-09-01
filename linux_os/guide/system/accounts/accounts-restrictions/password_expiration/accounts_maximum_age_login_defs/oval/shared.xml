@@ -22,7 +22,7 @@
     <ind:behaviors singleline="true" />
     <ind:filepath>/etc/login.defs</ind:filepath>
     <!-- Retrieve last (uncommented) occurrence of PASS_MAX_DAYS directive -->
-    <ind:pattern operation="pattern match">.*\n[^#]*(PASS_MAX_DAYS\s+\d+)\s*\n</ind:pattern>
+    <ind:pattern operation="pattern match">^(?:.*\n)*\s*[^#]*(PASS_MAX_DAYS\s+\d+)\s*\n</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
