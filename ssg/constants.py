@@ -496,6 +496,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "pam": "cpe:/a:pam",
     "login_defs": "cpe:/a:login_defs",
     "sssd": "cpe:/a:sssd",
+    "sssd-ldap": "cpe:/a:sssd-ldap",
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",
     "zipl": "cpe:/a:zipl",

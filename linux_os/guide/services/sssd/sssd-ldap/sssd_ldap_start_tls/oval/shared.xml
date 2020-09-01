@@ -5,29 +5,16 @@
       {{{- oval_affected(products) }}}
       <description>LDAP should be used for authentication and use STARTTLS</description>
     </metadata>
-    <criteria operator="OR">
-      <criterion comment="Identification provider is set to ad within /etc/sssd/sssd.conf" test_ref="test_id_provider_is_ad"/>
+    <criteria>
       <criterion comment="LDAP uses STARTTLS set within /etc/sssd/sssd.conf" test_ref="test_use_starttls" />
     </criteria>
   </definition>
-
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="Ensures that LDAP is being used for authentication"
-  id="test_id_provider_is_ad" version="1">
-    <ind:object object_ref="object_id_provider_is_ad" />
-  </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Ensures that LDAP uses STARTTLS"
   id="test_use_starttls" version="1">
     <ind:object object_ref="object_use_starttls_sssd_conf" />
   </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_id_provider_is_ad" version="1">
-    <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*id_provider[ \t]*=[ \t]*((?i)ad)[ \t]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_use_starttls_sssd_conf" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
