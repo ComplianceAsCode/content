@@ -34,7 +34,6 @@ ocil_clause: 'existing passwords are not configured correctly'
 
 ocil: |-
     Check whether the maximum time period for existing passwords is restricted
-    to 60 days by running the following command for each user:
-    <pre>$ sudo chage -l <i>USER</i> | grep Maximum</pre>
-    The output for each user should return something similary to the following:
-    <pre>Maximum number of days between password change\t\t: 60</pre>
+    to 60 days:
+    <pre>sudo awk -F: '$5 &gt; 60 {print $1 " " $5}' /etc/shadow</pre>
+    The output must not contain names of any system account.

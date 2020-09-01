@@ -33,9 +33,7 @@ references:
 ocil_clause: 'existing passwords are not configured correctly'
 
 ocil: |-
-    Check whether the minimum time period between password changes for each
-    user account is one day or greater by running the following command for
-    each user:
-    <pre>$ sudo chage -l <i>USER</i> | grep Minimum</pre>
-    The output for each user should return something similary to the following:
-    <pre>Minimum number of days between password change\t\t: 1</pre>
+    Check whether the minimum time period between password changes for each user
+    account is one day or greater:
+    <pre>sudo awk -F: '$4 &lt; 1 {print $1 " " $4}' /etc/shadow</pre>
+    The output must not contain names of any system account.
