@@ -548,13 +548,13 @@ DOMAIN_REGEX="[[:space:]]*\[domain\/[^]]*]"
 # if [domain/..] doesn't exist, add it here for default domain
 if grep -qvzosP $AD_REGEX $SSSD_CONF; then
         if grep -qzosP $LDAP_REGEX $SSSD_CONF; then
-                sed -i 's/{{{ parameter }}}[^(\n)]*/{{{ parameter }}} = {{{ value }}}/' $SSSD_CONF
+                sed -i "s#{{{ parameter }}}[^(\n)]*#{{{ parameter }}} = {{{ value }}}#" $SSSD_CONF
         elif grep -qs $DOMAIN_REGEX $SSSD_CONF; then
                 sed -i "/$DOMAIN_REGEX/a {{{ parameter }}} = {{{ value }}}" $SSSD_CONF
         else
                 mkdir -p /etc/sssd
                 touch $SSSD_CONF
-                echo -e "[domain/default]\{{{ parameter }}} = {{{ value }}}" >> $SSSD_CONF
+                echo -e "[domain/default]\n{{{ parameter }}} = {{{ value }}}" >> $SSSD_CONF
         fi
 fi
 {{%- endmacro %}}
