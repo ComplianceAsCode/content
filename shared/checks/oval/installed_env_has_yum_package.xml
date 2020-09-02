@@ -21,7 +21,7 @@
     <linux:object object_ref="obj_env_has_yum_installed" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="obj_env_has_yum_installed" version="1">
-    <linux:name>yum</linux:name>
+    <linux:name>{{{ pkg_manager }}}</linux:name>
   </linux:rpminfo_object>
 {{% elif pkg_system == "dpkg" %}}
   <linux:dpkginfo_test check="all" check_existence="all_exist"
@@ -30,7 +30,7 @@
     <linux:object object_ref="obj_env_has_yum_installed" />
   </linux:dpkginfo_test>
   <linux:dpkginfo_object id="obj_env_has_yum_installed" version="1">
-    <linux:name>yum</linux:name>
+    <linux:name>{{{ pkg_manager }}}</linux:name>
   </linux:dpkginfo_object>
 {{% endif %}}
 
