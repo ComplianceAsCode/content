@@ -10,6 +10,7 @@
     section: Disable General User Access to NetworkManager
     option: "{{ item.option }}"
     value: "{{ item.value }}"
+    no_extra_spaces: yes
     create: yes
   loop:
     - { option: 'Identity', value: 'default' }
