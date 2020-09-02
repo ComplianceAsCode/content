@@ -10,10 +10,17 @@
     path: /etc/opensc-{{ ansible_architecture }}.conf
   register: opensc_conf_cd
 
-- name: "{{{ rule_title }}}"
-  lineinfile:
-    path: /etc/opensc-{{ ansible_architecture }}.conf
-    line: '        card_drivers = {{ var_smartcard_drivers }}'
-    regexp: '(^\s+#|^)\s+card_drivers\s+=\s+.*'
-    state: present
-  when: opensc_conf_cd.stat.exists    
+- name: Configure smartcard driver block
+  block:
+    - name: Check if card_drivers is defined
+      command: /usr/bin/opensc-tool -G app:default:card_drivers
+      changed_when: false
+      register: card_drivers
+
+    - name: "{{{ rule_title }}}"
+      command: |
+        /usr/bin/opensc-tool -S app:default:card_drivers:{{ var_smartcard_drivers }}
+      when:
+        - card_drivers.stdout != var_smartcard_drivers
+  when:
+    - opensc_conf_cd.stat.exists
