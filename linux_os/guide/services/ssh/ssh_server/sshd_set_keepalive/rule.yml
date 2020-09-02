@@ -3,15 +3,17 @@ documentation_complete: true
 title: 'Set SSH Client Alive Count Max'
 
 description: |-
-    The SSH option <tt>ClientAliveCountMax</tt> is connected with the option
-    <tt>ClientAliveInterval</tt>. The SSH server sends at most
-    <tt>ClientAliveCountMax</tt> messages and waits for a response from a
-    client. The option <tt>ClientAliveInterval</tt> configures timeout after
-    each message. If it does not receive a response from the client, then the
-    connection is considered idle and terminated. To ensure the SSH idle timeout
-    occurs precisely when the <tt>ClientAliveInterval</tt> is set, set the
-    <tt>ClientAliveCountMax</tt> to value of <tt>0</tt>. This profile sets
-    <tt>ClientAliveCountMax</tt> to <tt>{{{ xccdf_value("var_sshd_set_keepalive") }}}</tt>. To modify the
+    The SSH server sends at most <tt>ClientAliveCountMax</tt> messages
+    during a SSH session and waits for a response from the SSH client.
+    The option <tt>ClientAliveInterval</tt> configures timeout after
+    each <tt>ClientAliveCountMax</tt> message. If the SSH server does not
+    receive a response from the client, then the connection is considered idle
+    and terminated.
+    
+    To ensure the SSH idle timeout occurs precisely when the
+    <tt>ClientAliveInterval</tt> is set, set the <tt>ClientAliveCountMax</tt> to
+    value of <tt>0</tt>. This profile sets <tt>ClientAliveCountMax</tt> to
+    <tt>{{{ xccdf_value("var_sshd_set_keepalive") }}}</tt>. To modify the
     <tt>ClientAliveCountMax</tt> option, edit <tt>/etc/ssh/sshd_config</tt> as
     follows:
     <pre>ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}</pre>
@@ -54,17 +56,11 @@ references:
 ocil_clause: 'it is commented out or not configured properly'
 
 ocil: |-
-<<<<<<< HEAD
-    To ensure the SSH idle timeout will occur when the <tt>ClientAliveInterval</tt> is set, run the following command:
+    To ensure <tt>ClientAliveInterval</tt> is set correctly, run the following command:
     <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
-    If properly configured, output should be:
+    If properly configured, the output should be:
     <pre>ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}</pre>
-=======
-    To ensure the SSH idle timeout will occur when the
-    <tt>ClientAliveInterval</tt> is set, run the following command: <pre>$ sudo
-    grep ClientAliveCountMax /etc/ssh/sshd_config</pre> If properly configured,
-    output should be:
-    <pre>ClientAliveCountMax 0</pre>
-    If the option is set to a different number, then the idle session will be disconnected after
+    If the option is set to <tt>0</tt>, then the SSH idle timeout occurs precisely when
+    the <tt>ClientAliveInterval</tt> is set.
+    If the option is set to a number greater than <tt>0</tt>, then the idle session will be disconnected after
     <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds.
->>>>>>> f1ce329d9... update description stressing that value of 0 should be configured

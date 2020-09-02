@@ -64,9 +64,6 @@ ocil: |-
     <pre>ClientAliveInterval {{{ xccdf_value("sshd_idle_timeout_value") }}}</pre>
 
 warnings:
-    - general: |-
-        The configuration will not have desired effect without configuring an
-        additional SSH option. To ensure that SSH disconnects idle clients
-        precisely after the timeout configured in this rule, the following line
-        has to exist in the SSHD configuration:
-        <pre>ClientAliveCountMax 0</pre>
+    - dependency: |-
+        SSH disconnecting idle clients will not have desired effect without also
+        configuring ClientAliveCountMax in the SSH service configuration.
