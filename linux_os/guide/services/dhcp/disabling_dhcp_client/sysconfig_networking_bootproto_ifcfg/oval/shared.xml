@@ -1,14 +1,8 @@
 <def-group>
   <definition class="compliance" id="sysconfig_networking_bootproto_ifcfg"
   version="2">
-    <metadata>
-      <title>Disable DHCP Client</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>DHCP configuration should be static for all
-      interfaces.</description>
-    </metadata>
+    {{{ oval_metadata("DHCP configuration should be static for all
+      interfaces.") }}}
     <criteria comment="Test for BOOTPROTO=(static|none) across all interfaces">
       <criterion test_ref="test_sysconfig_networking_bootproto_ifcfg" />
     </criteria>

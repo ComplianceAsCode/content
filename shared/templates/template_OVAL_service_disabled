@@ -7,13 +7,7 @@
   {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_disabled" version="1">
-    <metadata>
-      <title>Service {{{ SERVICENAME }}} Disabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ SERVICENAME }}} service should be disabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled if possible.", affected_platforms=["multi_platform_all"]) }}}
     <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
       <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
       <criteria operator="AND" comment="service {{{ SERVICENAME }}} is not configured to start">
@@ -95,13 +89,7 @@
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_disabled"
   version="1">
-    <metadata>
-      <title>Service {{{ SERVICENAME }}} Disabled</title>
-      <affected family="unix">
-        <platform>Ubuntu 14.04</platform>
-      </affected>
-      <description>The {{{ SERVICENAME }}} service should be disabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled if possible.", affected_platforms=["multi_platform_all"]) }}}
    <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
     <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
 
@@ -132,13 +120,7 @@
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_disabled"
   version="1">
-    <metadata>
-      <title>Service {{{ SERVICENAME }}} Disabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ SERVICENAME }}} service should be disabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled if possible.", affected_platforms=["multi_platform_all"]) }}}
    <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
     <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
     <criteria operator="AND" comment="service {{{ SERVICENAME }}} is not configured to start">
@@ -232,13 +214,7 @@
   {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_disabled" version="2">
-    <metadata>
-      <title>Service {{{ SERVICENAME }}} Disabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ SERVICENAME }}} service should be disabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled if possible.", affected_platforms=["multi_platform_all"]) }}}
     <criteria comment="package {{{ PACKAGENAME }}} removed or service and socket {{{ SERVICENAME }}} are not configured to start" operator="OR">
       <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
       <criteria operator="AND" comment="service and socket {{{ SERVICENAME }}} are disabled">

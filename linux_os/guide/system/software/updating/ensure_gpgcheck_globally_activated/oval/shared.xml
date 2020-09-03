@@ -1,14 +1,8 @@
 <def-group>
   <definition class="compliance" id="ensure_gpgcheck_globally_activated" version="1">
-    <metadata>
-      <title>Ensure {{{ pkg_manager }}} gpgcheck Globally Activated</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The gpgcheck option should be used to ensure that checking
+    {{{ oval_metadata("The gpgcheck option should be used to ensure that checking
       of an RPM package's signature always occurs prior to its
-      installation.</description>
-    </metadata>
+      installation.") }}}
     <criteria operator="AND">
      <criterion comment="check value of gpgcheck in {{{ pkg_manager_config_file }}}" test_ref="test_ensure_gpgcheck_globally_activated" />
     </criteria>

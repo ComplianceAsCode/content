@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="kerberos_disable_no_keytab" version="1">
-    <metadata>
-      <title>Restrict Kerberos operation by removing keytab files</title>
-      <affected family="unix">
-        <platform>Oracle Linux 8</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
-      <description>Check that there is no Kerberos keytab file present in /etc</description>
-    </metadata>
+    {{{ oval_metadata("Check that there is no Kerberos keytab file present in /etc") }}}
     <criteria>
       <criterion test_ref="test_kerberos_disable_no_keytab"
         comment="Restrict Kerberos operation by removing keytab files" />

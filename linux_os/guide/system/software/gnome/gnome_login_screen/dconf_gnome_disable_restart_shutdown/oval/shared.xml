@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_disable_restart_shutdown" version="1">
-    <metadata>
-      <title>Disable the GNOME3 Login Restart and Shutdown Buttons</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Disable the GNOME3 Login GUI Restart and Shutdown buttons to all users on the login screen.</description>
-    </metadata>
+    {{{ oval_metadata("Disable the GNOME3 Login GUI Restart and Shutdown buttons to all users on the login screen.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Disable GUI shutdown and restart buttons and prevent user from changing it" operator="AND">

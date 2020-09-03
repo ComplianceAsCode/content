@@ -1,11 +1,7 @@
 <def-group>
   <definition class="compliance" id="no_shelllogin_for_systemaccounts" version="2">
-    <metadata>
-      <title>System Accounts Do Not Run a Shell</title>
-      {{{- oval_affected(products) }}}
-      <description>The root account is the only system account that should have
-      a login shell.</description>
-    </metadata>
+    {{{ oval_metadata("The root account is the only system account that should have
+      a login shell.") }}}
     <criteria operator="OR">
       <!-- If SYS_UID_MIN and SYS_UID_MAX is not defined in /etc/login.defs
            perform the check that all /etc/passwd entries having shell defined

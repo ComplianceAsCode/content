@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_password_pam_unix_remember" version="2">
-    <metadata>
-      <title>Limit Password Reuse</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The passwords to remember should be set correctly.</description>
-    </metadata>
+    {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
     <criteria comment="remember parameter of pam_unix.so or pam_pwhistory.so is set correctly" operator="OR">
       <criterion comment="remember parameter of pam_unix.so is set correctly" test_ref="test_accounts_password_pam_unix_remember" />
       <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember" />

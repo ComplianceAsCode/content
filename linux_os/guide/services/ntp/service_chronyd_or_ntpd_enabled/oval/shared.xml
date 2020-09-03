@@ -1,10 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="service_chronyd_or_ntpd_enabled" version="1">
-    <metadata>
-      <title>Service chronyd Or Service ntpd Enabled</title>
-      {{{- oval_affected(products) }}}
-      <description>At least one of the chronyd or ntpd services should be enabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("At least one of the chronyd or ntpd services should be enabled if possible.") }}}
 
     <criteria comment="chronyd or ntpd service enabled" operator="OR">
       <extend_definition comment="service chronyd enabled" definition_ref="service_chronyd_enabled" />

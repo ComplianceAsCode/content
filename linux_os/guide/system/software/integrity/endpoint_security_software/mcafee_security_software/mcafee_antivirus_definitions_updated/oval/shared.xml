@@ -1,12 +1,6 @@
 <def-group oval_version="5.10">
   <definition class="compliance" id="mcafee_antivirus_definitions_updated" version="1">
-    <metadata>
-      <title>McAfee AntiVirus Definitions Updated</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Verify that McAfee AntiVirus definitions have been updated.</description>
-    </metadata>
+    {{{ oval_metadata("Verify that McAfee AntiVirus definitions have been updated.") }}}
 
     <criteria>
       <criterion comment="Check if McAfee AntiVirus definitions have been updated" test_ref="test_mcafee_antivirus_definitions_updated" />

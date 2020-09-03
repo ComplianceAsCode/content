@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="sssd_ldap_configure_tls_ca_dir" version="1">
-    <metadata>
-      <title>Configure SSSD LDAP Backend Client CA Certificate Location</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Configure SSSD to implement cryptography to protect the integrity of LDAP remote access sessions.</description>
-    </metadata>
+    {{{ oval_metadata("Configure SSSD to implement cryptography to protect the integrity of LDAP remote access sessions.") }}}
     <criteria>
       <criterion test_ref="test_sssd_ldap_tls_ca_dir" />
     </criteria>

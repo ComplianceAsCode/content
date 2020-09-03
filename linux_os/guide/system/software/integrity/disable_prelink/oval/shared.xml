@@ -1,14 +1,10 @@
 
 <def-group>
   <definition class="compliance" id="disable_prelink" version="3">
-    <metadata>
-      <title>Disable Prelinking</title>
-      {{{- oval_affected(products) }}}
-      <description>The prelinking feature can interfere with the operation of
+    {{{ oval_metadata("The prelinking feature can interfere with the operation of
       checksum integrity tools (e.g. AIDE), mitigates the protection provided
       by ASLR, and requires additional CPU cycles by software upgrades.
-      </description>
-    </metadata>
+      ") }}}
     <criteria operator="OR" comment="Conditions for prelinking disabled are satisfied">
       <extend_definition comment="prelink RPM package not installed" definition_ref="package_prelink_removed" />
       <criterion comment="Prelinking is disabled" test_ref="test_prelinking_disabled" />

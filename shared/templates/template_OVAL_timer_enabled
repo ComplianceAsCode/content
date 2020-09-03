@@ -3,11 +3,7 @@
 {{% if target_oval_version >= [5, 11] %}}
 
   <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
-    <metadata>
-      <title>Timer {{{ TIMERNAME }}} Enabled</title>
-      {{{- oval_affected(products) }}}
-      <description>The {{{ TIMERNAME }}} timer should be enabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + TIMERNAME + " service should be enabled if possible.") }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is configured to start" operator="AND">
       <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
       <criteria comment="timer {{{ TIMERNAME }}} is configured to start and is running" operator="AND">
@@ -45,13 +41,7 @@
 {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
 
   <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
-    <metadata>
-      <title>Timer {{{ TIMERNAME }}} Enabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ TIMERNAME }}} timer should be enabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + TIMERNAME + " service should be enabled if possible.") }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is configured to start" operator="AND">
       <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
       <criterion comment="{{{ TIMERNAME }}} enabled in multi-user.target" test_ref="test_{{{ TIMERNAME }}}_enabled_multi_user_target" />

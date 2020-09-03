@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ ID }}}" version="1">
-    <metadata>
-      <title>{{{ TITLE }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules about the information on the use of {{{ NAME }}} is enabled.</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules about the information on the use of " + NAME + " is enabled.") }}}
 
     <criteria operator="OR">
 

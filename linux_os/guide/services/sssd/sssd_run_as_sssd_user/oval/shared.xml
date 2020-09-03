@@ -1,10 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="sssd_run_as_sssd_user" version="1">
-    <metadata>
-      <title>Configure SSSD to run as user sssd</title>
-      {{{- oval_affected(products) }}}
-      <description>SSSD processes should be configured to run as user sssd, not root.</description>
-    </metadata>
+    {{{ oval_metadata("SSSD processes should be configured to run as user sssd, not root.") }}}
     <criteria>
       <criterion comment="Check user setting in SSSD configuration" test_ref="test_sssd_run_as_sssd_user" />
     </criteria>

@@ -1,17 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_system_shutdown" version="1">
-    <metadata>
-      <title>Shutdown System When Auditing Failures Occur</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The system will shutdown when auditing fails.</description>
-    </metadata>
+    {{{ oval_metadata("The system will shutdown when auditing fails.") }}}
 
     <criteria operator="OR">
 

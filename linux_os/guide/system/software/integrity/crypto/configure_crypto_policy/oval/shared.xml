@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_crypto_policy" version="1">
-    <metadata>
-      <title>Configure System Cryptographic Policies</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure crypto policy is correctly configured in /etc/crypto-policies/config, and the policy is current.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure crypto policy is correctly configured in /etc/crypto-policies/config, and the policy is current.") }}}
     <criteria operator="AND">
       <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
       test_ref="test_configure_crypto_policy" />

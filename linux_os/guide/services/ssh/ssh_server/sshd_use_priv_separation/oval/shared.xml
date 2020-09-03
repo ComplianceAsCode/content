@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="sshd_use_priv_separation" version="1">
-    <metadata>
-      <title>Rule title of sshd_use_priv_separation</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Ensure 'UsePrivilegeSeparation' is configured with value 'sandbox' in '/etc/ssh/sshd_config'</description>
-    </metadata>
+    {{{ oval_metadata("Ensure 'UsePrivilegeSeparation' is configured with value 'sandbox' in '/etc/ssh/sshd_config'") }}}
     <criteria comment="sshd is configured correctly or is not installed"
     operator="OR">
       <criteria comment="sshd is not installed" operator="AND">

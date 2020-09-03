@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="zipl_bls_entries_only" version="1">
-    <metadata>
-      <title>Ensure zIPL entries are BLS compliant</title>
-      {{{- oval_affected(products) }}}
-      <description>Check if /etc/zipl.conf configures any boot entry</description>
-    </metadata>
+    {{{ oval_metadata("Check if /etc/zipl.conf configures any boot entry") }}}
     <criteria operator="AND">
       <criterion test_ref="test_zipl_bls_entries_only"
       comment="Test presence of image configuration in /etc/zipl.conf" />

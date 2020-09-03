@@ -1,11 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
-    <metadata>
-      <title>Disable {{{ KERNMODULE }}} Kernel Module</title>
-      {{{- oval_affected(products) }}}
-      <description>The kernel module {{{ KERNMODULE }}} should be disabled.</description>
-    </metadata>
+    {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.d" />
 

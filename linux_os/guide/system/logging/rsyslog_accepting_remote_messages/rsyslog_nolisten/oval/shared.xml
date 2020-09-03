@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="rsyslog_nolisten" version="2">
-    <metadata>
-      <title>Disable Rsyslogd from Accepting Remote Messages on Loghosts
-      Only</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>rsyslogd should reject remote messages</description>
-    </metadata>
+    {{{ oval_metadata("rsyslogd should reject remote messages") }}}
     <criteria>
       <criterion comment="Conditions are satisfied"
       test_ref="test_rsyslog_nolisten" />

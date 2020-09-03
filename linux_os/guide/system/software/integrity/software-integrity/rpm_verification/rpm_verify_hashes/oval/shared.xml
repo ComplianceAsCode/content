@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="rpm_verify_hashes" version="3">
-    <metadata>
-      <title>Verify File Hashes with RPM</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Verify the RPM digests of system binaries using the RPM database.</description>
-    </metadata>
+    {{{ oval_metadata("Verify the RPM digests of system binaries using the RPM database.") }}}
     <criteria>
       <criterion test_ref="test_files_fail_md5_hash" comment="verify file md5 hashes" />
     </criteria>

@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="configure_bind_crypto_policy" version="1">
-    <metadata>
-      <title>Configure BIND to use System Crypto Policy.</title>
-      {{{- oval_affected(products) }}}
-      <description>BIND should be configured to use the system-wide crypto policy setting.</description>
-    </metadata>
+    {{{ oval_metadata("BIND should be configured to use the system-wide crypto policy setting.") }}}
     <criteria operator="OR">
       <extend_definition comment="Check if package bind is not installed" definition_ref="package_bind_removed" />
       <criterion test_ref="test_configure_bind_crypto_policy"

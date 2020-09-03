@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_unsuccessful_file_modification_{{{ NAME }}}" version="1">
-    <metadata>
-      <title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful) - {{{ NAME }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.") }}}
 
     <criteria operator="OR">
 

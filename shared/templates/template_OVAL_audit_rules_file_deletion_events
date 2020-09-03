@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_file_deletion_events_{{{ NAME }}}" version="1">
-    <metadata>
-      <title>Audit File Deletion Events - {{{ NAME }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>The deletion of files should be audited.</description>
-    </metadata>
+    {{{ oval_metadata("The deletion of files should be audited.") }}}
 
     <criteria operator="OR">
 

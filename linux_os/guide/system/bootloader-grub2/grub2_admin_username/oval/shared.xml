@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="grub2_admin_username" version="1">
-    <metadata>
-      <title>Set Boot Loader Superuser Username to Unique Value</title>
-      {{{- oval_affected(products) }}}
-      <description>The grub2 boot loader superuser should have a username that is hard to guess.</description>
-    </metadata>
+    {{{ oval_metadata("The grub2 boot loader superuser should have a username that is hard to guess.") }}}
 
     <criteria operator="OR">
       {{{ oval_file_absent_criterion("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}

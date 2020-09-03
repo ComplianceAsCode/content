@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_groupowner_grub2_cfg" version="1">
-    <metadata>
-      <title>Verify /boot/grub2/grub.cfg Group Owner</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Verify that /boot/grub2/grub.cfg is group owned by gid 0.</description>
-    </metadata>
+    {{{ oval_metadata("Verify that /boot/grub2/grub.cfg is group owned by gid 0.") }}}
     <criteria operator="OR">
       <extend_definition definition_ref="system_boot_mode_is_uefi" comment="Pass if system boot mode is UEFI" />
       <criterion comment="Check file group ownership of /boot/grub2/grub.cfg" test_ref="test_file_groupowner_grub2_cfg" />

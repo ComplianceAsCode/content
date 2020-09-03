@@ -1,15 +1,8 @@
 <def-group>
   <definition class="compliance" id="network_disable_ddns_interfaces"
   version="1">
-    <metadata>
-      <title>Disable Client Dynamic DNS Updates</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-      </affected>
-      <description>Clients should not automatically update their own
-      DNS record.</description>
-    </metadata>
+    {{{ oval_metadata("Clients should not automatically update their own
+      DNS record.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_network_disable_ddns_interfaces_ifcfg" />
       <criterion test_ref="test_network_disable_ddns_interfaces_dhclient" />

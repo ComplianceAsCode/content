@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="directory_access_var_log_audit" version="1">
-    <metadata>
-      <title>Ensure auditd Collects Information Read Access to /var/log/audit</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules about the read events to /var/log/audit</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules about the read events to /var/log/audit") }}}
 
     <criteria operator="OR">
 

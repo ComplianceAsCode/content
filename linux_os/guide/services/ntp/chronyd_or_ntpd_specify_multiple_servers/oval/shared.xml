@@ -1,10 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="chronyd_or_ntpd_specify_multiple_servers" version="1">
-    <metadata>
-      <title>Specify Multiple Remote chronyd Or ntpd NTP Servers for Time Data</title>
-      {{{- oval_affected(products) }}}
-      <description>Multiple remote chronyd or ntpd NTP Servers for time synchronization should be specified (and dependencies are met)</description>
-    </metadata>
+    {{{ oval_metadata("Multiple remote chronyd or ntpd NTP Servers for time synchronization should be specified (and dependencies are met)") }}}
 
     <criteria operator="OR">
       <criteria comment="chronyd enabled and multiple remote servers specified" operator="AND">

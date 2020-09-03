@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_have_homedir_login_defs" version="1">
-    <metadata>
-      <title>Ensure new users receive home directories</title>
-      {{{- oval_affected(products) }}}
-      <description>CREATE_HOME should be enabled</description>
-    </metadata>
+    {{{ oval_metadata("CREATE_HOME should be enabled") }}}
     <criteria operator="AND">
       <criterion comment="Check CREATE_HOME in /etc/login.defs" test_ref="test_accounts_have_homedir_login_defs" />
     </criteria>

@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="postfix_server_banner" version="1">
-    <metadata>
-      <title>Configure Postfix Against Unnecessary Release of Information</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Protect against unnecessary release of information.</description>
-    </metadata>
+    {{{ oval_metadata("Protect against unnecessary release of information.") }}}
     <criteria operator="AND">
       <criterion comment="Limit release of information" test_ref="test_postfix_server_banner" />
     </criteria>

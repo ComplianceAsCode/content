@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_permissions_var_log_audit" version="2">
-    <metadata>
-      <title>Verify /var/log/audit Permissions</title>
-      {{{- oval_affected(products) }}}
-      <description>Checks for correct permissions for all log files in /var/log/audit.</description>
-    </metadata>
+    {{{ oval_metadata("Checks for correct permissions for all log files in /var/log/audit.") }}}
     <criteria operator="OR">
       <criterion test_ref="test_file_permissions_var_log_audit" negate="true" />
       <criteria operator="AND" comment="log_group in auditd.conf is not root">

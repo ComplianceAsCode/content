@@ -1,11 +1,7 @@
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    <metadata>
-      <title>{{{ rule_title }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure 'RekeyLimit' is configured with the correct value in /etc/ssh/ssh_config and /etc/ssh/ssh_config.d/*.conf</description>
-    </metadata>
+    {{{ oval_metadata("Ensure 'RekeyLimit' is configured with the correct value in /etc/ssh/ssh_config and /etc/ssh/ssh_config.d/*.conf") }}}
     <criteria comment="RekeyLimit is correctly configured for ssh client" operator="AND">
       <criterion comment="check that RekeyLimit is not configured in /etc/ssh/ssh_config" test_ref="test_ssh_client_rekey_limit_main_config" negate="true" />
       <criterion comment="check correct RekeyLimit configuration in /etc/ssh/ssh_config.d/*.conf" test_ref="test_ssh_client_rekey_limit_include_configs" />

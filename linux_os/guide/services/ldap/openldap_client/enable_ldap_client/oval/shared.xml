@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="enable_ldap_client" version="1">
-    <metadata>
-      <title>Enable the LDAP Client For Use in Authconfig</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_rhv</platform>
-      </affected>
-      <description>Enable LDAP in authconfig.</description>
-    </metadata>
+    {{{ oval_metadata("Enable LDAP in authconfig.") }}}
     <criteria>
       <criterion comment="LDAP client is enabled"
       test_ref="test_enable_ldap_client" />

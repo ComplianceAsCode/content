@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_passwords_pam_faillock_unlock_time" version="2">
-    <metadata>
-      <title>Lock out account after failed login attempts</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The unlock time after number of failed logins should be set correctly.</description>
-    </metadata>
+    {{{ oval_metadata("The unlock time after number of failed logins should be set correctly.") }}}
     <criteria operator="OR">
         <!-- We divide the checking domain space in two,
         1. when the ext var unlock_time is zero, we are only looking for zero or never in the config files,

@@ -1,17 +1,7 @@
 <def-group>
   <definition class="compliance" id="firewalld_sshd_port_enabled" version="1">
-    <metadata>
-      <title>Allow inbound firewall access to the SSH Server port</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
-      <description>If inbound SSH access is needed, the firewall should allow access to
-      the SSH port (22).</description>
-    </metadata>
+    {{{ oval_metadata("If inbound SSH access is needed, the firewall should allow access to
+      the SSH port (22).") }}}
     <criteria operator="OR">
       <criterion comment="ssh service is enabled in services" test_ref="test_firewalld_service_sshd_enabled" />
       <criterion comment="ssh port is enabled in services" test_ref="test_firewalld_service_sshd_port_enabled" />

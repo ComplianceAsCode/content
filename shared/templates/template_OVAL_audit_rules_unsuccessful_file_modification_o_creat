@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_unsuccessful_file_modification_{{{ SYSCALL }}}_o_creat" version="1">
-    <metadata>
-      <title>Ensure auditd Collects Information on Unsuccesful Creation Attempts to Files - {{{ SYSCALL }}} o_creat</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules about the information on the unsuccessful use of {{{ SYSCALL }}} O_CREAT is enabled.</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules about the information on the unsuccessful use of " + SYSCALL + " O_CREAT is enabled.") }}}
 
     <criteria operator="OR">
 

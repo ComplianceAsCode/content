@@ -3,11 +3,7 @@
 {{% set backend_krb5_config = "/etc/crypto-policies/back-ends/krb5.config" %}}
 <def-group>
   <definition class="compliance" id="configure_kerberos_crypto_policy" version="2">
-    <metadata>
-      <title>Configure kerberos to use System Crypto Policy</title>
-      {{{- oval_affected(products) }}}
-      <description>Kerberos should be configured to use the system-wide crypto policy setting.</description>
-    </metadata>
+    {{{ oval_metadata("Kerberos should be configured to use the system-wide crypto policy setting.") }}}
     <criteria operator="OR" comment="The config file is always a symlink to the backend, but the backend itself may be either a file, or a symlink. For this reason, we need two tests, if one passes, the other one is expected to either fail, or error.">
       <criterion comment="kerberos crypto-policy configuration links to same file as kerberos crypto-policy backend" test_ref="test_configure_kerberos_crypto_policy_symlink" />
       <criterion comment="kerberos crypto-policy configuration links to the crypto-policy backend file" test_ref="test_configure_kerberos_crypto_policy_nosymlink" />

@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="ntpd_specify_multiple_servers" version="2">
-    <metadata>
-      <title>Specify Multiple Remote ntpd NTP Server for Time Data</title>
-      {{{- oval_affected(products) }}}
-      <description>Multiple ntpd NTP Servers for time synchronization should be specified.</description>
-    </metadata>
+    {{{ oval_metadata("Multiple ntpd NTP Servers for time synchronization should be specified.") }}}
     <criteria comment="ntp.conf conditions are met">
       <criterion test_ref="test_ntpd_multiple_servers" />
     </criteria>

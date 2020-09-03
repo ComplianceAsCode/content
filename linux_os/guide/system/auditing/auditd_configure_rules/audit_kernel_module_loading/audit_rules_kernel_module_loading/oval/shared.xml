@@ -1,17 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_kernel_module_loading" version="1">
-    <metadata>
-      <title>Audit Kernel Module Loading and Unloading</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_sle</platform>
-        <platform>multi_platform_rhcos</platform>
-      </affected>
-      <description>The audit rules should be configured to log information about kernel module loading and unloading.</description>
-    </metadata>
+    {{{ oval_metadata("The audit rules should be configured to log information about kernel module loading and unloading.") }}}
     <criteria operator="AND">
       <extend_definition comment="audit init_module" definition_ref="audit_rules_kernel_module_loading_init" />
       <extend_definition comment="audit delete_module" definition_ref="audit_rules_kernel_module_loading_delete" />

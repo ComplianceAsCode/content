@@ -1,11 +1,7 @@
 <def-group>
   <definition class="compliance" id="grub2_disable_interactive_boot" version="4">
-    <metadata>
-      <title>Verify that Interactive Boot is Disabled</title>
-      {{{- oval_affected(products) }}}
-      <description>The ability for users to perform interactive startups should
-      be disabled.</description>
-    </metadata>
+    {{{ oval_metadata("The ability for users to perform interactive startups should
+      be disabled.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_grub2_disable_interactive_boot_grub_cmdline_linux"
       comment="Check systemd.confirm_spawn=(1|yes|true|on) not in GRUB_CMDLINE_LINUX" />

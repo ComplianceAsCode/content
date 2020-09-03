@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_data_disk_full_action" version="1">
-    <metadata>
-      <title>Auditd Action to Take When Disk Is Full</title>
-      {{{- oval_affected(products) }}}
-      <description>disk_full_action setting in /etc/audit/auditd.conf is set to a certain action</description>
-    </metadata>
+    {{{ oval_metadata("disk_full_action setting in /etc/audit/auditd.conf is set to a certain action") }}}
 
     <criteria>
         <criterion comment="disk_full_action setting in auditd.conf" test_ref="test_auditd_data_disk_full_action" />

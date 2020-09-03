@@ -1,13 +1,6 @@
 <def-group>
   <definition class="compliance" id="ensure_redhat_gpgkey_installed" version="2">
-    <metadata>
-      <title>Red Hat Release and Auxiliary gpg-pubkey Packages Installed</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_rhv</platform>
-      </affected>
-      <description>The Red Hat release and auxiliary key packages are required to be installed.</description>
-    </metadata>
+    {{{ oval_metadata("The Red Hat release and auxiliary key packages are required to be installed.") }}}
     <criteria comment="Vendor GPG keys" operator="OR">
       <criteria comment="Red Hat Vendor Keys" operator="AND">
         <criteria comment="Red Hat Installed" operator="OR">

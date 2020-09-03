@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="logwatch_configured_hostlimit" version="1">
-    <metadata>
-      <title>Ensure Logwatch HostLimit Configured</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Test if HostLimit line in logwatch.conf is set appropriately.</description>
-    </metadata>
+    {{{ oval_metadata("Test if HostLimit line in logwatch.conf is set appropriately.") }}}
     <criteria operator="AND">
       <criterion comment="Test value of HostLimit" test_ref="test_logwatch_configured_hostlimit" />
     </criteria>

@@ -1,14 +1,8 @@
 <def-group>
   <definition class="compliance" id="file_permissions_systemmap" version="1">
-    <metadata>
-      <title>Verify that System.map files are readable only by root</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>
+    {{{ oval_metadata("
         Checks that /boot/System.map-* are only readable by root.
-      </description>
-    </metadata>
+      ") }}}
     <criteria operator="AND">
       <criterion test_ref="test_permissions_systemmap_files" />
     </criteria>

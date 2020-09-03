@@ -1,13 +1,7 @@
 <def-group>
   <definition class="compliance" id="sshd_set_max_sessions" version="1">
-    <metadata>
-      <title>Set OpenSSH MaxSessions</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The SSH number of max sessions should be set to an
-      appropriate value.</description>
-    </metadata>
+    {{{ oval_metadata("The SSH number of max sessions should be set to an
+      appropriate value.") }}}
     <criteria comment="SSH is configured correctly or is not installed"
     operator="OR">
       <criteria comment="sshd is not installed" operator="AND">

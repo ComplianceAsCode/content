@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_mac_modification" version="1">
-    <metadata>
-      <title>Record Events that Modify the System's Mandatory Access Controls</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules that detect changes to the system's mandatory access controls (SELinux) are enabled.</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules that detect changes to the system's mandatory access controls (SELinux) are enabled.") }}}
 
     <criteria operator="OR">
 

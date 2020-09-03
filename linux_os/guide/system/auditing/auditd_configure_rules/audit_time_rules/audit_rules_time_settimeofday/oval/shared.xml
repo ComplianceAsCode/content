@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_time_settimeofday" version="1">
-    <metadata>
-      <title>Record Attempts to Alter Time Through Settimeofday</title>
-      {{{- oval_affected(products) }}}
-      <description>Record attempts to alter time through settimeofday.</description>
-    </metadata>
+    {{{ oval_metadata("Record attempts to alter time through settimeofday.") }}}
 
     <criteria operator="OR">
 

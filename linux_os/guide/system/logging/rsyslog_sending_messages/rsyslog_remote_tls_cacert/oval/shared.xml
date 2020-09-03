@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="rsyslog_remote_tls_cacert" version="1">
-    <metadata>
-      <title>Check that CA certificate is configured for rsyslog remote logging</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
-      <description>Check that the CA certificate path is set</description>
-    </metadata>
+    {{{ oval_metadata("Check that the CA certificate path is set") }}}
     <criteria comment="Check that CA certificate is configured for rsyslog remote logging" operator="AND">
       <criterion comment="Check that the CA certificate path is set" test_ref="test_rsyslog_remote_tls_cacert" />
     </criteria>

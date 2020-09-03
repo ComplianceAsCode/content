@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="tftpd_uses_secure_mode" version="1">
-    <metadata>
-      <title>TFTP Daemon Uses Secure Mode</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The TFTP daemon should use secure mode.</description>
-    </metadata>
+    {{{ oval_metadata("The TFTP daemon should use secure mode.") }}}
     <criteria comment="package tftp-server removed or /etc/xinetd.d/tftp configured correctly" operator="OR">
       <extend_definition comment="rpm package tftp-server removed" definition_ref="package_tftp-server_removed" />
       <criterion comment="tftpd secure mode" test_ref="test_tftpd_uses_secure_mode" />

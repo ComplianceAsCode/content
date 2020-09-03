@@ -17,11 +17,7 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_{{{ SYSCTLID }}}" version="3">
-    <metadata>
-      <title>Kernel "{{{ SYSCTLVAR }}}" Parameter Configuration and Runtime Check</title>
-      {{{- oval_affected(products) }}}
-      <description>The "{{{ SYSCTLVAR }}}" kernel parameter should be set to the appropriate value in both system configuration and system runtime.</description>
-    </metadata>
+    {{{ oval_metadata("The '" + SYSCTLVAR + "' kernel parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
     <criteria operator="AND">
       <extend_definition comment="{{{ SYSCTLVAR }}} configuration setting check" definition_ref="sysctl_static_{{{ SYSCTLID }}}" />
       <extend_definition comment="{{{ SYSCTLVAR }}} runtime setting check" definition_ref="sysctl_runtime_{{{ SYSCTLID }}}" />
@@ -33,13 +29,7 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_{{{ SYSCTLID }}}" version="4">
-    <metadata>
-      <title>Kernel "{{{ SYSCTLVAR }}}" Parameter Configuration and Runtime Check</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The "{{{ SYSCTLVAR }}}" kernel parameter should be set to the appropriate value in both system configuration and system runtime.</description>
-    </metadata>
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
     <criteria comment="IPv6 disabled or {{{ SYSCTLVAR }}} set correctly" operator="OR">
 {{% if product in ["rhel6", "debian8", "ubuntu1404", "ubuntu1604", "ubuntu1804"] %}}
       <extend_definition comment="is IPv6 enabled?" definition_ref="kernel_module_ipv6_option_disabled" />
@@ -59,17 +49,7 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_runtime_{{{ SYSCTLID }}}" version="3">
-    <metadata>
-      <title>Kernel "{{{ SYSCTLVAR }}}" Parameter Runtime Check</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-{{%- if SYSCTLVAL == "" %}}
-      <description>The kernel "{{{ SYSCTLVAR }}}" parameter should be set to the appropriate value in system runtime.</description>
-{{%- else %}}
-      <description>The kernel "{{{ SYSCTLVAR }}}" parameter should be set to "{{{ SYSCTLVAL }}}" in system runtime.</description>
-{{%- endif %}}
-    </metadata>
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system runtime.") }}}
     <criteria operator="AND">
 {{%- if SYSCTLVAL == "" %}}
       <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to the appropriate value" test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}" />
@@ -108,17 +88,7 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_static_{{{ SYSCTLID }}}" version="3">
-    <metadata>
-      <title>Kernel "{{{ SYSCTLVAR }}}" Parameter Configuration Check</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-{{%- if SYSCTLVAL == "" %}}
-      <description>The kernel "{{{ SYSCTLVAR }}}" parameter should be set to the appropriate value in the system configuration.</description>
-{{%- else %}}
-      <description>The kernel "{{{ SYSCTLVAR }}}" parameter should be set to "{{{ SYSCTLVAL }}}" in the system configuration.</description>
-{{%- endif %}}
-    </metadata>
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system configuration.") }}}
 {{% if product == "rhel6" %}}
     <criteria operator="OR">
 

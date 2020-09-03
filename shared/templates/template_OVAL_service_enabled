@@ -5,13 +5,7 @@
 {{% if init_system == "systemd" and target_oval_version >= [5, 11] %}}
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_enabled" version="1">
-    <metadata>
-      <title>Service {{{ SERVICENAME }}} Enabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ SERVICENAME }}} service should be enabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
     <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
       <criteria comment="service {{{ SERVICENAME }}} is configured to start and is running" operator="AND">
@@ -62,13 +56,7 @@
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_enabled"
   version="1">
-    <metadata>
-      <title>Service {{{ SERVICENAME }}} Enabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ SERVICENAME }}} service should be enabled if possible.</description>
-    </metadata>
+    {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
     <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
     <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">

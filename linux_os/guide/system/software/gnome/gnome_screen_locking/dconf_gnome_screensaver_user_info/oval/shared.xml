@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_screensaver_user_info" version="1">
-    <metadata>
-      <title>Disable Full User Name on Splash Shield</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>GNOME3 screen splash shield should not display full name of logged in user.</description>
-    </metadata>
+    {{{ oval_metadata("GNOME3 screen splash shield should not display full name of logged in user.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Disable screensaver user info and prevent user from changing it" operator="AND">
