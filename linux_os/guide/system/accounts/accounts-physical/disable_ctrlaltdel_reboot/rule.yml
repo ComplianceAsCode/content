@@ -72,15 +72,20 @@ ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed'
 ocil: |-
 {{% if product == "rhel6" %}}
     To ensure the system is configured to log a message instead of rebooting the
-    system when Ctrl-Alt-Del is pressed, ensure the following line is in
-    <tt>/etc/init/control-alt-delete.conf</tt>:
+    system when Ctrl-Alt-Del is pressed, run the following command:
+    <pre>sudo grep logger /etc/init/control-alt-delete.conf</pre>
+    The output should contain a line resembling the following one:
     <pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
 {{% else %}}
-    To ensure the system is configured to mask the Ctrl-Alt-Del sequence,
-    enter the following command:
-    <pre>$ sudo ln -sf /dev/null /etc/systemd/system/ctrl-alt-del.target</pre>
-    or
-    <pre>$ sudo systemctl mask ctrl-alt-del.target</pre>
+    To ensure the system is configured to mask the Ctrl-Alt-Del sequence, Check
+    that the ctrl-alt-del.target is masked and not active with the following
+    command:
+    <pre>sudo systemctl status ctrl-alt-del.target</pre>
+    The output should indicate that the target is masked and not active. It
+    might resemble following output:
+    <pre>ctrl-alt-del.target
+    Loaded: masked (/dev/null; bad)
+    Active: inactive (dead)</pre>
 {{% endif %}}
 
 warnings:
