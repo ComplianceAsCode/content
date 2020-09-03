@@ -585,6 +585,7 @@ EOF
 {{%- endmacro %}}
 
 {{% macro bash_ini_file_set(filename, section, key, value) -%}}
+{{% set config_dir = "/".join(filename.split("/")[:-1]) %}}
 # Try find '[{{{ section }}}]' and '{{{ key }}}' in '{{{ filename }}}', if it exists, set
 # to '{{{ value }}}', if it isn't here, add it, if '[{{{ section }}}]' doesn't exist, add it there
 if grep -qzosP '[[:space:]]*\[{{{ section }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}' '{{{ filename }}}'; then
@@ -592,7 +593,10 @@ if grep -qzosP '[[:space:]]*\[{{{ section }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ key
 elif grep -qs '[[:space:]]*\[{{{ section }}}]' '{{{ filename }}}'; then
     sed -i '/[[:space:]]*\[{{{ section }}}]/a {{{ key }}}={{{ value }}}' '{{{ filename }}}'
 else
-    mkdir -p {{{ "/".join(filename.split("/")[:-1]) }}}
-    printf '%s\n' '[{{{ section }}}]' '{{{ key }}}={{{ value }}}' >> '{{{ filename }}}'
+    if test -d "{{{ config_dir }}}"; then
+        printf '%s\n' '[{{{ section }}}]' '{{{ key }}}={{{ value }}}' >> '{{{ filename }}}'
+    else
+        echo "Config file directory '{{{ config_dir }}}' doesnt exist, not remediating, assuming non-applicability." >&2
+    fi
 fi
 {{%- endmacro %}}
