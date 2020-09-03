@@ -236,6 +236,7 @@ selections:
     - sssd_ldap_start_tls.severity=medium
     - sssd_ldap_configure_tls_ca_dir
     - sssd_ldap_configure_tls_ca
+    - sssd_ldap_configure_tls_reqcert
     - sysctl_kernel_randomize_va_space
     - package_openssh-server_installed
     - sshd_required=yes
