@@ -8,7 +8,7 @@ description: |-
     Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
     all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
     setting in <tt>/etc/profile</tt> should read as follows:
-    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
 
 rationale: |-
     Terminating an idle session within a short time period reduces
@@ -48,4 +48,4 @@ ocil: |-
     on the system:
     <pre>$ sudo grep TMOUT /etc/profile</pre>
     The output should return the following:
-    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>

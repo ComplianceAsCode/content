@@ -9,7 +9,7 @@ description: |-
     general-purpose desktops and servers, as well as systems in many other roles.
     To configure the system to use this policy, add or correct the following line
     in <tt>/etc/selinux/config</tt>:
-    <pre>SELINUXTYPE=<sub idref="var_selinux_policy_name" /></pre>
+    <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>
     Other policies, such as <tt>mls</tt>, provide additional security labeling
     and greater confinement but are not compatible with many general-purpose
     use cases.
@@ -23,7 +23,7 @@ rationale: |-
     temporarily place non-production systems in <tt>permissive</tt> mode. In such
     temporary cases, SELinux policies should be developed, and once work
     is completed, the system should be reconfigured to
-    <tt><sub idref="var_selinux_policy_name" /></tt>.
+    <tt>{{{ xccdf_value("var_selinux_policy_name") }}}</tt>.
 
 severity: high
 
@@ -57,4 +57,4 @@ ocil_clause: 'it does not'
 
 ocil: |-
     Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
-    <pre>SELINUXTYPE=<sub idref="var_selinux_policy_name" /></pre>
+    <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>

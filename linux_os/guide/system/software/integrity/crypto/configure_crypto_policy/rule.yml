@@ -5,9 +5,9 @@ prodtype: fedora,rhcos4,ol8,rhel8,rhv4
 title: 'Configure System Cryptography Policy'
 
 description: |-
-    To configure the system cryptography policy to use ciphers only from the <tt><sub idref="var_system_crypto_policy" /></tt>
+    To configure the system cryptography policy to use ciphers only from the <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>
     policy, run the following command:
-    <pre>$ sudo update-crypto-policies --set <sub idref="var_system_crypto_policy" /></pre>
+    <pre>$ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}</pre>
     The rule checks if settings for selected crypto policy are configured as expected. Configuration files in the <tt>/etc/crypto-policies/back-ends</tt> are either symlinks to correct files provided by Crypto-policies package or they are regular files in case crypto policy customizations are applied.
     Crypto policies may be customized by crypto policy modules, in which case it is delimited from the base policy using a colon.
 
@@ -34,7 +34,7 @@ ocil: |-
     To verify that cryptography policy has been configured correctly, run the
     following command:
     <pre>$ update-crypto-policies --show</pre>
-    The output should return <pre><sub idref="var_system_crypto_policy" /></pre>.
+    The output should return <pre>{{{ xccdf_value("var_system_crypto_policy") }}}</pre>.
     Run the command to check if the policy is correctly applied:
     <pre>$ update-crypto-policies --is-applied</pre>
     The output should be <pre>The configured policy is applied</pre>.

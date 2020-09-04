@@ -5,10 +5,10 @@ prodtype: fedora,rhcos4,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle15,wrlinux1019
 title: 'Ensure SELinux State is Enforcing'
 
 description: |-
-    The SELinux state should be set to <tt><sub idref="var_selinux_state" /></tt> at
+    The SELinux state should be set to <tt>{{{ xccdf_value("var_selinux_state") }}}</tt> at
     system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
     following line to configure the system to boot into enforcing mode:
-    <pre>SELINUX=<sub idref="var_selinux_state" /></pre>
+    <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
 
 rationale: |-
     Setting the SELinux state to enforcing ensures SELinux is able to confine
@@ -49,4 +49,4 @@ ocil_clause: 'SELINUX is not set to enforcing'
 
 ocil: |-
     Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
-    <pre>SELINUX=<sub idref="var_selinux_state" /></pre>
+    <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>

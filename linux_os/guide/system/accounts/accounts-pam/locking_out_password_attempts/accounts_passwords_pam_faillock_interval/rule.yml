@@ -14,11 +14,11 @@ description: |-
     <ul>
     <li>Add the following line immediately <tt>before</tt> the
         <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre>
+    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
     </li>
     <li>Add the following line immediately <tt>after</tt> the
         <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" />
+    <pre>auth [default=die] pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}
     </pre>
     </li>
     <li>Add the following line immediately <tt>before</tt> the
@@ -63,7 +63,7 @@ ocil: |-
     To ensure the failed password attempt policy is configured correctly,
     run the following command:
     <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
-    For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt><sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></tt> or greater.
+    For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt> or greater.
     If the <tt>fail_interval</tt> parameter is not set, the default setting
     of 900 seconds is acceptable.
 

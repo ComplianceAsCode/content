@@ -8,7 +8,7 @@ description: |-
     concurrent sessions by a single user via multiple accounts. To set the number of concurrent
     sessions per user add the following line in <tt>/etc/security/limits.conf</tt> or
     a file under <tt>/etc/security/limits.d/</tt>:
-    <pre>* hard maxlogins <sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
+    <pre>* hard maxlogins {{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}</pre>
 
 rationale: |-
     Limiting simultaneous user logins can insulate the system from denial of service
@@ -46,6 +46,6 @@ ocil: |-
     configured for all users on the system:
     <pre># grep "maxlogins" /etc/security/limits.conf</pre>
     You should receive output similar to the following:
-    <pre>*\t\thard\tmaxlogins\t<sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
+    <pre>*\t\thard\tmaxlogins\t{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}</pre>
 
 platform: pam

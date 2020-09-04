@@ -6,7 +6,7 @@ title: 'Set Password Minimum Length'
 
 description: |-
     The pam_cracklib module's <tt>minlen</tt> parameter controls requirements for
-    minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+    minimum characters required in a password. Add <tt>minlen={{{ xccdf_value("var_password_pam_minlen") }}}</tt>
     after pam_pwquality to set minimum password length requirements.
 
 rationale: |-
@@ -38,4 +38,4 @@ ocil_clause: 'minlen is not found or not set to the required value (or higher)'
 ocil: |-
     To check how many characters are required in a password, run the following command:
     <pre>$ grep cracklib /etc/pam.d/system-auth</pre>
-    Your output should contain <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
+    Your output should contain <tt>minlen={{{ xccdf_value("var_password_pam_minlen") }}}</tt>

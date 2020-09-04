@@ -6,7 +6,7 @@ description: |-
     Determine the amount of audit data (in megabytes)
     which should be retained in each log file. Edit the file
     <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line, substituting
-    the correct value of <sub idref="var_auditd_max_log_file" /> for <i>STOREMB</i>:
+    the correct value of {{{ xccdf_value("var_auditd_max_log_file") }}} for <i>STOREMB</i>:
     <pre>max_log_file = <i>STOREMB</i></pre>
     Set the value to <tt>6</tt> (MB) or higher for general-purpose systems.
     Larger values, of course,

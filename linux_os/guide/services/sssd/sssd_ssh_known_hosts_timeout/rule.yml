@@ -6,12 +6,12 @@ title: 'Configure SSSD to Expire SSH Known Hosts'
 
 description: |-
     SSSD should be configured to expire keys from known SSH hosts after
-    <tt><sub idref="var_sssd_ssh_known_hosts_timeout" /></tt> seconds.
+    <tt>{{{ xccdf_value("var_sssd_ssh_known_hosts_timeout") }}}</tt> seconds.
     To configure SSSD to known SSH hosts, set <tt>ssh_known_hosts_timeout</tt>
-    to <tt><sub idref="var_sssd_ssh_known_hosts_timeout" /></tt> under the
+    to <tt>{{{ xccdf_value("var_sssd_ssh_known_hosts_timeout") }}}</tt> under the
     <tt>[ssh]</tt> section in <tt>/etc/sssd/sssd.conf</tt>. For example:
     <pre>[ssh]
-    ssh_known_hosts_timeout = <sub idref="var_sssd_ssh_known_hosts_timeout" />
+    ssh_known_hosts_timeout = {{{ xccdf_value("var_sssd_ssh_known_hosts_timeout") }}}
     </pre>
 
 rationale: |-
@@ -44,4 +44,4 @@ ocil: |-
     To verify that SSSD expires known SSH host keys, run the following command:
     <pre>$ sudo grep ssh_known_hosts_timeout /etc/sssd/sssd.conf</pre>
     If configured properly, output should be
-    <pre>ssh_known_hosts_timeout = <sub idref="var_sssd_ssh_known_hosts_timeout" /></pre>
+    <pre>ssh_known_hosts_timeout = {{{ xccdf_value("var_sssd_ssh_known_hosts_timeout") }}}</pre>

@@ -5,7 +5,7 @@ title: 'Ensure the Logon Failure Delay is Set Correctly in login.defs'
 description: |-
     To ensure the logon failure delay controlled by <tt>/etc/login.defs</tt> is set properly,
     add or correct the <tt>FAIL_DELAY</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
-    <pre>FAIL_DELAY <sub idref="var_accounts_fail_delay" /></pre>
+    <pre>FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}</pre>
 
 rationale: |-
     Increasing the time between a failed authentication attempt and re-prompting to
@@ -37,6 +37,6 @@ ocil: |-
     <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs</pre>
     All output must show the value of <tt>FAIL_DELAY</tt> set as shown in the below:
     <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs
-    FAIL_DELAY <sub idref="var_accounts_fail_delay" /></pre>
+    FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}</pre>
 
 platform: login_defs

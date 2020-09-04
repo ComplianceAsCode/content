@@ -7,7 +7,7 @@ description: |-
     the session key of the is renegotiated, both in terms of
     amount of data that may be transmitted and the time
     elapsed. To decrease the default limits, put line
-    <tt>RekeyLimit {{{ sub_var_value("var_rekey_limit_size") }}} {{{ sub_var_value("var_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/sshd_config</tt>.
+    <tt>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</tt> to file <tt>/etc/ssh/sshd_config</tt>.
 
 rationale: |-
     By decreasing the limit based on the amount of data and enabling
@@ -30,4 +30,4 @@ ocil: |-
     following command:
     <pre>$ sudo grep RekeyLimit /etc/ssh/sshd_config</pre>
     If configured properly, output should be
-    <pre>RekeyLimit {{{ sub_var_value("var_rekey_limit_size") }}} {{{ sub_var_value("var_rekey_limit_time") }}}</pre>
+    <pre>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</pre>

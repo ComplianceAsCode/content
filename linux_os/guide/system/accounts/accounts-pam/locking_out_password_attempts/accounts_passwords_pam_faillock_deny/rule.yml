@@ -11,9 +11,9 @@ description: |-
     <br /><br />
     <ul>
     <li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth required pam_faillock.so preauth silent deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
     <li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth [default=die] pam_faillock.so authfail deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /> unlock_time=<sub idref="var_accounts_passwords_pam_faillock_unlock_time" /> fail_interval=<sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></pre></li>
+    <pre>auth [default=die] pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
     <li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
     <pre>account required pam_faillock.so</pre></li>
     </ul>
@@ -56,6 +56,6 @@ ocil_clause: 'that is not the case'
 ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
     <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-    The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /></tt>.
+    The output should show <tt>deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}</tt>.
 
 platform: pam

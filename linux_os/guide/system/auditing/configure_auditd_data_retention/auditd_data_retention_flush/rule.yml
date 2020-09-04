@@ -9,7 +9,7 @@ description: |-
     synchronously write audit event data to disk. Add or correct the following
     line in <tt>/etc/audit/auditd.conf</tt> to ensure that audit event data is
     fully synchronized with the log files on the disk:
-    <pre>flush = <sub idref="var_auditd_flush" /></pre>
+    <pre>flush = {{{ xccdf_value("var_auditd_flush") }}}</pre>
 
 rationale: |-
     Audit data should be synchronously written to disk to ensure
