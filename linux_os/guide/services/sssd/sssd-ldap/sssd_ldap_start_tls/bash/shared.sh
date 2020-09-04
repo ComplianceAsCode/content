@@ -3,5 +3,5 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-{{{ bash_sssd_ldap_config(parameter="ldap_id_use_start_tls", value="True") }}}
+{{{ bash_sssd_ldap_config(parameter="ldap_id_use_start_tls", value="true") }}}
 
