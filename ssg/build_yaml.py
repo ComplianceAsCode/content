@@ -112,6 +112,7 @@ class Profile(object):
         self.variables = dict()
         self.refine_rules = defaultdict(list)
         self.metadata = None
+        self.reference = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -132,7 +133,11 @@ class Profile(object):
             profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
-        profile.metadata = yaml_contents.pop("metadata", None)
+        profile.reference = yaml_contents.pop("reference", None)
+
+        # At the moment, metadata is not used to build content
+        if "metadata" in yaml_contents:
+            del yaml_contents["metadata"]
 
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
@@ -145,6 +150,7 @@ class Profile(object):
         to_dump["documentation_complete"] = documentation_complete
         to_dump["title"] = self.title
         to_dump["description"] = self.description
+        to_dump["reference"] = self.reference
         if self.metadata is not None:
             to_dump["metadata"] = self.metadata
 
@@ -198,11 +204,8 @@ class Profile(object):
         desc = add_sub_element(element, "description", self.description)
         desc.set("override", "true")
 
-        if self.metadata:
-            reference = self.metadata.pop("reference", None)
-            # At the moment, only 'reference' is included in the Profile XML
-            if reference is not None:
-                add_sub_element(element, "reference", reference)
+        if self.reference:
+            add_sub_element(element, "reference", self.reference)
 
         for selection in self.selected:
             select = ET.Element("select")

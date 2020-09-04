@@ -1,9 +1,10 @@
 documentation_complete: true
 
 metadata:
-    reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
     SMEs:
         - mrogers950
+
+reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
 
 title: 'NIST 800-53 Moderate-Impact Baseline for Red Hat Enterprise Linux CoreOS'
 
