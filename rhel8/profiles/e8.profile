@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    reference: https://www.cyber.gov.au/acsc/view-all-content/essential-eight
+    reference: https://www.cyber.gov.au/acsc/view-all-content/publications/essential-eight-linux-environments
     SMEs:
         - shaneboulden
 
