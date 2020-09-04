@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- (xccdf-var var_audispd_remote_server)
+{{{ ansible_instantiate_variables("var_audispd_remote_server") }}}
 
 {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
 {{% set audisp_config_file_path = "/etc/audit/audisp-remote.conf" %}}

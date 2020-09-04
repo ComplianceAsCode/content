@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
-- (xccdf-var var_password_pam_retry)
+{{{ ansible_instantiate_variables("var_password_pam_retry") }}}
 
 - name: "Set Password Retry Prompts Permitted Per-Session - system-auth (change)"
   replace:

@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = high
-- (xccdf-var var_removable_partition)
+{{{ ansible_instantiate_variables("var_removable_partition") }}}
 
 - name: Ensure permission {{{ MOUNTOPTION }}} are set on var_removable_partition
   lineinfile:

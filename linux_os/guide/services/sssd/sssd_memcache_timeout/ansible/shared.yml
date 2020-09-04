@@ -3,7 +3,7 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- (xccdf-var var_sssd_memcache_timeout)
+{{{ ansible_instantiate_variables("var_sssd_memcache_timeout") }}}
 
 - name: "Test for domain group"
   command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
