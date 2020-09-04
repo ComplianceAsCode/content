@@ -1,6 +1,6 @@
 # platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_wrlinux,multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
-populate var_time_service_set_maxpoll
+{{{ bash_instantiate_variables("var_time_service_set_maxpoll") }}}
 
 
 config_file="/etc/ntp.conf"

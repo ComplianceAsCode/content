@@ -2,6 +2,6 @@
 
 . /usr/share/scap-security-guide/remediation_functions
 
-populate rsyslog_remote_loghost_address
+{{{ bash_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
 replace_or_append '/etc/rsyslog.conf' '^\*\.\*' "@@$rsyslog_remote_loghost_address" '@CCENUM@' '%s %s'

@@ -7,6 +7,6 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-populate var_selinux_policy_name
+{{{ bash_instantiate_variables("var_selinux_policy_name") }}}
 
 {{{ bash_selinux_config_set(parameter="SELINUXTYPE", value="$var_selinux_policy_name") }}}

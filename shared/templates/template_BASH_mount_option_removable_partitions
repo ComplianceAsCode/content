@@ -4,7 +4,7 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-populate var_removable_partition
+{{{ bash_instantiate_variables("var_removable_partition") }}}
 
 device_regex="^\s*$var_removable_partition\s\+"
 mount_option="{{{ MOUNTOPTION }}}"

@@ -3,7 +3,7 @@
 # include remediation functions library
 . /usr/share/scap-security-guide/remediation_functions
 
-populate var_system_crypto_policy
+{{{ bash_instantiate_variables("var_system_crypto_policy") }}}
 
 stderr_of_call=$(update-crypto-policies --set ${var_system_crypto_policy} 2>&1 > /dev/null)
 rc=$?

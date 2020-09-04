@@ -1,6 +1,6 @@
 # platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
 . /usr/share/scap-security-guide/remediation_functions
-populate login_banner_text
+{{{ bash_instantiate_variables("login_banner_text") }}}
 
 # Multiple regexes transform the banner regex into a usable banner
 # 0 - Remove anchors around the banner text

@@ -3,6 +3,6 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-populate var_sshd_set_keepalive
+{{{ bash_instantiate_variables("var_sshd_set_keepalive") }}}
 
 {{{ bash_sshd_config_set(parameter="ClientAliveCountMax", value="$var_sshd_set_keepalive") }}}
