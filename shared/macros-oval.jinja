@@ -522,7 +522,7 @@
 {{%- else %}}
         <title>{{{ rule_title }}}</title>
 {{%- endif -%}}
-{{%- if affected_platforms -%}}
+{{%- if affected_platforms %}}
             <affected family="unix">
 {{%- for platform in affected_platforms %}}
                 <platform>{{{ platform }}}</platform>
