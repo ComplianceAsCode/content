@@ -501,6 +501,14 @@ XCCDF_PLATFORM_TO_CPE = {
     "zipl": "cpe:/a:zipl",
 }
 
+# Default platform to package mapping
+XCCDF_PLATFORM_TO_PACKAGE = {
+  "grub2": "grub2-pc",
+  "login_defs": "login",
+  "sssd": "sssd-common",
+  "zipl": "s390x-utils",
+}
+
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
     'chromium': 'Google Chromium Browser',
