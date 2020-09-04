@@ -11,7 +11,7 @@ rationale: |-
     Increasing the time between a failed authentication attempt and re-prompting to
     enter credentials helps to slow a single-threaded brute force attack.
 
-severity: low
+severity: medium
 
 identifiers:
     cce@rhel7: CCE-80352-8
@@ -37,6 +37,6 @@ ocil: |-
     <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs</pre>
     All output must show the value of <tt>FAIL_DELAY</tt> set as shown in the below:
     <pre>$ sudo grep -i "FAIL_DELAY" /etc/login.defs
-    fail_delay <sub idref="var_accounts_fail_delay" /></pre>
+    FAIL_DELAY <sub idref="var_accounts_fail_delay" /></pre>
 
 platform: login_defs
