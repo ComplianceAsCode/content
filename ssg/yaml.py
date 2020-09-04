@@ -10,7 +10,8 @@ from collections import OrderedDict
 
 from .jinja import load_macros, process_file
 from .constants import (PKG_MANAGER_TO_SYSTEM,
-                        PKG_MANAGER_TO_CONFIG_FILE)
+                        PKG_MANAGER_TO_CONFIG_FILE,
+                        XCCDF_PLATFORM_TO_PACKAGE)
 from .constants import DEFAULT_UID_MIN
 
 try:
@@ -138,6 +139,9 @@ def open_raw(yaml_file):
 
 def open_environment(build_config_yaml, product_yaml):
     contents = open_raw(build_config_yaml)
+    # Load common platform package mappings,
+    # any specific mapping in product_yaml will override the default
+    contents["platform_package_overrides"] = XCCDF_PLATFORM_TO_PACKAGE
     contents.update(open_raw(product_yaml))
     contents.update(_get_implied_properties(contents))
     return contents

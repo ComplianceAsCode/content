@@ -389,6 +389,9 @@ class AnsibleRemediation(Remediation):
                 if "package_facts" in to_update:
                     continue
 
+                if platform in self.local_env_yaml["platform_package_overrides"]:
+                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
                 additional_when.append('"' + platform + '" in ansible_facts.packages')
                 # After adding the conditional, we need to make sure package_facts are collected.
                 # This is done via inject_package_facts_task()
