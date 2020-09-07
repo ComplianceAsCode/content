@@ -17,6 +17,7 @@ import (
 	cmpapis "github.com/openshift/compliance-operator/pkg/apis"
 	cmpv1alpha1 "github.com/openshift/compliance-operator/pkg/apis/compliance/v1alpha1"
 	mcfg "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
+	mcfgv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	mcfgconst "github.com/openshift/machine-config-operator/pkg/daemon/constants"
 	"gopkg.in/yaml.v2"
 	appsv1 "k8s.io/api/apps/v1"
@@ -28,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 	k8syaml "k8s.io/apimachinery/pkg/util/yaml"
 	cached "k8s.io/client-go/discovery/cached"
 	"k8s.io/client-go/kubernetes"
@@ -156,7 +158,7 @@ func (ctx *e2econtext) assertKubeClient() {
 		ctx.t.Fatalf("failed to add cmpliance scheme to runtime scheme: %s", err)
 	}
 	if err := mcfg.Install(scheme); err != nil {
-		ctx.t.Fatalf("failed to add cmpliance scheme to runtime scheme: %s", err)
+		ctx.t.Fatalf("failed to add MachineConfig scheme to runtime scheme: %s", err)
 	}
 
 	cachedDiscoveryClient := cached.NewMemCacheClient(kubeclient.Discovery())
@@ -394,6 +396,38 @@ func (ctx *e2econtext) waitForComplianceSuite(suite *cmpv1alpha1.ComplianceSuite
 	if err != nil {
 		ctx.t.Fatalf("The Compliance Suite '%s' didn't get to DONE phase: %s", key.Name, err)
 	}
+}
+
+func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
+	mcKey := types.NamespacedName{Name: name}
+
+	err := wait.PollImmediate(10*time.Second, 20*time.Minute, func() (bool, error) {
+		pool := &mcfgv1.MachineConfigPool{}
+		err := ctx.dynclient.Get(goctx.TODO(), mcKey, pool)
+		if err != nil {
+			ctx.t.Errorf("Could not find the pool %s post update", name)
+			return false, err
+		}
+
+		// Check if the pool has finished updating yet.
+		if (pool.Status.UpdatedMachineCount == pool.Status.MachineCount) &&
+			(pool.Status.UnavailableMachineCount == 0) {
+			ctx.t.Logf("The pool %s has updated", name)
+			return true, nil
+		}
+
+		ctx.t.Logf("The pool %s has not updated yet. updated %d/%d unavailable %d",
+			name,
+			pool.Status.UpdatedMachineCount, pool.Status.MachineCount,
+			pool.Status.UnavailableMachineCount)
+		return false, nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (ctx *e2econtext) waitForNodesToBeReady() {
