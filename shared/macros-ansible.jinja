@@ -559,3 +559,22 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
     create: yes
     mode: 0644
 {{%- endmacro %}}
+
+{{%- macro ansible_sudo_remove_config(parameter, pattern) -%}}
+
+- name: Find /etc/sudoers.d/ files
+  find:
+    paths:
+      - /etc/sudoers.d/
+  register: sudoers
+
+- name: "Remove lines containing {{{ parameter }}} from sudoers files"
+  replace:
+    regexp: '(^(?!#).*[\s]+\{{{ pattern }}}.*$)'
+    replace: '# \g<1>'
+    path: "{{ item.path }}"
+    validate: /usr/sbin/visudo -cf %s
+  with_items:
+    - { path: /etc/sudoers }
+    - "{{ sudoers.files }}"
+{{%- endmacro -%}}
