@@ -552,9 +552,11 @@ if grep -qvzosP $AD_REGEX $SSSD_CONF; then
         elif grep -qs $DOMAIN_REGEX $SSSD_CONF; then
                 sed -i "/$DOMAIN_REGEX/a {{{ parameter }}} = {{{ value }}}" $SSSD_CONF
         else
-                mkdir -p /etc/sssd
-                touch $SSSD_CONF
-                echo -e "[domain/default]\n{{{ parameter }}} = {{{ value }}}" >> $SSSD_CONF
+                if test -f "$SSSD_CONF"; then
+                        echo -e "[domain/default]\n{{{ parameter }}} = {{{ value }}}" >> $SSSD_CONF
+                else
+                        echo "Config file '$SSSD_CONF' doesnt exist, not remediating, assuming non-applicability." >&2
+                fi        
         fi
 fi
 {{%- endmacro %}}

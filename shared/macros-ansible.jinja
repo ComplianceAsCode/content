@@ -526,8 +526,6 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
-    create: yes
-    mode: 0644
   with_items:
     - { section: sssd, option: domains, value: default}
     - { section: domain/default, option: {{{ parameter }}}, value: "{{{ value }}}"}
@@ -543,8 +541,6 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
     section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
     option: {{{ parameter }}}
     value: "{{{ value }}}"
-    create: yes
-    mode: 0644
   when:
     - test_grep_domain.stdout is defined
     - test_grep_domain.stdout | length > 0
