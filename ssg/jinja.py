@@ -53,6 +53,10 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
             raise jinja2.TemplateNotFound(template)
         try:
             contents = template_file.read().decode(self.encoding)
+        except Exception as exc:
+            msg = ("Error reading file {template}: {exc}"
+                   .format(template=template, exc=str(exc)))
+            raise RuntimeError(msg)
         finally:
             template_file.close()
 
