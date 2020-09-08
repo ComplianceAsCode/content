@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory" id="sssd_conf_uses_ldap" version="1">
+    <metadata>
+      <title>SSSD is configured to use LDAP</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Identification provider is not set to ad within /etc/sssd/sssd.conf</description>
+      <reference ref_id="cpe:/a:sssd-ldap" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion comment="Identification provider is not set to ad within /etc/sssd/sssd.conf"
+      test_ref="test_id_provider_is_set_to_ad" negate="true"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="SSSD Configuration is set to use Active Directory"
+  id="test_id_provider_is_set_to_ad" version="1">
+  <ind:object object_ref="object_id_provider_is_set_to_ad"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_id_provider_is_set_to_ad" version="1">
+  <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
+  <ind:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*id_provider[ \t]*=[ \t]*((?i)ad)[ \t]*$</ind:pattern>
+  <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

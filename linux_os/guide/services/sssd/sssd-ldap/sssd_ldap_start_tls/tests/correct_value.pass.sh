@@ -2,6 +2,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
 . $SHARED/setup_config_files.sh
-setup_correct_auth_and_sssd_configs
+setup_correct_sssd_config
 
-sed -i '/USELDAPAUTH/d' /etc/sysconfig/authconfig
+yum -y install /usr/lib/systemd/system/sssd.service
+systemctl enable sssd

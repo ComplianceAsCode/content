@@ -235,6 +235,7 @@ selections:
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
+    - sssd_ldap_start_tls.severity=medium
     - sssd_ldap_configure_tls_ca_dir
     - sssd_ldap_configure_tls_ca
     - sysctl_kernel_randomize_va_space

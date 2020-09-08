@@ -28,11 +28,11 @@ identifiers:
     cce@rhel8: CCE-82456-5
 
 references:
-    stigid@ol7: OL07-00-040190
+    stigid@ol7: OL07-00-040200
     disa: CCI-001453
     nist: SC-12(3),CM-6(a)
     srg: SRG-OS-000250-GPOS-00093
-    stigid@rhel7: RHEL-07-040190
+    stigid@rhel7: RHEL-07-040200
 
 ocil_clause: 'the TLS CA cert is not configured'
 
@@ -42,3 +42,5 @@ ocil: |-
     <pre>$ sudo grep ldap_tls_cacertdir /etc/sssd/sssd.conf</pre>
     The output should return the following with a correctly configured CA cert path:
     <pre>ldap_tls_cacertdir /path/to/tls/cacert</pre>
+
+platform: sssd-ldap
