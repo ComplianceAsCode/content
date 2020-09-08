@@ -10,9 +10,9 @@ root_dir=$(git rev-parse --show-toplevel)
 
 pushd $root_dir
 
-echo "* Building ocp4, rhel7, rhel8, rhcos4 products"
+echo "* Building ocp4, rhel7, rhcos4 products"
 # build the product's content
-"$root_dir/build_product" ocp4 rhel7 rhel8 rhcos4
+"$root_dir/build_product" ocp4 rhel7 rhcos4
 
 if [ "$namespace" == "openshift-compliance" ]; then
     # Ensure openshift-compliance namespace exists. If it already exists, this
