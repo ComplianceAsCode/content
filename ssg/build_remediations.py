@@ -273,9 +273,11 @@ class BashRemediation(Remediation):
         self.local_env_yaml.update(env_yaml)
         result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
 
-        # There can be repeated inherited platforms and rule platforms
-        rule_platforms = set(self.associated_rule.inherited_platforms)
-        rule_platforms.add(self.associated_rule.platform)
+        rule_platforms = set()
+        if self.associated_rule:
+            # There can be repeated inherited platforms and rule platforms
+            rule_platforms.update(self.associated_rule.inherited_platforms)
+            rule_platforms.add(self.associated_rule.platform)
 
         platform_conditionals = []
         for platform in rule_platforms:
