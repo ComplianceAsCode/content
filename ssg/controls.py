@@ -1,6 +1,7 @@
 import collections
 import logging
 import os
+from glob import glob
 
 import ssg.yaml
 import ssg.utils
@@ -94,7 +95,7 @@ class ControlsManager():
     def load(self):
         if not os.path.exists(self.controls_dir):
             return
-        for filename in os.listdir(self.controls_dir):
+        for filename in glob(os.path.join(self.controls_dir, "*.yml")):
             logging.info("Found file %s" % (filename))
             filepath = os.path.join(self.controls_dir, filename)
             policy = Policy(filepath, self.env_yaml)
