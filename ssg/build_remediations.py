@@ -27,6 +27,13 @@ REMEDIATION_TO_EXT_MAP = {
     'kubernetes': '.yml'
 }
 
+PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
+    'apt_get': 'dpkg-query -s {} &>/dev/null',
+    'dnf': 'rpm --quiet -q {}',
+    'yum': 'rpm --quiet -q {}',
+    'zypper': 'rpm --quiet -q {}',
+}
+
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
 
 REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
@@ -262,6 +269,44 @@ class BashRemediation(Remediation):
     def __init__(self, file_path):
         super(BashRemediation, self).__init__(file_path, "bash")
 
+    def parse_from_file_with_jinja(self, env_yaml):
+        self.local_env_yaml.update(env_yaml)
+        result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
+
+        # There can be repeated inherited platforms and rule platforms
+        rule_platforms = set(self.associated_rule.inherited_platforms)
+        rule_platforms.add(self.associated_rule.platform)
+
+        platform_conditionals = []
+        for platform in rule_platforms:
+            if platform == "machine":
+                # Based on check installed_env_is_a_container
+                platform_conditionals.append('[ ! -f /.dockerenv -a ! -f /run/.containerenv ]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
+
+                # Some package names are different from the platform names
+                if platform in self.local_env_yaml["platform_package_overrides"]:
+                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                # Adjust package check command according to the pkg_manager
+                pkg_manager = self.local_env_yaml["pkg_manager"]
+                pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
+                platform_conditionals.append(pkg_check_command.format(platform))
+
+        if platform_conditionals:
+            platform_fix_text = "# Remediation is applicable only in certain platforms\n"
+
+            cond = platform_conditionals.pop(0)
+            platform_fix_text += "if {}".format(cond)
+            for cond in platform_conditionals:
+                platform_fix_text += " && {}".format(cond)
+            platform_fix_text += '; then\n{}\nelse\necho "Remediation is not applicable, nothing was done"\nfi'.format(result.contents)
+
+            remediation = namedtuple('remediation', ['contents', 'config'])
+            result = remediation(contents=platform_fix_text, config=result.config)
+
+        return result
 
 class AnsibleRemediation(Remediation):
     def __init__(self, file_path):
