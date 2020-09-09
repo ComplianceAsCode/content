@@ -4,7 +4,7 @@
 # strategy = configure
 # disruption = low
 
-{{{ ansible_instantiate_variables("tftpd_secure_directory") }}}
+{{{ ansible_instantiate_variables("var_tftpd_secure_directory") }}}
 
 - name: "Find out if the file exists and contains the line configuring server arguments"
   find:
@@ -17,7 +17,7 @@
   lineinfile:
     path: "/etc/xinetd.d/tftp"
     regexp: '^[\s]*(server_args[\s]+=[\s]+.*?)(-s[\s]+[/\.\w]+)*(.*)$'
-    line: '\1 -s {{ tftpd_secure_directory }} \3'
+    line: '\1 -s {{ var_tftpd_secure_directory }} \3'
     state: present
     backrefs: true
   when: tftpd_secure_config_line is defined and tftpd_secure_config_line.matched > 0
@@ -25,7 +25,7 @@
 - name: "Insert correct config line to start TFTP server with secure directory"
   lineinfile:
     path: "/etc/xinetd.d/tftp"
-    line: "server_args = -s {{ tftpd_secure_directory }}"
+    line: "server_args = -s {{ var_tftpd_secure_directory }}"
     state: present
     create: true
   when: tftpd_secure_config_line is defined and tftpd_secure_config_line.matched == 0

@@ -9,7 +9,7 @@ description: |-
     to change its root directory at startup. To do so, ensure
     <tt>/etc/xinetd.d/tftp</tt> includes <tt>-s</tt> as a command line argument, as shown in
     the following example:
-    <pre>server_args = -s {{{ sub_var_value("tftpd_secure_directory") }}}</pre>
+    <pre>server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}</pre>
 
 rationale: |-
     Using the <tt>-s</tt> option causes the TFTP service to only serve files from the
@@ -55,4 +55,4 @@ ocil: |-
     The output should indicate the <tt>server_args</tt> variable is configured
     with the <tt>-s</tt> flag, matching the example below:
     <pre>$ grep "server_args" /etc/xinetd.d/tftp
-    server_args = -s {{{ sub_var_value("tftpd_secure_directory") }}}</pre>
+    server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}</pre>
