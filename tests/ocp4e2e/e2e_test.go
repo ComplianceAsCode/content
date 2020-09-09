@@ -59,7 +59,6 @@ func TestE2e(t *testing.T) {
 			time.Sleep(30 * time.Second)
 			ctx.waitForMachinePoolUpdate("master")
 			ctx.waitForMachinePoolUpdate("worker")
-			ctx.waitForNodesToBeReady()
 		})
 
 		t.Run("Run second compliance scan", func(t *testing.T) {
