@@ -430,36 +430,6 @@ func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 	return nil
 }
 
-func (ctx *e2econtext) waitForNodesToBeReady() {
-	nodeList := &corev1.NodeList{}
-	// A long time...
-	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(15*time.Second), 480)
-
-	err := backoff.RetryNotify(
-		func() error {
-			err := ctx.dynclient.List(goctx.TODO(), nodeList)
-			if err != nil {
-				// Returning an error merely makes this retry after the interval
-				return err
-			}
-			for _, node := range nodeList.Items {
-				if isNodeReady(node) {
-					continue
-				}
-				return fmt.Errorf("The node '%s' is not ready yet", node.Name)
-			}
-			return nil
-		},
-		bo,
-		func(err error, d time.Duration) {
-			// TODO(jaosorior): Change this for a log call
-			fmt.Printf("Nodes not ready yet after %s: %s\n", d.String(), err)
-		})
-	if err != nil {
-		ctx.t.Fatalf("The nodes were never ready: %s", err)
-	}
-}
-
 func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
 	remList := &cmpv1alpha1.ComplianceRemediationList{}
 	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s.Name)
