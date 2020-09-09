@@ -6,26 +6,20 @@
 
 {{{ ansible_instantiate_variables("var_accounts_max_concurrent_login_sessions") }}}
 
-- name: Find /etc/security/limits.d files contains maxlogins configuration
-  shell: "grep -q '^[^#]*\\<maxlogins\\>' /etc/security/limits.d/*.conf"
-  register: maxlogins
-  failed_when: False
-
-- name: Find /etc/security/limits.d files contains maxlogins configuration 2
+- name: Find /etc/security/limits.d files containing maxlogins configuration
   find:
-    paths:
-      - /etc/security/limits.d
-  register: configuration_files
-  when: maxlogins.rc == 0
+    paths: "/etc/security/limits.d"
+    contains: '^[\s]*\*[\s]+(?:(?:hard)|(?:-))[\s]+maxlogins'
+    patterns: "*.conf"
+  register: maxlogins
 
-- name: "Limit the Number of Concurrent Login Sessions Allowed Per User limits.d"
+- name: "Limit the Number of Concurrent Login Sessions Allowed Per User in files from limits.d"
   replace:
     dest: "{{ item.path }}"
     regexp: "^#?\\*.*maxlogins.*"
     replace: "*          hard    maxlogins     {{ var_accounts_max_concurrent_login_sessions }}"
   with_items:
-    - "{{ configuration_files.files }}"
-  when: maxlogins.rc == 0
+    - "{{ maxlogins.files }}"
 
 - name: "Limit the Number of Concurrent Login Sessions Allowed Per User"
   lineinfile:
@@ -35,4 +29,4 @@
     regexp: "^#?\\*.*maxlogins"
     line: "*          hard    maxlogins     {{ var_accounts_max_concurrent_login_sessions }}"
     create: yes
-  when: maxlogins.rc != 0 # no files found on /etc/security/limits.d
+  when: maxlogins.matched == 0 # no files found on /etc/security/limits.d matching maxlogins
