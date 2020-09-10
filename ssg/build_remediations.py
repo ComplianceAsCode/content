@@ -28,10 +28,10 @@ REMEDIATION_TO_EXT_MAP = {
 }
 
 PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
-    'apt_get': 'dpkg-query -s {} &>/dev/null',
-    'dnf': 'rpm --quiet -q {}',
-    'yum': 'rpm --quiet -q {}',
-    'zypper': 'rpm --quiet -q {}',
+    'apt_get': 'dpkg-query -s {0} &>/dev/null',
+    'dnf': 'rpm --quiet -q {0}',
+    'yum': 'rpm --quiet -q {0}',
+    'zypper': 'rpm --quiet -q {0}',
 }
 
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
@@ -297,16 +297,23 @@ class BashRemediation(Remediation):
                 platform_conditionals.append(pkg_check_command.format(platform))
 
         if platform_conditionals:
-            platform_fix_text = "# Remediation is applicable only in certain platforms\n"
+            wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
 
-            cond = platform_conditionals.pop(0)
-            platform_fix_text += "if {}".format(cond)
-            for cond in platform_conditionals:
-                platform_fix_text += " && {}".format(cond)
-            platform_fix_text += '; then\n{}\nelse\necho "Remediation is not applicable, nothing was done"\nfi'.format(result.contents)
+            all_conditions = " && ".join(platform_conditionals)
+            wrapped_fix_text.append("if {0}; then".format(all_conditions))
+
+            # Avoid adding extra blank line
+            if not result.contents.startswith("\n"):
+                wrapped_fix_text.append("")
+
+            wrapped_fix_text.append("{0}".format(result.contents))
+            wrapped_fix_text.append("")
+            wrapped_fix_text.append("else")
+            wrapped_fix_text.append("    >&2 echo 'Remediation is not applicable, nothing was done'")
+            wrapped_fix_text.append("fi")
 
             remediation = namedtuple('remediation', ['contents', 'config'])
-            result = remediation(contents=platform_fix_text, config=result.config)
+            result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
 
         return result
 
