@@ -45,9 +45,10 @@
   <!-- step 1 and 3 test -->
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_numeric_default_check_system-auth"
   check="all" check_existence="all_exist"
-  comment="Checks if pam_faillock authfail is hit even if pam_unix skips lines by defaulting, and also authfail deny value" version="1">
+  comment="Checks if pam_faillock authfail is hit even if pam_unix skips lines by defaulting, and also authfail deny value" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_when_lines_skipped_system-auth" />
-    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_upper_bound" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_lower_bound" />
   </ind:textfilecontent54_test>
 
   <!-- step 1 and 4 object -->
@@ -78,9 +79,10 @@
   <!-- step 1 and 3 test -->
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_numeric_default_check_password-auth"
   check="all" check_existence="all_exist"
-  comment="Checks if pam_faillock authfail is hit even if pam_unix skips lines by defaulting, and also authfail deny value" version="1">
+  comment="Checks if pam_faillock authfail is hit even if pam_unix skips lines by defaulting, and also authfail deny value" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_when_lines_skipped_password-auth" />
-    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_upper_bound" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_lower_bound" />
   </ind:textfilecontent54_test>
 
   <!-- step 1 and 4 object -->
@@ -113,17 +115,22 @@
   <external_variable id="var_accounts_passwords_pam_faillock_deny" datatype="int"
   comment="number of failed login attempts allowed" version="1" />
 
-  <ind:textfilecontent54_state id="state_var_accounts_passwords_pam_faillock_deny_value" version="1">
+  <ind:textfilecontent54_state id="state_var_accounts_passwords_pam_faillock_deny_value_upper_bound" version="1">
     <ind:subexpression datatype="int" operation="less than or equal" var_ref="var_accounts_passwords_pam_faillock_deny" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_var_accounts_passwords_pam_faillock_deny_value_lower_bound" version="1">
+    <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
   </ind:textfilecontent54_state>
 
   <!-- Check for preauth silent in /etc/pam.d/system-auth -->
   <!-- Also check the 'deny' option value matches the number of failed login attempts allowed -->
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_preauth_silent_system-auth"
   check="all" check_existence="all_exist"
-  comment="Check pam_faillock.so preauth silent present, with correct deny value, and is followed by pam_unix." version="1">
+  comment="Check pam_faillock.so preauth silent present, with correct deny value, and is followed by pam_unix." version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_preauth_silent_system-auth" />
-    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_upper_bound" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_lower_bound" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_preauth_silent_system-auth" version="1">
@@ -138,9 +145,10 @@
   <!-- Check for authfail deny in /etc/pam.d/system-auth -->
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_authfail_deny_system-auth"
   check="all" check_existence="all_exist"
-  comment="Check control values of pam_unix, that it is followed by pam_faillock.so authfail and deny value of pam_faillock.so authfail" version="1">
+  comment="Check control values of pam_unix, that it is followed by pam_faillock.so authfail and deny value of pam_faillock.so authfail" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_authfail_deny_system-auth" />
-    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_upper_bound" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_lower_bound" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_authfail_deny_system-auth" version="1">
@@ -170,9 +178,10 @@
   <!-- Also check the 'deny' option value matches the number of failed login attempts allowed -->
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_preauth_silent_password-auth"
   check="all" check_existence="all_exist"
-  comment="Check pam_faillock.so preauth silent present in /etc/pam.d/password-auth, has correct deny value, and is followed by pam_unix" version="1">
+  comment="Check pam_faillock.so preauth silent present in /etc/pam.d/password-auth, has correct deny value, and is followed by pam_unix" version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_preauth_silent_password-auth" />
-    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_upper_bound" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_lower_bound" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_preauth_silent_password-auth" version="1">
@@ -187,9 +196,10 @@
   <!-- Check for authfail deny in /etc/pam.d/password-auth -->
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_faillock_authfail_deny_password-auth"
   check="all" check_existence="all_exist"
-  comment="Check pam_faillock authfail is present after pam_unix, check pam_unix has proper control values, and authfail deny value is correct." version="1">
+  comment="Check pam_faillock authfail is present after pam_unix, check pam_unix has proper control values, and authfail deny value is correct." version="2">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_authfail_deny_password-auth" />
-    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_upper_bound" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_faillock_deny_value_lower_bound" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_authfail_deny_password-auth" version="1">
