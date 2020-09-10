@@ -306,6 +306,9 @@ class BashRemediation(Remediation):
             if not result.contents.startswith("\n"):
                 wrapped_fix_text.append("")
 
+            # It is possible to indent the original body of the remediation with textwrap.indent(),
+            # however, it is not supported by python2, and there is a risk of breaking remediations
+            # For example, remediations with a here-doc block could be affected.
             wrapped_fix_text.append("{0}".format(result.contents))
             wrapped_fix_text.append("")
             wrapped_fix_text.append("else")
