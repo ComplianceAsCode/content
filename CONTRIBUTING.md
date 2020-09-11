@@ -25,6 +25,6 @@ Contributing Content
 
 Changes related to one distribution or profile shouldn’t change behavior for other distributions or profiles.
 
-Prevent duplication of code. Use Jinja macros and [check (remediation) templates](/docs/manual/developer_guide.adoc#732-list-of-available-templates). Follow the indentation style. For Python code, follow PEP8. [Developer Guide](/docs/manual/developer_guide.adoc) is your friend.
+Prevent duplication of code. Use Jinja macros and [check (remediation) templates](/docs/manual/developer_guide.adoc#732-list-of-available-templates). Follow the indentation style. For Python code, follow [PEP8](https://www.python.org/dev/peps/pep-0008/). [Developer Guide](/docs/manual/developer_guide.adoc) is your friend.
 
 Enjoy!
