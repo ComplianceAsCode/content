@@ -64,11 +64,27 @@ controls:
 
   - id: R5
     level: minimal
-    title: In-depth defense principle
+    title: Defense in-depth principle
+    description: >-
+      Under Unix and derivatives, defense in depth must be based on a combination of
+      barriers that must be kept independent of each other.
+    automated: partially
+    notes: >-
+      Defense in-depth can be broadly divded into three areas, physical, technical and
+      administrative. The security profile is best suitedto protect the technical area.
+      Among the barriers that can be implemented within the technical area are antivirus software,
+      authentication, multi-factor authentication, encryption, logging, auditing, sandboxing,
+      intrusion detection systems, firewalls, and vulnerability scanners.
     rules:
+    - package_auditd_installed
+    - service_auditd_enabled
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
     - service_rsyslog_enabled
+    - package_ntp_installed
+    - package_firewalld_installed
+    - service_firewalld_enabled
+    - sssd_enable_smartcards
 
   - id: R8
     level: minimal
