@@ -8,6 +8,17 @@ description: |-
     and pods. This configuration setting ensures that all registries other than
     those specified are blocked.
 
+    You can set the allowed repositories by applying the following manifest using
+    <pre>oc patch</pre>, e.g. if you save the following snippet to
+    <pre>/tmp/allowed-registries-patch.yaml</pre>
+    <pre>
+    spec:
+      registrySources:
+        allowedRegistries:
+        - my-trusted-registry.internal.example.com
+    </pre> you would call
+    <pre>oc patch image.config.openshift.io cluster --patch="$(cat /tmp/allowed-registries-patch.yaml)" --type=merge</pre>
+
 rationale: |-
     Allowed registries should be configured to restrict the registries that the
     OpenShift container runtime can access, and all other registries should be

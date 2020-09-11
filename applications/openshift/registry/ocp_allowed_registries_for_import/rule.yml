@@ -7,6 +7,16 @@ description: |-
     image registries from which normal users may import images. This is important
     to control, as a user who can stand up a malicious registry can then import
     content which claims to include the SHAs of legimitate content layers.
+    You can set the allowed repositories for import by applying the following
+    manifest using <pre>oc patch</pre>, e.g. if you save the following snippet to
+    <pre>/tmp/allowed-import-registries-patch.yaml</pre>
+    <pre>
+    spec:
+      allowedRegistriesForImport:
+      - domainName: my-trusted-registry.internal.example.com
+        insecure: false
+    </pre> you would call
+    <pre>oc patch image.config.openshift.io cluster --patch="$(cat /tmp/allowed-import-registries-patch.yaml)" --type=merge</pre>
 
 rationale: |-
     Allowed registries for import should be specified to limit the registries 
