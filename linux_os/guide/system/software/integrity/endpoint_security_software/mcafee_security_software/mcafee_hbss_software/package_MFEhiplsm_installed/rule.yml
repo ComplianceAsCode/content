@@ -36,6 +36,11 @@ ocil: |-
     To verify that McAfee HIPS is installed, run the following command(s):
     <pre>$ rpm -q MFEhiplsm</pre>
 
+{{% if product in ["rhel7", "ol7", "rhel8", "ol8"] %}}
+conflicts:
+    - selinux_state
+{{% endif %}}
+
 warnings:
     - functionality: |-
         Installing and enabling this module conflicts with SELinux.
