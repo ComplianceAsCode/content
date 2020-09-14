@@ -86,6 +86,23 @@ controls:
     - service_firewalld_enabled
     - sssd_enable_smartcards
 
+  - id: R6
+    level: enhanced
+    title: Network services partitioning
+    description: >-
+      Network services should as much as possible be hosted on isolated environments.
+      This avoids having other potentially affected services if one of them gets
+      compromised under the same environment.
+    #rules: TBD
+
+  - id: R7
+    level: enhanced
+    title: Logging of service activity
+    description: >-
+      The activities of the running system and services must be logged and
+      archived on an external, non-local system.
+    #rules: TBD
+
   - id: R8
     level: minimal
     title: Regular updates
@@ -136,6 +153,20 @@ controls:
     - mount_option_var_tmp_nodev
     - mount_option_var_tmp_noexec
 
+  - id: R13
+    level: enhanced
+    title: Access Restrictions on System.map files
+    description: >-
+      When the /boot partition cannot be dismounted (or it does not exist),
+      the file(s) System.map must be read restricted to root only.
+    rules:
+    - file_permissions_systemmap
+
+  - id: R14
+    level: intermediary
+    title: Installation of packages reduced to the bare necessities
+    # rules: TBD
+
   - id: R15
     level: minimal
     title: Package repositories selection
@@ -145,10 +176,26 @@ controls:
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_local_packages
 
-  - id: R14
-    level: intermediary
-    title: Installation of packages reduced to the bare necessities
-    # rules: TBD
+  - id: R16
+    level: enhanced
+    title: Hardened package repositories
+    description: >-
+      When the distribution provides several types of repositories, preference
+      should be given to those containing packages subject to additional
+      hardening measures.
+      Between two packages providing the same service, those subject to hardening
+      (at compilation, installation, or default configuration) must be preferred.
+    #rules: TBD
+
+  - id: R17
+    level: enhanced
+    title: Boot loader password
+    description: >-
+      A boot loader to protect the password boot must be to be privileged.
+      This password must prevent any user from changing their configuration options.
+    rules:
+    - grub2_password
+    - grub2_uefi_password
 
   - id: R18
     level: minimal
@@ -163,6 +210,16 @@ controls:
     # performed (for example sudo).
     - no_direct_root_logins
     - sshd_disable_root_login
+
+  - id: R20
+    level: enhanced
+    title: Installation of secret or trusted elements
+    description: >-
+      All secret elements or those contributing to the authentication mechanisms
+      must be set up as soon as the system is installed: account and administration
+      passwords, root authority certificates, public keys, or certificates of the
+      host (and their respective private key).
+    # rules: TBD
 
   - id: R21
     level: intermediary
@@ -308,10 +365,55 @@ controls:
     # kernel.perf_event_max_sample_rate = 1
     # kernel.perf_cpu_time_max_percent = 1
 
+  - id: R24
+    level: enhanced
+    title: Disabling the loading of kernel modules
+    description: >-
+      The loading of the kernel modules can be blocked by the activation of the
+      sysctl kernel.modules_disabledconf:
+      Prohibition of loading modules (except those already loaded to this point)
+      kernel.modules_disabled = 1
+    # rules: TBD
+
+  - id: R25
+    level: enhanced
+    title: Yama module sysctl configuration
+    description: >-
+      It is recommended to load the Yama security module at startup (by example
+      passing the security = yama argument to the kernel) and configure the
+      sysctl kernel.yama.ptrace_scope to a value of at least 1.
+    rules:
+    - sysctl_kernel_yama_ptrace_scope
+
+  - id: R26
+    level: enhanced
+    title: Disabling unused user accounts
+    description: >-
+      Unused user accounts must be disabled at the system level.
+    # rules: TBD
+
   - id: R27
     title: Disabling service accounts
     level: intermediary
     # rules: TBD
+
+  - id: R28
+    level: enhanced
+    title: Uniqueness and exclusivity of system service accounts
+    description: >-
+      Each service must have its own system account and be dedicated to it exclusively.
+    # rules: TBD
+
+  - id: R29
+    level: enhanced
+    title: User session timeout
+    description: >-
+      Remote user sessions (shell access, graphical clients) must be closed
+      after a certain period of inactivity.
+    rules:
+    - accounts_tmout
+    - sshd_set_idle_timeout
+    - sshd_idle_timeout_value=5_minutes
 
   - id: R30
     level: minimal
@@ -341,6 +443,19 @@ controls:
     level: intermediary
     # rules: TBD
 
+  - id: R35
+    level: enhanced
+    title: umask value
+    description: >-
+      The system umask must be set to 0027 (by default, any created file can
+      only be read by the user and his group, and be editable only by his owner).
+      The umask for users must be set to 0077 (any file created by a user is
+      readable and editable only by him).
+    rules:
+    - var_accounts_user_umask=077
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
+
   - id: R36
     title: Rights to access sensitive content files
     level: intermediary
@@ -356,6 +471,17 @@ controls:
     level: minimal
     title: Executables with setuid and/or setgid bits
     # rules: TBD
+
+  - id: R38
+    level: enhanced
+    title: Executable setuid root
+    description: >-
+      Setuid executables should be as small as possible. When it is expected
+      that only the administrators of the machine execute them, the setuid bit
+      must be removed and prefer them commands like su or sudo, which can be monitored
+    rules:
+    - file_permissions_unauthorized_suid
+    - file_permissions_unauthorized_sgid
 
   - id: R39
     level: intermediary
@@ -411,6 +537,29 @@ controls:
     title: Messaging Aliases for Service Accounts
     # rules: TBD
 
+  - id: R50
+    level: enhanced
+    title: Logging activity by auditd
+    description: >-
+      The logging of the system activity must be done through the auditd service.
+    # rules: TBD
+
+  - id: R53
+    level: enhanced
+    title: Restricting access of deployed services
+    description: >-
+      The deployed services must have their access restricted to the system
+      strict minimum, especially when it comes to files, processes or network.
+    # rules: TBD
+
+  - id: R54
+    level: enhanced
+    title: Virtualization components hardening
+    description: >-
+      Each component supporting the virtualization must be hardened, especially
+      by applying technical measures to counter the exploit attempts.
+    # rules: TBD
+
   - id: R55
     level: intermediary
     title: chroot jail and access right for partitioned service
@@ -440,6 +589,14 @@ controls:
   - id: R60
     level: intermediary
     title: Privileges of target sudo users
+    # rules: TBD
+
+  - id: R61
+    level: enhanced
+    title: Limiting the number of commands requiring the use of the EXEC option
+    description: >-
+      The commands requiring the execution of sub-processes (EXEC tag) must be
+      explicitly listed and their use should be reduced to a strict minimum.
     # rules: TBD
 
   - id: R62
