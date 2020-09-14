@@ -29,7 +29,6 @@ class Control():
             )
             raise ValueError(msg)
         control.level = control_dict.get("level", default_level)
-        control.automated = control_dict.get("automated", False)
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", [])
         for item in selections:
