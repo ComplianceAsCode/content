@@ -27,6 +27,13 @@ REMEDIATION_TO_EXT_MAP = {
     'kubernetes': '.yml'
 }
 
+PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
+    'apt_get': 'dpkg-query -s {0} &>/dev/null',
+    'dnf': 'rpm --quiet -q {0}',
+    'yum': 'rpm --quiet -q {0}',
+    'zypper': 'rpm --quiet -q {0}',
+}
+
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
 
 REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
@@ -262,6 +269,56 @@ class BashRemediation(Remediation):
     def __init__(self, file_path):
         super(BashRemediation, self).__init__(file_path, "bash")
 
+    def parse_from_file_with_jinja(self, env_yaml):
+        self.local_env_yaml.update(env_yaml)
+        result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
+
+        rule_platforms = set()
+        if self.associated_rule:
+            # There can be repeated inherited platforms and rule platforms
+            rule_platforms.update(self.associated_rule.inherited_platforms)
+            rule_platforms.add(self.associated_rule.platform)
+
+        platform_conditionals = []
+        for platform in rule_platforms:
+            if platform == "machine":
+                # Based on check installed_env_is_a_container
+                platform_conditionals.append('[ ! -f /.dockerenv -a ! -f /run/.containerenv ]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
+
+                # Some package names are different from the platform names
+                if platform in self.local_env_yaml["platform_package_overrides"]:
+                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                # Adjust package check command according to the pkg_manager
+                pkg_manager = self.local_env_yaml["pkg_manager"]
+                pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
+                platform_conditionals.append(pkg_check_command.format(platform))
+
+        if platform_conditionals:
+            wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
+
+            all_conditions = " && ".join(platform_conditionals)
+            wrapped_fix_text.append("if {0}; then".format(all_conditions))
+
+            # Avoid adding extra blank line
+            if not result.contents.startswith("\n"):
+                wrapped_fix_text.append("")
+
+            # It is possible to indent the original body of the remediation with textwrap.indent(),
+            # however, it is not supported by python2, and there is a risk of breaking remediations
+            # For example, remediations with a here-doc block could be affected.
+            wrapped_fix_text.append("{0}".format(result.contents))
+            wrapped_fix_text.append("")
+            wrapped_fix_text.append("else")
+            wrapped_fix_text.append("    >&2 echo 'Remediation is not applicable, nothing was done'")
+            wrapped_fix_text.append("fi")
+
+            remediation = namedtuple('remediation', ['contents', 'config'])
+            result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
+
+        return result
 
 class AnsibleRemediation(Remediation):
     def __init__(self, file_path):
@@ -691,14 +748,16 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         patcomp = re.compile(pattern, re.DOTALL)
         fixparts = re.split(patcomp, fix.text)
         if fixparts[0] is not None:
-            # Split the portion of fix.text from fix start to first call of
-            # remediation function, keeping only the third part:
-            # * tail        to hold part of the fix.text after inclusion,
-            #               but before first call of remediation function
+            # Split the portion of fix.text at the string remediation_functions,
+            # and remove preceeding comment whenever it is there.
+            # * head        holds part of the fix.text before
+            #               remediation_functions string
+            # * tail        holds part of the fix.text after the
+            #               remediation_functions string
             try:
-                rfpattern = '(.*remediation_functions)(.*)'
-                rfpatcomp = re.compile(rfpattern, re.DOTALL)
-                _, _, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
+                rfpattern = r'((?:# Include source function library\.\n)?.*remediation_functions)'
+                rfpatcomp = re.compile(rfpattern)
+                head, _, tail = re.split(rfpatcomp, fixparts[0], maxsplit=1)
             except ValueError:
                 sys.stderr.write("Processing fix.text for: %s rule\n"
                                  % fix.get('rule'))
@@ -706,9 +765,10 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                                  "after inclusion of remediation functions."
                                  " Aborting..\n")
                 sys.exit(1)
-            # If the 'tail' is not empty, make it new fix.text.
+            # If the 'head' is not empty, make it new fix.text.
             # Otherwise use ''
-            fix.text = tail if tail is not None else ''
+            fix.text = head if head is not None else ''
+            fix.text += tail if tail is not None else ''
             # Drop the first element of 'fixparts' since it has been processed
             fixparts.pop(0)
             # Perform sanity check on new 'fixparts' list content (to continue
