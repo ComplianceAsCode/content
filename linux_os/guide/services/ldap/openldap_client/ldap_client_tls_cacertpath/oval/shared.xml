@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="ldap_client_tls_cacertpath" version="1">
-    {{{ oval_metadata("Require the use of TLS for ldap clients.") }}}
+    {{{ oval_metadata("Require the use of TLS for LDAP clients.") }}}
     {{%- if product == "rhel6" -%}}
     <criteria comment="package pam_ldap is not present" operator="OR">
       <extend_definition comment="pam_ldap not present or in use"

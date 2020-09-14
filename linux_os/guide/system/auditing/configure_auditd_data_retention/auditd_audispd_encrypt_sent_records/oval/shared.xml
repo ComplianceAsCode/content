@@ -1,6 +1,10 @@
 <def-group>
   <definition class="compliance" id="auditd_audispd_encrypt_sent_records" version="1">
+    {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+    {{{ oval_metadata("transport setting in /etc/audit/audisp-remote.conf is set to 'KRB5'") }}}
+    {{% else %}}
     {{{ oval_metadata("enable_krb5 setting in /etc/audisp/audisp-remote.conf is set to 'yes'") }}}
+    {{% endif %}}
 
     <criteria>
       <criterion comment="setting in audisp-remote.conf" test_ref="test_auditd_audispd_encrypt_sent_records" />
