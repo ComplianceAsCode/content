@@ -62,6 +62,17 @@ controls:
     rules:
     - selinux_state
 
+  - id: R4
+    level: high
+    title: Using access control features
+    description: >-
+      It is recommended to use the mandatory access control (MAC) features in
+      addition to the traditional Unix user model (DAC), or possibly combine
+      them with partitioning mechanisms.
+    rules:
+    - selinux_state
+    - var_selinux_state=enforcing
+
   - id: R5
     level: minimal
     title: Defense in-depth principle
@@ -118,6 +129,16 @@ controls:
     level: intermediary
     title: 32 and 64 bit architecture
     # rules: TBD
+
+  - id: R11
+    level: high
+    title: IOMMU Configuration Guidelines
+    description: >-
+      The iommu = force directive must be added to the list of kernel parameters
+      during startup in addition to those already present in the configuration
+      files of the bootloader (/boot/grub/menu.lst or  /etc/default/grub).
+    rules:
+    - grub2_enable_iommu_force
 
   - id: R12
     level: intermediary
@@ -518,6 +539,14 @@ controls:
     title: Partitioning the syslog service by chroot
     # rules: TBD
 
+  - id: R45
+    level: high
+    title: Partitioning the syslog service by container
+    description: >-
+      The syslog services must be isolated from the rest of the system in a
+      dedicated container.
+    # rules: TBD
+
   - id: R46
     level: intermediary
     title: Service Activity Logs
@@ -542,6 +571,35 @@ controls:
     title: Logging activity by auditd
     description: >-
       The logging of the system activity must be done through the auditd service.
+    # rules: TBD
+
+  - id: R51
+    level: high
+    title: Sealing and integrity of files
+    description: >-
+      Any file that is not transient (such as temporary files, databases, etc.)
+      must be monitored by a sealing program.
+      This includes: directories containing executables, libraries,
+      configuration files, as well as any files that may contain sensitive
+      elements (cryptographic keys, passwords, confidential data).
+    rules:
+    - package_aide_installed
+    - aide_build_database
+    - aide_periodic_cron_checking
+    - aide_scan_notification
+    - aide_verify_acls
+    - aide_verify_ext_attributes
+
+  - id: R52
+    level: high
+    title: Protection of the seals database
+    description: >-
+      The sealing database must be protected from malicious access by
+      cryptographic signature mechanisms (with the key used for the signature
+      not locally stored in clear), or possibly stored on a separate machine
+      of the one on which the sealing is done.
+      Check section "Database and config signing in AIDE manual"
+      https://github.com/aide/aide/blob/master/doc/manual.html
     # rules: TBD
 
   - id: R53
@@ -612,4 +670,52 @@ controls:
   - id: R64
     level: intermediary
     title: Good use of sudoedit
+    # rules: TBD
+
+  - id: R65
+    level: high
+    title: Enable AppArmor security profiles
+    description: >-
+      All AppArmor security profiles on the system must be enabled by default.
+    # rules: TBD
+
+  - id: R66
+    level: high
+    title: Enabling SELinux Targeted Policy
+    description: >-
+      It is recommended to enable the targeted policy when the distribution
+      support it and that it does not operate another security module than SELinux.
+    rules:
+    - selinux_policytype
+    - var_selinux_policy_name=targeted
+
+  - id: R67
+    level: high
+    title: Setting SELinux booleans
+    description: >-
+      It is recommended to set the following Boolean values to off:
+      allow_execheap        if off, forbid processes to make their heap executable (heap);
+      allow_execmem         if off, forbid processes to have a memory area with rights w (write) and x (execute);
+      allow_execstack       if off, forbid processes to make their stack (stack) executable;
+      secure_mode_insmod    if off, prohibits dynamic loading of modules by any process;
+      ssh_sysadm_login      if off, forbid SSH logins to connect directly in sysadmin role.
+    rules:
+    - sebool_secure_mode_insmod
+    - sebool_ssh_sysadm_login
+
+  - id: R68
+    level: high
+    title: Uninstalling SELinux Policy Debugging Tools
+    description: >-
+      SELinux policy manipulation and debugging tools should not be installed
+      on a machine in production.
+    rules:
+    - package_setroubleshoot_removed
+
+  - id: R69
+    level: high
+    title: Kernel hardening with grsecurity
+    description: >-
+      It is recommended to use a hardened kernel with grsecurity patch when
+      the GNU/Linux distribution allows.
     # rules: TBD
