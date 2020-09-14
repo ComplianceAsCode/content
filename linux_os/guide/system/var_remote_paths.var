@@ -1,11 +1,10 @@
 documentation_complete: true
 
-title: 'Explicit remote paths'
+title: 'Explicit remote filesystem paths'
 
 description: |-
-    Colon-separated list of paths that are remote mounts s.a. network filesystems, and that are intended to be filtered out from scanning.
-    In some cases, the scanner may not detect local filesystems correctly, and this variable is meant to be used as a user-friendly way to designate paths as non-local.
-    This variable is supposed to be used in rules that use the concept of local filesystems in their checks.
+    A colon-separated list of paths that are remote mounts on network filesystems that are intended to be filtered out from scanning.
+    In some cases, the scanner may not detect local filesystems correctly, or there may be a performance hit on remote filesystem scanning that is organizationally deemed unacceptable. This variable is mean to be used to designate non-local remote filesystem paths and to be used for excluding remote filesystems for local filesystem scanning only.
 
 type: string
 
@@ -13,4 +12,3 @@ interactive: false
 
 options:
     default: "/mnt:/net"
-
