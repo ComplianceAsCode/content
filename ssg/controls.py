@@ -18,8 +18,16 @@ class Control():
     @classmethod
     def from_control_dict(cls, control_dict, default_level=""):
         control = cls()
+        control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
+        control.automated = control_dict.get("automated", "yes")
+        if control.automated not in ["yes", "no", "partially"]:
+            msg = ("Invalid value '%s' of automated key in control "
+                    "%s '%s'. Can be only 'yes', 'no', 'partially'.") % (
+                control.automated,  control.id, control.title
+            )
+            raise ValueError(msg)
         control.level = control_dict.get("level", default_level)
         control.automated = control_dict.get("automated", False)
         control.notes = control_dict.get("notes", "")
@@ -32,10 +40,6 @@ class Control():
                 control.rules.append(item)
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
-        control.id = ssg.utils.required_key(control_dict, "id")
-        control.title = control_dict.get("title")
-        control.description = control_dict.get("description")
-        control.automated = control_dict.get("automated", False)
         return control
 
 
