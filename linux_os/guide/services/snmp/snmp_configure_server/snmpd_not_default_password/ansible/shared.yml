@@ -9,13 +9,11 @@
 - name: "Replace all instances of SNMP RO strings"
   replace:
     path: "/etc/snmp/snmpd.conf"
-    #regexp: '^[#](.*)public(.*)$'
     regexp: 'public'
     replace: '{{ var_snmpd_ro_string }}'
 
 - name: "Replace all instances of SNMP RW strings"
   replace:
     path: "/etc/snmp/snmpd.conf"
-    #regexp: '^[#](.*)private(.*)$'
     regexp: 'private'
     replace: '{{ var_snmpd_rw_string }}'
