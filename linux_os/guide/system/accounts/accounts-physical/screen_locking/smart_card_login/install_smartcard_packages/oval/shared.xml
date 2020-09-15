@@ -1,9 +1,0 @@
-<def-group>
-  <definition class="compliance" id="install_smartcard_packages" version="1">
-    {{{ oval_metadata("The RPM packages esc and pam_pkcs11 must be installed.") }}}
-      <criteria comment="packages for smartcard use are installed">
-      <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
-      <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
-      </criteria>
-  </definition>
-</def-group>
