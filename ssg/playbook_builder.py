@@ -16,7 +16,7 @@ COMMENTS_TO_PARSE = ["strategy", "complexity", "disruption"]
 
 
 class PlaybookBuilder():
-    def __init__(self, product_yaml_path, input_dir, output_dir, rules_dir):
+    def __init__(self, product_yaml_path, input_dir, output_dir, rules_dir, profiles_dir):
         self.input_dir = input_dir
         self.output_dir = output_dir
         self.rules_dir = rules_dir
@@ -26,10 +26,7 @@ class PlaybookBuilder():
                                                     "benchmark_root")
         self.guide_dir = os.path.abspath(os.path.join(product_dir,
                                                       relative_guide_dir))
-        relative_profiles_dir = ssg.utils.required_key(product_yaml,
-                                                       "profiles_root")
-        self.profiles_dir = os.path.abspath(
-            os.path.join(product_dir, relative_profiles_dir))
+        self.profiles_dir = profiles_dir
         additional_content_directories = product_yaml.get("additional_content_directories", [])
         self.add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
 
@@ -176,7 +173,7 @@ class PlaybookBuilder():
                 % (profile_path, ext)
             )
 
-        profile = ssg.build_yaml.ResolvableProfile.from_yaml(profile_path)
+        profile = ssg.build_yaml.Profile.from_yaml(profile_path)
         if not profile:
             raise RuntimeError("Could not parse profile %s.\n" % profile_path)
         return profile
@@ -265,7 +262,6 @@ class PlaybookBuilder():
 
         for p in to_process:
             profile = profiles[p]
-            profile.resolve(profiles)
             if rule_id:
                 self.create_playbook_for_single_rule(profile, rule_id,
                                                      variables)

@@ -29,6 +29,13 @@ def parse_args():
         "--ssg-root."
     )
     p.add_argument(
+        "--resolved-profiles-dir",
+        help="Directory that contains preprocessed profiles in YAML format "
+        "eg. ~/scap-security-guide/build/fedora/profiles. "
+        "If --resolved-profiles-dir is not specified, it is derived from "
+        "--ssg-root."
+    )
+    p.add_argument(
         "--ssg-root", required=True,
         help="Directory containing the source tree. "
         "e.g. ~/scap-security-guide/"
@@ -74,8 +81,14 @@ def main():
         resolved_rules_dir = os.path.join(
             args.ssg_root, "build", args.product, "rules"
         )
+    if args.resolved_profiles_dir:
+        resolved_profiles_dir = args.resolved_profiles_dir
+    else:
+        resolved_profiles_dir = os.path.join(
+            args.ssg_root, "build", args.product, "profiles"
+        )
     playbook_builder = ssg.playbook_builder.PlaybookBuilder(
-        product_yaml, input_dir, output_dir, resolved_rules_dir
+        product_yaml, input_dir, output_dir, resolved_rules_dir, resolved_profiles_dir
     )
     playbook_builder.build(args.profile, args.rule)
 
