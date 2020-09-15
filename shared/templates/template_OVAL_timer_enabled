@@ -3,7 +3,7 @@
 {{% if target_oval_version >= [5, 11] %}}
 
   <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
-    {{{ oval_metadata("The " + TIMERNAME + " service should be enabled if possible.") }}}
+    {{{ oval_metadata("The " + TIMERNAME + " timer should be enabled if possible.") }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is configured to start" operator="AND">
       <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
       <criteria comment="timer {{{ TIMERNAME }}} is configured to start and is running" operator="AND">
