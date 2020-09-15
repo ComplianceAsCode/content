@@ -297,7 +297,5 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - sysctl_net_ipv4_conf_all_accept_redirects
     - wireless_disable_interfaces
-    - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
-    - mount_option_dev_shm_nosuid
     - audit_rules_privileged_commands_mount

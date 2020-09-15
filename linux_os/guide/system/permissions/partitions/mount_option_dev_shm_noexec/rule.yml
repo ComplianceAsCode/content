@@ -10,12 +10,14 @@ description: |-
     It can be dangerous to allow the execution of binaries
     from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
     {{{ describe_mount(option="noexec", part="/dev/shm") }}}
+    {{{ describe_mount(option="nodev", part="/dev/shm") }}}
+    {{{ describe_mount(option="nosuid", part="/dev/shm") }}}
 
 rationale: |-
     Allowing users to execute binaries from world-writable directories
     such as <tt>/dev/shm</tt> can expose the system to potential compromise.
 
-{{{ complete_ocil_entry_mount_option("/dev/shm", "noexec") }}}
+{{{ complete_ocil_entry_mount_option("/dev/shm", "noexec nodev nosuid") }}}
 
 severity: medium
 
