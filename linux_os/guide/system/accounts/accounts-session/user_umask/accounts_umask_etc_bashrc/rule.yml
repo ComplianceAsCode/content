@@ -8,7 +8,7 @@ description: |-
     To ensure the default umask for users of the Bash shell is set properly,
     add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
     as follows:
-    <pre>umask <sub idref="var_accounts_user_umask" /></pre>
+    <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 rationale: |-
     The umask value influences the permissions assigned to files when they are created.
@@ -44,5 +44,5 @@ ocil: |-
     <pre># grep "umask" /etc/bashrc</pre>
     All output must show the value of <tt>umask</tt> set as shown below:
     <pre># grep "umask" /etc/bashrc
-    umask <sub idref="var_accounts_user_umask" />
-    umask <sub idref="var_accounts_user_umask" /></pre>
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>

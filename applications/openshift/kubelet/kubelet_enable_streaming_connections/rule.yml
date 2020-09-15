@@ -11,13 +11,13 @@ description: |-
 {{%- if product == "ocp4" %}}
     file <tt>/etc/kubernetes/kubernetes.conf</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>streamingConnectionIdleTimeout: <sub idref="var_streaming_connection_timeouts"/></pre>
+    <pre>streamingConnectionIdleTimeout: {{{ xccdf_value("var_streaming_connection_timeouts") }}}</pre>
 {{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>kubeletArguments:
       streaming-connection-idle-timeout:
-      - '<sub idref="var_streaming_connection_timeouts"/>'</pre>
+      - '{{{ xccdf_value("var_streaming_connection_timeouts") }}}'</pre>
 {{%- endif %}}
 
 rationale: |-
@@ -33,10 +33,10 @@ ocil: |-
     Run the following command on the kubelet node(s):
 {{%- if product == "ocp4" %}}
     <pre>$ sudo grep streamingConnectionIdleTimeout /etc/kubernetes/kubernetes.conf</pre>
-    The output should return <tt><sub idref="var_streaming_connection_timeouts"/></tt>.
+    The output should return <tt>{{{ xccdf_value("var_streaming_connection_timeouts") }}}</tt>.
 {{% else %}}
     <pre>$ sudo grep -A1 streaming-connection-idle-timeout /etc/origin/node/node-config.yaml</pre>
-    The output should return <tt><sub idref="var_streaming_connection_timeouts"/></tt>.
+    The output should return <tt>{{{ xccdf_value("var_streaming_connection_timeouts") }}}</tt>.
 {{%- endif %}}
 
 identifiers:

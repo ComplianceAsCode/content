@@ -9,7 +9,7 @@ description: |-
     in a password that must not be present in and old password during a password change.
     <br /><br />
     Modify the <tt>difok</tt> setting in <tt>/etc/security/pwquality.conf</tt>
-    to equal <sub idref="var_password_pam_difok" /> to require differing characters
+    to equal {{{ xccdf_value("var_password_pam_difok") }}} to require differing characters
     when changing passwords.
 
 rationale: |-

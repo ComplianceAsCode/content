@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
-- (xccdf-var var_password_pam_unix_remember)
+{{{ ansible_instantiate_variables("var_password_pam_unix_remember") }}}
 
 - name: "Do not allow users to reuse recent passwords - system-auth (change)"
   replace:

@@ -32,4 +32,4 @@ ocil: |-
     <pre>$ grep lockout_failure_attempts /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf</pre>
     <br />
     If properly configured, the output should be:
-    <pre>lockout_failure_attempts=<sub idref="var_keystone_lockout_failure_attempts" /></pre>
+    <pre>lockout_failure_attempts={{{ xccdf_value("var_keystone_lockout_failure_attempts") }}}</pre>

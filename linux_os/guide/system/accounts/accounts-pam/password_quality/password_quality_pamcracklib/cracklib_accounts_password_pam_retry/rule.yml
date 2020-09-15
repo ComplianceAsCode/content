@@ -9,7 +9,7 @@ description: |-
     <br /><br />
     Edit the <tt>pam_cracklib.so</tt> statement in
     <tt>/etc/pam.d/system-auth</tt> to show
-    <tt>retry=<sub idref="var_password_pam_retry" /></tt>, or a lower value
+    <tt>retry={{{ xccdf_value("var_password_pam_retry") }}}</tt>, or a lower value
     if site policy is more restrictive.
     <br /><br />
     The DoD requirement is a maximum of 3 prompts per session.

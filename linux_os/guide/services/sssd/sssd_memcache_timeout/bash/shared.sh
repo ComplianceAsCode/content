@@ -3,7 +3,7 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-populate var_sssd_memcache_timeout
+{{{ bash_instantiate_variables("var_sssd_memcache_timeout") }}}
 
 SSSD_CONF="/etc/sssd/sssd.conf"
 MEMCACHE_TIMEOUT_REGEX="[[:space:]]*\[nss]([^\n\[]*\n+)+?[[:space:]]*memcache_timeout"

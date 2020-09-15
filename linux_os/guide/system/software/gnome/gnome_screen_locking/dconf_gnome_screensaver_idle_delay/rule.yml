@@ -54,7 +54,7 @@ ocil_clause: 'idle-delay is not equal to or less than the expected value'
 ocil: |-
     To check the current idle time-out value, run the following command:
     <pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
-    If properly configured, the output should be <tt>'uint32 <sub idref="inactivity_timeout_value" />'</tt>.
+    If properly configured, the output should be <tt>'uint32 {{{ xccdf_value("inactivity_timeout_value") }}}'</tt>.
     To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
     <pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>

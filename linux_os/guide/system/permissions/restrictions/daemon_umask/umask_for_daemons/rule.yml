@@ -11,7 +11,7 @@ description: |-
     a umask of <tt>077</tt> in their own init scripts. By default, the umask of
     <tt>022</tt> is set which prevents creation of group- or world-writable files.
     To set the umask for daemons expected by the profile, edit the following line:
-    <pre>umask <i><sub idref="var_umask_for_daemons" /></i></pre>
+    <pre>umask <i>{{{ xccdf_value("var_umask_for_daemons") }}}</i></pre>
 
 rationale: |-
     The umask influences the permissions assigned to files created by a
@@ -40,7 +40,7 @@ ocil_clause: 'it does not'
 ocil: |-
     To check the value of the <tt>umask</tt>, run the following command:
     <pre>$ grep umask /etc/init.d/functions</pre>
-    The output should show <tt><sub idref="var_umask_for_daemons" /></tt>.
+    The output should show <tt>{{{ xccdf_value("var_umask_for_daemons") }}}</tt>.
 
 warnings:
     - functionality: |-

@@ -8,7 +8,7 @@ description: |-
     <br /><br />
     To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
     follows:
-    <pre>ClientAliveInterval <b><sub idref="sshd_idle_timeout_value" /></b></pre>
+    <pre>ClientAliveInterval <b>{{{ xccdf_value("sshd_idle_timeout_value") }}}</b></pre>
     <br/><br/>
     The timeout <b>interval</b> is given in seconds. For example, have a timeout
     of 10 minutes, set <b>interval</b> to 600.
@@ -61,4 +61,4 @@ ocil: |-
     Run the following command to see what the timeout interval is:
     <pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
     If properly configured, the output should be:
-    <pre>ClientAliveInterval <sub idref="sshd_idle_timeout_value" /></pre>
+    <pre>ClientAliveInterval {{{ xccdf_value("sshd_idle_timeout_value") }}}</pre>

@@ -5,7 +5,7 @@
 # disruption = medium
 . /usr/share/scap-security-guide/remediation_functions
 {{%- if SYSCTLVAL == "" %}}
-populate sysctl_{{{ SYSCTLID }}}_value
+{{{ bash_instantiate_variables("sysctl_" + SYSCTLID + "_value") }}}
 
 #
 # Set runtime for {{{ SYSCTLVAR }}}

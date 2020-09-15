@@ -5,7 +5,7 @@ ocil_clause: "the required value is not set"
 
 {{% macro openshift_cluster_setting(endpoint) -%}}
 This rule's check operates on the cluster configuration dump.
-Therefore, you need to use a tool that can query the OCP API, retreive the <code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ sub_var_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.
+Therefore, you need to use a tool that can query the OCP API, retreive the <code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.
 {{%- endmacro %}}
 
 
@@ -42,6 +42,11 @@ ocil_clause: "the {{{ option }}} is not present in the output line, or there is 
 
 
 {{% macro sub_var_value(varname) -%}}
+{{{ xccdf_value(varname) }}}
+{{%- endmacro %}}
+
+
+{{% macro xccdf_value(varname) -%}}
 <sub idref="{{{ varname }}}" />
 {{%- endmacro %}}
 

@@ -9,7 +9,7 @@
 {{% if SEBOOL_BOOL %}}
 setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
 {{% else %}}
-populate var_{{{ SEBOOLID }}}
+{{{ bash_instantiate_variables("var_" + SEBOOLID) }}}
 
 setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
 {{% endif %}}

@@ -32,4 +32,4 @@ ocil: |-
     <pre>$ grep disable_user_account_days_inactive /etc/keystone/keystone.conf</pre>
     <br />
     If properly configured, the output should be:
-    <pre>disable_user_account_days_inactive = <sub idref="var_keystone_disable_user_account_days_inactive" /></pre>
+    <pre>disable_user_account_days_inactive = {{{ xccdf_value("var_keystone_disable_user_account_days_inactive") }}}</pre>

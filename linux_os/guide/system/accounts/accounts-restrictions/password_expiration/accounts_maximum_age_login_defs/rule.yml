@@ -6,10 +6,10 @@ description: |-
     To specify password maximum age for new accounts,
     edit the file <tt>/etc/login.defs</tt>
     and add or correct the following line:
-    <pre>PASS_MAX_DAYS <sub idref="var_accounts_maximum_age_login_defs" /></pre>
+    <pre>PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</pre>
     A value of 180 days is sufficient for many environments.
     The DoD requirement is 60.
-    The profile requirement is <tt><sub idref="var_accounts_maximum_age_login_defs" /></tt>.
+    The profile requirement is <tt>{{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</tt>.
 
 rationale: |-
     Any password, no matter how complex, can eventually be cracked. Therefore, passwords

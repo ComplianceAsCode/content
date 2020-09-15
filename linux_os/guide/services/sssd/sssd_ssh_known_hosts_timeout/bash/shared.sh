@@ -3,7 +3,7 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-populate var_sssd_ssh_known_hosts_timeout
+{{{ bash_instantiate_variables("var_sssd_ssh_known_hosts_timeout") }}}
 
 SSSD_CONF="/etc/sssd/sssd.conf"
 SSH_KNOWN_HOSTS_TIMEOUT_REGEX="[[:space:]]*\[ssh]([^\n\[]*\n+)+?[[:space:]]*ssh_known_hosts_timeout"

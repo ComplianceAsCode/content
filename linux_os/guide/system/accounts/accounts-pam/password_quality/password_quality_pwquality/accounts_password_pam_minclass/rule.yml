@@ -19,7 +19,7 @@ description: |-
     * Special characters (for example, punctuation)
     </pre>
     Modify the <tt>minclass</tt> setting in <tt>/etc/security/pwquality.conf</tt> entry
-    to require <sub idref="var_password_pam_minclass" />
+    to require {{{ xccdf_value("var_password_pam_minclass") }}}
     differing categories of characters when changing passwords.
 
 rationale: |-

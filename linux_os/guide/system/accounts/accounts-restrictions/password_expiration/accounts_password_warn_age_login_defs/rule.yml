@@ -7,9 +7,9 @@ description: |-
     expiration that a warning will be issued to users,
     edit the file <tt>/etc/login.defs</tt> and add or correct
      the following line:
-    <pre>PASS_WARN_AGE <sub idref="var_accounts_password_warn_age_login_defs" /></pre>
+    <pre>PASS_WARN_AGE {{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</pre>
     The DoD requirement is 7.
-    The profile requirement is <tt><sub idref="var_accounts_password_warn_age_login_defs" /></tt>.
+    The profile requirement is <tt>{{{ xccdf_value("var_accounts_password_warn_age_login_defs") }}}</tt>.
 
 rationale: |-
     Setting the password warning age enables users to

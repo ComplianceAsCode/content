@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- (xccdf-var var_multiple_time_servers)
+{{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
 
 - name: "Detect if chrony is already configured with pools or servers"
   find:

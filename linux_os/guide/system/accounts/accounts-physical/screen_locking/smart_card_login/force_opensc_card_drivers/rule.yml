@@ -9,13 +9,13 @@ description: |-
     forcing the smart card driver in use by your organization, opensc will no longer
     autodetect or use other drivers unless specified. This helps to prevent
     users from using unauthorized smart cards. The default smart card driver for this
-    profile is <tt><sub idref="var_smartcard_drivers" /></tt>.
+    profile is <tt>{{{ xccdf_value("var_smartcard_drivers") }}}</tt>.
     To force the OpenSC driver, edit the <tt>/etc/opensc-<i>ARCH</i>.conf</tt> (where
     <i>ARCH</i> is the architecture of your operating system) file. Look for a line
     similar to:
     <pre># force_card_driver = customcos;</pre>
     and change it to:
-    <pre>force_card_driver = <sub idref="var_smartcard_drivers" />;</pre>
+    <pre>force_card_driver = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>
 
 rationale: |-
     Smart card login provides two-factor authentication stronger than
@@ -46,9 +46,9 @@ references:
 ocil_clause: 'the smart card driver is not configured correctly'
 
 ocil: |-
-    To verify that <tt><sub idref="var_smartcard_drivers" /></tt> is configured
+    To verify that <tt>{{{ xccdf_value("var_smartcard_drivers") }}}</tt> is configured
     as the smart card driver, run the following command changing <i>ARCH</i> for
     the architecture of your operating system:
     <pre>$ grep force_card_driver /etc/opensc-<i>ARCH</i></pre>
     The output should return something similar to:
-    <pre>force_card_drivers = <sub idref="var_smartcard_drivers" />;</pre>
+    <pre>force_card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>

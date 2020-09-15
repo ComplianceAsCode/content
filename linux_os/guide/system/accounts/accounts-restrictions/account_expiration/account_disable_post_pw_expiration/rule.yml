@@ -9,9 +9,9 @@ description: |-
     signifies inactivity) until an account is permanently disabled, add or correct
     the following lines in <tt>/etc/default/useradd</tt>, substituting
     <tt><i>NUM_DAYS</i></tt> appropriately:
-    <pre>INACTIVE=<i><sub idref="var_account_disable_post_pw_expiration" /></i></pre>
+    <pre>INACTIVE=<i>{{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</i></pre>
     A value of 35 is recommended; however, this profile expects that the value is set to
-    <tt><sub idref="var_account_disable_post_pw_expiration" /></tt>.
+    <tt>{{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</tt>.
     If a password is currently on the
     verge of expiration, then 35 days remain until the account is automatically
     disabled. However, if the password will not expire for another 60 days, then 95
@@ -63,6 +63,6 @@ ocil: |-
     The output should indicate the <tt>INACTIVE</tt> configuration option is set
     to an appropriate integer as shown in the example below:
     <pre>$ grep "INACTIVE" /etc/default/useradd
-    INACTIVE=<sub idref="var_account_disable_post_pw_expiration" /></pre>
+    INACTIVE={{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</pre>
 
 platform: login_defs

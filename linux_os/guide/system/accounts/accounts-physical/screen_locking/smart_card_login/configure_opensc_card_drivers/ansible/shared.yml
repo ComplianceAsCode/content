@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- (xccdf-var var_smartcard_drivers)
+{{{ ansible_instantiate_variables("var_smartcard_drivers") }}}
 
 - name: Check existence of opensc conf
   stat:

@@ -1,6 +1,6 @@
 # platform = multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
-populate var_accounts_authorized_local_users_regex
+{{{ bash_instantiate_variables("var_accounts_authorized_local_users_regex") }}}
 
 # never delete the root user
 default_os_user="root"
