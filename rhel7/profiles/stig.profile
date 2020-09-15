@@ -127,7 +127,6 @@ selections:
     - accounts_no_uid_except_zero
     - no_files_unowned_by_user
     - file_permissions_ungroupowned
-    - accounts_user_interactive_home_directory_defined
     - accounts_have_homedir_login_defs
     - accounts_user_interactive_home_directory_exists
     - file_permissions_home_directories
