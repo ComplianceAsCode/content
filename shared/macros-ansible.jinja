@@ -570,7 +570,7 @@ See official documentation: https://jinja.palletsprojects.com/en/2.11.x/template
 
 - name: "Remove lines containing {{{ parameter }}} from sudoers files"
   replace:
-    regexp: '(^(?!#).*[\s]+\{{{ pattern }}}.*$)'
+    regexp: '(^(?!#).*[\s]+{{{ pattern }}}.*$)'
     replace: '# \g<1>'
     path: "{{ item.path }}"
     validate: /usr/sbin/visudo -cf %s
