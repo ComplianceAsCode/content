@@ -380,6 +380,11 @@ def zipl_bls_entries_option(data, lang):
     return bls_entries_option(data, lang)
 
 
+@template(["oval"])
+def coreos_kernel_option(data, lang):
+    return bls_entries_option(data, lang)
+
+
 class Builder(object):
     """
     Class for building all templated content for a given product.

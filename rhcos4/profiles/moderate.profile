@@ -548,8 +548,8 @@ selections:
 
     # AU-3
     - package_audit_installed
-    - bls_audit_option
     - grub2_audit_backlog_limit_argument
+    - coreos_audit_option
     #- grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
