@@ -7,20 +7,15 @@ title: 'Set Account Expiration Following Inactivity'
 description: |-
     To specify the number of days after a password expires (which
     signifies inactivity) until an account is permanently disabled, add or correct
-    the following lines in <tt>/etc/default/useradd</tt>, substituting
-    <tt><i>NUM_DAYS</i></tt> appropriately:
+    the following line in <tt>/etc/default/useradd</tt>:
     <pre>INACTIVE=<i>{{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</i></pre>
-    A value of 35 is recommended; however, this profile expects that the value is set to
-    <tt>{{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</tt>.
-    If a password is currently on the
-    verge of expiration, then 35 days remain until the account is automatically
-    disabled. However, if the password will not expire for another 60 days, then 95
-    days could elapse until the account would be automatically disabled. See the
-    <tt>useradd</tt> man page for more information.  Determining the inactivity
-    timeout must be done with careful consideration of the length of a "normal"
-    period of inactivity for users in the particular environment. Setting
-    the timeout too low incurs support costs and also has the potential to impact
-    availability of the system to legitimate users.
+    If a password is currently on the verge of expiration, then
+    <tt>{{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</tt>
+    day(s) remain(s) until the account is automatically
+    disabled. However, if the password will not expire for another 60 days, then 60
+    days plus <tt>{{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</tt> day(s) could
+    elapse until the account would be automatically disabled. See the
+    <tt>useradd</tt> man page for more information.
 
 rationale: |-
     Disabling inactive accounts ensures that accounts which may not
