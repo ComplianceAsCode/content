@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_groupowner{{{ FILEID }}}" version="1">
-    <metadata>
-      <title>Verify {{{ FILEPATH }}} Group Owner</title>
-      {{{- oval_affected(products) }}}
-      <description>This test makes sure that {{{ FILEPATH }}} is group owned by {{{ FILEGID }}}.</description>
-    </metadata>
+    {{{ oval_metadata("This test makes sure that " + FILEPATH + " is group owned by " + FILEGID + ".") }}}
     <criteria>
       <criterion comment="Check file group ownership of {{{ FILEPATH }}}" test_ref="test_file_groupowner{{{ FILEID }}}" />
     </criteria>

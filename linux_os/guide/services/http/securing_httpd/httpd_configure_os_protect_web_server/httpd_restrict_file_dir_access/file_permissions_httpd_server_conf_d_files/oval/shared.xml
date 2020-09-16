@@ -1,13 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="file_permissions_httpd_server_conf_d_files" version="2">
-    <metadata>
-      <title>Verify Permissions On Apache Web Server Configuration Files</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>The /etc/httpd/conf.d/* files should have the appropriate permissions (0640 or stronger).</description>
-    </metadata>
+    {{{ oval_metadata("The /etc/httpd/conf.d/* files should have the appropriate permissions (0640 or stronger).") }}}
     <criteria operator="OR">
       <extend_definition comment="httpd not present or in use"
       definition_ref="package_httpd_removed" />

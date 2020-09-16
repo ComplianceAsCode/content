@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="auditd_data_retention_flush" version="1">
-    <metadata>
-      <title>Auditd priority for flushing data to disk</title>
-      {{{- oval_affected(products) }}}
-      <description>The setting for flush in /etc/audit/auditd.conf</description>
-    </metadata>
+    {{{ oval_metadata("The setting for flush in /etc/audit/auditd.conf") }}}
 
     <criteria>
         <criterion comment="flush setting in auditd.conf" test_ref="test_auditd_data_retention_flush" />

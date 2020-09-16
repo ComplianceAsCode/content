@@ -1,15 +1,7 @@
 <def-group>
   <definition class="compliance" id="aide_use_fips_hashes" version="1">
-    <metadata>
-      <title>Configure AIDE to Use FIPS 140-2 for Validating Hashes</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>AIDE should be configured to use the FIPS 140-2 
-      cryptographic hashes.</description>
-    </metadata>
+    {{{ oval_metadata("AIDE should be configured to use the FIPS 140-2 
+      cryptographic hashes.") }}}
     <criteria operator="AND">
       <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />

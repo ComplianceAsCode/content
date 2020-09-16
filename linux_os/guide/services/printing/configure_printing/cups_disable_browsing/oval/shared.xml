@@ -1,17 +1,11 @@
 <def-group>
   <definition class="compliance" id="cups_disable_browsing" version="1">
-    <metadata>
-      <title>Disable Printer Browsing Entirely if Possible</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>The CUPS print service can be configured to broadcast a list
+    {{{ oval_metadata("The CUPS print service can be configured to broadcast a list
       of available printers to the network. Other machines on the network, also
       running the CUPS print service, can be configured to listen to these
       broadcasts and add and configure these printers for immediate use. By
       disabling this browsing capability, the machine will no longer generate
-      or receive such broadcasts.</description>
-    </metadata>
+      or receive such broadcasts.") }}}
     <criteria operator="AND">
       <criterion comment="Ensure remote printer browsing is off"
       test_ref="test_cups_disable_browsing_browsing_off" />

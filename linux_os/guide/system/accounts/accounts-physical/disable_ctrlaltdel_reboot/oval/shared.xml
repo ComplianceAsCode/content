@@ -3,12 +3,8 @@
 {{%- else -%}}
 <def-group>
   <definition class="compliance" id="disable_ctrlaltdel_reboot" version="1">
-    <metadata>
-      <title>Disable Ctrl-Alt-Del Reboot Activation</title>
-      {{{- oval_affected(products) }}}
-      <description>By default, the system will reboot when the
-      Ctrl-Alt-Del key sequence is pressed.</description>
-    </metadata>
+    {{{ oval_metadata("By default, the system will reboot when the
+      Ctrl-Alt-Del key sequence is pressed.") }}}
     {{%- if init_system == "systemd" -%}}
     <criteria>
       <criterion comment="Disable Ctrl-Alt-Del systemd softlink exists" test_ref="test_disable_ctrlaltdel_exists" />

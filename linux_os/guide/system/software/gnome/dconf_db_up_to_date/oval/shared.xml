@@ -48,16 +48,7 @@
   {{% endmacro %}}
 
   <definition class="compliance" id="dconf_db_up_to_date" version="2">
-    <metadata>
-      <title>The dconf databases are up-to-date.</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Make sure that the dconf databases are up-to-date with regards to respective keyfiles.</description>
-    </metadata>
+    {{{ oval_metadata("Make sure that the dconf databases are up-to-date with regards to respective keyfiles.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="check that all DBs in question are up-to-date" operator="AND">

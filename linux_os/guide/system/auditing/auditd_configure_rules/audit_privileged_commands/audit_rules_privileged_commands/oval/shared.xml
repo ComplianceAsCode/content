@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_privileged_commands" version="1">
-    <metadata>
-      <title>Ensure auditd Collects Information on the Use of Privileged Commands</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules about the information on the use of privileged commands are enabled.</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules about the information on the use of privileged commands are enabled.") }}}
 
     <criteria operator="OR">
 

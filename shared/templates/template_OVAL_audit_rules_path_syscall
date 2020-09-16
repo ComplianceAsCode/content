@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_{{{ PATHID }}}_{{{ SYSCALL }}}" version="1">
-    <metadata>
-      <title>Ensure auditd Collects Write Events to {{{ PATH }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit rules about the write events to {{{ PATH }}}</description>
-    </metadata>
+    {{{ oval_metadata("Audit rules about the write events to " + PATH) }}}
 
     <criteria operator="OR">
 

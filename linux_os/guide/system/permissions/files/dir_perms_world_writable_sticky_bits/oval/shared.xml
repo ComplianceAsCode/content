@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="dir_perms_world_writable_sticky_bits" version="1">
-    <metadata>
-      <title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>The sticky bit should be set for all world-writable directories.</description>
-    </metadata>
+    {{{ oval_metadata("The sticky bit should be set for all world-writable directories.") }}}
     <criteria>
       <criterion comment="all local world writable directories have sticky bit set" test_ref="test_dir_perms_world_writable_sticky_bits" negate="true" />
     </criteria>

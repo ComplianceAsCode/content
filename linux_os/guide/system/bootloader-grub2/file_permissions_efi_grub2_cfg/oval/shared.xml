@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_permissions_efi_grub2_cfg" version="1">
-    <metadata>
-      <title>Verify the UEFI Boot Loader grub.cfg Permissions</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Verify that UEFI Boot Loader grub.cfg file permissions set to 0700 (or stronger).</description>
-    </metadata>
+    {{{ oval_metadata("Verify that UEFI Boot Loader grub.cfg file permissions set to 0700 (or stronger).") }}}
     <criteria operator="OR">
       <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if system boot mode is not UEFI" />
       <criterion test_ref="test_file_permissions_efi_grub2_cfg" />

@@ -1,14 +1,7 @@
 <def-group>
   <definition class="compliance"
   id="network_ipv6_static_address" version="1">
-    <metadata>
-      <title>Manually Assign Global IPv6 Address</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Manually configure addresses for IPv6</description>
-    </metadata>
+    {{{ oval_metadata("Manually configure addresses for IPv6") }}}
     <criteria operator="OR">
       {{%- if product == "rhel6" -%}}
       <extend_definition comment="IPv6 disabled or..."

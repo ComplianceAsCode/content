@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="sssd_ldap_start_tls" version="1">
-    <metadata>
-      <title>Configure SSSD LDAP Backend to Use TLS For All Transactions</title>
-      {{{- oval_affected(products) }}}
-      <description>LDAP should be used for authentication and use STARTTLS</description>
-    </metadata>
+    {{{ oval_metadata("LDAP should be used for authentication and use STARTTLS") }}}
     <criteria>
       <criterion comment="LDAP uses STARTTLS set within /etc/sssd/sssd.conf" test_ref="test_use_starttls" />
     </criteria>

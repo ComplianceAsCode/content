@@ -1,13 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="postfix_network_listening_disabled" version="2">
-    <metadata>
-      <title>Postfix network listening should be disabled</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
-      <description>Postfix network listening should be disabled</description>
-    </metadata>
+    {{{ oval_metadata("Postfix network listening should be disabled") }}}
     <criteria operator="OR">
       <!-- postfix package not installed or postfix service not configured to start -->
       <extend_definition comment="Postfix installed and configured to start" negate="true" definition_ref="service_postfix_enabled" />

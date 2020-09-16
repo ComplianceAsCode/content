@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_permissions_grub2_cfg" version="1">
-    <metadata>
-      <title>Verify /boot/grub2/grub.cfg Mode Permissions</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>File permissions for /boot/grub2/grub.cfg should be set to 0600 (or stronger).</description>
-    </metadata>
+    {{{ oval_metadata("File permissions for /boot/grub2/grub.cfg should be set to 0600 (or stronger).") }}}
     <criteria operator="OR">
       <extend_definition definition_ref="system_boot_mode_is_uefi" comment="Pass if system boot mode is UEFI" />      
       <criterion comment="Check file mode of /boot/grub2/grub.cfg" test_ref="test_file_permissions_grub2_cfg" />

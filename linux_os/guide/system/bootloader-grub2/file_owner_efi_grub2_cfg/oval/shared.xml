@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_owner_efi_grub2_cfg" version="1">
-    <metadata>
-      <title>Verify the UEFI Boot Loader grub.cfg Owner</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Verify that UEFI Boot Loader grub.cfg is owned by uid 0.</description>
-    </metadata>
+    {{{ oval_metadata("Verify that UEFI Boot Loader grub.cfg is owned by uid 0.") }}}
     <criteria operator="OR">
       <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if system boot mode is not UEFI" />
       <criterion comment="Check file ownership of /boot/efi/EFI/redhat/grub.cfg" test_ref="test_file_owner_efi_grub2_cfg" />

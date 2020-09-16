@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="display_login_attempts" version="1">
-    <metadata>
-      <title>Set Last Login/Access Notification</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
-      <description>Configure the system to notify users of last login/access using pam_lastlog.</description>
-    </metadata>
+    {{{ oval_metadata("Configure the system to notify users of last login/access using pam_lastlog.") }}}
     <criteria>
       <criterion comment="Conditions for pam_lastlog are satisfied" test_ref="test_display_login_attempts" />
     </criteria>

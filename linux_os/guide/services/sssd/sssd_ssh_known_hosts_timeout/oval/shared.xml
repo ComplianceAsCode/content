@@ -1,14 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="sssd_ssh_known_hosts_timeout" version="1">
-    <metadata>
-      <title>Configure SSSD to Expire SSH Known Hosts</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>SSSD should be configured to expire keys from known SSH hosts after 1 day.</description>
-    </metadata>
+    {{{ oval_metadata("SSSD should be configured to expire keys from known SSH hosts after 1 day.") }}}
     <criteria operator="OR">
       <criteria operator="OR">
         <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />

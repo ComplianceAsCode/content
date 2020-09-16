@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="account_disable_post_pw_expiration" version="2">
-    <metadata>
-      <title>Set Accounts to Expire Following Password Expiration</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The accounts should be configured to expire automatically following password expiration.</description>
-    </metadata>
+    {{{ oval_metadata("The accounts should be configured to expire automatically following password expiration.") }}}
     <criteria comment="the value INACTIVE parameter should be set appropriately in /etc/default/useradd">
       <criterion test_ref="test_etc_default_useradd_inactive" />
     </criteria>

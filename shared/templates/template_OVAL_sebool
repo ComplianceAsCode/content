@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="sebool_{{{ SEBOOLID }}}" version="1">
-    <metadata>
-      <title>SELinux "{{{ SEBOOLID }}}" Boolean Check</title>
-      {{{- oval_affected(products) }}}
-      <description>The SELinux "{{{ SEBOOLID }}}" boolean should be set in the system configuration.</description>
-    </metadata>
+    {{{ oval_metadata("The SELinux '" + SEBOOLID + "' boolean should be set in the system configuration.") }}}
     <criteria>
       <criterion comment="{{{ SEBOOLID }}} is configured correctly" test_ref="test_sebool_{{{ SEBOOLID }}}" />
     </criteria>

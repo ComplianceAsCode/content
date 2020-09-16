@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="sshd_disable_compression" version="1">
-    <metadata>
-      <title>Disable Compression Or Set Compression to delayed</title>
-      {{{- oval_affected(products) }}}
-      <description>SSH should either have compression disabled or set to delayed.</description>
-    </metadata>
+    {{{ oval_metadata("SSH should either have compression disabled or set to delayed.") }}}
     <criteria comment="SSH is configured correctly or is not installed"
     operator="OR">
       <criteria comment="sshd is not installed" operator="AND">

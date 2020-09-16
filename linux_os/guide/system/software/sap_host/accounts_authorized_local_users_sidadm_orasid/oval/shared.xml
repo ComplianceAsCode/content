@@ -1,16 +1,10 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="accounts_authorized_local_users_sidadm_orasid" version="1">
-    <metadata>
-      <title>Only sidadm and orasid/oracle Exist as Local Users on Operating System</title>
-      <affected family="unix">
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description> SAP system users sidadm/sapadm and orasid/oracle should be the only
+    {{{ oval_metadata(" SAP system users sidadm/sapadm and orasid/oracle should be the only
       users besides the authorized usrs listed in var_accounts_authorized_local_users_regex
       that exist locally on the operating system.
       Limitation: only works with zero to one SAP system on each OS/VM. 
-      </description>
-    </metadata>
+      ") }}}
     <criteria operator="AND">
       <!-- users in the external list -->
       <criterion test_ref="test_accounts_authorized_local_users_sidadm_orasid"

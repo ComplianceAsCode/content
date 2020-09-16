@@ -1,16 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_password_pam_retry" version="1">
-    <metadata>
-      <title>Set Password retry Requirements</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
-      <description>The password retry should meet minimum requirements</description>
-    </metadata>
+    {{{ oval_metadata("The password retry should meet minimum requirements") }}}
     <criteria operator="AND" comment="Conditions for retry are satisfied">
       <criterion comment="pam_pwquality" test_ref="test_password_pam_pwquality_retry" />
     </criteria>

@@ -1,16 +1,10 @@
 <def-group>
   <definition class="compliance" id="auditd_audispd_encrypt_sent_records" version="1">
-    <metadata>
-      <title>Kerberos 5 Authentication and Encryption in Audit Event Multiplexor (audispd) Is Activated</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-      <description>transport setting in /etc/audit/audisp-remote.conf is set to 'KRB5'</description>
-{{% else %}}
-      <description>enable_krb5 setting in /etc/audisp/audisp-remote.conf is set to 'yes'</description>
-{{% endif %}}
-    </metadata>
+    {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+    {{{ oval_metadata("transport setting in /etc/audit/audisp-remote.conf is set to 'KRB5'") }}}
+    {{% else %}}
+    {{{ oval_metadata("enable_krb5 setting in /etc/audisp/audisp-remote.conf is set to 'yes'") }}}
+    {{% endif %}}
 
     <criteria>
       <criterion comment="setting in audisp-remote.conf" test_ref="test_auditd_audispd_encrypt_sent_records" />

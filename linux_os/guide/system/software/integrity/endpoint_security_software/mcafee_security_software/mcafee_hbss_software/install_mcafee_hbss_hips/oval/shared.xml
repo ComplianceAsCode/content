@@ -1,14 +1,8 @@
 <def-group>
   <definition class="compliance" id="install_mcafee_hbss_hips"
   version="1">
-    <metadata>
-      <title>Install the Host Intrusion Prevention System (HIPS) Module</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Install the McAfee Host Intrusion Prevention System (HIPS) Module if it is
-      absolutely necessary. If SELinux is enabled, do not install or enable this module.</description>
-    </metadata>
+	  {{{ oval_metadata("Install the McAfee Host Intrusion Prevention System (HIPS) Module if it is absolutely necessary. If SELinux is enabled, do not install or enable this module.",
+	  affected_platforms=["multi_platform_all"]) }}}
     <criteria>
       <criterion comment="McAfee IPS  is installed"
       test_ref="test_mcafee_hbss_hips_installed" />

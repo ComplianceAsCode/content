@@ -1,16 +1,7 @@
 <def-group>
   <definition class="compliance" id="use_kerberos_security_all_exports" version="3">
-    <metadata>
-      <title>Use Kerberos Security on All Exports</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Using Kerberos Security allows to cryptography authenticate a
-      valid user to an NFS share.</description>
-    </metadata>
+    {{{ oval_metadata("Using Kerberos Security allows to cryptography authenticate a
+      valid user to an NFS share.") }}}
     <criteria operator="OR">
       <criterion comment="Check for Kerberos settings in /etc/exports"
       test_ref="test_use_kerberos_security_all_exports" />

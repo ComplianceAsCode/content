@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="no_rsh_trust_files" version="1">
-    <metadata>
-      <title>No Legacy .rhosts Or hosts.equiv Files</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>There should not be any .rhosts or hosts.equiv files on the system.</description>
-    </metadata>
+    {{{ oval_metadata("There should not be any .rhosts or hosts.equiv files on the system.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_no_rsh_trust_files_root" negate="true" />
       <criterion test_ref="test_no_rsh_trust_files_home" negate="true" />

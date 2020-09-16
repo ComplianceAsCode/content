@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_screensaver_user_locks" version="1">
-    <metadata>
-      <title>Ensure Users Cannot Change GNOME3 Screensaver Lock Delay Settings</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Ensure that users cannot change GNOME3 screensaver idle and lock settings.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure that users cannot change GNOME3 screensaver idle and lock settings.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="check screensaver idle delay and prevent user from changing it" operator="AND">

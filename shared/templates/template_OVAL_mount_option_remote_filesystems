@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    <metadata>
-      <title>Mount Remote Filesystems with {{{ MOUNTOPTIONID }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>The {{{ MOUNTOPTIONID }}} option should be enabled for all NFS mounts in /etc/fstab.</description>
-    </metadata>
+    {{{ oval_metadata("The " + MOUNTOPTIONID + " option should be enabled for all NFS mounts in /etc/fstab.") }}}
     <criteria operator="XOR">
       <!-- these tests are designed to be mutually exclusive; either no nfs mounts exist in /etc/fstab -->
       <!-- or all of the nfs mounts defined in /etc/fstab have the {{{ MOUNTOPTIONID }}} mount option specified -->

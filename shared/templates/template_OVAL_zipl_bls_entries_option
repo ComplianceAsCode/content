@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    <metadata>
-      <title>Ensure that BLS-compatible boot loader is configured to run Linux operating system with argument {{{ ARG_NAME_VALUE }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure {{{ ARG_NAME_VALUE }}} option is configured in the 'options' line in /boot/loader/entries/*.conf.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " option is configured in the 'options' line in /boot/loader/entries/*.conf.") }}}
     <criteria operator="AND">
       <criterion test_ref="test_bls_{{{ SANITIZED_ARG_NAME }}}_options"
       comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/*.conf" />

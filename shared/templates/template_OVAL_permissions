@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="permissions{{{ FILEID }}}" version="1">
-    <metadata>
-      <title>Ensure Correct Mode, Owner, Group Owner for {{{ FILEPATH }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Checks for correct UNIX permissions on {{{ FILEPATH }}}.</description>
-    </metadata>
+    {{{ oval_metadata("Checks for correct UNIX permissions on " + FILEPATH + ".") }}}
     <criteria operator="AND">
       {{% if FILEGID != "" %}}
       <extend_definition comment="Check file group ownership of {{{ FILEPATH }}}" definition_ref="file_groupowner{{{ FILEID }}}" />

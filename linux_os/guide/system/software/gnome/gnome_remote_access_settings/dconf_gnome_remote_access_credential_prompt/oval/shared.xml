@@ -1,15 +1,6 @@
 <def-group>
   <definition class="compliance" id="dconf_gnome_remote_access_credential_prompt" version="1">
-    <metadata>
-      <title>Require Credential Prompting for Remote Access in GNOME3</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Configure GNOME3 to require credential prompting for remote access.</description>
-    </metadata>
+    {{{ oval_metadata("Configure GNOME3 to require credential prompting for remote access.") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria operator="AND">

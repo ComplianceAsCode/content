@@ -6,11 +6,7 @@
 
 <def-group>
   <definition class="compliance" id="grub2_uefi_password" version="1">
-    <metadata>
-      <title>Set the UEFI Boot Loader Password</title>
-      {{{- oval_affected(products) }}}
-      <description>The UEFI grub2 boot loader should have password protection enabled.</description>
-    </metadata>
+    {{{ oval_metadata("The UEFI grub2 boot loader should have password protection enabled.") }}}
 
     <criteria operator="OR">
       {{{ oval_file_absent_criterion(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}

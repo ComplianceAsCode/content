@@ -1,11 +1,7 @@
 <def-group>
   <definition class="compliance" id="sssd_enable_pam_services" version="1">
-    <metadata>
-      <title>Configure PAM in SSSD Services</title>
-      {{{- oval_affected(products) }}}
-      <description>SSSD should be configured to run SSSD PAM services.
-      </description>
-    </metadata>
+    {{{ oval_metadata("SSSD should be configured to run SSSD PAM services.
+      ") }}}
     <criteria>
         <criterion comment="check if pam is configured in the services setting of the sssd section"
         test_ref="test_sssd_enable_pam_services" />

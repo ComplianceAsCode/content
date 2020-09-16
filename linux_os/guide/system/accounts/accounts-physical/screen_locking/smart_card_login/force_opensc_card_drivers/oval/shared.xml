@@ -1,17 +1,7 @@
 <def-group>
   <definition class="compliance" id="force_opensc_card_drivers" version="1">
-    <metadata>
-      <title>Force opensc To Use Defined Smart Card Driver</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Force opensc to use the organization's smart card driver so that only
-      the smart card in use by the organization will be recognized by the system.</description>
-    </metadata>
+    {{{ oval_metadata("Force opensc to use the organization's smart card driver so that only
+      the smart card in use by the organization will be recognized by the system.") }}}
     <criteria>
       <criterion test_ref="test_force_opensc_card_drivers"
       comment="Check that force_card_driver is configured for opensc" />

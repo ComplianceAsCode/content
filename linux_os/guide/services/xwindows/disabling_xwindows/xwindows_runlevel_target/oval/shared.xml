@@ -3,11 +3,7 @@
 {{%- else -%}}
 <def-group>
   <definition class="compliance" id="xwindows_runlevel_target" version="1">
-    <metadata>
-      <title>Disable X Windows Startup By Setting Default SystemD Target</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure that the default runlevel target is set to multi-user.target.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.") }}}
     <criteria>
       <criterion comment="default.target systemd softlink exists" test_ref="test_disable_xwindows_runlevel_target" />
     </criteria>

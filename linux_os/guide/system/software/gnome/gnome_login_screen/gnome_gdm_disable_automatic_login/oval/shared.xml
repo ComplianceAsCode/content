@@ -1,17 +1,7 @@
 <def-group>
   <definition class="compliance" id="gnome_gdm_disable_automatic_login" version="2">
-    <metadata>
-      <title>Disable GDM Automatic Login</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Disable the GNOME Display Manager (GDM) ability to allow users to
-      automatically login.</description>
-    </metadata>
+    {{{ oval_metadata("Disable the GNOME Display Manager (GDM) ability to allow users to
+      automatically login.") }}}
     <criteria operator="OR">
       <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
       <criterion comment="Disable GDM Automatic Login" test_ref="test_disable_automatic_login" />

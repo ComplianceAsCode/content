@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="ensure_oracle_gpgkey_installed" version="1">
-    <metadata>
-      <title>Oracle Linux gpg-pubkey Package Installed</title>
-      <affected family="unix">
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>The Oracle Linux key packages are required to be installed.</description>
-    </metadata>
+    {{{ oval_metadata("The Oracle Linux key packages are required to be installed.") }}}
     <criteria comment="Vendor GPG keys" operator="OR">
       <criteria comment="Oracle Vendor GPG Keys" operator="AND">
         <criteria comment="Oracle Linux Release Installed" operator="OR">

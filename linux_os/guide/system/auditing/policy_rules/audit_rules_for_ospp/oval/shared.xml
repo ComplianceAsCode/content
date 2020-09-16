@@ -32,15 +32,7 @@
 
 <def-group>
   <definition class="compliance" id="audit_rules_for_ospp" version="1">
-    <metadata>
-      <title>Check audit rules for OSPP</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
-      <description>Compare configure audit rules againd the recommended pre-configured files</description>
-    </metadata>
+    {{{ oval_metadata("Compare configure audit rules against the recommended pre-configured files.") }}}
 
     <criteria operator="AND">
       {{{- audit_file_compare_criterion("10-base-config") -}}}

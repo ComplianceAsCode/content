@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_usergroup_modification_{{{ NAME }}}" version="1">
-    <metadata>
-      <title>Audit User/Group Modification - {{{ NAME }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Audit user/group modification.</description>
-    </metadata>
+    {{{ oval_metadata("Audit user/group modification.") }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />

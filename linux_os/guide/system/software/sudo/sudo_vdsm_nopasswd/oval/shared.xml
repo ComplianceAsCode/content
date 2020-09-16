@@ -1,14 +1,6 @@
 <def-group>
   <definition class="compliance" id="sudo_vdsm_nopasswd" version="1">
-    <metadata>
-      <title>Ensure NOPASSWD Is Used Only for the VDSM User in Sudo</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Checks sudo usage for the vdsm user without a password</description>
-    </metadata>
+    {{{ oval_metadata("Checks sudo usage for the vdsm user without a password") }}}
     <criteria operator="AND">
       <criterion comment="NOPASSWD only exists for vdsm user in /etc/sudoers" test_ref="test_vdsm_nopasswd_etc_sudoers" />
       <criterion comment="NOPASSWD only exists for vdsm user in /etc/sudoers.d" test_ref="test_vdsm_nopasswd_etc_sudoers_d" />

@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    <metadata>
-      <title>Audit Discretionary Access Control Modification Events - {{{ ATTR }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>The changing of file permissions and attributes should be audited.</description>
-    </metadata>
+    {{{ oval_metadata("The changing of file permissions and attributes should be audited.") }}}
     <criteria operator="OR">
 
       <!-- Test the augenrules case -->

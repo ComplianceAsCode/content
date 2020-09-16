@@ -1,13 +1,7 @@
 <def-group>
   <definition class="compliance" id="sshd_set_max_auth_tries" version="1">
-    <metadata>
-      <title>Set OpenSSH authentication attempt limit (MaxAuthTries)</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The SSH MaxAuthTries should be set to an
-      appropriate value.</description>
-    </metadata>
+    {{{ oval_metadata("The SSH MaxAuthTries should be set to an
+      appropriate value.") }}}
     <criteria comment="SSH is not being used or conditions are met" operator="OR">
       <extend_definition comment="sshd service is disabled"
       definition_ref="service_sshd_disabled" />

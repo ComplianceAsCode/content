@@ -1,17 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="rsyslog_files_permissions" version="1">
-    <metadata>
-      <title>Confirm Existence and Permissions of System Log Files</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_debian</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_ubuntu</platform>
-      </affected>
-      <description>File permissions for all syslog log files should be set correctly.</description>
-    </metadata>
+    {{{ oval_metadata("File permissions for all syslog log files should be set correctly.") }}}
 
     <criteria operator="AND">
       {{% if product in ["debian8", "debian9", "debian10", "ubuntu1404", "ubuntu1604", "ubuntu1804"] %}}

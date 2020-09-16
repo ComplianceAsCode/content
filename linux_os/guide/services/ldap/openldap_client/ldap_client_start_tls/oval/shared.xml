@@ -1,13 +1,6 @@
 <def-group>
   <definition class="compliance" id="ldap_client_start_tls" version="1">
-    <metadata>
-      <title>Configure LDAP to Use TLS for All Transactions</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Require the use of TLS for ldap clients.</description>
-    </metadata>
+    {{{ oval_metadata("Require the use of TLS for LDAP clients.") }}}
     {{%- if product == "rhel6" -%}}
     <criteria comment="package pam_ldap is not present" operator="OR">
       <extend_definition comment="pam_ldap not present or not in use"

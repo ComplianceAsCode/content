@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_passwords_pam_faillock_deny" version="4">
-    <metadata>
-      <title>Lock out account after failed login attempts</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The number of allowed failed logins should be set correctly.</description>
-    </metadata>
+    {{{ oval_metadata("The number of allowed failed logins should be set correctly.") }}}
     <criteria operator="AND" comment="Checks common to both scenarios">
       <criterion test_ref="test_accounts_passwords_pam_faillock_preauth_silent_system-auth"
       comment="pam_faillock.so preauth silent set in system-auth" />

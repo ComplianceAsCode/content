@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="audit_rules_immutable" version="1">
-    <metadata>
-      <title>Make Audit Configuration Immutable</title>
-      {{{- oval_affected(products) }}}
-      <description>Force a reboot to change audit rules is enabled</description>
-    </metadata>
+    {{{ oval_metadata("Force a reboot to change audit rules is enabled") }}}
 
     <criteria operator="OR">
 

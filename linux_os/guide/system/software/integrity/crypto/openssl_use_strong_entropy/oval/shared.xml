@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="openssl_use_strong_entropy" version="1">
-    <metadata>
-      <title>Configure OpenSSL to use strong entropy</title>
-      {{{- oval_affected(products) }}}
-      <description>OpenSSL should be configured to generate random data with strong entropy.</description>
-    </metadata>
+    {{{ oval_metadata("OpenSSL should be configured to generate random data with strong entropy.") }}}
     <criteria>
       <criterion test_ref="test_openssl_strong_entropy"
       comment="Check that the OpenSSL is configured to generate random data with strong entropy." />

@@ -1,14 +1,6 @@
 <def-group oval_version="5.11">
   <definition class="compliance" id="smartcard_auth" version="3">
-    <metadata>
-      <title>Enable Smart Card Login</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Oracle Linux 7</platform>
-      </affected>
-      <description>Enable Smart Card logins</description>
-    </metadata>
+    {{{ oval_metadata("Enable Smart Card logins") }}}
     <criteria comment="smart card authentication is configured" operator="AND">
       <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
       <extend_definition comment="pcscd service is enabled" definition_ref="service_pcscd_enabled" />

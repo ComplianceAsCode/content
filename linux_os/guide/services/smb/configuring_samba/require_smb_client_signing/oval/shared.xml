@@ -1,14 +1,8 @@
 <def-group>
   <definition class="compliance" id="require_smb_client_signing" version="1">
-    <metadata>
-      <title>Require Client SMB Packet Signing in smb.conf</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-      </affected>
-      <description>Require samba clients which use smb.conf, such as smbclient,
+    {{{ oval_metadata("Require samba clients which use smb.conf, such as smbclient,
       to use packet signing. A Samba client should only communicate with
-      servers who can support SMB packet signing.</description>
-    </metadata>
+      servers who can support SMB packet signing.") }}}
     <criteria operator="OR">
       <extend_definition comment="package samba-common is not installed"
       definition_ref="package_samba-common_removed" />

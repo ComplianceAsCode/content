@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="sysctl_crypto_fips_enabled" version="1">
-    <metadata>
-      <title>Kernel "crypto.fips_enabled" Parameter Runtime Check</title>
-      {{{- oval_affected(products) }}}
-      <description>The kernel "crypto.fips_enabled" parameter should be set to "1" in system runtime.</description>
-    </metadata>
+    {{{ oval_metadata("The kernel 'crypto.fips_enabled' parameter should be set to '1' in system runtime.") }}}
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter crypto.fips_enabled set to 1" test_ref="test_sysctl_crypto_fips_enabled" />
     </criteria>

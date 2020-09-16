@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="account_unique_name" version="1">
-    <metadata>
-      <title>Set All Accounts To Have Unique Names</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>All accounts on the system should have unique names for proper accountability.</description>
-    </metadata>
+    {{{ oval_metadata("All accounts on the system should have unique names for proper accountability.") }}}
 
       <criteria comment="There should not exist duplicate user name entries in /etc/passwd">
         <criterion test_ref="test_etc_passwd_no_duplicate_user_names" />

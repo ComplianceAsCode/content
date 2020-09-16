@@ -1,12 +1,8 @@
 <def-group>
   <definition class="compliance" id="installed_OS_is_vendor_supported" version="1">
-    <metadata>
-      <title>Vendor Supported Operating System</title>
-      {{{- oval_affected(products) }}}
-     <description>
+    {{{ oval_metadata("
         The operating system installed on the system is supported by a vendor that provides security patches.
-      </description>
-    </metadata>
+      ") }}}
     <criteria comment="Installed operating system is supported by a vendor" operator="OR">
       <extend_definition comment="Installed OS is RHEL6" definition_ref="installed_OS_is_rhel6" />
       <extend_definition comment="Installed OS is RHEL7" definition_ref="installed_OS_is_rhel7" />

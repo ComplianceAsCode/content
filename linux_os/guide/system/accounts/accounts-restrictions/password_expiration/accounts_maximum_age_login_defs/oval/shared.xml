@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="accounts_maximum_age_login_defs" version="3">
-    <metadata>
-      <title>Set Password Expiration Parameters</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The maximum password age policy should meet minimum requirements.</description>
-    </metadata>
+    {{{ oval_metadata("The maximum password age policy should meet minimum requirements.") }}}
     <criteria comment="The value PASS_MAX_DAYS should be set appropriately in /etc/login.defs">
       <criterion test_ref="test_pass_max_days" />
     </criteria>

@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="file_groupowner_efi_grub2_cfg" version="1">
-    <metadata>
-      <title>Verify the UEFI Boot Loader grub.cfg Group Owner</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>Verify that UEFI Boot Loader grub.cfg is group owned by 0.</description>
-    </metadata>
+    {{{ oval_metadata("Verify that UEFI Boot Loader grub.cfg is group owned by 0.") }}}
     <criteria operator="OR">
       <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if system boot mode is not UEFI" />
       <criterion comment="Check file group ownership of /boot/efi/EFI/redhat/grub.cfg" test_ref="test_file_groupowner_efi_grub2_cfg" />
