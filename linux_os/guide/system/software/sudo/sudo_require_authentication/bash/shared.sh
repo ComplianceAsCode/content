@@ -6,4 +6,4 @@
 
 {{{ bash_sudo_remove_config("NOPASSWD", "NOPASSWD[\s]*\:") }}}
 
-{{{ bash_sudo_remove_config("!authenticate", "!authenticate") }}}
+{{{ bash_sudo_remove_config("!authenticate", "\!authenticate") }}}

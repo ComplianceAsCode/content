@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = low
 
-{{{ bash_sudo_remove_config("!authenticate", "!authenticate") }}}
+{{{ bash_sudo_remove_config("!authenticate", "\!authenticate") }}}
