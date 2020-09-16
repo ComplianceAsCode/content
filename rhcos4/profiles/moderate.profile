@@ -2,6 +2,7 @@ documentation_complete: true
 
 metadata:
     SMEs:
+        - JAORMX
         - mrogers950
 
 reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
