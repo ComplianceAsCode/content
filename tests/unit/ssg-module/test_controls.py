@@ -9,6 +9,7 @@ data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 controls_dir = os.path.join(data_dir, "controls_dir")
 profiles_dir = os.path.join(data_dir, "profiles_dir")
 
+
 def test_controls_load():
     controls_manager = ssg.controls.ControlsManager(controls_dir)
     controls_manager.load()
@@ -47,7 +48,6 @@ def test_controls_load():
     assert "accounts_password_pam_ocredit" in c_r4.rules
     assert "var_password_pam_ocredit" in c_r4.variables
     assert c_r4.variables["var_password_pam_ocredit"] == "1"
-    #logging.info(c.rules)
 
 
 def test_controls_levels():
@@ -74,9 +74,11 @@ def test_controls_levels():
     assert c_4a.level == "high"
 
     # just the essential controls
-    low_controls = controls_manager.get_all_controls_of_level_at_least("abcd-levels", "low")
+    low_controls = controls_manager.get_all_controls_of_level_at_least(
+        "abcd-levels", "low")
     # essential and more advanced together
-    high_controls = controls_manager.get_all_controls_of_level_at_least("abcd-levels", "high")
+    high_controls = controls_manager.get_all_controls_of_level_at_least(
+        "abcd-levels", "high")
     all_controls = controls_manager.get_all_controls("abcd-levels")
 
     assert len(high_controls) == len(all_controls)
@@ -109,23 +111,29 @@ def test_profile_resolution_separate():
 
 
 def test_profile_resolution_extends_separate():
-    profile_resolution_extends(ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-low", "abcd-high")
+    profile_resolution_extends(
+        ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-low", "abcd-high")
 
 
 def test_profile_resolution_all_separate():
-    profile_resolution_all(ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-all")
+    profile_resolution_all(
+        ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-all")
 
 
 def test_profile_resolution_inline():
-    profile_resolution(ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
+    profile_resolution(
+        ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
 
 
 def test_profile_resolution_extends_inline():
-    profile_resolution_extends(ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline", "abcd-high-inline")
+    profile_resolution_extends(
+        ssg.build_yaml.ProfileWithInlinePolicies,
+        "abcd-low-inline", "abcd-high-inline")
 
 
 def test_profile_resolution_all_inline():
-    profile_resolution_all(ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
+    profile_resolution_all(
+        ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
 
 
 def profile_resolution(cls, profile_low):
@@ -144,9 +152,9 @@ def profile_resolution(cls, profile_low):
     assert "cockpit_session_timeout" in profile.selected
     assert "var_accounts_tmout" in profile.variables
 
-    # The rule "security_patches_up_to_date" has been selected directly by profile
-    # selections, not by using controls, so it should be in the resolved profile
-    # as well.
+    # The rule "security_patches_up_to_date" has been selected directly
+    # by profile selections, not by using controls, so it should be in
+    # the resolved profile as well.
     assert "security_patches_up_to_date" in profile.selected
 
 
@@ -171,8 +179,8 @@ def profile_resolution_extends(cls, profile_low, profile_high):
     assert "var_accounts_tmout" in high_profile.variables
 
     # The rule "security_patches_up_to_date" has been selected directly by the
-    # abcd-low profile selections, not by using controls, so it should be in the
-    # resolved profile as well.
+    # abcd-low profile selections, not by using controls, so it should be
+    # in the resolved profile as well.
     assert "security_patches_up_to_date" in high_profile.selected
 
     assert "accounts_passwords_pam_faillock_deny_root" in high_profile.selected
@@ -207,7 +215,7 @@ def profile_resolution_all(cls, profile_all):
     assert "var_password_pam_ocredit" in profile.variables
     assert profile.variables["var_password_pam_ocredit"] == "1"
 
-    # The rule "security_patches_up_to_date" has been selected directly by profile
-    # selections, not by using controls, so it should be in the resolved profile
-    # as well.
+    # The rule "security_patches_up_to_date" has been selected directly
+    # by profile selections, not by using controls, so it should be in
+    # the resolved profile as well.
     assert "security_patches_up_to_date" in profile.selected

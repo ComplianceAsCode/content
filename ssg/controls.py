@@ -23,10 +23,10 @@ class Control():
         control.description = control_dict.get("description")
         control.automated = control_dict.get("automated", "yes")
         if control.automated not in ["yes", "no", "partially"]:
-            msg = ("Invalid value '%s' of automated key in control "
-                    "%s '%s'. Can be only 'yes', 'no', 'partially'.") % (
-                control.automated,  control.id, control.title
-            )
+            msg = (
+                "Invalid value '%s' of automated key in control "
+                "%s '%s'. Can be only 'yes', 'no', 'partially'."
+                % (control.automated,  control.id, control.title))
             raise ValueError(msg)
         control.level = control_dict.get("level", default_level)
         control.notes = control_dict.get("notes", "")
@@ -57,7 +57,8 @@ class Policy():
             default_level = self.levels[0]
 
         for node in tree:
-            control = Control.from_control_dict(node, default_level=default_level)
+            control = Control.from_control_dict(
+                node, default_level=default_level)
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
@@ -75,8 +76,8 @@ class Policy():
             self.level_value[level] = i
 
         controls_tree = ssg.utils.required_key(yaml_contents, "controls")
-        self.controls = {
-            c.id: c for c in self._parse_controls_tree(controls_tree)}
+        self.controls = dict(
+            (c.id, c) for c in self._parse_controls_tree(controls_tree))
 
     def get_control(self, control_id):
         try:
@@ -128,8 +129,9 @@ class ControlsManager():
 
         if level_id not in policy.levels:
             msg = (
-                "Control level {level_id} not compatible with policy {policy_id}"
-                .format(level_id=level_id, policy_id=policy_id)
+                "Control level {level_id} not compatible "
+                "with policy {policy_id}"
+                .format(level_id=level_id, policy_id=policy.id)
             )
             raise ValueError(msg)
         return policy.level_value[level_id]
