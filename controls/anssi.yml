@@ -23,18 +23,19 @@ controls:
       The minimal install is a good starting point, but this doesn't provide any assurante over any packages installed later.
     rules:
     - package_dhcp_removed
-    - package_rsh_removed
-    - package_rsh-server_removed
+    #- package_rsh_removed
+    #- package_rsh-server_removed
     - package_sendmail_removed
-    - package_talk_removed
-    - package_talk-server_removed
-    - package_telnet_removed
-    - package_telnet-server_removed
-    - package_tftp_removed
-    - package_tftp-server_removed
-    - package_xinetd_removed
-    - package_ypbind_removed
-    - package_ypserv_removed
+    - package_telnetd_removed
+    #- package_talk_removed
+    #- package_talk-server_removed
+    #- package_telnet_removed
+    #- package_telnet-server_removed
+    #- package_tftp_removed
+    #- package_tftp-server_removed
+    #- package_xinetd_removed
+    #- package_ypbind_removed
+    #- package_ypserv_removed
 
   - id: R2
     level: intermediary
@@ -87,15 +88,15 @@ controls:
       authentication, multi-factor authentication, encryption, logging, auditing, sandboxing,
       intrusion detection systems, firewalls, and vulnerability scanners.
     rules:
-    - package_audit_installed
-    - service_auditd_enabled
+    #- package_audit_installed
+    #- service_auditd_enabled
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
     - service_rsyslog_enabled
-    - package_ntp_installed
-    - package_firewalld_installed
-    - service_firewalld_enabled
-    - sssd_enable_smartcards
+    #- package_ntp_installed
+    #- package_firewalld_installed
+    #- service_firewalld_enabled
+    #- sssd_enable_smartcards
 
   - id: R6
     level: enhanced
