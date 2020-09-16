@@ -47,7 +47,7 @@ ocil_clause: "rsyslog accepts remote messages"
 ocil: |-
     Display the contents of the configuration file:
     <pre>cat /etc/rsyslog.conf</pre>
-    Make sure that following lines are not present in the configuration:
+    Make sure that the following lines are not present in the output:
     <pre>$ModLoad imtcp
     $InputTCPServerRun <i>port</i>
     $ModLoad imudp
