@@ -1,5 +1,13 @@
 documentation_complete: true
 
+metadata:
+    version: 2.2.0
+    SMEs:
+        - vojtapolasek
+        - yuumasato
+
+reference: TODO
+
 title: 'CIS Red Hat Enterprise Linux 7 Benchmark'
 
 description: |-
