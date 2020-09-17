@@ -1,8 +1,40 @@
 #!/bin/bash
 
+display_description() {
+    echo "Build a content container image for OpenShift."
+    echo ""
+}
+
+print_usage() {
+    echo "Usage:"
+    echo "    $0 -h                      Display this help message."
+    echo "    $0 -n [namespace]          Build image in the given namespace (Defaults to 'openshift-compliance')."
+    exit 0
+}
+
+parms=()
+
+while getopts ":hdn:" opt; do
+    case ${opt} in
+        n ) # Set the namespace
+            namespace_opt=$OPTARG
+            ;;
+        d ) # Set debug build
+            params+=(--debug)
+            ;;
+        h ) # Display help
+            display_description
+            print_usage
+            ;;
+        \? ) 
+            print_usage
+            ;;
+    esac
+done
+
 # Build container in specified namespace. Else default to
 # "openshift-compliance"
-namespace=${1:-"openshift-compliance"}
+namespace=${namespace_opt:-"openshift-compliance"}
 
 echo "* Pushing datastream content image to namespace: $namespace"
 
@@ -12,7 +44,7 @@ pushd $root_dir
 
 echo "* Building ocp4, rhel7, rhcos4 products"
 # build the product's content
-"$root_dir/build_product" ocp4 rhel7 rhcos4
+"$root_dir/build_product" ocp4 rhel7 rhcos4 "${params[@]}"
 
 if [ "$namespace" == "openshift-compliance" ]; then
     # Ensure openshift-compliance namespace exists. If it already exists, this
