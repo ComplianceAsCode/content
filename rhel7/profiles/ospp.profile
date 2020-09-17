@@ -1,5 +1,13 @@
 documentation_complete: true
 
+metadata:
+    version: 4.2.1
+    SMEs:
+        - stevegrubb
+        - redhatrises
+
+reference: https://www.niap-ccevs.org/Profile/PP.cfm
+
 title: 'OSPP - Protection Profile for General Purpose Operating Systems v4.2.1'
 
 description: |-

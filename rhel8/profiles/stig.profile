@@ -4,7 +4,6 @@ metadata:
     version: V1R0.1-Draft
     SMEs:
         - redhatrises
-        - tedbrunell
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 

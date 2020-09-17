@@ -1,5 +1,9 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - redhatrises
+
 title: 'NIST National Checklist for Red Hat Enterprise Linux CoreOS'
 
 description: |-

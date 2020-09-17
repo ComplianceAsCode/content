@@ -3,6 +3,7 @@ documentation_complete: True
 metadata:
     SMEs:
         - jjaswanson4
+        - redhatrises
 
 reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 

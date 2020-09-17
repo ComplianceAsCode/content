@@ -4,6 +4,7 @@ metadata:
     version: 4.2.1
     SMEs:
         - stevegrubb
+        - redhatrises
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 
