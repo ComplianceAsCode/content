@@ -13,5 +13,4 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal
 WORKDIR /
 COPY --from=builder /content/build/ssg-ocp4-ds.xml .
 COPY --from=builder /content/build/ssg-rhel7-ds.xml .
-COPY --from=builder /content/build/ssg-rhel8-ds.xml .
 COPY --from=builder /content/build/ssg-rhcos4-ds.xml .
