@@ -8,6 +8,7 @@ from copy import deepcopy
 import datetime
 import re
 import sys
+from xml.sax.saxutils import escape
 
 import yaml
 
@@ -205,7 +206,7 @@ class Profile(object):
         desc.set("override", "true")
 
         if self.reference:
-            add_sub_element(element, "reference", self.reference)
+            add_sub_element(element, "reference", escape(self.reference))
 
         for selection in self.selected:
             select = ET.Element("select")
