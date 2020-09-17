@@ -6,7 +6,7 @@ metadata:
         - vojtapolasek
         - yuumasato
 
-reference: https://www.cisecurity.org/cis-benchmarks/#red_hat_linux
+reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 
 title: 'CIS Red Hat Enterprise Linux 8 Benchmark'
 

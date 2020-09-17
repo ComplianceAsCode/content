@@ -6,7 +6,8 @@ metadata:
         - vojtapolasek
         - yuumasato
 
-reference: TODO
+reference: https://www.cisecurity.org/cis-benchmarks/#red_hat_linux
+
 
 title: 'CIS Red Hat Enterprise Linux 7 Benchmark'
 
