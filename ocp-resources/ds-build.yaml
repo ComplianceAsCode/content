@@ -2,6 +2,9 @@ kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
   name: "openscap-ocp4-ds" 
+spec:
+  lookupPolicy:
+    local: true
 ---
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
