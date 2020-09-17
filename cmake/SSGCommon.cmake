@@ -600,6 +600,14 @@ macro(ssg_build_sds PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
     )
 
+    if("${PRODUCT}" MATCHES "rhel(6|7|8)")
+        add_test(
+            NAME "missing-cces-${PRODUCT}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/missing_cces.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        )
+        set_tests_properties("missing-cces-${PRODUCT}" PROPERTIES LABELS quick)
+    endif()
+
     define_validate_product("${PRODUCT}")
     if ("${VALIDATE_PRODUCT}" OR "${FORCE_VALIDATE_EVERYTHING}")
         add_test(
