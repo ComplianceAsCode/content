@@ -3,8 +3,9 @@ documentation_complete: true
 metadata:
     version: 4.2.1
     SMEs:
-        - stevegrubb
+        - comps
         - redhatrises
+        - stevegrubb
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 
