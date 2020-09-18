@@ -180,9 +180,10 @@ def reboot_domain(domain, domain_ip, ssh_port):
     while domain.isActive():
         time.sleep(1)
         if time.time() >= end_time:
-            str_err = "Timeout reached: '{0}' domain failed to shutdown.".format(domain.name())
-            logging.debug(str_err)
-            raise TimeoutException(str_err)
+            str_err = ("Timeout reached: '{0}' domain failed to shutdown. "
+                       "Forcing the shutdown...".format(domain.name()))
+            logging.warning(str_err)
+            domain.destroy()
 
     logging.debug("Starting domain '{0}'".format(domain.name()))
     domain.create()
