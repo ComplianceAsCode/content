@@ -9,18 +9,28 @@ print_usage() {
     echo "Usage:"
     echo "    $0 -h                      Display this help message."
     echo "    $0 -n [namespace]          Build image in the given namespace (Defaults to 'openshift-compliance')."
+    echo "    $0 -p                      Create ProfileBundle objects for the image."
     exit 0
 }
 
 parms=()
 
-while getopts ":hdn:" opt; do
+# Build container in specified namespace. Else default to
+# "openshift-compliance"
+namespace="openshift-compliance"
+create_profile_bundles="false"
+products=(ocp4 rhel7 rhcos4)
+
+while getopts ":hdpn:" opt; do
     case ${opt} in
         n ) # Set the namespace
-            namespace_opt=$OPTARG
+            namespace=$OPTARG
             ;;
         d ) # Set debug build
             params+=(--debug)
+            ;;
+        p ) # Create ProfileBundle objects
+            create_profile_bundles="true"
             ;;
         h ) # Display help
             display_description
@@ -32,19 +42,16 @@ while getopts ":hdn:" opt; do
     esac
 done
 
-# Build container in specified namespace. Else default to
-# "openshift-compliance"
-namespace=${namespace_opt:-"openshift-compliance"}
-
 echo "* Pushing datastream content image to namespace: $namespace"
 
 root_dir=$(git rev-parse --show-toplevel)
 
 pushd $root_dir
 
-echo "* Building ocp4, rhel7, rhcos4 products"
+echo "* Building $(echo ${products[@]} | sed 's/ /, /g') products"
+
 # build the product's content
-"$root_dir/build_product" ocp4 rhel7 rhcos4 "${params[@]}"
+"$root_dir/build_product" "${products[@]}" "${params[@]}"
 
 if [ "$namespace" == "openshift-compliance" ]; then
     # Ensure openshift-compliance namespace exists. If it already exists, this
@@ -87,6 +94,14 @@ while true; do
         echo "Success!"
         echo "********"
         echo "Your image is available at: $image"
+
+        if [ "$create_profile_bundles" == "true" ]; then
+            echo "Creating profile bundles"
+            for prod in "${products[@]}"
+            do
+                sed "s/\$PRODUCT/$prod/g" "$root_dir/ocp-resources/profile-bundle.yaml.tpl" | oc apply -f -
+            done
+        fi
         exit 0
     elif [ "$build_status" == "Error" ]; then
         echo "Error!"
