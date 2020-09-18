@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from __future__ import print_function
 
@@ -8,6 +8,7 @@ import argparse
 import os
 import ssg
 import ssg.xml
+import xml.dom.minidom
 
 ET = ssg.xml.ElementTree
 
@@ -65,8 +66,8 @@ def ssg_xccdf_stigid_mapping(ssgtree):
 
 def get_nested_stig_items(ssg_mapping, srg):
     mapped_id = "XXXX"
-    for rhid, srgs in ssg_mapping.iteritems():
-        for xccdfid, srglist in srgs.iteritems():
+    for rhid, srgs in ssg_mapping.items():
+        for xccdfid, srglist in srgs.items():
             if srg in srglist and len(srglist) > 1:
                 mapped_id = xccdfid
                 break
@@ -115,9 +116,11 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
 
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
-    tree = ET.ElementTree(new_stig_overlay)
-    tree.write(outfile, encoding="UTF-8",
-               xml_declaration=True)
+    
+    dom = xml.dom.minidom.parseString(ET.tostring(new_stig_overlay, encoding="UTF-8", xml_declaration=True))
+    pretty_xml_as_string = dom.toprettyxml(indent='  ', encoding="UTF-8")
+    with open(outfile, 'wb') as f:
+        f.write(pretty_xml_as_string)
     print("\nGenerated the new STIG overlay file: %s" % outfile)
 
 
