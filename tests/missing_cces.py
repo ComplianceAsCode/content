@@ -26,11 +26,15 @@ def check_all_rules(root):
         selected_rules = get_selected_rules(benchmark)
         for rule in benchmark.findall(".//{%s}Rule" % (XCCDF12_NS)):
             rule_id = rule.get("id")
-            if rule_id in selected_rules:
-                match = rule.find(
-                    "{%s}ident[@system='%s']" % (XCCDF12_NS, cce_uri))
-                if match is None:
-                    rules_missing_cce.append(rule_id)
+            if rule_id not in selected_rules:
+                continue
+            match = False
+            for ident in rule.findall("{%s}ident" % (XCCDF12_NS)):
+                if ident.get("system") == cce_uri:
+                    match = True
+                    break
+            if not match:
+                rules_missing_cce.append(rule_id)
     return rules_missing_cce
 
 
