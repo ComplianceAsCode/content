@@ -1812,8 +1812,6 @@ an OVAL template file called _template_OVAL_package_installed_:
 </def-group>
 ----
 
-Notice that you can use Jinja macros and Jinja filters in the template code.
-
 And here is the Ansible template file called _template_ANSIBLE_package_installed_:
 
 ----
@@ -1886,6 +1884,18 @@ def mount_option(data, lang):
         data["mountoption"] = re.sub(" ", ",", data["mountoption"])
     return data
 ----
+
+==== Filters
+
+You can use Jinja macros and Jinja filters in the template code. ComplianceAsCode support all built-in Jinja link:https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters[filters]. 
+
+There are also some custom filters useful for content authoring defined in the project:
+
+escape_id::
+* Replaces all non-word (regex *\W*) characters with underscore. Useful for sanitizing ID strings as it is compatible with OVAL IDs `oval:[A-Za-z0-9_\-\.]+:ste:[1-9][0-9]*`.
+
+escape_regex::
+* Escapes characters in the string for it to be usable as a part of some regular expression, behaves similar to the Python 3's link:https://docs.python.org/3/library/re.html#re.escape[*re.escape*].
 
 
 === Tests (ctest)
