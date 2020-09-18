@@ -10,11 +10,11 @@ oc apply -f "$root_dir/ocp-resources/compliance-operator-ns.yaml"
 # namespace
 sleep 5
 
-echo "* Creating OperatorSource"
+echo "* Creating CatalogSource"
 # Create operator source so we can install the latest available release which
 # is available from an "external datastore"; meaning, it's our upstream release
 # which is not yet in OperatorHub
-oc apply -f "$root_dir/ocp-resources/compliance-operator-source.yaml"
+oc apply -f "$root_dir/ocp-resources/compliance-operator-catalog-source.yaml"
 
 echo "* Creating OperatorGroup"
 # Create operator group (defines which namespaces are targetted by the
