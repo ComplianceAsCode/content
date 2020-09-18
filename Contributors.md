@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.pyc script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2020-07-17 09:11
+Last Modified: 2020-09-18 10:42
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -28,7 +28,6 @@ The following people have contributed to the SCAP Security Guide project
 * Patrick Callahan <pmc@patrickcallahan.com>
 * George Campbell <gcampbell@palantir.com>
 * Nick Carboni <ncarboni@redhat.com>
-* Carlos <64919342+carlosmmatos@users.noreply.github.com>
 * James Cassell <james.cassell@ll.mit.edu>
 * Frank Caviggia <fcaviggi@ra.iad.redhat.com>
 * Eric Christensen <echriste@redhat.com>
@@ -36,6 +35,7 @@ The following people have contributed to the SCAP Security Guide project
 * Caleb Cooper <coopercd@ornl.gov>
 * Deric Crago <deric.crago@gmail.com>
 * Will Cushen <wcushen@redhat.com>
+* cyarbrough76 <42849651+cyarbrough76@users.noreply.github.com>
 * Maura Dailey <maura@eclipse.ncsc.mil>
 * Klaas Demter <demter@atix.de>
 * dhanushkar-wso2 <dhanushkar@wso2.com>
@@ -64,7 +64,6 @@ The following people have contributed to the SCAP Security Guide project
 * John Hooks <jhooks@starscream.pa.jhbcomputers.com>
 * Jakub Hrozek <jhrozek@redhat.com>
 * De Huo <De.Huo@windriver.com>
-* Ultra IA <42849651+cyarbrough76@users.noreply.github.com>
 * Robin Price II <robin@redhat.com>
 * Yasir Imam <yimam@redhat.com>
 * Jiri Jaburek <jjaburek@redhat.com>
@@ -94,6 +93,7 @@ The following people have contributed to the SCAP Security Guide project
 * Caitlin Macleod <caitelatte@gmail.com>
 * Matus Marhefka <mmarhefk@redhat.com>
 * Jamie Lorwey Martin <jlmartin@redhat.com>
+* Carlos Matos <cmatos@redhat.com>
 * Robert McAllister <rmcallis@redhat.com>
 * Michael McConachie <michael@redhat.com>
 * Khary Mendez <kharyam@gmail.com>
