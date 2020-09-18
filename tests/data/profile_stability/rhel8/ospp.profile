@@ -143,7 +143,6 @@ selections:
 - package_openscap-scanner_installed
 - package_openssh-clients_installed
 - package_openssh-server_installed
-- package_pigz_removed
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
 - package_rng-tools_installed
