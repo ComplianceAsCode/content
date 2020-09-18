@@ -13,7 +13,6 @@
 
   <ind:textfilecontent54_object id="object_last_pass_max_days_from_etc_login_defs" version="1">
     <!-- Read whole /etc/login.defs as single line so we can retrieve last PASS_MAX_DAYS directive occurrence -->
-    <ind:behaviors singleline="true" />
     <ind:filepath>/etc/login.defs</ind:filepath>
     <!-- Retrieve last (uncommented) occurrence of PASS_MAX_DAYS directive -->
     <ind:pattern operation="pattern match">^(?:.*\n)*\s*[^#]*(PASS_MAX_DAYS\s+\d+)\s*\n</ind:pattern>
