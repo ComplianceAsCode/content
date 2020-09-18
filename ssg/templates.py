@@ -364,24 +364,18 @@ def yamlfile_value(data, lang):
 
 
 @template(["oval"])
-def bls_entries_option(data, lang):
-    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
-    if lang == "oval":
-        # escape dot, this is used in oval regex
-        data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
-        # replace . with _, this is used in test / object / state ids
-        data["sanitized_arg_name"] = data["arg_name"].replace(".", "_")
+def argument_in_file(data, lang):
     return data
 
 
 @template(["ansible", "bash", "oval"])
 def zipl_bls_entries_option(data, lang):
-    return bls_entries_option(data, lang)
+    return data
 
 
 @template(["oval"])
 def coreos_kernel_option(data, lang):
-    return bls_entries_option(data, lang)
+    return data
 
 
 class Builder(object):

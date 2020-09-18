@@ -220,8 +220,8 @@
     - filepath (String): Path to the file to be checked.
     - id of the test name - the test will be named test_<id>
 #}}
-{{%- macro oval_file_absent_criterion(filepath, id) -%}}
-	<criterion comment="Pass if {{{ filepath }}} does not exist" test_ref="test_{{{ id }}}" />
+{{%- macro oval_file_absent_criterion(filepath, id='') -%}}
+	<criterion comment="Pass if {{{ filepath }}} does not exist" test_ref="test_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
 {{%- endmacro %}}
 
 {{#
@@ -230,11 +230,12 @@
     - filepath (String): Path to the configuration file to be checked.
     - id of the test name - the test will be named test_<id>, the respective object object_<id> etc.
 #}}
-{{%- macro oval_file_absent(filepath, id) -%}}
-  <unix:file_test check="all" check_existence="none_exist" comment="{{{ filepath }}} does not exist" id="test_{{{ id }}}" version="1">
-    <unix:object object_ref="object_{{{ id }}}" />
+{{%- macro oval_file_absent(filepath, id='') -%}}
+  <unix:file_test check="all" check_existence="none_exist" id="test_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent"
+  comment="Check if {{{ filepath }}} does not exist" version="1">
+    <unix:object object_ref="object_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
   </unix:file_test>
-  <unix:file_object id="object_{{{ id }}}" version="1">
+  <unix:file_object id="object_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent" version="1">
     <unix:filepath>{{{ filepath }}}</unix:filepath>
   </unix:file_object>
 {{%- endmacro %}}
@@ -249,6 +250,73 @@
     <unix:filepath operation="pattern match">^{{{ path }}}</unix:filepath>
   </unix:file_object>
 {{%- endmacro %}}
+
+{{#
+  Macro to define the OVAL test to check if there is a line in file with a pair of argument=value (Criterion definition).
+  Parameters:
+    - filepath (String): Path to the file to be checked.
+    - name (String): Argument name
+    - value (String): Argument value
+    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
+#}}
+{{%- macro oval_argument_in_file_criterion(filepath, name, value, application='') -%}}
+{{%- set name_value = name+"="+value -%}}
+  <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is present in {{{ filepath }}}" 
+  test_ref="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}"/>
+{{%- endmacro -%}}
+
+{{#
+  Macro to define the OVAL test to check if there is a line in file with a pair of argument=value (Test definition).
+  Parameters:
+    - filepath (String): Path to the configuration file to be checked.
+    - name (String): Argument name
+    - value (String): Argument value
+    - line_prefix (String): The starting part of the line with the list of arguments, default is empty
+    - line_suffix (String): The ending part of the line with the list of arguments, default is empty
+#}}
+{{%- macro oval_argument_in_file_test(filepath, name, value, line_prefix='', line_suffix='') -%}}
+{{%- set name_value = name+"="+value -%}}
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}"
+  comment="Check if argument {{{ name_value }}} is present{{% if line_prefix %}} in the line starting with '{{{ line_prefix }}}'{{% endif %}} in {{{ filepath }}}"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" version="1">
+    <ind:filepath>{{{ filepath }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^{{{ line_prefix|escape_regex }}}(.*){{{ line_suffix|escape_regex }}}$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ name_value|escape_regex }}}(?:\s.*)?$</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{%- endmacro -%}}
+
+{{#
+  Hight level macro to define the OVAL test to check if there is a line in file with a pair of argument=value.
+  Parameters:
+    - filepath (String): Path to the configuration file to be checked.
+    - name (String): Argument name
+    - value (String): Argument value
+    - line_prefix (String): The starting part of the line with the list of arguments, default is empty
+    - line_suffix (String): The ending part of the line with the list of arguments, default is empty
+    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
+#}}
+{{%- macro oval_argument_in_file(filepath, name, value, application='', line_prefix='', line_suffix='') -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="2">
+    <metadata>
+      <title>Ensure that {{{ application if application else 'the respective application or service' }}} is configured to run with argument {{{ name }}}={{{ value }}}</title>
+      {{{- oval_affected(products) }}}
+      <description>Ensure {{{ name }}}={{{ value }}} argument is present{{% if line_prefix %}} in the line starting with '{{{ line_prefix }}}'{{% endif %}} in {{{ filepath }}}.</description>
+    </metadata>
+    <criteria operator="AND">
+      {{{- oval_argument_in_file_criterion(filepath, name, value, application) }}}
+    </criteria>
+  </definition>
+  {{{- oval_argument_in_file_test(filepath, name, value, line_prefix, line_suffix) }}}
+</def-group>
+{{%- endmacro -%}}
 
 {{#
   High level macro to check if a particular combination of parameter and value in the ssh daemon configuration file is set.
