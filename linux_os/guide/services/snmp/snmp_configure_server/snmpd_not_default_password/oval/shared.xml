@@ -11,7 +11,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_snmp_default_communities" version="1">
     <ind:filepath>/etc/snmp/snmpd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(com2se|rocommunity|rwcommunity|createUser).*(public|private)</ind:pattern>
+    <ind:pattern operation="pattern match">^((?!#).)*(public|private).*</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
