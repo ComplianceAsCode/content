@@ -97,6 +97,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
     - accounts_logon_fail_delay
+    - accounts_logon_fail_delay.severity=medium
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
     - sshd_do_not_permit_user_env
@@ -274,6 +275,7 @@ selections:
     - network_sniffer_disabled
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
+    - package_vsftpd_removed.severity=high
     - package_tftp-server_removed
     - sshd_enable_x11_forwarding
     - tftpd_uses_secure_mode
