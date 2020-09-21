@@ -41,8 +41,11 @@ def process_results(result_path):
         id_ = base_req.get("id")
         status = base_req.find("./{%s}status" % scapval_results_ns).text
         if status == "FAIL":
-            print("    %s: %s" % (id_, status))
-            ret_val = False
+            if 'ssg-ocp4-ds' in result_path and id_ == "SRC-329":
+                print("    %s: %s" % (id_, "WARNING (Contains non-standardized yamlfilecontent_test)"))
+            else:
+                print("    %s: %s" % (id_, status))
+                ret_val = False
     return ret_val
 
 
