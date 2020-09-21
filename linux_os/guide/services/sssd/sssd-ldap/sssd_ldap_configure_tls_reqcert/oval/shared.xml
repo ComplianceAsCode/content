@@ -1,10 +1,7 @@
 <def-group>
   <definition class="compliance" id="sssd_ldap_configure_tls_reqcert" version="1">
-    <metadata>
-      <title>Configure SSSD LDAP Backend Client to Demand a Valid Certificate from the Server</title>
-      {{{- oval_affected(products) }}}
-      <description>Configure SSSD to request a valid certificate from the server to protect LDAP remote access sessions.</description>
-    </metadata>
+    {{{ oval_metadata("Configure SSSD to request a valid certificate from the server to protect LDAP remote access sessions.",
+        title="Configure SSSD LDAP Backend Client to Demand a Valid Certificate from the Server") }}}
     <criteria>
       <criterion test_ref="test_sssd_ldap_tls_reqcert" />
     </criteria>
