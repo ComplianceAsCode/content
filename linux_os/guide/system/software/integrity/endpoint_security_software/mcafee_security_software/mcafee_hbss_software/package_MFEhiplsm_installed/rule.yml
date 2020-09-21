@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: fedora,rhel6,rhel7,rhel8,rhv4
+
 title: 'Install the Host Intrusion Prevention System (HIPS) Module'
 
 description: |-
@@ -36,10 +38,8 @@ ocil: |-
     To verify that McAfee HIPS is installed, run the following command(s):
     <pre>$ rpm -q MFEhiplsm</pre>
 
-{{% if product in ["rhel7", "ol7", "rhel8", "ol8"] %}}
 conflicts:
     - selinux_state
-{{% endif %}}
 
 warnings:
     - functionality: |-
