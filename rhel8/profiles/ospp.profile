@@ -426,4 +426,3 @@ selections:
     - zipl_vsyscall_argument
     - zipl_vsyscall_argument.role=unscored
     - zipl_vsyscall_argument.severity=info
-    - zipl_pti_argument
