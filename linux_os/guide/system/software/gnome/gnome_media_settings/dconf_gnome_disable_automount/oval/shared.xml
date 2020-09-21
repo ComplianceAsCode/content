@@ -2,8 +2,7 @@
   <definition class="compliance" id="dconf_gnome_disable_automount" version="2">
     {{{ oval_metadata("The system's default desktop environment, GNOME3, will mount
       devices and removable media (such as DVDs, CDs and USB flash drives)
-      whenever they are inserted into the system. Disable automount and autorun
-      within GNOME3.") }}}
+      whenever they are inserted into the system. Disable automount within GNOME3.", title="Disable GNOME3 automount") }}}
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Disable GNOME3 automount and prevent user from changing it" operator="AND">
