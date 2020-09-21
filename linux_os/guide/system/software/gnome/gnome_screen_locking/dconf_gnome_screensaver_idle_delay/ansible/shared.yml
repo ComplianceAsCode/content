@@ -12,6 +12,7 @@
     option: idle-delay
     value: "{{ inactivity_timeout_value }}"
     create: yes
+    no_extra_spaces: yes
 
 - name: "Prevent user modification of GNOME idle-delay"
   lineinfile:
