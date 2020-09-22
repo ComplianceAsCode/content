@@ -1,5 +1,12 @@
 documentation_complete: true
 
+metadata:
+    version: V2R8
+    SMEs:
+        - redhatrises
+
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+
 title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-

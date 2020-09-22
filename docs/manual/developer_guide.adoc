@@ -656,6 +656,33 @@ For any of the `[red]#Required#` directories that may not yet add content,
 add a `.gitkeep` file for any empty directories.
 ====
 
+=== Profiles
+
+Profiles define the set of rules and variables aligned to a compliance standard.
+
+Structurally, a profile is a YAML file that represents a dictionary.
+A profile YAML file has one implied attribute:
+
+* `id`: The primary identifier for the profile, to be referenced during evaluations. This is inferred from the file name.
+
+A profile YAML file can, optionally, include metadata about the implemented policy and experts in the field, called Subject Matter Experts (SMEs). The SMEs usually are people familiar with the policy requirements or how it is applied.
+
+* `metadata`: Dictionary for profile metadata.
+  * `reference`: URL pointing to page or organization that publishes the policy.
+  * `version`: Version of the policy implemented by the profile.
+  * `SMEs`: List of people experienced with the profile, or how they are applied. The preferred method is the GitHub handle, but email is also accepted.
+
+A profile should define these attributes:
+
+* `title`: Human-readable title of the profile.
+* `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale.
+* `extends`: The `id` of a profile to be extended. A profile can make incremental changes based on another profile, via `extends` attribute. The extendee can then, via the `selections` attribute, select/unselect rules and change XCCDF Value selectors.
+* `selections`: List composed of items of these types:
+  * `id`s of rules to be included in the profile, e.g. `accounts_tmout`, or
+  * `id`s of rules to be excluded from the profile prefixed by an exclamation mark, e.g. `!accounts_tmout`, or
+  * changes to XCCDF Value selectors, e.g. `var_accounts_tmout=10_min`, or
+  * rule refinements, e.g. `accounts_tmout.severity=high`.
+
 == Updating Reference and Overlay Content
 
 === Reference Content

@@ -1,5 +1,13 @@
 documentation_complete: true
 
+metadata:
+    version: 1.1.0
+    SMEs:
+        - vojtapolasek
+        - yuumasato
+
+reference: https://www.cisecurity.org/benchmark/red_hat_linux/
+
 title: 'CIS Red Hat Enterprise Linux 8 Benchmark'
 
 description: |-

@@ -1,5 +1,14 @@
 documentation_complete: true
 
+metadata:
+    version: 4.2.1
+    SMEs:
+        - comps
+        - redhatrises
+        - stevegrubb
+
+reference: https://www.niap-ccevs.org/Profile/PP.cfm
+
 title: 'Protection Profile for General Purpose Operating Systems'
 
 description: |-

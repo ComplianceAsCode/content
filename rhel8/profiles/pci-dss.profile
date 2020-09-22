@@ -1,5 +1,11 @@
 documentation_complete: true
 
+metadata:
+    SMEs:
+        - redhatrises
+
+reference: https://www.hhs.gov/hipaa/for-professionals/index.html
+
 title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
 
 description: |-

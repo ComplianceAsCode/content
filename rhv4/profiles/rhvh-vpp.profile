@@ -1,5 +1,12 @@
 documentation_complete: true
 
+metadata:
+    version: 1.0
+    SMEs:
+        - redhatrises
+
+reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=408&id=408
+
 title: 'VPP - Protection Profile for Virtualization v. 1.0 for Red Hat Virtualization Host (RHVH)'
 
 description: |-

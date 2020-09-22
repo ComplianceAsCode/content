@@ -1,5 +1,12 @@
 documentation_complete: true
 
+metadata:
+    version: V1R0.1-Draft
+    SMEs:
+        - redhatrises
+
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
+
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
