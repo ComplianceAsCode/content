@@ -14,7 +14,7 @@ description: |-
     <tt>halt</tt>. For certain systems, the need for availability
     outweighs the need to log all actions, and a different setting should be
     determined.
-    This profile configures the <i>action</i> to be {{{ sub_var_value("var_audispd_network_failure_action") }}}.
+    This profile configures the <i>action</i> to be <tt>{{{ xccdf_value("var_audispd_network_failure_action") }}}</tt>.
 
 rationale: |-
     Taking appropriate action when there is an error sending audit records to a
@@ -39,4 +39,4 @@ ocil: |-
     determine if the system is configured to perform a correct action according to the policy:
     <pre>grep -i network_failure_action /etc/audisp/audisp-remote.conf</pre>
     The output should return:
-    <pre>network_failure_action = {{{ sub_var_value("var_audispd_network_failure_action") }}}</pre>
+    <pre>network_failure_action = {{{ xccdf_value("var_audispd_network_failure_action") }}}</pre>
