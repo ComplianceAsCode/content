@@ -219,7 +219,6 @@ selections:
 - zipl_bls_entries_only
 - zipl_bootmap_is_up_to_date
 - zipl_page_poison_argument
-- zipl_pti_argument
 - zipl_slub_debug_argument
 - zipl_vsyscall_argument
 - var_sshd_set_keepalive=0
