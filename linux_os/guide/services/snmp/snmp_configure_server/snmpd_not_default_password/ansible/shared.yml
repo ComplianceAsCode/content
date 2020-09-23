@@ -6,14 +6,21 @@
 
 {{{ ansible_instantiate_variables("var_snmpd_ro_string", "var_snmpd_rw_string") }}}
 
+- name: "Check if file /etc/snmp/snmpd.conf exists"
+  stat:
+    path: /etc/snmp/snmpd.conf
+  register: snmpd
+
 - name: "Replace all instances of SNMP RO strings"
   replace:
     path: "/etc/snmp/snmpd.conf"
     regexp: 'public'
     replace: '{{ var_snmpd_ro_string }}'
+  when: snmpd.stat is defined and snmpd.stat.exists
 
 - name: "Replace all instances of SNMP RW strings"
   replace:
     path: "/etc/snmp/snmpd.conf"
     regexp: 'private'
     replace: '{{ var_snmpd_rw_string }}'
+  when: snmpd.stat is defined and snmpd.stat.exists
