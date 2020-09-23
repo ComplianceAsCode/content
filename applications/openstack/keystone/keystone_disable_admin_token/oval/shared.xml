@@ -8,7 +8,7 @@
       <description>Is admin_token parameter set to disabled?</description>
     </metadata>
     <criteria comment="Is admin_token parameter set to disabled?" operator="AND">
-      <criterion comment="Check admin_token in /etc/keystone/keystone-paste.ini" test_ref="test_keystone_admin_token" />
+      <criterion comment="Check admin_token in /etc/keystone/keystone.conf" test_ref="test_keystone_admin_token" />
       <criterion comment="Check AdminTokenAuthMiddleware does not exist in /etc/keystone/keystone-paste.ini" test_ref="test_keystone_admin_token_auth_middleware" />
     </criteria>
   </definition>
