@@ -55,6 +55,9 @@ references:
     cis-csc: 1,12,13,14,15,16,18,3,5,7,8
     anssi: BP28(R29)
 
+requires:
+    - sshd_set_keepalive
+
 ocil_clause: 'it is commented out or not configured properly'
 
 ocil: |-
@@ -62,3 +65,8 @@ ocil: |-
     <pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
     If properly configured, the output should be:
     <pre>ClientAliveInterval {{{ xccdf_value("sshd_idle_timeout_value") }}}</pre>
+
+warnings:
+    - dependency: |-
+        SSH disconnecting idle clients will not have desired effect without also
+        configuring ClientAliveCountMax in the SSH service configuration.
