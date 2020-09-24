@@ -538,7 +538,7 @@ benchmark_root: "../linux_os/guide"
 ----
 
 Rules from multiple locations can be used for a single Benchmark. There is an optional key `additional_content_directories` for a list of paths to some arbitrary Groups of Rules
-to be included in the benchmark. Of all the rules collected only following would become a part of the benchmark:
+to be included in the benchmark. Note that the additional directories cannot contain a benchmark file (`benchmark.yml`), otherwise it fails to build the content. Of all the rules collected only the following would become a part of the benchmark:
 
 - rules that have the `prodtype` specified in correspondence with the benchmark;
 - rules that have no `prodtype` metadata.
@@ -548,7 +548,8 @@ to be included in the benchmark. Of all the rules collected only following would
 
 benchmark_root: "../applications"
 additional_content_directories:
-    - "../linux_os/guide"
+    - "../linux_os/guide/services"
+    - "../linux_os/guide/system"
 
 .....
 ----
