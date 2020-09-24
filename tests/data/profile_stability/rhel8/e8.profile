@@ -98,7 +98,6 @@ selections:
 - sshd_enable_strictmodes
 - sshd_print_last_log
 - sshd_set_loglevel_info
-- sshd_use_priv_separation
 - sudo_remove_no_authenticate
 - sudo_remove_nopasswd
 - sudo_require_authentication
