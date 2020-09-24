@@ -500,6 +500,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",
     "zipl": "cpe:/a:zipl",
+    "net-snmp": "cpe:/a:net-snmp",
 }
 
 # Default platform to package mapping

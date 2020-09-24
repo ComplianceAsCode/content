@@ -16,11 +16,11 @@
     path: "/etc/snmp/snmpd.conf"
     regexp: 'public'
     replace: '{{ var_snmpd_ro_string }}'
-  when: snmpd.stat is defined and snmpd.stat.exists
+  when: (snmpd.stat.exists is defined and snmpd.stat.exists)
 
 - name: "Replace all instances of SNMP RW strings"
   replace:
     path: "/etc/snmp/snmpd.conf"
     regexp: 'private'
     replace: '{{ var_snmpd_rw_string }}'
-  when: snmpd.stat is defined and snmpd.stat.exists
+  when: (snmpd.stat.exists is defined and snmpd.stat.exists)

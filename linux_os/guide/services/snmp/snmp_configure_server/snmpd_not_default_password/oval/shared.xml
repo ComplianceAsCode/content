@@ -1,8 +1,7 @@
 <def-group>
   <definition class="compliance" id="snmpd_not_default_password" version="2">
     {{{ oval_metadata("SNMP default communities must be removed.") }}}
-    <criteria operator="OR">
-      <extend_definition comment="SMNP installed" definition_ref="package_net-snmp_removed" />
+    <criteria>
       <criterion comment="SNMP communities" test_ref="test_snmp_default_communities" />
     </criteria>
   </definition>
