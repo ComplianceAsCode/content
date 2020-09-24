@@ -25,7 +25,7 @@ Scenario = collections.namedtuple(
     "Scenario", ["script", "context", "script_params"])
 
 
-def get_viable_profiles(selected_profiles, datastream, benchmark):
+def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
     """Read datastream, and return set intersection of profiles of given
     benchmark and those provided in `selected_profiles` parameter.
     """
@@ -45,8 +45,12 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
                 valid_profiles += [ds_profile]
 
     if not valid_profiles:
-        logging.warning('No profile ends with "{0}"'
-                      .format(", ".join(selected_profiles)))
+        if script:
+            logging.warning('Script {0} - profile {1} not found in datastream'
+                            .format(script, ", ".join(selected_profiles)))
+        else:
+            logging.warning('Profile {0} not found in datastream'
+                            .format(", ".join(selected_profiles)))
     return valid_profiles
 
 
@@ -318,8 +322,16 @@ class RuleChecker(oscap.Checker):
         logging.debug('Using test script {0} with context {1}'
                       .format(scenario.script, scenario.context))
 
-        profiles = get_viable_profiles(
-            scenario.script_params['profiles'], self.datastream, self.benchmark_id)
+        if scenario.script_params['profiles']:
+            profiles = get_viable_profiles(
+                scenario.script_params['profiles'], self.datastream, self.benchmark_id, scenario.script)
+        else:
+            # Special case for combined mode when scenario.script_params['profiles']
+            # is empty which means scenario is not applicable on given profile.
+            logging.warning('Script {0} is not applicable on given profile'
+                            .format(scenario.script))
+            return
+
         test_data = dict(scenario=scenario,
                          rule_id=rule_id,
                          remediation_available=remediation_available)

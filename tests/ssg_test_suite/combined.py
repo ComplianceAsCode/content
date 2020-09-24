@@ -39,9 +39,16 @@ class CombinedChecker(rule.RuleChecker):
         self._current_result = None
 
     def _modify_parameters(self, script, params):
-        # Override any metadata in test scenario, wrt to profile to test
-        # We already know that all target rules are part of the target profile
-        params['profiles'] = [self.profile]
+        # If there is no profiles metadata for a script we add the tested
+        # profile id into it. Otherwise we check the metadata and set it
+        # to self.profile (the tested profile) only if the  metadata
+        # contains self.profile - otherwise scenario is not supposed to be
+        # tested using the self.profile and we return empty profiles
+        # metadata.
+        if not params["profiles"]:
+            params['profiles'] = [self.profile]
+        else:
+            params['profiles'] = [item for item in params['profiles'] if re.search(self.profile, item)]
         return params
 
     def _test_target(self, target):
