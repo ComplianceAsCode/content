@@ -242,6 +242,31 @@ def create_tarball():
         return fp.name
 
 
+def execute_remote_command(machine, args, log_file, error_msg=""):
+    if not error_msg:
+        error_msg = (
+            "Failed to execute '{cmd}' on {machine}"
+            .format(cmd=" ".join(args), machine=machine))
+    try:
+        run_with_stdout_logging("ssh", SSH_ADDITIONAL_OPTS + (machine,) + args, log_file)
+    except Exception as exc:
+        logging.error(error_msg + ": " + str(exc))
+        raise RuntimeError(error_msg)
+
+
+def copy_file_to(machine, what, dest, log_file, error_msg=""):
+    scp_dest = "{machine}:{dest}".format(machine=machine, dest=dest)
+    if not error_msg:
+        error_msg = (
+            "Failed to copy {what} to {scp_dest}"
+            .format(what=what, scp_dest=scp_dest))
+    try:
+        run_with_stdout_logging("scp", SSH_ADDITIONAL_OPTS + (what, scp_dest), log_file)
+    except Exception:
+        logging.error(error_msg)
+        raise RuntimeError(error_msg)
+
+
 def send_scripts(domain_ip):
     remote_dir = REMOTE_TEST_SCENARIOS_DIRECTORY
     archive_file = create_tarball()
@@ -249,35 +274,23 @@ def send_scripts(domain_ip):
     remote_archive_file = os.path.join(remote_dir, archive_file_basename)
     machine = "{0}@{1}".format(REMOTE_USER, domain_ip)
     logging.debug("Uploading scripts.")
-    log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
+    log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
 
     with open(log_file_name, 'a') as log_file:
-        args = SSH_ADDITIONAL_OPTS + (machine, "mkdir", "-p", remote_dir)
-        try:
-            run_with_stdout_logging("ssh", args, log_file)
-        except Exception:
-            msg = "Cannot create directory {0}.".format(remote_dir)
-            logging.error(msg)
-            raise RuntimeError(msg)
+        print("Setting up test setup scripts", file=log_file)
 
-        args = (SSH_ADDITIONAL_OPTS
-                + (archive_file, "{0}:{1}".format(machine, remote_dir)))
-        try:
-            run_with_stdout_logging("scp", args, log_file)
-        except Exception:
-            msg = ("Cannot copy archive {0} to the target machine's directory {1}."
-                   .format(archive_file, remote_dir))
-            logging.error(msg)
-            raise RuntimeError(msg)
+        execute_remote_command(
+            machine, ("mkdir", "-p", remote_dir),
+            log_file, "Cannot create directory {0}".format(remote_dir))
 
-        args = (SSH_ADDITIONAL_OPTS
-                + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
-        try:
-            run_with_stdout_logging("ssh", args, log_file)
-        except Exception:
-            msg = "Cannot extract data tarball {0}.".format(remote_archive_file)
-            logging.error(msg)
-            raise RuntimeError(msg)
+        copy_file_to(
+            machine, archive_file, remote_dir,
+            log_file, "Cannot copy archive {0} to the target machine's directory {1}"
+            .format(archive_file, remote_dir))
+
+        execute_remote_command(
+            machine, ("tar", "xf", remote_archive_file, "-C", remote_dir),
+            log_file, "Cannot extract data tarball {0}".format(remote_archive_file))
     os.unlink(archive_file)
     return remote_dir
 
