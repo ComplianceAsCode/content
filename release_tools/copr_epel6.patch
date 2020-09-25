@@ -1,0 +1,36 @@
+--- scap-security-guide.spec	2020-09-25 11:49:18.257916790 +0200
++++ scap-security-guide_epel6.spec	2020-09-25 11:56:28.165456729 +0200
+@@ -11,9 +11,10 @@
+ BuildRequires:	expat
+ BuildRequires:	openscap-scanner >= 1.2.5
+ BuildRequires:	cmake >= 2.8
+-BuildRequires:	python%{python3_pkgversion}
+-BuildRequires:	python%{python3_pkgversion}-jinja2
+-BuildRequires:	python%{python3_pkgversion}-PyYAML
++BuildRequires:	python2
++BuildRequires:	python-jinja2
++BuildRequires:	PyYAML
++BuildRequires:	python-argparse
+ Requires:	xml-common, openscap-scanner >= 1.2.5
+ Obsoletes:	openscap-content < 0:0.9.13
+ Provides:	openscap-content
+@@ -41,13 +42,16 @@
+ 
+ %prep
+ %setup -q
++mkdir build
+ 
+ %build
+-%cmake
+-%cmake_build
++cd build
++%cmake ..
++%make_build
+ 
+ %install
+-%cmake_install
++cd build
++%make_install
+ 
+ %files
+ %{_datadir}/xml/scap/ssg/content
