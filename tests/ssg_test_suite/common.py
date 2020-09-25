@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import logging
 import subprocess
@@ -5,6 +7,7 @@ from collections import namedtuple
 import functools
 import tarfile
 import tempfile
+import re
 
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import PRODUCT_TO_CPE_MAPPING
@@ -262,7 +265,8 @@ def copy_file_to(machine, what, dest, log_file, error_msg=""):
             .format(what=what, scp_dest=scp_dest))
     try:
         run_with_stdout_logging("scp", SSH_ADDITIONAL_OPTS + (what, scp_dest), log_file)
-    except Exception:
+    except Exception as exc:
+        error_msg = error_msg + ": " + str(exc)
         logging.error(error_msg)
         raise RuntimeError(error_msg)
 
@@ -321,3 +325,34 @@ def iterate_over_rules():
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
                 files=scripts)
             yield result
+
+
+INSTALL_COMMANDS = dict(
+        fedora=("dnf", "install", "-y"),
+        rhel7=("yum", "install", "-y"),
+        rhel8=("yum", "install", "-y"),
+)
+
+
+def install_packages(domain_ip, platform, packages):
+    machine = "{0}@{1}".format(REMOTE_USER, domain_ip)
+    log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
+
+    with open(log_file_name, 'a') as log_file:
+        print("Installing packages", file=log_file)
+        execute_remote_command(
+                machine, INSTALL_COMMANDS[platform] + tuple(packages), log_file,
+                "Couldn't install required packages {packages}".format(packages=packages))
+
+
+def benchmark_cpes_to_platform(cpes):
+    for cpe in cpes:
+        if "fedora" in cpe:
+            return "fedora"
+        if "redhat:enterprise_linux" in cpe:
+            version = re.match(r"enterprise_linux:(\d)+:", cpe).groups()[1]
+            return "rhel" + version
+    msg = (
+            "Unable to deduce a platform from these benchmark CPEs: {cpes}"
+            .format(cpes=cpes))
+    raise ValueError(msg)
