@@ -118,6 +118,9 @@ class RuleChecker(oscap.Checker):
             logging.INFO, "Script {0} using profile {1} OK".format(scenario.script, profile),
             log_target='pass')
         LogHelper.preload_log(
+            logging.WARNING, "Script {0} using profile {1} notapplicable".format(scenario.script, profile),
+            log_target='notapplicable')
+        LogHelper.preload_log(
             logging.ERROR,
             "Script {0} using profile {1} found issue:".format(scenario.script, profile),
             log_target='fail')
