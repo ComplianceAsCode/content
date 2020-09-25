@@ -129,8 +129,12 @@ class RuleChecker(oscap.Checker):
         runner = runner_cls(
             self.test_env, oscap.process_profile_id(profile), self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean, self.manual_debug)
-        if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
+        initial_scan_res = self._initial_scan_went_ok(runner, rule_id, scenario.context)
+        if not initial_scan_res:
             return False
+        if initial_scan_res == 2:
+            # notapplicable
+            return True
 
         supported_and_available_remediations = self._get_available_remediations(scenario)
         if (scenario.context not in ['fail', 'error']
