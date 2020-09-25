@@ -114,6 +114,7 @@ class Profile(object):
         self.refine_rules = defaultdict(list)
         self.metadata = None
         self.reference = None
+        self.platform = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -135,6 +136,7 @@ class Profile(object):
         del yaml_contents["selections"]
 
         profile.reference = yaml_contents.pop("reference", None)
+        profile.platform = yaml_contents.pop("platform", None)
 
         # At the moment, metadata is not used to build content
         if "metadata" in yaml_contents:
@@ -157,6 +159,9 @@ class Profile(object):
 
         if self.extends is not None:
             to_dump["extends"] = self.extends
+
+        if self.platform is not None:
+            to_dump["platform"] = self.platform
 
         selections = []
         for item in self.selected:
@@ -207,6 +212,15 @@ class Profile(object):
 
         if self.reference:
             add_sub_element(element, "reference", escape(self.reference))
+
+        if self.platform:
+            try:
+                cpes = PRODUCT_TO_CPE_MAPPING[self.platform]
+            except KeyError:
+                raise ValueError("Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
+            for idref in cpes:
+                plat = ET.SubElement(element, "platform")
+                plat.set("idref", idref)
 
         for selection in self.selected:
             select = ET.Element("select")
@@ -327,6 +341,7 @@ class Profile(object):
         profile.title = self.title
         profile.description = self.description
         profile.extends = self.extends
+        profile.platform = self.platform
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
