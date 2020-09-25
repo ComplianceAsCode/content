@@ -220,6 +220,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "ocp4": [
         "cpe:/a:redhat:openshift_container_platform:4.1",
     ],
+    "ocp4-node": [
+        "cpe:/o:redhat:openshift_container_platform_node:4",
+    ],
     "rhcos4": [
         "cpe:/o:redhat:enterprise_linux_coreos:4",
     ],
