@@ -25,7 +25,7 @@ Scenario = collections.namedtuple(
     "Scenario", ["script", "context", "script_params"])
 
 
-def get_viable_profiles(selected_profiles, datastream, benchmark):
+def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
     """Read datastream, and return set intersection of profiles of given
     benchmark and those provided in `selected_profiles` parameter.
     """
@@ -45,8 +45,12 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
                 valid_profiles += [ds_profile]
 
     if not valid_profiles:
-        logging.warning('No profile ends with "{0}"'
-                      .format(", ".join(selected_profiles)))
+        if script:
+            logging.warning('Script {0} - profile {1} not found in datastream'
+                            .format(script, ", ".join(selected_profiles)))
+        else:
+            logging.warning('Profile {0} not found in datastream'
+                            .format(", ".join(selected_profiles)))
     return valid_profiles
 
 
@@ -114,6 +118,9 @@ class RuleChecker(oscap.Checker):
             logging.INFO, "Script {0} using profile {1} OK".format(scenario.script, profile),
             log_target='pass')
         LogHelper.preload_log(
+            logging.WARNING, "Script {0} using profile {1} notapplicable".format(scenario.script, profile),
+            log_target='notapplicable')
+        LogHelper.preload_log(
             logging.ERROR,
             "Script {0} using profile {1} found issue:".format(scenario.script, profile),
             log_target='fail')
@@ -122,8 +129,12 @@ class RuleChecker(oscap.Checker):
         runner = runner_cls(
             self.test_env, oscap.process_profile_id(profile), self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean, self.manual_debug)
-        if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
+        initial_scan_res = self._initial_scan_went_ok(runner, rule_id, scenario.context)
+        if not initial_scan_res:
             return False
+        if initial_scan_res == 2:
+            # notapplicable
+            return True
 
         supported_and_available_remediations = self._get_available_remediations(scenario)
         if (scenario.context not in ['fail', 'error']
@@ -318,8 +329,16 @@ class RuleChecker(oscap.Checker):
         logging.debug('Using test script {0} with context {1}'
                       .format(scenario.script, scenario.context))
 
-        profiles = get_viable_profiles(
-            scenario.script_params['profiles'], self.datastream, self.benchmark_id)
+        if scenario.script_params['profiles']:
+            profiles = get_viable_profiles(
+                scenario.script_params['profiles'], self.datastream, self.benchmark_id, scenario.script)
+        else:
+            # Special case for combined mode when scenario.script_params['profiles']
+            # is empty which means scenario is not applicable on given profile.
+            logging.warning('Script {0} is not applicable on given profile'
+                            .format(scenario.script))
+            return
+
         test_data = dict(scenario=scenario,
                          rule_id=rule_id,
                          remediation_available=remediation_available)

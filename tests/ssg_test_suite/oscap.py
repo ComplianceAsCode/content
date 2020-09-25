@@ -366,7 +366,7 @@ class GenericRunner(object):
                 finally:
                     self._filenames_to_clean_afterwards.remove(fname)
 
-        if result:
+        if result == 1:
             LogHelper.log_preloaded('pass')
             if self.clean_files:
                 files_to_remove = [self.verbose_path]
@@ -381,6 +381,8 @@ class GenericRunner(object):
                         logging.error(
                             "Failed to cleanup file '{0}'"
                             .format(fname))
+        elif result == 2:
+            LogHelper.log_preloaded('notapplicable')
         else:
             LogHelper.log_preloaded('fail')
             if self.manual_debug:
@@ -526,12 +528,19 @@ class RuleRunner(GenericRunner):
         return match[-1]
 
     def _analyze_output_of_oscap_call(self):
-        local_success = True
+        local_success = 1
         # check expected result
         rule_result = self._find_rule_result_in_output()
 
+        if rule_result == "notapplicable":
+            msg = (
+                'Rule {0} evaluation resulted in {1}'
+                .format(self.rule_id, rule_result))
+            LogHelper.preload_log(logging.WARNING, msg, 'notapplicable')
+            local_success = 2
+            return local_success
         if rule_result != self.context:
-            local_success = False
+            local_success = 0
             if rule_result == 'notselected':
                 msg = (
                     'Rule {0} has not been evaluated! '

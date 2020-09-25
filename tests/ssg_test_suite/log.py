@@ -13,7 +13,7 @@ class LogHelper(object):
     the output itself.
     """
     FORMATTER = logging.Formatter('%(levelname)s - %(message)s')
-    INTERMEDIATE_LOGS = {'pass': [], 'fail': []}
+    INTERMEDIATE_LOGS = {'pass': [], 'fail': [], 'notapplicable': []}
     LOG_DIR = None
     LOG_FILE = None
 
