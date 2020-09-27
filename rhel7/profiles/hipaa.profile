@@ -71,7 +71,6 @@ selections:
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - sshd_set_keepalive
-    - sshd_use_priv_separation
     - encrypt_partitions
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs
