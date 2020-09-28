@@ -149,6 +149,13 @@ type ComplianceScanSettings struct {
 	Debug bool `json:"debug,omitempty"`
 	// Specifies settings that pertain to raw result storage.
 	RawResultStorage RawResultStorageSettings `json:"rawResultStorage,omitempty"`
+	// Defines that no external resources in the Data Stream should be used. External
+	// resources could be, for instance, CVE feeds. This is useful for disconnected
+	// installations without access to a proxy.
+	NoExternalResources bool `json:"noExternalResources,omitempty"`
+	// Defines a proxy for the scan to get external resources from. This is useful for
+	// disconnected installations with access to a proxy.
+	HTTPSProxy string `json:"httpsProxy,omitempty"`
 	// Specifies tolerations needed for the scan to run on the nodes. This is useful
 	// in case the target set of nodes have custom taints that don't allow certain
 	// workloads to run. Defaults to allowing scheduling on the master nodes.

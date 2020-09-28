@@ -1,7 +1,6 @@
 package v1alpha1
 
 import (
-	libgoimg "github.com/openshift/library-go/pkg/image/reference"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -52,6 +51,7 @@ type ProfileBundleStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=profilebundles,scope=Namespaced
 // +kubebuilder:printcolumn:name="ContentImage",type="string",JSONPath=`.spec.contentImage`
+// +kubebuilder:printcolumn:name="ContentFile",type="string",JSONPath=`.spec.contentFile`
 // +kubebuilder:printcolumn:name="Status",type="string",JSONPath=`.status.dataStreamStatus`
 type ProfileBundle struct {
 	metav1.TypeMeta   `json:",inline"`
@@ -59,14 +59,6 @@ type ProfileBundle struct {
 
 	Spec   ProfileBundleSpec   `json:"spec,omitempty"`
 	Status ProfileBundleStatus `json:"status,omitempty"`
-}
-
-func (pb *ProfileBundle) GetImageDigest() string {
-	dockerRef, err := libgoimg.Parse(pb.Spec.ContentImage)
-	if err != nil {
-		return ""
-	}
-	return dockerRef.ID
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
