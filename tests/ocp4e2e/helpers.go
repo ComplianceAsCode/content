@@ -401,12 +401,13 @@ func (ctx *e2econtext) waitForComplianceSuite(suite *cmpv1alpha1.ComplianceSuite
 func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 	mcKey := types.NamespacedName{Name: name}
 
+	var lastErr error
 	err := wait.PollImmediate(10*time.Second, 20*time.Minute, func() (bool, error) {
 		pool := &mcfgv1.MachineConfigPool{}
-		err := ctx.dynclient.Get(goctx.TODO(), mcKey, pool)
-		if err != nil {
-			ctx.t.Errorf("Could not find the pool %s post update", name)
-			return false, err
+		lastErr = ctx.dynclient.Get(goctx.TODO(), mcKey, pool)
+		if lastErr != nil {
+			ctx.t.Errorf("Could not get the pool %s post update", name)
+			return false, nil
 		}
 
 		// Check if the pool has finished updating yet.
@@ -423,8 +424,14 @@ func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 		return false, nil
 	})
 
+	// timeout error
 	if err != nil {
 		return err
+	}
+
+	// An actual error at the end of the run
+	if lastErr != nil {
+		return lastErr
 	}
 
 	return nil
