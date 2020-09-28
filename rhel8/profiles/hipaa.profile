@@ -65,7 +65,6 @@ selections:
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - sshd_set_keepalive
-    - sshd_use_priv_separation
     - encrypt_partitions
     - var_system_crypto_policy=fips
     - configure_crypto_policy

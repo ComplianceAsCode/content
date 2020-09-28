@@ -127,7 +127,6 @@ selections:
   - sshd_disable_gssapi_auth
   - sshd_use_strong_ciphers
   - sshd_print_last_log
-  - sshd_use_priv_separation
   - sshd_do_not_permit_user_env
   - sshd_disable_rhosts_rsa
   - sshd_disable_rhosts

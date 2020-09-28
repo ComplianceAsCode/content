@@ -95,7 +95,6 @@ selections:
 - sshd_enable_strictmodes
 - sshd_print_last_log
 - sshd_set_loglevel_info
-- sshd_use_priv_separation
 - sshd_use_strong_ciphers
 - sshd_use_strong_macs
 - sudo_remove_no_authenticate
