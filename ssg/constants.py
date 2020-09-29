@@ -470,7 +470,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "grub2": "grub2-pc",
   "login_defs": "login",
   "sssd": "sssd-common",
-  "zipl": "s390x-utils",
+  "zipl": "s390utils-base",
 }
 
 # _version_name_map = {
