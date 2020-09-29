@@ -1,8 +1,8 @@
 #!/bin/bash
+# packages = nfs-utils at
 #
 
 # this tesst ensures that only the atd.service is matched, not for example the service rpc-statd
 
-yum -y install nfs-utils at
 systemctl disable atd.service
 systemctl add-wants default.target rpc-statd.service

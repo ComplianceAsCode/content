@@ -1,3 +1,3 @@
 #!/bin/bash
+# packages = aide
 
-yum install -y aide

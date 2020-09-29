@@ -1,6 +1,6 @@
 #!/bin/bash
+# packages = prelink
 #
 
-yum install -y prelink
 
 : > /etc/sysconfig/prelink

@@ -1,7 +1,7 @@
 #!/bin/bash
+# packages = pcsc-lite pam_pkcs11 esc
 
 
-yum install -y pcsc-lite pam_pkcs11 esc
 
 systemctl enable pcscd.socket
 

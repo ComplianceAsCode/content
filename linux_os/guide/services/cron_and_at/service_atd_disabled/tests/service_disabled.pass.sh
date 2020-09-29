@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = at
 #
 
-yum -y install at
 systemctl disable atd.service

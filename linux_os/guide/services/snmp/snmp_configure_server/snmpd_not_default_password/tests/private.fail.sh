@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = net-snmp
 
-yum -y install net-snmp
 
 echo "something private" >> /etc/snmp/snmpd.conf

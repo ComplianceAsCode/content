@@ -1,6 +1,6 @@
 #!/bin/bash
+# packages = tftp-server
 
-yum -y install tftp-server
 
 if grep -q 'server_args' /etc/xinetd.d/tftp; then
 	sed -i '/.*server_args.*/d' /etc/xinetd.d/tftp

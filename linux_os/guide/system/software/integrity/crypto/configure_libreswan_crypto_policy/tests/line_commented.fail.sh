@@ -1,7 +1,7 @@
 #!/bin/bash
+# packages = libreswan
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 
-yum install -y libreswan
 
 cp ipsec.conf /etc
 config_file="/etc/ipsec.conf"

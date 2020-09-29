@@ -1,7 +1,7 @@
 #!/bin/bash
+# packages = aide
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_ol
 
-yum install -y aide
 
 cat >/etc/aide.conf <<EOL
 All = p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux

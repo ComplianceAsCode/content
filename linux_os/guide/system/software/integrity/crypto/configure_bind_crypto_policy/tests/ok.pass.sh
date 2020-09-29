@@ -1,9 +1,9 @@
 #!/bin/bash
+# packages = bind
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 
 BIND_CONF='/etc/named.conf'
 
-yum install -y bind
 
 cat << EOF > "$BIND_CONF"
 options {
