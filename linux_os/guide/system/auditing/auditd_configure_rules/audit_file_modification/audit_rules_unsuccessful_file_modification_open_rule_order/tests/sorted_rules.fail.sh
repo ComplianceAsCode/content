@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 # remediation = none
 
 cat $SHARED/audit_open_o_creat.rules $SHARED/audit_open_o_trunc_write.rules $SHARED/audit_open.rules > ./ordered_by_filter.rules

@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 CONFIRM_SPAWN_OPT="systemd.confirm_spawn"
 CONFIRM_SPAWN_YES="systemd.confirm_spawn=yes"

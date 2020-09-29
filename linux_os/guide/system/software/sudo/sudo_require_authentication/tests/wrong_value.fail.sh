@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_e8
 
 echo "%wheel        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
 echo "Defaults !authenticate" >> /etc/sudoers

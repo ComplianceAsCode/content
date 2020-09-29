@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_standard
 
 # this tesst ensures that only the atd.service is matched, not for example the service rpc-statd
 

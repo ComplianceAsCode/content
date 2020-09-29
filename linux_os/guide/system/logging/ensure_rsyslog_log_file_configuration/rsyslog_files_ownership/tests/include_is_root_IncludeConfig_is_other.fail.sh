@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # platform = Red Hat Enterprise Linux 8,multi_platform_fedora,Oracle Linux 8
 
 # Check rsyslog.conf with root user log from rules and

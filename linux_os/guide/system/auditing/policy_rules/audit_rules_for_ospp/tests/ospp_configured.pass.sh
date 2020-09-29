@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 # These tests are for systems with 30-ospp-v42.rules file installed
 if [ ! -f /usr/share/doc/audit*/rules/30-ospp-v42.rules ]; then
