@@ -10,7 +10,6 @@ set(PRODUCT_REMEDIATION_LANGUAGES "ignition;kubernetes")
 ssg_build_product(${PRODUCT})
 
 ssg_build_html_table_by_ref(${PRODUCT} "nist")
-ssg_build_html_nistrefs_table(${PRODUCT} "standard")
 ssg_build_html_nistrefs_table(${PRODUCT} "ospp")
 ssg_build_html_nistrefs_table(${PRODUCT} "stig")
 ssg_build_html_cce_table(${PRODUCT})
