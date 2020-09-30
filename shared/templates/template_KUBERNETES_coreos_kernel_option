@@ -1,0 +1,12 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = medium
+
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  kernelArguments:
+    - {{ ARG_NAME }}={{ ARG_VALUE }}
+

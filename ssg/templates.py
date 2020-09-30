@@ -373,7 +373,7 @@ def zipl_bls_entries_option(data, lang):
     return data
 
 
-@template(["oval"])
+@template(["oval", "kubernetes"])
 def coreos_kernel_option(data, lang):
     return data
 
