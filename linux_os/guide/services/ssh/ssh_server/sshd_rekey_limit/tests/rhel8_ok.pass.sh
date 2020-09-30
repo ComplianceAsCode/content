@@ -1,4 +1,4 @@
-# platform = multi_platform_all
+# platform = Red Hat Enterprise Linux 8
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
 sed -e '/RekeyLimit/d' /etc/ssh/sshd_config
