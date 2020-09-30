@@ -19,7 +19,7 @@ def test_is_applicable():
     assert not ssg.utils.is_applicable('rhosp13', 'rhel7')
     assert not ssg.utils.is_applicable('fedora,multi_platform_ubuntu', 'rhel7')
     assert not ssg.utils.is_applicable('ol7', 'rhel7')
-    assert not ssg.utils.is_applicable('fedora,debian8,debian9,debian10', 'rhel7')
+    assert not ssg.utils.is_applicable('fedora,debian9,debian10', 'rhel7')
 
 
 def test_is_applicable_for_product():

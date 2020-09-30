@@ -11,7 +11,7 @@ import ssg
 def _create_profile_cache(ssg_root):
     profile_cache = {}
 
-    product_list = ['debian8', 'debian9', 'debian10', 'fedora', 'ol7', 'opensuse', 'rhel6',
+    product_list = ['debian9', 'debian10', 'fedora', 'ol7', 'opensuse', 'rhel6',
                     'rhel7', 'sle11', 'sle12', 'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
                     'wrlinux']
 

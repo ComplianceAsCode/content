@@ -61,7 +61,6 @@ option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be bui
 # the root of this project. Note that the example product is always disabled
 # unless explicitly asked for.
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_DEBIAN8 "If enabled, the Debian 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN9 "If enabled, the Debian 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN10 "If enabled, the Debian 10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_EXAMPLE "If enabled, the Example SCAP content will be built" FALSE)
@@ -234,7 +233,6 @@ message(STATUS " ")
 
 message(STATUS "Products:")
 message(STATUS "Chromium: ${SSG_PRODUCT_CHROMIUM}")
-message(STATUS "Debian 8: ${SSG_PRODUCT_DEBIAN8}")
 message(STATUS "Debian 9: ${SSG_PRODUCT_DEBIAN9}")
 message(STATUS "Debian 10: ${SSG_PRODUCT_DEBIAN10}")
 message(STATUS "Example: ${SSG_PRODUCT_EXAMPLE}")
@@ -297,9 +295,6 @@ ssg_build_man_page()
 
 if (SSG_PRODUCT_CHROMIUM)
     add_subdirectory("chromium")
-endif()
-if (SSG_PRODUCT_DEBIAN8)
-    add_subdirectory("debian8")
 endif()
 if (SSG_PRODUCT_DEBIAN9)
     add_subdirectory("debian9")
