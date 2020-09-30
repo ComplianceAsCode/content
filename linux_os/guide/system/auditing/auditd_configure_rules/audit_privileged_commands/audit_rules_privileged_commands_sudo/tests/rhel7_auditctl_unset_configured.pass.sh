@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 # remediation = bash
 # platform = Red Hat Enterprise Linux 7
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_stig
 
 if grep -q "^CREATE_HOME" /etc/login.defs; then
 	sed -i "s/^CREATE_HOME.*/CREATE_HOME yes/" /etc/login.defs

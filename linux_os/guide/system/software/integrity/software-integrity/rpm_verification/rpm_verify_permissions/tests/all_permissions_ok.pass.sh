@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_pci-dss
 
 # Declare an associative array to hold list of RPM packages we need to correct permissions for
 declare -A SETPERMS_RPM_LIST

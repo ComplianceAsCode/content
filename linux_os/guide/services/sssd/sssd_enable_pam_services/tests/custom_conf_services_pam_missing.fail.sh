@@ -1,7 +1,6 @@
 
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_stig
 
 yum -y install /usr/lib/systemd/system/sssd.service
 rm -rf /etc/sssd/conf.d/

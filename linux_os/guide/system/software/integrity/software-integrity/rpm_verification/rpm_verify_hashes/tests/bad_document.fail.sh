@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_pci-dss
 
 # find all TODO files in /usr/share/doc and get first of them
 todo_file=$(find /usr/share/doc -name TODO | head -n 1)

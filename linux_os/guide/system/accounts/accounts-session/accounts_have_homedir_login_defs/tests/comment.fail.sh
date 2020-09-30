@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_stig
 # remediation = bash
 
 if grep -q "^CREATE_HOME" /etc/login.defs; then

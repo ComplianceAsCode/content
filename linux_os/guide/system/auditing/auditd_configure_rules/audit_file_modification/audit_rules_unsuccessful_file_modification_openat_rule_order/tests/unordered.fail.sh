@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 # remediation = none
 
 # The rule without filter is less specific, and thus, catches more events than the more specific rules (with O_CREAT and O_TRUNC filters)

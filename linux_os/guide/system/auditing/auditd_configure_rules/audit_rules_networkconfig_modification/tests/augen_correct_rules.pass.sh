@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# profiles = xccdf_org.ssgproject.content_profile_pci-dss
 
 echo "-a always,exit -F arch=b32 -S sethostname,setdomainname -F key=audit_rules_networkconfig_modification" >> /etc/audit/rules.d/networkconfig.rules
 echo "-a always,exit -F arch=b64 -S sethostname,setdomainname -F key=audit_rules_networkconfig_modification" >> /etc/audit/rules.d/networkconfig.rules

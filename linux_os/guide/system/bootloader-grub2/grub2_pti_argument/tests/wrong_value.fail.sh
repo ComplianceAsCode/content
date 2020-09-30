@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 # platform = Red Hat Enterprise Linux 8
 
 # Break the pti argument in kernel command line in /boot/grub2/grubenv
