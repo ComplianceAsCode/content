@@ -137,14 +137,14 @@ selections:
 
     ### Kernel Config
     ## Boot prompt
-    - grub2_audit_argument
-    - grub2_audit_backlog_limit_argument
-    - grub2_slub_debug_argument
-    - grub2_page_poison_argument
-    - grub2_vsyscall_argument
-    - grub2_vsyscall_argument.role=unscored
-    - grub2_vsyscall_argument.severity=info
-    - grub2_pti_argument
+    - coreos_audit_option
+    - coreos_audit_backlog_limit_kernel_argument
+    - coreos_slub_debug_kernel_argument
+    - coreos_page_poison_kernel_argument
+    - coreos_vsyscall_kernel_argument
+    - coreos_vsyscall_kernel_argument.role=unscored
+    - coreos_vsyscall_kernel_argument.severity=info
+    - coreos_pti_kernel_argument
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict

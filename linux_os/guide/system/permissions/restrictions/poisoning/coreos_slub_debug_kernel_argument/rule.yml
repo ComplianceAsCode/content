@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Enable SLUB/SLAB allocator poisoning'
+
+description: |-
+    To enable poisoning of SLUB/SLAB objects, add the argument <tt>slub_debug=P</tt> to all
+    BLS (Boot Loader Specification) entries ('options' line) for the Linux
+    operating system in <tt>/boot/loader/entries/*.conf</tt>.
+
+rationale: |-
+    Poisoning writes an arbitrary value to freed objects, so any modification or
+    reference to that object after being freed or before being initialized will be
+    detected and prevented.
+    This prevents many types of use-after-free vulnerabilities at little performance cost.
+    Also prevents leak of data and detection of corrupted memory.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-82672-7
+
+references:
+    srg: SRG-OS-000433-GPOS-00192
+    nist: CM-6(a)
+
+ocil_clause: 'SLUB/SLAB poisoning is not enabled'
+
+ocil: |-
+    Inspect the form of all the BLS (Boot Loader Specification) entries
+    ('options' line) in <tt>/boot/loader/entries/*.conf</tt>. If they include
+    <tt>slub_debug=P</tt>, then SLUB/SLAB poisoning is enabled at boot time.
+    <br /><br />
+    To ensure <tt>vsyscall=none</tt> is configured on the installed kernel, add
+    the kernel argument via a <pre>MachineConfig</pre> object to the appropriate
+    pools.
+
+template:
+    name: coreos_kernel_option
+    vars:
+        arg_name: slub_debug
+        arg_value: P
