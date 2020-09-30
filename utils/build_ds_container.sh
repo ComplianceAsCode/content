@@ -52,6 +52,12 @@ echo "* Building $(echo ${products[@]} | sed 's/ /, /g') products"
 
 # build the product's content
 "$root_dir/build_product" "${products[@]}" "${params[@]}"
+result=$?
+
+if [ "$result" != "0" ]; then
+    echo "Error building content"
+    exit $result
+fi
 
 if [ "$namespace" == "openshift-compliance" ]; then
     # Ensure openshift-compliance namespace exists. If it already exists, this
