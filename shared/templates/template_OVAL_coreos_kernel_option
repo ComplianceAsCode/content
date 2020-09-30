@@ -3,24 +3,24 @@
     <metadata>
       <title>Ensure that the most recent (default) CoreOS boot loader entry is configured to run Linux operating system with argument {{{ ARG_NAME_VALUE }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Ensure {{{ ARG_NAME_VALUE }}} option is configured in the 'options' line in /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if the second version does not exists).</description>
+      <description>Ensure {{{ ARG_NAME_VALUE }}} option is configured in the 'options' line in /boot/loader/entries/ostree-2-.*.conf (or ostree-1-.*.conf if the second version does not exists).</description>
     </metadata>
     <criteria operator="OR">
         <criteria operator="AND">
             <criterion test_ref="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options"
-            comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/ostree-2-*.conf (if it does exists)" />
+            comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/ostree-2-.*.conf (if it does exists)" />
         </criteria>
         <criteria operator="AND">
             <criterion test_ref="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options"
-            comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/ostree-1-*.conf" />
+            comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/ostree-1-.*.conf" />
             <criterion test_ref="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists"
-            comment="Check if /boot/loader/entries/ostree-2-*.conf is not present" />
+            comment="Check if /boot/loader/entries/ostree-2-.*.conf is not present" />
         </criteria>
      </criteria>
   </definition>
 
   <ind:textfilecontent54_test id="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options"
-  comment="check for kernel option {{{ ARG_NAME_VALUE }}} in /boot/loader/entries/ostree-2-*.conf"
+  comment="check for kernel option {{{ ARG_NAME_VALUE }}} in /boot/loader/entries/ostree-2-.*.conf"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options" />
     <ind:state state_ref="state_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_option" />
@@ -28,7 +28,7 @@
 
   <ind:textfilecontent54_object id="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options"
   version="1">
-    <ind:filepath operation="pattern match">^/boot/loader/entries/ostree-2-*\.conf$</ind:filepath>
+    <ind:filepath operation="pattern match">^/boot/loader/entries/ostree-2-.*\.conf$</ind:filepath>
     <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -39,7 +39,7 @@
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test id="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options"
-  comment="check for kernel option {{{ ARG_NAME_VALUE }}} in /boot/loader/entries/ostree-1-*.conf"
+  comment="check for kernel option {{{ ARG_NAME_VALUE }}} in /boot/loader/entries/ostree-1-.*.conf"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options" />
     <ind:state state_ref="state_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_option" />
@@ -47,7 +47,7 @@
 
   <ind:textfilecontent54_object id="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options"
   version="1">
-    <ind:filepath operation="pattern match">^/boot/loader/entries/ostree-1-*\.conf$</ind:filepath>
+    <ind:filepath operation="pattern match">^/boot/loader/entries/ostree-1-.*\.conf$</ind:filepath>
     <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -58,14 +58,14 @@
   </ind:textfilecontent54_state>
 
   <unix:file_test id="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists" check="all" check_existence="none_exist"
-  comment="Check if /boot/loader/entries/ostree-2-*.conf is not present"
+  comment="Check if /boot/loader/entries/ostree-2-.*.conf is not present"
   version="1">
     <unix:object object_ref="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists" />
   </unix:file_test>
 
   <unix:file_object id="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists"
   version="1">
-    <unix:filepath operation="pattern match">^/boot/loader/entries/ostree-2-*\.conf</unix:filepath>
+    <unix:filepath operation="pattern match">^/boot/loader/entries/ostree-2-.*\.conf</unix:filepath>
   </unix:file_object>
 
 </def-group>
