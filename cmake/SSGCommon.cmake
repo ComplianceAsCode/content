@@ -1261,9 +1261,14 @@ macro(ssg_define_guide_and_table_tests)
         endforeach()
         add_test(
             NAME "unique-cces"
-	    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_cces_unique.sh"
+	    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.sh" "cce"
+        )
+        add_test(
+            NAME "unique-stigids"
+	    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_reference_unique.sh" "stigid"
         )
         set_tests_properties("unique-cces" PROPERTIES LABELS quick)
+        set_tests_properties("unique-stigids" PROPERTIES LABELS quick)
     endif()
 endmacro()
 
