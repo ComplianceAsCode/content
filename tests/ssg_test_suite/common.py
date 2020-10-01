@@ -349,9 +349,9 @@ def get_cpe_of_tested_os(domain_ip, logfile_name):
 
 
 INSTALL_COMMANDS = dict(
-        fedora=("dnf", "install", "-y"),
-        rhel7=("yum", "install", "-y"),
-        rhel8=("yum", "install", "-y"),
+    fedora=("dnf", "install", "-y"),
+    rhel7=("yum", "install", "-y"),
+    rhel8=("yum", "install", "-y"),
 )
 
 

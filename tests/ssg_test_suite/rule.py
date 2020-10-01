@@ -196,7 +196,7 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
-    def _rule_should_be_tested(self, rule_id, rules_to_be_tested):
+    def _rule_should_be_tested(self, rule, rules_to_be_tested):
         if 'ALL' in rules_to_be_tested:
             return True
         else:
@@ -206,7 +206,7 @@ class RuleChecker(oscap.Checker):
                     pattern = rule_to_be_tested
                 else:
                     pattern = OSCAP_RULE + rule_to_be_tested
-                if fnmatch.fnmatch(rule_id, pattern):
+                if fnmatch.fnmatch(rule.id, pattern):
                     return True
             return False
 
@@ -232,7 +232,7 @@ class RuleChecker(oscap.Checker):
     def _get_rules_to_test(self, target):
         rules_to_test = []
         for rule in common.iterate_over_rules():
-            if not self._rule_should_be_tested(rule.id, target):
+            if not self._rule_should_be_tested(rule, target):
                 continue
             if not xml_operations.find_rule_in_benchmark(
                     self.datastream, self.benchmark_id, rule.id):
@@ -243,8 +243,13 @@ class RuleChecker(oscap.Checker):
             rules_to_test.append(rule)
         return rules_to_test
 
-    def _test_target(self, target):
+    def test_rule(self, state, rule, scenarios):
+        remediation_available = self._is_remediation_available(rule)
+        self._check_rule(
+            rule, scenarios,
+            self.remote_dir, state, remediation_available)
 
+    def _test_target(self, target):
         rules_to_test = self._get_rules_to_test(target)
         if not rules_to_test:
             self._matching_rule_found = False
@@ -263,10 +268,7 @@ class RuleChecker(oscap.Checker):
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in rules_to_test:
-                remediation_available = self._is_remediation_available(rule)
-                self._check_rule(
-                    rule, scenarios_by_rule[rule.id],
-                    self.remote_dir, state, remediation_available)
+                self.test_rule(state, rule, scenarios_by_rule[rule.id])
 
     def _modify_parameters(self, script, params):
         if self.scenarios_profile:
