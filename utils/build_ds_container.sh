@@ -105,7 +105,7 @@ while true; do
             echo "Creating profile bundles"
             for prod in "${products[@]}"
             do
-                sed "s/\$PRODUCT/$prod/g" "$root_dir/ocp-resources/profile-bundle.yaml.tpl" | oc apply -f -
+                sed "s/\$PRODUCT/$prod/g" "$root_dir/ocp-resources/profile-bundle.yaml.tpl" | oc apply -n "$namespace" -f -
             done
         fi
         exit 0
