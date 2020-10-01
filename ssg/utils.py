@@ -257,10 +257,7 @@ def escape_regex(text):
     # In python 3.7 the set of charaters escaped by re.escape is reasonable, so lets mimic it.
     # See https://docs.python.org/3/library/re.html#re.sub
     # '!', '"', '%', "'", ',', '/', ':', ';', '<', '=', '>', '@', and "`" are not escaped.
-    return re.sub(r"([#$&*+-.^`|~:()])", r"\\\1", text) \
-        .replace("\n", "BFLMPSVZ") \
-        .replace(" ", "[\\s\\n]+") \
-        .replace("BFLMPSVZ", "(?:[\\n]+|(?:\\\\n)+)")
+    return re.sub(r"([#$&*+-.^`|~:()])", r"\\\1", text)
 
 
 def escape_id(text):
@@ -270,9 +267,11 @@ def escape_id(text):
     return re.sub(r"[^\w]", "_", text).strip("_")
 
 
-# TODO: Replace with generic 'escape_regex'?
 def banner_regexify(banner_text):
-    return escape_regex(banner_text)
+    return escape_regex(banner_text) \
+        .replace("\n", "BFLMPSVZ") \
+        .replace(" ", "[\\s\\n]+") \
+        .replace("BFLMPSVZ", "(?:[\\n]+|(?:\\\\n)+)")
 
 
 def banner_anchor_wrap(banner_text):
