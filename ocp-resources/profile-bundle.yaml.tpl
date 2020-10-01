@@ -5,7 +5,7 @@
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ProfileBundle
 metadata:
-  name: usptream-$PRODUCT
+  name: upstream-$PRODUCT
 spec:
   contentImage: openscap-ocp4-ds:latest
   contentFile: ssg-$PRODUCT-ds.xml
