@@ -8,13 +8,11 @@
 - name: "Do not allow users to reuse recent passwords - system-auth (change)"
   replace:
     dest: /etc/pam.d/system-auth
-    follow: yes
     regexp: '^(password\s+sufficient\s+pam_unix\.so\s.*remember\s*=\s*)(\S+)(.*)$'
     replace: '\g<1>{{ var_password_pam_unix_remember }}\g<3>'
 
 - name: "Do not allow users to reuse recent passwords - system-auth (add)"
   replace:
     dest: /etc/pam.d/system-auth
-    follow: yes
     regexp: '^password\s+sufficient\s+pam_unix\.so\s(?!.*remember\s*=\s*).*$'
     replace: '\g<0> remember={{ var_password_pam_unix_remember }}'
