@@ -283,7 +283,7 @@
     <ind:state state_ref="state_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" version="1">
-    <ind:filepath>{{{ filepath }}}</ind:filepath>
+    <ind:filepath operation="pattern match">{{{ filepath }}}</ind:filepath>
     <ind:pattern operation="pattern match">^{{{ line_prefix|escape_regex }}}(.*){{{ line_suffix|escape_regex }}}$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -302,14 +302,10 @@
     - line_suffix (String): The ending part of the line with the list of arguments, default is empty
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
 #}}
-{{%- macro oval_argument_in_file(filepath, name, value, application='', line_prefix='', line_suffix='') -%}}
+{{%- macro oval_argument_in_file(filepath, name, value, line_prefix='', line_suffix='') -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
-    <metadata>
-      <title>Ensure that {{{ application if application else 'the respective application or service' }}} is configured to run with argument {{{ name }}}={{{ value }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure {{{ name }}}={{{ value }}} argument is present{{% if line_prefix %}} in the line starting with '{{{ line_prefix }}}'{{% endif %}} in {{{ filepath }}}.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure argument " + name + "=" + value + " is present"+ (" in the line starting with '" + line_prefix + "'" if line_prefix else "") + " in file(s) '" + filepath + "'") }}}
     <criteria operator="AND">
       {{{- oval_argument_in_file_criterion(filepath, name, value, application) }}}
     </criteria>

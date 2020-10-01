@@ -1600,11 +1600,14 @@ audit_rules_usergroup_modification::
 ** *path* - path that should be part of the audit rule as a value of `-w` argument, eg. `/etc/group`.
 * Languages: Ansible, Bash, OVAL
 
-bls_bootloader_option::
-* Checks kernel command line arguments in BLS-compatible (Boot Loader Specification) boot loader configuration.
+argument_in_file::
+* Checks that `argument=value` pair is present in (optionally) the line started with line_prefix (and, optionally, ending with line_suffix) in the file(s) defined by filepath.
 * Parameters:
-** *arg_name* - argument name, eg. `audit`
-** *arg_value* - argument value, eg. `'1'`
+** *filepath* - File(s) to be checked. The value would be treated as a regular expression pattern.
+** *arg_name* - Argument name, eg. `audit`
+** *arg_value* - Argument value, eg. `'1'`
+** *line_prefix* - The prefix of the line in which argument-value pair should be present, optional.
+** *line_suffix* - The suffix of the line in which argument-value pair should be present, optional.
 * Languages: OVAL
 
 file_groupowner::

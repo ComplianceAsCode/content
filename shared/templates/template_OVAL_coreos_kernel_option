@@ -1,18 +1,14 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    <metadata>
-      <title>Ensure that the most recent (default) CoreOS boot loader entry is configured to run Linux operating system with argument {{{ ARG_NAME }}}={{{ ARG_VALUE }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure {{{ ARG_NAME }}}={{{ ARG_VALUE }}} argument is present in the 'options' line of /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if there is no ostree-2-*.conf; CoreOS has only two enries at the most). Also, ensure that kernel is currently running with this argument by checking /proc/cmdline.</description>
-    </metadata>
+    {{{ oval_metadata("Ensure " + ARG_NAME + "=" + ARG_VALUE +" argument is present in the 'options' line of /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if there is no ostree-2-*.conf as ostree has only two enries at the most, with *-2-*.conf entry always being the most recent). Also, ensure that kernel is currently running with this argument by checking /proc/cmdline.") }}}
     <criteria operator="AND">
       <criteria operator="OR">
         <criteria operator="AND">
-            {{{- oval_file_absent_criterion('/boot/loader/entries/ostree-2-*.conf')}}}
-            {{{- oval_argument_in_file_criterion('/boot/loader/entries/ostree-1-*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+            {{{- oval_file_absent_criterion('/boot/loader/entries/ostree-2-.*.conf')}}}
+            {{{- oval_argument_in_file_criterion('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
         </criteria>
         <criteria operator="AND">
-            {{{- oval_argument_in_file_criterion('/boot/loader/entries/ostree-2-*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+            {{{- oval_argument_in_file_criterion('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
         </criteria>
       </criteria>
       <criteria operator="AND">
@@ -21,10 +17,10 @@
     </criteria>
   </definition>
 
-  {{{- oval_file_absent('/boot/loader/entries/ostree-2-*.conf') }}}
-  {{{- oval_argument_in_file_test('/boot/loader/entries/ostree-1-*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
+  {{{- oval_file_absent('/boot/loader/entries/ostree-2-.*.conf') }}}
+  {{{- oval_argument_in_file_test('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
 
-  {{{- oval_argument_in_file_test('/boot/loader/entries/ostree-2-*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
+  {{{- oval_argument_in_file_test('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
 
   {{{- oval_argument_in_file_test('/proc/cmdline', ARG_NAME, ARG_VALUE, 'BOOT_IMAGE') }}}
 </def-group>
