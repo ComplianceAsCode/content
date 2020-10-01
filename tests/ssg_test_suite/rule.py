@@ -217,8 +217,7 @@ class RuleChecker(oscap.Checker):
                 scenario_packages = s.script_params["packages"]
                 packages_required.update(scenario_packages)
         if packages_required:
-            packaging_platform = common.benchmark_cpes_to_platform(self.benchmark_cpes)
-            common.install_packages(self.test_env.domain_ip, packaging_platform, packages_required)
+            common.install_packages(self.test_env.domain_ip, packages_required)
 
     def _prepare_environment(self, scenarios_by_rule):
         domain_ip = self.test_env.domain_ip
