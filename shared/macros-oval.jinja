@@ -220,8 +220,8 @@
     - filepath (String): Path to the file to be checked.
     - id of the test name - the test will be named test_<id>
 #}}
-{{%- macro oval_file_absent_criterion(filepath, id='') -%}}
-	<criterion comment="Pass if {{{ filepath }}} does not exist" test_ref="test_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
+{{%- macro oval_file_absent_criterion(filepath) -%}}
+  <criterion comment="Pass if there are no files matching pattern '{{{ filepath }}}' exist in the system" test_ref="test_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
 {{%- endmacro %}}
 
 {{#
@@ -230,13 +230,13 @@
     - filepath (String): Path to the configuration file to be checked.
     - id of the test name - the test will be named test_<id>, the respective object object_<id> etc.
 #}}
-{{%- macro oval_file_absent(filepath, id='') -%}}
-  <unix:file_test check="all" check_existence="none_exist" id="test_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent"
+{{%- macro oval_file_absent(filepath) -%}}
+  <unix:file_test check="all" check_existence="none_exist" id="test_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent"
   comment="Check if {{{ filepath }}} does not exist" version="1">
-    <unix:object object_ref="object_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
+    <unix:object object_ref="object_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent" />
   </unix:file_test>
-  <unix:file_object id="object_{{{ id if id else rule_id }}}_file_{{{ filepath|escape_id }}}_absent" version="1">
-    <unix:filepath>{{{ filepath }}}</unix:filepath>
+  <unix:file_object id="object_{{{ rule_id }}}_file_{{{ filepath|escape_id }}}_absent" version="1">
+    <unix:filepath operation="pattern match">^{{{ filepath }}}</unix:filepath>
   </unix:file_object>
 {{%- endmacro %}}
 

@@ -3,12 +3,12 @@
     {{{ oval_metadata("The grub2 boot loader superuser should have a username that is hard to guess.") }}}
 
     <criteria operator="OR">
-      {{{ oval_file_absent_criterion("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
+      {{{ oval_file_absent_criterion("/boot/grub2/grub.cfg") }}}
       <criterion comment="Superuser is defined in /boot/grub2/grub.cfg and it isn't root, admin, or administrator." test_ref="test_bootloader_unique_superuser"/>
     </criteria>
   </definition>
 
-  {{{ oval_file_absent("/boot/grub2/grub.cfg", rule_id + "_grub_cfg") }}}
+  {{{ oval_file_absent("/boot/grub2/grub.cfg") }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files. Superuser is not root, admin, or administrator" id="test_bootloader_unique_superuser" version="1">
     <ind:object object_ref="object_bootloader_unique_superuser" />
