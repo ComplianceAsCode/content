@@ -226,7 +226,7 @@ def clusterTestFunc(args):
         if ret_code != 0:
             print(output)
             try:
-                os.remove(profile_path)
+                os.remove(PROFILE_PATH)
             except OSError:
                 pass
             return 1
@@ -247,7 +247,7 @@ def clusterTestFunc(args):
         if proc.returncode != 0:
             print('error applying scan object: %s' % err)
             try:
-                os.remove(profile_path)
+                os.remove(PROFILE_PATH)
             except OSError:
                 pass
             return 1
