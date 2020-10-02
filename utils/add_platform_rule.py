@@ -181,6 +181,14 @@ def createFunc(args):
     if args.namespace is not None:
         namespace_flag = '-n ' + args.namespace
 
+    group_path = os.path.join(PLATFORM_RULE_DIR, args.group)
+    if args.group:
+        if not os.path.isdir(group_path):
+            print("ERROR: The specified group '%s' doesn't exist in the '%s' directory" % (
+                args.group, PLATFORM_RULE_DIR))
+            return 0
+
+    rule_path = os.path.join(group_path, args.rule)
     while url is None and retries < 5:
         retries += 1
         ret_code, output = subprocess.getstatusoutput(
@@ -198,8 +206,7 @@ def createFunc(args):
 
     print('* Creating check for "%s" with yamlpath "%s" satisfying match of "%s"' % (
         url, args.yamlpath, args.match))
-    rule_path = PLATFORM_RULE_DIR + '/' + args.rule
-    rule_yaml_path = rule_path + '/rule.yml'
+    rule_yaml_path = os.path.join(rule_path, 'rule.yml')
 
     pathlib.Path(rule_path).mkdir(parents=True, exist_ok=True)
     with open(rule_yaml_path, 'w') as f:
@@ -328,6 +335,8 @@ def main():
         'create', help='Bootstrap the XML and YML files under %s for a new check.' % PLATFORM_RULE_DIR)
     create_parser.add_argument(
         '--rule', required=True, help='The name of the rule to create. Required.')
+    create_parser.add_argument(
+        '--group', default="", help='The group directory of the rule to create.')
     create_parser.add_argument(
         '--name', required=True, help='The name of the Kubernetes object to check. Required.')
     create_parser.add_argument(
