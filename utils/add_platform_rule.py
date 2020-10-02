@@ -137,6 +137,28 @@ spec:
 ''')
 
 
+def needs_oc(func):
+    def wrapper(args):
+        if which('oc') is None:
+            print('oc is required for this command.')
+            return 1
+
+        return func(args)
+    return wrapper
+
+
+def needs_working_cluster(func):
+    def wrapper(args):
+        ret_code, output = subprocess.getstatusoutput(
+            'oc whoami')
+        if ret_code != 0:
+            print("* Error connecting to cluster")
+            print(output)
+            return ret_code
+
+        return func(args)
+    return wrapper
+
 def which(program):
     fpath, fname = os.path.split(program)
     if fpath:
@@ -151,17 +173,13 @@ def which(program):
     return None
 
 
+@needs_oc
 def createFunc(args):
     url = args.url
     retries = 0
     namespace_flag = ''
     if args.namespace is not None:
         namespace_flag = '-n ' + args.namespace
-
-    if args.url is not None:
-        if which('oc') is None:
-            print('oc is required if --url is not provided.')
-            return 1
 
     while url is None and retries < 5:
         retries += 1
@@ -201,12 +219,10 @@ def createTestProfile(rule):
         f.write(PROFILE_TEMPLATE.format(RULE_NAME=rule))
 
 
+@needs_oc
+@needs_working_cluster
 def clusterTestFunc(args):
     build_cmd = 'utils/build_ds_container.sh'
-
-    if which('oc') is None:
-        print('oc is required to test a rule in-cluster.')
-        return 1
 
     print('testing rule %s in-cluster' % args.rule)
 
@@ -363,10 +379,6 @@ def main():
     test_parser.set_defaults(func=testFunc)
 
     args = parser.parse_args()
-
-    if os.getenv('KUBECONFIG') == None:
-        print('export KUBECONFIG needed')
-        return 1
 
     return args.func(args)
 
