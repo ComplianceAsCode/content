@@ -270,7 +270,7 @@ def clusterTestFunc(args):
             return 1
 
     # poll for the DONE result
-    timeout = time.time() + 60   # A minute is generous for the platform scan.
+    timeout = time.time() + 120   # A couple of minutes is generous for the platform scan.
     scan_result = None
     while True:
         ret_code, output = subprocess.getstatusoutput(
