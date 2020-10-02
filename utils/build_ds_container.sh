@@ -12,7 +12,7 @@ print_usage() {
     echo "    $cmdname -n [namespace]          Build image in the given namespace (Defaults to 'openshift-compliance')."
     echo "    $cmdname -p                      Create ProfileBundle objects for the image."
     echo "    $cmdname -d                      Build content using the --debug flag."
-    echo "    $cmdname -P [product] (-P ...)   Specify applicable product(s) to build. This option can be specified multiple times. (Defaults to 'ocp4' 'rhel7' 'rhcos4')"
+    echo "    $cmdname -P [product] (-P ...)   Specify applicable product(s) to build. This option can be specified multiple times. (Defaults to 'ocp4' 'rhcos4')"
     exit 0
 }
 
@@ -23,7 +23,7 @@ parms=()
 namespace="openshift-compliance"
 create_profile_bundles="false"
 products=()
-default_products=(ocp4 rhcos4 rhel7)
+default_products=(ocp4 rhcos4)
 
 while getopts ":hdpn:P:" opt; do
     case ${opt} in
