@@ -302,10 +302,6 @@ def testFunc(args):
 
 
 def main():
-    if os.getenv('KUBECONFIG') == None:
-        print('export KUBECONFIG needed')
-        return 1
-
     parser = argparse.ArgumentParser(
         prog="add_platform_rule.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -367,6 +363,11 @@ def main():
     test_parser.set_defaults(func=testFunc)
 
     args = parser.parse_args()
+
+    if os.getenv('KUBECONFIG') == None:
+        print('export KUBECONFIG needed')
+        return 1
+
     return args.func(args)
 
 
