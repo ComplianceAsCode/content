@@ -19,9 +19,7 @@ spec:
     dockerfile: |
       FROM registry.access.redhat.com/ubi8/ubi-minimal
       WORKDIR /
-      COPY ssg-ocp4-ds.xml .
-      COPY ssg-rhel7-ds.xml .
-      COPY ssg-rhcos4-ds.xml .
+      COPY *-ds.xml .
   strategy: 
     dockerStrategy:
       noCache: true

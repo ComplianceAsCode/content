@@ -12,6 +12,7 @@ print_usage() {
     echo "    $cmdname -n [namespace]          Build image in the given namespace (Defaults to 'openshift-compliance')."
     echo "    $cmdname -p                      Create ProfileBundle objects for the image."
     echo "    $cmdname -d                      Build content using the --debug flag."
+    echo "    $cmdname -P [product] (-P ...)   Specify applicable product(s) to build. This option can be specified multiple times. (Defaults to 'ocp4' 'rhel7' 'rhcos4')"
     exit 0
 }
 
@@ -21,9 +22,10 @@ parms=()
 # "openshift-compliance"
 namespace="openshift-compliance"
 create_profile_bundles="false"
-products=(ocp4 rhel7 rhcos4)
+products=()
+default_products=(ocp4 rhcos4 rhel7)
 
-while getopts ":hdpn:" opt; do
+while getopts ":hdpn:P:" opt; do
     case ${opt} in
         n ) # Set the namespace
             namespace=$OPTARG
@@ -38,11 +40,18 @@ while getopts ":hdpn:" opt; do
             display_description
             print_usage
             ;;
+        P ) # A product to build
+            products+=($OPTARG)
+            ;;
         \? ) 
             print_usage
             ;;
     esac
 done
+
+if [ ${#products[@]} -eq 0 ]; then
+    products=${default_products[@]}
+fi
 
 echo "* Pushing datastream content image to namespace: $namespace"
 
@@ -53,7 +62,7 @@ pushd $root_dir
 echo "* Building $(echo ${products[@]} | sed 's/ /, /g') products"
 
 # build the product's content
-"$root_dir/build_product" "${products[@]}" "${params[@]}"
+"$root_dir/build_product" ${products[@]} "${params[@]}"
 result=$?
 
 if [ "$result" != "0" ]; then
