@@ -97,7 +97,6 @@ selections:
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
     - accounts_logon_fail_delay
-    - accounts_logon_fail_delay.severity=medium
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
     - sshd_do_not_permit_user_env
@@ -105,7 +104,6 @@ selections:
     - grub2_password
     - require_singleuser_auth
     - grub2_uefi_password
-    - grub2_uefi_password.severity=high
     - smartcard_auth
     - package_rsh-server_removed
     - package_ypserv_removed
@@ -159,7 +157,6 @@ selections:
     - grub2_enable_fips_mode
     - aide_verify_acls
     - aide_verify_ext_attributes
-    - aide_verify_ext_attributes.severity=low
     - aide_use_fips_hashes
     - grub2_no_removeable_media
     - uefi_no_removeable_media
@@ -275,7 +272,6 @@ selections:
     - network_sniffer_disabled
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
-    - package_vsftpd_removed.severity=high
     - package_tftp-server_removed
     - sshd_enable_x11_forwarding
     - tftpd_uses_secure_mode
@@ -301,9 +297,6 @@ selections:
     - sysctl_net_ipv4_conf_all_accept_redirects
     - wireless_disable_interfaces
     - mount_option_dev_shm_nodev
-    - mount_option_dev_shm_nodev.severity=low
     - mount_option_dev_shm_noexec
-    - mount_option_dev_shm_noexec.severity=low
     - mount_option_dev_shm_nosuid
-    - mount_option_dev_shm_nosuid.severity=low
     - audit_rules_privileged_commands_mount
