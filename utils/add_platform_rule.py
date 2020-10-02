@@ -133,7 +133,7 @@ spec:
     profile: {PROFILE}
     content: ssg-ocp4-ds.xml
     contentImage: image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest
-    debug: True
+    debug: true
 ''')
 
 
