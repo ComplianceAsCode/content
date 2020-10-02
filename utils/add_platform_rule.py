@@ -196,7 +196,7 @@ def createFunc(args):
         print('there was a problem finding the URL from the oc debug output. Hint: override this automatic check with --url')
         return 1
 
-    print('creating check for "%s" with yamlpath "%s" satisfying match of "%s"' % (
+    print('* Creating check for "%s" with yamlpath "%s" satisfying match of "%s"' % (
         url, args.yamlpath, args.match))
     rule_path = PLATFORM_RULE_DIR + '/' + args.rule
     rule_yaml_path = rule_path + '/rule.yml'
@@ -208,8 +208,7 @@ def createFunc(args):
                                      NEGATE=str(args.negate).lower(),
                                      CHECK_TYPE=operation_value(args.regex),
                                      ENTITY_CHECK=entity_value(args.match_entity)))
-    print('wrote ' + rule_yaml_path)
-
+    print('* Wrote ' + rule_yaml_path)
     return 0
 
 
