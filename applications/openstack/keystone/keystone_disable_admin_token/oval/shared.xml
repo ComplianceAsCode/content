@@ -8,13 +8,13 @@
       <description>Is admin_token parameter set to disabled?</description>
     </metadata>
     <criteria comment="Is admin_token parameter set to disabled?" operator="AND">
-      <criterion comment="Check admin_token in /etc/keystone/keystone-paste.ini" test_ref="test_keystone_admin_token" />
+      <criterion comment="Check admin_token in /etc/keystone/keystone.conf" test_ref="test_keystone_admin_token" />
       <criterion comment="Check AdminTokenAuthMiddleware does not exist in /etc/keystone/keystone-paste.ini" test_ref="test_keystone_admin_token_auth_middleware" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="Tests the value of the admin_token[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/keystone/keystone-paste.ini file"
+  comment="Tests the value of the admin_token[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/keystone/keystone.conf file"
   id="test_keystone_admin_token" version="1">
     <ind:object object_ref="obj_keystone_admin_token" />
   </ind:textfilecontent54_test>
@@ -26,7 +26,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_keystone_admin_token" version="2">
-    <ind:filepath>/etc/keystone/keystone-paste.ini</ind:filepath>
+    <ind:filepath>/etc/keystone/keystone.conf</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)admin_token(?-i)[\s]+disabled[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
