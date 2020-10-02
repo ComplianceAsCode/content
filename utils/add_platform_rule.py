@@ -222,7 +222,6 @@ def createTestProfile(rule):
 @needs_oc
 @needs_working_cluster
 def clusterTestFunc(args):
-    build_cmd = 'utils/build_ds_container.sh'
 
     print('* Testing rule %s in-cluster' % args.rule)
 
@@ -237,7 +236,8 @@ def clusterTestFunc(args):
         createTestProfile(args.rule)
         print('* Pushing image build to cluster')
         # execute the build_ds_container script
-        buildp = subprocess.run(build_cmd)
+        buildp = subprocess.run(
+            ['utils/build_ds_container.sh', '-P', 'ocp4', '-P', 'rhcos4'])
         if buildp.returncode != 0:
             try:
                 os.remove(PROFILE_PATH)
