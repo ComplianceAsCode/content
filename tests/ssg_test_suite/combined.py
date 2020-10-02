@@ -39,14 +39,21 @@ class CombinedChecker(rule.RuleChecker):
         self._current_result = None
 
     def _modify_parameters(self, script, params):
-        # If there is no profiles metadata for a script we add the tested
-        # profile id into it. Otherwise we check the metadata and set it
-        # to self.profile (the tested profile) only if the  metadata
-        # contains self.profile - otherwise scenario is not supposed to be
-        # tested using the self.profile and we return empty profiles
+        # If there is no profiles metadata in a script we will use
+        # the ALL profile - this will prevent failures which might
+        # be caused by the tested profile selecting different values
+        # in tested variables compared to defaults. The ALL profile
+        # is always selecting default values.
+        # If there is profiles metadata we check the metadata and set
+        # it to self.profile (the tested profile) only if the metadata
+        # contains self.profile - otherwise scenario is not supposed to
+        # be tested using the self.profile and we return empty profiles
         # metadata.
         if not params["profiles"]:
-            params['profiles'] = [self.profile]
+            params["profiles"].append(rule.OSCAP_PROFILE_ALL_ID)
+            logging.debug(
+                "Added the {0} profile to the list of available profiles for {1}"
+                .format(rule.OSCAP_PROFILE_ALL_ID, script))
         else:
             params['profiles'] = [item for item in params['profiles'] if re.search(self.profile, item)]
         return params
