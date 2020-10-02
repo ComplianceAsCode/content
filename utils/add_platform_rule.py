@@ -65,9 +65,9 @@ PROFILE_PATH = 'ocp4/profiles/test.profile'
 MOCK_VERSION = ('''status:
   versions:
   - name: operator
-    version: 4.5.0-0.ci-2020-06-15-112708
+    version: 4.6.0-0.ci-2020-06-15-112708
   - name: openshift-apiserver
-    version: 4.5.0-0.ci-2020-06-15-112708
+    version: 4.6.0-0.ci-2020-06-15-112708
 ''')
 
 RULE_TEMPLATE = ('''prodtype: ocp4
@@ -133,9 +133,31 @@ spec:
     profile: {PROFILE}
     content: ssg-ocp4-ds.xml
     contentImage: image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest
-    debug: True
+    debug: true
 ''')
 
+
+def needs_oc(func):
+    def wrapper(args):
+        if which('oc') is None:
+            print('oc is required for this command.')
+            return 1
+
+        return func(args)
+    return wrapper
+
+
+def needs_working_cluster(func):
+    def wrapper(args):
+        ret_code, output = subprocess.getstatusoutput(
+            'oc whoami')
+        if ret_code != 0:
+            print("* Error connecting to cluster")
+            print(output)
+            return ret_code
+
+        return func(args)
+    return wrapper
 
 def which(program):
     fpath, fname = os.path.split(program)
@@ -151,6 +173,7 @@ def which(program):
     return None
 
 
+@needs_oc
 def createFunc(args):
     url = args.url
     retries = 0
@@ -158,11 +181,14 @@ def createFunc(args):
     if args.namespace is not None:
         namespace_flag = '-n ' + args.namespace
 
-    if args.url is not None:
-        if which('oc') is None:
-            print('oc is required if --url is not provided.')
-            return 1
+    group_path = os.path.join(PLATFORM_RULE_DIR, args.group)
+    if args.group:
+        if not os.path.isdir(group_path):
+            print("ERROR: The specified group '%s' doesn't exist in the '%s' directory" % (
+                args.group, PLATFORM_RULE_DIR))
+            return 0
 
+    rule_path = os.path.join(group_path, args.rule)
     while url is None and retries < 5:
         retries += 1
         ret_code, output = subprocess.getstatusoutput(
@@ -178,10 +204,9 @@ def createFunc(args):
         print('there was a problem finding the URL from the oc debug output. Hint: override this automatic check with --url')
         return 1
 
-    print('creating check for "%s" with yamlpath "%s" satisfying match of "%s"' % (
+    print('* Creating check for "%s" with yamlpath "%s" satisfying match of "%s"' % (
         url, args.yamlpath, args.match))
-    rule_path = PLATFORM_RULE_DIR + '/' + args.rule
-    rule_yaml_path = rule_path + '/rule.yml'
+    rule_yaml_path = os.path.join(rule_path, 'rule.yml')
 
     pathlib.Path(rule_path).mkdir(parents=True, exist_ok=True)
     with open(rule_yaml_path, 'w') as f:
@@ -190,8 +215,7 @@ def createFunc(args):
                                      NEGATE=str(args.negate).lower(),
                                      CHECK_TYPE=operation_value(args.regex),
                                      ENTITY_CHECK=entity_value(args.match_entity)))
-    print('wrote ' + rule_yaml_path)
-
+    print('* Wrote ' + rule_yaml_path)
     return 0
 
 
@@ -201,65 +225,64 @@ def createTestProfile(rule):
         f.write(PROFILE_TEMPLATE.format(RULE_NAME=rule))
 
 
+@needs_oc
+@needs_working_cluster
 def clusterTestFunc(args):
-    build_cmd = 'utils/build_ds_container.sh'
 
-    if which('oc') is None:
-        print('oc is required to test a rule in-cluster.')
-        return 1
+    print('* Testing rule %s in-cluster' % args.rule)
 
-    print('testing rule %s in-cluster' % args.rule)
-
-    if not os.path.exists(PLATFORM_RULE_DIR + '/' + args.rule):
-        print('no rule for %s, run "create" first' % args.rule)
+    findout = subprocess.getoutput(
+        "find %s -name '%s' -type d" % (PLATFORM_RULE_DIR, args.rule))
+    if findout == "":
+        print('ERROR: no rule for %s, run "create" first' % args.rule)
         return 1
 
     if not args.skip_deploy:
-        print('deploying compliance-operator')
-        subprocess.getstatusoutput("utils/deploy_compliance_operator.sh")
+        subprocess.run("utils/deploy_compliance_operator.sh")
 
     if not args.skip_build:
         createTestProfile(args.rule)
-        print('pushing image build to cluster')
+        print('* Pushing image build to cluster')
         # execute the build_ds_container script
-        ret_code, output = subprocess.getstatusoutput(build_cmd)
-        if ret_code != 0:
-            print(output)
+        buildp = subprocess.run(
+            ['utils/build_ds_container.sh', '-P', 'ocp4', '-P', 'rhcos4'])
+        if buildp.returncode != 0:
             try:
-                os.remove(profile_path)
+                os.remove(PROFILE_PATH)
             except OSError:
                 pass
             return 1
 
-    ret_code, output = subprocess.getstatusoutput(
+    ret_code, _ = subprocess.getstatusoutput(
         'oc delete compliancescans/test')
     if ret_code == 0:
         # if previous compliancescans were actually deleted, wait a bit to allow resources to clean up.
-        print('waiting for cleanup from a previous test run')
+        print('* Waiting for cleanup from a previous test run')
         time.sleep(20)
 
     # create a single-rule scan
+    print("* Running scan with rule '%s'" % args.rule)
     profile = 'xccdf_org.ssgproject.content_profile_test'
     apply_cmd = ['oc', 'apply', '-f', '-']
     with subprocess.Popen(apply_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as proc:
-        out, err = proc.communicate(
+        _, err = proc.communicate(
             input=TEST_SCAN_TEMPLATE.format(PROFILE=profile).encode())
         if proc.returncode != 0:
-            print('error applying scan object: %s' % err)
+            print('Error applying scan object: %s' % err)
             try:
-                os.remove(profile_path)
+                os.remove(PROFILE_PATH)
             except OSError:
                 pass
             return 1
 
     # poll for the DONE result
-    timeout = time.time() + 60   # A minute is generous for the platform scan.
+    timeout = time.time() + 120   # A couple of minutes is generous for the platform scan.
     scan_result = None
     while True:
         ret_code, output = subprocess.getstatusoutput(
             'oc get compliancescans/test -o template="{{.status.phase}} {{.status.result}}"')
         if output is not None:
-            print('output from last phase check: %s' % output)
+            print('> Output from last phase check: %s' % output)
         if output.startswith('DONE'):
             scan_result = output[5:]
             break
@@ -268,10 +291,10 @@ def clusterTestFunc(args):
         time.sleep(2)
 
     if scan_result == None:
-        print('timeout waiting for scan to finish')
+        print('ERROR: Timeout waiting for scan to finish')
         return 1
 
-    print(scan_result)
+    print("* The result is '%s'" % scan_result)
     return 0
 
 
@@ -302,10 +325,6 @@ def testFunc(args):
 
 
 def main():
-    if os.getenv('KUBECONFIG') == None:
-        print('export KUBECONFIG needed')
-        return 1
-
     parser = argparse.ArgumentParser(
         prog="add_platform_rule.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -316,6 +335,8 @@ def main():
         'create', help='Bootstrap the XML and YML files under %s for a new check.' % PLATFORM_RULE_DIR)
     create_parser.add_argument(
         '--rule', required=True, help='The name of the rule to create. Required.')
+    create_parser.add_argument(
+        '--group', default="", help='The group directory of the rule to create.')
     create_parser.add_argument(
         '--name', required=True, help='The name of the Kubernetes object to check. Required.')
     create_parser.add_argument(
@@ -367,6 +388,7 @@ def main():
     test_parser.set_defaults(func=testFunc)
 
     args = parser.parse_args()
+
     return args.func(args)
 
 
