@@ -65,9 +65,9 @@ PROFILE_PATH = 'ocp4/profiles/test.profile'
 MOCK_VERSION = ('''status:
   versions:
   - name: operator
-    version: 4.5.0-0.ci-2020-06-15-112708
+    version: 4.6.0-0.ci-2020-06-15-112708
   - name: openshift-apiserver
-    version: 4.5.0-0.ci-2020-06-15-112708
+    version: 4.6.0-0.ci-2020-06-15-112708
 ''')
 
 RULE_TEMPLATE = ('''prodtype: ocp4
