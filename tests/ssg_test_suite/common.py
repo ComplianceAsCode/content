@@ -330,8 +330,8 @@ def iterate_over_rules():
 def get_cpe_of_tested_os(domain_ip, logfile_name):
     os_release_file = "/etc/os-release"
     ret, cpe_line = run_cmd_remote(
-            "grep CPE_NAME {os_release_file}".format(os_release_file=os_release_file),
-            domain_ip, logfile_name)
+        "grep CPE_NAME {os_release_file}".format(os_release_file=os_release_file),
+        domain_ip, logfile_name)
     # We are parsing an assignment that is possibly quoted
     cpe = re.match(r'''CPE_NAME=(["']?)(.*)\1''', cpe_line)
     if cpe and cpe.groups()[1]:
@@ -339,12 +339,12 @@ def get_cpe_of_tested_os(domain_ip, logfile_name):
     msg = ["Unable to get a CPE of the system running tests"]
     if cpe_line:
         msg.append(
-                "Retreived a CPE line that we couldn't parse: {cpe_line}"
-                .format(cpe_line=cpe_line))
+            "Retreived a CPE line that we couldn't parse: {cpe_line}"
+            .format(cpe_line=cpe_line))
     else:
         msg.append(
-                "Couldn't get CPE entry from '{os_release_file}'"
-                .format(os_release_file=os_release_file))
+            "Couldn't get CPE entry from '{os_release_file}'"
+            .format(os_release_file=os_release_file))
     raise RuntimeError("\n".join(msg))
 
 
@@ -366,8 +366,8 @@ def install_packages(domain_ip, packages):
         print("Installing packages", file=log_file)
         log_file.flush()
         execute_remote_command(
-                machine, INSTALL_COMMANDS[platform] + tuple(packages), log_file,
-                "Couldn't install required packages {packages}".format(packages=packages))
+            machine, INSTALL_COMMANDS[platform] + tuple(packages), log_file,
+            "Couldn't install required packages {packages}".format(packages=packages))
 
 
 def cpes_to_platform(cpes):
@@ -379,7 +379,5 @@ def cpes_to_platform(cpes):
             if match:
                 major_version = match.groups()[0].split(".")[0]
                 return "rhel" + major_version
-    msg = (
-            "Unable to deduce a platform from these CPEs: {cpes}"
-            .format(cpes=cpes))
+    msg = "Unable to deduce a platform from these CPEs: {cpes}".format(cpes=cpes)
     raise ValueError(msg)
