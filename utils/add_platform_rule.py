@@ -224,44 +224,43 @@ def createTestProfile(rule):
 def clusterTestFunc(args):
     build_cmd = 'utils/build_ds_container.sh'
 
-    print('testing rule %s in-cluster' % args.rule)
+    print('* Testing rule %s in-cluster' % args.rule)
 
     if not os.path.exists(PLATFORM_RULE_DIR + '/' + args.rule):
-        print('no rule for %s, run "create" first' % args.rule)
+        print('ERROR: no rule for %s, run "create" first' % args.rule)
         return 1
 
     if not args.skip_deploy:
-        print('deploying compliance-operator')
-        subprocess.getstatusoutput("utils/deploy_compliance_operator.sh")
+        subprocess.run("utils/deploy_compliance_operator.sh")
 
     if not args.skip_build:
         createTestProfile(args.rule)
-        print('pushing image build to cluster')
+        print('* Pushing image build to cluster')
         # execute the build_ds_container script
-        ret_code, output = subprocess.getstatusoutput(build_cmd)
-        if ret_code != 0:
-            print(output)
+        buildp = subprocess.run(build_cmd)
+        if buildp.returncode != 0:
             try:
                 os.remove(PROFILE_PATH)
             except OSError:
                 pass
             return 1
 
-    ret_code, output = subprocess.getstatusoutput(
+    ret_code, _ = subprocess.getstatusoutput(
         'oc delete compliancescans/test')
     if ret_code == 0:
         # if previous compliancescans were actually deleted, wait a bit to allow resources to clean up.
-        print('waiting for cleanup from a previous test run')
+        print('* Waiting for cleanup from a previous test run')
         time.sleep(20)
 
     # create a single-rule scan
+    print("* Running scan with rule '%s'" % args.rule)
     profile = 'xccdf_org.ssgproject.content_profile_test'
     apply_cmd = ['oc', 'apply', '-f', '-']
     with subprocess.Popen(apply_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as proc:
-        out, err = proc.communicate(
+        _, err = proc.communicate(
             input=TEST_SCAN_TEMPLATE.format(PROFILE=profile).encode())
         if proc.returncode != 0:
-            print('error applying scan object: %s' % err)
+            print('Error applying scan object: %s' % err)
             try:
                 os.remove(PROFILE_PATH)
             except OSError:
@@ -275,7 +274,7 @@ def clusterTestFunc(args):
         ret_code, output = subprocess.getstatusoutput(
             'oc get compliancescans/test -o template="{{.status.phase}} {{.status.result}}"')
         if output is not None:
-            print('output from last phase check: %s' % output)
+            print('> Output from last phase check: %s' % output)
         if output.startswith('DONE'):
             scan_result = output[5:]
             break
@@ -284,10 +283,10 @@ def clusterTestFunc(args):
         time.sleep(2)
 
     if scan_result == None:
-        print('timeout waiting for scan to finish')
+        print('ERROR: Timeout waiting for scan to finish')
         return 1
 
-    print(scan_result)
+    print("* The result is '%s'" % scan_result)
     return 0
 
 
