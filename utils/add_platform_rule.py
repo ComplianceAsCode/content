@@ -225,7 +225,9 @@ def clusterTestFunc(args):
 
     print('* Testing rule %s in-cluster' % args.rule)
 
-    if not os.path.exists(PLATFORM_RULE_DIR + '/' + args.rule):
+    findout = subprocess.getoutput(
+        "find %s -name '%s' -type d" % (PLATFORM_RULE_DIR, args.rule))
+    if findout == "":
         print('ERROR: no rule for %s, run "create" first' % args.rule)
         return 1
 
