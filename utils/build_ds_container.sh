@@ -6,10 +6,12 @@ display_description() {
 }
 
 print_usage() {
+    cmdname=$(basename $0)
     echo "Usage:"
-    echo "    $0 -h                      Display this help message."
-    echo "    $0 -n [namespace]          Build image in the given namespace (Defaults to 'openshift-compliance')."
-    echo "    $0 -p                      Create ProfileBundle objects for the image."
+    echo "    $cmdname -h                      Display this help message."
+    echo "    $cmdname -n [namespace]          Build image in the given namespace (Defaults to 'openshift-compliance')."
+    echo "    $cmdname -p                      Create ProfileBundle objects for the image."
+    echo "    $cmdname -d                      Build content using the --debug flag."
     exit 0
 }
 
