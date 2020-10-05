@@ -19,18 +19,11 @@
           test_ref="test_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" />
         </criteria>
       </criteria>
-      {{%- if product == "rhel6" %}}
+      {{%- if centos_major_version %}}
       <criteria comment="CentOS Vendor Keys" operator="AND">
-        <extend_definition comment="CentOS6 installed" definition_ref="installed_OS_is_centos6" />
-        <criterion comment="package gpg-pubkey-c105b9de-4e0fd3a3 is installed"
-        test_ref="test_package_gpgkey-c105b9de-4e0fd3a3_installed" />
-      </criteria>
-      {{%- endif %}}
-      {{%- if product == "rhel7" %}}
-      <criteria comment="CentOS Vendor Keys" operator="AND">
-        <extend_definition comment="CentOS7 installed" definition_ref="installed_OS_is_centos7" />
-        <criterion comment="package gpg-pubkey-f4a80eb5-53a7ff4b is installed"
-        test_ref="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" />
+        <extend_definition comment="CentOS{{{ centos_major_version }}} installed" definition_ref="installed_OS_is_centos{{{ centos_major_version }}}" />
+        <criterion comment="package gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}} is installed"
+        test_ref="test_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" />
       </criteria>
       {{%- endif %}}
     </criteria>
@@ -68,33 +61,17 @@
     <linux:version>{{{ aux_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
 
-  {{%- if product == "rhel7" %}}
-  <!-- Test for CentOS7 key -->
+  {{%- if centos_major_version %}}
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" version="1"
-  comment="CentOS7 key package is installed">
+  id="test_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" version="1"
+  comment="CentOS{{{ centos_major_version }}} key package is installed">
     <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-f4a80eb5-53a7ff4b" />
+    <linux:state state_ref="state_package_gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}" />
   </linux:rpminfo_test>
 
-  <linux:rpminfo_state id="state_package_gpg-pubkey-f4a80eb5-53a7ff4b" version="1">
-    <linux:release>53a7ff4b</linux:release>
-    <linux:version>f4a80eb5</linux:version>
-  </linux:rpminfo_state>
-  {{%- endif %}}
-
-  {{%- if product == "rhel6" %}}
-  <!-- Test for CentOS6 key -->
-  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-c105b9de-4e0fd3a3_installed" version="1"
-  comment="CentOS6 key package is installed">
-    <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-c105b9de-4e0fd3a3" />
-  </linux:rpminfo_test>
-
-  <linux:rpminfo_state id="state_package_gpg-pubkey-c105b9de-4e0fd3a3" version="1">
-    <linux:release>4e0fd3a3</linux:release>
-    <linux:version>c105b9de</linux:version>
+  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}" version="1">
+    <linux:release>{{{ centos_pkg_release }}}</linux:release>
+    <linux:version>{{{ centos_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
   {{%- endif %}}
 
