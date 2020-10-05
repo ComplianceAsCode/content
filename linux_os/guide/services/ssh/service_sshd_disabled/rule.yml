@@ -5,7 +5,7 @@ title: 'Disable SSH Server If Possible (Unusual)'
 description: |-
     The SSH server service, sshd, is commonly needed.
     However, if it can be disabled, do so.
-    {{% if product in ['debian8', 'debian9', 'debian10', 'ubuntu1404', 'ubuntu1604', 'ubuntu1804'] %}}
+    {{% if product in ['debian9', 'debian10', 'ubuntu1404', 'ubuntu1604', 'ubuntu1804'] %}}
     {{{ describe_service_disable(service="sshd") }}}
     {{% else %}}
     {{{ describe_service_disable(service="sshd") }}}
@@ -29,7 +29,6 @@ template:
         packagename@opensuse: openssh
         packagename@sle11: openssh
         packagename@sle12: openssh
-        daemonname@debian8: ssh
         daemonname@debian9: ssh
         daemonname@debian10: ssh
         daemonname@ubuntu1404: ssh

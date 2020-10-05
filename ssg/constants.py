@@ -6,7 +6,7 @@ import os.path
 
 product_directories = [
     'chromium',
-    'debian8', 'debian9', 'debian10',
+    'debian9', 'debian10',
     'example',
     'fedora',
     'firefox',
@@ -141,7 +141,6 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
-    "Debian 8": "debian8",
     "Debian 9": "debian9",
     "Debian 10": "debian10",
     "Example": "example",
@@ -176,9 +175,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 PRODUCT_TO_CPE_MAPPING = {
     "chromium": [
         "cpe:/a:google:chromium-browser",
-    ],
-    "debian8": [
-        "cpe:/o:debianproject:debian:8",
     ],
     "debian9": [
         "cpe:/o:debianproject:debian:9",
@@ -303,7 +299,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian8", "debian9", "debian10"],
+    "multi_platform_debian": ["debian9", "debian10"],
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
