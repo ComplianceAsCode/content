@@ -37,5 +37,5 @@
     <unix:filepath operation="pattern match">^/sys/.*$</unix:filepath>
   </unix:file_state>
 
-  {{{ add_remote_state("state_file_in_remote_dir_" + rule_id, "linux", "rpmverifyfile_state") }}}
+  {{{ add_remote_state("state_file_in_remote_dir_" + rule_id, "unix", "file_state") }}}
 </def-group>
