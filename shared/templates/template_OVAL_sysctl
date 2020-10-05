@@ -31,7 +31,7 @@
   <definition class="compliance" id="sysctl_{{{ SYSCTLID }}}" version="4">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to the appropriate value in both system configuration and system runtime.") }}}
     <criteria comment="IPv6 disabled or {{{ SYSCTLVAR }}} set correctly" operator="OR">
-{{% if product in ["rhel6", "ubuntu1404", "ubuntu1604", "ubuntu1804"] %}}
+{{% if product in ["rhel6", "ubuntu1604", "ubuntu1804"] %}}
       <extend_definition comment="is IPv6 enabled?" definition_ref="kernel_module_ipv6_option_disabled" />
 {{% else %}}
       <extend_definition comment="is IPv6 enabled?" definition_ref="sysctl_kernel_ipv6_disable" />

@@ -12,7 +12,7 @@ def _create_profile_cache(ssg_root):
     profile_cache = {}
 
     product_list = ['debian9', 'debian10', 'fedora', 'ol7', 'opensuse', 'rhel6',
-                    'rhel7', 'sle11', 'sle12', 'ubuntu1404', 'ubuntu1604', 'ubuntu1804',
+                    'rhel7', 'sle11', 'sle12', 'ubuntu1604', 'ubuntu1804',
                     'wrlinux']
 
     for product in product_list:
@@ -182,7 +182,7 @@ def find_profiles(ssg_root, path, obj_name):
 
     more_than_two = len(used_products) >= 3
     uses_wrlinux = 'wrlinux' in used_products
-    uses_debian_like_distro = 'ubuntu1404' in used_products or 'ubuntu1604' in used_products or 'ubuntu1804' in used_products
+    uses_debian_like_distro = 'ubuntu1604' in used_products or 'ubuntu1804' in used_products
     uses_rhel_like_distro = 'rhel6' in used_products or 'rhel7' in used_products or 'ol7' in used_products
     uses_sles_like_distro = 'opensuse' in used_products or 'sle11' in used_products or 'sle12' in used_products
     uses_two_distros = (uses_debian_like_distro and uses_rhel_like_distro) or (uses_debian_like_distro and uses_sles_like_distro) or (uses_rhel_like_distro and uses_sles_like_distro)
