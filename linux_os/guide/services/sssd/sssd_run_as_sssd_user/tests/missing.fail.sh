@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = /usr/lib/systemd/system/sssd.service
 
 
-yum -y install /usr/lib/systemd/system/sssd.service
 systemctl enable sssd

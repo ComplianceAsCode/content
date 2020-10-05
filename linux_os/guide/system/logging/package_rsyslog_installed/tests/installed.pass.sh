@@ -1,3 +1,3 @@
 #!/bin/bash
+# packages = rsyslog
 
-yum install -y rsyslog

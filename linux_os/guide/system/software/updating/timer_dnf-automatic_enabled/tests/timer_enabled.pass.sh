@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = dnf-automatic
 
 
-dnf -y install dnf-automatic
 systemctl enable --now dnf-automatic.timer

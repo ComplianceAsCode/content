@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = firewalld
 
 
-yum install -y firewalld
 systemctl disable firewalld.service

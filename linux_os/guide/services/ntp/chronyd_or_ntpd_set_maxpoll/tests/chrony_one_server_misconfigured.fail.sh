@@ -1,8 +1,8 @@
 #!/bin/bash
+# packages = chrony
 #
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
-yum install -y chrony
 yum remove -y ntp
 
 if ! grep "^server.*maxpoll 10" /etc/chrony.conf; then

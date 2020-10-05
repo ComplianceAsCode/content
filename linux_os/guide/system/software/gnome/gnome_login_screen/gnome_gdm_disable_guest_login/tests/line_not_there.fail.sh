@@ -1,5 +1,4 @@
 #!/bin/bash
-
-yum -y install gdm
+# packages = gdm
 
 sed -i "/^TimedLoginEnable=.*/d" /etc/gdm/custom.conf

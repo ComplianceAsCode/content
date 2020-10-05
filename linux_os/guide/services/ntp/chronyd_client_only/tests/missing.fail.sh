@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = chrony
 #
 
-yum install -y chrony
 systemctl enable chronyd.service

@@ -1,6 +1,6 @@
 #!/bin/bash
+# packages = gdm
 
-yum -y install gdm
 
 if grep -q "^AutomaticLoginEnable=" /etc/gdm/custom.conf ; then
 	sed -i "s/^AutomaticLoginEnable=.*/AutomaticLoginEnable=True/g" /etc/gdm/custom.conf

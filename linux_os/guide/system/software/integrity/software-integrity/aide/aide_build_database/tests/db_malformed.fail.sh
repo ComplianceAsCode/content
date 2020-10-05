@@ -1,8 +1,7 @@
 #!/bin/bash
+# packages = aide
 
 # ensure aide is installed
-yum install -y aide
-
 
 DB=/var/lib/aide/aide.db.gz
 

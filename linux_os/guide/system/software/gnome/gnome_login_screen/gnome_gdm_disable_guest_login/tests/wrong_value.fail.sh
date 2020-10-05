@@ -1,6 +1,5 @@
 #!/bin/bash
-
-yum -y install gdm
+# packages = gdm
 
 if grep -q "^TimedLoginEnable=" /etc/gdm/custom.conf ; then
 	sed -i "s/^TimedLoginEnable=.*/TimedLoginEnable=True/g" /etc/gdm/custom.conf

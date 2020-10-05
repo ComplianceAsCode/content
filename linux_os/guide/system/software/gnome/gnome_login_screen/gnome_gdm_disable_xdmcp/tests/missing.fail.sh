@@ -1,6 +1,4 @@
-# platform = multi_platform_all
-
-dnf install -y gdm
+# packages = gdm
 
 mkdir -p /etc/gdm
 rm -f /etc/gdm/custom.conf

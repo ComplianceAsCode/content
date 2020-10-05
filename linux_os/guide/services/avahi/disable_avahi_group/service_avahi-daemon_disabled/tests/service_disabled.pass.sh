@@ -1,7 +1,7 @@
 #!/bin/bash
+# packages = avahi
 #
 
-yum -y install avahi
 
 systemctl stop avahi-daemon.service
 systemctl disable avahi-daemon.service

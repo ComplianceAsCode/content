@@ -1,13 +1,11 @@
 #!/bin/bash
 #
 
-yum install -y nss-pam-ldapd
 
 AUTHCONFIG_REGEX="^[[:space:]]*USELDAPAUTH=yes[[:space:]]*$"
 grep -q "$AUTHCONFIG_REGEX" /etc/sysconfig/authconfig && \
 	sed -i "s/$AUTHCONFIG_REGEX//" /etc/sysconfig/authconfig
 
-yum install -y nss-pam-ldapd
 
 START_TLS_REGEX="^[[:space:]]*ssl[[:space:]]*start_tls[[:space:]]*$"
 grep -q "$START_TLS_REGEX" /etc/nslcd.conf && \

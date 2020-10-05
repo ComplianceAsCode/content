@@ -1,5 +1,5 @@
 #!/bin/bash
+# packages = chrony
 
-yum -y install chrony
 
 echo 'OPTIONS="-u chrony"' > /etc/sysconfig/chronyd
