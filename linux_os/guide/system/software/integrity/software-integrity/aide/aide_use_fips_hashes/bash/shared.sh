@@ -5,7 +5,7 @@
 aide_conf="/etc/aide.conf"
 forbidden_hashes=(sha1 rmd160 sha256 whirlpool tiger haval gost crc32)
 
-groups=$(LC_ALL=C grep "^[A-Za-z]\+" $aide_conf | cut -f1 -d ' ' | tr -d ' ' | sort -u)
+groups=$(LC_ALL=C grep "^[A-Z][A-Za-z_]*" $aide_conf | cut -f1 -d ' ' | tr -d ' ' | sort -u)
 
 for group in $groups
 do
