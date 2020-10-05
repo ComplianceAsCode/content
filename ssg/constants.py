@@ -468,7 +468,7 @@ XCCDF_PLATFORM_TO_CPE = {
 
 # Default platform to package mapping
 XCCDF_PLATFORM_TO_PACKAGE = {
-  "grub2": "grub2-pc",
+  "grub2": "grub2-common",
   "login_defs": "login",
   "sssd": "sssd-common",
   "zipl": "s390utils-base",
