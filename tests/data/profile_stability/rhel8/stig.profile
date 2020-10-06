@@ -157,7 +157,6 @@ selections:
 - package_firewalld_installed
 - package_gssproxy_removed
 - package_iprutils_removed
-- package_iptables_installed
 - package_krb5-workstation_removed
 - package_libcap-ng-utils_installed
 - package_nfs-utils_removed

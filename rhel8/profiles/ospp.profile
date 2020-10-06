@@ -179,7 +179,6 @@ selections:
     - package_subscription-manager_installed
     - package_dnf-plugin-subscription-manager_installed
     - package_firewalld_installed
-    - package_iptables_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
     - package_rng-tools_installed
