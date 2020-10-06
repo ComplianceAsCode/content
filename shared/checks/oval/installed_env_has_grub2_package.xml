@@ -6,32 +6,49 @@
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <description>Checks if package grub2-pc is installed.</description>
+      <description>Checks if package grub2-common is installed.</description>
       <reference ref_id="cpe:/a:grub2" source="CPE" />
     </metadata>
-    <criteria>
-      <criterion comment="Package grub2-pc is installed" test_ref="test_env_has_grub2_installed" />
+    <criteria operator="AND">
+      <criterion comment="Package grub2-common is installed" test_ref="test_env_has_grub2_installed" />
+      <criteria operator="OR">
+        <!-- On ppc64le systems, OF (Grub2) or OPAL (petitboot) can be used,
+        and unfortunately the package set installed is the same in both cases.
+        But when OPAL is used, /sys/firmware/opal exists.
+        So the system uses grub when: -->
+        <!-- grub2-common is installed and arch is not a ppc64le -->
+        <criterion comment="Test for ppcle64 architecture" test_ref="test_system_info_architecture_ppcle_64" negate="true" />
+        <!-- or when grub2-common is installed, arch is a ppc64le but OPAL is not used -->
+        <criterion comment="Test if OPAL is not used" test_ref="test_system_using_opal" negate="true" />
+      </criteria>
     </criteria>
   </definition>
 
 {{% if pkg_system == "rpm" %}}
   <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
   id="test_env_has_grub2_installed" version="1"
-  comment="system has package grub2-pc installed">
+  comment="system has package grub2-common installed">
     <linux:object object_ref="obj_env_has_grub2_installed" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="obj_env_has_grub2_installed" version="1">
-    <linux:name>grub2-pc</linux:name>
+    <linux:name>grub2-common</linux:name>
   </linux:rpminfo_object>
 {{% elif pkg_system == "dpkg" %}}
   <linux:dpkginfo_test check="all" check_existence="all_exist"
   id="test_env_has_grub2_installed" version="1"
-  comment="system has package grub2-pc installed">
+  comment="system has package grub2-common installed">
     <linux:object object_ref="obj_env_has_grub2_installed" />
   </linux:dpkginfo_test>
   <linux:dpkginfo_object id="obj_env_has_grub2_installed" version="1">
-    <linux:name>grub2-pc</linux:name>
+    <linux:name>grub2-common</linux:name>
   </linux:dpkginfo_object>
 {{% endif %}}
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /sys/firware/opal exists" id="test_system_using_opal" version="1">
+    <unix:object object_ref="object_system_using_opal" />
+  </unix:file_test>
+  <unix:file_object id="object_system_using_opal" version="1">
+    <unix:filepath>/sys/firmware/opal</unix:filepath>
+  </unix:file_object>
 
 </def-group>
