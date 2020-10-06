@@ -5,7 +5,7 @@ grubby --update-kernel=ALL --args="{{{ ARG_NAME }}}={{{ ARG_VALUE }}}"
 
 # Ensure new kernels and boot entries retain the boot option
 if [ ! -f /etc/kernel/cmdline ]; then
-    echo "{{{ ARG_NAME_VALUE }}}" >> /etc/kernel/cmdline
+    echo "{{{ ARG_NAME }}}={{{ ARG_VALUE }}}" > /etc/kernel/cmdline
 elif ! grep -q '^(.*\s)?{{{ ARG_NAME }}}={{{ ARG_VALUE }}}(\s.*)?$' /etc/kernel/cmdline; then
     sed -Ei 's/^(.*)$/\1 {{{ ARG_NAME }}}={{{ ARG_VALUE }}}/' /etc/kernel/cmdline
 fi

@@ -264,7 +264,7 @@ def escape_id(text):
     # Make a string used as an Id for OSCAP/XCCDF/OVAL entities more readable
     # and compatible with:
     # OVAL: r'oval:[A-Za-z0-9_\-\.]+:ste:[1-9][0-9]*'
-    return re.sub(r"[^\w]", "_", text).strip("_")
+    return re.sub(r"[^\w]+", "_", text).strip("_")
 
 
 def banner_regexify(banner_text):

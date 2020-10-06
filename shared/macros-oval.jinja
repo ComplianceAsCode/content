@@ -268,7 +268,7 @@
 {{#
   Macro to define the OVAL test to check if there is a line in file with a pair of argument=value (Test definition).
   Parameters:
-    - filepath (String): Path to the configuration file to be checked.
+    - filepath (String): Path to the configuration file to be checked. The operation is "pattern match"
     - name (String): Argument name
     - value (String): Argument value
     - line_prefix (String): The starting part of the line with the list of arguments, default is empty
@@ -283,7 +283,7 @@
     <ind:state state_ref="state_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" version="1">
-    <ind:filepath operation="pattern match">{{{ filepath }}}</ind:filepath>
+    <ind:filepath operation="pattern match">^{{{ filepath }}}</ind:filepath>
     <ind:pattern operation="pattern match">^{{{ line_prefix|escape_regex }}}(.*){{{ line_suffix|escape_regex }}}$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
