@@ -9,7 +9,7 @@
     {{{ oval_metadata("The UEFI grub2 boot loader should have password protection enabled.") }}}
 
     <criteria operator="OR">
-      {{{ oval_file_absent_criterion(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}
+      {{{ oval_file_absent_criterion(grub_cfg_prefix + "/grub.cfg") }}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documenation" operator="OR">
           <criterion comment="make sure a password is defined in {{{ grub_cfg_prefix }}}/user.cfg" test_ref="test_grub2_uefi_password_usercfg" />
@@ -20,7 +20,7 @@
     </criteria>
   </definition>
 
-  {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg", rule_id + "_grub_cfg") }}}
+  {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg") }}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg." id="test_bootloader_uefi_superuser" version="2">
     <ind:object object_ref="object_bootloader_uefi_superuser" />

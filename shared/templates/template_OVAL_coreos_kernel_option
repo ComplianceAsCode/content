@@ -1,71 +1,26 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    <metadata>
-      <title>Ensure that the most recent (default) CoreOS boot loader entry is configured to run Linux operating system with argument {{{ ARG_NAME_VALUE }}}</title>
-      {{{- oval_affected(products) }}}
-      <description>Ensure {{{ ARG_NAME_VALUE }}} option is configured in the 'options' line in /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if the second version does not exists).</description>
-    </metadata>
-    <criteria operator="OR">
+    {{{ oval_metadata("Ensure " + ARG_NAME + "=" + ARG_VALUE +" argument is present in the 'options' line of /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if there is no ostree-2-*.conf as ostree has only two enries at the most, with *-2-*.conf entry always being the most recent). Also, ensure that kernel is currently running with this argument by checking /proc/cmdline.") }}}
+    <criteria operator="AND">
+      <criteria operator="OR">
         <criteria operator="AND">
-            <criterion test_ref="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options"
-            comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/ostree-2-*.conf (if it does exists)" />
+            {{{- oval_file_absent_criterion('/boot/loader/entries/ostree-2-.*.conf')}}}
+            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
         </criteria>
         <criteria operator="AND">
-            <criterion test_ref="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options"
-            comment="Check if {{{ ARG_NAME_VALUE }}} is present in the 'options' line in /boot/loader/entries/ostree-1-*.conf" />
-            <criterion test_ref="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists"
-            comment="Check if /boot/loader/entries/ostree-2-*.conf is not present" />
+            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
         </criteria>
-     </criteria>
+      </criteria>
+      <criteria operator="AND">
+        {{{- oval_argument_value_in_line_criterion('/proc/cmdline', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+      </criteria>
+    </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options"
-  comment="check for kernel option {{{ ARG_NAME_VALUE }}} in /boot/loader/entries/ostree-2-*.conf"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options" />
-    <ind:state state_ref="state_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_option" />
-  </ind:textfilecontent54_test>
+  {{{- oval_file_absent('/boot/loader/entries/ostree-2-.*.conf') }}}
+  {{{- oval_argument_value_in_line_test('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
 
-  <ind:textfilecontent54_object id="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_options"
-  version="1">
-    <ind:filepath operation="pattern match">^/boot/loader/entries/ostree-2-*\.conf$</ind:filepath>
-    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
+  {{{- oval_argument_value_in_line_test('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
 
-  <ind:textfilecontent54_state id="state_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_option"
-  version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
-  </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_test id="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options"
-  comment="check for kernel option {{{ ARG_NAME_VALUE }}} in /boot/loader/entries/ostree-1-*.conf"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options" />
-    <ind:state state_ref="state_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_option" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_options"
-  version="1">
-    <ind:filepath operation="pattern match">^/boot/loader/entries/ostree-1-*\.conf$</ind:filepath>
-    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_state id="state_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_1_option"
-  version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
-  </ind:textfilecontent54_state>
-
-  <unix:file_test id="test_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists" check="all" check_existence="none_exist"
-  comment="Check if /boot/loader/entries/ostree-2-*.conf is not present"
-  version="1">
-    <unix:object object_ref="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists" />
-  </unix:file_test>
-
-  <unix:file_object id="object_coreos_{{{ SANITIZED_ARG_NAME }}}_entry_2_does_not_exists"
-  version="1">
-    <unix:filepath operation="pattern match">^/boot/loader/entries/ostree-2-*\.conf</unix:filepath>
-  </unix:file_object>
-
+  {{{- oval_argument_value_in_line_test('/proc/cmdline', ARG_NAME, ARG_VALUE, 'BOOT_IMAGE') }}}
 </def-group>

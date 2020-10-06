@@ -1600,11 +1600,14 @@ audit_rules_usergroup_modification::
 ** *path* - path that should be part of the audit rule as a value of `-w` argument, eg. `/etc/group`.
 * Languages: Ansible, Bash, OVAL
 
-bls_bootloader_option::
-* Checks kernel command line arguments in BLS-compatible (Boot Loader Specification) boot loader configuration.
+argument_value_in_line::
+* Checks that `argument=value` pair is present in (optionally) the line started with line_prefix (and, optionally, ending with line_suffix) in the file(s) defined by filepath.
 * Parameters:
-** *arg_name* - argument name, eg. `audit`
-** *arg_value* - argument value, eg. `'1'`
+** *filepath* - File(s) to be checked. The value would be treated as a regular expression pattern.
+** *arg_name* - Argument name, eg. `audit`
+** *arg_value* - Argument value, eg. `'1'`
+** *line_prefix* - The prefix of the line in which argument-value pair should be present, optional.
+** *line_suffix* - The suffix of the line in which argument-value pair should be present, optional.
 * Languages: OVAL
 
 file_groupowner::
@@ -1812,8 +1815,6 @@ an OVAL template file called _template_OVAL_package_installed_:
 </def-group>
 ----
 
-Notice that you can use Jinja macros and Jinja filters in the template code.
-
 And here is the Ansible template file called _template_ANSIBLE_package_installed_:
 
 ----
@@ -1886,6 +1887,18 @@ def mount_option(data, lang):
         data["mountoption"] = re.sub(" ", ",", data["mountoption"])
     return data
 ----
+
+==== Filters
+
+You can use Jinja macros and Jinja filters in the template code. ComplianceAsCode support all built-in Jinja link:https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters[filters]. 
+
+There are also some custom filters useful for content authoring defined in the project:
+
+escape_id::
+* Replaces all non-word (regex *\W*) characters with underscore. Useful for sanitizing ID strings as it is compatible with OVAL IDs `oval:[A-Za-z0-9_\-\.]+:ste:[1-9][0-9]*`.
+
+escape_regex::
+* Escapes characters in the string for it to be usable as a part of some regular expression, behaves similar to the Python 3's link:https://docs.python.org/3/library/re.html#re.escape[*re.escape*].
 
 
 === Tests (ctest)

@@ -7,6 +7,7 @@ import re
 from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
+import ssg.utils
 
 try:
     from urllib.parse import quote
@@ -25,8 +26,6 @@ lang_to_ext_map = {
     "kubernetes": ".yml"
 }
 
-def sanitize_input(string):
-    return re.sub(r'[\W_]', '_', string)
 
 templates = dict()
 
@@ -73,7 +72,7 @@ def audit_rules_file_deletion_events(data, lang):
 @template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_login_events(data, lang):
     path = data["path"]
-    name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
+    name = ssg.utils.escape_id(os.path.basename(os.path.normpath(path)))
     data["name"] = name
     if lang == "oval":
         data["path"] = path.replace("/", "\\/")
@@ -83,7 +82,7 @@ def audit_rules_login_events(data, lang):
 @template(["ansible", "bash", "oval"])
 def audit_rules_path_syscall(data, lang):
     if lang == "oval":
-        pathid = re.sub(r'[-\./]', '_', data["path"])
+        pathid = ssg.utils.escape_id(data["path"])
         # remove root slash made into '_'
         pathid = pathid[1:]
         data["pathid"] = pathid
@@ -93,7 +92,7 @@ def audit_rules_path_syscall(data, lang):
 @template(["ansible", "bash", "oval", "kubernetes"])
 def audit_rules_privileged_commands(data, lang):
     path = data["path"]
-    name = re.sub(r"[-\./]", "_", os.path.basename(path))
+    name = ssg.utils.escape_id(os.path.basename(path))
     data["name"] = name
     if lang == "oval":
         data["id"] = data["_rule_id"]
@@ -134,7 +133,7 @@ def audit_rules_unsuccessful_file_modification_rule_order(data, lang):
 @template(["ansible", "bash", "oval"])
 def audit_rules_usergroup_modification(data, lang):
     path = data["path"]
-    name = re.sub(r'[-\./]', '_', os.path.basename(path))
+    name = ssg.utils.escape_id(os.path.basename(path))
     data["name"] = name
     if lang == "oval":
         data["path"] = path.replace("/", "\\/")
@@ -144,7 +143,7 @@ def audit_rules_usergroup_modification(data, lang):
 @template(["ansible", "bash", "oval"])
 def audit_file_contents(data, lang):
     if lang == "oval":
-        pathid = re.sub(r'[-\./]', '_', data["filepath"])
+        pathid = ssg.utils.escape_id(data["filepath"])
         # remove root slash made into '_'
         pathid = pathid[1:]
         data["filepath_id"] = pathid
@@ -216,7 +215,7 @@ def grub2_bootloader_argument(data, lang):
         # escape dot, this is used in oval regex
         data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
         # replace . with _, this is used in test / object / state ids
-        data["sanitized_arg_name"] = data["arg_name"].replace(".", "_")
+        data["sanitized_arg_name"] = ssg.utils.escape_id(data["arg_name"])
     return data
 
 
@@ -227,13 +226,13 @@ def kernel_module_disabled(data, lang):
 
 @template(["anaconda", "oval"])
 def mount(data, lang):
-    data["pointid"] = re.sub(r'[-\./]', '_', data["mountpoint"])
+    data["pointid"] = ssg.utils.escape_id(data["mountpoint"])
     return data
 
 
 def _mount_option(data, lang):
     if lang == "oval":
-        data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
+        data["pointid"] = ssg.utils.escape_id(data["mountpoint"])
     else:
         data["mountoption"] = re.sub(" ", ",", data["mountoption"])
     return data
@@ -247,7 +246,7 @@ def mount_option(data, lang):
 @template(["ansible", "bash", "oval"])
 def mount_option_remote_filesystems(data, lang):
     if lang == "oval":
-        data["mountoptionid"] = sanitize_input(data["mountoption"])
+        data["mountoptionid"] = ssg.utils.escape_id(data["mountoption"])
     return _mount_option(data, lang)
 
 
@@ -270,7 +269,7 @@ def package_installed(data, lang):
 
 @template(["ansible", "bash", "oval"])
 def sysctl(data, lang):
-    data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
+    data["sysctlid"] = ssg.utils.escape_id(data["sysctlvar"])
     if not data.get("sysctlval"):
         data["sysctlval"] = ""
     ipv6_flag = "P"
@@ -365,24 +364,18 @@ def yamlfile_value(data, lang):
 
 
 @template(["oval"])
-def bls_entries_option(data, lang):
-    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
-    if lang == "oval":
-        # escape dot, this is used in oval regex
-        data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
-        # replace . with _, this is used in test / object / state ids
-        data["sanitized_arg_name"] = data["arg_name"].replace(".", "_")
+def argument_value_in_line(data, lang):
     return data
 
 
 @template(["ansible", "bash", "oval"])
 def zipl_bls_entries_option(data, lang):
-    return bls_entries_option(data, lang)
+    return data
 
 
 @template(["oval"])
 def coreos_kernel_option(data, lang):
-    return bls_entries_option(data, lang)
+    return data
 
 
 class Builder(object):
