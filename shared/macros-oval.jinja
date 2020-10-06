@@ -259,7 +259,7 @@
     - value (String): Argument value
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
 #}}
-{{%- macro oval_argument_in_file_criterion(filepath, name, value, application='') -%}}
+{{%- macro oval_argument_value_in_line_criterion(filepath, name, value, application='') -%}}
 {{%- set name_value = name+"="+value -%}}
   <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is present in {{{ filepath }}}" 
   test_ref="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}"/>
@@ -274,7 +274,7 @@
     - line_prefix (String): The starting part of the line with the list of arguments, default is empty
     - line_suffix (String): The ending part of the line with the list of arguments, default is empty
 #}}
-{{%- macro oval_argument_in_file_test(filepath, name, value, line_prefix='', line_suffix='') -%}}
+{{%- macro oval_argument_value_in_line_test(filepath, name, value, line_prefix='', line_suffix='') -%}}
 {{%- set name_value = name+"="+value -%}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}"
   comment="Check if argument {{{ name_value }}} is present{{% if line_prefix %}} in the line starting with '{{{ line_prefix }}}'{{% endif %}} in {{{ filepath }}}"
@@ -302,15 +302,15 @@
     - line_suffix (String): The ending part of the line with the list of arguments, default is empty
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
 #}}
-{{%- macro oval_argument_in_file(filepath, name, value, line_prefix='', line_suffix='') -%}}
+{{%- macro oval_argument_value_in_line(filepath, name, value, line_prefix='', line_suffix='') -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="2">
     {{{ oval_metadata("Ensure argument " + name + "=" + value + " is present"+ (" in the line starting with '" + line_prefix + "'" if line_prefix else "") + " in file(s) '" + filepath + "'") }}}
     <criteria operator="AND">
-      {{{- oval_argument_in_file_criterion(filepath, name, value, application) }}}
+      {{{- oval_argument_value_in_line_criterion(filepath, name, value, application) }}}
     </criteria>
   </definition>
-  {{{- oval_argument_in_file_test(filepath, name, value, line_prefix, line_suffix) }}}
+  {{{- oval_argument_value_in_line_test(filepath, name, value, line_prefix, line_suffix) }}}
 </def-group>
 {{%- endmacro -%}}
 

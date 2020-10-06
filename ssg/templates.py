@@ -364,7 +364,7 @@ def yamlfile_value(data, lang):
 
 
 @template(["oval"])
-def argument_in_file(data, lang):
+def argument_value_in_line(data, lang):
     return data
 
 

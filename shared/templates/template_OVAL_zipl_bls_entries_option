@@ -2,11 +2,11 @@
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("Ensure " + ARG_NAME + "=" + ARG_VALUE + " option is configured in the 'options' line in /boot/loader/entries/*.conf. Make sure that newly installed kernels will retain this option, it should be configured in /etc/kernel/cmdline as well.") }}}
     <criteria operator="AND">
-      {{{- oval_argument_in_file_criterion('/boot/loader/entries/.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
-      {{{- oval_argument_in_file_criterion('/etc/kernel/cmdline', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+      {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+      {{{- oval_argument_value_in_line_criterion('/etc/kernel/cmdline', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
     </criteria>
   </definition>
 
-  {{{- oval_argument_in_file_test('/boot/loader/entries/.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
-  {{{- oval_argument_in_file_test('/etc/kernel/cmdline', ARG_NAME, ARG_VALUE) }}}
+  {{{- oval_argument_value_in_line_test('/boot/loader/entries/.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
+  {{{- oval_argument_value_in_line_test('/etc/kernel/cmdline', ARG_NAME, ARG_VALUE) }}}
 </def-group>
