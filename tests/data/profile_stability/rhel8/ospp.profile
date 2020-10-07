@@ -14,6 +14,7 @@ description: 'This profile reflects mandatory configuration controls identified 
 
     use in U.S. National Security Systems.'
 documentation_complete: true
+reference: https://www.niap-ccevs.org/Profile/PP.cfm
 selections:
 - accounts_max_concurrent_login_sessions
 - accounts_password_minlen_login_defs
@@ -144,6 +145,8 @@ selections:
 - package_openssh-server_installed
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
+- package_rsyslog-gnutls_installed
+- package_rsyslog_installed
 - package_scap-security-guide_installed
 - package_sendmail_removed
 - package_subscription-manager_installed
@@ -156,6 +159,8 @@ selections:
 - partition_for_var_log
 - partition_for_var_log_audit
 - require_singleuser_auth
+- rsyslog_remote_tls
+- rsyslog_remote_tls_cacert
 - securetty_root_login_console_only
 - selinux_policytype
 - selinux_state
