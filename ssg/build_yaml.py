@@ -431,8 +431,11 @@ class Value(object):
                 % (value.operator, yaml_file, ", ".join(possible_operators))
             )
 
-        value.interactive = \
-            yaml_contents.pop("interactive", "false").lower() == "true"
+        interactive = yaml_contents.pop("interactive", False)
+        if isinstance(interactive, str):
+            value.interactive = interactive.lower() == "true"
+        else:
+            value.interactive = interactive
 
         value.options = required_key(yaml_contents, "options")
         del yaml_contents["options"]
