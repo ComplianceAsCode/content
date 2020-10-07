@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,sle15,ubuntu1404,ubuntu1604,ubuntu1804
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle12,sle15,ubuntu1604,ubuntu1804
 
 title: 'Ensure Software Patches Installed'
 
@@ -73,8 +73,6 @@ oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhs
 oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml"
 {{% elif product == "rhel8" %}}
 oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL8.xml"
-{{% elif product == "ubuntu1404" %}}
-oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.trusty.cve.oval.xml"
 {{% elif product == "ubuntu1604" %}}
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.xenial.cve.oval.xml"
 {{% elif product in ["ol7", "ol8"] %}}

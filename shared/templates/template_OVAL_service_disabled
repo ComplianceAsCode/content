@@ -85,36 +85,7 @@
 
 {{% else %}}
 
-  {{% if product == "ubuntu1404" %}}
-
-  <definition class="compliance" id="service_{{{ SERVICENAME }}}_disabled"
-  version="1">
-    {{{ oval_metadata("The " + SERVICENAME + " service should be disabled if possible.", affected_platforms=["multi_platform_all"]) }}}
-   <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
-    <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
-
-    <!-- OVAL <runlevel_test> is not implemented in OpenSCAP when compiled on Ubuntusystems yet:
-         https://github.com/OpenSCAP/openscap/blob/maint-1.2/src/OVAL/probes/unix/runlevel.c#L210
-
-         (attempt to use it will result into 'error' result), therefore we verify that there
-         DOES NOT exist some "S\d{2}ssh" service record in all of "/etc/rc*.d/" subfolders -->
-    <criterion comment="{{{ SERVICENAME }}} disabled in /etc/rc*.d" test_ref="test_{{{ SERVICENAME }}}_disabled" />
-
-    </criteria>
-  </definition>
-
-  <!-- Verify there DOES NOT exist some 'S\d{2}ssh' service record in some of '/etc/rc*.d/' subfolders -->
-  <unix:file_test id="test_{{{ SERVICENAME }}}_disabled" check="all" check_existence="none_exist"
-   comment="{{{ SERVICENAME }}} disabled in /etc/rc*.d" version="1" >
-   <unix:object object_ref="object_{{{ DAEMONNAME }}}_etc_rcd" />
-  </unix:file_test>
-
-  <unix:file_object id="object_{{{ DAEMONNAME }}}_etc_rcd" comment="/etc/rc*.d/S\d{2}{{{ DAEMONNAME }}}" version="1">
-    <unix:path operation="pattern match">^/etc/rc[0-6S]\.d$</unix:path>
-    <unix:filename operation="pattern match">^S\d{2}{{{ DAEMONNAME }}}$</unix:filename>
-  </unix:file_object>
-
-  {{% elif init_system != "systemd" %}}
+  {{% if init_system != "systemd" %}}
 
   {{# we are not using systemd, it doesn't matter if we can or cannot use OVAL 5.11, let us just use the runlevel test #}}
 
