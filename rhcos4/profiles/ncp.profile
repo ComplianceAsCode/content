@@ -197,7 +197,6 @@ selections:
     #- package_libcap-ng-utils_installed
     #- package_openscap-scanner_installed
     #- package_policycoreutils_installed
-    #- package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
     ####
@@ -244,9 +243,6 @@ selections:
     ### Application Whitelisting (RHEL 8)
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
-
-    ### Enable the Hardware RNG Entropy Gatherer Service
-    - service_rngd_enabled
 
     ### Configure SSSD
     - sssd_run_as_sssd_user
