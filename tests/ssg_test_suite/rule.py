@@ -2,12 +2,15 @@ from __future__ import print_function
 
 import logging
 import os
+import shutil
 import os.path
 import re
 import subprocess
 import collections
 import json
 import fnmatch
+import tempfile
+import contextlib
 
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
 from ssg_test_suite import oscap
@@ -51,6 +54,20 @@ def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
             logging.warning('Profile {0} not found in datastream'
                             .format(", ".join(selected_profiles)))
     return valid_profiles
+
+
+def generate_xslt_change_value_template(value_short_id, new_value):
+    XSLT_TEMPLATE = """<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ds="http://scap.nist.gov/schema/scap/source/1.2" xmlns:xccdf-1.2="http://checklists.nist.gov/xccdf/1.2">
+    <xsl:output omit-xml-declaration="yes" indent="yes"/>
+        <xsl:strip-space elements="*"/>
+        <xsl:template match="node()|@*">
+            <xsl:copy>
+                <xsl:apply-templates select="node()|@*"/>
+            </xsl:copy>
+        </xsl:template>
+        <xsl:template match="ds:component/xccdf-1.2:Benchmark//xccdf-1.2:Value[@id='xccdf_org.ssgproject.content_value_{value_short_id}']/xccdf-1.2:value[not(@selector)]/text()">{new_value}</xsl:template>
+</xsl:stylesheet>"""
+    return XSLT_TEMPLATE.format(value_short_id=value_short_id, new_value=new_value)
 
 
 def _apply_script(rule_dir, test_env, script):
@@ -285,11 +302,13 @@ class RuleChecker(oscap.Checker):
                   'templates': [],
                   'packages': [],
                   'platform': ['multi_platform_all'],
-                  'remediation': ['all']}
+                  'remediation': ['all'],
+                  'variables': [],
+                  }
         with open(script, 'r') as script_file:
             script_content = script_file.read()
             for parameter in params:
-                found = re.search(r'^# {0} = ([ ,_\.\-\w\(\)]*)$'.format(parameter),
+                found = re.search(r'^# {0} = ([ =,_\.\-\w\(\)]*)$'.format(parameter),
                                   script_content,
                                   re.MULTILINE)
                 if found is None:
@@ -344,8 +363,34 @@ class RuleChecker(oscap.Checker):
         self._current_result.scenario = common.Scenario_run(rule_id, scenario.script)
         self._current_result.when = self.test_timestamp_str
 
-        self._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
+        with self.copy_of_datastream():
+            self._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
         self.results.append(self._current_result.save_to_dict())
+
+    @contextlib.contextmanager
+    def copy_of_datastream(self, new_filename=None):
+        old_filename = self.datastream
+        if not new_filename:
+            _, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+        shutil.copy(old_filename, new_filename)
+        self.datastream = new_filename
+        yield new_filename
+        self.datastream = old_filename
+        os.unlink(new_filename)
+
+    def _change_variable_value(self, varname, value):
+        _, xslt_filename = tempfile.mkstemp(prefix="xslt-change-value", dir="/tmp")
+        template = generate_xslt_change_value_template(varname, value)
+        with open(xslt_filename, "w") as fp:
+            fp.write(template)
+        _, temp_datastream = tempfile.mkstemp(prefix="ds-temp", dir="/tmp")
+        log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
+        with open(log_file_name, "a") as log_file:
+            common.run_with_stdout_logging(
+                    "xsltproc", ("--output", temp_datastream, xslt_filename, self.datastream),
+                    log_file)
+        os.rename(temp_datastream, self.datastream)
+        os.unlink(xslt_filename)
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
         if not _apply_script(
@@ -354,6 +399,10 @@ class RuleChecker(oscap.Checker):
             self._current_result.record_stage_result("preparation", False)
             return
 
+        if scenario.script_params["variables"]:
+            for assignment in scenario.script_params["variables"]:
+                varname, value = assignment.split("=", 1)
+                self._change_variable_value(varname, value)
         self._current_result.record_stage_result("preparation", True)
         logging.debug('Using test script {0} with context {1}'
                       .format(scenario.script, scenario.context))
