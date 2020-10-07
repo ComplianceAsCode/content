@@ -48,8 +48,27 @@ ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["basic-auth-file"]'</pre>
-    The output should return <pre>false</pre>.
+    The output should return <pre>null</pre>.
 {{% else %}}
     <pre>$ sudo grep -A2 basic-auth-file /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}
     The output should return no output.
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+{{%- endif %}}
+
+# This is updated for OCP4
+template:
+    name: yamlfile_value
+    vars:
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: ".data['config.yaml']"
+        value: "basic-auth"
+        type: "string"
+        operation: "pattern match"
+        entity_check: "none satisfy"
+        ocp_data: "true"
+
