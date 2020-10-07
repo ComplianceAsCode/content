@@ -144,7 +144,6 @@ selections:
 - package_openssh-server_installed
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
-- package_rng-tools_installed
 - package_scap-security-guide_installed
 - package_sendmail_removed
 - package_subscription-manager_installed
@@ -164,7 +163,6 @@ selections:
 - service_debug-shell_disabled
 - service_fapolicyd_enabled
 - service_firewalld_enabled
-- service_rngd_enabled
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - ssh_client_rekey_limit
