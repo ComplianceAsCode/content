@@ -47,7 +47,7 @@ def _open_yaml(stream, original_file=None, substitutions_dict={}):
     Return None if it contains "documentation_complete" key set to "false".
     """
     try:
-        yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
+        yaml_contents = yaml.load(stream, Loader=yaml.Loader)
 
         if yaml_contents.pop("documentation_complete", "true") == "false" and \
                 substitutions_dict.get("cmake_build_type") != "Debug":
