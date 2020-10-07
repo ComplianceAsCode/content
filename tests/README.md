@@ -111,6 +111,8 @@ public_key="$(cat ~/.ssh/id_rsa.pub)"
 podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
 ```
 
+or just call the `build_test_container.sh` script.
+
 *NOTE*: If you are setting up the suite as superuser (i.e. *sudo podman build ...*) use *public_key="$(sudo cat /root/.ssh/id_rsa.pub)"* instead of the first command.
 
 #### Docker
@@ -280,6 +282,10 @@ Using Podman:
 ```
 ./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
+
+or just call the `test_rule_in_container.sh` script that passes the backend options for you
+in addition to `--remove-machine-only` and `--add-platform`
+that remove some testing limitations of the container backend.
 
 Using Docker:
 ```
