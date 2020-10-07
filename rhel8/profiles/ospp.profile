@@ -189,6 +189,8 @@ selections:
     - package_openssh-server_installed
     - package_openssh-clients_installed
     - package_policycoreutils-python-utils_installed
+    - package_rsyslog_installed
+    - package_rsyslog-gnutls_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
@@ -410,7 +412,8 @@ selections:
     - timer_dnf-automatic_enabled
 
     # Configure TLS for remote logging
-    # temporarily dropped
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
