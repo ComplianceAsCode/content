@@ -406,7 +406,7 @@ func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 		pool := &mcfgv1.MachineConfigPool{}
 		lastErr = ctx.dynclient.Get(goctx.TODO(), mcKey, pool)
 		if lastErr != nil {
-			ctx.t.Errorf("Could not get the pool %s post update", name)
+			ctx.t.Logf("Could not get the pool %s post update. Retrying.", name)
 			return false, nil
 		}
 
