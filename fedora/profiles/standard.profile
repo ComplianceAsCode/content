@@ -84,9 +84,8 @@ selections:
     - service_auditd_enabled
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
-    - sshd_idle_timeout_value=5_minutes
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_accounts_tmout=5_min
+    - accounts_tmout
     - configure_ssh_crypto_policy
     - configure_libreswan_crypto_policy
     - configure_openssl_crypto_policy

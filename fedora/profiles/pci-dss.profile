@@ -10,7 +10,7 @@ selections:
     - var_account_disable_post_pw_expiration=90
     - var_accounts_passwords_pam_faillock_deny=6
     - var_accounts_passwords_pam_faillock_unlock_time=1800
-    - sshd_idle_timeout_value=15_minutes
+    - var_accounts_tmout=15_min
     - var_password_pam_minlen=7
     - var_password_pam_minclass=2
     - var_accounts_maximum_age_login_defs=90
@@ -100,7 +100,7 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
-    - sshd_set_idle_timeout
+    - accounts_tmout
     - accounts_password_pam_minlen
     - accounts_password_pam_dcredit
     - accounts_password_pam_ucredit
