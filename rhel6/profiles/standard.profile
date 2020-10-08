@@ -156,8 +156,6 @@ selections:
     - service_tftp_disabled
     - service_crond_enabled
     - sshd_allow_only_protocol2
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
@@ -225,4 +223,3 @@ selections:
     - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
     - file_owner_logfiles_value=root
     - file_groupowner_logfiles_value=root
-    - sshd_idle_timeout_value=5_minutes

@@ -214,8 +214,7 @@ selections:
     - service_crond_enabled
     - sshd_allow_only_protocol2
     - service_atd_disabled
-    - sshd_set_keepalive
-    - sshd_set_idle_timeout
+    - accounts_tmout
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords

@@ -164,7 +164,7 @@ selections:
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
     - sshd_use_approved_ciphers
-    - sshd_set_idle_timeout
+    - accounts_tmout
     - sshd_limit_user_access
     - sshd_enable_warning_banner
     - accounts_passwords_pam_faillock_deny

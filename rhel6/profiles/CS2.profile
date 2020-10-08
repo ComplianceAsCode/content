@@ -237,7 +237,6 @@ selections:
     - service_sshd_disabled
     - sshd_allow_only_protocol2
     - sshd_idle_timeout_value=60_minutes
-    - sshd_set_keepalive
     - sshd_disable_rhosts
     - sshd_disable_root_login
     - sshd_disable_empty_passwords

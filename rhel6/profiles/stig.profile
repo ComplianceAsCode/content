@@ -97,7 +97,7 @@ selections:
     - var_password_pam_ucredit=1
     - var_password_pam_ocredit=1
     - var_password_pam_lcredit=1
-    - sshd_idle_timeout_value=15_minutes
+    - var_accounts_tmout=15_min
     - gconf_gnome_disable_ctrlaltdel_reboot
     - postfix_client_configure_mail_alias
     - account_use_centralized_automated_auth
