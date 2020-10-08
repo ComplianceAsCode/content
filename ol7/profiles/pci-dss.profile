@@ -97,8 +97,8 @@ selections:
     - audit_rules_kernel_module_loading_init
     - audit_rules_usergroup_modification
     - ensure_logrotate_activated
-    - sshd_idle_timeout_value=15_minutes
-    - sshd_set_idle_timeout
+    - var_accounts_tmout=15_min
+    - accounts_tmout
     - disable_prelink
     - display_login_attempts
     - gid_passwd_group_same
