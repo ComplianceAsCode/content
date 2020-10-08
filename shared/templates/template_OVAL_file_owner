@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="file_owner{{{ FILEID }}}" version="1">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("This test makes sure that " + FILEPATH + " is owned by " + FILEUID + ".") }}}
     <criteria>
       <criterion comment="Check file ownership of {{{ FILEPATH }}}" test_ref="test_file_owner{{{ FILEID }}}" />

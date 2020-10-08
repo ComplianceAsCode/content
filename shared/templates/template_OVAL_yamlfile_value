@@ -1,6 +1,6 @@
 {{% if target_oval_version >= [5, 11] %}}
 <def-group>
-  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("
         The file '" + FILEPATH + "' should " + "not " if NEGATE else "" + "contain value '" + VALUE + "' " + ("of type " + TYPE + " ") if TYPE else "" + "at '" + YAMLPATH + "'.") }}}
     <criteria>
