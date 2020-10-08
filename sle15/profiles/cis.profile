@@ -692,12 +692,8 @@ selections:
 
     ### 5.2.16 Ensure SSH Idle Timeout Interval is configured (Scored)
     # ClientAliveInterval 300
-    - sshd_idle_timeout_value=5_minutes
-    - sshd_set_idle_timeout
-
-    # ClientAliveCountMax 0
-    - var_sshd_set_keepalive=0
-    - sshd_set_keepalive
+    - var_accounts_tmout=5_min
+    - accounts_tmout
 
     ### 5.2.17 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)    
