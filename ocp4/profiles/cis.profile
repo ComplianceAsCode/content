@@ -134,21 +134,11 @@ selections:
   #### 4.2 Kubelet
   # 4.2.4 Ensure that the --read-only-port argument is set to 0
     - kubelet_disable_readonly_port
-  # 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0 (??)
-    - kubelet_enable_streaming_connections
-  # 4.2.6 Ensure that the --protect-kernel-defaults argument is set to true (??)
-  # 4.2.7 Ensure that the --make-iptables-util-chains argument is set to true
-  # 4.2.8 Ensure that the --hostname-override argument is not set
-  # 4.2.9 Ensure that the --event-qps argument is set to 0 or a level which ensures appropriate event capture
-    - kubelet_configure_event_creation
   # 4.2.10 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
     - kubelet_configure_tls_cert
+    # Like kubelet_disable_readonly_port but check for .apiServerArguments["kubelet-client-certificate"]
     - kubelet_configure_tls_key
-  # 4.2.11 Ensure that the --rotate-certificates argument is not set to false
-    - kubelet_enable_client_cert_rotation
-  # 4.2.12 Verify that the RotateKubeletServerCertificate argument is set to true
-    - kubelet_enable_server_cert_rotation
-  # 4.2.13 Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers
+    # Like kubelet_disable_readonly_port but check for .apiServerArguments["kubelet-client-key"]
 
   ### 5 Policies
   ###

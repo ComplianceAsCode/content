@@ -7,9 +7,16 @@ title: 'kubelet - Disable the Read-Only Port'
 description: |-
     To disable the read-only port, edit the kubelet configuration
 {{%- if product == "ocp4" %}}
-    file <tt>/etc/kubernetes/kubernetes.conf</tt>
-    on the kubelet node(s) and set the below parameter:
-    <pre>readOnlyPort: 0</pre>
+    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    and set the <tt>kubelet-read-only-port</tt> parameter to 0:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "kubelet-read-only-port":[
+        "0"
+      ],
+      ...
+    </pre>
 {{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
@@ -31,7 +38,7 @@ ocil_clause: 'the read-only port is not disabled'
 ocil: |-
     Run the following command on the kubelet node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep readOnlyPort /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments["kubelet-read-only-port"]'</pre>
     The output should be <tt>0</tt>.
 {{% else %}}
     <pre>$ sudo grep -A1 read-only-port /etc/origin/node/node-config.yaml</pre>
@@ -44,3 +51,21 @@ identifiers:
 references:
     cis@ocp3: 2.1.5
     cis@ocp4: 4.2.4
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+{{%- endif %}}
+
+# This is updated for OCP4
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: ".data['config.yaml']"
+        values:
+          - value: '.*kubelet-read-only-port"\:\["0"\].*'
+            type: "string"
+            operation: "pattern match"

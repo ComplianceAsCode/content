@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhcos4
+
+title: 'Verify Permissions on the Kubelet service file'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/systemd/system/kubelet.service", perms="0644") }}}
+
+rationale: |-
+    If the <tt>/etc/systemd/system/kubelet.service</tt> file is writable by a group-owner or the
+    world the risk of its compromise is increased. The file contains the service configuration of the
+    OpenShift kubelet service that is configured on the system. Protection of this file is
+    critical for OpenShift security.
+
+severity: medium
+
+references:
+    cis: 4.1.1
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/systemd/system/kubelet.service", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/systemd/system/kubelet.service", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/systemd/system/kubelet.service
+        filemode: '0644'
