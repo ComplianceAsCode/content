@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="package_{{{ PKGNAME }}}_removed"
+  <definition class="compliance" id="{{{ _RULE_ID }}}"
   version="1">
     {{{ oval_metadata("The " + pkg_system|upper + " package " + PKGNAME + " should be removed.", affected_platforms=["multi_platform_all"]) }}}
     <criteria>

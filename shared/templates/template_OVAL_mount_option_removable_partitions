@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="mount_option_{{{ MOUNTOPTION }}}_removable_partitions" version="5">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="5">
     {{{ oval_metadata("The " + MOUNTOPTION + " option should be enabled for all removable devices mounts in /etc/fstab.") }}}
     <criteria operator="OR">
       <!-- First check if specified removable partition truly exists on the system. If not, don't check /etc/fstab

@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="mount_option_{{{ POINTID }}}_{{{ MOUNTOPTION }}}" version="1">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata(MOUNTPOINT + " should be mounted with mount option " + MOUNTOPTION + ".") }}}
     <criteria>
       <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}}" test_ref="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}" />

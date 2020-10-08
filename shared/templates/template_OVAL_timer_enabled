@@ -2,7 +2,7 @@
 
 {{% if target_oval_version >= [5, 11] %}}
 
-  <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("The " + TIMERNAME + " timer should be enabled if possible.") }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is configured to start" operator="AND">
       <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
@@ -40,7 +40,7 @@
 
 {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
 
-  <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("The " + TIMERNAME + " service should be enabled if possible.") }}}
     <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is configured to start" operator="AND">
       <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
