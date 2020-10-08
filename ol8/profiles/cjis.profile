@@ -94,8 +94,7 @@ selections:
     - dconf_gnome_screensaver_mode_blank
     - dconf_db_up_to_date
     - sshd_allow_only_protocol2
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - accounts_tmout
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
@@ -106,7 +105,7 @@ selections:
     - service_firewalld_enabled
     - set_firewalld_default_zone
     - firewalld_sshd_port_enabled
-    - sshd_idle_timeout_value=30_minutes
+    - var_accounts_tmout=30_min
     - inactivity_timeout_value=30_minutes
     - sysctl_net_ipv4_conf_default_accept_source_route
     - sysctl_net_ipv4_tcp_syncookies
