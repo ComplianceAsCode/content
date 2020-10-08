@@ -136,8 +136,6 @@ selections:
     - service_autofs_disabled
     - account_disable_post_pw_expiration
     - accounts_tmout
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
     - sshd_use_approved_macs
     - rpm_verify_permissions
     - sshd_disable_gssapi_auth
