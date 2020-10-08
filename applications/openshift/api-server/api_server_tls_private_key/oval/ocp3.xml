@@ -15,19 +15,11 @@
     <ind:state state_ref="state_api_server_tls_private_key" />
   </ind:textfilecontent54_test>
 
-{{%- if product == "ocp4" %}}
-  <ind:textfilecontent54_object id="object_api_server_tls_private_key" version="1">
-    <ind:filepath>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">>^.*"servingInfo":[\s]*{.*"keyFile":[\s]*"([^\s"']+)",.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{% else %}}
   <ind:textfilecontent54_object id="object_api_server_tls_private_key" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*servingInfo\:(?:[^\n]*\n+)+?[\s]*keyFile\:[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-{{%- endif %}}
 
   <ind:textfilecontent54_state id="state_api_server_tls_private_key" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^master.server.key|/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.key$</ind:subexpression>

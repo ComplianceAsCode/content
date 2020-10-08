@@ -29,10 +29,6 @@
     <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/peer.crt|/etc/ssl/etcd/system\:etcd-peer\:.*\.crt$</ind:subexpression>
   </ind:textfilecontent54_state>
 
-{{%- if product == "ocp4" %}}
-  {{{ oval_ocp_service_runtime_config(command="etcd", option="--peer-cert-file", value="/etc/ssl/etcd/system\:etcd-peer\:.*\.crt", option_id="peer_cert_file") }}}
-{{% else %}}
   {{{ oval_ocp_service_runtime_config(command="etcd", option="--peer-cert-file", value="/etc/etcd/peer.crt", option_id="peer_cert_file") }}}
-{{%- endif %}}
 
 </def-group>

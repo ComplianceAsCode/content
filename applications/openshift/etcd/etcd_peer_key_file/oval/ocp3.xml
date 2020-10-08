@@ -29,10 +29,6 @@
     <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/peer.key|/etc/ssl/etcd/system\:etcd-peer\:.*\.key$</ind:subexpression>
   </ind:textfilecontent54_state>
 
-{{%- if product == "ocp4" %}}
-  {{{ oval_ocp_service_runtime_config(command="etcd", option="--peer-key-file", value="/etc/ssl/etcd/system\:etcd-peer\:.*\.key", option_id="peer_key_file") }}}
-{{% else %}}
   {{{ oval_ocp_service_runtime_config(command="etcd", option="--peer-key-file", value="/etc/etcd/peer.key", option_id="peer_key_file") }}}
-{{%- endif %}}
 
 </def-group>
