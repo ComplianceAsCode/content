@@ -27,7 +27,6 @@ selections:
     - login_banner_text=dod_banners
     - inactivity_timeout_value=15_minutes
     - var_screensaver_lock_delay=5_seconds
-    - sshd_idle_timeout_value=10_minutes
     - sshd_approved_macs=stig
     - var_accounts_fail_delay=4
     - var_selinux_state=enforcing
@@ -248,10 +247,8 @@ selections:
     - package_openssh-server_installed
     - sshd_required=yes
     - service_sshd_enabled
-    - sshd_set_idle_timeout
     - sshd_disable_rhosts
     - sshd_disable_rhosts_rsa
-    - sshd_set_keepalive
     - sshd_print_last_log
     - sshd_disable_root_login
     - sshd_allow_only_protocol2

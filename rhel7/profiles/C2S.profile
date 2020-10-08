@@ -201,8 +201,7 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - accounts_tmout
     - sshd_enable_warning_banner
     - var_password_pam_minlen=14
     - accounts_password_pam_minlen

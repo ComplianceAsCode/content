@@ -615,8 +615,7 @@ selections:
     - sshd_use_approved_macs # TODO: approved macs don't match
 
     ### 5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    # managed by accounts_tmout
 
     ### 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)
     ### 5.2.14 Ensure SSH access is limited (Scored)

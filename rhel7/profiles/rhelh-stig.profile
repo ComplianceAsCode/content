@@ -22,8 +22,6 @@ selections:
     - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
     - package_screen_installed
-    - sshd_idle_timeout_value=10_minutes
-    - sshd_set_idle_timeout
     - accounts_password_all_shadowed
     - grub2_password
     - grub2_uefi_password
@@ -211,8 +209,6 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
-    - var_sshd_set_keepalive=3
-    - sshd_set_keepalive
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs
     - sshd_use_priv_separation

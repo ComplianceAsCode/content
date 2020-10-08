@@ -72,8 +72,7 @@ selections:
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - sshd_print_last_log
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - accounts_tmout
     - sshd_set_loglevel_info
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs

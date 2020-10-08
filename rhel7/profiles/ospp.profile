@@ -49,7 +49,6 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_disable_rhosts_rsa
     - sshd_use_approved_ciphers
@@ -210,8 +209,8 @@ selections:
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
-    - sshd_idle_timeout_value=10_minutes
-    - sshd_set_idle_timeout
+    - var_accounts_tmout=10_min
+    - accounts_tmout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1

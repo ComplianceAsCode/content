@@ -80,8 +80,7 @@ selections:
     # Remote user sessions (shell access, graphical clients) must be closed
     # after a certain period of inactivity.
     - accounts_tmout
-    - sshd_set_idle_timeout
-    - sshd_idle_timeout_value=5_minutes
+
 
     # ==============================================
     # R35 - umask value
