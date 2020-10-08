@@ -17,17 +17,9 @@
     <ind:object object_ref="object_api_server_admission_control_plugin_AlwaysAdmit" />
   </ind:textfilecontent54_test>
 
-{{%- if product == "ocp4" %}}
-  <ind:textfilecontent54_object id="object_api_server_admission_control_plugin_AlwaysAdmit" version="1">
-    <ind:filepath>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^.*"serviceAccountPublicKeyFiles":[\s]*\[.*"(\S+)".*\][,]*.*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{% else %}}
   <ind:textfilecontent54_object id="object_api_server_admission_control_plugin_AlwaysAdmit" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*admissionConfig\:(?:[^\n]*\n+)+?[\s]*pluginConfig\:(?:[^\n]*\n+)+?[\s]*AlwaysAdmit\:[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-{{%- endif %}}
 </def-group>

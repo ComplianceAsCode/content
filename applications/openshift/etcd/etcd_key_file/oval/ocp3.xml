@@ -29,10 +29,6 @@
     <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/server.key|/etc/ssl/etcd/system\:etcd-.*\:.*\.key$</ind:subexpression>
   </ind:textfilecontent54_state>
 
-{{%- if product == "ocp4" %}}
-  {{{ oval_ocp_service_runtime_config(command="etcd", option="--key-file", value="/etc/ssl/etcd/system\:etcd-server\:.*\.key", option_id="key_file") }}}
-{{% else %}}
   {{{ oval_ocp_service_runtime_config(command="etcd", option="--key-file", value="/etc/etcd/server.key", option_id="key_file") }}}
-{{%- endif %}}
 
 </def-group>

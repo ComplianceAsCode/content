@@ -25,10 +25,6 @@
     <ind:subexpression datatype="string" operation="pattern match">^/etc(|/ssl)/etcd/ca.crt$</ind:subexpression>
   </ind:textfilecontent54_state>
 
-{{%- if product == "ocp4" %}}
-  {{{ oval_ocp_service_runtime_config(command="etcd", option="--trusted-ca-file", value="/etc/ssl/etcd/ca.crt", option_id="trusted_ca_file") }}}
-{{% else %}}
   {{{ oval_ocp_service_runtime_config(command="etcd", option="--trusted-ca-file", value="/etc/etcd/ca.crt", option_id="trusted_ca_file") }}}
-{{%- endif %}}
 
 </def-group>
