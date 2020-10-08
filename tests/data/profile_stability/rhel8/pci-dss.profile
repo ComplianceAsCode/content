@@ -1,5 +1,6 @@
 description: Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 documentation_complete: true
+reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 selections:
 - account_disable_post_pw_expiration
 - account_unique_name
@@ -12,6 +13,7 @@ selections:
 - accounts_password_pam_unix_remember
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_unlock_time
+- accounts_tmout
 - aide_build_database
 - aide_periodic_cron_checking
 - audit_rules_dac_modification_chmod
@@ -121,13 +123,12 @@ selections:
 - set_password_hashing_algorithm_libuserconf
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
-- sshd_set_idle_timeout
 - sssd_enable_smartcards
 - var_password_pam_unix_remember=4
 - var_account_disable_post_pw_expiration=90
 - var_accounts_passwords_pam_faillock_deny=6
 - var_accounts_passwords_pam_faillock_unlock_time=1800
-- sshd_idle_timeout_value=15_minutes
+- var_accounts_tmout=15_min
 - var_password_pam_minlen=7
 - var_password_pam_minclass=2
 - var_accounts_maximum_age_login_defs=90

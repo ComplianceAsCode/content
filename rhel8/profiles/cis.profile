@@ -822,13 +822,7 @@ selections:
     - sshd_do_not_permit_user_env
 
     ### 5.2.13 Ensure SSH Idle Timeout Interval is configured (Scored)
-    # ClientAliveInterval 300
-    - sshd_idle_timeout_value=5_minutes
-    - sshd_set_idle_timeout
-
-    # ClientAliveCountMax 0
-    - var_sshd_set_keepalive=0
-    - sshd_set_keepalive
+    # handled by accounts_tmout
 
     ### 5.2.14 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)

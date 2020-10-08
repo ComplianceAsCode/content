@@ -63,8 +63,6 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - var_sshd_set_keepalive=0
-    - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_rekey_limit
     - var_rekey_limit_size=1G
@@ -292,8 +290,8 @@ selections:
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
     ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
-    - sshd_idle_timeout_value=14_minutes
-    - sshd_set_idle_timeout
+    - var_accounts_tmout=15_min
+    - accounts_tmout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1

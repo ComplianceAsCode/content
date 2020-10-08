@@ -21,6 +21,7 @@ description: 'This profile contains configuration checks that align to the
 
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 documentation_complete: true
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
 - account_temp_expire_date
@@ -40,6 +41,7 @@ selections:
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_interval
 - accounts_passwords_pam_faillock_unlock_time
+- accounts_tmout
 - accounts_umask_etc_bashrc
 - accounts_umask_etc_csh_cshrc
 - accounts_umask_etc_profile
@@ -198,8 +200,6 @@ selections:
 - sshd_enable_strictmodes
 - sshd_enable_warning_banner
 - sshd_rekey_limit
-- sshd_set_idle_timeout
-- sshd_set_keepalive
 - sshd_use_strong_rng
 - sssd_enable_smartcards
 - sssd_offline_cred_expiration
@@ -238,7 +238,6 @@ selections:
 - sysctl_user_max_user_namespaces
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
-- var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027
@@ -257,7 +256,7 @@ selections:
 - var_password_pam_dcredit=1
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
-- sshd_idle_timeout_value=14_minutes
+- var_accounts_tmout=15_min
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never

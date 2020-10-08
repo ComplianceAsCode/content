@@ -14,6 +14,7 @@ description: 'This profile reflects mandatory configuration controls identified 
 
     use in U.S. National Security Systems.'
 documentation_complete: true
+reference: https://www.niap-ccevs.org/Profile/PP.cfm
 selections:
 - accounts_max_concurrent_login_sessions
 - accounts_password_minlen_login_defs
@@ -29,6 +30,7 @@ selections:
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_interval
 - accounts_passwords_pam_faillock_unlock_time
+- accounts_tmout
 - accounts_umask_etc_bashrc
 - accounts_umask_etc_csh_cshrc
 - accounts_umask_etc_profile
@@ -173,8 +175,6 @@ selections:
 - sshd_enable_strictmodes
 - sshd_enable_warning_banner
 - sshd_rekey_limit
-- sshd_set_idle_timeout
-- sshd_set_keepalive
 - sshd_use_strong_rng
 - sysctl_fs_protected_hardlinks
 - sysctl_fs_protected_symlinks
@@ -218,7 +218,6 @@ selections:
 - zipl_page_poison_argument
 - zipl_slub_debug_argument
 - zipl_vsyscall_argument
-- var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027
@@ -237,7 +236,7 @@ selections:
 - var_password_pam_dcredit=1
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
-- sshd_idle_timeout_value=14_minutes
+- var_accounts_tmout=15_min
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never

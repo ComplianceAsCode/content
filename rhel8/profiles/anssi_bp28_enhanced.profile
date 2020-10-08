@@ -37,8 +37,7 @@ selections:
 
     # User session timeout
     - accounts_tmout
-    - sshd_set_idle_timeout
-    - sshd_idle_timeout_value=5_minutes
+    - var_accounts_tmout=5_min
 
     # umask value
     - var_accounts_user_umask=077
