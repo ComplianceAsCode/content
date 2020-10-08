@@ -43,22 +43,22 @@ mkdir $NEW_PRODUCT \
 2. Add the product to [CMakeLists.txt](../CMakeLists.txt) by adding the following lines:
 <pre>
 ...
-option(SSG_PRODUCT_DEBIAN8 "If enabled, the Debian 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_DEBIAN9 "If enabled, the Debian 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 <b>option(SSG_PRODUCT_CUSTOM6 "If enabled, the Custom 6 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})</b>
 option(SSG_PRODUCT_EAP6 "If enabled, the JBoss EAP6 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 ...
 </pre>
 <pre>
 ...
-message(STATUS "Debian 8: ${SSG_PRODUCT_DEBIAN8}")
+message(STATUS "Debian 9: ${SSG_PRODUCT_DEBIAN9}")
 <b>message(STATUS "Custom 6: ${SSG_PRODUCT_CUSTOM6}")</b>
 message(STATUS "JBoss EAP 6: ${SSG_PRODUCT_EAP6}")
 ...
 </pre>
 <pre>
 ...
-if (SSG_PRODUCT_DEBIAN8)
-    add_subdirectory("debian8")
+if (SSG_PRODUCT_DEBIAN9)
+    add_subdirectory("debian9")
 endif()
 <b>if (SSG_PRODUCT_CUSTOM6)
       add_subdirectory("custom6")
@@ -74,7 +74,7 @@ endif()
 ...
 all_cmake_products=(
 	CHROMIUM
-	DEBIAN8
+	DEBIAN9
         <b>CUSTOM6</b>
 	EAP6
 ...
@@ -83,7 +83,7 @@ all_cmake_products=(
 4. Add the product to [constants.py](../ssg/constants.py) file:
 <pre>
 ...
-product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
+product_directories = ['debian9', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
                        'rhel7', 'rhel8', 'sle11', 'sle12',
                        'ubuntu1604', 'ubuntu1804', 'wrlinux', 'rhosp13',
                        'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
@@ -94,7 +94,7 @@ product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
 ...
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
-    "Debian 8": "debian8",
+    "Debian 8": "debian9",
     "Custom 6": "custom6",
     "JBoss EAP 6": "eap6",
     "Example": "example",
@@ -111,8 +111,8 @@ PRODUCT_TO_CPE_MAPPING = {
     <b>"custom6": [
         "cpe:/o:custom:6",
     ],</b>
-    "debian8": [
-        "cpe:/o:debianproject:debian:8",
+    "debian9": [
+        "cpe:/o:debianproject:debian:9",
     ],
 ...
 </pre>
@@ -125,7 +125,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
 <pre>
 ...
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian8"],
+    "multi_platform_debian": ["debian9", "debian10"],
     "multi_platform_example": ["example"],
     <b>"multi_platform_custom": ["custom6"],</b>
     "multi_platform_fedora": ["fedora"],
