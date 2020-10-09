@@ -18,9 +18,9 @@ warnings:
 template:
     name: yamlfile_value
     vars:
+        ocp_data: 'true'
         filepath: /apis/config.openshift.io/v1/oauths/cluster
         yamlpath: ".spec.identityProviders[:].type"
-        value: "HTPasswd"
-        entity_check: "at least one"
-        negate: 'true'
-        ocp_data: 'true'
+        entity_check: "none satisfy"
+        values:
+            - value: "HTPasswd"

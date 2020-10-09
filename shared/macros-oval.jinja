@@ -595,6 +595,6 @@
 {{%- else %}}
         {{{ oval_affected(products) | indent -}}}
 {{%- endif %}}
-        <description>{{{ description }}}</description>
+        <description>{{{ description }}}{{{ caller() if caller else '' }}}</description>
     </metadata>
 {{%- endmacro %}}

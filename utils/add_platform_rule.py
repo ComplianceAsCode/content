@@ -89,11 +89,11 @@ warnings:
 template:
     name: yamlfile_value
     vars:
+        ocp_data: "true"{ENTITY_CHECK}
         filepath: {URL}
         yamlpath: "{YAMLPATH}"
-        value: "{MATCH}"
-        negate: "{NEGATE}"
-        ocp_data: "true"{CHECK_TYPE}{ENTITY_CHECK}
+        values:
+            - value: "{MATCH}"{CHECK_TYPE}
 
 ''')
 
