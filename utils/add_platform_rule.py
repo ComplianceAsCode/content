@@ -83,31 +83,30 @@ identifiers: {{}}
 severity: {SEV}
 
 warnings:
-    - general: |-
-        {{{{{{ openshift_cluster_setting("{URL}") | indent(8) }}}}}}
+- general: |-
+    {{{{{{ openshift_cluster_setting("{URL}") | indent(4) }}}}}}
 
 template:
-    name: yamlfile_value
-    vars:
-        ocp_data: "true"{ENTITY_CHECK}
-        filepath: {URL}
-        yamlpath: "{YAMLPATH}"
-        values:
-            - value: "{MATCH}"{CHECK_TYPE}
-
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"{ENTITY_CHECK}
+    filepath: {URL}
+    yamlpath: "{YAMLPATH}"
+    values:
+    - value: "{MATCH}"{CHECK_TYPE}
 ''')
 
 
 def operation_value(value):
     if value:
-        return '\n        operation: "pattern match"\n        type: "string"'
+        return '\n      operation: "pattern match"\n      type: "string"'
     else:
         return ''
 
 
 def entity_value(value):
     if value is not None:
-        return '\n        entity_check: "%s"' % value
+        return '\n    entity_check: "%s"' % value
     else:
         return ''
 
@@ -116,11 +115,9 @@ PROFILE_TEMPLATE = ('''documentation_complete: true
 
 title: 'Test Profile for {RULE_NAME}'
 
-description: |-
-    Test Profile
+description: Test Profile
 selections:
-
-    - {RULE_NAME}
+- {RULE_NAME}
 ''')
 
 
@@ -129,11 +126,11 @@ kind: ComplianceScan
 metadata:
   name: test
 spec:
-    scanType: Platform
-    profile: {PROFILE}
-    content: ssg-ocp4-ds.xml
-    contentImage: image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest
-    debug: true
+  scanType: Platform
+  profile: {PROFILE}
+  content: ssg-ocp4-ds.xml
+  contentImage: image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest
+  debug: true
 ''')
 
 
