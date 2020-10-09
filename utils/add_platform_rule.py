@@ -89,7 +89,7 @@ warnings:
 template:
   name: yamlfile_value
   vars:
-    ocp_data: "true"{ENTITY_CHECK}
+    ocp_data: "true"{ENTITY_CHECK}{CHECK_EXISTENCE}
     filepath: {URL}
     yamlpath: "{YAMLPATH}"
     values:
@@ -107,6 +107,12 @@ def operation_value(value):
 def entity_value(value):
     if value is not None:
         return '\n    entity_check: "%s"' % value
+    else:
+        return ''
+
+def check_existence_value(value):
+    if value is not None:
+        return '\n    check_existence: "%s"' % value
     else:
         return ''
 
@@ -211,6 +217,7 @@ def createFunc(args):
                                      DESC=args.description, YAMLPATH=args.yamlpath, MATCH=args.match,
                                      NEGATE=str(args.negate).lower(),
                                      CHECK_TYPE=operation_value(args.regex),
+                                     CHECK_EXISTENCE=check_existence_value(args.check_existence),
                                      ENTITY_CHECK=entity_value(args.match_entity)))
     print('* Wrote ' + rule_yaml_path)
     return 0
@@ -354,6 +361,8 @@ def main():
         '--regex', default=False, action="store_true", help='treat the --match value as a regex')
     create_parser.add_argument(
         '--match-entity', help='the entity_check value to apply, i.e., "all", "at least one", "none exist"')
+    create_parser.add_argument(
+        '--check-existence', help='check_existence` value for the `yamlfilecontent_test`.')
     create_parser.add_argument(
         '--negate', default=False, action="store_true", help='negate the given matching criteria (does NOT match). Default is false.')
     create_parser.add_argument(

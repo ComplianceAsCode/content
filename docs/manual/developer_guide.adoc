@@ -1769,6 +1769,7 @@ yamlfile_value::
 ** *filepath* - full path to the file to check
 ** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
 ** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'.
+** *check_existence* `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will defalut to 'only_one_exists'.
 ** *values* - a list of dictionaries with values to check, where:
 **   *value* - the value to check.
 **   *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional. If omitted, datatype would be treated as OVAL's default 'string'.
