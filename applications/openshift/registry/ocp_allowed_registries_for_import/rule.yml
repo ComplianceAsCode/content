@@ -21,9 +21,10 @@ warnings:
 template:
     name: yamlfile_value
     vars:
+        ocp_data: 'true'
         filepath: /apis/config.openshift.io/v1/images/cluster
         yamlpath: ".spec.allowedRegistriesForImport[:].domainName"
-        value: ".*"
         entity_check: "at least one"
-        operation: "pattern match"
-        ocp_data: 'true'
+        values:
+            - value: ".*"
+              operation: "pattern match"
