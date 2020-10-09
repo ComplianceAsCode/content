@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="inventory" id="installed_app_is_ocp4_node" version="1">
+    <metadata>
+      <title>Red Hat OpenShift Container Platform Node</title>
+      <affected family="unix">
+        <platform>Red Hat OpenShift Container Platform 4 Node</platform>
+      </affected>
+      <reference ref_id="cpe:/o:redhat:openshift_container_platform_node:4" source="CPE" />
+      <description>The application installed installed on the system is OpenShift 4.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Kubelet is installed" test_ref="test_kubelet_conf_exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing if /etc/kubernetes/kubelet.conf exists" id="test_kubelet_conf_exists" version="1">
+    <unix:object object_ref="object_kubelet_conf_exists" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/kubernetes/kubelet.conf" id="object_kubelet_conf_exists" version="1">
+    <unix:filepath>/etc/kubernetes/kubelet.conf</unix:filepath>
+  </unix:file_object>
+
+</def-group>
