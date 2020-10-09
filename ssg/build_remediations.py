@@ -273,6 +273,13 @@ class BashRemediation(Remediation):
         self.local_env_yaml.update(env_yaml)
         result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
 
+        # Avoid platform wrapping empty fix text
+        # Remediations can be empty when a Jinja macro or conditional
+        # renders no fix text for a product
+        stripped_fix_text = result.contents.strip()
+        if stripped_fix_text == "":
+            return result
+
         rule_platforms = set()
         if self.associated_rule:
             # There can be repeated inherited platforms and rule platforms
@@ -301,15 +308,11 @@ class BashRemediation(Remediation):
 
             all_conditions = " && ".join(platform_conditionals)
             wrapped_fix_text.append("if {0}; then".format(all_conditions))
-
-            # Avoid adding extra blank line
-            if not result.contents.startswith("\n"):
-                wrapped_fix_text.append("")
-
+            wrapped_fix_text.append("")
             # It is possible to indent the original body of the remediation with textwrap.indent(),
             # however, it is not supported by python2, and there is a risk of breaking remediations
             # For example, remediations with a here-doc block could be affected.
-            wrapped_fix_text.append("{0}".format(result.contents))
+            wrapped_fix_text.append("{0}".format(stripped_fix_text))
             wrapped_fix_text.append("")
             wrapped_fix_text.append("else")
             wrapped_fix_text.append("    >&2 echo 'Remediation is not applicable, nothing was done'")
