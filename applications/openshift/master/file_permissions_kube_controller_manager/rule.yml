@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: ocp4-node
 
 title: 'Verify Permissions on the Kube Controller Manager Pod Specificiation File'
 
@@ -26,8 +26,8 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod.yaml", perms="-rw-r--r--") }}}
 
-#template:
-#    name: file_permissions
-#    vars:
-#        filepath: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod.yaml
-#        filemode: '0644'
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod.yaml
+        filemode: '0644'

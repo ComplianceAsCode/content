@@ -1204,6 +1204,7 @@ class DirectoryLoader(object):
         self.bash_remediation_fns = bash_remediation_fns
         self.env_yaml = env_yaml
         self.product = env_yaml["product"]
+        self.alternative_products = env_yaml.get("alternative_products", [])
 
         self.parent_group = None
 
@@ -1322,7 +1323,7 @@ class BuildLoader(DirectoryLoader):
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
             prodtypes = parse_prodtype(rule.prodtype)
-            if "all" not in prodtypes and self.product not in prodtypes:
+            if not self._rule_is_for_relevant_product(prodtypes):
                 continue
             self.all_rules.add(rule)
             self.loaded_group.add_rule(rule)
@@ -1336,6 +1337,10 @@ class BuildLoader(DirectoryLoader):
                 with open(output_for_rule, "w") as f:
                     rule.normalize(self.env_yaml["product"])
                     yaml.dump(rule.to_contents_dict(), f)
+
+    def _rule_is_for_relevant_product(self, prodtypes):
+        return ("all" in prodtypes or self.product in prodtypes or
+                len([x for x in prodtypes if x in self.alternative_products]) > 0)
 
     def _get_new_loader(self):
         return BuildLoader(

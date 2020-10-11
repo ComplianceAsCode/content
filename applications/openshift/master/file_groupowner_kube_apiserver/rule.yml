@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: ocp4-node
 
 title: 'Verify Group Who Owns The Kube API Server Pod Specification File'
 
@@ -23,8 +23,8 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod.yaml", group="root") }}}'
 
-#template:
-#    name: file_groupowner
-#    vars:
-#        filepath: /etc/kubernetes/static-pod-resources/kube-apiserver-pod.yaml
-#        filegid: '0'
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/kubernetes/static-pod-resources/kube-apiserver-pod.yaml
+        filegid: '0'
