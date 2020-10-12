@@ -21,6 +21,7 @@ description: 'This profile contains configuration checks that align to the
 
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 documentation_complete: true
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
 - account_temp_expire_date
@@ -150,11 +151,13 @@ selections:
 - package_aide_installed
 - package_audispd-plugins_installed
 - package_audit_installed
+- package_chrony_installed
 - package_crypto-policies_installed
 - package_dnf-automatic_installed
 - package_dnf-plugin-subscription-manager_installed
 - package_fapolicyd_installed
 - package_firewalld_installed
+- package_gnutls-utils_installed
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed

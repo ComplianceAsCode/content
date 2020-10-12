@@ -130,12 +130,15 @@ selections:
 - package_abrt-plugin-sosreport_removed
 - package_abrt_removed
 - package_aide_installed
+- package_audispd-plugins_installed
 - package_audit_installed
+- package_chrony_installed
 - package_crypto-policies_installed
 - package_dnf-automatic_installed
 - package_dnf-plugin-subscription-manager_installed
 - package_fapolicyd_installed
 - package_firewalld_installed
+- package_gnutls-utils_installed
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
