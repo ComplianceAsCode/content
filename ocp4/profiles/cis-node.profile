@@ -52,18 +52,24 @@ selections:
 
   ### 4 Worker Nodes
   ###
-  #### 4.1 Worker Node Configuration Files
+  #### 4.1 Worker node configuration
   # 4.1.1 Ensure that the kubelet service file permissions are set to 644 or more restrictive
+    - file_permissions_worker_service
   # 4.1.2 Ensure that the kubelet service file ownership is set to root:root
     - file_owner_worker_service
-  # 4.1.3 If proxy kubeconfig file exists ensure permissions are set to 644 or more restrictive
-  # 4.1.4 If proxy kubeconfig file exists ensure ownership is set to root:root
+    - file_groupowner_worker_service
   # 4.1.5 Ensure that the --kubeconfig kubelet.conf file permissions are set to 644 or more restrictive
+    # - create a rule based on file_permissions_kubelet_service that checks the perms of /etc/kubernetes/kubelet.conf
   # 4.1.6 Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root
+    # - create a rule based on file_ownership_kubelet_service that checks the ownership of /etc/kubernetes/kubelet.conf
   # 4.1.7 Ensure that the certificate authorities file permissions are set to 644 or more restrictive
+    # - create a rule based on file_permissions_kubelet_service that checks the perms of /etc/kubernetes/kubelet-ca.crt
   # 4.1.8 Ensure that the client certificate authorities file ownership is set to root:root
+    # - create a rule based on file_ownership_kubelet_service that checks the ownership of /etc/kubernetes/kubelet-ca.crt
   # 4.1.9 Ensure that the kubelet --config configuration file has permissions set to 644 or more restrictive
+    # - create a rule based on file_permissions_kubelet_service that checks the perms of /var/lib/kubelet/kubeconfig
   # 4.1.10 Ensure that the kubelet configuration file ownership is set to root:root
+    # - create a rule based on file_ownership_kubelet_service that checks the ownership of /var/lib/kubelet/kubeconfig
   #### 4.2 Kubelet
   # 4.2.1 Ensure that the --anonymous-auth argument is set to false
   # 4.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow
