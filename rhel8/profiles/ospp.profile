@@ -191,6 +191,9 @@ selections:
     - package_policycoreutils-python-utils_installed
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
+    - package_audispd-plugins_installed
+    - package_chrony_installed
+    - package_gnutls-utils_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
