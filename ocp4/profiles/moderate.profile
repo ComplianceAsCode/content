@@ -10,6 +10,8 @@ reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
 
 title: 'NIST 800-53 Moderate-Impact Baseline for Red Hat OpenShift'
 
+platform: ocp4
+
 description: |-
     This compliance profile reflects the core set of Moderate-Impact Baseline
     configuration settings for deployment of Red Hat OpenShift Container

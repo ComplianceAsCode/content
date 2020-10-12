@@ -6,6 +6,8 @@ metadata:
 
 title: 'NIST National Checklist for Red Hat OpenShift Container Platform'
 
+platform: ocp4
+
 description: |-
     This compliance profile reflects the core set of security
     related configuration settings for deployment of Red Hat OpenShift

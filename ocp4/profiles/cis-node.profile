@@ -55,6 +55,7 @@ selections:
   #### 4.1 Worker Node Configuration Files
   # 4.1.1 Ensure that the kubelet service file permissions are set to 644 or more restrictive
   # 4.1.2 Ensure that the kubelet service file ownership is set to root:root
+    - file_owner_worker_service
   # 4.1.3 If proxy kubeconfig file exists ensure permissions are set to 644 or more restrictive
   # 4.1.4 If proxy kubeconfig file exists ensure ownership is set to root:root
   # 4.1.5 Ensure that the --kubeconfig kubelet.conf file permissions are set to 644 or more restrictive

@@ -121,6 +121,8 @@ PROFILE_TEMPLATE = ('''documentation_complete: true
 
 title: 'Test Profile for {RULE_NAME}'
 
+platform: ocp4
+
 description: Test Profile
 selections:
 - {RULE_NAME}
