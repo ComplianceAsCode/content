@@ -8,6 +8,8 @@ reference: https://www.cyber.gov.au/acsc/view-all-content/publications/essential
 
 title: 'Australian Cyber Security Centre (ACSC) Essential Eight'
 
+platform: ocp4
+
 description: |-
     This profile contains configuration checks for Red Hat OpenShift Container Platform
     that align to the Australian Cyber Security Centre (ACSC) Essential Eight.
