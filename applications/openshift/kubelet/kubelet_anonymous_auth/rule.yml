@@ -36,3 +36,12 @@ ocil: |-
     Run the following command on the worker node(s):
     <pre>$ sudo grep -A1 anonymous /etc/kubernetes/kubernetes.conf</pre>
     The output should return <pre>enabled: false</pre>.
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /etc/kubernetes/kubelet.conf
+        yamlpath: ".authentication.anonymous.enabled"
+        values:
+         - value: "false"
+           operation: "equals"
