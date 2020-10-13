@@ -61,7 +61,8 @@ selections:
   # 4.1.5 Ensure that the --kubeconfig kubelet.conf file permissions are set to 644 or more restrictive
     # - create a rule based on file_permissions_kubelet_service that checks the perms of /etc/kubernetes/kubelet.conf
   # 4.1.6 Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root
-    # - create a rule based on file_ownership_kubelet_service that checks the ownership of /etc/kubernetes/kubelet.conf
+    - file_groupowner_kubelet_conf
+    - file_owner_kubelet_conf
   # 4.1.7 Ensure that the certificate authorities file permissions are set to 644 or more restrictive
     # - create a rule based on file_permissions_kubelet_service that checks the perms of /etc/kubernetes/kubelet-ca.crt
   # 4.1.8 Ensure that the client certificate authorities file ownership is set to root:root
