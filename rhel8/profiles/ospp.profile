@@ -147,6 +147,7 @@ selections:
     - sysctl_user_max_user_namespaces.severity=info
     - sysctl_kernel_unprivileged_bpf_disabled
     - sysctl_net_core_bpf_jit_harden
+    - service_kdump_disabled
 
     ## File System Settings
     - sysctl_fs_protected_hardlinks
