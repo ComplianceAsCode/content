@@ -13,9 +13,9 @@ description: |-
     Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and set the below parameter if it is not already configured:
     <pre>
-    "kubeletClientInfo":{
+    "apiServerArguments":{
       ...
-      "ca":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",
+      "kubelet-certificate-authority":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",
       ...
     </pre>
 {{% else %}}
@@ -47,7 +47,7 @@ ocil_clause: '<tt>ca</tt> is not set as appropriate for <tt>kubeletClientInfo</t
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.kubeletClientInfo["ca"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."kubelet-certificate-authority"'</pre>
     The output should return a configured certificate.
 {{% else %}}
     <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
@@ -57,3 +57,21 @@ ocil: |-
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
 {{%- endif %}}
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+{{%- endif %}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: '.data["config.yaml"]'
+        entity_check: "at least one"
+        values:
+            - value: 'kubelet-certificate-authority'
+              type: "string"
+              operation: "pattern match"
