@@ -34,7 +34,6 @@ selections:
     - api_server_auth_mode_no_aa
   # 1.2.8 Ensure that the --authorization-mode argument includes Node
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
-    - api_server_authorization_mode
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
     - api_server_admission_control_plugin_EventRateLimit
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
