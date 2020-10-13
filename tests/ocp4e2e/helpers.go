@@ -437,7 +437,7 @@ func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 	return nil
 }
 
-func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
+func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite) int {
 	remList := &cmpv1alpha1.ComplianceRemediationList{}
 	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s.Name)
 	opts := &client.ListOptions{
@@ -447,18 +447,18 @@ func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite, d
 	if err != nil {
 		ctx.t.Fatalf("Couldn't get remediation list")
 	}
-	if display {
-		if len(remList.Items) > 0 {
-			ctx.t.Logf("Remediations from ComplianceSuite: %s", s.Name)
-		}
-		for _, rem := range remList.Items {
-			ctx.t.Logf("- %s", rem.Name)
-		}
+	if len(remList.Items) > 0 {
+		ctx.t.Logf("Remediations from ComplianceSuite: %s", s.Name)
+	} else {
+		ctx.t.Log("This suite didn't generate remediations")
+	}
+	for _, rem := range remList.Items {
+		ctx.t.Logf("- %s", rem.Name)
 	}
 	return len(remList.Items)
 }
 
-func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
+func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite) int {
 	failList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
 		cmpv1alpha1.SuiteLabel:                               s.Name,
@@ -468,19 +468,17 @@ func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite, displ
 	if err != nil {
 		ctx.t.Fatalf("Couldn't get check result list")
 	}
-	if display {
-		if len(failList.Items) > 0 {
-			ctx.t.Logf("Failures from ComplianceSuite: %s", s.Name)
-		}
-		for _, rem := range failList.Items {
-			ctx.t.Logf("- %s", rem.Name)
-		}
+	if len(failList.Items) > 0 {
+		ctx.t.Logf("Failures from ComplianceSuite: %s", s.Name)
+	}
+	for _, rem := range failList.Items {
+		ctx.t.Logf("- %s", rem.Name)
 	}
 	return len(failList.Items)
 }
 
 // This returns the number of results that are either CheckResultError or CheckResultNoResult
-func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite, display bool) int {
+func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite) int {
 	ret := 0
 	errList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
@@ -491,13 +489,11 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite
 	if err != nil {
 		ctx.t.Fatalf("Couldn't get result list")
 	}
-	if display {
-		if len(errList.Items) > 0 {
-			ctx.t.Logf("Errors from ComplianceSuite: %s", s.Name)
-		}
-		for _, check := range errList.Items {
-			ctx.t.Logf("unexpected Error result - %s", check.Name)
-		}
+	if len(errList.Items) > 0 {
+		ctx.t.Logf("Errors from ComplianceSuite: %s", s.Name)
+	}
+	for _, check := range errList.Items {
+		ctx.t.Logf("unexpected Error result - %s", check.Name)
 	}
 	ret = len(errList.Items)
 
@@ -510,28 +506,35 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite
 	if err != nil {
 		ctx.t.Fatalf("Couldn't get result list")
 	}
-	if display {
-		if len(noneList.Items) > 0 {
-			ctx.t.Logf("None result from ComplianceSuite: %s", s.Name)
-		}
-		for _, check := range noneList.Items {
-			ctx.t.Logf("unexpected None result - %s", check.Name)
-		}
+	if len(noneList.Items) > 0 {
+		ctx.t.Logf("None result from ComplianceSuite: %s", s.Name)
+	}
+	for _, check := range noneList.Items {
+		ctx.t.Logf("unexpected None result - %s", check.Name)
 	}
 
 	return ret + len(noneList.Items)
 }
 
 func (ctx *e2econtext) getCheckResultsForSuite(s *cmpv1alpha1.ComplianceSuite) int {
-	failList := &cmpv1alpha1.ComplianceCheckResultList{}
+	resList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
 		cmpv1alpha1.SuiteLabel: s.Name,
 	}
-	err := ctx.dynclient.List(goctx.TODO(), failList, matchLabels)
+	err := ctx.dynclient.List(goctx.TODO(), resList, matchLabels)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get remediation list")
+		ctx.t.Fatalf("Couldn't get result list")
 	}
-	return len(failList.Items)
+	if len(resList.Items) > 0 {
+		ctx.t.Logf("Results from ComplianceSuite: %s", s.Name)
+	} else {
+		ctx.t.Logf("There were no results for the ComplianceSuite: %s", s.Name)
+	}
+	for _, check := range resList.Items {
+		ctx.t.Logf("Result - Name: %s - Status: %s - Severity: %s", check.Name, check.Status, check.Severity)
+	}
+
+	return len(resList.Items)
 }
 
 func isNodeReady(node corev1.Node) bool {
