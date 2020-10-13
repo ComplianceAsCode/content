@@ -1773,6 +1773,7 @@ yamlfile_value::
 ** *check_existence* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration[ExistenceEnumeration]) - `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will defalut to 'only_one_exists'. +
    Possible options are `all_exist`, `any_exist`, `at_least_one_exists`, `none_exist`, `only_one_exists`.
 ** *values* - a list of dictionaries with values to check, where:
+**   *key* - the yaml key to check, optional. Used when the yamlpath expression yields a map.
 **   *value* - the value to check.
 **   *type* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---[SimpleDatatypeEnumeration]) - datatype for state's value_of, optional. If omitted, datatype would be treated as OVAL's default 'string'. +
      Most common datatypes are `string` and `int`. For complete list check reference link.
