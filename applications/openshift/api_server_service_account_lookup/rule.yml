@@ -1,14 +1,26 @@
+documentation_complete: true
+
 prodtype: ocp4
 
 title: Ensure that the --service-account-lookup argument is set to true
 
 description: Validate service account before validating token.
 
-rationale: TBD
+rationale: |-
+  If <tt>--service-account-lookup</tt> is not enabled, the apiserver
+  only verifies that the authentication token is valid, and
+  does not validate that the service account token mentioned
+  in the request is actually present in etcd. This allows
+  using a service account token even after the corresponding
+  service account is deleted. This is an example of time of
+  check to time of use security issue.
 
 identifiers: {}
 
 severity: unknown
+
+references:
+  cis: 1.2.27
 
 warnings:
 - general: |-
@@ -20,6 +32,17 @@ template:
     ocp_data: "true"
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
-    yamlpath: ".data["config.yaml"]"
+    yamlpath: '.data["config.yaml"]'
     values:
-    - value: "service-account-lookup.*\[\"true\"\]"
+    - value: 'service-account-lookup.*\["true"\]'
+      operation: "pattern match"
+      type: "string"
+
+ocil_clause: 'API server argument <tt>--service-account-lookup</tt> contains <tt>true</tt>'
+
+ocil: |-
+  Run the following command on the master node(s):
+  <pre>$ oc get configmap config -n openshift-kube-apiserver -o json | \
+      jq -r '.data["config.yaml"]' | \
+      jq -r '.apiServerArguments["service-account-lookup"]'</pre>
+  The output should return <pre>true</pre>.
