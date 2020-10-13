@@ -4,7 +4,7 @@
     {{% call oval_metadata("In the YAML/JSON file '" + FILEPATH + "' at path '" + YAMLPATH + "' " + (ENTITY_CHECK if ENTITY_CHECK else "all") + ": ") %}}
       {{%- for val in VALUES -%}}
         {{{- "key '" + key + "' " if key in val else "" }}}value{{{ (" of type '" + val.type + "' ") if type in val else " " }}}
-          {{{- val.operation if operation in val else "equals" }}} '{{{ val.value }}}'{{% if not loop.last %}} and{{% endif %}}
+          {{{- val.operation if operation in val else "equals" }}} '{{{ val.value }}}'{{% if not loop.last %}} and {{% endif %}}
       {{%- endfor -%}}
     {{%- endcall -%}}
     <criteria>
@@ -26,7 +26,7 @@
       {{% endif %}}
   </local_variable>
 
-  <ind:yamlfilecontent_test id="test_{{{ rule_id }}}" check="all" check_existence="{{{ CHECK_EXISTENCE|default("only_one_exists") }}}" 
+  <ind:yamlfilecontent_test id="test_{{{ rule_id }}}" check="all" check_existence="{{{ CHECK_EXISTENCE|default("only_one_exists") }}}"
     {{{ {'comment': "In the file '" + FILEPATH + "' find only one object at path '" + YAMLPATH + "'."}|xmlattr }}} version="1">
     <ind:object object_ref="object_{{{ rule_id }}}"/>
     <ind:state state_ref="state_{{{ rule_id }}}"/>
@@ -51,7 +51,7 @@
   <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
     <ind:value datatype="record"{{% if ENTITY_CHECK %}} entity_check="{{{ ENTITY_CHECK }}}"{{% endif %}}>
       {{% for val in VALUES %}}
-      <field {{{ {'name': key if key in val else "#", 'datatype': val.type,  'operation':  val.operation}|xmlattr }}}>{{{ val.value }}}</field>
+      <field {{{ {'name': val.key if val.key is defined else "#", 'datatype': val.type,  'operation':  val.operation}|xmlattr }}}>{{{ val.value }}}</field>
       {{% endfor %}}
     </ind:value>
   </ind:yamlfilecontent_state>
