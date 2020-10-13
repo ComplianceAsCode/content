@@ -23,8 +23,8 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/kubelet/kubeconfig
 
 ocil: '{{{ ocil_file_group_owner(file="/var/lib/kubelet/kubeconfig", group="root") }}}'
 
-#template:
-#    name: file_groupowner
-#    vars:
-#        filepath: /var/lib/kubelet/kubeconfig
-#        filegid: '0'
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/lib/kubelet/kubeconfig
+        filegid: '0'
