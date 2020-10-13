@@ -80,7 +80,7 @@ selections:
   # 4.2.4 Ensure that the --read-only-port argument is set to 0
     # - this is a platform rule (reads from a CM)
   # 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
-    # - like kubelet_anonymous_auth_disabled but check for streamingConnectionIdleTimeout NOT being 0
+    - kubelet_enable_streaming_connections
   # 4.2.6 Ensure that the --protect-kernel-defaults argument is set to true
     # - like kubelet_anonymous_auth_disabled but check that protectKernelDefaults is set to true
     # FIXME(jhrozek): This does not seem to be set in OCP explicitly and the code seems to suggest

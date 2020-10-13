@@ -9,7 +9,7 @@ description: |-
     denial-of-service attacks.
     To configure streaming connection timeouts, edit the kubelet configuration
 {{%- if product == "ocp4" %}}
-    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    file <tt>/etc/kubernetes/kubelet.conf</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>streamingConnectionIdleTimeout: {{{ xccdf_value("var_streaming_connection_timeouts") }}}</pre>
 {{% else %}}
@@ -32,7 +32,7 @@ ocil_clause: 'the streaming connection timeouts are not disabled'
 ocil: |-
     Run the following command on the kubelet node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep streamingConnectionIdleTimeout /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ sudo grep streamingConnectionIdleTimeout /etc/kubernetes/kubelet.conf</pre>
     The output should return <tt>{{{ xccdf_value("var_streaming_connection_timeouts") }}}</tt>.
 {{% else %}}
     <pre>$ sudo grep -A1 streaming-connection-idle-timeout /etc/origin/node/node-config.yaml</pre>
@@ -45,3 +45,13 @@ identifiers:
 references:
     cis@ocp3: 2.1.6
     cis@ocp4: 4.2.5
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /etc/kubernetes/kubelet.conf
+        yamlpath: ".streamingConnectionIdleTimeout"
+        check_existence: "any_exist"
+        values:
+         - value: "0"
+           operation: "not equal"
