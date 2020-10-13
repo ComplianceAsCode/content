@@ -63,6 +63,7 @@ selections:
   # 4.1.7 Ensure that the certificate authorities file permissions are set to 644 or more restrictive
   # 4.1.8 Ensure that the client certificate authorities file ownership is set to root:root
   # 4.1.9 Ensure that the kubelet --config configuration file has permissions set to 644 or more restrictive
+    - file_permissions_worker_kubeconfig
   # 4.1.10 Ensure that the kubelet configuration file ownership is set to root:root
   #### 4.2 Kubelet
   # 4.2.1 Ensure that the --anonymous-auth argument is set to false
