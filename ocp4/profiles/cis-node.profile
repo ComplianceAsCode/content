@@ -70,7 +70,8 @@ selections:
   # 4.1.9 Ensure that the kubelet --config configuration file has permissions set to 644 or more restrictive
     # - create a rule based on file_permissions_kubelet_service that checks the perms of /var/lib/kubelet/kubeconfig
   # 4.1.10 Ensure that the kubelet configuration file ownership is set to root:root
-    # - create a rule based on file_ownership_kubelet_service that checks the ownership of /var/lib/kubelet/kubeconfig
+    - file_owner_worker_kubeconfig
+    - file_groupowner_worker_kubeconfig
   #### 4.2 Kubelet
   # 4.2.1 Ensure that the --anonymous-auth argument is set to false
     - kubelet_anonymous_auth
