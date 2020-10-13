@@ -98,6 +98,7 @@ selections:
   # 4.2.10 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
     # - this is a platform rule (reads from a CM)
   # 4.2.11 Ensure that the --rotate-certificates argument is not set to false
-    # - like kubelet_anonymous_auth_disabled but check for rotateCertificates=true
+    - kubelet_enable_client_cert_rotation
+    - kubelet_enable_cert_rotation
   # 4.2.12 Verify that the RotateKubeletServerCertificate argument is set to true
     - kubelet_enable_server_cert_rotation
