@@ -47,10 +47,10 @@ func TestE2e(t *testing.T) {
 		// Create suite and auto-apply remediations
 		suite := ctx.createComplianceSuiteForProfile("1", true)
 		ctx.waitForComplianceSuite(suite)
-		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite, false)
-		numberOfFailuresInit = ctx.getFailuresForSuite(suite, false)
+		numberOfRemediationsInit = ctx.getRemediationsForSuite(suite)
+		numberOfFailuresInit = ctx.getFailuresForSuite(suite)
 		numberOfCheckResultsInit = ctx.getCheckResultsForSuite(suite)
-		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(suite, true)
+		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(suite)
 	})
 
 	if numberOfRemediationsInit > 0 {
@@ -65,8 +65,8 @@ func TestE2e(t *testing.T) {
 			// Create suite and auto-apply remediations
 			suite := ctx.createComplianceSuiteForProfile("2", false)
 			ctx.waitForComplianceSuite(suite)
-			numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite, true)
-			numberOfFailuresEnd = ctx.getFailuresForSuite(suite, true)
+			numberOfRemediationsEnd = ctx.getRemediationsForSuite(suite)
+			numberOfFailuresEnd = ctx.getFailuresForSuite(suite)
 			numberOfCheckResultsEnd = ctx.getCheckResultsForSuite(suite)
 		})
 
