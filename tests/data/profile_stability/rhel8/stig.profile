@@ -191,6 +191,7 @@ selections:
 - service_debug-shell_disabled
 - service_fapolicyd_enabled
 - service_firewalld_enabled
+- service_kdump_disabled
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - smartcard_configure_cert_checking
