@@ -100,4 +100,4 @@ selections:
   # 4.2.11 Ensure that the --rotate-certificates argument is not set to false
     # - like kubelet_anonymous_auth_disabled but check for rotateCertificates=true
   # 4.2.12 Verify that the RotateKubeletServerCertificate argument is set to true
-    # - like kubelet_anonymous_auth_disabled but check for featureGates.RotateKubeletServerCertificate=true
+    - kubelet_enable_server_cert_rotation
