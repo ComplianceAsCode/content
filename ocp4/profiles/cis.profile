@@ -32,6 +32,7 @@ selections:
     - api_server_kubelet_certificate_authority
   # 1.2.7 Ensure that the --authorization-mode argument is not set to AlwaysAllow 
   # 1.2.8 Ensure that the --authorization-mode argument includes Node
+    - api_server_auth_mode_node
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
     - api_server_authorization_mode
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
