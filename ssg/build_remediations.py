@@ -290,7 +290,7 @@ class BashRemediation(Remediation):
         for platform in rule_platforms:
             if platform == "machine":
                 # Based on check installed_env_is_a_container
-                platform_conditionals.append('[ ! -f /.dockerenv -a ! -f /run/.containerenv ]')
+                platform_conditionals.append('[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]')
             elif platform is not None:
                 # Assume any other platform is a Package CPE
 
