@@ -1768,12 +1768,16 @@ yamlfile_value::
 ** *ocp_data* - if set to `"true"` then the filepath would be treated as a part of the dump of OCP configuration with the `ocp_data_root` prefix; optional.
 ** *filepath* - full path to the file to check
 ** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
-** *entity_check* (CheckEnumeration) - entity_check value for state's value_of, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'.
-** *check_existence* `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will defalut to 'only_one_exists'.
+** *entity_check* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration[CheckEnumeration]) - entity_check value for state's value_of, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'. +
+    Possible options are `all`, `at least one`, `none satisfy` and `only one`.
+** *check_existence* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration[ExistenceEnumeration]) - `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will defalut to 'only_one_exists'. +
+   Possible options are `all_exist`, `any_exist`, `at_least_one_exists`, `none_exist`, `only_one_exists`.
 ** *values* - a list of dictionaries with values to check, where:
 **   *value* - the value to check.
-**   *type* (SimpleDatatypeEnumeration) - datatype for state's value_of, optional. If omitted, datatype would be treated as OVAL's default 'string'.
-**   *operation* (OperationEnumeration) - operation value for state's value_of, optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'.
+**   *type* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---[SimpleDatatypeEnumeration]) - datatype for state's value_of, optional. If omitted, datatype would be treated as OVAL's default 'string'. +
+     Most common datatypes are `string` and `int`. For complete list check reference link.
+**   *operation* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---operationenumeration---[OperationEnumeration]) - operation value for state's value_of, optional. If omitted, operation attribute would not be set. OVAL's default operation is 'equals'. +
+     Most common operations are `equals`, `not equal`, `pattern match`, `greater than or equal` and `less than or equal`. For complete list of operations check the reference link.
 * Languages: OVAL
 
 
