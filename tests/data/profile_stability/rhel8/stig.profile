@@ -175,7 +175,6 @@ selections:
 - package_subscription-manager_installed
 - package_sudo_installed
 - package_tmux_installed
-- package_tuned_removed
 - package_usbguard_installed
 - partition_for_home
 - partition_for_var

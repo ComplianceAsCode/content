@@ -209,7 +209,6 @@ selections:
     - package_abrt-plugin-logger_removed
     - package_abrt-plugin-sosreport_removed
     - package_abrt-cli_removed
-    - package_tuned_removed
     - package_abrt_removed
 
     ### Login
