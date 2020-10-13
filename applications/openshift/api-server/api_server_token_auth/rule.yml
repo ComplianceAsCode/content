@@ -45,8 +45,27 @@ ocil_clause: '<tt>token-auth-file</tt> argument is configured'
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["token-"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments' | grep "token-auth-file"</pre>
 {{% else %}}
     <pre>$ sudo grep -A2 token-auth-file /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}
     The output should return no output.
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+{{%- endif %}}
+
+# This is updated for OCP4
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: '.data["config.yaml"]'
+        entity_check: "none satisfy"
+        values:
+            - value: 'token-auth-file'
+              type: "string"
+              operation: "pattern match"
