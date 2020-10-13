@@ -31,6 +31,7 @@ selections:
   # 1.2.6 Ensure that the --kubelet-certificate-authority argument is set as appropriate
     - api_server_kubelet_certificate_authority
   # 1.2.7 Ensure that the --authorization-mode argument is not set to AlwaysAllow 
+    - api_server_auth_mode_no_aa
   # 1.2.8 Ensure that the --authorization-mode argument includes Node
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
     - api_server_authorization_mode
