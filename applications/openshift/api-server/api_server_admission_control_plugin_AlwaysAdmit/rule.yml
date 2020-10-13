@@ -7,7 +7,7 @@ title: 'Disable the AlwaysAdmit Admission Control Plugin'
 description: |-
     To ensure OpenShift only responses to requests explicitly allowed by the
 {{%- if product == "ocp4" %}}
-    admission control plugin. Check that the 'config' ConfigMap object does not
+    admission control plugin. Check that the <code>config</code> ConfigMap object does not
     contain the AlwaysAdmit plugin.
 {{% else %}}
     admissions control plugin, edit the API Server pod specification file
