@@ -52,3 +52,22 @@ identifiers:
 references:
     cis@ocp3: 2.1.4
     cis@ocp4: 4.2.3
+
+template:
+{{%- if product == "ocp4" %}}
+  name: yamlfile_value
+  vars:
+    filepath: /etc/kubernetes/kubelet.conf
+    yamlpath: ".authentication.x509.clientCAFile"
+    values:
+      - value: "/etc/kubernetes/kubelet-ca.crt"
+        operation: "equals"
+{{% else %}}
+  name: yamlfile_value
+  vars:
+    filepath: /etc/origin/node/node-config.yaml
+    yamlpath: ".servingInfo.clientCA"
+    values:
+      - value: "client-ca.crt"
+        operation: "equals"
+{{%- endif %}}
