@@ -49,4 +49,17 @@ ocil: |-
 {{% else %}}
     <pre>$ sudo grep -A1 authorization-mode /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}
-    Verify that there is no output, or the output is set to <tt>Webhook</tt>.
+    Verify that there is no output, or the output is set to <tt>Webhook</tt>. 
+
+# Updated for OCP4
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: '.data["config.yaml"]'
+        entity_check: "none satisfy"
+        values:
+            - value: 'authorization-mode'
+              type: "string"
+              operation: "pattern match"
