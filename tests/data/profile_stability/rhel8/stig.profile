@@ -21,6 +21,7 @@ description: 'This profile contains configuration checks that align to the
 
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 documentation_complete: true
+reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
 - account_temp_expire_date
@@ -115,6 +116,7 @@ selections:
 - kernel_module_firewire-core_disabled
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
+- kernel_trust_cpu_rng
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
