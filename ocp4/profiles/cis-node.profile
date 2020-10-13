@@ -79,7 +79,7 @@ selections:
   # 4.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow
     # - this seems to be the default in the code, so the rule should verify that authorization mode is NOT set to AlwaysAllow
   # 4.2.3 Ensure that the --client-ca-file argument is set as appropriate
-    # - like kubelet_anonymous_auth_disabled but check for authentication.x509.clientCAFile=/etc/kubernetes/kubelet-ca.crt
+    - kubelet_configure_client_ca
   # 4.2.4 Ensure that the --read-only-port argument is set to 0
     # - this is a platform rule (reads from a CM)
   # 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
