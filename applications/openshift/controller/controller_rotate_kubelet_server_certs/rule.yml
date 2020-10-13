@@ -41,6 +41,26 @@ ocil: |-
 #identifiers:
 #    cce@ocp4:
 
+{{%- if product == "ocp4" %}}
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+{{%- endif %}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '\"RotateKubeletServerCertificate\=true\"'
+      operation: "pattern match"
+      type: "string"
+
+identifiers:
+    cce@ocp3: CCE-80590-3
+
 references:
     cis: 1.3.6
 
