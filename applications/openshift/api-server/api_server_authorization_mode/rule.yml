@@ -2,21 +2,19 @@ documentation_complete: true
 
 prodtype: ocp3,ocp4
 
-title: 'Ensure API Server authorization-mode is set to Webhook'
+title: 'Ensure that the --authorization-mode argument includes RBAC'
 
 description: |-
-    By default, unauthenticated/unauthorized users have no access to OpenShift nodes
-    and the API Server <tt>authorization-mode</tt> is set to <tt>Webhook</tt>.
-    To ensure that the API server requires authorization for API requests,
-    validate that <tt>authorization-mode</tt> is configured to <tt>Webhook</tt>.
+    Turn on Role Based Access Control.
 {{%- if product == "ocp4" %}}
-    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
-    and set the below parameter:
+    Confirm that the below parameter is set on the <tt>openshift-kube-apiserver</tt> configmap 
     <pre>
     "apiServerArguments":{
       ...
       "authorization-mode":[
-        "Webhook"
+        ...
+        "RBAC"
+        ...
       ],
       ...
     </pre>
@@ -31,25 +29,23 @@ description: |-
 
 warnings:
   - functionality: |-
-      If <tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>, the node
-      systemd service (<tt>atomic-openshift-node</tt>) will not start.
+      If <tt>authorization-mode</tt> is not configured to <tt>RBAC</tt>, something went wrong during cluster installation.
 
 rationale: |-
-    Ensuring <tt>authorization-mode</tt> is set to <tt>Webhook</tt> helps enforce that
-    unauthenticated/unauthorized users have no access to OpenShift nodes.
+    Role Based Access Control (RBAC) allows fine-grained control over the operations that different entities can perform on different objects in the cluster. It is recommended to use the RBAC authorization mode.
 
-severity: medium
+severity: critical
 
 references:
     cis: 1.2.7,1.2.8,1.2.9
 
-ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
+ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>RBAC</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["authorization-mode"]'</pre>
-    Verify that there is no output, or the output is set to <tt>Webhook</tt>.
+    Verify that there is no output, or that <tt>RBAC</tt> is part of the output. 
 {{% else %}}
     <pre>$ sudo grep -A1 authorization-mode /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}
