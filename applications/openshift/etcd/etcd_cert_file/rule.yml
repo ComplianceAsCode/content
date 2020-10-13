@@ -6,12 +6,16 @@ title: 'Ensure That The etcd Client Certificate Is Correctly Set'
 
 description: |-
     To ensure the <tt>etcd</tt> service is serving TLS to clients,
+{{%- if product == "ocp4" %}}
+    make sure the <tt>etcd-pod*</tt> <tt>ConfigMaps</tt> in the
+    <tt>openshift-etcd</tt> namespace contain the following argument
+    for the <tt>etcd</tt> binary in the <tt>etcd</tt> pod:
+    <pre>--cert-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.crt</pre>
+{{% else %}}
     edit the <tt>etcd</tt> configuration file
     <tt>/etc/etcd/etcd.conf</tt> on the master and adding a certificate
     to <tt>ETCD_CERT_FILE</tt>:
-{{%- if product == "ocp4" %}}
     <pre>ETCD_CERT_FILE=/etc/ssl/etcd/system:etcd-server:<i>etcd_dns_name</i>.crt</pre>
-{{% else %}}
     <pre>ETCD_CERT_FILE=/etc/etcd/server.crt</pre>
 {{%- endif %}}
 
@@ -30,7 +34,29 @@ references:
 ocil_clause: 'the etcd client certificate is not configured'
 
 ocil: |-
+{{%- if product == "ocp4" %}}
+    Run the following command:
+
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep --cert-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.crt</pre>
+{{% else %}}
     Run the following command on the master node(s):
 
     <pre>$ grep ETCD_CERT_FILE=/etc/etcd/etcd.conf</pre>
+{{%- endif %}}
     Verify that there is a certificate configured.
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod") | indent(8) }}}
+{{%- endif %}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+        yamlpath: ".data['pod.yaml']"
+        values:
+          - value: ".*--cert-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.crt \\.*"
+            operation: "pattern match"
