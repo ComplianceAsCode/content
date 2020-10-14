@@ -10,12 +10,14 @@ description: |-
     <tt>clientCA</tt> must be configured. Verify
     that <tt>servingInfo</tt> has the <tt>clientCA</tt> configured in
 {{%- if product == "ocp4" %}}
-    the <tt>openshift-kube-apiserver</tt> configmap on the master
+    the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap on the master
     node(s) to something similar to:
     <pre>
-    "servingInfo":{
+    "apiServerArguments": {
       ...
-      "clientCA":"/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt",
+        "client-ca-file": [
+          "/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt"
+        ],
       ...
     </pre>
 {{% else %}}
