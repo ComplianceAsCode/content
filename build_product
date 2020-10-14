@@ -257,10 +257,10 @@ set_no_derivatives_options() {
 	fi
 }
 
-set_quick_options() {
+set_explict_build_targets() {
 	if test "$_arg_quick" = on ; then
 		for chosen_product in "${_arg_product[@]}"; do
-			QUICK+=("generate-ssg-${chosen_product}-ds.xml")
+			EXPLICIT_BUILD_TARGETS+=("generate-ssg-${chosen_product}-ds.xml")
 		done
 	fi
 }
@@ -339,13 +339,13 @@ done
 
 CMAKE_OPTIONS=(${ADDITIONAL_CMAKE_OPTIONS} "${build_type_option}" "${oval_major_version_option}" "${oval_minor_version_option}" '-DSSG_PRODUCT_DEFAULT=OFF' "${cmake_enable_args[@]}" -G "$cmake_generator")
 set_no_derivatives_options
-QUICK=()
-set_quick_options
+EXPLICIT_BUILD_TARGETS=()
+set_explict_build_targets
 
 set -e
 rm -rf build/*
 cd build
 cmake .. "${CMAKE_OPTIONS[@]}"
-$build_command "-j${jobs}" ${QUICK[@]}
+$build_command "-j${jobs}" ${EXPLICIT_BUILD_TARGETS[@]}
 
 # ] <-- needed because of Argbash
