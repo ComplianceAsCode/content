@@ -70,8 +70,8 @@ template:
         ocp_data: "true"
         filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
         yamlpath: '.data["config.yaml"]'
-        entity_check: "at least one"
+        check_existence: "at_least_one_exists"
         values:
-            - value: 'kubelet-certificate-authority'
+            - value: '\"kubelet-certificate-authority\"\s*:\s*\[\s*\".+\"\s*\]'
               type: "string"
               operation: "pattern match"
