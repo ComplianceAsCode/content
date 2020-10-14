@@ -56,7 +56,7 @@ selections:
   # 1.2.19 Ensure that the --insecure-port argument is set to 0
     - api_server_insecure_port
   # 1.2.20 Ensure that the --secure-port argument is not set to 0
-    - api_server_secure_port
+    - api_server_bind_address
   # 1.2.21 Ensure that the --profiling argument is set to false
     - api_server_profiling
   # 1.2.22 Ensure that the --audit-log-path argument is set
