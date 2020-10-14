@@ -78,7 +78,7 @@ selections:
     - file_owner_worker_ca
     - file_groupowner_worker_ca
   # 4.1.9 Ensure that the kubelet --config configuration file has permissions set to 644 or more restrictive
-    # - create a rule based on file_permissions_kubelet_service that checks the perms of /var/lib/kubelet/kubeconfig
+    - file_permissions_worker_kubeconfig
   # 4.1.10 Ensure that the kubelet configuration file ownership is set to root:root
     - file_owner_worker_kubeconfig
     - file_groupowner_worker_kubeconfig
