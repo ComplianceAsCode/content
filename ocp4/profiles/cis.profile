@@ -21,16 +21,19 @@ selections:
     - api_server_anonymous_auth
   # 1.2.2 Ensure that the --basic-auth-file argument is not set
     - api_server_basic_auth
-  # 1.2.3 Ensure that the --token-auth-file parameter is not set 
+  # 1.2.3 Ensure that the --token-auth-file parameter is not set
     - api_server_token_auth
   # 1.2.4 Ensure that the --kubelet-https argument is set to true
-    - api_server_kubelet_https
+    - api_server_kubelet_https_cert
+    - api_server_kubelet_https_key
+    - api_server_kubelet_https_serving_cert
+    #- api_server_kubelet_https_serving_type
   # 1.2.5 Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate
     - api_server_kubelet_client_cert
     - api_server_kubelet_client_key
   # 1.2.6 Ensure that the --kubelet-certificate-authority argument is set as appropriate
     - api_server_kubelet_certificate_authority
-  # 1.2.7 Ensure that the --authorization-mode argument is not set to AlwaysAllow 
+  # 1.2.7 Ensure that the --authorization-mode argument is not set to AlwaysAllow
     - api_server_auth_mode_no_aa
   # 1.2.8 Ensure that the --authorization-mode argument includes Node
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
@@ -50,7 +53,7 @@ selections:
     - api_server_admission_control_plugin_PodSecurityPolicy
   # 1.2.17 Ensure that the admission control plugin NodeRestriction is set (Automated)
     - api_server_admission_control_plugin_NodeRestriction
-  # 1.2.18 Ensure that the --insecure-bind-address argument is not set 
+  # 1.2.18 Ensure that the --insecure-bind-address argument is not set
     - api_server_insecure_bind_address
   # 1.2.19 Ensure that the --insecure-port argument is set to 0
     - api_server_insecure_port
@@ -86,7 +89,7 @@ selections:
     - api_server_encryption_provider_config
   # 1.2.34 Ensure that encryption providers are appropriately configured
     - api_server_encryption_provider_cipher
-  # 1.2.35 Ensure that the API Server only makes use of Strong Cryptographic Ciphers 
+  # 1.2.35 Ensure that the API Server only makes use of Strong Cryptographic Ciphers
     - api_server_tls_cipher_suites
   #### 1.3 Controller Manager
   # 1.3.1 Ensure that the --terminated-pod-gc-threshold argument is set as appropriate
@@ -117,11 +120,11 @@ selections:
   # 2.4 Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate
     - etcd_peer_cert_file
     - etcd_peer_key_file
-  # 2.5 Ensure that the --peer-client-cert-auth argument is set to true 
+  # 2.5 Ensure that the --peer-client-cert-auth argument is set to true
     - etcd_peer_client_cert_auth
   # 2.6 Ensure that the --peer-auto-tls argument is not set to true
     - etcd_peer_auto_tls
-  # 2.7 Ensure that a unique Certificate Authority is used for etcd 
+  # 2.7 Ensure that a unique Certificate Authority is used for etcd
     - etcd_unique_ca
 
   ### 3 Control Plane Configuration
