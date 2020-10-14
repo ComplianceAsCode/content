@@ -2,22 +2,17 @@ documentation_complete: true
 
 prodtype: ocp3,ocp4
 
+{{%- if product == "ocp4" %}}
+title: 'OpenShift Profiling considerations'
+{{% else %}}
 title: 'Disable Profiling on the API server'
+{{%- endif %}}
 
 description: |-
-    To disable profiling,
 {{%- if product == "ocp4" %}}
-    edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
-    and set <tt>profiling</tt> to <tt>false</tt>:
-    <pre>
-    "schedulerArguments":{
-      ...
-      "profiling":[
-        "false"
-      ],
-      ...
-    </pre>
+  Profiling cannot be disabled.
 {{% else %}}
+    To disable profiling,
     edit the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set <tt>profiling</tt> to <tt>false</tt>:
@@ -28,24 +23,37 @@ description: |-
 {{%- endif %}}
 
 rationale: |-
+{{%- if product == "ocp4" %}}
+    Profiling is enabled by default in OpenShift. The API server operators exposes
+    Prometheus metrics via the metrics service.  Profiling data is sent to <tt>healthzPort</tt>,
+    the port of the localhost healthz endpoint. Changing this value may disrupt components
+    that monitor the kubelet health. The default port value is <tt>10248</tt>, and the healthz
+
+    BindAddress is <tt>127.0.0.1</tt>.
+
+    To ensure the collected data is not exploited, profiling endpoints are exposed at each
+    master port and secured via RBAC (see cluster-debugger role). By default, the profiling
+    endpoints are accessible only by users bound to <tt>cluster-admin</tt> or
+    <tt>cluster-debugger</tt> role. 
+{{% else %}}
     Profiling allows for the identification of specific performance bottlenecks. It
     generates a significant amount of program data that could potentially be
     exploited to uncover system and program details. If the profiler is not
     needed for troubleshooting purposes, it is recommended to turn off for
     reduction of potential attack surface.
+{{%- endif %}}
 
 severity: low
 
 references:
     cis: 1.2.21
 
+{{%- if product != "ocp4" %}}
 ocil_clause: '<tt>profiling</tt> is enabled and is set to value of <tt>true</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.schedulerArguments["profiling"]'</pre>
-{{% else %}}
     <pre>$ sudo grep -A2 profiling /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should return <pre>false</pre>.
+{{%- endif %}}
