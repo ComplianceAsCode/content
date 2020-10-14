@@ -36,6 +36,7 @@ selections:
   # 1.2.7 Ensure that the --authorization-mode argument is not set to AlwaysAllow
     - api_server_auth_mode_no_aa
   # 1.2.8 Ensure that the --authorization-mode argument includes Node
+    - api_server_auth_mode_node
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
     - api_server_admission_control_plugin_EventRateLimit
@@ -58,7 +59,7 @@ selections:
   # 1.2.19 Ensure that the --insecure-port argument is set to 0
     - api_server_insecure_port
   # 1.2.20 Ensure that the --secure-port argument is not set to 0
-    - api_server_secure_port
+    - api_server_bind_address
   # 1.2.21 Ensure that the --profiling argument is set to false
     - api_server_profiling
   # 1.2.22 Ensure that the --audit-log-path argument is set
