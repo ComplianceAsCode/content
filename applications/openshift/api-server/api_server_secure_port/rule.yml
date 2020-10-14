@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp3
 
 title: 'Enable the Secure Port for the API Server'
 
@@ -9,16 +9,6 @@ description: |-
     edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and either remove the <tt>secure-port</tt>  or set it to a different
     (non-zero) desired port.
-{{%- if product == "ocp4" %}}
-    <pre>
-    "apiServerArguments":{
-      ...
-      "secure-port":[
-        "8443"
-      ],
-      ...
-    </pre>
-{{% else %}}
     edit the API Server pod specification
     file <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and either remove the <tt>secure-port</tt>  or set it to a different
@@ -27,7 +17,6 @@ description: |-
       apiServerArguments:
         secure-port:
         - 8443</pre>
-{{%- endif %}}
 
 rationale: |-
     The secure port is used to serve HTTPS with authentication and authorization.
@@ -43,9 +32,5 @@ ocil_clause: '<tt>secure-port</tt> is set with a value greater than <tt>0</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["secure-port"]'</pre>
-{{% else %}}
     <pre>$ sudo grep -A2 secure-port /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should not return <pre>0</pre>.
