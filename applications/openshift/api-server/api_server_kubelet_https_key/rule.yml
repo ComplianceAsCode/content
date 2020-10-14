@@ -17,6 +17,8 @@ description: |-
       ],
       ...
     </pre>
+    This rule checks the <tt>kubelet-client-key</tt> value in the apiserver
+    configuration config map to make sure it is set.
 
 rationale: |-
     Connections from the API Server to Kubelets could potentially carry
