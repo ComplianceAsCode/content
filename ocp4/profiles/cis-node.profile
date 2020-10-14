@@ -98,6 +98,7 @@ selections:
     # FIXME(jhrozek): This does not seem to be set in OCP explicitly and the code seems to suggest
     # that the default is false? Need to confirm
   # 4.2.7 Ensure that the --make-iptables-util-chains argument is set to true
+    - kubelet_enable_iptables_util_chains
     # - like kubelet_anonymous_auth_disabled but check for makeIPTablesUtilChains is NOT set to false (true is the default)
   # 4.2.8 Ensure that the --hostname-override argument is not set (Manual)
     # FIXME: systemd probe to check that the service.execStart does NOT contain --hostname-override. This is
