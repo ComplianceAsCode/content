@@ -2,8 +2,11 @@
   <definition class="compliance" id="kernel_trust_cpu_rng" version="1">
     {{{ oval_metadata("Ensure the kernel is configured to trust the CPU hardware random number generator.") }}}
     <criteria operator="OR" >
-      <criterion comment="check if the option is compiled in" test_ref="test_trust_cpu_rng_compiled_in" />
-      <criterion comment="check if the option is configured as a boot parameter" test_ref="test_trust_cpu_rng_boot_param" />
+      <criteria operator="AND">
+        <criterion comment="check if the option is compiled in" test_ref="test_trust_cpu_rng_compiled_in" />
+        <criterion comment="check if the option is not overridden through a boot parameter" test_ref="test_trust_cpu_rng_boot_param_off" negate="true" />
+      </criteria>
+      <criterion comment="check if the option is configured as a boot parameter" test_ref="test_trust_cpu_rng_boot_param_on" />
     </criteria>
   </definition>
 
@@ -26,11 +29,19 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-    <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param"
+<ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_off"
+  comment="check forkernel command line parameters random.trust_cpu=off in /boot/grub2/grubenv for all kernels"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_trust_cpu_rng_boot_param" />
+    <ind:state state_ref="state_trust_cpu_rng_boot_param_off" />
+  </ind:textfilecontent54_test>
+
+
+  <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_on"
   comment="check forkernel command line parameters random.trust_cpu=on in /boot/grub2/grubenv for all kernels"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_trust_cpu_rng_boot_param" />
-    <ind:state state_ref="state_trust_cpu_rng_boot_param" />
+    <ind:state state_ref="state_trust_cpu_rng_boot_param_on" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_trust_cpu_rng_boot_param"
@@ -40,9 +51,15 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_trust_cpu_rng_boot_param"
+  <ind:textfilecontent54_state id="state_trust_cpu_rng_boot_param_on"
   version="1">
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?random\.trust_cpu=on(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_trust_cpu_rng_boot_param_off"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?random\.trust_cpu=off(?:\s.*)?$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
 
 </def-group>

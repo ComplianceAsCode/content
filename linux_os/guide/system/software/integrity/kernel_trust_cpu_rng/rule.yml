@@ -5,9 +5,13 @@ prodtype: rhel8
 title: 'Configure kernel to trust the CPU random number generator'
 
 description: |-
-    To configure the Linux kernel to trust the CPU hardware random number
-    generator, make sure that <tt>random.trust_cpu=on</tt> is configured as a boot
-    parameter by running the following command:
+    There exist two ways how to ensure that the Linux kernel trusts the CPU
+    hardware random number generator. If the option is configured during kernel
+    compilation, e.g. the option <tt>CONFIG_RANDOM_TRUST_CPU</tt> is set to
+    <tt>Y</tt>, make sure that it is not overridden with the boot parameter.
+    There must not exist the boot parameter <tt>random.trust_cpu=off</tt>. If
+    the option is not compiled in, make sure that <tt>random.trust_cpu=on</tt>
+    is configured as a boot parameter by running the following command:
     <pre>sudo grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) random.trust_cpu=on"</pre>
 
 rationale: |-
@@ -32,9 +36,14 @@ ocil: |-
     commands. To check if the option was correctly configured at kernel compile
     time, run the following command:
     <pre>grep -q CONFIG_RANDOM_TRUST_CPU=y /boot/config-`uname -r`</pre>
-    If the command does not return any output, then the option is not compiled
-    in. To check if the option is configured through boot parameter, run the
-    following command:
+    If the command outputs:
+    <pre>CONFIG_RANDOM_TRUST_CPU=y</pre>,
+    it means that the option is compiled into the kernel. Make sure that the
+    option is not overridden through a boot parameter:
+    <pre>sudo grep 'kernelopts.*random\.trust_cpu=off.*' /boot/grub2/grubenv</pre>
+    The command should not return any output. If the option is not compiled into
+    the kernel, check that the option is configured through boot parameter with
+    the following command:
     <pre>sudo grep 'kernelopts.*random\.trust_cpu=on.*' /boot/grub2/grubenv</pre>
     If the command does not return any output, then the boot parameter is
     missing.
