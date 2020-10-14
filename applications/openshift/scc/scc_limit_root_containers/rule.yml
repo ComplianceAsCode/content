@@ -22,6 +22,9 @@ severity: medium
 references:
     cis: 5.2.6
 
+identifiers:
+  cce@ocp4: CCE-83432-5
+
 ocil_clause: 'allowPrivilegedContainer is set to true or too many SCCs have allowPrivilegedContainer enabled'
 
 ocil: |-
@@ -30,3 +33,21 @@ ocil: |-
     Review each SCC and determine that <tt>allowPrivilegedContainer</tt> is either
     completely disabled, or that <tt>allowPrivilegedContainer</tt> is only enabled to
     a small set of containers and SCCs.
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/security.openshift.io/v1/securitycontextconstraints") | indent(8) }}}
+{{%- endif %}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /apis/security.openshift.io/v1/securitycontextconstraints
+        yamlpath: ".items[:]['allowPrivilegedContainer']"
+        check_existence: "at_least_one_exists"
+        entity_check: "at least one"
+        values:
+          - type: "boolean"
+            value: "false"
