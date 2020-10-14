@@ -1,10 +1,15 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: ocp3,ocp4
 
 title: 'Configure the Encryption Provider'
 
 description: |-
+{{%- if product == "ocp4" %}}
+    To encrypt the etcd key-value store, follow the OpenShift documentation
+    and set the encryption type <tt>aescbc</tt> in the <tt>apiserver</tt>
+    object which configures the API server itself.
+{{% else %}}
     To encrypt the etcd key-value store, follow the OpenShift documentation
     and configure a <tt>EncryptionConfig</tt> file. Then, verify that the
     <tt>openshift-kube-apiserver</tt> configmap on the master
@@ -14,6 +19,7 @@ description: |-
     apiServerArguments:
       encryption-provider-config:
       - /etc/kubernetes/static-pod-resources/secrets/encryption-config/encryption-config</pre>
+{{%- endif %}}
 
 rationale: |-
     etcd is a highly available key-value store used by OpenShift deployments
@@ -26,9 +32,24 @@ severity: medium
 references:
     cis: 1.2.33
 
+{{%- if product == "ocp4" %}}
+ocil_clause: '<tt>aescbc</tt> is not set as the encryption type for etcd.'
+{{% else %}}
 ocil_clause: '<tt>encryption-provider-config</tt> arguments do not point to the <tt>EncryptionConfig</tt> file'
+{{%- endif %}}
 
 ocil: |-
+{{%- if product == "ocp4" %}}
+    Run the following command on the master node(s):
+    <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
+    The output should return an encryption type that's not <tt>identity</tt>.
+    For instance <tt>aescdc</tt> is acceptable.
+{{% else %}}
     Run the following command on the master node(s):
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["encryption-provider-config"]'</pre>
     The output should return a file path configured for <tt>EncryptionConfig</tt>.
+{{%- endif %}}
+
+# TODO: Add warning for compliance-operator to parse resource path
+
+# TODO: Add template to check for warning
