@@ -2,28 +2,26 @@ documentation_complete: true
 
 prodtype: ocp3,ocp4
 
-title: 'kubelet - Do Not Limit Event Creation'
+title: 'kubelet - Limit Event Creation'
 
 description: |-
-    All events should be captured and not restricted as this helps in
-    reconstucting the chain-of-events.
+    A maximum of 50 events should be captured to protect against DoS attacks.
 
     To prevent log creation limiting, edit the kubelet configuration
 {{%- if product == "ocp4" %}}
     file <tt>/etc/kubernetes/kubernetes.conf</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>eventRecordQPS: 0</pre>
+    <pre>kubeAPIQPS: 50</pre>
 {{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>kubeletArguments:
       event-qps:
-      - '0'</pre>
+      - '50'</pre>
 {{%- endif %}}
 
 rationale: |-
-    All events should be captured and not restricted as this helps in
-    reconstucting the chain-of-events.
+    A maximum of 50 events should be captured to protect against DoS attacks.
 
 severity: medium
 
@@ -32,7 +30,7 @@ ocil_clause: 'events are limited'
 ocil: |-
     Run the following command on the kubelet node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep eventRecordQPS /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ sudo grep kubeAPIQPS /etc/kubernetes/kubernetes.conf</pre>
 {{% else %}}
     <pre>$ sudo grep -A1 event-qps /etc/origin/node/node-config.yaml</pre>
 {{%- endif %}}
@@ -44,3 +42,22 @@ identifiers:
 references:
     cis@ocp3: 2.1.11
     cis@ocp4: 4.2.9
+
+template:
+{{%- if product == "ocp4" %}}
+  name: yamlfile_value
+  vars:
+    filepath: /etc/kubernetes/kubelet.conf
+    yamlpath: ".kubeAPIQPS"
+    values:
+      - value: "50"
+        operation: "equals"
+{{% else %}}
+  name: yamlfile_value
+  vars:
+    filepath: /etc/origin/node/node-config.yaml
+    yamlpath: ".event-qps"
+    values:
+      - value: "50"
+        operation: "equals"
+{{%- endif %}}

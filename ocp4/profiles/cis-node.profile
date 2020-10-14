@@ -94,7 +94,7 @@ selections:
     # FIXME: systemd probe to check that the service.execStart does NOT contain --hostname-override. This is
     # runtime flag only, no config value
   # 4.2.9 Ensure that the --event-qps argument is set to 0 or a level which ensures appropriate event capture
-    # - like kubelet_anonymous_auth_disabled but check for kubeAPIQPS set to 50
+    - kubelet_configure_event_creation
   # 4.2.10 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
     # - this is a platform rule (reads from a CM)
   # 4.2.11 Ensure that the --rotate-certificates argument is not set to false
