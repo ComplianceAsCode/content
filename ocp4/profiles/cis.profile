@@ -60,6 +60,7 @@ selections:
     - api_server_profiling
   # 1.2.22 Ensure that the --audit-log-path argument is set
     - api_server_audit_log_path
+    - kube_api_server_audit_log_path
   # 1.2.23 Ensure that the --audit-log-maxage argument is set to 30 or as appropriate
     - api_server_audit_log_maxage
   # 1.2.24 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate
