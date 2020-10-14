@@ -33,3 +33,19 @@ ocil: |-
     Run the following command on the master node(s):
     <pre>$ grep ETCD_KEY_FILE=/etc/etcd/etcd.conf</pre>
     Verify that there is a key file configured.
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod") | indent(8) }}}
+{{%- endif %}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+        yamlpath: ".data['pod.yaml']"
+        values:
+          - value: ".*--key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-serving/etcd-serving-NODE_NAME.key\\.*"
+            operation: "pattern match"
