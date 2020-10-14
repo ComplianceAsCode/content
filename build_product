@@ -260,7 +260,7 @@ set_no_derivatives_options() {
 set_quick_options() {
 	if test "$_arg_quick" = on ; then
 		for chosen_product in "${_arg_product[@]}"; do
-			QUICK+="generate-ssg-${chosen_product}-ds.xml "
+			QUICK+=("generate-ssg-${chosen_product}-ds.xml")
 		done
 	fi
 }
@@ -339,12 +339,13 @@ done
 
 CMAKE_OPTIONS=(${ADDITIONAL_CMAKE_OPTIONS} "${build_type_option}" "${oval_major_version_option}" "${oval_minor_version_option}" '-DSSG_PRODUCT_DEFAULT=OFF' "${cmake_enable_args[@]}" -G "$cmake_generator")
 set_no_derivatives_options
+QUICK=()
 set_quick_options
 
 set -e
 rm -rf build/*
 cd build
 cmake .. "${CMAKE_OPTIONS[@]}"
-$build_command "-j${jobs}" ${QUICK}
+$build_command "-j${jobs}" ${QUICK[@]}
 
 # ] <-- needed because of Argbash
