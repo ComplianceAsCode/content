@@ -25,7 +25,8 @@ from .utils import (required_key,
                     banner_regexify,
                     banner_anchor_wrap,
                     escape_id,
-                    escape_regex
+                    escape_regex,
+                    escape_yaml_key
                     )
 
 
@@ -91,6 +92,7 @@ def _get_jinja_environment(substitutions_dict):
         _get_jinja_environment.env.filters['banner_anchor_wrap'] = banner_anchor_wrap
         _get_jinja_environment.env.filters['escape_regex'] = escape_regex
         _get_jinja_environment.env.filters['escape_id'] = escape_id
+        _get_jinja_environment.env.filters['escape_yaml_key'] = escape_yaml_key
 
     return _get_jinja_environment.env
 
