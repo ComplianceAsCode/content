@@ -69,6 +69,7 @@ selections:
   # 1.2.26 Ensure that the --request-timeout argument is set as appropriate
     - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
+    - api_server_service_account_lookup
   # 1.2.28 Ensure that the --service-account-key-file argument is set as appropriate
     - api_server_service_account_public_key
   # 1.2.29 Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate
