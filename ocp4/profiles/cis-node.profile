@@ -45,6 +45,15 @@ selections:
   # 1.1.20 Ensure that the OpenShift PKI certificate file permissions are set to 644 or more restrictive
   # 1.1.21 Ensure that the OpenShift PKI key file permissions are set to 600 
 
+  ### 2 etcd
+  # 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate
+  # 2.2 Ensure that the --client-cert-auth argument is set to true
+  # 2.3 Ensure that the --auto-tls argument is not set to true
+  # 2.4 Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate
+  # 2.5 Ensure that the --peer-client-cert-auth argument is set to true
+  # 2.6 Ensure that the --peer-auto-tls argument is not set to true
+  # 2.7 Ensure that a unique Certificate Authority is used for etcd (manual)
+
   ### 3 Control Plane Configuration
   ###
   #### 3.2 Logging
