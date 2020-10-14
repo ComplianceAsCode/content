@@ -346,6 +346,6 @@ set -e
 rm -rf build/*
 cd build
 cmake .. "${CMAKE_OPTIONS[@]}"
-$build_command "-j${jobs}" ${EXPLICIT_BUILD_TARGETS[@]}
+$build_command "-j${jobs}" "${EXPLICIT_BUILD_TARGETS[@]}"
 
 # ] <-- needed because of Argbash
