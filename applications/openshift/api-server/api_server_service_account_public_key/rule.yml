@@ -30,12 +30,22 @@ description: |-
 {{%- endif %}}
 
 rationale: |-
+{{%- if product == "ocp4" %}}
+    By default, if no <tt>--service-account-key-file</tt> is specified
+    to the apiserver, it uses the private key from the TLS serving
+    certificate to verify service account tokens. To ensure that the
+    keys for service account tokens could be rotated as needed, a
+    separate public/private key pair should be used for signing service
+    account tokens. Hence, the public key should be specified to the
+    apiserver with <tt>--service-account-key-file</tt>.
+{{% else %}}
     By default, if no <tt>privateKeyFile</tt> is specified to the
     API Server, the API Server uses the private key from the TLS serving
     certificate to verify service account tokens. To ensure that the keys
     for service account tokens could be rotated as needed, a separate
     public/private key pair should be used for signing service account
     tokens.
+{{%- endif %}}
 
 severity: medium
 
@@ -55,3 +65,19 @@ ocil: |-
     <pre>publicKeyFiles:
       - serviceaccounts.public.key</pre>
 {{%- endif %}}
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+     - value: '"serviceAccountPublicKeyFiles":\[.*sa-token-signing-certs",.*bound-sa-token-signing-certs"]'
+       operation: "pattern match"
+       type: "string"

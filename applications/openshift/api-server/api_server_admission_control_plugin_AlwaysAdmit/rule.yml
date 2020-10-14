@@ -6,10 +6,11 @@ title: 'Disable the AlwaysAdmit Admission Control Plugin'
 
 description: |-
     To ensure OpenShift only responses to requests explicitly allowed by the
-    admissions control plugin, edit the API Server pod specification file
 {{%- if product == "ocp4" %}}
-    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s)
+    admission control plugin. Check that the <code>config</code> ConfigMap object does not
+    contain the AlwaysAdmit plugin.
 {{% else %}}
+    admissions control plugin, edit the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
 {{%- endif %}}
     and ensure the <tt>admissionConfig</tt> is not configured to include <tt>AlwaysAdmit</tt>.
@@ -28,8 +29,24 @@ ocil_clause: '<tt>admissionConfig</tt> is not set'
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep -A4 AlwaysAdmit /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'AlwaysAdmit'</pre>
 {{% else %}}
     <pre>$ sudo grep -A4 AlwaysAdmit /etc/origin/master/master-config.yaml</pre>
 {{%- endif %}}
     The output should return no output.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "none satisfy"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: 'AlwaysAdmit'
+      operation: "pattern match"
+      type: "string"

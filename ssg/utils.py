@@ -267,6 +267,14 @@ def escape_id(text):
     return re.sub(r"[^\w]+", "_", text).strip("_")
 
 
+def escape_yaml_key(text):
+    # Due to the limitation of OVAL's name argument of the filed type
+    # we have to avoid using uppercase letters for keys. The probe would escape
+    # them with '^' symbol.
+    # myCamelCase^Key -> my^camel^case^^^key
+    return re.sub(r'([A-Z^])', '^\\1', text).lower()
+
+
 def banner_regexify(banner_text):
     return escape_regex(banner_text) \
         .replace("\n", "BFLMPSVZ") \
