@@ -200,6 +200,12 @@ func (ctx *e2econtext) getScanType() (cmpv1alpha1.ComplianceScanType, error) {
 		return "", fmt.Errorf("Can't read product definition: %s", err)
 	}
 
+	// FIXME(jaosorior): We should ditch this in favor of using
+	// scansettingbindings.
+	if strings.HasSuffix(ctx.Profile, "-node") {
+		return cmpv1alpha1.ScanTypeNode, nil
+	}
+
 	if strings.HasSuffix(profileInfo.BenchmarkRoot, "applications") {
 		return cmpv1alpha1.ScanTypePlatform, nil
 	}

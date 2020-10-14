@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'kubelet - Allow Automatic Firewall Configuration'
 
@@ -10,9 +10,9 @@ description: |-
     parameters potentially creating a security incident.
     To allow the kubelet to modify the firewall, edit the kubelet configuration
 {{%- if product == "ocp4" %}}
-    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    file <tt>/etc/kubernetes/kubelet.conf</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>makeIPTablesUtilChains: true<pre>
+    <pre>makeIPTablesUtilChains: true</pre>
 {{% else %}}
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
@@ -35,7 +35,7 @@ ocil_clause: 'the kubelet cannot modify the firewall settings'
 ocil: |-
     Run the following command on the kubelet node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep makeIPTablesUtilChains /etc/origin/node/node-config.yaml</pre>
+    <pre>$ sudo grep makeIPTablesUtilChains /etc/kubernetes/kubelet.conf</pre>
 {{% else %}}
     <pre>$ sudo grep readOnlyPort /etc/kubernetes/kubernetes.conf</pre>
 {{%- endif %}}
@@ -53,3 +53,14 @@ warnings:
         IT IS NOT RECOMMENDED FOR ANY REASON to manually configure firewall ports for running
         pods and containers as this not only can create conflicts with firewall rules but can
         also introduce inconsistences into the allowed/disabled ports on the firewall.
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /etc/kubernetes/kubelet.conf
+        yamlpath: ".makeIPTablesUtilChains"
+        check_existence: "any_exist"
+        values:
+         - value: "false"
+           operation: "not equal"
+

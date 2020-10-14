@@ -29,6 +29,7 @@ severity: medium
 
 identifiers:
     cce@ocp3: CCE-80596-0
+    cce@ocp4: CCE-83396-2
 
 references:
     cis@ocp3: 2.1.12
@@ -39,11 +40,28 @@ ocil_clause: 'the kubelet certificate is not configured'
 ocil: |-
     Run the following command on the kubelet node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ sudo grep tlsCertFile /etc/kubernetes/kubernetes.conf</pre>
-    Verify that a TLS certificate is configured.
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments["kubelet-client-certificate"]'</pre>
+    The output should be <tt>0</tt>.
 {{% else %}}
     <pre>$ sudo grep -A1 cert-dir /etc/origin/node/node-config.yaml</pre>
     Verify that a certificate path is configured.
     <pre>$ sudo ls /etc/origin/node/certificates/kubelet-client-current.pem</pre>
 {{%- endif %}}
     Verify that a client certificate is configured.
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+{{%- endif %}}
+
+# This is updated for OCP4
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: ".data['config.yaml']"
+        values:
+          - value: '"kubelet-client-certificate":\["/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt"\]'
+            operation: "pattern match"

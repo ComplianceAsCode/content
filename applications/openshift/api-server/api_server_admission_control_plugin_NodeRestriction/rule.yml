@@ -5,8 +5,14 @@ prodtype: ocp3,ocp4
 title: 'Enable the NodeRestriction Admission Control Plugin'
 
 description: |-
-    To limit the <tt>Node</tt> and <tt>Pod</tt> objects that a kubelet could
-    modify, follow the OpenShift documentation and configure
+    To limit the <tt>Node</tt> and <tt>Pod</tt> objects that a kubelet could modify,
+{{%- if product == "ocp4" %}}
+    The <tt>NodeRestriction</tt> plugin on kubelets is used. Ensure it's enabled in
+    the api-server configuration by doing:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    and looking for the appropriate entry.
+{{% else %}}
+    follow the OpenShift documentation and configure
     <tt>NodeRestriction</tt> plugin on kubelets. Then, edit the API Server pod
     specification file <tt>/etc/origin/master/master-config.yaml</tt>
     on the master node(s) and set the <tt>admissionConfig</tt> to include <tt>NodeRestriction</tt>:
@@ -17,6 +23,7 @@ description: |-
           kind: DefaultAdmissionConfig
           apiVersion: v1
           disable: false</pre>
+{{%- endif %}}
 
 rationale: |-
     Using the <tt>NodeRestriction</tt> plugin ensures that the kubelet is
@@ -33,6 +40,30 @@ references:
 ocil_clause: '<tt>enable-admission-plugins</tt> does not contain <tt>NodeRestriction</tt>'
 
 ocil: |-
+{{%- if product == "ocp4" %}}
+    The NodeRestriction plugin should be enabled in the list of enabled plugins in
+    the apiserver configuration:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'ServiceAccount'</pre>
+{{% else %}}
     Run the following command on the master node(s):
     <pre>$ sudo grep -A4 NodeRestriction /etc/origin/master/master-config.yaml</pre>
     The output should return <pre>disable: false</pre>.
+{{%- endif %}}
+
+{{%- if product == "ocp4" %}}
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+{{%- endif %}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"enable-admission-plugins":\[[^]]*"NodeRestriction"'
+      operation: "pattern match"
+      type: "string"

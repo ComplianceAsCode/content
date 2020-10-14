@@ -336,7 +336,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(PROG_DESC))
     subparser = parser.add_subparsers(
-        dest='subcommand', title='subcommands', help='pick one', required=True)
+        dest='subcommand', title='subcommands', help='pick one')
     create_parser = subparser.add_parser(
         'create', help='Bootstrap the XML and YML files under %s for a new check.' % PLATFORM_RULE_DIR)
     create_parser.add_argument(
