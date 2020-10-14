@@ -45,7 +45,7 @@ ocil_clause: '<tt>certFile</tt> is not set as appropriate for <tt>kubeletClientI
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.kubeletClientInfo["certFile"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-client-certificate"]'</pre>
     The output should return a configured certificate.
 {{% else %}}
     <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
@@ -55,3 +55,21 @@ ocil: |-
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
 {{%- endif %}}
+
+{{%- if product == "ocp4" %}}
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+{{%- endif %}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "all"
+    filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"kubelet-client-certificate":\[.*\.crt"\]'
+      type: "string"
+      operation: "pattern match"
