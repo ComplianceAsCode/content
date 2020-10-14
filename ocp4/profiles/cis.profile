@@ -27,7 +27,6 @@ selections:
     - api_server_kubelet_https_cert
     - api_server_kubelet_https_key
     - api_server_kubelet_https_serving_cert
-    #- api_server_kubelet_https_serving_type
   # 1.2.5 Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate
     - api_server_kubelet_client_cert
     - api_server_kubelet_client_key
