@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="kernel_trust_cpu_rng" version="1">
-    {{{ oval_metadata("tests if the kernel is configured to trust the CPU RNG.") }}}
+    {{{ oval_metadata("Ensure the kernel is configured to trust the CPU hardware random number generator.") }}}
     <criteria operator="OR" >
       <criterion comment="check if the option is compiled in" test_ref="test_trust_cpu_rng_compiled_in" />
       <criterion comment="check if the option is configured as a boot parameter" test_ref="test_trust_cpu_rng_boot_param" />
