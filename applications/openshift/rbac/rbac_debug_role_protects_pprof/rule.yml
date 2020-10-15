@@ -1,0 +1,39 @@
+prodtype: ocp4
+
+title: 'Profiling is protected by RBAC'
+
+description: |-
+  Ensure that the cluster-debugger cluster role includes the /debug/pprof
+  resource URL. This demonstrates that profiling is protected by RBAC, with a
+  specific cluster role to allow access.
+
+rationale: |-
+  Profiling allows for the identification of specific performance bottlenecks.
+  It generates a significant amount of program data that could potentially be
+  exploited to uncover system and program details. If you are not experiencing
+  any bottlenecks and do not need the profiler for troubleshooting purposes, it
+  is recommended to turn it off to reduce the potential attack surface. To
+  ensure the collected data is not exploited, profiling endpoints are secured
+  via RBAC (see cluster-debugger role). By default, the profiling endpoints are
+  accessible only by users bound to cluster-admin or cluster-debugger role.
+  Profiling can not be disabled.
+
+identifiers:
+  cce@ocp4: CCE-84182-5
+
+severity: unknown
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/rbac.authorization.k8s.io/v1/clusterroles/cluster-debugger") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/rbac.authorization.k8s.io/v1/clusterroles/cluster-debugger
+    yamlpath: '.rules[0].nonResourceURLs[:]'
+    entity_check: 'at least one'
+    values:
+    - value: '\/debug\/pprof'
+      operation: 'pattern match'
