@@ -10,12 +10,14 @@ description: |-
     <tt>clientCA</tt> must be configured. Verify
     that <tt>servingInfo</tt> has the <tt>clientCA</tt> configured in
 {{%- if product == "ocp4" %}}
-    the <tt>openshift-kube-apiserver</tt> configmap on the master
+    the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap on the master
     node(s) to something similar to:
     <pre>
-    "servingInfo":{
+    "apiServerArguments": {
       ...
-      "clientCA":"/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt",
+        "client-ca-file": [
+          "/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt"
+        ],
       ...
     </pre>
 {{% else %}}
@@ -44,15 +46,40 @@ references:
 identifiers:
     cce@ocp3: CCE-81152-1
 
-ocil_clause: '<tt>clientCA</tt> is not set as appropriate for <tt>servingInfo</tt>'
+ocil_clause: >
+{{%- if product == "ocp4" %}}
+    '<tt>client-ca-file</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
+{{% else %}}
+    '<tt>clientCA</tt> is not set as appropriate for <tt>servingInfo</tt>'
+{{%- endif %}}
 
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.servingInfo["clientCA"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["client-ca-file"]'</pre>
     The output should return a configured TLS CA certificate file.
 {{% else %}}
     <pre>$ sudo grep clientCA /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:
     <pre>clientCA: ca.crt</pre>
+{{%- endif %}}
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+{{%- endif %}}
+
+{{%- if product == "ocp4" %}}
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: '.data["config.yaml"]'
+        entity_check: "all"
+        values:
+            - value: '.apiServerArguments.*"client-ca-file":\["/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt"\]'
+              operation: "pattern match"
+              type: "string"
 {{%- endif %}}
