@@ -12,10 +12,11 @@ description: |-
     the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) to something similar to:
     <pre>
-    "servingInfo":{
-      ...
-      "certFile":"/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.crt",
-      ...
+    ...
+    "tls-cert-file": [
+      "/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.crt"
+    ],
+    ...
     </pre>
 {{% else %}}
     the API Server pod specification file
@@ -42,7 +43,7 @@ ocil_clause: '<tt>certFile</tt> is not set as appropriate for <tt>servingInfo</t
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.servingInfo["certFile"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."tls-cert-file"'</pre>
     The output should return a configured TLS certificate file.
 {{% else %}}
     <pre>$ sudo grep -A7 servingInfo /etc/origin/master/master-config.yaml</pre>
@@ -52,3 +53,19 @@ ocil: |-
       certFile: master.server.crt
       keyFile: master.server.key</pre>
 {{%- endif %}}
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "all"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+     - value: '"tls-cert-file":\[.*\.crt"\]'
+       operation: "pattern match"
+       type: "string"
