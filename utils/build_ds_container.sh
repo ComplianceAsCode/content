@@ -16,7 +16,7 @@ print_usage() {
     exit 0
 }
 
-parms=()
+parms=(--datastream-only)
 
 # Build container in specified namespace. Else default to
 # "openshift-compliance"
