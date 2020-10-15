@@ -9,14 +9,15 @@ description: |-
     communications, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, verify
 {{%- if product == "ocp4" %}}
-    that <tt>storageConfig</tt> has the <tt>keyFile</tt> configured in
+    that <tt>apiServerArguments</tt> has the <tt>etcd-keyfile</tt> configured in
     the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) to something similar to:
     <pre>
-    "storageConfig":{
-      ...
-      "keyFile":"/etc/kubernetes/static-pod-resources/secrets/etcd-client/tls.key",
-      ...
+    ...
+    "etcd-keyfile": [
+        "/etc/kubernetes/static-pod-resources/secrets/etcd-client/tls.key"
+    ],
+    ...
     </pre>
 {{% else %}}
     that <tt>etcdClientInfo</tt> has the <tt>ca</tt> configured in
@@ -46,7 +47,7 @@ ocil_clause: '<tt>keyFile</tt> does not exist or is not configured to valid cert
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.storageConfig["keyFile"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."etcd-keyfile"'</pre>
     The output should return a configured certificate key file.
 {{% else %}}
     <pre>$ sudo grep -A3 etcdClientInfo /etc/origin/master/master-config.yaml</pre>
@@ -56,3 +57,19 @@ ocil: |-
       certFile: master.etcd-client.crt
       keyFile: master.etcd-client.key</pre>
 {{%- endif %}}
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "all"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+     - value: '"etcd-keyfile":\[.*\.key"\]'
+       operation: "pattern match"
+       type: "string"
