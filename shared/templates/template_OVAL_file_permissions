@@ -30,7 +30,7 @@
         <unix:filename xsi:nil="true" />
       {{%- endif -%}}
     {{%- else -%}}
-      <unix:filepath{{% if FILEPATH_REGEX %}} operation="pattern match"{{% endif %}}>{{{ FILEPATH }}}</unix:filepath>
+      <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ FILEPATH }}}</unix:filepath>
     {{%- endif -%}}
   </unix:file_object>
 </def-group>
