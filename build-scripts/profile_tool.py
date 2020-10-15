@@ -17,7 +17,7 @@ try:
 except ImportError:
     print("The ssg module could not be found.")
     print("Run .pyenv.sh available in the project root diretory,"
-          "or add it to PYTHONPATH manually.")
+          " or add it to PYTHONPATH manually.")
     print("$ source .pyenv.sh")
     exit(1)
 
