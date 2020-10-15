@@ -5,11 +5,19 @@ prodtype: ocp3,ocp4
 title: 'Disable etcd Self-Signed Certificates'
 
 description: |-
+{{%- if product == "ocp4" %}}
+    To ensure the <tt>etcd</tt> service is not using self-signed
+    certificates, run the following command:
+    <pre>$ oc get cm/etcd-pod -n openshift-etcd -o yaml</pre>
+    The etcd pod configuration contained in the configmap should not
+    contain the <tt>--auto-tls=true</tt> flag.
+{{% else %}}
     To ensure the <tt>etcd</tt> service is not using self-signed
     certificates, edit the <tt>etcd</tt> configuration file
     <tt>/etc/etcd/etcd.conf</tt> from the master node and set
     <tt>ETCD_AUTO_TLS</tt> to <tt>false</tt>:
     <pre>ETCD_AUTO_TLS=false</pre>
+{{%- endif %}}
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -22,6 +30,7 @@ severity: medium
 
 identifiers:
     cce@ocp3: CCE-80573-9
+    cce@ocp4: CCE-84199-9
 
 references:
     cis: '2.3'
@@ -32,3 +41,21 @@ ocil: |-
     Run the following command on the master node(s):
     <pre>$ grep ETCD_AUTO_TLS /etc/etcd/etcd.conf</pre>
     The output should not return <tt>true</tt>.
+
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod") | indent(8) }}}
+{{%- endif %}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+        entity_check: "none satisfy"
+        yamlpath: '.data["pod.yaml"]'
+        values:
+          - value: '.*auto-tls[= ]true.*'
+            operation: "pattern match"
