@@ -1,14 +1,21 @@
 prodtype: ocp4
 
-title: Ensure RotateKubeletServerCertificate is set to True
+title: 'Ensure RotateKubeletServerCertificate is set to True'
 
-description: None
+description: 'Enable kubelet server certificate rotation on controller-manager.'
 
-rationale: TBD
+rationale: |-
+  RotateKubeletServerCertificate causes the kubelet to both request a serving certificate
+  after bootstrapping its client credentials and rotate the certificate as its existing
+  credentials expire. This automated periodic rotation ensures that there are no downtimes
+  due to expired certificates and thus addressing availability in the CIA security triad.
+  Note: This recommendation only applies if you let kubelets get their certificates from
+  the API server. In case your kubelet certificates come from an outside authority/tool (e.g.
+  Vault) then you need to take care of rotation yourself.
 
 identifiers: {}
 
-severity: unknown
+severity: medium
 
 warnings:
 - general: |-
