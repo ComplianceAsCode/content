@@ -31,3 +31,23 @@ ocil: |-
     Review each SCC and determine that all capabilities are either
     completely disabled as a list entry under <tt>requiredDropCapabilities</tt>,
     or that all the un-required capabilities are dropped for containers and SCCs.
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/security.openshift.io/v1/securitycontextconstraints") | indent(8) }}}
+{{%- endif %}}
+
+template:
+{{%- if product == "ocp4" %}}
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /apis/security.openshift.io/v1/securitycontextconstraints
+        yamlpath: ".items[:]['requiredDropCapabilities']"
+        check_existence: "at_least_one_exists"
+        entity_check: "at least one"
+        values:
+          - type: "string"
+            value: "ALL"
+{{%- endif %}}
