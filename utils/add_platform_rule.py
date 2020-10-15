@@ -313,7 +313,7 @@ def testFunc(args):
 
     if not args.skip_build:
         createTestProfile(args.rule)
-        ret_code, out = subprocess.getstatusoutput('./build_product ocp4')
+        ret_code, out = subprocess.getstatusoutput('./build_product --datastream-only ocp4')
         if ret_code != 0:
             print('build failed: %s' % out)
             return 1
