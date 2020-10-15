@@ -49,9 +49,9 @@
   </ind:yamlfilecontent_object>
 
   <ind:yamlfilecontent_state id="state_{{{ rule_id }}}" version="1">
-    <ind:value datatype="record">
+    <ind:value datatype="record"{{% if ENTITY_CHECK %}} entity_check="{{{ ENTITY_CHECK }}}"{{% endif %}}>
       {{% for val in VALUES %}}
-      <field {{{ {'name': val.key|default("#")|escape_yaml_key, 'datatype': val.type,  'operation':  val.operation}|xmlattr }}}{{% if ENTITY_CHECK %}} entity_check="{{{ ENTITY_CHECK }}}"{{% endif %}}>{{{ val.value }}}</field>
+      <field {{{ {'name': val.key|default("#")|escape_yaml_key, 'datatype': val.type,  'operation':  val.operation}|xmlattr }}}>{{{ val.value }}}</field>
       {{% endfor %}}
     </ind:value>
   </ind:yamlfilecontent_state>
