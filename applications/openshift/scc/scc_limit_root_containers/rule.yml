@@ -9,24 +9,31 @@ description: |-
     to run and should very rarely be run as root user. To prevent
     containers from running as root user,
     the appropriate Security Context Constraints (SCCs) should set
-    <tt>allowPrivilegedContainer</tt> to <tt>false</tt>.
+    <tt>runAsUser</tt> to <tt>MustRunAsNonRoot</tt> or <tt>MustRunAs</tt>
+    with a range of UIDs that does not include 0.
 
 rationale: |-
-    Privileged containers have access to all Linux Kernel
-    capabilities and devices. If a privileged container were
-    compromised, an attacker would have full access to the container
-    and host.
+    Containers may run as any Linux user. Containers which run as the root user,
+    whilst constrained by Container Runtime security features still have an escalated
+    likelihood of container breakout.
 
 severity: medium
 
 references:
     cis: 5.2.6
 
-ocil_clause: 'allowPrivilegedContainer is set to true or too many SCCs have allowPrivilegedContainer enabled'
+ocil_clause: 'no SCC has runAsUser set to MustRunAsNonRoot or MustRunAs'
 
 ocil: |-
     Inspect each SCC returned from running the following command:
     <pre>$ oc get scc</pre>
-    Review each SCC and determine that <tt>allowPrivilegedContainer</tt> is either
-    completely disabled, or that <tt>allowPrivilegedContainer</tt> is only enabled to
-    a small set of containers and SCCs.
+    Review each SCC and determine that <tt>runAsUser</tt> is either
+    set to <tt>MustRunAsNonRoot</tt> or <tt>MustRunAs</tt> with a
+    range of UIDs that does not include 0, or only a small set of
+    containers and SCCs don't run as root.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/security.openshift.io/v1/securitycontextconstraints") | indent(8) }}}
+        {{{ openshift_cluster_setting("/api/v1/namespaces") | indent(8) }}}
+
