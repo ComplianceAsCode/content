@@ -9,10 +9,17 @@ import os
 import os.path
 import sys
 
-import ssg.build_profile
-import ssg.constants
-import ssg.xml
-import ssg.build_yaml
+try:
+    import ssg.build_profile
+    import ssg.constants
+    import ssg.xml
+    import ssg.build_yaml
+except ImportError:
+    print("The ssg module could not be found.")
+    print("Run .pyenv.sh available in the project root diretory,"
+          "or add it to PYTHONPATH manually.")
+    print("$ source .pyenv.sh")
+    exit(1)
 
 
 def parse_args():
