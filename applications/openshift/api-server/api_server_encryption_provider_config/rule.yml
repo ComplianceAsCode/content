@@ -51,5 +51,21 @@ ocil: |-
 {{%- endif %}}
 
 # TODO: Add warning for compliance-operator to parse resource path
+{{%- if product == "ocp4" %}}
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/apiservers/cluster") | indent(4) }}}
+{{%- endif %}}
 
 # TODO: Add template to check for warning
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: '/apis/config.openshift.io/v1/apiservers/cluster'
+    yamlpath: '.spec.encryption.type'
+    values:
+    - value: 'aescbc'
+      type: "string"
+      operation: "pattern match"
