@@ -9,13 +9,15 @@ description: |-
     connections, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, verify
 {{%- if product == "ocp4" %}}
-    that <tt>storageConfig</tt> has the <tt>ca</tt> configured in
-    the <tt>openshift-kube-apiserver</tt> configmap on the master
+    that <tt>apiServerArguments</tt> has the <tt>etcd-cafile</tt> configured in
+    the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap on the master
     node(s) to something similar to:
     <pre>
-    "storageConfig":{
+    "apiServerArguments": {
       ...
-      "ca":"/etc/kubernetes/static-pod-resources/configmaps/etcd-serving-ca/ca-bundle.crt",
+        "etcd-cafile": [
+            "/etc/kubernetes/static-pod-resources/configmaps/etcd-serving-ca/ca-bundle.crt"
+        ],
       ...
     </pre>
 {{% else %}}
@@ -41,12 +43,17 @@ severity: medium
 references:
     cis: 1.2.32
 
-ocil_clause: '{{%- if product == "ocp4" %}}<tt>ca</tt> is not set as appropriate for <tt>etcdClientInfo</tt>{{% else %}}<tt>ca</tt> is not set as appropriate for <tt>storageConfig</tt>{{%- endif %}}'
+ocil_clause: >
+{{%- if product == "ocp4" %}}
+    '<tt>etcd-cafile</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
+{{% else %}}
+    '<tt>ca</tt> is not set as appropriate for <tt>storageConfig</tt>'
+{{%- endif %}}
 
 ocil: |-
     Run the following command on the master node(s):
 {{%- if product == "ocp4" %}}
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.storageConfig["anonymous-auth"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["etcd-cafile"]'</pre>
     The output should return a configured CA certificate for ETCD.
 {{% else %}}
     <pre>$ sudo grep -A3 etcdClientInfo /etc/origin/master/master-config.yaml</pre>
@@ -55,4 +62,24 @@ ocil: |-
       ca: master.etcd-ca.crt
       certFile: master.etcd-client.crt
       keyFile: master.etcd-client.key</pre>
+{{%- endif %}}
+
+{{%- if product == "ocp4" %}}
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+{{%- endif %}}
+
+{{%- if product == "ocp4" %}}
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        yamlpath: '.data["config.yaml"]'
+        entity_check: "all"
+        values:
+            - value: '.apiServerArguments.*"etcd-cafile":\["/etc/kubernetes/static-pod-resources/configmaps/etcd-serving-ca/ca-bundle.crt"\]'
+              operation: "pattern match"
+              type: "string"
 {{%- endif %}}
