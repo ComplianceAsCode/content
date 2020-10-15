@@ -178,9 +178,9 @@ selections:
   # 5.2.7 Minimize the admission of containers with the NET_RAW capability (info)
     - scc_limit_net_raw_capability
   # 5.2.8 Minimize the admission of containers with added capabilities (info)
-    - scc_drop_container_capabilities
-  # 5.2.9 Minimize the admission of containers with capabilities assigned (info)
     - scc_limit_container_allowed_capabilities
+  # 5.2.9 Minimize the admission of containers with capabilities assigned (info)
+    - scc_drop_container_capabilities
   #### 5.3 Network Policies and CNI
   # 5.3.1 Ensure that the CNI in use supports Network Policies (info)
     - configure_network_policies
