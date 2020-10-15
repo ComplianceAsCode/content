@@ -219,6 +219,7 @@ selections:
 - sysctl_user_max_user_namespaces
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
+- use_pam_wheel_for_su
 - zipl_audit_argument
 - zipl_audit_backlog_limit_argument
 - zipl_bls_entries_only

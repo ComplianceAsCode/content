@@ -222,6 +222,7 @@ selections:
     - securetty_root_login_console_only
     - var_password_pam_unix_remember=5
     - accounts_password_pam_unix_remember
+    - use_pam_wheel_for_su
 
     ### SELinux Configuration
     - var_selinux_state=enforcing
