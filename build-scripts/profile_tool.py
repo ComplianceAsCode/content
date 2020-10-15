@@ -93,6 +93,10 @@ def parse_args():
 
     args = parser.parse_args()
 
+    if not args.subcommand:
+        parser.print_help()
+        exit(0)
+
     if args.subcommand == "stats":
         if args.all:
             args.implemented = True
