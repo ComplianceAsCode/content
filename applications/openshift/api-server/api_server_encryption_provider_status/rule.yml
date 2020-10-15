@@ -1,0 +1,27 @@
+prodtype: ocp4
+
+title: Check the Encryption Status
+
+description: placeholder
+
+rationale: TBD
+
+identifiers: {}
+
+severity: unknown
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/operator.openshift.io/v1/openshiftapiservers/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /apis/operator.openshift.io/v1/openshiftapiservers/cluster
+    yamlpath: ".status.conditions[:]['type']"
+    values:
+    - value: "Encrypted"
+      type: "string"
+      operation: "pattern match"      
