@@ -1614,6 +1614,7 @@ file_groupowner::
 * Check group that owns the given file.
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *filepath_is_regex* - If set to `"true"` the OVAL will consider the value of *filepath* as a regular expression.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
 ** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *filegid* - group ID (GID)
@@ -1623,6 +1624,7 @@ file_owner::
 * Check user that owns the given file.
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *filepath_is_regex* - If set to `"true"` the OVAL will consider the value of *filepath* as a regular expression.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
 ** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *fileuid* - user ID (UID)
@@ -1632,6 +1634,7 @@ file_permissions::
 * Checks permissions (mode) on a given file.
 * Parameters:
 ** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *filepath_is_regex* - If set to `"true"` the OVAL will consider the value of *filepath* as a regular expression.
 ** *missing_file_pass* - If set to `"true"` the OVAL check will pass when file is absent. Default value is `"false"`.
 ** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory. Note: Applies to base name of files, so if a file `/foo/bar/file.txt` is processed, only `file.txt` is tested against *file_regex*.
 ** *filemode* - File permissions in a hexadecimal format, eg. `'0640'`.
