@@ -281,7 +281,50 @@ controls:
   - id: R18
     level: minimal
     title: Administrator password robustness
-    # rules: TBD
+    notes: >-
+      The rules selected below establish a general password strength baseline of 100 bits,
+      inspired by DAT-NT-001 and the "Password Strenght Calculator"
+      (https://www.ssi.gouv.fr/administration/precautions-elementaires/calculer-la-force-dun-mot-de-passe/).
+
+      The baseline should be reviewed and tailored to the system's use case and needs.
+    automated: partially
+    rules:
+    # Renew passwords every 90 days
+    - var_accounts_maximum_age_login_defs=90
+    - accounts_maximum_age_login_defs
+
+    # Ensure passwords with minimum of 18 characters
+    - var_password_pam_minlen=18
+    - accounts_password_pam_minlen
+    # Enforce password lenght for new accounts
+    - var_accounts_password_minlen_login_defs=18
+    - accounts_password_minlen_login_defs
+    # Require at Least 1 Special Character in Password
+    - var_password_pam_ocredit=1
+    - accounts_password_pam_ocredit
+    # Require at Least 1 Numeric Character in Password
+    - var_password_pam_dcredit=1
+    - accounts_password_pam_dcredit
+    # Require at Least 1 Uppercase Character in Password
+    - var_password_pam_ucredit=1
+    - accounts_password_pam_ucredit
+    # Require at Least 1 Lowercase Character in Password
+    - var_password_pam_lcredit=1
+    - accounts_password_pam_lcredit
+
+    # Lock out users after 3 failed authentication attempts within 15 min
+    - var_accounts_passwords_pam_faillock_fail_interval=900
+    - accounts_passwords_pam_faillock_interval
+    - var_accounts_passwords_pam_faillock_deny=3
+    - accounts_passwords_pam_faillock_deny
+    - accounts_passwords_pam_faillock_deny_root
+    # Automatically unlock users after 15 min to prevent DoS
+    - var_accounts_passwords_pam_faillock_unlock_time=900
+    - accounts_passwords_pam_faillock_unlock_time
+
+    # Do not reuse last two passwords
+    - var_password_pam_unix_remember=2
+    - accounts_password_pam_unix_remember
 
   - id: R19
     level: intermediary
