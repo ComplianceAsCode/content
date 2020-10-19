@@ -79,7 +79,7 @@ do
 	local count_of_inspected_files=0
 
 	# Define expected rule form for this binary
-	expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=unset -k privileged"
+	expected_rule="-a always,exit -F path=${sbinary} -F auid>=${min_auid} -F auid!=unset -F key=privileged"
 
 	# If list of audit rules files to be inspected is empty, just add new rule and move on to next binary
 	if [[ ${#files_to_inspect[@]} -eq 0 ]]; then
@@ -101,7 +101,7 @@ do
 		#   them in arbitrary order)
 	
 		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'[^[:graph:]]/!d'		\
-				-e '/-F path=[^[:space:]]\+/!d'   -e '/-F perm=.*/!d'						\
+				-e '/-F path=[^[:space:]]\+/!d'						\
 				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=\(4294967295\|unset\)/!d'	\
 				-e '/-k \|-F key=/!d' "$afile")
 
@@ -127,31 +127,6 @@ do
 			# Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
 			readarray -t sbinaries_to_skip < <(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo "$i"; done | sort -du)
 
-			# Separate concrete_rule into three sections using hash '#'
-			# sign as a delimiter around rule's permission section borders
-			concrete_rule="$(echo "$concrete_rule" | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\)\+/\1#\2#/p")"
-
-			# Split concrete_rule into head, perm, and tail sections using hash '#' delimiter
-
-			rule_head=$(cut -d '#' -f 1 <<< "$concrete_rule")
-			rule_perm=$(cut -d '#' -f 2 <<< "$concrete_rule")
-			rule_tail=$(cut -d '#' -f 3 <<< "$concrete_rule")
-
-			# Extract already present exact access type [r|w|x|a] from rule's permission section
-			access_type=${rule_perm//-F perm=/}
-
-			# Verify current permission access type(s) for rule contain 'x' (execute) permission
-			if ! grep -q "$exec_access" <<< "$access_type"
-			then
-
-				# If not, append the 'x' (execute) permission to the existing access type bits
-				access_type="$access_type$exec_access"
-				# Reconstruct the permissions section for the rule
-				new_rule_perm="-F perm=$access_type"
-				# Update existing rule in current audit rules file with the new permission section
-				sed -i "s#${rule_head}\(.*\)${rule_tail}#${rule_head}${new_rule_perm}${rule_tail}#" "$afile"
-
-			fi
 
 		# If the required audit rule for particular sbinary wasn't found yet, insert it under following conditions:
 		#
