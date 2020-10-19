@@ -118,8 +118,15 @@ controls:
   - id: R8
     level: minimal
     title: Regular updates
+    notes: Check the vendor CVE feed and configure automatic install of security related updates.
     rules:
     - security_patches_up_to_date
+    - package_dnf-automatic_installed
+    - timer_dnf-automatic_enabled
+    # Configure dnf-automatic to Install Available Updates Automatically
+    - dnf-automatic_apply_updates
+    # Configure dnf-automatic to Install Only Security Updates
+    - dnf-automatic_security_updates_only
 
   - id: R9
     level: intermediary
