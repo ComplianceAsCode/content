@@ -1,0 +1,57 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure kernel to trust the CPU random number generator'
+
+description: |-
+    There exist two ways how to ensure that the Linux kernel trusts the CPU
+    hardware random number generator. If the option is configured during kernel
+    compilation, e.g. the option <tt>CONFIG_RANDOM_TRUST_CPU</tt> is set to
+    <tt>Y</tt>, make sure that it is not overridden with the boot parameter.
+    There must not exist the boot parameter <tt>random.trust_cpu=off</tt>. If
+    the option is not compiled in, make sure that <tt>random.trust_cpu=on</tt>
+    is configured as a boot parameter by running the following command:
+    <pre>sudo grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) random.trust_cpu=on"</pre>
+
+rationale: |-
+    The Linux kernel offers an option which signifies if the kernel should trust
+    data provided by CPU hardware random number generator. Hardware random
+    number generators can provide random data very quickly and are used to generate random cryptographic keys. They can
+    be useful during boot time when other means of getting random data can be
+    slow because there is not yet enough entropy in the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83314-5
+
+references:
+    ospp: FCS_RBG_EXT.1.1
+
+ocil_clause: 'the kernel is not configured to trust the CPU RNG'
+
+ocil: |-
+    Make sure that the kernel is configured to trust the CPU RNG by following
+    commands. To check if the option was correctly configured at kernel compile
+    time, run the following command:
+    <pre>grep -q CONFIG_RANDOM_TRUST_CPU=y /boot/config-`uname -r`</pre>
+    If the command outputs:
+    <pre>CONFIG_RANDOM_TRUST_CPU=y</pre>,
+    it means that the option is compiled into the kernel. Make sure that the
+    option is not overridden through a boot parameter:
+    <pre>sudo grep 'kernelopts.*random\.trust_cpu=off.*' /boot/grub2/grubenv</pre>
+    The command should not return any output. If the option is not compiled into
+    the kernel, check that the option is configured through boot parameter with
+    the following command:
+    <pre>sudo grep 'kernelopts.*random\.trust_cpu=on.*' /boot/grub2/grubenv</pre>
+    If the command does not return any output, then the boot parameter is
+    missing.
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: random.trust_cpu
+        arg_value: 'on'
+    backends:
+        oval: "off"
