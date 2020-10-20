@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Disable User Access to Unsigned Applications Setting'
+
+description: |-
+    To ensure that users cannot change the unsigned applications setting, add
+    <tt>deployment.security.level.locked</tt> to
+    <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Unsigned applications could perform numerous types of attacks on a system.
+    As such, ensuring users cannot change the permission settings which control
+    the execution of unsigned Java applications contributes to a more consistent
+    security profile.
+
+severity: high
+
+references:
+    srg: SRG-APP-000516
+    disa: CCI-000366
+    stigid: JRE8-UX-000060
+    nist: CM-6(b)
+
+ocil_clause: 'it is not configured'
+
+ocil: |-
+    To verify that a user cannot change the unsigned applications setting, run
+    the following command:
+    <pre>$ grep 'deployment.security.level.locked' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured,
+    the output should return:
+    <pre>deployment.security.level.locked</pre>
