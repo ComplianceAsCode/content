@@ -43,10 +43,11 @@ template:
     vars:
         ocp_data: "true"
         filepath: /apis/security.openshift.io/v1/securitycontextconstraints
-        yamlpath: ".items[:]['requiredDropCapabilities']"
+        yamlpath: ".items[:]['requiredDropCapabilities','#'][:]"
         check_existence: "at_least_one_exists"
         entity_check: "at least one"
         values:
-          - type: "string"
-            value: "NET_RAW"
-            value: "ALL"
+          - key: "requiredDropCapabilities"
+            value: "^NET_RAW|ALL$"
+            entity_check: "at least one"
+            operation: "pattern match"
