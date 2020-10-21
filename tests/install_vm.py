@@ -152,7 +152,10 @@ def main():
         else:
             content = content.replace("&&YUM_EXTRA_REPO&&", "")
         if data.uefi:
-            content = content.replace("part /boot --fstype=xfs --size=512", "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200")
+            content = content.replace(
+                "part /boot --fstype=xfs --size=512",
+                "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200"
+            )
         outfile.write(content)
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
@@ -170,7 +173,9 @@ def main():
     if data.uefi == "normal":
         command = command+" --boot uefi"
     if data.uefi == "secureboot":
-        command = command + " --boot uefi,loader_secure=yes,loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
+        command = command + " --boot uefi,loader_secure=yes,\
+loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,\
+nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
 
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
