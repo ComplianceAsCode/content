@@ -95,6 +95,7 @@ selections:
   #### 1.3 Controller Manager
   # 1.3.1 Ensure that the --terminated-pod-gc-threshold argument is set as appropriate
   # 1.3.2 Ensure that the --profiling argument is set to false (info only)
+    - rbac_debug_role_protects_pprof
   # 1.3.3 Ensure that the --use-service-account-credentials argument is set to true
     - controller_use_service_account
   # 1.3.4 Ensure that the --service-account-private-key-file argument is set as appropriate
