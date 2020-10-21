@@ -451,6 +451,8 @@ XCCDF_PLATFORM_TO_CPE = {
     "yum": "cpe:/a:yum",
     "zipl": "cpe:/a:zipl",
     "net-snmp": "cpe:/a:net-snmp",
+    "uefi": "cpe:/a:uefi",
+    "bios": "cpe:/a:bios",
 }
 
 # Default platform to package mapping

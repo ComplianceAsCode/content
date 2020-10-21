@@ -22,7 +22,7 @@
 
   {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg") }}}
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg." id="test_bootloader_uefi_superuser" version="2">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in {{{ grub_cfg_prefix + "/grub.cfg" }}}." id="test_bootloader_uefi_superuser" version="2">
     <ind:object object_ref="object_bootloader_uefi_superuser" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_bootloader_uefi_superuser" version="2">

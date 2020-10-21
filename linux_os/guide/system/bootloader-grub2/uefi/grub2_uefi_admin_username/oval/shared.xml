@@ -1,0 +1,27 @@
+{{% if product == "fedora" %}}
+{{% set grub_cfg_prefix = "/boot/efi/EFI/fedora" %}}
+{{% else %}}
+{{% set grub_cfg_prefix = "/boot/efi/EFI/redhat" %}}
+{{% endif %}}
+
+<def-group>
+  <definition class="compliance" id="grub2_uefi_admin_username" version="1">
+    {{{ oval_metadata("The grub2 boot loader superuser should have a username that is hard to guess.") }}}
+
+    <criteria operator="OR">
+      {{{ oval_file_absent_criterion(grub_cfg_prefix + "/grub.cfg") }}}
+      <criterion comment="make sure a superuser is defined in {{{ grub_cfg_prefix + "/grub.cfg" }}}" test_ref="test_bootloader_uefi_unique_superuser"/>
+    </criteria>
+  </definition>
+
+  {{{ oval_file_absent(grub_cfg_prefix + "/grub.cfg") }}}
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in {{{ grub_cfg_prefix + "/grub.cfg" }}}. Superuser is not root, admin, or administrator" id="test_bootloader_uefi_unique_superuser" version="1">
+    <ind:object object_ref="object_bootloader_uefi_unique_superuser" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_bootloader_uefi_unique_superuser" version="1">
+    <ind:filepath>{{{ grub_cfg_prefix + "/grub.cfg" }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers="(?i)(?!root|admin|administrator)(?-i).*"$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
