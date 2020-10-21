@@ -88,6 +88,12 @@ def parse_args():
         default=None,
         help="Path to an SSH public key which will be used to access the VM."
     )
+    parser.add_argument(
+        "--uefi",
+        dest="uefi",
+        choices=['secureboot', 'normal'],
+        help="Perform UEFI based installation, optionally with secure boot support."
+    )
 
     return parser.parse_args()
 
@@ -145,6 +151,8 @@ def main():
             content = content.replace("&&YUM_EXTRA_REPO_URL&&", data.extra_repo)
         else:
             content = content.replace("&&YUM_EXTRA_REPO&&", "")
+        if data.uefi:
+            content = content.replace("part /boot --fstype=xfs --size=512", "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200")
         outfile.write(content)
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
@@ -159,6 +167,10 @@ def main():
     # interface names, for more details see:
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
     command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics=none --noautoconsole --rng /dev/random --wait=-1 --location={url}'.format(**data.__dict__)
+    if data.uefi == "normal":
+        command = command+" --boot uefi"
+    if data.uefi == "secureboot":
+        command = command + " --boot uefi,loader_secure=yes,loader=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
 
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
