@@ -57,4 +57,7 @@ template:
     name: file_groupowner
     vars:
         filepath: /boot/efi/EFI/redhat/grub.cfg
+        filepath@fedora: /boot/efi/EFI/fedora/grub.cfg
         filegid: '0'
+    backends:
+        oval: 'off'
