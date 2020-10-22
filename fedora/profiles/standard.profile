@@ -7,7 +7,6 @@ description: |-
     Regardless of your system's workload all of these checks should pass.
 
 selections:
-    - disable_prelink
     - aide_build_database
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled

@@ -90,7 +90,6 @@ selections:
     - rsyslog_files_groupownership
     - ensure_logrotate_activated
     - package_aide_installed
-    - disable_prelink
     - aide_build_database
     - aide_periodic_cron_checking
     - account_unique_name
