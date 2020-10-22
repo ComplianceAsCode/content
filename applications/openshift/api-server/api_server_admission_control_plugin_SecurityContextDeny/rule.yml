@@ -2,16 +2,16 @@ documentation_complete: true
 
 prodtype: ocp3,ocp4
 
-title: 'Enable the SecurityContextDeny Admission Control Plugin'
+title: 'Ensure that the admission control plugin SecurityContextDeny is set if PodSecurityPolicy is not used'
 
 description: |-
     Instead of using a customized SecurityContext for pods, a Pod Security
     Policy (PSP) should be used. PSP is a cluster-level resource that controls
     the actions that a pod can perform and what resource the pod may access.
-    The <tt>SecurityContextDeny</tt> admission control policy enables PSP.    
+    The <tt>SecurityContextDeny</tt> admission control policy enables PSP.
 {{%- if product == "ocp4" %}}
-    Ensure that the SecurityContextConstraint plugin is enabled:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments."enable-admission-plugins"' | grep 'SecurityContextConstraint'</pre>
+    Ensure that the list of admission controllers does not include SecurityContextDeny:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"' </pre>
 {{% else %}}
     To configure OpenShift to use PSP, edit the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s) and
@@ -24,11 +24,11 @@ description: |-
           apiVersion: v1
           disable: false</pre>
 {{%- endif %}}
-    
 
 rationale: |-
 {{%- if product == "ocp4" %}}
-    SecurityContextDeny can be used to provide a layer of security for clusters which do not have PodSecurityPolicies enabled.
+    SecurityContextDeny can be used to provide a layer of security for clusters 
+    which do not have PodSecurityPolicies enabled.
 {{% else %}}
     Setting admission control policy to <tt>SecurityContextDeny</tt> denies the
     pod level SecurityContext customization. Any attempts to customize the
@@ -44,15 +44,15 @@ references:
 
 ocil_clause: |-
 {{%- if product == "ocp4" %}}
-    '<tt>enable-admission-plugins</tt>does not contain <tt>SecurityContextConstraint</tt>'
+    '<tt>enable-admission-plugins</tt>does not contain <tt>SecurityContextDeny</tt>'
 {{% else %}}
     '<tt>admissionConfig</tt> does not contain <tt>SecurityContextDeny</tt>'
 {{%- endif %}}
 
 ocil: |-
 {{%- if product == "ocp4" %}}
-    The SecurityContextConstraint plugin should be enabled in the list of enabled plugins in the apiserver configuration:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments."enable-admission-plugins"' | grep 'SecurityContextConstraint' </pre>
+    The SecurityContextDeny plugin should not be enabled in the list of enabled plugins in the apiserver configuration:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"' </pre>
 {{% else %}}
     Run the following command on the master node(s):
     <pre>$ sudo grep -A4 SecurityContextDeny /etc/origin/master/master-config.yaml</pre>
@@ -73,6 +73,6 @@ template:
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     yamlpath: '.data["config.yaml"]'
     values:
-    - value: '"enable-admission-plugins":\[[^]]*"SecurityContextConstraint"'
+    - value: '"enable-admission-plugins":\[[^]]*"SecurityContextDeny"'
       operation: "pattern match"
       type: "string"
