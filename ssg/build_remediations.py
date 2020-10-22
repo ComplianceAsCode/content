@@ -440,7 +440,7 @@ class AnsibleRemediation(Remediation):
 
         for platform in rule_platforms:
             if platform == "machine":
-                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz"]')
+                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]')
             elif platform is not None:
                 # Assume any other platform is a Package CPE
 
