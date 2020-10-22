@@ -464,6 +464,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "login_defs": "login",
   "sssd": "sssd-common",
   "zipl": "s390utils-base",
+  "sssd-ldap": None,  # Force package check wrapping skip
 }
 
 # _version_name_map = {

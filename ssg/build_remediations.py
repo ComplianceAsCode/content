@@ -298,6 +298,12 @@ class BashRemediation(Remediation):
                 if platform in self.local_env_yaml["platform_package_overrides"]:
                     platform = self.local_env_yaml["platform_package_overrides"].get(platform)
 
+                    # Workaround for plaforms that are not Package CPEs
+                    # Skip platforms that are not about packages installed
+                    # These should be handled in the remediation itself
+                    if not platform:
+                        continue
+
                 # Adjust package check command according to the pkg_manager
                 pkg_manager = self.local_env_yaml["pkg_manager"]
                 pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
@@ -451,6 +457,12 @@ class AnsibleRemediation(Remediation):
 
                 if platform in self.local_env_yaml["platform_package_overrides"]:
                     platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                    # Workaround for plaforms that are not Package CPEs
+                    # Skip platforms that are not about packages installed
+                    # These should be handled in the remediation itself
+                    if not platform:
+                        continue
 
                 additional_when.append('"' + platform + '" in ansible_facts.packages')
                 # After adding the conditional, we need to make sure package_facts are collected.
