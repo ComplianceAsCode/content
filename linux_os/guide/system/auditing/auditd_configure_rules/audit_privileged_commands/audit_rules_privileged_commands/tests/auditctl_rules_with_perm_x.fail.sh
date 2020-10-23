@@ -2,5 +2,6 @@
 # remediation = bash
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
 
-echo "-a always,exit -F path=/usr/bin/sudo -F auid>=1000 -F auid!=unset -k privileged" >> /etc/audit/audit.rules
+./generate_privileged_commands_rule.sh 1000 privileged /etc/audit/audit.rules
+sed -i -E 's/^(.*path=[[:graph:]]+ )(.*$)/\1-F perm=x \2/' /etc/audit/audit.rules
 sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
