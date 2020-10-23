@@ -68,7 +68,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arpc_suid_sgid_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a always,exit (?:-F path=([\S]+) )+-F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]q|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a always,exit (?:-F path=([\S]+) )+-F auid>={{{ auid }}} -F auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     <filter action="exclude">state_proper_audit_rule_but_for_unprivileged_command</filter>
   </ind:textfilecontent54_object>
