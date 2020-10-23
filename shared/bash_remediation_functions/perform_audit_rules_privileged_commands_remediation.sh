@@ -103,13 +103,12 @@ do
 		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'[^[:graph:]]/!d'		\
 				-e '/-F path=[^[:space:]]\+/!d'						\
 				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=\(4294967295\|unset\)/!d'	\
+				-e '/-F perm=[rwxa]\+/d' \
 				-e '/-k \|-F key=/!d' "$afile")
 
 		# Increase the count of inspected files for this sbinary
 		count_of_inspected_files=$((count_of_inspected_files + 1))
 
-		# Require execute access type to be set for existing audit rule
-		exec_access='x'
 
 		# Search current audit rules file's content for presence of rule pattern for this sbinary
 		if [[ $base_search ]]
