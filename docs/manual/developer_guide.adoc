@@ -1525,7 +1525,7 @@ auditd_lineinfile::
 * Parameters:
 ** *parameter* - auditd configuration item
 ** *value* - the value of configuration item specified by parameter
-** *missing_parameter_pass* - effective only in OVAL checks, if set to `"true"` and the parameter is not present in the configuration file the OVAL check will return true.
+** *missing_parameter_pass* - effective only in OVAL checks, if set to `"false"` and the parameter is not present in the configuration file, the OVAL check will return `false`.
 * Languages: Ansible, Bash, OVAL
 
 audit_rules_dac_modification::
