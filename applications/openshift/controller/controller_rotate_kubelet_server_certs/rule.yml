@@ -43,13 +43,18 @@ ocil: |-
 
 {{%- if product == "ocp4" %}}
 warnings:
-- general: |-
+  - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+  - functionality: |-
+    This recommendation only applies if you let kubelets get their
+    certificates from the API Server. In case your certificates come from an
+    outside Certificate Authority/tool (e.g. Vault) then you need to take care
+    of rotation yourself.
 {{%- endif %}}
 
 references:
-    cis@ocp4: 1.3.6
-    
+    cis: 1.3.6
+
 template:
   name: yamlfile_value
   vars:
@@ -63,13 +68,3 @@ template:
 
 identifiers:
     cce@ocp3: CCE-80590-3
-
-references:
-    cis: 1.3.6
-
-warnings:
-    - functionality: |-
-        This recommendation only applies if you let kubelets get their
-        certificates from the API Server. In case your certificates come from an
-        outside Certificate Authority/tool (e.g. Vault) then you need to take care
-        of rotation yourself.
