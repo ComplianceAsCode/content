@@ -35,7 +35,8 @@
   <!-- Define corresponding variable state (the requirement) for the variable object -->
   <!-- The check should PASS if retrieved last ENCRYPT_METHOD value is equal to the requirement -->
   <ind:variable_state id="state_last_encrypt_method_instance_value" version="1">
-    <ind:value operation="equals" datatype="string">SHA512</ind:value>
+    <ind:value operation="equals" datatype="string" var_ref="var_password_hashing_algorithm"/>
   </ind:variable_state>
 
+  <external_variable comment="defined hashing algorithm" datatype="string" id="var_password_hashing_algorithm" version="1" />
 </def-group>
