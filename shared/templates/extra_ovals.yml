@@ -43,3 +43,11 @@ service_sssd_disabled:
   vars:
     servicename: sssd
     packagename: sssd-common
+
+
+sshd_set_keepalive_0:
+  name: sshd_lineinfile
+  vars:
+    parameter: "ClientAliveCountMax"
+    value: "0"
+    missing_parameter_pass: "false"
