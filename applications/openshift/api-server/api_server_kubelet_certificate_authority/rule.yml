@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Configure the kubelet Certificate Authority for the API Server'
 
@@ -9,7 +9,6 @@ description: |-
     connections, follow the OpenShift documentation and setup the TLS connection
     between the API Server and kubelets.
 
-{{%- if product == "ocp4" %}}
     Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and set the below parameter if it is not already configured:
     <pre>
@@ -18,16 +17,6 @@ description: |-
       "kubelet-certificate-authority":"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt",
       ...
     </pre>
-{{% else %}}
-    Ensure that <tt>kubeletClientInfo</tt> has the <tt>ca</tt> configured in
-    the API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) to something similar to:
-    <pre>kubeletClientInfo:
-      ca: ca-bundle.crt
-      certFile: master.kubelet-client.crt
-      keyFile: master.kubelet-client.key</pre>
-{{%- endif %}}
 
 rationale: |-
     Connections from the API Server to the kubelet are used for fetching logs
@@ -46,23 +35,12 @@ ocil_clause: '<tt>ca</tt> is not set as appropriate for <tt>kubeletClientInfo</t
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."kubelet-certificate-authority"'</pre>
     The output should return a configured certificate.
-{{% else %}}
-    <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
-    The output should contain something similar to:
-    <pre>kubeletClientInfo:
-      ca: ca-bundle.crt
-      certFile: master.kubelet-client.crt
-      keyFile: master.kubelet-client.key</pre>
-{{%- endif %}}
 
-{{%- if product == "ocp4" %}}
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
-{{%- endif %}}
 
 template:
     name: yamlfile_value

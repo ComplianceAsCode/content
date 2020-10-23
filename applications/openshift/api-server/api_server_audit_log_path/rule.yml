@@ -1,12 +1,11 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Configure the Audit Log Path'
 
 description: |-
     To enable auditing on the OpenShift API Server, the audit log path must be set.
-{{%- if product == "ocp4" %}}
     Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and set the <tt>audit-log-path</tt> to a suitable path and file
     where audit logs should be written. For example:
@@ -16,18 +15,6 @@ description: |-
       "audit-log-path":"/var/log/kube-apiserver/audit.log",
       ...
     </pre>
-{{% else %}}
-    Edit the API server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
-    and set the <tt>audit-log-path</tt> to a suitable path and file
-    where audit logs should be written. For example:
-    <pre>auditConfig:
-      auditFilePath: "/etc/origin/master/audit-ocp.log"
-      enabled: true
-      maximumFileRetentionDays: 30
-      maximumFileSizeMegabytes: 10
-      maximumRetainedFiles: 10</pre>
-{{%- endif %}}
 
 rationale: |-
     Auditing of the API Server is not enabled by default. Auditing the API Server
@@ -44,18 +31,11 @@ ocil_clause: '<tt>audit-log-path</tt> does not contain a valid audit file path'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-path"]'</pre>
-{{% else %}}
-    <pre>$ sudo grep auditFilePath /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
-    The output should return a valid audit log path.
 
-{{%- if product == "ocp4" %}}
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
-{{%- endif %}}
 
 template:
     name: yamlfile_value

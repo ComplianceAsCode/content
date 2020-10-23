@@ -36,11 +36,9 @@ ocil: |-
     <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["root-ca-file"]'</pre>
     The output should return a configured certificate authority file.
 
-{{%- if product == "ocp4" %}}
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
-{{%- endif %}}
 
 template:
   name: yamlfile_value

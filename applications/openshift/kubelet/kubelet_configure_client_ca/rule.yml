@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'kubelet - Configure the Client CA Certificate'
 
@@ -9,7 +9,6 @@ description: |-
     can subject the kubelet to man-in-the-middle attacks.
 
     To configure a client CA certificate, edit the kubelet configuration
-{{%- if product == "ocp4" %}}
     file <tt>/etc/kubernetes/kubernetes.conf</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>
@@ -19,12 +18,6 @@ description: |-
         clientCAFile: /etc/kubernetes/kubelet-ca.crt
     ...
     </pre>
-{{% else %}}
-    file <tt>/etc/origin/node/node-config.yaml</tt>
-    on the kubelet node(s) and set the below parameter:
-    <pre>servingInfo:
-      clientCA: client-ca.crt</pre>
-{{%- endif %}}
 
 rationale: |-
     Not having a CA certificate for the kubelet will subject the kubelet to possible
@@ -38,23 +31,16 @@ ocil_clause: 'no client CA certificate has been configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ sudo grep -A1 x509 /etc/kubernetes/kubernetes.conf</pre>
-    The output should contain a configured certificate like <tt>i/etc/kubernetes/kubelet-ca.crt</tt>.
-{{% else %}}
-    <pre>$ sudo grep client-ca.crt /etc/origin/node/node-config.yaml</pre>
-    The output should something similar to <tt>client-ca.crt</tt>.
-{{%- endif %}}
+    The output should contain a configured certificate like <tt>/etc/kubernetes/kubelet-ca.crt</tt>.
 
-identifiers:
-    cce@ocp3: CCE-80594-5
+#identifiers:
+#    cce@ocp4:
 
 references:
-    cis@ocp3: 2.1.4
-    cis@ocp4: 4.2.3
+    cis: 4.2.3
 
 template:
-{{%- if product == "ocp4" %}}
   name: yamlfile_value
   vars:
     filepath: /etc/kubernetes/kubelet.conf
@@ -62,12 +48,3 @@ template:
     values:
       - value: "/etc/kubernetes/kubelet-ca.crt"
         operation: "equals"
-{{% else %}}
-  name: yamlfile_value
-  vars:
-    filepath: /etc/origin/node/node-config.yaml
-    yamlpath: ".servingInfo.clientCA"
-    values:
-      - value: "client-ca.crt"
-        operation: "equals"
-{{%- endif %}}

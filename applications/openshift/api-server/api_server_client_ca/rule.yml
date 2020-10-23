@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Configure the Client Certificate Authority for the API Server'
 
@@ -9,7 +9,6 @@ description: |-
     authentication. To ensure the API Server utilizes its own TLS certificates, the
     <tt>clientCA</tt> must be configured. Verify
     that <tt>servingInfo</tt> has the <tt>clientCA</tt> configured in
-{{%- if product == "ocp4" %}}
     the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap on the master
     node(s) to something similar to:
     <pre>
@@ -20,15 +19,6 @@ description: |-
         ],
       ...
     </pre>
-{{% else %}}
-    the API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) to something similar to:
-    <pre>servingInfo:
-      clientCA: ca.crt
-      certFile: master.server.crt
-      keyFile: master.server.key</pre>
-{{%- endif %}}
 
 rationale: |-
     API Server communication contains sensitive parameters that should remain
@@ -43,34 +33,20 @@ severity: medium
 references:
     cis: 1.2.31
 
-identifiers:
-    cce@ocp3: CCE-81152-1
+#identifiers:
+#    cce@ocp4:
 
-ocil_clause: >
-{{%- if product == "ocp4" %}}
-    '<tt>client-ca-file</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
-{{% else %}}
-    '<tt>clientCA</tt> is not set as appropriate for <tt>servingInfo</tt>'
-{{%- endif %}}
+ocil_clause: '<tt>client-ca-file</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["client-ca-file"]'</pre>
     The output should return a configured TLS CA certificate file.
-{{% else %}}
-    <pre>$ sudo grep clientCA /etc/origin/master/master-config.yaml</pre>
-    The output should contain something similar to:
-    <pre>clientCA: ca.crt</pre>
-{{%- endif %}}
 
-{{%- if product == "ocp4" %}}
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
-{{%- endif %}}
 
-{{%- if product == "ocp4" %}}
 template:
     name: yamlfile_value
     vars:
@@ -82,4 +58,3 @@ template:
             - value: '.apiServerArguments.*"client-ca-file":\["/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt"\]'
               operation: "pattern match"
               type: "string"
-{{%- endif %}}

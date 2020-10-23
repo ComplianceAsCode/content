@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Prevent Insecure Port Access'
 
@@ -9,7 +9,6 @@ description: |-
     HTTPS with authentication and authorization, and the secure API endpoint
     is bound to <tt>0.0.0.0:8443</tt>. To ensure that the insecure port configuration
     has not been enabled, the <tt>insecure-port</tt> setting should not exist
-{{%- if product == "ocp4" %}}
     Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and remove the <tt>insecure-port</tt> if it exists:
     <pre>
@@ -20,9 +19,6 @@ description: |-
       ],
       ...
     </pre>
-{{% else %}}
-    in <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s).
-{{%- endif %}}
 
 rationale: |-
     Configuring the API Server on an insecure port would allow unauthenticated
@@ -40,21 +36,13 @@ ocil_clause: '<tt>insecure-port</tt> setting exists'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-port"]'</pre>
     The output should return <pre>0</pre>.
-{{% else %}}
-    <pre>$ sudo grep -A2 insecure-port /etc/origin/master/master-config.yaml</pre>
-    There should be no output returned.
-{{%- endif %}}
 
-{{%- if product == "ocp4" %}}
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
-{{%- endif %}}
 
-# This will check that insecure-port is "0" or 0.
 template:
   name: yamlfile_value
   vars:

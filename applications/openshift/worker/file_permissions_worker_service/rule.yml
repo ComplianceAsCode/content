@@ -5,18 +5,10 @@ prodtype: ocp4
 title: 'Verify Permissions on the OpenShift Node Service File'
 
 description: |-
-{{%- if product == "ocp4" %}}
     {{{ describe_file_permissions(file="/etc/systemd/system/kubelet.service", perms="0644") }}}
-{{% else %}}
-    {{{ describe_file_permissions(file="/etc/systemd/system/atomic-openshift-node.service", perms="0644") }}}
-{{%- endif %}}
 
 rationale: |-
-{{%- if product == "ocp4" %}}
     If the <tt>/etc/systemd/system/kubelet.service</tt>
-{{% else %}}
-    If the <tt>/etc/systemd/system/atomic-openshift-node.service</tt>
-{{%- endif %}}
     file is writable by a group-owner or the
     world the risk of its compromise is increased. The file contains the service configuration of the
     OpenShift node service that is configured on the system. Protection of this file is
@@ -31,29 +23,13 @@ references:
     cis: 4.1.1
 
 ocil_clause: |-
-{{%- if product == "ocp4" %}}
   {{{ ocil_clause_file_permissions(file="/etc/systemd/system/kubelet.service", perms="-rw-r--r--") }}}
-{{% else %}}
-  {{{ ocil_clause_file_permissions(file="/etc/systemd/system/atomic-openshift-node.service", perms="-rw-r--r--") }}}
-{{%- endif %}}
 
 ocil: |-
-{{%- if product == "ocp4" %}}
   {{{ ocil_file_permissions(file="/etc/systemd/system/kubelet.service", perms="-rw-r--r--") }}}
-{{% else %}}
-  {{{ ocil_file_permissions(file="/etc/systemd/system/atomic-openshift-node.service", perms="-rw-r--r--") }}}
-{{%- endif %}}
 
-{{%- if product == "ocp4" %}}
 template:
     name: file_permissions
     vars:
         filepath: /etc/systemd/system/kubelet.service
         filemode: '0644'
-{{% else %}}
-template:
-    name: file_permissions
-    vars:
-        filepath: /etc/systemd/system/atomic-openshift-node.service
-        filemode: '0644'
-{{%- endif %}}

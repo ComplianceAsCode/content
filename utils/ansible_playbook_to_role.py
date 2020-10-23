@@ -58,7 +58,6 @@ PRODUCT_WHITELIST = set([
     "rhel7",
     "rhel8",
     "rhv4",
-    "ocp3",
 ])
 
 PROFILE_WHITELIST = set([
