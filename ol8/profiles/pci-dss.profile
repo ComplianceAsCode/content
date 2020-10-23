@@ -105,7 +105,6 @@ selections:
     - ensure_logrotate_activated
     - sshd_idle_timeout_value=15_minutes
     - sshd_set_idle_timeout
-    - disable_prelink
     - display_login_attempts
     - gid_passwd_group_same
     - grub2_audit_argument
