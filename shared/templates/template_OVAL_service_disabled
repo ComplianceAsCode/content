@@ -12,38 +12,11 @@
       <criterion comment="{{{ PACKAGENAME }}} removed" test_ref="{{{ package_removed_test_id }}}" />
       <criteria operator="AND" comment="service {{{ SERVICENAME }}} is not configured to start">
         <criterion comment="{{{ SERVICENAME }}} is not running" test_ref="test_service_not_running_{{{ SERVICENAME }}}" />
-        {{%- if MASK_SERVICE %}}
         <criterion comment="Property LoadState of service {{{ SERVICENAME }}} is masked" test_ref="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" />
         <criterion comment="Property FragmentPath of service {{{ SERVICENAME }}} is set to /dev/null" test_ref="test_service_fragmentpath_is_dev_null_{{{ SERVICENAME }}}" />
-        {{%- else %}}
-        <criterion comment="{{{ SERVICENAME }}} not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_not_wanted_by_multi_user_target" />
-        <criterion comment="{{{ SERVICENAME }}} socket not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_socket_not_wanted_by_multi_user_target" />
-        {{%- endif %}}
       </criteria>
     </criteria>
   </definition>
-
-  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_{{{ SERVICENAME }}}_not_wanted_by_multi_user_target" version="1">
-    <linux:object object_ref="object_multi_user_target_for_{{{ SERVICENAME }}}_disabled" />
-    <linux:state state_ref="state_systemd_{{{ SERVICENAME }}}_off"/>
-  </linux:systemdunitdependency_test>
-  <linux:systemdunitdependency_object id="object_multi_user_target_for_{{{ SERVICENAME }}}_disabled" comment="list of dependencies of multi-user.target" version="1">
-    <linux:unit>multi-user.target</linux:unit>
-  </linux:systemdunitdependency_object>
-  <linux:systemdunitdependency_state id="state_systemd_{{{ SERVICENAME }}}_off" comment="{{{ SERVICENAME }}} service is not listed in the dependencies" version="1">
-    <linux:dependency entity_check="none satisfy">{{{ SERVICENAME }}}.service</linux:dependency>
-  </linux:systemdunitdependency_state>
-
-  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_{{{ SERVICENAME }}}_socket_not_wanted_by_multi_user_target" version="1">
-    <linux:object object_ref="object_multi_user_target_for_{{{ SERVICENAME }}}_socket_disabled" />
-    <linux:state state_ref="state_systemd_{{{ SERVICENAME }}}_socket_off"/>
-  </linux:systemdunitdependency_test>
-  <linux:systemdunitdependency_object id="object_multi_user_target_for_{{{ SERVICENAME }}}_socket_disabled" comment="list of dependencies of multi-user.target" version="1">
-    <linux:unit>multi-user.target</linux:unit>
-  </linux:systemdunitdependency_object>
-  <linux:systemdunitdependency_state id="state_systemd_{{{ SERVICENAME }}}_socket_off" comment="{{{ SERVICENAME }}} socket is not listed in the dependencies" version="1">
-    <linux:dependency entity_check="none satisfy">{{{ SERVICENAME }}}.socket</linux:dependency>
-  </linux:systemdunitdependency_state>
 
   <linux:systemdunitproperty_test id="test_service_not_running_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the {{{ SERVICENAME }}} service is not running" version="1">
     <linux:object object_ref="obj_service_not_running_{{{ SERVICENAME }}}"/>
@@ -56,7 +29,6 @@
   <linux:systemdunitproperty_state id="state_service_not_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is not running">
       <linux:value>inactive</linux:value>
   </linux:systemdunitproperty_state>
-{{%- if MASK_SERVICE %}}
   <linux:systemdunitproperty_test id="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the property LoadState from the service {{{ SERVICENAME }}} is masked" version="1">
     <linux:object object_ref="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
     <linux:state state_ref="state_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
@@ -80,8 +52,6 @@
   <linux:systemdunitproperty_state id="state_service_fragmentpath_is_dev_null_{{{ SERVICENAME }}}" version="1" comment="FragmentPath is set to /dev/null">
       <linux:value>/dev/null</linux:value>
   </linux:systemdunitproperty_state>
-{{%- endif %}}
-
 
 {{% else %}}
 
