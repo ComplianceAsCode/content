@@ -25,3 +25,9 @@ function set_superusers_unquoted {
 	mkdir -p "$GRUB_CFG_ROOT"
 	echo "set superusers=$1" > "$GRUB_CFG_ROOT/grub.cfg"
 }
+
+
+function set_root_unquoted {
+	mkdir -p "$GRUB_CFG_ROOT"
+	echo "set root=$1" > "$GRUB_CFG_ROOT/grub.cfg"
+}

@@ -25,7 +25,7 @@
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in '" + path) }}}
+    {{{ oval_metadata("Ensure '" + parameter + "' is configured with value '" + value | replace("(?i)", "") | replace("(?-i)", "") + (" in section '" + section if section else "") + "' in " + path) }}}
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
