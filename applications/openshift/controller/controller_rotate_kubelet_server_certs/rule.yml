@@ -43,13 +43,13 @@ ocil: |-
 
 {{%- if product == "ocp4" %}}
 warnings:
-  - general: |-
+- general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
-  - functionality: |-
+- functionality: |-
     This recommendation only applies if you let kubelets get their
     certificates from the API Server. In case your certificates come from an
     outside Certificate Authority/tool (e.g. Vault) then you need to take care
-    of rotation yourself.
+    of rotation yourself
 {{%- endif %}}
 
 references:
