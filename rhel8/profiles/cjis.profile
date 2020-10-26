@@ -128,7 +128,6 @@ selections:
     - var_password_pam_ucredit=1
     - var_password_pam_lcredit=1
     - package_aide_installed
-    - disable_prelink
     - aide_build_database
     - aide_periodic_cron_checking
     - rpm_verify_permissions

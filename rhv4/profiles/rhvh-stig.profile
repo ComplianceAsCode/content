@@ -315,7 +315,6 @@ selections:
     - aide_use_fips_hashes
     - aide_verify_acls
     - aide_verify_ext_attributes
-    - disable_prelink
     - enable_fips_mode
     - install_antivirus
     - install_hids

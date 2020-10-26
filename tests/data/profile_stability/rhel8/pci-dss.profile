@@ -80,7 +80,6 @@ selections:
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
 - dconf_gnome_screensaver_mode_blank
-- disable_prelink
 - display_login_attempts
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_never_disabled
