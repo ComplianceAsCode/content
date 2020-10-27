@@ -34,11 +34,9 @@ ocil: |-
     completely disabled, or that <tt>allowPrivilegeEscalation</tt> is only enabled to
     a small set of containers and SCCs.
 
-{{%- if product == "ocp4" %}}
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/apis/security.openshift.io/v1/securitycontextconstraints") | indent(8) }}}
-{{%- endif %}}
 
 template:
     name: yamlfile_value
