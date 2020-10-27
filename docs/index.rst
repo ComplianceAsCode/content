@@ -3,8 +3,8 @@ ComplianceAsCode/content's Documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Developer Guide
-
+   :caption: Documentation
+   
    manual/developer/01_introduction
    manual/developer/02_building_complianceascode
    manual/developer/03_creating_content
@@ -12,3 +12,13 @@ ComplianceAsCode/content's Documentation
    manual/developer/05_tools_and_utilities
    manual/developer/06_contributing_with_content
    manual/developer/07_legacy_notice
+
+   jinja_macros
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
