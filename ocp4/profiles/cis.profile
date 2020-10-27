@@ -93,8 +93,8 @@ selections:
   # 1.2.35 Ensure that the API Server only makes use of Strong Cryptographic Ciphers
     - api_server_tls_cipher_suites
   #### 1.3 Controller Manager
-  # 1.3.1 Ensure that the --terminated-pod-gc-threshold argument is set as appropriate
-  # 1.3.2 Ensure that the --profiling argument is set to false (info only)
+  # 1.3.1 Ensure that garbage collection is configured as appropriate (Manual)
+  # 1.3.2 Ensure that controller manager healthz endpoints are protected by RBAC. (Automated)
     - rbac_debug_role_protects_pprof
   # 1.3.3 Ensure that the --use-service-account-credentials argument is set to true
     - controller_use_service_account

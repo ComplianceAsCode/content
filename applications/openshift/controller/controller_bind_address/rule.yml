@@ -34,11 +34,15 @@ ocil_clause: |-
     <tt>bind-address</tt> is not configured to a secure IP address
 
 ocil: |-
-    To verify that <tt>bind-address</tt> is configured correctly,
+    To verify that <tt>secure-port</tt> is configured correctly,
     run the following command:
-    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["bind-address"]'</pre>
-    Verify that the <tt>bind-address</tt> argument is set to a secure
-    IP address.
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson |   jq -r '.data["config.yaml"]' | jq '.extendedArguments["secure-port"][]'</pre>
+    Verify that it's using an appropriate port (the value is not <pre>0</pre>).
+
+    To verify that <tt>port</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson |   jq -r '.data["config.yaml"]' | jq '.extendedArguments["port"][]'</pre>
+    Verify that it's disabled (the value is <pre>0</pre>).
 
 references:
     cis: 1.3.7
