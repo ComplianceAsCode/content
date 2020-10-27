@@ -6,10 +6,8 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
-	"strings"
 	"testing"
 	"time"
 
@@ -19,10 +17,10 @@ import (
 	mcfg "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
 	mcfgv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	mcfgconst "github.com/openshift/machine-config-operator/pkg/daemon/constants"
-	"gopkg.in/yaml.v2"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	extscheme "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme"
+	"k8s.io/apimachinery/pkg/api/errors"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -41,11 +39,13 @@ import (
 )
 
 const (
-	namespacePath     = "compliance-operator-ns.yaml"
-	catalogSourcePath = "compliance-operator-catalog-source.yaml"
-	operatorGroupPath = "compliance-operator-operator-group.yaml"
-	subscriptionPath  = "compliance-operator-alpha-subscription.yaml"
-	apiPollInterval   = 5 * time.Second
+	namespacePath         = "compliance-operator-ns.yaml"
+	catalogSourcePath     = "compliance-operator-catalog-source.yaml"
+	operatorGroupPath     = "compliance-operator-operator-group.yaml"
+	subscriptionPath      = "compliance-operator-alpha-subscription.yaml"
+	apiPollInterval       = 5 * time.Second
+	testProfilebundleName = "e2e"
+	autoApplySettingsName = "auto-apply-debug"
 )
 
 var product string
@@ -63,7 +63,6 @@ type e2econtext struct {
 	profilepath     string
 	product         string
 	resourcespath   string
-	scanType        cmpv1alpha1.ComplianceScanType
 	installOperator bool
 	dynclient       dynclient.Client
 	restMapper      *restmapper.DeferredDiscoveryRESTMapper
@@ -175,48 +174,6 @@ func (ctx *e2econtext) resetClientMappings() {
 	ctx.restMapper.Reset()
 }
 
-func (ctx *e2econtext) assertScanType() {
-	scanType, err := ctx.getScanType()
-	if err != nil {
-		ctx.t.Fatalf("Couldn't get scan type: %s", err)
-	}
-	ctx.scanType = scanType
-}
-
-func (ctx *e2econtext) getScanType() (cmpv1alpha1.ComplianceScanType, error) {
-	profileInfo := &struct {
-		BenchmarkRoot string `yaml:"benchmark_root"`
-	}{}
-
-	file, err := ioutil.ReadFile(path.Join(ctx.rootdir, ctx.product, "product.yml"))
-
-	if err != nil {
-		return "", fmt.Errorf("Can't open product definition: %s", err)
-	}
-
-	err = yaml.Unmarshal(file, profileInfo)
-
-	if err != nil {
-		return "", fmt.Errorf("Can't read product definition: %s", err)
-	}
-
-	// FIXME(jaosorior): We should ditch this in favor of using
-	// scansettingbindings.
-	if strings.HasSuffix(ctx.Profile, "-node") {
-		return cmpv1alpha1.ScanTypeNode, nil
-	}
-
-	if strings.HasSuffix(profileInfo.BenchmarkRoot, "applications") {
-		return cmpv1alpha1.ScanTypePlatform, nil
-	}
-
-	if strings.HasSuffix(profileInfo.BenchmarkRoot, "linux_os/guide") {
-		return cmpv1alpha1.ScanTypeNode, nil
-	}
-
-	return "", fmt.Errorf("Unkown platform type. It has to be either `linux_os/type` or `application`")
-}
-
 // Makes sure that the namespace where the test will run exists. Doesn't fail
 // if it already does.
 func (ctx *e2econtext) ensureNamespaceExistsAndSet() {
@@ -292,92 +249,135 @@ func (ctx *e2econtext) waitForOperatorToBeReady() {
 	}
 }
 
-func (ctx *e2econtext) createComplianceSuiteForProfile(suffix string, autoApply bool) *cmpv1alpha1.ComplianceSuite {
-	suite := &cmpv1alpha1.ComplianceSuite{
+func (ctx *e2econtext) ensureTestProfileBundle() {
+	key := types.NamespacedName{
+		Name:      testProfilebundleName,
+		Namespace: ctx.OperatorNamespacedName.Namespace,
+	}
+	pb := &cmpv1alpha1.ProfileBundle{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      ctx.Profile + "-suite-" + suffix,
+			Name:      testProfilebundleName,
 			Namespace: ctx.OperatorNamespacedName.Namespace,
 		},
-		Spec: cmpv1alpha1.ComplianceSuiteSpec{
-			ComplianceSuiteSettings: cmpv1alpha1.ComplianceSuiteSettings{
-				AutoApplyRemediations: autoApply,
-			},
-			Scans: ctx.getScansForSuite(suffix),
+		Spec: cmpv1alpha1.ProfileBundleSpec{
+			ContentImage: ctx.ContentImage,
+			ContentFile:  fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
 		},
 	}
 
 	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
 	err := backoff.RetryNotify(func() error {
-		return ctx.dynclient.Create(goctx.TODO(), suite)
+		found := &cmpv1alpha1.ProfileBundle{}
+		if err := ctx.dynclient.Get(goctx.TODO(), key, found); err != nil {
+			if errors.IsNotFound(err) {
+				return ctx.dynclient.Create(goctx.TODO(), pb)
+			}
+			return err
+		}
+		// Update the spec in case it differs
+		found.Spec = pb.Spec
+		return ctx.dynclient.Update(goctx.TODO(), found)
 	}, bo, func(err error, d time.Duration) {
-		fmt.Printf("Couldn't create compliance suite after %s: %s\n", d.String(), err)
+		fmt.Printf("Couldn't ensure test PB exists after %s: %s\n", d.String(), err)
 	})
 	if err != nil {
-		ctx.t.Fatalf("failed to create compliance-suite: %s", err)
+		ctx.t.Fatalf("failed to ensure test PB: %s", err)
 	}
-	return suite
 }
 
-func (ctx *e2econtext) getScansForSuite(suffix string) []cmpv1alpha1.ComplianceScanSpecWrapper {
-	switch ctx.scanType {
-	case cmpv1alpha1.ScanTypePlatform:
-		return []cmpv1alpha1.ComplianceScanSpecWrapper{
-			{
-				Name: ctx.Profile + "-platform-scan-" + suffix,
-				ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
-					ScanType:     cmpv1alpha1.ScanTypePlatform,
-					ContentImage: ctx.ContentImage,
-					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
-					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
-					ComplianceScanSettings: cmpv1alpha1.ComplianceScanSettings{
-						Debug: true,
-					},
-				},
-			},
-		}
-	case cmpv1alpha1.ScanTypeNode:
-		return []cmpv1alpha1.ComplianceScanSpecWrapper{
-			{
-				Name: ctx.Profile + "-master-scan-" + suffix,
-				ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
-					ContentImage: ctx.ContentImage,
-					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
-					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
-					NodeSelector: map[string]string{
-						"node-role.kubernetes.io/master": "",
-					},
-					ComplianceScanSettings: cmpv1alpha1.ComplianceScanSettings{
-						Debug: true,
-					},
-				},
-			},
-			{
-				Name: ctx.Profile + "-worker-scan-" + suffix,
-				ComplianceScanSpec: cmpv1alpha1.ComplianceScanSpec{
-					ContentImage: ctx.ContentImage,
-					Profile:      "xccdf_org.ssgproject.content_profile_" + ctx.Profile,
-					Content:      fmt.Sprintf("ssg-%s-ds.xml", ctx.product),
-					NodeSelector: map[string]string{
-						"node-role.kubernetes.io/worker": "",
-					},
-					ComplianceScanSettings: cmpv1alpha1.ComplianceScanSettings{
-						Debug: true,
-					},
-				},
-			},
-		}
+func (ctx *e2econtext) ensureTestSettings() {
+	defaultkey := types.NamespacedName{
+		Name:      "default",
+		Namespace: ctx.OperatorNamespacedName.Namespace,
+	}
+	defaultSettings := &cmpv1alpha1.ScanSetting{}
+
+	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
+
+	err := backoff.RetryNotify(func() error {
+		return ctx.dynclient.Get(goctx.TODO(), defaultkey, defaultSettings)
+	}, bo, func(err error, d time.Duration) {
+		fmt.Printf("Couldn't get default scanSettings after %s: %s\n", d.String(), err)
+	})
+	if err != nil {
+		ctx.t.Fatalf("failed to get default scanSettings: %s", err)
 	}
 
-	// We shouldn't get here.
-	return nil
+	// Ensure auto-apply
+	key := types.NamespacedName{
+		Name:      autoApplySettingsName,
+		Namespace: ctx.OperatorNamespacedName.Namespace,
+	}
+	autoApplySettings := defaultSettings.DeepCopy()
+	// Delete Object Meta so we reset unwanted references
+	autoApplySettings.ObjectMeta = metav1.ObjectMeta{
+		Name:      autoApplySettingsName,
+		Namespace: ctx.OperatorNamespacedName.Namespace,
+	}
+	autoApplySettings.AutoApplyRemediations = true
+	autoApplySettings.Debug = true
+	err = backoff.RetryNotify(func() error {
+		found := &cmpv1alpha1.ScanSetting{}
+		if err := ctx.dynclient.Get(goctx.TODO(), key, found); err != nil {
+			if errors.IsNotFound(err) {
+				return ctx.dynclient.Create(goctx.TODO(), autoApplySettings)
+			}
+			return err
+		}
+		// Copy references to enable updating object
+		found.ObjectMeta.DeepCopyInto(&autoApplySettings.ObjectMeta)
+		return ctx.dynclient.Update(goctx.TODO(), autoApplySettings)
+	}, bo, func(err error, d time.Duration) {
+		fmt.Printf("Couldn't ensure auto-apply scansettings after %s: %s\n", d.String(), err)
+	})
+	if err != nil {
+		ctx.t.Fatalf("failed to ensure auto-apply scanSettings: %s", err)
+	}
 }
 
-func (ctx *e2econtext) waitForComplianceSuite(suite *cmpv1alpha1.ComplianceSuite) {
-	key := types.NamespacedName{Name: suite.Name, Namespace: suite.Namespace}
+func getPrefixedProfileName(prof string) string {
+	return testProfilebundleName + "-" + prof
+}
+
+func (ctx *e2econtext) createBindingForProfile() string {
+	binding := &cmpv1alpha1.ScanSettingBinding{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "e2e-" + ctx.Profile,
+			Namespace: ctx.OperatorNamespacedName.Namespace,
+		},
+		Profiles: []cmpv1alpha1.NamedObjectReference{
+			{
+				APIGroup: "compliance.openshift.io/v1alpha1",
+				Kind:     "Profile",
+				Name:     getPrefixedProfileName(ctx.Profile),
+			},
+		},
+		SettingsRef: &cmpv1alpha1.NamedObjectReference{
+			APIGroup: "compliance.openshift.io/v1alpha1",
+			Kind:     "ScanSetting",
+			Name:     autoApplySettingsName,
+		},
+	}
+
+	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
+	err := backoff.RetryNotify(func() error {
+		return ctx.dynclient.Create(goctx.TODO(), binding)
+	}, bo, func(err error, d time.Duration) {
+		fmt.Printf("Couldn't create binding after %s: %s\n", d.String(), err)
+	})
+	if err != nil {
+		ctx.t.Fatalf("failed to create binding: %s", err)
+	}
+	return binding.Name
+}
+
+func (ctx *e2econtext) waitForComplianceSuite(suiteName string) {
+	key := types.NamespacedName{Name: suiteName, Namespace: ctx.OperatorNamespacedName.Namespace}
 	// aprox. 15 min
 	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
 
 	err := backoff.Retry(func() error {
+		suite := &cmpv1alpha1.ComplianceSuite{}
 		err := ctx.dynclient.Get(goctx.TODO(), key, suite)
 		if err != nil {
 			// Returning an error merely makes this retry after the interval
@@ -443,9 +443,67 @@ func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 	return nil
 }
 
-func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite) int {
+func (ctx *e2econtext) doRescan(s string) {
+	scanList := &cmpv1alpha1.ComplianceScanList{}
+	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s)
+	opts := &client.ListOptions{
+		LabelSelector: labelSelector,
+	}
+	err := ctx.dynclient.List(goctx.TODO(), scanList, opts)
+	if err != nil {
+		ctx.t.Fatalf("Couldn't get scan list")
+	}
+	if len(scanList.Items) == 0 {
+		ctx.t.Fatal("This suite didn't contain scans")
+	}
+	for _, scan := range scanList.Items {
+		updatedScan := scan.DeepCopy()
+		annotations := updatedScan.GetAnnotations()
+		if annotations == nil {
+			annotations = map[string]string{}
+		}
+		annotations[cmpv1alpha1.ComplianceScanRescanAnnotation] = ""
+		updatedScan.SetAnnotations(annotations)
+
+		bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
+		err := backoff.RetryNotify(func() error {
+			return ctx.dynclient.Update(goctx.TODO(), updatedScan)
+		}, bo, func(err error, d time.Duration) {
+			fmt.Printf("Couldn't rescan after %s: %s\n", d.String(), err)
+		})
+		if err != nil {
+			ctx.t.Fatalf("failed rescan: %s", err)
+		}
+	}
+	var lastErr error
+	err = wait.PollImmediate(2*time.Second, 5*time.Minute, func() (bool, error) {
+		suite := &cmpv1alpha1.ComplianceSuite{}
+		key := types.NamespacedName{Name: s, Namespace: ctx.OperatorNamespacedName.Namespace}
+		lastErr = ctx.dynclient.Get(goctx.TODO(), key, suite)
+		if lastErr != nil {
+			return false, nil
+		}
+		if suite.Status.Phase == cmpv1alpha1.PhaseDone {
+			return false, nil
+		}
+		// The scan has been reset, we're good to go
+		return true, nil
+	})
+
+	// timeout error
+	if err != nil {
+		ctx.t.Fatalf("Timed out waiting for scan to be reset: %s", err)
+	}
+
+	// An actual error at the end of the run
+	if lastErr != nil {
+		ctx.t.Fatalf("Error occured while waiting for scan to be reset: %s", lastErr)
+	}
+}
+
+func (ctx *e2econtext) getRemediationsForSuite(s string) int {
 	remList := &cmpv1alpha1.ComplianceRemediationList{}
-	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s.Name)
+	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s)
 	opts := &client.ListOptions{
 		LabelSelector: labelSelector,
 	}
@@ -454,7 +512,7 @@ func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite) i
 		ctx.t.Fatalf("Couldn't get remediation list")
 	}
 	if len(remList.Items) > 0 {
-		ctx.t.Logf("Remediations from ComplianceSuite: %s", s.Name)
+		ctx.t.Logf("Remediations from ComplianceSuite: %s", s)
 	} else {
 		ctx.t.Log("This suite didn't generate remediations")
 	}
@@ -464,10 +522,10 @@ func (ctx *e2econtext) getRemediationsForSuite(s *cmpv1alpha1.ComplianceSuite) i
 	return len(remList.Items)
 }
 
-func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite) int {
+func (ctx *e2econtext) getFailuresForSuite(s string) int {
 	failList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
-		cmpv1alpha1.SuiteLabel:                               s.Name,
+		cmpv1alpha1.SuiteLabel:                               s,
 		string(cmpv1alpha1.ComplianceCheckResultStatusLabel): string(cmpv1alpha1.CheckResultFail),
 	}
 	err := ctx.dynclient.List(goctx.TODO(), failList, matchLabels)
@@ -475,7 +533,7 @@ func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite) int {
 		ctx.t.Fatalf("Couldn't get check result list")
 	}
 	if len(failList.Items) > 0 {
-		ctx.t.Logf("Failures from ComplianceSuite: %s", s.Name)
+		ctx.t.Logf("Failures from ComplianceSuite: %s", s)
 	}
 	for _, rem := range failList.Items {
 		ctx.t.Logf("- %s", rem.Name)
@@ -484,11 +542,11 @@ func (ctx *e2econtext) getFailuresForSuite(s *cmpv1alpha1.ComplianceSuite) int {
 }
 
 // This returns the number of results that are either CheckResultError or CheckResultNoResult
-func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite) int {
+func (ctx *e2econtext) getInvalidResultsFromSuite(s string) int {
 	ret := 0
 	errList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
-		cmpv1alpha1.SuiteLabel:                               s.Name,
+		cmpv1alpha1.SuiteLabel:                               s,
 		string(cmpv1alpha1.ComplianceCheckResultStatusLabel): string(cmpv1alpha1.CheckResultError),
 	}
 	err := ctx.dynclient.List(goctx.TODO(), errList, matchLabels)
@@ -496,7 +554,7 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite
 		ctx.t.Fatalf("Couldn't get result list")
 	}
 	if len(errList.Items) > 0 {
-		ctx.t.Logf("Errors from ComplianceSuite: %s", s.Name)
+		ctx.t.Logf("Errors from ComplianceSuite: %s", s)
 	}
 	for _, check := range errList.Items {
 		ctx.t.Logf("unexpected Error result - %s", check.Name)
@@ -505,7 +563,7 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite
 
 	noneList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels = dynclient.MatchingLabels{
-		cmpv1alpha1.SuiteLabel:                               s.Name,
+		cmpv1alpha1.SuiteLabel:                               s,
 		string(cmpv1alpha1.ComplianceCheckResultStatusLabel): string(cmpv1alpha1.CheckResultNoResult),
 	}
 	err = ctx.dynclient.List(goctx.TODO(), noneList, matchLabels)
@@ -513,7 +571,7 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite
 		ctx.t.Fatalf("Couldn't get result list")
 	}
 	if len(noneList.Items) > 0 {
-		ctx.t.Logf("None result from ComplianceSuite: %s", s.Name)
+		ctx.t.Logf("None result from ComplianceSuite: %s", s)
 	}
 	for _, check := range noneList.Items {
 		ctx.t.Logf("unexpected None result - %s", check.Name)
@@ -522,19 +580,19 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s *cmpv1alpha1.ComplianceSuite
 	return ret + len(noneList.Items)
 }
 
-func (ctx *e2econtext) getCheckResultsForSuite(s *cmpv1alpha1.ComplianceSuite) int {
+func (ctx *e2econtext) getCheckResultsForSuite(s string) int {
 	resList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
-		cmpv1alpha1.SuiteLabel: s.Name,
+		cmpv1alpha1.SuiteLabel: s,
 	}
 	err := ctx.dynclient.List(goctx.TODO(), resList, matchLabels)
 	if err != nil {
 		ctx.t.Fatalf("Couldn't get result list")
 	}
 	if len(resList.Items) > 0 {
-		ctx.t.Logf("Results from ComplianceSuite: %s", s.Name)
+		ctx.t.Logf("Results from ComplianceSuite: %s", s)
 	} else {
-		ctx.t.Logf("There were no results for the ComplianceSuite: %s", s.Name)
+		ctx.t.Logf("There were no results for the ComplianceSuite: %s", s)
 	}
 	for _, check := range resList.Items {
 		ctx.t.Logf("Result - Name: %s - Status: %s - Severity: %s", check.Name, check.Status, check.Severity)

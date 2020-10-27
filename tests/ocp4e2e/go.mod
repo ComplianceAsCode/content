@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/cenkalti/backoff/v3 v3.2.2
-	github.com/openshift/compliance-operator v0.1.17
+	github.com/openshift/compliance-operator v0.1.19
 	github.com/openshift/machine-config-operator v0.0.1-0.20200913004441-7eba765c69c9
 	gopkg.in/yaml.v2 v2.3.0
 	k8s.io/api v0.19.0
