@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Configure the Path to the exception.sites File'
+
+description: |-
+    To ensure that the accepted sites list file is set in
+    <tt>/etc/.java/deployment/deployment.properties</tt>, add or modify
+    <tt>deployment.user.security.exception.sites</tt> to equal
+    <tt>/etc/.java/deployment/exception.sites</tt>.
+
+rationale: |-
+    Without a proper path for the accepted sites list file, unauthorized
+    software programs are able to be executed. Using only authorized software
+    decreases risk by limiting the number of potential vulnerabilities.
+
+severity: medium
+
+references:
+    srg: SRG-APP-000386
+    disa: CCI-001774
+    stigid: JRE8-UX-000120
+    nist: CM-7(5)(b)
+
+ocil_clause: 'it is not configured'
+
+ocil: |-
+    To verify that <tt>deployment.properties</tt> file is configured properly,
+    run the following command:
+    <pre>$ grep 'deployment.user.security.exception.sites=' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.user.security.exception.sites=/etc/.java/deployment/exception.sites</pre>

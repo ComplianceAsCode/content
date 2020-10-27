@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="java_jre_insecure_prompt" version="1">
+    <metadata>
+      <title>Prompt User Prior to Executing Mobile Code</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <description>Configure setting to ensure Java prevents 
+      mobile code from executing without prompting the user.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check deployment.insecure.jres" test_ref="test_java_jre_insecure_prompt" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.webjava.enabled" id="test_java_jre_insecure_prompt" version="1">
+    <ind:object object_ref="object_java_jre_insecure_prompt" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_java_jre_insecure_prompt" version="1">
+    <ind:filepath>/etc/.java/deployment/deployment.properties</ind:filepath>
+   <ind:pattern operation="pattern match">^deployment.insecure.jres=PROMPT$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
