@@ -172,6 +172,15 @@ PRODUCT_TO_CPE_MAPPING = {
     "chromium": [
         "cpe:/a:google:chromium-browser",
     ],
+    "centos6": [
+        "cpe:/o:centos:centos:6",
+    ],
+    "centos7": [
+        "cpe:/o:centos:centos:7",
+    ],
+    "centos8": [
+        "cpe:/o:centos:centos:8",
+    ],
     "debian9": [
         "cpe:/o:debianproject:debian:9",
     ],
@@ -182,13 +191,6 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "fedora": [
         "cpe:/o:fedoraproject:fedora:32",
-        "cpe:/o:fedoraproject:fedora:31",
-        "cpe:/o:fedoraproject:fedora:30",
-        "cpe:/o:fedoraproject:fedora:29",
-        "cpe:/o:fedoraproject:fedora:28",
-        "cpe:/o:fedoraproject:fedora:27",
-        "cpe:/o:fedoraproject:fedora:26",
-        "cpe:/o:fedoraproject:fedora:25",
     ],
     "firefox": [
         "cpe:/a:mozilla:firefox",

@@ -7,7 +7,8 @@ from __future__ import print_function
 
 import re
 from .xml import ElementTree
-from .constants import standard_profiles, OSCAP_VENDOR
+from .constants import standard_profiles, OSCAP_VENDOR, PREFIX_TO_NS, PRODUCT_TO_CPE_MAPPING
+from .build_cpe import CPEItem
 
 
 def add_cpes(elem, namespace, mapping):
@@ -39,6 +40,15 @@ def add_cpes(elem, namespace, mapping):
             affected = True
 
     return affected
+
+
+def add_cpe_item_to_dictionary(tree_root, derivative):
+    cpe_list = tree_root.find(".//{%s}cpe-list" % (PREFIX_TO_NS["cpe-dict"]))
+    if cpe_list:
+        derivative_cpe_names = PRODUCT_TO_CPE_MAPPING[derivative]
+        for cpe_name in derivative_cpe_names:
+            cpe_item = CPEItem(cpe_name)
+            cpe_list.append(cpe_item.to_xml_element("ssg-%s-cpe-oval.xml" % derivative))
 
 
 def add_notice(benchmark, namespace, notice, warning):

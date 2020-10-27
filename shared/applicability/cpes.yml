@@ -1,0 +1,325 @@
+cpes:
+  "cpe:/o:centos:centos:6":
+    id: centos6
+    title: "CentOS 6"
+    check_id: installed_OS_is_centos6
+
+  "cpe:/o:centos:centos:7":
+    id: centos7
+    title: "CentOS 7"
+    check_id: installed_OS_is_centos7
+
+  "cpe:/o:centos:centos:8":
+    id: centos8
+    title: "CentOS 8"
+    check_id: installed_OS_is_centos8
+
+  "cpe:/a:google:chromium-browser":
+    id: chromium
+    title: "Google Chromium Browser"
+    check_id: installed_app_is_chromium
+
+  "cpe:/a:chrony":
+    id: chrony
+    title: "Package chrony is installed"
+    check_id: installed_env_has_chrony_package
+
+  "cpe:/a:container":
+    id: container
+    title: "Container"
+    check_id: installed_env_is_a_container
+
+  "cpe:/o:debianproject:debian:9":
+    id: debian9
+    title: "Debian release 9 (Stretch)"
+    check_id: installed_OS_is_debian9
+
+  "cpe:/o:debian:debian_linux:10":
+    id: debian10
+    title: "Debian Linux 10"
+    check_id: installed_OS_is_debian10
+
+  "cpe:/o:example":
+    id: example
+    title: "Example"
+    check_id: installed_OS_is_part_of_Unix_family
+
+  "cpe:/o:fedoraproject:fedora:32":
+    id: fedora32
+    title: "Fedora 32"
+    check_id: installed_OS_is_fedora
+
+  "cpe:/a:mozilla:firefox":
+    id: firefox
+    title: "Mozilla Firefox"
+    check_id: installed_app_is_firefox
+
+  "cpe:/a:redhat:jboss_fuse:6.0":
+    id: fuse6
+    title: "JBoss Fuse 6.0"
+    check_id: installed_app_is_fuse6
+
+  "cpe:/a:gdm":
+    id: gdm
+    title: "Package gdm is installed"
+    check_id: installed_env_has_gdm_package
+
+  "cpe:/a:grub2":
+    id: grub2
+    title: "Package grub2 is installed"
+    check_id: installed_env_has_grub2_package
+
+  "cpe:/a:oracle:jre:":
+    id: jre-oracle
+    title: "Oracle's Java Runtime Environment"
+    check_id: installed_app_is_java
+
+  "cpe:/a:ibm:jre:":
+    id: jre-ibm
+    title: "IBM Java Runtime Environment"
+    check_id: installed_app_is_java
+
+  "cpe:/a:redhat:openjdk:":
+    id: openjdk-redhat
+    title: "OpenJDK Java Runtime Environment<"
+    check_id: installed_app_is_java
+
+  "cpe:/a:sun:jre:":
+    id: jre-oracle
+    title: "Sun Java Runtime Environment"
+    check_id: installed_app_is_java
+
+  "cpe:/a:libuser":
+    id: libuser
+    title: "Package libuser is installed"
+    check_id: installed_env_has_libuser_package
+
+  "cpe:/a:login_defs":
+    id: login_defs
+    title: "Package providing /etc/login.defs is installed"
+    check_id: installed_env_has_login_defs
+
+  "cpe:/a:machine":
+    id: machine
+    title: "Bare-metal or Virtual Machine"
+    check_id: installed_env_is_a_machine
+
+  "cpe:/o:apple:macos:10.15":
+    id: macos
+    title: "Apple macOS 10.15"
+    check_id: installed_OS_is_macos1015
+
+  "cpe:/a:mcafee:virusscan_enterprise_for_linux:1.9":
+    id: mcafee-1.9
+    title: "McAfee's VirusScan Enterprise for Linux (VSEL) 1.9.x"
+    check_id: installed_app_is_vsel
+
+  "cpe:/a:mcafee:virusscan_enterprise_for_linux:2.0":
+    id: mcafee-2.0
+    title: "McAfee's VirusScan Enterprise for Linux (VSEL) 2.0.x"
+    check_id: installed_app_is_vsel
+
+  "cpe:/a:net-snmp":
+    id: net-snmp
+    title: "Package net-snmp is installed"
+    check_id: installed_env_has_net-snmp_package
+
+  "cpe:/a:nss-pam-ldapd":
+    id: nss-pam-ldapd
+    title: "Package nss-pam-ldapd is installed"
+    check_id: installed_env_has_nss-pam-ldapd_package
+
+  "cpe:/a:ntp":
+    id: ntp
+    title: "Package ntp is installed"
+    check_id: installed_env_has_ntp_package
+
+  "cpe:/a:redhat:openshift_container_platform:4.1":
+    id: ocp4.1
+    title: "Red Hat OpenShift Container Platform 4"
+    check_id: installed_app_is_ocp4
+
+  "cpe:/o:redhat:openshift_container_platform_node:4":
+    id: ocp4.1
+    title: "Red Hat OpenShift Container Platform 4 Node"
+    check_id: installed_app_is_ocp4_node
+
+  "cpe:/o:oracle:linux:7":
+    id: ol7
+    title: "Oracle Linux 7"
+    check_id: installed_OS_is_ol7_family
+
+  "cpe:/o:oracle:linux:8":
+    id: ol8
+    title: "Oracle Linux 8"
+    check_id: installed_OS_is_ol8_family
+
+  "cpe:/o:opensuse:leap:42.1":
+    id: opensuse-42.1
+    title: "openSUSE Leap 42.1"
+    check_id: installed_OS_is_opensuse_leap42
+
+  "cpe:/o:opensuse:leap:42.2":
+    id: opensuse-42.2
+    title: "openSUSE Leap 42.2"
+    check_id: installed_OS_is_opensuse_leap42
+
+  "cpe:/o:opensuse:leap:42.3":
+    id: opensuse-42.3
+    title: "openSUSE Leap 42.3"
+    check_id: installed_OS_is_opensuse_leap42
+
+  "cpe:/o:opensuse:leap:15.0":
+    id: opensuse-15
+    title: "openSUSE Leap 15.0"
+    check_id: installed_OS_is_opensuse_leap15
+
+  "cpe:/a:pam":
+    id: pam
+    title: "Package pam is installed"
+    check_id: installed_env_has_pam_package
+
+  "cpe:/o:redhat:enterprise_linux_coreos:4":
+    id: rhcos4
+    title: "Red Hat Enterprise Linux CoreOS 4"
+    check_id: installed_OS_is_rhcos4
+
+  "cpe:/o:redhat:enterprise_linux:6":
+    id: rhel6
+    title: "Red Hat Enterprise Linux 6"
+    check_id: installed_OS_is_rhel6
+
+  "cpe:/o:redhat:enterprise_linux:6::client":
+    id: rhel6-client
+    title: "Red Hat Enterprise Linux 6 Client"
+    check_id: installed_OS_is_rhel6
+
+  "cpe:/o:redhat:enterprise_linux:6::computenode":
+    id: rhel6-computenode
+    title: "Red Hat Enterprise Linux 6 ComputeNode"
+    check_id: installed_OS_is_rhel6
+
+  "cpe:/o:redhat:enterprise_linux:7":
+    id: rhel7
+    title: "Red Hat Enterprise Linux 7"
+    check_id: installed_OS_is_rhel7
+
+  "cpe:/o:redhat:enterprise_linux:7::server":
+    id: rhel7-server
+    title: "Red Hat Enterprise Linux 7 Server"
+    check_id: installed_OS_is_rhel7
+
+  "cpe:/o:redhat:enterprise_linux:7::client":
+    id: rhel7-client
+    title: "Red Hat Enterprise Linux 7 Client"
+    check_id: installed_OS_is_rhel7
+
+  "cpe:/o:redhat:enterprise_linux:7::computenode":
+    id: rhel7-computenode
+    title: "Red Hat Enterprise Linux 7 ComputeNode"
+    check_id: installed_OS_is_rhel7
+
+  "cpe:/o:redhat:enterprise_linux:7::workstation":
+    id: rhel7-workstation
+    title: "red hat enterprise linux 7 workstation"
+    check_id: installed_OS_is_rhel7
+
+  "cpe:/o:redhat:enterprise_linux:8":
+    id: rhel8
+    title: "Red Hat Enterprise Linux 8"
+    check_id: installed_OS_is_rhel8
+
+  "cpe:/o:redhat:enterprise_linux:8::hypervisor":
+    id: rhel8-host
+    title: "Red Hat Virtualization 4 Host"
+    check_id: installed_OS_is_rhv4
+
+  "cpe:/a:redhat:openstack:10":
+    id: rhosp10
+    title: "Red Hat OpenStack Platform 10"
+    check_id: installed_app_is_rhosp10
+
+  "cpe:/a:redhat:openstack:13":
+    id: rhosp13
+    title: "Red Hat OpenStack Platform 13"
+    check_id: installed_app_is_rhosp13
+
+  "cpe:/a:redhat:enterprise_virtualization_manager:4":
+    id: rhvm4
+    title: "Red Hat Virtualization 4 Manager"
+    check_id: installed_app_is_rhv4
+
+  "cpe:/o:scientificlinux:scientificlinux:6":
+    id: sl6
+    title: "Scientific Linux 6"
+    check_id: installed_OS_is_sl6
+
+  "cpe:/o:scientificlinux:scientificlinux:7":
+    id: sl7
+    title: "Scientific Linux 7"
+    check_id: installed_OS_is_sl7
+
+  "cpe:/o:suse:linux_enterprise_server:12":
+    id: sle12-server
+    title: "SUSE Linux Enterprise Server 12"
+    check_id: installed_OS_is_sle12
+
+  "cpe:/o:suse:linux_enterprise_desktop:12":
+    id: sle12-desktop
+    title: "SUSE Linux Enterprise Desktop 12"
+    check_id: installed_OS_is_sle12
+
+  "cpe:/o:suse:linux_enterprise_server:15":
+    id: sle15-server
+    title: "SUSE Linux Enterprise Server 15"
+    check_id: installed_OS_is_sle15
+
+  "cpe:/o:suse:linux_enterprise_desktop:15":
+    id: sle15-desktop
+    title: "SUSE Linux Enterprise Desktop 15"
+    check_id: installed_OS_is_sle15
+
+  "cpe:/a:sssd":
+    id: sssd
+    title: "Package sssd-common is installed"
+    check_id: installed_env_has_sssd-common_package
+
+  "cpe:/a:sssd-ldap":
+    id: sssd-ldap
+    title: "SSSD is configured to use LDAP"
+    check_id: sssd_conf_uses_ldap
+
+  "cpe:/a:systemd":
+    id: systemd
+    title: "Package systemd is installed"
+    check_id: installed_env_has_systemd_package
+
+  "cpe:/o:canonical:ubuntu_linux:16.04":
+    id: ubuntu1604
+    title: "Ubuntu release 16.04 (Xenial)"
+    check_id: installed_OS_is_ubuntu1604
+
+  "cpe:/o:canonical:ubuntu_linux:18.04":
+    id: ubuntu1804
+    title: "Ubuntu release 18.04 (Bionic Beaver)"
+    check_id: installed_OS_is_ubuntu1804
+
+  "cpe:/o:windriver:wrlinux:8":
+    id: wrlinux8
+    title: "Wind River Linux 8"
+    check_id: installed_OS_is_wrlinux8
+
+  "cpe:/o:windriver:wrlinux:1019":
+    id: wrlinux1019
+    title: "Wind River Linux 1019"
+    check_id: installed_OS_is_wrlinux1019
+
+  "cpe:/a:yum":
+    id: yum
+    title: "Package yum is installed"
+    check_id: installed_env_has_yum_package
+
+  "cpe:/a:zipl":
+    id: zipl
+    title: "System uses zipl"
+    check_id: installed_env_has_zipl_package

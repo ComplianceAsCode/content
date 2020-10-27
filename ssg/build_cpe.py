@@ -4,6 +4,82 @@ Common functions for building CPEs
 
 from __future__ import absolute_import
 from __future__ import print_function
+import os
+
+from .constants import oval_namespace
+from .constants import PREFIX_TO_NS
+from .xml import ElementTree as ET
+from .yaml import open_raw
+
+
+YAML_CPE_FILE = os.path.join("shared", "applicability", "cpes.yml")
+
+
+def load_all_cpes():
+    shared_dir = \
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    cpes_path = os.path.join(shared_dir, YAML_CPE_FILE)
+    return open_raw(cpes_path)
+
+
+class CPEList(object):
+    prefix = "cpe-dict"
+    ns = PREFIX_TO_NS[prefix]
+
+    def __init__(self):
+        self.all_cpes = load_all_cpes()
+        self.cpe_items = []
+
+    def add(self, cpe_name):
+        self.cpe_items.append(CPEItem(cpe_name, self.all_cpes["cpes"][cpe_name]))
+
+    def to_xml_element(self, cpe_oval_file):
+        cpe_list = ET.Element("{%s}cpe-list" % CPEList.ns)
+        cpe_list.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+        cpe_list.set("xsi:schemaLocation",
+                     "http://cpe.mitre.org/dictionary/2.0 "
+                     "http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd")
+
+        for cpe_item in self.cpe_items:
+            cpe_list.append(cpe_item.to_xml_element(cpe_oval_file))
+
+        return cpe_list
+
+    def to_file(self, file_name, cpe_oval_file):
+        root = self.to_xml_element(cpe_oval_file)
+        tree = ET.ElementTree(root)
+        tree.write(file_name, encoding="utf-8")
+
+
+class CPEItem(object):
+    prefix = "cpe-dict"
+    ns = PREFIX_TO_NS[prefix]
+
+    def __init__(self, cpe_name, cpeitem_data=None):
+        if not cpeitem_data:
+            all_cpes = load_all_cpes()
+            cpeitem_data = all_cpes["cpes"][cpe_name]
+
+        self.name = cpeitem_data["name"]
+        self.id_ = cpeitem_data["id"]
+        self.title = cpeitem_data["title"]
+        self.check_id = cpeitem_data["check_id"]
+
+    def to_xml_element(self, cpe_oval_filename):
+        cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
+        cpe_item.set('name', self.name)
+
+        cpe_item_title = ET.SubElement(cpe_item, "{%s}title" % CPEItem.ns)
+        cpe_item_title.set('xml:lang', "en-us")
+        cpe_item_title.text = self.title
+
+        cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
+        cpe_item_check.set('system', oval_namespace)
+        cpe_item_check.set('href', cpe_oval_filename)
+        cpe_item_check.text = self.check_id
+
+        return cpe_item
+
 
 
 def extract_subelement(objects, sub_elem_type):
