@@ -301,8 +301,6 @@ def service_disabled(data, lang):
         data["packagename"] = data["servicename"]
     if "daemonname" not in data:
         data["daemonname"] = data["servicename"]
-    if "mask_service" not in data:
-        data["mask_service"] = "true"
     return data
 
 

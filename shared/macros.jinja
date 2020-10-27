@@ -256,7 +256,7 @@ ocil_clause: "no line is returned"
     If the socket is not running the command will return the following output:
     <pre>inactive</pre>
 
-    By default the socket will also be masked, to check that the <code>{{{ socket }}}</code> is masked, run the following command:
+    The socket will also be masked, to check that the <code>{{{ socket }}}</code> is masked, run the following command:
     <pre>$ systemctl show <code>{{{ socket }}}</code> | grep "LoadState\|UnitFileState"</pre>
 
     If the socket is masked the command will return the following outputs:
@@ -333,7 +333,7 @@ ocil_clause: "the package is installed"
     If the service is not running the command will return the following output:
     <pre>inactive</pre>
 
-    By default the service will also be masked, to check that the <code>{{{ service }}}</code> is masked, run the following command:
+    The service will also be masked, to check that the <code>{{{ service }}}</code> is masked, run the following command:
     <pre>$ systemctl show <code>{{{ service }}}</code> | grep "LoadState\|UnitFileState"</pre>
 
     If the service is masked the command will return the following outputs:
@@ -379,9 +379,7 @@ ocil_clause: "the package is installed"
 
 {{%- macro systemd_describe_socket_disable(socket) %}}
     The <code>{{{ socket }}}</code> socket can be disabled with the following command:
-    <pre>$ sudo systemctl disable {{{ socket }}}.socket</pre>
-    The <code>{{{ socket }}}</code> socket can be masked with the following command:
-    <pre>$ sudo systemctl mask {{{ service }}}.socket</pre>
+    <pre>$ sudo systemctl mask --now {{{ socket }}}.socket</pre>
 {{%- endmacro %}}
 
 
@@ -401,9 +399,7 @@ ocil_clause: "the package is installed"
 
 {{%- macro systemd_describe_service_disable(service) %}}
     The <code>{{{ service }}}</code> service can be disabled with the following command:
-    <pre>$ sudo systemctl disable {{{ service }}}.service</pre>
-    The <code>{{{ service }}}</code> service can be masked with the following command:
-    <pre>$ sudo systemctl mask {{{ service }}}.service</pre>
+    <pre>$ sudo systemctl mask --now {{{ service }}}.service</pre>
 {{%- endmacro %}}
 
 

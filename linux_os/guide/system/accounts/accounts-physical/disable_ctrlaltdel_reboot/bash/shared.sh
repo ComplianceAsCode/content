@@ -4,7 +4,7 @@
 # The process to disable ctrl+alt+del has changed in RHEL7. 
 # Reference: https://access.redhat.com/solutions/1123873
 {{% endif %}}
-systemctl mask ctrl-alt-del.target
+systemctl mask --now ctrl-alt-del.target
 {{%- else -%}}
 # If system does not contain control-alt-delete.override,
 if [ ! -f /etc/init/control-alt-delete.override ]; then

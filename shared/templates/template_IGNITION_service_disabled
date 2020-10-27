@@ -13,11 +13,9 @@ spec:
       units:
       - name: {{{ DAEMONNAME }}}.service
         enabled: false
-{{%- if MASK_SERVICE %}}
         mask: true
-{{%- endif %}}
+        state: stopped
       - name: {{{ DAEMONNAME }}}.socket
         enabled: false
-{{%- if MASK_SERVICE %}}
         mask: true
-{{%- endif %}}
+        state: stopped
