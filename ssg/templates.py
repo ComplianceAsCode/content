@@ -110,8 +110,6 @@ class Builder(object):
         output_file_name = rule_id + ext
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
-        print (template_name)
-        print (templates[template_name])
         template_parameters = templates[template_name].preprocess(template_vars, lang)
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
