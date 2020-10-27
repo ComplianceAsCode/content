@@ -41,12 +41,25 @@ ocil: |-
 #identifiers:
 #    cce@ocp4:
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+- functionality: |-
+    This recommendation only applies if you let kubelets get their
+    certificates from the API Server. In case your certificates come from an
+    outside Certificate Authority/tool (e.g. Vault) then you need to take care
+    of rotation yourself
+
 references:
     cis: 1.3.6
 
-warnings:
-    - functionality: |-
-        This recommendation only applies if you let kubelets get their
-        certificates from the API Server. In case your certificates come from an
-        outside Certificate Authority/tool (e.g. Vault) then you need to take care
-        of rotation yourself.
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '\"RotateKubeletServerCertificate\=true\"'
+      operation: "pattern match"
+      type: "string"
