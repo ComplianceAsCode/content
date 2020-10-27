@@ -1788,10 +1788,13 @@ Possible options are `all`, `at least one`, `none satisfy` and `only one`.
 The offer of currently available templates can be extended by developing a new
 template.
 
-1) Create the template files, one for each type of file. Each one should be
-named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH,
-ANACONDA or PUPPET and `<NAME>` is the what we will call the template name.
-Create these files in `link:{rootdir}/shared/templates[shared/templates]` directory.
+1) Create a new subdirectory within the
+`link:{rootdir}/shared/templates[shared/templates]` directory. The name of the
+new subdirectory will become the template name.
+
+2) For each language supported by this template, create a corresponding file
+within the template directory. The file namess should be the same of the name of
+the language in lower case, e.g. `oval`, `bash` etc.
 
 Use the Jinja syntax we use elsewhere in the project; refer to the earlier
 section on Jinja macros for more information.  The parameters should be named
@@ -1799,7 +1802,7 @@ using uppercase letters, because the keys from `rule.yml` are converted to
 uppercase by the code that substitutes the parameters to the template.
 
 Notice that OVAL should be written in shorthand format.  This is an example of
-an OVAL template file called _template_OVAL_package_installed_:
+an OVAL template file called _oval_ within the _package_installed_ directory:
 
 [source,xml]
 ----
@@ -1822,7 +1825,8 @@ an OVAL template file called _template_OVAL_package_installed_:
 </def-group>
 ----
 
-And here is the Ansible template file called _template_ANSIBLE_package_installed_:
+And here is the Ansible template file called _ansible_ within the
+_package_installed_ directory:
 
 ----
 # platform = multi_platform_all
@@ -1838,56 +1842,36 @@ And here is the Ansible template file called _template_ANSIBLE_package_installed
 ----
 
 
-2) Implement a callback function which will process the
-parameters before passing them to the Jinja engine.  For example, this callback can
+2) Implement a preprocessing function which will process the
+parameters before passing them to the Jinja engine.  For example, this function can
 provide default values, escape characters, check if parameters are correct, or
-any other processing of the parameters specific for the template.
+perform any other processing of the parameters specific for the template.
 
-The callback functions are located in `link:{rootdir}/ssg/templates.py[ssg/templates.py]`.
+The function should be called _preprocess_ and should be located in the file
+_template.py_ within the template directory.
 
-The callback function must have the same name as the template name. This is the
-name that is used in `rule.yml` in `name:` key, for example
-`package_installed`.
-
-The callback must have 2 parameters:
+The function must have 2 parameters:
 
 - `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
 - `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`, `"kubernetes"`
 
-The callback function is executed for every supported language, so it can process the data differently for each language.
+The function is executed for every supported language, so it can process the data differently for each language.
 
 The function must always return the (modified) `data` dictionary.
 
 The function must be always defined even if no processing of data is needed.
 In that situation the function just returns `data` parameter.
 
-3) Decorate the callback function by the `@template` decorator. The decorator
-will register the template in the templating engine. The decorator has a single
-parameter which is a list of languages that the template provides. The list can
-contain the following values: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`,
-`"puppet"`, `"ignition"`, `"kubernetes"`. The decorator parameter is mandatory.
-Insert the `@template` decorator on the line before the callback function definition.
-
-For example, if the template name is `package_installed` and it provides
-Ansible template in `shared/templates/template_ANSIBLE_package_installed` and
-OVAL template in `shared/templates/template_OVAL_package_installed`, then there
-must be callback function `package_installed` in
-`link:{rootdir}/ssg/templates.py[ssg/templates.py]` and the callback must be
-decorated by `@template(["ansible", "oval")]`. In this example, decorating the
-callback function lets the templating engine know that Ansible and OVAL should
-be generated if any rule uses `package_installed` in `rule.yml`.
-
-The following example shows the callback function for the template
-`mount_option`, including the `@template` decorator. The example function
-declares that there is a template which name is `mount_option` and it provides
-Ansible, Bash and OVAL content. The code takes the `data` argument which is a
-dictionary with template parameters from `rule.yml` and based on `lang` it
-modifies the template parameters and returns the modified dictionary.
+The following example shows the file _template.py_ for the template
+`mount_option`. The code takes the `data` argument which is a dictionary with
+template parameters from `rule.yml` and based on `lang` it modifies the template
+parameters and returns the modified dictionary.
 
 [source,python]
 ----
-@template(["ansible", "bash", "oval"])
-def mount_option(data, lang):
+import re
+
+def preprocess(data, lang):
     if lang == "oval":
         data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
     else:
