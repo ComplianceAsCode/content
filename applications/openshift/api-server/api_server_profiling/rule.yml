@@ -1,12 +1,11 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Disable Profiling on the API server'
 
 description: |-
     To disable profiling,
-{{%- if product == "ocp4" %}}
     edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and set <tt>profiling</tt> to <tt>false</tt>:
     <pre>
@@ -17,15 +16,6 @@ description: |-
       ],
       ...
     </pre>
-{{% else %}}
-    edit the API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
-    and set <tt>profiling</tt> to <tt>false</tt>:
-    <pre>kubernetesMasterConfig:
-      schedulerArguments:
-        profiling:
-        - false</pre>
-{{%- endif %}}
 
 rationale: |-
     Profiling allows for the identification of specific performance bottlenecks. It
@@ -43,9 +33,5 @@ ocil_clause: '<tt>profiling</tt> is enabled and is set to value of <tt>true</tt>
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.schedulerArguments["profiling"]'</pre>
-{{% else %}}
-    <pre>$ sudo grep -A2 profiling /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should return <pre>false</pre>.

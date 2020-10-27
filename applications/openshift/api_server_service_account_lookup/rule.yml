@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: Ensure that the --service-account-lookup argument is set to true
+title: Ensure that the service-account-lookup argument is set to true
 
 description: Validate service account before validating token.
 
@@ -15,17 +15,26 @@ rationale: |-
   service account is deleted. This is an example of time of
   check to time of use security issue.
 
-identifiers: {}
+#identifiers:
 
-severity: unknown
+severity: medium
 
 references:
   cis: 1.2.27
 
+ocil_clause: 'API server argument <tt>--service-account-lookup</tt> contains <tt>true</tt>'
+
+ocil: |-
+  Run the following command on the master node(s):
+  <pre>$ oc get configmap config -n openshift-kube-apiserver -o json | \
+      jq -r '.data["config.yaml"]' | \
+      jq -r '.apiServerArguments["service-account-lookup"]'</pre>
+  The output should return <pre>true</pre>.
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
-
+      
 template:
   name: yamlfile_value
   vars:
@@ -37,12 +46,3 @@ template:
     - value: 'service-account-lookup.*\["true"\]'
       operation: "pattern match"
       type: "string"
-
-ocil_clause: 'API server argument <tt>--service-account-lookup</tt> contains <tt>true</tt>'
-
-ocil: |-
-  Run the following command on the master node(s):
-  <pre>$ oc get configmap config -n openshift-kube-apiserver -o json | \
-      jq -r '.data["config.yaml"]' | \
-      jq -r '.apiServerArguments["service-account-lookup"]'</pre>
-  The output should return <pre>true</pre>.

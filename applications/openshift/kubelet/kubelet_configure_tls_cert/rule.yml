@@ -1,25 +1,14 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Ensure That The kubelet Client Certificate Is Correctly Set'
 
 description: |-
     To ensure the kubelet TLS client certificate is configured, edit the
-{{%- if product == "ocp4" %}}
     kubelet configuration file <tt>/etc/kubernetes/kubernetes.conf</tt>
     and configure the kubelet certificate file.
     <pre>tlsCertFile: /path/to/TLS/cert.key</pre>
-{{% else %}}
-    kubelet configuration file <tt>/etc/origin/node/node-config.yaml</tt>
-    and configure the <tt>cert-dir</tt> path for the kubelet certificates.
-    For example:
-    <pre>  cert-dir:
-      - /etc/origin/node/certificates</pre>
-    A corresponding certificate should exist in the <tt>cert-dir</tt>. For
-    example:
-    <pre>/etc/origin/node/certificates/kubelet-client-current.pem</pre>
-{{%- endif %}}
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -28,34 +17,23 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp3: CCE-80596-0
-    cce@ocp4: CCE-83396-2
+    cce: CCE-83396-2
 
 references:
-    cis@ocp3: 2.1.12
-    cis@ocp4: 4.2.10
+    cis: 4.2.10
 
 ocil_clause: 'the kubelet certificate is not configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments["kubelet-client-certificate"]'</pre>
     The output should be <tt>0</tt>.
-{{% else %}}
-    <pre>$ sudo grep -A1 cert-dir /etc/origin/node/node-config.yaml</pre>
-    Verify that a certificate path is configured.
-    <pre>$ sudo ls /etc/origin/node/certificates/kubelet-client-current.pem</pre>
-{{%- endif %}}
     Verify that a client certificate is configured.
 
-{{%- if product == "ocp4" %}}
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
-{{%- endif %}}
 
-# This is updated for OCP4
 template:
     name: yamlfile_value
     vars:

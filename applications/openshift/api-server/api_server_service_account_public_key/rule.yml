@@ -1,12 +1,11 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Configure the Service Account Public Key for the API Server'
 
 description: |-
     To ensure the API Server utilizes its own key pair,
-{{%- if product == "ocp4" %}}
     edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and set the <tt>serviceAccountPublicKeyFiles</tt> parameter to the public
     key file for service accounts:
@@ -17,54 +16,26 @@ description: |-
     ],
     ...
     </pre>
-{{% else %}}
-    edit the API server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
-    and set the <tt>publicKeyFiles</tt> parameter to the public
-    key file for service accounts:
-    <pre>serviceAccountConfig:
-    ...
-      publicKeyFiles:
-      - serviceaccounts.public.key
-    ...</pre>
-{{%- endif %}}
 
 rationale: |-
-{{%- if product == "ocp4" %}}
-    By default, if no <tt>--service-account-key-file</tt> is specified
+    By default if no <tt>service-account-key-file</tt> is specified
     to the apiserver, it uses the private key from the TLS serving
     certificate to verify service account tokens. To ensure that the
-    keys for service account tokens could be rotated as needed, a
+    keys for service account tokens are rotated as needed, a
     separate public/private key pair should be used for signing service
-    account tokens. Hence, the public key should be specified to the
-    apiserver with <tt>--service-account-key-file</tt>.
-{{% else %}}
-    By default, if no <tt>privateKeyFile</tt> is specified to the
-    API Server, the API Server uses the private key from the TLS serving
-    certificate to verify service account tokens. To ensure that the keys
-    for service account tokens could be rotated as needed, a separate
-    public/private key pair should be used for signing service account
-    tokens.
-{{%- endif %}}
+    account tokens.
 
 severity: medium
 
 references:
     cis: 1.2.28
 
-ocil_clause: '{{%- if product == "ocp4" %}}serviceAccountPublicKeyFiles is not configured correctly{{% else %}}<tt>publicKeyFiles</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>{{%- endif %}}'
+ocil_clause: 'serviceAccountPublicKeyFiles is not configured correctly'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r .serviceAccountPublicKeyFiles</pre>
     The output should return configured certificate key file(s).
-{{% else %}}
-    <pre>$ sudo grep -A9 serviceAccountConfig /etc/origin/master/master-config.yaml</pre>
-    The output should contain a line similar to:
-    <pre>publicKeyFiles:
-      - serviceaccounts.public.key</pre>
-{{%- endif %}}
 
 warnings:
 - general: |-

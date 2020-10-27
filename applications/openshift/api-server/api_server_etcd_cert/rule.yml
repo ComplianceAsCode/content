@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Configure the etcd Certificate for the API Server'
 
@@ -8,7 +8,6 @@ description: |-
     To ensure etcd is configured to make use of TLS encryption for client
     communications, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, verify
-{{%- if product == "ocp4" %}}
     that <tt>apiServerArguments</tt> has the <tt>etcd-certfile</tt> configured in
     the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) to something similar to:
@@ -19,16 +18,6 @@ description: |-
     ],
     ...
     </pre>
-{{% else %}}
-    that <tt>etcdClientInfo</tt> has the <tt>ca</tt> configured in
-    the API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) to something similar to:
-    <pre>etcdClientInfo:
-      ca: master.etcd-ca.crt
-      certFile: master.etcd-client.crt
-      keyFile: master.etcd-client.key</pre>
-{{%- endif %}}
 
 rationale: |-
     etcd is a highly-available key-value store used by OpenShift deployments
@@ -46,17 +35,8 @@ ocil_clause: '<tt>etcd-certfile</tt> does not exist or is not configured to vali
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."etcd-certfile"'</pre>
     The output should return a configured certificate file.
-{{% else %}}
-    <pre>$ sudo grep -A3 etcdClientInfo /etc/origin/master/master-config.yaml</pre>
-    The output should contain something similar to:
-    <pre>etcdClientInfo:
-      ca: master.etcd-ca.crt
-      certFile: master.etcd-client.crt
-      keyFile: master.etcd-client.key</pre>
-{{%- endif %}}
 
 warnings:
 - general: |-

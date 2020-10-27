@@ -1,20 +1,16 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Configure A Unique CA Certificate for etcd'
 
 description: |-
     A unique and different CA certificate should be created for <tt>etcd</tt>.
     To ensure the <tt>etcd</tt> service is using a unique certificate,
-    , set <tt>ETCD_TRUSTED_CA_FILE</tt> to <tt>/etc/etcd/ca.crt</tt>
+    set <tt>ETCD_TRUSTED_CA_FILE</tt> to <tt>/etc/etcd/ca.crt</tt>
     in <tt>/etc/etcd/etcd.conf</tt> on the master node that does NOT match
     the OpenShift CA certificate:
-{{%- if product == "ocp4" %}}
     <pre>ETCD_TRUSTED_CA_FILE=/etc/ssl/etcd/ca.crt</pre>
-{{% else %}}
-    <pre>ETCD_TRUSTED_CA_FILE=/etc/etcd/ca.crt</pre>
-{{%- endif %}}
 
 rationale: |-
     A unique CA certificate that is utilized by etcd and is different from
@@ -23,8 +19,8 @@ rationale: |-
 
 severity: medium
 
-identifiers:
-    cce@ocp3: CCE-80585-3
+#identifiers:
+#    cce@ocp4:
 
 references:
     cis: '2.7'

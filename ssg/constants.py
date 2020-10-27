@@ -13,7 +13,7 @@ product_directories = [
     'fuse6',
     'jre',
     'macos1015',
-    'ocp3', 'ocp4',
+    'ocp4',
     'rhcos4',
     'ol7', 'ol8',
     'opensuse',
@@ -149,7 +149,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "JBoss Fuse 6": "fuse6",
     "Java Runtime Environment": "jre",
     "Apple macOS 10.15": "macos1015",
-    "Red Hat OpenShift Container Platform 3": "ocp3",
     "Red Hat OpenShift Container Platform 4": "ocp4",
     "McAfee VirusScan Enterprise for Linux": "vsel",
     "Red Hat Enterprise Linux CoreOS 4": "rhcos4",
@@ -206,10 +205,6 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "macos1015": [
         "cpe:/o:apple:macos:10.15",
-    ],
-    "ocp3": [
-        "cpe:/a:redhat:openshift_container_platform:3.10",
-        "cpe:/a:redhat:openshift_container_platform:3.11",
     ],
     "ocp4": [
         "cpe:/a:redhat:openshift_container_platform:4.1",
@@ -300,7 +295,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8"],
-    "multi_platform_ocp": ["ocp3", "ocp4"],
+    "multi_platform_ocp": ["ocp4"],
     "multi_platform_rhcos": ["rhcos4"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp10", "rhosp13"],

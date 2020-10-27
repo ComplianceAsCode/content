@@ -1,15 +1,13 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Configure the API Server Request Timeout'
 
 description: |-
     All components that use the API should connect via the secured port,
     authenticate themselves, and be authorized to use the API. To ensure
-    such a configuration,
-{{%- if product == "ocp4" %}}
-    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master
+    such a configuration, edit the <tt>openshift-kube-apiserver</tt> configmap on the master
     node(s) and set the <tt>request-timeout</tt> to <tt>300</tt>:
     <pre>
     "apiServerArguments":{
@@ -19,15 +17,6 @@ description: |-
       ],
       ...
     </pre>
-{{% else %}}
-    edit the API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) and set the <tt>request-timeout</tt> to <tt>300</tt>:
-    <pre>kubernetesMasterConfig:
-      apiServerArguments:
-        request-timeout:
-        - 300</pre>
-{{%- endif %}}
 
 rationale: |-
     Setting global request timout allows extending the API Server request
@@ -49,9 +38,5 @@ ocil_clause: '<tt>request-timeout</tt> is not set or is not set to an appropriat
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["request-timeout"]'</pre>
-{{% else %}}
-    <pre>$ sudo grep -A2 request-timeout /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should return <pre>300</pre>.

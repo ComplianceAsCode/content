@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Enable the ServiceAccount Admission Control Plugin'
 
@@ -8,22 +8,8 @@ description: |-
     To ensure <tt>ServiceAccount</tt> objects must be created and granted
     before pod creation is allowed, follow the documentation and create
     <tt>ServiceAccount</tt> objects as per your environment.
-{{%- if product == "ocp4" %}}
     Ensure that the plugin is enabled in the api-server configuration:
     <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
-{{% else %}}
-    Then, edit the
-    API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
-    set the <tt>admissionConfig</tt> to include <tt>ServiceAccount</tt>:
-    <pre>admissionConfig:
-      pluginConfig:
-        ServiceAccount:
-          configuration:
-          kind: DefaultAdmissionConfig
-          apiVersion: v1
-          disable: false</pre>
-{{%- endif %}}
 
 rationale: |-
     When a pod is created, if a service account is not specified, the pod
@@ -39,21 +25,13 @@ references:
 ocil_clause: '<tt>admissionConfig</tt> contains <tt>ServiceAccount</tt>'
 
 ocil: |-
-{{%- if product == "ocp4" %}}
     The ServiceAccount plugin should be enabled in the list of enabled plugins in
     the apiserver configuration:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'ServiceAccount'</pre>
-{{% else %}}
-    Run the following command on the master node(s):
-    <pre>$ sudo grep -A4 ServiceAccount /etc/origin/master/master-config.yaml</pre>
-    The output should return <pre>disable: false</pre>.
-{{%- endif %}}
 
-{{%- if product == "ocp4" %}}
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
-{{%- endif %}}
 
 template:
   name: yamlfile_value

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3,ocp4
+prodtype: ocp4
 
 title: 'Disable Token-based Authentication'
 
@@ -8,7 +8,6 @@ description: |-
     To ensure OpenShift does not accept token-based authentication,
     follow the OpenShift documentation and configure alternate mechanisms for
     authentication. Then, edit the API Server pod specification file
-{{%- if product == "ocp4" %}}
     Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
     and remove the <tt>token-auth-file</tt> parameter:
     <pre>
@@ -19,15 +18,6 @@ description: |-
       ],
       ...
     </pre>
-{{% else %}}
-    Then, edit the API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) and remove the <tt>token-auth-file</tt> setting.
-    <pre>kubernetesMasterConfig:
-      apiServerArguments:
-        token-auth-file:
-        - /path/to/file</pre>
-{{%- endif %}}
 
 rationale: |-
     The token-based authentication utilizes static tokens to authenticate
@@ -44,20 +34,13 @@ ocil_clause: '<tt>token-auth-file</tt> argument is configured'
 
 ocil: |-
     Run the following command on the master node(s):
-{{%- if product == "ocp4" %}}
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments' | grep "token-auth-file"</pre>
-{{% else %}}
-    <pre>$ sudo grep -A2 token-auth-file /etc/origin/master/master-config.yaml</pre>
-{{%- endif %}}
     The output should return no output.
 
-{{%- if product == "ocp4" %}}
 warnings:
     - general: |-
         {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
-{{%- endif %}}
 
-# This is updated for OCP4
 template:
     name: yamlfile_value
     vars:
