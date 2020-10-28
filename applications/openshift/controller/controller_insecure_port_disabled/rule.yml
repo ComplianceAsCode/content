@@ -2,20 +2,18 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Ensure Controller bind-address argument is set'
+title: 'Ensure Controller insecure port argument is unset'
 
 description: |-
     To ensure the Controller Manager service is bound to secure loopback
-    address,
+    address and a secure port,
     set the <tt>RotateKubeletServerCertificate</tt> option to <tt>true</tt>
     in the <tt>openshift-kube-controller-manager</tt> configmap on the master
     node(s):
     <pre>
     "extendedArguments": {
     ...
-      "bind-address": [
-        "127.0.0.1",
-      ],
+      "port": ["0"],
     ...
     </pre>
 
@@ -31,14 +29,9 @@ severity: low
 #    cce@ocp4:
 
 ocil_clause: |-
-    <tt>bind-address</tt> is not configured to a secure IP address
+    <tt>port</tt> is not disabled
 
 ocil: |-
-    To verify that <tt>secure-port</tt> is configured correctly,
-    run the following command:
-    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson |   jq -r '.data["config.yaml"]' | jq '.extendedArguments["secure-port"][]'</pre>
-    Verify that it's using an appropriate port (the value is not <pre>0</pre>).
-
     To verify that <tt>port</tt> is configured correctly,
     run the following command:
     <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson |   jq -r '.data["config.yaml"]' | jq '.extendedArguments["port"][]'</pre>
@@ -58,6 +51,6 @@ template:
     filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
     yamlpath: '.data["config.yaml"]'
     values:
-    - value: '(\"port\":\[\"0\"\]).*(\"secure-port\":\[\"10257\"\])'
+    - value: '(\"port\":\[\"0\"\])'
       operation: "pattern match"
       type: "string"

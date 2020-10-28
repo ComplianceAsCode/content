@@ -105,7 +105,8 @@ selections:
   # 1.3.6 Ensure that the RotateKubeletServerCertificate argument is set to true
     - controller_rotate_kubelet_server_certs
   # 1.3.7 Ensure that the --bind-address argument is set to 127.0.0.1
-    - controller_bind_address
+    - controller_secure_port
+    - controller_insecure_port_disabled
   #### 1.4 Scheduler
   # 1.4.1 Ensure that the --profiling argument is set to false  (info only)
     - scheduler_profiling_argument
