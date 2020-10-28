@@ -1,0 +1,56 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure Controller secure-port argument is set'
+
+description: |-
+    To ensure the Controller Manager service is bound to secure loopback
+    address using a secure port,
+    set the <tt>RotateKubeletServerCertificate</tt> option to <tt>true</tt>
+    in the <tt>openshift-kube-controller-manager</tt> configmap on the master
+    node(s):
+    <pre>
+    "extendedArguments": {
+    ...
+      "secure-port": ["10257"],
+    ...
+    </pre>
+
+rationale: |-
+    The Controller Manager API service is used for health and metrics
+    information and is available without authentication or encryption. As such, it
+    should only be bound to a localhost interface to minimize the cluster's
+    attack surface.
+
+severity: low
+
+#identifiers:
+#    cce@ocp4:
+
+ocil_clause: |-
+    <tt>secure-port</tt> is not configured to use a secure port
+
+ocil: |-
+    To verify that <tt>secure-port</tt> is configured correctly,
+    run the following command:
+    <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson |   jq -r '.data["config.yaml"]' | jq '.extendedArguments["secure-port"][]'</pre>
+    Verify that it's using an appropriate port (the value is not <pre>0</pre>).
+
+references:
+    cis: 1.3.7
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '(\"secure-port\":\[\"10257\"\])'
+      operation: "pattern match"
+      type: "string"
