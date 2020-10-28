@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Prevent the Download of Prohibited Mobile Code'
+
+description: |-
+    To ensure that Java prevents the download of prohibited mobile code, set
+    <tt>deployment.security.blacklist.check</tt> to equal <tt>true</tt> in
+    <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Mobile code has the potential to cause damage to information systems within
+    an organization if used maliciously. Therefore it is important to allow vetted
+    mobile code and prevent potentially malicious execution of mobile code.
+    Mobile code has the potential to cause damage to information systems within
+    an organization if used maliciously. Therefore it is important to allow vetted
+    mobile code and prevent potentially malicious execution of mobile code.
+
+severity: medium
+
+references:
+    srg: SRG-APP-000209
+    disa: CCI-001169
+    stigid: JRE8-UX-000110
+    nist: SC-18(3)
+
+ocil_clause: 'it is not configured'
+
+ocil: |-
+    To verify that Java prevents prohibited mobile code from being downloaded,
+    run the following command:
+    <pre>$ grep 'deployment.security.blacklist.check=true' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.blacklist.check=true</pre>

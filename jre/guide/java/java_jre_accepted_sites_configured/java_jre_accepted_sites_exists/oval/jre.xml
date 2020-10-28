@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="compliance" id="java_jre_accepted_sites_exists" version="1">
+    <metadata>
+      <title>The Java exception.sites File Exists</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <description>The accepted sites file must be present to identify authorized 
+      software programs and permit execution of authorized software.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check exception.sites file" test_ref="test_java_jre_accepted_sites_exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" comment="Check exception.sites file" id="test_java_jre_accepted_sites_exists" version="1">
+    <unix:object object_ref="object_java_jre_accepted_sites_exists" />
+  </unix:file_test>
+  <unix:file_object id="object_java_jre_accepted_sites_exists" version="1">
+    <unix:filepath>/etc/.java/deployment/exception.sites</unix:filepath>
+  </unix:file_object>
+</def-group>

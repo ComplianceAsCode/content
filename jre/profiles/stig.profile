@@ -14,12 +14,24 @@ description: |-
     (JRE) as well as Red Hat with OpenJDK.
 
 selections:
+    - java_jre_accepted_sites_exists
+    - java_jre_accepted_sites_properties
+    - java_jre_blacklist_check
+    - java_jre_blacklist_check_locked
     - java_jre_deployment_config_exists
     - java_jre_deployment_config_properties
     - java_jre_deployment_config_mandatory
     - java_jre_deployment_properties_exists
-    - java_jre_untrusted_sources
-    - java_jre_untrusted_sources_locked
+    - java_jre_disable_untrusted_sources
+    - java_jre_disable_untrusted_sources_locked
+    - java_jre_enable_jws
+    - java_jre_enable_jws_locked
+    - java_jre_insecure_prompt
+    - java_jre_insecure_prompt_locked
+    - java_jre_lock_untrusted_sources
+    - java_jre_lock_untrusted_sources_locked
+    - java_jre_unsigned_applications
+    - java_jre_unsigned_applications_locked
     - java_jre_validation_crl
     - java_jre_validation_crl_locked
     - java_jre_validation_ocsp

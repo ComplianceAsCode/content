@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'Disable User Access to Online Certificate Validation Settings'
+title: 'Disable User Access to Online Certificate Validation Setting'
 
 description: |-
-    To ensure that users cannot change the online certificate verification settings,
+    To ensure that users cannot change the online certificate verification setting,
     add <tt>deployment.security.validation.ocsp.locked</tt> to
     <tt>/etc/.java/deployment/deployment.properties</tt>.
 
@@ -17,8 +17,10 @@ rationale: |-
 severity: medium
 
 references:
-    nist: DCBP-1
-    stigid: JRE0050-UX
+    srg: SRG-APP-000175
+    disa: CCI-000185
+    stigid: JRE8-UX-000100
+    nist: IA-5(2)(a)
 
 ocil_clause: 'it does not exist or is not configured properly'
 

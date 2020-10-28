@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'The Java exception.sites File Exists'
+
+description: |-
+    By default, no <tt>exception.sites</tt> file exists which means that there is no prevention of
+    unauthorized software. The <tt>exception.sites</tt> file is a text file containing single-line URLs for
+    accepted risk sites. If the Java accepted sites list file does not exist, it can be added
+    by running:
+    <pre>$ sudo mkdir -p -m 755 /etc/.java/deployment
+    $ sudo touch /etc/.java/deployment/exception.sites
+    $ sudo chmod 644 /etc/.java/deployment/exception.sites</pre>
+
+rationale: |-
+    Utilizing a
+    whitelist provides a configuration management method for allowing the
+    execution of only authorized software. Using only authorized software
+    decreases risk by limiting the number of potential vulnerabilities.
+
+severity: medium
+
+references:
+    srg: SRG-APP-000386
+    disa: CCI-001774
+    stigid: JRE8-UX-000130
+    nist: CM-7(5)(b)
+
+ocil_clause: 'it does not exist'
+
+ocil: |-
+    To verify that the <tt>exception.sites</tt> file exists,
+    run the following command:
+    <pre>$ ls /etc/.java/deployment</pre>
+    The output should contain:
+    <pre>exception.sites</pre>
