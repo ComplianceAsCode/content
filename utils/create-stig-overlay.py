@@ -16,7 +16,8 @@ ET = ssg.xml.ElementTree
 owner = "disastig"
 stig_ns = ["https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux",
            "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os",
-           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capplication-servers"]
+           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capplication-servers",
+           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capp-security-dev"]
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 dc_ns = "http://purl.org/dc/elements/1.1/"
 outfile = "stig_overlay.xml"
@@ -116,7 +117,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
 
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
-    
+
     dom = xml.dom.minidom.parseString(ET.tostring(new_stig_overlay, encoding="UTF-8", xml_declaration=True))
     pretty_xml_as_string = dom.toprettyxml(indent='  ', encoding="UTF-8")
     with open(outfile, 'wb') as f:
