@@ -590,8 +590,17 @@ controls:
 
   - id: R37
     level: minimal
-    title: Executables with setuid and/or setgid bits
-    # rules: TBD
+    title: Executables with setuid and setgid bits
+    notes: >-
+      Only programs specifically designed to be used with setuid or setgid bits can have these privilege bits set.
+      This requirement considers apropriate for setuid and setgid bits the binaries that are installed from
+      recognized and authorized repositories (covered in R15).
+      The remediation resets the sticky bit to intended value by vendor/developer, any finding after remediation
+      should be reviewed.
+    automated: yes
+    rules:
+    - file_permissions_unauthorized_suid
+    - file_permissions_unauthorized_sgid
 
   - id: R38
     level: enhanced
@@ -600,9 +609,7 @@ controls:
       Setuid executables should be as small as possible. When it is expected
       that only the administrators of the machine execute them, the setuid bit
       must be removed and prefer them commands like su or sudo, which can be monitored
-    rules:
-    - file_permissions_unauthorized_suid
-    - file_permissions_unauthorized_sgid
+    # rules: TBD
 
   - id: R39
     level: intermediary
