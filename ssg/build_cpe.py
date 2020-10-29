@@ -15,23 +15,57 @@ from .yaml import open_raw
 YAML_CPE_FILE = os.path.join("shared", "applicability", "cpes.yml")
 
 
-def load_all_cpes():
-    shared_dir = \
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    cpes_path = os.path.join(shared_dir, YAML_CPE_FILE)
-    return open_raw(cpes_path)
+class Yaml_CPEs(object):
+    """
+    Reads all the yaml CPEs from cpes.yml.
+    """
+
+    def __init__(self):
+        self.cpes_by_id = {}
+        self.cpes_by_name = {}
+
+        self.load_all_cpes()
+
+    def load_all_cpes(self):
+        shared_dir = \
+            os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        cpes_path = os.path.join(shared_dir, YAML_CPE_FILE)
+
+        self.cpes_by_id = open_raw(cpes_path)
+
+        # Generate a CPE map by name,
+        # so that we can easily reference them by CPE Name
+        # Note: After the shorthand is generated,
+        # all references to CPEs are by its name
+        for cpe_id, cpe in self.cpes_by_id.items():
+            self.cpes_by_name[cpe["name"]] = cpe
+
+    def _is_name(self, ref):
+        return ref.startswith("cpe:")
+
+    def get_cpe(self, ref):
+        if self._is_name(ref):
+            return self.cpes_by_name.get(ref)
+        else:
+            return self.cpes_by_id.get(ref)
+
+
+YAML_CPES = Yaml_CPEs()
 
 
 class CPEList(object):
+    """
+    Represents the cpe-list element from the CPE standard.
+    """
+
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
 
     def __init__(self):
-        self.all_cpes = load_all_cpes()
         self.cpe_items = []
 
     def add(self, cpe_name):
-        self.cpe_items.append(CPEItem(cpe_name, self.all_cpes["cpes"][cpe_name]))
+        self.cpe_items.append(CPEItem(cpe_name))
 
     def to_xml_element(self, cpe_oval_file):
         cpe_list = ET.Element("{%s}cpe-list" % CPEList.ns)
@@ -52,16 +86,17 @@ class CPEList(object):
 
 
 class CPEItem(object):
+    """
+    Represents the cpe-list element from the CPE standard.
+    """
+
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
 
-    def __init__(self, cpe_name, cpeitem_data=None):
-        if not cpeitem_data:
-            all_cpes = load_all_cpes()
-            cpeitem_data = all_cpes["cpes"][cpe_name]
+    def __init__(self, cpe_name):
+        cpeitem_data = YAML_CPES.get_cpe(cpe_name)
 
         self.name = cpeitem_data["name"]
-        self.id_ = cpeitem_data["id"]
         self.title = cpeitem_data["title"]
         self.check_id = cpeitem_data["check_id"]
 
@@ -79,7 +114,6 @@ class CPEItem(object):
         cpe_item_check.text = self.check_id
 
         return cpe_item
-
 
 
 def extract_subelement(objects, sub_elem_type):
