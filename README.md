@@ -139,7 +139,7 @@ detailed instructions.
 
 If ComplianceAsCode is not packaged in your distribution (it may be present there as `scap-security-guide` package), or if the
 version that is packaged is too old, you need to build the content yourself
-and install it via `make install`. Please see the [Developer Guide](docs/manual/developer_guide.adoc)
+and install it via `make install`. Please see the [Developer Guide](https://complianceascode.readthedocs.io/en/latest/en/latest/manual/developer/02_building_complianceascode.html)
 document for more info. We also recommend opening an issue on that distributions
 bug tracker to voice interest.
 
@@ -279,7 +279,7 @@ abstraction instead of using XCCDF for the input format.
 The SSG homepage is [https://www.open-scap.org/security-policies/scap-security-guide/](https://www.open-scap.org/security-policies/scap-security-guide/).
 
 * [SSG User Manual](docs/manual/user_guide.adoc)
-* [SSG Developer Guide](docs/manual/developer_guide.adoc)
+* [SSG Developer Guide](https://complianceascode.readthedocs.io/)
 * [Compliance As Code Blog](https://complianceascode.github.io/)
 
 ## Contributors ✨
