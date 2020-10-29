@@ -11,6 +11,7 @@ print_usage() {
     echo "    $cmdname -h                      Display this help message."
     echo "    $cmdname -n [namespace]          Build image in the given namespace (Defaults to 'openshift-compliance')."
     echo "    $cmdname -p                      Create ProfileBundle objects for the image."
+    echo "    $cmdname -c                      Build content in-cluster (NOTE: This ignores the products and debug flags)."
     echo "    $cmdname -d                      Build content using the --debug flag."
     echo "    $cmdname -P [product] (-P ...)   Specify applicable product(s) to build. This option can be specified multiple times. (Defaults to 'ocp4' 'rhcos4')"
     exit 0
@@ -22,10 +23,11 @@ parms=(--datastream-only)
 # "openshift-compliance"
 namespace="openshift-compliance"
 create_profile_bundles="false"
+build_in_cluster="false"
 products=()
 default_products=(ocp4 rhcos4)
 
-while getopts ":hdpn:P:" opt; do
+while getopts ":hdpcn:P:" opt; do
     case ${opt} in
         n ) # Set the namespace
             namespace=$OPTARG
@@ -35,6 +37,9 @@ while getopts ":hdpn:P:" opt; do
             ;;
         p ) # Create ProfileBundle objects
             create_profile_bundles="true"
+            ;;
+        c ) # Build content in-cluster
+            build_in_cluster="true"
             ;;
         h ) # Display help
             display_description
@@ -61,38 +66,51 @@ pushd $root_dir
 
 echo "* Building $(echo ${products[@]} | sed 's/ /, /g') products"
 
-# build the product's content
-"$root_dir/build_product" ${products[@]} "${params[@]}"
-result=$?
-
-if [ "$result" != "0" ]; then
-    echo "Error building content"
-    exit $result
-fi
-
 if [ "$namespace" == "openshift-compliance" ]; then
     # Ensure openshift-compliance namespace exists. If it already exists, this
     # is not a problem.
     oc apply -f "$root_dir/ocp-resources/compliance-operator-ns.yaml"
 fi
 
-# Create buildconfig and ImageStream
-# This enables us to create a configuration so we can build a container
-# with the datastream
-# If they already exist, this is not a problem
-oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-build.yaml"
+if [ "$build_in_cluster" == "false" ];then
+    # build the product's content
+    "$root_dir/build_product" ${products[@]} "${params[@]}"
+    result=$?
 
-# Create output directory
-ds_dir=$(mktemp -d)
+    if [ "$result" != "0" ]; then
+        echo "Error building content"
+        exit $result
+    fi
 
-# Copy datastream files to output directory
-cp "$root_dir/build/"*-ds.xml "$ds_dir"
+    # Create buildconfig and ImageStream
+    # This enables us to create a configuration so we can build a container
+    # with the datastream
+    # If they already exist, this is not a problem
+    oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-from-local-build.yaml"
+
+    # Create output directory
+    from_dir=$(mktemp -d)
+
+    # Copy datastream files to output directory
+    cp "$root_dir/build/"*-ds.xml "$from_dir"
+else
+    # Create buildconfig and ImageStream
+    # This enables us to create a configuration so we can build a container
+    # with the datastream
+    # If they already exist, this is not a problem
+    oc apply -n "$namespace" -f "$root_dir/ocp-resources/ds-build-remote.yaml"
+
+    # We'll copy the local contents for the build to happen remotely
+    from_dir="."
+fi
 
 # Start build
-oc start-build -n "$namespace" "openscap-ocp4-ds" --from-dir="$ds_dir"
+oc start-build -n "$namespace" "openscap-ocp4-ds" --from-dir="$from_dir"
 
-# Clean output directory
-rm -rf "$ds_dir"
+if [ "$build_in_cluster" == "false" ];then
+    # Clean output directory
+    rm -rf "$from_dir"
+fi
 
 # Wait some seconds until the object gets persisted
 sleep 5
@@ -126,6 +144,11 @@ while true; do
         echo "Check the logs"
         exit 1
     fi
-    echo "Retrying... build status is still: $build_status"
+    echo "Build status is still: $build_status"
+
+    # Follow logs to express actual output
+    if [ "$build_in_cluster" == "true" ];then
+        oc logs -f "openscap-ocp4-ds-$latest_build-build"
+    fi
 done
 
