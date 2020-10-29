@@ -130,7 +130,7 @@ Each zip file is an archive with ready-made SCAP source datastreams.
 
 We maintain a COPR repository that provides unofficial builds of latest versions
 of openscap, scap-security-guide, scap-workbench, and openscap-daemon.
-The packages are suitable for use on Red Hat Enterprise Linux 6 and 7 and CentOS 6 and 7.
+The packages are suitable for use on Red Hat Enterprise Linux 6, 7 and 8 and CentOS 6, 7 and 8.
 
 See https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/ for
 detailed instructions.
@@ -171,7 +171,7 @@ all possible choices using:
 oscap info /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 ```
 
-Please see the [OpenSCAP User Manual](https://static.open-scap.org/openscap-1.2/oscap_user_manual.html)
+Please see the [OpenSCAP User Manual](https://static.open-scap.org/openscap-1.3/oscap_user_manual.html)
 for more info.
 
 ### SCAP Workbench
@@ -182,7 +182,7 @@ or remote (via SSH). New versions of SCAP Workbench have SSG integration
 and will automatically offer it when the application is started.
 
 Please see the
-[SCAP Workbench User Manual](https://static.open-scap.org/scap-workbench-1.1/)
+[SCAP Workbench User Manual](https://static.open-scap.org/scap-workbench-1.2/)
 for more info.
 
 ### `oscap-ssh` tool
