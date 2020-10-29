@@ -462,6 +462,8 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "sssd": "sssd-common",
   "zipl": "s390utils-base",
   "sssd-ldap": None,  # Force package check wrapping skip
+  "uefi": None,
+  "non-uefi": None,
 }
 
 # _version_name_map = {
