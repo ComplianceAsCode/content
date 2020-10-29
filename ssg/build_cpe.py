@@ -74,6 +74,7 @@ class CPEList(object):
                      "http://cpe.mitre.org/dictionary/2.0 "
                      "http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd")
 
+        self.cpe_items.sort(key=lambda cpe: cpe.name)
         for cpe_item in self.cpe_items:
             cpe_list.append(cpe_item.to_xml_element(cpe_oval_file))
 
