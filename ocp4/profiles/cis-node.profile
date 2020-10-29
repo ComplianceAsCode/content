@@ -13,6 +13,8 @@ description: |-
 
     Note that this part of the profile is meant to run on the Operating System that
     Red Hat OpenShift Container Platform 4 runs on top of.
+
+    This profile is applicable to OpenShift versions 4.6 and greater.
 selections:
   ### 1. Control Plane Components
   ###
