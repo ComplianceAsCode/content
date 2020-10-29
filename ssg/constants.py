@@ -452,7 +452,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "zipl": "cpe:/a:zipl",
     "net-snmp": "cpe:/a:net-snmp",
     "uefi": "cpe:/a:uefi",
-    "bios": "cpe:/a:bios",
+    "non-uefi": "cpe:/a:non-uefi",
 }
 
 # Default platform to package mapping
