@@ -42,13 +42,13 @@ def add_cpes(elem, namespace, mapping):
     return affected
 
 
-def add_cpe_item_to_dictionary(tree_root, derivative):
+def add_cpe_item_to_dictionary(tree_root, cpe_ref, cpe_oval_filename):
     cpe_list = tree_root.find(".//{%s}cpe-list" % (PREFIX_TO_NS["cpe-dict"]))
     if cpe_list:
-        derivative_cpe_names = PRODUCT_TO_CPE_MAPPING[derivative]
+        derivative_cpe_names = PRODUCT_TO_CPE_MAPPING[cpe_ref]
         for cpe_name in derivative_cpe_names:
             cpe_item = CPEItem(cpe_name)
-            cpe_list.append(cpe_item.to_xml_element("ssg-%s-cpe-oval.xml" % derivative))
+            cpe_list.append(cpe_item.to_xml_element(cpe_oval_filename)
 
 
 def add_notice(benchmark, namespace, notice, warning):
