@@ -1088,7 +1088,7 @@ the following to `rule.yml`:
 
 ### List of available templates
 
-accounts_password  
+#### accounts_password
 -   Checks if PAM enforces password quality requirements. Checks the
     configuration in `/etc/pam.d/system-auth` (for RHEL 6 systems) or
     `/etc/security/pwquality.conf` (on other systems).
@@ -1102,7 +1102,7 @@ accounts_password
 
 -   Languages: OVAL
 
-auditd_lineinfile  
+#### auditd_lineinfile
 -   Checks configuration options of the Audit Daemon in
     `/etc/audit/auditd.conf`.
 
@@ -1119,7 +1119,7 @@ auditd_lineinfile
 
 -   Languages: Ansible, Bash, OVAL
 
-audit_rules_dac_modification  
+#### audit_rules_dac_modification
 -   Checks Audit Discretionary Access Control rules
 
 -   Parameters:
@@ -1128,7 +1128,7 @@ audit_rules_dac_modification
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
-audit_rules_file_deletion_events  
+#### audit_rules_file_deletion_events
 -   Ensure auditd Collects file deletion events
 
 -   Parameters:
@@ -1137,7 +1137,7 @@ audit_rules_file_deletion_events
 
 -   Languages: Ansible, Bash, OVAL
 
-audit_rules_login_events  
+#### audit_rules_login_events
 -   Checks if there are Audit rules that record attempts to alter logon
     and logout events.
 
@@ -1148,7 +1148,7 @@ audit_rules_login_events
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
-audit_rules_path_syscall  
+#### audit_rules_path_syscall
 -   Check if there are Audit rules to record events that modify
     user/group information via a syscall on a specific file.
 
@@ -1162,7 +1162,7 @@ audit_rules_path_syscall
 
 -   Languages: Ansible, Bash, OVAL
 
-audit_rules_privileged_commands  
+#### audit_rules_privileged_commands
 -   Ensure Auditd collects information on the use of specified
     privileged command.
 
@@ -1173,7 +1173,7 @@ audit_rules_privileged_commands
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
-audit_file_contents  
+#### audit_file_contents
 -   Ensure that audit `.rules` file specified by parameter `filepath`
     contains the contents specified in parameter `contents`.
 
@@ -1186,7 +1186,7 @@ audit_file_contents
 
 -   Languages: Ansible, Bash, OVAL
 
-audit_rules_unsuccessful_file_modification  
+#### audit_rules_unsuccessful_file_modification
 -   Ensure there is an Audit rule to record unsuccessful attempts to
     access files
 
@@ -1196,7 +1196,7 @@ audit_rules_unsuccessful_file_modification
 
 -   Languages: Ansible, Bash, OVAL
 
-audit_rules_unsuccessful_file_modification_o_creat  
+#### audit_rules_unsuccessful_file_modification_o_creat
 -   Ensure there is an Audit rule to record unsuccessful attempts to
     access files when O_CREAT flag is specified.
 
@@ -1209,7 +1209,7 @@ audit_rules_unsuccessful_file_modification_o_creat
 
 -   Languages: OVAL
 
-audit_rules_unsuccessful_file_modification_o_trunc_write  
+#### audit_rules_unsuccessful_file_modification_o_trunc_write
 -   Ensure there is an Audit rule to record unsuccessful attempts to
     access files when O_TRUNC_WRITE flag is specified.
 
@@ -1222,7 +1222,7 @@ audit_rules_unsuccessful_file_modification_o_trunc_write
 
 -   Languages: OVAL
 
-audit_rules_unsuccessful_file_modification_rule_order  
+#### audit_rules_unsuccessful_file_modification_rule_order
 -   Ensure that Audit rules for unauthorized attempts to use a specific
     system call are ordered correctly.
 
@@ -1235,7 +1235,7 @@ audit_rules_unsuccessful_file_modification_rule_order
 
 -   Languages: OVAL
 
-audit_rules_usergroup_modification  
+#### audit_rules_usergroup_modification
 -   Check if Audit is configured to record events that modify account
     changes.
 
@@ -1246,7 +1246,7 @@ audit_rules_usergroup_modification
 
 -   Languages: Ansible, Bash, OVAL
 
-argument_value_in_line  
+#### argument_value_in_line
 -   Checks that `argument=value` pair is present in (optionally) the
     line started with line_prefix (and, optionally, ending with
     line_suffix) in the file(s) defined by filepath.
@@ -1268,7 +1268,7 @@ argument_value_in_line
 
 -   Languages: OVAL
 
-file_groupowner  
+#### file_groupowner
 -   Check group that owns the given file.
 
 -   Parameters:
@@ -1292,7 +1292,7 @@ file_groupowner
 
 -   Languages: Ansible, Bash, OVAL
 
-file_owner  
+#### file_owner
 -   Check user that owns the given file.
 
 -   Parameters:
@@ -1316,7 +1316,7 @@ file_owner
 
 -   Languages: Ansible, Bash, OVAL
 
-file_permissions  
+#### file_permissions
 -   Checks permissions (mode) on a given file.
 
 -   Parameters:
@@ -1341,7 +1341,7 @@ file_permissions
 
 -   Languages: Ansible, Bash, OVAL
 
-grub2_bootloader_argument  
+#### grub2_bootloader_argument
 -   Checks kernel command line arguments in GRUB 2 configuration.
 
 -   Parameters:
@@ -1352,7 +1352,7 @@ grub2_bootloader_argument
 
 -   Languages: Ansible, Bash, OVAL
 
-kernel_module_disabled  
+#### kernel_module_disabled
 -   Checks if the given Linux kernel module is disabled.
 
 -   Parameters:
@@ -1361,7 +1361,7 @@ kernel_module_disabled
 
 -   Languages: Ansible, Bash, OVAL
 
-mount  
+#### mount
 -   Checks that a given mount point is located on a separate partition.
 
 -   Parameters:
@@ -1370,7 +1370,7 @@ mount
 
 -   Languages: Anaconda, OVAL
 
-mount_option  
+#### mount_option
 -   Checks if a given partition is mounted with a specific option such
     as "nosuid".
 
@@ -1394,7 +1394,7 @@ mount_option
 
 -   Languages: Anaconda, Ansible, Bash, OVAL
 
-mount_option_remote_filesystems  
+#### mount_option_remote_filesystems
 -   Checks if all remote filesystems (NFS mounts in `/etc/fstab`) are
     mounted with a specific option.
 
@@ -1417,7 +1417,7 @@ mount_option_remote_filesystems
 
 -   Languages: Ansible, Bash, OVAL
 
-mount_option_removable_partitions  
+#### mount_option_removable_partitions
 -   Checks if all removable media mounts are mounted with a specific
     option. Unlike other mount option templates, this template doesn’t
     use the mount point, but the block device. The block device path
@@ -1431,7 +1431,7 @@ mount_option_removable_partitions
 
 -   Languages: Anaconda, Ansible, Bash, OVAL
 
-package_installed  
+#### package_installed
 -   Checks if a given package is installed. Optionally, it can also
     check whether a specific version or newer is installed.
 
@@ -1448,7 +1448,7 @@ package_installed
 
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet
 
-package_removed  
+#### package_removed
 -   Checks if the given package is not installed.
 
 -   Parameters:
@@ -1457,7 +1457,7 @@ package_removed
 
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet
 
-sebool  
+#### sebool
 -   Checks values of SELinux booleans.
 
 -   Parameters:
@@ -1477,7 +1477,7 @@ sebool
 
 -   Languages: Ansible, Bash, OVAL
 
-service_disabled  
+#### service_disabled
 -   Checks if a service is disabled. Uses either systemd or SysV init
     based on the product configuration in `product.yml`.
 
@@ -1500,7 +1500,7 @@ service_disabled
 
 -   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes
 
-service_enabled  
+#### service_enabled
 -   Checks if a system service is enabled. Uses either systemd or SysV
     init based on the product configuration in `product.yml`.
 
@@ -1519,7 +1519,7 @@ service_enabled
 
 -   Languages: Ansible, Bash, OVAL, Puppet
 
-shell_lineinfile  
+#### shell_lineinfile
 -   Checks shell variable assignments in files. Remediations will paste
     assignments with single shell quotes unless there is the dollar sign
     in the value string, in which case double quotes are administered.
@@ -1563,7 +1563,7 @@ shell_lineinfile
         form would be checked for, and the unquoted assignment would be
         inserted to the file by the remediation if not present.
 
-sshd_lineinfile  
+#### sshd_lineinfile
 -   Checks SSH server configuration items in `/etc/ssh/sshd_config`.
 
 -   Parameters:
@@ -1580,7 +1580,7 @@ sshd_lineinfile
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
-sysctl  
+#### sysctl
 -   Checks sysctl parameters. The OVAL definition checks both
     configuration and runtime settings and require both of them to be
     set to the desired value to return true.
@@ -1597,7 +1597,7 @@ sysctl
 
 -   Languages: Ansible, Bash, OVAL
 
-timer_enabled  
+#### timer_enabled
 -   Checks if a SystemD timer unit is enabled.
 
 -   Parameters:
@@ -1612,7 +1612,7 @@ timer_enabled
 
 -   Languages: Ansible, Bash, OVAL
 
-yamlfile_value  
+#### yamlfile_value
 -   Check if value(s) of certain type is (are) present in a YAML (or
     JSON) file at a given path.
 
