@@ -29,14 +29,6 @@ lang_to_ext_map = {
 templates = dict()
 
 
-def template(langs):
-    def decorator_template(func):
-        func.langs = langs
-        templates[func.__name__] = func
-        return func
-    return decorator_template
-
-
 class Template():
     def __init__(self, template_root_directory, name):
         self.template_root_directory = template_root_directory
