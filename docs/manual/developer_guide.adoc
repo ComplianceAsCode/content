@@ -1793,8 +1793,9 @@ template.
 new subdirectory will become the template name.
 
 2) For each language supported by this template, create a corresponding file
-within the template directory. The file namess should be the same of the name of
-the language in lower case, e.g. `oval`, `bash` etc.
+within the template directory. File names should have format of `LANG.template`,
+where _LANG_ should be the language  identifier in lower case, e.g.
+`oval.template`, `bash.template` etc.
 
 Use the Jinja syntax we use elsewhere in the project; refer to the earlier
 section on Jinja macros for more information.  The parameters should be named
@@ -1802,7 +1803,8 @@ using uppercase letters, because the keys from `rule.yml` are converted to
 uppercase by the code that substitutes the parameters to the template.
 
 Notice that OVAL should be written in shorthand format.  This is an example of
-an OVAL template file called _oval_ within the _package_installed_ directory:
+an OVAL template file called _oval.template_ within the _package_installed_
+directory:
 
 [source,xml]
 ----
@@ -1825,7 +1827,7 @@ an OVAL template file called _oval_ within the _package_installed_ directory:
 </def-group>
 ----
 
-And here is the Ansible template file called _ansible_ within the
+And here is the Ansible template file called _ansible.template_ within the
 _package_installed_ directory:
 
 ----
