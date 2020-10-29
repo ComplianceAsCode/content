@@ -1,6 +1,7 @@
 import ssg.utils
 from xml.sax.saxutils import unescape
 
+
 def preprocess(data, lang):
     if lang == "oval":
         pathid = ssg.utils.escape_id(data["filepath"])

@@ -1,5 +1,6 @@
 import ssg.utils
 
+
 def preprocess(data, lang):
     data["sysctlid"] = ssg.utils.escape_id(data["sysctlvar"])
     if not data.get("sysctlval"):

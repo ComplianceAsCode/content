@@ -1,5 +1,6 @@
 import re
 
+
 def preprocess(data, lang):
     if "evr" in data:
         evr = data["evr"]

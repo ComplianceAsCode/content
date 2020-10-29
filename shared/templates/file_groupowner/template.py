@@ -8,6 +8,7 @@ def _file_owner_groupowner_permissions_regex(data):
             "specify a directory. Append '/' to the filepath or remove the "
             "'file_regex' key.".format(data["_rule_id"], data["filepath"]))
 
+
 def preprocess(data, lang):
     _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":

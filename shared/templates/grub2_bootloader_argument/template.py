@@ -1,5 +1,6 @@
 import ssg.utils
 
+
 def preprocess(data, lang):
     data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
     if lang == "oval":

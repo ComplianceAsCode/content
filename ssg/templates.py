@@ -49,8 +49,10 @@ class Template():
                 self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
-        preprocess_mod = None #temporarily imported module containing preprocessing function
-        spec = importlib.util.spec_from_file_location("preprocess_mod", self.preprocessing_file_path)
+        preprocess_mod = None  # temporarily imported module containing preprocessing function
+        spec = importlib.util.spec_from_file_location(
+            "preprocess_mod", self.preprocessing_file_path
+        )
         preprocess_mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(preprocess_mod)
         parameters = preprocess_mod.preprocess(parameters.copy(), lang)

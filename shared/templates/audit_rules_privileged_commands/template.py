@@ -1,6 +1,7 @@
 import ssg.utils
 import os
 
+
 def preprocess(data, lang):
     path = data["path"]
     name = ssg.utils.escape_id(os.path.basename(path))
