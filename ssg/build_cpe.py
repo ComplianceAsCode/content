@@ -57,7 +57,8 @@ class Yaml_CPEs(object):
             os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         cpes_path = os.path.join(ssg_root, YAML_CPE_FILE)
 
-        self.cpes_by_id = open_raw(cpes_path)
+        # "cpes" key is here for readability
+        self.cpes_by_id = open_raw(cpes_path)["cpes"]
         for product in self.product_cpes:
             self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes[product])
 

@@ -1,104 +1,105 @@
-centos6:
-  name: "cpe:/o:centos:centos:6"
-  title: "CentOS 6"
-  check_id: installed_OS_is_centos6
+cpes:
+  centos6:
+    name: "cpe:/o:centos:centos:6"
+    title: "CentOS 6"
+    check_id: installed_OS_is_centos6
 
-centos7:
-  name: "cpe:/o:centos:centos:7"
-  title: "CentOS 7"
-  check_id: installed_OS_is_centos7
+  centos7:
+    name: "cpe:/o:centos:centos:7"
+    title: "CentOS 7"
+    check_id: installed_OS_is_centos7
 
-centos8:
-  name: "cpe:/o:centos:centos:8"
-  title: "CentOS 8"
-  check_id: installed_OS_is_centos8
+  centos8:
+    name: "cpe:/o:centos:centos:8"
+    title: "CentOS 8"
+    check_id: installed_OS_is_centos8
 
-chrony:
-  name: "cpe:/a:chrony"
-  title: "Package chrony is installed"
-  check_id: installed_env_has_chrony_package
+  chrony:
+    name: "cpe:/a:chrony"
+    title: "Package chrony is installed"
+    check_id: installed_env_has_chrony_package
 
-container:
-  name: "cpe:/a:container"
-  title: "Container"
-  check_id: installed_env_is_a_container
+  container:
+    name: "cpe:/a:container"
+    title: "Container"
+    check_id: installed_env_is_a_container
 
-gdm:
-  name: "cpe:/a:gdm"
-  title: "Package gdm is installed"
-  check_id: installed_env_has_gdm_package
+  gdm:
+    name: "cpe:/a:gdm"
+    title: "Package gdm is installed"
+    check_id: installed_env_has_gdm_package
 
-grub2:
-  name: "cpe:/a:grub2"
-  title: "Package grub2 is installed"
-  check_id: installed_env_has_grub2_package
+  grub2:
+    name: "cpe:/a:grub2"
+    title: "Package grub2 is installed"
+    check_id: installed_env_has_grub2_package
 
-libuser:
-  name: "cpe:/a:libuser"
-  title: "Package libuser is installed"
-  check_id: installed_env_has_libuser_package
+  libuser:
+    name: "cpe:/a:libuser"
+    title: "Package libuser is installed"
+    check_id: installed_env_has_libuser_package
 
-login_defs:
-  name: "cpe:/a:login_defs"
-  title: "Package providing /etc/login.defs is installed"
-  check_id: installed_env_has_login_defs
+  login_defs:
+    name: "cpe:/a:login_defs"
+    title: "Package providing /etc/login.defs is installed"
+    check_id: installed_env_has_login_defs
 
-machine:
-  name: "cpe:/a:machine"
-  title: "Bare-metal or Virtual Machine"
-  check_id: installed_env_is_a_machine
+  machine:
+    name: "cpe:/a:machine"
+    title: "Bare-metal or Virtual Machine"
+    check_id: installed_env_is_a_machine
 
-net-snmp:
-  name: "cpe:/a:net-snmp"
-  title: "Package net-snmp is installed"
-  check_id: installed_env_has_net-snmp_package
+  net-snmp:
+    name: "cpe:/a:net-snmp"
+    title: "Package net-snmp is installed"
+    check_id: installed_env_has_net-snmp_package
 
-nss-pam-ldapd:
-  name: "cpe:/a:nss-pam-ldapd"
-  title: "Package nss-pam-ldapd is installed"
-  check_id: installed_env_has_nss-pam-ldapd_package
+  nss-pam-ldapd:
+    name: "cpe:/a:nss-pam-ldapd"
+    title: "Package nss-pam-ldapd is installed"
+    check_id: installed_env_has_nss-pam-ldapd_package
 
-ntp:
-  name: "cpe:/a:ntp"
-  title: "Package ntp is installed"
-  check_id: installed_env_has_ntp_package
+  ntp:
+    name: "cpe:/a:ntp"
+    title: "Package ntp is installed"
+    check_id: installed_env_has_ntp_package
 
-pam:
-  name: "cpe:/a:pam"
-  title: "Package pam is installed"
-  check_id: installed_env_has_pam_package
+  pam:
+    name: "cpe:/a:pam"
+    title: "Package pam is installed"
+    check_id: installed_env_has_pam_package
 
-sl6:
-  name: "cpe:/o:scientificlinux:scientificlinux:6"
-  title: "Scientific Linux 6"
-  check_id: installed_OS_is_sl6
+  sl6:
+    name: "cpe:/o:scientificlinux:scientificlinux:6"
+    title: "Scientific Linux 6"
+    check_id: installed_OS_is_sl6
 
-sl7:
-  name: "cpe:/o:scientificlinux:scientificlinux:7"
-  title: "Scientific Linux 7"
-  check_id: installed_OS_is_sl7
+  sl7:
+    name: "cpe:/o:scientificlinux:scientificlinux:7"
+    title: "Scientific Linux 7"
+    check_id: installed_OS_is_sl7
 
-sssd:
-  name: "cpe:/a:sssd"
-  title: "Package sssd-common is installed"
-  check_id: installed_env_has_sssd-common_package
+  sssd:
+    name: "cpe:/a:sssd"
+    title: "Package sssd-common is installed"
+    check_id: installed_env_has_sssd-common_package
 
-sssd-ldap:
-  name: "cpe:/a:sssd-ldap"
-  title: "SSSD is configured to use LDAP"
-  check_id: sssd_conf_uses_ldap
+  sssd-ldap:
+    name: "cpe:/a:sssd-ldap"
+    title: "SSSD is configured to use LDAP"
+    check_id: sssd_conf_uses_ldap
 
-systemd:
-  name: "cpe:/a:systemd"
-  title: "Package systemd is installed"
-  check_id: installed_env_has_systemd_package
+  systemd:
+    name: "cpe:/a:systemd"
+    title: "Package systemd is installed"
+    check_id: installed_env_has_systemd_package
 
-yum:
-  name: "cpe:/a:yum"
-  title: "Package yum is installed"
-  check_id: installed_env_has_yum_package
+  yum:
+    name: "cpe:/a:yum"
+    title: "Package yum is installed"
+    check_id: installed_env_has_yum_package
 
-zipl:
-  name: "cpe:/a:zipl"
-  title: "System uses zipl"
-  check_id: installed_env_has_zipl_package
+  zipl:
+    name: "cpe:/a:zipl"
+    title: "System uses zipl"
+    check_id: installed_env_has_zipl_package
