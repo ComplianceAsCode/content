@@ -8,6 +8,15 @@ from .constants import product_directories
 from .yaml import open_raw
 
 
+def get_all_product_yamls(ssg_root):
+    product_yamls = []
+    for product in product_directories:
+        product_dir = os.path.join(ssg_root, product)
+        product_yaml_path = os.path.join(product_dir, "product.yml")
+        product_yamls.append(open_raw(product_yaml_path))
+
+    return product_yamls
+
 def get_all(ssg_root):
     """
     Analyzes all products in the SSG root and sorts them into two categories:
@@ -18,11 +27,10 @@ def get_all(ssg_root):
     linux_products = set()
     other_products = set()
 
-    for product in product_directories:
+    product_yamls = get_all_product_yamls(ssg_root)
+    for product_yaml in product_yamls:
+        product = product_yaml["product"]
         product_dir = os.path.join(ssg_root, product)
-        product_yaml_path = os.path.join(product_dir, "product.yml")
-        product_yaml = open_raw(product_yaml_path)
-
         guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
         guide_dir = os.path.abspath(guide_dir)
 

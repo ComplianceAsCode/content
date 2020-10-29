@@ -8,6 +8,8 @@ import os
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
+from .products import get_all_product_yamls
+from .utils import merge_dicts
 from .xml import ElementTree as ET
 from .yaml import open_raw
 
@@ -27,15 +29,37 @@ class Yaml_CPEs(object):
     def __init__(self):
         self.cpes_by_id = {}
         self.cpes_by_name = {}
+        self.product_cpes = {}
 
+        self._load_all_product_cpes()
         self.load_all_cpes()
 
-    def load_all_cpes(self):
-        shared_dir = \
+    def _load_all_product_cpes(self):
+        ssg_root = \
             os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-        cpes_path = os.path.join(shared_dir, YAML_CPE_FILE)
+        product_yamls = get_all_product_yamls(ssg_root)
+
+        for product in product_yamls:
+            product_id = product["product"]
+            try:
+                product_cpes = product["cpes"]
+
+                self.product_cpes[product_id] = {}
+                for cpe_id in product_cpes.keys():
+                    self.product_cpes[product_id][cpe_id] = product_cpes[cpe_id]
+
+            except KeyError:
+                print("Product %s does not define cpes" % (product_id))
+                raise
+
+    def load_all_cpes(self):
+        ssg_root = \
+            os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        cpes_path = os.path.join(ssg_root, YAML_CPE_FILE)
 
         self.cpes_by_id = open_raw(cpes_path)
+        for product in self.product_cpes:
+            self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes[product])
 
         # Generate a CPE map by name,
         # so that we can easily reference them by CPE Name

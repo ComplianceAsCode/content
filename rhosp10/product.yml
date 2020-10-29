@@ -10,6 +10,12 @@ pkg_manager: "yum"
 
 init_system: "systemd"
 
+cpes:
+  rhosp10:
+    name: "cpe:/a:redhat:openstack:10"
+    title: "Red Hat OpenStack Platform 10"
+    check_id: installed_app_is_rhosp10
+
 # Mapping of CPE platform to package
 platform_package_overrides:
   login_defs: "shadow-utils"
