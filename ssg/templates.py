@@ -37,7 +37,8 @@ class Template():
         self.preprocessing_file_path = os.path.join(self.template_path, preprocessing_file_name)
         self.langs = []
         for lang in languages:
-            if os.path.exists(os.path.join(self.template_path, lang)):
+            langfilename = lang + ".template"
+            if os.path.exists(os.path.join(self.template_path, langfilename)):
                 self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
@@ -99,7 +100,8 @@ class Builder(object):
         """
         if lang not in templates[template_name].langs:
             return
-        template_file_path = os.path.join(self.templates_dir, template_name, lang)
+        template_file_name = lang + ".template"
+        template_file_path = os.path.join(self.templates_dir, template_name, template_file_name)
         ext = lang_to_ext_map[lang]
         output_file_name = rule_id + ext
         output_filepath = os.path.join(
