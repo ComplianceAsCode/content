@@ -430,27 +430,6 @@ OCILREFATTR_TO_TAG = {
     "question_ref": "question",
 }
 
-XCCDF_PLATFORM_TO_CPE = {
-    "machine": "cpe:/a:machine",
-    "container": "cpe:/a:container",
-    "chrony": "cpe:/a:chrony",
-    "gdm": "cpe:/a:gdm",
-    "grub2": "cpe:/a:grub2",
-    "libuser": "cpe:/a:libuser",
-    "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
-    "ntp": "cpe:/a:ntp",
-    "pam": "cpe:/a:pam",
-    "login_defs": "cpe:/a:login_defs",
-    "sssd": "cpe:/a:sssd",
-    "sssd-ldap": "cpe:/a:sssd-ldap",
-    "systemd": "cpe:/a:systemd",
-    "yum": "cpe:/a:yum",
-    "zipl": "cpe:/a:zipl",
-    "net-snmp": "cpe:/a:net-snmp",
-    "uefi": "cpe:/a:uefi",
-    "non-uefi": "cpe:/a:non-uefi",
-}
-
 # Default platform to package mapping
 XCCDF_PLATFORM_TO_PACKAGE = {
   "grub2": "grub2-common",

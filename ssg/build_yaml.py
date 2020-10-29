@@ -12,7 +12,7 @@ from xml.sax.saxutils import escape
 
 import yaml
 
-from .constants import XCCDF_PLATFORM_TO_CPE
+from .build_cpe import get_cpe_name, CPEDoesNotExist
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
@@ -753,9 +753,10 @@ class Group(object):
         if self.platform:
             platform_el = ET.SubElement(group, "platform")
             try:
-                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
-            except KeyError:
-                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                platform_cpe = get_cpe_name(self.platform)
+            except CPEDoesNotExist:
+                print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                raise
             platform_el.set("idref", platform_cpe)
 
         for _value in self.values.values():
@@ -1174,9 +1175,10 @@ class Rule(object):
         if self.platform:
             platform_el = ET.SubElement(rule, "platform")
             try:
-                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
-            except KeyError:
-                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                platform_cpe = get_cpe_name(self.platform)
+            except CPEDoesNotExist:
+                print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                raise
             platform_el.set("idref", platform_cpe)
 
         return rule

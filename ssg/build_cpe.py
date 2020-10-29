@@ -15,6 +15,10 @@ from .yaml import open_raw
 YAML_CPE_FILE = os.path.join("shared", "applicability", "cpes.yml")
 
 
+class CPEDoesNotExist(Exception):
+    pass
+
+
 class Yaml_CPEs(object):
     """
     Reads all the yaml CPEs from cpes.yml.
@@ -44,14 +48,21 @@ class Yaml_CPEs(object):
         return ref.startswith("cpe:")
 
     def get_cpe(self, ref):
-        if self._is_name(ref):
-            return self.cpes_by_name.get(ref)
-        else:
-            return self.cpes_by_id.get(ref)
+        try:
+            if self._is_name(ref):
+                return self.cpes_by_name[ref]
+            else:
+                return self.cpes_by_id[ref]
+        except KeyError:
+            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, YAML_CPE_FILE))
 
 
 YAML_CPES = Yaml_CPEs()
 
+
+def get_cpe_name(cpe_id):
+    cpe = YAML_CPES.get_cpe(cpe_id)
+    return cpe.get("name")
 
 class CPEList(object):
     """
