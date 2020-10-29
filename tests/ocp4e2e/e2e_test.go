@@ -55,7 +55,7 @@ func TestE2e(t *testing.T) {
 		ctx.waitForComplianceSuite(suite)
 		numberOfRemediations = ctx.getRemediationsForSuite(suite)
 		numberOfFailuresInit = ctx.getFailuresForSuite(suite)
-		numberOfCheckResultsInit = ctx.getCheckResultsForSuite(suite)
+		numberOfCheckResultsInit = ctx.verifyCheckResultsForSuite(suite, false)
 		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(suite)
 	})
 
@@ -71,7 +71,7 @@ func TestE2e(t *testing.T) {
 			ctx.doRescan(suite)
 			ctx.waitForComplianceSuite(suite)
 			numberOfFailuresEnd = ctx.getFailuresForSuite(suite)
-			numberOfCheckResultsEnd = ctx.getCheckResultsForSuite(suite)
+			numberOfCheckResultsEnd = ctx.verifyCheckResultsForSuite(suite, true)
 		})
 
 		t.Run("We should have the same number of check results in each scan", func(t *testing.T) {
