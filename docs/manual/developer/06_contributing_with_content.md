@@ -1086,7 +1086,7 @@ the following to `rule.yml`:
 > strings as arguments until **Python 2** is completely removed from the
 > list of supported interpreters.
 
-### List of available templates
+### Available Templates
 
 #### accounts_password
 -   Checks if PAM enforces password quality requirements. Checks the
