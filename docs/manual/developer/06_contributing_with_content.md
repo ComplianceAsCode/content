@@ -2001,9 +2001,9 @@ Python.
 
 ### Python
 
--   The common pattern is to dynamically add the `shared/modules` to the
-    import path. The `ssgcommon` module has many useful utility
-    functions and predefined constants. See scripts at `./build-scripts`
+-   The common pattern is to dynamically add `ssg` to the
+    import path. There are many useful modules with several functions
+    and predefined constants. See scripts at `./build-scripts`
     as an example of this practice.
 
 -   Follow the [PEP8
