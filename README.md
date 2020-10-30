@@ -171,7 +171,7 @@ all possible choices using:
 oscap info /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 ```
 
-Please see the [OpenSCAP User Manual](https://static.open-scap.org/openscap-1.3/oscap_user_manual.html)
+Please see the [OpenSCAP](https://www.open-scap.org/)
 for more info.
 
 ### SCAP Workbench
@@ -182,7 +182,7 @@ or remote (via SSH). New versions of SCAP Workbench have SSG integration
 and will automatically offer it when the application is started.
 
 Please see the
-[SCAP Workbench User Manual](https://static.open-scap.org/scap-workbench-1.2/)
+[SCAP Workbench](https://www.open-scap.org/tools/scap-workbench/)
 for more info.
 
 ### `oscap-ssh` tool
