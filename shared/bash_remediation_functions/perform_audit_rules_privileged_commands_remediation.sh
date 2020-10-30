@@ -103,7 +103,6 @@ do
 		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'[^[:graph:]]/!d'		\
 				-e '/-F path=[^[:space:]]\+/!d'						\
 				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=\(4294967295\|unset\)/!d'	\
-				-e '/-F perm=[rwxa]\+/d' \
 				-e '/-k \|-F key=/!d' "$afile")
 
 		# Increase the count of inspected files for this sbinary
@@ -123,10 +122,26 @@ do
 			readarray -t handled_sbinaries < <(grep -o -e "-F path=[^[:space:]]\+" <<< "$concrete_rule")
 			handled_sbinaries=("${handled_sbinaries[@]//-F path=/}")
 
-			# Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
+		# 		Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
 			readarray -t sbinaries_to_skip < <(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo "$i"; done | sort -du)
 
+			# if there is aa -F perm flag, remove it
+			if grep -q '.*-F\s\+perm=[rwxa]\+.*' <<< "$concrete_rule"; then
 
+				# Separate concrete_rule into three sections using hash '#'
+				# sign as a delimiter around rule's permission section borders
+				# note that the trailing space after perm flag is captured because there would be 
+				# two consecutive spaces after joining remaining parts of the rule together
+				concrete_rule="$(echo "$concrete_rule" | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\ \?\)\+/\1#\2#/p")"
+
+				# Split concrete_rule into head, perm, and tail sections using hash '#' delimiter
+				rule_head=$(cut -d '#' -f 1 <<< "$concrete_rule")
+				rule_perm=$(cut -d '#' -f 2 <<< "$concrete_rule")
+				rule_tail=$(cut -d '#' -f 3 <<< "$concrete_rule")
+
+				# Remove permissions section from existing rule in the file
+				sed -i "s#${rule_head}\(.*\)${rule_tail}#${rule_head}${rule_tail}#" "$afile"
+			fi
 		# If the required audit rule for particular sbinary wasn't found yet, insert it under following conditions:
 		#
 		# * in the "auditctl" mode of operation insert particular rule each time
