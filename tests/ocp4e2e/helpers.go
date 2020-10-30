@@ -6,8 +6,11 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
+	"os/exec"
 	"path"
+	"strings"
 	"testing"
 	"time"
 
@@ -17,6 +20,7 @@ import (
 	mcfg "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
 	mcfgv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	mcfgconst "github.com/openshift/machine-config-operator/pkg/daemon/constants"
+	"gopkg.in/yaml.v2"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	extscheme "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme"
@@ -48,10 +52,19 @@ const (
 	autoApplySettingsName = "auto-apply-debug"
 )
 
+// This is the definition of the structure rule-specific e2e tests should have
+type RuleTest struct {
+	DefaultResult          string `yaml:"default_result"`
+	ResultAfterRemediation string `yaml:"result_after_remediation,omitempty"`
+}
+
 var product string
 var profile string
 var contentImage string
 var installOperator bool
+
+var ruleTestDir string = path.Join("tests", "ocp4")
+var ruleTestFilePath string = path.Join(ruleTestDir, "e2e.yml")
 
 type e2econtext struct {
 	// These are public because they're needed in the template
@@ -63,6 +76,7 @@ type e2econtext struct {
 	profilepath     string
 	product         string
 	resourcespath   string
+	benchmarkRoot   string
 	installOperator bool
 	dynclient       dynclient.Client
 	restMapper      *restmapper.DeferredDiscoveryRESTMapper
@@ -84,7 +98,12 @@ func newE2EContext(t *testing.T) *e2econtext {
 	}
 
 	profilefile := fmt.Sprintf("%s.profile", profile)
-	profilepath := path.Join(rootdir, product, "profiles", profilefile)
+	productpath := path.Join(rootdir, product)
+	benchmarkRoot, err := getBenchmarkRootFromProductSpec(productpath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	profilepath := path.Join(productpath, "profiles", profilefile)
 	resourcespath := path.Join(rootdir, "ocp-resources")
 
 	return &e2econtext{
@@ -94,10 +113,28 @@ func newE2EContext(t *testing.T) *e2econtext {
 		rootdir:                rootdir,
 		profilepath:            profilepath,
 		resourcespath:          resourcespath,
+		benchmarkRoot:          benchmarkRoot,
 		product:                product,
 		installOperator:        installOperator,
 		t:                      t,
 	}
+}
+
+func getBenchmarkRootFromProductSpec(productpath string) (string, error) {
+	prodyamlpath := path.Join(productpath, "product.yml")
+	benchmarkRelative := struct {
+		Path string `yaml:"benchmark_root"`
+	}{}
+	buf, err := ioutil.ReadFile(prodyamlpath)
+	if err != nil {
+		return "", err
+	}
+
+	err = yaml.Unmarshal(buf, &benchmarkRelative)
+	if err != nil {
+		return "", fmt.Errorf("Couldn't parse file %q: %v", prodyamlpath, err)
+	}
+	return path.Join(productpath, benchmarkRelative.Path), nil
 }
 
 func (ctx *e2econtext) assertRootdir() {
@@ -335,21 +372,21 @@ func (ctx *e2econtext) ensureTestSettings() {
 	}
 }
 
-func getPrefixedProfileName(prof string) string {
-	return testProfilebundleName + "-" + prof
+func (ctx *e2econtext) getPrefixedProfileName() string {
+	return testProfilebundleName + "-" + ctx.Profile
 }
 
 func (ctx *e2econtext) createBindingForProfile() string {
 	binding := &cmpv1alpha1.ScanSettingBinding{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "e2e-" + ctx.Profile,
+			Name:      ctx.getPrefixedProfileName(),
 			Namespace: ctx.OperatorNamespacedName.Namespace,
 		},
 		Profiles: []cmpv1alpha1.NamedObjectReference{
 			{
 				APIGroup: "compliance.openshift.io/v1alpha1",
 				Kind:     "Profile",
-				Name:     getPrefixedProfileName(ctx.Profile),
+				Name:     ctx.getPrefixedProfileName(),
 			},
 		},
 		SettingsRef: &cmpv1alpha1.NamedObjectReference{
@@ -580,7 +617,7 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s string) int {
 	return ret + len(noneList.Items)
 }
 
-func (ctx *e2econtext) getCheckResultsForSuite(s string) int {
+func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bool) int {
 	resList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
 		cmpv1alpha1.SuiteLabel: s,
@@ -596,9 +633,84 @@ func (ctx *e2econtext) getCheckResultsForSuite(s string) int {
 	}
 	for _, check := range resList.Items {
 		ctx.t.Logf("Result - Name: %s - Status: %s - Severity: %s", check.Name, check.Status, check.Severity)
+		err = ctx.verifyRule(check, afterRemediations)
+		if err != nil {
+			ctx.t.Error(err)
+		}
 	}
 
 	return len(resList.Items)
+}
+
+func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afterRemediations bool) error {
+	ruleName, err := ctx.getRuleFolderNameFromResult(result)
+	if err != nil {
+		return err
+	}
+	rulePathBytes, err := exec.Command("find", ctx.benchmarkRoot, "-name", ruleName).Output()
+	if err != nil {
+		return err
+	}
+	rulePath := strings.Trim(string(rulePathBytes), "\n")
+	testFilePath := path.Join(rulePath, ruleTestFilePath)
+
+	buf, err := ioutil.ReadFile(testFilePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			// There's no test file, so no need to verify
+			return nil
+		}
+		return err
+	}
+
+	test := RuleTest{}
+	if err := yaml.Unmarshal(buf, &test); err != nil {
+		return err
+	}
+
+	// Initial run
+	if !afterRemediations {
+		if strings.ToLower(string(result.Status)) != strings.ToLower(test.DefaultResult) {
+			return fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
+				ruleName, test.DefaultResult, result.Status)
+		}
+	} else {
+		// after remediations
+		// If we expect a change after remediation is applied, let's test for it
+		if test.ResultAfterRemediation != "" {
+			if strings.ToLower(string(result.Status)) != strings.ToLower(test.ResultAfterRemediation) {
+				return fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
+					ruleName, test.ResultAfterRemediation, result.Status)
+			}
+		} else {
+			// Check that the default didn't change
+			if strings.ToLower(string(result.Status)) != strings.ToLower(test.DefaultResult) {
+				return fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
+					ruleName, test.DefaultResult, result.Status)
+			}
+		}
+	}
+
+	ctx.t.Logf("Rule %s matched expected result", ruleName)
+	return nil
+}
+
+func (ctx *e2econtext) getRuleFolderNameFromResult(result cmpv1alpha1.ComplianceCheckResult) (string, error) {
+	labels := result.GetLabels()
+	resultName := result.Name
+	if labels == nil {
+		return "", fmt.Errorf("ERROR: Can't derive name from rule %s since it contains no label", resultName)
+	}
+	prefix, ok := labels[cmpv1alpha1.ComplianceScanLabel]
+	if !ok {
+		return "", fmt.Errorf("ERROR: Result %s doesn't have label with scan name", resultName)
+	}
+	if !strings.HasPrefix(resultName, prefix) {
+		return "", fmt.Errorf("ERROR: Result %s doesn't have expected prefix %s", resultName, prefix)
+	}
+	// Removes prefix plus the "-" delimiter
+	prefixRemoved := resultName[len(prefix)+1:]
+	return strings.ReplaceAll(prefixRemoved, "-", "_"), nil
 }
 
 func isNodeReady(node corev1.Node) bool {
