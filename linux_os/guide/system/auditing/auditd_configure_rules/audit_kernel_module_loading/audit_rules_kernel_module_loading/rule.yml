@@ -6,11 +6,7 @@ description: |-
     To capture kernel module loading and unloading events, use following lines, setting ARCH to
     either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
     <pre>
-{{% if product == "rhel6" %}}
-    -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
-{{% else %}}
     -a always,exit -F arch=<i>ARCH</i> -S init_module,finit_module,delete_module -F key=modules
-{{% endif %}}
     </pre>
 
     The place to add the lines depends on a way <tt>auditd</tt> daemon is configured. If it is configured
@@ -28,16 +24,10 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel6: CCE-26611-4
     cce@rhel7: CCE-27129-6
     cce@rhel8: CCE-80709-9
 
 references:
-    disa@rhel6: CCI-000126
-    nist@rhel6: AC-3(10)
-    nist-csf@rhel6: PR.AC-4,PR.AC-6,PR.PT-3
-    srg@rhel6: SRG-OS-000064
-    stigid@rhel6: RHEL-06-000202
     cis: 5.2.17
     cjis: 5.4.1.1
     cui: 3.1.7

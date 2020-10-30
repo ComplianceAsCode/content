@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 6,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_ol
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_ol
 
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
@@ -14,13 +14,8 @@
 for ARCH in "${RULE_ARCHS[@]}"
 do
         GROUP="modules"
-{{% if product == "rhel6" %}}
-        PATTERN="-a always,exit -F arch=$ARCH -S init_module -S delete_module \(-F key=\|-k \).*"
-        FULL_RULE="-a always,exit -F arch=$ARCH -S init_module -S delete_module -k modules"
-{{% else %}}
         PATTERN="-a always,exit -F arch=$ARCH -S init_module -S delete_module -S finit_module \(-F key=\|-k \).*"
         FULL_RULE="-a always,exit -F arch=$ARCH -S init_module -S delete_module -S finit_module -k modules"
-{{% endif %}}
         # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
         fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
         fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"

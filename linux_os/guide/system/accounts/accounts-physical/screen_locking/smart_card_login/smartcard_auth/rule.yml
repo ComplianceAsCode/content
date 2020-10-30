@@ -1,15 +1,13 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,rhel6,rhel7
+prodtype: fedora,ol7,rhel7
 
 title: 'Enable Smart Card Login'
 
 description: |-
     To enable smart card authentication, consult the documentation at:
     <ul>
-    {{% if product == "rhel6" %}}
-    <li><b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Smart_Cards/enabling-smart-card-login.html") }}}</b></li>
-    {{% elif product == "rhel7" %}}
+    {{% if product == "rhel7" %}}
     <li><b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/smartcards.html#authconfig-smartcards") }}}</b></li>
     {{% elif product == "rhel8" %}}
     <li><b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/smartcards.html#authconfig-smartcards") }}}</b></li>
@@ -35,13 +33,10 @@ severity: medium
 platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
 
 identifiers:
-    cce@rhel6: CCE-27440-7
     cce@rhel7: CCE-80207-4
 
 references:
     stigid@ol7: OL07-00-010500
-    stigid@rhel6: RHEL-06-000349
-    srg@rhel6: SRG-OS-000105
     disa: CCI-000764,CCI-000765,CCI-000766,CCI-000767,CCI-000768,CCI-000770,CCI-000771,CCI-000772,CCI-000884
     nist: IA-2(1),IA-2(2),IA-2(3),IA-2(4),IA-2(6),IA-2(7),IA-2(11),CM-6(a)
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7

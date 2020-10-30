@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 6,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,WRLinux 1019
+# platform = Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,WRLinux 1019
 
 . /usr/share/scap-security-guide/remediation_functions
 

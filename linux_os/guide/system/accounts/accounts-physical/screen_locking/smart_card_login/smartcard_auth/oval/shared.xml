@@ -6,11 +6,7 @@
       <extend_definition comment="pcscd service is enabled" definition_ref="service_pcscd_enabled" />
       <criteria operator="OR">
         <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
-{{% if product == "rhel6" %}}
-        <extend_definition comment="GConf2 installed" definition_ref="package_GConf2_installed" negate="true" />
-{{% else %}}
         <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
-{{% endif %}}
       </criteria>
       <criterion comment="cert_policy directive contains oscp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
       <criteria comment="smart card authentication is enabled or required in system-auth" operator="OR">
@@ -53,11 +49,7 @@
       <literal_component>\nauth[\s]+\[success=1[\s]default=ignore\][\s]pam_succeed_if.so[\s]service[\s]notin[\s]</literal_component>
       <literal_component>login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver[\s]quiet[\s]use_uid</literal_component>
       <literal_component>\nauth[\s]+\[success=done[\s]authinfo_unavail=ignore[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
-{{% if product == "rhel6" %}}
-      <literal_component>pam_pkcs11.so[\s]card_only\n</literal_component>
-{{% else %}}
       <literal_component>pam_pkcs11.so[\s]nodebug\n</literal_component>
-{{% endif %}}
     </concat>
   </local_variable>
 
@@ -81,11 +73,7 @@
       <literal_component>\nauth[\s]+\[success=1[\s]default=ignore\][\s]pam_succeed_if.so[\s]service[\s]notin[\s]</literal_component>
       <literal_component>login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver[\s]quiet[\s]use_uid</literal_component>
       <literal_component>\nauth[\s]+\[success=done[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
-{{% if product == "rhel6" %}}
-      <literal_component>pam_pkcs11.so[\s]wait_for_card[\s]card_only\n</literal_component>
-{{% else %}}
       <literal_component>pam_pkcs11.so[\s]nodebug[\s]wait_for_card\n</literal_component>
-{{% endif %}}
     </concat>
   </local_variable>
 
@@ -106,11 +94,7 @@
     <concat>
       <literal_component>\nauth[\s]+required[\s]+pam_env.so</literal_component>
       <literal_component>\nauth[\s]+\[success=done[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
-{{% if product == "rhel6" %}}
-      <literal_component>pam_pkcs11.so[\s]wait_for_card[\s]card_only\n</literal_component>
-{{% else %}}
       <literal_component>pam_pkcs11.so[\s]nodebug[\s]wait_for_card\n.*</literal_component>
-{{% endif %}}
       <literal_component>\npassword[\s]+required[\s]+pam_pkcs11.so\n</literal_component>
     </concat>
   </local_variable>

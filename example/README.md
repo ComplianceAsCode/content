@@ -83,7 +83,7 @@ all_cmake_products=(
 4. Add the product to [constants.py](../ssg/constants.py) file:
 <pre>
 ...
-product_directories = ['debian9', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
+product_directories = ['debian9', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel7', 'rhel8', 'sle12',
                        'ubuntu1604', 'ubuntu1804', 'wrlinux', 'rhosp13',
                        'chromium', 'eap6', 'firefox', 'fuse6', 'jre',

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel6,rhel7,rhel8,rhv4
+prodtype: fedora,rhel7,rhel8,rhv4
 
 title: 'Install Intrusion Detection Software'
 
@@ -14,17 +14,12 @@ rationale: |-
     Host-based intrusion detection tools provide a system-level defense when an
     intruder gains access to a system or network.
 
-severity: {{% if product == "rhel6" -%}}
-medium
-{{%- else -%}}
-high
-{{%- endif %}}
+severity: high
 
 conflicts:
     - selinux_state
 
 identifiers:
-    cce@rhel6: CCE-27409-2
     cce@rhel7: CCE-26818-5
     cce@rhel8: CCE-80831-1
 
@@ -33,8 +28,6 @@ references:
     nist: CM-6(a)
     nist-csf: DE.CM-1,PR.AC-5,PR.DS-5,PR.PT-4
     pcidss: Req-11.4
-    srg@rhel6: SRG-OS-000196
-    stigid@rhel6: RHEL-06-000285
     isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 6.2,SR 7.1,SR 7.6'
     isa-62443-2009: 4.3.3.4
     cobit5: APO01.06,APO13.01,DSS01.03,DSS01.05,DSS03.05,DSS05.02,DSS05.04,DSS05.07,DSS06.02

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7
+prodtype: rhel7
 
 title: 'Disable Control Group Rules Engine (cgred)'
 
@@ -16,7 +16,6 @@ rationale: |-
 severity: low
 
 identifiers:
-    cce@rhel6: CCE-27252-6
     cce@rhel7: CCE-80255-3
 
 references:
@@ -37,4 +36,3 @@ template:
     vars:
         servicename: cgred
         packagename: libcgroup-tools
-        packagename@rhel6: libcgroup

@@ -4,7 +4,6 @@
     <criteria comment="Vendor GPG keys" operator="OR">
       <criteria comment="Oracle Vendor GPG Keys" operator="AND">
         <criteria comment="Oracle Linux Release Installed" operator="OR">
-          <extend_definition comment="Oracle Linux 6 installed" definition_ref="installed_OS_is_ol6_family" />
           <extend_definition comment="Oracle Linux 7 installed" definition_ref="installed_OS_is_ol7_family" />
           <extend_definition comment="Oracle Linux 8 installed" definition_ref="installed_OS_is_ol8_family" />
         </criteria>

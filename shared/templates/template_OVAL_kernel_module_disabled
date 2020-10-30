@@ -9,7 +9,7 @@
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
 
-{{% if (product != "rhel6") and (product != "ubuntu1804") %}}
+{{% if (product != "ubuntu1804") %}}
 
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d" />
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modules-load.d" />
@@ -31,8 +31,6 @@
   comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf" />
   </ind:textfilecontent54_test>
-
-{{% if product != "rhel6" %}}
 
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d">
@@ -59,8 +57,6 @@
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_libmodprobed" />
   </ind:textfilecontent54_test>
 
-{{% endif %}}
-
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_disabled"
   version="1" comment="kernel module {{{ KERNMODULE }}} disabled">
     <ind:path>/etc/modprobe.d</ind:path>
@@ -75,8 +71,6 @@
     <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-
-{{% if product != "rhel6" %}}
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_etcmodules-load"
   version="1" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d">
@@ -117,7 +111,5 @@
     <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-
-{{% endif %}}
 
 </def-group>
