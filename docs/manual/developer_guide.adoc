@@ -1925,6 +1925,176 @@ Tests are added using the add_test cmake call. Each test should finish with a 0 
 
 See some of the existing testing code in `cmake/SSGCommon.cmake`.
 
+=== Tests (OCP4)
+
+==== Unit tests
+
+TBD
+
+==== End-to-end tests
+
+The ComplianceAsCode/content repo runs some end-to-end tests for the ocp4
+content. These tests run over the OpenShift infrastructure, spawn an ephemeral
+cluster and run tests targetted at a specific profile.
+
+The current workflow is as follows:
+
+* Install needed prerequisites (e.g. the compliance-operator and other resources it might need)
+* Run a scan using the specific profile (for the specific product)
+* Run manual remediations
+* Run automated remediations
+* Wait for remediations to converge
+* Run second scan
+
+The test will pass if:
+* There are no errors in the scan runs
+* We have less rule failures after the remediations have been applied
+* The cluster status is not inconsistent
+
+Rules may have extra verifications on them. For instance, one is able to verify
+if:
+* The rule's expected result is gotten on a clean run.
+* The rule's result changes after a remediation has been applied.
+
+If an automated remediation is not possible, one is also able to created a
+"manual" remediation that will be run as a bash script. The end-to-end tests
+have a *15 minute* timeout for the manual remediation scripts to be executed.
+
+===== Writing e2e tests for specific rules
+
+In order to test that a rule is yielding expected results in the e2e tests, one
+must create a file called `e2e.yml` in a `tests/ocp4/` directory which will
+exist in the rule's directory itself.
+
+The format looks as follows:
+
+----
+---
+default_result: [PASS|FAIL]
+result_after_remediation: [PASS|FAIL]
+----
+
+Where:
+
+* `default_result` will look at the result when the first scan is run.
+* `result_after_remediation` will look at the result when the second scan is run. The second scan takes place after remediations are applied.
+
+Let's look at an example:
+
+For the `controller_use_service_account` rule, which exists in the
+`applications/openshift/controller/` directory, the directory tree will contain
+the rule definition and the test file:
+
+----
+.
+├── rule.yml
+└── tests
+    └── ocp4
+        └── e2e.yml
+----
+
+In this case, we just want to verify that the default value returns a passing
+result. So `e2e.yml` has the following content:
+
+----
+---
+default_result: PASS
+----
+
+Let's look at another example:
+
+For the `api_server_encryption_provider_config` we want to apply a remediation
+which cannot be applied via the `compliance-operator`. So we'll need a manual
+remediation for this.
+
+The directory structure looks as follows:
+
+----
+.
+├── rule.yml
+└── tests
+    └── ocp4
+        ├── e2e-remediation.sh
+        └── e2e.yml
+----
+
+Where our test contains information for both the first default result and the
+expected result after the remediation has been applied:
+
+----
+---
+default_result: FAIL
+result_after_remediation: PASS
+----
+
+The remediation expects the name of the remediation script to be
+`e2e-remediation.sh`. The script should:
+
+* Apply the remediation.
+* Verify that the status has converged.
+
+In the aforementioned case, the remediation script is as follows:
+
+----
+#!/bin/bash
+
+oc patch apiservers cluster -p '{"spec":{"encryption":{"type":"aescbc"}}}' --type=merge
+
+while true; do
+    status=$(oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}')
+
+    echo "Current Encryption Status:"
+    oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}'
+
+    if [ "$status" == "EncryptionCompleted" ]; then
+        exit 0
+    fi
+
+    sleep 5
+done
+----
+
+Here, we apply the remediation (through the `patch` command) and probe the
+cluster for status. Once the cluster converges, we exit the script with `0`,
+which is a successful status.
+
+The e2e test run will time out at *15 minuntes* if a script doesn't converge.
+
+Note that the scripts will be run in parallel, but the test run will wait for
+all of them to be done.
+
+===== Running the e2e tests on a local cluster
+
+Note that it's possible to run the e2e tests on a cluster of your choice.
+
+To do so, ensure that you have a `KUBECONFIG` with appropriate credentials that
+points to the cluster where you'll run the tests.
+
+From the root of the `ComplianceAsCode/content` repository, run:
+
+----
+$ make -f tests/ocp4e2e/Makefile e2e PROFILE=<profile> PRODUCT=<product>
+----
+
+Where profile is the name of the profile you want to test, and product is a
+product relevant to `OCP4`, such as `ocp4` or `rhcos4`.
+
+For instance, to run the tests for the `cis` benchmark for `ocp4` do:
+
+----
+$ make -f tests/ocp4e2e/Makefile e2e PROFILE=cis PRODUCT=ocp4
+----
+
+For more information on the available options, do:
+
+----
+$ make -f tests/ocp4e2e/Makefile help
+----
+
+It is important to note that the tests will do changes to your cluster and
+there currently isn't an option to clean them up. So take that into account
+before running these tests.
+
 === Contribution to infrastructure code
 
 The ComplianceAsCode build and templating system is mostly written in Python.
