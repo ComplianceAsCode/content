@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import os
 import sys
-import importlib.util
+import imp
 
 import ssg.build_yaml
 import ssg.utils
@@ -42,12 +42,8 @@ class Template():
                 self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
-        preprocess_mod = None  # temporarily imported module containing preprocessing function
-        spec = importlib.util.spec_from_file_location(
-            "preprocess_mod", self.preprocessing_file_path
-        )
-        preprocess_mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(preprocess_mod)
+        module_name = "tmpmod" # dummy module name, we don't need it later
+        preprocess_mod = imp.load_source(module_name, self.preprocessing_file_path)
         parameters = preprocess_mod.preprocess(parameters.copy(), lang)
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
@@ -87,9 +83,10 @@ class Builder(object):
             dir_ = os.path.join(output_dir, lang)
             self.output_dirs[lang] = dir_
         # scan directory structure and dynamically create list of templates
-        for item in os.scandir(self.templates_dir):
-            if item.is_dir(follow_symlinks=False):
-                templates[item.name] = Template(templates_dir, item.name)
+        for item in os.listdir(self.templates_dir):
+            itempath = os.path.join(self.templates_dir, item)
+            if os.path.isdir(itempath) and not os.path.islink(itempath):
+                templates[item] = Template(templates_dir, item)
 
 
     def build_lang(
