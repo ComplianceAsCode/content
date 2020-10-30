@@ -5,8 +5,7 @@
 # disruption = low
 
 - name: "restrict usage of su command only to members of wheel group"
-  lineinfile:
+  replace:
     path: "/etc/pam.d/su"
-    line: "auth             required        pam_wheel.so use_uid"
-    regexp: '^[\s]*[#]*[\s]*auth[\s]+required[\s]+pam_wheel\.so[\s]+use_uid$'
-    state: present
+    regexp: '^[\s]*#[\s]*auth[\s]+required[\s]+pam_wheel\.so[\s]+use_uid$'
+    replace: "auth             required        pam_wheel.so use_uid"
