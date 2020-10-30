@@ -7,7 +7,7 @@ title: Ensure that the service-account-lookup argument is set to true
 description: Validate service account before validating token.
 
 rationale: |-
-  If <tt>--service-account-lookup</tt> is not enabled, the apiserver
+  If <tt>service-account-lookup</tt> is not enabled, the apiserver
   only verifies that the authentication token is valid, and
   does not validate that the service account token mentioned
   in the request is actually present in etcd. This allows
