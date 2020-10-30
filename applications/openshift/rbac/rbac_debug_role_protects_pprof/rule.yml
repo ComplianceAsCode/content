@@ -26,6 +26,15 @@ references:
 
 severity: medium
 
+ocil_clause: |-
+    The <tt>cluster-debugger</tt> role isn't protecting <tt>/debug/pprof</tt>
+
+ocil: |-
+    To verify that the <tt>cluster-debugger</tt> role is configured correctly,
+    run the following command:
+    <pre>$ oc get clusterroles cluster-debugger -o jsonpath='{.rules[0].nonResourceURLs}'</pre>
+    and verify that the <tt>/debug/pprof</tt> path is included there.
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/apis/rbac.authorization.k8s.io/v1/clusterroles/cluster-debugger") | indent(4) }}}
@@ -40,3 +49,4 @@ template:
     values:
     - value: '\/debug\/pprof'
       operation: 'pattern match'
+      entity_check: 'at least one'
