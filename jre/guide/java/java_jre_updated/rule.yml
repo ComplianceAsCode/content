@@ -8,16 +8,21 @@ description: |-
     <pre>$ sudo yum update</pre>
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded and installed using <tt>rpm</tt>.
+    <br /><br />
+    NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
+    dictates.
 
 rationale: |-
     Running an older version of the JRE can introduce security
     vulnerabilities to the system.
 
-severity: medium
+severity: low
 
 references:
-    nist: DCBP-1
-    stigid: JRE0090-UX
+    srg: SRG-APP-000456
+    disa: CCI-002605
+    stigid: JRE8-UX-000180
+    nist: SI-2(c)
 
 ocil_clause: 'it is not updated'
 

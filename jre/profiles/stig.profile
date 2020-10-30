@@ -36,4 +36,5 @@ selections:
     - java_jre_validation_crl_locked
     - java_jre_validation_ocsp
     - java_jre_validation_ocsp_locked
+    - java_jre_clean_previous_version
     - java_jre_updated
