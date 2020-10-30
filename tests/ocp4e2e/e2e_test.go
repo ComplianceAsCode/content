@@ -49,17 +49,24 @@ func TestE2e(t *testing.T) {
 	// suite name
 	var suite string
 
+	var manualRemediations []string
+
 	t.Run("Run first compliance scan", func(t *testing.T) {
 		// Create suite and auto-apply remediations
 		suite = ctx.createBindingForProfile()
 		ctx.waitForComplianceSuite(suite)
 		numberOfRemediations = ctx.getRemediationsForSuite(suite)
 		numberOfFailuresInit = ctx.getFailuresForSuite(suite)
-		numberOfCheckResultsInit = ctx.verifyCheckResultsForSuite(suite, false)
+		numberOfCheckResultsInit, manualRemediations = ctx.verifyCheckResultsForSuite(suite, false)
 		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(suite)
 	})
 
-	if numberOfRemediations > 0 {
+	if numberOfRemediations > 0 || len(manualRemediations) > 0 {
+		if len(manualRemediations) > 0 {
+			t.Run("Apply manual remediations", func(t *testing.T) {
+				ctx.applyManualRemediations(manualRemediations)
+			})
+		}
 		t.Run("Wait for Remediations to apply", func(t *testing.T) {
 			// Lets wait for the MachineConfigs to start applying
 			time.Sleep(30 * time.Second)
@@ -71,7 +78,7 @@ func TestE2e(t *testing.T) {
 			ctx.doRescan(suite)
 			ctx.waitForComplianceSuite(suite)
 			numberOfFailuresEnd = ctx.getFailuresForSuite(suite)
-			numberOfCheckResultsEnd = ctx.verifyCheckResultsForSuite(suite, true)
+			numberOfCheckResultsEnd, _ = ctx.verifyCheckResultsForSuite(suite, true)
 		})
 
 		t.Run("We should have the same number of check results in each scan", func(t *testing.T) {

@@ -2,6 +2,7 @@ package ocp4e2e
 
 import (
 	"bufio"
+	"context"
 	goctx "context"
 	"flag"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 	"os/exec"
 	"path"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -43,13 +45,14 @@ import (
 )
 
 const (
-	namespacePath         = "compliance-operator-ns.yaml"
-	catalogSourcePath     = "compliance-operator-catalog-source.yaml"
-	operatorGroupPath     = "compliance-operator-operator-group.yaml"
-	subscriptionPath      = "compliance-operator-alpha-subscription.yaml"
-	apiPollInterval       = 5 * time.Second
-	testProfilebundleName = "e2e"
-	autoApplySettingsName = "auto-apply-debug"
+	namespacePath             = "compliance-operator-ns.yaml"
+	catalogSourcePath         = "compliance-operator-catalog-source.yaml"
+	operatorGroupPath         = "compliance-operator-operator-group.yaml"
+	subscriptionPath          = "compliance-operator-alpha-subscription.yaml"
+	apiPollInterval           = 5 * time.Second
+	testProfilebundleName     = "e2e"
+	autoApplySettingsName     = "auto-apply-debug"
+	manualRemediationsTimeout = 15 * time.Minute
 )
 
 // This is the definition of the structure rule-specific e2e tests should have
@@ -65,6 +68,7 @@ var installOperator bool
 
 var ruleTestDir string = path.Join("tests", "ocp4")
 var ruleTestFilePath string = path.Join(ruleTestDir, "e2e.yml")
+var ruleManualRemediationFilePath string = path.Join(ruleTestDir, "e2e-remediation.sh")
 
 type e2econtext struct {
 	// These are public because they're needed in the template
@@ -617,7 +621,8 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s string) int {
 	return ret + len(noneList.Items)
 }
 
-func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bool) int {
+func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bool) (int, []string) {
+	manualRemediations := []string{}
 	resList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
 		cmpv1alpha1.SuiteLabel: s,
@@ -633,23 +638,26 @@ func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bo
 	}
 	for _, check := range resList.Items {
 		ctx.t.Logf("Result - Name: %s - Status: %s - Severity: %s", check.Name, check.Status, check.Severity)
-		err = ctx.verifyRule(check, afterRemediations)
+		manualRem, err := ctx.verifyRule(check, afterRemediations)
 		if err != nil {
 			ctx.t.Error(err)
 		}
+		if manualRem != "" {
+			manualRemediations = append(manualRemediations, manualRem)
+		}
 	}
 
-	return len(resList.Items)
+	return len(resList.Items), manualRemediations
 }
 
-func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afterRemediations bool) error {
+func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afterRemediations bool) (string, error) {
 	ruleName, err := ctx.getRuleFolderNameFromResult(result)
 	if err != nil {
-		return err
+		return "", err
 	}
 	rulePathBytes, err := exec.Command("find", ctx.benchmarkRoot, "-name", ruleName).Output()
 	if err != nil {
-		return err
+		return "", err
 	}
 	rulePath := strings.Trim(string(rulePathBytes), "\n")
 	testFilePath := path.Join(rulePath, ruleTestFilePath)
@@ -658,20 +666,27 @@ func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afte
 	if err != nil {
 		if os.IsNotExist(err) {
 			// There's no test file, so no need to verify
-			return nil
+			return "", nil
 		}
-		return err
+		return "", err
 	}
 
 	test := RuleTest{}
 	if err := yaml.Unmarshal(buf, &test); err != nil {
-		return err
+		return "", err
+	}
+
+	remPath := path.Join(rulePath, ruleManualRemediationFilePath)
+	_, err = os.Stat(remPath)
+	if os.IsNotExist(err) {
+		// We reset the path to return in case there isn't a remediation
+		remPath = ""
 	}
 
 	// Initial run
 	if !afterRemediations {
 		if strings.ToLower(string(result.Status)) != strings.ToLower(test.DefaultResult) {
-			return fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
+			return remPath, fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
 				ruleName, test.DefaultResult, result.Status)
 		}
 	} else {
@@ -679,20 +694,20 @@ func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afte
 		// If we expect a change after remediation is applied, let's test for it
 		if test.ResultAfterRemediation != "" {
 			if strings.ToLower(string(result.Status)) != strings.ToLower(test.ResultAfterRemediation) {
-				return fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
+				return remPath, fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
 					ruleName, test.ResultAfterRemediation, result.Status)
 			}
 		} else {
 			// Check that the default didn't change
 			if strings.ToLower(string(result.Status)) != strings.ToLower(test.DefaultResult) {
-				return fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
+				return remPath, fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
 					ruleName, test.DefaultResult, result.Status)
 			}
 		}
 	}
 
 	ctx.t.Logf("Rule %s matched expected result", ruleName)
-	return nil
+	return remPath, nil
 }
 
 func (ctx *e2econtext) getRuleFolderNameFromResult(result cmpv1alpha1.ComplianceCheckResult) (string, error) {
@@ -711,6 +726,37 @@ func (ctx *e2econtext) getRuleFolderNameFromResult(result cmpv1alpha1.Compliance
 	// Removes prefix plus the "-" delimiter
 	prefixRemoved := resultName[len(prefix)+1:]
 	return strings.ReplaceAll(prefixRemoved, "-", "_"), nil
+}
+
+func (ctx *e2econtext) applyManualRemediations(rems []string) {
+	var wg sync.WaitGroup
+	cmdctx, cancel := context.WithTimeout(context.Background(), manualRemediationsTimeout)
+	defer cancel()
+
+	for _, rem := range rems {
+		wg.Add(1)
+		go ctx.runManualRemediation(cmdctx, &wg, rem)
+	}
+
+	wg.Wait()
+}
+
+func (ctx *e2econtext) runManualRemediation(cmdctx goctx.Context, wg *sync.WaitGroup, rem string) {
+	defer wg.Done()
+
+	ctx.t.Logf("Running manual remediation '%s'", rem)
+	cmd := exec.CommandContext(cmdctx, rem)
+	cmd.Env = os.Environ()
+	out, err := cmd.CombinedOutput()
+
+	if cmdctx.Err() == context.DeadlineExceeded {
+		ctx.t.Errorf("Command '%s' timed out", rem)
+		return
+	}
+
+	if err != nil {
+		ctx.t.Errorf("Failed applying remediation '%s': %s\n%s", rem, err, out)
+	}
 }
 
 func isNodeReady(node corev1.Node) bool {
