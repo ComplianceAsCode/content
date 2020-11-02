@@ -122,7 +122,7 @@ do
 			readarray -t handled_sbinaries < <(grep -o -e "-F path=[^[:space:]]\+" <<< "$concrete_rule")
 			handled_sbinaries=("${handled_sbinaries[@]//-F path=/}")
 
-			# 		Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
+			# Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
 			readarray -t sbinaries_to_skip < <(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo "$i"; done | sort -du)
 
 			# if there is a -F perm flag, remove it
