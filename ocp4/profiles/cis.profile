@@ -111,7 +111,7 @@ selections:
     - controller_insecure_port_disabled
   #### 1.4 Scheduler
   # 1.4.1 Ensure that the --profiling argument is set to false  (info only)
-    - scheduler_profiling_argument
+  # Handled by rbac_debug_role_protects_pprof
   # 1.4.2 Ensure that the --bind-address argument is set to 127.0.0.1
 
   ### 2 etcd
