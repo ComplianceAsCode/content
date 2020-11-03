@@ -709,7 +709,6 @@ selections:
     - sshd_set_idle_timeout
 
     # ClientAliveCountMax 0
-    - var_sshd_set_keepalive=0
     - sshd_set_keepalive
 
     ### 5.2.13 Ensure SSH LoginGraceTime is set to one minute

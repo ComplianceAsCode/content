@@ -228,7 +228,6 @@ selections:
 - zipl_page_poison_argument
 - zipl_slub_debug_argument
 - zipl_vsyscall_argument
-- var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027

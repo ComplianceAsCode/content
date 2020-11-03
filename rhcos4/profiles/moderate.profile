@@ -76,7 +76,6 @@ selections:
     #- sshd_disable_empty_passwords
     #- sshd_disable_kerb_auth
     #- sshd_disable_gssapi_auth
-    #- var_sshd_set_keepalive=0
     # AC-2(5)
     - sshd_set_keepalive
     #- sshd_enable_warning_banner

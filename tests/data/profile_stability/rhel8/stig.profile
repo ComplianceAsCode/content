@@ -243,7 +243,6 @@ selections:
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
 - use_pam_wheel_for_su
-- var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=027
