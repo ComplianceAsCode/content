@@ -70,3 +70,9 @@ warnings:
     - dependency: |-
         SSH disconnecting idle clients will not have desired effect without also
         configuring ClientAliveCountMax in the SSH service configuration.
+    - general: |-
+        Following conditions may prevent the SSH session to time out:
+        <ul>
+        <li>Remote processes on the remote machine generates output. As the output has to be transferred over the network to the client, the timeout is reset every time such transfer happens.</li>
+        <li>Any <tt>scp</tt> or <tt>sftp</tt> activity by the same user to the host resets the timeout.</li>
+        </ul>
