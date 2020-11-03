@@ -1632,7 +1632,7 @@ the following to `rule.yml`:
         ([CheckEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration)) -
         entity_check value for state’s value, optional. If omitted,
         entity_check attribute would not be set and will be treated by
-        OVAL as *all*.  
+        OVAL as *all*.
         Possible options are `all`, `at least one`, `none satisfy` and
         `only one`.
 
@@ -1805,12 +1805,12 @@ ComplianceAsCode support all built-in Jinja
 There are also some custom filters useful for content authoring defined
 in the project:
 
-escape_id  
+escape_id
 -   Replaces all non-word (regex **\\W**) characters with underscore.
     Useful for sanitizing ID strings as it is compatible with OVAL IDs
     `oval:[A-Za-z0-9_\-\.]+:ste:[1-9][0-9]*`.
 
-escape_regex  
+escape_regex
 -   Escapes characters in the string for it to be usable as a part of
     some regular expression, behaves similar to the Python 3’s
     [**re.escape**](https://docs.python.org/3/library/re.html#re.escape).

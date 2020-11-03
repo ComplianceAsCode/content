@@ -71,7 +71,7 @@ are a few utilities you can use to transform your text into the
 appropriate regular expression:
 
 When adding a new banner directly to the `login_banner_text`, use the
-custom Jinja filter `banner_regexify`.  
+custom Jinja filter `banner_regexify`.
 If customizing content via SCAP Workbench, or directly writing your
 tailoring XML, use `utils/regexify_banner.py` to generate the
 appropriate regular expression.
