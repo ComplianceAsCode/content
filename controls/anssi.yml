@@ -458,9 +458,13 @@ controls:
     level: minimal
     title: Protecting stored passwords
     rules:
-    - set_password_hashing_algorithm_logindefs
-    # ENCRYPT_METHOD SHA512
+    # ENCRYPT_METHOD, system default is SHA512
+    - set_password_hashing_algorithm_systemauth
+    # The default salt size is secure enough:
+    # https://bugzilla.redhat.com/show_bug.cgi?id=1229472
     # SHA_CRYPT_MIN_ROUNDS 65536
+    - var_password_pam_unix_rounds=65536
+    - accounts_password_pam_unix_rounds
 
   - id: R33
     title: Securing access to remote user databases
