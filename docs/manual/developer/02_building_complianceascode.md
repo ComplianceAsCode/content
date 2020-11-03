@@ -155,8 +155,8 @@ ninja-build  # depending on the distribution just "ninja" may also work
 ```bash
 cd build/
 cmake ../
-make -j4 stats # create statistics for all products
-make -j4 profile-stats # create statistics for all profiles in all products
+make -j4 stats # display statistics in text format for all products
+make -j4 profile-stats # display statistics in text format for all profiles in all products
 ```
 
 You can also create statistics per product, to do that just prepend the product name (e.g.: `rhel7-stats`) to the make target.
@@ -166,8 +166,8 @@ It is possible to generate HTML output by triggering similar command:
 ```bash
 cd build/
 cmake ../
-make -j4 html-stats # create statistics for all products, as a result <product>/stats.html file is created.
-make -j4 html-profile-stats # create statistics for all profiles in all products, as a result <product>/profile-stats.html file is created
+make -j4 html-stats # generate statistics for all products, as a result <product>/product-statistics/statistics.html file is created.
+make -j4 html-profile-stats # generate statistics for all profiles in all products, as a result <product>/profile-statistics/statistics.html file is created
 ```
 
 If you want to go deeper into statistics, refer to <<Profile Statistics and Utilities>> section.
