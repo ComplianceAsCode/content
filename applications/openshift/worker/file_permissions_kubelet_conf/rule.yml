@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Permissions on The Kubelet Configuration File'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="0600") }}}
+    {{{ describe_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="0644") }}}
 
 rationale: |-
     If the kubelet configuration file is writable by a group-owner or the
@@ -21,13 +21,13 @@ severity: medium
 references:
     cis: 4.1.5
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="-rw-------") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="-rw-r--r--") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="-rw-------") }}}
+    {{{ ocil_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="-rw-r--r--") }}}
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/kubernetes/kubelet.conf
-        filemode: '0600'
+        filemode: '0644'
