@@ -1640,39 +1640,41 @@ the following to `rule.yml`:
         ([ExistenceEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration)) -
         `check_existence` value for the `yamlfilecontent_test`,
         optional. If omitted, check_existence attribute will defalut to
-        *only_one_exists*.  
+        *only_one_exists*.
         Possible options are `all_exist`, `any_exist`,
         `at_least_one_exists`, `none_exist`, `only_one_exists`.
 
     -   **values** - a list of dictionaries with values to check, where:
 
-    -   **key** - the yaml key to check, optional. Used when the
-        yamlpath expression yields a map.
+        -   **key** - the yaml key to check, optional. Used when the
+            yamlpath expression yields a map.
 
-    -   **value** - the value to check.
+        -   **value** - the value to check.
 
-    -   **type**
-        ([SimpleDatatypeEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---)) -
-        datatype for state’s field (child of value), optional. If
-        omitted, datatype would be treated as OVAL’s default *string*.  
-        Most common datatypes are `string` and `int`. For complete list
-        check reference link.
+        -   **type**
+            ([SimpleDatatypeEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---)) -
+            datatype for state’s field (child of value), optional. If
+            omitted, datatype would be treated as OVAL’s default *string*.
+            Most common datatypes are `string` and `int`. For complete list
+            check reference link.
 
-    -   **operation**
-        ([OperationEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---operationenumeration---)) -
-        operation value for state’s field (child of value), optional. If
-        omitted, operation attribute would not be set. OVAL’s default
-        operation is *equals*.  
-        Most common operations are `equals`, `not equal`,
-        `pattern match`, `greater than or equal` and
-        `less than or equal`. For complete list of operations check the
-        reference link.
+        -   **operation**
+            ([OperationEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---operationenumeration---)) -
+            operation value for state’s field (child of value), optional. If
+            omitted, operation attribute would not be set. OVAL’s default
+            operation is *equals*.
+            Most common operations are `equals`, `not equal`,
+            `pattern match`, `greater than or equal` and
+            `less than or equal`. For complete list of operations check the
+            reference link.
 
-    -   **entity_check**
-        ([CheckEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration)) -
-        entity_check value for state’s field (child of value),
-        optional. If omitted, entity_check attribute would not be set
-        and will be treated by OVAL as *all*.  
+        -   **entity_check**
+            ([CheckEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration)) -
+            entity_check value for state’s field (child of value),
+            optional. If omitted, entity_check attribute would not be set
+            and will be treated by OVAL as *all*.
+            Possible options are `all`, `at least one`, `none satisfy` and
+            `only one`.
 
 -   Languages: OVAL
 
