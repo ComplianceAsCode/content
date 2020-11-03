@@ -1639,7 +1639,7 @@ the following to `rule.yml`:
     -   **check_existence**
         ([ExistenceEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration)) -
         `check_existence` value for the `yamlfilecontent_test`,
-        optional. If omitted, check_existence attribute will defalut to
+        optional. If omitted, check_existence attribute will default to
         *only_one_exists*.
         Possible options are `all_exist`, `any_exist`,
         `at_least_one_exists`, `none_exist`, `only_one_exists`.
