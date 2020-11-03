@@ -1772,7 +1772,7 @@ yamlfile_value::
 ** *yamlpath* - OVAL's link:https://github.com/OpenSCAP/yaml-filter/wiki/YAML-Path-Definition[YAML Path] expression.
 ** *entity_check* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#CheckEnumeration[CheckEnumeration]) - entity_check value for state's value, optional. If omitted, entity_check attribute would not be set and will be treated by OVAL as 'all'. +
     Possible options are `all`, `at least one`, `none satisfy` and `only one`.
-** *check_existence* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration[ExistenceEnumeration]) - `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will defalut to 'only_one_exists'. +
+** *check_existence* (link:https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#ExistenceEnumeration[ExistenceEnumeration]) - `check_existence` value for the `yamlfilecontent_test`, optional. If omitted, check_existence attribute will default to 'only_one_exists'. +
    Possible options are `all_exist`, `any_exist`, `at_least_one_exists`, `none_exist`, `only_one_exists`.
 ** *values* - a list of dictionaries with values to check, where:
 ***   *key* - the yaml key to check, optional. Used when the yamlpath expression yields a map.
