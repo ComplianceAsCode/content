@@ -30,8 +30,9 @@ ocil_clause: 'the etcd is using self-signed certificates'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep ETCD_AUTO_TLS /etc/etcd/etcd.conf</pre>
-    The output should not return <tt>true</tt>.
+    <pre>$ oc get cm/etcd-pod -n openshift-etcd -o yaml</pre>
+    The etcd pod configuration contained in the configmap should not
+    contain the <tt>--auto-tls=true</tt> flag.
 
 warnings:
     - general: |-
