@@ -113,6 +113,7 @@ selections:
   # 1.4.1 Ensure that the --profiling argument is set to false  (info only)
   # Handled by rbac_debug_role_protects_pprof
   # 1.4.2 Ensure that the --bind-address argument is set to 127.0.0.1
+    - scheduler_no_bind_address
 
   ### 2 etcd
   # 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate
