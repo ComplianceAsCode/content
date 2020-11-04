@@ -317,6 +317,8 @@ selections:
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
     - dconf_gnome_disable_automount
+    - dconf_gnome_disable_automount_open
+    - dconf_gnome_disable_autorun
     - dconf_gnome_disable_ctrlaltdel_reboot
     - dconf_gnome_disable_geolocation
     - dconf_gnome_disable_restart_shutdown

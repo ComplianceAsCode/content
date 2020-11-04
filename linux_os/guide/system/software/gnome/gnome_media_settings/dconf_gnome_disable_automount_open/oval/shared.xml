@@ -1,0 +1,41 @@
+<def-group>
+  <definition class="compliance" id="dconf_gnome_disable_automount_open" version="1">
+    {{{ oval_metadata("The system's default desktop environment, GNOME3, will mount
+    devices and removable media (such as DVDs, CDs and USB flash drives)
+    whenever they are inserted into the system. Disable automount-open within GNOME3.", title="Disable GNOME3 automount-open") }}}
+    <criteria operator="OR">
+      <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <criteria comment="Disable GNOME3 automount/autorun and prevent user from changing it" operator="AND">
+        <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
+        <criterion comment="Disable automount-open in GNOME3" test_ref="test_dconf_gnome_disable_automount_open" />
+        <criterion comment="Prevent user from changing automount-open setting" test_ref="test_prevent_user_gnome_automount_open" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Disable automount-open in GNOME"
+  id="test_dconf_gnome_disable_automount_open" version="1">
+    <ind:object object_ref="obj_dconf_gnome_disable_automount_open" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_dconf_gnome_disable_automount_open"
+  version="1">
+    <ind:path>/etc/dconf/db/local.d/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^\[org/gnome/desktop/media-handling\]([^\n]*\n+)+?automount-open=false$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Prevent user from changing automount-open setting"
+  id="test_prevent_user_gnome_automount_open" version="1">
+    <ind:object object_ref="obj_prevent_user_gnome_automount_open" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_prevent_user_gnome_automount_open"
+  version="1">
+    <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^/org/gnome/desktop/media-handling/automount-open$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

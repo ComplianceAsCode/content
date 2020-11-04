@@ -3,18 +3,18 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- name: "Disable GNOME3 Automounting - automount"
+- name: "Disable GNOME3 Automounting - automount-open"
   ini_file:
     dest: /etc/dconf/db/local.d/00-security-settings
     section: org/gnome/desktop/media-handling
-    option: automount
+    option: automount-open
     value: "false"
     create: yes
     no_extra_spaces: yes
 
-- name: "Prevent user modification of GNOME3 Automounting - automount"
+- name: "Prevent user modification of GNOME3 Automounting - automount-open"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/media-handling/automount'
-    line: '/org/gnome/desktop/media-handling/automount'
+    regexp: '^/org/gnome/desktop/media-handling/automount-open'
+    line: '/org/gnome/desktop/media-handling/automount-open'
     create: yes

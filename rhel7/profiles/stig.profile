@@ -77,6 +77,9 @@ selections:
     - dconf_gnome_screensaver_idle_activation_locked
     - dconf_gnome_screensaver_lock_delay
     - dconf_gnome_disable_ctrlaltdel_reboot
+    - dconf_gnome_disable_automount
+    - dconf_gnome_disable_automount_open
+    - dconf_gnome_disable_autorun
     - accounts_password_pam_ucredit
     - accounts_password_pam_lcredit
     - accounts_password_pam_dcredit
