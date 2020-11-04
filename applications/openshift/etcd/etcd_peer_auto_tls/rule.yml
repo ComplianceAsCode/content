@@ -6,10 +6,10 @@ title: 'Disable etcd Peer Self-Signed Certificates'
 
 description: |-
     To ensure the <tt>etcd</tt> service is not using self-signed
-    certificates, edit the <tt>etcd</tt> configuration file
-    <tt>/etc/etcd/etcd.conf</tt> from the master node and set
-    <tt>ETCD_PEER_AUTO_TLS</tt> to <tt>false</tt>:
-    <pre>ETCD_PEER_AUTO_TLS=false</pre>
+    certificates, run the following command:
+    <pre>$ oc get cm/etcd-pod -n openshift-etcd -o yaml</pre>
+    The etcd pod configuration contained in the configmap should not
+    contain the <tt>--peer-auto-tls=true</tt> flag.
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -30,5 +30,21 @@ ocil_clause: 'the etcd is using peer self-signed certificates'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep ETCD_PEER_AUTO_TLS /etc/etcd/etcd.conf</pre>
-    The output should return <tt>false</tt>.
+    <pre>$ oc get cm/etcd-pod -n openshift-etcd -o yaml</pre>
+    The etcd pod configuration contained in the configmap should not
+    contain the <tt>--peer-auto-tls=true</tt> flag.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+        entity_check: "none satisfy"
+        yamlpath: '.data["pod.yaml"]'
+        values:
+          - value: '.*peer-auto-tls[= ]true.*'
+            operation: "pattern match"
