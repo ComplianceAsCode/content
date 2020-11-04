@@ -5,11 +5,11 @@ prodtype: ocp4
 title: 'Ensure That The etcd Peer Key File Is Correctly Set'
 
 description: |-
-    To ensure the <tt>etcd</tt> service is serving TLS to clients,
-    edit the <tt>etcd</tt> configuration file
-    <tt>/etc/etcd/etcd.conf</tt> on the master on the master and
-    adding a key file to <tt>ETCD_PEER_KEY_FILE</tt>:
-    <pre>ETCD_PEER_KEY_FILE=/etc/ssl/etcd/system:etcd-peer:<i>etcd_dns_name</i>.key</pre>
+    To ensure the <tt>etcd</tt> service is serving TLS to peers,
+    make sure the <tt>etcd-pod*</tt> <tt>ConfigMaps</tt> in the
+    <tt>openshift-etcd</tt> namespace contain the following argument
+    for the <tt>etcd</tt> binary in the <tt>etcd</tt> pod:
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-peer-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-peer/etcd-peer-NODE_NAME.key"</pre>
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -23,9 +23,23 @@ severity: medium
 references:
     cis: '2.4'
 
-ocil_clause: 'the etcd client key file is not configured'
+ocil_clause: 'the etcd peer client key file is not configured'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ grep ETCD_PEER_KEY_FILE=/etc/etcd/etcd.conf</pre>
-    Verify that there is a key file configured.
+    Run the following command:
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-peer-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-peer/etcd-peer-NODE_NAME.key"</pre>
+    Verify that there is a certificate configured.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+        yamlpath: ".data['pod.yaml']"
+        values:
+          - value: ".*--peer-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-peer/etcd-peer-NODE_NAME.key \\.*"
+            operation: "pattern match"
