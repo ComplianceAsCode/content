@@ -6,10 +6,11 @@ title: 'Enable The Client Certificate Authentication'
 
 description: |-
     To ensure the <tt>etcd</tt> service is serving TLS to clients,
-    edit the <tt>etcd</tt> configuration file
-    <tt>/etc/etcd/etcd.conf</tt> on the master node and set
-    <tt>ETCD_CLIENT_CERT_AUTH</tt> to <tt>true</tt>.
-    <pre>ETCD_CLIENT_CERT_AUTH=true</pre>
+    make sure the <tt>etcd-pod*</tt> <tt>ConfigMaps</tt> in the
+    <tt>openshift-etcd</tt> namespace contain the following argument
+    for the <tt>etcd</tt> binary in the <tt>etcd</tt> pod:
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-client-cert-auth="</pre>
+    the parameter should be set to <tt>true</tt>.
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -26,6 +27,21 @@ references:
 ocil_clause: 'the etcd client certificate authentication is not configured'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ grep ETCD_CLIENT_CERT_AUTH</pre>
-    The output should return <tt>true</tt>.
+    Run the following command:
+    <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-client-cert-auth="</pre>
+    The parameter should be set to <tt>true</tt>.
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod") | indent(8) }}}
+
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+        yamlpath: ".data['pod.yaml']"
+        values:
+          - value: ".*--client-cert-auth=true \\.*"
+            operation: "pattern match"
