@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
+
+title: 'Add noexec Option to /home'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries from being
+    executed out of <tt>/home</tt>. 
+    {{{ describe_mount(option="noexec", part="/home") }}}
+
+rationale: |-
+    The <tt>/home</tt> directory contains data of individual users. Binaries in
+    this directory should not be considered as trusted and users should not be
+    able to execute them.
+
+{{{ complete_ocil_entry_mount_option("/home", "noexec") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83327-7
+    cce@rhel8: CCE-83328-5
+
+references:
+    anssi: BP28(R12)
+
+platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /home
+        mountoption: noexec
+        mount_has_to_exist: 'yes'

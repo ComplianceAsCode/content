@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,wrlinux1019
+
+title: 'Add noexec Option to /var'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries from being
+    executed out of <tt>/var</tt>. 
+    {{{ describe_mount(option="noexec", part="/var") }}}
+
+rationale: |-
+    The <tt>/var</tt> directory contains variable system data such as logs,
+    mails and caches. No binaries should be executed from this directory.
+
+{{{ complete_ocil_entry_mount_option("/var", "noexec") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83329-3
+    cce@rhel8: CCE-83330-1
+
+references:
+    anssi: BP28(R12)
+
+platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /var
+        mountoption: noexec
+        mount_has_to_exist: 'yes'
