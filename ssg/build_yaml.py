@@ -200,7 +200,7 @@ class Profile(object):
             else:
                 self.selected.append(item)
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         element = ET.Element('Profile')
         element.set("id", self.id_)
         if self.extends:
@@ -215,12 +215,11 @@ class Profile(object):
 
         if self.platform:
             try:
-                cpes = PRODUCT_TO_CPE_MAPPING[self.platform]
+                platform_cpe = product_cpes.get_cpe_name(self.platform)
             except KeyError:
                 raise ValueError("Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
-            for idref in cpes:
-                plat = ET.SubElement(element, "platform")
-                plat.set("idref", idref)
+            plat = ET.SubElement(element, "platform")
+            plat.set("idref", platform_cpe)
 
         for selection in self.selected:
             select = ET.Element("select")
@@ -628,7 +627,7 @@ class Benchmark(object):
         ET.SubElement(root, "metadata")
 
         for profile in self.profiles:
-            root.append(profile.to_xml_element())
+            root.append(profile.to_xml_element(product_cpes))
 
         for value in self.values.values():
             root.append(value.to_xml_element())
