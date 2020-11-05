@@ -103,20 +103,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 </pre>
 <pre>
 ...
-PRODUCT_TO_CPE_MAPPING = {
-    "chromium": [
-        "cpe:/a:google:chromium-browser",
-    ],
-    <b>"custom6": [
-        "cpe:/o:custom:6",
-    ],</b>
-    "debian9": [
-        "cpe:/o:debianproject:debian:9",
-    ],
-...
-</pre>
-<pre>
-...
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
 ...

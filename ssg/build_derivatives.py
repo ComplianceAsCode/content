@@ -7,7 +7,7 @@ from __future__ import print_function
 
 import re
 from .xml import ElementTree
-from .constants import standard_profiles, OSCAP_VENDOR, PREFIX_TO_NS, PRODUCT_TO_CPE_MAPPING
+from .constants import standard_profiles, OSCAP_VENDOR, PREFIX_TO_NS
 from .build_cpe import ProductCPEs
 
 

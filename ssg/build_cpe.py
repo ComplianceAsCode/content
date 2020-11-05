@@ -104,6 +104,9 @@ class ProductCPEs(object):
         cpe = self.get_cpe(cpe_id)
         return cpe.name
 
+    def get_product_cpe_names(self):
+        return [ cpe.name for cpe in self.product_cpes.values() ]
+
 
 class CPEList(object):
     """

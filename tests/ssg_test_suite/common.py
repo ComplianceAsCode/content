@@ -9,8 +9,8 @@ import tarfile
 import tempfile
 import re
 
+from ssg.build_cpe import ProductCPEs
 from ssg.constants import MULTI_PLATFORM_MAPPING
-from ssg.constants import PRODUCT_TO_CPE_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
 from ssg_test_suite.log import LogHelper
@@ -171,7 +171,8 @@ def _get_platform_cpes(platform):
             raise ValueError
         platform_cpes = set()
         for p in products:
-            platform_cpes |= set(PRODUCT_TO_CPE_MAPPING[p])
+            p_cpes = ProductCPEs(p)
+            platform_cpes |= set(p_cpes.get_product_cpe_names())
         return platform_cpes
     else:
         # scenario platform is specified by a full product name
@@ -182,7 +183,8 @@ def _get_platform_cpes(platform):
                 "Unknown product name: %s is not from %s"
                 % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
             raise ValueError
-        platform_cpes = set(PRODUCT_TO_CPE_MAPPING[product])
+        product_cpes = ProductCPEs(product)
+        platform_cpes = set(product_cpes.get_product_cpe_names())
         return platform_cpes
 
 

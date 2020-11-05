@@ -13,7 +13,6 @@ from xml.sax.saxutils import escape
 import yaml
 
 from .build_cpe import CPEDoesNotExist
-from .constants import PRODUCT_TO_CPE_MAPPING
 from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
@@ -556,9 +555,6 @@ class Benchmark(object):
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
 
-        if product_yaml:
-            benchmark.cpes = PRODUCT_TO_CPE_MAPPING[product_yaml["product"]]
-
         return benchmark
 
     def add_profiles_from_dir(self, dir_, env_yaml):
@@ -618,9 +614,12 @@ class Benchmark(object):
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
 
-        for idref in self.cpes:
+        # The Benchmark applicability is determined by the CPEs
+        # defined in the product.yml
+        product_cpe_names = product_cpes.get_product_cpe_names()
+        for cpe_name in product_cpe_names:
             plat = ET.SubElement(root, "platform")
-            plat.set("idref", idref)
+            plat.set("idref", cpe_name)
 
         version = ET.SubElement(root, 'version')
         version.text = self.version
