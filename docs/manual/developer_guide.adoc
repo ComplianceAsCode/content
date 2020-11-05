@@ -1920,23 +1920,23 @@ At the moment, only the CPE mechanism is supported.
 
 ==== Applicability by CPE
 
-To define a new CPE add a new entry in `shared/applicability/cpes.yml`.
+The CPEs defined by the project are declared in `shared/applicability/cpes.yml`.
 
-Syntax is as follows (using exmples of CPEs already implemented):
+Syntax is as follows (using examples of existing CPEs):
 
 [source,yml]
 ----
 cpes:
 
-  machine:                                  ## The id of the CPE
-    name: "cpe:/a:machine"                  ## The CPE Name as defined by the CPE standard
-    title: "Bare-metal or Virtual Machine"  ## Human readable tile for the CPE
-    check_id: installed_env_is_a_machine    ## ID of OVAL implementing the applicability check
+  - machine:                                  ## The id of the CPE
+      name: "cpe:/a:machine"                  ## The CPE Name as defined by the CPE standard
+      title: "Bare-metal or Virtual Machine"  ## Human readable tile for the CPE
+      check_id: installed_env_is_a_machine    ## ID of OVAL implementing the applicability check
 
-  gdm:
-    name: "cpe:/a:gdm"
-    title: "Package gdm is installed"
-    check_id: installed_env_has_gdm_package
+  - gdm:
+      name: "cpe:/a:gdm"
+      title: "Package gdm is installed"
+      check_id: installed_env_has_gdm_package
 ----
 
 The first entry above defines the a CPE whose id is `machine`, this CPE is used for rules not applicable to containers. +
@@ -1947,20 +1947,28 @@ By setting the `platform` to `gdm`, the rule will have its applicability restric
 
 The OVAL checks for the CPE need to be of `inventory` class, and must be under `shared/checks/oval/`.
 
-==== Setting a produt's default CPE
+===== Setting a produt's default CPE
 The product's default applicability is set in its `product.yml` file, under the `cpes` key.
 For example:
 
 [source,yml]
 ----
 cpes:
-  example:
-    name: "cpe:/o:example"
-    title: "Example"
-    check_id: installed_OS_is_part_of_Unix_family
+  - example:
+      name: "cpe:/o:example"
+      title: "Example"
+      check_id: installed_OS_is_part_of_Unix_family
 ----
 
 Multiple CPEs can be set as default platforms for a product. +
+
+===== Setting the product's CPE source directory
+
+The key `cpes_root` in `product.yml` file specifies the directory to source the CPES from. +
+By default, all products source their CPES from `shared/applicabilty/`. Any file with extension `.yml` will be sourced for CPE definitions.
+
+Note: Only CPEs that are reference by a rule or profile will be included in the product's CPE Dictionary. +
+If no content requires the CPE it is deemed unnecessary and won't be included in the dictonary.
 
 === Tests (ctest)
 
