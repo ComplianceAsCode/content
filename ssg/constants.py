@@ -445,6 +445,8 @@ XCCDF_PLATFORM_TO_CPE = {
     "yum": "cpe:/a:yum",
     "zipl": "cpe:/a:zipl",
     "net-snmp": "cpe:/a:net-snmp",
+    "uefi": "cpe:/a:uefi",
+    "non-uefi": "cpe:/a:non-uefi",
 }
 
 # Default platform to package mapping
@@ -454,6 +456,8 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "sssd": "sssd-common",
   "zipl": "s390utils-base",
   "sssd-ldap": None,  # Force package check wrapping skip
+  "uefi": None,
+  "non-uefi": None,
 }
 
 # _version_name_map = {
