@@ -43,6 +43,7 @@ selections:
     - file_permissions_cni_conf
     - file_permissions_multus_conf
     - file_permissions_ip_allocations
+    - file_perms_openshift_sdn_cniserver_config
   # 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root
     - file_owner_cni_conf
     - file_groupowner_cni_conf
@@ -50,6 +51,8 @@ selections:
     - file_groupowner_multus_conf
     - file_owner_ip_allocations
     - file_groupowner_ip_allocations
+    - file_owner_openshift_sdn_cniserver_config
+    - file_groupowner_openshift_sdn_cniserver_config
   # 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive
   # 1.1.12 Ensure that the etcd data directory ownership is set to root:root
   # 1.1.13 Ensure that the admin.conf file permissions are set to 644 or more restrictive
