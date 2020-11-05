@@ -42,11 +42,12 @@ class Yaml_CPEs(object):
         for product in product_yamls:
             product_id = product["product"]
             try:
-                product_cpes = product["cpes"]
+                product_cpes_list = product["cpes"]
 
                 self.product_cpes[product_id] = {}
-                for cpe_id in product_cpes.keys():
-                    self.product_cpes[product_id][cpe_id] = product_cpes[cpe_id]
+                for cpe in product_cpes_list:
+                    for cpe_id in cpe.keys():
+                        self.product_cpes[product_id][cpe_id] = cpe[cpe_id]
 
             except KeyError:
                 print("Product %s does not define cpes" % (product_id))
@@ -58,7 +59,11 @@ class Yaml_CPEs(object):
         cpes_path = os.path.join(ssg_root, YAML_CPE_FILE)
 
         # "cpes" key is here for readability
-        self.cpes_by_id = open_raw(cpes_path)["cpes"]
+        cpes_list = open_raw(cpes_path)["cpes"]
+        for cpe in cpes_list:
+            for cpe_id in cpe.keys():
+                self.cpes_by_id[cpe_id] = cpe[cpe_id]
+
         for product in self.product_cpes:
             self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes[product])
 

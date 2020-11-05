@@ -9,22 +9,22 @@ profiles_root: "./profiles"
 pkg_manager: "yum"
 
 cpes:
-  jre-oracle:
-    name: "cpe:/a:oracle:jre:"
-    title: "Oracle's Java Runtime Environment"
-    check_id: installed_app_is_java
+  - jre-oracle:
+      name: "cpe:/a:oracle:jre:"
+      title: "Oracle's Java Runtime Environment"
+      check_id: installed_app_is_java
 
-  jre-ibm:
-    name: "cpe:/a:ibm:jre:"
-    title: "IBM Java Runtime Environment"
-    check_id: installed_app_is_java
+  - jre-ibm:
+      name: "cpe:/a:ibm:jre:"
+      title: "IBM Java Runtime Environment"
+      check_id: installed_app_is_java
 
-  openjdk-redhat:
-    name: "cpe:/a:redhat:openjdk:"
-    title: "OpenJDK Java Runtime Environment<"
-    check_id: installed_app_is_java
+  - openjdk-redhat:
+      name: "cpe:/a:redhat:openjdk:"
+      title: "OpenJDK Java Runtime Environment<"
+      check_id: installed_app_is_java
 
-  jre-oracle:
-    name: "cpe:/a:sun:jre:"
-    title: "Sun Java Runtime Environment"
-    check_id: installed_app_is_java
+  - jre-oracle:
+      name: "cpe:/a:sun:jre:"
+      title: "Sun Java Runtime Environment"
+      check_id: installed_app_is_java

@@ -11,7 +11,7 @@ pkg_manager: "yum"
 init_system: "systemd"
 
 cpes:
-  ol8:
-    name: "cpe:/o:oracle:linux:8"
-    title: "Oracle Linux 8"
-    check_id: installed_OS_is_ol8_family
+  - ol8:
+      name: "cpe:/o:oracle:linux:8"
+      title: "Oracle Linux 8"
+      check_id: installed_OS_is_ol8_family
