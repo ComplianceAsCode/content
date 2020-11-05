@@ -35,7 +35,10 @@ selections:
     - file_owner_kube_scheduler
     - file_groupowner_kube_scheduler
   # 1.1.7 Ensure that the etcd pod specification file permissions are set to 644 or more restrictive
+    - file_permissions_etcd_member
   # 1.1.8 Ensure that the etcd pod specification file ownership is set to root:root (Automated)
+    - file_owner_etcd_member
+    - file_groupowner_etcd_member
   # 1.1.9 Ensure that the Container Network Interface file permissions are set to 644 or more restrictive
   # 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root
   # 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive
