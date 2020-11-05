@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8
+
+title: 'Ensure /boot Located On Separate Partition'
+
+description: |-
+    It is recommended that the <tt>/boot</tt> directory resides on a separate
+    partition. This makes it easier to apply restrictions e.g. through the
+    <tt>noexec</tt> mount option. Eventually, the <tt>/boot</tt> partition can
+    be configured not to be mounted automatically with the <tt>noauto</tt> mount
+    option.
+
+rationale: |-
+    The <tt>/boot</tt> partition contains the kernel and bootloader files.
+    Access to this partition should be restricted.
+
+severity: medium
+
+platform: machine
+
+identifiers:
+    cce@rhel7: CCE-83333-5
+    cce@rhel8: CCE-83336-8
+
+references:
+    anssi: BP28(R12)
+
+{{{ complete_ocil_entry_separate_partition(part="/boot") }}}
+
+template:
+    name: mount
+    vars:
+        mountpoint: /boot

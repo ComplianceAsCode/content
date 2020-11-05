@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8
+
+title: 'Ensure /opt Located On Separate Partition'
+
+description: |-
+    It is recommended that the <tt>/opt</tt> directory resides on a separate
+    partition.
+
+rationale: |-
+    The <tt>/opt</tt> partition contains additional software, usually installed
+    outside the packaging system. Putting this directory on a separate partition
+    makes it easier to apply restrictions e.g. through the <tt>nosuid</tt> mount
+    option.
+
+severity: medium
+
+platform: machine
+
+identifiers:
+    cce@rhel7: CCE-83339-2
+    cce@rhel8: CCE-83340-0
+
+references:
+    anssi: BP28(R12)
+
+{{{ complete_ocil_entry_separate_partition(part="/opt") }}}
+
+template:
+    name: mount
+    vars:
+        mountpoint: /opt
