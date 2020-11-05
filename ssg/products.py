@@ -8,14 +8,14 @@ from .constants import product_directories
 from .yaml import open_raw
 
 
-def get_all_product_yamls(ssg_root):
-    product_yamls = []
-    for product in product_directories:
-        product_dir = os.path.join(ssg_root, product)
-        product_yaml_path = os.path.join(product_dir, "product.yml")
-        product_yamls.append(open_raw(product_yaml_path))
+def get_product_yaml(ssg_root, product):
+    """
+    Given a project root directory and product name.
+    Reads the product data from disk and returns it.
+    """
+    product_yaml_path = os.path.join(ssg_root, product, "product.yml")
+    return open_raw(product_yaml_path)
 
-    return product_yamls
 
 def get_all(ssg_root):
     """
@@ -27,10 +27,10 @@ def get_all(ssg_root):
     linux_products = set()
     other_products = set()
 
-    product_yamls = get_all_product_yamls(ssg_root)
-    for product_yaml in product_yamls:
-        product = product_yaml["product"]
+    for product in product_directories:
         product_dir = os.path.join(ssg_root, product)
+        product_yaml = get_product_yaml(ssg_root, product)
+
         guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
         guide_dir = os.path.abspath(guide_dir)
 

@@ -117,9 +117,10 @@ def main():
         cpe_name = platform.get("idref")
         benchmark_cpe_names.add(cpe_name)
 
+    product_cpes = ssg.build_cpe.ProductCPEs(args.product)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
-        cpe_list.add(cpe_name)
+        cpe_list.add(product_cpes.get_cpe(cpe_name))
 
     cpedict_filename = "ssg-" + args.product + "-cpe-dictionary.xml"
     cpedict_path = os.path.join(args.cpeoutdir, cpedict_filename)

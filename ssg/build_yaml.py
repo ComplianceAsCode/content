@@ -12,7 +12,7 @@ from xml.sax.saxutils import escape
 
 import yaml
 
-from .build_cpe import get_cpe_name, CPEDoesNotExist
+from .build_cpe import CPEDoesNotExist
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
@@ -598,7 +598,7 @@ class Benchmark(object):
         tree = ET.parse(file_)
         self.bash_remediation_fns_group = tree.getroot()
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         root = ET.Element('Benchmark')
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set('xmlns:xhtml', 'http://www.w3.org/1999/xhtml')
@@ -644,15 +644,15 @@ class Benchmark(object):
             group = self.groups.get(group_id)
             # Products using application benchmark don't have system or services group
             if group is not None:
-                root.append(group.to_xml_element())
+                root.append(group.to_xml_element(product_cpes))
 
         for rule in self.rules.values():
-            root.append(rule.to_xml_element())
+            root.append(rule.to_xml_element(product_cpes))
 
         return root
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
+    def to_file(self, file_name, product_cpes):
+        root = self.to_xml_element(product_cpes)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -738,7 +738,7 @@ class Group(object):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         group = ET.Element('Group')
         group.set('id', self.id_)
         if self.prodtype != "all":
@@ -753,7 +753,7 @@ class Group(object):
         if self.platform:
             platform_el = ET.SubElement(group, "platform")
             try:
-                platform_cpe = get_cpe_name(self.platform)
+                platform_cpe = product_cpes.get_cpe_name(self.platform)
             except CPEDoesNotExist:
                 print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
                 raise
@@ -775,7 +775,7 @@ class Group(object):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
-            group.append(self.rules.get(rule_id).to_xml_element())
+            group.append(self.rules.get(rule_id).to_xml_element(product_cpes))
 
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
@@ -807,12 +807,12 @@ class Group(object):
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
-            group.append(_group.to_xml_element())
+            group.append(_group.to_xml_element(product_cpes))
 
         return group
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
+    def to_file(self, file_name, product_cpes):
+        root = self.to_xml_element(product_cpes)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -1107,7 +1107,7 @@ class Rule(object):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         rule = ET.Element('Rule')
         rule.set('id', self.id_)
         if self.prodtype != "all":
@@ -1175,7 +1175,7 @@ class Rule(object):
         if self.platform:
             platform_el = ET.SubElement(rule, "platform")
             try:
-                platform_cpe = get_cpe_name(self.platform)
+                platform_cpe = product_cpes.get_cpe_name(self.platform)
             except CPEDoesNotExist:
                 print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
                 raise
@@ -1183,8 +1183,8 @@ class Rule(object):
 
         return rule
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
+    def to_file(self, file_name, product_cpes):
+        root = self.to_xml_element(product_cpes)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -1343,5 +1343,5 @@ class BuildLoader(DirectoryLoader):
         return BuildLoader(
             self.profiles_dir, self.bash_remediation_fns, self.env_yaml, self.resolved_rules_dir)
 
-    def export_group_to_file(self, filename):
-        return self.loaded_group.to_file(filename)
+    def export_group_to_file(self, filename, product_cpes):
+        return self.loaded_group.to_file(filename, product_cpes)

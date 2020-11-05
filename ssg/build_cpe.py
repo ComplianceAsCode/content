@@ -5,74 +5,87 @@ Common functions for building CPEs
 from __future__ import absolute_import
 from __future__ import print_function
 import os
+import sys
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
-from .products import get_all_product_yamls
-from .utils import merge_dicts
+from .products import get_product_yaml
+from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .yaml import open_raw
-
-
-YAML_CPE_FILE = os.path.join("shared", "applicability", "cpes.yml")
 
 
 class CPEDoesNotExist(Exception):
     pass
 
 
-class Yaml_CPEs(object):
+class ProductCPEs(object):
     """
-    Reads all the yaml CPEs from cpes.yml.
+    Reads from the disk all the yaml CPEs related to a product
+    and provides them in a structured way.
     """
 
-    def __init__(self):
+    def __init__(self, product):
+        self.ssg_root = \
+            os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        self.product_yaml = get_product_yaml(self.ssg_root, product)
+
         self.cpes_by_id = {}
         self.cpes_by_name = {}
         self.product_cpes = {}
 
-        self._load_all_product_cpes()
-        self.load_all_cpes()
+        self.load_product_cpes()
+        self.load_content_cpes()
 
-    def _load_all_product_cpes(self):
-        ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-        product_yamls = get_all_product_yamls(ssg_root)
-
-        for product in product_yamls:
-            product_id = product["product"]
-            try:
-                product_cpes_list = product["cpes"]
-
-                self.product_cpes[product_id] = {}
-                for cpe in product_cpes_list:
-                    for cpe_id in cpe.keys():
-                        self.product_cpes[product_id][cpe_id] = cpe[cpe_id]
-
-            except KeyError:
-                print("Product %s does not define cpes" % (product_id))
-                raise
-
-    def load_all_cpes(self):
-        ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-        cpes_path = os.path.join(ssg_root, YAML_CPE_FILE)
-
-        # "cpes" key is here for readability
-        cpes_list = open_raw(cpes_path)["cpes"]
+    def _load_cpes_list(self, map_, cpes_list):
         for cpe in cpes_list:
             for cpe_id in cpe.keys():
-                self.cpes_by_id[cpe_id] = cpe[cpe_id]
+                map_[cpe_id] = CPEItem(cpe[cpe_id])
 
-        for product in self.product_cpes:
-            self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes[product])
+    def load_product_cpes(self):
+
+        try:
+            product_cpes_list = self.product_yaml["cpes"]
+            self._load_cpes_list(self.product_cpes, product_cpes_list)
+
+        except KeyError:
+            print("Product %s does not define 'cpes'" % (self.product_yaml["product"]))
+            raise
+
+    def load_content_cpes(self):
+
+        cpes_root = required_key(self.product_yaml, "cpes_root")
+        # we have to "absolutize" the paths the right way, relative to the product_yaml path
+        if not os.path.isabs(cpes_root):
+            cpes_root = os.path.join(self.ssg_root, self.product_yaml["product"], cpes_root)
+
+        for dir_item in os.listdir(cpes_root):
+            dir_item_path = os.path.join(cpes_root, dir_item)
+            if not os.path.isfile(dir_item_path):
+                continue
+
+            _, ext = os.path.splitext(os.path.basename(dir_item_path))
+            if ext != '.yml':
+                sys.stderr.write(
+                    "Encountered file '%s' while looking for content CPEs, "
+                    "extension '%s' is unknown. Skipping..\n"
+                    % (dir_item, ext)
+                )
+                continue
+
+            # Get past "cpes" key, which was added for readability of the content
+            cpes_list = open_raw(dir_item_path)["cpes"]
+            self._load_cpes_list(self.cpes_by_id, cpes_list)
+
+        # Add product_cpes to map of CPEs by ID
+        self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes)
 
         # Generate a CPE map by name,
         # so that we can easily reference them by CPE Name
         # Note: After the shorthand is generated,
         # all references to CPEs are by its name
         for cpe_id, cpe in self.cpes_by_id.items():
-            self.cpes_by_name[cpe["name"]] = cpe
+            self.cpes_by_name[cpe.name] = cpe
 
     def _is_name(self, ref):
         return ref.startswith("cpe:")
@@ -84,15 +97,13 @@ class Yaml_CPEs(object):
             else:
                 return self.cpes_by_id[ref]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, YAML_CPE_FILE))
+            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, self.product_yaml["cpes_root"]))
 
 
-YAML_CPES = Yaml_CPEs()
+    def get_cpe_name(self, cpe_id):
+        cpe = self.get_cpe(cpe_id)
+        return cpe.name
 
-
-def get_cpe_name(cpe_id):
-    cpe = YAML_CPES.get_cpe(cpe_id)
-    return cpe.get("name")
 
 class CPEList(object):
     """
@@ -105,8 +116,8 @@ class CPEList(object):
     def __init__(self):
         self.cpe_items = []
 
-    def add(self, cpe_name):
-        self.cpe_items.append(CPEItem(cpe_name))
+    def add(self, cpe_item):
+        self.cpe_items.append(cpe_item)
 
     def to_xml_element(self, cpe_oval_file):
         cpe_list = ET.Element("{%s}cpe-list" % CPEList.ns)
@@ -129,14 +140,13 @@ class CPEList(object):
 
 class CPEItem(object):
     """
-    Represents the cpe-list element from the CPE standard.
+    Represents the cpe-item element from the CPE standard.
     """
 
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
 
-    def __init__(self, cpe_name):
-        cpeitem_data = YAML_CPES.get_cpe(cpe_name)
+    def __init__(self, cpeitem_data):
 
         self.name = cpeitem_data["name"]
         self.title = cpeitem_data["title"]
