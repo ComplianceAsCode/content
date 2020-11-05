@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Verify Grop Who Owns The Etcd Database Files'
+
+description: |-
+    {{{ describe_file_group_owner(file="/var/lib/etcd/*", group="root") }}}
+
+rationale: |-
+    etcd is a highly-available key-value store used by Kubernetes deployments for
+    persistent storage of all of its REST API objects. This data directory should
+    be protected from any unauthorized reads or writes. It should be owned by
+    <pre>root:root</pre>.
+
+severity: medium
+
+#identifiers:
+#    cce@ocp4:
+
+references:
+    cis: 1.1.12
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/etcd/*", group="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/lib/etcd/*", group="owner") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: ^/var/lib/etcd/*$
+        filegid: '0'
+        missing_file_pass: "true"
+        filepath_is_regex: "true"

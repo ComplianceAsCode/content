@@ -72,7 +72,13 @@ selections:
     - file_owner_ovsdb_server_pid
     - file_groupowner_ovsdb_server_pid
   # 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive
+    - file_permissions_etcd_data_dir
+    - file_permissions_etcd_data_files
   # 1.1.12 Ensure that the etcd data directory ownership is set to root:root
+    - file_owner_etcd_data_dir
+    - file_groupowner_etcd_data_dir
+    - file_owner_etcd_data_files
+    - file_groupowner_etcd_data_files
   # 1.1.13 Ensure that the admin.conf file permissions are set to 644 or more restrictive
   # 1.1.14 Ensure that the admin.conf file ownership is set to root:root 
   # 1.1.15 Ensure that the scheduler.conf file permissions are set to 644 or more restrictive
