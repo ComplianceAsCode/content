@@ -130,7 +130,7 @@ Each zip file is an archive with ready-made SCAP source datastreams.
 
 We maintain a COPR repository that provides unofficial builds of latest versions
 of openscap, scap-security-guide, scap-workbench, and openscap-daemon.
-The packages are suitable for use on Red Hat Enterprise Linux 6, 7 and 8 and CentOS 6, 7 and 8.
+The packages are suitable for use on Red Hat Enterprise Linux and CentOS.
 
 See https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/ for
 detailed instructions.
@@ -195,7 +195,7 @@ stored on the local machine. Keep in mind that `oscap` has to be installed on th
 remote machine but the SSG content doesn't need to be.
 
 ```bash
-oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
+oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_standard --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
 ```
 
 ### Ansible
@@ -203,17 +203,7 @@ oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.conten
 To see a list of available Ansible Playbooks, run:
 
 ```bash
-# ls /usr/share/scap-security-guide/ansible/
-...
-rhel6-playbook-standard.yml
-rhel6-playbook-stig-rhel6-server-upstream.yml
-rhel6-playbook-usgcb-rhel6-server.yml
-rhel7-playbook-C2S.yml
-rhel7-playbook-cjis-rhel7-server.yml
-rhel7-playbook-common.yml
-rhel7-playbook-docker-host.yml
-rhel7-playbook-cui.yml
-...
+ls /usr/share/scap-security-guide/ansible/
 ```
 
 These Ansible Playbooks are generated from *SCAP* profiles available for the products.

@@ -11,11 +11,7 @@
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
 # set list of syscalls based on rhel version
-{{% if product == "rhel6" %}}
-{{% set audit_syscalls = ["init_module", "delete_module"] %}}
-{{% else %}}
 {{% set audit_syscalls = ["init_module", "delete_module", "finit_module"] %}}
-{{% endif %}}
 
 - name: Perform remediation of Audit rules for kernel module loading for x86 platform
   block:

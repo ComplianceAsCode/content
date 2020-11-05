@@ -1,25 +1,12 @@
 <def-group>
   <definition class="compliance" id="ldap_client_tls_cacertpath" version="1">
     {{{ oval_metadata("Require the use of TLS for LDAP clients.") }}}
-    {{%- if product == "rhel6" -%}}
-    <criteria comment="package pam_ldap is not present" operator="OR">
-      <extend_definition comment="pam_ldap not present or in use"
-      definition_ref="package_pam_ldap_removed" />
-      <criterion comment="look for tls_cacertdir in /etc/pam_ldap.conf"
-      test_ref="test_ldap_client_tls_cacertdir" />
-      <criterion comment="look for tls_cacertfile in /etc/pam_ldap.conf"
-      test_ref="test_ldap_client_tls_cacertfile" />
-    </criteria>
-    {{% set LDAP_CLIENT_CONF_FILE = "/etc/pam_ldap.conf" %}}
-    {{%- else -%}}
     <criteria operator="AND">
       <extend_definition comment="LDAP is in use"
       definition_ref="enable_ldap_client" />
       <criterion comment="look for tls_cacertdir in /etc/nslcd.conf"
       test_ref="test_ldap_client_tls_cacertdir" />
     </criteria>
-    {{% set LDAP_CLIENT_CONF_FILE = "/etc/nslcd.conf" %}}
-    {{%- endif -%}}
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
   comment="Tests the value of the tls_cacertdir setting in the configuration file"
@@ -27,7 +14,7 @@
     <ind:object object_ref="obj_ldap_client_tls_cacertdir" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_ldap_client_tls_cacertdir" version="1">
-    <ind:filepath>{{{ LDAP_CLIENT_CONF_FILE }}}</ind:filepath>
+    <ind:filepath>/etc/nslcd.conf</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*tls_cacertdir[\s]+/etc/pki/tls/CA$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -38,7 +25,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_ldap_client_tls_cacertfile"
   version="1">
-    <ind:filepath>{{{ LDAP_CLIENT_CONF_FILE }}}</ind:filepath>
+    <ind:filepath>/etc/nslcd.conf</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*tls_cacertfile[\s]+/etc/pki/tls/CA/.*\.(pem|crt)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

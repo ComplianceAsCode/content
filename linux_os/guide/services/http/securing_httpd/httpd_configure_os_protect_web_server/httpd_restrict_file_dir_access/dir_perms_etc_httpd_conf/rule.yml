@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8
+prodtype: rhel7,rhel8
 
 title: 'Set Permissions on the /etc/httpd/conf/ Directory'
 
@@ -13,7 +13,6 @@ rationale: |-
 severity: unknown
 
 identifiers:
-    cce@rhel6: CCE-27487-8
     cce@rhel7: CCE-80323-9
 
 ocil: '{{{ ocil_file_permissions(file="/etc/http/conf", perms="-rwxr-x---") }}}'

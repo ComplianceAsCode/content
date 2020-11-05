@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = debian 10,debian 9,multi_platform_fedora,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 6,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,WRLinux 1019
+# platform = debian 10,debian 9,multi_platform_fedora,Oracle Linux 7,Oracle Linux 8,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,WRLinux 1019
 
 . /usr/share/scap-security-guide/remediation_functions
 

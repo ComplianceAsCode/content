@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel6,rhel7,rhel8,rhv4
+prodtype: fedora,rhel7,rhel8,rhv4
 
 title: 'Install PAE Kernel on Supported 32-bit x86 Systems'
 
@@ -14,11 +14,7 @@ description: |-
     {{{ describe_package_install(package="kernel-PAE") }}}
     The installation process should also have configured the
     bootloader to load the new kernel at boot. Verify this after reboot
-    {{% if product == "rhel6" %}}
-    and modify <tt>/etc/grub.conf</tt> if necessary.
-    {{% else %}}
     and modify <tt>/etc/default/grub</tt> if necessary.
-    {{% endif %}}
 
 rationale: |-
     On 32-bit systems that support the XD or NX bit, the vendor-supplied
@@ -27,7 +23,6 @@ rationale: |-
 severity: unknown
 
 identifiers:
-    cce@rhel6: CCE-27010-8
     cce@rhel7: CCE-27116-3
 
 references:

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel6,rhel7,rhel8
+prodtype: fedora,rhel7,rhel8
 
 title: 'Specify UID and GID for Anonymous NFS Connections'
 
@@ -11,7 +11,7 @@ description: |-
     anongid=<tt>value greater than GID_MAX from /etc/login.defs</tt>
     </pre>
     Note that a value of "-1" is technically acceptable as this will randomize the <tt>anonuid</tt> and
-    <tt>anongid</tt> values on a Red Hat Enterprise Linux 6 based NFS server. While acceptable from a security perspective,
+    <tt>anongid</tt> values on a Red Hat Enterprise Linux based NFS server. While acceptable from a security perspective,
     a value of <tt>-1</tt>  may cause interoperability issues, particularly with Red Hat Enterprise Linux 7 client systems.
     Alternatively, functionally equivalent values of 60001, 65534, 65535 may be used.
 
@@ -22,7 +22,6 @@ rationale: |-
 severity: unknown
 
 identifiers:
-    cce@rhel6: CCE-27414-2
     cce@rhel7: CCE-80236-3
 
 ocil_clause: 'anonuid or anongid are not set to a value greater than UID_MAX (for anonuid) and GID_MAX (for anongid)'

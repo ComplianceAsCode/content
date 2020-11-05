@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel6,rhel7,rhel8,rhv4
+prodtype: fedora,rhel7,rhel8,rhv4
 
 title: 'Enable ExecShield via sysctl'
 
@@ -25,13 +25,10 @@ severity: medium
 platform: machine  # The oscap sysctl probe doesn't support offline mode
 
 identifiers:
-    cce@rhel6: CCE-27007-4
     cce@rhel7: CCE-27211-2
     cce@rhel8: CCE-80914-5
 
 references:
-    srg@rhel6: SRG-OS-999999
-    stigid@rhel6: RHEL-06-000079
     cis: 1.5.2
     cui: 3.1.7
     disa: CCI-002530

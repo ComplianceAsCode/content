@@ -3,13 +3,8 @@
   id="network_ipv6_static_address" version="1">
     {{{ oval_metadata("Manually configure addresses for IPv6") }}}
     <criteria operator="OR">
-      {{%- if product == "rhel6" -%}}
-      <extend_definition comment="IPv6 disabled or..."
-      definition_ref="kernel_module_ipv6_option_disabled" />
-      {{%- else -%}}
       <extend_definition comment="IPv6 disabled or..."
       definition_ref="sysctl_kernel_ipv6_disable" />
-      {{%- endif -%}}
       <criterion comment="Set static IPv6 address on each interface" 
       test_ref="test_network_ipv6_static_address" />
     </criteria>

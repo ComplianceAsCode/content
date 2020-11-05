@@ -120,7 +120,7 @@ def test_two_plus_remediation():
 def test_prodtypes_oval():
     bad_rule = {
         "id": "bad_rule",
-        "products": ["rhel6"],
+        "products": ["rhel8"],
         "ovals": {
             "rhel7.xml": {
                 "products": ["rhel7"]
@@ -153,7 +153,7 @@ def test_prodtypes_oval():
 def test_prodtypes_remediation():
     bad_rule = {
         "id": "bad_rule",
-        "products": ["rhel6"],
+        "products": ["rhel8"],
         "remediations": {
             "bash": {
                 "rhel7.sh": {

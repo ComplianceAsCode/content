@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,sle15
+prodtype: rhel7,rhel8,sle15
 
 title: 'Disable rpcbind Service'
 
@@ -20,7 +20,6 @@ rationale: |-
 severity: low
 
 identifiers:
-    cce@rhel6: CCE-27430-8
     cce@rhel7: CCE-80230-6
     cce@rhel8: CCE-82858-2
 
@@ -33,4 +32,3 @@ template:
     vars:
         servicename: rpcbind
         packagename: nfs-utils
-        packagename@rhel6: rpcbind
