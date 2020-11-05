@@ -14,8 +14,13 @@
         definition_ref="sshd_required_or_unset" />
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
-        <criterion comment="Check Compression in /etc/ssh/sshd_config"
-        test_ref="test_sshd_disable_compression" />
+        <criteria comment="sshd is configured" operator="OR">
+          <criterion comment="Check Compression in /etc/ssh/sshd_config" test_ref="test_sshd_disable_compression" />
+          <criteria comment="sshd is missing Compression and is set to default value" operator="AND">
+            <criterion comment="check if variable is set to default value (delayed)" test_ref="test_var_sshd_disable_compression_is_default" />
+            <criterion comment="check absence of the value of Compression setting in the /etc/ssh/sshd_config file" test_ref="test_absence_of_sshd_disable_compression" />
+          </criteria>
+        </criteria>
       </criteria>
     </criteria>
   </definition>
@@ -28,4 +33,35 @@
   </ind:textfilecontent54_state>
 
   <external_variable comment="external variable for the desired value of Compression" datatype="string" id="var_sshd_disable_compression" version="1" />
+
+  <ind:variable_test check="all" check_existence="all_exist"
+  comment="tests if the variable is selecting default value (delayed)"
+  id="test_var_sshd_disable_compression_is_default" version="1">
+    <ind:object object_ref="object_var_sshd_disable_compression" />
+    <ind:state state_ref="state_sshd_disable_compression_default_value" />
+  </ind:variable_test>
+
+  <local_variable id="sshd_disable_compression_default_value" datatype="string" version="1" comment="Delayed">
+    <literal_component>delayed</literal_component>
+  </local_variable>
+
+  <ind:variable_object comment="All modified times of all keyfiles" id="object_var_sshd_disable_compression" version="1">
+     <ind:var_ref>var_sshd_disable_compression</ind:var_ref>
+   </ind:variable_object>
+
+  <ind:variable_state id="state_sshd_disable_compression_default_value" version="1">
+    <ind:value datatype="int" operation="equals" var_check="all" var_ref="sshd_disable_compression_default_value" />
+  </ind:variable_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="tests absence of the value of Compression setting in the /etc/ssh/sshd_config file"
+  id="test_absence_of_sshd_disable_compression" version="1">
+    <ind:object object_ref="obj_absence_of_sshd_disable_compression" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_absence_of_sshd_disable_compression" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)Compression(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>
