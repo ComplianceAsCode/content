@@ -160,6 +160,7 @@ pkg_manager: "yum"
 
 init_system: "systemd"
 
+cpes_root: "../shared/applicability"
 cpes:
   new_product:
     name: "cpe:/o:$NAME:$VERSION"
