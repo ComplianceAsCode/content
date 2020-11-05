@@ -32,6 +32,8 @@ selections:
   # 1.1.5 Ensure that the scheduler pod specification file permissions are set to 644 or more restrictive
     - file_permissions_scheduler
   # 1.1.6 Ensure that the scheduler pod specification file ownership is set to root:root
+    - file_owner_kube_scheduler
+    - file_groupowner_kube_scheduler
   # 1.1.7 Ensure that the etcd pod specification file permissions are set to 644 or more restrictive
   # 1.1.8 Ensure that the etcd pod specification file ownership is set to root:root (Automated)
   # 1.1.9 Ensure that the Container Network Interface file permissions are set to 644 or more restrictive
