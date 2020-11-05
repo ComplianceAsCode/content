@@ -41,9 +41,12 @@ selections:
     - file_groupowner_etcd_member
   # 1.1.9 Ensure that the Container Network Interface file permissions are set to 644 or more restrictive
     - file_permissions_cni_conf
+    - file_permissions_multus_conf
   # 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root
     - file_owner_cni_conf
     - file_groupowner_cni_conf
+    - file_owner_multus_conf
+    - file_groupowner_multus_conf
   # 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive
   # 1.1.12 Ensure that the etcd data directory ownership is set to root:root
   # 1.1.13 Ensure that the admin.conf file permissions are set to 644 or more restrictive
