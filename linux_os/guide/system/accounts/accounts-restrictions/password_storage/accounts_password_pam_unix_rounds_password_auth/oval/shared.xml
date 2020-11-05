@@ -1,0 +1,54 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The number of rounds for password hashing should be set correctly.") }}}
+    <criteria comment="Check if rounds option of pam_unix is as expected" operator="OR">
+        <criterion comment="The value of rounds is set correctly in pam_unix.so" test_ref="test_password_auth_pam_unix_rounds_is_set" />
+        <criteria comment="The value of rounds is no set, in this case the system default is used" operator="AND">
+            <criterion comment="The default value of rounds is used in pam_unix.so" test_ref="test_password_auth_pam_unix_rounds_is_default" />
+            <criterion comment="The target value of rounds is the default" test_ref="test_password_auth_default_pam_unix_rounds_var" />
+        </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_password_auth_pam_unix_rounds_is_set" check="all" check_existence="all_exist"
+  comment="Test if rounds attribute of pam_unix.so is set correctly in /etc/pam.d/password-auth" version="1">
+    <ind:object object_ref="object_password_auth_pam_unix_rounds" />
+    <ind:state state_ref="state_password_auth_pam_unix_rounds" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_password_auth_pam_unix_rounds_is_default" check="all" check_existence="none_exist"
+  comment="Test if rounds attribute of pam_unix.so is not set in /etc/pam.d/password-auth" version="1">
+    <ind:object object_ref="object_password_auth_pam_unix_rounds" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_password_auth_pam_unix_rounds" version="1">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*rounds=([0-9]*).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_password_auth_pam_unix_rounds" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_password_pam_unix_rounds" />
+  </ind:textfilecontent54_state>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_password_auth_default_pam_unix_rounds_var" version="1"
+      comment="Check if value of var_password_pam_unix_rounds is the system's default">
+    <ind:object object_ref="object_password_auth_default_pam_unix_rounds_var" />
+    <ind:state state_ref="state_password_auth_default_pam_unix_rounds_var" />
+  </ind:variable_test>
+
+  <ind:variable_object comment="All modified times of all keyfiles" id="object_password_auth_default_pam_unix_rounds_var" version="1">
+     <ind:var_ref>var_password_pam_unix_rounds</ind:var_ref>
+   </ind:variable_object>
+
+  <ind:variable_state id="state_password_auth_default_pam_unix_rounds_var" version="1">
+    <ind:value datatype="int" operation="equals" var_check="all" var_ref="var_password_auth_default_hashing_rounds" />
+  </ind:variable_state>
+
+  <local_variable id="var_password_auth_default_hashing_rounds" datatype="int" version="1" comment="Default number of password hashing rounds">
+      <literal_component>5000</literal_component>
+  </local_variable>
+
+  <external_variable comment="number of passwords hashing rounds" datatype="int" id="var_password_pam_unix_rounds" version="1" />
+
+</def-group>
