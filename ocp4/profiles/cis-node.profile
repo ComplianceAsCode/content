@@ -48,6 +48,7 @@ selections:
     - file_permissions_ovs_conf_db
     - file_permissions_ovs_sys_id_conf
     - file_permissions_ovs_conf_db_lock
+    - file_permissions_ovs_vswitchd_pid
   # 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root
     - file_owner_cni_conf
     - file_groupowner_cni_conf
@@ -65,6 +66,8 @@ selections:
     - file_groupowner_ovs_sys_id_conf
     - file_owner_ovs_conf_db_lock
     - file_groupowner_ovs_conf_db_lock
+    - file_owner_ovs_vswitchd_pid
+    - file_groupowner_ovs_vswitchd_pid
   # 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive
   # 1.1.12 Ensure that the etcd data directory ownership is set to root:root
   # 1.1.13 Ensure that the admin.conf file permissions are set to 644 or more restrictive
