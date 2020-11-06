@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4
+
+title: 'Set number of Password Hashing Rounds - password-auth'
+
+description: |-
+    Configure the number or rounds for the password hashing algorithm. This can be
+    accomplished by using the <tt>rounds</tt> option for the <tt>pam_unix</tt> PAM module.
+    <br /><br />
+    In file <tt>/etc/pam.d/password-auth</tt> append <tt>rounds=<sub idref="var_password_pam_unix_rounds" /></tt>
+    to the <tt>pam_unix.so</tt> file, as shown below:
+    <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds=<sub idref="var_password_pam_unix_rounds" /></pre>
+    The system's default number of rounds is 5000.
+
+rationale: |-
+    Using a higher number of rounds makes password cracking attacks more difficult.
+
+warnings:
+    - performance: |-
+        Setting a high number of hashing rounds makes it more difficult to brute force the password,
+        but requires more CPU resources to authenticate users.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83402-8
+    cce@rhel8: CCE-83403-6
+
+references:
+  anssi: BP28(R32)
+
+ocil_clause: 'it does not set the appropriate number of hashing rounds'
+
+ocil: |-
+    To verify the number of rounds for the password hashing algorithm is compliant, run the following command:
+    <pre>$ grep rounds /etc/pam.d/password-auth</pre>
+    The output should show the following match:
+    <pre>rounds=<sub idref="var_password_pam_unix_rounds" /></pre>
+
+platform: pam

@@ -1,0 +1,15 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("var_password_pam_unix_rounds") }}}
+
+- name: "Configure number of password-auth password hashing rounds in pam_unix.so"
+  pamd:
+    name: password-auth
+    type: password
+    control: sufficient
+    module_path: pam_unix.so
+    module_arguments: 'rounds={{ var_password_pam_unix_rounds }}'
+    state: args_present
