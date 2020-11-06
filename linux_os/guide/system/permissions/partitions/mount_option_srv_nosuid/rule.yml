@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+
+title: 'Add nosuid Option to /srv'
+
+description: |-
+    The <tt>nosuid</tt> mount option can be used to prevent
+    execution of setuid programs in <tt>/srv</tt>. The SUID and SGID permissions
+    should not be required in this directory.
+    {{{ describe_mount(option="nosuid", part="/srv") }}}
+
+rationale: |-
+    The presence of SUID and SGID executables should be tightly controlled. The
+    <tt>/srv</tt> directory contains files served by various network services such as FTP. Users should
+    not be able to execute SUID or SGID binaries from this directory.
+
+{{{ complete_ocil_entry_mount_option("/srv", "nosuid") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83320-2
+    cce@rhel8: CCE-83322-8
+
+references:
+    anssi: BP28(R12)
+
+platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /srv
+        mountoption: nosuid
+        mount_has_to_exist: 'yes'

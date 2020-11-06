@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+
+title: 'Add noexec Option to /boot'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries from being
+    executed out of <tt>/boot</tt>. 
+    {{{ describe_mount(option="noexec", part="/boot") }}}
+
+rationale: |-
+    The <tt>/boot</tt> partition contains the kernel and the bootloader. No
+    binaries should be executed from this partition after the booting process
+    finishes.
+
+{{{ complete_ocil_entry_mount_option("/boot", "noexec") }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83315-2
+    cce@rhel8: CCE-83316-0
+
+references:
+    anssi: BP28(R12)
+
+platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mountpoint: /boot
+        mountoption: noexec
+        mount_has_to_exist: 'yes'
