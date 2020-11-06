@@ -4,7 +4,7 @@ prodtype: ocp4
 
 title: 'Verify User Who Owns The OpenShift Open vSwitch Files'
 
-description: '{{{ describe_file_owner(file="/etc/openvswitch/*", owner="root") }}}'
+description: '{{{ describe_file_owner(file="/etc/openvswitch/.*", owner="root") }}}'
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -20,9 +20,9 @@ severity: medium
 references:
     cis: 1.1.10
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/openvswitch/*", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/openvswitch/.*", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/etc/openvswitch/*", owner="root") }}}'
+ocil: '{{{ ocil_file_owner(file="/etc/openvswitch/.*", owner="root") }}}'
 
 template:
     name: file_owner

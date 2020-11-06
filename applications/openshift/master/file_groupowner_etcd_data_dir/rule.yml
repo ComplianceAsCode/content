@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Group Who Owns The Etcd Database Directory'
 
 description: |-
-    {{{ describe_file_group_owner(file="/var/lib/etcd", group="root") }}}
+    {{{ describe_file_group_owner(file="/var/lib/etcd/member/", group="root") }}}
 
 rationale: |-
     etcd is a highly-available key-value store used by Kubernetes deployments for
@@ -21,14 +21,14 @@ severity: medium
 references:
     cis: 1.1.12
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/etcd", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/etcd/member/", group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/lib/etcd", group="root") }}}
+    {{{ ocil_file_group_owner(file="/var/lib/etcd/member/", group="root") }}}
 
 template:
     name: file_groupowner
     vars:
-        filepath: /var/lib/etcd
+        filepath: /var/lib/etcd/member/
         filegid: '0'
         missing_file_pass: "true"

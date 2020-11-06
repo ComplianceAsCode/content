@@ -4,7 +4,7 @@ prodtype: ocp4
 
 title: 'Verify User Who Owns The Kube Controller Manager Pod Specificiation File'
 
-description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", owner="root") }}}'
+description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml", owner="root") }}}'
 
 rationale: |-
     The Kube specification file contains information about the configuration of the
@@ -19,9 +19,9 @@ severity: medium
 references:
     cis: 1.1.4
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", owner="root") }}}'
+ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml", owner="root") }}}'
 
 template:
     name: file_owner
