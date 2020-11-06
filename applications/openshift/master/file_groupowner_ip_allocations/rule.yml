@@ -4,7 +4,8 @@ prodtype: ocp4
 
 
 title: 'Verify Group Who Owns The OpenShift SDN Container Network Interface Plugin IP Address Allocations'
-description: '{{{ describe_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/*", group="root") }}}'
+
+description: '{{{ describe_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/.*", group="root") }}}'
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -20,14 +21,14 @@ severity: medium
 references:
     cis: 1.1.10
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/*", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/.*", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/*", group="root") }}}'
+ocil: '{{{ ocil_file_group_owner(file="/var/lib/cni/networks/openshift-sdn/.*", group="root") }}}'
 
 template:
     name: file_groupowner
     vars:
-        filepath: ^/var/lib/cni/networks/openshift-sdn/*$
+        filepath: ^/var/lib/cni/networks/openshift-sdn/.*$
         filegid: '0'
         missing_file_pass: "true"
         filepath_is_regex: "true"

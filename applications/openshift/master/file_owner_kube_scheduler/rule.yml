@@ -26,7 +26,7 @@ ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-sched
 template:
     name: file_owner
     vars:
-        filepath: ^/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/kube-scheduler-pod.yaml$
+        filepath: ^/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/kube-scheduler-pod.yaml$
         fileuid: '0'
         missing_file_pass: "true"
         filepath_is_regex: "true"

@@ -4,7 +4,7 @@ prodtype: ocp4
 
 title: 'Verify Group Who Owns The ETCD Member Pod Specification File'
 
-description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", group="root") }}}'
+description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", group="root") }}}'
 
 rationale: |-
     The Kube Specification file contains information about the configuration of the
@@ -19,14 +19,14 @@ severity: medium
 references:
     cis: 1.1.8
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", group="root") }}}'
+ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", group="root") }}}'
 
 template:
     name: file_groupowner
     vars:
-        filepath: ^/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml$
+        filepath: ^/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml$
         filegid: '0'
         missing_file_pass: "true"
         filepath_is_regex: "true"

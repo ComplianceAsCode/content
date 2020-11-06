@@ -29,7 +29,7 @@ ocil: |-
 template:
     name: file_permissions
     vars:
-        filepath: ^/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml$
+        filepath: ^/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml$
         filemode: '0644'
         missing_file_pass: "true"
         filepath_is_regex: "true"
