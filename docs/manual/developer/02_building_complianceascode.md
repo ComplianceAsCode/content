@@ -74,10 +74,6 @@ apt-get install ninja-build
 ```bash
 pip install json2html
 ```
-if you are using python3:
-```bash
-pip3 install json2html
-```
 
 (optional) Install Sphinx packages if you want to generate HTML Documentation, from source directory run:
 
