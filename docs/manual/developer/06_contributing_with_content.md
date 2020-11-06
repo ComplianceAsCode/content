@@ -1494,10 +1494,6 @@ the following to `rule.yml`:
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
-    -   **mask_service** - Check if the service should be masked to
-        prevent it from running. This argument is optional. Implicit
-        value is "true".
-
 -   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes
 
 #### service_enabled
