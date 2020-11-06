@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify User Who Owns The Open vSwitch Configuration Database Lock'
 
 description: |-
-    {{{ describe_file_owner(file="/etc/openvswitch/.conf.db.~lock~", owner="800") }}}
+    {{{ describe_file_owner(file="/etc/openvswitch/.conf.db.~lock~", owner="openvswitch") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -21,10 +21,10 @@ severity: medium
 references:
     cis: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/openvswitch/.conf.db.~lock~", owner="800") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/openvswitch/.conf.db.~lock~", owner="openvswitch") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/etc/openvswitch/.conf.db.~lock~", owner="owner") }}}
+    {{{ ocil_file_owner(file="/etc/openvswitch/.conf.db.~lock~", owner="openvswitch") }}}
 
 template:
     name: file_owner

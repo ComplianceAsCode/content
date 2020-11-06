@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Group Who Owns The Open vSwitch Database Server PID'
 
 description: |-
-    {{{ describe_file_group_owner(file="/run/openvswitch/ovsdb-server.pid", group="800") }}}
+    {{{ describe_file_group_owner(file="/run/openvswitch/ovsdb-server.pid", group="openvswitch") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -21,10 +21,10 @@ severity: medium
 references:
     cis: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/run/openvswitch/ovsdb-server.pid", group="800") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/run/openvswitch/ovsdb-server.pid", group="openvswitch") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/run/openvswitch/ovsdb-server.pid", group="owner") }}}
+    {{{ ocil_file_group_owner(file="/run/openvswitch/ovsdb-server.pid", group="openvswitch") }}}
 
 template:
     name: file_groupowner

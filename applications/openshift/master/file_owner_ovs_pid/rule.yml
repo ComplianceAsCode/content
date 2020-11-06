@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify User Who Owns The Open vSwitch Process ID File'
 
 description: |-
-    {{{ describe_file_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", owner="800") }}}
+    {{{ describe_file_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", owner="openvswitch") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -21,10 +21,10 @@ severity: medium
 references:
     cis: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", owner="800") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", owner="openvswitch") }}}'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", owner="owner") }}}
+    {{{ ocil_file_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", owner="openvswitch") }}}
 
 template:
     name: file_owner
