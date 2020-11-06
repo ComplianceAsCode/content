@@ -228,14 +228,14 @@ A rule may contain those reference-type attributes:
     product dependent which means that a different CCE must be used for
     each different product and product version. For example if
     `cce@rhel7: 80328-8` exists in a rule, that CCE cannot be used for
-    another product or version (e.g. rhel6), and the CCE MUST be retired
+    another product or version (e.g. rhel9), and the CCE MUST be retired
     with the rule. Available CCEs that can be assigned to new rules are
     listed in the `shared/references/cce-rhel-avail.txt` file.
 
 -   `references`: This is related to the compliance document line items
     that the rule applies to. These can be attributes such as `stigid`,
     `srg`, `nist`, etc., whose keys may be modified with a product
-    (e.g., `stigid@rhel6`) to restrict what products a reference
+    (e.g., `stigid@rhel7`) to restrict what products a reference
     identifier applies to. Depending on the type of reference (e.g.
     catalog, rulei, etc.) will depend on how many can be added to a
     single rule. In addition, certain references in a rule such as

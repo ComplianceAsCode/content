@@ -2,7 +2,7 @@
 
 ## Installing build dependencies
 
-On *Red Hat Enterprise Linux 6/7* make sure the packages `cmake`, `openscap-utils`,
+On *Red Hat Enterprise Linux 7* make sure the packages `cmake`, `openscap-utils`,
 `PyYAML`, `python-jinja2` and their dependencies are installed:
 
 ```bash
