@@ -85,17 +85,18 @@ def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
     return success
 
 
-def get_file_remote(verbose_path, local_dir, domain_ip, remote_path):
+def get_file_remote(test_env, verbose_path, local_dir, remote_path):
     """Download a file from VM."""
     # remote_path is an absolute path of a file on remote machine
     success = True
-    source = 'root@{0}:{1}'.format(domain_ip, remote_path)
-    logging.debug('Downloading file {0} to {1}'
-                  .format(source, local_dir))
-    command = ['scp'] + list(common.SSH_ADDITIONAL_OPTS) + [source, local_dir]
-    if common.run_cmd_local(command, verbose_path)[0] != 0:
-        logging.error('Failed to download file {0}'.format(remote_path))
-        success = False
+    logging.debug('Downloading remote file {0} to {1}'
+                  .format(remote_path, local_dir))
+    with open(verbose_path, "a") as log_file:
+        try:
+            test_env.scp_download_file(remote_path, local_dir, log_file)
+        except Exception:
+            logging.error('Failed to download file {0}'.format(remote_path))
+            success = False
     return success
 
 
@@ -128,7 +129,7 @@ def single_quote_string(input):
     return "'{}'".format(result)
 
 
-def generate_fixes_remotely(formatting, verbose_path):
+def generate_fixes_remotely(test_env, formatting, verbose_path):
     command_base = ['oscap', 'xccdf', 'generate', 'fix']
     command_options = [
         '--benchmark-id', formatting['benchmark_id'],
@@ -142,28 +143,23 @@ def generate_fixes_remotely(formatting, verbose_path):
 
     command_components = command_base + command_options + command_operands
     command_string = ' '.join([single_quote_string(c) for c in command_components])
-    rc, stdout = common.run_cmd_remote(
-        command_string, formatting['domain_ip'], verbose_path)
-    if rc != 0:
-        msg = ('Command {0} ended with return code {1} (expected 0).'
-               .format(command_string, rc))
-        raise RuntimeError(msg)
+    with open(verbose_path, "a") as log_file:
+        test_env.execute_ssh_command(command_string, log_file)
 
 
-def run_stage_remediation_ansible(run_type, formatting, verbose_path):
+def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
     """
        Returns False on error, or True in case of successful Ansible playbook
        run."""
     formatting['output_template'] = _ANSIBLE_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
-        run_type, formatting, verbose_path)
-    if not get_file_remote(verbose_path, LogHelper.LOG_DIR,
-                           formatting['domain_ip'],
+        run_type, test_env, formatting, verbose_path)
+    if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR,
                            '/' + formatting['output_file']):
         return False
     command = (
         'ansible-playbook', '-v', '-i', '{0},'.format(formatting['domain_ip']),
-        '-u' 'root', '--ssh-common-args={0}'.format(' '.join(list(common.SSH_ADDITIONAL_OPTS))),
+        '-u' 'root', '--ssh-common-args={0}'.format(' '.join(test_env.ssh_additional_options)),
         formatting['playbook'])
     command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
@@ -181,36 +177,33 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
     return True
 
 
-def run_stage_remediation_bash(run_type, formatting, verbose_path):
+def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
     """
        Returns False on error, or True in case of successful bash scripts
        run."""
     formatting['output_template'] = _BASH_TEMPLATE
     send_arf_to_remote_machine_and_generate_remediations_there(
-        run_type, formatting, verbose_path)
-    if not get_file_remote(verbose_path, LogHelper.LOG_DIR,
-                           formatting['domain_ip'],
+        run_type, test_env, formatting, verbose_path)
+    if not get_file_remote(test_env, verbose_path, LogHelper.LOG_DIR,
                            '/' + formatting['output_file']):
         return False
 
     command_string = '/bin/bash -x /{output_file}'.format(** formatting)
-    returncode, output = common.run_cmd_remote(
-        command_string, formatting['domain_ip'], verbose_path)
-    # Appends output of script execution to the verbose_path file.
-    with open(verbose_path, 'ab') as f:
-        f.write('Stdout of "{}":'.format(command_string).encode("utf-8"))
-        f.write(output.encode("utf-8"))
-    if returncode != 0:
-        msg = (
-            'Bash script remediation run has exited with return code {} '
-            'instead of expected 0'.format(returncode))
-        LogHelper.preload_log(logging.ERROR, msg, 'fail')
-        return False
+
+    with open(verbose_path, "a") as log_file:
+        try:
+            test_env.execute_ssh_command(command_string, log_file)
+        except Exception as exc:
+            msg = (
+                'Bash script remediation run has exited with return code {} '
+                'instead of expected 0'.format(exc.returncode))
+            LogHelper.preload_log(logging.ERROR, msg, 'fail')
+            return False
     return True
 
 
 def send_arf_to_remote_machine_and_generate_remediations_there(
-        run_type, formatting, verbose_path):
+        run_type, test_env, formatting, verbose_path):
     if run_type == 'rule':
         try:
             res_id = get_result_id_from_arf(formatting['arf'], verbose_path)
@@ -219,12 +212,14 @@ def send_arf_to_remote_machine_and_generate_remediations_there(
             return False
         formatting['result_id'] = res_id
 
-    if not send_files_remote(
-            verbose_path, '/', formatting['domain_ip'], formatting['arf']):
-        return False
+    with open(verbose_path, "a") as log_file:
+        try:
+            test_env.scp_upload_file(formatting["arf"], "/", log_file)
+        except Exception:
+            return False
 
     try:
-        generate_fixes_remotely(formatting, verbose_path)
+        generate_fixes_remotely(test_env, formatting, verbose_path)
     except Exception as exc:
         logging.error(str(exc))
         return False
@@ -583,7 +578,7 @@ class AnsibleProfileRunner(ProfileRunner):
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
                                               formatting['output_file'])
 
-        return run_stage_remediation_ansible('profile',
+        return run_stage_remediation_ansible('profile', self.environment,
                                              formatting,
                                              self.verbose_path)
 
@@ -597,7 +592,7 @@ class BashProfileRunner(ProfileRunner):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.profile)
 
-        return run_stage_remediation_bash('profile', formatting, self.verbose_path)
+        return run_stage_remediation_bash('profile', self.environment, formatting, self.verbose_path)
 
 
 class OscapRuleRunner(RuleRunner):
@@ -621,7 +616,7 @@ class BashRuleRunner(RuleRunner):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.rule_id)
 
-        success = run_stage_remediation_bash('rule', formatting, self.verbose_path)
+        success = run_stage_remediation_bash('rule', self.environment, formatting, self.verbose_path)
         return success
 
 
@@ -636,7 +631,7 @@ class AnsibleRuleRunner(RuleRunner):
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
                                               formatting['output_file'])
 
-        success = run_stage_remediation_ansible('rule', formatting, self.verbose_path)
+        success = run_stage_remediation_ansible('rule', self.environment, formatting, self.verbose_path)
         return success
 
 

@@ -6,6 +6,7 @@ import os
 import time
 import subprocess
 import json
+import logging
 
 import ssg_test_suite
 from ssg_test_suite import common
@@ -61,7 +62,10 @@ class TestEnv(object):
 
         self.scanning_mode = scanning_mode
         self.backend = None
-        self.ssh_port = 22
+        self.ssh_port = None
+
+        self.domain_ip = None
+        self.ssh_additional_options = []
 
     def start(self):
         """
@@ -69,7 +73,56 @@ class TestEnv(object):
         ensure that the environment will not be permanently modified
         by subsequent procedures.
         """
-        pass
+        self.refresh_connection_parameters()
+
+    def refresh_connection_parameters(self):
+        self.domain_ip = self.get_ip_address()
+        self.ssh_port = self.get_ssh_port()
+        self.ssh_additional_options = self.get_ssh_additional_options()
+
+    def get_ip_address(self):
+        raise NotImplementedError()
+
+    def get_ssh_port(self):
+        return 22
+
+    def get_ssh_additional_options(self):
+        return list(common.SSH_ADDITIONAL_OPTS)
+
+    def execute_ssh_command(self, command, log_file, error_msg=None):
+        remote_dest = "root@{ip}".format(ip=self.domain_ip)
+        if not error_msg:
+            error_msg = (
+                "Failed to execute '{command}' on {remote_dest}"
+                .format(command=command, remote_dest=remote_dest))
+        try:
+            stdout = common.run_with_stdout_logging(
+                "ssh", tuple(self.ssh_additional_options) + (remote_dest, command), log_file)
+        except Exception as exc:
+            logging.error(error_msg + ": " + str(exc))
+            raise RuntimeError(error_msg)
+        return stdout
+
+    def scp_download_file(self, source, destination, log_file, error_msg=None):
+        scp_src = "root@{ip}:{source}".format(ip=self.domain_ip, source=source)
+        return self.scp_transfer_file(scp_src, destination, log_file, error_msg)
+
+    def scp_upload_file(self, source, destination, log_file, error_msg=None):
+        scp_dest = "root@{ip}:{dest}".format(ip=self.domain_ip, dest=destination)
+        return self.scp_transfer_file(source, scp_dest, log_file, error_msg)
+
+    def scp_transfer_file(self, source, destination, log_file, error_msg=None):
+        if not error_msg:
+            error_msg = (
+                "Failed to copy {source} to {destination}"
+                .format(source=source, destination=destination))
+        try:
+            common.run_with_stdout_logging(
+                "scp", tuple(self.ssh_additional_options) + (source, destination), log_file)
+        except Exception as exc:
+            error_msg = error_msg + ": " + str(exc)
+            logging.error(error_msg)
+            raise RuntimeError(error_msg)
 
     def finalize(self):
         """
@@ -142,9 +195,15 @@ class VMTestEnv(TestEnv):
         self.snapshot_stack = virt.SnapshotStack(self.domain)
 
         virt.start_domain(self.domain)
-        self.domain_ip = virt.determine_ip(self.domain)
 
         self._origin = self._save_state("origin")
+
+        super().start()
+
+    def get_ip_address(self):
+        from ssg_test_suite import virt
+
+        return virt.determine_ip(self.domain)
 
     def reboot(self):
         from ssg_test_suite import virt
@@ -196,6 +255,7 @@ class ContainerTestEnv(TestEnv):
 
     def start(self):
         self.run_container(self.base_image)
+        super().start()
 
     def finalize(self):
         self._terminate_current_running_container_if_applicable()
@@ -228,25 +288,41 @@ class ContainerTestEnv(TestEnv):
         state = self._create_new_image(self.current_container, state_name)
         return state
 
+    def get_ssh_port(self):
+        if self.domain_ip == 'localhost':
+            ports = self._get_container_ports(self.current_container)
+            if self.internal_ssh_port in ports:
+                ssh_port = ports[self.internal_ssh_port]
+            else:
+                msg = "Unable to detect the SSH port for the container."
+                raise RuntimeError(msg)
+        else:
+            ssh_port = self.internal_ssh_port
+        return ssh_port
+
+    def get_ssh_additional_options(self):
+        ssh_additional_options = super().get_ssh_additional_options()
+
+        # Assure that the -o option is followed by Port=<correct value> argument
+        # If there is Port, assume that -o precedes it and just set the correct value
+        port_opt = ['-o', 'Port={}'.format(self.ssh_port)]
+        for index, opt in enumerate(ssh_additional_options):
+            if opt.startswith('Port='):
+                ssh_additional_options[index] = port_opt[1]
+
+        # Put both arguments to the list of arguments if Port is not there.
+        if port_opt[1] not in ssh_additional_options:
+            ssh_additional_options = port_opt + ssh_additional_options
+        return ssh_additional_options
+
     def run_container(self, image_name, container_name="running"):
         new_container = self._new_container_from_image(image_name, container_name)
         self.containers.append(new_container)
         # Get the container time to fully start its service
         time.sleep(0.2)
 
-        self.domain_ip = self._get_container_ip(new_container)
-        if not self.domain_ip:
-            self.domain_ip = 'localhost'
-            ports = self._get_container_ports(new_container)
-            if self.internal_ssh_port in ports:
-                self.ssh_port = ports[self.internal_ssh_port]
-        else:
-            self.ssh_port = self.internal_ssh_port
-        port_opt = ('-o', 'Port={}'.format(self.ssh_port),)
-        common.SSH_ADDITIONAL_OPTS = tuple(map(lambda x: port_opt[1] if x.startswith('Port=') else x,
-                                               common.SSH_ADDITIONAL_OPTS))
-        if port_opt[1] not in common.SSH_ADDITIONAL_OPTS:
-            common.SSH_ADDITIONAL_OPTS = port_opt + common.SSH_ADDITIONAL_OPTS
+        self.refresh_connection_parameters()
+
         return new_container
 
     def reset_state_to(self, state_name, new_running_state_name):
@@ -277,7 +353,7 @@ class ContainerTestEnv(TestEnv):
     def _new_container_from_image(self, image_name, container_name):
         raise NotImplementedError
 
-    def _get_container_ip(self, container):
+    def get_ip_address(self):
         raise NotImplementedError
 
     def _get_container_ports(self, container):
@@ -326,9 +402,12 @@ class DockerTestEnv(ContainerTestEnv):
             detach=True)
         return result
 
-    def _get_container_ip(self, container):
+    def get_ip_address(self):
+        container = self.current_container
         container.reload()
         container_ip = container.attrs["NetworkSettings"]["Networks"]["bridge"]["IPAddress"]
+        if not container_ip:
+            container_ip = 'localhost'
         return container_ip
 
     def _terminate_current_running_container_if_applicable(self):
@@ -343,6 +422,9 @@ class DockerTestEnv(ContainerTestEnv):
     def _local_oscap_check_base_arguments(self):
         return ['oscap-docker', "container", self.current_container.id,
                 'xccdf', 'eval']
+
+    def _get_container_ports(self, container):
+        raise NotImplementedError("This method shouldn't be needed.")
 
 
 class PodmanTestEnv(ContainerTestEnv):
@@ -377,8 +459,11 @@ class PodmanTestEnv(ContainerTestEnv):
         container_id = podman_output.decode("utf-8").strip()
         return container_id
 
-    def _get_container_ip(self, container):
-        podman_cmd = ["podman", "inspect", container, "--format", "{{.NetworkSettings.IPAddress}}"]
+    def get_ip_address(self):
+        podman_cmd = [
+                "podman", "inspect", self.current_container,
+                "--format", "{{.NetworkSettings.IPAddress}}",
+        ]
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
@@ -386,6 +471,8 @@ class PodmanTestEnv(ContainerTestEnv):
                 " ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
         ip_address = podman_output.decode("utf-8").strip()
+        if not ip_address:
+            ip_address = "localhost"
         return ip_address
 
     def _get_container_ports(self, container):

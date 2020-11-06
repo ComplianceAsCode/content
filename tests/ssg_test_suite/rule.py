@@ -53,9 +53,8 @@ def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
     return valid_profiles
 
 
-def _apply_script(rule_dir, domain_ip, script):
+def _apply_script(rule_dir, test_env, script):
     """Run particular test script on VM and log it's output."""
-    machine = "{0}@{1}".format(common.REMOTE_USER, domain_ip)
     logging.debug("Applying script {0}".format(script))
     rule_name = os.path.basename(rule_dir)
     log_file_name = os.path.join(
@@ -65,10 +64,9 @@ def _apply_script(rule_dir, domain_ip, script):
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
         shared_dir = os.path.join(common.REMOTE_TEST_SCENARIOS_DIRECTORY, "shared")
         command = "cd {0}; SHARED={1} bash -x {2}".format(rule_dir, shared_dir, script)
-        args = common.SSH_ADDITIONAL_OPTS + (machine, command)
 
         try:
-            common.run_with_stdout_logging("ssh", args, log_file)
+            test_env.execute_ssh_command(command, log_file)
         except subprocess.CalledProcessError as exc:
             logging.error("Rule testing script {script} failed with exit code {rc}"
                           .format(script=script, rc=exc.returncode))
@@ -217,12 +215,12 @@ class RuleChecker(oscap.Checker):
                 scenario_packages = s.script_params["packages"]
                 packages_required.update(scenario_packages)
         if packages_required:
-            common.install_packages(self.test_env.domain_ip, packages_required)
+            common.install_packages(self.test_env, packages_required)
 
     def _prepare_environment(self, scenarios_by_rule):
         domain_ip = self.test_env.domain_ip
         try:
-            self.remote_dir = common.send_scripts(domain_ip)
+            self.remote_dir = common.send_scripts(self.test_env)
         except RuntimeError as exc:
             msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
             raise RuntimeError(msg)
@@ -351,7 +349,7 @@ class RuleChecker(oscap.Checker):
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
         if not _apply_script(
-                remote_rule_dir, self.test_env.domain_ip, scenario.script):
+                remote_rule_dir, self.test_env, scenario.script):
             logging.error("Environment failed to prepare, skipping test")
             self._current_result.record_stage_result("preparation", False)
             return
