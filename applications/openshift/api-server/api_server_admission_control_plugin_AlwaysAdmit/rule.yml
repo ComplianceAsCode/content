@@ -8,10 +8,9 @@ description: |-
     To ensure OpenShift only responses to requests explicitly allowed by the
     admission control plugin. Check that the <code>config</code> ConfigMap object does not
     contain the AlwaysAdmit plugin.
-    and ensure the <tt>admissionConfig</tt> is not configured to include <tt>AlwaysAdmit</tt>.
 
 rationale: |-
-    Enabling the admission control plugin <tt>AlwaysAdmin</tt> allows all
+    Enabling the admission control plugin <tt>AlwaysAdmit</tt> allows all
     requests and does not provide any filtering.
 
 severity: medium
@@ -19,11 +18,11 @@ severity: medium
 references:
     cis: 1.2.11
 
-ocil_clause: '<tt>admissionConfig</tt> is not set'
+ocil_clause: '<tt>AlwaysAllow</tt> admission control plugin is not set'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'AlwaysAdmit'</pre>
+    To verify that the <tt>AlwaysAllow</tt> admission control plugin is not set, run the following command:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
     The output should return no output.
 
 warnings:

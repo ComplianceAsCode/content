@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Enable the NamespaceLifecyle Admission Control Plugin'
+title: 'Enable the NamespaceLifecycle Admission Control Plugin'
 
 description: |-
     OpenShift enables the <tt>NamespaceLifecycle</tt> plugin by default.
@@ -19,12 +19,12 @@ severity: medium
 references:
     cis: 1.2.15
 
-ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>NamespaceLifecycle</tt>'
+ocil_clause: 'API server config contains <tt>NamespaceLifecycle</tt>'
 
 ocil: |-
-    The ServiceAccount plugin should be enabled in the list of enabled plugins in
-    the apiserver configuration:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'NamespaceLifecycle'</pre>
+    To verify that the <tt>NamespaceLifecycle</tt> plugin is be enabled in
+    the apiserver configuration, run:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
 
 warnings:
 - general: |-

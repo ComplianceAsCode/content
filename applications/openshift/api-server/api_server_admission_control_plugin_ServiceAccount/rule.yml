@@ -22,12 +22,12 @@ severity: medium
 references:
     cis: 1.2.14
 
-ocil_clause: '<tt>admissionConfig</tt> contains <tt>ServiceAccount</tt>'
+ocil_clause: 'API server configuration contains <tt>ServiceAccount</tt>'
 
 ocil: |-
     The ServiceAccount plugin should be enabled in the list of enabled plugins in
     the apiserver configuration:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'ServiceAccount'</pre>
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
 
 warnings:
 - general: |-
