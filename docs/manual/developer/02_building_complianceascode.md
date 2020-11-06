@@ -79,6 +79,12 @@ if you are using python3:
 pip3 install json2html
 ```
 
+(optional) Install Sphinx packages if you want to generate HTML Documentation, from source directory run:
+
+```bash
+pip install -r docs/requirements.txt
+```
+
 ## Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):
@@ -171,6 +177,14 @@ make -j4 html-profile-stats # generate statistics for all profiles in all produc
 ```
 
 If you want to go deeper into statistics, refer to <<Profile Statistics and Utilities>> section.
+
+(optional) Generate HTML documentation of the project which includes developer documentation, supported Jinja Macros documentation and python modules documentation:
+
+```bash
+cd build/
+cmake ../
+make -j4 docs # check docs/index.html file
+```
 
 ### Building compliant SCAP 1.2 content
 
