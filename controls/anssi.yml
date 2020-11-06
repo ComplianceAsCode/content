@@ -241,11 +241,16 @@ controls:
   - id: R19
     level: intermediary
     title: Accountability of administration
+    notes: >-
+      By disabling direct root logins proper accountability is ensured.
+      Users will first login, then escalate to privileged (root) access.
+      Change of privilege operations must be based on executables to monitor the activities
+      performed (for example sudo).
     rules:
-    # Change of privilege operations must be based on executables to monitor the activities
-    # performed (for example sudo).
     - no_direct_root_logins
     - sshd_disable_root_login
+    - package_sudo_installed
+    - audit_rules_privileged_commands_sudo
 
   - id: R20
     level: enhanced
