@@ -1114,8 +1114,8 @@ the following to `rule.yml`:
         parameter
 
     -   **missing_parameter_pass** - effective only in OVAL checks, if
-        set to `"true"` and the parameter is not present in the
-        configuration file the OVAL check will return true.
+        set to `"false"` and the parameter is not present in the
+        configuration file, the OVAL check will return false (default value: `"false"`).
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -1536,8 +1536,9 @@ the following to `rule.yml`:
         be without quotes during the check and remediation doesn’t quote
         assignments either.
 
-    -   **missing_parameter_pass** - If set to `"true"` the OVAL check
-        will pass if the parameter is not present in the target file.
+    -   **missing_parameter_pass** - effective only in OVAL checks, if
+        set to `"false"` and the parameter is not present in the
+        configuration file, the OVAL check will return false (default value: `"false"`).
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -1570,9 +1571,9 @@ the following to `rule.yml`:
     -   **value** - value of the SSH configuration option specified by
         **parameter**, eg. `"no"`.
 
-    -   **missing_parameter_pass** - If set to `"true"` the OVAL check
-        will pass if the parameter is not present in
-        `/etc/ssh/sshd_config`.
+    -   **missing_parameter_pass** - effective only in OVAL checks, if
+        set to `"false"` and the parameter is not present in the
+        configuration file, the OVAL check will return false (default value: `"false"`).
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
