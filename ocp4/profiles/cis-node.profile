@@ -71,7 +71,7 @@ selections:
     - file_owner_worker_service
     - file_groupowner_worker_service
   # 4.1.5 Ensure that the --kubeconfig kubelet.conf file permissions are set to 644 or more restrictive
-    # - create a rule based on file_permissions_kubelet_service that checks the perms of /etc/kubernetes/kubelet.conf
+    - file_permissions_kubelet_conf
   # 4.1.6 Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root
     - file_groupowner_kubelet_conf
     - file_owner_kubelet_conf
