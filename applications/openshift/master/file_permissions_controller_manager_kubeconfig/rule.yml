@@ -8,7 +8,7 @@ description: |-
   {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="0644") }}}
 
 rationale: |-
-  The Controller Manager's kubeconfig contains information abot how the
+  The Controller Manager's kubeconfig contains information about how the
   component will access the API server. You should restrict its file
   permissions to maintain the integrity of the file. The file should be
   writable by only the administrators on the system.
