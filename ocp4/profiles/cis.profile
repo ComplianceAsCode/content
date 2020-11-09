@@ -55,7 +55,7 @@ selections:
   # 1.2.15 Ensure that the admission control plugin NamespaceLifecycle is set
     - api_server_admission_control_plugin_NamespaceLifecycle
   # 1.2.16 Ensure that the admission control plugin PodSecurityPolicy is set (Automated)
-    - api_server_admission_control_plugin_PodSecurityPolicy
+    - api_server_admission_control_plugin_Scc
   # 1.2.17 Ensure that the admission control plugin NodeRestriction is set (Automated)
     - api_server_admission_control_plugin_NodeRestriction
   # 1.2.18 Ensure that the --insecure-bind-address argument is not set
