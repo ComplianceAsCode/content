@@ -30,4 +30,15 @@ ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
 ocil: |-
     Run the following command on the master node(s):
     <pre>$ sudo grep -A1 authorization /etc/kubernetes/kubernetes.conf</pre>
-    Verify that the output is set to <tt>mode: Webhook</tt>.
+    Verify that the output is not set to <tt>mode: AlwaysAllow</tt>, or missing
+    (defaults to <tt>mode: Webhook</tt>).
+
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /etc/kubernetes/kubelet.conf
+        yamlpath: ".authorization.mode"
+        check_existence: "none_exist"
+        values:
+         - value: "AlwaysAllow"
+           operation: "equals"
