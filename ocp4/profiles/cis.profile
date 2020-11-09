@@ -41,7 +41,8 @@ selections:
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
     - api_server_auth_mode_rbac
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
-    - api_server_admission_control_plugin_EventRateLimit
+    - api_server_api_priority_gate_enabled
+    - api_server_api_priority_flowschema_catch_all
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
     - api_server_admission_control_plugin_AlwaysAdmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
