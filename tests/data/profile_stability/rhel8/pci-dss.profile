@@ -1,5 +1,6 @@
 description: Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 documentation_complete: true
+reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 selections:
 - account_disable_post_pw_expiration
 - account_unique_name
