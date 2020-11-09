@@ -121,6 +121,7 @@ selections:
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
 - sshd_set_idle_timeout
+- sshd_set_keepalive
 - sssd_enable_smartcards
 - var_password_pam_unix_remember=4
 - var_account_disable_post_pw_expiration=90
