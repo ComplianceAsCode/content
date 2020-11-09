@@ -1,7 +1,7 @@
 .. toctree::
     :maxdepth: 2
     :glob:
-    :caption: Developer's Guide
+    :caption: Developer Guide
 
     manual/developer/*
 
