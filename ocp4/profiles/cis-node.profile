@@ -32,18 +32,65 @@ selections:
   # 1.1.5 Ensure that the scheduler pod specification file permissions are set to 644 or more restrictive
     - file_permissions_scheduler
   # 1.1.6 Ensure that the scheduler pod specification file ownership is set to root:root
+    - file_owner_kube_scheduler
+    - file_groupowner_kube_scheduler
   # 1.1.7 Ensure that the etcd pod specification file permissions are set to 644 or more restrictive
+    - file_permissions_etcd_member
   # 1.1.8 Ensure that the etcd pod specification file ownership is set to root:root (Automated)
+    - file_owner_etcd_member
+    - file_groupowner_etcd_member
   # 1.1.9 Ensure that the Container Network Interface file permissions are set to 644 or more restrictive
+    - file_permissions_cni_conf
+    - file_permissions_multus_conf
+    - file_permissions_ip_allocations
+    - file_perms_openshift_sdn_cniserver_config
+    - file_permissions_ovs_pid
+    - file_permissions_ovs_conf_db
+    - file_permissions_ovs_sys_id_conf
+    - file_permissions_ovs_conf_db_lock
+    - file_permissions_ovs_vswitchd_pid
+    - file_permissions_ovsdb_server_pid
   # 1.1.10 Ensure that the Container Network Interface file ownership is set to root:root
+    - file_owner_cni_conf
+    - file_groupowner_cni_conf
+    - file_owner_multus_conf
+    - file_groupowner_multus_conf
+    - file_owner_ip_allocations
+    - file_groupowner_ip_allocations
+    - file_owner_openshift_sdn_cniserver_config
+    - file_groupowner_openshift_sdn_cniserver_config
+    - file_owner_ovs_pid
+    - file_groupowner_ovs_pid
+    - file_owner_ovs_conf_db
+    - file_groupowner_ovs_conf_db
+    - file_owner_ovs_sys_id_conf
+    - file_groupowner_ovs_sys_id_conf
+    - file_owner_ovs_conf_db_lock
+    - file_groupowner_ovs_conf_db_lock
+    - file_owner_ovs_vswitchd_pid
+    - file_groupowner_ovs_vswitchd_pid
+    - file_owner_ovsdb_server_pid
+    - file_groupowner_ovsdb_server_pid
   # 1.1.11 Ensure that the etcd data directory permissions are set to 700 or more restrictive
+    - file_permissions_etcd_data_dir
+    - file_permissions_etcd_data_files
   # 1.1.12 Ensure that the etcd data directory ownership is set to root:root
+    - file_owner_etcd_data_dir
+    - file_groupowner_etcd_data_dir
+    - file_owner_etcd_data_files
+    - file_groupowner_etcd_data_files
   # 1.1.13 Ensure that the admin.conf file permissions are set to 644 or more restrictive
   # 1.1.14 Ensure that the admin.conf file ownership is set to root:root 
   # 1.1.15 Ensure that the scheduler.conf file permissions are set to 644 or more restrictive
+    - file_permissions_scheduler_kubeconfig
   # 1.1.16 Ensure that the scheduler.conf file ownership is set to root:root
+    - file_owner_scheduler_kubeconfig
+    - file_groupowner_scheduler_kubeconfig
   # 1.1.17 Ensure that the controller-manager.conf file permissions are set to 644 or more restrictive
+    - file_permissions_controller_manager_kubeconfig
   # 1.1.18 Ensure that the controller-manager.conf file ownership is set to root:root 
+    - file_owner_controller_manager_kubeconfig
+    - file_groupowner_controller_manager_kubeconfig
   # 1.1.19 Ensure that the OpenShift PKI directory and file ownership is set to root:root
   # 1.1.20 Ensure that the OpenShift PKI certificate file permissions are set to 644 or more restrictive
   # 1.1.21 Ensure that the OpenShift PKI key file permissions are set to 600 
