@@ -2,29 +2,31 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Verify Group Who Owns The OpenShift Scheduler Kubeconfig File'
+title: 'Verify Group Who Owns The Kubernetes Scheduler Kubeconfig File'
 
-description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
+description: |-
+  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}
 
 rationale: |-
-    The Scheduler Kubeconfig file contains information about the configuration of the
-    OpenShift scheduler that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+  The kubeconfig for the Scheduler contains paramters for the scheduler
+  to access the Kube API.
+  You should set its file ownership to maintain the integrity of the file.
+  The file should be owned by <pre>root:root</pre>.
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4: 80639-8
-
 references:
-    cis: 1.1.16
+  cis: 1.1.16
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
+ocil: |-
+  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}
 
-#template:
-#    name: file_groupowner
-#    vars:
-#        filepath: /etc/kubernetes/static-pod-resources/configmaps/scheduler-kubeconfig/kubeconfig
-#        filegid: '0'
+template:
+  name: file_groupowner
+  vars:
+    filepath: ^/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig$
+    filegid: '0'
+    missing_file_pass: "true"
+    filepath_is_regex: "true"

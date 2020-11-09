@@ -82,7 +82,10 @@ selections:
   # 1.1.13 Ensure that the admin.conf file permissions are set to 644 or more restrictive
   # 1.1.14 Ensure that the admin.conf file ownership is set to root:root 
   # 1.1.15 Ensure that the scheduler.conf file permissions are set to 644 or more restrictive
+    - file_permissions_scheduler_kubeconfig
   # 1.1.16 Ensure that the scheduler.conf file ownership is set to root:root
+    - file_owner_scheduler_kubeconfig
+    - file_groupowner_scheduler_kubeconfig
   # 1.1.17 Ensure that the controller-manager.conf file permissions are set to 644 or more restrictive
   # 1.1.18 Ensure that the controller-manager.conf file ownership is set to root:root 
   # 1.1.19 Ensure that the OpenShift PKI directory and file ownership is set to root:root
