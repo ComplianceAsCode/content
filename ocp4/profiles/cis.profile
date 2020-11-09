@@ -51,6 +51,7 @@ selections:
     - api_server_admission_control_plugin_SecurityContextDeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
     - api_server_admission_control_plugin_ServiceAccount
+    - api_server_no_adm_ctrl_plugins_disabled
   # 1.2.15 Ensure that the admission control plugin NamespaceLifecycle is set
     - api_server_admission_control_plugin_NamespaceLifecycle
   # 1.2.16 Ensure that the admission control plugin PodSecurityPolicy is set (Automated)
