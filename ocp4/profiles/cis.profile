@@ -73,6 +73,7 @@ selections:
     - ocp_api_server_audit_log_maxbackup
   # 1.2.25 Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate
     - api_server_audit_log_maxsize
+    - ocp_api_server_audit_log_maxsize
   # 1.2.26 Ensure that the --request-timeout argument is set as appropriate
     - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
