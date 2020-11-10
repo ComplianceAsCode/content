@@ -35,6 +35,10 @@ ocil: |-
     <pre>$ oc get configmap config -n openshift-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxbackup"][0]'</pre>
     The output should return a value of <pre>10</pre> or as appropriate.
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+
 template:
   name: yamlfile_value
   vars:
