@@ -2,11 +2,11 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Configure the Kubernetes API Server Maximum Retained Audit Logs'
+title: 'Configure the OpenShift API Server Maximum Retained Audit Logs'
 
 description: |-
     To configure how many rotations of audit logs are retained,
-    edit the <tt>openshift-kube-apiserver</tt> configmap
+    edit the <tt>openshift-apiserver</tt> configmap
     on the master node(s) and set the <tt>audit-log-maxbackup</tt> parameter to
     <tt>10</tt> or to an organizationally appropriate value:
     <pre>
@@ -32,19 +32,19 @@ ocil_clause: '<tt>audit-log-maxbackup</tt> is set to <tt>10</tt> or as appropria
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxbackup"][0]'</pre>
+    <pre>$ oc get configmap config -n openshift-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxbackup"][0]'</pre>
     The output should return a value of <pre>10</pre> or as appropriate.
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     entity_check: "at least one"
-    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
     yamlpath: '.data["config.yaml"]'
     values:
     - value: '"apiServerArguments":{.*"audit-log-maxbackup":\["10"\]'

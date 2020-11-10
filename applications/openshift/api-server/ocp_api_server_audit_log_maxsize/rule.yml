@@ -2,11 +2,11 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Configure Kubernetes API Server Maximum Audit Log Size'
+title: 'Configure OpenShift API Server Maximum Audit Log Size'
 
 description: |-
     To rotate audit logs upon reaching a maximum size,
-    edit the <tt>openshift-kube-apiserver</tt> configmap on
+    edit the <tt>openshift-apiserver</tt> configmap on
     the master node(s) and set the <tt>audit-log-maxsize</tt> parameter to
     an appropriate size in MB. For example, to set it to 100 MB:
     <pre>
@@ -32,19 +32,19 @@ ocil_clause: '<tt>audit-log-maxsize</tt> is set to <tt>100</tt> or as appropriat
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxsize"]'</pre>
+    <pre>$ oc get configmap config -n openshift-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxsize"]'</pre>
     The output should return a value of <pre>["100"]</pre> or as appropriate.
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     entity_check: "at least one"
-    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
     yamlpath: '.data["config.yaml"]'
     values:
     - value: '"apiServerArguments":{.*"audit-log-maxsize":\["100"\]'
