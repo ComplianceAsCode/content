@@ -96,8 +96,11 @@ selections:
     - file_groupowner_openshift_pki_key_files
     - file_owner_openshift_pki_cert_files
     - file_groupowner_openshift_pki_cert_files
+    - file_owner_etcd_pki_cert_files
+    - file_groupowner_etcd_pki_cert_files
   # 1.1.20 Ensure that the OpenShift PKI certificate file permissions are set to 644 or more restrictive
     - file_permissions_openshift_pki_cert_files
+    - file_permissions_etcd_pki_cert_files
   # 1.1.21 Ensure that the OpenShift PKI key file permissions are set to 600 
     - file_permissions_openshift_pki_key_files
 
