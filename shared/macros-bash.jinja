@@ -181,7 +181,7 @@ then
     printf '%s=%s\n' "{{{ key }}}" "{{{ value }}}" >> ${DCONFFILE}
 else
     escaped_value="$(sed -e 's/\\/\\\\/g' <<< "{{{ value }}}")"
-    if grep -q "^\\s*{{{ key }}}" "${SETTINGSFILES[@]}"
+    if grep -q "^\\s*{{{ key }}}\\s*=" "${SETTINGSFILES[@]}"
     then
         sed -i "s/\\s*{{{ key }}}\\s*=\\s*.*/{{{ key }}}=${escaped_value}/g" "${SETTINGSFILES[@]}"
     else
