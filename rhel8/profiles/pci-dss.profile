@@ -4,7 +4,7 @@ metadata:
     SMEs:
         - redhatrises
 
-reference: https://www.hhs.gov/hipaa/for-professionals/index.html
+reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 
 title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
 
@@ -106,6 +106,7 @@ selections:
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
     - sshd_set_idle_timeout
+    - sshd_set_keepalive
     - accounts_password_pam_minlen
     - accounts_password_pam_dcredit
     - accounts_password_pam_ucredit
