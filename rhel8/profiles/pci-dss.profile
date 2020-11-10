@@ -4,7 +4,7 @@ metadata:
     SMEs:
         - redhatrises
 
-reference: https://www.hhs.gov/hipaa/for-professionals/index.html
+reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 
 title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
 
