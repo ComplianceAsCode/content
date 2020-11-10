@@ -136,7 +136,7 @@ selections:
   # 4.2.1 Ensure that the --anonymous-auth argument is set to false
     - kubelet_anonymous_auth
   # 4.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow
-    # - this seems to be the default in the code, so the rule should verify that authorization mode is NOT set to AlwaysAllow
+    - kubelet_authorization_mode
   # 4.2.3 Ensure that the --client-ca-file argument is set as appropriate
     - kubelet_configure_client_ca
   # 4.2.4 Ensure that the --read-only-port argument is set to 0
