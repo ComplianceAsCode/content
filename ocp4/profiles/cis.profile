@@ -70,6 +70,7 @@ selections:
     - api_server_audit_log_maxage
   # 1.2.24 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate
     - api_server_audit_log_maxbackup
+    - ocp_api_server_audit_log_maxbackup
   # 1.2.25 Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate
     - api_server_audit_log_maxsize
   # 1.2.26 Ensure that the --request-timeout argument is set as appropriate
