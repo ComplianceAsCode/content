@@ -24,3 +24,4 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
+    - sshd_set_keepalive
