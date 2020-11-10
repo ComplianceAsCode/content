@@ -1,0 +1,18 @@
+# platform = Java Runtime Environment
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+- name: Ensure Java Deployment Directory Exists
+  file:
+    path: /etc/.java/deployment
+    state: directory
+    mode: '0755'
+
+- name: Prompt User Prior to Executing Mobile Code
+  lineinfile:
+    create: yes
+    mode: '0644'
+    dest: "/etc/.java/deployment/deployment.properties"
+    regexp: '^\s*#?\s*deployment.insecure.jres=.*'
+    line: 'deployment.insecure.jres=PROMPT'
