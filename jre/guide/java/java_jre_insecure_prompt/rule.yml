@@ -26,6 +26,6 @@ ocil_clause: 'it is not configured'
 ocil: |-
     To verify that Java prevents mobile code from executing without prompting
     the user,run the following command:
-    <pre>$ grep 'deployment.insecure.jres=true' /etc/.java/deployment/deployment.properties</pre>
+    <pre>$ grep 'deployment.insecure.jres=PROMPT' /etc/.java/deployment/deployment.properties</pre>
     If properly configured, the output should return:
-    <pre>deployment.insecure.jres=true</pre>
+    <pre>deployment.insecure.jres=PROMPT</pre>
