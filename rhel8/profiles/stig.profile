@@ -45,13 +45,15 @@ selections:
     - package_audispd-plugins_installed
     - package_libcap-ng-utils_installed
     - auditd_audispd_syslog_plugin_activated
+    - accounts_passwords_pam_faillock_enforce_local
+    - accounts_password_pam_enforce_local
+    - accounts_password_pam_enforce_root
 
     # Configure TLS for remote logging
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
-    - "!ssh_client_rekey_limit"
 
     # Unselect zIPL rules from OSPP
     - "!zipl_bls_entries_only"
