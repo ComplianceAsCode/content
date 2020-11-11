@@ -123,6 +123,13 @@ find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
 
+# sphinx documentation requirements
+find_python_module(sphinx)
+find_python_module(sphinxcontrib.autojinja)
+find_python_module(sphinx_rtd_theme)
+find_python_module(recommonmark)
+
+
 include(CMakeDependentOption)
 cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
 
@@ -210,6 +217,10 @@ message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABL
 message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
 message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
 message(STATUS "BATS framework (optional): ${BATS_EXECUTABLE}")
+message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
+message(STATUS "python sphinxcontrib.autojinja module (optional): ${PY_SPHINXCONTRIB.AUTOJINJA}")
+message(STATUS "python sphinx_rtd_theme module (optional): ${PY_SPHINX_RTD_THEME}")
+message(STATUS "python recommonmark module (optional): ${PY_RECOMMONMARK}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -255,6 +266,8 @@ message(STATUS "McAfee VSEL: ${SSG_PRODUCT_VSEL}")
 message(STATUS "WRLinux 8: ${SSG_PRODUCT_WRLINUX8}")
 message(STATUS "WRLinux 1019: ${SSG_PRODUCT_WRLINUX1019}")
 
+
+
 message(STATUS " ")
 
 # Remove this option when we would like to run ansible-lint and yamllint against our playbooks by default.
@@ -280,6 +293,11 @@ add_custom_target(profile-stats)
 
 add_custom_target(html-stats)
 add_custom_target(html-profile-stats)
+
+if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_RECOMMONMARK)
+    message(STATUS "Enabling docs directory as system supports Sphinx builds.")
+    add_subdirectory("docs")
+endif()
 
 ssg_build_bash_remediation_functions()
 
