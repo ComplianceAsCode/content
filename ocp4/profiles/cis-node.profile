@@ -80,7 +80,10 @@ selections:
     - file_owner_etcd_data_files
     - file_groupowner_etcd_data_files
   # 1.1.13 Ensure that the admin.conf file permissions are set to 644 or more restrictive
+    - file_permissions_master_admin_kubeconfigs
   # 1.1.14 Ensure that the admin.conf file ownership is set to root:root 
+    - file_owner_master_admin_kubeconfigs
+    - file_groupowner_master_admin_kubeconfigs
   # 1.1.15 Ensure that the scheduler.conf file permissions are set to 644 or more restrictive
     - file_permissions_scheduler_kubeconfig
   # 1.1.16 Ensure that the scheduler.conf file ownership is set to root:root
