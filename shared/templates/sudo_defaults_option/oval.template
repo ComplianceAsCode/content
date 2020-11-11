@@ -6,7 +6,7 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" id="test_{{{ OPTION }}}_sudoers"
+  <ind:textfilecontent54_test check="all" check_existence="{{{ OPTION_EXISTENCE }}}" id="test_{{{ OPTION }}}_sudoers"
       comment="{{{ OPTION }}} exists in /etc/sudoers or /etc/sudoers.d/" version="1">
   <ind:object object_ref="object_{{{ OPTION }}}_sudoers" />
   </ind:textfilecontent54_test>
