@@ -1,0 +1,19 @@
+<def-group>
+  <definition class="compliance" id="sudo_add_noexec" version="1">
+    {{{ oval_metadata("Checks sudo usage without password") }}}
+    <criteria >
+      <criterion comment="noexec is configured in /etc/sudoers or /etc/sudoers.d/" test_ref="test_noexec_sudoers" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" id="test_noexec_sudoers"
+      comment="noexec exists in /etc/sudoers or /etc/sudoers.d/" version="1">
+    <ind:object object_ref="object_noexec_sudoers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_noexec_sudoers" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(|\.d/.*)$</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)[\s]*Defaults.*[\s]+noexec[\s]*.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
