@@ -6,16 +6,18 @@ title: 'Configure the Certificate Key for the API Server'
 
 description: |-
     To ensure the API Server utilizes its own TLS certificates, the
-    <tt>keyFile</tt> must be configured. Verify
-    that <tt>servingInfo</tt> has the <tt>keyFile</tt> configured in
-    the <tt>openshift-kube-apiserver</tt> configmap on the master
-    node(s) to something similar to:
+    <tt>tls-private-key-file</tt> must be configured. Verify
+    that the <tt>apiServerArguments</tt> section has the <tt>tls-private-key-file</tt> configured in
+    the <tt>config</tt> configmap in the <tt>openshift-kube-apiserver</tt> namespace
+    similar to:
     <pre>
+    "apiServerArguments":{
     ...
     "tls-private-key-file": [
       "/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.key"
-    ]
+    ],
     ...
+    }
     </pre>
 
 rationale: |-
@@ -28,12 +30,12 @@ severity: medium
 references:
     cis: 1.2.30
 
-ocil_clause: '<tt>keyFile</tt> is not set as appropriate for <tt>servingInfo</tt>'
+ocil_clause: '<tt>tls-private-key-file</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."tls-private-key-file"'</pre>
-    The output should return a configured TLS certificate file.
+    The output should return <tt>/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.key</tt>
 
 warnings:
 - general: |-
@@ -47,6 +49,6 @@ template:
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     yamlpath: '.data["config.yaml"]'
     values:
-     - value: '"tls-private-key-file":\[.*\.key"\]'
+     - value: '"tls-private-key-file":\["/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls\.key"\]'
        operation: "pattern match"
        type: "string"
