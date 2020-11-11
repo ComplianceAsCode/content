@@ -35,7 +35,6 @@ export FULL_SHORT_NAME="$SHORTNAME$VERSION"
 export NEW_PRODUCT=$NAME$VERSION
 export CAPITAL_NAME="CUSTOM"
 mkdir $NEW_PRODUCT \
-        $NEW_PRODUCT/cpe \
         $NEW_PRODUCT/overlays \
         $NEW_PRODUCT/profiles \
         $NEW_PRODUCT/transforms
@@ -104,20 +103,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 </pre>
 <pre>
 ...
-PRODUCT_TO_CPE_MAPPING = {
-    "chromium": [
-        "cpe:/a:google:chromium-browser",
-    ],
-    <b>"custom6": [
-        "cpe:/o:custom:6",
-    ],</b>
-    "debian9": [
-        "cpe:/o:debianproject:debian:9",
-    ],
-...
-</pre>
-<pre>
-...
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
 ...
@@ -159,21 +144,6 @@ endif()
 ssg_build_product("$NEW_PRODUCT")
 EOF
 ```
-6. Create a new file under `cpe` directory called `custom6-cpe-dictionary.xml`:
-```
-cat << EOF >> $NEW_PRODUCT/cpe/$NEW_PRODUCT-cpe-dictionary.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<cpe-list xmlns="http://cpe.mitre.org/dictionary/2.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
-      <cpe-item name="cpe:/o:$NAME:$VERSION">
-            <title xml:lang="en-us">$FULL_NAME</title>
-            <!-- the check references an OVAL file that contains an inventory definition -->
-            <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="filename">installed_OS_is_$NEW_PRODUCT</check>
-      </cpe-item>
-</cpe-list>
-EOF
-```
 
 7. Create a new file in the product directory called `product.yml` (note: you may want to change the `pkg_manager` attribute):
 ```
@@ -189,6 +159,13 @@ profiles_root: "./profiles"
 pkg_manager: "yum"
 
 init_system: "systemd"
+
+cpes_root: "../shared/applicability"
+cpes:
+  new_product:
+    name: "cpe:/o:$NAME:$VERSION"
+    title: "$FULL_NAME"
+    check_id: installed_OS_is_$NEW_PRODUCT
 EOF
 ```
 

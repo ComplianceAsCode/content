@@ -10,5 +10,17 @@ pkg_system: "rpm"
 
 init_system: "systemd"
 
+cpes_root: "../shared/applicability"
+cpes:
+  - ocp4:
+      name: "cpe:/a:redhat:openshift_container_platform:4.1"
+      title: "Red Hat OpenShift Container Platform 4"
+      check_id: installed_app_is_ocp4
+
+  - ocp4-node:
+      name: "cpe:/o:redhat:openshift_container_platform_node:4"
+      title: "Red Hat OpenShift Container Platform 4 Node"
+      check_id: installed_app_is_ocp4_node
+
 # Requirement string, see: https://setuptools.readthedocs.io/en/latest/pkg_resources.html#requirements-parsing
 # requires: "openscap>=1.3.3"

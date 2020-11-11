@@ -12,8 +12,7 @@ from xml.sax.saxutils import escape
 
 import yaml
 
-from .constants import XCCDF_PLATFORM_TO_CPE
-from .constants import PRODUCT_TO_CPE_MAPPING
+from .build_cpe import CPEDoesNotExist
 from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
@@ -200,7 +199,7 @@ class Profile(object):
             else:
                 self.selected.append(item)
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         element = ET.Element('Profile')
         element.set("id", self.id_)
         if self.extends:
@@ -215,12 +214,11 @@ class Profile(object):
 
         if self.platform:
             try:
-                cpes = PRODUCT_TO_CPE_MAPPING[self.platform]
+                platform_cpe = product_cpes.get_cpe_name(self.platform)
             except KeyError:
                 raise ValueError("Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
-            for idref in cpes:
-                plat = ET.SubElement(element, "platform")
-                plat.set("idref", idref)
+            plat = ET.SubElement(element, "platform")
+            plat.set("idref", platform_cpe)
 
         for selection in self.selected:
             select = ET.Element("select")
@@ -557,9 +555,6 @@ class Benchmark(object):
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
 
-        if product_yaml:
-            benchmark.cpes = PRODUCT_TO_CPE_MAPPING[product_yaml["product"]]
-
         return benchmark
 
     def add_profiles_from_dir(self, dir_, env_yaml):
@@ -598,7 +593,7 @@ class Benchmark(object):
         tree = ET.parse(file_)
         self.bash_remediation_fns_group = tree.getroot()
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         root = ET.Element('Benchmark')
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set('xmlns:xhtml', 'http://www.w3.org/1999/xhtml')
@@ -619,16 +614,19 @@ class Benchmark(object):
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
 
-        for idref in self.cpes:
+        # The Benchmark applicability is determined by the CPEs
+        # defined in the product.yml
+        product_cpe_names = product_cpes.get_product_cpe_names()
+        for cpe_name in product_cpe_names:
             plat = ET.SubElement(root, "platform")
-            plat.set("idref", idref)
+            plat.set("idref", cpe_name)
 
         version = ET.SubElement(root, 'version')
         version.text = self.version
         ET.SubElement(root, "metadata")
 
         for profile in self.profiles:
-            root.append(profile.to_xml_element())
+            root.append(profile.to_xml_element(product_cpes))
 
         for value in self.values.values():
             root.append(value.to_xml_element())
@@ -644,15 +642,15 @@ class Benchmark(object):
             group = self.groups.get(group_id)
             # Products using application benchmark don't have system or services group
             if group is not None:
-                root.append(group.to_xml_element())
+                root.append(group.to_xml_element(product_cpes))
 
         for rule in self.rules.values():
-            root.append(rule.to_xml_element())
+            root.append(rule.to_xml_element(product_cpes))
 
         return root
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
+    def to_file(self, file_name, product_cpes):
+        root = self.to_xml_element(product_cpes)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -738,7 +736,7 @@ class Group(object):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         group = ET.Element('Group')
         group.set('id', self.id_)
         if self.prodtype != "all":
@@ -753,9 +751,10 @@ class Group(object):
         if self.platform:
             platform_el = ET.SubElement(group, "platform")
             try:
-                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
-            except KeyError:
-                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                platform_cpe = product_cpes.get_cpe_name(self.platform)
+            except CPEDoesNotExist:
+                print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                raise
             platform_el.set("idref", platform_cpe)
 
         for _value in self.values.values():
@@ -774,7 +773,7 @@ class Group(object):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
-            group.append(self.rules.get(rule_id).to_xml_element())
+            group.append(self.rules.get(rule_id).to_xml_element(product_cpes))
 
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
@@ -806,12 +805,12 @@ class Group(object):
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
-            group.append(_group.to_xml_element())
+            group.append(_group.to_xml_element(product_cpes))
 
         return group
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
+    def to_file(self, file_name, product_cpes):
+        root = self.to_xml_element(product_cpes)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -1106,7 +1105,7 @@ class Rule(object):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, product_cpes):
         rule = ET.Element('Rule')
         rule.set('id', self.id_)
         if self.prodtype != "all":
@@ -1174,15 +1173,16 @@ class Rule(object):
         if self.platform:
             platform_el = ET.SubElement(rule, "platform")
             try:
-                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
-            except KeyError:
-                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                platform_cpe = product_cpes.get_cpe_name(self.platform)
+            except CPEDoesNotExist:
+                print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+                raise
             platform_el.set("idref", platform_cpe)
 
         return rule
 
-    def to_file(self, file_name):
-        root = self.to_xml_element()
+    def to_file(self, file_name, product_cpes):
+        root = self.to_xml_element(product_cpes)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -1341,5 +1341,5 @@ class BuildLoader(DirectoryLoader):
         return BuildLoader(
             self.profiles_dir, self.bash_remediation_fns, self.env_yaml, self.resolved_rules_dir)
 
-    def export_group_to_file(self, filename):
-        return self.loaded_group.to_file(filename)
+    def export_group_to_file(self, filename, product_cpes):
+        return self.loaded_group.to_file(filename, product_cpes)
