@@ -28,3 +28,8 @@ ocil: |-
     To determine if <tt>NOEXEC</tt> has been configured for sudo, run the following command:
     <pre>$ sudo grep -ri "^Defaults.*noexec" /etc/sudoers /etc/sudoers.d/</pre>
     The command should return a matching output.
+
+template:
+    name: sudo_defaults_option
+    vars:
+        option: noexec
