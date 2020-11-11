@@ -39,8 +39,10 @@ selections:
   # 1.2.8 Ensure that the --authorization-mode argument includes Node
     - api_server_auth_mode_node
   # 1.2.9 Ensure that the --authorization-mode argument includes RBAC
+    - api_server_auth_mode_rbac
   # 1.2.10 Ensure that the admission control plugin EventRateLimit is set
-    - api_server_admission_control_plugin_EventRateLimit
+    - api_server_api_priority_gate_enabled
+    - api_server_api_priority_flowschema_catch_all
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
     - api_server_admission_control_plugin_AlwaysAdmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
@@ -49,10 +51,11 @@ selections:
     - api_server_admission_control_plugin_SecurityContextDeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
     - api_server_admission_control_plugin_ServiceAccount
+    - api_server_no_adm_ctrl_plugins_disabled
   # 1.2.15 Ensure that the admission control plugin NamespaceLifecycle is set
     - api_server_admission_control_plugin_NamespaceLifecycle
   # 1.2.16 Ensure that the admission control plugin PodSecurityPolicy is set (Automated)
-    - api_server_admission_control_plugin_PodSecurityPolicy
+    - api_server_admission_control_plugin_Scc
   # 1.2.17 Ensure that the admission control plugin NodeRestriction is set (Automated)
     - api_server_admission_control_plugin_NodeRestriction
   # 1.2.18 Ensure that the --insecure-bind-address argument is not set
