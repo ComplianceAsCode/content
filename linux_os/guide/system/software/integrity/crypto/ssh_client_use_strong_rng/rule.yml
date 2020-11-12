@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'SSH client uses strong entropy to seed'
+
+description: |-
+    To set up SSH client to use entropy from a high-quality source, make sure
+    that appropriate shell environment variables are configured. The
+    <tt>SSH_USE_STRONG_RNG</tt> environment variable determines how many bytes
+    of entropy to use. Make sure that the file
+    <tt>/etc/profile.d/cc-ssh-strong-rng.sh</tt> contains line
+    <pre>export SSH_USE_STRONG_RNG=32</pre>
+    and that the file <tt>/etc/profile.d/cc-ssh-strong-rng.csh</tt> contains line
+    <pre>setenv SSH_USE_STRONG_RNG 32</pre>.
+
+rationale: |-
+    SSH implementation in RHEL8 uses the openssl library, which doesn't use high-entropy sources by default.
+    Randomness is needed to generate data-encryption keys, and as plaintext padding and initialization vectors
+    in encryption algorithms, and high-quality entropy elliminates the possibility that the output of
+    the random number generator used by SSH would be known to potential attackers.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83346-7
+
+references:
+    ospp: FCS_CKM.1.1
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'SSH client is not configured to use 32 bytes of entropy'
+
+ocil: |-
+    Run following two commands to verify that SSH client is configured to use 32 bytes of entropy:
+    The command
+    <pre>grep SSH_USE_STRONG_RNG /etc/profile.d/cc-ssh-strong-rng.sh</pre>
+    should return the following output:
+    <pre>export SSH_USE_STRONG_RNG=32</pre>
+    The command
+    <pre>grep SSH_USE_STRONG_RNG /etc/profile.d/cc-ssh-strong-rng.csh</pre>
+    should return the following output:
+    <pre>setenv SSH_USE_STRONG_RNG 32</pre>.
+
