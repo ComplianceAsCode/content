@@ -71,8 +71,21 @@ tree clean and helps to make it easy to understand historical changes done in pa
 Contributing Content
 ---
 
-Changes related to one product or profile shouldn’t change behavior for other products or profiles.
+If you are considering contributing content to the project, thank you for your willingness to do so.
+There are some guidelines and rules to consider when you are contributing content:
 
-Prevent duplication of code. Use Jinja macros and [check (remediation) templates](/docs/manual/developer_guide.adoc#732-list-of-available-templates). Follow the indentation style. For Python code, follow [PEP8](https://www.python.org/dev/peps/pep-0008/). [Developer Guide](/docs/manual/developer_guide.adoc) is your friend.
+1. There should only be 1 configuration change per XCCDF rule. This is to not only help us meet U.S. Government expectations, but it makes our content easier to use and tweak for the end users.
+1. Create variables when a configuration change can be multiple different values. For example if a rule says to "create a 16 character password", create a variable that by default is set to 16 and add other possible password lengths. This is not just to make the content more usable, but not everyone's computing environments require a 16 character password.
+1. It is always better to fix an issue in external upstream open source projects before contributing, fixing, or breaking content here. For example if the `gdm` rpm reports changed permissions when the `rpm_verify_permissions` rule runs, the fix needs to be provided in the `gdm` rpm not by changing or disabling the content. Another example of this is adding a configuration option like to `pam_faillock` and `pam_pwquality` to make it easy for centralized accounts to ignore local settings which may be governed by the centralized account management tool. Once the patches are merged in the upstream project, you should then open a new pull request in this project with the changes. Following this approach not only ensures that it is easier for others to securely configure their systems, but it makes other upstream projects better and easier to use.
+1. Ask before you disable or remove content because you feel that they are not security relevant. They might actaully be security relevant in ways that you might not realize. This way we all learn something.
+1. Products or content that have been previously retired should stay retired unless there is a heavy commitment to support that content.
+1. While this is an open source project, contributing content from projects that have been taken over by a hacker is a no-go. Not only can you or the project not guarantee that that project is truly cleaned up, but doing so diminishes the trust and provenance of this project.
+1. Both DISA and NSA have said CentOS does not meet the expectations of U.S. Government security requirements. Therefore, there are no government profiles for CentOS, and they are not supported by this project whether through developement or contributions. This clearly angers some, but good cyber practices and compliance are practiced and expected by this project.
+1. Changes related to one product or profile shouldn’t change behavior for other products or profiles unless the nature of the change affects multiple products or profiles.
+1. If you are able and have time, prevent duplication of code. Use Jinja macros and [check (remediation) templates](/docs/manual/developer_guide.adoc#732-list-of-available-templates).
+1. When developing Python scripts, follow the indentation style. For Python code, follow [PEP8](https://www.python.org/dev/peps/pep-0008/).
+
+And as always, you can view the docs at [https://complianceascode.readthedocs.io/](https://complianceascode.readthedocs.io/),
+or if you do not have internet access, the docs can be viewed at [Developer Guide](/docs/manual/developer_guide.adoc).
 
 Enjoy!
