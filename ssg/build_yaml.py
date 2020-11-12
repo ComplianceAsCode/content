@@ -782,6 +782,14 @@ class Group(object):
         # are after rules that install or remove it.
         groups_in_group = list(self.groups.keys())
         priority_order = [
+            # Make sure rpm_verify_(hashes|permissions|ownership) are run before any other rule.
+            # Due to conflicts between rules rpm_verify_* rules and any rule that configures
+            # stricter settings, like file_permissions_grub2_cfg and sudo_dedicated_group,
+            # the rules deviating from the system detault should be evaluated later.
+            # So that in the end the system has contents, permissions and ownership reset, and
+            # any deviations or stricter settings are applied by the rules in the profile.
+            "software", "integrity", "integrity-software", "rpm_verification",
+
             # The account group has to precede audit group because
             # the rule package_screen_installed is desired to be executed before the rule
             # audit_rules_privileged_commands, othervise the rule
@@ -789,12 +797,6 @@ class Group(object):
             # and report fail
             "accounts", "auditing",
 
-            # The software group should come before the
-            # bootloader-grub2 group because of conflict between
-            # rules rpm_verify_permissions and file_permissions_grub2_cfg
-            # specific rules concerning permissions should
-            # be applied after the general rpm_verify_permissions
-            "software", "bootloader-grub2",
 
             # The FIPS group should come before Crypto,
             # if we want to set a different (stricter) Crypto Policy than FIPS.
