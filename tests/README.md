@@ -345,10 +345,13 @@ The header consists of comments (starting by `#`). Possible values are:
 - `remediation` is a string specifying one of the allowed remediation types (eg. `bash`, `ansible`, `none`).
   The `none` value means that the tested rule has no implemented remediation.
 - `templates` has no effect at the moment.
+- `variables` is a comma-separated list of XCCDF values that sets a different default value for XCCDF variables.
 
 After the header, bash commands that prepare the scenario follow.
 
-Example of a scenario:
+Examples of test scenario:
+
+Using `platform` and `profiles` metadata:
 
 ```
 #!/bin/bash
@@ -357,6 +360,20 @@ Example of a scenario:
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
 echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config
+```
+
+Multi values in `variables` metadata option:
+
+```
+#!/bin/bash
+#
+# variables = var_accounts_tmout=600,var_example_1=value_example
+
+if grep -q "^TMOUT" /etc/profile; then
+  sed -i "s/^TMOUT.*/# TMOUT=600/" /etc/profile
+else
+  echo "# TMOUT=600" >> /etc/profile
+fi
 ```
 
 ## Example of incorporating new test scenario
