@@ -1,6 +1,6 @@
 prodtype: ocp4
 
-title: Must have authorization-mode Node set
+title: Ensure authorization-mode Node is configured
 
 description: 'Restrict kubelet nodes to reading only objects associated with them.'
 
@@ -14,10 +14,10 @@ severity: medium
 references:
     cis: 1.2.8
 
-ocil_clause: 'The Node authorization-mode is configured and enabled on the master node'
+ocil_clause: 'The Node authorization-mode is configured and enabled'
 
 ocil: |-
-    Run the following command on the master node(s):
+    To verify that Node authorization mode is enabled, run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"Node"'</pre>
     The output should show that the "authorization-mode" list contains the "Node" authorizer.
 
