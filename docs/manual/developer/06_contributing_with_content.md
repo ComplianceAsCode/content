@@ -1598,6 +1598,33 @@ the following to `rule.yml`:
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
+#### sudo_defaults_option
+This template ensures a sudo `Defaults` options is enabled in `/etc/sudoers`
+or in `/etc/sudoers.d/*`.
+The remediations add the `Defaults` option  to `/etc/sudoers` file.
+
+-   Parameters:
+
+    - **option** - name of sudo `Defaults` option to enable.
+    - **default_is_enabled** -  set to `"true"` if the option is enabled by default for
+      the product. In this case, the check will pass even if the options is not explicitly set.
+      (optional, default value is `"false"`)
+
+-   Languages: Ansible, Bash, OVAL
+
+Example:
+```
+template:
+  name: sudo_defaults_option
+  vars:
+    option: noexec
+```
+This will generate:
+-   A check that asserts `Defaults noexec` is present in `/etc/sudoers` or `/etc/sudoers.d/`.
+    `Defaults` with multiple options are also accepted, i.e.: `Defaults ignore_dot,noexec,use_pty`.
+-   A remediation that adds `Defaults noexec` to `/etc/sudoers`.
+
+
 #### sysctl
 -   Checks sysctl parameters. The OVAL definition checks both
     configuration and runtime settings and require both of them to be
