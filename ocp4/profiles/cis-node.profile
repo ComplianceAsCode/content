@@ -151,8 +151,6 @@ selections:
     - kubelet_authorization_mode
   # 4.2.3 Ensure that the --client-ca-file argument is set as appropriate
     - kubelet_configure_client_ca
-  # 4.2.4 Ensure that the --read-only-port argument is set to 0
-    # - this is a platform rule (reads from a CM)
   # 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
     - kubelet_enable_streaming_connections
   # 4.2.6 Ensure that the --protect-kernel-defaults argument is set to true
@@ -161,14 +159,10 @@ selections:
     # that the default is false? Need to confirm
   # 4.2.7 Ensure that the --make-iptables-util-chains argument is set to true
     - kubelet_enable_iptables_util_chains
-    # - like kubelet_anonymous_auth_disabled but check for makeIPTablesUtilChains is NOT set to false (true is the default)
-  # 4.2.8 Ensure that the --hostname-override argument is not set (Manual)
-    # FIXME: systemd probe to check that the service.execStart does NOT contain --hostname-override. This is
-    # runtime flag only, no config value
+  # 4.2.8 Ensure that the --hostname-override argument is not set
+    - kubelet_disable_hostname_override
   # 4.2.9 Ensure that the --event-qps argument is set to 0 or a level which ensures appropriate event capture
     # - like kubelet_anonymous_auth_disabled but check for kubeAPIQPS set to 50
-  # 4.2.10 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate
-    # - this is a platform rule (reads from a CM)
   # 4.2.11 Ensure that the --rotate-certificates argument is not set to false
     - kubelet_enable_client_cert_rotation
     - kubelet_enable_cert_rotation

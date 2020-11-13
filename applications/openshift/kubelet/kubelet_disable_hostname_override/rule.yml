@@ -5,15 +5,14 @@ prodtype: ocp4
 title: 'kubelet - Disable Hostname Override'
 
 description: |-
-    To prevent the hostname from being overrided, edit the kubelet configuration file
-    <tt>/etc/origin/node/node-config.yaml</tt> on the kubelet node(s) and
-    remove the <tt>hostname-override</tt> option if it exists.
+    To prevent the hostname from being overrided, edit the kubelet systemd service file
+    <tt>/etc/systemd/system/kubelet.service</tt> on the kubelet node(s) and
+    remove the <tt>--hostname-override</tt> flag if it exists.
 
 rationale: |-
     Allowing hostnames to be overrided creates issues around resolving nodes
     in addition to TLS configuration, certificate validation, and log correlation
     and validation.
-
 
 severity: medium
 
@@ -21,7 +20,7 @@ ocil_clause: 'the hostname cannot be overrided'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep hostname-override /etc/origin/node/node-config.yaml</pre>
+    <pre>$ sudo grep hostname-override /etc/systemd/system/kubelet.service</pre>
     The output should return no output.
 
 #identifiers:
