@@ -345,7 +345,7 @@ The header consists of comments (starting by `#`). Possible values are:
 - `remediation` is a string specifying one of the allowed remediation types (eg. `bash`, `ansible`, `none`).
   The `none` value means that the tested rule has no implemented remediation.
 - `templates` has no effect at the moment.
-- `variables` is a comma-separated list of XCCDF values that sets a different default value for XCCDF variables.
+- `variables` is a comma-separated list of XCCDF values that sets a different default value for XCCDF variables in a form `<variable name>=<value>`. Typically, you use only one of `profile` or `variables` in scenario metadata - default values are effective only if the variable is not defined using a selector, which is exactly what profiles do.
 
 After the header, bash commands that prepare the scenario follow.
 
