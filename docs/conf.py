@@ -16,6 +16,18 @@ sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../tests'))
 import sphinx_rtd_theme
 
+# since these files live outside of root doc directory, we need to create a symlink to a dir under where conf.py lives
+# so recommonmark can properly render them
+filepaths = ["release_tools/README.md", "tests/README.md"]
+for filepath in filepaths:
+    try:
+        path, _ = filepath.split("/")
+        os.mkdir(os.path.join(path))
+        os.symlink(os.path.join(os.path.abspath('..'), filepath), os.path.join(filepath))
+    except FileExistsError as e:
+        # ignore if file exists
+        print("Warning: {}".format(e))
+
 # -- Project information -----------------------------------------------------
 
 project = 'ComplianceAsCode/content'
