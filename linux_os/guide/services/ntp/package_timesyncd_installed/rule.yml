@@ -1,10 +1,12 @@
 documentation_complete: true
 
-title: 'Install the ntp service'
+prodtype: ubuntu2004
 
-description: 'The ntpd service should be installed.'
+title: 'Install the systemd_timesyncd service'
 
-rationale: 'Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). Ntpd is regulary maintained and updated, supporting security features such as RFC 5906.'
+description: 'The systemd_timesyncd service should be installed.'
+
+rationale: 'Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). systemd_timesyncd is a part of the systemd suite and acts as a NTP client.'
 
 severity: high
 
@@ -24,4 +26,4 @@ references:
 template:
     name: package_installed
     vars:
-        pkgname: ntp
+        pkgname: systemd-timesyncd

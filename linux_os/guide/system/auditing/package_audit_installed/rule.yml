@@ -20,6 +20,7 @@ references:
     anssi: BP28(R50)
     srg: SRG-OS-000480-GPOS-00227,SRG-OS-000122-GPOS-00063
     cis@rhel8: 4.1.1.1
+    cis@ubuntu2004: 4.1.1.1
 
 template:
     name: package_installed
@@ -27,5 +28,6 @@ template:
         pkgname: audit
         pkgname@ubuntu1604: auditd
         pkgname@ubuntu1804: auditd
+        pkgname@ubuntu2004: auditd
         pkgname@debian9: auditd
         pkgname@debian10: auditd
