@@ -1812,6 +1812,75 @@ escape_regex
     some regular expression, behaves similar to the Python 3’s
     [**re.escape**](https://docs.python.org/3/library/re.html#re.escape).
 
+## Applicability of content
+
+All profiles and rules included in a products' DataStream are applicable
+by default. For example, all profiles and rules included in a `rhel8` DS
+will apply and evaluate in a RHEL 8 host.
+
+But a content’s applicability can be fine tuned to a specific
+environment in the product. The SCAP standard specifies two mechanisms
+to define applicability: - [CPE](https://nvd.nist.gov/products/cpe):
+Allows a specific hardware or platform to be identified. -
+[Applicability Language](https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe/applicability-language):
+Allows the construction of logical expressions involving CPEs.
+
+At the moment, only the CPE mechanism is supported.
+
+### Applicability by CPE
+
+The CPEs defined by the project are declared in
+`shared/applicability/cpes.yml`.
+
+Syntax is as follows (using examples of existing CPEs):
+
+    cpes:
+      - machine:                                  ## The id of the CPE
+          name: "cpe:/a:machine"                  ## The CPE Name as defined by the CPE standard
+          title: "Bare-metal or Virtual Machine"  ## Human readable title for the CPE
+          check_id: installed_env_is_a_machine    ## ID of OVAL implementing the applicability check
+      - gdm:
+          name: "cpe:/a:gdm"
+          title: "Package gdm is installed"
+          check_id: installed_env_has_gdm_package
+
+The first entry above defines a CPE whose `id` is `machine`, this CPE
+is used for rules not applicable to containers.
+A rule or profile with `platform: machine` will be evaluated only if the
+targeted scan environment is either bare-metal or virtual machine.
+
+The second entry defines a CPE for GDM.
+By setting the `platform` to `gdm`, the rule will have its applicability
+restricted to only environments which have `gdm` package installed.
+
+The OVAL checks for the CPE need to be of `inventory` class, and must be
+under `shared/checks/oval/`.
+
+#### Setting a product’s default CPE
+
+The product’s default applicability is set in its `product.yml` file,
+under the `cpes` key. For example:
+
+    cpes:
+      - example:
+          name: "cpe:/o:example"
+          title: "Example"
+          check_id: installed_OS_is_part_of_Unix_family
+
+Multiple CPEs can be set as default platforms for a product.
+
+#### Setting the product’s CPE source directory
+
+The key `cpes_root` in `product.yml` file specifies the directory to
+source the CPEs from.
+By default, all products source their CPEs from `shared/applicability/`.
+Any file with extension `.yml` will be sourced for CPE definitions.
+
+Note: Only CPEs that are referenced by a rule or profile will be included
+in the product’s CPE Dictionary.
+If no content requires the CPE, it is deemed unnecessary and won’t be
+included in the dictionary.
+
 ## Tests (ctest)
 
 ComplianceAsCode uses ctest to orchestrate testing upstream. To run the

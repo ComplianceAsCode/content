@@ -1,5 +1,3 @@
-# SSG Test Suite
-
 This directory contains SSG Test Suite, effort separate to the main SSG code.
 Goal of this Test Suite is primarily to ensure Remediation scripts are usable,
 and to define scenarios in which these should work.
@@ -16,13 +14,13 @@ Once a domain or container is prepared it can be used indefinitely.\
 The Test Suite can perform tests focused on a profile or a specific rule.\
 Typically, for a test run, a sequence of scan, remediation and scan is peformed.
 
-## How to prepare a backend for testing
+# How to prepare a backend for testing
 For the Test Suite to work, you need to have a backend image prepared for testing.\
 You can use a powerful full-blown VM backend, or a lightweight container backend.
 
 SSG Test Suite currently does not provide automated provisioning of VMs or containers.
 
-### Libvirt backend
+## Libvirt backend
 
 To use Libvirt backend, you need to have:
 
@@ -71,7 +69,7 @@ UEFI based machines. Therefore, you can't use them with SSG test suite.
 in case the test suite breaks something and fails to revert. Do not use snapshot names starting with `ssg_`.\
 You can create a snapshot using `virsh` or `virt-manager`.
 
-### Container backends
+## Container backends
 
 There are 2 container backends supported, Podman and Docker.
 
@@ -89,13 +87,13 @@ The image needs to fulfil the following requirements:
 You can use `test_suite-*` Dockerfiles in the [`content/Dockerfiles`](../Dockerfiles) directory to build the images.
 We recommend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
 
-#### Podman
+### Podman
 
 To use Podman backend, you need to have:
 
 - `podman` package installed
 
-##### Building podman base image
+#### Building podman base image
 The Test Suite will log in to the container via SSH, so, if you don't have an SSH key pair, lets setup a key without passphrase, so the procedure could happen without any additional interaction. You can skip this step if you already have an SSH key pair.
 
 ```
@@ -113,7 +111,7 @@ podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f te
 
 *NOTE*: If you are setting up the suite as superuser (i.e. *sudo podman build ...*) use *public_key="$(sudo cat /root/.ssh/id_rsa.pub)"* instead of the first command.
 
-#### Docker
+### Docker
 
 To use Docker backend, you need to have:
 
@@ -123,16 +121,16 @@ To use Docker backend, you need to have:
   - using `sudo` with every `docker` command, or;
   - create a `docker` group, then add yourself to it and restart `docker`. Depending on your OS, you may need to logout for the group change to apply.
 
-##### Building docker base image
+#### Building docker base image
 
 The procedure is same as using Podman, you just swap the `podman` call with `docker`. But since Docker does not support rootless containers you will have to take superuser route of the guide.
 
-## How to run the tests
+# How to run the tests
 
 To test you profile or rule use `test_suite.py` script. It can take your DataStream, and test it on the specified backend.
 The Test Suite can test a whole profile or just a specific rule within a profile.
 
-## Argument summary
+# Argument summary
 
 Mode of operation, specify one of the following commands;
 - `profile`: Evaluate, remediate and evalute again using selected profile
@@ -205,7 +203,7 @@ UserKnownHostsFile /dev/null
 
 All logs of Test Suite are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
 
-### Profile-based testing
+## Profile-based testing
 
 In this operation mode, you specify the `profile` command and you supply the
 profile ID as a positional argument.  The test suite then runs scans over the
@@ -229,7 +227,7 @@ To test Fedora Standard Profile on a Docker container:
 Note that `profile-id` is matched by the suffix, so it works the same as in `oscap` tool
 (you can use `oscap info --profiles` to see available profiles).
 
-#### Unselecting problematic rules
+### Unselecting problematic rules
 
 Sometimes you would like to skip a rule in the profile because they are too slow to test,\
 or you know a rule doesn't have a remediation and you get less value by testing it.
@@ -251,7 +249,7 @@ Example usage:
 
 *Tip*: file `unselect_rules_list` contains a few typical rules you may want to skip
 
-### Rule-based testing
+## Rule-based testing
 
 In this mode, you specify the `rule` command and you supply one or more rule
 IDs or wildcards as positional arguments. Unlike the profile mode, here each
@@ -291,12 +289,12 @@ Notice we didn't use full rule name on the command line. The prefix `xccdf_org.s
 It is possible to use wildcards, eg `accounts_passwords*` will run test scenarios for all
 rules which ID starts with `accounts_passwords`.
 
-#### Debug mode
+### Debug mode
 
 Use `--debug` option, to investigate a test scenario which is not evaluating to expected result.
 The Test Suite will pause its execution, and you will be able to SSH into the environment to inspect its state manually.
 
-#### How rule validation scenarios work
+### How rule validation scenarios work
 
 The test scenarios for a rule are located in `tests` subdirectory in rule directory.
 
@@ -304,23 +302,23 @@ The test scenarios for a rule are located in `tests` subdirectory in rule direct
 Scenarios are currently supported only in `bash`. And type of scenario is
 defined by its file name.
 
-##### (something).pass.sh
+#### (something).pass.sh
 
 Success scenario - script is expected to prepare machine in such way that the
 rule is expected to pass.
 
-##### (something).fail.sh
+#### (something).fail.sh
 
 Fail scenario - script is expected to break machine so the rule fails. Test
 Suite than, if initial scan fails as expected, tries to remediate machine and
 expects evaluation to pass.
 
-##### (something).sh
+#### (something).sh
 
 Support files, these are available to the scenarios during their runtime. Can
 be used as common libraries.
 
-### Combined testing mode
+## Combined testing mode
 
 In this mode, you are testing the rules selected by a profile, using the contexts provided by each rule's test scenarios.
 This mode provides an easy way of performing rule-based testing on all rules that are part of a profile.
@@ -334,9 +332,9 @@ If you would like to test all profile's rules against their test scenarios:
 ./test_suite.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
 ```
 
-## How to write new test scenarios
+# How to write new test scenarios
 
-### Scenarios format
+## Scenarios format
 
 Scenarios are simple bash scripts. A scenario starts with a header which provides metadata.
 The header consists of comments (starting by `#`). Possible values are:
@@ -362,6 +360,7 @@ Using `platform` and `profiles` metadata:
 echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config
 ```
 
+<<<<<<< HEAD
 Multi values in `variables` metadata option:
 
 ```
@@ -376,7 +375,7 @@ else
 fi
 ```
 
-## Example of incorporating new test scenario
+# Example of incorporating new test scenario
 
 Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 
@@ -391,7 +390,7 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 ```
 Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
 
-## Sharing code among test scenarios
+# Sharing code among test scenarios
 
 Test scenarios can use files from `/tests/shared` directory. This directory
 and its contents is copied to the target VM or container together with the
@@ -408,7 +407,7 @@ the following way:
 If you happen to have many similar test scenarios, consider extracting the
 common code to the shared directory.
 
-## Analysis of results
+# Analysis of results
 
 The rule tests results are saved as `results.json` into the corresponding log directory.
 You can then analyze those results by running e.g.
@@ -422,7 +421,7 @@ scenarios that yielded different results.
 Sometimes, different results may have been caused by different test environments, whereas sometimes
 the security content is different, and those scans can be identified by respective scanning dates only.
 
-## Known issues
+# Known issues
 
 1 - Test suite fails to test rule with the message:
 

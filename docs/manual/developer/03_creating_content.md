@@ -261,7 +261,6 @@ For example:
 
     $ tree -d rhel7
     rhel7
-    ├── cpe
     ├── kickstart
     ├── overlays
     ├── profiles
@@ -282,22 +281,18 @@ For example:
 <td><p>Description</p></td>
 </tr>
 <tr class="even">
-<td><p><code>cpe</code></p></td>
-<td><p><code>Required</code> Contains the Common Platform Enumeration (CPE) product identifier that is provided from <a href="https://nvd.nist.gov/products/cpe">NIST</a>.</p></td>
-</tr>
-<tr class="odd">
 <td><p><code>kickstart</code></p></td>
 <td><p><code>Optional</code> Contains product kickstart or build files to be used in testing, development, or production (not recommended) of compliance content.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>overlays</code></p></td>
 <td><p><code>Required</code> Contains overlay files for specific standards organizations such as NIST, DISA STIG, PCI-DSS, etc.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p><code>profiles</code></p></td>
 <td><p><code>Required</code> Contains profiles that are created and tailored to meet government or commercial compliance standards.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>transforms</code></p></td>
 <td><p><code>Required</code> Contains XSLT files and scripts that are used to transform the content into the expected compliance document such as XCCDF, OVAL, Datastream, etc.</p></td>
 </tr>
