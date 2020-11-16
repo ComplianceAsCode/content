@@ -102,9 +102,12 @@ populate {{{ name }}}
 {{%- endmacro -%}}
 
 {{#
-# Install a package
-# Uses the right command based on pkg_manger proprerty defined in product.yaml.
-# package: name of the package
+    Install a package
+
+    Uses the right command based on pkg_manager property defined in product.yml.
+
+    :param package: name of the package
+    :type package: str
 #}}
 {{%- macro bash_package_install(package) -%}}
 {{%- if pkg_manager is defined -%}}
@@ -123,9 +126,12 @@ apt-get install -y "{{{ package }}}"
 {{%- endmacro -%}}
 
 {{#
-# Remove a package
-# Uses the right command based on pkg_manger proprerty defined in product.yaml.
-# package: name of the package
+    Remove a package
+
+    Uses the right command based on pkg_manager property defined in product.yml.
+
+    :param package: name of the package
+    :type package: str
 #}}
 {{%- macro bash_package_remove(package) -%}}
 {{%- if pkg_manager is defined -%}}

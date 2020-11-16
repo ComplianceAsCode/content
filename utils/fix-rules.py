@@ -126,7 +126,7 @@ def find_rules(directory, func):
                 if func(path, product_yaml):
                     results.append((path, product_yaml_path))
             except jinja2.exceptions.UndefinedError:
-                print("Failed to parse file %s (with product.yaml: %s). Skipping"
+                print("Failed to parse file %s (with product.yml: %s). Skipping"
                       % (path, product_yaml_path))
                 pass
 
