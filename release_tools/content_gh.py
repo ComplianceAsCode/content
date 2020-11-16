@@ -82,7 +82,8 @@ def close_milestone(milestone):
 def get_closed_prs(repo, milestone):
     closed_issues = repo.get_issues(milestone=milestone, state="closed", sort="updated")
     issues_with_prs = [i for i in closed_issues if i.pull_request is not None]
-    merged_prs = [i.as_pull_request() for i in issues_with_prs if i.as_pull_request().merged == True]
+    merged_prs =
+    [i.as_pull_request() for i in issues_with_prs if i.as_pull_request().merged is True]
     return merged_prs
 
 

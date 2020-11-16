@@ -130,7 +130,9 @@ def prep_next_release(env, args):
     print(f"Creating commit for version bump")
     local_repo = git.Repo('../')
 
-    bump_branch = local_repo.create_head('bump_version_{0}'.format(args.next_version), local_repo.heads.master)
+    bump_branch = local_repo.create_head(
+        'bump_version_{0}'.format(args.next_version), local_repo.heads.master
+    )
     local_repo.head.reference = bump_branch
     # reset the index and working tree to match the pointed-to commit
     local_repo.head.reset(index=True, working_tree=True)
