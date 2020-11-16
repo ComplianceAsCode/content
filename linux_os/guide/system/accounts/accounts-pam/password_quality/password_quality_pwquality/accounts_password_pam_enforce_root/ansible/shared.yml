@@ -1,0 +1,12 @@
+# platform = Red Hat Enterprise Linux 8,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Ensure password complexity for root user
+  lineinfile:
+    create: yes
+    dest: "/etc/security/pwquality.conf"
+    regexp: '^#?\s*enforce_for_root'
+    line: "enforce_for_root"

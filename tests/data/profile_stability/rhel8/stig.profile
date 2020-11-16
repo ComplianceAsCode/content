@@ -272,4 +272,8 @@ selections:
 - grub2_vsyscall_argument.severity=info
 - sysctl_user_max_user_namespaces.role=unscored
 - sysctl_user_max_user_namespaces.severity=info
+- ssh_client_rekey_limit
+- accounts_passwords_pam_faillock_enforce_local
+- accounts_password_pam_enforce_local
+- accounts_password_pam_enforce_root
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 8'

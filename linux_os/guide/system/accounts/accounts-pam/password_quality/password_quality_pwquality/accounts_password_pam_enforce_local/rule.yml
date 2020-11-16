@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8
+
+title: 'Ensure PAM Enforces Password Requirements - Enforce for Local Accounts Only'
+
+description: |-
+    The pam_pwquality module's <tt>local_users_only</tt> parameter controls requirements for
+    enforcing password complexity by pam_pwquality only for local user accounts and ignoring
+    centralized user account management password complexity configurations. Enable the <tt>local_users_only</tt>
+    setting in <tt>/etc/security/pwquality.conf</tt> to require password complexity enforcement
+    for only local user accounts.
+
+rationale: |-
+    The operating system must provide automated mechanisms for supporting account management
+    functions. Enterprise environments make application account management challenging and
+    complex. A manual process for account management functions adds the risk of a potential
+    oversight or other error.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83364-0
+
+references:
+    disa: CCI-000015
+    nist: AC-2(1)
+    srg: SRG-OS-000001-GPOS-00001
+
+ocil_clause: 'local_users_only is not uncommented or configured correctly'
+
+ocil: |-
+    To verify if password complexities are only enforce on local users, run the following command:
+    <pre>$ grep local_users_only /etc/security/pwquality.conf</pre>
+    The output should return <tt>local_users_only</tt> uncommented.
+
+platform: pam
+
+warnings:
+    - management: |-
+        Using this rule bypasses pam_faillock's functionality and should be used in cases
+        where centralized management such as LDAP or Active Directory is in use.
