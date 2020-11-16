@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="java_jre_security_revocation_check_locked" version="1">
+    <metadata>
+      <title>Disable User Access to Revocation Check Settings</title>
+      <affected family="unix">
+        <product>Java Runtime Environment</product>
+      </affected>
+      <description>The setting enabling users to configure the check publisher
+      certificates for revocation must be locked.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check deployment.security.revocation.check.locked" test_ref="test_java_jre_security_revocation_check_locked" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check deployment.security.revocation.check.locked" id="test_java_jre_security_revocation_check_locked" version="1">
+    <ind:object object_ref="object_java_jre_security_revocation_check_locked" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_java_jre_security_revocation_check_locked" version="1">
+    <ind:filepath>/etc/.java/deployment/deployment.properties</ind:filepath>
+    <ind:pattern operation="pattern match">^deployment.security.revocation.check.locked$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
