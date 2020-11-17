@@ -51,5 +51,6 @@ selections:
     - file_groupowner_etc_group
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
+    - service_apport_disabled
     - sysctl_fs_suid_dumpable
     - sysctl_kernel_randomize_va_space
