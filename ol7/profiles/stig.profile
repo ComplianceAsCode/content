@@ -86,7 +86,6 @@ selections:
     - accounts_passwords_pam_faillock_deny_root
     - sudo_remove_nopasswd
     - accounts_logon_fail_delay
-    - accounts_logon_fail_delay.severity=medium
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
     - sshd_do_not_permit_user_env
@@ -94,7 +93,6 @@ selections:
     - grub2_password
     - require_singleuser_auth
     - grub2_uefi_password
-    - grub2_uefi_password.severity=high
     - smartcard_auth
     - package_rsh-server_removed
     - package_ypserv_removed
@@ -136,11 +134,8 @@ selections:
     - mount_option_nosuid_removable_partitions
     - mount_option_nosuid_remote_filesystems
     - mount_option_dev_shm_nodev
-    - mount_option_dev_shm_nodev.severity=low
     - mount_option_dev_shm_noexec
-    - mount_option_dev_shm_noexec.severity=low
     - mount_option_dev_shm_nosuid
-    - mount_option_dev_shm_nosuid.severity=low
     - dir_perms_world_writable_system_owned
     - accounts_umask_interactive_users
     - rsyslog_cron_logging
@@ -154,7 +149,6 @@ selections:
     - grub2_enable_fips_mode
     - aide_verify_acls
     - aide_verify_ext_attributes
-    - aide_verify_ext_attributes.severity=low
     - aide_use_fips_hashes
     - grub2_no_removeable_media
     - package_telnet-server_removed
@@ -270,7 +264,6 @@ selections:
     - network_sniffer_disabled
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
-    - package_vsftpd_removed.severity=high
     - package_tftp-server_removed
     - sshd_enable_x11_forwarding
     - tftpd_uses_secure_mode
