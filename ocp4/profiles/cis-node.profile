@@ -154,9 +154,7 @@ selections:
   # 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
     - kubelet_enable_streaming_connections
   # 4.2.6 Ensure that the --protect-kernel-defaults argument is set to true
-    # - like kubelet_anonymous_auth_disabled but check that protectKernelDefaults is set to true
-    # FIXME(jhrozek): This does not seem to be set in OCP explicitly and the code seems to suggest
-    # that the default is false? Need to confirm
+    - kubelet_enable_protect_kernel_defaults
   # 4.2.7 Ensure that the --make-iptables-util-chains argument is set to true
     - kubelet_enable_iptables_util_chains
   # 4.2.8 Ensure that the --hostname-override argument is not set
