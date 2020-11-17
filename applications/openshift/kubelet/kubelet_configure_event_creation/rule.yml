@@ -2,32 +2,46 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'kubelet - Do Not Limit Event Creation'
+title: 'Kubelet - Ensure Event Creation Is Configured'
 
 description: |-
-    All events should be captured and not restricted as this helps in
-    reconstucting the chain-of-events.
-
-    To prevent log creation limiting, edit the kubelet configuration
-    file <tt>/etc/kubernetes/kubernetes.conf</tt>
-    on the kubelet node(s) and set the below parameter:
-    <pre>eventRecordQPS: 0</pre>
+    Security relevant information should be captured. The eventRecordQPS
+    Kubelet option can be used to limit the rate at which events are gathered.
+    Setting this too low could result in relevant events not being logged,
+    however the unlimited setting of 0 could result in a denial of service on
+    the kubelet. Processing and storage systems should be scaled to handle the
+    expected event load.
 
 rationale: |-
-    All events should be captured and not restricted as this helps in
-    reconstucting the chain-of-events.
+    It is important to capture all events and not restrict event creation.
+    Events are an important source of security information and analytics that
+    ensure that your environment is consistently monitored using the event
+    data.
 
 severity: medium
 
-ocil_clause: 'events are limited'
+ocil_clause: 'event creation limits are not configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
     <pre>$ sudo grep eventRecordQPS /etc/kubernetes/kubernetes.conf</pre>
-    The output should return <tt>0</tt>.
+    The output should return <tt>{{{ xccdf_value("var_event_record_qps") }}}</tt>.
 
 #identifiers:
 #    cce@ocp4:
 
 references:
     cis: 4.2.9
+
+# This check ensures that the option is not left defaulted in the config.  The
+# default of 5 might be sufficient for a deployment; here the point is to check
+# that at least _some_ value has been considered.
+template:
+    name: yamlfile_value
+    vars:
+        filepath: /etc/kubernetes/kubelet.conf
+        yamlpath: ".eventRecordQPS"
+        values:
+         - value: 0
+           type: int
+           operation: "greater than or equal"
