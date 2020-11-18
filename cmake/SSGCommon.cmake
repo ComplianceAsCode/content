@@ -62,15 +62,15 @@ set(SSG_HTML_TABLE_FILE_LIST "")
 
 # Define VALIDATE_PRODUCT to FALSE if a successful product validation is known to require newer oscap
 # that the one that is picked by the build system.
-function(define_validate_product PRODUCT)
-    set(VALIDATE_PRODUCT, TRUE)
-    if ("${OSCAP_VERSION}" VERSION_LESS "1.3.4")
+macro(define_validate_product PRODUCT)
+    set(VALIDATE_PRODUCT TRUE)
+    if ("${OSCAP_VERSION}" VERSION_LESS "1.4.0")
 	    if ("${PRODUCT}" MATCHES "^(ocp4|ANOTHER_PROBLEMATIC_PRODUCT)$")
-            message(STATUS "Won't validate ${PRODUCT}, as it requires at least oscap 1.3.4")
-            set(VALIDATE_PRODUCT, FALSE)
+            message(STATUS "Won't validate ${PRODUCT}, as it requires the OpenSCAP scanner that is capable of the validation.")
+            set(VALIDATE_PRODUCT FALSE)
         endif ()
     endif ()
-endfunction()
+endmacro()
 
 macro(ssg_build_bash_remediation_functions)
     file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
