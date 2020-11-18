@@ -1,3 +1,7 @@
+---
+name: General Issue
+about: Report a general issue within the content hosted in this repository
+---
 #### Description of problem:
 
 
@@ -20,6 +24,6 @@
 #### Expected Results:
 
 
-#### Addition Information/Debugging Steps:
+#### Additional Information/Debugging Steps:
 
 
