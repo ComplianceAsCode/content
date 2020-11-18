@@ -4,8 +4,8 @@
 
 <xsl:variable name="product_long_name">Ubuntu 2004</xsl:variable>
 <xsl:variable name="product_short_name">Ubuntu 2004</xsl:variable>
-<xsl:variable name="product_stig_id_name">UBUNTU_FOCAL_FOSSA</xsl:variable>
-<xsl:variable name="product_guide_id_name">UBUNTU-FOCAL</xsl:variable>
+<xsl:variable name="product_stig_id_name">Canonical_Ubuntu_20-04</xsl:variable>
+<xsl:variable name="product_guide_id_name">UBUNTU_20-04</xsl:variable>
 <xsl:variable name="prod_type">ubuntu2004</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for Ubuntu Linux v1.0 -->
