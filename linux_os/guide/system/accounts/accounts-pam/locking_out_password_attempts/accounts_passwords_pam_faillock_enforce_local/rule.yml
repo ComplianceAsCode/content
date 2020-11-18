@@ -40,3 +40,11 @@ warnings:
     - management: |-
         Using this rule bypasses pam_faillock's functionality and should be used in cases
         where centralized management such as LDAP or Active Directory is in use.
+
+template:
+    name: "lineinfile"
+    vars:
+        text: "local_users_only"
+        path: "/etc/security/faillock.conf"
+        oval_extend_definitions:
+            - accounts_password_pam_faillock
