@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Disable Apport Service'
+
+prodtype: ubuntu2004
+
+description: |-
+    The Apport modifies certain kernel configuration values at
+    runtime which may decrease the overall security of the system and expose sensitive data.
+    {{{ describe_service_disable(service="apport") }}}
+
+rationale: |-
+    The Apport service modifies the kernel
+    <tt>fs.suid_dumpable</tt> configuration at runtime which
+    prevents other hardening from being persistent. Disabling the
+    service prevents this behavior.
+
+severity: unknown
+
+template:
+    name: service_disabled
+    vars:
+        servicename: apport
