@@ -108,13 +108,8 @@ selections:
     - file_permissions_openshift_pki_key_files
 
   ### 2 etcd
-  # 2.1 Ensure that the --cert-file and --key-file arguments are set as appropriate
-  # 2.2 Ensure that the --client-cert-auth argument is set to true
-  # 2.3 Ensure that the --auto-tls argument is not set to true
-  # 2.4 Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate
-  # 2.5 Ensure that the --peer-client-cert-auth argument is set to true
-  # 2.6 Ensure that the --peer-auto-tls argument is not set to true
-  # 2.7 Ensure that a unique Certificate Authority is used for etcd (manual)
+  # 2.7 Ensure that a unique Certificate Authority is used for etcd
+    - etcd_unique_ca
 
   ### 3 Control Plane Configuration
   ###

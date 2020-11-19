@@ -137,8 +137,6 @@ selections:
     - etcd_peer_client_cert_auth
   # 2.6 Ensure that the --peer-auto-tls argument is not set to true
     - etcd_peer_auto_tls
-  # 2.7 Ensure that a unique Certificate Authority is used for etcd
-    - etcd_unique_ca
 
   ### 3 Control Plane Configuration
   ###

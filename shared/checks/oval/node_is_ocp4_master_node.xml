@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="inventory" id="node_is_ocp4_master_node" version="1">
+    <metadata>
+      <title>Node is Red Hat OpenShift Container Platform 4 Master Node</title>
+      <affected family="unix">
+        <platform>Red Hat OpenShift Container Platform 4 Node</platform>
+      </affected>
+      <reference ref_id="cpe:/a:ocp4-master-node" source="CPE" />
+      <description>The current node is an OpenShift 4 master node.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="The Kube API pod is present" test_ref="test_kube_api_pod_exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing if /etc/kubernetes/static-pod-resources/kube-apiserver-certs exists" id="test_kube_api_pod_exists" version="1">
+    <unix:object object_ref="object_kube_api_pod_exists" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/kubernetes/static-pod-resources/kube-apiserver-certs" id="object_kube_api_pod_exists" version="1">
+    <unix:path>/etc/kubernetes/static-pod-resources/kube-apiserver-certs</unix:path>
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+</def-group>
