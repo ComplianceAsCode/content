@@ -1,5 +1,3 @@
-{{# ##### High level macros ##### #}}
-
 {{#
 Pass strings that correspond to XCCDF value names as arguments to this macro:
 bash_instantiate_variables("varname1", "varname2")
@@ -409,9 +407,6 @@ do
     {{{ bash_set_faillock_option_account("$pam_file") | indent(4) }}}
 done
 {{%- endmacro -%}}
-
-
-{{# ##### Low level macros ##### #}}
 
 {{#
 # Print a message to stderr and exit the shell
