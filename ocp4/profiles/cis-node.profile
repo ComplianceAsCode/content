@@ -162,7 +162,7 @@ selections:
   # 4.2.8 Ensure that the --hostname-override argument is not set
     - kubelet_disable_hostname_override
   # 4.2.9 Ensure that the --event-qps argument is set to 0 or a level which ensures appropriate event capture
-    # - like kubelet_anonymous_auth_disabled but check for kubeAPIQPS set to 50
+    - kubelet_configure_event_creation
   # 4.2.11 Ensure that the --rotate-certificates argument is not set to false
     - kubelet_enable_client_cert_rotation
     - kubelet_enable_cert_rotation
