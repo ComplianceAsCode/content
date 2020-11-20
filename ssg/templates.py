@@ -35,6 +35,8 @@ class Template():
         self.name = name
         self.template_path = os.path.join(self.template_root_directory, self.name)
         self.preprocessing_file_path = os.path.join(self.template_path, preprocessing_file_name)
+        if not os.path.exists(self.preprocessing_file_path):
+            self.preprocessing_file_path = None
         self.langs = []
         for lang in languages:
             langfilename = lang + ".template"
@@ -42,9 +44,11 @@ class Template():
                 self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
-        module_name = "tmpmod" # dummy module name, we don't need it later
-        preprocess_mod = imp.load_source(module_name, self.preprocessing_file_path)
-        parameters = preprocess_mod.preprocess(parameters.copy(), lang)
+        # if no template.py file exists, skip this preprocessing part
+        if self.preprocessing_file_path is not None:
+            module_name = "tmpmod" # dummy module name, we don't need it later
+            preprocess_mod = imp.load_source(module_name, self.preprocessing_file_path)
+            parameters = preprocess_mod.preprocess(parameters.copy(), lang)
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
         uppercases = dict()
