@@ -1950,11 +1950,11 @@ In order to test that a rule is yielding expected results in the e2e
 tests, one must create a file called `e2e.yml` in a `tests/ocp4/`
 directory which will exist in the rule’s directory itself.
 
-The format looks as follows:
+The format may look as follows:
 
     ---
-    default_result: [PASS|FAIL]
-    result_after_remediation: [PASS|FAIL]
+    default_result: [PASS|FAIL|SKIP]
+    result_after_remediation: [PASS|FAIL|SKIP]
 
 Where:
 
@@ -1964,7 +1964,23 @@ Where:
     scan is run. The second scan takes place after remediations are
     applied.
 
+Note that this format applies if the result of a rule will be the same accross
+roles in the cluster.
+
+It is also possible to differentiate results between roles. For such a thing,
+the format would look as follows:
+
 Let’s look at an example:
+
+    ---
+    default_result:
+      worker: [PASS|FAIL|SKIP]
+      master: [PASS|FAIL|SKIP]
+    result_after_remediation:
+      worker: [PASS|FAIL|SKIP]
+      master: [PASS|FAIL|SKIP]
+
+Where "worker" and "master" are node roles.
 
 For the `controller_use_service_account` rule, which exists in the
 `applications/openshift/controller/` directory, the directory tree will

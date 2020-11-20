@@ -55,10 +55,10 @@ const (
 	manualRemediationsTimeout = 15 * time.Minute
 )
 
-// This is the definition of the structure rule-specific e2e tests should have
+// RuleTest is the definition of the structure rule-specific e2e tests should have
 type RuleTest struct {
-	DefaultResult          string `yaml:"default_result"`
-	ResultAfterRemediation string `yaml:"result_after_remediation,omitempty"`
+	DefaultResult          interface{} `yaml:"default_result"`
+	ResultAfterRemediation interface{} `yaml:"result_after_remediation,omitempty"`
 }
 
 var product string
@@ -685,29 +685,64 @@ func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afte
 
 	// Initial run
 	if !afterRemediations {
-		if strings.ToLower(string(result.Status)) != strings.ToLower(test.DefaultResult) {
-			return remPath, fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
-				ruleName, test.DefaultResult, result.Status)
+		if err := verifyRuleResult(result, test.DefaultResult, test, ruleName); err != nil {
+			return remPath, err
 		}
 	} else {
 		// after remediations
 		// If we expect a change after remediation is applied, let's test for it
-		if test.ResultAfterRemediation != "" {
-			if strings.ToLower(string(result.Status)) != strings.ToLower(test.ResultAfterRemediation) {
-				return remPath, fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
-					ruleName, test.ResultAfterRemediation, result.Status)
+		if test.ResultAfterRemediation != nil {
+			if err := verifyRuleResult(result, test.ResultAfterRemediation, test, ruleName); err != nil {
+				return remPath, err
 			}
 		} else {
 			// Check that the default didn't change
-			if strings.ToLower(string(result.Status)) != strings.ToLower(test.DefaultResult) {
-				return remPath, fmt.Errorf("The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
-					ruleName, test.DefaultResult, result.Status)
+			if err := verifyRuleResult(result, test.DefaultResult, test, ruleName); err != nil {
+				return remPath, err
 			}
 		}
 	}
 
 	ctx.t.Logf("Rule %s matched expected result", ruleName)
 	return remPath, nil
+}
+
+func verifyRuleResult(foundResult cmpv1alpha1.ComplianceCheckResult, expectedResult interface{}, testDef RuleTest, ruleName string) error {
+	if matches, err := matchFoundResultToExpectation(foundResult, expectedResult); !matches || err != nil {
+		if err != nil {
+			return fmt.Errorf("E2E-ERROR: The e2e YAML for rule '%s' is malformed: %v . Got error: %v", ruleName, testDef, err)
+		}
+		return fmt.Errorf("E2E-FAILURE: The expected result for the %s rule didn't match. Expected '%s', Got '%s'",
+			ruleName, expectedResult, foundResult.Status)
+	}
+	return nil
+}
+
+func matchFoundResultToExpectation(foundResult cmpv1alpha1.ComplianceCheckResult, expectedResult interface{}) (bool, error) {
+	// Handle expected result for all roles
+	if resultStr, ok := expectedResult.(string); ok {
+		return strings.ToLower(string(foundResult.Status)) == strings.ToLower(resultStr), nil
+	}
+	// Handle role-specific result
+	if resultMap, ok := expectedResult.(map[interface{}]interface{}); ok {
+		for rawRole, rawRoleResult := range resultMap {
+			role, ok := rawRole.(string)
+			if !ok {
+				return false, fmt.Errorf("Couldn't parse the result as string or map of strings")
+			}
+			roleResult, ok := rawRoleResult.(string)
+			if !ok {
+				return false, fmt.Errorf("Couldn't parse the result as string or map of strings")
+			}
+			// NOTE(jaosorior): Normally, the results will have a reference
+			// to the role they apply to in the name. This is hacky...
+			if strings.Contains(foundResult.GetName(), role) {
+				return strings.ToLower(string(foundResult.Status)) == strings.ToLower(roleResult), nil
+			}
+		}
+		return false, fmt.Errorf("The role specified in the test doesn't match an existing role")
+	}
+	return false, fmt.Errorf("Couldn't parse the result as string or map")
 }
 
 func (ctx *e2econtext) getRuleFolderNameFromResult(result cmpv1alpha1.ComplianceCheckResult) (string, error) {
