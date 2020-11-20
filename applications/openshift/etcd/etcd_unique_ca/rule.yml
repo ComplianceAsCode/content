@@ -5,17 +5,15 @@ prodtype: ocp4
 title: 'Configure A Unique CA Certificate for etcd'
 
 description: |-
-    A unique and different CA certificate should be created for <tt>etcd</tt>.
-    To ensure the <tt>etcd</tt> service is using a unique certificate,
-    set <tt>ETCD_TRUSTED_CA_FILE</tt> to <tt>/etc/etcd/ca.crt</tt>
-    in <tt>/etc/etcd/etcd.conf</tt> on the master node that does NOT match
-    the OpenShift CA certificate:
-    <pre>ETCD_TRUSTED_CA_FILE=/etc/ssl/etcd/ca.crt</pre>
+  A unique and different CA certificate should be created for <tt>etcd</tt>.
+  OpenShift by default creates different and separate PKIs for etcd and the
+  Kubernetes API server. The same is done for other points of communication
+  in the cluster.
 
 rationale: |-
-    A unique CA certificate that is utilized by etcd and is different from
-    OpenShift ensures that the etcd data is still protected in the event that
-    the OpenShift certificate is compromised.
+  A unique CA certificate that is utilized by etcd and is different from
+  OpenShift ensures that the etcd data is still protected in the event that
+  the OpenShift certificate is compromised.
 
 severity: medium
 
@@ -23,12 +21,15 @@ severity: medium
 #    cce@ocp4:
 
 references:
-    cis: '2.7'
+  cis: '2.7'
 
-ocil_clause: 'the etcd CA certificate is not unique'
+platform: ocp4-master-node
+
+ocil_clause: 'The etcd CA certificate is not unique'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ grep ETCD_TRUSTED_CA_FILE /etc/etcd/etcd.conf</pre>
-    Inspect the certificate file that is returned and verify that it
-    does not match the OpenShift CA certificate.
+  Run the following command:
+  <pre>oc debug node/$NODE -- diff /host/etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt /host/etc/kubernetes/static-pod-resources/kube-apiserver-certs/configmaps/client-ca/ca-bundle.crt</pre>
+  where <tt>$NODE</tt> is a master node. If you don't see diff output
+  the differences, you might have a compromise and should isolate the cluster.
+  OpenShift will use separate PKIs by default.
