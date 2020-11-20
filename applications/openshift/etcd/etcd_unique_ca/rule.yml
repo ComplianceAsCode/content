@@ -5,15 +5,14 @@ prodtype: ocp4
 title: 'Configure A Unique CA Certificate for etcd'
 
 description: |-
-  A unique and different CA certificate should be created for <tt>etcd</tt>.
-  OpenShift by default creates different and separate PKIs for etcd and the
-  Kubernetes API server. The same is done for other points of communication
-  in the cluster.
+  A unique CA certificate should be created for <tt>etcd</tt>.  OpenShift by
+  default creates separate PKIs for etcd and the Kubernetes API server. The
+  same is done for other points of communication in the cluster.
 
 rationale: |-
-  A unique CA certificate that is utilized by etcd and is different from
-  OpenShift ensures that the etcd data is still protected in the event that
-  the OpenShift certificate is compromised.
+  The Kubernetes API server and etcd utilize separate CA certificates in
+  OpenShift.  This ensures that the etcd data is still protected in the event
+  that the API server CA is compromised.
 
 severity: medium
 
