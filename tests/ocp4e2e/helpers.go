@@ -622,7 +622,7 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s string) int {
 }
 
 func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bool) (int, []string) {
-	manualRemediations := []string{}
+	manualRemediationSet := map[string]bool{}
 	resList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
 		cmpv1alpha1.SuiteLabel: s,
@@ -643,8 +643,13 @@ func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bo
 			ctx.t.Error(err)
 		}
 		if manualRem != "" {
-			manualRemediations = append(manualRemediations, manualRem)
+			manualRemediationSet[manualRem] = true
 		}
+	}
+
+	manualRemediations := []string{}
+	for key := range manualRemediationSet {
+		manualRemediations = append(manualRemediations, key)
 	}
 
 	return len(resList.Items), manualRemediations
