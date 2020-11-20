@@ -175,6 +175,7 @@ selections:
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - ssh_client_rekey_limit
+- ssh_client_use_strong_rng
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth

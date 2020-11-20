@@ -427,6 +427,9 @@ selections:
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
 
+# configure ssh client to use strong entropy
+    - ssh_client_use_strong_rng
+
     # zIPl specific rules
     - zipl_bls_entries_only
     - zipl_bootmap_is_up_to_date
