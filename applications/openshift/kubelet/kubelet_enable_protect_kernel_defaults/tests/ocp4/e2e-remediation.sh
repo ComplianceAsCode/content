@@ -2,7 +2,7 @@
 set -xe
 
 echo "applying kernel tuning for kubelet"
-cat << EOF | oc apply -f -
+cat << EOF | oc apply --server-side -f -
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
@@ -65,7 +65,7 @@ done
 sleep 20
 
 echo "applying protectKernelDefaults"
-cat << EOF | oc apply -f -
+cat << EOF | oc apply --server-side -f -
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
