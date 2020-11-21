@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,ubuntu1604,ubuntu1804
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,ubuntu1604,ubuntu1804,ubuntu2004
 
 title: 'Ensure Software Patches Installed'
 
@@ -21,6 +21,9 @@ description: |-
     If the system is configured for online updates, invoking the following command will list available
     security updates:
     <pre>$ sudo zypper refresh &amp;&amp; sudo zypper list-patches -g security</pre>
+{{% elif product in ["ubuntu2004"] %}}
+    If the system has an apt repository available, run the following command to install updates:
+    <pre>apt update && apt full-upgrade</pre>
 {{% endif %}}
     <br /><br />
     NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
@@ -42,7 +45,7 @@ identifiers:
 
 references:
     stigid@ol7: OL07-00-020260
-    cis@rhel8: "1.9"
+    cis: "1.9"
     cjis: 5.10.4.1
     disa: CCI-000366
     nist: SI-2(5),SI-2(c),CM-6(a)
@@ -75,6 +78,8 @@ oval_external_content: "https://linux.oracle.com/security/oval/com.oracle.elsa-a
 oval_external_content: "https://support.novell.com/security/oval/suse.linux.enterprise.12.xml"
 {{% elif product == "sle15" %}}
 oval_external_content: "https://support.novell.com/security/oval/suse.linux.enterprise.15.xml"
+{{% elif product == "ubuntu2004" %}}
+oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.focal.cve.oval.xml"
 {{% else %}}
 {{# The rule will be "notchecked" #}}
 {{% endif %}}

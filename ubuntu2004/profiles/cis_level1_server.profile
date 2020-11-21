@@ -9,29 +9,36 @@ description: |-
 selections:
     # 1 Initial Setup #
     ## 1.1 Filesystem Configuration ## 
-
     ### 1.1.1 Disable unused filesystems ###
-
     #### 1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Automated)
+    - kernel_module_cramfs_disabled
 
     #### 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Automated)
+    - kernel_module_freevxfs_disabled
 
     #### 1.1.1.3 Ensure mounting of jffs2 filesystems is disabled (Automated)
+    - kernel_module_jffs2_disabled
 
     #### 1.1.1.4 Ensure mounting of hfs filesystems is disabled (Automated)
+    - kernel_module_hfs_disabled
 
     #### 1.1.1.5 Ensure mounting of hfsplus filesystems is disabled (Automated)
+    - kernel_module_hfsplus_disabled
 
     #### 1.1.1.6 Ensure mounting of udf filesystems is disabled (Automated)
+    - kernel_module_udf_disabled
 
     #### 1.1.1.7 Ensure mounting of FAT filesystems is limited (Manual)
     # Skip due to being Level 2
 
     ### 1.1.2 Ensure /tmp is configured (Automated)
+    - partition_for_tmp
 
     ### 1.1.3 Ensure nodev option set on /tmp partition (Automated)
+    - mount_option_tmp_nodev
 
     ### 1.1.4 Ensure nosuid option set on /tmp partition (Automated)
+    - mount_option_tmp_nosuid
 
     ### 1.1.5 Ensure noexec option set on /tmp partition (Automated)
 
@@ -47,13 +54,17 @@ selections:
     # Skip due to being Level 2
 
     ### 1.1.11 Ensure separate partition exists for /var/tmp (Automated)
-    # Skip due to being Level 2
+    # This is a Level 2 test but is needed for 1.1.12-14
+    - partition_for_var_tmp
 
     ### 1.1.12 Ensure nodev option set on /var/tmp partition (Automated)
+    - mount_option_var_tmp_nodev
 
     ### 1.1.13 Ensure nosuid option set on /var/tmp partition (Automated)
+    - mount_option_var_tmp_nosuid
 
     ### 1.1.14 Ensure noexec option set on /var/tmp partition (Automated)
+    - mount_option_var_tmp_noexec
 
     ### 1.1.15 Ensure separate partition exists for /var/log (Automated)
     # Skip due to being Level 2
@@ -62,9 +73,11 @@ selections:
     # Skip due to being Level 2
 
     ### 1.1.17 Ensure separate partition exists for /home (Automated)
-    # Skip due to being Level 2
+    # This is a Level 2 test but is needed for 1.1.18
+    - partition_for_home
 
     ### 1.1.18 Ensure nodev option set on /home partition (Automated)
+    - mount_option_home_nodev
 
     ### 1.1.19 Ensure nodev option set on removable media partitions (Manual)
     # Skip due to being a manual test
@@ -76,6 +89,7 @@ selections:
     # Skip due to being a manual test
 
     ### 1.1.22 Ensure sticky bit is set on all world-writable directories (Automated)
+    - dir_perms_world_writable_sticky_bits
 
     ### 1.1.23 Disable Automounting (Automated)
 
@@ -111,6 +125,7 @@ selections:
     ### 1.6.1 Ensure XD/NX support is enabled (Automated)
 
     ### 1.6.2 Ensure address space layout randomization (ASLR) is enabled (Automated)
+    - sysctl_kernel_randomize_va_space
 
     ### 1.6.3 Ensure prelink is disabled (Automated)
 
@@ -142,7 +157,7 @@ selections:
     #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Automated)
 
     ## 1.9 Ensure updates, patches, and additional security software are installed (Manual)
-    # Skip due to being a manual test
+    - security_patches_up_to_date
 
     ## 1.10 Ensure GDM is removed or login is configured (Automated)
 
@@ -453,21 +468,29 @@ selections:
     ### 5.2.3 Ensure permissions on SSH public host key files are configured (Automated)
 
     ### 5.2.4 Ensure SSH LogLevel is appropriate (Automated)
+    - sshd_set_loglevel_info
 
     ### 5.2.5 Ensure SSH X11 forwarding is disabled (Automated)
     # Skip due to being Level 2
 
     ### 5.2.6 Ensure SSH MaxAuthTries is set to 4 or less (Automated)
+    - sshd_max_auth_tries_value=4
+    - sshd_set_max_auth_tries
 
     ### 5.2.7 Ensure SSH IgnoreRhosts is enabled (Automated)
+    - sshd_disable_rhosts
 
     ### 5.2.8 Ensure SSH HostbasedAuthentication is disabled (Automated)
+    - disable_host_auth
 
     ### 5.2.9 Ensure SSH root login is disabled (Automated)
+    - sshd_disable_root_login
 
     ### 5.2.10 Ensure SSH PermitEmptyPasswords is disabled (Automated)
+    - sshd_disable_empty_passwords
 
     ### 5.2.11 Ensure SSH PermitUserEnvironment is disabled (Automated)
+    - sshd_do_not_permit_user_env
 
     ### 5.2.12 Ensure only strong Ciphers are used (Automated)
 
@@ -476,12 +499,16 @@ selections:
     ### 5.2.14 Ensure only strong Key Exchange algorithms are used (Automated)
 
     ### 5.2.15 Ensure SSH Idle Timeout Interval is configured (Automated)
+    - sshd_idle_timeout_value=5_minutes
+    - sshd_set_idle_timeout
+    - sshd_set_keepalive
 
     ### 5.2.16 Ensure SSH LoginGraceTime is set to one minute or less (Automated)
 
     ### 5.2.17 Ensure SSH access is limited (Automated)
 
     ### 5.2.18 Ensure SSH warning banner is configured (Automated)
+    - sshd_enable_warning_banner
 
     ### 5.2.19 Ensure SSH PAM is enabled (Automated)
 
@@ -532,20 +559,44 @@ selections:
     # Skip due to being Level 2
 
     ### 6.1.2 Ensure permissions on /etc/passwd are configured (Automated)
+    - file_owner_etc_passwd
+    - file_groupowner_etc_passwd
+    - file_permissions_etc_passwd
 
     ### 6.1.3 Ensure permissions on /etc/gshadow- are configured (Automated)
+    - file_owner_backup_etc_gshadow
+    - file_groupowner_backup_etc_gshadow
+    - file_permissions_backup_etc_gshadow
 
     ### 6.1.4 Ensure permissions on /etc/shadow are configured (Automated)
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
+    - file_permissions_etc_shadow
 
     ### 6.1.5 Ensure permissions on /etc/group are configured (Automated)
+    - file_owner_etc_group
+    - file_groupowner_etc_group
+    - file_permissions_etc_group
 
     ### 6.1.6 Ensure permissions on /etc/passwd- are configured (Automated)
+    - file_owner_backup_etc_passwd
+    - file_groupowner_backup_etc_passwd
+    - file_permissions_backup_etc_passwd
 
     ### 6.1.7 Ensure permissions on /etc/shadow- are configured (Automated)
+    - file_owner_backup_etc_shadow
+    - file_groupowner_backup_etc_shadow
+    - file_permissions_backup_etc_shadow
 
     ### 6.1.8 Ensure permissions on /etc/group- are configured (Automated)
+    - file_owner_backup_etc_group
+    - file_groupowner_backup_etc_group
+    - file_permissions_backup_etc_group
 
     ### 6.1.9 Ensure permissions on /etc/gshadow are configured (Automated)
+    - file_owner_etc_gshadow
+    - file_groupowner_etc_gshadow
+    - file_permissions_etc_gshadow
 
     ### 6.1.10 Ensure no world writable files exist (Automated)
 

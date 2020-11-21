@@ -23,6 +23,7 @@ identifiers:
 references:
     cis@rhel7: 6.1.9
     cis@rhel8: 6.1.9
+    cis@ubuntu2004: 6.1.3
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/gshadow-", group=target_group) }}}'
 
@@ -37,4 +38,5 @@ template:
         filegid@debian10: '42'
         filegid@ubuntu1604: '42'
         filegid@ubuntu1804: '42'
+        filegid@ubuntu2004: '42'
         missing_file_pass: 'true'
