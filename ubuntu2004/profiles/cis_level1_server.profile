@@ -41,14 +41,19 @@ selections:
     - mount_option_tmp_nosuid
 
     ### 1.1.5 Ensure noexec option set on /tmp partition (Automated)
+    - mount_option_tmp_noexec
 
     ### 1.1.6 Ensure /dev/shm is configured (Automated)
+    # Skip due to being handled by systemd and ensured by follow-on tests
 
     ### 1.1.7 Ensure nodev option set on /dev/shm partition (Automated)
+    - mount_option_dev_shm_nodev
 
     ### 1.1.8 Ensure nosuid option set on /dev/shm partition (Automated)
+    - mount_option_dev_shm_nosuid
 
     ### 1.1.9 Ensure noexec option set on /dev/shm partition (Automated)
+    - mount_option_dev_shm_noexec
 
     ### 1.1.10 Ensure separate partition exists for /var (Automated)
     # Skip due to being Level 2
@@ -92,8 +97,10 @@ selections:
     - dir_perms_world_writable_sticky_bits
 
     ### 1.1.23 Disable Automounting (Automated)
+    - service_autofs_disabled
 
     ### 1.1.24 Disable USB Storage (Automated)
+    - kernel_module_usb-storage_disabled
 
     ## 1.2 Configure Software Updates ##
     ### 1.2.1 Ensure package manager repositories are configured (Manual)
