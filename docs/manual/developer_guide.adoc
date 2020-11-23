@@ -1843,8 +1843,25 @@ _package_installed_ directory:
 
 ----
 
+2) Create a file called _template.yml_ within the template directory. This file
+stores template metadata. Currently, it stores list of supported languages. Note
+that each language listed in this file must have associated implementation
+file with the _.template_ extension, see above. 
 
-2) Implement a preprocessing function which will process the
+An example can look like this:
+
+----
+supported_languages:
+  - ansible
+  - bash
+  - ignition
+  - kubernetes
+  - oval
+  - puppet
+
+----
+
+3) If needed, implement a preprocessing function which will process the
 parameters before passing them to the Jinja engine.  For example, this function can
 provide default values, escape characters, check if parameters are correct, or
 perform any other processing of the parameters specific for the template.
