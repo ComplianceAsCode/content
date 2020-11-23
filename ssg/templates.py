@@ -7,6 +7,7 @@ import imp
 
 import ssg.build_yaml
 import ssg.utils
+import ssg.yaml
 
 try:
     from urllib.parse import quote
@@ -34,14 +35,21 @@ class Template():
         self.template_root_directory = template_root_directory
         self.name = name
         self.template_path = os.path.join(self.template_root_directory, self.name)
+        self.template_yaml_path = os.path.join(self.template_path, "template.yml")
         self.preprocessing_file_path = os.path.join(self.template_path, preprocessing_file_name)
         if not os.path.exists(self.preprocessing_file_path):
             self.preprocessing_file_path = None
         self.langs = []
-        for lang in languages:
+        template_yaml = ssg.yaml.open_raw(self.template_yaml_path)
+        for lang in template_yaml["supported_languages"]:
+            if lang not in languages:
+                raise ValueError("The template {0} declares to support the {1} language,"
+                "but this language is not supported by the content.".format(self.name, lang))
             langfilename = lang + ".template"
-            if os.path.exists(os.path.join(self.template_path, langfilename)):
-                self.langs.append(lang)
+            if not os.path.exists(os.path.join(self.template_path, langfilename)):
+                raise ValueError("The template {0} declares to support the {1} language,"
+                "but the implementation file is missing.".format(self.name, lang))
+            self.langs.append(lang)
 
     def preprocess(self, parameters, lang):
         # if no template.py file exists, skip this preprocessing part
