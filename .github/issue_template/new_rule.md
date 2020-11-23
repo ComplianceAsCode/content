@@ -39,7 +39,7 @@ sudo grep 'kernelopts.*audit=1.*' /boot/grub2/grubenv
 ```
 -->
 
-### Is it order dependent? (does it need to be at certain place in the file?
+### Is it order dependent? (does it need to be at certain place in the file?)
 
 <!---
 example: The audit=1 argument can be at any place within the list of arguments
