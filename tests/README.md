@@ -184,6 +184,7 @@ into a file ending with .conf and placed into the /etc/modprobe.d/ directory.
 Specify DataStream to use:
 - `--datastream`: Path to the datastream that you want to use for scanning.
   It will be transferred to the scanned system via SSH.
+  The option can be omitted if there is only one datastream in the build directory.
 
 Specify as last argument the id of a profile or rule to be tested.
 
@@ -374,9 +375,10 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 1. write a few fail scripts - for example removing the line, commenting it, wrong value, etc.
  into *DIR*
 1. write a pass script into *DIR* - (some rules can have more than one pass scenario)
+1. build the datastream by running `./build_product --datastream-only fedora`
 1. run `test_suite.py` with command:
 ```
-./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora --datastream ../build/ssg-fedora-ds.xml accounts_password_minlen_login_defs
+./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
 ```
 Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
 

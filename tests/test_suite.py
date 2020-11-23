@@ -48,7 +48,8 @@ def parse_args():
 
     common_parser.add_argument(
         "--datastream", dest="datastream", metavar="DATASTREAM",
-        help="Path to the Source DataStream on this machine which is going to be tested. ")
+        help="Path to the Source DataStream on this machine which is going to be tested. "
+        "If not supplied, autodetection is attempted by looking into the build directory.")
 
     benchmarks = common_parser.add_mutually_exclusive_group()
     benchmarks.add_argument("--xccdf-id",
