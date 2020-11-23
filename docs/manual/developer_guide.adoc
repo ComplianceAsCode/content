@@ -1878,9 +1878,6 @@ The function is executed for every supported language, so it can process the dat
 
 The function must always return the (modified) `data` dictionary.
 
-The function must be always defined even if no processing of data is needed.
-In that situation the function just returns `data` parameter.
-
 The following example shows the file _template.py_ for the template
 `mount_option`. The code takes the `data` argument which is a dictionary with
 template parameters from `rule.yml` and based on `lang` it modifies the template
