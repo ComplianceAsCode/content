@@ -2,7 +2,6 @@
   <definition class="compliance" id="accounts_passwords_pam_faillock_enforce_local" version="1">
     {{{ oval_metadata("Failed password attempts are enforced for local users only.") }}}
     <criteria operator="AND" comment="conditions for accounts_passwords_pam_faillock_enforce_local are satisfied">
-      <extend_definition comment="faillock.so exists in system-auth" definition_ref="accounts_password_pam_faillock" />
       <criterion comment="faillock.conf" test_ref="test_accounts_passwords_pam_faillock_enforce_local" />
     </criteria>
   </definition>
