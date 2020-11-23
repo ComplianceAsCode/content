@@ -52,7 +52,7 @@ const (
 	apiPollInterval           = 5 * time.Second
 	testProfilebundleName     = "e2e"
 	autoApplySettingsName     = "auto-apply-debug"
-	manualRemediationsTimeout = 15 * time.Minute
+	manualRemediationsTimeout = 20 * time.Minute
 )
 
 // This is the definition of the structure rule-specific e2e tests should have
