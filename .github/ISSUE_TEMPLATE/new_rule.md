@@ -1,5 +1,5 @@
 ---
-title: Request a new SCAP rule
+name: Request a new SCAP rule
 about: Use this template to ask for a new SCAP rule. Please fill in as much information as possible.
 labels: new_rule
 ---
