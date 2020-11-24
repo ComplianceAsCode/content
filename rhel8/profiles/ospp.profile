@@ -429,6 +429,7 @@ selections:
 
 # configure ssh client to use strong entropy
     - ssh_client_use_strong_rng_sh
+    - ssh_client_use_strong_rng_csh
 
     # zIPl specific rules
     - zipl_bls_entries_only
