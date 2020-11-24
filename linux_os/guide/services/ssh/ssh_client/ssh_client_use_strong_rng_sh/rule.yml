@@ -2,17 +2,15 @@ documentation_complete: true
 
 prodtype: rhel8
 
-title: 'SSH client uses strong entropy to seed'
+title: 'SSH client uses strong entropy to seed (Bash-like shells)'
 
 description: |-
     To set up SSH client to use entropy from a high-quality source, make sure
-    that appropriate shell environment variables are configured. The
+    that the appropriate shell environment variable is configured. The
     <tt>SSH_USE_STRONG_RNG</tt> environment variable determines how many bytes
     of entropy to use. Make sure that the file
     <tt>/etc/profile.d/cc-ssh-strong-rng.sh</tt> contains line
-    <pre>export SSH_USE_STRONG_RNG=32</pre>
-    and that the file <tt>/etc/profile.d/cc-ssh-strong-rng.csh</tt> contains line
-    <pre>setenv SSH_USE_STRONG_RNG 32</pre>.
+    <pre>export SSH_USE_STRONG_RNG=32</pre>.
 
 rationale: |-
     Some SSH implementations use the openssl library for entropy, which by default, doesn't use high-entropy sources.
@@ -32,12 +30,7 @@ references:
 ocil_clause: 'SSH client is not configured to use 32 bytes of entropy'
 
 ocil: |-
-    Run following two commands to verify that SSH client is configured to use 32 bytes of entropy:
-    The command
+    Run the following command to verify that SSH client is configured to use 32 bytes of entropy:
     <pre>grep SSH_USE_STRONG_RNG /etc/profile.d/cc-ssh-strong-rng.sh</pre>
-    should return the following output:
+    The output should be:
     <pre>export SSH_USE_STRONG_RNG=32</pre>
-    The command
-    <pre>grep SSH_USE_STRONG_RNG /etc/profile.d/cc-ssh-strong-rng.csh</pre>
-    should return the following output:
-    <pre>setenv SSH_USE_STRONG_RNG 32</pre>.

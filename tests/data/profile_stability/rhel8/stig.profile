@@ -199,7 +199,7 @@ selections:
 - service_usbguard_enabled
 - smartcard_configure_cert_checking
 - ssh_client_rekey_limit
-- ssh_client_use_strong_rng
+- ssh_client_use_strong_rng_sh
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth
