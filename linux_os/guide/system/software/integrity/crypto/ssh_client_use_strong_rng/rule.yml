@@ -15,9 +15,9 @@ description: |-
     <pre>setenv SSH_USE_STRONG_RNG 32</pre>.
 
 rationale: |-
-    SSH implementation in RHEL8 uses the openssl library, which doesn't use high-entropy sources by default.
-    Randomness is needed to generate data-encryption keys, and as plaintext padding and initialization vectors
-    in encryption algorithms, and high-quality entropy elliminates the possibility that the output of
+    Some SSH implementations use the openssl library for entropy, which by default, doesn't use high-entropy sources.
+    Randomness is needed to generate considerably more secure data-encryption keys. Plaintext padding, initialization vectors
+    in encryption algorithms, and high-quality entropy eliminates the possibility that the output of
     the random number generator used by SSH would be known to potential attackers.
 
 severity: medium
@@ -41,4 +41,3 @@ ocil: |-
     <pre>grep SSH_USE_STRONG_RNG /etc/profile.d/cc-ssh-strong-rng.csh</pre>
     should return the following output:
     <pre>setenv SSH_USE_STRONG_RNG 32</pre>.
-
