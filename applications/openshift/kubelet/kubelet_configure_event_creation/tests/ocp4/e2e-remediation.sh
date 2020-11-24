@@ -1,27 +1,46 @@
 #!/bin/bash
 set -xe
 
-# Test only on workers for speed.
-echo "applying eventRecordQPS"
-cat << EOF | oc apply --server-side -f -
----
-apiVersion: machineconfiguration.openshift.io/v1
-kind: KubeletConfig
-metadata:
-  name: worker-configure-event-limit
-spec:
-  machineConfigPoolSelector:
-    matchLabels:
-      pools.operator.machineconfiguration.openshift.io/worker: ""
-  kubeletConfig:
-    eventRecordQPS: 10
-EOF
+echo "applying sysctls"
+oc apply --server-side -f ${ROOT_DIR}/ocp-resources/kubelet-sysctls-mc.yaml
 
 sleep 30
 
 echo "waiting for workers to update"
 while true; do
     status=$(oc get mcp/worker | grep worker | awk '{ print $3 $4 }')
+    if [ "$status" == "TrueFalse" ]; then
+      break
+    fi
+    sleep 1
+done
+
+echo "waiting for masters to update"
+while true; do
+    status=$(oc get mcp/master | grep master | awk '{ print $3 $4 }')
+    if [ "$status" == "TrueFalse" ]; then
+      break
+    fi
+    sleep 1
+done
+
+echo "applying kubeletConfig"
+oc apply --server-side -f ${ROOT_DIR}/ocp-resources/kubelet-config-mc.yaml
+
+sleep 30
+
+echo "waiting for workers to update"
+while true; do
+    status=$(oc get mcp/worker | grep worker | awk '{ print $3 $4 }')
+    if [ "$status" == "TrueFalse" ]; then
+      break
+    fi
+    sleep 1
+done
+
+echo "waiting for masters to update"
+while true; do
+    status=$(oc get mcp/master | grep master | awk '{ print $3 $4 }')
     if [ "$status" == "TrueFalse" ]; then
       break
     fi

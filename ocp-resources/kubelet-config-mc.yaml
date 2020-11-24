@@ -1,0 +1,26 @@
+# Add to kubeletConfig any options required for remediation
+# * protectKernelDefaults requires application of kubelet-sysctls-mc.yaml
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: kubelet-config-test-master
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/master: ""
+  kubeletConfig:
+    protectKernelDefaults: true
+    eventRecordQPS: 10
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: kubelet-config-test-worker
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/worker: ""
+  kubeletConfig:
+    protectKernelDefaults: true
+    eventRecordQPS: 10
