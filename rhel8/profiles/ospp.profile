@@ -134,7 +134,7 @@ selections:
     - grub2_vsyscall_argument.role=unscored
     - grub2_vsyscall_argument.severity=info
     - grub2_pti_argument
-    - kernel_trust_cpu_rng
+    - grub2_kernel_trust_cpu_rng
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
