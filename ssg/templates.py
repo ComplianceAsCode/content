@@ -3,11 +3,11 @@ from __future__ import print_function
 
 import os
 import sys
-import re
-from xml.sax.saxutils import unescape
+import imp
 
 import ssg.build_yaml
 import ssg.utils
+import ssg.yaml
 
 try:
     from urllib.parse import quote
@@ -15,7 +15,7 @@ except ImportError:
     from urllib import quote
 
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
-
+preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
     "ansible": ".yml",
@@ -30,349 +30,39 @@ lang_to_ext_map = {
 templates = dict()
 
 
-def template(langs):
-    def decorator_template(func):
-        func.langs = langs
-        templates[func.__name__] = func
-        return func
-    return decorator_template
-
-
-# Callback functions for processing template parameters and/or validating them
-
-
-@template(["ansible", "bash", "oval"])
-def accounts_password(data, lang):
-    if lang == "oval":
-        data["sign"] = "-?" if data["variable"].endswith("credit") else ""
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def auditd_lineinfile(data, lang):
-    missing_parameter_pass = data["missing_parameter_pass"]
-    if missing_parameter_pass == "true":
-        missing_parameter_pass = True
-    elif missing_parameter_pass == "false":
-        missing_parameter_pass = False
-    data["missing_parameter_pass"] = missing_parameter_pass
-    return data
-
-
-@template(["ansible", "bash", "oval", "kubernetes"])
-def audit_rules_dac_modification(data, lang):
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def audit_rules_file_deletion_events(data, lang):
-    return data
-
-
-@template(["ansible", "bash", "oval", "kubernetes"])
-def audit_rules_login_events(data, lang):
-    path = data["path"]
-    name = ssg.utils.escape_id(os.path.basename(os.path.normpath(path)))
-    data["name"] = name
-    if lang == "oval":
-        data["path"] = path.replace("/", "\\/")
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def audit_rules_path_syscall(data, lang):
-    if lang == "oval":
-        pathid = ssg.utils.escape_id(data["path"])
-        # remove root slash made into '_'
-        pathid = pathid[1:]
-        data["pathid"] = pathid
-    return data
-
-
-@template(["ansible", "bash", "oval", "kubernetes"])
-def audit_rules_privileged_commands(data, lang):
-    path = data["path"]
-    name = ssg.utils.escape_id(os.path.basename(path))
-    data["name"] = name
-    if lang == "oval":
-        data["id"] = data["_rule_id"]
-        data["title"] = "Record Any Attempts to Run " + name
-        data["path"] = path.replace("/", "\\/")
-    elif lang == "kubernetes":
-        npath = path.replace("/", "_")
-        if npath[0] == '_':
-            npath = npath[1:]
-        data["normalized_path"] = npath
-    return data
-
-@template(["ansible", "bash", "oval"])
-def audit_rules_rule_file(data, lang):
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def audit_rules_unsuccessful_file_modification(data, lang):
-    return data
-
-
-@template(["oval"])
-def audit_rules_unsuccessful_file_modification_o_creat(data, lang):
-    return data
-
-
-@template(["oval"])
-def audit_rules_unsuccessful_file_modification_o_trunc_write(data, lang):
-    return data
-
-
-@template(["oval"])
-def audit_rules_unsuccessful_file_modification_rule_order(data, lang):
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def audit_rules_usergroup_modification(data, lang):
-    path = data["path"]
-    name = ssg.utils.escape_id(os.path.basename(path))
-    data["name"] = name
-    if lang == "oval":
-        data["path"] = path.replace("/", "\\/")
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def audit_file_contents(data, lang):
-    if lang == "oval":
-        pathid = ssg.utils.escape_id(data["filepath"])
-        # remove root slash made into '_'
-        pathid = pathid[1:]
-        data["filepath_id"] = pathid
-
-    # The build system converts "<",">" and "&" for us
-    if lang == "bash" or lang == "ansible":
-        data["contents"] = unescape(data["contents"])
-    return data
-
-
-def _file_owner_groupowner_permissions_regex(data):
-    data["is_directory"] = data["filepath"].endswith("/")
-    if "missing_file_pass" not in data:
-        data["missing_file_pass"] = False
-    if "file_regex" in data and not data["is_directory"]:
-        raise ValueError(
-            "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
-            "specify a directory. Append '/' to the filepath or remove the "
-            "'file_regex' key.".format(data["_rule_id"], data["filepath"]))
-
-
-@template(["ansible", "bash", "oval"])
-def file_groupowner(data, lang):
-    _file_owner_groupowner_permissions_regex(data)
-    if lang == "oval":
-        data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def file_owner(data, lang):
-    _file_owner_groupowner_permissions_regex(data)
-    if lang == "oval":
-        data["fileid"] = data["_rule_id"].replace("file_owner", "")
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def file_permissions(data, lang):
-    _file_owner_groupowner_permissions_regex(data)
-    if lang == "oval":
-        data["fileid"] = data["_rule_id"].replace("file_permissions", "")
-        # build the state that describes our mode
-        # mode_str maps to STATEMODE in the template
-        mode = data["filemode"]
-        fields = [
-            'oexec', 'owrite', 'oread', 'gexec', 'gwrite', 'gread',
-            'uexec', 'uwrite', 'uread', 'sticky', 'sgid', 'suid']
-        mode_int = int(mode, 8)
-        mode_str = ""
-        for field in fields:
-            if mode_int & 0x01 == 1:
-                mode_str = (
-                    "	<unix:" + field + " datatype=\"boolean\">true</unix:"
-                    + field + ">\n" + mode_str)
-            else:
-                mode_str = (
-                    "	<unix:" + field + " datatype=\"boolean\">false</unix:"
-                    + field + ">\n" + mode_str)
-            mode_int = mode_int >> 1
-        data["statemode"] = mode_str
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def grub2_bootloader_argument(data, lang):
-    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
-    if lang == "oval":
-        # escape dot, this is used in oval regex
-        data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
-        # replace . with _, this is used in test / object / state ids
-        data["sanitized_arg_name"] = ssg.utils.escape_id(data["arg_name"])
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def kernel_module_disabled(data, lang):
-    return data
-
-
-@template(["anaconda", "oval"])
-def mount(data, lang):
-    data["pointid"] = ssg.utils.escape_id(data["mountpoint"])
-    return data
-
-
-def _mount_option(data, lang):
-    if lang == "oval":
-        data["pointid"] = ssg.utils.escape_id(data["mountpoint"])
-    else:
-        data["mountoption"] = re.sub(" ", ",", data["mountoption"])
-    return data
-
-
-@template(["anaconda", "ansible", "bash", "oval"])
-def mount_option(data, lang):
-    return _mount_option(data, lang)
-
-
-@template(["ansible", "bash", "oval"])
-def mount_option_remote_filesystems(data, lang):
-    if lang == "oval":
-        data["mountoptionid"] = ssg.utils.escape_id(data["mountoption"])
-    return _mount_option(data, lang)
-
-
-@template(["anaconda", "ansible", "bash", "oval"])
-def mount_option_removable_partitions(data, lang):
-    return data
-
-
-@template(["anaconda", "ansible", "bash", "oval", "puppet"])
-def package_installed(data, lang):
-    if "evr" in data:
-        evr = data["evr"]
-        if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):
-            raise RuntimeError(
-                "ERROR: input violation: evr key should be in "
-                "epoch:version-release format, but package {0} has set "
-                "evr to {1}".format(data["pkgname"], evr))
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def sysctl(data, lang):
-    data["sysctlid"] = ssg.utils.escape_id(data["sysctlvar"])
-    if not data.get("sysctlval"):
-        data["sysctlval"] = ""
-    ipv6_flag = "P"
-    if data["sysctlid"].find("ipv6") >= 0:
-        ipv6_flag = "I"
-    data["flags"] = "SR" + ipv6_flag
-    return data
-
-
-@template(["anaconda", "ansible", "bash", "oval", "puppet"])
-def package_removed(data, lang):
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def sebool(data, lang):
-    sebool_bool = data.get("sebool_bool", None)
-    if sebool_bool is not None and sebool_bool not in ["true", "false"]:
-        raise ValueError(
-            "ERROR: key sebool_bool in rule {0} contains forbidden "
-            "value '{1}'.".format(data["_rule_id"], sebool_bool)
-        )
-    return data
-
-
-@template(["ansible", "bash", "oval", "puppet", "ignition", "kubernetes"])
-def service_disabled(data, lang):
-    if "packagename" not in data:
-        data["packagename"] = data["servicename"]
-    if "daemonname" not in data:
-        data["daemonname"] = data["servicename"]
-    return data
-
-
-@template(["ansible", "bash", "oval", "puppet"])
-def service_enabled(data, lang):
-    if "packagename" not in data:
-        data["packagename"] = data["servicename"]
-    if "daemonname" not in data:
-        data["daemonname"] = data["servicename"]
-    return data
-
-
-@template(["ansible", "bash", "oval", "kubernetes"])
-def sshd_lineinfile(data, lang):
-    missing_parameter_pass = data["missing_parameter_pass"]
-    if missing_parameter_pass == "true":
-        missing_parameter_pass = True
-    elif missing_parameter_pass == "false":
-        missing_parameter_pass = False
-    data["missing_parameter_pass"] = missing_parameter_pass
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def shell_lineinfile(data, lang):
-    value = data["value"]
-    if value[0] in ("'", '"') and value[0] == value[-1]:
-        msg = (
-            "Value >>{value}<< of shell variable '{varname}' "
-            "has been supplied with quotes, please fix the content - "
-            "shell quoting is handled by the check/remediation code."
-            .format(value=value, varname=data["parameter"]))
-        raise Exception(msg)
-    missing_parameter_pass = data.get("missing_parameter_pass", "false")
-    if missing_parameter_pass == "true":
-        missing_parameter_pass = True
-    elif missing_parameter_pass == "false":
-        missing_parameter_pass = False
-    data["missing_parameter_pass"] = missing_parameter_pass
-    no_quotes = False
-    if data["no_quotes"] == "true":
-        no_quotes = True
-    data["no_quotes"] = no_quotes
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def timer_enabled(data, lang):
-    if "packagename" not in data:
-        data["packagename"] = data["timername"]
-    return data
-
-
-@template(["oval"])
-def yamlfile_value(data, lang):
-    data["ocp_data"] = data.get("ocp_data", "false") == "true"
-    return data
-
-
-@template(["oval"])
-def argument_value_in_line(data, lang):
-    return data
-
-
-@template(["ansible", "bash", "oval"])
-def zipl_bls_entries_option(data, lang):
-    return data
-
-
-@template(["oval", "kubernetes"])
-def coreos_kernel_option(data, lang):
-    return data
+class Template():
+    def __init__(self, template_root_directory, name):
+        self.template_root_directory = template_root_directory
+        self.name = name
+        self.template_path = os.path.join(self.template_root_directory, self.name)
+        self.template_yaml_path = os.path.join(self.template_path, "template.yml")
+        self.preprocessing_file_path = os.path.join(self.template_path, preprocessing_file_name)
+        if not os.path.exists(self.preprocessing_file_path):
+            self.preprocessing_file_path = None
+        self.langs = []
+        template_yaml = ssg.yaml.open_raw(self.template_yaml_path)
+        for lang in template_yaml["supported_languages"]:
+            if lang not in languages:
+                raise ValueError("The template {0} declares to support the {1} language,"
+                "but this language is not supported by the content.".format(self.name, lang))
+            langfilename = lang + ".template"
+            if not os.path.exists(os.path.join(self.template_path, langfilename)):
+                raise ValueError("The template {0} declares to support the {1} language,"
+                "but the implementation file is missing.".format(self.name, lang))
+            self.langs.append(lang)
+
+    def preprocess(self, parameters, lang):
+        # if no template.py file exists, skip this preprocessing part
+        if self.preprocessing_file_path is not None:
+            module_name = "tmpmod" # dummy module name, we don't need it later
+            preprocess_mod = imp.load_source(module_name, self.preprocessing_file_path)
+            parameters = preprocess_mod.preprocess(parameters.copy(), lang)
+        # TODO: Remove this right after the variables in templates are renamed
+        # to lowercase
+        uppercases = dict()
+        for k, v in parameters.items():
+            uppercases[k.upper()] = v
+        return uppercases
 
 
 class Builder(object):
@@ -404,20 +94,12 @@ class Builder(object):
                 output_dir = self.remediations_dir
             dir_ = os.path.join(output_dir, lang)
             self.output_dirs[lang] = dir_
+        # scan directory structure and dynamically create list of templates
+        for item in os.listdir(self.templates_dir):
+            itempath = os.path.join(self.templates_dir, item)
+            if os.path.isdir(itempath) and not os.path.islink(itempath):
+                templates[item] = Template(templates_dir, item)
 
-    def preprocess_data(self, template, lang, raw_parameters):
-        """
-        Processes template data using a callback before the data will be
-        substituted into the Jinja template.
-        """
-        template_func = templates[template]
-        parameters = template_func(raw_parameters.copy(), lang)
-        # TODO: Remove this right after the variables in templates are renamed
-        # to lowercase
-        uppercases = dict()
-        for k, v in parameters.items():
-            uppercases[k.upper()] = v
-        return uppercases
 
     def build_lang(
             self, rule_id, template_name, template_vars, lang, local_env_yaml):
@@ -425,26 +107,15 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
-        template_func = templates[template_name]
-        if lang not in template_func.langs:
+        if lang not in templates[template_name].langs:
             return
-        template_file_name = "template_{0}_{1}".format(
-            lang.upper(), template_name)
-        template_file_path = os.path.join(
-            self.templates_dir, template_file_name)
-        if not os.path.exists(template_file_path):
-            raise RuntimeError(
-                "Rule {0} wants to generate {1} content from template {2}, "
-                "but file {3} which provides this template does not "
-                "exist.".format(
-                    rule_id, lang, template_name, template_file_path)
-            )
+        template_file_name = lang + ".template"
+        template_file_path = os.path.join(self.templates_dir, template_name, template_file_name)
         ext = lang_to_ext_map[lang]
         output_file_name = rule_id + ext
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
-        template_parameters = self.preprocess_data(
-            template_name, lang, template_vars)
+        template_parameters = templates[template_name].preprocess(template_vars, lang)
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             template_file_path, jinja_dict)
@@ -484,7 +155,7 @@ class Builder(object):
             raise ValueError(
                 "Rule {0} is missing template name under template key".format(
                     rule_id))
-        if template_name not in templates:
+        if template_name not in templates.keys():
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
                     rule_id, template_name))
