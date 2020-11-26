@@ -1689,93 +1689,92 @@ within the template directory. File names should have format of `LANG.template`,
 where *LANG* should be the language  identifier in lower case, e.g.
 `oval.template`, `bash.template` etc.
 
-Use the Jinja syntax we use elsewhere in the project; refer to the earlier
-section on Jinja macros for more information.  The parameters should be named
-using uppercase letters, because the keys from `rule.yml` are converted to
-uppercase by the code that substitutes the parameters to the template.
+    Use the Jinja syntax we use elsewhere in the project; refer to the earlier
+    section on Jinja macros for more information.  The parameters should be named
+    using uppercase letters, because the keys from `rule.yml` are converted to
+    uppercase by the code that substitutes the parameters to the template.
 
-Notice that OVAL should be written in shorthand format.  This is an example of
-an OVAL template file called `oval.template` within the `package_installed`
-directory:
+    Notice that OVAL should be written in shorthand format.  This is an example of
+    an OVAL template file called `oval.template` within the `package_installed`
+    directory:
 
-<def-group>
-  <definition class="compliance" id="package_{{{ PKGNAME }}}_installed"
-  version="1">
-    <metadata>
-      <title>Package {{{ PKGNAME }}} Installed</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be installed.</description>
-    </metadata>
-    <criteria>
-      <criterion comment="package {{{ PKGNAME }}} is installed"
-      test_ref="test_package_{{{ PKGNAME }}}_installed" />
-    </criteria>
-  </definition>
-{{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
-</def-group>
+        <def-group>
+        <definition class="compliance" id="package_{{{ PKGNAME }}}_installed"
+        version="1">
+            <metadata>
+            <title>Package {{{ PKGNAME }}} Installed</title>
+            <affected family="unix">
+                <platform>multi_platform_all</platform>
+            </affected>
+            <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be installed.</description>
+            </metadata>
+            <criteria>
+            <criterion comment="package {{{ PKGNAME }}} is installed"
+            test_ref="test_package_{{{ PKGNAME }}}_installed" />
+            </criteria>
+        </definition>
+        {{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
+        </def-group>
 
-And here is the Ansible template file called `ansible.template` within the
-`package_installed` directory:
+    And here is the Ansible template file called `ansible.template` within the
+    `package_installed` directory:
 
-# platform = multi_platform_all
-# reboot = false
-# strategy = enable
-# complexity = low
-# disruption = low
-- name: Ensure {{{ PKGNAME }}} is installed
-  package:
-    name: "{{{ PKGNAME }}}"
-    state: present
+        # platform = multi_platform_all
+        # reboot = false
+        # strategy = enable
+        # complexity = low
+        # disruption = low
+        - name: Ensure {{{ PKGNAME }}} is installed
+        package:
+            name: "{{{ PKGNAME }}}"
+            state: present
 
-
-2) Create a file called `template.yml` within the template directory. This file
+3) Create a file called `template.yml` within the template directory. This file
 stores template metadata. Currently, it stores list of supported languages. Note
 that each language listed in this file must have associated implementation
 file with the *.template* extension, see above. 
 
-An example can look like this:
+    An example can look like this:
 
-supported_languages:
-  - ansible
-  - bash
-  - ignition
-  - kubernetes
-  - oval
-  - puppet
+    supported_languages:
+    - ansible
+    - bash
+    - ignition
+    - kubernetes
+    - oval
+    - puppet
 
 
-3) If needed, implement a preprocessing function which will process the
+4) If needed, implement a preprocessing function which will process the
 parameters before passing them to the Jinja engine.  For example, this function can
 provide default values, escape characters, check if parameters are correct, or
 perform any other processing of the parameters specific for the template.
 
-The function should be called _preprocess_ and should be located in the file
-`template.py` within the template directory.
+    The function should be called _preprocess_ and should be located in the file
+    `template.py` within the template directory.
 
-The function must have 2 parameters:
+    The function must have 2 parameters:
 
-- `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
-- `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`, `"kubernetes"`
+    - `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
+    - `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`, `"kubernetes"`
 
-The function is executed for every supported language, so it can process the data differently for each language.
+    The function is executed for every supported language, so it can process the data differently for each language.
 
-The function must always return the (modified) `data` dictionary.
+    The function must always return the (modified) `data` dictionary.
 
-The following example shows the file `template.py` for the template
-`mount_option`. The code takes the `data` argument which is a dictionary with
-template parameters from `rule.yml` and based on `lang` it modifies the template
-parameters and returns the modified dictionary.
+    The following example shows the file `template.py` for the template
+    `mount_option`. The code takes the `data` argument which is a dictionary with
+    template parameters from `rule.yml` and based on `lang` it modifies the template
+    parameters and returns the modified dictionary.
 
-import re
+        import re
 
-def preprocess(data, lang):
-    if lang == "oval":
-        data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
-    else:
-        data["mountoption"] = re.sub(" ", ",", data["mountoption"])
-    return data
+        def preprocess(data, lang):
+            if lang == "oval":
+                data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
+            else:
+                data["mountoption"] = re.sub(" ", ",", data["mountoption"])
+            return data
 
 ### Filters
 
