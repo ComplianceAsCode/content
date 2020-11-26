@@ -785,7 +785,7 @@ class Group(object):
             # Make sure rpm_verify_(hashes|permissions|ownership) are run before any other rule.
             # Due to conflicts between rules rpm_verify_* rules and any rule that configures
             # stricter settings, like file_permissions_grub2_cfg and sudo_dedicated_group,
-            # the rules deviating from the system detault should be evaluated later.
+            # the rules deviating from the system default should be evaluated later.
             # So that in the end the system has contents, permissions and ownership reset, and
             # any deviations or stricter settings are applied by the rules in the profile.
             "software", "integrity", "integrity-software", "rpm_verification",
@@ -793,7 +793,7 @@ class Group(object):
             # The account group has to precede audit group because
             # the rule package_screen_installed is desired to be executed before the rule
             # audit_rules_privileged_commands, othervise the rule
-            # does not catch newly installed screeen binary during remediation
+            # does not catch newly installed screen binary during remediation
             # and report fail
             "accounts", "auditing",
 
