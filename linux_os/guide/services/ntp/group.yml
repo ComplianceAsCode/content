@@ -53,11 +53,9 @@ description: |-
         {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-nettime.html") }}}
     {{% elif product == "rhel7" %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html") }}}
-    {{% elif product == "fedora"  %}}
-        {{{ weblink(link="https://docs.fedoraproject.org/en-US/fedora/rawhide/system-administrators-guide/servers/Configuring_NTP_Using_the_chrony_Suite/") }}}
-    {{% elif product == "ubuntu"  %}}
+    {{% elif "ubuntu" in product  %}}
         {{{ weblink(link="https://help.ubuntu.com/lts/serverguide/NTP.html") }}}
-    {{% elif product == "debian"  %}}
+    {{% elif "debian" in product %}}
         {{{ weblink(link="https://wiki.debian.org/NTP") }}}
     {{% else %}}
         {{{ weblink(link="https://docs.fedoraproject.org/en-US/fedora/rawhide/system-administrators-guide/servers/Configuring_NTP_Using_the_chrony_Suite/") }}}
