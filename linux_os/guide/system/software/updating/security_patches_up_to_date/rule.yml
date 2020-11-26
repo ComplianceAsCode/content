@@ -74,5 +74,5 @@ warnings:
 {{% else %}}
 {{# The rule will be "notchecked" #}}
 warnings:
-    - general: "{{{ full_name }}} doesn't have a OVAL CVE Feed associated, so this rule doesn't have a corresponding check."
+    - general: '{{{ full_name }}} does not have a corresponding OVAL CVE Feed. Therefore, this will result in a "not checked" result during a scan.'
 {{% endif %}}
