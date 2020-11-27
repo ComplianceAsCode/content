@@ -1,0 +1,52 @@
+<def-group>
+  <definition class="compliance" id="sshd_set_keepalive" version="1">
+    {{{ oval_metadata("The SSH ClientAliveCountMax should be set to an appropriate
+      value (and dependencies are met)") }}}
+    <criteria comment="SSH is configured correctly or is not installed"
+    operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
+      </criteria>
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server installed"
+        definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
+        <criterion comment="Check ClientAliveCountMax in /etc/ssh/sshd_config"
+        test_ref="test_sshd_clientalivecountmax" />
+      </criteria>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of the ClientAliveCountMax setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_clientalivecountmax" version="1">
+    <ind:object object_ref="obj_sshd_clientalivecountmax" />
+    <ind:state state_ref="state_sshd_clientalivecountmax" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_state id="state_sshd_clientalivecountmax" version="1">
+    <ind:subexpression datatype="int" operation="equals" var_check="all"
+    var_ref="var_sshd_set_keepalive" />
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_object id="obj_sshd_clientalivecountmax" version="2">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <external_variable comment="ClientAliveCountMax value" datatype="int"
+  id="var_sshd_set_keepalive" version="1" />
+
+</def-group>

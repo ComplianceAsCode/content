@@ -9,10 +9,13 @@ description: |-
     each <tt>ClientAliveCountMax</tt> message. If the SSH server does not
     receive a response from the client, then the connection is considered idle
     and terminated.
-
     To ensure the SSH idle timeout occurs precisely when the
     <tt>ClientAliveInterval</tt> is set, set the <tt>ClientAliveCountMax</tt> to
-    value of <tt>0</tt>.
+    value of <tt>0</tt>. This profile sets <tt>ClientAliveCountMax</tt> to
+    <tt>{{{ xccdf_value("var_sshd_set_keepalive") }}}</tt>. To modify the
+    <tt>ClientAliveCountMax</tt> option, edit <tt>/etc/ssh/sshd_config</tt> as
+    follows:
+    <pre>ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}</pre>
 
 rationale: |-
     This ensures a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>
@@ -55,15 +58,9 @@ ocil: |-
     To ensure <tt>ClientAliveInterval</tt> is set correctly, run the following command:
     <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
     If properly configured, the output should be:
-    <pre>ClientAliveCountMax 0</pre>
-
-    In this case, the SSH idle timeout occurs precisely when
-    the <tt>ClientAliveInterval</tt> is set.
-
-template:
-  name: sshd_lineinfile
-  vars:
-    parameter: "ClientAliveCountMax"
-    value: "0"
-    missing_parameter_pass: "false"
-    kubernetes: "off"
+    <pre>ClientAliveCountMax {{{ xccdf_value("var_sshd_set_keepalive") }}}</pre>
+    For SSH earlier than v8.2, a <tt>ClientAliveCountMax</tt> value of <tt>0</tt> causes an idle timeout precisely when
+    the <tt>ClientAliveInterval</tt> is set.  Starting with v8.2, a value of <tt>0</tt> disables the timeout
+    functionality completely.
+    If the option is set to a number greater than <tt>0</tt>, then the idle session will be disconnected after
+    <tt>ClientAliveInterval * ClientAliveCountMax</tt> seconds.
