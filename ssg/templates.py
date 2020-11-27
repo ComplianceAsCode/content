@@ -4,6 +4,7 @@ from __future__ import print_function
 import os
 import sys
 import imp
+import glob
 
 import ssg.build_yaml
 import ssg.utils
@@ -37,6 +38,8 @@ class Template():
         self.template_path = os.path.join(self.template_root_directory, self.name)
         self.template_yaml_path = os.path.join(self.template_path, "template.yml")
         self.preprocessing_file_path = os.path.join(self.template_path, preprocessing_file_name)
+
+    def load(self):
         if not os.path.exists(self.preprocessing_file_path):
             self.preprocessing_file_path = None
         self.langs = []
@@ -63,6 +66,16 @@ class Template():
         for k, v in parameters.items():
             uppercases[k.upper()] = v
         return uppercases
+
+    def looks_like_template(self):
+        if not os.path.isdir(self.template_root_directory):
+            return False
+        if os.path.islink(self.template_root_directory):
+            return False
+        template_sources = glob.glob(os.path.join(self.template_path, "*.template"))
+        if not os.path.isfile(self.template_yaml_path) and not template_sources:
+            return False
+        return True
 
 
 class Builder(object):
@@ -97,8 +110,10 @@ class Builder(object):
         # scan directory structure and dynamically create list of templates
         for item in os.listdir(self.templates_dir):
             itempath = os.path.join(self.templates_dir, item)
-            if os.path.isdir(itempath) and not os.path.islink(itempath):
-                templates[item] = Template(templates_dir, item)
+            maybe_template = Template(templates_dir, item)
+            if maybe_template.looks_like_template():
+                maybe_template.load()
+                templates[item] = maybe_template
 
 
     def build_lang(
