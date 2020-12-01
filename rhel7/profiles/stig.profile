@@ -155,6 +155,7 @@ selections:
     - mount_option_nosuid_removable_partitions
     - mount_option_nosuid_remote_filesystems
     - dir_perms_world_writable_system_owned
+    - dir_perms_world_writable_system_owned_group
     - accounts_umask_interactive_users
     - rsyslog_cron_logging
     - file_owner_cron_allow
