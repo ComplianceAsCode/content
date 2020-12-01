@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Permissions on the Open vSwitch Configuration Database'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/openvswitch/conf.db", perms="0644") }}}
+    {{{ describe_file_permissions(file="/etc/openvswitch/conf.db", perms="0640") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -21,14 +21,14 @@ severity: medium
 references:
     cis: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/openvswitch/conf.db", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/openvswitch/conf.db", perms="-rw-r-----") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/openvswitch/conf.db", perms="-rw-r--r--") }}}
+    {{{ ocil_file_permissions(file="/etc/openvswitch/conf.db", perms="-rw-r-----") }}}
 
 template:
     name: file_permissions
     vars:
         filepath: /etc/openvswitch/conf.db
-        filemode: '0644'
+        filemode: '0640'
         missing_file_pass: "true"
