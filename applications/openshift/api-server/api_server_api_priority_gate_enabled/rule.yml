@@ -5,50 +5,48 @@ prodtype: ocp4
 title: 'Enable the APIPriorityAndFairness feature gate'
 
 description: |-
-    To limit the rate at which the API Server accepts requests, make
-    sure that the API Priority and Fairness feature is enabled.
-    Using <tt>APIPriorityAndFairness</tt> feature provides a fine-grained way
-    to control the behaviour of the Kubernetes API server in an overload
-    situation. To enable the <tt>APIPriorityAndFairness</tt> feature gate,
-    make sure that the <tt>feature-gates</tt> API server argument, typically
-    set in the <tt>config</tt> configMap in the <tt>openshift-kube-apiserver</tt>
-    namespace contains <tt>APIPriorityAndFairness=true</tt>.
+  To limit the rate at which the API Server accepts requests, make
+  sure that the API Priority and Fairness feature is enabled.
+  Using <tt>APIPriorityAndFairness</tt> feature provides a fine-grained way
+  to control the behaviour of the Kubernetes API server in an overload
+  situation. To enable the <tt>APIPriorityAndFairness</tt> feature gate,
+  make sure that the <tt>feature-gates</tt> API server argument, typically
+  set in the <tt>config</tt> configMap in the <tt>openshift-kube-apiserver</tt>
+  namespace contains <tt>APIPriorityAndFairness=true</tt>.
 
 rationale: |-
-    The <tt>APIPriorityAndFairness</tt> feature gate enables the use of the
-    <tt>FlowSchema</tt> API objects which enforce a limit on the number of
-    events that the API Server will accept in a given time slice In a large
-    multi-tenant cluster, there might be a small percentage of misbehaving
-    tenants which could have a significant impact on the performance of
-    the cluster overall. It is recommended to limit the rate of events
-    that the API Server will accept.
+  The <tt>APIPriorityAndFairness</tt> feature gate enables the use of the
+  <tt>FlowSchema</tt> API objects which enforce a limit on the number of
+  events that the API Server will accept in a given time slice In a large
+  multi-tenant cluster, there might be a small percentage of misbehaving
+  tenants which could have a significant impact on the performance of
+  the cluster overall. It is recommended to limit the rate of events
+  that the API Server will accept.
 
 severity: medium
 
 references:
-    cis: 1.2.10
+  cis: 1.2.10
 
 ocil_clause: '<tt>.apiServerArguments["feature-gates"]</tt> does not include <tt>EventRateLimit</tt>'
 
 ocil: |-
-    To verify that <tt>APIPriorityAndFairness</tt> is enabled, run the following command:
-    <pre>oc get kubeapiservers.operator.openshift.io cluster -o json | jq '.spec.observedConfig.apiServerArguments["feature-gates"]'</pre>
-    The output should contain "APIPriorityAndFairness=true"
+  To verify that <tt>APIPriorityAndFairness</tt> is enabled, run the following command:
+  <pre>oc get kubeapiservers.operator.openshift.io cluster -o json | jq '.spec.observedConfig.apiServerArguments["feature-gates"]'</pre>
+  The output should contain "APIPriorityAndFairness=true"
 
-# (jhrozek): Commented out because the compliance operator does not have the permissions
-#            to get the kubeapiservers.operator.openshift.io resource. The rule was tested
-#            locally, though
-#            When enabling the rule, also add a warning to fetch "/apis/operator.openshift.io/v1/kubeapiservers/cluster"
-#
-#template:
-#    name: yamlfile_value
-#    vars:
-#        ocp_data: "true"
-#        filepath: '/apis/operator.openshift.io/v1/kubeapiservers/cluster'
-#        yamlpath: '.spec.observedConfig.apiServerArguments["feature-gates"][:]'
-#        values:
-#            - value: '^APIPriorityAndFairness=true$'
-#              type: "string"
-#              operation: "pattern match"
-#              entity_check: "at least one"
-#
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/operator.openshift.io/v1/kubeapiservers/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: '/apis/operator.openshift.io/v1/kubeapiservers/cluster'
+    yamlpath: '.spec.observedConfig.apiServerArguments["feature-gates"][:]'
+    values:
+      - value: '^APIPriorityAndFairness=true$'
+        type: "string"
+        operation: "pattern match"
+        entity_check: "at least one"
