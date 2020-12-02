@@ -3,7 +3,7 @@ documentation_complete: true
 metadata:
     version: 1.0
     SMEs:
-        - redhatrises
+        - carlosmmatos
 
 reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=408&id=408
 
