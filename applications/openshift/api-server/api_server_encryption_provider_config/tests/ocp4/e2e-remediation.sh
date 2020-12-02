@@ -1,13 +1,10 @@
 #!/bin/bash
 #
-# This applies the remediation needed for this rule. Which enables etcd encryption
-# This rule wasn't able to be done via a standard remediation since we only need to
-# apply a partial part of the Kubernetes object. PATCH support for the
-# compliance-operator would be needed to make this work
+# This waits for etcd encryption to be enabled. The operator can apply the
+# remediation, but waiting for this to get applied is still something that
+# needs to be done outside of the operator.
 #
 # This patch sets the encryption setting and waits for it to be applied
-
-oc patch apiservers cluster -p '{"spec":{"encryption":{"type":"aescbc"}}}' --type=merge
 
 while true; do
     status=$(oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}')
