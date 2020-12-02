@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="inventory" id="system_info_architecture_not_s390x"
+  version="1">
+    <metadata>
+      <title>Test for different architecture than S390X</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Generic test checking if the architecture is not S390X to be used by other tests</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Architecture is not S390X"
+      test_ref="test_system_info_architecture_s390x" negate="true"/>
+    </criteria>
+  </definition>
+  <unix:uname_test check="all" comment="s390x architecture"
+  id="test_system_info_architecture_s390x" version="1">
+    <unix:object object_ref="object_system_info_architecture_s390x" />
+    <unix:state state_ref="state_system_info_architecture_s390x" />
+  </unix:uname_test>
+  <unix:uname_object comment="s390x architecture"
+  id="object_system_info_architecture_s390x" version="1" />
+  <unix:uname_state comment="s390x architecture"
+  id="state_system_info_architecture_s390x" version="1">
+    <unix:machine_class operation="equals">s390x</unix:machine_class>
+  </unix:uname_state>
+</def-group>
