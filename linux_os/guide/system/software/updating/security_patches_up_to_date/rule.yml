@@ -64,9 +64,6 @@ references:
 # SCAP 1.3 content should reference flat non compressed xml files
 {{% if oval_feed_url %}}
 oval_external_content: {{{ oval_feed_url }}}
-  {{% if not oval_feed_url.startswith("https") %}}
-  {{{ raise("OVAL feed of product '" + product + "' is not available through an encrypted channel: " + oval_feed_url) }}}
-  {{% endif %}}
   {{% if not oval_feed_url.endswith(".xml") %}}
 warnings:
     - general: "The OVAL feed of {{{ full_name }}} is not a XML file, which may not be understood by all scanners."

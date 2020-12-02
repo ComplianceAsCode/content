@@ -138,9 +138,22 @@ def open_raw(yaml_file):
     return yaml_contents
 
 
+def _validate_product_oval_feed_url(contents):
+    if "oval_feed_url" not in contents:
+        return
+    url = contents["oval_feed_url"]
+    if not url.startswith("https"):
+        msg = (
+            "OVAL feed of product '{product}' is not available through an encrypted channel: {url}"
+            .format(product=contents["product"], url=url)
+        )
+        raise ValueError(msg)
+
+
 def open_environment(build_config_yaml, product_yaml):
     contents = open_raw(build_config_yaml)
     contents.update(open_raw(product_yaml))
+    _validate_product_oval_feed_url(contents)
     platform_package_overrides = contents.get("platform_package_overrides", {})
     # Merge common platform package mappings, while keeping product specific mappings
     contents["platform_package_overrides"] = merge_dicts(XCCDF_PLATFORM_TO_PACKAGE,
