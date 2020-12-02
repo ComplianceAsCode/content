@@ -3,7 +3,7 @@ documentation_complete: true
 metadata:
     version: V3R1
     SMEs:
-        - redhatrises
+        - carlosmmatos
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 

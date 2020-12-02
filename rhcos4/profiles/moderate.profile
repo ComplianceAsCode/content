@@ -4,7 +4,7 @@ metadata:
     SMEs:
         - JAORMX
         - mrogers950
-        - redhatrises
+        - carlosmmatos
 
 reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
 
