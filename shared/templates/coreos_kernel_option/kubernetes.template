@@ -8,5 +8,5 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 spec:
   kernelArguments:
-    - {{ ARG_NAME }}={{ ARG_VALUE }}
+    - {{{ ARG_NAME }}}={{{ ARG_VALUE }}}
 
