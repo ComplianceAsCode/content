@@ -4,6 +4,12 @@ title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4
 
+metadata:
+    SMEs:
+        - JAORMX
+        - mrogers950
+        - jhrozek
+
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
     Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.

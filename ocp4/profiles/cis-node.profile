@@ -4,6 +4,12 @@ title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4-node
 
+metadata:
+    SMEs:
+        - JAORMX
+        - mrogers950
+        - jhrozek
+
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
     Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
@@ -149,7 +155,7 @@ selections:
   # 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
     - kubelet_enable_streaming_connections
   # 4.2.6 Ensure that the --protect-kernel-defaults argument is set to true
-    - kubelet_enable_protect_kernel_defaults
+    #- kubelet_enable_protect_kernel_defaults
   # 4.2.7 Ensure that the --make-iptables-util-chains argument is set to true
     - kubelet_enable_iptables_util_chains
   # 4.2.8 Ensure that the --hostname-override argument is not set
