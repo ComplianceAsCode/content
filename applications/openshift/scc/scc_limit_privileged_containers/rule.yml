@@ -31,18 +31,14 @@ ocil: |-
     a small set of containers and SCCs.
 
 
-warnings:
-    - general: |-
-        {{{ openshift_cluster_setting("/apis/security.openshift.io/v1/securitycontextconstraints") | indent(8) }}}
-
-template:
-    name: yamlfile_value
-    vars:
-        ocp_data: "true"
-        filepath: /apis/security.openshift.io/v1/securitycontextconstraints
-        yamlpath: ".items[:]['allowPrivilegedContainer']"
-        check_existence: "at_least_one_exists"
-        entity_check: "at least one"
-        values:
-          - type: "boolean"
-            value: "false"
+#template:
+#    name: yamlfile_value
+#    vars:
+#        ocp_data: "true"
+#        filepath: /apis/security.openshift.io/v1/securitycontextconstraints
+#        yamlpath: ".items[:]['allowPrivilegedContainer']"
+#        check_existence: "at_least_one_exists"
+#        entity_check: "at least one"
+#        values:
+#          - type: "boolean"
+#            value: "false"
