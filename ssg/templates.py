@@ -57,8 +57,16 @@ class Template():
     def preprocess(self, parameters, lang):
         # if no template.py file exists, skip this preprocessing part
         if self.preprocessing_file_path is not None:
-            module_name = "tmpmod" # dummy module name, we don't need it later
-            preprocess_mod = imp.load_source(module_name, self.preprocessing_file_path)
+            unique_dummy_module_name = "template_" + self.name
+            preprocess_mod = imp.load_source(
+                unique_dummy_module_name, self.preprocessing_file_path)
+            if not hasattr(preprocess_mod, "preprocess"):
+                msg = (
+                    "The '{name}' template's preprocessing file {preprocessing_file} "
+                    "doesn't define the 'preprocess' function, which is probably an omission."
+                    .format(name=self.name, preprocessing_file=self.preprocessing_file_path)
+                )
+                raise ValueError(msg)
             parameters = preprocess_mod.preprocess(parameters.copy(), lang)
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase

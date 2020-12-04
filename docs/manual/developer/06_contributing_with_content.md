@@ -1361,6 +1361,21 @@ the following to `rule.yml`:
 
 -   Languages: Ansible, Bash, OVAL
 
+#### lineinfile
+-   Checks that the given text is present in a file.
+    This template doesn't work with a concept of keys and values - it is meant
+    only for simple statements.
+
+-   Parameters:
+
+    -   **path** - path to the file to check.
+
+    -   **text** - the line that should be present in the file.
+
+    -   **oval_extend_definitions** - optional, list of additional OVAL
+        definitions that have to pass along the generated check.
+
+
 #### mount
 -   Checks that a given mount point is located on a separate partition.
 
