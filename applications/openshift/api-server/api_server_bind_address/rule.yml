@@ -20,6 +20,13 @@ severity: low
 references:
     cis: 1.2.20
 
+ocil_clause: '<tt>bindAddress</tt> allows unsecure connections'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.servingInfo["bindAddress"]'</pre>
+    The output should return <pre>0.0.0.0:6443</pre>.
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}

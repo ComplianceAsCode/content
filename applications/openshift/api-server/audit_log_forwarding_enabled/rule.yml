@@ -21,6 +21,13 @@ references:
 
 severity: medium
 
+ocil_clause: 'Logs are not forwarded outside the cluster'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get clusterlogforwarders instance -n openshift-logging -ojson | jq -r '.spec.pipelines[].inputRefs | contains(["audit"])'</pre>
+    The output should return <pre>true</pre>.
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance") | indent(4) }}}
