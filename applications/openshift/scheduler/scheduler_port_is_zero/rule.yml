@@ -23,6 +23,13 @@ references:
 
 severity: medium
 
+ocil_clause: '<tt>kube-scheduler-pod</tt> port parameter is zero'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get -nopenshift-kube-scheduler cm kube-scheduler-pod -ojson | jq -r '.data["pod.yaml"]' | jq -r '.spec.containers[] | select(.name == "kube-scheduler")' | jq -r '.args' | grep \\-\\-port</pre>
+    The output should return <pre>--port=0</pre>.
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod") | indent(4) }}}

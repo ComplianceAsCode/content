@@ -23,6 +23,13 @@ references:
 
 severity: medium
 
+ocil_clause: '<tt>kube-scheduler-pod</tt> sets --bind-address'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get -nopenshift-kube-scheduler cm kube-scheduler-pod -ojson | jq -r '.data["pod.yaml"]' | jq -r | grep bind-address</pre>
+    The output should be empty
+
 warnings:
 - general: |-
     {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod") | indent(4) }}}
