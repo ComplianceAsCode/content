@@ -829,7 +829,7 @@ selections:
 
     ### 5.3.3 Ensure password reuse is limited (Automated)
     - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remembe
+    - accounts_password_pam_unix_remember
 
     ## 5.4 User Accounts and Environment
     ### 5.4.1 Set Shadow Password Suite Parameters
