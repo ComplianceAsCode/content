@@ -1375,6 +1375,8 @@ the following to `rule.yml`:
     -   **oval_extend_definitions** - optional, list of additional OVAL
         definitions that have to pass along the generated check.
 
+-   Languages: Ansible, Bash, OVAL
+
 
 #### mount
 -   Checks that a given mount point is located on a separate partition.
