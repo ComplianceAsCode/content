@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="inventory" id="proc_sys_kernel_osrelease_arch_not_s390x"
+  version="1">
+    <metadata>
+      <title>Test for different architecture than s390x</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check that architecture of kernel in /proc/sys/kernel/osrelease is not s390x</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Architecture is not s390x"
+      test_ref="test_proc_sys_kernel_osrelease_arch_s390x" negate="true"/>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="proc_sys_kernel is for s390x architecture"
+      id="test_proc_sys_kernel_osrelease_arch_s390x"
+  version="1">
+    <ind:object object_ref="object_proc_sys_kernel_osrelease_arch_s390x" />
+    <ind:state state_ref="state_proc_sys_kernel_osrelease_arch_s390x" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_s390x" version="1">
+    <ind:filepath>/proc/sys/kernel/osrelease</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\.(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_proc_sys_kernel_osrelease_arch_s390x" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^s390x$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>
