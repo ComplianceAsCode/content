@@ -31,7 +31,7 @@ selections:
     - kernel_module_freevxfs_disabled
 
     #### 1.1.1.3 Ensure mounting jjfs2 filesystems is disabled (Scored)
-    - kernel_module_jjfs2_disabled
+    #### - kernel_module_jjfs2_disabled
 
     #### 1.1.1.4 Ensure mounting hfs filesystems is disabled (Scored)
     - kernel_module_hfs_disabled
@@ -322,9 +322,9 @@ selections:
 
     ### 2.2.10 Ensure HTTP server is not enabled (Scored)
     - service_httpd_disabled
-    - service_nginx_disabled
-    - service_apache2_disabled
-    - service_lighthttpd_disabled
+    # - service_nginx_disabled
+    # - service_apache2_disabled
+    # - service_lighthttpd_disabled
 
     ### 2.2.11 Ensure IMAP and POP3 server is not enabled (Scored)
     - service_dovecot_disabled
@@ -342,10 +342,10 @@ selections:
     - postfix_network_listening_disabled
 
     ### 2.2.16 Ensure NIS Server is not enabled (Scored)
-    - service_ypserv_disabled
+    # - service_ypserv_disabled
 
     ### 2.2.17 Ensure tftp server is not installed (Scored)
-    - service_aftpd_disabled
+    - service_tftp_disabled
 
     ### 2.2.18 Ensure rsync service is not enabled (Scored)
     - service_rsyncd_disabled
@@ -364,7 +364,7 @@ selections:
     - package_telnet_removed
 
     ### 2.3.5 Ensure LDAP client is not installed (Scored)
-    - package_openldap-clients2_removed
+    - package_openldap-clients_removed
 
     # 3 Network Configuration
     ## 3.1 Network Parameters (Host Only)

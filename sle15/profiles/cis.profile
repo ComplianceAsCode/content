@@ -165,7 +165,7 @@ selections:
     - sysctl_kernel_randomize_va_space
 
     ### 1.6.4 Ensure prelink is disabled (Automated)
-    - package_prelink_removed
+    # - package_prelink_removed
 
     ## 1.7 Mandatory Access Control
     ### 1.7.1 Ensure Mandatory Access Control Software is Installed
@@ -236,27 +236,27 @@ selections:
     - xwindows_runlevel_target
 
     ### 2.2.3 Ensure Avahi Server is not installed (Automated)
-    - package_avahi_removed
-    - package_avahi-autoipd_removed
+    # - package_avahi_removed
+    # - package_avahi-autoipd_removed
 
     ### 2.2.4 Ensure CUPS is not installed (Automated)
-    - package_cups_removed
+    # - package_cups_removed
 
     ### 2.2.5 Ensure DHCP Server is not installed (Automated)
     - package_dhcp_removed
 
     ### 2.2.6 Ensure LDAP server is not enabled (Automated)
-    - package_openldap2_removed
+    # - package_openldap2_removed
 
     ### 2.2.7 Ensure nfs-utils is not installed or nfs-server is masked (Automated)
     - package_nfs-utils_removed
-    - package_nfs-kernel-server_removed
+    # - package_nfs-kernel-server_removed
     # Opinionated selection
     # NEEDS RULE
     # - service_nfs-server_masked
 
     ### 2.2.8 Ensure rpcbind is not installed or rpcbind services are masked (Automated)
-    - package_rpcbind_removed
+    # - package_rpcbind_removed
     # Opinionated selection
     # NEEDS RULE
     # - service_rpcbind_masked
@@ -270,16 +270,16 @@ selections:
 
     ### 2.2.11 Ensure HTTP server is not installed (Automated)
     - package_httpd_removed
-    - package_nginx_removed
-    - package_apache2_removed
-    - package_lighthttpd_removed
+    # - package_nginx_removed
+    # - package_apache2_removed
+    # - package_lighthttpd_removed
     #TODO: Add other possible HTTP Servers to list
 
     ### 2.2.12 Ensure IMAP and POP3 server is not installed (Automated)
     - package_dovecot_removed
 
     ### 2.2.13 Ensure Samba is not installed (Automated)
-    - package_smb_removed
+    - package_samba_removed
 
     ### 2.2.14 Ensure HTTP Proxy Server is not installed (Automated)
     - package_squid_removed
@@ -292,7 +292,7 @@ selections:
     - postfix_network_listening_disabled
 
     ### 2.2.17 Ensure rsync is not installed or rsyncd service is masked (Automated)
-    - package_rsync_removed
+    # - package_rsync_removed
     # Opinionated selection
     # NEEDS RULE
     # - service_rsyncd_masked
@@ -317,7 +317,7 @@ selections:
     # Package telnet already removed in 2.2.19
 
     ### 2.3.5 Ensure LDAP client is not installed (Automated)
-    - package_openldap2-clients_removed
+    - package_openldap-clients_removed
 
     ## Ensure nonessential services are removed or masked (Manual)
     # lsof -i -P -n | grep -v "(ESTABLISHED)"
@@ -389,7 +389,7 @@ selections:
     - package_iptables_installed
     
     #### 3.5.1.2 Ensure nftables is not installed or stoped and masked (Automated)
-    - package_nftables_removed
+    # - package_nftables_removed
 
     # Stop and Mask Service
     # Needs Rule
@@ -410,12 +410,12 @@ selections:
 
     ### 3.5.2 Configure nftables
     #### 3.5.2.1 Ensure nftables is installed (Automated)
-    - package_nftables_installed
+    # - package_nftables_installed
 
     #### 3.5.2.2 Ensure firewalld is not installed or stopped and masked (Automated)
-    - package_firewalld_removed
+    # - package_firewalld_removed
     # Opinionated selection
-    - service_nfs-server_disbaled
+    # - service_nfs-server_disabled
     
     #### 3.5.2.3 Ensure iptables are flushed (UnAutomated)
     #### NEED RULE
@@ -436,7 +436,7 @@ selections:
     #### NEED RULE
     
     #### 3.5.2.9 Ensure nftables service is enabled (Automated)
-    - service_nftables_enabled
+    # - service_nftables_enabled
     
     #### 3.5.2.11 Ensure nftables rules are permanent (Manual)
     #### NEED RULE
@@ -450,10 +450,10 @@ selections:
     - service_iptables_enabled
 
     ##### 3.5.3.1.2 Ensure nftables is not installed (Automated)
-    - package_nftables_removed
+    # - package_nftables_removed
     
     ##### 3.5.3.1.3 Ensure firewalld is not installed or masked and stoped (Automated)
-    - package_firewalld_removed
+    # - package_firewalld_removed
     
     ### Mask Serice
     # NEEDS RULE
@@ -712,18 +712,18 @@ selections:
 
     ### 5.1.8 Ensure cron is restricted to authorized users (Automated)
     # chown root:root /etc/cron.deny
-    - file_owner_cron_deny
-    - file_groupowner_cron_deny
+    # - file_owner_cron_deny
+    # - file_groupowner_cron_deny
     
     # chmod 600 /etc/cron.deny
-    - file_permissions_cron_deny
+    # - file_permissions_cron_deny
 
     # chown root:root /etc/cron.allow
     - file_owner_cron_allow
     - file_groupowner_cron_allow
     
     # chmod 600 /etc/cron.allow
-    - file_permissions_cron_allow
+    # - file_permissions_cron_allow
     
     ### 5.1.9 Ensure at is restricted to authorized users (Automated)
     ### NEED RULE
@@ -924,11 +924,11 @@ selections:
     
     ### 6.1.6 Ensure permissions on /etc/shadow- are configured (Automated)
     # chown root:root /etc/shadow-
-    - file_owner_backup_etc_shadow-
-    - file_groupowner_backup_etc_shadow-
+    - file_owner_backup_etc_shadow
+    - file_groupowner_backup_etc_shadow
 
     # chmod 600 /etc/shadow
-    - file_permissions_backup_etc_shadow-
+    - file_permissions_backup_etc_shadow
 
     ### 6.1.7 Ensure permissions on /etc/group- are configured (Automated)
     # chown root:root /etc/group-
