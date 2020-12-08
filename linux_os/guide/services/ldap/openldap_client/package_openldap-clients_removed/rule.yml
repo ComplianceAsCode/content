@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15,sle12
 
 title: 'Ensure LDAP client is not installed'
 
@@ -32,3 +32,5 @@ template:
     name: package_removed
     vars:
         pkgname: openldap-clients
+        pkgname@sle12: openldap2-clients
+        pkgname@sle15: openldap2-clients
