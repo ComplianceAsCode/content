@@ -191,12 +191,12 @@ controls:
 
   - id: R13
     level: enhanced
-    title: Access Restrictions on System.map files
+    title: Access Restrictions on the /boot directory
     description: >-
-      When the /boot partition cannot be dismounted (or it does not exist),
-      the file(s) System.map must be read restricted to root only.
+      When possible, the /boot partition should not be mounted. In any case, access to
+      the /boot directory must only be allowed to the root user.
     rules:
-    - file_permissions_systemmap
+    - mount_option_boot_noauto
 
   - id: R14
     level: intermediary
