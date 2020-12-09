@@ -113,7 +113,10 @@ controls:
     description: >-
       The activities of the running system and services must be logged and
       archived on an external, non-local system.
-    #rules: TBD
+    rules:
+    # logcollector is a placeholder for the name or IP of the system to send the logs to
+    - rsyslog_remote_loghost_address=logcollector
+    - rsyslog_remote_loghost
 
   - id: R8
     level: minimal
