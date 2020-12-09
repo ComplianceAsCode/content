@@ -114,7 +114,6 @@ class OVALFileLinker(FileLinker):
 
     def __init__(self, translator, xccdftree, checks):
         super(OVALFileLinker, self).__init__(translator, xccdftree, checks)
-        self.tolerate_missing_extending_defs = False
         self.oval_groups = None
 
     def _get_checkid_string(self):
@@ -143,20 +142,12 @@ class OVALFileLinker(FileLinker):
 
         defs_miss = get_oval_checks_extending_non_existing_checks(self.tree, indexed_oval_defs)
         if defs_miss:
-            if self.tolerate_missing_extending_defs:
-                drop_oval_definitions(self.tree, defs_miss.keys(), self.oval_groups, indexed_oval_defs)
-                for broken, missed in defs_miss.items():
-                    print("WARNING: OVAL definition '{0}' extended by non-existing {1}, "
-                          "removing it from OVAL definitions."
-                          .format(broken.get("id"), list(missed)),
-                          file=sys.stderr)
-            else:
-                msg = ["Following extending definitions are missing:"]
-                for missing, broken in transpose_dict_with_sets(defs_miss).items():
-                    broken = [b.get("id") for b in broken]
-                    msg.append("\t'{missing}' needed by: {broken}"
-                               .format(missing=missing, broken=broken))
-                raise RuntimeError("\n".join(msg))
+            msg = ["Following extending definitions are missing:"]
+            for missing, broken in transpose_dict_with_sets(defs_miss).items():
+                broken = [b.get("id") for b in broken]
+                msg.append("\t'{missing}' needed by: {broken}"
+                           .format(missing=missing, broken=broken))
+            raise RuntimeError("\n".join(msg))
 
         self._add_cce_id_refs_to_oval_checks(xccdf_to_cce_id_mapping)
 
