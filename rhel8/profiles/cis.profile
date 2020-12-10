@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: 1.1.0
+    version: 1.0.0
     SMEs:
         - vojtapolasek
         - yuumasato
