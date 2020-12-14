@@ -2,6 +2,8 @@ def _file_owner_groupowner_permissions_regex(data):
     data["is_directory"] = data["filepath"].endswith("/")
     if "missing_file_pass" not in data:
         data["missing_file_pass"] = False
+    if "allow_stricter_permissions" not in data:
+        data["allow_stricter_permissions"] = False
     if "file_regex" in data and not data["is_directory"]:
         raise ValueError(
             "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
@@ -23,13 +25,17 @@ def preprocess(data, lang):
         mode_str = ""
         for field in fields:
             if mode_int & 0x01 == 1:
-                mode_str = (
-                    "	<unix:" + field + " datatype=\"boolean\">true</unix:"
-                    + field + ">\n" + mode_str)
+                if not data['allow_stricter_permissions']:
+                    mode_str = (
+                        "<unix:" + field + " datatype=\"boolean\">true</unix:"
+                        + field + ">\n" + mode_str)
             else:
+                value = "false"
+                if data['allow_stricter_permissions']:
+                    value = "true"
                 mode_str = (
-                    "	<unix:" + field + " datatype=\"boolean\">false</unix:"
+                    "<unix:" + field + " datatype=\"boolean\">{}</unix:".format(value)
                     + field + ">\n" + mode_str)
             mode_int = mode_int >> 1
-        data["statemode"] = mode_str
+        data["statemode"] = mode_str.rstrip("\n")
     return data

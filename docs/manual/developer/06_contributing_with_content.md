@@ -1339,6 +1339,10 @@ the following to `rule.yml`:
     -   **filemode** - File permissions in a hexadecimal format, eg.
         `'0640'`.
 
+    -   **allow_stricter_permissions** - If set to `"true"` the OVAL
+        will also consider permissions stricter than **filemode** as compliant.
+        Default value is `"false"`.
+
 -   Languages: Ansible, Bash, OVAL
 
 #### grub2_bootloader_argument
