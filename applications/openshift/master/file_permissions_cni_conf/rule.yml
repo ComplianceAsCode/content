@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Permissions on the OpenShift Container Network Interface Files'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/cni/net.d/.*", perms="0644") }}}
+    {{{ describe_file_permissions(file="/etc/cni/net.d/*", perms="0644") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -21,10 +21,10 @@ identifiers:
 references:
     cis: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cni/net.d/.*", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cni/net.d/*", perms="-rw-r--r--") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/cni/net.d/.*", perms="-rw-r--r--") }}}
+    {{{ ocil_file_permissions(file="/etc/cni/net.d/*", perms="-rw-r--r--") }}}
 
 template:
     name: file_permissions
