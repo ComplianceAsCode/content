@@ -1361,6 +1361,23 @@ the following to `rule.yml`:
 
 -   Languages: Ansible, Bash, OVAL
 
+#### lineinfile
+-   Checks that the given text is present in a file.
+    This template doesn't work with a concept of keys and values - it is meant
+    only for simple statements.
+
+-   Parameters:
+
+    -   **path** - path to the file to check.
+
+    -   **text** - the line that should be present in the file.
+
+    -   **oval_extend_definitions** - optional, list of additional OVAL
+        definitions that have to pass along the generated check.
+
+-   Languages: Ansible, Bash, OVAL
+
+
 #### mount
 -   Checks that a given mount point is located on a separate partition.
 
@@ -1677,121 +1694,104 @@ the following to `rule.yml`:
 
 ### Creating Templates
 
-The offer of currently available templates can be extended by developing
-a new template.
-
-1) Create the template files, one for each type of file. Each one should
-be named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL,
-ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call
-the template name. Create these files in
-[shared/templates](https://github.com/ComplianceAsCode/content/tree/master/shared/templates) directory.
-
-Use the Jinja syntax we use elsewhere in the project; refer to the
-earlier section on Jinja macros for more information. The parameters
-should be named using uppercase letters, because the keys from
-`rule.yml` are converted to uppercase by the code that substitutes the
-parameters to the template.
-
-Notice that OVAL should be written in shorthand format. This is an
-example of an OVAL template file called
-*template_OVAL_package_installed*:
-
-    <def-group>
-      <definition class="compliance" id="package_{{{ PKGNAME }}}_installed"
-      version="1">
-        <metadata>
-          <title>Package {{{ PKGNAME }}} Installed</title>
-          <affected family="unix">
-            <platform>multi_platform_all</platform>
-          </affected>
-          <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be installed.</description>
-        </metadata>
-        <criteria>
-          <criterion comment="package {{{ PKGNAME }}} is installed"
-          test_ref="test_package_{{{ PKGNAME }}}_installed" />
-        </criteria>
-      </definition>
-    {{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
-    </def-group>
-
-And here is the Ansible template file called
-*template_ANSIBLE_package_installed*:
-
-    # platform = multi_platform_all
-    # reboot = false
-    # strategy = enable
-    # complexity = low
-    # disruption = low
-    - name: Ensure {{{ PKGNAME }}} is installed
-      package:
-        name: "{{{ PKGNAME }}}"
-        state: present
-
-2) Implement a callback function which will process the parameters
-before passing them to the Jinja engine. For example, this callback can
-provide default values, escape characters, check if parameters are
-correct, or any other processing of the parameters specific for the
+The offer of currently available templates can be extended by developing a new
 template.
 
-The callback functions are located in
-[ssg/templates.py](https://github.com/ComplianceAsCode/content/tree/master/ssg/templates.py).
+1) Create a new subdirectory within the
+[shared/templates](https://github.com/ComplianceAsCode/content/tree/master/shared/templates) directory. The name of the
+new subdirectory will become the template name.
 
-The callback function must have the same name as the template name. This
-is the name that is used in `rule.yml` in `name:` key, for example
-`package_installed`.
+2) For each language supported by this template, create a corresponding file
+within the template directory. File names should have format of `LANG.template`,
+where *LANG* should be the language  identifier in lower case, e.g.
+`oval.template`, `bash.template` etc.
 
-The callback must have 2 parameters:
+    Use the Jinja syntax we use elsewhere in the project; refer to the earlier
+    section on Jinja macros for more information.  The parameters should be named
+    using uppercase letters, because the keys from `rule.yml` are converted to
+    uppercase by the code that substitutes the parameters to the template.
 
--   `data` - dictionary which contains the contents of `vars:`
-    dictionary from `rule.yml`
+    Notice that OVAL should be written in shorthand format.  This is an example of
+    an OVAL template file called `oval.template` within the `package_installed`
+    directory:
 
--   `lang` - string, describes language, can be one of: `"anaconda"`,
-    `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`,
-    `"kubernetes"`
+        <def-group>
+        <definition class="compliance" id="package_{{{ PKGNAME }}}_installed"
+        version="1">
+            <metadata>
+            <title>Package {{{ PKGNAME }}} Installed</title>
+            <affected family="unix">
+                <platform>multi_platform_all</platform>
+            </affected>
+            <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be installed.</description>
+            </metadata>
+            <criteria>
+            <criterion comment="package {{{ PKGNAME }}} is installed"
+            test_ref="test_package_{{{ PKGNAME }}}_installed" />
+            </criteria>
+        </definition>
+        {{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
+        </def-group>
 
-The callback function is executed for every supported language, so it
-can process the data differently for each language.
+    And here is the Ansible template file called `ansible.template` within the
+    `package_installed` directory:
 
-The function must always return the (modified) `data` dictionary.
+        # platform = multi_platform_all
+        # reboot = false
+        # strategy = enable
+        # complexity = low
+        # disruption = low
+        - name: Ensure {{{ PKGNAME }}} is installed
+        package:
+            name: "{{{ PKGNAME }}}"
+            state: present
 
-The function must be always defined even if no processing of data is
-needed. In that situation the function just returns `data` parameter.
+3) Create a file called `template.yml` within the template directory. This file
+stores template metadata. Currently, it stores list of supported languages. Note
+that each language listed in this file must have associated implementation
+file with the *.template* extension, see above. 
 
-3) Decorate the callback function by the `@template` decorator. The
-decorator will register the template in the templating engine. The
-decorator has a single parameter which is a list of languages that the
-template provides. The list can contain the following values:
-`"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`,
-`"kubernetes"`. The decorator parameter is mandatory. Insert the
-`@template` decorator on the line before the callback function
-definition.
+    An example can look like this:
 
-For example, if the template name is `package_installed` and it provides
-Ansible template in
-`shared/templates/template_ANSIBLE_package_installed` and OVAL template
-in `shared/templates/template_OVAL_package_installed`, then there must
-be callback function `package_installed` in
-[ssg/templates.py](https://github.com/ComplianceAsCode/content/tree/master/ssg/templates.py) and the callback
-must be decorated by `@template(["ansible", "oval")]`. In this example,
-decorating the callback function lets the templating engine know that
-Ansible and OVAL should be generated if any rule uses
-`package_installed` in `rule.yml`.
+    supported_languages:
+    - ansible
+    - bash
+    - ignition
+    - kubernetes
+    - oval
+    - puppet
 
-The following example shows the callback function for the template
-`mount_option`, including the `@template` decorator. The example
-function declares that there is a template which name is `mount_option`
-and it provides Ansible, Bash and OVAL content. The code takes the
-`data` argument which is a dictionary with template parameters from
-`rule.yml` and based on `lang` it modifies the template parameters and
-returns the modified dictionary.
 
-    @template(["ansible", "bash", "oval"])
-    def mount_option(data, lang):
-        if lang == "oval":
-            data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
-        else:
-            data["mountoption"] = re.sub(" ", ",", data["mountoption"])
-        return data
+4) If needed, implement a preprocessing function which will process the
+parameters before passing them to the Jinja engine.  For example, this function can
+provide default values, escape characters, check if parameters are correct, or
+perform any other processing of the parameters specific for the template.
+
+    The function should be called _preprocess_ and should be located in the file
+    `template.py` within the template directory.
+
+    The function must have 2 parameters:
+
+    - `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
+    - `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`, `"ignition"`, `"kubernetes"`
+
+    The function is executed for every supported language, so it can process the data differently for each language.
+
+    The function must always return the (modified) `data` dictionary.
+
+    The following example shows the file `template.py` for the template
+    `mount_option`. The code takes the `data` argument which is a dictionary with
+    template parameters from `rule.yml` and based on `lang` it modifies the template
+    parameters and returns the modified dictionary.
+
+        import re
+
+        def preprocess(data, lang):
+            if lang == "oval":
+                data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
+            else:
+                data["mountoption"] = re.sub(" ", ",", data["mountoption"])
+            return data
 
 ### Filters
 

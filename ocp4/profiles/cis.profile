@@ -4,6 +4,12 @@ title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4
 
+metadata:
+    SMEs:
+        - JAORMX
+        - mrogers950
+        - jhrozek
+
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
     Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
@@ -71,8 +77,8 @@ selections:
   # 1.2.22 Ensure that the --audit-log-path argument is set
     - api_server_audit_log_path
     - openshift_api_server_audit_log_path
-  # 1.2.23 Ensure that the --audit-log-maxage argument is set to 30 or as appropriate
-    - api_server_audit_log_maxage
+  # 1.2.23 Ensure that the audit logs are forwarded off the cluster for retention
+    - audit_log_forwarding_enabled
   # 1.2.24 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate
     - api_server_audit_log_maxbackup
     - ocp_api_server_audit_log_maxbackup

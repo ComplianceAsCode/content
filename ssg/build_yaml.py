@@ -780,26 +780,33 @@ class Group(object):
         # top level group, this ensures groups that further configure a package or service
         # are after rules that install or remove it.
         groups_in_group = list(self.groups.keys())
-        # The account group has to precede audit group because
-        # the rule package_screen_installed is desired to be executed before the rule
-        # audit_rules_privileged_commands, othervise the rule
-        # does not catch newly installed screeen binary during remediation
-        # and report fail
-        # the software group should come before the
-        # bootloader-grub2 group because of conflict between
-        # rules rpm_verify_permissions and file_permissions_grub2_cfg
-        # specific rules concerning permissions should
-        # be applied after the general rpm_verify_permissions
-        # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
-        # the firewalld_activation must come before ruleset_modifications, othervise
-        # remediations for ruleset_modifications won't work
-        # rules from group disabling_ipv6 must precede rules from configuring_ipv6,
-        # otherwise the remediation prints error although it is successful
         priority_order = [
+            # Make sure rpm_verify_(hashes|permissions|ownership) are run before any other rule.
+            # Due to conflicts between rules rpm_verify_* rules and any rule that configures
+            # stricter settings, like file_permissions_grub2_cfg and sudo_dedicated_group,
+            # the rules deviating from the system default should be evaluated later.
+            # So that in the end the system has contents, permissions and ownership reset, and
+            # any deviations or stricter settings are applied by the rules in the profile.
+            "software", "integrity", "integrity-software", "rpm_verification",
+
+            # The account group has to precede audit group because
+            # the rule package_screen_installed is desired to be executed before the rule
+            # audit_rules_privileged_commands, othervise the rule
+            # does not catch newly installed screen binary during remediation
+            # and report fail
             "accounts", "auditing",
-            "software", "bootloader-grub2",
+
+
+            # The FIPS group should come before Crypto,
+            # if we want to set a different (stricter) Crypto Policy than FIPS.
             "fips", "crypto",
+
+            # The firewalld_activation must come before ruleset_modifications, othervise
+            # remediations for ruleset_modifications won't work
             "firewalld_activation", "ruleset_modifications",
+
+            # Rules from group disabling_ipv6 must precede rules from configuring_ipv6,
+            # otherwise the remediation prints error although it is successful
             "disabling_ipv6", "configuring_ipv6"
         ]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)

@@ -6,6 +6,7 @@
       <extend_definition comment="prelink disabled" definition_ref="disable_prelink" />
       <extend_definition comment="package dracut-fips installed" definition_ref="package_dracut-fips_installed" />
       <extend_definition comment="package dracut-fips-aesni installed" definition_ref="package_dracut-fips-aesni_installed" />
+      <extend_definition comment="check /etc/system-fips exists" definition_ref="etc_system_fips_exists" />
       <criteria operator="OR">
         <criterion test_ref="test_grub2_enable_fips_mode" comment="check for fips=1 in /etc/default/grub via GRUB_CMDLINE_LINUX" />
         <criteria operator="AND">

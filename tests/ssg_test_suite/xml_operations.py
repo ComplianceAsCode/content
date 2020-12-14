@@ -23,6 +23,8 @@ SYSTEM_ATTRIBUTE = {
 }
 
 
+BENCHMARK_QUERY = ".//ds:component/xccdf-1.2:Benchmark"
+
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
@@ -84,13 +86,40 @@ def remove_machine_platform(root):
 
 
 def remove_machine_only_from_element(root, element_spec):
-    query = ".//ds:component/xccdf-1.2:Benchmark//{0}".format(element_spec)
+    query = BENCHMARK_QUERY + "//{0}".format(element_spec)
     elements = root.findall(query, PREFIX_TO_NS)
     for el in elements:
         platforms = el.findall("./xccdf-1.2:platform", PREFIX_TO_NS)
         for p in platforms:
             if p.get("idref") == "cpe:/a:machine":
                 el.remove(p)
+
+
+def remove_machine_remediation_condition(root):
+    remove_bash_machine_remediation_condition(root)
+    remove_ansible_machine_remediation_condition(root)
+
+
+def remove_bash_machine_remediation_condition(root):
+    query = BENCHMARK_QUERY + 'xccdf-1.2:fix[@system="urn:xccdf:fix:script:sh"]'
+    fix_elements = root.findall(query, PREFIX_TO_NS)
+    considered_machine_platform_checks = [
+        r"\[\s+!\s+-f\s+/\.dockerenv\s+\]\s+&&\s+\[\s+!\s+-f\s+/run/\.containerenv\s+\]",
+    ]
+    for el in fix_elements:
+        for check in considered_machine_platform_checks:
+            el.text = re.sub(check, "true", el.text)
+
+
+def remove_ansible_machine_remediation_condition(root):
+    query = BENCHMARK_QUERY + '//xccdf-1.2:fix[@system="urn:xccdf:fix:script:ansible"]'
+    fix_elements = root.findall(query, PREFIX_TO_NS)
+    considered_machine_platform_checks = [
+        r"\bansible_virtualization_type\s+not\s+in.*docker.*",
+    ]
+    for el in fix_elements:
+        for check in considered_machine_platform_checks:
+            el.text = re.sub(check, "True", el.text)
 
 
 def get_oscap_supported_cpes():

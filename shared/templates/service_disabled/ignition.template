@@ -1,0 +1,19 @@
+# platform = multi_platform_ocp,multi_platform_rhcos
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    systemd:
+      units:
+      - name: {{{ DAEMONNAME }}}.service
+        enabled: false
+        mask: true
+      - name: {{{ DAEMONNAME }}}.socket
+        enabled: false
+        mask: true

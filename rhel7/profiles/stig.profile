@@ -1,9 +1,9 @@
 documentation_complete: true
 
 metadata:
-    version: V2R8
+    version: V3R1
     SMEs:
-        - redhatrises
+        - carlosmmatos
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V2R8.
+    DISA STIG for Red Hat Enterprise Linux V3R1.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -155,6 +155,7 @@ selections:
     - mount_option_nosuid_removable_partitions
     - mount_option_nosuid_remote_filesystems
     - dir_perms_world_writable_system_owned
+    - dir_perms_world_writable_system_owned_group
     - accounts_umask_interactive_users
     - rsyslog_cron_logging
     - file_owner_cron_allow
@@ -287,6 +288,7 @@ selections:
     - sshd_enable_x11_forwarding
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
+    - xwindows_runlevel_target
     - sysctl_net_ipv4_ip_forward
     - mount_option_krb_sec_remote_filesystems
     - snmpd_not_default_password
@@ -312,3 +314,5 @@ selections:
     - mount_option_dev_shm_nosuid
     - audit_rules_privileged_commands_mount
     - package_MFEhiplsm_installed
+    - file_ownership_var_log_audit
+    - file_permissions_var_log_audit

@@ -109,6 +109,8 @@ public_key="$(cat ~/.ssh/id_rsa.pub)"
 podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
 ```
 
+or just call the `build_test_container.sh` script.
+
 *NOTE*: If you are setting up the suite as superuser (i.e. *sudo podman build ...*) use *public_key="$(sudo cat /root/.ssh/id_rsa.pub)"* instead of the first command.
 
 ### Docker
@@ -180,6 +182,7 @@ into a file ending with .conf and placed into the /etc/modprobe.d/ directory.
 Specify DataStream to use:
 - `--datastream`: Path to the datastream that you want to use for scanning.
   It will be transferred to the scanned system via SSH.
+  The option can be omitted if there is only one datastream in the build directory.
 
 Specify as last argument the id of a profile or rule to be tested.
 
@@ -278,6 +281,10 @@ Using Podman:
 ```
 ./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
+
+or just call the `test_rule_in_container.sh` script that passes the backend options for you
+in addition to `--remove-machine-only` and `--add-platform`
+that remove some testing limitations of the container backend.
 
 Using Docker:
 ```
@@ -384,9 +391,10 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 1. write a few fail scripts - for example removing the line, commenting it, wrong value, etc.
  into *DIR*
 1. write a pass script into *DIR* - (some rules can have more than one pass scenario)
+1. build the datastream by running `./build_product --datastream-only fedora`
 1. run `test_suite.py` with command:
 ```
-./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora --datastream ../build/ssg-fedora-ds.xml accounts_password_minlen_login_defs
+./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
 ```
 Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
 

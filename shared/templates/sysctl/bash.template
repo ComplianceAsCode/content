@@ -1,0 +1,32 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+. /usr/share/scap-security-guide/remediation_functions
+{{%- if SYSCTLVAL == "" %}}
+{{{ bash_instantiate_variables("sysctl_" + SYSCTLID + "_value") }}}
+
+#
+# Set runtime for {{{ SYSCTLVAR }}}
+#
+/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
+
+#
+# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
+#	else, add "{{{ SYSCTLVAR }}} = value" to /etc/sysctl.conf
+#
+replace_or_append '/etc/sysctl.conf' '^{{{ SYSCTLVAR }}}' "$sysctl_{{{ SYSCTLID }}}_value" '@CCENUM@'
+{{%- else %}}
+
+#
+# Set runtime for {{{ SYSCTLVAR }}}
+#
+/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+
+#
+# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
+#	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
+#
+replace_or_append '/etc/sysctl.conf' '^{{{ SYSCTLVAR }}}' "{{{ SYSCTLVAL }}}" '@CCENUM@'
+{{%- endif %}}

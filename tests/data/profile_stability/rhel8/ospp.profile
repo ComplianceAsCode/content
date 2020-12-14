@@ -84,6 +84,7 @@ selections:
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
 - grub2_disable_interactive_boot
+- grub2_kernel_trust_cpu_rng
 - grub2_page_poison_argument
 - grub2_pti_argument
 - grub2_slub_debug_argument
@@ -97,7 +98,6 @@ selections:
 - kernel_module_firewire-core_disabled
 - kernel_module_sctp_disabled
 - kernel_module_tipc_disabled
-- kernel_trust_cpu_rng
 - mount_option_boot_nodev
 - mount_option_boot_nosuid
 - mount_option_dev_shm_nodev
@@ -175,6 +175,8 @@ selections:
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - ssh_client_rekey_limit
+- ssh_client_use_strong_rng_csh
+- ssh_client_use_strong_rng_sh
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
 - sshd_disable_kerb_auth

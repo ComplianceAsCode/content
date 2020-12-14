@@ -4,7 +4,7 @@ metadata:
     SMEs:
         - JAORMX
         - mrogers950
-        - redhatrises
+        - carlosmmatos
 
 reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
 
@@ -41,3 +41,4 @@ selections:
     - ocp_idp_no_htpasswd
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
+    - audit_log_forwarding_enabled

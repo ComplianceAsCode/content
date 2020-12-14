@@ -2,7 +2,7 @@ documentation_complete: true
 
 metadata:
     SMEs:
-        - redhatrises
+        - carlosmmatos
 
 reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 

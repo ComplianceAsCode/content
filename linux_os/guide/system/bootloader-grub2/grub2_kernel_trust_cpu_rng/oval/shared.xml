@@ -1,0 +1,65 @@
+<def-group>
+  <definition class="compliance" id="grub2_kernel_trust_cpu_rng" version="1">
+    {{{ oval_metadata("Ensure the kernel is configured to trust the CPU hardware random number generator.") }}}
+    <criteria operator="OR" >
+      <criteria operator="AND">
+        <criterion comment="check if the option is compiled in" test_ref="test_trust_cpu_rng_compiled_in" />
+        <criterion comment="check if the option is not overridden through a boot parameter" test_ref="test_trust_cpu_rng_boot_param_off" negate="true" />
+      </criteria>
+      <criterion comment="check if the option is configured as a boot parameter" test_ref="test_trust_cpu_rng_boot_param_on" />
+    </criteria>
+  </definition>
+
+  <local_variable id="var_kernel_config_file" comment="the config file for currently running kernel" datatype="string" version="1">
+    <concat>
+      <literal_component>/boot/config-</literal_component>
+      <object_component object_ref="trust_cpu_rng_uname" item_field="os_release" />
+    </concat>
+  </local_variable>
+
+  <unix:uname_object id="trust_cpu_rng_uname" comment="determine version and build of currently running kernel" version="1" />
+
+  <ind:textfilecontent54_test id="test_trust_cpu_rng_compiled_in" check="all" check_existence="all_exist" version="1" comment="check if the parameter was set at the compile time for current kernel">
+    <ind:object object_ref="object_trust_cpu_rng_compiled_in" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_trust_cpu_rng_compiled_in" version="1">
+    <ind:filepath operation="equals" var_ref="var_kernel_config_file" />
+    <ind:pattern operation="pattern match">^CONFIG_RANDOM_TRUST_CPU=Y$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+<ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_off"
+  comment="check forkernel command line parameters random.trust_cpu=off in /boot/grub2/grubenv for all kernels"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_trust_cpu_rng_boot_param" />
+    <ind:state state_ref="state_trust_cpu_rng_boot_param_off" />
+  </ind:textfilecontent54_test>
+
+
+  <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_on"
+  comment="check forkernel command line parameters random.trust_cpu=on in /boot/grub2/grubenv for all kernels"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_trust_cpu_rng_boot_param" />
+    <ind:state state_ref="state_trust_cpu_rng_boot_param_on" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_trust_cpu_rng_boot_param"
+  version="1">
+    <ind:filepath>/boot/grub2/grubenv</ind:filepath>
+    <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_trust_cpu_rng_boot_param_on"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?random\.trust_cpu=on(?:\s.*)?$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_trust_cpu_rng_boot_param_off"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?random\.trust_cpu=off(?:\s.*)?$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+
+</def-group>
