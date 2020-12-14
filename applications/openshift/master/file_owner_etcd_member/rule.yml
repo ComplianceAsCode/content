@@ -2,14 +2,15 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Verify User Who Owns The ETCD Member Pod Specification File'
+title: 'Verify User Who Owns The etcd Member Pod Specification File'
 
-description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", owner="root") }}}'
+description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
 
 rationale: |-
-    The ETCD specification file contains information about the configuration of the
-    OpenShift scheduler that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+    If the etcd specification file contains the configuration of
+    the etcd highly-available key-value store which Kubernetes uses for
+    persistent storage of all of its REST API object. Protection of this
+    file is critical for OpenShift security.
 
 severity: medium
 
@@ -19,14 +20,15 @@ identifiers:
 references:
     cis: 1.1.8
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", owner="root") }}}'
+ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
+
+platform: ocp4-master-node
 
 template:
     name: file_owner
     vars:
         filepath: ^/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml$
         fileuid: '0'
-        missing_file_pass: "true"
         filepath_is_regex: "true"

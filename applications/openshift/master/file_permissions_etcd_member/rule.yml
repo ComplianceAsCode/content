@@ -2,16 +2,17 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Verify Permissions on the ETCD Member Pod Specification File'
+title: 'Verify Permissions on the etcd Member Pod Specification File'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", perms="0644") }}}
+    {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", perms="0644") }}}
 
 rationale: |-
-    If the ETCD specification file is writable by a group-owner or the
+    If the etcd specification file is writable by a group-owner or the
     world the risk of its compromise is increased. The file contains the configuration of
-    an OpenShift scheduler that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+    the etcd highly-available key-value store which Kubernetes uses for
+    persistent storage of all of its REST API object. Protection of this
+    file is critical for OpenShift security.
 
 severity: medium
 
@@ -21,15 +22,16 @@ identifiers:
 references:
     cis: 1.1.7
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", perms="-rw-r--r--") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", perms="-rw-r--r--") }}}
+    {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", perms="-rw-r--r--") }}}
+
+platform: ocp4-master-node
 
 template:
     name: file_permissions
     vars:
         filepath: ^/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml$
         filemode: '0644'
-        missing_file_pass: "true"
         filepath_is_regex: "true"
