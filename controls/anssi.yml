@@ -554,12 +554,41 @@ controls:
   - id: R43
     title: Hardening and configuring the syslog
     level: intermediary
+    description: >-
+      The chosen syslog server must be hardened according to the security guides associated with this server.
+      The configuration of the service must be performed according to the
+      'Security Recommendations for the implementation of a logging system' (DAT-NT-012) accessible on the ANSSI website.
+    notes: >-
+      A lot of recommendatios and requirements from the DAT-NT-012 document are administrative and hard to automate.
+      The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
+      be customized for the systems deployment requirements.
+    automated: partially
     rules:
+    # Based on DAT-NT-012 R3
+    - package_chrony_installed
+    - chronyd_specify_remote_server
+
+    # Derived from DAT-NT-012 R4
+    - partition_for_var_log_audit
+
+    # Derived from DAT-NT-012 R5, these are also covered in R7
+    # logcollector is a placeholder for the name or IP of the system to send the logs to
+    - rsyslog_remote_loghost_address=logcollector
+    - rsyslog_remote_loghost
+
+    # Derived from DAT-NT-012 R12
+    - package_rsyslog-gnutls_installed
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
+
+    # Based on DAT-NT-012 R18
+    # The rules sets the rotation frequency to daily
+    - ensure_logrotate_activated
+
+    # Based on DAT-NT-012 R20
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
-    - ensure_logrotate_activated
-    - rsyslog_remote_loghost
 
   - id: R44
     level: intermediary
