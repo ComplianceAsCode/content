@@ -2,13 +2,13 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Verify Group Who Owns The Kube Controller Manager Pod Specification File'
+title: 'Verify Group Who Owns The Kubernetes Controller Manager Pod Specification File'
 
-description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml", group="root") }}}'
+description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", group="root") }}}'
 
 rationale: |-
-    The Kube specification file contains information about the configuration of the
-    OpenShift Controller Manager Server that is configured on the system. Protection of this file is
+    The Kubernetes specification file contains information about the configuration of the
+    Kubernetes Controller Manager Server that is configured on the system. Protection of this file is
     critical for OpenShift security.
 
 severity: medium
@@ -19,14 +19,15 @@ identifiers:
 references:
     cis: 1.1.4
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml", group="root") }}}'
+ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/kube-controller-manager-pod.yaml", group="root") }}}'
+
+platform: ocp4-master-node
 
 template:
     name: file_groupowner
     vars:
         filepath: '^/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/kube-controller-manager-pod.yaml$'
         filepath_is_regex: 'true'
-        missing_file_pass: 'true'
         filegid: '0'
