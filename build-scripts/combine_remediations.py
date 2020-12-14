@@ -80,8 +80,6 @@ def main():
     remediation.write_fixes_to_dir(fixes, args.remediation_type,
                                    args.output_dir)
 
-    sys.stderr.write("Collected %d %s remediations.\n" % (len(fixes), args.remediation_type))
-
     sys.exit(0)
 
 
