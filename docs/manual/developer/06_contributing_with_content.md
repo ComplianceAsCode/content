@@ -1613,6 +1613,12 @@ the following to `rule.yml`:
     -   **sysctlval** - value of the sysctl value, eg. `'1'`. If this
         parameter is not specified, XCCDF Value is used instead.
 
+    -   **operation** - operation used for comparison of collected object
+        with **sysctlval**. Default value: `equals`.
+
+    -   **sysctlval_regex** - if **operation** is `pattern match`, this
+        parameter is used instead of **sysctlval**.
+
 -   Languages: Ansible, Bash, OVAL
 
 #### timer_enabled
