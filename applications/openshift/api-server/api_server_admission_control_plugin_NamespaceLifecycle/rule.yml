@@ -22,7 +22,7 @@ references:
 ocil_clause: 'API server config contains <tt>NamespaceLifecycle</tt>'
 
 ocil: |-
-    To verify that the <tt>NamespaceLifecycle</tt> plugin is be enabled in
+    To verify that the <tt>NamespaceLifecycle</tt> plugin is enabled in
     the apiserver configuration, run:
     <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
 
