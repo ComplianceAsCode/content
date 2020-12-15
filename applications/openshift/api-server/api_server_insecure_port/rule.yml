@@ -8,9 +8,9 @@ description: |-
     By default, traffic for the OpenShift API server is served over
     HTTPS with authentication and authorization, and the secure API endpoint
     is bound to <tt>0.0.0.0:8443</tt>. To ensure that the insecure port configuration
-    has not been enabled, the <tt>insecure-port</tt> setting should not exist
-    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
-    and remove the <tt>insecure-port</tt> if it exists:
+    has not been enabled, the <tt>insecure-port</tt> parameter should be set to 0.
+    Edit the <tt>openshift-kube-apiserver</tt> configmap and change the
+    <tt>insecure-port</tt> value to 0:
     <pre>
     "apiServerArguments":{
       ...
@@ -35,7 +35,7 @@ references:
 ocil_clause: '<tt>insecure-port</tt> setting exists'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-port"]'</pre>
     The output should return <pre>0</pre>.
 
