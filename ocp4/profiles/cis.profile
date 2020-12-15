@@ -75,7 +75,9 @@ selections:
   # 1.2.20 Ensure that the --secure-port argument is not set to 0
     - api_server_bind_address
   # 1.2.21 Ensure that the --profiling argument is set to false
-    - api_server_profiling
+    # (jhrozek): This rule should temporarily be commented out as OCP diverges from CIS
+    #            and we need to improve our reply to this control
+    # - api_server_profiling
   # 1.2.22 Ensure that the --audit-log-path argument is set
     - api_server_audit_log_path
     - openshift_api_server_audit_log_path
