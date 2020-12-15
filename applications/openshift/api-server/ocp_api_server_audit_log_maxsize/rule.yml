@@ -6,8 +6,8 @@ title: 'Configure OpenShift API Server Maximum Audit Log Size'
 
 description: |-
     To rotate audit logs upon reaching a maximum size,
-    edit the <tt>openshift-apiserver</tt> configmap on
-    the master node(s) and set the <tt>audit-log-maxsize</tt> parameter to
+    edit the <tt>openshift-apiserver</tt> configmap
+    and set the <tt>audit-log-maxsize</tt> parameter to
     an appropriate size in MB. For example, to set it to 100 MB:
     <pre>
     "apiServerArguments":{
@@ -31,7 +31,7 @@ references:
 ocil_clause: '<tt>audit-log-maxsize</tt> is set to <tt>100</tt> or as appropriate'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxsize"]'</pre>
     The output should return a value of <pre>["100"]</pre> or as appropriate.
 

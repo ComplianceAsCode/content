@@ -5,8 +5,8 @@ prodtype: ocp4
 title: 'Configure the Audit Log Path'
 
 description: |-
-    To enable auditing on the OpenShift API Server, the audit log path must be set.
-    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    To enable auditing on the Kubernetes API Server, the audit log path must be set.
+    Edit the <tt>openshift-kube-apiserver</tt> configmap
     and set the <tt>audit-log-path</tt> to a suitable path and file
     where audit logs should be written. For example:
     <pre>
@@ -17,7 +17,7 @@ description: |-
     </pre>
 
 rationale: |-
-    Auditing of the API Server is not enabled by default. Auditing the API Server
+    Auditing of the Kubernetes API Server is not enabled by default. Auditing the API Server
     provides a security-relevant chronological set of records documenting the sequence
     of activities that have affected the system by users, administrators, or other
     system components.
@@ -30,8 +30,9 @@ references:
 ocil_clause: '<tt>audit-log-path</tt> does not contain a valid audit file path'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-path"]'</pre>
+    The output should return a valid audit log path.
 
 warnings:
     - general: |-
