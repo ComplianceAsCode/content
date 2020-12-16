@@ -2,14 +2,17 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Verify Group Who Owns The ETCD Member Pod Specification File'
+title: 'Verify Group Who Owns The etcd Member Pod Specification File'
 
-description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", group="root") }}}'
+description: '{{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", group="root") }}}'
 
 rationale: |-
-    The Kube Specification file contains information about the configuration of the
-    OpenShift scheduler that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+    The etcd pod specification file controls various parameters that
+    set the behavior of the etcd service in the master node. etcd is a
+    highly-available key-value store which Kubernetes uses for persistent
+    storage of all of its REST API object. You should restrict its file
+    permissions to maintain the integrity of the file. The file should be
+    writable by only the administrators on the system.
 
 severity: medium
 
@@ -19,14 +22,15 @@ identifiers:
 references:
     cis: 1.1.8
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml", group="root") }}}'
+ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", group="root") }}}'
+
+platform: ocp4-master-node
 
 template:
     name: file_groupowner
     vars:
         filepath: ^/etc/kubernetes/static-pod-resources/etcd-pod-.*/etcd-pod.yaml$
         filegid: '0'
-        missing_file_pass: "true"
         filepath_is_regex: "true"

@@ -25,9 +25,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/etcd/member/", gro
 ocil: |-
     {{{ ocil_file_group_owner(file="/var/lib/etcd/member/", group="root") }}}
 
+platform: ocp4-master-node
+
 template:
     name: file_groupowner
     vars:
         filepath: /var/lib/etcd/member/
         filegid: '0'
-        missing_file_pass: "true"

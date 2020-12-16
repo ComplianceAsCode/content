@@ -26,9 +26,10 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/etcd", perms="drwx
 ocil: |-
     {{{ ocil_file_permissions(file="/var/lib/etcd", perms="drwx------") }}}
 
+platform: ocp4-master-node
+
 template:
     name: file_permissions
     vars:
         filepath: /var/lib/etcd/member/
         filemode: '0700'
-        missing_file_pass: "true"
