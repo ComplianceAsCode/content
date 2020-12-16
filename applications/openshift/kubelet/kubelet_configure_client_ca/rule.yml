@@ -9,7 +9,7 @@ description: |-
     can subject the kubelet to man-in-the-middle attacks.
 
     To configure a client CA certificate, edit the kubelet configuration
-    file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    file <tt>/etc/kubernetes/kubelet.conf</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>
     authentication:
@@ -31,7 +31,7 @@ ocil_clause: 'no client CA certificate has been configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 x509 /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ sudo grep -A1 x509 /etc/kubernetes/kubelet.conf</pre>
     The output should contain a configured certificate like <tt>/etc/kubernetes/kubelet-ca.crt</tt>.
 
 identifiers:
