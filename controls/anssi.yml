@@ -125,12 +125,14 @@ controls:
     notes: Check the vendor CVE feed and configure automatic install of security related updates.
     rules:
     - security_patches_up_to_date
+{{% if product in ['fedora', 'ol8', 'rhel8'] %}}
     - package_dnf-automatic_installed
     - timer_dnf-automatic_enabled
     # Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
     # Configure dnf-automatic to Install Only Security Updates
     - dnf-automatic_security_updates_only
+{{% endif %}}
 
   - id: R9
     level: intermediary
@@ -480,7 +482,8 @@ controls:
     # https://bugzilla.redhat.com/show_bug.cgi?id=1229472
     # SHA_CRYPT_MIN_ROUNDS 65536
     - var_password_pam_unix_rounds=65536
-    - accounts_password_pam_unix_rounds
+    - accounts_password_pam_unix_rounds_system_auth
+    - accounts_password_pam_unix_rounds_password_auth
 
   - id: R33
     title: Securing access to remote user databases
@@ -579,9 +582,11 @@ controls:
     - rsyslog_remote_loghost
 
     # Derived from DAT-NT-012 R12
+{{% if product in ['fedora', 'ol8', 'rhel8'] %}}
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
+{{% endif %}}
 
     # Based on DAT-NT-012 R18
     # The rules sets the rotation frequency to daily
@@ -766,7 +771,7 @@ controls:
     # Add rule for sebool allow_execheap
     # Add rule for sebool allow_execmem
     # Add rule for sebool allow_execstack
-    - var_sebool_secure_mode_insmod=on
+    - var_secure_mode_insmod=on
     - sebool_secure_mode_insmod
     - sebool_ssh_sysadm_login
 
