@@ -323,13 +323,15 @@ controls:
 
     # RFC 1337
     # net.ipv4.tcp_rfc1337 = 1
+    - sysctl_net_ipv4_tcp_rfc1337
 
     # Ignore responses that do not comply with RFC 1122
     # net.ipv4.icmp_ignore_bogus_error_responses = 1
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
 
     # Increase the range for ephemeral ports
-    # net.ipv4.ip_local_port_ranges = 32768 65535
+    # net.ipv4.ip_local_port_range = 32768 65535
+    - sysctl_net_ipv4_ip_local_port_range
 
     # Use SYN cookies
     # net.ipv4.tcp_syncookies = 1
@@ -338,22 +340,32 @@ controls:
     # Disable support for "router solicitations"
     # net.ipv6.conf.all.router_solicitations = 0
     # net.ipv6.conf.default.router_solicitations = 0
+    - sysctl_net_ipv6_conf_all_router_solicitations
+    - sysctl_net_ipv6_conf_default_router_solicitations
 
     # Do not accept "router preferences" by "router advertisements"
     # net.ipv6.conf.all.accept_ra_rtr_pref = 0
     # net.ipv6.conf.default.accept_ra_rtr_pref = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_rtr_pref
+    - sysctl_net_ipv6_conf_default_accept_ra_rtr_pref
 
     # No auto configuration of prefixes by router advertisements
     # net.ipv6.conf.all.accept_ra_pinfo = 0
     # net.ipv6.conf.default.accept_ra_pinfo = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_pinfo
+    - sysctl_net_ipv6_conf_default_accept_ra_pinfo
 
     # No default router learning by router advertisements
     # net.ipv6.conf.all.accept_ra_defrtr = 0
     # net.ipv6.conf.default.accept_ra_defrtr = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_defrtr
+    - sysctl_net_ipv6_conf_default_accept_ra_defrtr
 
     # No auto configuration of addresses from "routers" advertisements
     # net.ipv6.conf.all.autoconf = 0
     # net.ipv6.conf.default.autoconf = 0
+    - sysctl_net_ipv6_conf_all_autoconf
+    - sysctl_net_ipv6_conf_default_autoconf
 
     # Do not accept ICMPs of redirect type
     # net.ipv6.conf.all_accept_redirects = 0
@@ -372,6 +384,8 @@ controls:
     # Maximum number of autoconfigured addresses per interface
     # net.ipv6.conf.all.max_addresses = 1
     # net.ipv6.conf.default.max_addresses = 1
+    - sysctl_net_ipv6_conf_all_max_addresses
+    - sysctl_net_ipv6_conf_default_max_addresses
 
   - id: R23
     level: intermediary
