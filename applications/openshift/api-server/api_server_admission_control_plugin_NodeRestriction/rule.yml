@@ -31,7 +31,7 @@ ocil_clause: '<tt>enable-admission-plugins</tt> does not contain <tt>NodeRestric
 ocil: |-
     Ensure that the NodeRestriction plugin is enabled in the list of enabled plugins in
     the apiserver configuration by running the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'ServiceAccount'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep 'NodeRestriction'</pre>
 
 warnings:
 - general: |-

@@ -22,12 +22,12 @@ severity: medium
 references:
     cis: 1.2.11
 
-ocil_clause: '<tt>AlwaysAllow</tt> admission control plugin is not set'
+ocil_clause: '<tt>AlwaysAdmit</tt> admission control plugin is not set'
 
 ocil: |-
-    To verify that the <tt>AlwaysAllow</tt> admission control plugin is not set, run the following command:
+    To verify that the <tt>AlwaysAdmit</tt> admission control plugin is not set, run the following command:
     <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
-    The output should return no output.
+    The output should not contain <tt>AlwaysAdmit</tt>
 
 warnings:
 - general: |-

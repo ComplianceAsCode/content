@@ -39,7 +39,7 @@ ocil_clause: '<tt>token-auth-file</tt> argument is configured'
 ocil: |-
     Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments' | grep "token-auth-file"</pre>
-    The output should return no output.
+    The output should be empty as OpenShift does not support token-based authentication at all.
 
 warnings:
     - general: |-

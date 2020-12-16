@@ -9,8 +9,8 @@ description: |-
     connections, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, verify
     that <tt>apiServerArguments</tt> has the <tt>etcd-cafile</tt> configured in
-    the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap on the master
-    node(s) to something similar to:
+    the <tt>openshift-kube-apiserver</tt> <tt>config</tt> configmap  to something
+    similar to:
     <pre>
     "apiServerArguments": {
       ...
@@ -39,7 +39,7 @@ references:
 ocil_clause: '<tt>etcd-cafile</tt> is not set as appropriate for <tt>apiServerArguments</tt>'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["etcd-cafile"]'</pre>
     The output should return a configured CA certificate for ETCD.
 

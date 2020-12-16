@@ -32,7 +32,7 @@ references:
 ocil_clause: '<tt>aescbc</tt> is not set as the encryption type for etcd.'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
     The output should return <tt>aescdc</tt> as the encryption type.
 
