@@ -8,7 +8,7 @@ description: |-
     By default, anonymous access to the Kubelet server is enabled. This
     configuration check ensures that anonymous requests to the Kubelet
     server are disabled. Edit the Kubelet server configuration file
-    <tt>/etc/kubernetes/kubelet.conf</tt> on the worker node(s)
+    <tt>/etc/kubernetes/kubelet.conf</tt> on the kubelet node(s)
     and set the below parameter:
     <pre>
     authentication:
@@ -36,7 +36,7 @@ identifiers:
 ocil_clause: '<tt>anonymous</tt> authentication is not set to <tt>false</tt>'
 
 ocil: |-
-    Run the following command on the worker node(s):
+    Run the following command on the kubelet node(s):
     <pre>$ sudo grep -A1 anonymous /etc/kubernetes/kubernetes.conf</pre>
     The output should return <pre>enabled: false</pre>.
 

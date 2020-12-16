@@ -6,7 +6,7 @@ title: 'Ensure That The kubelet Server Key Is Correctly Set'
 
 description: |-
     To ensure the kubelet TLS private server key certificate is configured, edit the
-    kubelet configuration file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    kubelet configuration file <tt>/etc/kubernetes/kubelet.conf</tt>
     and configure the kubelet private key file.
     <pre>tlsPrivateKeyFile: /path/to/TLS/private.key</pre>
 
@@ -26,6 +26,6 @@ ocil_clause: 'the kubelet server key certificate is not configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep tlsPrivateKeyFile /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ sudo grep tlsPrivateKeyFile /etc/kubernetes/kubelet.conf</pre>
     Verify that a TLS private key is configured.
 
