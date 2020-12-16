@@ -37,7 +37,7 @@ ocil_clause: '<tt>anonymous</tt> authentication is not set to <tt>false</tt>'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 anonymous /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ sudo grep -A1 anonymous /etc/kubernetes/kubelet.conf</pre>
     The output should return <pre>enabled: false</pre>.
 
 template:
