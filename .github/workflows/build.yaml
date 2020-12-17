@@ -1,0 +1,20 @@
+name: Build Content
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  validate:
+    name: Build Content
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install Deps
+        uses: mstksg/get-package@master
+        with:
+                apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build
+        run: |
+          ./build_product rhel7 rhel8
