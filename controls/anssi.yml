@@ -398,7 +398,8 @@ controls:
     title: Setting up system sysctl
     rules:
     # Disabling SysReq
-    # kernel. sysrq = 0
+    # kernel.sysrq = 0
+    - sysctl_kernel_sysrq
 
     # No core dump of executable setuid
     - sysctl_fs_suid_dumpable
@@ -414,9 +415,11 @@ controls:
 
     # Prohibit mapping of memory in low addresses (0)
     # vm.mmap_min_addr = 65536
+    - sysctl_vm_mmap_min_addr
 
     # Larger choice space for PID values
     # kernel.pid_max = 65536
+    - sysctl_kernel_pid_max
 
     # Obfuscation of addresses memory kernel
     - sysctl_kernel_kptr_restrict
@@ -431,7 +434,11 @@ controls:
     # kernel.perf_event_paranoid = 2
     # kernel.perf_event_max_sample_rate = 1
     # kernel.perf_cpu_time_max_percent = 1
+    - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_perf_event_max_sample_rate
+    - sysctl_kernel_perf_cpu_time_max_percent
 
+  
   - id: R24
     level: enhanced
     title: Disabling the loading of kernel modules
