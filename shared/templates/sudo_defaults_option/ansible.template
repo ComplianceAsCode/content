@@ -9,3 +9,4 @@
     path: /etc/sudoers
     regexp: '^(?!#)[\s]*Defaults.*[\s]+{{{ OPTION }}}[\s]*.*$'
     line: 'Defaults {{{ OPTION }}}'
+    validate: /usr/sbin/visudo -cf /etc/sudoers
