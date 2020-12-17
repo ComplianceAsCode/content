@@ -1,0 +1,7 @@
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+{{{ ansible_lineinfile(
+  msg="Make changes to /etc/pam.d/login",
+  path="/etc/pam.d/login",
+  regex="^\s*session\s+required\s+pam_namespace.so\s*$",
+  new_line="session    required     pam_namespace.so"
+) }}}
