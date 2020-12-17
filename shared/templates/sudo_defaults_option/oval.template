@@ -1,6 +1,6 @@
 <def-group>
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Checks sudo usage without password") }}}
+    {{{ oval_metadata("Checks sudoers Defaults {{ OPTION }} configuration") }}}
     <criteria >
         <criterion comment="{{{ OPTION }}} is configured in /etc/sudoers or /etc/sudoers.d/" test_ref="test_{{{ OPTION }}}_sudoers" />
     </criteria>
