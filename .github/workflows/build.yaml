@@ -1,9 +1,9 @@
 name: Build Content
 on:
   push:
-    branches: [ master ]
+    branches: [ master, policy_source ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, policy_source ]
 jobs:
   validate:
     name: Build Content
