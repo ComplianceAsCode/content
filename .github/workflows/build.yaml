@@ -18,3 +18,6 @@ jobs:
       - name: Build
         run: |
           ./build_product rhel7 rhel8
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
