@@ -1,5 +1,5 @@
---- scap-security-guide.spec	2020-09-25 11:49:18.257916790 +0200
-+++ scap-security-guide_epel7.spec	2020-09-25 11:49:45.951338075 +0200
+--- /home/vojta/repos/downstream/fedora/scap-security-guide/scap-security-guide.spec	2020-12-18 12:17:34.751380285 +0100
++++ scap-security-guide.spec	2020-12-18 14:35:49.094404028 +0100
 @@ -11,9 +11,9 @@
  BuildRequires:	expat
  BuildRequires:	openscap-scanner >= 1.2.5
@@ -13,11 +13,12 @@
  Requires:	xml-common, openscap-scanner >= 1.2.5
  Obsoletes:	openscap-content < 0:0.9.13
  Provides:	openscap-content
-@@ -41,13 +41,16 @@
+@@ -41,13 +41,17 @@
  
  %prep
  %setup -q
 +mkdir build
++sed -i 's/option(SSG_PRODUCT_OCP4 "If enabled, the OCP4 SCAP content will be built" \${SSG_PRODUCT_DEFAULT})/option(SSG_PRODUCT_OCP4 "If enabled, the OCP4 SCAP content will be built" false)/' CMakeLists.txt
  
  %build
 -%cmake
