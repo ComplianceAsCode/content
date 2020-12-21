@@ -14,8 +14,8 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-83354-1
 
 references:
     cis: 1.1.12
@@ -25,9 +25,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/etcd/member/", gro
 ocil: |-
     {{{ ocil_file_group_owner(file="/var/lib/etcd/member/", group="root") }}}
 
+platform: ocp4-master-node
+
 template:
     name: file_groupowner
     vars:
         filepath: /var/lib/etcd/member/
         filegid: '0'
-        missing_file_pass: "true"

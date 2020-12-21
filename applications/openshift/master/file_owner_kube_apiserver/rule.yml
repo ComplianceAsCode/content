@@ -2,31 +2,32 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Verify User Who Owns The Kube API Server Pod Specification File'
+title: 'Verify User Who Owns The Kubernetes API Server Pod Specification File'
 
-description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-.*/kube-apiserver-pod.yaml", owner="root") }}}'
+description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", owner="root") }}}'
 
 rationale: |-
-    The Kube specification file contains information about the configuration of the
-    OpenShift API Server that is configured on the system. Protection of this file is
+    The Kubernetes specification file contains information about the configuration of the
+    Kubernetes API Server that is configured on the system. Protection of this file is
     critical for OpenShift security.
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-83372-3
 
 references:
     cis: 1.1.2
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-.*/kube-apiserver-pod.yaml", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-.*/kube-apiserver-pod.yaml", owner="root") }}}'
+ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", owner="root") }}}'
+
+platform: ocp4-master-node
 
 template:
     name: file_owner
     vars:
         filepath: "^/etc/kubernetes/static-pod-resources/kube-apiserver-pod-.*/kube-apiserver-pod.yaml$"
         filepath_is_regex: "true"
-        missing_file_pass: "true"
         fileuid: '0'

@@ -5,27 +5,32 @@ prodtype: ocp4
 title: 'Verify Group Who Owns The Kubernetes Scheduler Kubeconfig File'
 
 description: |-
-  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}
+  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}
 
 rationale: |-
   The kubeconfig for the Scheduler contains paramters for the scheduler
   to access the Kube API.
   You should set its file ownership to maintain the integrity of the file.
 
+identifiers:
+  cce@ocp4: CCE-83471-3
+
+
 severity: medium
 
 references:
   cis: 1.1.16
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}'
 
 ocil: |-
-  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}
+  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", group="root") }}}
+
+platform: ocp4-master-node
 
 template:
   name: file_groupowner
   vars:
     filepath: ^/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig$
     filegid: '0'
-    missing_file_pass: "true"
     filepath_is_regex: "true"

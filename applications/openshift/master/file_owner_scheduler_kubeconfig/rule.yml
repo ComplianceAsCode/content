@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify User Who Owns The Kubernetes Scheduler Kubeconfig File'
 
 description: |-
-  {{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", owner="root") }}}
+  {{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", owner="root") }}}
 
 rationale: |-
   The kubeconfig for the Scheduler contains paramters for the scheduler
@@ -14,21 +14,22 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-84017-3
 
 references:
   cis: 1.1.16
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", owner="root") }}}'
 
 ocil: |-
-  {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig", owner="root") }}}
+  {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", owner="root") }}}
+
+platform: ocp4-master-node
 
 template:
   name: file_owner
   vars:
     filepath: ^/etc/kubernetes/static-pod-resources/kube-scheduler-pod-.*/configmaps/scheduler-kubeconfig/kubeconfig$
     fileuid: '0'
-    missing_file_pass: "true"
     filepath_is_regex: "true"

@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Group Who Owns The OpenShift PKI Private Key Files'
 
 description: |-
-  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.key", group="root") }}}
+  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.key", group="root") }}}
 
 rationale: |-
   OpenShift makes use of a number of certificates as part of its operation.
@@ -13,15 +13,21 @@ rationale: |-
   information and all files in that directory to maintain their integrity.
   The directory and files should be owned by root:root.
 
+identifiers:
+  cce@ocp4: CCE-84172-6
+
+
 severity: medium
 
 references:
   cis: 1.1.19
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.key", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.key", group="root") }}}'
 
 ocil: |-
-  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.key", group="root") }}}
+  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.key", group="root") }}}
+
+platform: ocp4-master-node
 
 # Note that this recursively checks for files, and the form is as follows:
 #
@@ -41,5 +47,4 @@ template:
   vars:
     filepath: ^/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.key$
     filegid: '0'
-    missing_file_pass: "true"
     filepath_is_regex: "true"

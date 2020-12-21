@@ -741,7 +741,7 @@ func matchFoundResultToExpectation(foundResult cmpv1alpha1.ComplianceCheckResult
 			}
 			// NOTE(jaosorior): Normally, the results will have a reference
 			// to the role they apply to in the name. This is hacky...
-			if strings.Contains(foundResult.GetName(), role) {
+			if strings.Contains(foundResult.GetLabels()[cmpv1alpha1.ComplianceScanLabel], role) {
 				return strings.ToLower(string(foundResult.Status)) == strings.ToLower(roleResult), nil
 			}
 		}

@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Group Who Owns The Etcd PKI Certificate Files'
 
 description: |-
-  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.internal\.crt", group="root") }}}
+  {{{ describe_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.crt", group="root") }}}
 
 rationale: |-
   OpenShift makes use of a number of certificates as part of its operation.
@@ -13,15 +13,21 @@ rationale: |-
   information and all files in that directory to maintain their integrity.
   The directory and files should be owned by the system administrator.
 
+identifiers:
+  cce@ocp4: CCE-83890-4
+
+
 severity: medium
 
 references:
   cis: 1.1.19
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.internal\.crt", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.crt", group="root") }}}'
 
 ocil: |-
-  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.internal\.crt", group="root") }}}
+  {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/*/*/*/*.crt", group="root") }}}
+
+platform: ocp4-master-node
 
 # Note that this recursively checks for files, and the form is as follows:
 #
@@ -39,7 +45,6 @@ ocil: |-
 template:
   name: file_groupowner
   vars:
-    filepath: ^/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.internal\.crt$
+    filepath: ^/etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.crt$
     filegid: '0'
-    missing_file_pass: "true"
     filepath_is_regex: "true"

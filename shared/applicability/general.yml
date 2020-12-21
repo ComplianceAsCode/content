@@ -27,8 +27,7 @@ cpes:
   - not_s390x_arch:
       name: "cpe:/a:not_s390x_arch"
       title: "System architecture is not S390X"
-      check_id: system_info_architecture_not_s390x
-
+      check_id: proc_sys_kernel_osrelease_arch_not_s390x
 
   - nss-pam-ldapd:
       name: "cpe:/a:nss-pam-ldapd"
@@ -59,6 +58,11 @@ cpes:
       name: "cpe:/a:sssd-ldap"
       title: "SSSD is configured to use LDAP"
       check_id: sssd_conf_uses_ldap
+
+  - sudo:
+      name: "cpe:/a:sudo"
+      title: "Package sudo is installed"
+      check_id: installed_env_has_sudo_package
 
   - systemd:
       name: "cpe:/a:systemd"

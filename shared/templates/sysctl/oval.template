@@ -9,7 +9,11 @@
     <ind:pattern operation="pattern match">(?:^|.*\n)[^#]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(\d+)[\s]*\n</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- else -%}}
+{{% if OPERATION == "pattern match" %}}
+    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*{{{ SYSCTLVAL_REGEX }}}[\s]*$</ind:pattern>
+{{% else %}}
     <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*{{{ SYSCTLVAL }}}[\s]*$</ind:pattern>
+{{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
 {{%- endif -%}}
 {{%- endmacro -%}}
@@ -78,7 +82,11 @@
   <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
 {{%- else %}}
   <unix:sysctl_state id="state_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
-    <unix:value datatype="{{{ DATATYPE }}}" operation="equals">{{{ SYSCTLVAL }}}</unix:value>
+{{% if OPERATION == "pattern match" %}}
+    <unix:value datatype="{{{ DATATYPE }}}" operation="{{{ OPERATION }}}">{{{ SYSCTLVAL_REGEX }}}</unix:value>
+{{% else %}}
+    <unix:value datatype="{{{ DATATYPE }}}" operation="{{{ OPERATION }}}">{{{ SYSCTLVAL }}}</unix:value>
+{{% endif %}}
   </unix:sysctl_state>
 {{%- endif %}}
 </def-group>
@@ -150,7 +158,7 @@
 {{% if SYSCTLVAL == "" %}}
 
   <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
-    <ind:subexpression operation="equals"  var_ref="sysctl_{{{ SYSCTLID }}}_value" datatype="{{{ DATATYPE }}}" />
+    <ind:subexpression operation="{{{ OPERATION }}}"  var_ref="sysctl_{{{ SYSCTLID }}}_value" datatype="{{{ DATATYPE }}}" />
   </ind:textfilecontent54_state>
 
   <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />

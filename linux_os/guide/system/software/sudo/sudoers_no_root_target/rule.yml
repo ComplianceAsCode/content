@@ -1,0 +1,38 @@
+documentation_complete: true
+
+# Set prodtypes if needed, otherwise let the rule to be applicable for all products by omitting the prodtype declaration
+# prodtype: fedora
+
+title: "Don't target root user in the sudoers file"
+
+description: |-
+    The targeted users of a user specification should be, as much as possible, non privileged users (i.e.: non-root).
+
+    User specifications have to explicitly list the runas spec (i.e. the list of target users that can be impersonated), and <tt>ALL</tt> or <tt>root</tt> should not be used.
+
+rationale: |-
+    It is common that the command to be executed does not require superuser rights (editing a file
+    whose the owner is not root, sending a signal to an unprivileged process,etc.). In order to limit
+    any attempt of privilege escalation through a command, it is better to apply normal user rights.
+
+severity: medium
+
+references:
+    anssi: BP28(R60) 
+
+# The second part of the sentence explaining what got wrong.
+# ... Is it the case that <YOUR ocil_clause>
+ocil_clause: '/etc/sudoers file contains rules that allow non-root users to run commands as root'
+
+# A setp-by-step guide how to modify the configuration to achieve compliance
+ocil: |-
+    To determine if the users are allowed to run commands as root, run the following commands:
+    <pre>$ sudo grep -PR '^\s*((?!root\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*[^\(\s]' /etc/sudoers /etc/sudoers.d/</pre>
+    and
+    <pre>$ sudo grep -PR '^\s*((?!root\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)' /etc/sudoers /etc/sudoers.d/</pre>
+    Both commands should return no output.
+
+platform: sudo
+
+warnings:
+  - general: This rule doesn't come with a remediation, as the exact requirement allows exceptions, and removing lines from the sudoers file can make the system non-administrable.

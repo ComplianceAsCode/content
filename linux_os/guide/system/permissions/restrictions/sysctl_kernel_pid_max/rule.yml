@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,rhel7,rhel8
+
+title: 'Configure maximum number of process identifiers'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.pid_max", value="65536") }}}'
+
+rationale: |-
+    The <tt>kernel.pid_max</tt> parameter configures upper limit on process
+    identifiers (PID). If this number is not high enough, it might happen that
+    forking of new processes is not possible, because all available PIDs are
+    exhausted. Increasing this number enhances availability.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83365-7
+    cce@rhel8: CCE-83366-5
+
+references:
+    anssi: BP28(R23)
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.pid_max", value="65536") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.pid_max
+        sysctlval: '65536'
+        datatype: int

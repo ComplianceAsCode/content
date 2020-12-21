@@ -337,6 +337,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "sssd-ldap": None,  # Force package check wrapping skip
   "uefi": None,
   "non-uefi": None,
+  "not_s390x_arch": None,
 }
 
 # _version_name_map = {

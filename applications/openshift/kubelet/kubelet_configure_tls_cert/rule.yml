@@ -6,7 +6,7 @@ title: 'Ensure That The kubelet Client Certificate Is Correctly Set'
 
 description: |-
     To ensure the kubelet TLS client certificate is configured, edit the
-    kubelet configuration file <tt>/etc/kubernetes/kubernetes.conf</tt>
+    kubelet configuration file <tt>/etc/kubernetes/kubelet.conf</tt>
     and configure the kubelet certificate file.
     <pre>tlsCertFile: /path/to/TLS/cert.key</pre>
 
@@ -17,7 +17,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce: CCE-83396-2
+    cce@ocp4: CCE-83396-2
 
 references:
     cis: 4.2.10
@@ -27,7 +27,6 @@ ocil_clause: 'the kubelet certificate is not configured'
 ocil: |-
     Run the following command on the kubelet node(s):
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments["kubelet-client-certificate"]'</pre>
-    The output should be <tt>0</tt>.
     Verify that a client certificate is configured.
 
 warnings:

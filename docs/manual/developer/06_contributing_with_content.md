@@ -1339,6 +1339,10 @@ the following to `rule.yml`:
     -   **filemode** - File permissions in a hexadecimal format, eg.
         `'0640'`.
 
+    -   **allow_stricter_permissions** - If set to `"true"` the OVAL
+        will also consider permissions stricter than **filemode** as compliant.
+        Default value is `"false"`.
+
 -   Languages: Ansible, Bash, OVAL
 
 #### grub2_bootloader_argument
@@ -1374,6 +1378,8 @@ the following to `rule.yml`:
 
     -   **oval_extend_definitions** - optional, list of additional OVAL
         definitions that have to pass along the generated check.
+
+-   Languages: Ansible, Bash, OVAL
 
 
 #### mount
@@ -1606,6 +1612,12 @@ the following to `rule.yml`:
 
     -   **sysctlval** - value of the sysctl value, eg. `'1'`. If this
         parameter is not specified, XCCDF Value is used instead.
+
+    -   **operation** - operation used for comparison of collected object
+        with **sysctlval**. Default value: `equals`.
+
+    -   **sysctlval_regex** - if **operation** is `pattern match`, this
+        parameter is used instead of **sysctlval**.
 
 -   Languages: Ansible, Bash, OVAL
 

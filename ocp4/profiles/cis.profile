@@ -54,7 +54,9 @@ selections:
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
     - api_server_admission_control_plugin_AlwaysAdmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
-    - api_server_admission_control_plugin_AlwaysPullImages
+    # (jhrozek): This rule should temporarily be commented out as OCP diverges from CIS
+    #            and we need to improve our reply to this control
+    # - api_server_admission_control_plugin_AlwaysPullImages
   # 1.2.13 Ensure that the admission control plugin SecurityContextDeny is not set
     - api_server_admission_control_plugin_SecurityContextDeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
@@ -73,7 +75,9 @@ selections:
   # 1.2.20 Ensure that the --secure-port argument is not set to 0
     - api_server_bind_address
   # 1.2.21 Ensure that the --profiling argument is set to false
-    - api_server_profiling
+    # (jhrozek): This rule should temporarily be commented out as OCP diverges from CIS
+    #            and we need to improve our reply to this control
+    # - api_server_profiling
   # 1.2.22 Ensure that the --audit-log-path argument is set
     - api_server_audit_log_path
     - openshift_api_server_audit_log_path
@@ -86,7 +90,10 @@ selections:
     - api_server_audit_log_maxsize
     - ocp_api_server_audit_log_maxsize
   # 1.2.26 Ensure that the --request-timeout argument is set as appropriate
-    - api_server_request_timeout
+    # (jhrozek) Temporarily disabling the rule because the benchmark
+    #           specifies one value (60) for the request-timeout parameter, while we
+    #           use 3600 in OCP. It is unclear if this value is appropriate...
+    # - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
     - api_server_service_account_lookup
   # 1.2.28 Ensure that the --service-account-key-file argument is set as appropriate

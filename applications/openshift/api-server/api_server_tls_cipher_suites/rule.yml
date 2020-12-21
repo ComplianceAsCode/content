@@ -7,8 +7,7 @@ title: 'Use Strong Cryptographic Ciphers on the API Server'
 description: |-
     To ensure that the API Server is configured to only use strong
     cryptographic ciphers,
-    verify the <tt>openshift-kube-apiserver</tt> configmap on the master
-    node(s) to something similar to:
+    verify the <tt>openshift-kube-apiserver</tt> configmap to something similar to:
     <pre>
     "servingInfo":{
       ...
@@ -37,7 +36,7 @@ references:
 ocil_clause: '<tt>cipherSuites</tt> does not contain TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256 from servingInfo'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.servingInfo["cipherSuites"]'</pre>
     Verify that the output is similar to:
     <pre>

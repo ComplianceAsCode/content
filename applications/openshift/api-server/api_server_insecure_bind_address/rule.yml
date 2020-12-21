@@ -6,7 +6,7 @@ title: 'Disable Use of the Insecure Bind Address'
 
 description: |-
     OpenShift should not bind to non-loopback insecure addresses.
-    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    Edit the <tt>openshift-kube-apiserver</tt> configmap
     and remove the <tt>insecure-bind-address</tt> if it exists:
     <pre>
     "apiServerArguments":{
@@ -23,6 +23,10 @@ rationale: |-
     The API Server does not perform authentication checking for insecure
     binds and the traffic is generally not encrypted.
 
+identifiers:
+  cce@ocp4: CCE-83955-5
+
+
 severity: medium
 
 references:
@@ -31,9 +35,9 @@ references:
 ocil_clause: 'insecure-bind-address is exists and has not been removed</tt>'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-bind-address"]'</pre>
-    The output should return <pre>null</pre>.
+    The output should be empty.
 
 warnings:
 - general: |-

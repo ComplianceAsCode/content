@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Permissions on the OpenShift SDN Container Network Interface Plugin IP Address Allocations'
 
 description: |-
-    {{{ describe_file_permissions(file="/var/lib/cni/networks/openshift-sdn/.*", perms="0644") }}}
+    {{{ describe_file_permissions(file="/var/lib/cni/networks/openshift-sdn/*", perms="0644") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -15,21 +15,20 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-83469-7
 
 references:
     cis: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/cni/networks/openshift-sdn/.*", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/cni/networks/openshift-sdn/*", perms="-rw-r--r--") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/var/lib/cni/networks/openshift-sdn/.*", perms="-rw-r--r--") }}}
+    {{{ ocil_file_permissions(file="/var/lib/cni/networks/openshift-sdn/*", perms="-rw-r--r--") }}}
 
 template:
     name: file_permissions
     vars:
         filepath: ^/var/lib/cni/networks/openshift-sdn/.*$
         filemode: '0644'
-        missing_file_pass: "true"
         filepath_is_regex: "true"

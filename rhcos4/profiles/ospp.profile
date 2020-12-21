@@ -189,7 +189,6 @@ selections:
     - configure_openssl_crypto_policy
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
-    - enable_dracut_fips_module
 
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1

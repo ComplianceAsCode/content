@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Permissions on the OpenShift Controller Manager Kubeconfig File'
 
 description: |-
-  {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="0644") }}}
+  {{{ describe_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="0644") }}}
 
 rationale: |-
   The Controller Manager's kubeconfig contains information about how the
@@ -13,20 +13,25 @@ rationale: |-
   permissions to maintain the integrity of the file. The file should be
   writable by only the administrators on the system.
 
+identifiers:
+  cce@ocp4: CCE-83604-9
+
+
 severity: medium
 
 references:
   cis: 1.1.17
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="-rw-r--r--") }}}'
 
 ocil: |-
-  {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="-rw-r--r--") }}}
+  {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/configmaps/controller-manager-kubeconfig/kubeconfig", perms="-rw-r--r--") }}}
+
+platform: ocp4-master-node
 
 template:
   name: file_permissions
   vars:
     filepath: ^/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-.*/configmaps/controller-manager-kubeconfig/kubeconfig$
     filemode: '0644'
-    missing_file_pass: "true"
     filepath_is_regex: "true"

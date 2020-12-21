@@ -23,12 +23,16 @@ rationale: |-
   the cluster overall. It is recommended to limit the rate of events
   that the API Server will accept.
 
+identifiers:
+  cce@ocp4: CCE-83656-9
+
+
 severity: medium
 
 references:
   cis: 1.2.10
 
-ocil_clause: '<tt>.apiServerArguments["feature-gates"]</tt> does not include <tt>EventRateLimit</tt>'
+ocil_clause: '<tt>.apiServerArguments["feature-gates"]</tt> does not include <tt>APIPriorityAndFairness</tt>'
 
 ocil: |-
   To verify that <tt>APIPriorityAndFairness</tt> is enabled, run the following command:

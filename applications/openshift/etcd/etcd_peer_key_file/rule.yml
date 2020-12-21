@@ -17,8 +17,8 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-83711-2
 
 references:
     cis: '2.4'
@@ -28,7 +28,7 @@ ocil_clause: 'the etcd peer client key file is not configured'
 ocil: |-
     Run the following command:
     <pre>oc get -nopenshift-etcd cm etcd-pod -oyaml | grep "\-\-peer-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-peer/etcd-peer-NODE_NAME.key"</pre>
-    Verify that there is a certificate configured.
+    Verify that there is a private key configured.
 
 warnings:
     - general: |-
