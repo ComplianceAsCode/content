@@ -8,7 +8,7 @@ metadata:
 reference: https://www.cisecurity.org/cis-benchmarks/#suse_linux
 
 
-title: 'CIS SUSE Linux Ent Benchmark'
+title: 'CIS SUSE Linux Enterprise Benchmark'
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
@@ -31,7 +31,7 @@ selections:
     - kernel_module_freevxfs_disabled
 
     #### 1.1.1.3 Ensure mounting jjfs2 filesystems is disabled (Scored)
-    #### - kernel_module_jjfs2_disabled
+    - kernel_module_jffs2_disabled
 
     #### 1.1.1.4 Ensure mounting hfs filesystems is disabled (Scored)
     - kernel_module_hfs_disabled
@@ -208,9 +208,7 @@ selections:
     ### Need Rule
 
     ## 1.7 Warning Banners
-
     ### 1.7.1 Command Line Warning Baners
-
     #### 1.7.1.1 Ensure message of the day is configured properly (Scored)
     - banner_etc_motd
 
@@ -218,7 +216,7 @@ selections:
     - banner_etc_issue
 
     #### 1.7.1.3 Ensure remote login warning banner is configured properly (Not Scored)
-    # NEEDS RULE
+    - banner_etc_issue_net
 
     #### 1.7.1.4 Ensure permissions on /etc/motd are configured (Not Scored)
     # chmod u-x,go-wx /etc/motd
@@ -230,7 +228,7 @@ selections:
 
     #### 1.7.1.6 Ensure permissions on /etc/issue.net are configured (Not Scored)
     # chmod u-x,go-wx /etc/issue.net
-    #NEEDS RULE
+    - file_permissions_etc_issue_net
     
     #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Scored)
     # Previously addressed via 'rpm_verify_permissions' rule

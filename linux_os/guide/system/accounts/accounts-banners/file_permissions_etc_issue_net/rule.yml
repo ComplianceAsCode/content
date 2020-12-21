@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019
 
-title: 'Verify permissions on System Login Banner'
+title: 'Verify permissions on System Remote Login Banner'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/issue", perms="0644") }}}
+    {{{ describe_file_permissions(file="/etc/issue.net", perms="0644") }}}
 
 rationale: |-
     Display of a standardized and approved use notification before granting
@@ -26,12 +26,12 @@ references:
     cis@sle12: 1.7.1.5
     cis@sle15: 1.8.1.5
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/issue", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/issue.net", perms="-rw-r--r--") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/issue", perms="-rw-r--r--") }}}'
+ocil: '{{{ ocil_file_permissions(file="/etc/issue.net", perms="-rw-r--r--") }}}'
 
 template:
     name: file_permissions
     vars:
-        filepath: /etc/issue
+        filepath: /etc/issue.net
         filemode: '0644'

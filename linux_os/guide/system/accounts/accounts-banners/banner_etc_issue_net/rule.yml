@@ -1,11 +1,11 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019
 
-title: 'Modify the System Message of the Day Banner'
+title: 'Modify the System Remote Login Banner'
 
 description: |-
-    To configure the system message banner edit <tt>/etc/motd</tt>. Replace the
+    To configure the system login banner edit <tt>/etc/issue.net</tt>. Replace the
     default text with a message compliant with the local site policy or a legal
     disclaimer.
 
@@ -49,19 +49,33 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-83394-7
-    cce@rhel8: CCE-83496-0
+    cce@rhel7: CCE-27303-7
+    cce@rhel8: CCE-80763-6
+    cce@rhcos4: CCE-82555-4
 
 references:
-    cis@rhel7: 1.7.1.1
-    cis@rhel8: 1.8.1.1
-    cis@sle12: 1.7.1.1
-    cis@sle15: 1.8.1.1
-
+    stigid@ol7: OL07-00-010050
+    cis@rhel7: 1.7.1.3
+    cis@rhel8: 1.8.1.2
+    cis@sle12: 1.7.1.3
+    cis@sle15: 1.8.1.3
+    cui: 3.1.9
+    disa: CCI-000048,CCI-000050
+    nist: AC-8(a),AC-8(c)
+    nist-csf: PR.AC-7
+    ospp: FMT_MOF_EXT.1
+    srg: SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007
+    vmmsrg: SRG-OS-000023-VMM-000060,SRG-OS-000024-VMM-000070
+    stigid@rhel7: RHEL-07-010050
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16
 
 ocil_clause: 'it does not display the required banner'
 
 ocil: |-
     To check if the system login banner is compliant,
     run the following command:
-    <pre>$ cat /etc/motd</pre>
+    <pre>$ cat /etc/issue.net</pre>
