@@ -1,0 +1,47 @@
+<def-group>
+     <definition class="compliance" id="{{{ rule_id }}}" version="1">
+     {{{ oval_metadata("Check that sudoers doesn't allow users to run commands as root") }}}
+     <criteria operator="AND">
+        <criterion comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL" test_ref="test_no_root_or_ALL_in_runas_spec" />
+        <criterion comment="Make sure that all user specs in sudoers feature a runas spec" test_ref="test_no_user_spec_rules" />
+     </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no user spec in sudoers has a runas spec that includes root or ALL"
+  id="test_no_root_or_ALL_in_runas_spec" version="1">
+    <ind:object object_ref="root_or_ALL_in_runas_spec" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="root_or_ALL_in_runas_spec" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <!-- The regex matches:
+      - The username or group. If root, ignore everything, root can be allowed to do anything.
+      - User specs are present in brackets, and if there are no brackets root user is assumed.
+      - \1: The username or group.
+      - \2: target hostname or ALL
+      - later: word ALL or root inside brackets
+    -->
+    <ind:pattern operation="pattern match">^\s*((?!root\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*\([\w\s]*\b(root|ALL)\b[\w\s]*\)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="make sure that all user specs in sudoers feature a runas spec"
+  id="test_no_user_spec_rules" version="1">
+    <ind:object object_ref="object_no_runas_spec" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_no_runas_spec" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <!-- The regex matches:
+      - The username or group. If root, ignore everything, root can be allowed to do anything.
+      - User specs are present in brackets, and if there are no brackets root user is assumed.
+      - \1: The username
+      - \2: target hostname or ALL
+      - later: No bracket either right after "hosts =", or no bracket after the "previous command"
+    -->
+    <ind:pattern operation="pattern match">^\s*((?!root\b)[\w]+)\s*(\w+)\s*=\s*(.*,)?\s*[^\(\s]</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
