@@ -31,7 +31,7 @@ ocil_clause: 'env_reset is not enabled in sudo'
 
 ocil: |-
     To determine if <tt>env_reset</tt> has been configured for sudo, run the following command:
-    <pre>$ sudo grep -ri "^Defaults.*env_reset" /etc/sudoers /etc/sudoers.d/</pre>
+    <pre>$ sudo grep -ri "^[\s]*Defaults.*\benv_reset\b.*" /etc/sudoers /etc/sudoers.d/</pre>
     The command should return a matching output.
 
 template:

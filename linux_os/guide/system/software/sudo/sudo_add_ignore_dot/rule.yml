@@ -31,7 +31,7 @@ ocil_clause: 'ignore_dot is not enabled in sudo'
 
 ocil: |-
     To determine if <tt>ignore_dot</tt> has been configured for sudo, run the following command:
-    <pre>$ sudo grep -ri "^Defaults.*ignore_dot" /etc/sudoers /etc/sudoers.d/</pre>
+    <pre>$ sudo grep -ri "^[\s]*Defaults.*\bignore_dot\b.*" /etc/sudoers /etc/sudoers.d/</pre>
     The command should return a matching output.
 
 template:

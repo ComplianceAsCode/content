@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-if ! grep -P "^(?!#)[\s]*Defaults.*[\s]+{{{ OPTION }}}[\s]*.*$" /etc/sudoers; then
+if ! grep -P "^[\s]*Defaults.*\b{{{ OPTION }}}\b.*$" /etc/sudoers; then
     echo "Defaults {{{ OPTION }}}" >> /etc/sudoers
     /usr/sbin/visudo -cf /etc/sudoers &> /dev/null || echo "Fail to validate /etc/sudoers with visudo"
 fi

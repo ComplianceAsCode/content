@@ -7,6 +7,6 @@
 - name: Ensure {{{ OPTION }}} is enabled in /etc/sudoers
   lineinfile:
     path: /etc/sudoers
-    regexp: '^(?!#)[\s]*Defaults.*[\s]+{{{ OPTION }}}[\s]*.*$'
+    regexp: '^[\s]*Defaults.*\b{{{ OPTION }}}\b.*$'
     line: 'Defaults {{{ OPTION }}}'
     validate: /usr/sbin/visudo -cf /etc/sudoers
