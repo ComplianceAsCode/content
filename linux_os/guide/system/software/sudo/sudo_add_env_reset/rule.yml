@@ -7,7 +7,9 @@ title: 'Ensure sudo Runs In A Minimal Environment - sudo env_reset'
 description: |-
     The sudo <tt>env_reset</tt> tag, when specified, will run the command in a minimal environment,
     containing the TERM, PATH, HOME, MAIL, SHELL, LOGNAME, USER and SUDO_* variables.
+{{%- if product in ["rhel7", "rhel8"] %}}
     On {{{ full_name }}}, <tt>env_reset</tt> is enabled by default
+{{%- endif %}}
     This should be enabled by making sure that the <tt>env_reset</tt> tag exists in
     <tt>/etc/sudoers</tt> configuration file or any sudo configuration snippets
     in <tt>/etc/sudoers.d/</tt>.
@@ -36,4 +38,5 @@ template:
     name: sudo_defaults_option
     vars:
         option: env_reset
-        default_is_enabled: "true"
+        default_is_enabled@rhel7: "true"
+        default_is_enabled@rhel8: "true"
