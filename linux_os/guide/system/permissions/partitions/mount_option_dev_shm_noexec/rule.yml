@@ -25,7 +25,10 @@ identifiers:
     cce@rhcos4: CCE-82868-1
 
 references:
-    cis@rhel8: 1.1.17
+    cis@rhel7: 1.1.17
+    cis@rhel8: 1.1.7
+    cis@sle12: 1.1.17
+    cis@sle15: 1.1.7
     cis@ubuntu1804: 1.1.16
     stigid@ol7: OL07-00-021024
     stigid@rhel7: RHEL-07-021024
@@ -38,7 +41,6 @@ references:
     iso27001-2013: A.11.2.9,A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.8.2.1,A.8.2.2,A.8.2.3,A.8.3.1,A.8.3.3,A.9.1.2
     cis-csc: 11,13,14,3,8,9
     srg: SRG-OS-000368-GPOS-00154
-    cis@sle15: 1.1.17
 
 platform: machine
 
@@ -51,9 +53,11 @@ template:
         filesystem: tmpfs
         type: tmpfs
         mount_has_to_exist@sle12: 'yes'
+        mount_has_to_exist@sle115: 'yes'
         mount_has_to_exist@wrlinux8: 'yes'
         mount_has_to_exist@wrlinux1019: 'yes'
         filesystem@sle12: ''
+        filesystem@sle15: ''
         filesystem@wrlinux8: ''
         filesystem@wrlinux1019: ''
         type@sle12: ''
