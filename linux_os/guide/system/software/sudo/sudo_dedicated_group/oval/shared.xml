@@ -1,10 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    <metadata>
-      <title>Verify /usr/bin/sudo Group Owner is the appropriate</title>
-      {{{- oval_affected(products) }}}
-      <description>This test makes sure that /usr/bin/sudo is owned by the group set in var_sudo_dedicated_group</description>
-    </metadata>
+    {{{- oval_metadata("This test makes sure that /usr/bin/sudo is owned by the group set in var_sudo_dedicated_group") }}}
     <criteria>
       <criterion comment="Check if dedicated group exists" test_ref="test_dedicated_group_exists" />
       <criterion comment="Check file group ownership of /usr/bin/sudo" test_ref="test_sudo_owned_by_dedicated_group" />
@@ -51,4 +47,3 @@
   <external_variable comment="Name of sudo dedicated group" datatype="string" id="var_sudo_dedicated_group" version="1" />
 
 </def-group>
-

@@ -6,7 +6,7 @@
 {{{ bash_instantiate_variables("var_sudo_dedicated_group") }}}
 
 # Make sure the dedicated group exists
-if ! grep "^$var_sudo_dedicated_group" /etc/group; then
+if ! grep "^${var_sudo_dedicated_group}:" /etc/group; then
     groupadd $var_sudo_dedicated_group
 fi
 
