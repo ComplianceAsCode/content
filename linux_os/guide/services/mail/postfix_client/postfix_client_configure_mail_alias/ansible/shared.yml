@@ -1,0 +1,15 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_postfix_root_mail_alias") }}}
+
+- name: Make sure that that "/etc/aliases" has a defined value for root
+  lineinfile:
+    path: "/etc/aliases"
+    line: "root: {{ var_postfix_root_mail_alias }}"
+    regexp: '^(?:[rR][oO][oO][tT]|"[rR][oO][oO][tT]")\s*:\s*(.+)$'
+    create: true
+    state: present
+
