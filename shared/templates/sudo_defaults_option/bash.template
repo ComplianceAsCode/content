@@ -4,7 +4,19 @@
 # complexity = low
 # disruption = low
 
-if ! grep -P "^[\s]*Defaults.*\b{{{ OPTION }}}\b.*$" /etc/sudoers; then
-    echo "Defaults {{{ OPTION }}}" >> /etc/sudoers
-    /usr/sbin/visudo -cf /etc/sudoers &> /dev/null || echo "Fail to validate /etc/sudoers with visudo"
+if /usr/sbin/visudo -qcf /etc/sudoers; then
+    if ! grep -P "^[\s]*Defaults.*\b{{{ OPTION }}}\b.*$" /etc/sudoers; then
+        cp /etc/sudoers /etc/sudoers.bak
+        echo "Defaults {{{ OPTION }}}" >> /etc/sudoers
+        if /usr/sbin/visudo -qcf /etc/sudoers; then
+            rm -f /etc/sudoers.bak
+        else
+            echo "Fail to validate remediated /etc/sudoers, reverting to original file."
+            mv /etc/sudoers.bak /etc/sudoers
+            false
+        fi
+    fi
+else
+    echo "Skipping remediation, /etc/sudoers failed to validate"
+    false
 fi
