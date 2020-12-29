@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7,sle12,sle15
+
+title: 'Remove Prelink'
+
+description: |-
+    {{{ describe_package_remove(package="prelink") }}}
+
+rationale: |-
+    Uninstall Prelink.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-27078-5
+    cce@rhel8: CCE-80787-5
+
+references:
+    cis@rhel7: 1.5.4
+    cis@sle12: 1.5.4
+    cis@sle15: 1.6.4
+
+{{{ complete_ocil_entry_package(package="prelink") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: prelink
