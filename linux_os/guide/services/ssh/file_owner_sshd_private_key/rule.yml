@@ -35,19 +35,14 @@ references:
     cis-csc: 12,13,14,15,16,18,3,5
     cis@rhel8: 5.2.3
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/ssh/ssh_host_*_key", owner="root") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}'
+ocil: '{{{ ocil_file_owner(file="/etc/ssh/ssh_host_*_key", owner="root") }}}'
 
 template:
-    name: file_permissions
+    name: file_owner
     vars:
         filepath: /etc/ssh/
-        missing_file_pass: 'true'
+        missing_file_pass: true
         file_regex: ^.*_key$
-        filemode: '0640'
-        filemode@rhel7: '0600'
-        filemode@rhel8: '0600'
-        filemode@sle12: '0600'
-        filemode@sle15: '0600'
-        filemode@ubuntu1804: '0600'
+        fileuid: '0'

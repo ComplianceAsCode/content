@@ -2,7 +2,7 @@
 #
 
 if grep -q "^Banner" /etc/ssh/sshd_config; then
-	sed -i "s|^Banner.*|Banner /etc/issue|" /etc/ssh/sshd_config
+	sed -i "s|^Banner.*|Banner /etc/issue.net|" /etc/ssh/sshd_config
 else
-	echo "Banner /etc/issue" >> /etc/ssh/sshd_config
+	echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
 fi

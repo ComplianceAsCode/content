@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Enable UsePAM'
+
+description: |-
+    PLACEHOLDER 'UsePAM'
+    <br /><br />
+    To disable UsePAM, add or correct the
+    following line in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>UsePAM yes</pre>
+
+rationale: |-
+    PLACEHOLDER UsePAM
+
+severity: low
+
+ocil_clause: "that the UsePAM option exists and is enabled"
+
+ocil: |-
+    {{{ ocil_sshd_option(default="yes", option="UsePAM", value="yes") }}}
+
+identifiers:
+    cce@rhel7: CCE-83359-0
+    cce@rhel8: CCE-83360-8
+
+references:
+  cis@rhel7: 5.2.4
+  cis@rhel8: 5.2.6
+  cis@sle12: 5.2.4
+  cis@sle15: 5.2.6
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: UsePAM
+        rule_id: sshd_enable_use_pam
+        value: 'yes'

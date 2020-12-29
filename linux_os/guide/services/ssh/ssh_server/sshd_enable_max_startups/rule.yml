@@ -5,7 +5,7 @@ title: 'Enable SSH Warning Banner'
 description: |-
     To enable the warning banner and ensure it is consistent
     across the system, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
-    <pre>Banner /etc/issue.net</pre>
+    <pre>Banner /etc/issue</pre>
     Another section contains information on how to create an
     appropriate system-wide warning banner.
 
@@ -25,8 +25,7 @@ references:
     stigid@ol7: OL07-00-040170
     cis@rhel7: 5.2.15
     cis@rhel8: 5.2.15
-    cis@sle12: 5.2.15
-    cis@sle15: 5.2.18
+    cis@sle15: 5.2.19
     cjis: 5.5.6
     cui: 3.1.9
     disa: CCI-000048,CCI-000050,CCI-001384,CCI-001385,CCI-001386,CCI-001387,CCI-001388
@@ -44,7 +43,7 @@ references:
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16
 
-{{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue.net") }}}
+{{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue") }}}
 
 template:
     name: sshd_lineinfile
@@ -52,4 +51,4 @@ template:
         missing_parameter_pass: 'false'
         parameter: Banner
         rule_id: sshd_enable_warning_banner
-        value: /etc/issue.net
+        value: /etc/issue
