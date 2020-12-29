@@ -5,6 +5,7 @@ metadata:
     SMEs:
         - vojtapolasek
         - yuumasato
+        - truzzon
 
 reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 
@@ -25,9 +26,7 @@ selections:
     - mount_option_home_nodev
 
     ## 1.1 Filesystem Configuration
-
     ### 1.1.1 Disable unused filesystems
-
     #### 1.1.1.1 Ensure mounting cramfs filesystems is disabled (Scored)
     - kernel_module_cramfs_disabled
 
@@ -107,7 +106,6 @@ selections:
     - kernel_module_usb-storage_disabled
 
     ## 1.2 Configure Software Updates
-
     ### 1.2.1 Ensure Red Hat Subscription Manager connection is configured (Not Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5218
 
@@ -124,7 +122,6 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5219
 
     ## 1.3 Configure sudo
-
     ### 1.3.1 Ensure sudo is installed (Scored)
     - package_sudo_installed
 
@@ -135,15 +132,13 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5221
 
     ## 1.4 Filesystem Integrity Checking
-
     ### 1.4.1 Ensure AIDE is installed (Scored)
     - package_aide_installed
 
     ### 1.4.2 Ensure filesystem integrity is regularly checked (Scored)
     - aide_periodic_cron_checking
 
-    ## Secure Boot Settings
-
+    ## 1.5 Secure Boot Settings
     ### 1.5.1 Ensure permissions on bootloader config are configured (Scored)
     #### chown root:root /boot/grub2/grub.cfg
     - file_owner_grub2_cfg
@@ -169,7 +164,6 @@ selections:
     - require_emergency_target_auth
 
     ## 1.6 Additional Process Hardening
-
     ### 1.6.1 Ensure core dumps are restricted (Scored)
     #### * hard core 0
     - disable_users_coredumps
@@ -187,7 +181,6 @@ selections:
     - sysctl_kernel_randomize_va_space
 
     ## 1.7 Mandatory Access Control
-
     ### 1.7.1 Configure SELinux
 
     #### 1.7.1.1 Ensure SELinux is installed (Scored)
@@ -214,9 +207,7 @@ selections:
     - package_mcstrans_removed
 
     ## Warning Banners
-
     ### 1.8.1 Command Line Warning Baners
-
     #### 1.8.1.1 Ensure message of the day is configured properly (Scored)
     - banner_etc_motd
 
@@ -224,18 +215,31 @@ selections:
     - banner_etc_issue
 
     #### 1.8.1.3 Ensure remote login warning banner is configured properly (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5225
+    - banner_etc_issue_net
 
     #### 1.8.1.4 Ensure permissions on /etc/motd are configured (Scored)
-    # chmod u-x,go-wx /etc/motd
+    # chmod 0644 /etc/motd
     - file_permissions_etc_motd
 
+    # chown root:root /etc/motd
+    - file_owner_etc_motd
+    - file_groupowner_etc_motd
+
     #### 1.8.1.5 Ensure permissions on /etc/issue are configured (Scored)
-    # chmod u-x,go-wx /etc/issue
+    # chmod 0644 /etc/issue
     - file_permissions_etc_issue
 
+    # chown root:root /etc/issue
+    - file_owner_etc_issue
+    - file_groupowner_etc_issue
+
     #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Scored)
-    # Previously addressed via 'rpm_verify_permissions' rule
+    # chmod 0644 /etc/issue.net
+    - file_permissions_etc_issue_net
+
+    # chown root:root /etc/issue.net
+    - file_owner_etc_issue_net
+    - file_groupowner_etc_issue_net
 
     ### 1.8.2 Ensure GDM login banner is configured (Scored)
     #### banner-message-enable=true
@@ -254,17 +258,13 @@ selections:
     ## 1.11 Ensure system-wide crytpo policy is FUTURE or FIPS (Scored)
     # Previously addressed via 'configure_crypto_policy' rule
 
-    # Services
-
+    # 2 Services
     ## 2.1 inetd Services
-
     ### 2.1.1 Ensure xinetd is not installed (Scored)
     - package_xinetd_removed
 
     ## 2.2 Special Purpose Services
-
     ### 2.2.1 Time Synchronization
-
     #### 2.2.1.1 Ensure time synchronization is in use (Not Scored)
     - package_chrony_installed
 
@@ -327,7 +327,6 @@ selections:
     - postfix_network_listening_disabled
 
     ## 2.3 Service Clients
-
     ### 2.3.1 Ensure NIS Client is not installed (Scored)
     - package_ypbind_removed
 
@@ -338,9 +337,7 @@ selections:
     - package_openldap-clients_removed
 
     # 3 Network Configuration
-
     ## 3.1 Network Parameters (Host Only)
-
     ### 3.1.1 Ensure IP forwarding is disabled (Scored)
     #### net.ipv4.ip_forward = 0
     - sysctl_net_ipv4_ip_forward
@@ -435,29 +432,20 @@ selections:
     - kernel_module_tipc_disabled
 
     ## 3.4 Firewall Configuration
-
     ### 3.4.1 Ensure Firewall software is installed
-
     #### 3.4.1.1 Ensure a Firewall package is installed (Scored)
-    ##### firewalld
-    - package_firewalld_installed
-
-    ##### nftables
-    #NEED RULE - https://github.com/ComplianceAsCode/content/issues/5237
-
-    ##### iptables
-    #- package_iptables_installed
-
+    # Managed by Sub Chapters for each firewall
+    
     ### 3.4.2 Configure firewalld
-
     #### 3.4.2.1 Ensure firewalld service is enabled and running (Scored)
+    - package_firewalld_installed
     - service_firewalld_enabled
 
     #### 3.4.2.2 Ensure iptables is not enabled (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5238
+    - package_iptables_removed
 
     #### 3.4.2.3 Ensure nftables is not enabled (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5239
+    - package_nftables_removed
 
     #### 3.4.2.4 Ensure default zone is set (Scored)
     - set_firewalld_default_zone
@@ -499,13 +487,14 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5250
 
     ### 3.4.4 Configure iptables
-
     #### 3.4.4.1 Configure IPv4 iptables
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5251
+    - package_iptables_installed
+    - service_iptables_enabled
 
     ##### 3.4.4.1.1 Ensure default deny firewall policy (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5252
-
+    # ONLY INPUT
+    - set_iptables_default_rule
+    
     ##### 3.4.4.1.2 Ensure loopback traffic is configured (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5253
 
@@ -536,11 +525,8 @@ selections:
     - kernel_module_ipv6_option_disabled
 
     # Logging and Auditing
-
     ## 4.1 Configure System Accounting (auditd)
-
     ### 4.1.1 Ensure auditing is enabled
-
     #### 4.1.1.1 Ensure auditd is installed (Scored)
     - package_audit_installed
 
@@ -555,7 +541,6 @@ selections:
     - grub2_audit_backlog_limit_argument
 
     ### 4.1.2 Configure Data Retention
-
     #### 4.1.2.1 Ensure audit log storage size is configured (Scored)
     - auditd_data_retention_max_log_file
 
@@ -675,9 +660,7 @@ selections:
     - audit_rules_immutable
 
     ## 4.2 Configure Logging
-
     ### 4.2.1 Configure rsyslog
-
     #### 4.2.1.1 Ensure rsyslog is installed (Scored)
     - package_rsyslog_installed
 
@@ -699,7 +682,6 @@ selections:
     - rsyslog_nolisten
 
     ### 4.2.2 Configure journald
-
     #### 4.2.2.1 Ensure journald is configured to send logs to
     ####         rsyslog (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5520
@@ -720,17 +702,15 @@ selections:
     - ensure_logrotate_activated
 
     # 5 Access, Authentication and Authorization
-
     ## 5.1 Configure cron
-
     ### 5.1.1 Ensure cron daemon is enabled (Scored)
     - service_crond_enabled
-
 
     ### 5.1.2 Ensure permissions on /etc/crontab are configured (Scored)
     # chown root:root /etc/crontab
     - file_owner_crontab
     - file_groupowner_crontab
+    
     # chmod og-rwx /etc/crontab
     - file_permissions_crontab
 
@@ -738,42 +718,62 @@ selections:
     # chown root:root /etc/cron.hourly
     - file_owner_cron_hourly
     - file_groupowner_cron_hourly
-    # chmod og-rwx /etc/cron.hourly
+    
+    # chmod 700 /etc/cron.hourly
     - file_permissions_cron_hourly
 
     ### 5.1.4 Ensure permissions on /etc/cron.daily are configured (Scored)
     # chown root:root /etc/cron.daily
     - file_owner_cron_daily
     - file_groupowner_cron_daily
-    # chmod og-rwx /etc/cron.daily
+    
+    # chmod 700 /etc/cron.daily
     - file_permissions_cron_daily
 
     ### 5.1.5 Ensure permissions on /etc/cron.weekly are configured (Scored)
     # chown root:root /etc/cron.weekly
     - file_owner_cron_weekly
     - file_groupowner_cron_weekly
-    # chmod og-rwx /etc/cron.weekly
+    
+    # chmod 700 /etc/cron.weekly
     - file_permissions_cron_weekly
 
     ### 5.1.6 Ensure permissions on /etc/cron.monthly are configured (Scored)
     # chown root:root /etc/cron.monthly
     - file_owner_cron_monthly
     - file_groupowner_cron_monthly
-    # chmod og-rwx /etc/cron.monthly
+    
+    # chmod 700 /etc/cron.monthly
     - file_permissions_cron_monthly
 
     ### 5.1.7 Ensure permissions on /etc/cron.d are configured (Scored)
     # chown root:root /etc/cron.d
     - file_owner_cron_d
     - file_groupowner_cron_d
-    # chmod og-rwx /etc/cron.d
+    
+    # chmod 700 /etc/cron.d
     - file_permissions_cron_d
 
     ### 5.1.8 Ensure at/cron is restricted to authorized users (Scored)
+    # Using cron.allow to limit access to cron. Maybe Ensure that cron.deny is removed
+    # chown root:root /etc/cron.deny
+    #- file_owner_cron_deny
+    #- file_groupowner_cron_deny
+    
+    # chmod 600 /etc/cron.deny
+    #- file_permissions_cron_deny
+    
+    # chmod 0600 /etc/cron.allow
+    - file_permissions_cron_allow
+    
+    # chown root:root /etc/cron.allow
+    - file_owner_cron_allow
+    - file_groupowner_cron_allow
 
+    # Keeping at removed from system.
+    - package_at_removed
 
     ## 5.2 SSH Server Configuration
-
     ### 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)
     # chown root:root /etc/ssh/sshd_config
     - file_owner_sshd_config
@@ -783,18 +783,26 @@ selections:
     - file_permissions_sshd_config
 
     ### 5.2.2 Ensure SSH access is limited (Scored) 
-
+    # Manual Remediation  required
+    # Maybe Informational check.
 
     ### 5.2.3 Ensure permissions on SSH private host key files are
     ###       configured (Scored)
-    # TO DO: The rule sets to 640, but benchmark wants 600
+    # chmod 600 /etc/ssh/ssh_host_*_key
     - file_permissions_sshd_private_key
-    # TO DO: check owner of private keys in /etc/ssh is root:root
+    
+    # chown root:root /etc/ssh/ssh_host_*_key
+    - file_owner_sshd_private_key
+    - file_groupowner_sshd_private_key
 
     ### 5.2.4 Ensure permissions on SSH public host key files are configured
     ###      (Scored)
+    # chmod 0640 /etc/ssh/ssh_host_*_key.pub
     - file_permissions_sshd_pub_key
-    # TO DO: check owner of pub keys in /etc/ssh is root:root
+    
+    # chown root:root /etc/ssh/ssh_host_*_key.pub
+    - file_owner_sshd_pub_key
+    - file_groupowner_sshd_pub_key
 
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Scored)
     - sshd_set_loglevel_info
@@ -831,7 +839,8 @@ selections:
 
     ### 5.2.14 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5525
+    - sshd_login_grace_time_value=60
+    - sshd_set_login_grace_time
 
     ### 5.2.15 Ensure SSH warning banner is configured (Scored)
     - sshd_enable_warning_banner
@@ -843,8 +852,8 @@ selections:
     - sshd_disable_tcp_forwarding
 
     ### 5.2.18 Ensure SSH MaxStarups is configured (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5528
-
+    - sshd_enable_max_startups
+    
     ### 5.2.19 Ensure SSH MaxSessions is set to 4 or less (Scored)
     - sshd_set_max_sessions
     - var_sshd_max_sessions=4
@@ -853,10 +862,10 @@ selections:
     - configure_ssh_crypto_policy
 
     ## 5.3 Configure authselect
-
-
     ### 5.3.1 Create custom authselectet profile (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5530
+    # authselect just represent configs that would be done to pam.
+    # Wouldn't it be repetitive to work with authselect and configure PAM in the next Chapter?
 
     ### 5.3.2 Select authselect profile (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5531
@@ -865,7 +874,6 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5532
 
     ## 5.4 Configure PAM
-
     ### 5.4.1 Ensure password creation requirements are configured (Scored)
     # NEEDS RULE: try_first_pass - https://github.com/ComplianceAsCode/content/issues/5533
     - accounts_password_pam_retry
@@ -889,9 +897,7 @@ selections:
     - set_password_hashing_algorithm_systemauth
 
     ## 5.5 User Accounts and Environment
-
     ### 5.5.1 Set Shadow Password Suite Parameters
-
     #### 5.5.1 Ensure password expiration is 365 days or less (Scored)
     - var_accounts_maximum_age_login_defs=365
     - accounts_maximum_age_login_defs
@@ -940,10 +946,8 @@ selections:
     ## 5.7 Ensure access to the su command is restricted (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5541
 
-    # System Maintenance
-
+    # 6 System Maintenance
     ## 6.1 System File Permissions
-
     ### 6.1.1 Audit system file permissions (Not Scored)
     - rpm_verify_permissions
     - rpm_verify_ownership
@@ -961,7 +965,7 @@ selections:
     - file_owner_etc_shadow
     - file_groupowner_etc_shadow
 
-    # chmod o-rwx,g-wx /etc/shadow
+    # chmod 640 /etc/shadow
     - file_permissions_etc_shadow
 
     ### 6.1.4 Ensure permissions on /etc/group are configured (Scored)
@@ -973,11 +977,12 @@ selections:
     - file_permissions_etc_group
 
     ### 6.1.5 Ensure permissions on /etc/gshadow are configured (Scored)
+    # Should not be used at all. Best, if absent
     # chown root:root /etc/gshadow
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow
 
-    # chmod o-rwx,g-rw /etc/gshadow
+    # chmod 000 /etc/gshadow
     - file_permissions_etc_gshadow
 
     ### 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)
@@ -985,7 +990,7 @@ selections:
     - file_owner_backup_etc_passwd
     - file_groupowner_backup_etc_passwd
 
-    # chmod 644 /etc/passwd-
+    # chmod 600 /etc/passwd-
     - file_permissions_backup_etc_passwd
 
     ### 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)
@@ -993,7 +998,7 @@ selections:
     - file_owner_backup_etc_shadow
     - file_groupowner_backup_etc_shadow
 
-    # chmod 0000 /etc/shadow-
+    # chmod 0600 /etc/shadow-
     - file_permissions_backup_etc_shadow
 
     ### 6.1.8 Ensure permissions on /etc/group- are configured (Scored)
@@ -1028,7 +1033,6 @@ selections:
     - file_permissions_unauthorized_sgid
 
     ## 6.2 User and Group Settings
-
     ### 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored)
     - no_legacy_plus_entries_etc_passwd
 
@@ -1054,7 +1058,7 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5506
 
     ### 6.2.10 Ensure no users have .forward files (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5505
+    - no_forward_files
 
     ### 6.2.11 Ensure no users have .netrc files (Scored)
     - no_netrc_files
