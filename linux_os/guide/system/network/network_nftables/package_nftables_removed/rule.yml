@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,sle12,sle15
+
+title: 'Remove nftables Package'
+
+description: |-
+    {{{ describe_package_remove(package="nftables") }}}
+
+rationale: |-
+    <tt>nftables</tt> controls the Linux kernel network packet filtering
+    code. <tt>iptables</tt> allows system operators to set up firewalls and IP
+    masquerading, etc.
+
+severity: medium
+
+references:
+    cis@rhel8: 3.4.1.1
+
+ocil: '{{{ complete_ocil_entry_package(package="nftables") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: nftable

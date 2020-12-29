@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,sle12,sle15
+
+title: 'Install nftables Package'
+
+description: |-
+    {{{ describe_package_install(package="nftables") }}}
+
+rationale: |-
+    <tt>nftables</tt> controls the Linux kernel network packet filtering
+    code. <tt>iptables</tt> allows system operators to set up firewalls and IP
+    masquerading, etc.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-82983-8
+    cce@rhel8: CCE-82982-0
+    cce@rhcos4: CCE-82522-4
+
+references:
+    nist: CM-6(a)
+    srg: SRG-OS-000480-GPOS-00227
+    cis@rhel8: 3.4.1.1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="nftables") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: nftable
