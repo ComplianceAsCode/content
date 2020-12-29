@@ -134,7 +134,7 @@ selections:
     - file_owner_grub2_cfg
     - file_groupowner_grub2_cfg
 
-    #### chmod og-rwx /boot/grub2/grub.cfg
+    #### chmod 0600 /boot/grub2/grub.cfg
     - file_permissions_grub2_cfg
 
     ### 1.4.2 Ensure bootloader password is set (Scored)
@@ -219,19 +219,28 @@ selections:
     - banner_etc_issue_net
 
     #### 1.7.1.4 Ensure permissions on /etc/motd are configured (Not Scored)
-    # chmod u-x,go-wx /etc/motd
+    # chmod 0644 /etc/motd
     - file_permissions_etc_motd
 
+    # chown root:root /etc/motd
+    - file_owner_etc_motd
+    - file_groupowner_etc_motd
+
     #### 1.7.1.5 Ensure permissions on /etc/issue are configured (Scored)
-    # chmod u-x,go-wx /etc/issue
+    # chmod 0644 /etc/issue
     - file_permissions_etc_issue
 
+    # chown root:root /etc/issue
+    - file_owner_etc_issue
+    - file_groupowner_etc_issue
+
     #### 1.7.1.6 Ensure permissions on /etc/issue.net are configured (Not Scored)
-    # chmod u-x,go-wx /etc/issue.net
+    # chmod 0644 /etc/issue.net
     - file_permissions_etc_issue_net
     
-    #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Scored)
-    # Previously addressed via 'rpm_verify_permissions' rule
+    # chown root:root /etc/issue.net
+    - file_owner_etc_issue_net
+    - file_groupowner_etc_issue_net
 
     ### 1.7.2 Ensure GDM login banner is configured (Scored)
     #### banner-message-enable=true
@@ -271,7 +280,8 @@ selections:
     ### Need Rule
     
     ### 2.1.9 Ensure tftp server is not enabled (Scored)
-    - service_tftp_disabled
+    # Not needed, if xinetd is disabled.
+    #- service_tftp_disabled
     
     ### 2.1.10 Ensure rsync service is not enabled (Scored)
     ### Need Rule
@@ -320,9 +330,9 @@ selections:
 
     ### 2.2.10 Ensure HTTP server is not enabled (Scored)
     - service_httpd_disabled
-    # - service_nginx_disabled
-    # - service_apache2_disabled
-    # - service_lighthttpd_disabled
+    - service_nginx_disabled
+    - service_lighthttpd_disabled
+    #TODO: Add other possible HTTP Servers to list
 
     ### 2.2.11 Ensure IMAP and POP3 server is not enabled (Scored)
     - service_dovecot_disabled
@@ -340,7 +350,7 @@ selections:
     - postfix_network_listening_disabled
 
     ### 2.2.16 Ensure NIS Server is not enabled (Scored)
-    # - service_ypserv_disabled
+    - service_ypserv_disabled
 
     ### 2.2.17 Ensure tftp server is not installed (Scored)
     - service_tftp_disabled
@@ -420,6 +430,9 @@ selections:
     - package_tcp_wrappers_installed
 
     ### 3.4.2 Ensure /etc/hosts.allow is configured (Scored)
+    ### Needs Manual Remediation. Can't find the rule below.
+    #- configure_hosts
+
     ### 3.4.3 Ensure /etc/hosts.deny is configured (Scored)
     - configure_etc_hosts_deny
 
@@ -446,12 +459,13 @@ selections:
     ### 3.5.4 Ensure TIPC is disabled (Not Scored)
     - kernel_module_tipc_disabled
     
-        ## 3.6 Firewall Configuration
+    ## 3.6 Firewall Configuration
     ### 3.6.1 Ensure iptables is installed (Scored)
     - package_iptables_installed
 
     ### 3.6.2 Ensure default deny firewall policy (Scored)
-    ### Need Rule
+    # ONLY INPUT
+    - set_iptables_default_rule
 
     ### 3.6.3 Ensure loopback traffic is configured (Scored)
     ### Need Rule
@@ -575,8 +589,11 @@ selections:
     - service_rsyslog_enabled
 
     #### 4.2.1.3 Ensure rsyslog default file permissions configured (Scored)
-    - rsyslog_files_groupownership
+    
     - rsyslog_files_ownership
+    - rsyslog_files_groupownership
+    
+    # chmod 0644
     - rsyslog_files_permissions
 
     # 5 Access, Authentication and Authorization
@@ -585,41 +602,80 @@ selections:
     - service_crond_enabled
 
     ### 5.1.2 Ensure permissions on /etc/crontab are configured (Scored)
-    - file_groupowner_crontab
-    - file_owner_crontab
+    # chmod 0600 /etc/crontab
     - file_permissions_crontab
+    
+    # chown root:root /etc/crontab
+    - file_owner_crontab
+    - file_groupowner_crontab
 
     ### 5.1.3 Ensure permissions on /etc/cron.hourly are configured (Scored)
-    - file_groupowner_cron_hourly
-    - file_owner_cron_hourly
+    # chmod 0700 /etc/cron.hourly
     - file_permissions_cron_hourly
+    
+    # chown root:root /etc/cron.hourly
+    - file_owner_cron_hourly
+    - file_groupowner_cron_hourly
 
     ### 5.1.4 Ensure permissions on /etc/cron.daily are configured (Scored)
-    - file_groupowner_cron_daily
-    - file_owner_cron_daily
+    # chmod 0700 /etc/cron.daily
     - file_permissions_cron_daily
+    
+    # chown root:root /etc/cron.daily
+    - file_owner_cron_daily
+    - file_groupowner_cron_daily
 
     ### 5.1.5 Ensure permissions on /etc/cron.weekly are configured (Scored)
-    - file_groupowner_cron_weekly
-    - file_owner_cron_weekly
+    # chmod 0700 /etc/cron.weekly
     - file_permissions_cron_weekly
 
+    # chown root:root /etc/cron.weekly
+    - file_owner_cron_weekly
+    - file_groupowner_cron_weekly
+
     ### 5.1.6 Ensure permissions on /etc/cron.monthly are configured (Scored)
-    - file_groupowner_cron_monthly
-    - file_owner_cron_monthly
+    # chmod 0700 /etc/cron.monthly
     - file_permissions_cron_monthly
 
+    # chown root:root /etc/cron.monthly
+    - file_owner_cron_monthly
+    - file_groupowner_cron_monthly
+
     ### 5.1.7 Ensure permissions on /etc/cron.d are configured (Scored)
-    - file_groupowner_cron_d
-    - file_owner_cron_d
+    # chmod 0700 /etc/cron.d
     - file_permissions_cron_d
+    
+    # chown root:root /etc/cron.d
+    - file_owner_cron_d
+    - file_groupowner_cron_d
 
     ### 5.1.8 Ensure at/cron is restricted to authorized users (Scored)
+    # Using cron.allow to limit access to cron.
+    # cron.deny not needed.
+    # chown root:root /etc/cron.deny
+    # - file_owner_cron_deny
+    # - file_groupowner_cron_deny
+    
+    # chmod 600 /etc/cron.deny
+    # - file_permissions_cron_deny
+    
+    # chmod 0600 /etc/cron.allow
+    - file_permissions_cron_allow
+    
+    # chown root:root /etc/cron.allow
+    - file_owner_cron_allow
+    - file_groupowner_cron_allow
+
+    # Keeping at removed from system.
+    - package_at_removed
 
     ## 5.2 SSH Server Configuration
     ### 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored)
-    - file_groupowner_sshd_config
+    # chown root:root /etc/ssh/sshd_config
     - file_owner_sshd_config
+    - file_groupowner_sshd_config
+
+    # chmod og-rwx /etc/ssh/sshd_config
     - file_permissions_sshd_config
 
     ### 5.2.2 Ensure SSH Protocol is set to 2 (Scored)
@@ -662,7 +718,8 @@ selections:
     - sshd_set_keepalive
 
     ### 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)
-    ### NEED RULE
+    - sshd_login_grace_time_value=60
+    - sshd_set_login_grace_time
     
     ### 5.2.14 Ensure SSH access is limited (Scored)
     - sshd_limit_user_access
@@ -737,7 +794,6 @@ selections:
     
     # 6 System Maintenance
     ## 6.1 System File Permissions
-
     ### 6.1.1 Audit system file permissions (Not Scored)
     - rpm_verify_permissions
     - rpm_verify_ownership
@@ -747,7 +803,7 @@ selections:
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
 
-    # chmod 644 /etc/passwd
+    # chmod 0644 /etc/passwd
     - file_permissions_etc_passwd
 
     ### 6.1.3 Ensure permissions on /etc/shadow are configured (Scored)
@@ -755,7 +811,7 @@ selections:
     - file_owner_etc_shadow
     - file_groupowner_etc_shadow
 
-    # chmod o-rwx,g-wx /etc/shadow
+    # chmod 0600 /etc/shadow
     - file_permissions_etc_shadow
 
     ### 6.1.4 Ensure permissions on /etc/group are configured (Scored)
@@ -763,7 +819,7 @@ selections:
     - file_owner_etc_group
     - file_groupowner_etc_group
 
-    # chmod 644 /etc/group
+    # chmod 0644 /etc/group
     - file_permissions_etc_group
 
     ### 6.1.5 Ensure permissions on /etc/gshadow are configured (Scored)
@@ -771,7 +827,7 @@ selections:
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow
 
-    # chmod o-rwx,g-rw /etc/gshadow
+    # chmod 0640 /etc/gshadow
     - file_permissions_etc_gshadow
 
     ### 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored)
@@ -779,7 +835,7 @@ selections:
     - file_owner_backup_etc_passwd
     - file_groupowner_backup_etc_passwd
 
-    # chmod 600 /etc/passwd-
+    # chmod 0644 /etc/passwd-
     - file_permissions_backup_etc_passwd
 
     ### 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored)
@@ -787,7 +843,7 @@ selections:
     - file_owner_backup_etc_shadow
     - file_groupowner_backup_etc_shadow
 
-    # chmod 0000 /etc/shadow-
+    # chmod 0640 /etc/shadow-
     - file_permissions_backup_etc_shadow
 
     ### 6.1.8 Ensure permissions on /etc/group- are configured (Scored)
@@ -795,7 +851,7 @@ selections:
     - file_owner_backup_etc_group
     - file_groupowner_backup_etc_group
 
-    # chmod 644 /etc/group-
+    # chmod 0644 /etc/group-
     - file_permissions_backup_etc_group
 
     ### 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored)
@@ -853,13 +909,13 @@ selections:
     ### Need Rule
 
     ### 6.2.11 Ensure no users have .forward files (Scored)
-    ### Need Rule
+    - no_forward_files
     
     ### 6.2.12 Ensure no users have .netrc files (Scored)
-    ### Need Rule
+    - no_netrc_files
 
     ### 6.2.13 Ensure users' .netrc Files are not group or world accessible (Scored)
-    ### Need Rule
+    # Keeping .netrc absent
 
     ### 6.2.14 Ensure no users have .rhosts files (Scored)
     - no_rsh_trust_files

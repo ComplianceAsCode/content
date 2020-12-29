@@ -7,7 +7,6 @@ metadata:
 
 reference: https://www.cisecurity.org/cis-benchmarks/#suse_linux
 
-
 title: 'CIS SUSE Linux Enterprise 15 Benchmark'
 
 description: |-
@@ -46,6 +45,7 @@ selections:
     - mount_option_tmp_nosuid
 
     ### 1.1.6 Ensure /dev/shm is configured (Automated)
+    ### NEED RULE
 
     ### 1.1.7 Ensure noexec option set on /dev/shm (Automated)
     - mount_option_dev_shm_noexec
@@ -165,7 +165,7 @@ selections:
     - sysctl_kernel_randomize_va_space
 
     ### 1.6.4 Ensure prelink is disabled (Automated)
-    # - package_prelink_removed
+    - package_prelink_removed
 
     ## 1.7 Mandatory Access Control
     ### 1.7.1 Ensure Mandatory Access Control Software is Installed
@@ -190,24 +190,38 @@ selections:
     - banner_etc_issue
 
     #### 1.8.1.3 Ensure remote login warning banner is configured properly (Automated)
-    # NEEDS RULE
+    - banner_etc_issue_net
 
     #### 1.8.1.4 Ensure permissions on /etc/motd are configured (Automated)
-    # chmod u-x,go-wx /etc/motd
+    # chmod 0644 /etc/motd
     - file_permissions_etc_motd
 
+    # chown root:root /etc/motd
+    - file_owner_etc_motd
+    - file_groupowner_etc_motd
+
     #### 1.8.1.5 Ensure permissions on /etc/issue are configured (Automated)
-    # chmod u-x,go-wx /etc/issue
+    # chmod 0644 /etc/issue
     - file_permissions_etc_issue
 
+    # chown root:root /etc/issue
+    - file_owner_etc_issue
+    - file_groupowner_etc_issue
+
     #### 1.8.1.6 Ensure permissions on /etc/issue.net are configured (Automated)
-    # NEEDS RULE
+    # chmod 0644 /etc/issue.net
+    - file_permissions_etc_issue_net
+
+    # chown root:root /etc/issue.net
+    - file_owner_etc_issue_net
+    - file_groupowner_etc_issue_net
 
     ## 1.9 Ensure updates, patches, and additional security software are installed (Manual)
     - security_patches_up_to_date
 
     ## 1.10 Ensure GDM is removed or login is configured (Automated)
     - package_gdm_removed
+
     # Opinionated selection
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
@@ -236,27 +250,28 @@ selections:
     - xwindows_runlevel_target
 
     ### 2.2.3 Ensure Avahi Server is not installed (Automated)
-    # - package_avahi_removed
-    # - package_avahi-autoipd_removed
+    - package_avahi_removed
+    - package_avahi-autopid_removed
 
     ### 2.2.4 Ensure CUPS is not installed (Automated)
-    # - package_cups_removed
+    - package_cups_removed
 
     ### 2.2.5 Ensure DHCP Server is not installed (Automated)
     - package_dhcp_removed
 
     ### 2.2.6 Ensure LDAP server is not enabled (Automated)
-    # - package_openldap2_removed
+    - package_openldap2_removed
 
     ### 2.2.7 Ensure nfs-utils is not installed or nfs-server is masked (Automated)
     - package_nfs-utils_removed
-    # - package_nfs-kernel-server_removed
+    - package_nfs-kernel-server_removed
     # Opinionated selection
     # NEEDS RULE
     # - service_nfs-server_masked
 
     ### 2.2.8 Ensure rpcbind is not installed or rpcbind services are masked (Automated)
-    # - package_rpcbind_removed
+    - package_rpcbind_removed
+    
     # Opinionated selection
     # NEEDS RULE
     # - service_rpcbind_masked
@@ -270,9 +285,8 @@ selections:
 
     ### 2.2.11 Ensure HTTP server is not installed (Automated)
     - package_httpd_removed
-    # - package_nginx_removed
-    # - package_apache2_removed
-    # - package_lighthttpd_removed
+    - package_nginx_removed
+    - package_lighthttpd_removed
     #TODO: Add other possible HTTP Servers to list
 
     ### 2.2.12 Ensure IMAP and POP3 server is not installed (Automated)
@@ -292,7 +306,7 @@ selections:
     - postfix_network_listening_disabled
 
     ### 2.2.17 Ensure rsync is not installed or rsyncd service is masked (Automated)
-    # - package_rsync_removed
+    - package_rsync_removed
     # Opinionated selection
     # NEEDS RULE
     # - service_rsyncd_masked
@@ -389,7 +403,7 @@ selections:
     - package_iptables_installed
     
     #### 3.5.1.2 Ensure nftables is not installed or stoped and masked (Automated)
-    # - package_nftables_removed
+    - package_nftables_removed
 
     # Stop and Mask Service
     # Needs Rule
@@ -450,12 +464,12 @@ selections:
     - service_iptables_enabled
 
     ##### 3.5.3.1.2 Ensure nftables is not installed (Automated)
-    # - package_nftables_removed
+    - package_nftables_removed
     
     ##### 3.5.3.1.3 Ensure firewalld is not installed or masked and stoped (Automated)
-    # - package_firewalld_removed
+    - package_firewalld_removed
     
-    ### Mask Serice
+    ### Mask Service
     # NEEDS RULE
 
     #### 3.5.3.2 Configure IPv4 iptables
@@ -544,7 +558,6 @@ selections:
     - audit_rules_usergroup_modification_shadow
     - audit_rules_usergroup_modification_opasswd
 
-
     ### 4.1.5 Ensure events that modify the system's network
     ###       enironment are collected (Automated)
     - audit_rules_networkconfig_modification
@@ -615,7 +628,7 @@ selections:
 
     ### 4.1.16 Ensure kernel module loading and unloading is collected
     ###        (Automated)
-    -  audit_rules_kernel_module_loading
+    - audit_rules_kernel_module_loading
 
     ### 4.1.17 Ensure the audit configuration is immutable (Automated)
     - audit_rules_immutable
@@ -669,64 +682,73 @@ selections:
     - service_cron_enabled
 
     ### 5.1.2 Ensure permissions on /etc/crontab are configured (Automated)
+    # chmod 0600 /etc/crontab
+    - file_permissions_crontab
+    
     # chown root:root /etc/crontab
     - file_owner_crontab
     - file_groupowner_crontab
-    # chmod 600 /etc/crontab
-    - file_permissions_crontab
 
     ### 5.1.3 Ensure permissions on /etc/cron.hourly are configured (Automated)
+    # chmod 0700 /etc/cron.hourly
+    - file_permissions_cron_hourly
+    
     # chown root:root /etc/cron.hourly
     - file_owner_cron_hourly
     - file_groupowner_cron_hourly
-    # chmod 700 /etc/cron.hourly
-    - file_permissions_cron_hourly
 
     ### 5.1.4 Ensure permissions on /etc/cron.daily are configured (Automated)
+    # chmod 0700 /etc/cron.daily
+    - file_permissions_cron_daily
+    
     # chown root:root /etc/cron.daily
     - file_owner_cron_daily
     - file_groupowner_cron_daily
-    # chmod 700 /etc/cron.daily
-    - file_permissions_cron_daily
 
     ### 5.1.5 Ensure permissions on /etc/cron.weekly are configured (Automated)
+    # chmod 0700 /etc/cron.weekly
+    - file_permissions_cron_weekly
+
     # chown root:root /etc/cron.weekly
     - file_owner_cron_weekly
     - file_groupowner_cron_weekly
-    # chmod 700 /etc/cron.weekly
-    - file_permissions_cron_weekly
 
     ### 5.1.6 Ensure permissions on /etc/cron.monthly are configured (Automated)
+    # chmod 0700 /etc/cron.monthly
+    - file_permissions_cron_monthly
+
     # chown root:root /etc/cron.monthly
     - file_owner_cron_monthly
     - file_groupowner_cron_monthly
-    # chmod og-rwx /etc/cron.monthly
-    - file_permissions_cron_monthly
 
     ### 5.1.7 Ensure permissions on /etc/cron.d are configured (Automated)
+    # chmod 0700 /etc/cron.d
+    - file_permissions_cron_d
+    
     # chown root:root /etc/cron.d
     - file_owner_cron_d
     - file_groupowner_cron_d
-    # chmod 700 /etc/cron.d
-    - file_permissions_cron_d
 
     ### 5.1.8 Ensure cron is restricted to authorized users (Automated)
+    # Using cron.allow to limit access to cron.
+    # cron.deny not needed.
     # chown root:root /etc/cron.deny
     # - file_owner_cron_deny
     # - file_groupowner_cron_deny
     
     # chmod 600 /etc/cron.deny
     # - file_permissions_cron_deny
-
+    
+    # chmod 0600 /etc/cron.allow
+    - file_permissions_cron_allow
+    
     # chown root:root /etc/cron.allow
     - file_owner_cron_allow
     - file_groupowner_cron_allow
     
-    # chmod 600 /etc/cron.allow
-    # - file_permissions_cron_allow
-    
     ### 5.1.9 Ensure at is restricted to authorized users (Automated)
-    ### NEED RULE
+    # Keeping at removed from system.
+    - package_at_removed
 
     ## 5.2 SSH Server Configuration
     ### 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
@@ -739,23 +761,31 @@ selections:
 
     ### 5.2.2 Ensure permissions on SSH private host key files are
     ###       configured (Automated)
-    # TO DO: The rule sets to 640, but benchmark wants 600
+    # chmod 600 /etc/ssh/ssh_host_*_key
     - file_permissions_sshd_private_key
-    # TO DO: check owner of private keys in /etc/ssh is root:root
-
+    
+    # chown root:root /etc/ssh/ssh_host_*_key
+    - file_owner_sshd_private_key
+    - file_groupowner_sshd_private_key
+    
     ### 5.2.3 Ensure permissions on SSH public host key files are configured
     ###      (Automated)
+    # chmod 0640 /etc/ssh/ssh_host_*_key.pub
     - file_permissions_sshd_pub_key
-    # TO DO: check owner of pub keys in /etc/ssh is root:root
+    
+    # chown root:root /etc/ssh/ssh_host_*_key.pub
+    - file_owner_sshd_pub_key
+    - file_groupowner_sshd_pub_key
 
     ### 5.2.4 Ensure SSH access is limited (Automated)
-    ### NEED RULE
+    # AllowUsers, AllowGroups, etc. are defined by Site policy.
+    # Manual Remidiation required
 
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Automated)
     - sshd_set_loglevel_info
 
     ### 5.2.6 Ensure SSH X11 forward is diabled (Automated)
-    # - sshd_disable_x11_forwarding waiting until my pull request is merged
+    - sshd_disable_x11_forwarding
 
     ### 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less (Automated)
     - sshd_max_auth_tries_value=4
@@ -795,22 +825,24 @@ selections:
 
     ### 5.2.17 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Automated)    
-    ### NEED RULE
-
+    - sshd_login_grace_time_value=60
+    - sshd_set_login_grace_time
+    
     ### 5.2.18 Ensure SSH warning banner is configured (Automated)
     - sshd_enable_warning_banner
 
     ### 5.2.19 Ensure SSH PAM is enabled (Automated)
-    ### NEED RULE
+    - sshd_enable_use_pam
 
     ### 5.2.20 Ensure SSH AllowTcpForwarding is disabled (Automated)
     - sshd_disable_tcp_forwarding
     
     ### 5.2.21 Ensure SSH MaxStartups is configured (Automated)
-    ### NEED RULE
+    - sshd_enable_max_startups
 
     ### 5.2.22 Ensure SSH MaxSessions is set to 4 or less (Automated)
-    ### NEED RULE
+    - var_sshd_max_sessions=4
+    - sshd_set_max_sessions
 
     ## 5.3 Configure PAM
     ### 5.3.1 Ensure password creation requirements are configured (Automated)
@@ -880,7 +912,6 @@ selections:
     - securetty_root_login_console_only
     - no_direct_root_logins
 
-
     ## 5.6 Ensure access to the su command is restricted (Automated)
     ## NEED RULE
 
@@ -903,7 +934,7 @@ selections:
     - file_owner_etc_shadow
     - file_groupowner_etc_shadow
 
-    # chmod 600 /etc/shadow
+    # chmod 0600 /etc/shadow
     - file_permissions_etc_shadow
 
     ### 6.1.4 Ensure permissions on /etc/group are configured (Automated)
@@ -911,7 +942,7 @@ selections:
     - file_owner_etc_group
     - file_groupowner_etc_group
 
-    # chmod 644 /etc/group
+    # chmod 0644 /etc/group
     - file_permissions_etc_group
 
     ### 6.1.5 Ensure permissions on /etc/passwd- are configured (Automated)
@@ -919,7 +950,7 @@ selections:
     - file_owner_backup_etc_passwd
     - file_groupowner_backup_etc_passwd
 
-    # chmod 600 /etc/passwd-
+    # chmod 0600 /etc/passwd-
     - file_permissions_backup_etc_passwd
     
     ### 6.1.6 Ensure permissions on /etc/shadow- are configured (Automated)
@@ -927,7 +958,7 @@ selections:
     - file_owner_backup_etc_shadow
     - file_groupowner_backup_etc_shadow
 
-    # chmod 600 /etc/shadow
+    # chmod 0600 /etc/shadow
     - file_permissions_backup_etc_shadow
 
     ### 6.1.7 Ensure permissions on /etc/group- are configured (Automated)
@@ -961,7 +992,7 @@ selections:
     ### NEED RULE
 
     ### 6.2.3 Ensure root is the only UID 0 account (Automated)
-    ### NEED RULE
+    - accounts_no_uid_except_zero
 
     ### 6.2.4 Ensure root PATH Integrity (Automated)
     ### NEED RULE
@@ -986,9 +1017,9 @@ selections:
     - no_netrc_files
 
     ### 6.2.11 Ensure users' .netrc Files are not group or world accessible (Automated)
-    ### NEED RULE
+    ### Not needed due to 6.2.10
 
-    ### 6.2.12 Ensure no users have .rhosts files (Automated)
+    ### 6.2.12 Ensure users don't have .rhosts files (Automated)
     - no_rsh_trust_files
 
     ### 6.2.13 Ensure all groups in /etc/passwd exist in /etc/group (Automated)
