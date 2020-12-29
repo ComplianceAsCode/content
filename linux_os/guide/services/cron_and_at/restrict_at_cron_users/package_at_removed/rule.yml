@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,sle12,sle15
+
+title: 'Remove at'
+
+description: '{{{ describe_package_remove(package="at")}}}'
+
+rationale: |- 
+    PLACEHOLDER 'Remove at'
+
+severity: low
+
+references:
+    cis@rhel8: 5.1.8
+    cis@sle15: 5.1.9
+
+ocil: '{{{ complete_ocil_entry_package(package="at")}}}'
+
+template:
+  name: package_removed
+  vars:
+    pkgname: at
