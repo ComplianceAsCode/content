@@ -1,14 +1,14 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12,sle15
+prodtype: sle15
 
-title: 'Uninstall nfs-utils Package'
+title: 'Uninstall nfs-kernel-server Package'
 
 description: |-
-    {{{ describe_package_remove(package="nfs-utils") }}}
+    {{{ describe_package_remove(package="nfs-kernel-server") }}}
 
 rationale: |-
-    <tt>nfs-utils</tt> provides a daemon for the kernel NFS server and related tools. This
+    <tt>nfs-kernel-server</tt> provides a daemon for the kernel NFS server and related tools. This
     package also contains the <tt>showmount</tt> program. <tt>showmount</tt> queries the mount
     daemon on a remote host for information about the Network File System (NFS) server on the
     remote host. For example, <tt>showmount</tt> can display the clients which are mounted on
@@ -16,16 +16,12 @@ rationale: |-
 
 severity: low
 
-identifiers:
-    cce@rhel7: CCE-82933-3
-    cce@rhel8: CCE-82932-5
-
 references:
-    srg: SRG-OS-000095-GPOS-00049
+    cis@sle15: 2.2.7
 
-{{{ complete_ocil_entry_package(package="nfs-utils") }}}
+{{{ complete_ocil_entry_package(package="nfs-kernel-server") }}}
 
 template:
     name: package_removed
     vars:
-        pkgname: nfs-utils
+        pkgname: nfs-kernel-server

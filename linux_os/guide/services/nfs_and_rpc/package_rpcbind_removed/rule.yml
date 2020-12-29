@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,sle12,sle15
+
+title: 'Uninstall rpcbind Package'
+
+description: |-
+    {{{ describe_package_remove(package="rpcbind") }}}
+
+rationale: |-
+    PLACEHOLDER
+
+severity: low
+
+references:
+    cis@sle15: 2.2.8
+
+{{{ complete_ocil_entry_package(package="rpcbind") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: rpcbind

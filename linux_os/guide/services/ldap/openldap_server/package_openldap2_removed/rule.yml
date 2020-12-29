@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Uninstall openldap2 Package'
+
+description: |-
+    The openldap-servers RPM is not installed by default on a {{{ full_name }}}
+    system. It is needed only by the OpenLDAP server, not by the
+    clients which use LDAP for authentication. If the system is not
+    intended for use as an LDAP Server it should be removed.
+    {{{ describe_package_remove(package="openldap2") }}}
+
+
+rationale: |-
+    Unnecessary packages should not be installed to decrease the attack
+    surface of the system.  While this software is clearly essential on an LDAP
+    server, it is not necessary on typical desktop or workstation systems.
+
+severity: low
+
+references:
+    cis@sle15: 2.2.6
+
+{{{ complete_ocil_entry_package(package="openldap2") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: openldap2
