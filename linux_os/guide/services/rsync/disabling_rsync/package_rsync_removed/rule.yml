@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,sle12,sle15
+
+title: 'Uninstall RSync Package'
+
+description: '{{{ describe_package_remove(package="rsync") }}}'
+
+rationale: |-
+    If there is no need to make the rsync software available,
+    removing it provides a safeguard against its activation.
+
+severity: unknown
+
+references:
+    cis@rhel7: 2.2.21
+    cis@rhel8: 2.2.3
+    cis@sle12: 2.2.18
+    cis@sle15: 2.2.17
+
+{{{ complete_ocil_entry_package(package="rsync") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: rsync
