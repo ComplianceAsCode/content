@@ -1,8 +1,11 @@
 documentation_complete: true
 
-{{% if "ubuntu" in product or "debian" in product %}}
+{{% if "ubuntu" in product or "debian" in product or "sle" in product %}}
     {{% set target_perms_octal="0640" %}}
     {{% set target_perms="-rw-r-----" %}}
+{{% elif "rhel" in product%}}
+    {{% set target_perms_octal="0600" %}}
+    {{% set target_perms="-rw-------" %}}
 {{% else %}}
     {{% set target_perms_octal="0000" %}}
     {{% set target_perms="----------" %}}
@@ -27,6 +30,7 @@ identifiers:
 references:
     cis@rhel7: 6.1.7
     cis@rhel8: 6.1.7
+    cis@sle12: 6.1.7
     cis@sle15: 6.1.8
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow-", perms=target_perms) }}}'
@@ -43,4 +47,7 @@ template:
         filemode@debian10: '0640'
         filemode@ubuntu1604: '0640'
         filemode@ubuntu1804: '0640'
+        filemode@rhel8: '0600'
+        filemode@sle12: '0640'
+        filemode@sle15: '0640'
         missing_file_pass: 'true'
