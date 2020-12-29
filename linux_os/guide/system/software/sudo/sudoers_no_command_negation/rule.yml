@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: "Don't define allowed commands in sudoers by means of exclusion"
+
+description: |-
+    Policies applied by sudo through the sudoers file should not involve negation.
+
+    Each user specification in the <code>sudoers</code> file contains a comma-delimited list of command specifications.
+    The definition can make use glob patterns, as well as of negations.
+    Indirect definition of those commands by means of exclusion of a set of commands is trivial to bypass, so it is not allowed to use such constructs.
+
+rationale: |-
+    Specifying access right using negation is inefficient and can be easily circumvented.
+    For example, it is expected that a specification like <pre>
+    # To avoid absolutely , this rule can be easily circumvented!
+    user ALL = ALL ,!/ bin/sh
+    </pre> prevents the execution of the shell
+    but that’s not the case: just copy the binary <code>/bin/sh</code> to a different name to make it executable
+    again through the rule keyword <code>ALL</code>.
+
+severity: medium
+
+references:
+    anssi: BP28(R61)
+
+ocil_clause: '/etc/sudoers file contains rules that define the set of allowed commands using negation'
+
+# A setp-by-step guide how to modify the configuration to achieve compliance
+ocil: |-
+    To determine if negation is used to define commands users are allowed to execute using <tt>sudo</tt>, run the following command:
+    <pre>$ sudo grep -PR '^(?\s*[^#][^=]+)=(?\s*(\([^\)]+\))?\s*[^,!\n]+,)*\s*(?\([^\)]+\))?\s*([^,\n]*!\S+).*' /etc/sudoers /etc/sudoers.d/</pre>
+    The command should return no output.
+
+platform: sudo
+
+warnings:
+  - general:
+      This rule doesn't come with a remediation, as negations indicate design issues with the sudoers user specifications design.
+      Just removing negations doesn't increase the security - you typically have to rethink the definition of allowed commands to fix the issue.

@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8
+
+title: 'Ensure a dedicated group owns sudo'
+
+description: |-
+    Restrict the execution of privilege escalated commands to a dedicated group of users.
+    Ensure the group owner of /usr/bin/sudo is {{{ sub_var_value("var_sudo_dedicated_group") }}}.
+
+rationale: |-
+    Restricting the set of users able to execute commands as privileged user reduces the attack surface.
+
+warnings:
+    - functionality: |-
+        Changing group owner of <tt>/usr/bin/sudo</tt> to a group with no member users will prevent
+        any and all escalatation of privileges.
+        Additionally, the system may become unmanageable if root logins are not allowed.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83491-1
+    cce@rhel8: CCE-83982-9
+
+references:
+  anssi: BP28(R57)
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}'

@@ -115,6 +115,8 @@ if ! rpm -q --quiet "{{{ package }}}" ; then
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
 apt-get install -y "{{{ package }}}"
+{{%- elif pkg_manager == "zypper" -%}}
+zypper install -y "{{{ package }}}"
 {{%- else -%}}
 {{{ die("Can't generate a remediation for " + pkg_manager) }}}
 {{%- endif -%}}
@@ -139,6 +141,8 @@ if rpm -q --quiet "{{{ package }}}" ; then
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
 apt-get remove -y "{{{ package }}}"
+{{%- elif pkg_manager == "zypper" -%}}
+zypper remove -y "{{{ package }}}"
 {{%- else -%}}
 {{{ die("Can't generate a remediation for " + pkg_manager) }}}
 {{%- endif -%}}
