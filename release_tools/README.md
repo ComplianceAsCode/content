@@ -61,29 +61,29 @@ Stabilization phase
 It is a good practice to have a stabilization phase before the upstream release
 is performed. During this period, the new stabilization branch is created. Only
 bugfixes which are discovered during this stabilization period are cherry-picked
-from the master branch into the stabilization branch. This reduces risk of
+from the master branch into the stabilization branch. This reduces the risk of
 bringing a sudden breaking change into the release.
 
-We usually have stabilization phase two weeks long. To start the stabilization:
+The stabilization phase is typically two weeks long. To start the stabilization:
 
-- create a new branch called stabilization-vx.y.z, where x.y.z is the version of
-  upcoming release
+- Create a new branch called stabilization-vx.y.z, where x.y.z is the version of
+  the upcoming release
 
 - Create a new milestone for the next version
 
-- set milestone of opened pull requests to the new milestone
+- Set milestone of opened pull requests to the new milestone
 
-- announce start of stabilization period through mailing list
+- Announce start of stabilization period through mailing list
 
 During the stabilization:
 
-- if a bug is fixed, cherry-pick the PR from the master branch into the
+- If a bug is fixed, cherry-pick the PR from the master branch into the
   stabilization branch
 
-- change the milestone for the cherry-picked PR to the milestone of upcoming
+- Change the milestone for the cherry-picked PR to the milestone of upcoming
   release
 
-- label the PR with "backported_into_stabilization"
+- Label the PR with "backported_into_stabilization"
 
 
 Before the release
