@@ -9,11 +9,19 @@
   <ind:textfilecontent54_test check="all" check_existence="{{{ OPTION_EXISTENCE }}}" id="test_{{{ OPTION }}}_sudoers"
       comment="{{{ OPTION }}} exists in /etc/sudoers or /etc/sudoers.d/" version="1">
   <ind:object object_ref="object_{{{ OPTION }}}_sudoers" />
+{{% if VARIABLE_NAME %}}<ind:state state_ref="state_{{{ OPTION }}}_sudoers" />{{% endif %}}
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_{{{ OPTION }}}_sudoers" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(|\.d/.*)$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*Defaults.*\b{{{ OPTION }}}\b.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*Defaults.*\b{{{ OPTION_REGEX }}}\b.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal" >1</ind:instance>
   </ind:textfilecontent54_object>
 
+{{% if VARIABLE_NAME %}}
+  <ind:textfilecontent54_state id="state_{{{ OPTION }}}_sudoers" version="1">
+    <ind:subexpression datatype="string" operation="equals" var_ref="{{{ VARIABLE_NAME }}}" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="Variable value for sudo {{{ OPTION }}} " datatype="string" id="{{{ VARIABLE_NAME }}}" version="1" />
+{{% endif %}}
 </def-group>
