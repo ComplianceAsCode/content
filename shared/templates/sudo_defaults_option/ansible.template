@@ -10,7 +10,7 @@
     path: /etc/sudoers
     regexp: '^[\s]*Defaults\s(.*)\b{{{ OPTION }}}=\w+\b(.*)$'
     line: 'Defaults \g<1>{{{ OPTION }}}={{{ "{{ " ~ VARIABLE_NAME ~ " }}" }}}\g<2>'
-    validate: /usr/sbin/visudo -cf /etc/sudoers
+    validate: /usr/sbin/visudo -cf %s
     backrefs: yes
   register: edit_sudoers_{{{ OPTION }}}_option
 
@@ -18,7 +18,7 @@
   lineinfile: # noqa 503
     path: /etc/sudoers
     line: 'Defaults {{{ OPTION }}}={{{ "{{ " ~ VARIABLE_NAME ~ " }}" }}}'
-    validate: /usr/sbin/visudo -cf /etc/sudoers
+    validate: /usr/sbin/visudo -cf %s
   when: edit_sudoers_{{{ OPTION }}}_option.changed is false
 {{% else %}}
 - name: Ensure {{{ OPTION }}} is enabled in /etc/sudoers
@@ -26,5 +26,5 @@
     path: /etc/sudoers
     regexp: '^[\s]*Defaults.*\b{{{ OPTION }}}\b.*$'
     line: 'Defaults {{{ OPTION }}}'
-    validate: /usr/sbin/visudo -cf /etc/sudoers
+    validate: /usr/sbin/visudo -cf %s
 {{% endif %}}
