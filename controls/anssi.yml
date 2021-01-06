@@ -565,7 +565,10 @@ controls:
   - id: R40
     level: intermediary
     title: Sticky bit and write access rights
-    # rules: TBD
+    rules:
+    - dir_perms_world_writable_sticky_bits
+    - dir_perms_world_writable_root_owned
+    - file_permissions_unauthorized_world_writable
 
   - id: R41
     level: intermediary
