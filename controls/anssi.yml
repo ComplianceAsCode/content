@@ -652,7 +652,11 @@ controls:
   - id: R49
     level: intermediary
     title: Messaging Aliases for Service Accounts
-    # rules: TBD
+    automated: partially # it is hard to define what are "service accounts"
+    notes: >-
+      Only the alias for root user currently covered.
+    rules:
+    - postfix_client_configure_mail_alias
 
   - id: R50
     level: enhanced
