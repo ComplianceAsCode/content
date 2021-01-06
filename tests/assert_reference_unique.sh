@@ -19,7 +19,7 @@ function handle_duplicate {
 	readarray -t occurrence < <(grep -l "${REF}.*:\\s*\\<${dup}" "${all_rule_files[@]}" | sed -e "s|^$PROJECT_ROOT/||")
 
 	echo >&2
-	printf "${REF} %s is included in files: \n" "$dup" >&2
+	printf '%s %s is included in files: \n' "${REF}" "${dup}" >&2
 	printf ' - %s\n' "${occurrence[@]}" >&2
 	return 1
 }
