@@ -56,6 +56,36 @@ developers](https://github.com/orgs/ComplianceAsCode/teams/trusted-developers).
 >     owner: "--owner <owner of repo>" # your github user name
 >     repo: "--repo <name of repo>"    # your clone's repo name
 
+Stabilization phase
+----------------------------------------------------------
+It is a good practice to have a stabilization phase before the upstream release
+is performed. During this period, the new stabilization branch is created. Only
+bugfixes which are discovered during this stabilization period are cherry-picked
+from the master branch into the stabilization branch. This reduces the risk of
+bringing a sudden breaking change into the release.
+
+The stabilization phase is typically two weeks long. To start the stabilization:
+
+- Create a new branch called stabilization-vx.y.z, where x.y.z is the version of
+  the upcoming release
+
+- Create a new milestone for the next version
+
+- Set milestone of opened pull requests to the new milestone
+
+- Announce start of stabilization period through mailing list
+
+During the stabilization:
+
+- If a bug is fixed, cherry-pick the PR from the master branch into the
+  stabilization branch
+
+- Change the milestone for the cherry-picked PR to the milestone of upcoming
+  release
+
+- Label the PR with "backported_into_stabilization"
+
+
 Before the release
 ------------------
 
@@ -172,6 +202,8 @@ Clean up and bump version
     version" commit for your convenience.
     **Make a PR out of the branch**.
 
+- delete the "stable" branch and rename the stabilization branch to "stable"
+
 Announce it
 -----------
 
@@ -199,9 +231,8 @@ Copr builds
 
 -   Move to the directory where you did the latest Fedora build.
 
--   Copy `copr_epel8.patch`, `copr_epel7.patch` and `copr_epel6.patch`
-    from the directory where this readme is placed into the directory
-    where the spec file is.
+-   Copy `copr_epel8.patch` and `copr_epel7.patch` from the directory where this
+    readme is placed into the directory where the spec file is.
 
 -   For epel8, apply the patch with `patch -p1 < copr_epel8.patch` and
     rename the patched file appropriately.
@@ -209,8 +240,7 @@ Copr builds
 -   Upload the new spec file into publicly visible folder in your
     `fedorapeople.org` space.
 
--   Patch and upload spec files for epel7 and epel6 in similar way as
-    shown above.
+-   Patch and upload spec file for epel7 in similar way as shown above.
 
 -   Use your Fedora account and login into [COPR
     repo](https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/).
