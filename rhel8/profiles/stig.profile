@@ -65,3 +65,5 @@ selections:
     - "!zipl_vsyscall_argument"
     - "!zipl_vsyscall_argument.role=unscored"
     - "!zipl_vsyscall_argument.severity=info"
+
+    - installed_OS_is_vendor_supported

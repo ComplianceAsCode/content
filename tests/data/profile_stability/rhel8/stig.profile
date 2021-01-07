@@ -112,6 +112,7 @@ selections:
 - grub2_slub_debug_argument
 - grub2_uefi_password
 - grub2_vsyscall_argument
+- installed_OS_is_vendor_supported
 - kerberos_disable_no_keytab
 - kernel_module_atm_disabled
 - kernel_module_bluetooth_disabled
