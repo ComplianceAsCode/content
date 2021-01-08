@@ -1599,18 +1599,18 @@ the following to `rule.yml`:
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### sudo_defaults_option
-This template ensures a sudo `Defaults` options is enabled in `/etc/sudoers` or in `/etc/sudoers.d/*`.  
-The template can check for options with and without parameters.  
-The remediations add the `Defaults` option  to `/etc/sudoers` file.  
+This template ensures a sudo `Defaults` options is enabled in `/etc/sudoers` or in `/etc/sudoers.d/*`.\
+The template can check for options with and without parameters.\
+The remediations add the `Defaults` option  to `/etc/sudoers` file.
 
 -   Parameters:
 
     - **option** - name of sudo `Defaults` option to enable.
-    - **parameter_variable** - name of the XCCDF variable to get the value for the option parameter.  
+    - **parameter_variable** - name of the XCCDF variable to get the value for the option parameter.\
       (optional, if not set the check and remediation won't use parameters)
     - **default_is_enabled** -  set to `"true"` if the option is enabled by default for the product.
-      In this case, the check will pass even if the options is not explicitly set.  
-      If **parameter_variable** is used this is forced to `"false"` (there is no easy to check that the Value selector is the default).  
+      In this case, the check will pass even if the options is not explicitly set.\
+      If **parameter_variable** is used this is forced to `"false"` (there is no easy to check that the Value selector is the default).\
       (optional, default value is `"false"`. )
 
 -   Languages: Ansible, Bash, OVAL
@@ -1623,7 +1623,7 @@ template:
     option: noexec
 ```
 This will generate:
--   A check that asserts `Defaults noexec` is present in `/etc/sudoers` or `/etc/sudoers.d/`.  
+-   A check that asserts `Defaults noexec` is present in `/etc/sudoers` or `/etc/sudoers.d/`.\
     `Defaults` with multiple options are also accepted, i.e.: `Defaults ignore_dot,noexec,use_pty`.
 -   A remediation that adds `Defaults noexec` to `/etc/sudoers`.
 
@@ -1635,7 +1635,7 @@ template:
     variable_name: var_sudo_umask
 ```
 The default selected value of `var_sudo_umask` is `"0022"`.  Hence, the template key will generate:
--   A check that asserts `Defaults umask=0022` is present in `/etc/sudoers` or `/etc/sudoers.d/`.  
+-   A check that asserts `Defaults umask=0022` is present in `/etc/sudoers` or `/etc/sudoers.d/`.\
     `Defaults` with multiple options are also accepted, i.e.: `Defaults ignore_dot,umask=0022,use_pty`.
 -   A remediation that adds `Defaults umask=0022` to `/etc/sudoers`.
 
