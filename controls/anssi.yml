@@ -20,7 +20,7 @@ controls:
     automated: partially  # The list of essential services is not objective.
     notes: >-
       Use of obsolete or insecure services is not recommended.
-      The minimal install is a good starting point, but this doesn't provide any assurante over any packages installed later.
+      The minimal install is a good starting point, but this doesn't provide any assurance over any package installed later.
     rules:
     - package_dhcp_removed
     #- package_rsh_removed
@@ -41,7 +41,7 @@ controls:
     level: intermediary
     title: Minimization of configuration
     description: >-
-      Services are ofen installed with default configurations that enable features potentially
+      Services are often installed with default configurations that enable features potentially
       problematic from a security point of view.
       The features configured at the level of launched services should be limited to the strict
       minimum.
@@ -56,7 +56,7 @@ controls:
     description: >-
       The services and executables available on the system must be analyzed in order to
       know the privileges they require, and must then be configured and integrated to use
-      the, bare necessities.
+      the bare necessities.
     automated: partially # The system can be restricted even more with selinux-booleans or other technologies
     notes: >-
       SELinux policies limit the privileges of services and daemons to only what they require.
@@ -82,11 +82,11 @@ controls:
       barriers that must be kept independent of each other.
     automated: partially
     notes: >-
-      Defense in-depth can be broadly divded into three areas, physical, technical and
+      Defense in-depth can be broadly divided into three areas - physical, technical and
       administrative. The security profile is best suitedto protect the technical area.
       Among the barriers that can be implemented within the technical area are antivirus software,
       authentication, multi-factor authentication, encryption, logging, auditing, sandboxing,
-      intrusion detection systems, firewalls, and vulnerability scanners.
+      intrusion detection systems, firewalls and vulnerability scanners.
     rules:
     #- package_audit_installed
     #- service_auditd_enabled
@@ -156,7 +156,7 @@ controls:
     description: >-
       The iommu = force directive must be added to the list of kernel parameters
       during startup in addition to those already present in the configuration
-      files of the bootloader (/boot/grub/menu.lst or  /etc/default/grub).
+      files of the bootloader (/boot/grub/menu.lst or /etc/default/grub).
     rules:
     - grub2_enable_iommu_force
 
