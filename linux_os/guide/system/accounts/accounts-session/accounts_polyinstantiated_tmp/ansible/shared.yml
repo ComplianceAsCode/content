@@ -4,9 +4,9 @@
 # complexity = low
 # disruption = low
 
-- name: Create /tmp-inst directory
+- name: Create /tmp/tmp-inst directory
   file:
-    path: /tmp-inst
+    path: /tmp/tmp-inst
     state: directory
     mode: '000'
     seuser: system_u
@@ -16,6 +16,6 @@
 {{{ ansible_lineinfile(
   msg="Make changes to /etc/security/namespace.conf",
   path="/etc/security/namespace.conf",
-  regex="^\s*/tmp\s+/tmp-inst/\s+level\s+root,adm$",
-  new_line="/tmp     /tmp-inst/            level      root,adm"
+  regex="^\s*/tmp\s+/tmp/tmp-inst/\s+level\s+root,adm$",
+  new_line="/tmp     /tmp/tmp-inst/        level      root,adm"
 ) }}}

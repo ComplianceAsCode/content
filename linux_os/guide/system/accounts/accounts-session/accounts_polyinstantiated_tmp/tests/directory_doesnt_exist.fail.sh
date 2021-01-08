@@ -1,3 +1,3 @@
 #!/bin/bash
-rm -rf /tmp-inst
-echo "/tmp     /tmp-inst/            level      root,adm" >> /etc/security/namespace.conf
+rm -rf /tmp/tmp-inst
+echo "/tmp     /tmp/tmp-inst/        level      root,adm" >> /etc/security/namespace.conf

@@ -5,9 +5,9 @@ title: Configure Polyinstantiation of /tmp Directories
 description: |-
   To configure polyinstantiated /tmp directories, first create the parent directories
   which will hold the polyinstantiation child directories. Use the following command:
-  <pre>$ sudo mkdir --mode 000 /tmp-inst</pre>
+  <pre>$ sudo mkdir --mode 000 /tmp/tmp-inst</pre>
   Then, add the following entry to <tt>/etc/security/namespace.conf</tt>:
-  <pre>/tmp     /tmp-inst/            level      root,adm</pre>
+  <pre>/tmp     /tmp/tmp-inst/            level      root,adm</pre>
 
 rationale: |- 
   Polyinstantiation of temporary directories is a proactive security measure
@@ -30,4 +30,4 @@ ocil: |-
   polyinstantiated directory:
   <pre>$ sudo grep /tmp /etc/security/namespace.conf</pre>
   The output should return the following:
-  <pre>/tmp     /tmp-inst/            level      root,adm</pre>
+  <pre>/tmp     /tmp/tmp-inst/            level      root,adm</pre>
