@@ -1610,7 +1610,7 @@ The remediations add the `Defaults` option  to `/etc/sudoers` file.
       (optional, if not set the check and remediation won't use parameters)
     - **default_is_enabled** -  set to `"true"` if the option is enabled by default for the product.
       In this case, the check will pass even if the options is not explicitly set.\
-      If **parameter_variable** is used this is forced to `"false"` (there is no easy to check that the Value selector is the default).\
+      If **parameter_variable** is used this is forced to `"false"`. As the Value selector can be changed by tailoring at scan-time the default value needs to be defined at compile-time, and this is not supported at the moment.\
       (optional, default value is `"false"`. )
 
 -   Languages: Ansible, Bash, OVAL
