@@ -1,0 +1,20 @@
+<def-group>
+  <definition class="compliance" id="enable_pam_namespace" version="1">
+    {{{ oval_metadata("Check presence of pam_namespace.so module in the /etc/pam.d/login file") }}}
+    <criteria operator="AND" comment="Check that /etc/pam.d/login contains a line with certain text">
+      <criterion comment="Check that /etc/pam.d/login contains a line with certain text" test_ref="test_enable_pam_namespace" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+    comment="tests the presence of pam_namespace.so module in the /etc/pam.d/login file"
+    id="test_enable_pam_namespace" version="1">
+  <ind:object object_ref="obj_enable_pam_namespace" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_enable_pam_namespace" version="1">
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*session\s+required\s+pam_namespace\.so\s*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

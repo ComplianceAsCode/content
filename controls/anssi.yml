@@ -567,7 +567,15 @@ controls:
   - id: R39
     level: intermediary
     title: Temporary directories dedicated to accounts
-    # rules: TBD
+    description: >-
+      Each user or service account must have its own temporary directory
+      and dispose of it exclusively.
+    rules:
+    - enable_pam_namespace
+    - accounts_polyinstantiated_tmp
+    - accounts_polyinstantiated_var_tmp
+    - var_polyinstantiation_enabled=on
+    - sebool_polyinstantiation_enabled
 
   - id: R40
     level: intermediary
