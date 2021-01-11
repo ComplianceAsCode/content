@@ -766,7 +766,9 @@ controls:
   - id: R58
     level: intermediary
     title: Sudo configuration guidelines
-    # rules: TBD
+    rules:
+    - sudo_add_umask
+    - var_sudo_umask=0027
 
   - id: R59
     level: minimal
