@@ -1268,6 +1268,36 @@ the following to `rule.yml`:
 
 -   Languages: OVAL
 
+#### dconf_ini_file
+-   Checks for `dconf` configuration. Additionally checks if the
+    configuration is locked so it cannot be overriden by the user.
+    The `locks` directory is always the **path** appended by `locks/`.
+
+-   Parameters:
+
+    -   **path** - dconf configuration files directory. All files within this directory
+        will be check for the configuration presence.  eg. `/etc/dconf/db/local.d/`.
+
+    -   **section** - name of the `dconf` configuration section, eg. `"org/gnome/desktop/lockdown"`
+
+    -   **parameter** - name of the `dconf` configuration option, eg.
+        `user-administration-disabled`
+
+    -   **value** - value of the `dconf` configuration option specified by
+        **parameter**, eg. `"true"`.
+
+-   Languages: Ansible, Bash, OVAL
+
+-   Example:
+
+        template:
+            name: dconf_ini_file
+            vars:
+                path: /etc/dconf/db/local.d/
+                section: "org/gnome/desktop/lockdown"
+                parameter: user-administration-disabled
+                value: "true"
+
 #### file_groupowner
 -   Check group that owns the given file.
 
