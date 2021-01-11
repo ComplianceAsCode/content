@@ -765,18 +765,37 @@ controls:
   - id: R57
     level: intermediary
     title: Group dedicated to the use of sudo
-    # rules: TBD
+    description: >-
+      A group dedicated to the use of sudo must be created, and only members of this
+      group are allowed to execute sudo.
+    notes: >-
+      The rules below create and configure a group named sudogrp, to change the group customize the
+      value of var_sudo_dedicated_group.
+    automated: yes
+    rules:
+    - sudo_dedicated_group
+    - var_sudo_dedicated_group=sudogrp
 
   - id: R58
     level: intermediary
     title: Sudo configuration guidelines
+    automated: partially
     rules:
+    - sudo_add_noexec
+    - sudo_add_requiretty
+    - sudo_add_use_pty
     - sudo_add_umask
     - var_sudo_umask=0027
+    - sudo_add_ignore_dot
+    - sudo_add_env_reset
+    # passwd_timeout=1
 
   - id: R59
     level: minimal
     title: User authentication running sudo
+    description: >-
+      The the calling user must be authenticaed before running any command with sudo.
+    automated: yes
     rules:
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
@@ -784,7 +803,9 @@ controls:
   - id: R60
     level: intermediary
     title: Privileges of target sudo users
-    # rules: TBD
+    description: The targeted users of a rule should be, as much as possible, non privileged users.
+    rules:
+    - sudoers_no_root_target
 
   - id: R61
     level: enhanced
@@ -797,7 +818,9 @@ controls:
   - id: R62
     level: intermediary
     title: Good use of negation in a sudoers file
-    # rules: TBD
+    description: The sudoers configuration rules should not involve negation.
+    rules:
+    - sudoers_no_command_negation
 
   - id: R63
     level: intermediary
