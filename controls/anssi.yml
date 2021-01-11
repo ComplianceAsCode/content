@@ -122,6 +122,7 @@ controls:
     level: minimal
     title: Regular updates
     notes: Check the vendor CVE feed and configure automatic install of security related updates.
+    automated: yes
     rules:
     - security_patches_up_to_date
 {{% if product in ['fedora', 'ol8', 'rhel8'] %}}
@@ -140,6 +141,7 @@ controls:
       Configurations recommended for this requirement are to be performed at the BIOS level.
       The content automation cannot really configure the BIOS, but can in some cases,
       check settings that are visible to the OS. Like for example the NX/DX setting.
+    automated: partially
     rules:
     - sysctl_kernel_exec_shield
     - bios_enable_execution_restrictions
@@ -148,7 +150,11 @@ controls:
   - id: R10
     level: intermediary
     title: 32 and 64 bit architecture
-    # rules: TBD
+    description: When the machine supports 64-bit operating systems, prefer it.
+    notes: This requirement can be checked, but remediation requires manual reinstall of the OS.
+    automated: yes
+    rules:
+     - prefer_64bit_os
 
   - id: R11
     level: high
@@ -165,6 +171,7 @@ controls:
     title: Partitioning type
     notes: >- 
       The rule for the /proc file system is not implemented
+    automated: partially
     rules:
     # this covers nodev options
     - mount_option_nodev_nonroot_local_partitions
@@ -226,7 +233,13 @@ controls:
   - id: R14
     level: intermediary
     title: Installation of packages reduced to the bare necessities
-    # rules: TBD
+    description: >-
+      The selection of packages installed should be as small as possible,
+      limiting itself to select only what is required.
+    notes: >-
+      It is not possible to automatically decide in general way if a package is required or not for given system.
+      As a future improvement, there could be rules assisting assessment by listing the installed packages.
+    automated: no
 
   - id: R15
     level: minimal
@@ -278,6 +291,7 @@ controls:
       Users will first login, then escalate to privileged (root) access.
       Change of privilege operations must be based on executables to monitor the activities
       performed (for example sudo).
+    automated: yes
     rules:
     - no_direct_root_logins
     - sshd_disable_root_login
@@ -302,6 +316,7 @@ controls:
   - id: R22
     level: intermediary
     title: Setting up network sysctl
+    automated: yes
     rules:
     # No routing between interfaces
     # net.ipv4.ip_forward = 0
@@ -416,6 +431,7 @@ controls:
   - id: R23
     level: intermediary
     title: Setting up system sysctl
+    automated: yes
     rules:
     # Disabling SysReq
     # kernel.sysrq = 0
@@ -523,6 +539,10 @@ controls:
   - id: R32
     level: minimal
     title: Protecting stored passwords
+    description: Any password must be protected by cryptographic mechanisms.
+    notes: >-
+      The selection of rules doesn't cover the use of hardware devices to protect the passwords.
+    automated: yes
     rules:
     # ENCRYPT_METHOD, system default is SHA512
     - set_password_hashing_algorithm_systemauth
@@ -590,6 +610,8 @@ controls:
     description: >-
       Each user or service account must have its own temporary directory
       and dispose of it exclusively.
+    notes: The approach of the selected rules is to use and configure pam_namespace module.
+    automated: yes
     rules:
     - enable_pam_namespace
     - accounts_polyinstantiated_tmp
@@ -600,6 +622,7 @@ controls:
   - id: R40
     level: intermediary
     title: Sticky bit and write access rights
+    automated: yes
     rules:
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_root_owned
@@ -623,7 +646,7 @@ controls:
       The configuration of the service must be performed according to the
       'Security Recommendations for the implementation of a logging system' (DAT-NT-012) accessible on the ANSSI website.
     notes: >-
-      A lot of recommendatios and requirements from the DAT-NT-012 document are administrative and hard to automate.
+      A lot of recommendations and requirements from the DAT-NT-012 document are administrative and hard to automate.
       The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
       be customized for the systems deployment requirements.
     automated: partially
@@ -678,6 +701,7 @@ controls:
     level: intermediary
     title: Dedicated partition for logs
     notes: This assumes that syslog stores its logs locally in "/var/log/audit".
+    automated: yes
     rules:
       - partition_for_var_log_audit
 
@@ -692,7 +716,7 @@ controls:
     title: Messaging Aliases for Service Accounts
     automated: partially # it is hard to define what are "service accounts"
     notes: >-
-      Only the alias for root user currently covered.
+      Only the alias for root user is currently covered.
     rules:
     - postfix_client_configure_mail_alias
 
@@ -761,18 +785,37 @@ controls:
   - id: R57
     level: intermediary
     title: Group dedicated to the use of sudo
-    # rules: TBD
+    description: >-
+      A group dedicated to the use of sudo must be created, and only members of this
+      group are allowed to execute sudo.
+    notes: >-
+      The rules below create and configure a group named sudogrp, to change the group customize the
+      value of var_sudo_dedicated_group.
+    automated: yes
+    rules:
+    - sudo_dedicated_group
+    - var_sudo_dedicated_group=sudogrp
 
   - id: R58
     level: intermediary
     title: Sudo configuration guidelines
+    automated: partially
     rules:
+    - sudo_add_noexec
+    - sudo_add_requiretty
+    - sudo_add_use_pty
     - sudo_add_umask
     - var_sudo_umask=0027
+    - sudo_add_ignore_dot
+    - sudo_add_env_reset
+    # passwd_timeout=1
 
   - id: R59
     level: minimal
     title: User authentication running sudo
+    description: >-
+      The calling user must be authenticated before running any command with sudo.
+    automated: yes
     rules:
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
@@ -780,7 +823,9 @@ controls:
   - id: R60
     level: intermediary
     title: Privileges of target sudo users
-    # rules: TBD
+    description: The targeted users of a rule should be, as much as possible, non privileged users.
+    rules:
+    - sudoers_no_root_target
 
   - id: R61
     level: enhanced
@@ -793,7 +838,9 @@ controls:
   - id: R62
     level: intermediary
     title: Good use of negation in a sudoers file
-    # rules: TBD
+    description: The sudoers configuration rules should not involve negation.
+    rules:
+    - sudoers_no_command_negation
 
   - id: R63
     level: intermediary
