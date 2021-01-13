@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,rhel7
+
+title: 'Prevent remote hosts from connecting to the proxy display'
+
+description: |-
+    The SSH daemon should prevent remote hosts from connecting to the proxy
+    display. Make sure that the option <tt>X11UseLocalhost</tt> is set to
+    <tt>yes</tt> within the SSH server configuration file.
+
+
+rationale: |-
+    When X11 forwarding is enabled, there may be additional exposure to the
+    server and client displays if the sshd proxy display is configured to listen
+    on the wildcard address. By default, sshd binds the forwarding server to the
+    loopback address and sets the hostname part of the <tt>DISPLAY</tt>
+    environment variable to localhost. This prevents remote hosts from
+    connecting to the proxy display.  
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83404-4
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    stig@rhel7: RHEL-07-040711
+    disa: CCI-000366
+    nist: CM-6(b)
+
+ocil_clause: "the display proxy is listening on wildcard address"
+
+ocil: |-
+    {{{ ocil_sshd_option(default="yes", option="X11UseLocalhost", value="yes") }}}
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: X11UseLocalhost
+        rule_id: sshd_x11_use_localhost
+        value: 'yes'
