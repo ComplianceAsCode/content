@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+</style>
+</head>
+<body>
+
+<h1>Definition of {{{ policy.title }}} for {{{ full_name }}}</h1>
+
+{{% if policy.source %}}
+based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
+{{% endif %}}
+
+<div class="all_controls">
+{{% for control in policy.controls -%}}
+<div class="one_control">
+  <h2>{{{ control.id }}}: {{{ control.title }}}</h2>
+  <p>Description: {{{ control.description | safe }}}</p>
+  <p>Level: {{{ control.level }}}</p>
+  <p>Automated: {{{ control.automated }}}</p>
+  <p>
+  {{% if control.rules %}}
+  Selections:
+  <ul>
+    {{% for rulid in control.rules -%}}
+    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[rulid].relative_definition_location }}}">{{{ rulid }}}</a>: {{{ rules[rulid].title }}}</li>
+    {{% endfor -%}}
+  </ul>
+  {{% else %}}
+  <strong>No rules selected</strong>
+  {{% endif %}}
+  </p>
+</div>  
+{{% endfor -%}}
+</div>  
+
+</body>
+</html>
