@@ -36,3 +36,11 @@ ocil: |-
     The command should return no output.
 
 platform: sudo
+
+warnings:
+  - general:
+      This rule doesn't come with a remediation, as absence of arguments in the user spec doesn't mean that the command is intended to be executed with no arguments.
+
+  - general:
+      The rule can produce false findings when an argument contains a comma - sudoers syntax allows comma escaping using backslash, but the check doesn't support that.
+      For example, <code>root ALL=(ALL) echo 1\,2</code> allows root to execute <code>echo 1,2</code>, but the check would interpret it as two commands <code>echo 1\</code> and <code>2</code>.

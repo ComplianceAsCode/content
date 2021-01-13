@@ -2,4 +2,4 @@
 # packages = sudo
 # remediation = none
 
-echo 'nobody ALL=/bin/ls, (!bob alice) /bin/dog, /bin/cat arg' > /etc/sudoers
+echo 'nobody ALL=/bin/ls, (!bob,alice) /bin/dog, /bin/cat arg' > /etc/sudoers

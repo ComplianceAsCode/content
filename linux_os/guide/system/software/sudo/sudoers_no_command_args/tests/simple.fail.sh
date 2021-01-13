@@ -2,4 +2,4 @@
 # packages = sudo
 # remediation = none
 
-echo 'jen !fred		ALL, SERVERS = /bin/sh' > /etc/sudoers
+echo 'jen,!fred		ALL,SERVERS = /bin/sh ' > /etc/sudoers
