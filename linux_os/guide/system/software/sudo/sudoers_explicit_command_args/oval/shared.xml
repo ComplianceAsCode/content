@@ -1,0 +1,25 @@
+<def-group>
+     <definition class="compliance" id="{{{ rule_id }}}" version="1">
+     {{{ oval_metadata("Check that sudoers doesn't contain commands without arguments specified") }}}
+     <criteria operator="AND">
+	     <criterion comment="Make sure that no commands are without arguments" test_ref="test_{{{ rule_id }}}" />
+     </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that no command in user spec is without any argument"
+	  id="test_{{{ rule_id }}}" version="1">
+  <ind:object object_ref="object_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_{{{ rule_id }}}" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <!-- The regex idea: <user list> <host list> = (<the whole command with at least an arg>,)* <command with no arg> <end of the line or next command spec we don't care about>
+         where a command is <runas spec>?<anything except ,>+,
+           - ',' is a command delimiter, while
+         The last capturing group holds the offending command without args.
+    -->
+    <ind:pattern operation="pattern match">^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
