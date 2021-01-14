@@ -32,7 +32,7 @@ ocil_clause: '/etc/sudoers file contains user specifications that allow executio
 
 ocil: |-
     To determine if arguments that commands can be executed with are restricted, run the following command:
-    <pre>$ sudo grep -PR '^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:,|$))' /etc/sudoers /etc/sudoers.d/</pre>
+    <pre>$ sudo grep -PR '^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))' /etc/sudoers /etc/sudoers.d/</pre>
     The command should return no output.
 
 platform: sudo
