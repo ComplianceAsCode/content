@@ -285,7 +285,7 @@ selections:
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
     - package_tftp-server_removed
-    - sshd_enable_x11_forwarding
+    - sshd_disable_x11_forwarding
     - sshd_x11_use_localhost
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
