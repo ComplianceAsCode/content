@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,rhel7,rhel8
+
+title: 'Disable loading and unloading of kernel modules'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.modules_disabled", value="1") }}}'
+
+rationale: |-
+    Malicious kernel modules can have a significant impact on system security and
+    availability. Disabling loading of kernel modules prevents this threat. Note
+    that once this option has been set, it cannot be reverted without doing a
+    system reboot. Make sure that all needed kernel modules are loaded before
+    setting this option.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83392-1
+    cce@rhel8: CCE-83397-0
+
+references:
+    anssi: BP28(R24)
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.modules_disabled", value="1") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.modules_disabled
+        sysctlval: '1'
+        datatype: int

@@ -483,7 +483,8 @@ controls:
       sysctl kernel.modules_disabledconf:
       Prohibition of loading modules (except those already loaded to this point)
       kernel.modules_disabled = 1
-    # rules: TBD
+    rules:
+    - sysctl_kernel_modules_disabled
 
   - id: R25
     level: enhanced
