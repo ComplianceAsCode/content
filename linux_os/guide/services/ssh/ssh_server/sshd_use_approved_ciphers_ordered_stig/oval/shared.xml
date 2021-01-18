@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="sshd_use_approved_ciphers_ordered" version="1">
+  <definition class="compliance" id="sshd_use_approved_ciphers_ordered_stig" version="1">
     {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.") }}}
     <criteria operator="AND">
       <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
@@ -17,7 +17,7 @@
           <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
           <criterion comment="Check the Cipers list in /etc/ssh/sshd_config"
-          test_ref="test_sshd_use_approved_ciphers_ordered" />
+          test_ref="test_sshd_use_approved_ciphers_ordered_stig" />
         </criteria>
       </criteria>
     </criteria>
@@ -25,11 +25,11 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the value of Ciphers setting in the /etc/ssh/sshd_config file"
-  id="test_sshd_use_approved_ciphers_ordered" version="1">
-    <ind:object object_ref="obj_sshd_use_approved_ciphers_ordered" />
+  id="test_sshd_use_approved_ciphers_ordered_stig" version="1">
+    <ind:object object_ref="obj_sshd_use_approved_ciphers_ordered_stig" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="obj_sshd_use_approved_ciphers_ordered" version="1">
+  <ind:textfilecontent54_object id="obj_sshd_use_approved_ciphers_ordered_stig" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+(aes256-ctr(?=[\w,-@]+|$),?)?(aes192-ctr(?=[\w,-@]+|$),?)?(aes128-ctr(?=[\w,-@]+|$),?)?[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
