@@ -506,7 +506,10 @@ controls:
   - id: R27
     title: Disabling service accounts
     level: intermediary
-    # rules: TBD
+    notes: >-
+      It is difficult to generally identify the system's service accounts.
+      Assisting rules could list users which are not disabled for manual review.
+    automated: no
 
   - id: R28
     level: enhanced
@@ -530,7 +533,10 @@ controls:
   - id: R30
     level: minimal
     title: Applications using PAM
-    # rules: TBD
+    notes: >-
+      Manual review is necessary to decide if the list of applications using PAM is minimal.
+      Asssising rules could be created to list all applications using PAM for manual review.
+    automated: no
 
   - id: R31
     title: Securing PAM Authentication Network Services
@@ -580,6 +586,7 @@ controls:
   - id: R36
     title: Rights to access sensitive content files
     level: intermediary
+    automated: yes
     rules:
     - file_owner_etc_shadow
     - file_permissions_etc_shadow
@@ -637,7 +644,10 @@ controls:
   - id: R42
     level: minimal
     title: In memory services and daemons
-    # rules: TBD
+    notes: >-
+      Manual review is necessary to decide if the list of resident daemons is minimal.
+      Asssising rules could be created to list sevices listening on the network for manual review.
+    automated: no
 
   - id: R43
     title: Hardening and configuring the syslog
@@ -709,6 +719,7 @@ controls:
   - id: R48
     level: intermediary
     title: Configuring the local messaging service
+    automated: yes
     rules:
     - postfix_network_listening_disabled
 
@@ -825,6 +836,7 @@ controls:
     level: intermediary
     title: Privileges of target sudo users
     description: The targeted users of a rule should be, as much as possible, non privileged users.
+    automated: yes
     rules:
     - sudoers_no_root_target
 
@@ -840,12 +852,14 @@ controls:
     level: intermediary
     title: Good use of negation in a sudoers file
     description: The sudoers configuration rules should not involve negation.
+    automated: yes
     rules:
     - sudoers_no_command_negation
 
   - id: R63
     level: intermediary
     title: Explicit arguments in sudo specifications
+    automated: yes
     rules:
     - sudoers_explicit_command_args
 
