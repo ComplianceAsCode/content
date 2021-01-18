@@ -239,8 +239,7 @@ selections:
     - install_antivirus
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
-    - sshd_approved_ciphers=stig
-    - sshd_use_approved_ciphers
+    - sshd_use_approved_ciphers_ordered
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
