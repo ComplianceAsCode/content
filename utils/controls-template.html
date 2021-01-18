@@ -20,16 +20,20 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
   <p>Level: {{{ control.level }}}</p>
   <p>Automated: {{{ control.automated }}}</p>
   <p>
-  {{% if control.rules %}}
+  {{% if control.rules -%}}
   Selections:
   <ul>
-    {{% for rulid in control.rules -%}}
-    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[rulid].relative_definition_location }}}">{{{ rulid }}}</a>: {{{ rules[rulid].title }}}</li>
-    {{% endfor -%}}
+    {{%- for rule_id in control.rules -%}}
+    {{%- if rule_id in rules %}}
+    <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[rule_id].relative_definition_location }}}">{{{ rule_id }}}</a>: {{{ rules[rule_id].title }}}</li>
+    {{%- else %}}
+    <li>{{{ rule_id }}} - not available for this product</li>
+    {{%- endif -%}}
+    {{%- endfor %}}
   </ul>
-  {{% else %}}
+  {{% else -%}}
   <strong>No rules selected</strong>
-  {{% endif %}}
+  {{%- endif %}}
   </p>
 </div>  
 {{% endfor -%}}

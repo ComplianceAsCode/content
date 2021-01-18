@@ -15,7 +15,7 @@ import ssg.jinja
 
 class HtmlOutput(object):
     def __init__(self, product, build_dir, policy_file):
-        self.project_directory = pathlib.Path(os.path.dirname(__file__)).parent
+        self.project_directory = pathlib.Path(os.path.dirname(__file__)).parent.resolve()
 
         self.env_yaml = self.get_env_yaml(product, build_dir)
 
@@ -68,9 +68,15 @@ class HtmlOutput(object):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Generate reference-rule mapping.")
-    parser.add_argument("policy", help="The policy YAML")
-    parser.add_argument("product", help="What product to consider")
+    parser = argparse.ArgumentParser(
+        description="Render a policy file typically located in 'controls' directory "
+        "of the project to HTML in a context of a product. "
+        "The product must be built")
+    parser.add_argument(
+        "policy", metavar="FILENAME", help="The policy YAML file")
+    parser.add_argument(
+        "product", metavar="PRODTYPE",
+        help="Product that provides context to the policy. It must already be built")
     parser.add_argument("--build-dir", default="build", help="Path to the build directory")
     parser.add_argument("--output", help="The filename to generate")
     return parser.parse_args()
