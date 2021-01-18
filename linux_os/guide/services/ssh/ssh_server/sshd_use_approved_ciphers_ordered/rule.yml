@@ -1,0 +1,63 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Use Only FIPS 140-2 Validated Ciphers'
+
+description: |-
+    Limit the ciphers to those algorithms which are FIPS-approved.
+    The following line in <tt>/etc/ssh/sshd_config</tt>
+    demonstrates use of FIPS-approved ciphers:
+    <pre>Ciphers aes256-ctr,aes192-ctr,aes128-ctr</pre>
+    This rule ensures that there are configured ciphers mentioned above (or dheir subset), keeping the given order of algorithms.
+
+rationale: |-
+    Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore
+    cannot be relied upon to provide confidentiality or integrity, and system data may be compromised.
+    <br />
+    Operating systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to
+    cryptographic modules.
+    <br />
+    FIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules
+    utilize authentication that meets industry and government requirements. For government systems, this allows
+    Security Levels 1, 2, 3, or 4 for use on {{{ full_name }}}.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83392-1
+
+references:
+    disa: CCI-000068,CCI-000366,CCI-000803,CCI-000877,CCI-002890,CCI-003123
+    srg: SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174
+    stigid@rhel7: RHEL-07-040110
+
+ocil_clause: 'FIPS ciphers are not configured or the enabled ciphers are not FIPS-approved'
+
+ocil: |-
+    Only FIPS ciphers should be used. To verify that only FIPS-approved
+    ciphers are in use, run the following command:
+    <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
+    The output should contain only following ciphers (or a subset) in the exact order:
+    <pre>aes256-ctr,aes192-ctr,aes128-ctr</pre>
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.
