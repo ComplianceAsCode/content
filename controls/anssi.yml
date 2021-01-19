@@ -572,10 +572,18 @@ controls:
       only be read by the user and his group, and be editable only by his owner).
       The umask for users must be set to 0077 (any file created by a user is
       readable and editable only by him).
+    notes: >-
+      There is no simple way to check and remediate different umask values for
+      system and standard users reliably.
+      The different values are set in a conditional clause in a shell script
+      (e.g. /etc/profile or /etc/bashrc).
+      The current implementation checks and fixes both umask to the same value.
+    automated: partially
     rules:
     - var_accounts_user_umask=077
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_profile
+    - accounts_umask_etc_bashrc
 
   - id: R36
     title: Rights to access sensitive content files
