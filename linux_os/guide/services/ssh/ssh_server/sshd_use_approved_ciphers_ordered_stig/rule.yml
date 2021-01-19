@@ -9,7 +9,8 @@ description: |-
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of FIPS-approved ciphers:
     <pre>Ciphers aes256-ctr,aes192-ctr,aes128-ctr</pre>
-    This rule ensures that there are configured ciphers mentioned above (or dheir subset), keeping the given order of algorithms.
+    This rule ensures that there are configured ciphers mentioned
+    above (or their subset), keeping the given order of algorithms.
 
 rationale: |-
     Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore
