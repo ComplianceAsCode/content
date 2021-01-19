@@ -1,0 +1,57 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Use Only FIPS 140-2 Validated MACs'
+
+description: |-
+    Limit the MACs to those hash algorithms which are FIPS-approved.
+    The following line in <tt>/etc/ssh/sshd_config</tt>
+    demonstrates use of FIPS-approved MACs:
+    <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
+    This rule ensures that there are configured MACs mentioned
+    above (or their subset), keeping the given order of algorithms.
+
+rationale: |-
+    DoD Information Systems are required to use FIPS-approved cryptographic hash
+    functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83398-8
+
+references:
+    disa: CCI-000068,CCI-000803,CCI-000877,CCI-001453,CCI-003123
+    srg: SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000394-GPOS-00174
+    stigid@rhel7: RHEL-07-040400
+
+ocil_clause: 'MACs option is commented out or not using FIPS-approved hash algorithms'
+
+ocil: |-
+    Only FIPS-approved MACs should be used. To verify that only FIPS-approved
+    MACs are in use, run the following command:
+    <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
+    The output should contain only following MACs (or a subset) in the exact order:
+    <pre>hmac-sha2-512,hmac-sha2-256</pre>
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.
