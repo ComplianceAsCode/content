@@ -112,6 +112,8 @@ selections:
     - file_permissions_etcd_pki_cert_files
   # 1.1.21 Ensure that the OpenShift PKI key file permissions are set to 600 
     - file_permissions_openshift_pki_key_files
+  #### 1.3 Controller Manager
+  # 1.3.1 Ensure that garbage collection is configured as appropriate (Manual)
 
   ### 2 etcd
   # 2.7 Ensure that a unique Certificate Authority is used for etcd
@@ -121,6 +123,7 @@ selections:
   ###
   #### 3.2 Logging
   # 3.2.1 Ensure that a minimal audit policy is created
+    - kubelet_eviction_thresholds_set_soft_memory_available
 
   ### 4 Worker Nodes
   ###
