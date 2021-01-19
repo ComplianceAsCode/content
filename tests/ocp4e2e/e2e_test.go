@@ -74,6 +74,18 @@ func TestE2e(t *testing.T) {
 			ctx.waitForMachinePoolUpdate(t, "worker")
 		})
 
+		// empty cleanup function that will be a no-op if the profile setup is skipped.
+		var cleanup func() = func() {}
+		t.Run("Configure test IdP", func(t *testing.T) {
+			if ctx.Profile == "moderate" {
+				t.Skip("Skipping IdP setup as this doesn't work in this profile.")
+			}
+			cleanup = ctx.ensureIdP(t)
+		})
+
+		// These will get cleaned up at the end of the test
+		defer cleanup()
+
 		t.Run("Run second compliance scan", func(t *testing.T) {
 			ctx.doRescan(t, suite)
 			ctx.waitForComplianceSuite(t, suite)

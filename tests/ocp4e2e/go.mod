@@ -4,12 +4,13 @@ go 1.14
 
 require (
 	github.com/cenkalti/backoff/v3 v3.2.2
+	github.com/openshift/cluster-authentication-operator v0.0.3-0.20210114132717-a573e0b50452
 	github.com/openshift/compliance-operator v0.1.19
 	github.com/openshift/machine-config-operator v0.0.1-0.20200913004441-7eba765c69c9
 	gopkg.in/yaml.v2 v2.3.0
-	k8s.io/api v0.19.0
-	k8s.io/apiextensions-apiserver v0.19.0
-	k8s.io/apimachinery v0.19.0
+	k8s.io/api v0.20.1
+	k8s.io/apiextensions-apiserver v0.20.0
+	k8s.io/apimachinery v0.20.1
 	k8s.io/client-go v12.0.0+incompatible
 	sigs.k8s.io/controller-runtime v0.6.2
 )

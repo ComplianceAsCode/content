@@ -17,6 +17,7 @@ import (
 	"time"
 
 	backoff "github.com/cenkalti/backoff/v3"
+	caolib "github.com/openshift/cluster-authentication-operator/test/library"
 	cmpapis "github.com/openshift/compliance-operator/pkg/apis"
 	cmpv1alpha1 "github.com/openshift/compliance-operator/pkg/apis/compliance/v1alpha1"
 	mcfg "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
@@ -38,6 +39,7 @@ import (
 	cached "k8s.io/client-go/discovery/cached"
 	"k8s.io/client-go/kubernetes"
 	cgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/restmapper"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	dynclient "sigs.k8s.io/controller-runtime/pkg/client"
@@ -83,6 +85,7 @@ type e2econtext struct {
 	benchmarkRoot   string
 	installOperator bool
 	dynclient       dynclient.Client
+	kubecfg         *rest.Config
 	restMapper      *restmapper.DeferredDiscoveryRESTMapper
 }
 
@@ -177,9 +180,10 @@ func (ctx *e2econtext) assertKubeClient(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	ctx.kubecfg = cfg
 
 	// create the kubeclient (temporarily)
-	kubeclient, err := kubernetes.NewForConfig(cfg)
+	kubeclient, err := kubernetes.NewForConfig(ctx.kubecfg)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
@@ -203,7 +207,7 @@ func (ctx *e2econtext) assertKubeClient(t *testing.T) {
 	ctx.restMapper = restmapper.NewDeferredDiscoveryRESTMapper(cachedDiscoveryClient)
 	ctx.restMapper.Reset()
 
-	ctx.dynclient, err = dynclient.New(cfg, dynclient.Options{Scheme: scheme, Mapper: ctx.restMapper})
+	ctx.dynclient, err = dynclient.New(ctx.kubecfg, dynclient.Options{Scheme: scheme, Mapper: ctx.restMapper})
 	if err != nil {
 		t.Fatalf("failed to build the dynamic client: %s", err)
 	}
@@ -371,6 +375,18 @@ func (ctx *e2econtext) ensureTestSettings(t *testing.T) {
 	})
 	if err != nil {
 		t.Fatalf("failed to ensure auto-apply scanSettings: %s", err)
+	}
+}
+
+func (ctx *e2econtext) ensureIdP(t *testing.T) func() {
+	_, _, cleanups := caolib.AddGitlabIDP(t, ctx.kubecfg)
+	return func() {
+		t.Logf("Cleaning up IdP")
+		caolib.IDPCleanupWrapper(func() {
+			for _, c := range cleanups {
+				c()
+			}
+		})
 	}
 }
 
