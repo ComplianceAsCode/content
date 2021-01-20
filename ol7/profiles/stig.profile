@@ -142,6 +142,7 @@ selections:
     - service_kdump_disabled
     - partition_for_home
     - partition_for_var
+    - partition_for_var_log_audit
     - partition_for_tmp
     - grub2_enable_fips_mode
     - aide_verify_acls
@@ -156,6 +157,7 @@ selections:
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
+    - auditd_name_format
     - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
@@ -287,3 +289,15 @@ selections:
     - sudo_remove_no_authenticate
     - selinux_policytype
     - dconf_gnome_disable_ctrlaltdel_reboot
+    - dconf_gnome_disable_automount_open
+    - dconf_gnome_disable_automount
+    - dconf_gnome_disable_autorun
+    - audit_rules_privileged_commands_mount
+    - dir_perms_world_writable_system_owned_group
+    - package_MFEhiplsm_installed
+    - sssd_ldap_configure_tls_reqcert
+    - uefi_no_removeable_media
+    - xwindows_runlevel_target
+    - require_emergency_target_auth
+    - grub2_admin_username
+    - grub2_uefi_admin_username

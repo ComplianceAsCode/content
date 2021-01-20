@@ -180,23 +180,23 @@
     <VMSinfo VKey="221697" SVKey="221697r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must not allow a non-certificate trusted host SSH logon to the system."/>
   </overlay>
-  <overlay owner="disastig" ruleid="grub2_password" ownerid="OL07-00-010480" disa="213" severity="high">
+  <overlay owner="disastig" ruleid="grub2_admin_username" ownerid="OL07-00-010480" disa="213" severity="high">
     <VMSinfo VKey="221698" SVKey="221698r5059" VRelease="r505922"/>
     <title text="Oracle Linux operating systems prior to version 7.2 with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay owner="disastig" ruleid="require_singleuser_auth" ownerid="OL07-00-010481" disa="213" severity="medium">
+  <overlay owner="disastig" ruleid="require_emergency_target_auth" ownerid="OL07-00-010481" disa="213" severity="medium">
     <VMSinfo VKey="221699" SVKey="221699r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay owner="disastig" ruleid="XXXX" ownerid="OL07-00-010482" disa="213" severity="high">
+  <overlay owner="disastig" ruleid="grub2_password" ownerid="OL07-00-010482" disa="213" severity="high">
     <VMSinfo VKey="221700" SVKey="221700r5059" VRelease="r505922"/>
     <title text="Oracle Linux operating systems version 7.2 or newer with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay owner="disastig" ruleid="grub2_uefi_password" ownerid="OL07-00-010490" disa="213" severity="high">
+  <overlay owner="disastig" ruleid="grub2_uefi_admin_username" ownerid="OL07-00-010490" disa="213" severity="high">
     <VMSinfo VKey="221701" SVKey="221701r5059" VRelease="r505922"/>
     <title text="Oracle Linux operating systems prior to version 7.2 using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay owner="disastig" ruleid="XXXX" ownerid="OL07-00-010491" disa="213" severity="high">
+  <overlay owner="disastig" ruleid="grub2_uefi_password" ownerid="OL07-00-010491" disa="213" severity="high">
     <VMSinfo VKey="221702" SVKey="221702r5059" VRelease="r505922"/>
     <title text="Oracle Linux operating systems version 7.2 or newer using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
@@ -212,7 +212,7 @@
     <VMSinfo VKey="221705" SVKey="221705r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must not have the ypserv package installed."/>
   </overlay>
-  <overlay owner="disastig" ruleid="XXXX" ownerid="OL07-00-020019" disa="1233" severity="medium">
+  <overlay owner="disastig" ruleid="package_MFEhiplsm_installed" ownerid="OL07-00-020019" disa="1233" severity="medium">
     <VMSinfo VKey="221706" SVKey="221706r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must have a host-based intrusion detection tool installed."/>
   </overlay>
@@ -376,7 +376,7 @@
     <VMSinfo VKey="221744" SVKey="221744r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must prevent binary files from being executed on file systems that are being imported via Network File System (NFS)."/>
   </overlay>
-  <overlay owner="disastig" ruleid="mount_option_dev_shm_nosuid" ownerid="OL07-00-021024" disa="1764" severity="low">
+  <overlay owner="disastig" ruleid="mount_option_dev_shm_noexec" ownerid="OL07-00-021024" disa="1764" severity="low">
     <VMSinfo VKey="221747" SVKey="221747r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must mount /dev/shm with secure options."/>
   </overlay>
@@ -440,7 +440,7 @@
     <VMSinfo VKey="221761" SVKey="221761r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories."/>
   </overlay>
-  <overlay owner="disastig" ruleid="grub2_no_removeable_media" ownerid="OL07-00-021700" disa="1813" severity="medium">
+  <overlay owner="disastig" ruleid="uefi_no_removeable_media" ownerid="OL07-00-021700" disa="1813" severity="medium">
     <VMSinfo VKey="221762" SVKey="221762r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must not allow removable media to be used as the boot loader unless approved."/>
   </overlay>
@@ -640,7 +640,7 @@
     <VMSinfo VKey="221812" SVKey="221812r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must audit all uses of the chsh command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_media_export" ownerid="OL07-00-030740" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_mount" ownerid="OL07-00-030740" disa="2884" severity="medium">
     <VMSinfo VKey="221813" SVKey="221813r5059" VRelease="r505922"/>
     <title text="The Oracle Linux operating system must audit all uses of the mount command and syscall."/>
   </overlay>
