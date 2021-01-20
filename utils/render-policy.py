@@ -71,7 +71,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Render a policy file typically located in 'controls' directory "
         "of the project to HTML in a context of a product. "
-        "The product must be built")
+        "The product must be built.")
     parser.add_argument(
         "policy", metavar="FILENAME", help="The policy YAML file")
     parser.add_argument(
