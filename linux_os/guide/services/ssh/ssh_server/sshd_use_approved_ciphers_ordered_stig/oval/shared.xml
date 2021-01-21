@@ -31,7 +31,7 @@
 
   <ind:textfilecontent54_object id="obj_sshd_use_approved_ciphers_ordered_stig" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+(?=[\w,-@]+)(aes256-ctr(?=[\w,-@]+|$),?)?(aes192-ctr(?=[\w,-@]+|$),?)?(aes128-ctr(?=[\w,-@]+|$),?)?[\s]*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)Ciphers(?-i)[\s]+(?=[\w]+)(aes256-ctr(?=[\w,]+|$),?)?(aes192-ctr(?=[\w,]+|$),?)?(aes128-ctr)?[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
