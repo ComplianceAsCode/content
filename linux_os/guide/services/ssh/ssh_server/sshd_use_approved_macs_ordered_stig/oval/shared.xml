@@ -31,7 +31,7 @@
 
   <ind:textfilecontent54_object id="obj_sshd_use_approved_macs_ordered_stig" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+(?=[\w,-@]+)(hmac-sha2-512(?=[\w,]+|$),?)?(hmac-sha2-256)?[\s]*(?:#.*)?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+(?=[\w]+)(hmac-sha2-512(?=[\w,]+|$),?)?(hmac-sha2-256)?[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
