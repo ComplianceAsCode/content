@@ -69,7 +69,4 @@ template:
   vars:
     filepath: /etc/kubernetes/kubelet.conf
     yamlpath: ".evictionSoft['memory.available']"
-    values:
-      - value: {{{ xccdf_value("var_kubelet_evictionsoft_memory_available") }}}
-        operation: "equals"
-
+    xccdf_variable: var_kubelet_evictionsoft_memory_available
