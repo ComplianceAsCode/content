@@ -93,7 +93,7 @@ selections:
     # (jhrozek) Temporarily disabling the rule because the benchmark
     #           specifies one value (60) for the request-timeout parameter, while we
     #           use 3600 in OCP. It is unclear if this value is appropriate...
-    # - api_server_request_timeout
+    - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
     - api_server_service_account_lookup
   # 1.2.28 Ensure that the --service-account-key-file argument is set as appropriate
