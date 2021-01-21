@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4,rhcos4
+prodtype: ol7,ol8,rhel7,rhel8,rhv4,rhcos4,sle12
 
 title: 'Encrypt Partitions'
 
@@ -14,6 +14,7 @@ description: |-
     option is selected the system will prompt for a passphrase to use in
     decrypting the partition. The passphrase will subsequently need to be entered manually
     every time the system boots.
+    {{% if product != "sle12" %}}
     <br /><br />
     For automated/unattended installations, it is possible to use Kickstart by adding
     the <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be
@@ -26,11 +27,14 @@ description: |-
     <br /><br />
     By default, the <tt>Anaconda</tt> installer uses <tt>aes-xts-plain64</tt> cipher
     with a minimum <tt>512</tt> bit key size which should be compatible with FIPS enabled.
+    {{% endif %}}
     <br /><br />
     Detailed information on encrypting partitions using LUKS or LUKS ciphers can be found on
     the {{{ full_name }}} Documentation web site:<br />
     {{% if product in ["ol7", "ol8"] %}}
         {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54670/html/ol7-encrypt-sec.html") }}}.
+    {{% elif product == "sle12" %}}
+        {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
     {{% else %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html") }}}.
     {{% endif %}}
@@ -45,6 +49,7 @@ severity: high
 identifiers:
     cce@rhel7: CCE-27128-8
     cce@rhel8: CCE-80789-1
+    cce@sle12: CCE-83046-3
 
 references:
     cui: 3.13.16
@@ -58,6 +63,7 @@ references:
     isa-62443-2013: 'SR 3.4,SR 4.1,SR 5.2'
     cobit5: APO01.06,BAI02.01,BAI06.01,DSS04.07,DSS05.03,DSS05.04,DSS05.07,DSS06.02,DSS06.06
     cis-csc: 13,14
+    stigid@sle12: SLES-12-010450
 
 ocil_clause: 'partitions do not have a type of crypto_LUKS'
 
