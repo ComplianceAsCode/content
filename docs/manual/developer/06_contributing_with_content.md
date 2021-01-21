@@ -1744,12 +1744,21 @@ The selected value can be changed in the profile (consult the actual variable fo
         Possible options are `all_exist`, `any_exist`,
         `at_least_one_exists`, `none_exist`, `only_one_exists`.
 
+    -   **xccdf_variable** - XCCDF variable selector. Use this field if the comparison involves
+        checking for a value selected by a XCCDF variable.
+
+    -   **embedded_data** - if set to `"true"` and used combined with `xccdf_variable`, the data retrieved by `yamlpath`
+        is considered as a blob and the field `value` has to contain a capture regex.
+
     -   **values** - a list of dictionaries with values to check, where:
 
         -   **key** - the yaml key to check, optional. Used when the
             yamlpath expression yields a map.
 
-        -   **value** - the value to check.
+        -   **value** - the value to check. If used in combination with
+            `xccdf_variable` and `embedded_data`, this field must have a
+            regex with a capture group. The value captured by the regex
+            will be compared with value of variable referenced by `xccdf_variable`.
 
         -   **type**
             ([SimpleDatatypeEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---)) -
