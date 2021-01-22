@@ -19,7 +19,7 @@
     path: /etc/sudoers
     line: 'Defaults {{{ OPTION }}}={{ {{{ VARIABLE_NAME }}} }}'
     validate: /usr/sbin/visudo -cf %s
-  when: edit_sudoers_{{{ OPTION }}}_option.changed is false
+  when: edit_sudoers_{{{ OPTION }}}_option is defined and not edit_sudoers_{{{ OPTION }}}_option.changed
 {{% else %}}
 - name: Ensure {{{ OPTION }}} is enabled in /etc/sudoers
   lineinfile:
