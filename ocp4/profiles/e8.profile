@@ -23,3 +23,12 @@ selections:
     - ocp_idp_no_htpasswd
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
+    - scc_limit_privileged_containers
+    - scc_limit_privilege_escalation
+    - scc_limit_root_containers
+    - scc_limit_container_allowed_capabilities
+    - rbac_pod_creation_access
+    - rbac_wildcard_use
+    - rbac_limit_cluster_admin
+    - api_server_tls_cipher_suitres
+    - api_server_encryption_provider_cipher
