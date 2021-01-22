@@ -447,7 +447,10 @@ class PodmanTestEnv(ContainerTestEnv):
 
     def _new_container_from_image(self, image_name, container_name):
         long_name = "{0}_{1}".format(self._name_stem, container_name)
+        # Podman drops cap_audit_write which causes that it is not possible
+        # run sshd by default. Therefore, we need to add the capability.
         podman_cmd = ["podman", "run", "--name", long_name,
+                      "--cap-add=cap_audit_write",
                       "--publish", "{}".format(self.internal_ssh_port), "--detach", image_name,
                       "/usr/sbin/sshd", "-p", "{}".format(self.internal_ssh_port), "-D"]
         try:
