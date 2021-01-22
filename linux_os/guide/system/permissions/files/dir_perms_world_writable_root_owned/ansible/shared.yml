@@ -4,5 +4,52 @@
 # complexity = low
 # disruption = medium
 
-- name: "Find all world writable files not owned by root on local partitions and change their owner to root"
-  shell: find / -not -fstype afs -not -fstype ceph -not -fstype cifs -not -fstype smb3 -not -fstype smbfs -not -fstype sshfs -not -fstype ncpfs -not -fstype ncp -not -fstype nfs -not -fstype nfs4 -not -fstype gfs -not -fstype gfs2 -not -fstype glusterfs -not -fstype gpfs -not -fstype pvfs2 -not -fstype ocfs2 -not -fstype lustre -not -fstype davfs -type d -perm -0002 -uid +0 -exec chown root {} \;
+
+- name: "Configure excluded (non local) file systems"
+  set_fact:
+    excluded_fs:
+      - afs
+      - ceph
+      - cifs
+      - smb3
+      - smbfs
+      - sshfs
+      - ncpfs
+      - ncp
+      - nfs
+      - nfs4
+      - gfs
+      - gfs2
+      - glusterfs
+      - gpfs
+      - pvfs2
+      - ocfs2
+      - lustre
+      - davfs
+      - fuse.sshfs
+
+- name: "Create empty list of excluded paths"
+  set_fact:
+    excluded_paths: "[]"
+
+- name: "Detect nonlocal file systems and add them to excluded paths"
+  set_fact: 
+    excluded_paths: "{{ excluded_paths | union([item.mount]) }}"
+  loop: "{{ ansible_mounts }}"
+  when: item.fstype is in excluded_fs
+
+- name: "Find all directories excluding non-local partitions"
+  find:
+    paths: "/"
+    excludes: excluded_paths
+    file_type: directory
+    hidden: yes
+    recurse: yes
+  register: found_dirs
+
+- name: "Change owner to root on directories which are world writable"
+  file:
+    path: '{{ item.path }}'
+    owner: root
+  loop:  '{{ found_dirs.files }}'
+  when: item.woth is defined and item.woth is true
