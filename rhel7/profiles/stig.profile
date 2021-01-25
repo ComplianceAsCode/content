@@ -28,7 +28,6 @@ selections:
     - inactivity_timeout_value=15_minutes
     - var_screensaver_lock_delay=5_seconds
     - sshd_idle_timeout_value=10_minutes
-    - sshd_approved_macs=stig
     - var_accounts_fail_delay=4
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
@@ -258,7 +257,7 @@ selections:
     - sshd_print_last_log
     - sshd_disable_root_login
     - sshd_allow_only_protocol2
-    - sshd_use_approved_macs
+    - sshd_use_approved_macs_ordered_stig
     - file_permissions_sshd_pub_key
     - file_permissions_sshd_private_key
     - sshd_disable_gssapi_auth
