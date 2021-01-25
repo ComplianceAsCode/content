@@ -23,6 +23,7 @@ selections:
     - accounts_password_all_shadowed
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_nosuid
+    - audit_rules_privileged_commands
     - audit_rules_privileged_commands_at
     - audit_rules_privileged_commands_chage
     - audit_rules_privileged_commands_chsh
@@ -76,5 +77,6 @@ selections:
     - service_oddjobd_disabled
     - service_rdisc_disabled
     - service_rsyslog_enabled
+    - service_qpidd_disabled
     - partition_for_var_log
     - partition_for_var_log_audit
