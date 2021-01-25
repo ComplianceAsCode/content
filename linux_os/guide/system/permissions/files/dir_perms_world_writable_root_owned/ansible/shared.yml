@@ -7,7 +7,7 @@
 
 - name: "Configure excluded (non local) file systems"
   set_fact:
-    excluded_fs:
+    excluded_fstypes:
       - afs
       - ceph
       - cifs
@@ -36,7 +36,7 @@
   set_fact: 
     excluded_paths: "{{ excluded_paths | union([item.mount]) }}"
   loop: "{{ ansible_mounts }}"
-  when: item.fstype is in excluded_fs
+  when: item.fstype is in excluded_fstypes
 
 - name: "Find all directories excluding non-local partitions"
   find:
@@ -52,4 +52,4 @@
     path: '{{ item.path }}'
     owner: root
   loop:  '{{ found_dirs.files }}'
-  when: item.woth is defined and item.woth is true
+  when: item.woth is true
