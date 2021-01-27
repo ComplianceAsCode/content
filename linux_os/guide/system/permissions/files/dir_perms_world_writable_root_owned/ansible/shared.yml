@@ -30,7 +30,7 @@
 
 - name: "Create empty list of excluded paths"
   set_fact:
-    excluded_paths: "[]"
+    excluded_paths: []
 
 - name: "Detect nonlocal file systems and add them to excluded paths"
   set_fact: 
