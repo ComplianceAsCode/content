@@ -57,7 +57,7 @@ fi
 # Obtain the list of SUID/SGID binaries on the particular system (split by newline)
 # into privileged_binaries array
 privileged_binaries=()
-readarray -t privileged_binaries < <(find / -not -fstype afs -not -fstype ceph -not -fstype cifs -not -fstype smb3 -not -fstype smbfs -not -fstype sshfs -not -fstype ncpfs -not -fstype ncp -not -fstype nfs -not -fstype nfs4 -not -fstype gfs -not -fstype gfs2 -not -fstype glusterfs -not -fstype gpfs -not -fstype pvfs2 -not -fstype ocfs2 -not -fstype lustre -not -fstype davfs -type f -perm -4000 -o -type f -perm -2000 2>/dev/null)
+readarray -t privileged_binaries < <(find / -not -fstype afs -not -fstype ceph -not -fstype cifs -not -fstype smb3 -not -fstype smbfs -not -fstype sshfs -not -fstype ncpfs -not -fstype ncp -not -fstype nfs -not -fstype nfs4 -not -fstype gfs -not -fstype gfs2 -not -fstype glusterfs -not -fstype gpfs -not -fstype pvfs2 -not -fstype ocfs2 -not -fstype lustre -not -fstype davfs -not -fstype fuse.sshfs -type f -perm -4000 -o -type f -perm -2000 2>/dev/null)
 
 # Keep list of SUID/SGID binaries that have been already handled within some previous iteration
 declare -a sbinaries_to_skip=()
