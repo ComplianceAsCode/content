@@ -181,7 +181,9 @@ controls:
     - partition_for_boot
     - mount_option_boot_nosuid
     - mount_option_boot_noexec
-    - mount_option_boot_noauto
+    # The noauto option rule breaks checking of the other mount options
+    # Commented until rules for /boot mount_option handles this use case
+    # - mount_option_boot_noauto
 
     # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
     - partition_for_opt
