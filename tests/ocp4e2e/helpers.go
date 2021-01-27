@@ -52,7 +52,7 @@ const (
 	apiPollInterval           = 5 * time.Second
 	testProfilebundleName     = "e2e"
 	autoApplySettingsName     = "auto-apply-debug"
-	manualRemediationsTimeout = 20 * time.Minute
+	manualRemediationsTimeout = 30 * time.Minute
 )
 
 // RuleTest is the definition of the structure rule-specific e2e tests should have
@@ -84,7 +84,6 @@ type e2econtext struct {
 	installOperator bool
 	dynclient       dynclient.Client
 	restMapper      *restmapper.DeferredDiscoveryRESTMapper
-	t               *testing.T
 }
 
 func init() {
@@ -120,7 +119,6 @@ func newE2EContext(t *testing.T) *e2econtext {
 		benchmarkRoot:          benchmarkRoot,
 		product:                product,
 		installOperator:        installOperator,
-		t:                      t,
 	}
 }
 
@@ -141,64 +139,64 @@ func getBenchmarkRootFromProductSpec(productpath string) (string, error) {
 	return path.Join(productpath, benchmarkRelative.Path), nil
 }
 
-func (ctx *e2econtext) assertRootdir() {
+func (ctx *e2econtext) assertRootdir(t *testing.T) {
 	dirinfo, err := os.Stat(ctx.rootdir)
 	if os.IsNotExist(err) {
-		ctx.t.Fatal("$ROOT_DIR points to an unexistent directory")
+		t.Fatal("$ROOT_DIR points to an unexistent directory")
 	}
 	if err != nil {
-		ctx.t.Fatal(err)
+		t.Fatal(err)
 	}
 	if !dirinfo.IsDir() {
-		ctx.t.Fatal("$ROOT_DIR must be a directory")
+		t.Fatal("$ROOT_DIR must be a directory")
 	}
 }
 
-func (ctx *e2econtext) assertProfile() {
+func (ctx *e2econtext) assertProfile(t *testing.T) {
 	if ctx.Profile == "" {
-		ctx.t.Fatal("a profile must be given with the `-profile` flag")
+		t.Fatal("a profile must be given with the `-profile` flag")
 	}
 	_, err := os.Stat(ctx.profilepath)
 	if os.IsNotExist(err) {
-		ctx.t.Fatalf("The profile path %s points to an unexistent file", ctx.profilepath)
+		t.Fatalf("The profile path %s points to an unexistent file", ctx.profilepath)
 	}
 	if err != nil {
-		ctx.t.Fatal(err)
+		t.Fatal(err)
 	}
 }
 
-func (ctx *e2econtext) assertContentImage() {
+func (ctx *e2econtext) assertContentImage(t *testing.T) {
 	if ctx.ContentImage == "" {
-		ctx.t.Fatal("A content image must be provided with the `-content-image` flag")
+		t.Fatal("A content image must be provided with the `-content-image` flag")
 	}
 }
 
-func (ctx *e2econtext) assertKubeClient() {
+func (ctx *e2econtext) assertKubeClient(t *testing.T) {
 	// Get a config to talk to the apiserver
 	cfg, err := config.GetConfig()
 	if err != nil {
-		ctx.t.Fatal(err)
+		t.Fatal(err)
 	}
 
 	// create the kubeclient (temporarily)
 	kubeclient, err := kubernetes.NewForConfig(cfg)
 	if err != nil {
-		ctx.t.Fatal(err.Error())
+		t.Fatal(err.Error())
 	}
 
 	// create dynamic client
 	scheme := runtime.NewScheme()
 	if err := cgoscheme.AddToScheme(scheme); err != nil {
-		ctx.t.Fatalf("failed to add cgo scheme to runtime scheme: %s", err)
+		t.Fatalf("failed to add cgo scheme to runtime scheme: %s", err)
 	}
 	if err := extscheme.AddToScheme(scheme); err != nil {
-		ctx.t.Fatalf("failed to add api extensions scheme to runtime scheme: %s", err)
+		t.Fatalf("failed to add api extensions scheme to runtime scheme: %s", err)
 	}
 	if err := cmpapis.AddToScheme(scheme); err != nil {
-		ctx.t.Fatalf("failed to add cmpliance scheme to runtime scheme: %s", err)
+		t.Fatalf("failed to add cmpliance scheme to runtime scheme: %s", err)
 	}
 	if err := mcfg.Install(scheme); err != nil {
-		ctx.t.Fatalf("failed to add MachineConfig scheme to runtime scheme: %s", err)
+		t.Fatalf("failed to add MachineConfig scheme to runtime scheme: %s", err)
 	}
 
 	cachedDiscoveryClient := cached.NewMemCacheClient(kubeclient.Discovery())
@@ -207,7 +205,7 @@ func (ctx *e2econtext) assertKubeClient() {
 
 	ctx.dynclient, err = dynclient.New(cfg, dynclient.Options{Scheme: scheme, Mapper: ctx.restMapper})
 	if err != nil {
-		ctx.t.Fatalf("failed to build the dynamic client: %s", err)
+		t.Fatalf("failed to build the dynamic client: %s", err)
 	}
 }
 
@@ -217,28 +215,28 @@ func (ctx *e2econtext) resetClientMappings() {
 
 // Makes sure that the namespace where the test will run exists. Doesn't fail
 // if it already does.
-func (ctx *e2econtext) ensureNamespaceExistsAndSet() {
+func (ctx *e2econtext) ensureNamespaceExistsAndSet(t *testing.T) {
 	path := path.Join(ctx.resourcespath, namespacePath)
-	obj := ctx.ensureObjectExists(path)
+	obj := ctx.ensureObjectExists(t, path)
 	// Ensures that we don't depend on a specific namespace in the code,
 	// but we can instead change the namespace depending on the resource
 	// file
 	ctx.OperatorNamespacedName.Namespace = obj.GetName()
 }
 
-func (ctx *e2econtext) ensureCatalogSourceExists() {
+func (ctx *e2econtext) ensureCatalogSourceExists(t *testing.T) {
 	path := path.Join(ctx.resourcespath, catalogSourcePath)
-	ctx.ensureObjectExists(path)
+	ctx.ensureObjectExists(t, path)
 }
 
-func (ctx *e2econtext) ensureOperatorGroupExists() {
+func (ctx *e2econtext) ensureOperatorGroupExists(t *testing.T) {
 	path := path.Join(ctx.resourcespath, operatorGroupPath)
-	ctx.ensureObjectExists(path)
+	ctx.ensureObjectExists(t, path)
 }
 
-func (ctx *e2econtext) ensureSubscriptionExists() {
+func (ctx *e2econtext) ensureSubscriptionExists(t *testing.T) {
 	path := path.Join(ctx.resourcespath, subscriptionPath)
-	ctx.ensureObjectExists(path)
+	ctx.ensureObjectExists(t, path)
 }
 
 // Makes sure that an object from the given file path exists in the cluster.
@@ -246,29 +244,29 @@ func (ctx *e2econtext) ensureSubscriptionExists() {
 // Note that this assumes that the object's manifest already contains
 // the Namespace reference.
 // If all went well, this will return the reference to the object that was created.
-func (ctx *e2econtext) ensureObjectExists(path string) *unstructured.Unstructured {
+func (ctx *e2econtext) ensureObjectExists(t *testing.T, path string) *unstructured.Unstructured {
 	obj, err := readObjFromYAMLFilePath(path)
 
 	if err != nil {
-		ctx.t.Fatalf("failed to decode object from '%s' spec: %s", path, err)
+		t.Fatalf("failed to decode object from '%s' spec: %s", path, err)
 	}
 
 	err = ctx.dynclient.Create(goctx.TODO(), obj)
 	if err != nil && !apierrors.IsAlreadyExists(err) {
-		ctx.t.Fatalf("failed to create object from '%s': %s", path, err)
+		t.Fatalf("failed to create object from '%s': %s", path, err)
 	}
 
 	return obj
 }
 
-func (ctx *e2econtext) waitForOperatorToBeReady() {
+func (ctx *e2econtext) waitForOperatorToBeReady(t *testing.T) {
 	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 30)
 
 	retryFunc := func() error {
 		od := &appsv1.Deployment{}
 		err := ctx.dynclient.Get(goctx.TODO(), ctx.OperatorNamespacedName, od)
 		if err != nil {
-			return err
+			return fmt.Errorf("getting deployment: %w", err)
 		}
 		if len(od.Status.Conditions) == 0 {
 			return fmt.Errorf("No conditions for deployment yet")
@@ -286,11 +284,11 @@ func (ctx *e2econtext) waitForOperatorToBeReady() {
 
 	err := backoff.RetryNotify(retryFunc, bo, notifyFunc)
 	if err != nil {
-		ctx.t.Fatalf("Operator deployment was never created: %s", err)
+		t.Fatalf("Operator deployment was never created: %s", err)
 	}
 }
 
-func (ctx *e2econtext) ensureTestProfileBundle() {
+func (ctx *e2econtext) ensureTestProfileBundle(t *testing.T) {
 	key := types.NamespacedName{
 		Name:      testProfilebundleName,
 		Namespace: ctx.OperatorNamespacedName.Namespace,
@@ -322,11 +320,11 @@ func (ctx *e2econtext) ensureTestProfileBundle() {
 		fmt.Printf("Couldn't ensure test PB exists after %s: %s\n", d.String(), err)
 	})
 	if err != nil {
-		ctx.t.Fatalf("failed to ensure test PB: %s", err)
+		t.Fatalf("failed to ensure test PB: %s", err)
 	}
 }
 
-func (ctx *e2econtext) ensureTestSettings() {
+func (ctx *e2econtext) ensureTestSettings(t *testing.T) {
 	defaultkey := types.NamespacedName{
 		Name:      "default",
 		Namespace: ctx.OperatorNamespacedName.Namespace,
@@ -341,7 +339,7 @@ func (ctx *e2econtext) ensureTestSettings() {
 		fmt.Printf("Couldn't get default scanSettings after %s: %s\n", d.String(), err)
 	})
 	if err != nil {
-		ctx.t.Fatalf("failed to get default scanSettings: %s", err)
+		t.Fatalf("failed to get default scanSettings: %s", err)
 	}
 
 	// Ensure auto-apply
@@ -372,7 +370,7 @@ func (ctx *e2econtext) ensureTestSettings() {
 		fmt.Printf("Couldn't ensure auto-apply scansettings after %s: %s\n", d.String(), err)
 	})
 	if err != nil {
-		ctx.t.Fatalf("failed to ensure auto-apply scanSettings: %s", err)
+		t.Fatalf("failed to ensure auto-apply scanSettings: %s", err)
 	}
 }
 
@@ -380,7 +378,7 @@ func (ctx *e2econtext) getPrefixedProfileName() string {
 	return testProfilebundleName + "-" + ctx.Profile
 }
 
-func (ctx *e2econtext) createBindingForProfile() string {
+func (ctx *e2econtext) createBindingForProfile(t *testing.T) string {
 	binding := &cmpv1alpha1.ScanSettingBinding{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      ctx.getPrefixedProfileName(),
@@ -407,12 +405,12 @@ func (ctx *e2econtext) createBindingForProfile() string {
 		fmt.Printf("Couldn't create binding after %s: %s\n", d.String(), err)
 	})
 	if err != nil {
-		ctx.t.Fatalf("failed to create binding: %s", err)
+		t.Fatalf("failed to create binding: %s", err)
 	}
 	return binding.Name
 }
 
-func (ctx *e2econtext) waitForComplianceSuite(suiteName string) {
+func (ctx *e2econtext) waitForComplianceSuite(t *testing.T, suiteName string) {
 	key := types.NamespacedName{Name: suiteName, Namespace: ctx.OperatorNamespacedName.Namespace}
 	// aprox. 15 min
 	bo := backoff.WithMaxRetries(backoff.NewConstantBackOff(apiPollInterval), 180)
@@ -434,18 +432,18 @@ func (ctx *e2econtext) waitForComplianceSuite(suiteName string) {
 			}
 			if scanstatus.Result == cmpv1alpha1.ResultError {
 				// If there was an error, we can stop already.
-				ctx.t.Fatalf("There was an unexpected error in the scan '%s': %s",
+				t.Fatalf("There was an unexpected error in the scan '%s': %s",
 					scanstatus.Name, scanstatus.ErrorMessage)
 			}
 		}
 		return nil
 	}, bo)
 	if err != nil {
-		ctx.t.Fatalf("The Compliance Suite '%s' didn't get to DONE phase: %s", key.Name, err)
+		t.Fatalf("The Compliance Suite '%s' didn't get to DONE phase: %s", key.Name, err)
 	}
 }
 
-func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
+func (ctx *e2econtext) waitForMachinePoolUpdate(t *testing.T, name string) error {
 	mcKey := types.NamespacedName{Name: name}
 
 	var lastErr error
@@ -453,18 +451,18 @@ func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 		pool := &mcfgv1.MachineConfigPool{}
 		lastErr = ctx.dynclient.Get(goctx.TODO(), mcKey, pool)
 		if lastErr != nil {
-			ctx.t.Logf("Could not get the pool %s post update. Retrying.", name)
+			t.Logf("Could not get the pool %s post update. Retrying.", name)
 			return false, nil
 		}
 
 		// Check if the pool has finished updating yet.
 		if (pool.Status.UpdatedMachineCount == pool.Status.MachineCount) &&
 			(pool.Status.UnavailableMachineCount == 0) {
-			ctx.t.Logf("The pool %s has updated", name)
+			t.Logf("The pool %s has updated", name)
 			return true, nil
 		}
 
-		ctx.t.Logf("The pool %s has not updated yet. updated %d/%d unavailable %d",
+		t.Logf("The pool %s has not updated yet. updated %d/%d unavailable %d",
 			name,
 			pool.Status.UpdatedMachineCount, pool.Status.MachineCount,
 			pool.Status.UnavailableMachineCount)
@@ -484,7 +482,7 @@ func (ctx *e2econtext) waitForMachinePoolUpdate(name string) error {
 	return nil
 }
 
-func (ctx *e2econtext) doRescan(s string) {
+func (ctx *e2econtext) doRescan(t *testing.T, s string) {
 	scanList := &cmpv1alpha1.ComplianceScanList{}
 	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s)
 	opts := &client.ListOptions{
@@ -492,10 +490,10 @@ func (ctx *e2econtext) doRescan(s string) {
 	}
 	err := ctx.dynclient.List(goctx.TODO(), scanList, opts)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get scan list")
+		t.Fatalf("Couldn't get scan list")
 	}
 	if len(scanList.Items) == 0 {
-		ctx.t.Fatal("This suite didn't contain scans")
+		t.Fatal("This suite didn't contain scans")
 	}
 	for _, scan := range scanList.Items {
 		updatedScan := scan.DeepCopy()
@@ -513,7 +511,7 @@ func (ctx *e2econtext) doRescan(s string) {
 			fmt.Printf("Couldn't rescan after %s: %s\n", d.String(), err)
 		})
 		if err != nil {
-			ctx.t.Fatalf("failed rescan: %s", err)
+			t.Fatalf("failed rescan: %s", err)
 		}
 	}
 	var lastErr error
@@ -533,16 +531,16 @@ func (ctx *e2econtext) doRescan(s string) {
 
 	// timeout error
 	if err != nil {
-		ctx.t.Fatalf("Timed out waiting for scan to be reset: %s", err)
+		t.Fatalf("Timed out waiting for scan to be reset: %s", err)
 	}
 
 	// An actual error at the end of the run
 	if lastErr != nil {
-		ctx.t.Fatalf("Error occured while waiting for scan to be reset: %s", lastErr)
+		t.Fatalf("Error occured while waiting for scan to be reset: %s", lastErr)
 	}
 }
 
-func (ctx *e2econtext) getRemediationsForSuite(s string) int {
+func (ctx *e2econtext) getRemediationsForSuite(t *testing.T, s string) int {
 	remList := &cmpv1alpha1.ComplianceRemediationList{}
 	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s)
 	opts := &client.ListOptions{
@@ -550,20 +548,20 @@ func (ctx *e2econtext) getRemediationsForSuite(s string) int {
 	}
 	err := ctx.dynclient.List(goctx.TODO(), remList, opts)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get remediation list")
+		t.Fatalf("Couldn't get remediation list")
 	}
 	if len(remList.Items) > 0 {
-		ctx.t.Logf("Remediations from ComplianceSuite: %s", s)
+		t.Logf("Remediations from ComplianceSuite: %s", s)
 	} else {
-		ctx.t.Log("This suite didn't generate remediations")
+		t.Log("This suite didn't generate remediations")
 	}
 	for _, rem := range remList.Items {
-		ctx.t.Logf("- %s", rem.Name)
+		t.Logf("- %s", rem.Name)
 	}
 	return len(remList.Items)
 }
 
-func (ctx *e2econtext) getFailuresForSuite(s string) int {
+func (ctx *e2econtext) getFailuresForSuite(t *testing.T, s string) int {
 	failList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
 		cmpv1alpha1.SuiteLabel:                               s,
@@ -571,19 +569,19 @@ func (ctx *e2econtext) getFailuresForSuite(s string) int {
 	}
 	err := ctx.dynclient.List(goctx.TODO(), failList, matchLabels)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get check result list")
+		t.Fatalf("Couldn't get check result list")
 	}
 	if len(failList.Items) > 0 {
-		ctx.t.Logf("Failures from ComplianceSuite: %s", s)
+		t.Logf("Failures from ComplianceSuite: %s", s)
 	}
 	for _, rem := range failList.Items {
-		ctx.t.Logf("- %s", rem.Name)
+		t.Logf("- %s", rem.Name)
 	}
 	return len(failList.Items)
 }
 
 // This returns the number of results that are either CheckResultError or CheckResultNoResult
-func (ctx *e2econtext) getInvalidResultsFromSuite(s string) int {
+func (ctx *e2econtext) getInvalidResultsFromSuite(t *testing.T, s string) int {
 	ret := 0
 	errList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
@@ -592,13 +590,13 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s string) int {
 	}
 	err := ctx.dynclient.List(goctx.TODO(), errList, matchLabels)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get result list")
+		t.Fatalf("Couldn't get result list")
 	}
 	if len(errList.Items) > 0 {
-		ctx.t.Logf("Errors from ComplianceSuite: %s", s)
+		t.Logf("Errors from ComplianceSuite: %s", s)
 	}
 	for _, check := range errList.Items {
-		ctx.t.Logf("unexpected Error result - %s", check.Name)
+		t.Logf("unexpected Error result - %s", check.Name)
 	}
 	ret = len(errList.Items)
 
@@ -609,19 +607,19 @@ func (ctx *e2econtext) getInvalidResultsFromSuite(s string) int {
 	}
 	err = ctx.dynclient.List(goctx.TODO(), noneList, matchLabels)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get result list")
+		t.Fatalf("Couldn't get result list")
 	}
 	if len(noneList.Items) > 0 {
-		ctx.t.Logf("None result from ComplianceSuite: %s", s)
+		t.Logf("None result from ComplianceSuite: %s", s)
 	}
 	for _, check := range noneList.Items {
-		ctx.t.Logf("unexpected None result - %s", check.Name)
+		t.Logf("unexpected None result - %s", check.Name)
 	}
 
 	return ret + len(noneList.Items)
 }
 
-func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bool) (int, []string) {
+func (ctx *e2econtext) verifyCheckResultsForSuite(t *testing.T, s string, afterRemediations bool) (int, []string) {
 	manualRemediationSet := map[string]bool{}
 	resList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{
@@ -629,18 +627,18 @@ func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bo
 	}
 	err := ctx.dynclient.List(goctx.TODO(), resList, matchLabels)
 	if err != nil {
-		ctx.t.Fatalf("Couldn't get result list")
+		t.Fatalf("Couldn't get result list")
 	}
 	if len(resList.Items) > 0 {
-		ctx.t.Logf("Results from ComplianceSuite: %s", s)
+		t.Logf("Results from ComplianceSuite: %s", s)
 	} else {
-		ctx.t.Logf("There were no results for the ComplianceSuite: %s", s)
+		t.Logf("There were no results for the ComplianceSuite: %s", s)
 	}
 	for _, check := range resList.Items {
-		ctx.t.Logf("Result - Name: %s - Status: %s - Severity: %s", check.Name, check.Status, check.Severity)
-		manualRem, err := ctx.verifyRule(check, afterRemediations)
+		t.Logf("Result - Name: %s - Status: %s - Severity: %s", check.Name, check.Status, check.Severity)
+		manualRem, err := ctx.verifyRule(t, check, afterRemediations)
 		if err != nil {
-			ctx.t.Error(err)
+			t.Error(err)
 		}
 		if manualRem != "" {
 			manualRemediationSet[manualRem] = true
@@ -655,7 +653,7 @@ func (ctx *e2econtext) verifyCheckResultsForSuite(s string, afterRemediations bo
 	return len(resList.Items), manualRemediations
 }
 
-func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afterRemediations bool) (string, error) {
+func (ctx *e2econtext) verifyRule(t *testing.T, result cmpv1alpha1.ComplianceCheckResult, afterRemediations bool) (string, error) {
 	ruleName, err := ctx.getRuleFolderNameFromResult(result)
 	if err != nil {
 		return "", err
@@ -708,7 +706,7 @@ func (ctx *e2econtext) verifyRule(result cmpv1alpha1.ComplianceCheckResult, afte
 		}
 	}
 
-	ctx.t.Logf("Rule %s matched expected result", ruleName)
+	t.Logf("Rule %s matched expected result", ruleName)
 	return remPath, nil
 }
 
@@ -768,34 +766,34 @@ func (ctx *e2econtext) getRuleFolderNameFromResult(result cmpv1alpha1.Compliance
 	return strings.ReplaceAll(prefixRemoved, "-", "_"), nil
 }
 
-func (ctx *e2econtext) applyManualRemediations(rems []string) {
+func (ctx *e2econtext) applyManualRemediations(t *testing.T, rems []string) {
 	var wg sync.WaitGroup
 	cmdctx, cancel := context.WithTimeout(context.Background(), manualRemediationsTimeout)
 	defer cancel()
 
 	for _, rem := range rems {
 		wg.Add(1)
-		go ctx.runManualRemediation(cmdctx, &wg, rem)
+		go ctx.runManualRemediation(t, cmdctx, &wg, rem)
 	}
 
 	wg.Wait()
 }
 
-func (ctx *e2econtext) runManualRemediation(cmdctx goctx.Context, wg *sync.WaitGroup, rem string) {
+func (ctx *e2econtext) runManualRemediation(t *testing.T, cmdctx goctx.Context, wg *sync.WaitGroup, rem string) {
 	defer wg.Done()
 
-	ctx.t.Logf("Running manual remediation '%s'", rem)
+	t.Logf("Running manual remediation '%s'", rem)
 	cmd := exec.CommandContext(cmdctx, rem)
 	cmd.Env = os.Environ()
 	out, err := cmd.CombinedOutput()
 
 	if cmdctx.Err() == context.DeadlineExceeded {
-		ctx.t.Errorf("Command '%s' timed out", rem)
+		t.Errorf("Command '%s' timed out", rem)
 		return
 	}
 
 	if err != nil {
-		ctx.t.Errorf("Failed applying remediation '%s': %s\n%s", rem, err, out)
+		t.Errorf("Failed applying remediation '%s': %s\n%s", rem, err, out)
 	}
 }
 
