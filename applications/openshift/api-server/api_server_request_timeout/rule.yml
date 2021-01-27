@@ -40,3 +40,17 @@ ocil: |-
     Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["min-request-timeout"]'</pre>
     The output should return <pre>300</pre>.
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    xccdf_variable: var_api_min_request_timeout
+    embedded_data: "true"
+    values:
+    - value: '"apiServerArguments":{.*"min-request-timeout":\["(\d*)"\]'
+      operation: "pattern match"
+      type: "string"

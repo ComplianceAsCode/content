@@ -93,7 +93,7 @@ selections:
     # (jhrozek) Temporarily disabling the rule because the benchmark
     #           specifies one value (60) for the request-timeout parameter, while we
     #           use 3600 in OCP. It is unclear if this value is appropriate...
-    # - api_server_request_timeout
+    - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
     - api_server_service_account_lookup
   # 1.2.28 Ensure that the --service-account-key-file argument is set as appropriate
@@ -115,7 +115,6 @@ selections:
   # 1.2.35 Ensure that the API Server only makes use of Strong Cryptographic Ciphers
     - api_server_tls_cipher_suites
   #### 1.3 Controller Manager
-  # 1.3.1 Ensure that garbage collection is configured as appropriate (Manual)
   # 1.3.2 Ensure that controller manager healthz endpoints are protected by RBAC. (Automated)
     - rbac_debug_role_protects_pprof
   # 1.3.3 Ensure that the --use-service-account-credentials argument is set to true
