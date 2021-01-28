@@ -53,7 +53,7 @@
 - name: "construct list of suid or sgid binaries"
   set_fact:
     suid_sgid_binaries: "{{ suid_sgid_binaries | union([item.path]) }}"
-  when: item.mode is match("2.*")
+  when: item.mode is match("2.*") or item.mode is match("4.*")
   loop: '{{ found_files.files }}'
 
 # Inserts/replaces the rule in /etc/audit/rules.d
