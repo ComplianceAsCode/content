@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,rhv4,sle12,sle15
 
-title: 'Verify Permissions on cron.weekly'
+title: 'Verify Permissions on cron.allow'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/cron.weekly", perms="0700") }}}
+    {{{ describe_file_permissions(file="/etc/cron.allow", perms="0700") }}}
 
 rationale: |-
     Service configuration files enable or disable features of their respective services that if configured incorrectly
@@ -15,8 +15,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-82250-2
-    cce@rhel8: CCE-82253-6
+    #NO REFERENCE AVAILABLE
 
 references:
     cis@rhel7: 5.1.5
