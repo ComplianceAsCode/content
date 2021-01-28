@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8
+
+title: Set Up a Private Namespace in PAM Configuration
+
+description: |-
+  To setup a private namespace add the following line to <tt>/etc/pam.d/login</tt>:
+  <pre>session    required     pam_namespace.so</pre>
+
+
+rationale: |-
+  The pam_namespace PAM module sets up a private namespace for a
+  session with polyinstantiated directories. A polyinstantiated directory
+  provides a different instance of itself based on user name, or when using
+  SELinux, user name, security context or both. The polyinstatied directories
+  can be used to dedicate separate temporary directories to each account.
+
+severity: low
+
+identifiers:
+  cce@rhel7: CCE-83743-5
+  cce@rhel8: CCE-83744-3
+
+references:
+  anssi: BP28(R39)
+
+ocil_clause: |-
+    pam_namespace.so is not required or is commented out
+
+ocil: |-
+  To check if pam_namespace.so is required for user login, run the following command:
+  <pre>$ grep pam_namespace.so /etc/pam.d/login</pre>
+  The output should return the following uncommented:
+  <pre>session    required     pam_namespace.so</pre>
+
+platform: pam

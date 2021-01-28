@@ -41,7 +41,6 @@ selections:
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
 - accounts_passwords_pam_faillock_deny
-- accounts_passwords_pam_faillock_enforce_local
 - accounts_passwords_pam_faillock_interval
 - accounts_passwords_pam_faillock_unlock_time
 - accounts_umask_etc_bashrc
@@ -112,6 +111,7 @@ selections:
 - grub2_slub_debug_argument
 - grub2_uefi_password
 - grub2_vsyscall_argument
+- installed_OS_is_vendor_supported
 - kerberos_disable_no_keytab
 - kernel_module_atm_disabled
 - kernel_module_bluetooth_disabled

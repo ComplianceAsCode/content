@@ -16,6 +16,8 @@ warnings:
         Changing group owner of <tt>/usr/bin/sudo</tt> to a group with no member users will prevent
         any and all escalatation of privileges.
         Additionally, the system may become unmanageable if root logins are not allowed.
+    - general:
+        This rule doesn't come with a remediation, before remediating the sysadmin needs to add users to the dedicated sudo group.
 
 severity: medium
 

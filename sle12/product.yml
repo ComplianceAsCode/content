@@ -9,6 +9,7 @@ profiles_root: "./profiles"
 init_system: "systemd"
 
 pkg_manager: "zypper"
+pkg_manager_config_file: "/etc/zypp/zypp.conf"
 oval_feed_url: "https://support.novell.com/security/oval/suse.linux.enterprise.12.xml"
 
 cpes_root: "../shared/applicability"
@@ -25,3 +26,4 @@ cpes:
 
 platform_package_overrides:
   login_defs: "shadow"
+  grub2: "grub2"

@@ -45,7 +45,6 @@ selections:
     - package_audispd-plugins_installed
     - package_libcap-ng-utils_installed
     - auditd_audispd_syslog_plugin_activated
-    - accounts_passwords_pam_faillock_enforce_local
     - accounts_password_pam_enforce_local
     - accounts_password_pam_enforce_root
 
@@ -65,3 +64,5 @@ selections:
     - "!zipl_vsyscall_argument"
     - "!zipl_vsyscall_argument.role=unscored"
     - "!zipl_vsyscall_argument.severity=info"
+
+    - installed_OS_is_vendor_supported

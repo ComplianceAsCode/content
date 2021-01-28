@@ -28,7 +28,6 @@ selections:
     - inactivity_timeout_value=15_minutes
     - var_screensaver_lock_delay=5_seconds
     - sshd_idle_timeout_value=10_minutes
-    - sshd_approved_macs=stig
     - var_accounts_fail_delay=4
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
@@ -239,8 +238,7 @@ selections:
     - install_antivirus
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
-    - sshd_approved_ciphers=stig
-    - sshd_use_approved_ciphers
+    - sshd_use_approved_ciphers_ordered_stig
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
@@ -259,7 +257,7 @@ selections:
     - sshd_print_last_log
     - sshd_disable_root_login
     - sshd_allow_only_protocol2
-    - sshd_use_approved_macs
+    - sshd_use_approved_macs_ordered_stig
     - file_permissions_sshd_pub_key
     - file_permissions_sshd_private_key
     - sshd_disable_gssapi_auth
@@ -285,7 +283,8 @@ selections:
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
     - package_tftp-server_removed
-    - sshd_enable_x11_forwarding
+    - sshd_disable_x11_forwarding
+    - sshd_x11_use_localhost
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
     - xwindows_runlevel_target

@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: "Explicit arguments in sudo specifications"
+
+description: |-
+    All commands in the sudoers file must strictly specify the arguments allowed to be used for a given user.
+    If the command is supposed to be executed only without arguments, pass "" as an argument in the corresponding user specification.
+
+rationale: |-
+    Any argument can modify quite significantly the behavior of a program, whether regarding the
+    realized operation (read, write, delete, etc.) or accessed resources (path in a file system tree). To
+    avoid any possibility of misuse of a command by a user, the ambiguities must be removed at the
+    level of its specification.
+
+    For example, on some systems, the kernel messages are only accessible by root.
+    If a user nevertheless must have the privileges to read them, the argument of the dmesg command has to be restricted
+    in order to prevent the user from flushing the buffer through the -c option:
+    <pre>
+    user ALL = dmesg ""
+    </pre>
+
+severity: medium
+
+identifiers:
+  cce@rhel7: CCE-83631-2
+  cce@rhel8: CCE-83632-0
+
+references:
+    anssi: BP28(R63)
+
+ocil_clause: '/etc/sudoers file contains user specifications that allow execution of commands with any arguments'
+
+ocil: |-
+    To determine if arguments that commands can be executed with are restricted, run the following command:
+    <pre>$ sudo grep -PR '^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+(?:[ \t]+[^,\s]+)+[ \t]*,)*(\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,\s]+[ \t]*(?:,|$))' /etc/sudoers /etc/sudoers.d/</pre>
+    The command should return no output.
+
+platform: sudo
+
+warnings:
+  - general:
+      This rule doesn't come with a remediation, as absence of arguments in the user spec doesn't mean that the command is intended to be executed with no arguments.
+
+  - general:
+      The rule can produce false findings when an argument contains a comma - sudoers syntax allows comma escaping using backslash, but the check doesn't support that.
+      For example, <code>root ALL=(ALL) echo 1\,2</code> allows root to execute <code>echo 1,2</code>, but the check would interpret it as two commands <code>echo 1\</code> and <code>2</code>.

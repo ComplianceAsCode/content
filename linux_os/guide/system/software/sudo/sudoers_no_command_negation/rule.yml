@@ -20,6 +20,10 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+  cce@rhel7: CCE-83517-3
+  cce@rhel8: CCE-83518-1
+
 references:
     anssi: BP28(R61)
 
@@ -28,7 +32,7 @@ ocil_clause: '/etc/sudoers file contains rules that define the set of allowed co
 # A setp-by-step guide how to modify the configuration to achieve compliance
 ocil: |-
     To determine if negation is used to define commands users are allowed to execute using <tt>sudo</tt>, run the following command:
-    <pre>$ sudo grep -PR '^(?\s*[^#][^=]+)=(?\s*(\([^\)]+\))?\s*[^,!\n]+,)*\s*(?\([^\)]+\))?\s*([^,\n]*!\S+).*' /etc/sudoers /etc/sudoers.d/</pre>
+    <pre>$ sudo grep -PR '^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,!\n][^,\n]+,)*\s*(?:\([^\)]+\))?\s*(?!\s*\()(!\S+).*' /etc/sudoers /etc/sudoers.d/</pre>
     The command should return no output.
 
 platform: sudo

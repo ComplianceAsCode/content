@@ -20,7 +20,7 @@ controls:
     automated: partially  # The list of essential services is not objective.
     notes: >-
       Use of obsolete or insecure services is not recommended.
-      The minimal install is a good starting point, but this doesn't provide any assurante over any packages installed later.
+      The minimal install is a good starting point, but this doesn't provide any assurance over any package installed later.
     rules:
     - package_dhcp_removed
     #- package_rsh_removed
@@ -41,7 +41,7 @@ controls:
     level: intermediary
     title: Minimization of configuration
     description: >-
-      Services are ofen installed with default configurations that enable features potentially
+      Services are often installed with default configurations that enable features potentially
       problematic from a security point of view.
       The features configured at the level of launched services should be limited to the strict
       minimum.
@@ -56,7 +56,7 @@ controls:
     description: >-
       The services and executables available on the system must be analyzed in order to
       know the privileges they require, and must then be configured and integrated to use
-      the, bare necessities.
+      the bare necessities.
     automated: partially # The system can be restricted even more with selinux-booleans or other technologies
     notes: >-
       SELinux policies limit the privileges of services and daemons to only what they require.
@@ -82,11 +82,11 @@ controls:
       barriers that must be kept independent of each other.
     automated: partially
     notes: >-
-      Defense in-depth can be broadly divded into three areas, physical, technical and
+      Defense in-depth can be broadly divided into three areas - physical, technical and
       administrative. The security profile is best suitedto protect the technical area.
       Among the barriers that can be implemented within the technical area are antivirus software,
       authentication, multi-factor authentication, encryption, logging, auditing, sandboxing,
-      intrusion detection systems, firewalls, and vulnerability scanners.
+      intrusion detection systems, firewalls and vulnerability scanners.
     rules:
     #- package_audit_installed
     #- service_auditd_enabled
@@ -122,6 +122,7 @@ controls:
     level: minimal
     title: Regular updates
     notes: Check the vendor CVE feed and configure automatic install of security related updates.
+    automated: yes
     rules:
     - security_patches_up_to_date
 {{% if product in ['fedora', 'ol8', 'rhel8'] %}}
@@ -140,6 +141,7 @@ controls:
       Configurations recommended for this requirement are to be performed at the BIOS level.
       The content automation cannot really configure the BIOS, but can in some cases,
       check settings that are visible to the OS. Like for example the NX/DX setting.
+    automated: partially
     rules:
     - sysctl_kernel_exec_shield
     - bios_enable_execution_restrictions
@@ -148,7 +150,11 @@ controls:
   - id: R10
     level: intermediary
     title: 32 and 64 bit architecture
-    # rules: TBD
+    description: When the machine supports 64-bit operating systems, prefer it.
+    notes: This requirement can be checked, but remediation requires manual reinstall of the OS.
+    automated: yes
+    rules:
+     - prefer_64bit_os
 
   - id: R11
     level: high
@@ -156,42 +162,65 @@ controls:
     description: >-
       The iommu = force directive must be added to the list of kernel parameters
       during startup in addition to those already present in the configuration
-      files of the bootloader (/boot/grub/menu.lst or  /etc/default/grub).
+      files of the bootloader (/boot/grub/menu.lst or /etc/default/grub).
     rules:
     - grub2_enable_iommu_force
 
   - id: R12
     level: intermediary
     title: Partitioning type
+    notes: >- 
+      The rule for the /proc file system is not implemented
+    automated: partially
     rules:
+    # this covers nodev options
+    - mount_option_nodev_nonroot_local_partitions
     # The recommended partitioning type is as follows:
     # / <without option> Root partition, contains the rest of the tree
     # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader. No access required once the boot finished (except update)
+    - partition_for_boot
+    - mount_option_boot_nosuid
+    - mount_option_boot_noexec
+    # The noauto option rule breaks checking of the other mount options
+    # Commented until rules for /boot mount_option handles this use case
+    # - mount_option_boot_noauto
+
     # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
+    - partition_for_opt
+    - mount_option_opt_nosuid
+
     # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
     - partition_for_tmp
     - mount_option_tmp_nosuid
-    - mount_option_tmp_nodev
     - mount_option_tmp_noexec
 
     # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
+    - partition_for_srv
+    - mount_option_srv_nosuid
+
     # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
     - partition_for_home
     - mount_option_home_nosuid
-    - mount_option_home_nodev
+    - mount_option_home_noexec
 
-    # /proc hidepid = 1 Contains process information and the system
+    # /proc hidepid = 2 Contains process information and the system
+
     # /usr nodev Contains the majority of utilities and system files
+    - partition_for_usr
+
     # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
     - partition_for_var
+    - mount_option_var_nosuid
+    - mount_option_var_noexec
 
     # /var/log nosuid, nodev, noexec Contains system logs
     - partition_for_var_log
+    - mount_option_var_log_noexec
+    - mount_option_var_log_nosuid
 
     # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
     - partition_for_var_tmp
     - mount_option_var_tmp_nosuid
-    - mount_option_var_tmp_nodev
     - mount_option_var_tmp_noexec
 
   - id: R13
@@ -206,7 +235,13 @@ controls:
   - id: R14
     level: intermediary
     title: Installation of packages reduced to the bare necessities
-    # rules: TBD
+    description: >-
+      The selection of packages installed should be as small as possible,
+      limiting itself to select only what is required.
+    notes: >-
+      It is not possible to automatically decide in general way if a package is required or not for given system.
+      As a future improvement, there could be rules assisting assessment by listing the installed packages.
+    automated: no
 
   - id: R15
     level: minimal
@@ -248,7 +283,50 @@ controls:
   - id: R18
     level: minimal
     title: Administrator password robustness
-    # rules: TBD
+    notes: >-
+      The rules selected below establish a general password strength baseline of 100 bits,
+      inspired by DAT-NT-001 and the "Password Strenght Calculator"
+      (https://www.ssi.gouv.fr/administration/precautions-elementaires/calculer-la-force-dun-mot-de-passe/).
+
+      The baseline should be reviewed and tailored to the system's use case and needs.
+    automated: partially
+    rules:
+    # Renew passwords every 90 days
+    - var_accounts_maximum_age_login_defs=90
+    - accounts_maximum_age_login_defs
+
+    # Ensure passwords with minimum of 18 characters
+    - var_password_pam_minlen=18
+    - accounts_password_pam_minlen
+    # Enforce password lenght for new accounts
+    - var_accounts_password_minlen_login_defs=18
+    - accounts_password_minlen_login_defs
+    # Require at Least 1 Special Character in Password
+    - var_password_pam_ocredit=1
+    - accounts_password_pam_ocredit
+    # Require at Least 1 Numeric Character in Password
+    - var_password_pam_dcredit=1
+    - accounts_password_pam_dcredit
+    # Require at Least 1 Uppercase Character in Password
+    - var_password_pam_ucredit=1
+    - accounts_password_pam_ucredit
+    # Require at Least 1 Lowercase Character in Password
+    - var_password_pam_lcredit=1
+    - accounts_password_pam_lcredit
+
+    # Lock out users after 3 failed authentication attempts within 15 min
+    - var_accounts_passwords_pam_faillock_fail_interval=900
+    - accounts_passwords_pam_faillock_interval
+    - var_accounts_passwords_pam_faillock_deny=3
+    - accounts_passwords_pam_faillock_deny
+    - accounts_passwords_pam_faillock_deny_root
+    # Automatically unlock users after 15 min to prevent DoS
+    - var_accounts_passwords_pam_faillock_unlock_time=900
+    - accounts_passwords_pam_faillock_unlock_time
+
+    # Do not reuse last two passwords
+    - var_password_pam_unix_remember=2
+    - accounts_password_pam_unix_remember
 
   - id: R19
     level: intermediary
@@ -258,6 +336,7 @@ controls:
       Users will first login, then escalate to privileged (root) access.
       Change of privilege operations must be based on executables to monitor the activities
       performed (for example sudo).
+    automated: yes
     rules:
     - no_direct_root_logins
     - sshd_disable_root_login
@@ -282,6 +361,7 @@ controls:
   - id: R22
     level: intermediary
     title: Setting up network sysctl
+    automated: yes
     rules:
     # No routing between interfaces
     # net.ipv4.ip_forward = 0
@@ -396,9 +476,11 @@ controls:
   - id: R23
     level: intermediary
     title: Setting up system sysctl
+    automated: yes
     rules:
     # Disabling SysReq
-    # kernel. sysrq = 0
+    # kernel.sysrq = 0
+    - sysctl_kernel_sysrq
 
     # No core dump of executable setuid
     - sysctl_fs_suid_dumpable
@@ -414,9 +496,11 @@ controls:
 
     # Prohibit mapping of memory in low addresses (0)
     # vm.mmap_min_addr = 65536
+    - sysctl_vm_mmap_min_addr
 
     # Larger choice space for PID values
     # kernel.pid_max = 65536
+    - sysctl_kernel_pid_max
 
     # Obfuscation of addresses memory kernel
     - sysctl_kernel_kptr_restrict
@@ -431,7 +515,11 @@ controls:
     # kernel.perf_event_paranoid = 2
     # kernel.perf_event_max_sample_rate = 1
     # kernel.perf_cpu_time_max_percent = 1
+    - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_perf_event_max_sample_rate
+    - sysctl_kernel_perf_cpu_time_max_percent
 
+  
   - id: R24
     level: enhanced
     title: Disabling the loading of kernel modules
@@ -440,7 +528,8 @@ controls:
       sysctl kernel.modules_disabledconf:
       Prohibition of loading modules (except those already loaded to this point)
       kernel.modules_disabled = 1
-    # rules: TBD
+    rules:
+    - sysctl_kernel_modules_disabled
 
   - id: R25
     level: enhanced
@@ -462,7 +551,10 @@ controls:
   - id: R27
     title: Disabling service accounts
     level: intermediary
-    # rules: TBD
+    notes: >-
+      It is difficult to generally identify the system's service accounts.
+      Assisting rules could list users which are not disabled for manual review.
+    automated: no
 
   - id: R28
     level: enhanced
@@ -486,7 +578,10 @@ controls:
   - id: R30
     level: minimal
     title: Applications using PAM
-    # rules: TBD
+    notes: >-
+      Manual review is necessary to decide if the list of applications using PAM is minimal.
+      Asssising rules could be created to list all applications using PAM for manual review.
+    automated: no
 
   - id: R31
     title: Securing PAM Authentication Network Services
@@ -496,6 +591,10 @@ controls:
   - id: R32
     level: minimal
     title: Protecting stored passwords
+    description: Any password must be protected by cryptographic mechanisms.
+    notes: >-
+      The selection of rules doesn't cover the use of hardware devices to protect the passwords.
+    automated: yes
     rules:
     # ENCRYPT_METHOD, system default is SHA512
     - set_password_hashing_algorithm_systemauth
@@ -524,14 +623,23 @@ controls:
       only be read by the user and his group, and be editable only by his owner).
       The umask for users must be set to 0077 (any file created by a user is
       readable and editable only by him).
+    notes: >-
+      There is no simple way to check and remediate different umask values for
+      system and standard users reliably.
+      The different values are set in a conditional clause in a shell script
+      (e.g. /etc/profile or /etc/bashrc).
+      The current implementation checks and fixes both umask to the same value.
+    automated: partially
     rules:
     - var_accounts_user_umask=077
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_profile
+    - accounts_umask_etc_bashrc
 
   - id: R36
     title: Rights to access sensitive content files
     level: intermediary
+    automated: yes
     rules:
     - file_owner_etc_shadow
     - file_permissions_etc_shadow
@@ -543,8 +651,17 @@ controls:
 
   - id: R37
     level: minimal
-    title: Executables with setuid and/or setgid bits
-    # rules: TBD
+    title: Executables with setuid and setgid bits
+    notes: >-
+      Only programs specifically designed to be used with setuid or setgid bits can have these privilege bits set.
+      This requirement considers apropriate for setuid and setgid bits the binaries that are installed from
+      recognized and authorized repositories (covered in R15).
+      The remediation resets the sticky bit to intended value by vendor/developer, any finding after remediation
+      should be reviewed.
+    automated: yes
+    rules:
+    - file_permissions_unauthorized_suid
+    - file_permissions_unauthorized_sgid
 
   - id: R38
     level: enhanced
@@ -553,19 +670,31 @@ controls:
       Setuid executables should be as small as possible. When it is expected
       that only the administrators of the machine execute them, the setuid bit
       must be removed and prefer them commands like su or sudo, which can be monitored
-    rules:
-    - file_permissions_unauthorized_suid
-    - file_permissions_unauthorized_sgid
+    # rules: TBD
 
   - id: R39
     level: intermediary
     title: Temporary directories dedicated to accounts
-    # rules: TBD
+    description: >-
+      Each user or service account must have its own temporary directory
+      and dispose of it exclusively.
+    notes: The approach of the selected rules is to use and configure pam_namespace module.
+    automated: yes
+    rules:
+    - enable_pam_namespace
+    - accounts_polyinstantiated_tmp
+    - accounts_polyinstantiated_var_tmp
+    - var_polyinstantiation_enabled=on
+    - sebool_polyinstantiation_enabled
 
   - id: R40
     level: intermediary
     title: Sticky bit and write access rights
-    # rules: TBD
+    automated: yes
+    rules:
+    - dir_perms_world_writable_sticky_bits
+    - dir_perms_world_writable_root_owned
+    - file_permissions_unauthorized_world_writable
 
   - id: R41
     level: intermediary
@@ -575,7 +704,10 @@ controls:
   - id: R42
     level: minimal
     title: In memory services and daemons
-    # rules: TBD
+    notes: >-
+      Manual review is necessary to decide if the list of resident daemons is minimal.
+      Asssising rules could be created to list sevices listening on the network for manual review.
+    automated: no
 
   - id: R43
     title: Hardening and configuring the syslog
@@ -585,7 +717,7 @@ controls:
       The configuration of the service must be performed according to the
       'Security Recommendations for the implementation of a logging system' (DAT-NT-012) accessible on the ANSSI website.
     notes: >-
-      A lot of recommendatios and requirements from the DAT-NT-012 document are administrative and hard to automate.
+      A lot of recommendations and requirements from the DAT-NT-012 document are administrative and hard to automate.
       The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
       be customized for the systems deployment requirements.
     automated: partially
@@ -640,19 +772,25 @@ controls:
     level: intermediary
     title: Dedicated partition for logs
     notes: This assumes that syslog stores its logs locally in "/var/log/audit".
+    automated: yes
     rules:
       - partition_for_var_log_audit
 
   - id: R48
     level: intermediary
     title: Configuring the local messaging service
+    automated: yes
     rules:
     - postfix_network_listening_disabled
 
   - id: R49
     level: intermediary
     title: Messaging Aliases for Service Accounts
-    # rules: TBD
+    automated: partially # it is hard to define what are "service accounts"
+    notes: >-
+      Only the alias for root user is currently covered.
+    rules:
+    - postfix_client_configure_mail_alias
 
   - id: R50
     level: enhanced
@@ -719,16 +857,37 @@ controls:
   - id: R57
     level: intermediary
     title: Group dedicated to the use of sudo
-    # rules: TBD
+    description: >-
+      A group dedicated to the use of sudo must be created, and only members of this
+      group are allowed to execute sudo.
+    notes: >-
+      The rules below create and configure a group named sudogrp, to change the group customize the
+      value of var_sudo_dedicated_group.
+    automated: yes
+    rules:
+    - sudo_dedicated_group
+    - var_sudo_dedicated_group=sudogrp
 
   - id: R58
     level: intermediary
     title: Sudo configuration guidelines
-    # rules: TBD
+    automated: partially
+    rules:
+    - sudo_add_noexec
+    - sudo_add_requiretty
+    - sudo_add_use_pty
+    - sudo_add_umask
+    - var_sudo_umask=0027
+    - sudo_add_ignore_dot
+    - sudo_add_env_reset
+    # passwd_timeout=1
 
   - id: R59
     level: minimal
     title: User authentication running sudo
+    description: >-
+      The calling user must be authenticated before running any command with sudo.
+    automated: yes
     rules:
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
@@ -736,7 +895,10 @@ controls:
   - id: R60
     level: intermediary
     title: Privileges of target sudo users
-    # rules: TBD
+    description: The targeted users of a rule should be, as much as possible, non privileged users.
+    automated: yes
+    rules:
+    - sudoers_no_root_target
 
   - id: R61
     level: enhanced
@@ -749,12 +911,17 @@ controls:
   - id: R62
     level: intermediary
     title: Good use of negation in a sudoers file
-    # rules: TBD
+    description: The sudoers configuration rules should not involve negation.
+    automated: yes
+    rules:
+    - sudoers_no_command_negation
 
   - id: R63
     level: intermediary
     title: Explicit arguments in sudo specifications
-    # rules: TBD
+    automated: yes
+    rules:
+    - sudoers_explicit_command_args
 
   - id: R64
     level: intermediary
