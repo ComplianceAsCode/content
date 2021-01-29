@@ -229,8 +229,11 @@ controls:
     description: >-
       When possible, the /boot partition should not be mounted. In any case, access to
       the /boot directory must only be allowed to the root user.
-    rules:
-    - mount_option_boot_noauto
+    notes: >-
+      The rule disabling auto-mount for /boot is commented until the rules checking for other
+      /boot mount options are updated to handle this usecase.
+    #rules:
+    #- mount_option_boot_noauto
 
   - id: R14
     level: intermediary
