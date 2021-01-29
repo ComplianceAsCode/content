@@ -24,12 +24,16 @@ description: |-
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image
 
 selections:
+    # variables
     - var_rekey_limit_size=1G
     - var_rekey_limit_time=1hour
     - var_accounts_user_umask=077
-    - var_password_pam_difok=4
+    - var_password_pam_difok=8
     - var_password_pam_maxrepeat=3
+    - var_sshd_disable_compression=no
     - var_password_pam_maxclassrepeat=4
+    - var_password_pam_minclass=4
+    - var_accounts_minimum_age_login_defs=1
     - var_accounts_max_concurrent_login_sessions=10
     - var_password_pam_unix_remember=5
     - var_selinux_state=enforcing
@@ -41,6 +45,8 @@ selections:
     - var_password_pam_dcredit=1
     - var_password_pam_ucredit=1
     - var_password_pam_lcredit=1
+    - var_password_pam_retry=3
+    - var_password_pam_minlen=15
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_passwords_pam_faillock_deny=3
     - var_accounts_passwords_pam_faillock_fail_interval=900
@@ -48,8 +54,18 @@ selections:
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
     - var_accounts_fail_delay=4
+    - var_account_disable_post_pw_expiration=35
+    - var_auditd_action_mail_acct=root
+    - var_time_service_set_maxpoll=18_hours
+    - var_password_hashing_algorithm=SHA512
+    - var_accounts_maximum_age_login_defs=60
+    - var_auditd_space_left=250MB
+    - var_auditd_space_left_action=email
+    - var_auditd_disk_error_action=halt
+    - var_auditd_max_log_file_action=syslog
+    - var_auditd_disk_full_action=halt
 
-
+    # rules
     - installed_OS_is_vendor_supported
     - security_patches_up_to_date
     - enable_fips_mode
