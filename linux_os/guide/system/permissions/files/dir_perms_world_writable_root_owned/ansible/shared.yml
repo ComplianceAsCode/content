@@ -47,9 +47,17 @@
     recurse: yes
   register: found_dirs
 
+- name: "Create list of world writable directories"
+  set_fact:
+    world_writable_dirs: "{{ found_dirs.files | selectattr('woth') | list }}"
+
+- name: "debug"
+  debug:
+    msg: "{{ world_writable_dirs }}"
+
 - name: "Change owner to root on directories which are world writable"
   file:
     path: '{{ item.path }}'
     owner: root
-  loop:  '{{ found_dirs.files }}'
-  when: item.woth
+  loop:  '{{ world_writable_dirs }}'
+  ignore_errors: yes
