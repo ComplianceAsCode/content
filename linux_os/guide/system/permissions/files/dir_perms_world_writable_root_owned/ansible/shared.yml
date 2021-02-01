@@ -51,10 +51,6 @@
   set_fact:
     world_writable_dirs: "{{ found_dirs.files | selectattr('woth') | list }}"
 
-- name: "debug"
-  debug:
-    msg: "{{ world_writable_dirs }}"
-
 - name: "Change owner to root on directories which are world writable"
   file:
     path: '{{ item.path }}'
