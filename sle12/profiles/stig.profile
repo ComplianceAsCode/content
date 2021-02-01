@@ -7,7 +7,9 @@ description: |-
     DISA STIG for SUSE Linux Enterprise 12 V1R2.
 
 selections:
+    - sshd_approved_macs=stig
     - var_accounts_fail_delay=4
+    - var_removable_partition=dev_cdrom
     - account_disable_post_pw_expiration
     - account_temp_expire_date
     - accounts_have_homedir_login_defs
@@ -19,6 +21,22 @@ selections:
     - accounts_password_set_max_life_existing
     - accounts_password_set_min_life_existing
     - accounts_umask_etc_login_defs
+    - accounts_user_dot_no_world_writable_programs
+    - accounts_user_home_paths_only
+    - accounts_user_interactive_home_directory_defined
+    - accounts_user_interactive_home_directory_exists
+    - aide_scan_notification
+    - audit_rules_dac_modification_chmod
+    - audit_rules_login_events_lastlog
+    - audit_rules_login_events_tallylog
+    - audit_rules_privileged_commands_chage
+    - audit_rules_privileged_commands_unix_chkpwd
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_ftruncate
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_usergroup_modification_gshadow
     - auditd_audispd_encrypt_sent_records
     - auditd_data_disk_full_action
     - auditd_data_retention_action_mail_acct
@@ -26,17 +44,27 @@ selections:
     - banner_etc_issue
     - banner_etc_motd
     - dir_perms_world_writable_sticky_bits
+    - dir_perms_world_writable_system_owned_group
     - disable_ctrlaltdel_reboot
     - encrypt_partitions
     - ensure_gpgcheck_globally_activated
+    - file_groupownership_home_directories
+    - file_permission_user_init_files
+    - file_permissions_home_directories
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
+    - file_permissions_ungroupowned
     - ftp_present_banner
     - gnome_gdm_disable_automatic_login
     - grub2_password
     - grub2_uefi_password
     - installed_OS_is_vendor_supported
+    - kernel_module_dccp_disabled
     - kernel_module_usb-storage_disabled
+    - mount_option_home_nosuid
+    - mount_option_noexec_remote_filesystems
+    - mount_option_nosuid_remote_filesystems
+    - mount_option_nosuid_removable_partitions
     - no_empty_passwords
     - no_files_unowned_by_user
     - no_host_based_files
@@ -47,11 +75,14 @@ selections:
     - package_audit_installed
     - package_telnet-server_removed
     - postfix_client_configure_mail_alias
+    - run_chkstat
     - security_patches_up_to_date
     - service_auditd_enabled
+    - service_kdump_disabled
     - set_password_hashing_algorithm_logindefs
     - sshd_disable_compression
     - sshd_disable_empty_passwords
+    - sshd_disable_root_login
     - sshd_disable_user_known_hosts
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
@@ -61,10 +92,18 @@ selections:
     - sshd_set_idle_timeout
     - sshd_set_keepalive
     - sshd_set_loglevel_verbose
+    - sshd_use_approved_macs
     - sshd_use_priv_separation
     - sudo_remove_no_authenticate
     - sudo_remove_nopasswd
+    - sysctl_net_ipv4_conf_all_accept_redirects
     - sysctl_net_ipv4_conf_all_accept_source_route
+    - sysctl_net_ipv4_conf_all_send_redirects
+    - sysctl_net_ipv4_conf_default_accept_redirects
     - sysctl_net_ipv4_conf_default_accept_source_route
     - sysctl_net_ipv4_conf_default_send_redirects
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+    - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv6_conf_all_accept_source_route
+    - sysctl_net_ipv6_conf_default_accept_source_route
+
