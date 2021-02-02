@@ -32,3 +32,6 @@ template:
         sysctlvar: kernel.modules_disabled
         sysctlval: '1'
         datatype: int
+    backends:
+        # Automated remediation of this rule disrupts installs via kickstart
+        bash: 'off'
