@@ -6,8 +6,8 @@ title: 'Use Strong Cryptographic Ciphers on the API Server'
 
 description: |-
     To ensure that the API Server is configured to only use strong
-    cryptographic ciphers,
-    verify the <tt>openshift-kube-apiserver</tt> configmap to something similar to:
+    cryptographic ciphers, verify the <tt>openshift-kube-apiserver</tt>
+    configmap contains the following set of ciphers, with no additions:
     <pre>
     "servingInfo":{
       ...
@@ -16,8 +16,8 @@ description: |-
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
-        "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+        "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+        "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
       ],
       ...
     </pre>
@@ -33,23 +33,37 @@ severity: medium
 references:
     cis: 1.2.35
 
-ocil_clause: '<tt>cipherSuites</tt> does not contain TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256 from servingInfo'
+ocil_clause: '<tt>cipherSuites</tt> is not configured, or contains ciphers (possibly insecure) other than TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, or TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 in servingInfo'
 
 ocil: |-
     Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.servingInfo["cipherSuites"]'</pre>
-    Verify that the output is similar to:
+    Verify that the set of ciphers contains only the following:
     <pre>
     "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
     "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
     "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
     "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-    "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
-    "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+    "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+    "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
     </pre>
 
 warnings:
-    - management: |-
-        Once configured, API Server clients that cannot support modern
-        cryptographic ciphers will not be able to make connections to the API
-        server.
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+- management: |-
+    Once configured, API Server clients that cannot support modern
+    cryptographic ciphers will not be able to make connections to the API
+    server.
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '\"cipherSuites\":\[(\"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\"|\"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256\"|\"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256\"|\"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384\"|\"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256\"|\"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\"|,| )*\]'
+      operation: "pattern match"
+      type: "string"
