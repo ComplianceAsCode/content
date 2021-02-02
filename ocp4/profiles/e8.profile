@@ -30,5 +30,5 @@ selections:
     - rbac_pod_creation_access
     - rbac_wildcard_use
     - rbac_limit_cluster_admin
-    - api_server_tls_cipher_suitres
+    - api_server_tls_cipher_suites
     - api_server_encryption_provider_cipher

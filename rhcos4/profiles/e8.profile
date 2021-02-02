@@ -82,6 +82,6 @@ selections:
   - sshd_enable_strictmodes
 
   # See also: https://www.cyber.gov.au/ism/guidelines-using-cryptography
-  - var_system_crypto_policy=default
+  - var_system_crypto_policy=default_nosha1
   - configure_crypto_policy
   - configure_ssh_crypto_policy
