@@ -158,6 +158,7 @@ selections:
   #### 3.2 Logging
   # 3.2.1 Ensure that a minimal audit policy is created
   # 3.2.2 Ensure that the audit policy covers key security concerns
+    - audit_profile_set
 
   ### 4 Worker Nodes
   ###
