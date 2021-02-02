@@ -26,6 +26,11 @@ references:
 
 platform: machine
 
+warnings:
+  - general:
+      This rule doesn't come with Bash remediation.
+      Remediating this rule during the installation process disrupts the install and boot process.
+
 template:
     name: sysctl
     vars:
@@ -33,5 +38,5 @@ template:
         sysctlval: '1'
         datatype: int
     backends:
-        # Automated remediation of this rule disrupts installs via kickstart
+        # Automated remediation of this rule during installations disrupts the first boot
         bash: 'off'
