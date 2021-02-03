@@ -1,9 +1,15 @@
 documentation_complete: true
 
-title: 'DRAFT - ANSSI DAT-BP28 (minimal)'
+title: 'ANSSI BP-028 (minimal)'
 
-description: 'Draft profile for ANSSI compliance at the minimal level. ANSSI stands for Agence nationale de la sécurité des
-    systèmes d''information. Based on https://www.ssi.gouv.fr/.'
+description: |-
+    This profile contains configurations that align to ANSSI BP-28 at the minimal hardening level.
+
+    ANSSI is the French National Information Security Agency, and stands for Agence nationale de la sécurité des systèmes d''information.
+    ANSSI BP-028 is a configuration recommendation for GNU/Linux systems.
+
+    A copy of the ANSSI BP-028 can be found at the ANSSI website:
+    https://www.ssi.gouv.fr/administration/guide/recommandations-de-securite-relatives-a-un-systeme-gnulinux/
 
 selections:
-  - anssi:all:minimal
+    - anssi:all:minimal
