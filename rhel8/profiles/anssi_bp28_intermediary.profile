@@ -7,7 +7,6 @@ description:
     Agence nationale de la sécurité des systèmes d''information. Based on
     https://www.ssi.gouv.fr/.
 
-extends: anssi_bp28_minimal
 
 selections:
   - anssi:all:intermediary
