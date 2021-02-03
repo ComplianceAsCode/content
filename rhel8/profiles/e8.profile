@@ -136,7 +136,7 @@ selections:
   - sshd_disable_user_known_hosts
   - sshd_enable_strictmodes
 
-  # See also: https://www.cyber.gov.au/ism/guidelines-using-cryptography
+  # See also: https://www.cyber.gov.au/acsc/view-all-content/guidance/asd-approved-cryptographic-algorithms
   - var_system_crypto_policy=default_nosha1
   - configure_crypto_policy
   - configure_ssh_crypto_policy
