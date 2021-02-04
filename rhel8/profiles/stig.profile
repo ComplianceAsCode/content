@@ -223,7 +223,7 @@ selections:
     - package_abrt-plugin-rhtsupport_removed
     - package_abrt-plugin-sosreport_removed
     - package_sendmail_removed
-    - package_gssproxy_removed
+    # - package_gssproxy_removed
     - grub2_pti_argument
     - package_rsh-server_removed
     - kernel_module_atm_disabled
@@ -286,7 +286,7 @@ selections:
     - postfix_prevent_unrestricted_relay
     - aide_verify_ext_attributes
     - aide_verify_acls
-    - package_xorg-x11-server-common_removed
+    # - package_xorg-x11-server-common_removed
     - sshd_disable_x11_forwarding
     - sshd_x11_use_localhost
     - tftpd_uses_secure_mode
