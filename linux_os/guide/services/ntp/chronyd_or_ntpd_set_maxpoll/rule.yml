@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019,sle12
 
 title: 'Configure Time Service Maxpoll Interval'
 
@@ -26,6 +26,7 @@ platform: machine  # The check uses service_... extended definition, which doesn
 identifiers:
     cce@rhel7: CCE-80439-3
     cce@rhcos4: CCE-82684-2
+    cce@sle12: CCE-83124-8
 
 references:
     stigid@ol7: OL07-00-040500
@@ -39,6 +40,8 @@ references:
     cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
     iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
     cis-csc: 1,14,15,16,3,5,6
+    stigid@sle12: SLES-12-030300
+    nist@sle12: AU-8(1)(a),AU-8(1)(b)
 
 ocil_clause: 'it does not exist or maxpoll has not been set to the expected value'
 
