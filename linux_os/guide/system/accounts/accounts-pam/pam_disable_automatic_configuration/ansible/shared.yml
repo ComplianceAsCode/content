@@ -1,0 +1,19 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Find soft links /etc/pam.d/
+  find:
+    paths: /etc/pam.d
+    file_type: link
+    patterns: common-.*
+    use_regex: yes
+  register: find_pam_soft_links_result
+
+- name: Remove soft links in /etc/pam.d/
+  shell: |
+    target=$(readlink -f "{{ item.path }}")
+    cp -p --remove-destination "$target" "{{ item.path }}"
+  with_items: "{{ find_pam_soft_links_result.files }}"
