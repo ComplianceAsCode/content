@@ -195,7 +195,7 @@ selections:
     - file_permissions_var_log_audit
     - directory_permissions_var_log_audit
     - audit_rules_immutable
-    - audit_immutable_login_uids
+    # - audit_immutable_login_uids
     - audit_rules_usergroup_modification_shadow
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
