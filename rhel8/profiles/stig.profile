@@ -291,7 +291,6 @@ selections:
     - sshd_x11_use_localhost
     - tftpd_uses_secure_mode
     - package_vsftpd_removed
-    - package_gssproxy_removed
     - package_iprutils_removed
     - package_tuned_removed
     - require_emergency_target_auth
