@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R1.
+    DISA STIG for Oracle Linux V2R2.
 
 selections:
     - login_banner_text=dod_banners
@@ -218,7 +218,7 @@ selections:
     - install_antivirus
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
-    - sshd_use_approved_ciphers
+    - sshd_use_approved_ciphers_ordered_stig
     - accounts_tmout
     - sshd_enable_warning_banner
     - sssd_ldap_start_tls
@@ -236,7 +236,7 @@ selections:
     - sshd_print_last_log
     - sshd_disable_root_login
     - sshd_allow_only_protocol2
-    - sshd_use_approved_macs
+    - sshd_use_approved_macs_ordered_stig
     - file_permissions_sshd_pub_key
     - file_permissions_sshd_private_key
     - sshd_disable_gssapi_auth
@@ -263,7 +263,7 @@ selections:
     - postfix_prevent_unrestricted_relay
     - package_vsftpd_removed
     - package_tftp-server_removed
-    - sshd_enable_x11_forwarding
+    - sshd_disable_x11_forwarding
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
     - sysctl_net_ipv4_ip_forward
@@ -301,3 +301,4 @@ selections:
     - require_emergency_target_auth
     - grub2_admin_username
     - grub2_uefi_admin_username
+    - sshd_x11_use_localhost
