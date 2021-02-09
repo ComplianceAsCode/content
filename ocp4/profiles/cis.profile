@@ -160,6 +160,12 @@ selections:
 
   ### 4 Worker Nodes
   ###
+  #### 4.1 Worker node configuration
+  # 4.1.3 If proxy kubeconfig file exists ensure permissions are set to 644 or more restrictive (Automated)
+    - file_permissions_proxy_kubeconfig
+  # 4.1.4 If proxy kubeconfig file exists ensure ownership is set to root:root (Manual)
+    - file_owner_proxy_kubeconfig
+    - file_groupowner_proxy_kubeconfig
   #### 4.2 Kubelet
   # 4.2.4 Ensure that the --read-only-port argument is set to 0
     - kubelet_disable_readonly_port
