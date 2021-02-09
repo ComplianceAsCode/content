@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    [DRAFT] DISA STIG for Red Hat Enterprise Linux 8.
+    DISA STIG for Red Hat Enterprise Linux 8.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
