@@ -110,6 +110,7 @@ selections:
     - no_host_based_files
     - no_user_host_based_files
     - service_rngd_enabled
+    - package_rng-tools_installed
     - file_permissions_sshd_pub_key
     - file_permissions_sshd_private_key
     - sshd_enable_strictmodes
