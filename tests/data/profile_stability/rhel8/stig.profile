@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    [DRAFT] DISA STIG for Red Hat Enterprise Linux 8.
+    DISA STIG for Red Hat Enterprise Linux 8.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -59,7 +59,6 @@ selections:
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes
-- audit_immutable_login_uids
 - audit_rules_immutable
 - audit_rules_login_events_lastlog
 - audit_rules_sysadmin_actions
@@ -187,6 +186,7 @@ selections:
 - package_opensc_installed
 - package_openssh-server_installed
 - package_policycoreutils_installed
+- package_rng-tools_installed
 - package_rsh-server_removed
 - package_rsyslog-gnutls_installed
 - package_rsyslog_installed
