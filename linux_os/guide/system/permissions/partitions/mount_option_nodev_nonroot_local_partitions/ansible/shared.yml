@@ -7,7 +7,7 @@
 - name: Ensure non-root local partitions are mounted with nodev option
   mount:
     path: "{{ item.mount }}"
-    src: "{{ item.device}}"
+    src: "{{ item.device }}"
     opts: "{{ item.options }},nodev"
     state: "mounted"
     fstype: "{{ item.fstype }}"
