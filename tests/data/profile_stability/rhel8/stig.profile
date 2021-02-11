@@ -210,7 +210,6 @@ selections:
 - partition_for_var_log
 - partition_for_var_log_audit
 - postfix_client_configure_mail_alias
-- postfix_prevent_unrestricted_relay
 - require_emergency_target_auth
 - require_singleuser_auth
 - rsyslog_cron_logging

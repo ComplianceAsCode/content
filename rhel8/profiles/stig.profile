@@ -296,7 +296,8 @@ selections:
     - sysctl_user_max_user_namespaces
     - sysctl_net_ipv4_conf_all_rp_filter
     # /etc/postfix/main.cf does not exist on default installation resulting in error during remediation
-    - postfix_prevent_unrestricted_relay
+    # there needs to be a new platform check to identify when postfix is installed or not
+    # - postfix_prevent_unrestricted_relay
     - aide_verify_ext_attributes
     - aide_verify_acls
     # - package_xorg-x11-server-common_removed
