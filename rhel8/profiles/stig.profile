@@ -205,14 +205,14 @@ selections:
     - auditd_log_format
     - file_permissions_var_log_audit
     - directory_permissions_var_log_audit
-    - audit_rules_immutable
+    # - audit_rules_immutable
     # - audit_immutable_login_uids
-    - audit_rules_usergroup_modification_shadow
-    - audit_rules_usergroup_modification_opasswd
-    - audit_rules_usergroup_modification_passwd
-    - audit_rules_usergroup_modification_gshadow
-    - audit_rules_usergroup_modification_group
-    - audit_rules_login_events_lastlog
+    # - audit_rules_usergroup_modification_shadow
+    # - audit_rules_usergroup_modification_opasswd
+    # - audit_rules_usergroup_modification_passwd
+    # - audit_rules_usergroup_modification_gshadow
+    # - audit_rules_usergroup_modification_group
+    # - audit_rules_login_events_lastlog
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - configure_usbguard_auditbackend
@@ -326,7 +326,7 @@ selections:
     - no_empty_passwords
     - sshd_disable_empty_passwords
     - file_ownership_var_log_audit
-    - audit_rules_sysadmin_actions
+    # - audit_rules_sysadmin_actions
     - package_audit_installed
     - service_auditd_enabled
     - sshd_allow_only_protocol2
