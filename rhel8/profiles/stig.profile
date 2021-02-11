@@ -38,7 +38,6 @@ selections:
     - var_password_pam_unix_remember=5
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
-    - var_system_crypto_policy=fips_ospp
     - var_accounts_password_minlen_login_defs=15
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
@@ -65,10 +64,21 @@ selections:
     - var_auditd_max_log_file_action=syslog
     - var_auditd_disk_full_action=halt
 
+    ### Enable / Configure FIPS
+    - enable_fips_mode
+    - var_system_crypto_policy=fips
+    - configure_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_kerberos_crypto_policy
+    - enable_dracut_fips_module
+
     # rules
     - installed_OS_is_vendor_supported
     - security_patches_up_to_date
-    - enable_fips_mode
+
     - sysctl_crypto_fips_enabled
     - encrypt_partitions
     - sshd_enable_warning_banner
@@ -211,6 +221,7 @@ selections:
     - rsyslog_remote_loghost
     - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
+    # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
     - chronyd_client_only
     - chronyd_no_chronyc_network
@@ -284,6 +295,7 @@ selections:
     - sysctl_kernel_kptr_restrict
     - sysctl_user_max_user_namespaces
     - sysctl_net_ipv4_conf_all_rp_filter
+    # /etc/postfix/main.cf does not exist on default installation resulting in error during remediation
     - postfix_prevent_unrestricted_relay
     - aide_verify_ext_attributes
     - aide_verify_acls
