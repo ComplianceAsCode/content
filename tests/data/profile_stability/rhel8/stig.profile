@@ -82,7 +82,13 @@ selections:
 - chronyd_or_ntpd_set_maxpoll
 - clean_components_post_updating
 - configure_bashrc_exec_tmux
+- configure_bind_crypto_policy
+- configure_crypto_policy
 - configure_firewalld_ports
+- configure_kerberos_crypto_policy
+- configure_libreswan_crypto_policy
+- configure_openssl_crypto_policy
+- configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
 - configure_usbguard_auditbackend
@@ -100,6 +106,7 @@ selections:
 - disable_ctrlaltdel_reboot
 - disable_users_coredumps
 - display_login_attempts
+- enable_dracut_fips_module
 - enable_fips_mode
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
@@ -288,7 +295,6 @@ selections:
 - var_password_pam_unix_remember=5
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
-- var_system_crypto_policy=fips_ospp
 - var_accounts_password_minlen_login_defs=15
 - var_password_pam_minlen=15
 - var_password_pam_ocredit=1
@@ -313,4 +319,5 @@ selections:
 - var_auditd_disk_error_action=halt
 - var_auditd_max_log_file_action=syslog
 - var_auditd_disk_full_action=halt
+- var_system_crypto_policy=fips
 title: DISA STIG for Red Hat Enterprise Linux 8
