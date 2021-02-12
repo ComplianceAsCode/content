@@ -1,13 +1,17 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,rhel7
+prodtype: fedora,ol7,rhel7,rhel8
 
 title: 'Install Smart Card Packages For Multifactor Authentication'
 
 description: |-
     Configure the operating system to implement multifactor authentication by
     installing the required package with the following command:
+    {{%- if product in ["rhel7", "ol7"] %}}
     {{{ describe_package_install(package="pam_pkcs11") }}}
+    {{%- else %}}
+    {{{ describe_package_install(package="openssl-pkcs11") }}}
+    {{%- endif %}}
 
 rationale: |-
     Using an authentication device, such as a CAC or token that is separate from
@@ -25,6 +29,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80519-2
+    cce@rhel8: CCE-84029-8
 
 references:
     stigid@ol7: OL07-00-041001
@@ -32,12 +37,19 @@ references:
     nist: CM-6(a)
     srg: SRG-OS-000105-GPOS-00052,SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000377-GPOS-00162
     stigid@rhel7: RHEL-07-041001
+    stigid@rhel8: RHEL-08-010390
 
 ocil_clause: 'smartcard software is not installed'
 
+{{%- if product in ["rhel7", "ol7"] %}}
 ocil: '{{{ ocil_package(package="pam_pkcs11") }}}'
+{{%- else %}}
+ocil: '{{{ ocil_package(package="openssl-pkcs11") }}}'
+{{%- endif %}}
 
 template:
     name: package_installed
     vars:
-        pkgname: pam_pkcs11
+        pkgname: openssl-pkcs11
+        pkgname@rhel7: pam_pkcs11
+        pkgname@ol7: pam_pkcs11

@@ -11,7 +11,7 @@ rationale: |-
     terminates an application. The memory image could contain sensitive data and is generally useful
     only for developers trying to debug problems.
 
-severity: unknown
+severity: medium
 
 identifiers:
     cce@rhel8: CCE-82215-5
@@ -20,6 +20,7 @@ identifiers:
 references:
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel8: RHEL-08-010671
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.core_pattern", value="|/bin/false") }}}
 
