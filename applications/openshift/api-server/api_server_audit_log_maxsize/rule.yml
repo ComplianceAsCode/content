@@ -51,6 +51,6 @@ template:
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     yamlpath: '.data["config.yaml"]'
     values:
-    - value: '"apiServerArguments":{.*"audit-log-maxsize":\["100"\]'
+    - value: '"apiServerArguments":{.*"audit-log-maxsize":\["90"\]'
       operation: "pattern match"
       type: "string"
