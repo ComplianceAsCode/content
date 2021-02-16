@@ -25,7 +25,6 @@ selections:
     - kernel_module_udf_disabled
 
     #### 1.1.1.4 Ensure mounting of vFAT flesystems is limited (Not Scored)
-    - kernel_module_vfat_disabled
 
     ### 1.1.2 Ensure /tmp is configured (Scored)
     - partition_for_tmp

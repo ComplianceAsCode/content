@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = high
+
+- name: Ensure non-root local partitions are mounted with nodev option
+  mount:
+    path: "{{ item.mount }}"
+    src: "{{ item.device }}"
+    opts: "{{ item.options }},nodev"
+    state: "mounted"
+    fstype: "{{ item.fstype }}"
+  when:
+    - "item.mount is match('/\\w')"
+    - "item.options is not search('nodev')"
+  with_items:
+    - "{{ ansible_facts.mounts }}"

@@ -5,20 +5,17 @@ prodtype: ocp4
 title: 'Configure the Encryption Provider Cipher'
 
 description: |-
-    To configure OpenShift to use the <tt>aescbc</tt> encryption provider,
-    follow the OpenShift documentation to create or modify an
-    <tt>EncryptionConfig</tt> file.
-    In this file, choose <tt>aescbc</tt> as the encryption provider:
-    <pre>kind: EncryptionConfig
-    apiVersion: v1
-    resources:
-      - resources:
-        - secrets
-        providers:
-        - aescbc:
-            keys:
-            - name: key1
-              secret: <i>32-byte base64-encoded secret</i></pre>
+    To ensure the correct cipher, set the encryption type <tt>aescbc</tt> in the
+    <tt>apiserver</tt> object which configures the API server itself.
+    <pre>
+    spec:
+      encryption:
+        type: aescbc
+    </pre>
+
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/security/encrypting-etcd.html",
+                text="the relevant documentation") }}}.
 
 rationale: |-
     <tt>aescbc</tt> is currently the strongest encryption provider, it should
@@ -33,7 +30,21 @@ ocil_clause: '<tt>aescbc</tt> is not configured as the encryption provider'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get secrets encryption-config -n openshift-kube-apiserver -o json | jq -r '.data["encryption-config"]' | base64 -d | jq -r '.resources'</pre>
-    Verify that the <tt>aescbc</tt> encryption provider is used for all the desired
-    <tt>resources</tt>.
+    <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
+    The output should return <tt>aescdc</tt> as the encryption type.
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/apiservers/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: '/apis/config.openshift.io/v1/apiservers/cluster'
+    yamlpath: '.spec.encryption.type'
+    values:
+    - value: 'aescbc'
+      type: "string"
+      operation: "pattern match"

@@ -17,10 +17,10 @@
     <!-- The regex idea: <user list> <host list> = (<the whole command without negation>,)* <command with negation> <whatever>
          where a command is <runas spec>?<anything except , or !>+,
            - ',' is a command delimiter, while
-           - '!' outside of a runas spec is a command negation we are after,
+           - '!' as the leading character outside of a runas spec is a command negation we are after,
          The last non-capturing group holds the offending command.
     -->
-    <ind:pattern operation="pattern match">^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,!\n]+,)*\s*(?:\([^\)]+\))?\s*(?!\s*\()([^,\n]*!\S+).*</ind:pattern>
+    <ind:pattern operation="pattern match">^(?:\s*[^#=]+)=(?:\s*(?:\([^\)]+\))?\s*(?!\s*\()[^,!\n][^,\n]+,)*\s*(?:\([^\)]+\))?\s*(?!\s*\()(!\S+).*</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

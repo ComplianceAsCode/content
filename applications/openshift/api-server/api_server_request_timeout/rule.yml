@@ -2,32 +2,30 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Configure the API Server Request Timeout'
+title: 'Configure the API Server Minimum Request Timeout'
 
 description: |-
-    All components that use the API should connect via the secured port,
-    authenticate themselves, and be authorized to use the API. To ensure
-    such a configuration, edit the <tt>openshift-kube-apiserver</tt> configmap
-    and set the <tt>min-request-timeout</tt> to <tt>300</tt>:
+    The API server minimum request timeout defines the minimum number of
+    seconds a handler must keep a request open before timing it out. To set this,
+    edit the <tt>openshift-kube-apiserver</tt> configmap and set
+    <tt>min-request-timeout</tt> under the <tt>apiServerArguments</tt> field:
     <pre>
     "apiServerArguments":{
       ...
       "min-request-timeout":[
-        "300"
+        {{{ xccdf_value("var_api_min_request_timeout") }}}
       ],
       ...
     </pre>
 
 rationale: |-
     Setting global request timout allows extending the API Server request
-    timeout limit to a duration appropriate to the user's connection speed.
-    By default, it is set to 60 seconds which might be problematic on
-    slower connections making cluster resources inaccessible once the data
-    volume for requests exceeds what can be transmitted in 60 seconds. But,
-    setting this timeout limit to be too large can exhaust the API Server
-    resources making it prone to Denial-of-Service attack. It is recommended
-    to set this limit as appropriate and change the default limit of 60
-    seconds only if needed.
+    timeout limit to a duration appropriate to the user's connection speed.  By
+    default, it is set to 1800 seconds which might not be suitable for some
+    environments. Setting the limit too low may result in excessive timeouts,
+    and a limit that is too large may exhaust the API Server resources making
+    it prone to Denial-of-Service attack. It is recommended to set this limit
+    as appropriate and change the default limit of 1800 seconds only if needed.
 
 severity: medium
 
@@ -39,4 +37,22 @@ ocil_clause: '<tt>min-request-timeout</tt> is not set or is not set to an approp
 ocil: |-
     Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["min-request-timeout"]'</pre>
-    The output should return <pre>300</pre>.
+    The output should return <pre> {{{ xccdf_value("var_api_min_request_timeout") }}} </pre>.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    xccdf_variable: var_api_min_request_timeout
+    embedded_data: "true"
+    values:
+    - value: '"apiServerArguments":{.*"min-request-timeout":\["(\d*)"\]'
+      operation: "pattern match"
+      type: "string"

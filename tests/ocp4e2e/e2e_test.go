@@ -8,19 +8,19 @@ import (
 func TestE2e(t *testing.T) {
 	ctx := newE2EContext(t)
 	t.Run("Parameter setup and validation", func(t *testing.T) {
-		ctx.assertRootdir()
-		ctx.assertProfile()
-		ctx.assertContentImage()
-		ctx.assertKubeClient()
+		ctx.assertRootdir(t)
+		ctx.assertProfile(t)
+		ctx.assertContentImage(t)
+		ctx.assertKubeClient(t)
 	})
 
 	t.Run("Operator setup", func(t *testing.T) {
-		ctx.ensureNamespaceExistsAndSet()
+		ctx.ensureNamespaceExistsAndSet(t)
 		if ctx.installOperator {
-			ctx.ensureCatalogSourceExists()
-			ctx.ensureOperatorGroupExists()
-			ctx.ensureSubscriptionExists()
-			ctx.waitForOperatorToBeReady()
+			ctx.ensureCatalogSourceExists(t)
+			ctx.ensureOperatorGroupExists(t)
+			ctx.ensureSubscriptionExists(t)
+			ctx.waitForOperatorToBeReady(t)
 		} else {
 			t.Logf("Skipping operator install as requested")
 		}
@@ -28,8 +28,8 @@ func TestE2e(t *testing.T) {
 	})
 
 	t.Run("Prereqs setup", func(t *testing.T) {
-		ctx.ensureTestProfileBundle()
-		ctx.ensureTestSettings()
+		ctx.ensureTestProfileBundle(t)
+		ctx.ensureTestSettings(t)
 	})
 
 	// Remediations
@@ -53,32 +53,44 @@ func TestE2e(t *testing.T) {
 
 	t.Run("Run first compliance scan", func(t *testing.T) {
 		// Create suite and auto-apply remediations
-		suite = ctx.createBindingForProfile()
-		ctx.waitForComplianceSuite(suite)
-		numberOfRemediations = ctx.getRemediationsForSuite(suite)
-		numberOfFailuresInit = ctx.getFailuresForSuite(suite)
-		numberOfCheckResultsInit, manualRemediations = ctx.verifyCheckResultsForSuite(suite, false)
-		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(suite)
+		suite = ctx.createBindingForProfile(t)
+		ctx.waitForComplianceSuite(t, suite)
+		numberOfRemediations = ctx.getRemediationsForSuite(t, suite)
+		numberOfFailuresInit = ctx.getFailuresForSuite(t, suite)
+		numberOfCheckResultsInit, manualRemediations = ctx.verifyCheckResultsForSuite(t, suite, false)
+		numberOfInvalidResults = ctx.getInvalidResultsFromSuite(t, suite)
 	})
 
 	if numberOfRemediations > 0 || len(manualRemediations) > 0 {
 		if len(manualRemediations) > 0 {
 			t.Run("Apply manual remediations", func(t *testing.T) {
-				ctx.applyManualRemediations(manualRemediations)
+				ctx.applyManualRemediations(t, manualRemediations)
 			})
 		}
 		t.Run("Wait for Remediations to apply", func(t *testing.T) {
 			// Lets wait for the MachineConfigs to start applying
 			time.Sleep(30 * time.Second)
-			ctx.waitForMachinePoolUpdate("master")
-			ctx.waitForMachinePoolUpdate("worker")
+			ctx.waitForMachinePoolUpdate(t, "master")
+			ctx.waitForMachinePoolUpdate(t, "worker")
 		})
 
+		// empty cleanup function that will be a no-op if the profile setup is skipped.
+		var cleanup func() = func() {}
+		t.Run("Configure test IdP", func(t *testing.T) {
+			if ctx.Profile == "moderate" {
+				t.Skip("Skipping IdP setup as this doesn't work in this profile.")
+			}
+			cleanup = ctx.ensureIdP(t)
+		})
+
+		// These will get cleaned up at the end of the test
+		defer cleanup()
+
 		t.Run("Run second compliance scan", func(t *testing.T) {
-			ctx.doRescan(suite)
-			ctx.waitForComplianceSuite(suite)
-			numberOfFailuresEnd = ctx.getFailuresForSuite(suite)
-			numberOfCheckResultsEnd, _ = ctx.verifyCheckResultsForSuite(suite, true)
+			ctx.doRescan(t, suite)
+			ctx.waitForComplianceSuite(t, suite)
+			numberOfFailuresEnd = ctx.getFailuresForSuite(t, suite)
+			numberOfCheckResultsEnd, _ = ctx.verifyCheckResultsForSuite(t, suite, true)
 		})
 
 		t.Run("We should have the same number of check results in each scan", func(t *testing.T) {

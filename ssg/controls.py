@@ -14,6 +14,9 @@ class Control():
         self.variables = {}
         self.level = ""
         self.notes = ""
+        self.title = ""
+        self.description = ""
+        self.automated = ""
 
     @classmethod
     def from_control_dict(cls, control_dict, default_level=""):
@@ -47,9 +50,12 @@ class Policy():
         self.id = None
         self.env_yaml = env_yaml
         self.filepath = filepath
-        self.controls = {}
+        self.controls = []
+        self.controls_by_id = dict()
         self.levels = []
         self.level_value = {}
+        self.title = ""
+        self.source = ""
 
     def _parse_controls_tree(self, tree):
         default_level = ""
@@ -70,18 +76,21 @@ class Policy():
     def load(self):
         yaml_contents = ssg.yaml.open_and_expand(self.filepath, self.env_yaml)
         self.id = ssg.utils.required_key(yaml_contents, "id")
+        self.title = ssg.utils.required_key(yaml_contents, "title")
+        self.source = yaml_contents.get("source", "")
 
         self.levels = yaml_contents.get("levels", ["default"])
         for i, level in enumerate(self.levels):
             self.level_value[level] = i
 
         controls_tree = ssg.utils.required_key(yaml_contents, "controls")
-        self.controls = dict(
-            (c.id, c) for c in self._parse_controls_tree(controls_tree))
+        for c in self._parse_controls_tree(controls_tree):
+            self.controls.append(c)
+            self.controls_by_id[c.id] = c
 
     def get_control(self, control_id):
         try:
-            c = self.controls[control_id]
+            c = self.controls_by_id[control_id]
             return c
         except KeyError:
             msg = "%s not found in policy %s" % (
@@ -148,4 +157,4 @@ class ControlsManager():
 
     def get_all_controls(self, policy_id):
         policy = self._get_policy(policy_id)
-        return policy.controls.values()
+        return policy.controls_by_id.values()

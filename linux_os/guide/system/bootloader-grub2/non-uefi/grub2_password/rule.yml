@@ -47,7 +47,7 @@ identifiers:
 
 references:
     cis@rhel8: 1.5.2
-    stigid@ol7: OL07-00-010480
+    stigid@ol7: OL07-00-010482
     cui: 3.4.5
     disa: CCI-000213
     hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
@@ -63,6 +63,7 @@ references:
     iso27001-2013: A.18.1.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
     cis-csc: 1,11,12,14,15,16,18,3,5
     anssi: BP28(R17)
+    stigid@rhel8: RHEL-08-010150
 
 ocil_clause: 'it does not'
 
@@ -71,7 +72,7 @@ ocil: |-
     command:
     {{% if product == "sle12" %}}
     <pre>sudo grep "boot" /boot/grub2/grub.cfg</pre>
-    {{% else %}} 
+    {{% else %}}
     <pre>sudo grep "superusers" /etc/grub2.cfg</pre>
     {{% endif %}}
     The output should show the following:

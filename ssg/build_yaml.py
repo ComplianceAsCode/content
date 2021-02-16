@@ -995,6 +995,7 @@ class Rule(object):
         "platform": lambda: None,
         "inherited_platforms": lambda: list(),
         "template": lambda: None,
+        "definition_location": lambda: None,
     }
 
     def __init__(self, id_):
@@ -1002,6 +1003,7 @@ class Rule(object):
         self.prodtype = "all"
         self.title = ""
         self.description = ""
+        self.definition_location = ""
         self.rationale = ""
         self.severity = "unknown"
         self.references = {}
@@ -1044,6 +1046,9 @@ class Rule(object):
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
+
+        if not rule.definition_location:
+            rule.definition_location = yaml_file
 
         rule.validate_prodtype(yaml_file)
         rule.validate_identifiers(yaml_file)

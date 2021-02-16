@@ -1,0 +1,57 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Verify that Local Logs of the audit Daemon are not World-Readable'
+
+description: |-
+    Files containing sensitive informations should be protected by restrictive
+    permissions. Most of the time, there is no need that these files need to bei
+    read by any non-root user.
+
+    Check that "permissions.local" file contains the correct permissions rules with the following command:
+
+    <pre># grep -i audit /etc/permissions.local
+
+    /var/log/audit/ root:root 600
+    /var/log/audit/audit.log root:root 600
+    /etc/audit/audit.rules root:root 640
+    /etc/audit/rules.d/audit.rules root:root 640</pre>
+
+rationale: |-
+    Without the capability to restrict which roles and individuals can select
+    which events are audited, unauthorized personnel may be able to prevent the
+    auditing of critical events. Misconfigured audits may degrade the system's
+    performance by overwhelming the audit log. Misconfigured audits may also
+    make it more difficult to establish, correlate, and investigate the events
+    relating to an incident or identify those responsible for one.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83117-2
+
+references:
+    disa@sle12: CCI-000164
+    nist: AU-9
+    srg@sle12: SRG-OS-000057-GPOS-00027,SRG-OS-000058-GPOS-00028,SRG-OS-000059-GPOS-00029
+    stigid@sle12: SLES-12-020120
+
+ocil: |-
+    Check that <tt>permissions.local</tt> file contains the correct permissionsi
+    rules with the following command:
+
+    <pre># grep -i audit /etc/permissions.local
+
+    /var/log/audit/ root:root 600
+    /var/log/audit/audit.log root:root 600
+    /etc/audit/audit.rules root:root 640
+    /etc/audit/rules.d/audit.rules root:root 640</pre>
+
+    If the command does not return all the above lines, the missing ones need
+    to be added.
+
+    Run the following command to correct the permissions after adding missing
+    entries:
+
+    <pre># sudo chkstat --set --system</pre>
