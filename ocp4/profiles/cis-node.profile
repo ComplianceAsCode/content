@@ -179,3 +179,5 @@ selections:
     - kubelet_enable_cert_rotation
   # 4.2.12 Verify that the RotateKubeletServerCertificate argument is set to true
     - kubelet_enable_server_cert_rotation
+  # 4.2.13 Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers
+    - kubelet_configure_tls_cipher_suites
