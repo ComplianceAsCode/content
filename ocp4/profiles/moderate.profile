@@ -42,3 +42,7 @@ selections:
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
     - audit_log_forwarding_enabled
+
+    # SC-28 (1) PROTECTION OF INFORMATION AT REST | CRYPTOGRAPHIC PROTECTION
+    - api_server_encryption_provider_config
+    - api_server_encryption_provider_cipher
