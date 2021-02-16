@@ -127,6 +127,7 @@ selections:
     - sshd_disable_compression
     - sshd_disable_user_known_hosts
     - partition_for_var
+    - partition_for_var_tmp
     - partition_for_var_log
     - partition_for_var_log_audit
     - partition_for_tmp
