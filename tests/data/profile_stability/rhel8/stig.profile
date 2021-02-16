@@ -63,7 +63,6 @@ selections:
 - auditd_data_disk_full_action
 - auditd_data_retention_action_mail_acct
 - auditd_data_retention_max_log_file_action
-- auditd_data_retention_space_left
 - auditd_data_retention_space_left_action
 - auditd_local_events
 - auditd_log_format

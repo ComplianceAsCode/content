@@ -219,7 +219,8 @@ selections:
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_loghost
-    - auditd_data_retention_space_left
+    # this rule expects configuration in MB instead percentage as how STIG demands
+    # - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
     # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
