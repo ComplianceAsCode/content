@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhcos4
 
 title: 'Add nodev Option to Non-Root Local Partitions'
 
@@ -25,7 +25,7 @@ ocil: |
 
 ocil_clause: "some mounts appear among output lines"
 
-severity: unknown
+severity: medium
 
 identifiers:
     cce@rhel7: CCE-80145-6
@@ -41,5 +41,7 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
     cis-csc: 11,14,3,9
     srg: SRG-OS-000368-GPOS-00154
+    anssi: BP28(R12)
+    stigid@rhel8: RHEL-08-010580
 
 platform: machine

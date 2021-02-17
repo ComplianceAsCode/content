@@ -21,7 +21,7 @@ ocil_clause: 'the kubelet can modify kernel parameters'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep protectKernelDefaults /etc/kubernetes/kubernetes.conf</pre>
+    <pre>$ sudo grep protectKernelDefaults /etc/kubernetes/kubelet.conf</pre>
     The output should return <tt>true</tt>.
 
 #identifiers:

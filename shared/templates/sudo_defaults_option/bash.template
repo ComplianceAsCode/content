@@ -1,0 +1,38 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{% if VARIABLE_NAME %}}
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
+
+{{{ bash_instantiate_variables(VARIABLE_NAME) }}}
+{{% endif %}}
+if /usr/sbin/visudo -qcf /etc/sudoers; then
+    cp /etc/sudoers /etc/sudoers.bak
+    if ! grep -P "^[\s]*Defaults.*\b{{{ OPTION_REGEX }}}\b.*$" /etc/sudoers; then
+        # sudoers file doesn't define Option {{{ OPTION }}}
+        echo "Defaults {{{ OPTION_VALUE }}}" >> /etc/sudoers
+    {{%- if not VARIABLE_NAME %}}
+    fi
+    {{% else %}}
+    else
+        # sudoers file defines Option {{{ OPTION }}}, remediate if appropriate value is not set
+        if ! grep -P "^[\s]*Defaults.*\b{{{ OPTION_VALUE }}}\b.*$" /etc/sudoers; then
+            sed -Ei "s/(^[\s]*Defaults.*\b{{{ OPTION }}}=)\w+(\b.*$)/\1{{{ '${' ~ VARIABLE_NAME ~ '}' }}}\2/" /etc/sudoers
+        fi
+    fi
+    {{% endif %}}
+    # Check validity of sudoers and cleanup bak
+    if /usr/sbin/visudo -qcf /etc/sudoers; then
+        rm -f /etc/sudoers.bak
+    else
+        echo "Fail to validate remediated /etc/sudoers, reverting to original file."
+        mv /etc/sudoers.bak /etc/sudoers
+        false
+    fi
+else
+    echo "Skipping remediation, /etc/sudoers failed to validate"
+    false
+fi

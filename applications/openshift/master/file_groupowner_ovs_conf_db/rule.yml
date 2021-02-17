@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Verify Group Who Owns The Open vSwitch Configuration Database'
 
 description: |-
-    {{{ describe_file_group_owner(file="/etc/openvswitch/conf.db", group="openvswitch") }}}
+    {{{ describe_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -15,20 +15,19 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-84226-0
 
 references:
     cis: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/conf.db", group="openvswitch") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/openvswitch/conf.db", group="openvswitch") }}}
+    {{{ ocil_file_group_owner(file="/etc/openvswitch/conf.db", group="hugetlbfs") }}}
 
 template:
     name: file_groupowner
     vars:
         filepath: /etc/openvswitch/conf.db
-        filegid: '800'
-        missing_file_pass: "true"
+        filegid: '801'

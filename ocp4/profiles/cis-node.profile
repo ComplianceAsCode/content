@@ -4,6 +4,12 @@ title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4-node
 
+metadata:
+    SMEs:
+        - JAORMX
+        - mrogers950
+        - jhrozek
+
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
     Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
@@ -106,6 +112,18 @@ selections:
     - file_permissions_etcd_pki_cert_files
   # 1.1.21 Ensure that the OpenShift PKI key file permissions are set to 600 
     - file_permissions_openshift_pki_key_files
+  #### 1.3 Controller Manager
+  # 1.3.1 Ensure that garbage collection is configured as appropriate
+    - kubelet_eviction_thresholds_set_soft_memory_available
+    - kubelet_eviction_thresholds_set_soft_nodefs_available
+    - kubelet_eviction_thresholds_set_soft_nodefs_inodesfree
+    - kubelet_eviction_thresholds_set_soft_imagefs_available
+    - kubelet_eviction_thresholds_set_soft_imagefs_inodesfree
+    - kubelet_eviction_thresholds_set_hard_memory_available
+    - kubelet_eviction_thresholds_set_hard_nodefs_available
+    - kubelet_eviction_thresholds_set_hard_nodefs_inodesfree
+    - kubelet_eviction_thresholds_set_hard_imagefs_available
+    - kubelet_eviction_thresholds_set_hard_imagefs_inodesfree
 
   ### 2 etcd
   # 2.7 Ensure that a unique Certificate Authority is used for etcd
@@ -149,7 +167,7 @@ selections:
   # 4.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
     - kubelet_enable_streaming_connections
   # 4.2.6 Ensure that the --protect-kernel-defaults argument is set to true
-    - kubelet_enable_protect_kernel_defaults
+    #- kubelet_enable_protect_kernel_defaults
   # 4.2.7 Ensure that the --make-iptables-util-chains argument is set to true
     - kubelet_enable_iptables_util_chains
   # 4.2.8 Ensure that the --hostname-override argument is not set

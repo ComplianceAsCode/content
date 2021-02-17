@@ -56,6 +56,36 @@ developers](https://github.com/orgs/ComplianceAsCode/teams/trusted-developers).
 >     owner: "--owner <owner of repo>" # your github user name
 >     repo: "--repo <name of repo>"    # your clone's repo name
 
+Stabilization phase
+----------------------------------------------------------
+It is a good practice to have a stabilization phase before the upstream release
+is performed. During this period, the new stabilization branch is created. Only
+bugfixes which are discovered during this stabilization period are cherry-picked
+from the master branch into the stabilization branch. This reduces the risk of
+bringing a sudden breaking change into the release.
+
+The stabilization phase is typically two weeks long. To start the stabilization:
+
+- Create a new branch called stabilization-vx.y.z, where x.y.z is the version of
+  the upcoming release
+
+- Create a new milestone for the next version
+
+- Set milestone of opened pull requests to the new milestone
+
+- Announce start of stabilization period through mailing list
+
+During the stabilization:
+
+- If a bug is fixed, cherry-pick the PR from the master branch into the
+  stabilization branch
+
+- Change the milestone for the cherry-picked PR to the milestone of upcoming
+  release
+
+- Label the PR with "backported_into_stabilization"
+
+
 Before the release
 ------------------
 
@@ -119,18 +149,18 @@ Everything necessary for the release is built in Jenkins:
     You can run `python3 release_content.py build` again to check status
     of the jobs.
     NOTE: As of July-20th 2019, it takes about 44 minutes for all the
-    builds finish.
+    builds to finish.
 
 While Jenkins performs the builds you can generate and review the
 release notes:
 
 -   Run `python3 release_content.py release_notes`
 
-Format of the release notes are as follows:
+Format of the release notes is as follows:
 At the top Highlighted PRs will be listed, followed by list of product’s
 profiles that changed since last release.
-Followed by a list of *relevant* changes, genereated from the Pull
-Requests mereged in this release.
+Followed by a list of *relevant* changes, generated from the Pull
+Requests merged in this release.
 Not all PRs have an entry to avoid over cluttering. To determine the
 *relevant* PRs a few heuristics are applied:
 
@@ -154,9 +184,9 @@ reviewed. We move on to creating the release entry in GitHub:
 
 -   Run `python3 release_content.py release`
 
-    It will create the next milestone (if it doens’t exist yet), move
+    It will create the next milestone (if it doesn’t exist yet), move
     any open issues and PRs from current
-    milestone to next milesone, and close current release’s milestone.
+    milestone to next milestone, and close current release’s milestone.
     The assets from Jenkins builds and the release notes will be used to
     create the git release.
     **Review the Git Release** and publish it.
@@ -171,6 +201,8 @@ Clean up and bump version
     It will also create a `bump_version_{version}` branch and a "Bump
     version" commit for your convenience.
     **Make a PR out of the branch**.
+
+- delete the "stable" branch and rename the stabilization branch to "stable"
 
 Announce it
 -----------
@@ -199,9 +231,8 @@ Copr builds
 
 -   Move to the directory where you did the latest Fedora build.
 
--   Copy `copr_epel8.patch`, `copr_epel7.patch` and `copr_epel6.patch`
-    from the directory where this readme is placed into the directory
-    where the spec file is.
+-   Copy `copr_epel8.patch` and `copr_epel7.patch` from the directory where this
+    readme is placed into the directory where the spec file is.
 
 -   For epel8, apply the patch with `patch -p1 < copr_epel8.patch` and
     rename the patched file appropriately.
@@ -209,8 +240,7 @@ Copr builds
 -   Upload the new spec file into publicly visible folder in your
     `fedorapeople.org` space.
 
--   Patch and upload spec files for epel7 and epel6 in similar way as
-    shown above.
+-   Patch and upload spec file for epel7 in similar way as shown above.
 
 -   Use your Fedora account and login into [COPR
     repo](https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/).

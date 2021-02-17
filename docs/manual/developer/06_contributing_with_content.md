@@ -1268,6 +1268,36 @@ the following to `rule.yml`:
 
 -   Languages: OVAL
 
+#### dconf_ini_file
+-   Checks for `dconf` configuration. Additionally checks if the
+    configuration is locked so it cannot be overriden by the user.
+    The `locks` directory is always the **path** appended by `locks/`.
+
+-   Parameters:
+
+    -   **path** - dconf configuration files directory. All files within this directory
+        will be check for the configuration presence.  eg. `/etc/dconf/db/local.d/`.
+
+    -   **section** - name of the `dconf` configuration section, eg. `"org/gnome/desktop/lockdown"`
+
+    -   **parameter** - name of the `dconf` configuration option, eg.
+        `user-administration-disabled`
+
+    -   **value** - value of the `dconf` configuration option specified by
+        **parameter**, eg. `"true"`.
+
+-   Languages: Ansible, Bash, OVAL
+
+-   Example:
+
+        template:
+            name: dconf_ini_file
+            vars:
+                path: /etc/dconf/db/local.d/
+                section: "org/gnome/desktop/lockdown"
+                parameter: user-administration-disabled
+                value: "true"
+
 #### file_groupowner
 -   Check group that owns the given file.
 
@@ -1339,6 +1369,10 @@ the following to `rule.yml`:
     -   **filemode** - File permissions in a hexadecimal format, eg.
         `'0640'`.
 
+    -   **allow_stricter_permissions** - If set to `"true"` the OVAL
+        will also consider permissions stricter than **filemode** as compliant.
+        Default value is `"false"`.
+
 -   Languages: Ansible, Bash, OVAL
 
 #### grub2_bootloader_argument
@@ -1360,6 +1394,23 @@ the following to `rule.yml`:
     -   **kernmodule** - name of the Linux kernel module, eg. `cramfs`
 
 -   Languages: Ansible, Bash, OVAL
+
+#### lineinfile
+-   Checks that the given text is present in a file.
+    This template doesn't work with a concept of keys and values - it is meant
+    only for simple statements.
+
+-   Parameters:
+
+    -   **path** - path to the file to check.
+
+    -   **text** - the line that should be present in the file.
+
+    -   **oval_extend_definitions** - optional, list of additional OVAL
+        definitions that have to pass along the generated check.
+
+-   Languages: Ansible, Bash, OVAL
+
 
 #### mount
 -   Checks that a given mount point is located on a separate partition.
@@ -1577,6 +1628,52 @@ the following to `rule.yml`:
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
+#### sudo_defaults_option
+This template ensures a sudo `Defaults` options is enabled in `/etc/sudoers` or in `/etc/sudoers.d/*`.\
+The template can check for options with and without parameters.\
+The remediations add the `Defaults` option  to `/etc/sudoers` file.
+
+-   Parameters:
+
+    - **option** - name of sudo `Defaults` option to enable.
+    - **parameter_variable** - name of the XCCDF variable to get the value for the option parameter.\
+      (optional, if not set the check and remediation won't use parameters)
+    - **default_is_enabled** -  set to `"true"` if the option is enabled by default for the product.
+      In this case, the check will pass even if the options is not explicitly set.\
+      If **parameter_variable** is used this is forced to `"false"`. As the Value selector can be changed by tailoring at scan-time the default value needs to be defined at compile-time, and this is not supported at the moment.\
+      (optional, default value is `"false"`. )
+
+-   Languages: Ansible, Bash, OVAL
+
+Examples:
+```
+template:
+  name: sudo_defaults_option
+  vars:
+    option: noexec
+```
+This will generate:
+-   A check that asserts `Defaults noexec` is present in `/etc/sudoers` or `/etc/sudoers.d/`.\
+    `Defaults` with multiple options are also accepted, i.e.: `Defaults ignore_dot,noexec,use_pty`.
+-   A remediation that adds `Defaults noexec` to `/etc/sudoers`.
+
+```
+template:
+  name: sudo_defaults_option
+  vars:
+    option: umask
+    variable_name: var_sudo_umask
+```
+The default selected value of `var_sudo_umask` is `"0022"`.  Hence, the template key will generate:
+-   A check that asserts `Defaults umask=0022` is present in `/etc/sudoers` or `/etc/sudoers.d/`.\
+    `Defaults` with multiple options are also accepted, i.e.: `Defaults ignore_dot,umask=0022,use_pty`.
+-   A remediation that adds `Defaults umask=0022` to `/etc/sudoers`.
+
+The selected value can be changed in the profile (consult the actual variable for valid selectors). E.g.:
+```
+    - var_sudo_umask=0027
+```
+
 #### sysctl
 -   Checks sysctl parameters. The OVAL definition checks both
     configuration and runtime settings and require both of them to be
@@ -1591,6 +1688,12 @@ the following to `rule.yml`:
 
     -   **sysctlval** - value of the sysctl value, eg. `'1'`. If this
         parameter is not specified, XCCDF Value is used instead.
+
+    -   **operation** - operation used for comparison of collected object
+        with **sysctlval**. Default value: `equals`.
+
+    -   **sysctlval_regex** - if **operation** is `pattern match`, this
+        parameter is used instead of **sysctlval**.
 
 -   Languages: Ansible, Bash, OVAL
 
@@ -1641,12 +1744,21 @@ the following to `rule.yml`:
         Possible options are `all_exist`, `any_exist`,
         `at_least_one_exists`, `none_exist`, `only_one_exists`.
 
+    -   **xccdf_variable** - XCCDF variable selector. Use this field if the comparison involves
+        checking for a value selected by a XCCDF variable.
+
+    -   **embedded_data** - if set to `"true"` and used combined with `xccdf_variable`, the data retrieved by `yamlpath`
+        is considered as a blob and the field `value` has to contain a capture regex.
+
     -   **values** - a list of dictionaries with values to check, where:
 
         -   **key** - the yaml key to check, optional. Used when the
             yamlpath expression yields a map.
 
-        -   **value** - the value to check.
+        -   **value** - the value to check. If used in combination with
+            `xccdf_variable` and `embedded_data`, this field must have a
+            regex with a capture group. The value captured by the regex
+            will be compared with value of variable referenced by `xccdf_variable`.
 
         -   **type**
             ([SimpleDatatypeEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---simpledatatypeenumeration---)) -

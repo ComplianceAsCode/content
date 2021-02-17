@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,rhel7,rhel8
+
+title: 'Limit sampling frequency of the Perf system'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.perf_event_max_sample_rate", value="1") }}}'
+
+rationale: |-
+    The <tt>kernel.perf_event_max_sample_rate</tt> parameter configures maximum
+    frequency of collecting of samples for the Perf system. It is expressed in
+    samples per second. Restricting usage of <tt>Perf</tt> system decreases risk
+    of potential availability problems.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83367-3
+    cce@rhel8: CCE-83368-1
+
+references:
+    anssi: BP28(R23)
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_max_sample_rate", value="1") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.perf_event_max_sample_rate
+        sysctlval: '1'
+        datatype: int

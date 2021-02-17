@@ -4,7 +4,7 @@ metadata:
     SMEs:
         - JAORMX
         - mrogers950
-        - redhatrises
+        - carlosmmatos
 
 reference: https://nvd.nist.gov/800-53/Rev4/impact/moderate
 
@@ -249,7 +249,6 @@ selections:
     - harden_ssh_client_crypto_policy
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
-    - enable_dracut_fips_module
 
     #######################################################
     ### CONFIGURATION ANNEX TO THE PROTECTION PROFILE
@@ -628,4 +627,3 @@ selections:
     - kernel_module_squashfs_disabled
     - kernel_module_udf_disabled
     - kernel_module_usb-storage_disabled
-    - kernel_module_vfat_disabled

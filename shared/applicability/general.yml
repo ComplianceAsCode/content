@@ -24,6 +24,11 @@ cpes:
       title: "Package net-snmp is installed"
       check_id: installed_env_has_net-snmp_package
 
+  - not_s390x_arch:
+      name: "cpe:/a:not_s390x_arch"
+      title: "System architecture is not S390X"
+      check_id: proc_sys_kernel_osrelease_arch_not_s390x
+
   - nss-pam-ldapd:
       name: "cpe:/a:nss-pam-ldapd"
       title: "Package nss-pam-ldapd is installed"
@@ -54,6 +59,11 @@ cpes:
       title: "SSSD is configured to use LDAP"
       check_id: sssd_conf_uses_ldap
 
+  - sudo:
+      name: "cpe:/a:sudo"
+      title: "Package sudo is installed"
+      check_id: installed_env_has_sudo_package
+
   - systemd:
       name: "cpe:/a:systemd"
       title: "Package systemd is installed"
@@ -64,3 +74,7 @@ cpes:
       title: "Package yum is installed"
       check_id: installed_env_has_yum_package
 
+  - zypper:
+      name: "cpe:/a:zypper"
+      title: "Package zypper is installed"
+      check_id: installed_env_has_zypper_package

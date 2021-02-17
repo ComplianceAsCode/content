@@ -13,22 +13,31 @@ description: |-
         type: aescbc
     </pre>
 
+    For more information, follow
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/security/encrypting-etcd.html",
+                text="the relevant documentation") }}}.
+
 rationale: |-
     etcd is a highly available key-value store used by OpenShift deployments
     for persistent storage of all REST API objects. These objects are
     sensitive in nature and should be encrypted at rest to avoid any
     disclosures.
 
+identifiers:
+  cce@ocp4: CCE-83585-0
+
+
 severity: medium
 
 references:
     cis: 1.2.33
+    nist: SC-28(1)
 
 
 ocil_clause: '<tt>aescbc</tt> is not set as the encryption type for etcd.'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
     The output should return <tt>aescdc</tt> as the encryption type.
 

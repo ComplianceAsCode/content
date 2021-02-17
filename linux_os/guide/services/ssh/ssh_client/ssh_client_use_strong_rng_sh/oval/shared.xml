@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Ensure the SSH_USE_STRONG_RNG environment variable is exported in /etc/profile.d/cc-ssh-strong-rng.sh and is not overridden in /etc/profile") }}}
+    <criteria comment="ssh client is configured to use strong entropy" operator="AND">
+      <criterion comment="check configuration in /etc/profile.d/cc-ssh-strong-rng.sh" test_ref="test_ssh_client_strong_rng_sh" />
+      <criterion comment="check that the configuration is not overridden in /etc/profile" test_ref="test_ssh_client_strong_rng_sh_not_overridden" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check correct entropy configuration in /etc/profile.d/cc-ssh-strong-rng.sh" id="test_ssh_client_strong_rng_sh" version="1">
+    <ind:object object_ref="obj_ssh_client_strong_rng_sh"/>
+    <ind:state state_ref="state_ssh_client_strong_rng_sh" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_ssh_client_strong_rng_sh" version="1">
+    <ind:filepath>/etc/profile.d/cc-ssh-strong-rng.sh</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*export[\s]+SSH_USE_STRONG_RNG=([\d]+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="check that the configuration is not overridden in /etc/profile" id="test_ssh_client_strong_rng_sh_not_overridden" version="1">
+    <ind:object object_ref="obj_ssh_client_strong_rng_sh_not_overridden"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_ssh_client_strong_rng_sh_not_overridden" version="1">
+    <ind:filepath>/etc/profile</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*export[\s]+SSH_USE_STRONG_RNG=.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_ssh_client_strong_rng_sh"
+  version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal">32</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>

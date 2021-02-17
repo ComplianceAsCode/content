@@ -13,12 +13,20 @@ rationale: |-
   the internal service.  The value is set by the bindAddress argument under the servingInfo
   parameter.
 
-#identifiers:
+identifiers:
+  cce@ocp4: CCE-83646-0
 
 severity: low
 
 references:
     cis: 1.2.20
+
+ocil_clause: '<tt>bindAddress</tt> allows unsecure connections'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.servingInfo["bindAddress"]'</pre>
+    The output should return <pre>0.0.0.0:6443</pre>.
 
 warnings:
 - general: |-

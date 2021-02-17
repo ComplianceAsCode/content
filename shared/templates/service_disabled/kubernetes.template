@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp,multi_platform_rhcos
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ocp,multi_platform_rhcos,multi_platform_ubuntu
 # reboot = true
 # strategy = disable
 # complexity = low
@@ -14,8 +14,6 @@ spec:
       - name: {{{ DAEMONNAME }}}.service
         enabled: false
         mask: true
-        state: stopped
       - name: {{{ DAEMONNAME }}}.socket
         enabled: false
         mask: true
-        state: stopped

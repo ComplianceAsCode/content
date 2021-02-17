@@ -38,8 +38,8 @@ ocil: |-
     <pre>$ oc get configmaps config -n openshift-kube-controller-manager -ojson | jq -r '.data["config.yaml"]' | jq -r '.extendedArguments["feature-gates"]'</pre>
     The output should return <tt>RotateKubeletServerCertificate=true</tt>.
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-83730-2
 
 warnings:
 - general: |-

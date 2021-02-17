@@ -4,6 +4,12 @@ title: 'CIS Red Hat OpenShift Container Platform 4 Benchmark'
 
 platform: ocp4
 
+metadata:
+    SMEs:
+        - JAORMX
+        - mrogers950
+        - jhrozek
+
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
     Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
@@ -48,7 +54,9 @@ selections:
   # 1.2.11 Ensure that the admission control plugin AlwaysAdmit is not set
     - api_server_admission_control_plugin_AlwaysAdmit
   # 1.2.12 Ensure that the admission control plugin AlwaysPullImages is set
-    - api_server_admission_control_plugin_AlwaysPullImages
+    # (jhrozek): This rule should temporarily be commented out as OCP diverges from CIS
+    #            and we need to improve our reply to this control
+    # - api_server_admission_control_plugin_AlwaysPullImages
   # 1.2.13 Ensure that the admission control plugin SecurityContextDeny is not set
     - api_server_admission_control_plugin_SecurityContextDeny
   # 1.2.14 Ensure that the admission control plugin ServiceAccount is set
@@ -67,12 +75,12 @@ selections:
   # 1.2.20 Ensure that the --secure-port argument is not set to 0
     - api_server_bind_address
   # 1.2.21 Ensure that the --profiling argument is set to false
-    - api_server_profiling
+    - api_server_profiling_protected_by_rbac
   # 1.2.22 Ensure that the --audit-log-path argument is set
     - api_server_audit_log_path
     - openshift_api_server_audit_log_path
-  # 1.2.23 Ensure that the --audit-log-maxage argument is set to 30 or as appropriate
-    - api_server_audit_log_maxage
+  # 1.2.23 Ensure that the audit logs are forwarded off the cluster for retention
+    - audit_log_forwarding_enabled
   # 1.2.24 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate
     - api_server_audit_log_maxbackup
     - ocp_api_server_audit_log_maxbackup
@@ -80,6 +88,9 @@ selections:
     - api_server_audit_log_maxsize
     - ocp_api_server_audit_log_maxsize
   # 1.2.26 Ensure that the --request-timeout argument is set as appropriate
+    # (jhrozek) Temporarily disabling the rule because the benchmark
+    #           specifies one value (60) for the request-timeout parameter, while we
+    #           use 3600 in OCP. It is unclear if this value is appropriate...
     - api_server_request_timeout
   # 1.2.27 Ensure that the --service-account-lookup argument is set to true
     - api_server_service_account_lookup
@@ -102,7 +113,6 @@ selections:
   # 1.2.35 Ensure that the API Server only makes use of Strong Cryptographic Ciphers
     - api_server_tls_cipher_suites
   #### 1.3 Controller Manager
-  # 1.3.1 Ensure that garbage collection is configured as appropriate (Manual)
   # 1.3.2 Ensure that controller manager healthz endpoints are protected by RBAC. (Automated)
     - rbac_debug_role_protects_pprof
   # 1.3.3 Ensure that the --use-service-account-credentials argument is set to true
@@ -142,12 +152,20 @@ selections:
   ###
   #### 3.1 Authentication and Authorization
   # 3.1.1 Client certificate authentication should not be used for users
+    - idp_is_configured
   #### 3.2 Logging
   # 3.2.1 Ensure that a minimal audit policy is created
   # 3.2.2 Ensure that the audit policy covers key security concerns
+    - audit_profile_set
 
   ### 4 Worker Nodes
   ###
+  #### 4.1 Worker node configuration
+  # 4.1.3 If proxy kubeconfig file exists ensure permissions are set to 644 or more restrictive (Automated)
+    - file_permissions_proxy_kubeconfig
+  # 4.1.4 If proxy kubeconfig file exists ensure ownership is set to root:root (Manual)
+    - file_owner_proxy_kubeconfig
+    - file_groupowner_proxy_kubeconfig
   #### 4.2 Kubelet
   # 4.2.4 Ensure that the --read-only-port argument is set to 0
     - kubelet_disable_readonly_port

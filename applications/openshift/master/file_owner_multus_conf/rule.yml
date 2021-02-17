@@ -4,7 +4,7 @@ prodtype: ocp4
 
 title: 'Verify User Who Owns The OpenShift Multus Container Network Interface Plugin Files'
 
-description: '{{{ describe_file_owner(file="/var/run/multus/cni/net.d/.*", owner="root") }}}'
+description: '{{{ describe_file_owner(file="/var/run/multus/cni/net.d/*", owner="root") }}}'
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -14,20 +14,19 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-83603-1
 
 references:
     cis: 1.1.10
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/var/run/multus/cni/net.d/.*", owner="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_owner(file="/var/run/multus/cni/net.d/*", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/var/run/multus/cni/net.d/.*", owner="root") }}}'
+ocil: '{{{ ocil_file_owner(file="/var/run/multus/cni/net.d/*", owner="root") }}}'
 
 template:
     name: file_owner
     vars:
         filepath: ^/var/run/multus/cni/net.d/.*$
         fileuid: '0'
-        missing_file_pass: "true"
         filepath_is_regex: "true"

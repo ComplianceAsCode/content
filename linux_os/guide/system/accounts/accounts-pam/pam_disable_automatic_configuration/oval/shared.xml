@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="pam_disable_automatic_configuration" version="1">
+    <metadata>
+      <title>The PAM configuration should not be changed automatically</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Verify the SUSE operating system is configured to not overwrite Pluggable
+    Authentication Modules (PAM) configuration on package changes.</description>
+    </metadata>
+    <criteria>
+        <criterion comment="/etc/pam.d/common-* are not symbolic links" test_ref="test_pam_disable_automatic_configuration" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/pam.d/common-* are not symbolic links" id="test_pam_disable_automatic_configuration" version="1">
+    <unix:object object_ref="obj_pam_disable_automatic_configuration" />
+    <unix:state state_ref="state_pam_disable_automatic_configuration_no_symlink" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/pam.d/common-* files" id="obj_pam_disable_automatic_configuration" version="1">
+    <unix:path operation="equals">/etc/pam.d</unix:path>
+    <unix:filename operation="pattern match">^common-.*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_pam_disable_automatic_configuration_no_symlink" version="1">
+    <unix:type>regular</unix:type>
+  </unix:file_state>
+</def-group>

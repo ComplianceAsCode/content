@@ -21,7 +21,18 @@ rationale: |-
 references:
   cis: 1.4.2
 
+identifiers:
+  cce@ocp4: CCE-83674-2
+
+
 severity: medium
+
+ocil_clause: '<tt>kube-scheduler-pod</tt> sets --bind-address'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get -nopenshift-kube-scheduler cm kube-scheduler-pod -ojson | jq -r '.data["pod.yaml"]' | jq -r | grep bind-address</pre>
+    The output should be empty
 
 warnings:
 - general: |-

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,rhel7,rhel8
+
+title: 'Disallow magic SysRq key'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.sysrq", value="0") }}}'
+
+rationale: |-
+    The Magic SysRq key allows sending certain commands directly to the running
+    kernel. It can dump various system and process information, potentially
+    revealing sensitive information. It can also reboot or shutdown the machine,
+    disturbing its availability.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83353-3
+    cce@rhel8: CCE-83355-8
+
+references:
+    anssi: BP28(R23)
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.sysrq", value="0") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.sysrq
+        sysctlval: '0'
+        datatype: int

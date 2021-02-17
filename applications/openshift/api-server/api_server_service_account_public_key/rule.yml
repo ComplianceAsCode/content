@@ -6,7 +6,7 @@ title: 'Configure the Service Account Public Key for the API Server'
 
 description: |-
     To ensure the API Server utilizes its own key pair,
-    edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    edit the <tt>openshift-kube-apiserver</tt> configmap
     and set the <tt>serviceAccountPublicKeyFiles</tt> parameter to the public
     key file for service accounts:
     <pre>
@@ -25,6 +25,10 @@ rationale: |-
     separate public/private key pair should be used for signing service
     account tokens.
 
+identifiers:
+  cce@ocp4: CCE-83350-9
+
+
 severity: medium
 
 references:
@@ -33,7 +37,7 @@ references:
 ocil_clause: 'serviceAccountPublicKeyFiles is not configured correctly'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r .serviceAccountPublicKeyFiles</pre>
     The output should return configured certificate key file(s).
 

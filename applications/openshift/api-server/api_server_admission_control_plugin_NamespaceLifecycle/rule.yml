@@ -14,6 +14,10 @@ rationale: |-
     is recommended to enforce the integrity of the namespace termination process
     and also for the availability of new objects.
 
+identifiers:
+  cce@ocp4: CCE-83854-0
+
+
 severity: medium
 
 references:
@@ -22,7 +26,7 @@ references:
 ocil_clause: 'API server config contains <tt>NamespaceLifecycle</tt>'
 
 ocil: |-
-    To verify that the <tt>NamespaceLifecycle</tt> plugin is be enabled in
+    To verify that the <tt>NamespaceLifecycle</tt> plugin is enabled in
     the apiserver configuration, run:
     <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
 

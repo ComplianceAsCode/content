@@ -1,0 +1,48 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,wrlinux1019,sle12
+
+title: 'Ensure All World-Writable Directories Are Group Owned by a System Account'
+
+description: |-
+    All directories in local partitions which are
+    world-writable should be group owned by root or another
+    system account. If any world-writable directories are not
+    group owned by a system account, this should be investigated.
+    Following this, the files should be deleted or assigned to an
+    appropriate group.
+
+rationale: |-
+    Allowing a user account to group own a world-writable directory is
+    undesirable because it allows the owner of that directory to remove
+    or replace any files that may be placed in the directory by other
+    users.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83923-3
+    cce@sle12: CCE-83104-0
+
+references:
+    stigid@ol7: OL07-00-021030
+    disa: CCI-000366
+    nist: CM-6(a),AC-6(1)
+    nist@sle12: CM-6(b)
+    nist-csf: PR.AC-4,PR.DS-5
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: RHEL-07-021030
+    stigid@sle12: SLES-12-010830
+    isa-62443-2013: 'SR 2.1,SR 5.2'
+    isa-62443-2009: 4.3.3.7.3
+    cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    cis-csc: 12,13,14,15,16,18,3,5
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    The following command will discover and print world-writable directories that
+    are not group owned by a system account, given the assumption that only system
+    accounts have a gid lower than {{{ auid }}}.  Run it once for each local partition <i>PART</i>:
+    <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -gid +{{{ auid - 1 }}} -print</pre>

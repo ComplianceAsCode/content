@@ -46,8 +46,7 @@ selections:
     #### 1.1.1.7 Ensure mounting of udf filesystems is disabled (Scored)
     - kernel_module_udf_disabled
 
-    #### 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Scored)
-    - kernel_module_vfat_disabled
+    #### 1.1.1.8 Ensure mounting of FAT filesystems is disabled (Manual)
 
     ### 1.1.2 Ensure separate partition exists for /tmp (Scored)
     - partition_for_tmp

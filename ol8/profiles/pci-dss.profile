@@ -80,9 +80,7 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
-    - audit_rules_login_events_faillock
-    - audit_rules_login_events_lastlog
-    - audit_rules_login_events_tallylog
+    - audit_rules_login_events
     - audit_rules_session_events
     - audit_rules_unsuccessful_file_modification_creat
     - audit_rules_unsuccessful_file_modification_ftruncate
@@ -141,3 +139,4 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_ssh_crypto_policy
     - configure_kerberos_crypto_policy
+    - install_hids

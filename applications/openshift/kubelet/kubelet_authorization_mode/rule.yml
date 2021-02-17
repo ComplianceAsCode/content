@@ -9,7 +9,7 @@ description: |-
     The Kubelet should be set to only allow Webhook authorization.
     To ensure that the Kubelet requires authorization,
     validate that <tt>authorization</tt> is configured to <tt>Webhook</tt>
-    in <tt>/etc/kubernetes/kubernetes.conf</tt>:
+    in <tt>/etc/kubernetes/kubelet.conf</tt>:
     <pre>
     authorization:
       mode: Webhook
@@ -20,6 +20,10 @@ rationale: |-
     Ensuring that the authorization is configured correctly helps enforce that
     unauthenticated/unauthorized users have no access to OpenShift nodes.
 
+identifiers:
+  cce@ocp4: CCE-83593-4
+
+
 severity: medium
 
 references:
@@ -28,8 +32,8 @@ references:
 ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
 
 ocil: |-
-    Run the following command on the master node(s):
-    <pre>$ sudo grep -A1 authorization /etc/kubernetes/kubernetes.conf</pre>
+    Run the following command on the kubelet node(s):
+    <pre>$ sudo grep -A1 authorization /etc/kubernetes/kubelet.conf</pre>
     Verify that the output is not set to <tt>mode: AlwaysAllow</tt>, or missing
     (defaults to <tt>mode: Webhook</tt>).
 

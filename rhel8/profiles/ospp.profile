@@ -4,7 +4,7 @@ metadata:
     version: 4.2.1
     SMEs:
         - comps
-        - redhatrises
+        - carlosmmatos
         - stevegrubb
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
@@ -426,6 +426,10 @@ selections:
     - ssh_client_rekey_limit
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
+
+# configure ssh client to use strong entropy
+    - ssh_client_use_strong_rng_sh
+    - ssh_client_use_strong_rng_csh
 
     # zIPl specific rules
     - zipl_bls_entries_only

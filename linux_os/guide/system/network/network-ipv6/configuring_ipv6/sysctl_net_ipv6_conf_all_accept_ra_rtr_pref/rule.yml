@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8
+
+title: Configure Accepting Router Preference in Router Advertisements on All IPv6 Interfaces
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_ra_rtr_pref", value="0") }}}'
+
+rationale: An illicit router advertisement message could result in a man-in-the-middle attack.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: CCE-84287-2
+    cce@rhel8: CCE-84288-0
+
+references:
+    anssi: BP28(R22)
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_ra_rtr_pref", value="0") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.all.accept_ra_rtr_pref
+        datatype: int

@@ -24,10 +24,19 @@ severity: medium
 references:
     cis: 5.1.2
 
-#ocil_clause: 'cluster-admin role is in use by more personnel than necessary'
-#
-#ocil: |-
-#    To review the <tt>cluster-admin</tt> role, run the following command:
-#    <pre>$ oc get clusterrolebinding -o json | jq '.items[] | select(.metadata.name |  startswith("cluster-admin"))'</pre>
-#    Review the output and ensure that authorized users have
-#    the <tt>cluster-admin</tt> role.
+ocil_clause: 'Access to Kubernetes clusters is too wide'
+
+ocil: |-
+    To review the policy rules assigned to roles in all namespaces, run
+    the following command:
+    <pre>$ for ns in $(oc get projects -ojsonpath='{.items[*].metadata.name}'); do oc describe roles -n$ns; done</pre>
+    To review the policy rules assigned to cluster roles, run the following
+    command:
+    <pre>$ for i in $(oc get clusterroles -o jsonpath='{.items[*].metadata.name}'); do oc describe clusterrole ${i}; done</pre>
+    Review the output and ensure that only authorized roles have access to the
+    secrets resource or all resources using a wildcard.
+    To filter clusterroles that have assigned access to the secrets resources for clustrroles, run:
+    <pre>$ oc get clusterroles -ojson | jq -r '.items[] | {name: .metadata.name, rules: .rules} | select(.rules[]?.resources | try contains(["secrets"])) | .name' | sort | uniq</pre>
+    and similarly to filter namespace/role pairs:
+    <pre>$ for ns in $(oc get projects -ojsonpath='{.items[*].metadata.name}'); do oc get roles -n$ns -ojson | jq -r '.items[] | {name: .metadata.name, namespace: .metadata.namespace, rules: .rules} | select(.rules[]?.resources | try contains(["secrets"])) | "\(.namespace)/\(.name)"' | sort | uniq; done</pre>
+    note that the two commands above do not show roles and/or clusterroles with wildcard access to any resources.

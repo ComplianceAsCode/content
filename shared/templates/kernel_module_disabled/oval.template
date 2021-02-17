@@ -4,19 +4,14 @@
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.d" />
-
-{{% if product != "ubuntu1804" %}}
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
-{{% endif %}}
-
-{{% if (product != "ubuntu1804") %}}
-
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_etcmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modules-load.d" />
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modules-load.d" />
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodules-load" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modules-load.d" />
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_runmodprobed" comment="kernel module {{{ KERNMODULE }}} disabled in /run/modprobe.d" />
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_libmodprobed" comment="kernel module {{{ KERNMODULE }}} disabled in /usr/lib/modprobe.d" />
 
+{{% if "ubuntu" not in product %}}
+      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
 
     </criteria>
@@ -59,9 +54,14 @@
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_disabled"
   version="1" comment="kernel module {{{ KERNMODULE }}} disabled">
+    {{% if product == "sle12" %}}
+    <ind:filepath>/etc/modprobe.d/50-blacklist.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE }}}$</ind:pattern>
+    {{% else %}}
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

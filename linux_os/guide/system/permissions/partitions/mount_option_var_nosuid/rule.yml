@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel7,rhel8
+prodtype: fedora,rhel7,rhel8,rhcos4
 
 title: 'Add nosuid Option to /var'
 
@@ -12,6 +12,13 @@ description: |-
 
 rationale: |-
     The presence of SUID and SGID executables should be tightly controlled.
+
+identifiers:
+    cce@rhel7: CCE-83378-0
+    cce@rhel8: CCE-83383-0
+
+references:
+    anssi: BP28(R12)
 
 {{{ complete_ocil_entry_mount_option("/var", "nosuid") }}}
 

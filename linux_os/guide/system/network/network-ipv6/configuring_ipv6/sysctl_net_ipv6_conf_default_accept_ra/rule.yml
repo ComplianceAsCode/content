@@ -8,7 +8,7 @@ description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.default.acc
 
 rationale: 'An illicit router advertisement message could result in a man-in-the-middle attack.'
 
-severity: unknown
+severity: medium
 
 identifiers:
     cce@rhel7: CCE-80181-1
@@ -27,6 +27,7 @@ references:
     cis-csc: 11,14,3,9
     srg: SRG-OS-000480-GPOS-00227
     cis@sle15: 3.3.9
+    stigid@rhel8: RHEL-08-040262
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_ra", value="0") }}}
 

@@ -23,11 +23,13 @@ platform: machine  # The oscap sysctl probe doesn't support offline mode
 
 identifiers:
     cce@rhel7: CCE-80658-8
+    cce@rhel8: CCE-84027-2
 
 references:
     disa: CCI-000068,CCI-000803,CCI-002450
     nist: SC-12(2),SC-12(3),IA-7,SC-13,CM-6(a),SC-12
     vmmsrg: SRG-OS-000120-VMM-000600,SRG-OS-000478-VMM-001980,SRG-OS-000396-VMM-001590
+    srg: SRG-OS-000033-GPOS-00014,SRG-OS-000125-GPOS-00065,SRG-OS-000396-GPOS-00176,SRG-OS-000423-GPOS-00187,SRG-OS-000478-GPOS-00223
 
 ocil_clause: 'crypto.fips_enabled is not 1'
 

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019
 
 title: 'Install AIDE'
 
@@ -14,6 +14,7 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-27096-7
     cce@rhel8: CCE-80844-4
+    cce@sle12: CCE-83067-9
 
 references:
     cis@rhel8: 1.4.1
@@ -30,6 +31,8 @@ references:
     srg: SRG-OS-000363-GPOS-00150
     cis@sle15: 1.4.1
     ism: 1034,1288,1341,1417
+    stigid@sle12: SLES-12-010500
+    disa@sle12: CCI-002699
 
 ocil_clause: 'the package is not installed'
 

@@ -1,0 +1,79 @@
+prodtype: ocp4
+
+title: "Configure An Identity Provider"
+
+# NOTE(jaosorior): this required a remediation that's written in go as opposed
+# to being a script like the ocp4 e2e remediations usually are... This
+# remediation doesn't work in the "moderate" profile, so this needs to be
+# figured out.
+
+description: |-
+  <p>
+  For users to interact with OpenShift Container Platform, they must first
+  authenticate to the cluster. The authentication layer identifies the user
+  associated with requests to the OpenShift Container Platform API. The
+  authorization layer then uses information about the requesting user to
+  determine if the request is allowed.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/logging/cluster-logging-external.html",
+              text="Understanding authentication | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  The OpenShift Container Platform includes a built-in OAuth server for
+  token-based authentication. Developers and administrators obtain OAuth
+  access tokens to authenticate themselves to the API. It is recommended for
+  an administrator to configure OAuth to specify an identity provider after
+  the cluster is installed. User access to the cluster is managed through the
+  identity provider.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/authentication/understanding-identity-provider.html",
+              text="Understanding identity provider configuration | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  OpenShift includes built-in role based access control (RBAC) to determine
+  whether a user is allowed to perform a given action within the cluster.
+  Roles can have cluster scope or local (i.e. project) scope.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/authentication/using-rbac.html",
+              text="Using RBAC to define and apply permissions | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+rationale: |-
+  <p>
+  With any authentication mechanism the ability to revoke credentials if they
+  are compromised or no longer required, is a key control. Kubernetes client
+  certificate authentication does not allow for this due to a lack of support
+  for certificate revocation.
+  </p>
+
+  <p>
+  OpenShift's built-in OAuth server allows credential revocation by relying on
+  the Identity provider, as well as giving the administrators the ability to
+  revoke any tokens given to a specific user.
+  </p>
+
+identifiers:
+  cce@ocp4: CCE-84088-4
+
+
+references:
+  cis: 3.1.1
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(4) }}}
+
+# NOTE(jaosorior): Here we're testing that ANYTHING has been set in
+# the identityProvidres section. We only care that it has been
+# configured to something.
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: 'true'
+    filepath: /apis/config.openshift.io/v1/oauths/cluster
+    yamlpath: ".spec.identityProviders[:].type"
+    entity_check: "at least one"
+    values:
+    - value: ".*"
+      operation: "pattern match"

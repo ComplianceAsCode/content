@@ -15,7 +15,7 @@ rationale: |-
     A misconfigured umask value could result in files with excessive permissions that can be read or
     written to by unauthorized users.
 
-severity: unknown
+severity: medium
 
 identifiers:
     cce@rhel7: CCE-80202-5
@@ -32,6 +32,7 @@ references:
     iso27001-2013: A.14.1.1,A.14.2.1,A.14.2.5,A.6.1.5
     cis-csc: '18'
     srg: SRG-OS-000480-GPOS-00228
+    stigid@rhel8: RHEL-08-020353
 
 ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
 

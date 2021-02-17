@@ -14,8 +14,8 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-83905-0
 
 references:
     cis: 1.1.12
@@ -25,9 +25,10 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/etcd/member/", owner="ro
 ocil: |-
     {{{ ocil_file_owner(file="/var/lib/etcd/member/", owner="root") }}}
 
+platform: ocp4-master-node
+
 template:
     name: file_owner
     vars:
         filepath: /var/lib/etcd/member/
         fileuid: '0'
-        missing_file_pass: "true"

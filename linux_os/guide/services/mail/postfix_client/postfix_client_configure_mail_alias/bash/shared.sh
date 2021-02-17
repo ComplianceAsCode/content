@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_sle
+# platform = multi_platform_all
 . /usr/share/scap-security-guide/remediation_functions
 {{{ bash_instantiate_variables("var_postfix_root_mail_alias") }}}
 

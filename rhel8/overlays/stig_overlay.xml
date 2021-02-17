@@ -1,0 +1,1367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
+  <overlay owner="disastig" ruleid="installed_OS_is_vendor_supported" ownerid="RHEL-08-010000" disa="366" severity="high">
+    <VMSinfo VKey="230221" SVKey="230221r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must be a vendor-supported release."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010010" disa="366" severity="medium">
+    <VMSinfo VKey="230222" SVKey="230222r5997" VRelease="r599732"/>
+    <title text="RHEL 8 vendor packaged system security patches and updates must be installed and up to date."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010020" disa="68" severity="high">
+    <VMSinfo VKey="230223" SVKey="230223r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010030" disa="1199" severity="medium">
+    <VMSinfo VKey="230224" SVKey="230224r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at rest protection."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010040" disa="48" severity="medium">
+    <VMSinfo VKey="230225" SVKey="230225r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a ssh logon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010050" disa="48" severity="medium">
+    <VMSinfo VKey="230226" SVKey="230226r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010060" disa="48" severity="medium">
+    <VMSinfo VKey="230227" SVKey="230227r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010070" disa="67" severity="medium">
+    <VMSinfo VKey="230228" SVKey="230228r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 remote access methods must be monitored."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010090" disa="185" severity="medium">
+    <VMSinfo VKey="230229" SVKey="230229r5997" VRelease="r599732"/>
+    <title text="RHEL 8, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010100" disa="186" severity="medium">
+    <VMSinfo VKey="230230" SVKey="230230r5997" VRelease="r599732"/>
+    <title text="RHEL 8, for certificate-based authentication, must enforce authorized access to the corresponding private key."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010110" disa="196" severity="medium">
+    <VMSinfo VKey="230231" SVKey="230231r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must encrypt all stored passwords with a FIPS 140-2 approved cryptographic hashing algorithm."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010120" disa="196" severity="medium">
+    <VMSinfo VKey="230232" SVKey="230232r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must employ FIPS 140-2 approved cryptographic hashing algorithms for all stored passwords."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010130" disa="196" severity="medium">
+    <VMSinfo VKey="230233" SVKey="230233r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must employ FIPS 140-2 approved cryptographic hashing algorithms for all created passwords."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010140" disa="213" severity="high">
+    <VMSinfo VKey="230234" SVKey="230234r5997" VRelease="r599732"/>
+    <title text="RHEL 8 operating systems booted with United Extensible Firmware Interface (UEFI) implemented must require authentication upon booting into single-user mode and maintenance."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010150" disa="213" severity="high">
+    <VMSinfo VKey="230235" SVKey="230235r5997" VRelease="r599732"/>
+    <title text="RHEL 8 operating systems booted with a BIOS must require authentication upon booting into single-user and maintenance modes."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010151" disa="213" severity="medium">
+    <VMSinfo VKey="230236" SVKey="230236r5997" VRelease="r599732"/>
+    <title text="RHEL 8 operating systems must require authentication upon booting into emergency or rescue modes."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010160" disa="803" severity="medium">
+    <VMSinfo VKey="230237" SVKey="230237r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 pam_unix.so module must use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010161" disa="803" severity="medium">
+    <VMSinfo VKey="230238" SVKey="230238r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent system daemons from using Kerberos for authentication."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010162" disa="803" severity="medium">
+    <VMSinfo VKey="230239" SVKey="230239r5997" VRelease="r599732"/>
+    <title text="The krb5-workstation package must not be installed on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010170" disa="1084" severity="medium">
+    <VMSinfo VKey="230240" SVKey="230240r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must use a Linux Security Module configured to enforce limits on system services."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010171" disa="1084" severity="low">
+    <VMSinfo VKey="230241" SVKey="230241r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must have policycoreutils package installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010180" disa="1090" severity="medium">
+    <VMSinfo VKey="230242" SVKey="230242r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 public directories must be owned by root or a system account to prevent unauthorized and unintended information transferred via shared system resources."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010190" disa="1090" severity="medium">
+    <VMSinfo VKey="230243" SVKey="230243r5997" VRelease="r599732"/>
+    <title text="A sticky bit must be set on all RHEL 8 public directories to prevent unauthorized and unintended information transferred via shared system resources."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010200" disa="1133" severity="medium">
+    <VMSinfo VKey="230244" SVKey="230244r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must be configured so that all network connections associated with SSH traffic are terminated at the end of the session or after 10 minutes of inactivity, except to fulfill documented and validated mission requirements."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010210" disa="1314" severity="medium">
+    <VMSinfo VKey="230245" SVKey="230245r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 /var/log/messages file must have mode 0640 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010220" disa="1314" severity="medium">
+    <VMSinfo VKey="230246" SVKey="230246r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 /var/log/messages file must be owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010230" disa="1314" severity="medium">
+    <VMSinfo VKey="230247" SVKey="230247r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 /var/log/messages file must be group-owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010240" disa="1314" severity="medium">
+    <VMSinfo VKey="230248" SVKey="230248r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 /var/log directory must have mode 0755 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010250" disa="1314" severity="medium">
+    <VMSinfo VKey="230249" SVKey="230249r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 /var/log directory must be owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010260" disa="1314" severity="medium">
+    <VMSinfo VKey="230250" SVKey="230250r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 /var/log directory must be group-owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010290" disa="1453" severity="medium">
+    <VMSinfo VKey="230251" SVKey="230251r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH daemon must be configured to use only Message Authentication Codes (MACs) employing FIPS 140-2 validated cryptographic hash algorithms."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010291" disa="1453" severity="medium">
+    <VMSinfo VKey="230252" SVKey="230252r5997" VRelease="r599778"/>
+    <title text="The RHEL 8 operating system must implement DoD-approved encryption to protect the confidentiality of SSH connections."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010292" disa="366" severity="low">
+    <VMSinfo VKey="230253" SVKey="230253r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must ensure the SSH server uses strong entropy."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010293" disa="1453" severity="medium">
+    <VMSinfo VKey="230254" SVKey="230254r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 operating system must implement DoD-approved encryption in the OpenSSL package."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010294" disa="1453" severity="medium">
+    <VMSinfo VKey="230255" SVKey="230255r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 operating system must implement DoD-approved TLS encryption in the OpenSSL package."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010295" disa="1453" severity="medium">
+    <VMSinfo VKey="230256" SVKey="230256r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 operating system must implement DoD-approved TLS encryption in the GnuTLS package."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010300" disa="1499" severity="medium">
+    <VMSinfo VKey="230257" SVKey="230257r5997" VRelease="r599732"/>
+    <title text="RHEL 8 system commands must have mode 0755 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010310" disa="1499" severity="medium">
+    <VMSinfo VKey="230258" SVKey="230258r5997" VRelease="r599732"/>
+    <title text="RHEL 8 system commands must be owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010320" disa="1499" severity="medium">
+    <VMSinfo VKey="230259" SVKey="230259r5997" VRelease="r599732"/>
+    <title text="RHEL 8 system commands must be group-owned by root or a system account."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010330" disa="1499" severity="medium">
+    <VMSinfo VKey="230260" SVKey="230260r5997" VRelease="r599732"/>
+    <title text="RHEL 8 library files must have mode 0755 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010340" disa="1499" severity="medium">
+    <VMSinfo VKey="230261" SVKey="230261r5997" VRelease="r599732"/>
+    <title text="RHEL 8 library files must be owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010350" disa="1499" severity="medium">
+    <VMSinfo VKey="230262" SVKey="230262r5997" VRelease="r599732"/>
+    <title text="RHEL 8 library files must be group-owned by root or a system account."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010360" disa="1744" severity="medium">
+    <VMSinfo VKey="230263" SVKey="230263r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 file integrity tool must notify the system administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered within an organizationally defined frequency."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010370" disa="1749" severity="high">
+    <VMSinfo VKey="230264" SVKey="230264r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010371" disa="1749" severity="high">
+    <VMSinfo VKey="230265" SVKey="230265r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent the installation of software, patches, service packs, device drivers, or operating system components of local packages without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010372" disa="1749" severity="medium">
+    <VMSinfo VKey="230266" SVKey="230266r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent the loading of a new kernel for later execution."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010373" disa="2165" severity="medium">
+    <VMSinfo VKey="230267" SVKey="230267r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enable kernel parameters to enforce discretionary access control on symlinks."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010374" disa="2165" severity="medium">
+    <VMSinfo VKey="230268" SVKey="230268r5998" VRelease="r599818"/>
+    <title text="RHEL 8 must enable kernel parameters to enforce discretionary access control on hardlinks."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010375" disa="1090" severity="low">
+    <VMSinfo VKey="230269" SVKey="230269r5998" VRelease="r599820"/>
+    <title text="RHEL 8 must restrict access to the kernel message buffer."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010376" disa="1090" severity="low">
+    <VMSinfo VKey="230270" SVKey="230270r5998" VRelease="r599823"/>
+    <title text="RHEL 8 must prevent kernel profiling by unprivileged users."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010380" disa="2038" severity="medium">
+    <VMSinfo VKey="230271" SVKey="230271r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must require users to provide a password for privilege escalation."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010381" disa="2038" severity="medium">
+    <VMSinfo VKey="230272" SVKey="230272r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must require users to reauthenticate for privilege escalation."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010390" disa="1948" severity="medium">
+    <VMSinfo VKey="230273" SVKey="230273r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must have the packages required for multifactor authentication installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010400" disa="1948" severity="medium">
+    <VMSinfo VKey="230274" SVKey="230274r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must implement certificate status checking for multifactor authentication."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010410" disa="1953" severity="medium">
+    <VMSinfo VKey="230275" SVKey="230275r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must accept Personal Identity Verification (PIV) credentials."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010420" disa="2824" severity="medium">
+    <VMSinfo VKey="230276" SVKey="230276r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must implement non-executable data to protect its memory from unauthorized code execution."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010421" disa="1084" severity="medium">
+    <VMSinfo VKey="230277" SVKey="230277r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must clear the page allocator to prevent use-after-free attacks."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010422" disa="1084" severity="medium">
+    <VMSinfo VKey="230278" SVKey="230278r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable virtual syscalls."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010423" disa="1084" severity="medium">
+    <VMSinfo VKey="230279" SVKey="230279r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must clear SLUB/SLAB objects to prevent use-after-free attacks."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010430" disa="2824" severity="medium">
+    <VMSinfo VKey="230280" SVKey="230280r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010440" disa="2617" severity="low">
+    <VMSinfo VKey="230281" SVKey="230281r5997" VRelease="r599732"/>
+    <title text="YUM must remove all software components after updated versions have been installed on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010450" disa="2696" severity="medium">
+    <VMSinfo VKey="230282" SVKey="230282r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enable the SELinux targeted policy."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010460" disa="366" severity="high">
+    <VMSinfo VKey="230283" SVKey="230283r5997" VRelease="r599732"/>
+    <title text="There must be no shosts.equiv files on the RHEL 8 operating system."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010470" disa="366" severity="high">
+    <VMSinfo VKey="230284" SVKey="230284r5997" VRelease="r599732"/>
+    <title text="There must be no .shosts files on the RHEL 8 operating system."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010471" disa="366" severity="low">
+    <VMSinfo VKey="230285" SVKey="230285r5997" VRelease="r599779"/>
+    <title text="RHEL 8 must enable the hardware random number generator entropy gatherer service."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010480" disa="366" severity="medium">
+    <VMSinfo VKey="230286" SVKey="230286r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH public host key files must have mode 0644 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010490" disa="366" severity="medium">
+    <VMSinfo VKey="230287" SVKey="230287r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH private host key files must have mode 0640 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010500" disa="366" severity="medium">
+    <VMSinfo VKey="230288" SVKey="230288r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH daemon must perform strict mode checking of home directory configuration files."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010510" disa="366" severity="medium">
+    <VMSinfo VKey="230289" SVKey="230289r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH daemon must not allow compression or must only allow compression after successful authentication."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010520" disa="366" severity="medium">
+    <VMSinfo VKey="230290" SVKey="230290r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH daemon must not allow authentication using known host’s authentication."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010521" disa="366" severity="medium">
+    <VMSinfo VKey="230291" SVKey="230291r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH daemon must not allow unused methods of authentication."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010540" disa="366" severity="low">
+    <VMSinfo VKey="230292" SVKey="230292r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must use a separate file system for /var."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010541" disa="366" severity="low">
+    <VMSinfo VKey="230293" SVKey="230293r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must use a separate file system for /var/log."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010542" disa="366" severity="low">
+    <VMSinfo VKey="230294" SVKey="230294r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must use a separate file system for the system audit data path."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010543" disa="366" severity="medium">
+    <VMSinfo VKey="230295" SVKey="230295r5997" VRelease="r599732"/>
+    <title text="A separate RHEL 8 filesystem must be used for the /tmp directory."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010550" disa="770" severity="medium">
+    <VMSinfo VKey="230296" SVKey="230296r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not permit direct logons to the root account using remote access via SSH."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010560" disa="366" severity="medium">
+    <VMSinfo VKey="230297" SVKey="230297r5997" VRelease="r599732"/>
+    <title text="The auditd service must be running in RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010561" disa="366" severity="medium">
+    <VMSinfo VKey="230298" SVKey="230298r5997" VRelease="r599732"/>
+    <title text="The rsyslog service must be running in RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010570" disa="366" severity="medium">
+    <VMSinfo VKey="230299" SVKey="230299r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent files with the setuid and setgid bit set from being executed on file systems that contain user home directories."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010571" disa="366" severity="medium">
+    <VMSinfo VKey="230300" SVKey="230300r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent files with the setuid and setgid bit set from being executed on the /boot directory."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010580" disa="366" severity="medium">
+    <VMSinfo VKey="230301" SVKey="230301r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent special devices on non-root local partitions."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010590" disa="366" severity="medium">
+    <VMSinfo VKey="230302" SVKey="230302r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent code from being executed on file systems that contain user home directories."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010600" disa="366" severity="medium">
+    <VMSinfo VKey="230303" SVKey="230303r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent special devices on file systems that are used with removable media."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010610" disa="366" severity="medium">
+    <VMSinfo VKey="230304" SVKey="230304r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent code from being executed on file systems that are used with removable media."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010620" disa="366" severity="medium">
+    <VMSinfo VKey="230305" SVKey="230305r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010630" disa="366" severity="medium">
+    <VMSinfo VKey="230306" SVKey="230306r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent code from being executed on file systems that are imported via Network File System (NFS)."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010640" disa="366" severity="medium">
+    <VMSinfo VKey="230307" SVKey="230307r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent special devices on file systems that are imported via Network File System (NFS)."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010650" disa="366" severity="medium">
+    <VMSinfo VKey="230308" SVKey="230308r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent files with the setuid and setgid bit set from being executed on file systems that are imported via Network File System (NFS)."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010660" disa="366" severity="medium">
+    <VMSinfo VKey="230309" SVKey="230309r5997" VRelease="r599732"/>
+    <title text="Local RHEL 8 initialization files must not execute world-writable programs."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010670" disa="366" severity="medium">
+    <VMSinfo VKey="230310" SVKey="230310r5997" VRelease="r599780"/>
+    <title text="RHEL 8 must disable kernel dumps unless needed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010671" disa="366" severity="medium">
+    <VMSinfo VKey="230311" SVKey="230311r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable the kernel.core_pattern."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010672" disa="366" severity="medium">
+    <VMSinfo VKey="230312" SVKey="230312r5997" VRelease="r599782"/>
+    <title text="RHEL 8 must disable acquiring, saving, and processing core dumps."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010673" disa="366" severity="medium">
+    <VMSinfo VKey="230313" SVKey="230313r5997" VRelease="r599784"/>
+    <title text="RHEL 8 must disable core dumps for all users."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010674" disa="366" severity="medium">
+    <VMSinfo VKey="230314" SVKey="230314r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable storing core dumps."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010675" disa="366" severity="medium">
+    <VMSinfo VKey="230315" SVKey="230315r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable core dump backtraces."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010680" disa="366" severity="medium">
+    <VMSinfo VKey="230316" SVKey="230316r5997" VRelease="r599732"/>
+    <title text="For RHEL 8 systems using Domain Name Servers (DNS) resolution, at least two name servers must be configured."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010690" disa="366" severity="medium">
+    <VMSinfo VKey="230317" SVKey="230317r5997" VRelease="r599732"/>
+    <title text="Executable search paths within the initialization files of all local interactive RHEL 8 users must only contain paths that resolve to the system default or the users home directory."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010700" disa="366" severity="medium">
+    <VMSinfo VKey="230318" SVKey="230318r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 world-writable directories must be owned by root, sys, bin, or an application group."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010710" disa="366" severity="medium">
+    <VMSinfo VKey="230319" SVKey="230319r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 world-writable directories must be group-owned by root, sys, bin, or an application group."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010720" disa="366" severity="medium">
+    <VMSinfo VKey="230320" SVKey="230320r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local interactive users must have a home directory assigned in the /etc/passwd file."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010730" disa="366" severity="medium">
+    <VMSinfo VKey="230321" SVKey="230321r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local interactive user home directories must have mode 0750 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010740" disa="366" severity="medium">
+    <VMSinfo VKey="230322" SVKey="230322r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local interactive user home directories must be group-owned by the home directory owner’s primary group."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010750" disa="366" severity="medium">
+    <VMSinfo VKey="230323" SVKey="230323r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local interactive user home directories defined in the /etc/passwd file must exist."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010760" disa="366" severity="medium">
+    <VMSinfo VKey="230324" SVKey="230324r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local interactive user accounts must be assigned a home directory upon creation."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010770" disa="366" severity="medium">
+    <VMSinfo VKey="230325" SVKey="230325r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local initialization files must have mode 0740 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010780" disa="366" severity="medium">
+    <VMSinfo VKey="230326" SVKey="230326r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local files and directories must have a valid owner."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010790" disa="366" severity="medium">
+    <VMSinfo VKey="230327" SVKey="230327r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 local files and directories must have a valid group owner."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010800" disa="366" severity="medium">
+    <VMSinfo VKey="230328" SVKey="230328r5997" VRelease="r599732"/>
+    <title text="A separate RHEL 8 filesystem must be used for user home directories (such as /home or an equivalent)."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010820" disa="366" severity="high">
+    <VMSinfo VKey="230329" SVKey="230329r5997" VRelease="r599732"/>
+    <title text="Unattended or automatic logon via the RHEL 8 graphical user interface must not be allowed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-010830" disa="366" severity="medium">
+    <VMSinfo VKey="230330" SVKey="230330r5997" VRelease="r599732"/>
+    <title text="Unattended or automatic logon to RHEL 8 via ssh must not be allowed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020000" disa="16" severity="medium">
+    <VMSinfo VKey="230331" SVKey="230331r5998" VRelease="r599824"/>
+    <title text="RHEL 8 temporary user accounts must be provisioned with an expiration time of 72 hours or less."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020010" disa="44" severity="medium">
+    <VMSinfo VKey="230332" SVKey="230332r5998" VRelease="r599827"/>
+    <title text="RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020011" disa="44" severity="medium">
+    <VMSinfo VKey="230333" SVKey="230333r5998" VRelease="r599828"/>
+    <title text="RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020012" disa="44" severity="medium">
+    <VMSinfo VKey="230334" SVKey="230334r5998" VRelease="r599829"/>
+    <title text="RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020013" disa="44" severity="medium">
+    <VMSinfo VKey="230335" SVKey="230335r5998" VRelease="r599830"/>
+    <title text="RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020014" disa="44" severity="medium">
+    <VMSinfo VKey="230336" SVKey="230336r5998" VRelease="r599831"/>
+    <title text="RHEL 8 must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020015" disa="44" severity="medium">
+    <VMSinfo VKey="230337" SVKey="230337r5998" VRelease="r599832"/>
+    <title text="RHEL 8 must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020016" disa="44" severity="medium">
+    <VMSinfo VKey="230338" SVKey="230338r5998" VRelease="r599833"/>
+    <title text="RHEL 8 must ensure account lockouts persist."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020017" disa="44" severity="medium">
+    <VMSinfo VKey="230339" SVKey="230339r5998" VRelease="r599834"/>
+    <title text="RHEL 8 must ensure account lockouts persist."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020018" disa="44" severity="medium">
+    <VMSinfo VKey="230340" SVKey="230340r5998" VRelease="r599835"/>
+    <title text="RHEL 8 must prevent system messages from being presented when three unsuccessful logon attempts occur."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020019" disa="44" severity="medium">
+    <VMSinfo VKey="230341" SVKey="230341r5998" VRelease="r599836"/>
+    <title text="RHEL 8 must prevent system messages from being presented when three unsuccessful logon attempts occur."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020020" disa="44" severity="medium">
+    <VMSinfo VKey="230342" SVKey="230342r5998" VRelease="r599837"/>
+    <title text="RHEL 8 must log user name information when unsuccessful logon attempts occur."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020021" disa="44" severity="medium">
+    <VMSinfo VKey="230343" SVKey="230343r5998" VRelease="r599838"/>
+    <title text="RHEL 8 must log user name information when unsuccessful logon attempts occur."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020022" disa="44" severity="medium">
+    <VMSinfo VKey="230344" SVKey="230344r5998" VRelease="r599839"/>
+    <title text="RHEL 8 must include root when automatically locking an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020023" disa="44" severity="medium">
+    <VMSinfo VKey="230345" SVKey="230345r5998" VRelease="r599840"/>
+    <title text="RHEL 8 must include root when automatically locking an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020024" disa="54" severity="low">
+    <VMSinfo VKey="230346" SVKey="230346r5997" VRelease="r599786"/>
+    <title text="RHEL 8 must limit the number of concurrent sessions to ten for all accounts and/or account types."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020030" disa="56" severity="medium">
+    <VMSinfo VKey="230347" SVKey="230347r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enable a user session lock until that user re-establishes access using established identification and authentication procedures for graphical user sessions."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020040" disa="56" severity="medium">
+    <VMSinfo VKey="230348" SVKey="230348r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enable a user session lock until that user re-establishes access using established identification and authentication procedures for command line sessions."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020041" disa="56" severity="medium">
+    <VMSinfo VKey="230349" SVKey="230349r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must ensure session control is automatically started at shell initialization."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020042" disa="56" severity="low">
+    <VMSinfo VKey="230350" SVKey="230350r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent users from disabling session control mechanisms."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020050" disa="56" severity="medium">
+    <VMSinfo VKey="230351" SVKey="230351r5997" VRelease="r599792"/>
+    <title text="RHEL 8 must be able to initiate directly a session lock for all connection types using smartcard when the smartcard is removed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020060" disa="57" severity="medium">
+    <VMSinfo VKey="230352" SVKey="230352r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must automatically lock graphical user sessions after 15 minutes of inactivity."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020070" disa="57" severity="medium">
+    <VMSinfo VKey="230353" SVKey="230353r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must automatically lock command line user sessions after 15 minutes of inactivity."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020080" disa="57" severity="medium">
+    <VMSinfo VKey="230354" SVKey="230354r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent a user from overriding graphical user interface settings."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020090" disa="187" severity="medium">
+    <VMSinfo VKey="230355" SVKey="230355r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must map the authenticated identity to the user or group account for PKI-based authentication."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020100" disa="192" severity="medium">
+    <VMSinfo VKey="230356" SVKey="230356r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must ensure a password complexity module is enabled."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020110" disa="192" severity="medium">
+    <VMSinfo VKey="230357" SVKey="230357r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enforce password complexity by requiring that at least one uppercase character be used."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020120" disa="193" severity="medium">
+    <VMSinfo VKey="230358" SVKey="230358r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enforce password complexity by requiring that at least one lower-case character be used."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020130" disa="194" severity="medium">
+    <VMSinfo VKey="230359" SVKey="230359r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enforce password complexity by requiring that at least one numeric character be used."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020140" disa="195" severity="medium">
+    <VMSinfo VKey="230360" SVKey="230360r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must require the maximum number of repeating characters of the same character class be limited to four when passwords are changed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020150" disa="195" severity="medium">
+    <VMSinfo VKey="230361" SVKey="230361r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must require the maximum number of repeating characters be limited to three when passwords are changed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020160" disa="195" severity="medium">
+    <VMSinfo VKey="230362" SVKey="230362r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must require the change of at least four character classes when passwords are changed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020170" disa="195" severity="medium">
+    <VMSinfo VKey="230363" SVKey="230363r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must require the change of at least 8 characters when passwords are changed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020180" disa="198" severity="medium">
+    <VMSinfo VKey="230364" SVKey="230364r5997" VRelease="r599732"/>
+    <title text="RHEL 8 passwords must have a 24 hours/1 day minimum password lifetime restriction in /etc/shadow."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020190" disa="198" severity="medium">
+    <VMSinfo VKey="230365" SVKey="230365r5997" VRelease="r599732"/>
+    <title text="RHEL 8 passwords for new users or password changes must have a 24 hours/1 day minimum password lifetime restriction in /etc/logins.def."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020200" disa="199" severity="medium">
+    <VMSinfo VKey="230366" SVKey="230366r5997" VRelease="r599732"/>
+    <title text="RHEL 8 user account passwords must have a 60-day maximum password lifetime restriction."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020210" disa="199" severity="medium">
+    <VMSinfo VKey="230367" SVKey="230367r5997" VRelease="r599732"/>
+    <title text="RHEL 8 user account passwords must be configured so that existing passwords are restricted to a 60-day maximum lifetime."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020220" disa="200" severity="medium">
+    <VMSinfo VKey="230368" SVKey="230368r5997" VRelease="r599732"/>
+    <title text="RHEL 8 passwords must be prohibited from reuse for a minimum of five generations."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020230" disa="205" severity="medium">
+    <VMSinfo VKey="230369" SVKey="230369r5997" VRelease="r599732"/>
+    <title text="RHEL 8 passwords must have a minimum of 15 characters."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020231" disa="205" severity="medium">
+    <VMSinfo VKey="230370" SVKey="230370r5997" VRelease="r599732"/>
+    <title text="RHEL 8 passwords for new users must have a minimum of 15 characters."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020240" disa="764" severity="medium">
+    <VMSinfo VKey="230371" SVKey="230371r5997" VRelease="r599732"/>
+    <title text="RHEL 8 duplicate User IDs (UIDs) must not exist for interactive users."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020250" disa="765" severity="medium">
+    <VMSinfo VKey="230372" SVKey="230372r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must implement smart card logon for multifactor authentication for access to interactive accounts."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020260" disa="795" severity="medium">
+    <VMSinfo VKey="230373" SVKey="230373r5997" VRelease="r599732"/>
+    <title text="RHEL 8 account identifiers (individuals, groups, roles, and devices) must be disabled after 35 days of inactivity."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020270" disa="1682" severity="medium">
+    <VMSinfo VKey="230374" SVKey="230374r5997" VRelease="r599732"/>
+    <title text="RHEL 8 emergency accounts must be automatically removed or disabled after the crisis is resolved or within 72 hours."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020280" disa="1619" severity="medium">
+    <VMSinfo VKey="230375" SVKey="230375r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 passwords must contain at least one special character."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020290" disa="2007" severity="medium">
+    <VMSinfo VKey="230376" SVKey="230376r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prohibit the use of cached authentications after one day."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020300" disa="366" severity="medium">
+    <VMSinfo VKey="230377" SVKey="230377r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent the use of dictionary words for passwords."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020310" disa="366" severity="medium">
+    <VMSinfo VKey="230378" SVKey="230378r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enforce a delay of at least four seconds between logon prompts following a failed logon attempt."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020320" disa="366" severity="medium">
+    <VMSinfo VKey="230379" SVKey="230379r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not have unnecessary accounts."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020330" disa="366" severity="high">
+    <VMSinfo VKey="230380" SVKey="230380r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not have accounts configured with blank or null passwords."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020340" disa="366" severity="low">
+    <VMSinfo VKey="230381" SVKey="230381r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must display the date and time of the last successful account logon upon logon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020350" disa="366" severity="medium">
+    <VMSinfo VKey="230382" SVKey="230382r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must display the date and time of the last successful account logon upon an SSH logon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020351" disa="366" severity="medium">
+    <VMSinfo VKey="230383" SVKey="230383r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must define default permissions for all authenticated users in such a way that the user can only read and modify their own files."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020352" disa="366" severity="medium">
+    <VMSinfo VKey="230384" SVKey="230384r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must set the umask value to 077 for all local interactive user accounts."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-020353" disa="366" severity="medium">
+    <VMSinfo VKey="230385" SVKey="230385r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must define default permissions for logon and non-logon shells."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030000" disa="2233" severity="medium">
+    <VMSinfo VKey="230386" SVKey="230386r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must be configured to audit the execution of privileged functions and prevent all software from executing at higher privilege levels than users executing the software."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030010" disa="366" severity="medium">
+    <VMSinfo VKey="230387" SVKey="230387r5997" VRelease="r599732"/>
+    <title text="Cron logging must be implemented in RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030020" disa="139" severity="medium">
+    <VMSinfo VKey="230388" SVKey="230388r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) must be alerted of an audit processing failure event."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030030" disa="139" severity="medium">
+    <VMSinfo VKey="230389" SVKey="230389r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 Information System Security Officer (ISSO) and System Administrator (SA) (at a minimum) must have mail aliases to be notified of an audit processing failure."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030040" disa="140" severity="medium">
+    <VMSinfo VKey="230390" SVKey="230390r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 System must take appropriate action when an audit processing failure occurs."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030050" disa="140" severity="medium">
+    <VMSinfo VKey="230391" SVKey="230391r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) must be alerted when the audit storage volume is full."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030060" disa="140" severity="medium">
+    <VMSinfo VKey="230392" SVKey="230392r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must take appropriate action when the audit storage volume is full."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030061" disa="366" severity="medium">
+    <VMSinfo VKey="230393" SVKey="230393r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must audit local events."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030062" disa="1851" severity="medium">
+    <VMSinfo VKey="230394" SVKey="230394r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must label all off-loaded audit logs before sending them to the central log server."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030063" disa="366" severity="low">
+    <VMSinfo VKey="230395" SVKey="230395r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must resolve audit information before writing to disk."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030070" disa="162" severity="medium">
+    <VMSinfo VKey="230396" SVKey="230396r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit logs must have a mode of 0600 or less permissive to prevent unauthorized read access."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030080" disa="162" severity="medium">
+    <VMSinfo VKey="230397" SVKey="230397r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit logs must be owned by root to prevent unauthorized read access."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030090" disa="162" severity="medium">
+    <VMSinfo VKey="230398" SVKey="230398r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit logs must be group-owned by root to prevent unauthorized read access."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030100" disa="162" severity="medium">
+    <VMSinfo VKey="230399" SVKey="230399r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit log directory must be owned by root to prevent unauthorized read access."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030110" disa="162" severity="medium">
+    <VMSinfo VKey="230400" SVKey="230400r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit log directory must be group-owned by root to prevent unauthorized read access."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030120" disa="162" severity="medium">
+    <VMSinfo VKey="230401" SVKey="230401r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit log directory must have a mode of 0700 or less permissive to prevent unauthorized read access."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030121" disa="162" severity="medium">
+    <VMSinfo VKey="230402" SVKey="230402r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit system must protect auditing rules from unauthorized change."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030122" disa="162" severity="medium">
+    <VMSinfo VKey="230403" SVKey="230403r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit system must protect logon UIDs from unauthorized change."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030130" disa="169" severity="medium">
+    <VMSinfo VKey="230404" SVKey="230404r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/shadow."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030140" disa="169" severity="medium">
+    <VMSinfo VKey="230405" SVKey="230405r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/security/opasswd."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030150" disa="169" severity="medium">
+    <VMSinfo VKey="230406" SVKey="230406r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030160" disa="169" severity="medium">
+    <VMSinfo VKey="230407" SVKey="230407r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030170" disa="169" severity="medium">
+    <VMSinfo VKey="230408" SVKey="230408r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/group."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030171" disa="169" severity="medium">
+    <VMSinfo VKey="230409" SVKey="230409r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/sudoers."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030172" disa="169" severity="medium">
+    <VMSinfo VKey="230410" SVKey="230410r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/sudoers.d/."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030180" disa="169" severity="medium">
+    <VMSinfo VKey="230411" SVKey="230411r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit records must contain information to establish what type of events occurred, the source of events, where events occurred, and the outcome of events."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030190" disa="169" severity="medium">
+    <VMSinfo VKey="230412" SVKey="230412r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the su command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030200" disa="169" severity="medium">
+    <VMSinfo VKey="230413" SVKey="230413r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must be configured to audit any usage of the lremovexattr system call."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030210" disa="169" severity="medium">
+    <VMSinfo VKey="230414" SVKey="230414r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must be configured to audit any usage of the removexattr system call."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030220" disa="169" severity="medium">
+    <VMSinfo VKey="230415" SVKey="230415r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must be configured to audit any usage of the lsetxattr system call."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030230" disa="169" severity="medium">
+    <VMSinfo VKey="230416" SVKey="230416r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must be configured to audit any usage of the fsetxattr system call."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030240" disa="169" severity="medium">
+    <VMSinfo VKey="230417" SVKey="230417r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit system must be configured to audit any usage of the fremovexattr system call."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030250" disa="169" severity="medium">
+    <VMSinfo VKey="230418" SVKey="230418r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the chage command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030260" disa="169" severity="medium">
+    <VMSinfo VKey="230419" SVKey="230419r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the chcon command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030270" disa="169" severity="medium">
+    <VMSinfo VKey="230420" SVKey="230420r5997" VRelease="r599794"/>
+    <title text="The RHEL 8 audit system must be configured to audit any usage of the setxattr system call."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030280" disa="169" severity="medium">
+    <VMSinfo VKey="230421" SVKey="230421r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the ssh-agent in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030290" disa="169" severity="medium">
+    <VMSinfo VKey="230422" SVKey="230422r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the passwd command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030300" disa="169" severity="medium">
+    <VMSinfo VKey="230423" SVKey="230423r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the mount command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030301" disa="169" severity="medium">
+    <VMSinfo VKey="230424" SVKey="230424r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the umount command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030302" disa="169" severity="medium">
+    <VMSinfo VKey="230425" SVKey="230425r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the mount syscall in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030310" disa="169" severity="medium">
+    <VMSinfo VKey="230426" SVKey="230426r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the unix_update in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030311" disa="169" severity="medium">
+    <VMSinfo VKey="230427" SVKey="230427r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of postdrop in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030312" disa="169" severity="medium">
+    <VMSinfo VKey="230428" SVKey="230428r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of postqueue in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030313" disa="169" severity="medium">
+    <VMSinfo VKey="230429" SVKey="230429r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of semanage in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030314" disa="169" severity="medium">
+    <VMSinfo VKey="230430" SVKey="230430r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of setfiles in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030315" disa="169" severity="medium">
+    <VMSinfo VKey="230431" SVKey="230431r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of userhelper in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030316" disa="169" severity="medium">
+    <VMSinfo VKey="230432" SVKey="230432r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of setsebool in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030317" disa="169" severity="medium">
+    <VMSinfo VKey="230433" SVKey="230433r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of unix_chkpwd in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030320" disa="169" severity="medium">
+    <VMSinfo VKey="230434" SVKey="230434r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the ssh-keysign in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030330" disa="169" severity="medium">
+    <VMSinfo VKey="230435" SVKey="230435r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the setfacl command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030340" disa="169" severity="medium">
+    <VMSinfo VKey="230436" SVKey="230436r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the pam_timestamp_check command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030350" disa="169" severity="medium">
+    <VMSinfo VKey="230437" SVKey="230437r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the newgrp command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030360" disa="169" severity="medium">
+    <VMSinfo VKey="230438" SVKey="230438r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the init_module command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030361" disa="169" severity="medium">
+    <VMSinfo VKey="230439" SVKey="230439r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the rename command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030362" disa="169" severity="medium">
+    <VMSinfo VKey="230440" SVKey="230440r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the renameat command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030363" disa="169" severity="medium">
+    <VMSinfo VKey="230441" SVKey="230441r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the rmdir command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030364" disa="169" severity="medium">
+    <VMSinfo VKey="230442" SVKey="230442r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the unlink command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030365" disa="169" severity="medium">
+    <VMSinfo VKey="230443" SVKey="230443r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the unlinkat command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030370" disa="169" severity="medium">
+    <VMSinfo VKey="230444" SVKey="230444r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the gpasswd command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030380" disa="169" severity="medium">
+    <VMSinfo VKey="230445" SVKey="230445r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the finit_module command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030390" disa="169" severity="medium">
+    <VMSinfo VKey="230446" SVKey="230446r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the delete_module command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030400" disa="169" severity="medium">
+    <VMSinfo VKey="230447" SVKey="230447r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the crontab command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030410" disa="169" severity="medium">
+    <VMSinfo VKey="230448" SVKey="230448r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the chsh command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030420" disa="169" severity="medium">
+    <VMSinfo VKey="230449" SVKey="230449r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the truncate command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030430" disa="169" severity="medium">
+    <VMSinfo VKey="230450" SVKey="230450r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the openat system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030440" disa="169" severity="medium">
+    <VMSinfo VKey="230451" SVKey="230451r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the open system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030450" disa="169" severity="medium">
+    <VMSinfo VKey="230452" SVKey="230452r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the open_by_handle_at system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030460" disa="169" severity="medium">
+    <VMSinfo VKey="230453" SVKey="230453r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the ftruncate command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030470" disa="169" severity="medium">
+    <VMSinfo VKey="230454" SVKey="230454r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the creat system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030480" disa="169" severity="medium">
+    <VMSinfo VKey="230455" SVKey="230455r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the chown command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030490" disa="169" severity="medium">
+    <VMSinfo VKey="230456" SVKey="230456r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the chmod command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030500" disa="169" severity="medium">
+    <VMSinfo VKey="230457" SVKey="230457r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the lchown system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030510" disa="169" severity="medium">
+    <VMSinfo VKey="230458" SVKey="230458r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the fchownat system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030520" disa="169" severity="medium">
+    <VMSinfo VKey="230459" SVKey="230459r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the fchown system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030530" disa="169" severity="medium">
+    <VMSinfo VKey="230460" SVKey="230460r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the fchmodat system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030540" disa="169" severity="medium">
+    <VMSinfo VKey="230461" SVKey="230461r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the fchmod system call in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030550" disa="169" severity="medium">
+    <VMSinfo VKey="230462" SVKey="230462r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the sudo command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030560" disa="169" severity="medium">
+    <VMSinfo VKey="230463" SVKey="230463r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the usermod command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030570" disa="169" severity="medium">
+    <VMSinfo VKey="230464" SVKey="230464r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the chacl command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030580" disa="169" severity="medium">
+    <VMSinfo VKey="230465" SVKey="230465r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful uses of the kmod command in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030590" disa="169" severity="medium">
+    <VMSinfo VKey="230466" SVKey="230466r5998" VRelease="r599841"/>
+    <title text="Successful/unsuccessful modifications to the faillock log file in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030600" disa="169" severity="medium">
+    <VMSinfo VKey="230467" SVKey="230467r5997" VRelease="r599732"/>
+    <title text="Successful/unsuccessful modifications to the lastlog file in RHEL 8 must generate an audit record."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030601" disa="169" severity="low">
+    <VMSinfo VKey="230468" SVKey="230468r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enable auditing of processes that start prior to the audit daemon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030602" disa="1849" severity="low">
+    <VMSinfo VKey="230469" SVKey="230469r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030603" disa="169" severity="low">
+    <VMSinfo VKey="230470" SVKey="230470r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enable Linux audit logging for the USBGuard daemon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030610" disa="171" severity="medium">
+    <VMSinfo VKey="230471" SVKey="230471r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must allow only the Information System Security Manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030620" disa="1493" severity="medium">
+    <VMSinfo VKey="230472" SVKey="230472r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit tools must have a mode of 0755 or less permissive."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030630" disa="1493" severity="medium">
+    <VMSinfo VKey="230473" SVKey="230473r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit tools must be owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030640" disa="1493" severity="medium">
+    <VMSinfo VKey="230474" SVKey="230474r5997" VRelease="r599732"/>
+    <title text="RHEL 8 audit tools must be group-owned by root."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030650" disa="1496" severity="medium">
+    <VMSinfo VKey="230475" SVKey="230475r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must use cryptographic mechanisms to protect the integrity of audit tools."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030660" disa="1849" severity="medium">
+    <VMSinfo VKey="230476" SVKey="230476r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must allocate audit record storage capacity to store at least one week of audit records, when audit records are not immediately sent to a central audit record storage facility."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030670" disa="366" severity="medium">
+    <VMSinfo VKey="230477" SVKey="230477r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must have the packages required for offloading audit logs installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030680" disa="366" severity="medium">
+    <VMSinfo VKey="230478" SVKey="230478r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must have the packages required for encrypting offloaded audit logs installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030690" disa="1851" severity="medium">
+    <VMSinfo VKey="230479" SVKey="230479r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 audit records must be off-loaded onto a different system or storage media from the system being audited."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030700" disa="1851" severity="medium">
+    <VMSinfo VKey="230480" SVKey="230480r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must take appropriate action when the internal event queue is full."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030710" disa="1851" severity="medium">
+    <VMSinfo VKey="230481" SVKey="230481r5997" VRelease="r599796"/>
+    <title text="RHEL 8 must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030720" disa="1851" severity="medium">
+    <VMSinfo VKey="230482" SVKey="230482r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must authenticate the remote logging server for off-loading audit logs."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030730" disa="1855" severity="medium">
+    <VMSinfo VKey="230483" SVKey="230483r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030740" disa="1891" severity="medium">
+    <VMSinfo VKey="230484" SVKey="230484r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS)."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030741" disa="381" severity="low">
+    <VMSinfo VKey="230485" SVKey="230485r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable the chrony daemon from acting as a server."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-030742" disa="381" severity="low">
+    <VMSinfo VKey="230486" SVKey="230486r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable network management of the chrony daemon."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040000" disa="381" severity="high">
+    <VMSinfo VKey="230487" SVKey="230487r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not have the telnet-server package installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040001" disa="381" severity="medium">
+    <VMSinfo VKey="230488" SVKey="230488r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not have any automated bug reporting tools installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040002" disa="381" severity="medium">
+    <VMSinfo VKey="230489" SVKey="230489r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not have the sendmail package installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040003" disa="381" severity="medium">
+    <VMSinfo VKey="230490" SVKey="230490r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not have the gssproxy package installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040004" disa="381" severity="low">
+    <VMSinfo VKey="230491" SVKey="230491r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enable mitigations against processor-based vulnerabilities."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040010" disa="381" severity="high">
+    <VMSinfo VKey="230492" SVKey="230492r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not have the rsh-server package installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040020" disa="381" severity="medium">
+    <VMSinfo VKey="230493" SVKey="230493r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must cover or disable the built-in or attached camera when not in use."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040021" disa="381" severity="low">
+    <VMSinfo VKey="230494" SVKey="230494r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable the asynchronous transfer mode (ATM) protocol."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040022" disa="381" severity="low">
+    <VMSinfo VKey="230495" SVKey="230495r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable the controller area network (CAN) protocol."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040023" disa="381" severity="low">
+    <VMSinfo VKey="230496" SVKey="230496r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable the stream control transmission (SCTP) protocol."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040024" disa="381" severity="low">
+    <VMSinfo VKey="230497" SVKey="230497r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable the transparent inter-process communication (TIPC) protocol."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040025" disa="381" severity="low">
+    <VMSinfo VKey="230498" SVKey="230498r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable mounting of cramfs."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040026" disa="381" severity="low">
+    <VMSinfo VKey="230499" SVKey="230499r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable IEEE 1394 (FireWire) Support."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040030" disa="382" severity="medium">
+    <VMSinfo VKey="230500" SVKey="230500r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management (PPSM) Category Assignments List (CAL) and vulnerability assessments."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040060" disa="1941" severity="high">
+    <VMSinfo VKey="230501" SVKey="230501r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must enforce SSHv2 for network access to all accounts."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040070" disa="778" severity="medium">
+    <VMSinfo VKey="230502" SVKey="230502r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 file system automounter must be disabled unless required."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040080" disa="778" severity="medium">
+    <VMSinfo VKey="230503" SVKey="230503r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must be configured to disable USB mass storage."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040090" disa="2314" severity="medium">
+    <VMSinfo VKey="230504" SVKey="230504r5997" VRelease="r599732"/>
+    <title text="A RHEL 8 firewall must employ a deny-all, allow-by-exception policy for allowing connections to other systems."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040100" disa="2314" severity="medium">
+    <VMSinfo VKey="230505" SVKey="230505r5997" VRelease="r599732"/>
+    <title text="A firewall must be installed on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040110" disa="1444" severity="medium">
+    <VMSinfo VKey="230506" SVKey="230506r5997" VRelease="r599732"/>
+    <title text="RHEL 8 wireless network adapters must be disabled."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040111" disa="1443" severity="medium">
+    <VMSinfo VKey="230507" SVKey="230507r5997" VRelease="r599732"/>
+    <title text="RHEL 8 Bluetooth must be disabled."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040120" disa="1764" severity="medium">
+    <VMSinfo VKey="230508" SVKey="230508r5997" VRelease="r599797"/>
+    <title text="RHEL 8 must mount /dev/shm with the nodev option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040121" disa="1764" severity="medium">
+    <VMSinfo VKey="230509" SVKey="230509r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must mount /dev/shm with the nosuid option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040122" disa="1764" severity="medium">
+    <VMSinfo VKey="230510" SVKey="230510r5997" VRelease="r599798"/>
+    <title text="RHEL 8 must mount /dev/shm with the noexec option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040123" disa="1764" severity="medium">
+    <VMSinfo VKey="230511" SVKey="230511r5997" VRelease="r599799"/>
+    <title text="RHEL 8 must mount /tmp with the nodev option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040124" disa="1764" severity="medium">
+    <VMSinfo VKey="230512" SVKey="230512r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must mount /tmp with the nosuid option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040125" disa="1764" severity="medium">
+    <VMSinfo VKey="230513" SVKey="230513r5998" VRelease="r599800"/>
+    <title text="RHEL 8 must mount /tmp with the noexec option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040126" disa="1764" severity="medium">
+    <VMSinfo VKey="230514" SVKey="230514r5998" VRelease="r599801"/>
+    <title text="RHEL 8 must mount /var/log with the nodev option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040127" disa="1764" severity="medium">
+    <VMSinfo VKey="230515" SVKey="230515r5998" VRelease="r599802"/>
+    <title text="RHEL 8 must mount /var/log with the nosuid option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040128" disa="1764" severity="medium">
+    <VMSinfo VKey="230516" SVKey="230516r5998" VRelease="r599803"/>
+    <title text="RHEL 8 must mount /var/log with the noexec option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040129" disa="1764" severity="medium">
+    <VMSinfo VKey="230517" SVKey="230517r5998" VRelease="r599804"/>
+    <title text="RHEL 8 must mount /var/log/audit with the nodev option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040130" disa="1764" severity="medium">
+    <VMSinfo VKey="230518" SVKey="230518r5998" VRelease="r599805"/>
+    <title text="RHEL 8 must mount /var/log/audit with the nosuid option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040131" disa="1764" severity="medium">
+    <VMSinfo VKey="230519" SVKey="230519r5998" VRelease="r599806"/>
+    <title text="RHEL 8 must mount /var/log/audit with the noexec option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040132" disa="1764" severity="medium">
+    <VMSinfo VKey="230520" SVKey="230520r5998" VRelease="r599807"/>
+    <title text="RHEL 8 must mount /var/tmp with the nodev option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040133" disa="1764" severity="medium">
+    <VMSinfo VKey="230521" SVKey="230521r5998" VRelease="r599808"/>
+    <title text="RHEL 8 must mount /var/tmp with the nosuid option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040134" disa="1764" severity="medium">
+    <VMSinfo VKey="230522" SVKey="230522r5998" VRelease="r599809"/>
+    <title text="RHEL 8 must mount /var/tmp with the noexec option."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040135" disa="1764" severity="medium">
+    <VMSinfo VKey="230523" SVKey="230523r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 fapolicy module must be configured to employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040140" disa="1958" severity="medium">
+    <VMSinfo VKey="230524" SVKey="230524r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must block unauthorized peripherals before establishing a connection."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040150" disa="2385" severity="medium">
+    <VMSinfo VKey="230525" SVKey="230525r5997" VRelease="r599732"/>
+    <title text="A firewall must be able to protect against or limit the effects of Denial of Service (DoS) attacks by ensuring RHEL 8 can implement rate-limiting measures on impacted network interfaces."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040160" disa="2418" severity="medium">
+    <VMSinfo VKey="230526" SVKey="230526r5997" VRelease="r599732"/>
+    <title text="All RHEL 8 networked systems must have and implement SSH to protect the confidentiality and integrity of transmitted and received information, as well as information during preparation for transmission."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040161" disa="68" severity="medium">
+    <VMSinfo VKey="230527" SVKey="230527r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must force a frequent session key renegotiation for SSH connections to the server."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040162" disa="68" severity="medium">
+    <VMSinfo VKey="230528" SVKey="230528r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must force a frequent session key renegotiation for SSH connections by the client."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040170" disa="366" severity="high">
+    <VMSinfo VKey="230529" SVKey="230529r5998" VRelease="r599811"/>
+    <title text="The x86 Ctrl-Alt-Delete key sequence must be disabled on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040171" disa="366" severity="high">
+    <VMSinfo VKey="230530" SVKey="230530r5997" VRelease="r599732"/>
+    <title text="The x86 Ctrl-Alt-Delete key sequence in RHEL 8 must be disabled if a graphical user interface is installed."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040172" disa="366" severity="high">
+    <VMSinfo VKey="230531" SVKey="230531r5998" VRelease="r599813"/>
+    <title text="The systemd Ctrl-Alt-Delete burst key sequence in RHEL 8 must be disabled."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040180" disa="366" severity="medium">
+    <VMSinfo VKey="230532" SVKey="230532r5998" VRelease="r599815"/>
+    <title text="The debug-shell systemd service must be disabled on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040190" disa="366" severity="high">
+    <VMSinfo VKey="230533" SVKey="230533r5997" VRelease="r599732"/>
+    <title text="The Trivial File Transfer Protocol (TFTP) server package must not be installed if not required for RHEL 8 operational support."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040200" disa="366" severity="high">
+    <VMSinfo VKey="230534" SVKey="230534r5997" VRelease="r599732"/>
+    <title text="The root account must be the only account having unrestricted access to the RHEL 8 system."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040210" disa="366" severity="medium">
+    <VMSinfo VKey="230535" SVKey="230535r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must prevent Internet Control Message Protocol (ICMP) redirect messages from being accepted."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040220" disa="366" severity="medium">
+    <VMSinfo VKey="230536" SVKey="230536r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not send Internet Control Message Protocol (ICMP) redirects."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040230" disa="366" severity="medium">
+    <VMSinfo VKey="230537" SVKey="230537r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast address."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040240" disa="366" severity="medium">
+    <VMSinfo VKey="230538" SVKey="230538r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not forward source-routed packets."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040250" disa="366" severity="medium">
+    <VMSinfo VKey="230539" SVKey="230539r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not forward source-routed packets by default."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040260" disa="366" severity="medium">
+    <VMSinfo VKey="230540" SVKey="230540r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not be performing packet forwarding unless the system is a router."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040261" disa="366" severity="medium">
+    <VMSinfo VKey="230541" SVKey="230541r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not accept router advertisements on all IPv6 interfaces."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040262" disa="366" severity="medium">
+    <VMSinfo VKey="230542" SVKey="230542r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not accept router advertisements on all IPv6 interfaces by default."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040270" disa="366" severity="medium">
+    <VMSinfo VKey="230543" SVKey="230543r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must not allow interfaces to perform Internet Control Message Protocol (ICMP) redirects by default."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040280" disa="366" severity="medium">
+    <VMSinfo VKey="230544" SVKey="230544r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must ignore Internet Control Message Protocol (ICMP) redirect messages."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040281" disa="366" severity="medium">
+    <VMSinfo VKey="230545" SVKey="230545r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable access to network bpf syscall from unprivileged processes."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040282" disa="366" severity="medium">
+    <VMSinfo VKey="230546" SVKey="230546r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must restrict usage of ptrace to descendant  processes."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040283" disa="366" severity="medium">
+    <VMSinfo VKey="230547" SVKey="230547r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must restrict exposed kernel pointer addresses access."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040284" disa="366" severity="medium">
+    <VMSinfo VKey="230548" SVKey="230548r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must disable the use of user namespaces."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040285" disa="366" severity="medium">
+    <VMSinfo VKey="230549" SVKey="230549r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must use reverse path filtering on all IPv4 interfaces."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040290" disa="366" severity="medium">
+    <VMSinfo VKey="230550" SVKey="230550r5997" VRelease="r599732"/>
+    <title text="RHEL 8 must be configured to prevent unrestricted mail relaying."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040300" disa="366" severity="low">
+    <VMSinfo VKey="230551" SVKey="230551r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 file integrity tool must be configured to verify extended attributes."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040310" disa="366" severity="low">
+    <VMSinfo VKey="230552" SVKey="230552r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 file integrity tool must be configured to verify Access Control Lists (ACLs)."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040320" disa="366" severity="medium">
+    <VMSinfo VKey="230553" SVKey="230553r5997" VRelease="r599732"/>
+    <title text="The graphical display manager must not be installed on RHEL 8 unless approved."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040330" disa="366" severity="medium">
+    <VMSinfo VKey="230554" SVKey="230554r5997" VRelease="r599732"/>
+    <title text="RHEL 8 network interfaces must not be in promiscuous mode."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040340" disa="366" severity="medium">
+    <VMSinfo VKey="230555" SVKey="230555r5998" VRelease="r599816"/>
+    <title text="RHEL 8 remote X connections for interactive users must be disabled unless to fulfill documented and validated mission requirements."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040341" disa="366" severity="medium">
+    <VMSinfo VKey="230556" SVKey="230556r5997" VRelease="r599732"/>
+    <title text="The RHEL 8 SSH daemon must prevent remote hosts from connecting to the proxy display."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040350" disa="366" severity="medium">
+    <VMSinfo VKey="230557" SVKey="230557r5997" VRelease="r599732"/>
+    <title text="If the Trivial File Transfer Protocol (TFTP) server is required, the RHEL 8 TFTP daemon must be configured to operate in secure mode."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040360" disa="366" severity="high">
+    <VMSinfo VKey="230558" SVKey="230558r5997" VRelease="r599732"/>
+    <title text="A File Transfer Protocol (FTP) server package must not be installed unless mission essential on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040370" disa="366" severity="medium">
+    <VMSinfo VKey="230559" SVKey="230559r5997" VRelease="r599732"/>
+    <title text="The gssproxy package must not be installed unless mission essential on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040380" disa="366" severity="medium">
+    <VMSinfo VKey="230560" SVKey="230560r5997" VRelease="r599732"/>
+    <title text="The iprutils package must not be installed unless mission essential on RHEL 8."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-08-040390" disa="366" severity="medium">
+    <VMSinfo VKey="230561" SVKey="230561r5997" VRelease="r599732"/>
+    <title text="The tuned package must not be installed unless mission essential on RHEL 8."/>
+  </overlay>
+</overlays>

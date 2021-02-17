@@ -15,8 +15,8 @@ rationale: |-
 
 severity: medium
 
-#identifiers:
-#    cce@ocp4:
+identifiers:
+    cce@ocp4: CCE-84211-2
 
 references:
     cis: 1.1.10
@@ -30,5 +30,4 @@ template:
     vars:
         filepath: ^/var/lib/cni/networks/openshift-sdn/.*$
         filegid: '0'
-        missing_file_pass: "true"
         filepath_is_regex: "true"

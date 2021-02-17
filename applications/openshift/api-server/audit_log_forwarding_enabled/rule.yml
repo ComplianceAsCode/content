@@ -1,0 +1,47 @@
+prodtype: ocp4
+
+title: Ensure that Audit Log Forwarding Is Enabled
+
+description: |-
+  OpenShift audit works at the API server level, logging all requests coming to the server.
+  Audit is on by default and the best practice is to ship audit logs off the cluster for retention.
+  The cluster-logging-operator is able to do this with the <pre>ClusterLogForwarders</pre> resource.
+  The forementioned resource can be configured to logs to different third party systems.
+  For more information on this, please reference the official documentation:
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/logging/cluster-logging-external.html") }}}
+
+rationale: |-
+  Retaining logs ensures the ability to go back in time to investigate or correlate any events.
+  Offloading audit logs from the cluster ensures that an attacker that has access to the cluster will not be able to
+  tamper with the logs because of the logs being stored off-site.
+
+references:
+  cis: 1.2.23
+  nist: AU-9(2)
+
+identifiers:
+  cce@ocp4: CCE-84076-9
+
+
+severity: medium
+
+ocil_clause: 'Logs are not forwarded outside the cluster'
+
+ocil: |-
+    Run the following command:
+    <pre>oc get clusterlogforwarders instance -n openshift-logging -ojson | jq -r '.spec.pipelines[].inputRefs | contains(["audit"])'</pre>
+    The output should return <pre>true</pre>.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance
+    yamlpath: "spec.pipelines[:].inputRefs[:]"
+    values:
+    - value: "audit"
+      entity_check: "at least one"

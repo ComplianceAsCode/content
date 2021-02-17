@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: 1.1.0
+    version: 1.0.0
     SMEs:
         - vojtapolasek
         - yuumasato
@@ -31,8 +31,8 @@ selections:
     #### 1.1.1.1 Ensure mounting cramfs filesystems is disabled (Scored)
     - kernel_module_cramfs_disabled
 
-    #### 1.1.1.2 Ensure mounting of vFAT flesystems is limited (Not Scored)
-    - kernel_module_vfat_disabled
+    #### 1.1.1.2 Ensure mounting of vFAT filesystems is limited (Not Scored)
+
 
     #### 1.1.1.3 Ensure mounting of squashfs filesystems is disabled (Scored)
     - kernel_module_squashfs_disabled

@@ -27,6 +27,10 @@ rationale: |-
     Basic Authentication is currently supported for convenience and is
     not intended for production workloads.
 
+identifiers:
+  cce@ocp4: CCE-83936-5
+
+
 severity: medium
 
 references:
@@ -37,7 +41,7 @@ ocil_clause: 'basic-auth-file is configured and enabled for the API server'
 ocil: |-
     To verify that <tt>basic-auth-file</tt> is configured and enabled for the API server, run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["basic-auth-file"]'</pre>
-    The output should return <pre>null</pre>.
+    The output should be empty as OpenShift does not support basic authentication at all.
 
 warnings:
     - general: |-
