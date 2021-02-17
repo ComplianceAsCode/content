@@ -42,3 +42,17 @@ selections:
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
     - audit_log_forwarding_enabled
+
+    # SC-28 (1) PROTECTION OF INFORMATION AT REST | CRYPTOGRAPHIC PROTECTION
+    - api_server_encryption_provider_config
+    - api_server_encryption_provider_cipher
+
+    # SC-8(1): TRANSMISSION CONFIDENTIALITY AND INTEGRITY | CRYPTOGRAPHIC OR ALTERNATE PHYSICAL PROTECTION
+    - api_server_client_ca
+    - api_server_etcd_ca
+    - api_server_tls_cert
+    - api_server_tls_private_key
+    - etcd_peer_cert_file
+    - etcd_peer_key_file
+    - kubelet_configure_tls_cert
+    - kubelet_configure_tls_key

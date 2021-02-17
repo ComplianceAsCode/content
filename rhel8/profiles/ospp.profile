@@ -34,6 +34,7 @@ selections:
     - mount_option_tmp_nodev
     - mount_option_tmp_noexec
     - mount_option_tmp_nosuid
+    - partition_for_var_tmp
     - mount_option_var_tmp_nodev
     - mount_option_var_tmp_noexec
     - mount_option_var_tmp_nosuid
