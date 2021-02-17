@@ -365,7 +365,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'sle': 'SUSE Linux Enterprise',
     'vsel': 'McAfee VirusScan Enterprise for Linux',
     'wrlinux': 'WRLinux',
-    'example': 'Example Linux Content',
+    'example': 'Example',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
     'rhcos': 'Red Hat Enterprise Linux CoreOS',
