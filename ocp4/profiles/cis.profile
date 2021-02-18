@@ -174,7 +174,7 @@ selections:
     # Like kubelet_disable_readonly_port but check for .apiServerArguments["kubelet-client-certificate"]
     - kubelet_configure_tls_key
     # Like kubelet_disable_readonly_port but check for .apiServerArguments["kubelet-client-key"]
-  # 4.2.13 Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers
+
 
   ### 5 Policies
   ###
