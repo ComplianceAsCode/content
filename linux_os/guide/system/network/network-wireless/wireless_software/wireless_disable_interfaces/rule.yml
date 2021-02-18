@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15,sle12
 
 title: 'Deactivate Wireless Network Interfaces'
 
@@ -8,9 +8,19 @@ description: |-
     Deactivating wireless network interfaces should prevent
     normal usage of the wireless capability.
     <br /><br />
+    {{% if product == "sle12" %}}
+    Configure the system to disable wireless network interfaces by issuing the
+    following command for every active <tt>&lt;WIFI-INTERFACE&gt;</tt> in the
+    system:
+    <pre>$ sudo wicked ifdown &lt;WIFI-INTERFACE&gt;</pre>
+    Also remove the configuration files for every wifi adapter from
+    <tt>/etc/wicked/ifconfig/&lt;WIFI-INTERFACE&gt;.xml</tt> to prevent future
+    connections.
+    {{% else %}}
     Configure the system to disable all wireless network interfaces with the
     following command:
     <pre>$ sudo nmcli radio wifi off</pre>
+    {{% endif %}}
 
 rationale: |-
     The use of wireless networking can introduce many different attack vectors into
@@ -27,6 +37,7 @@ identifiers:
     cce@rhel7: CCE-27358-1
     cce@rhel8: CCE-83501-7
     cce@rhcos4: CCE-82660-2
+    cce@sle12: CCE-83148-7
 
 references:
     stigid@ol7: OL07-00-041010
@@ -45,6 +56,9 @@ references:
     cis-csc: 11,12,14,15,3,8,9
     cis@sle15: 3.1.2
     ism: 1315,1319
+    stigid@sle12: SLES-12-030450
+    srg@sle12: SRG-OS-000299-GPOS-00117,SRG-OS-000300-GPOS-00118,SRG-OS-000481-GPOS-000481
+    nist@sle12: AC-18(1),SC-8
     stigid@rhel8: RHEL-08-040110
 
 ocil_clause: 'it is not'
@@ -52,6 +66,31 @@ ocil_clause: 'it is not'
 ocil: |-
     Verify that there are no wireless interfaces configured on the system
     with the following command:
+    {{% if product == "sle12" %}}
+    <pre># wicked show all
+    lo up
+    link: #1, state up
+    type: loopback
+    config: compat:suse:/etc/sysconfig/network/ifcfg-lo
+    leases: ipv4 static granted
+    leases: ipv6 static granted
+    addr: ipv4 127.0.0.1/8 [static]
+    addr: ipv6 ::1/128 [static]
+
+    wlan0 up
+    link: #3, state up, mtu 1500
+    type: wireless, hwaddr 06:00:00:00:00:02
+    config: wicked:xml:/etc/wicked/ifconfig/wlan0.xml
+    leases: ipv4 dhcp granted
+    addr: ipv4 10.0.0.101/16 [dhcp]
+    route: ipv4 default via 10.0.0.1 proto dhcp</pre>
+    The output should not contain any interfaces of type <tt>wireless</tt> in
+    state <tt>up</tt>.
+
+    If a wireless interface is configured it must be documented and approved by
+    the local Authorizing Official.
+    {{% else %}}
     <pre>$ sudo nmcli device</pre>
     The output should contain the following:
     <pre>wifi disconnected</pre>
+    {{% endif %}}
