@@ -1508,6 +1508,66 @@ the following to `rule.yml`:
 
 -   Languages: Anaconda, Ansible, Bash, OVAL, Puppet
 
+#### pam_options
+-   Checks if the parameters or arguments of a given Linux-PAM (Pluggable
+    Authentication Modules) module in a given PAM configuration file
+    are correctly specified. This template is using regular expression to match
+    the module parameters, and their respective values if any. A parameter
+    can be added if absent, modified when it's value doesn't match the expected
+    value, or removed when present. There are two ways to specify a PAM module
+    parameter, either using XCCDF variable or argument value matching.
+    Use XCCDF variable in a situation where the parameter value is expected
+    to be configurable/selectable by the user.
+    eg, `ucredit=<var_pam_password_ucredit.var>`. Otherwise, use argument value
+    matching is advised.
+
+-   Parameters:
+
+    -   **path** - the complete path to the PAM configuration file, eg.
+        `/etc/pam.d/common-password`
+    -   **type** - (required) PAM type, eg. `password`
+    -   **control_flag** - (required) PAM control flag, eg. `requisite`
+    -   **module** - (required) PAM module, eg. `pam_cracklib.so`
+    -   **arguments** - (optional) parameters or arguments for the PAM module.
+        These are optional. A PAM module can have multiple arguments, specified
+        as a list of dictionaries. Following are acceptable parameters for
+        each argument.
+
+        -  **variable** - (optional) PAM module argument/parameter name,
+           eg. `ucredit`, `ocredit`. Use this parameter in a situation where
+           the PAM module argument is configurable/selectable by the user.
+           `var_password_pam_<variable name>.var` XCCDF variable must be
+           defined when using this parameter. This parameter must be used
+           in conjunction with the **operation** parameter. Also, this
+           parameter is mutually exclusive with the **argument** parameter.
+        -  **operation** - (optional) OVAL operation,
+           eg. `less than or equal`. This parameter must be used in
+           conjunction with the **variable** parameter.
+        -  **argument** - (optional) the name of the PAM module argument,
+           eg. `dcredit`. It is mutually exclusive with the **variable**
+           parameter. Therefore, it must be absent when **variable** is
+           present.
+        -  **argument_match** - (optional) the regular expression to match the
+           argument value. It is optional when the argument has no value, or
+           when the argument is to be removed. In these cases the parameter
+           is not required and will be ignored if present. It is required when
+           a value argument needs to be added or modified.
+        -  **argument_value** - (optional) the expected argument value for a
+           value argument to be added or modifed, when the **argument_match**
+           regular expression failed to yield a match. The argument's existing
+           value will be replaced by **argument_value**. When the argument has
+           no value, or when the argument is to be removed, this parameter is
+           not required and will be ignored. It is required when a value
+           argument needs to be added or modified.
+        -  **new_argument** - (optional) the argument to be added if not
+           already present, eg, `dcredit=-1`. It is required when the argument
+           is not already present and needs to be added. 
+        -  **remove_argument** - (optional) the argument will be
+           removed, if the argument is present. This parameter must not be
+           specified when the argument is being added or modified.
+       
+-    Language: Ansible, OVAL
+
 #### sebool
 -   Checks values of SELinux booleans.
 

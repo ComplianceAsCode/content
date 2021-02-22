@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="accounts_passwords_pam_tally2" version="4">
+    {{{ oval_metadata("The number of allowed failed logins should be set correctly.") }}}
+    <criteria operator="AND" comment="Checks common to both scenarios">
+      <criterion test_ref="test_accounts_passwords_pam_tally2_deny_auth"
+      comment="Verify deny configuation of pam_tally2 in common-auth" />
+      <criterion test_ref="test_accounts_passwords_pam_tally2_deny_account"
+      comment="Verify deny configuation of pam_tally2 in common-account" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_deny_auth"
+  check="all" check_existence="all_exist"
+  comment="Verify deny configuation of pam_tally2" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_tally2_deny_auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_deny_auth" comment="Check deny configuration of pam_tally2" version="1">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(?:(?!\n)\s)+(((?:(?!\n)\s)?[^\n]+)?onerr=fail((?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+deny=[123]((\s+\S+)*\s*$))|(((?:(?!\n)\s)?[^\n]+)?deny=[123]((?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+onerr=fail((\s+\S+)*\s*$))</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_deny_account"
+  check="all" check_existence="all_exist"
+  comment="Verify deny configuation of pam_tally2_account" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_tally2_deny_account" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_deny_account" comment="Check deny configuration of pam_tally2" version="1">
+    <ind:filepath>/etc/pam.d/common-account</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*account(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(\s|$)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

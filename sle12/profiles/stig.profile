@@ -10,7 +10,16 @@ selections:
     - sshd_approved_macs=stig
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
-    #
+    - var_accounts_tmout=15_min
+    - var_password_pam_dcredit=1
+    - var_password_pam_delay=4000000
+    - var_password_pam_difok=8
+    - var_password_pam_lcredit=1
+    - var_password_pam_minlen=15
+    - var_password_pam_ocredit=1
+    - var_password_pam_remember=5
+    - var_password_pam_retry=3
+    - var_password_pam_ucredit=1
     # NOTE: must configure "var_audispd_remote_server" when
     # "auditd_audispd_configure_remote_server" rule is enabled
     #

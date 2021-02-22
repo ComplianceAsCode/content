@@ -1,0 +1,61 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Deny For Failed Password Attempts'
+
+description: |-
+    The SUSE operating system must lock an account after three consecutive
+    invalid access attempts.
+
+rationale: |-
+    By limiting the number of failed logon attempts, the risk of unauthorized
+    system access via user password guessing, otherwise known as brute-force
+    attacks, is reduced. Limits are imposed by locking the account.
+
+    To configure the operating system to lock an account after three
+    unsuccessful consecutive access attempts using <tt>pam_tally2.so</tt>,
+    modify the content of both <tt>/etc/pam.d/common-auth</tt> and
+    <tt>/etc/pam.d/common-account</tt> as follows:
+    <br /><br />
+    <ul>
+    <li> add or modify the <tt>pam_tally2.so</tt> module line in
+    <tt>/etc/pam.d/common-auth</tt> to ensure both <tt>onerr=fail</tt> and
+    <tt>deny=3</tt> are present. For example:
+    <pre>auth required pam_tally2.so onerr=fail silent audit deny=3</pre></li>
+    <li> add or modify the following line in <tt>/etc/pam.d/common-account</tt>:
+    <pre>account required pam_tally2.so</pre></li>
+    </ul>
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83055-4
+
+references:
+    stigid@sle12: SLES-12-010130
+    disa@sle12: CCI-000044
+    nist@sle12: AC-7(a)
+    srg@sle12: SRG-OS-000021-GPOS-00005
+
+ocil_clause: 'that is not the case'
+
+ocil: |-
+    Check that the systems locks a user account after three consecutive failed
+    login attempts with the following command:
+
+    <pre># grep pam_tally2.so /etc/pam.d/common-auth
+    auth required pam_tally2.so onerr=fail deny=3</pre>
+
+    If no line is returned, the line is commented out, or the line is missing
+    "onerr=fail", this is a finding.
+    If the line has "deny" set to a value other than 1, 2, or 3, this is a
+    finding.
+
+    Check that the system resets the failed login attempts counter after a
+    successful login using the following command:
+
+    <pre># grep pam_tally2.so /etc/pam.d/common-account
+    account required pam_tally2.so deny=3</pre>
+
+    If the account option is missing, or commented out, this is a finding.
