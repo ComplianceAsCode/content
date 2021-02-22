@@ -8,25 +8,17 @@ var ruleExceptions = []string{
 	"sshd_disable_compression",
 	"sshd_set_idle_timeout",
 	"sshd_set_keepalive",
-	"audit_delete_success",  // The remediation uses a macro, so it looks like as an invalid YAML
+	"audit_delete_success", // The remediation uses a macro, so it looks like as an invalid YAML
 }
 
 func TestUnit(t *testing.T) {
 	ctx := newUnitTestContext(t)
 	t.Run("Verify kubernetes files are correct", func(t *testing.T) {
-		filesTouchedByMCs := make(map[string]fileTracker)
 		ctx.assertWithRelevantContentFiles(func(path string) {
 			if isRuleException(path) {
 				return
 			}
-			obj := ctx.assertObjectIsValid(path)
-
-			if isMachineConfig(obj) {
-				mcfg := ctx.assertMachineConfigIsValid(obj, path)
-				if mcfgChangesFile(mcfg, ctx.t) {
-					ctx.assertFileDoesntDiffer(mcfg, path, filesTouchedByMCs)
-				}
-			}
+			ctx.assertObjectIsValid(path)
 		})
 	})
 

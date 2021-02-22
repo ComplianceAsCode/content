@@ -7,16 +7,11 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 
-	ign "github.com/coreos/ignition/config/v2_2/types"
-	mcfgapi "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io"
-	mcfgv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	"gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	k8syaml "k8s.io/apimachinery/pkg/util/yaml"
 )
 
@@ -34,11 +29,6 @@ type profile struct {
 type undesiredSelection struct {
 	Name   string
 	Reason string
-}
-
-type fileTracker struct {
-	FileInContent string
-	File          *ign.File
 }
 
 func newUnitTestContext(t *testing.T) *unitTestContext {
@@ -70,37 +60,6 @@ func (ctx *unitTestContext) assertProfileIsValid(path string) *profile {
 	}
 
 	return obj
-}
-
-func (ctx *unitTestContext) assertMachineConfigIsValid(obj *unstructured.Unstructured, path string) *mcfgv1.MachineConfig {
-	mcfg := &mcfgv1.MachineConfig{}
-	unstructured := obj.UnstructuredContent()
-	err := runtime.DefaultUnstructuredConverter.FromUnstructured(unstructured, mcfg)
-
-	if err != nil {
-		ctx.t.Errorf("The MachineConfig in the following path is not valid '%s': %s", path, err)
-		return nil
-	}
-	return mcfg
-}
-
-func (ctx *unitTestContext) assertFileDoesntDiffer(mcfg *mcfgv1.MachineConfig, contentPath string, affectedFiles map[string]fileTracker) {
-	files := mcfg.Spec.Config.Storage.Files
-	for i, file := range files {
-		trackedFile, found := affectedFiles[file.Path]
-		if found {
-			if !fileDiff(trackedFile.File, &file) {
-				ctx.t.Errorf("Files differ: %s - %s", trackedFile.FileInContent, contentPath)
-			}
-			//ctx.t.Logf("Files EQUAL: %s - %s", trackedFile.FileInContent, contentPath)
-		} else {
-			affectedFiles[file.Path] = fileTracker{FileInContent: contentPath, File: &files[i]}
-		}
-	}
-}
-
-func fileDiff(f1, f2 *ign.File) bool {
-	return reflect.DeepEqual(f1, f2)
 }
 
 func (ctx *unitTestContext) assertWithRelevantFiles(startDir string,
@@ -193,38 +152,6 @@ func isOCPProfileDir(path string, info os.FileInfo) bool {
 
 func isProfileFile(path string) bool {
 	return strings.HasSuffix(path, ".profile")
-}
-
-func isMachineConfig(obj *unstructured.Unstructured) bool {
-	objgvk := obj.GroupVersionKind()
-	return "MachineConfig" == objgvk.Kind && mcfgapi.GroupName == objgvk.Group
-}
-
-func mcfgChangesFile(mcfg *mcfgv1.MachineConfig, t *testing.T) bool {
-	if mcfg == nil {
-		return false
-	}
-
-	files := mcfg.Spec.Config.Storage.Files
-	if files == nil || len(files) == 0 {
-		return false
-	}
-
-	for _, file := range files {
-		if file.Mode != nil {
-			return true
-		}
-		if file.Group != nil {
-			return true
-		}
-		if file.User != nil {
-			return true
-		}
-		if file.Contents.Source != "" {
-			return true
-		}
-	}
-	return false
 }
 
 // Reads a YAML file and returns an unstructured object from it. This object

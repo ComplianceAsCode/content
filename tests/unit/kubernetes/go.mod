@@ -3,16 +3,18 @@ module ocp4unit
 go 1.13
 
 require (
-	github.com/ajeddeloh/go-json v0.0.0-20200220154158-5ae607161559 // indirect
-	github.com/coreos/ignition v0.35.0
+	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
-	github.com/openshift/machine-config-operator v4.2.0-alpha.0.0.20190917115525-033375cbe820+incompatible
-	github.com/vincent-petithory/dataurl v0.0.0-20191104211930-d1553a71de50 // indirect
-	go4.org v0.0.0-20200104003542-c7e774b10ea0 // indirect
+	github.com/json-iterator/go v1.1.8 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/testify v1.4.0 // indirect
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2 // indirect
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.8
-	k8s.io/api v0.17.2 // indirect
 	k8s.io/apimachinery v0.17.2
+	k8s.io/klog v1.0.0 // indirect
 )
 
 replace (
