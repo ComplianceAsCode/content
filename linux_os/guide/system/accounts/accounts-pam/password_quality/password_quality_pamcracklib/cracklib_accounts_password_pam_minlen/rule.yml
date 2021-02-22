@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Password Minimum Length'
+
+description: |-
+    The pam_cracklib module's <tt>minlen</tt> parameter controls requirements for
+    minimum characters required in a password. Add <tt>minlen=15</tt>
+     to set minimum password length requirements.
+
+rationale: |-
+    Password length is one factor of several that helps to determine
+    strength and how long it takes to crack a password. Use of more characters in
+    a password helps to exponentially increase the time and/or resources
+    required to compromise the password.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83188-3
+
+references:
+    disa@sle12: CCI-000205
+    stigid@sle12: SLES-12-010250
+    nist@sle12: IA-5(1)(a)
+    srg@sle12: SRG-OS-000078-GPOS-00046
+
+ocil_clause: 'minlen is not found or not set to the required value (or higher)'
+
+ocil: |-
+    To check how many characters are required in a password, run the following command:
+    <pre>$ grep pam_cracklib.so /etc/pam.d/common-password</pre>
+    Your output should contain <tt>minlen=15</tt>
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - argument: minlen 
+          argument_match: (?:[1-9][0-9]{2,}|[2-9][0-9]|1[5-9])
+          argument_value: 15
+          new_argument: minlen=15

@@ -4,19 +4,24 @@
 # complexity = low
 # disruption = low
 - block:
+    - name: "Find local mount points"
+      shell: df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev'
+      register: local_mount_points
+
     - name: "Detect the .shosts files on the system"
       find:
-          paths: /
+          paths: "{{ item }}"
           recurse: yes
           patterns: [".shosts"]
           hidden: yes
           file_type: "file"
       check_mode: no
+      with_items: "{{ local_mount_points.stdout_lines }}"
       register: shosts_locations
 
     - name: "Remove .shosts Files"
       file:
           path: "{{ item.path }}"
           state: absent
-      with_items: "{{ shosts_locations.files }}"
+      with_items: "{{ shosts_locations.results | map(attribute='files') | list }}"
       when: shosts_locations is success

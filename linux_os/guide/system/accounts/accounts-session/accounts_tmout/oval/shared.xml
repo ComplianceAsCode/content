@@ -1,10 +1,16 @@
 <def-group>
   <definition class="compliance" id="accounts_tmout" version="3">
     {{{ oval_metadata("Checks interactive shell timeout") }}}
+    {{% if product == "sle12" %}}
+    <criteria>
+      <criterion comment="TMOUT value in /etc/profile.d/autologout.sh &lt;= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
+    </criteria>
+    {{% else %}}
     <criteria operator="OR">
       <criterion comment="TMOUT value in /etc/profile &lt;= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
       <criterion comment="TMOUT value in /etc/profile.d/*.sh &lt;= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
     </criteria>
+    {{% endif %}}
   </definition>
 
   {{% macro test_tmout(test_stem, files) %}}
@@ -25,7 +31,11 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
+    {{% if product == "sle12" %}}
+    <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+).*$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}

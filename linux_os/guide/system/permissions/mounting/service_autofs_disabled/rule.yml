@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019,ubuntu1804
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019,ubuntu1804
 
 title: 'Disable the Automounter'
 
@@ -28,6 +28,7 @@ identifiers:
     cce@rhel7: CCE-27498-5
     cce@rhel8: CCE-80873-3
     cce@rhcos4: CCE-82663-6
+    cce@sle12: CCE-83070-3
 
 references:
     stigid@ol7: OL07-00-020110
@@ -46,6 +47,7 @@ references:
     iso27001-2013: A.11.2.6,A.13.1.1,A.13.2.1,A.18.1.4,A.6.2.1,A.6.2.2,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
     cis@sle15: 1.1.23
+    stigid@sle12: SLES-12-010590
     stigid@rhel8: RHEL-08-040070
 
 ocil: '{{{ ocil_service_disabled(service="autofs") }}}'

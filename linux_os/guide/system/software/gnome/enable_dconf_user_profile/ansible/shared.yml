@@ -1,0 +1,12 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+- name: "Configure GNOME3 DConf User Profile"
+  lineinfile:
+    dest: "/etc/dconf/profile/gdm"
+    line: "user-db:user\nsystem-db:gdm"
+    create: yes
+    state: present

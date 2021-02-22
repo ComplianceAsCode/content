@@ -1,0 +1,76 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Enable Smart Card Logins in PAM'
+
+description: |-
+    This requirement only applies to components where this is specific to the
+    function of the device or has the concept of an organizational user (e.g.,
+    VPN, proxy capability). This does not apply to authentication for the
+    purpose of configuring the device itself (management).
+
+    Check that the <tt>pam_pkcs11.so</tt> option is configured in the
+    <tt>etc/pam.d/common-auth</tt> file with the following command:
+
+    <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
+
+    auth sufficient pam_pkcs11.so</pre>
+
+    For general information about enabling smart card authentication, consult
+    the documentation at:
+    <ul>
+    <li><b>{{{ weblink(link="https://www.suse.com/c/configuring-smart-card-authentication-suse-linux-enterprise/") }}}</b></li>
+    </ul>
+
+rationale: |-
+    Smart card login provides two-factor authentication stronger than
+    that provided by a username and password combination. Smart cards leverage PKI
+    (public key infrastructure) in order to provide and verify credentials.
+
+    Using an authentication device, such as a CAC or token that is separate
+    from the information system, ensures that even if the information system is
+    compromised, that compromise will not affect credentials stored on the
+    authentication device.
+
+    Multifactor solutions that require devices separate from information
+    systems gaining access include, for example, hardware tokens providing
+    time-based or challenge-response authenticators and smart cards such as the
+    U.S. Government Personal Identity Verification card and the DoD Common
+    Access Card.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83208-9
+
+references:
+    disa@sle12: CCI-000765,CCI-000766,CCI-000767,CCI-000768,CCI-000187,CCI-001948,CCI-001953,CCI-001954
+    nist@sle12: IA-2(1),IA-2(1).1,IA-2(2),IA-2(2).1,IA-2(3),IA-2(3).1,IA-2(4),IA-2(4).1,IA-5(2),IA-5(2).1,IA-5(2)(c),IA-2(11),IA-2(12)
+    stigid@sle12: SLES-12-030520
+    srg@sle12: SRG-OS-000068-GPOS-00036,SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055,SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000375-GPOS-00162
+
+ocil_clause: 'non-exempt accounts are not using CAC authentication'
+
+ocil: |-
+    Remote access is access to DoD nonpublic information systems by an
+    authorized user (or an information system) communicating through an
+    external, non-organization-controlled network. Remote access methods
+    include, for example, dial-up, broadband, and wireless.
+
+    This requirement only applies to components where this is specific to the
+    function of the device or has the concept of an organizational user (e.g.,
+    VPN, proxy capability). This does not apply to authentication for the
+    purpose of configuring the device itself (management).
+
+    Check that the <tt>pam_pkcs11.so</tt> option is configured in the
+    <tt>etc/pam.d/common-auth</tt> file with the following command:
+
+    <pre># grep pam_pkcs11.so /etc/pam.d/common-auth
+
+    auth sufficient pam_pkcs11.so</pre>
+
+    If <tt>pam_pkcs11.so</tt> is not set in <tt>etc/pam.d/common-auth</tt> this
+    is a finding.
+
+platform: machine

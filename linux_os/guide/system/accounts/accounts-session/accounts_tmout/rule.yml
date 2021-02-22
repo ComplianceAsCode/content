@@ -1,14 +1,21 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019,rhcos4
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019,rhcos4
 
 title: 'Set Interactive Session Timeout'
 
 description: |-
     Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
     all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
+    {{% if product == "sle12" %}}
+    setting in <tt>/etc/profile.d/autologout.sh</tt> should read as follows:
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    readonly TMOUT
+    export TMOUT
+    {{% else %}}
     setting in <tt>/etc/profile</tt> should read as follows:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    {{% endif %}}
 
 rationale: |-
     Terminating an idle session within a short time period reduces
@@ -21,17 +28,21 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-27557-8
     cce@rhel8: CCE-80673-7
+    cce@sle12: CCE-83011-7
 
 references:
     stigid@ol7: OL07-00-040160
     cui: 3.1.11
     disa: CCI-002361,CCI-001133
+    disa@sle12: CCI-000057
     nist: AC-12,SC-10,AC-2(5),CM-6(a)
+    nist@sle12: AC-11(a)
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
     srg: SRG-OS-000163-GPOS-00072,SRG-OS-000029-GPOS-00010
     vmmsrg: SRG-OS-000163-VMM-000700,SRG-OS-000279-VMM-001010
     stigid@rhel7: RHEL-07-040160
+    stigid@sle12: SLES-12-010090
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     cobit5: DSS05.04,DSS05.10,DSS06.10
@@ -45,8 +56,16 @@ ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
 ocil: |-
     Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
     on the system:
+    {{% if product == "sle12" %}}
+    <pre>$ sudo grep TMOUT /etc/profile.d/autologout.sh</pre>
+    {{% else %}}
     <pre>$ sudo grep TMOUT /etc/profile</pre>
+    {{% endif %}}
     The output should return the following:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    {{% if product == "sle12" %}}
+    readonly TMOUT
+    export TMOUT
+    {{% endif %}}
 
 platform: machine

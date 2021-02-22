@@ -1,0 +1,59 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Password Strength Minimum Lowercase Characters'
+
+description: |-
+    The pam_cracklib module's <tt>lcredit=</tt> parameter controls requirements
+    for usage of lowercase letters in a password. When set to a negative
+    number, any password will be required to contain that many lowercase
+    characters. When set to a positive number, pam_cracklib will grant +1
+    additional length credit for each lowercase character.
+    Add <tt>lcredit=-1</tt> after pam_cracklib.so to require use of a
+    lowercase character in passwords.
+
+rationale: |-
+    Requiring a minimum number of lowercase characters makes password guessing
+    attacks more difficult by ensuring a larger search space.
+
+severity: medium
+
+identifiers:
+   cce@sle12: CCE-83167-7
+
+references:
+    disa@sle12: CCI-000193
+    nist@sle12: IA-5(a),IA-5(v)
+    srg@sle12: SRG-OS-000070-GPOS-00038
+    stigid@sle12: SLES-12-010160
+
+ocil_clause: 'lcredit is not found or not set to the required value'
+
+ocil: |-
+    Check that the operating system enforces password complexity by requiring
+    that at least one lower-case character be used by using the following
+    command:
+
+    <pre># grep pam_cracklib.so /etc/pam.d/common-password
+    password requisite pam_cracklib.so lcredit=-1</pre>
+
+    If the command does not return anything, the returned line is commented
+    out, or has a second column value different from "requisite", or does not
+    contain "lcredit=-1", this is a finding.
+
+    The DoD and FISMA require at least one lowercase character in a password.
+    This would appear as <tt>lcredit=-1</tt>.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - argument: lcredit
+          argument_match: -[1-9]+
+          argument_value: -1
+          new_argument: lcredit=-1

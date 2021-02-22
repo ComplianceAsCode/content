@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Password Strength Minimum Uppercase Characters'
+
+description: |-
+    The pam_cracklib module's <tt>ucredit=</tt> parameter controls requirements
+    for usage of uppercase letters in a password. When set to a negative
+    number, any password will be required to contain that many uppercase
+    characters. When set to a positive number, pam_cracklib will grant +1
+    additional length credit for each uppercase character.
+    Add <tt>ucredit=-1</tt> after pam_cracklib.so to require use of an upper
+    case character in passwords.
+
+rationale: |-
+    Requiring a minimum number of uppercase characters makes password guessing
+    attacks more difficult by ensuring a larger search space.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83166-9
+
+references:
+    disa@sle12: CCI-000192
+    nist@sle12: IA-5(a),IA-5(v)
+    stigid@sle12: SLES-12-010150
+    srg@sle12: SRG-OS-000069-GPOS-00037
+
+ocil_clause: 'ucredit is not found or not set to the required value'
+
+ocil: |-
+    To check how many uppercase characters are required in a password, run the
+    following command:
+    <pre>grep pam_cracklib.so /etc/pam.d/common-password
+    password requisite pam_cracklib.so ucredit=-1</pre>
+    The <tt>ucredit</tt> parameter (as a negative number) will indicate how
+    many uppercase characters are required.
+    The DoD and FISMA require at least one uppercase character in a password.
+    This would appear as <tt>ucredit=-1</tt>.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - argument: ucredit
+          argument_match: -[1-9]+
+          argument_value: -1
+          new_argument: ucredit=-1

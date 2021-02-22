@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Password Strength Minimum Digit Characters'
+
+description: |-
+    The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements
+    for usage of digits in a password. When set to a negative number, any
+    password will be required to contain that many digits. When set to a
+    positive number, pam_cracklib will grant +1 additional length credit for
+    each digit. Add <tt>dcredit=-1</tt> after pam_cracklib.so to require use of
+    a digit in passwords.
+
+rationale: |-
+    Requiring digits makes password guessing attacks more difficult by ensuring
+    a larger search space.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83168-5
+
+references:
+    disa@sle12: CCI-000194
+    nist@sle12: IA-5(a),IA-5(v)
+    stigid@sle12: SLES-12-010170
+    srg@sle12: SRG-OS-000071-GPOS-00039
+
+ocil_clause: 'dcredit is not found or not set to the required value'
+
+ocil: |-
+    To check how many digits are required in a password, run the following
+    command:
+    <pre># grep pam_cracklib /etc/pam.d/common-password
+    password requisite pam_cracklib.so dcredit=-1</pre>
+    The <tt>dcredit</tt> parameter (as a negative number) will indicate how
+    many digits are required.
+    The DoD requires at least one digit in a password.
+    This would appear as <tt>dcredit=-1</tt>.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-password
+      type: password
+      control_flag: requisite
+      module: pam_cracklib.so
+      arguments:
+        - argument: dcredit
+          argument_match: -[1-9]+
+          argument_value: -1
+          new_argument: dcredit=-1

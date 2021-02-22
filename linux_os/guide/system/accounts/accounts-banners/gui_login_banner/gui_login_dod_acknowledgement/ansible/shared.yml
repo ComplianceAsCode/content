@@ -1,0 +1,33 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+- name: Validate /etc/gdm/Xsession is executable
+  stat:
+    path: /etc/gdm/Xsession
+  register: file_stat
+
+- name: Validate /etc/gdm/Xsession is a shell script
+  lineinfile: 
+    dest: /etc/gdm/Xsession
+    line: "#!/bin/sh"
+  check_mode: yes
+  register: presence
+
+- name: Update file /etc/gdm/Xsession
+  blockinfile:
+    path: /etc/gdm/Xsession
+    block: |
+      if ! zenity --text-info \
+       --title "Consent" \
+       --filename=/etc/gdm/banner \
+       --no-markup \
+       --checkbox="Accept." 10 10; then
+        sleep 1;
+        exit 1;
+      fi
+    insertafter: "#!/bin/sh"
+    state: present
+  when: presence.changed == false and file_stat.stat.executable == true

@@ -1,13 +1,17 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4
+prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle12
 
 title: 'Ensure {{{ pkg_manager }}} Removes Previous Package Versions'
 
 description: |-
     <tt>{{{ pkg_manager }}}</tt> should be configured to remove previous software components after
     new versions have been installed. To configure <tt>{{{ pkg_manager }}}</tt> to remove the
+    {{% if product == "sle12" %}}
+    previous software components after updating, set the <tt>solver.upgradeRemoveDroppedPackages</tt>
+    {{% else %}}
     previous software components after updating, set the <tt>clean_requirements_on_remove</tt>
+    {{% endif %}}
     to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
 
 rationale: |-
@@ -19,6 +23,7 @@ severity: low
 identifiers:
     cce@rhel7: CCE-80346-0
     cce@rhel8: CCE-82476-3
+    cce@sle12: CCE-83186-7
 
 references:
     stigid@ol7: OL07-00-020200
@@ -29,19 +34,33 @@ references:
     srg: SRG-OS-000437-GPOS-00194
     vmmsrg: SRG-OS-000437-VMM-001760
     stigid@rhel7: RHEL-07-020200
+    stigid@sle12: SLES-12-010570
     isa-62443-2009: 4.2.3,4.2.3.12,4.2.3.7,4.2.3.9
     cobit5: APO12.01,APO12.02,APO12.03,APO12.04,BAI03.10,DSS05.01,DSS05.02
     iso27001-2013: A.12.6.1,A.14.2.3,A.16.1.3,A.18.2.2,A.18.2.3
     cis-csc: 18,20,4
     stigid@rhel8: RHEL-08-010440
 
-ocil_clause: 'clean_requirements_on_remove is not enabled or configured correctly'
+ocil_clause: |-
+    {{% if product == "sle12" %}}
+    'solver.upgradeRemoveDroppedPackages is not enabled or configured correctly'
+    {{% else %}}
+    'clean_requirements_on_remove is not enabled or configured correctly'
+    {{% endif %}}
 
 ocil: |-
+    {{% if product == "sle12" %}}
+    To verify that <tt>solver.upgradeRemoveDroppedPackages</tt> is configured properly, run the
+    following command:
+    <pre>$ grep upgradeRemoveDroppedPackages {{{ pkg_manager_config_file }}}</pre>
+    The output should return something similar to:
+    <pre>solver.upgradeRemoveDroppedPackages=true</pre>
+    {{% else %}}
     To verify that <tt>clean_requirements_on_remove</tt> is configured properly, run the
     following command:
     <pre>$ grep clean_requirements_on_remove {{{ pkg_manager_config_file }}}</pre>
     The output should return something similar to:
     <pre>clean_requirements_on_remove=1</pre>
+    {{% endif %}}
 
-platform: yum
+platform: machine

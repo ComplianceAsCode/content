@@ -1,0 +1,59 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Never Automatically Remove or Disable Emergency Administrator Accounts'
+
+description: |-
+    Emergency accounts are privileged accounts that are established in response
+    to crisis situations where the need for rapid account activation is
+    required. Therefore, emergency account activation may bypass normal account
+    authorization processes. If these accounts are automatically disabled,
+    system maintenance during emergencies may not be possible, thus adversely
+    affecting system availability. 
+
+    Check to see if an emergency administrator account password or account expires with the following command:
+
+    <pre># sudo chage -l [Emergency_Administrator]
+
+    Password expires:never</pre>
+
+    If <tt>Password expires</tt> or <tt>Account expires</tt> is set to anything other than <tt>never</tt>, this is a finding.
+
+
+rationale: |-
+    Emergency accounts are different from infrequently used accounts (i.e.,
+    local logon accounts used by the organization's system administrators when
+    network or normal logon/access is not available). Infrequently used
+    accounts are not subject to automatic termination dates. Emergency accounts
+    are accounts created in response to crisis situations, usually for use by
+    maintenance personnel. The automatic expiration or disabling time period
+    may be extended as needed until the crisis is resolved; however, it must
+    not be extended indefinitely. A permanent account should be established for
+    privileged users who need long-term maintenance accounts.
+
+    To address access requirements the SUSE operating system can be integrated
+    with enterprise-level authentication/access mechanisms that meet or exceed
+    access control policy requirements.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83175-0
+
+references:
+    disa@sle12: CCI-001682
+    nist@sle12: AC-2(2),AC-2(2).1(ii)
+    stigid@sle12: SLES-12-010330
+    srg@sle12: SRG-OS-000123-GPOS-00064
+
+ocil_clause: 'any emergency administrator account or account password has an expiration date set'
+
+ocil: |-
+    Check to see if an emergency administrator account password or account expires with the following command:
+
+    <pre># sudo chage -l [Emergency_Administrator]
+
+    Password expires:never</pre>
+
+    If <tt>Password expires</tt> or <tt>Account expires</tt> is set to anything other than <tt>never</tt>, this is a finding.

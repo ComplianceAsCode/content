@@ -1,0 +1,61 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Configure AIDE to Verify the Audit Tools'
+
+description: |-
+    The SUSE operating system file integrity tool must be configured to protect the integrity of the audit tools.
+
+rationale: |-
+    Protecting the integrity of the tools used for auditing purposes is a
+    critical step toward ensuring the integrity of audit information. Audit
+    information includes all information (e.g., audit records, audit settings,
+    and audit reports) needed to successfully audit information system
+    activity.
+
+    Audit tools include but are not limited to vendor-provided and open-source
+    audit tools needed to successfully view and manipulate audit information
+    system activity and records. Audit tools include custom queries and report
+    generators.
+
+    It is not uncommon for attackers to replace the audit tools or inject code
+    into the existing tools to provide the capability to hide or erase system
+    activity from the audit logs.
+
+    To address this risk, audit tools must be cryptographically signed to
+    provide the capability to identify when the audit tools have been modified,
+    manipulated, or replaced. An example is a checksum hash of the file or
+    files.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83204-8
+
+references:
+    disa@sle12: CCI-001496
+    nist@sle12: AU-9(3),AU-9(3).1
+    stigid@sle12: SLES-12-010540
+    srg@sle12: SRG-OS-000278-GPOS-00108
+
+ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
+
+ocil: |-
+    Check that AIDE is properly configured to protect the integrity of the
+    audit tools by running the following command:
+
+    <pre># sudo cat /etc/aide.conf | grep /usr/sbin/au
+
+    /usr/sbin/auditctl p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+    /usr/sbin/auditd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+    /usr/sbin/ausearch p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+    /usr/sbin/aureport p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+    /usr/sbin/autrace p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+    /usr/sbin/audispd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+    /usr/sbin/augenrules p+i+n+u+g+s+b+acl+selinux+xattrs+sha512</pre>
+
+    If AIDE is configured properly to protect the integrity of the audit tools,
+    all lines listed above will be returned from the command.
+
+    If one or more lines are missing, this is a finding.

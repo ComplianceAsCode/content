@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Verify All Account Password Hashes are Shadowed with SHA512'
+
+description: |-
+    Verify the SUSE operating system requires the shadow password suite
+    configuration be set to encrypt interactive user passwords using a strong
+    cryptographic hash.
+    Check that the interactive user account passwords are using a strong
+    password hash with the following command:
+    <pre># sudo cut -d: -f2 /etc/shadow
+    $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
+    Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
+    available for logon and are not evaluated.
+    If any interactive user password hash does not begin with <tt>$6</tt>,
+    this is a finding.
+
+rationale: |-
+    The system must use a strong hashing algorithm to store the password. The
+    system must use a sufficient number of hashing rounds to ensure the required
+    level of entropy.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83038-0 
+
+references:
+    nist: IA-5(1)(c),IA-5(1).1(v),IA-7,IA-7.1
+    stigid@sle12: SLES-12-010220
+    disa@sle12: CCI-000196,CCI-000803
+    srg@sle12:  SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
+    
+
+ocil_clause: 'passwords hashed with an unauthorized algorithm are found in /etc/shadow'
+
+ocil: |-
+    Check that the interactive user account passwords are using a strong
+    password hash with the following command:
+
+    <pre># sudo cut -d: -f2 /etc/shadow
+
+    $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/</pre>
+
+    Password hashes <tt>!</tt> or <tt>*</tt> indicate inactive accounts not
+    available for logon and are not evaluated.
+
+    If any interactive user password hash does not begin with <tt>$6</tt>,
+    this is a finding.

@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Enforce Delay After Failed Logon Attempts'
+
+description: |-
+    To configure the system to introduce a delay after failed logon attempts,
+    add or correct the <tt>pam_faildelay</tt> settings in
+    <tt>/etc/pam.d/common-auth</tt> to make sure its <tt>delay</tt> parameter
+    is at least four(4) seconds. For example:
+    <pre>auth required pam_faildelay.so delay=4000000</pre>
+
+rationale: |-
+    Limiting the number of logon attempts over a certain time interval reduces
+    the chances that an unauthorized user may gain access to an account.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83176-8
+
+references:
+    stigid@sle12: SLES-12-010370
+    disa@sle12: CCI-000366
+    nist@sle12: CM-6(b),CM-6.1(iv)
+    srg@sle12: SRG-OS-000480-GPOS-00226
+
+ocil_clause: 'that is not the case'
+
+ocil: |-
+    Verify the SUSE operating system enforces a delay of at least four seconds
+    between logon prompts following a failed logon attempt.
+
+    <pre># grep pam_faildelay /etc/pam.d/common-auth
+    auth required pam_faildelay.so delay=4000000</pre>
+
+    If the value of "delay" is not set to "4000000" or greater, "delay" is
+    commented out, "delay" is missing, or the "pam_faildelay" line is missing
+    completely, this is a finding.
+
+template:
+    name: pam_options
+    vars:
+      path: /etc/pam.d/common-auth
+      type: auth
+      control_flag: required
+      module: pam_faildelay.so
+      arguments:
+        - argument: delay
+          argument_match: (?:[4-9]\d{6}|\d{8,})
+          argument_value: 4000000
+          new_argument: delay=4000000

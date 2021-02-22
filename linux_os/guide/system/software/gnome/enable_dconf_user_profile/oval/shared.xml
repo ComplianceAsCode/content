@@ -13,8 +13,13 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_dconf_user_profile"
   version="2">
-    <ind:filepath>/etc/dconf/profile/user</ind:filepath>
-    <ind:pattern operation="pattern match">^user-db:user\nsystem-db:local$</ind:pattern>
+    {{% if product == "sle12" %}}
+      <ind:filepath>/etc/dconf/profile/gdm</ind:filepath>
+      <ind:pattern operation="pattern match">^user-db:user\nsystem-db:gdm$</ind:pattern>
+    {{% else %}}
+      <ind:filepath>/etc/dconf/profile/user</ind:filepath>
+      <ind:pattern operation="pattern match">^user-db:user\nsystem-db:local$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

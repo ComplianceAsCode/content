@@ -1,0 +1,34 @@
+{{% if CONTROL_FLAG is defined and CONTROL_FLAG|string|length %}}
+   {{% set MATCH_CONTROL_FLAG = CONTROL_FLAG %}}
+{{% else %}}
+   {{% set MATCH_CONTROL_FLAG = '\S+' %}}
+{{% endif %}}
+
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="3">
+    {{{ oval_metadata("Configure {{{ MODULE }}} module") }}}
+    <criteria operator="AND" comment="Make sure arguments are properly configured">
+{{% for arg in ARGUMENTS %}}
+      <criterion test_ref="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}" comment="Verify {{{ arg['argument'] }}} is set to the desired state" />
+{{% endfor %}}
+    </criteria>
+  </definition>
+
+{{% for arg in ARGUMENTS %}}
+  <ind:textfilecontent54_test id="test_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}"
+  check="all" check_existence={{% if arg['remove_argument']|length %}}"none_exist"{{% else %}}"all_exist"{{% endif %}}
+  comment="Verify {{{ arg['argument'] }}} configuation of {{{ MODULE }}}" version="1">
+    <ind:object object_ref="object_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_pam_{{{ TYPE|lower }}}_{{{ MODULE|lower|replace('.so', '') }}}_{{{ arg['argument']|lower }}}" comment="Check {{{ arg['argument'] }}} configuration of PAM {{{ MODULE }}} module" version="1">
+    <ind:filepath>{{{ PATH }}}</ind:filepath>
+{{% if arg['argument_match']|length %}}
+    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}(?:(?!\n)\s)+{{{ MATCH_CONTROL_FLAG }}}(?:(?!\n)\s)+{{{ MODULE }}}((?!\n)\s[^\n]+)?(?!\n)\s+{{{ arg['argument'] }}}={{{ arg['argument_match'] }}}((\s+\S+)*\s*\\*\s*)$</ind:pattern>
+{{% else %}}
+    <ind:pattern operation="pattern match">^\s*{{{ TYPE }}}(?:(?!\n)\s)+{{{ MATCH_CONTROL_FLAG }}}(?:(?!\n)\s)+{{{ MODULE }}}((?!\n)\s[^\n]+)?(?!\n)\s+{{{ arg['argument'] }}}((\s+\S+)*\s*\\*\s*)$</ind:pattern>
+{{% endif %}}
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endfor %}}
+</def-group>
