@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,sle12
+prodtype: sle12
 
-title: 'Configure Smart Card Certificate Status Checking'
+title: 'Configure Smart Card Certificate Authority Validation'
 
 description: |-
     Configure the operating system to do certificate status checking for PKI
     authentication. Modify all of the <tt>cert_policy</tt> lines in
-    <tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> to include <tt>ocsp_on</tt> like so:
+    <tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> to include <tt>ca</tt> like so:
     <pre>cert_policy = ca, ocsp_on, signature;</pre>
 
 rationale: |-
@@ -25,18 +25,15 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-80520-0
-    cce@rhel8: CCE-82475-5
-    cce@sle12: CCE-83178-4
+    cce@sle12: CCE-83198-2
 
 references:
-    stigid@ol7: OL07-00-041003
-    disa: CCI-001948,CCI-001953,CCI-001954
-    srg: SRG-OS-000375-GPOS-00160,SRG-OS-000376-GPOS-00161,SRG-OS-000377-GPOS-00162,SRG-OS-000384-GPOS-00167
-    stigid@rhel7: RHEL-07-041003
-    stigid@sle12: SLES-12-030510
+    disa@sle12: CCI-000185,CCI-001991
+    nist@sle12: IA-5 (2),IA-5(2)(a),IA-5 (2).1,IA-5(2)(d)
+    stigid@sle12: SLES-12-030530
+    srg@sle12: SRG-OS-000066-GPOS-00034,SRG-OS-000384-GPOS-00167
 
-ocil_clause: 'ocsp_on is not configured'
+ocil_clause: 'ca is not configured'
 
 ocil: |-
     To verify the operating system implements certificate status checking for PKI
@@ -46,3 +43,5 @@ ocil: |-
     <pre>cert_policy = ca, ocsp_on, signature;
     cert_policy = ca, ocsp_on, signature;
     cert_policy = ca, ocsp_on, signature;</pre>
+
+platform: machine

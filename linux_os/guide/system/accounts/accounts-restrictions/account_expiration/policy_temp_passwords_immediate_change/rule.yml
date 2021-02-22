@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Policy Requires Immediate Change of Temporary Passwords'
+
+description: |-
+    Temporary passwords for SUSE operating system logons must require an
+    immediate change to a permanent password.
+
+    Verify that a policy exists that ensures when a user is created, it is
+    creating using a method that forces a user to change their password upon
+    their next login.
+
+
+rationale: |-
+    Without providing this capability, an account may be created without a
+    password. Nonrepudiation cannot be guaranteed once an account is created if
+    a user is not forced to change the temporary password upon initial logon.
+
+    Temporary passwords are typically used to allow access when new accounts
+    are created or passwords are changed. It is common practice for
+    administrators to create temporary passwords for user accounts that allow
+    the users to log on, yet force them to change the password once they have
+    successfully authenticated.
+
+severity: medium
+
+identifiers:
+    cce@sle12: CCE-83205-5
+
+references:
+    disa@sle12: CCI-002041
+    nist@sle12: IA-5(1)(f)
+    stigid@sle12: SLES-12-010660
+    srg@sle12: SRG-OS-000380-GPOS-00165
+
+ocil_clause: 'any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame'
+
+ocil: |-
+    Verify that a policy exists that ensures when a user is created, it is
+    creating using a method that forces a user to change their password upon
+    their next login.
+
+    Configure the SUSE operating system to allow the use of a temporary
+    password for system logons with an immediate change to a permanent
+    password.
+
+    Using one of the acceptable methods listed below, force a user to change
+    their password on their next logon by replacing "[UserName]" in the one of the
+    following commands:
+
+    <pre># chage -d 0 [UserName]
+    # passwd -e [UserName]</pre>

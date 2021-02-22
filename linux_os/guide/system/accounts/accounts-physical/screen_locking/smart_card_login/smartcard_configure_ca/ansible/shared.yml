@@ -1,0 +1,22 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: package facts
+  package_facts:
+
+- name: Replace 'none' from cert_policy
+  replace:
+    path: /etc/pam_pkcs11/pam_pkcs11.conf
+    regexp: (^\s*cert_policy\s*=\s*)none\s*;(\s*$)
+    replace: \g<1>ocsp_on,ca,signature;\g<2>
+  when: "'pam_pkcs11' in ansible_facts.packages"
+
+- name: Add 'ca' parameter for cert_policy in /etc/pam_pkcs11/pam_pkcs11.conf
+  replace:
+    path: /etc/pam_pkcs11/pam_pkcs11.conf
+    regexp: (^\s*cert_policy\s*=\s*)(?!.*ca)(.*)
+    replace: \g<1>ca,\g<2>
+  when: "'pam_pkcs11' in ansible_facts.packages"
