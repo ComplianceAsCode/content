@@ -113,6 +113,7 @@ selections:
     - display_login_attempts
     - enable_dconf_user_profile
     - ensure_gpgcheck_globally_activated
+    - ensure_rtc_utc_configuration
     - file_etc_security_opasswd
     - file_permissions_home_directories
     - file_permissions_sshd_private_key
