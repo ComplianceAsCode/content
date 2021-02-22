@@ -1,0 +1,43 @@
+<def-group>
+  <definition class="compliance" id="gui_login_dod_acknowledgement" version="1">
+    {{{ oval_metadata("Display of a standardized and approved use notification before granting access to the SUSE operating system ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.") }}}
+    <criteria operator="OR">
+      <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
+      <criteria comment="GUI Banner acknowledgement" operator="AND">
+        <criterion comment="GUI Banner acknowledgement is active" test_ref="test_banner_gui_acknowledgement" />
+        <criterion comment="/etc/gdm/Xsession world executable and owned by root" test_ref="test_banner_gui_acknowledgement_exec" />
+      </criteria>
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/gdm/Xsession world executable and owned by root" id="test_banner_gui_acknowledgement_exec" version="1">
+    <unix:object object_ref="object_banner_gui_acknowledgement_file" />
+    <unix:state state_ref="state_banner_gui_acknowledgement_file" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/gdm/Xsession" id="object_banner_gui_acknowledgement_file" version="1">
+      <unix:filepath>/etc/gdm/Xsession</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_banner_gui_acknowledgement_file" version="1">
+    <unix:uread datatype="boolean">true</unix:uread>
+    <!-- don't care about uwrite-->
+    <unix:uexec datatype="boolean">true</unix:uexec>
+    <unix:gread datatype="boolean">true</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">true</unix:gexec>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">true</unix:oexec>
+  </unix:file_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="GUI Banner acknowledgement is active"
+  id="test_banner_gui_acknowledgement" version="1">
+    <ind:object object_ref="obj_banner_gui_acknowledgement" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_banner_gui_acknowledgement" version="1">
+    <ind:filepath>/etc/gdm/Xsession</ind:filepath>
+    <ind:pattern operation="pattern match">\A#!/bin/sh\n(# BEGIN ANSIBLE MANAGED BLOCK\n)?\s*if ! zenity --text-info(\\\n|(?!\n)\s)+--title "Consent"(\\\n|(?!\n)\s)+--filename=/etc/gdm/banner(\\\n|(?!\n)\s)+--no-markup(\\\n|(?!\n)\s)+--checkbox="Accept." 10 10; then\s+sleep 1[;\n]\s*exit 1[;\n]\s*fi(# END ANSIBLE MANAGED BLOCK\n)?\s</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

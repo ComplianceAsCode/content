@@ -1,0 +1,23 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Service facts
+  service_facts:
+
+- name: Configure banner_file setting
+  lineinfile:
+    dest: /etc/vsftpd.conf
+    line: banner_file=/etc/issue
+    regexp: '^\s*banner_file\s*=\s*.*$'
+    state: present
+  register: banner_file_update_result
+  when: ansible_facts.services["vsftpd.service"] is defined
+
+- name: Restart vsftpd
+  systemd:
+    name: vsftpd.service
+    state: restarted
+  when: banner_file_update_result.changed and ansible_facts.services["vsftpd.service"].state == "running"

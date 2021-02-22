@@ -90,7 +90,6 @@ selections:
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_space_left
     - banner_etc_issue
-    - banner_etc_motd
     - chronyd_or_ntpd_set_maxpoll
     - dir_perms_world_writable_sticky_bits
     - disable_ctrlaltdel_reboot
