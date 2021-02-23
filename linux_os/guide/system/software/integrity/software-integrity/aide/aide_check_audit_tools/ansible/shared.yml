@@ -1,0 +1,34 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Install aide package
+  zypper:
+    name: aide
+    state: latest
+
+- name: Set audit_tools fact
+  set_fact:
+    audit_tools:
+      - /usr/sbin/audispd
+      - /usr/sbin/auditctl
+      - /usr/sbin/auditd
+      - /usr/sbin/augenrules
+      - /usr/sbin/aureport
+      - /usr/sbin/ausearch
+      - /usr/sbin/autrace
+
+- name: Ensure existing AIDE configuration for audit tools are correct
+  lineinfile:
+    path: /etc/aide.conf
+    regexp: ^{{ item }}\s
+    line: "{{ item }} p+i+n+u+g+s+b+acl+selinux+xattrs+sha512"
+  with_items: "{{ audit_tools }}"
+
+- name: Configure AIDE to properly protect audit tools
+  lineinfile:
+    path: /etc/aide.conf
+    line: "{{ item }} p+i+n+u+g+s+b+acl+selinux+xattrs+sha512"
+  with_items: "{{ audit_tools }}"
