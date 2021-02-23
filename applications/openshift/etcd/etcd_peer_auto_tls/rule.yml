@@ -29,7 +29,7 @@ references:
 ocil_clause: 'the etcd is using peer self-signed certificates'
 
 ocil: |-
-    Run the following command on the master node(s):
+    Run the following command:
     <pre>$ oc get cm/etcd-pod -n openshift-etcd -o yaml</pre>
     The etcd pod configuration contained in the configmap should not
     contain the <tt>--peer-auto-tls=true</tt> flag.

@@ -6,7 +6,7 @@ title: 'kubelet - Disable the Read-Only Port'
 
 description: |-
     To disable the read-only port, edit the kubelet configuration
-    Edit the <tt>openshift-kube-apiserver</tt> configmap on the master node(s)
+    Edit the <tt>openshift-kube-apiserver</tt> configmap
     and set the <tt>kubelet-read-only-port</tt> parameter to 0:
     <pre>
     "apiServerArguments":{
@@ -28,7 +28,7 @@ severity: medium
 ocil_clause: 'the read-only port is not disabled'
 
 ocil: |-
-    Run the following command on the kubelet node(s):
+    Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments["kubelet-read-only-port"]'</pre>
     The output should be <tt>0</tt>.
 
