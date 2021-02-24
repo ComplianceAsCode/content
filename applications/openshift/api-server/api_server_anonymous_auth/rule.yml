@@ -42,8 +42,29 @@ ocil_clause: 'anonymous requests are not authorized'
 ocil: |-
     Run the following command to view the authorization rules for anonymous requests:
     <pre>$ oc describe clusterrolebindings</pre>
+    Make sure that there exists at least one <tt>clusterrolebinding</tt> that binds
+    either the <tt>system:unauthenticated</tt> group or the <tt>system:anonymous</tt>
+    user.
     To test that an anonymous request is authorized to access the <tt>readyz</tt>
     endpoint, run:
     <pre>$ oc get --as="system:anonymous" --raw='/readyz?verbose'</pre>
     In contrast, a request to list all projects should not be authorized:
     <pre>$ oc get --as="system:anonymous" projects</pre>
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/rbac.authorization.k8s.io/v1/clusterrolebindings") | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: "true"
+        filepath: /apis/rbac.authorization.k8s.io/v1/clusterrolebindings
+        yamlpath: ".items[:]['subjects'][:].name"
+        check_existence: "at_least_one_exists"
+        entity_check: "at least one"
+        values:
+          - value: "system:unauthenticated"
+            entity_check: "at least one"
+            operation: "pattern match"
+            check_existence: "at_least_one_exists"
