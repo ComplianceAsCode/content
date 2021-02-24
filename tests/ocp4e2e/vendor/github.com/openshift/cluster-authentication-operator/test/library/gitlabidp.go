@@ -41,7 +41,7 @@ func AddGitlabIDP( // TODO: possibly make this be a wrapper to a function to sim
 
 	nsName, gitlabHost, cleanup := deployPod(t, kubeClients, routeClient,
 		"gitlab",
-		"docker.io/gitlab/gitlab-ce:latest",
+		"docker.io/gitlab/gitlab-ce:13.8.4-ce.0",
 		[]corev1.EnvVar{
 			// configure password for GitLab root user
 			{Name: "GITLAB_OMNIBUS_CONFIG", Value: "gitlab_rails['initial_root_password']='password';"},
