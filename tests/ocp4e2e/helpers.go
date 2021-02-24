@@ -577,6 +577,28 @@ func (ctx *e2econtext) getRemediationsForSuite(t *testing.T, s string) int {
 	return len(remList.Items)
 }
 
+func (ctx *e2econtext) suiteHasRemediationsWithUnmetDependencies(t *testing.T, s string) bool {
+	remList := &cmpv1alpha1.ComplianceRemediationList{}
+	labelSelector, _ := labels.Parse(cmpv1alpha1.SuiteLabel + "=" + s + "," +
+		cmpv1alpha1.RemediationHasUnmetDependenciesLabel)
+	opts := &client.ListOptions{
+		LabelSelector: labelSelector,
+	}
+	err := ctx.dynclient.List(goctx.TODO(), remList, opts)
+	if err != nil {
+		t.Fatalf("Couldn't get remediation list")
+	}
+	if len(remList.Items) > 0 {
+		t.Logf("Remediations from ComplianceSuite: %s", s)
+	} else {
+		t.Log("This suite didn't generate remediations")
+	}
+	for _, rem := range remList.Items {
+		t.Logf("- %s", rem.Name)
+	}
+	return len(remList.Items) > 0
+}
+
 func (ctx *e2econtext) getFailuresForSuite(t *testing.T, s string) int {
 	failList := &cmpv1alpha1.ComplianceCheckResultList{}
 	matchLabels := dynclient.MatchingLabels{

@@ -19,6 +19,17 @@ const SuiteScriptLabel = "compliance.openshift.io/suite-script"
 // added by the ComplianceSuite controller in order to delete resources.
 const SuiteFinalizer = "suite.finalizers.compliance.openshift.io"
 
+// ApplyRemediationsAnnotation is an annotation that, when set on a ComplianceSuite
+// will apply all the remediations that were generated. It will be removed once
+// they've been applied.
+const ApplyRemediationsAnnotation = "compliance.openshift.io/apply-remediations"
+
+// RemoveOutdatedAnnotation is an annotation that, when set on a ComplianceSuite
+// will automatically remove outdated remediations so the operator will apply
+// only the up-to-date ones. It'll be removed once the outdated remediations have
+// been removed.
+const RemoveOutdatedAnnotation = "compliance.openshift.io/remove-outdated"
+
 // ComplianceScanSpecWrapper provides a ComplianceScanSpec and a Name
 // +k8s:openapi-gen=true
 type ComplianceScanSpecWrapper struct {
@@ -174,4 +185,33 @@ func (s *ComplianceSuite) LowestCommonResult() ComplianceScanStatusResult {
 func (s *ComplianceSuite) IsResultAvailable() bool {
 	result := s.LowestCommonResult()
 	return result != "" && result != ResultNotAvailable
+}
+
+// ShouldApplyRemediations returns whether the ComplianceSuite requires
+// that the CoplianceRemediations that were generated from it be
+// applied.
+func (s *ComplianceSuite) ShouldApplyRemediations() bool {
+	// autoApplyRemediations from the spec takes precedence
+	if s.Spec.AutoApplyRemediations {
+		return true
+	}
+	return s.ApplyRemediationsAnnotationSet()
+}
+
+func (s *ComplianceSuite) ApplyRemediationsAnnotationSet() bool {
+	annotations := s.GetAnnotations()
+	if annotations == nil {
+		return false
+	}
+	_, ok := annotations[ApplyRemediationsAnnotation]
+	return ok
+}
+
+func (s *ComplianceSuite) RemoveOutdated() bool {
+	annotations := s.GetAnnotations()
+	if annotations == nil {
+		return false
+	}
+	_, ok := annotations[RemoveOutdatedAnnotation]
+	return ok
 }
