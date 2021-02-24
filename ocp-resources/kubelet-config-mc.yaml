@@ -34,6 +34,11 @@ spec:
     imageMinimumGCAge: 5m
     imageGCHighThresholdPercent: 80
     imageGCLowThresholdPercent: 75
+    tlsCipherSuites:
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
@@ -68,3 +73,8 @@ spec:
     imageMinimumGCAge: 5m
     imageGCHighThresholdPercent: 80
     imageGCLowThresholdPercent: 75
+    tlsCipherSuites:
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
