@@ -14,6 +14,11 @@ type ComplianceCheckStatus string
 const ComplianceCheckResultStatusLabel = "compliance.openshift.io/check-status"
 const ComplianceCheckResultSeverityLabel = "compliance.openshift.io/check-severity"
 
+// ComplianceCheckResultLabel defines a label that will be included in the
+// ComplianceCheckResult objects. It indicates whether the result has an automated
+// remediation or not.
+const ComplianceCheckResultHasRemediation = "compliance.openshift.io/automated-remediation"
+
 // ComplianceCheckInconsistentLabel signifies that the check's results were not consistent
 // across the target nodes
 const ComplianceCheckInconsistentLabel = "compliance.openshift.io/inconsistent-check"
@@ -41,6 +46,8 @@ const (
 	CheckResultFail ComplianceCheckStatus = "FAIL"
 	// The check ran to completion and found something not severe enough to be considered error
 	CheckResultInfo ComplianceCheckStatus = "INFO"
+	// The check ran to completion and found something not severe enough to be considered error
+	CheckResultManual ComplianceCheckStatus = "MANUAL"
 	// The check ran, but could not complete properly
 	CheckResultError ComplianceCheckStatus = "ERROR"
 	// The check didn't run because it is not applicable or not selected
@@ -79,6 +86,9 @@ type ComplianceCheckResult struct {
 	Severity ComplianceCheckResultSeverity `json:"severity"`
 	// A human-readable check description, what and why it does
 	Description string `json:"description,omitempty"`
+	// How to evaluate if the rule status manually. If no automatic test is present, the rule status will be MANUAL
+	// and the administrator should follow these instructions.
+	Instructions string `json:"instructions,omitempty"`
 }
 
 // IDToDNSFriendlyName gets the ID from the scan and returns a DNS
