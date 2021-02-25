@@ -354,6 +354,8 @@ def walk_dir(ssg_root, product, function):
 
     data = None
     for root, dirs, files in os.walk(product_guide):
+        dirs.sort()
+        files.sort()
         for filename in files:
             path = os.path.join(root, filename)
 

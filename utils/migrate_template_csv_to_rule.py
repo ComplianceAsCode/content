@@ -627,7 +627,7 @@ class ProductCSVData(object):
     def _identify_csv_files(self, csv_dir):
         try:
             # get all CSV files
-            product_csvs = [csv_filename for csv_filename in os.listdir(csv_dir)
+            product_csvs = [csv_filename for csv_filename in sorted(os.listdir(csv_dir))
                             if csv_filename.endswith(".csv")]
         except FileNotFoundError as not_found:
             product_csvs = []
@@ -816,6 +816,8 @@ def walk_benchmarks(benchmark_dir, product, override_template=False):
     csv_data = product.csv_data
 
     for root, dirs, files in os.walk(benchmark_dir):
+        dirs.sort()
+        files.sort()
         rule_id = os.path.basename(root)
         if rule_id in ["oval", "bash", "ansible", "tests"]:
             continue

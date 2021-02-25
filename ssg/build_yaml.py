@@ -682,7 +682,7 @@ class Benchmark(object):
         return benchmark
 
     def add_profiles_from_dir(self, dir_, env_yaml):
-        for dir_item in os.listdir(dir_):
+        for dir_item in sorted(os.listdir(dir_)):
             dir_item_path = os.path.join(dir_, dir_item)
             if not os.path.isfile(dir_item_path):
                 continue
@@ -1344,7 +1344,7 @@ class DirectoryLoader(object):
         self.parent_group = None
 
     def _collect_items_to_load(self, guide_directory):
-        for dir_item in os.listdir(guide_directory):
+        for dir_item in sorted(os.listdir(guide_directory)):
             dir_item_path = os.path.join(guide_directory, dir_item)
             _, extension = os.path.splitext(dir_item)
 

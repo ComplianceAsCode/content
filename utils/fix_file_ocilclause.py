@@ -18,7 +18,9 @@ def _create_profile_cache(ssg_root):
     for product in product_list:
         found_obj_name = False
         prod_profiles_dir = os.path.join(ssg_root, product, "profiles")
-        for _, _, files in os.walk(prod_profiles_dir):
+        for _, dirs, files in os.walk(prod_profiles_dir):
+            dirs.sort()
+            files.sort()
             for filename in files:
                 profile_path = os.path.join(prod_profiles_dir, filename)
                 parsed_profile = yaml.load(open(profile_path, 'r'))
@@ -217,6 +219,8 @@ def walk_dir(ssg_root, function):
 
     data = None
     for root, dirs, files in os.walk(product_guide):
+        dirs.sort()
+        files.sort()
         for filename in files:
             path = os.path.join(root, filename)
 

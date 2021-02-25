@@ -96,7 +96,8 @@ def find_rules(directory, func):
     product_yaml = None
     product_yaml_path = None
     for root, dirs, files in os.walk(directory):
-
+        dirs.sort()
+        files.sort()
         if "product.yml" in files:
             product_yaml_path = os.path.join(root, "product.yml")
             product_yaml = yaml.open_raw(product_yaml_path)
