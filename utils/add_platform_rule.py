@@ -59,7 +59,7 @@ COMPLIANT
 
 PLATFORM_RULE_DIR = 'applications/openshift'
 OSCAP_TEST_IMAGE = 'quay.io/compliance-operator/openscap-ocp:1.3.4'
-OSCAP_CMD_OPTS = 'oscap xccdf eval --verbose INFO --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_test --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
+OSCAP_CMD_TEMPLATE = 'oscap xccdf eval --verbose %s --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_test --results-arf /tmp/report-arf.xml /content/ssg-ocp4-ds.xml'
 PROFILE_PATH = 'ocp4/profiles/test.profile'
 
 MOCK_VERSION = ('''status:
@@ -325,8 +325,9 @@ def testFunc(args):
         with open(version_dir + '/openshift-apiserver', 'w') as f:
             f.write(MOCK_VERSION)
 
+    oscap_cmd_opts = OSCAP_CMD_TEMPLATE % (args.verbosity)
     pod_cmd = 'podman run -it --security-opt label=disable -v "%s:/content" -v "%s:/kubernetes-api-resources" %s %s' % (args.contentdir,
-                                                                                                                        args.objectdir, OSCAP_TEST_IMAGE, OSCAP_CMD_OPTS)
+                                                                                                                        args.objectdir, OSCAP_TEST_IMAGE, oscap_cmd_opts)
     print(subprocess.getoutput(pod_cmd))
 
 
@@ -393,6 +394,9 @@ def main():
         '--skip-build', default=False, action="store_true", help='Skip building the datastream. Default is false.')
     test_parser.add_argument('--objectdir', default="/tmp",
                              help='The path to a directory structure of yaml objects to test against.')
+    test_parser.add_argument('--verbosity', default="INFO",
+                             choices=['INFO', 'DEVEL'],
+                             help='How verbose should OpenScap be')
     test_parser.set_defaults(func=testFunc)
 
     args = parser.parse_args()
