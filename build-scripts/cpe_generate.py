@@ -141,6 +141,8 @@ def main():
             refovalfilename = check.text
             refovalfilefound = False
             for dirpath, dirnames, filenames in os.walk(os.curdir, topdown=True):
+                dirnames.sort()
+                filenames.sort()
                 # Case when referenced OVAL file exists
                 for location in fnmatch.filter(filenames, refovalfilename + '.xml'):
                     refovalfilefound = True
@@ -153,6 +155,8 @@ def main():
                 os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
             if shared_dir is not None:
                 for dirpath, dirnames, filenames in os.walk(shared_dir, topdown=True):
+                    dirnames.sort()
+                    filenames.sort()
                     # Case when referenced OVAL file exists
                     for location in fnmatch.filter(filenames, refovalfilename + '.xml'):
                         refovalfilefound = True

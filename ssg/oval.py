@@ -264,7 +264,8 @@ def find_testfile(oval_id):
 
     found_file = None
     for path in ['.', SHARED_OVAL, LINUX_OS_GUIDE]:
-        for root, _, _ in os.walk(path):
+        for root, dirs, _ in os.walk(path):
+            dirs.sort()
             for candidate in candidates:
                 search_file = os.path.join(root, candidate).strip()
                 if os.path.isfile(search_file):

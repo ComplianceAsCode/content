@@ -37,7 +37,7 @@ def main():
         sys.exit(1)
 
     fixes = dict()
-    for filename in os.listdir(args.fixdir):
+    for filename in sorted(os.listdir(args.fixdir)):
         file_path = os.path.join(args.fixdir, filename)
         fix_name, _ = os.path.splitext(filename)
         result = remediation.parse_from_file_without_jinja(file_path)

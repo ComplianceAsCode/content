@@ -618,7 +618,7 @@ def get_rule_dir_remediations(dir_path, remediation_type, product=None):
         return []
 
     results = []
-    for remediation_file in os.listdir(remediations_dir):
+    for remediation_file in sorted(os.listdir(remediations_dir)):
         file_name, file_ext = os.path.splitext(remediation_file)
         remediation_path = os.path.join(remediations_dir, remediation_file)
 
