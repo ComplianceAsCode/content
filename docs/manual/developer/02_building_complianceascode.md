@@ -163,6 +163,16 @@ cmake-gui ../
 make -j4
 ```
 
+### Reproducible Builds
+
+Set the environment variable `SOURCE_DATE_EPOCH` to generate [reproducible builds](https://reproducible-builds.org/).
+For details about the values and meaning of this variable please check this [source](https://reproducible-builds.org/specs/source-date-epoch/):
+
+```bash
+cd build/
+SOURCE_DATE_EPOCH=1614699939 make -j4
+```
+
 ### Using Ninja for Faster Builds
 
 Use the `ninja` build system (requires the `ninja-build` package):
