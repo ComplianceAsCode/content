@@ -1,8 +1,9 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import datetime
 import os.path
+import os
+import time
 
 product_directories = [
     'chromium',
@@ -124,7 +125,10 @@ oval_header = (
         {0}#linux linux-definitions-schema.xsd">"""
     .format(oval_namespace))
 
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+timestamp = time.strftime(
+    "%Y-%m-%dT%H:%M:%S",
+    time.gmtime(int(os.environ.get('SOURCE_DATE_EPOCH', time.time())))
+)
 
 PKG_MANAGER_TO_SYSTEM = {
     "yum": "rpm",
