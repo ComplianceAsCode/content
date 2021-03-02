@@ -32,8 +32,8 @@ selections:
   # 1.2.3 Ensure that the --token-auth-file parameter is not set
     - api_server_token_auth
   # 1.2.4 Ensure that the --kubelet-https argument is set to true
-  # OCP doesn't use --kubelet-https but relies on TLS which is checked for in 1.2.30
-  # This rule also makes sure that the services of openshift-apiserver and openshift-oauth-apiserver
+    - api_server_https_for_kubelet_conn
+  # These rules make sure that the services of openshift-apiserver and openshift-oauth-apiserver
   # serve TLS
     - api_server_openshift_https_serving_cert
     - api_server_oauth_https_serving_cert
