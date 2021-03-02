@@ -56,6 +56,14 @@ identifiers:
 references:
   cis: 3.2.1,3.2.2
 
+ocil_clause: 'The proper audit profile is not set'
+
+ocil: |-
+    Run the following command to retrieve the current audit profile:
+    <pre>$ oc get apiservers cluster -ojsonpath='{.spec.audit.profile}'</pre>
+    Make sure the profile returned matches the one that should be used.
+
+
 severity: medium
 
 warnings:
