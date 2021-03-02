@@ -2,6 +2,7 @@
 
 ## Installing build dependencies
 
+### Required Dependencies
 On *Red Hat Enterprise Linux 7* make sure the packages `cmake`, `openscap-utils`,
 `PyYAML`, `python-jinja2` and their dependencies are installed:
 
@@ -25,7 +26,9 @@ apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-
 
 IMPORTANT: Version `1.0.8` or later of `openscap-utils` is required to build the content.
 
-(optional) Install git if you want to clone the GitHub repository to get the
+### Git (Clone the Repository)
+
+Install git if you want to clone the GitHub repository to get the
 source code:
 
 ```bash
@@ -36,7 +39,9 @@ yum install git
 apt-get install git
 ```
 
-(optional) Install the `ShellCheck` package to perform fix script static analysis:
+### Shellcheck (Script Static Analysis)
+
+Install the `ShellCheck` package to perform fix script static analysis:
 
 ```bash
 # Fedora/RHEL
@@ -45,8 +50,9 @@ yum install ShellCheck
 # Ubuntu/Debian
 apt-get install shellcheck
 ```
+### Ansible Static Analysis packages
 
-(optional) Install `yamllint` and `ansible-lint` packages to perform Ansible
+Install `yamllint` and `ansible-lint` packages to perform Ansible
 playbooks checks. These checks are not enabled by default in CTest, to enable
 them add `-DANSIBLE_CHECKS=ON` option to `cmake`.
 ```bash
@@ -58,7 +64,9 @@ yum install yamllint ansible-lint
 apt-get install yamllint ansible-lint
 ```
 
-(optional) Install the `ninja` build system if you want to use it instead of
+### Ninja (Faster Builds)
+
+Install the `ninja` build system if you want to use it instead of
 `make` for faster builds:
 
 ```bash
@@ -69,13 +77,17 @@ yum install ninja-build
 apt-get install ninja-build
 ```
 
-(optional) Install the `json2html` package if you want to generate HTML report statistics:
+### json2html (HTML Report Statistics)
+
+Install the `json2html` package if you want to generate HTML report statistics:
 
 ```bash
 pip install json2html
 ```
 
-(optional) Install Sphinx packages if you want to generate HTML Documentation, from source directory run:
+### Sphinx packages (Developer Documentation)
+
+Install Sphinx packages if you want to generate HTML Documentation, from source directory run:
 
 ```bash
 pip install -r docs/requirements.txt
@@ -106,6 +118,8 @@ git checkout master
 
 ## Building
 
+### Building Everything
+
 To build all the security content:
 
 ```bash
@@ -117,13 +131,16 @@ make -j4
 make -j4 rhel7
 ```
 
-Or use the `build_product` script from base directory that removes whatever is in the `build` directory and builds specific product:
+Or use the `build_product` script from the base directory that removes
+whatever is in the `build` directory and builds a specific product:
 
 ```bash
 ./build_product rhel7
 ```
 
-(optional) To build only specific content for one specific product:
+### Building Specific Content
+
+To build specific content for a specific product:
 
 ```bash
 cd build/
@@ -136,7 +153,9 @@ make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
 make -j4 rhel7  # everything above for RHEL7
 ```
 
-(optional) Configure options before building using a GUI tool:
+### Configuring CMAKE options using GUI
+
+Configure options before building using a GUI tool:
 
 ```bash
 cd build/
@@ -144,7 +163,9 @@ cmake-gui ../
 make -j4
 ```
 
-(optional) Use the `ninja` build system (requires the `ninja-build` package):
+### Using Ninja for Faster Builds
+
+Use the `ninja` build system (requires the `ninja-build` package):
 
 ```bash
 cd build/
@@ -152,7 +173,11 @@ cmake -G Ninja ../
 ninja-build  # depending on the distribution just "ninja" may also work
 ```
 
-(optional) Generate statistics for products and profiles. Some of the statistics generated are: implemented OVAL, bash, ansible for rules, missing CCE, etc:
+### Generating Statistics for Products and Profiles
+
+#### Text Output
+
+Generate statistics for products and profiles. Some of the statistics generated are: implemented OVAL, bash, Ansible for rules, missing CCE, etc:
 
 ```bash
 cd build/
@@ -161,9 +186,11 @@ make -j4 stats # display statistics in text format for all products
 make -j4 profile-stats # display statistics in text format for all profiles in all products
 ```
 
-You can also create statistics per product, to do that just prepend the product name (e.g.: `rhel7-stats`) to the make target.
+You can also create statistics per product. Prepend the product name (e.g.: `rhel7-stats`) to the make target.
 
-It is possible to generate HTML output by triggering similar command:
+#### HTML Output
+
+To generate an HTML output, run a similar command:
 
 ```bash
 cd build/
@@ -175,7 +202,10 @@ make -j4 html-profile-stats # generate statistics for all profiles in all produc
 If you want to go deeper into statistics, refer to [Profile Statistics and Utilities](manual/developer/05_tools_and_utilities:Profile%20Statistics%20and%20Utilities) section.
 
 
-(optional) Generate HTML documentation of the project which includes developer documentation, supported Jinja Macros documentation and python modules documentation:
+### Generating Sphinx Documentation
+Generate HTML documentation of the project that includes developer documentation,
+supported Jinja Macros documentation, python modules documentation, SSG Test Suite
+documentation and release tools documentation:
 
 ```bash
 cd build/
