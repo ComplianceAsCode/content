@@ -58,6 +58,13 @@ identifiers:
 references:
   cis: 3.1.1
 
+ocil_clause: 'identity provider is not configured'
+
+ocil: |-
+    Run the following command to list the identity providers configured:
+    <pre>$ oc get oauths cluster -ojsonpath='{.spec.identityProviders}' | jq </pre>
+    Make sure that there exists at least one item referenced by the above path.
+
 severity: medium
 
 warnings:
