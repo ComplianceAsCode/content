@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure that the --kubelet-https argument is set to true'
+
+description: |-
+    The kube-apiserver ensures https to the kubelet by default. The apiserver
+    flag "--kubelet-https" is deprecated and should be either set to "true" or
+    omitted from the argument list.
+
+rationale: |-
+    Connections from the kube-apiserver to kubelets could potentially carry
+    sensitive data such as secrets and keys. It is thus important to use
+    in-transit encryption for any communication between the apiserver and
+    kubelets.
+
+severity: medium
+
+references:
+    cis: 1.2.4
+
+ocil_clause: '<tt>kubelet-https</tt> is set to false'
+
+ocil: |-
+    Run the following command:
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-https"]'</pre>
+    The output should return <pre>true</pre>, or no output at all.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
+    yamlpath: '.data["config.yaml"]'
+    values:
+    - value: '"apiServerArguments":{.*"kubelet-https":\["false"\]'
+      operation: "pattern match"
+      type: "string"
+      entity_check: "none satisfy"
