@@ -153,7 +153,7 @@ make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
 make -j4 rhel7  # everything above for RHEL7
 ```
 
-### Configuring CMAKE options using GUI
+### Configuring CMake options using GUI
 
 Configure options before building using a GUI tool:
 
@@ -170,7 +170,7 @@ For details about the values and meaning of this variable please check this [sou
 
 ```bash
 cd build/
-SOURCE_DATE_EPOCH=1614699939 make -j4
+SOURCE_DATE_EPOCH=1614699939 make
 ```
 
 ### Using Ninja for Faster Builds
