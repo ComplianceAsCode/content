@@ -106,7 +106,8 @@ selections:
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - accounts_password_pam_minlen
     - accounts_password_pam_dcredit
     - accounts_password_pam_ucredit

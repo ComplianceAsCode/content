@@ -100,7 +100,8 @@ selections:
     - dconf_gnome_screensaver_mode_blank
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords

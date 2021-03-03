@@ -49,7 +49,8 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_enable_warning_banner
     - sshd_disable_rhosts_rsa
     - sshd_use_approved_ciphers

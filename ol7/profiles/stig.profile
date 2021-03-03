@@ -232,7 +232,8 @@ selections:
     - sshd_set_idle_timeout
     - sshd_disable_rhosts
     - sshd_disable_rhosts_rsa
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_print_last_log
     - sshd_disable_root_login
     - sshd_allow_only_protocol2

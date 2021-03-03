@@ -210,7 +210,8 @@ selections:
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_use_priv_separation
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy

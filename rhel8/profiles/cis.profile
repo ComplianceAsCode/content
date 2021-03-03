@@ -827,7 +827,8 @@ selections:
     - sshd_set_idle_timeout
 
     # ClientAliveCountMax 0
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
 
     ### 5.2.14 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Scored)

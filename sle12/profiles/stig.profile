@@ -126,7 +126,8 @@ selections:
     - sshd_enable_x11_forwarding
     - sshd_print_last_log
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_set_loglevel_verbose
     - sshd_use_approved_macs
     - sshd_use_priv_separation

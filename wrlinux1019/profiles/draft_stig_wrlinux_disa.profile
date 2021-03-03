@@ -137,7 +137,8 @@ selections:
     - account_disable_post_pw_expiration
     - accounts_tmout
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_use_approved_macs
     - rpm_verify_permissions
     - sshd_disable_gssapi_auth
