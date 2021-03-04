@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019,sle12
+prodtype: sle12
 
-title: 'Modify the System Login Banner'
+title: 'Modify the System GUI Login Banner'
 
 description: |-
-    To configure the system login banner edit <tt>/etc/issue</tt>. Replace the
-    default text with a message compliant with the local site policy or a legal
-    disclaimer.
+    To configure the GUI system login banner edit <tt>/etc/gdm/banner</tt>.
+    Replace the default text with a message compliant with the local site
+    policy or a legal disclaimer.
 
     The DoD required text is either:
     <br /><br />
@@ -49,36 +49,16 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-27303-7
-    cce@rhel8: CCE-80763-6
-    cce@rhcos4: CCE-82555-4
-    cce@sle12: CCE-83054-7
+    cce@sle12: CCE-83183-4
 
 references:
-    stigid@ol7: OL07-00-010050
-    cis@rhel8: 1.8.1.2
-    cui: 3.1.9
-    disa: CCI-000048,CCI-000050
-    nist: AC-8(a),AC-8(c)
-    nist@sle12: AC-8(a),AC-8.1(ii)
-    nist-csf: PR.AC-7
-    ospp: FMT_MOF_EXT.1
-    srg: SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007
-    vmmsrg: SRG-OS-000023-VMM-000060,SRG-OS-000024-VMM-000070
-    stigid@rhel7: RHEL-07-010050
-    stigid@sle12: SLES-12-010030
-    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
-    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
-    cobit5: DSS05.04,DSS05.10,DSS06.10
-    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
-    cis-csc: 1,12,15,16
-    stigid@rhel8: RHEL-08-010060
+    disa: CCI-000050
+    nist: AC-8(b)
+    stigid@sle12: SLES-12-030020
 
 ocil_clause: 'it does not display the required banner'
 
 ocil: |-
     To check if the system login banner is compliant,
     run the following command:
-    <pre>$ cat /etc/issue</pre>
-
-platform: machine
+    <pre>$ cat /etc/gdm/banner</pre>
