@@ -7,8 +7,15 @@ title: 'Set Interactive Session Timeout'
 description: |-
     Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
     all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
+    {{% if product == "sle12" %}}
+    setting in <tt>/etc/profile.d/autologout.sh</tt> should read as follows:
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    readonly TMOUT
+    export TMOUT
+    {{% else %}}
     setting in <tt>/etc/profile</tt> should read as follows:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    {{% endif %}}
 
 rationale: |-
     Terminating an idle session within a short time period reduces
@@ -49,8 +56,16 @@ ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
 ocil: |-
     Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
     on the system:
+    {{% if product == "sle12" %}}
+    <pre>$ sudo grep TMOUT /etc/profile.d/autologout.sh</pre>
+    {{% else %}}
     <pre>$ sudo grep TMOUT /etc/profile</pre>
+    {{% endif %}}
     The output should return the following:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    {{% if product == "sle12" %}}
+    readonly TMOUT
+    export TMOUT
+    {{% endif %}}
 
 platform: machine

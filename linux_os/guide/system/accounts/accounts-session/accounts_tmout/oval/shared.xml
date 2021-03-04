@@ -25,7 +25,11 @@
     {{% if filepath %}}
     <ind:filepath>{{{ filepath }}}</ind:filepath>
     {{% endif %}}
+    {{% if product == "sle12" %}}
+    <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+).*$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endmacro %}}
