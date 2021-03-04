@@ -456,34 +456,32 @@ class AnsibleRemediation(Remediation):
         additional_when = []
 
         # There can be repeated inherited platforms and rule platforms
-        rule_platforms = set()
-        rule_platforms = set(self.associated_rule.inherited_platforms)
+        inherited_platforms = set()
+        rule_specific_platforms = set()
+        inherited_platforms.update(self.associated_rule.inherited_platforms)
         if self.associated_rule.platforms is not None:
-            rule_platforms.update(self.associated_rule.platforms)
+            rule_specific_platforms = {p for p in self.associated_rule.platforms if p not in inherited_platforms }
 
-        for platform in rule_platforms:
-            if platform == "machine":
-                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]')
-            elif platform is not None:
-                # Assume any other platform is a Package CPE
+        inherited_conditionals = [self.generate_platform_conditional(p) for p in inherited_platforms]
+        rule_specific_conditionals = [self.generate_platform_conditional(p) for p in rule_specific_platforms]
+        # remove potential "None" from lists
+        inherited_conditionals = [p for p in inherited_conditionals if p != None]
+        rule_specific_conditionals = [p for p in rule_specific_conditionals if p != None]
 
-                # It doesn't make sense to add a conditional on the task that
-                # gathers data for the conditional
-                if "package_facts" in to_update:
-                    continue
+        # remove conditionals related to package CPEs if the updated task
+        # collects package facts
+        if "package_facts" in to_update:
+            inherited_conditionals = [c for c in inherited_conditionals if "in ansible_facts.packages" not in c]
+            rule_specific_conditionals = [c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
 
-                if platform in self.local_env_yaml["platform_package_overrides"]:
-                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+        print (to_update)
+        print (inherited_conditionals)
+        print (rule_specific_conditionals)
+        if inherited_conditionals:
+            additional_when = additional_when + inherited_conditionals
 
-                    # Workaround for plaforms that are not Package CPEs
-                    # Skip platforms that are not about packages installed
-                    # These should be handled in the remediation itself
-                    if not platform:
-                        continue
-
-                additional_when.append('"' + platform + '" in ansible_facts.packages')
-                # After adding the conditional, we need to make sure package_facts are collected.
-                # This is done via inject_package_facts_task()
+        if rule_specific_conditionals:
+            additional_when.append(" or ".join(rule_specific_conditionals))
 
         to_update.setdefault("when", "")
         new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
@@ -521,6 +519,24 @@ class AnsibleRemediation(Remediation):
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 return None
             return result
+
+    def generate_platform_conditional(self, platform):
+        if platform == "machine":
+            return 'ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]'
+        elif platform is not None:
+            # Assume any other platform is a Package CPE
+
+            if platform in self.local_env_yaml["platform_package_overrides"]:
+                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                # Workaround for platforms that are not Package CPEs
+                # Skip platforms that are not about packages installed
+                # These should be handled in the remediation itself
+                if not platform:
+                    return
+
+            return '"' + platform + '" in ansible_facts.packages'
+
 
 
 class AnacondaRemediation(Remediation):
