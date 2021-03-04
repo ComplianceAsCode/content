@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="file_etc_security_opasswd" version="2">
+    {{{ oval_metadata("Verify Permissions and Ownership of Old Passwords File", title="Verify Permissions and Ownership of Old Passwords File") }}}
+    <criteria comment="root should own /etc/security/opasswd">
+      <criterion test_ref="test_file_etc_security_opasswd" />
+    </criteria>
+  </definition>
+
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/security/opasswd is owned by root:root / 0600" id="test_file_etc_security_opasswd" version="1">
+    <unix:object object_ref="object_file_etc_security_opasswd" />
+    <unix:state state_ref="state_file_etc_security_opasswd" />
+    <unix:state state_ref="state_file_group_etc_security_opasswd" />
+  </unix:file_test>
+
+  <unix:file_object id="object_file_etc_security_opasswd" version="1">
+      <unix:filepath>/etc/security/opasswd</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_etc_security_opasswd" version="1">
+      <unix:user_id operation="equals" datatype="int">0</unix:user_id>
+
+      <unix:suid operation="equals" datatype="boolean">0</unix:suid>
+      <unix:sticky operation="equals" datatype="boolean">0</unix:sticky>
+
+      <unix:uread operation="equals" datatype="boolean">1</unix:uread>
+      <unix:uwrite operation="equals" datatype="boolean">1</unix:uwrite>
+      <unix:uexec operation="equals" datatype="boolean">0</unix:uexec>
+
+      <unix:oread operation="equals" datatype="boolean">0</unix:oread>
+      <unix:owrite operation="equals" datatype="boolean">0</unix:owrite>
+      <unix:oexec operation="equals" datatype="boolean">0</unix:oexec>
+
+      <unix:has_extended_acl operation="equals" datatype="boolean">0</unix:has_extended_acl>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_group_etc_security_opasswd" version="1">
+      <unix:group_id operation="equals" datatype="int">0</unix:group_id>
+
+      <unix:sgid operation="equals" datatype="boolean">0</unix:sgid>
+      <unix:gread operation="equals" datatype="boolean">0</unix:gread>
+      <unix:gwrite operation="equals" datatype="boolean">0</unix:gwrite>
+      <unix:gexec operation="equals" datatype="boolean">0</unix:gexec>
+  </unix:file_state>
+
+</def-group>
