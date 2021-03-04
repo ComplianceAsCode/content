@@ -284,7 +284,8 @@ class BashRemediation(Remediation):
         if self.associated_rule:
             # There can be repeated inherited platforms and rule platforms
             rule_platforms.update(self.associated_rule.inherited_platforms)
-            rule_platforms.add(self.associated_rule.platform)
+            if self.associated_rule.platforms is not None:
+                rule_platforms.update(self.associated_rule.platforms)
 
         platform_conditionals = []
         for platform in rule_platforms:
@@ -441,8 +442,10 @@ class AnsibleRemediation(Remediation):
         additional_when = []
 
         # There can be repeated inherited platforms and rule platforms
+        rule_platforms = set()
         rule_platforms = set(self.associated_rule.inherited_platforms)
-        rule_platforms.add(self.associated_rule.platform)
+        if self.associated_rule.platforms is not None:
+            rule_platforms.update(self.associated_rule.platforms)
 
         for platform in rule_platforms:
             if platform == "machine":
