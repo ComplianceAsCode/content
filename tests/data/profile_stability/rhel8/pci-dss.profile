@@ -122,7 +122,7 @@ selections:
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
 - sshd_set_idle_timeout
-- sshd_set_keepalive
+- sshd_set_keepalive_0
 - sssd_enable_smartcards
 - var_password_pam_unix_remember=4
 - var_account_disable_post_pw_expiration=90
@@ -134,5 +134,6 @@ selections:
 - var_accounts_maximum_age_login_defs=90
 - var_auditd_num_logs=5
 - var_multiple_time_servers=rhel
+- var_sshd_set_keepalive=0
 - var_smartcard_drivers=cac
 title: PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8

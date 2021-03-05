@@ -236,7 +236,7 @@ selections:
 - sshd_print_last_log
 - sshd_rekey_limit
 - sshd_set_idle_timeout
-- sshd_set_keepalive
+- sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_enable_smartcards
@@ -310,4 +310,5 @@ selections:
 - var_auditd_max_log_file_action=syslog
 - var_auditd_disk_full_action=halt
 - var_system_crypto_policy=fips
+- var_sshd_set_keepalive=0
 title: DISA STIG for Red Hat Enterprise Linux 8
