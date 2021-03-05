@@ -231,7 +231,8 @@ class Profile(object):
                 try:
                     platform_cpe = product_cpes.get_cpe_name(platform)
                 except KeyError:
-                    raise ValueError("Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
+                    raise ValueError(
+                        "Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
                 plat = ET.SubElement(element, "platform")
                 plat.set("idref", platform_cpe)
 

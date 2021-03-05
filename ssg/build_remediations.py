@@ -287,13 +287,16 @@ class BashRemediation(Remediation):
             # There can be repeated inherited platforms and rule platforms
             inherited_platforms.update(self.associated_rule.inherited_platforms)
             if self.associated_rule.platforms is not None:
-                rule_specific_platforms = {p for p in self.associated_rule.platforms if p not in inherited_platforms }
+                rule_specific_platforms = {
+                    p for p in self.associated_rule.platforms if p not in inherited_platforms}
 
-        inherited_conditionals = [self.generate_platform_conditional(p) for p in inherited_platforms]
-        rule_specific_conditionals = [self.generate_platform_conditional(p) for p in rule_specific_platforms]
+        inherited_conditionals = [
+            self.generate_platform_conditional(p) for p in inherited_platforms]
+        rule_specific_conditionals = [
+            self.generate_platform_conditional(p) for p in rule_specific_platforms]
         # remove potential "None" from lists
-        inherited_conditionals = [p for p in inherited_conditionals if p != None]
-        rule_specific_conditionals = [p for p in rule_specific_conditionals if p != None]
+        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
+        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
 
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
@@ -460,19 +463,24 @@ class AnsibleRemediation(Remediation):
         rule_specific_platforms = set()
         inherited_platforms.update(self.associated_rule.inherited_platforms)
         if self.associated_rule.platforms is not None:
-            rule_specific_platforms = {p for p in self.associated_rule.platforms if p not in inherited_platforms }
+            rule_specific_platforms = {
+                p for p in self.associated_rule.platforms if p not in inherited_platforms}
 
-        inherited_conditionals = [self.generate_platform_conditional(p) for p in inherited_platforms]
-        rule_specific_conditionals = [self.generate_platform_conditional(p) for p in rule_specific_platforms]
+        inherited_conditionals = [
+            self.generate_platform_conditional(p) for p in inherited_platforms]
+        rule_specific_conditionals = [
+            self.generate_platform_conditional(p) for p in rule_specific_platforms]
         # remove potential "None" from lists
-        inherited_conditionals = [p for p in inherited_conditionals if p != None]
-        rule_specific_conditionals = [p for p in rule_specific_conditionals if p != None]
+        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
+        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
 
         # remove conditionals related to package CPEs if the updated task
         # collects package facts
         if "package_facts" in to_update:
-            inherited_conditionals = [c for c in inherited_conditionals if "in ansible_facts.packages" not in c]
-            rule_specific_conditionals = [c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
+            inherited_conditionals = [
+                c for c in inherited_conditionals if "in ansible_facts.packages" not in c]
+            rule_specific_conditionals = [
+                c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
 
         print (to_update)
         print (inherited_conditionals)
@@ -522,7 +530,8 @@ class AnsibleRemediation(Remediation):
 
     def generate_platform_conditional(self, platform):
         if platform == "machine":
-            return 'ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]'
+            return 'ansible_virtualization_type not in '\
+                '["docker", "lxc", "openvz", "podman", "container"]'
         elif platform is not None:
             # Assume any other platform is a Package CPE
 
