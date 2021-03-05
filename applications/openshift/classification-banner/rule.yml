@@ -1,0 +1,25 @@
+prodtype: ocp4
+
+title: Security Banner must be configured on OpenShift console
+
+description: test
+
+rationale: TBD
+
+identifiers: {}
+
+severity: unknown
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/console.openshift.io/v1/consolenotifications/security-banner") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    entity_check: "at least one"
+    filepath: /apis/console.openshift.io/v1/consolenotifications/security-banner
+    yamlpath: ".spec.location"
+    values:
+    - value: "BannerTopBottom"
