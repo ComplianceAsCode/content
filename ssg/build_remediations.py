@@ -482,9 +482,6 @@ class AnsibleRemediation(Remediation):
             rule_specific_conditionals = [
                 c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
 
-        print (to_update)
-        print (inherited_conditionals)
-        print (rule_specific_conditionals)
         if inherited_conditionals:
             additional_when = additional_when + inherited_conditionals
 
