@@ -494,7 +494,7 @@ class XCCDFBenchmark(object):
 
             if options.missing_hipaa_refs and profile_stats['missing_hipaa_refs']:
                 print("*** rules of '%s' profile missing "
-                      "CIS Refs: %d of %d have them [%d%% missing]"
+                      "HIPAA Refs: %d of %d have them [%d%% missing]"
                       % (profile, rules_count - missing_hipaa_refs_count,
                          rules_count,
                          (100.0 * missing_hipaa_refs_count / rules_count)))
@@ -503,7 +503,7 @@ class XCCDFBenchmark(object):
 
             if options.missing_anssi_refs and profile_stats['missing_anssi_refs']:
                 print("*** rules of '%s' profile missing "
-                      "CIS Refs: %d of %d have them [%d%% missing]"
+                      "ANSSI Refs: %d of %d have them [%d%% missing]"
                       % (profile, rules_count - missing_anssi_refs_count,
                          rules_count,
                          (100.0 * missing_anssi_refs_count / rules_count)))
