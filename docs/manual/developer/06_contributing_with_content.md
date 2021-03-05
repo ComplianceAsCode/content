@@ -144,9 +144,10 @@ A rule itself contains these attributes:
 
     The severity of the rule can be overridden by a profile with
     `refine-rule` selector. \* `platform`: Defines applicability of a
-    rule. For example, if a rule is not applicable to containers, this
-    should be set to `machine`, which means it will be evaluated only if
-    the targeted scan environment is either bare-metal or virtual
+    rule. It is specified as a list of platforms. For example, if a rule is not
+    applicable to containers, the list should contain the item `machine`, which
+    means it will be evaluated only if the targeted scan environment is either
+    bare-metal or virtual
     machine. Also, it can restrict applicability on higher software
     layers. By setting to `shadow-utils`, the rule will have its
     applicability restricted to only environments which have
@@ -154,9 +155,11 @@ A rule itself contains these attributes:
     in the file &lt;product&gt;/cpe/&lt;product&gt;-cpe-dictionary.xml
     (e.g.: rhel8/cpe/rhel8-cpe-dictionary.xml). In order to support a
     new value, an OVAL check (of `inventory` class) must be created
-    under `shared/checks/oval/` and referenced in the dictionary
-    file. \* `ocil`: Defines asserting statements to check whether or
-    not the rule is valid. \* `ocil_clause`: This attribute contains the
+    under `shared/checks/oval/` and referenced in the dictionary file. It is
+    possible to specify multiple platforms in the list. In that case, they are
+    implicitly connected with "OR" operand. \* `ocil`: Defines asserting
+    statements to check whether or not the rule is valid. \* `ocil_clause`: This
+    attribute contains the
     statement which describes how to determine whether the statement is
     true or false. Check out `rule.yml` in
     `linux_os/guide/system/software/disk_partitioning/encrypt_partitions/`:
