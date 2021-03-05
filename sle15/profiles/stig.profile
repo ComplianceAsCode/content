@@ -106,6 +106,7 @@ selections:
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
+    - dconf_gnome_screensaver_idle_delay
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_system_owned_group
     - disable_ctrlaltdel_reboot

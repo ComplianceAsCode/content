@@ -24,7 +24,11 @@
     <!-- GSettings expects unsigned integer when setting 'idle-delay' per:
          https://bugzilla.redhat.com/show_bug.cgi?id=1141779#c3
          Thus require the proper datatype to be specified in 'idle-delay' configuration too -->
+    {{% if product in ['sle12', 'sle15'] %}}
+    <ind:pattern operation="pattern match">^\[org/gnome/desktop/screensaver]([^\n]*\n+)+?idle-delay=[0-9]*$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^\[org/gnome/desktop/session]([^\n]*\n+)+?idle-delay=uint32[\s][0-9]*$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -37,7 +41,11 @@
   version="1">
     <ind:path>/etc/dconf/db/local.d/locks/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
+    {{% if product in ['sle12', 'sle15'] %}}
+    <ind:pattern operation="pattern match">^/org/gnome/desktop/screensaver/idle-delay$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^/org/gnome/desktop/session/idle-delay$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -54,7 +62,12 @@
     <!-- GSettings expects unsigned integer when setting 'idle-delay' per:
          https://bugzilla.redhat.com/show_bug.cgi?id=1141779#c3
          Thus require the proper datatype to be specified in 'idle-delay' configuration too -->
+    {{% if product in ['sle12', 'sle15'] %}}
+    <ind:pattern operation="pattern match">^idle-delay[\s=]([^=\s]*)</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^idle-delay[\s=]*uint32[\s]([^=\s]*)</ind:pattern>
+    {{% endif %}}
+
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
