@@ -56,3 +56,6 @@ selections:
     - etcd_peer_key_file
     - kubelet_configure_tls_cert
     - kubelet_configure_tls_key
+
+    # AC-8: SYSTEM USE NOTIFICATION
+    - classification_banner
