@@ -77,7 +77,8 @@ selections:
     #- sshd_disable_kerb_auth
     #- sshd_disable_gssapi_auth
     # AC-2(5)
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     #- sshd_enable_warning_banner
     #- sshd_rekey_limit
 

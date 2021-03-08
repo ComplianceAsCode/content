@@ -155,7 +155,8 @@ selections:
     - sshd_enable_x11_forwarding
     - sshd_print_last_log
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_set_loglevel_verbose
     - sudo_remove_no_authenticate
     - sudo_remove_nopasswd

@@ -95,7 +95,8 @@ selections:
     - selinux_state
     - package_policycoreutils_installed
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
     - sshd_use_strong_rng
     - file_permissions_binary_dirs
     - file_ownership_binary_dirs

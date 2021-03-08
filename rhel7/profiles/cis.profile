@@ -615,7 +615,8 @@ selections:
 
     ### 5.2.12 Ensure SSH Idle Timeout Interval is configured (Scored)
     - sshd_set_idle_timeout
-    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive_0
 
     ### 5.2.13 Ensure SSH LoginGraceTime is set to one minute or less (Scored)
     ### 5.2.14 Ensure SSH access is limited (Scored)
