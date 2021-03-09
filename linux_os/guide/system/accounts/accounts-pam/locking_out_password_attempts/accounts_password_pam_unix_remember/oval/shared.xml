@@ -2,33 +2,59 @@
   <definition class="compliance" id="accounts_password_pam_unix_remember" version="2">
     {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
     <criteria comment="remember parameter of pam_unix.so or pam_pwhistory.so is set correctly" operator="OR">
-      <criterion comment="remember parameter of pam_unix.so is set correctly" test_ref="test_accounts_password_pam_unix_remember" />
-      <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember" />
+      <criterion comment="remember parameter of pam_unix.so is set correctly in system-auth" test_ref="test_accounts_password_pam_unix_remember_systemauth" />
+      <criterion comment="remember parameter of pam_pwhistory.so is set correctly in system-auth" test_ref="test_accounts_password_pam_pwhistory_remember_systemauth" />
+      <criterion comment="remember parameter of pam_unix.so is set correctly in password-auth" test_ref="test_accounts_password_pam_unix_remember_passwordauth" />
+      <criterion comment="remember parameter of pam_pwhistory.so is set correctly in password-auth" test_ref="test_accounts_password_pam_pwhistory_remember_passwordauth" />
     </criteria>
   </definition>
 
   <!-- Check the pam_unix.so remember case -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember" check="all" check_existence="all_exist"
+  <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember_systemauth" check="all" check_existence="all_exist"
   comment="Test if remember attribute of pam_unix.so is set correctly in /etc/pam.d/system-auth" version="1">
-    <ind:object object_ref="object_accounts_password_pam_unix_remember" />
+    <ind:object object_ref="object_accounts_password_pam_unix_remember_systemauth" />
     <ind:state state_ref="state_accounts_password_pam_unix_remember" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_accounts_password_pam_unix_remember" version="1">
+  <ind:textfilecontent54_object id="object_accounts_password_pam_unix_remember_systemauth" version="1">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
     <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*remember=([0-9]*).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Check the pam_pwhistory.so remember case -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember" check="all" check_existence="all_exist"
-  comment="Test if remember attribute of pam_pwhistory.so is set correctly in /etc/pam.d/system-auth" version="1">
-    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember" />
+  <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember_passwordauth" check="all" check_existence="all_exist"
+  comment="Test if remember attribute of pam_unix.so is set correctly in /etc/pam.d/password-auth" version="1">
+    <ind:object object_ref="object_accounts_password_pam_unix_remember_passwordauth" />
     <ind:state state_ref="state_accounts_password_pam_unix_remember" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember" version="1">
+  <ind:textfilecontent54_object id="object_accounts_password_pam_unix_remember_passwordauth" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*remember=([0-9]*).*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Check the pam_pwhistory.so remember case -->
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_systemauth" check="all" check_existence="all_exist"
+  comment="Test if remember attribute of pam_pwhistory.so is set correctly in /etc/pam.d/system-auth" version="1">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_systemauth" />
+    <ind:state state_ref="state_accounts_password_pam_unix_remember" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember_systemauth" version="1">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:requisite)|(?:required))\s+pam_pwhistory\.so.*remember=([0-9]*).*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember_passwordauth" check="all" check_existence="all_exist"
+  comment="Test if remember attribute of pam_pwhistory.so is set correctly in /etc/pam.d/password-auth" version="1">
+    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember_passwordauth" />
+    <ind:state state_ref="state_accounts_password_pam_unix_remember" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember_passwordauth" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
     <ind:pattern operation="pattern match">^\s*password\s+(?:(?:requisite)|(?:required))\s+pam_pwhistory\.so.*remember=([0-9]*).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
