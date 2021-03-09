@@ -9,7 +9,7 @@ description: |-
     account tokens for the Kubernetes API or credentials used
     by workloads in the cluster. Access to these secrets should
     be restricted to the smallest possible group of users to
-    reduce the risk of privilege escalation. To restict users from
+    reduce the risk of privilege escalation. To restrict users from
     secrets, remove <tt>get</tt>, <tt>list</tt>, and <tt>watch</tt>
     access to unauthorized users to secret objects in the cluster.
 
@@ -24,7 +24,7 @@ severity: medium
 references:
     cis@ocp4: 5.1.2
 
-ocil_clause: 'Access to Kubernetes clusters is too wide'
+ocil_clause: 'Access to secrets needs review'
 
 ocil: |-
     To review the policy rules assigned to roles in all namespaces, run
