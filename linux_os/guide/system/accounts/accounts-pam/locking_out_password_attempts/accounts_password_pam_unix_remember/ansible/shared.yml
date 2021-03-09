@@ -5,14 +5,53 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("var_password_pam_unix_remember") }}}
 
-- name: "Do not allow users to reuse recent passwords - system-auth (change)"
-  replace:
-    dest: /etc/pam.d/system-auth
-    regexp: '^(password\s+sufficient\s+pam_unix\.so\s.*remember\s*=\s*)(\S+)(.*)$'
-    replace: '\g<1>{{ var_password_pam_unix_remember }}\g<3>'
+# this macro is used to correct existing instances of unix or pwhistory module
 
-- name: "Do not allow users to reuse recent passwords - system-auth (add)"
+{{% macro prevent_password_reuse(file, module) -%}}
+
+- name: "detect if {{{ module }}} module is used"
+  command: grep '^\s*password.*{{{ module }}}\.so.*$' /etc/pam.d/{{{ file }}}
+  register: pam_password_reuse_files
+  ignore_errors: true
+
+- name: "Do not allow users to reuse recent passwords - in {{{ file }}} for {{{ module }}} (change)"
   replace:
-    dest: /etc/pam.d/system-auth
-    regexp: '^password\s+sufficient\s+pam_unix\.so\s(?!.*remember\s*=\s*).*$'
+    dest: "/etc/pam.d/{{{ file }}}"
+    regexp: '^(password\s+.*{{{ module }}}\.so\s.*remember\s*=\s*)(\S+)(.*)$'
+    replace: '\g<1>{{ var_password_pam_unix_remember }}\g<3>'
+  when: pam_password_reuse_files.rc == 0
+
+- name: "Do not allow users to reuse recent passwords in {{{ file }}} for {{{ module }}} (add)"
+  replace:
+    dest: "/etc/pam.d/{{{ file }}}"
+    regexp: '^password\s+.*{{{ module }}}\.so\s(?!.*remember\s*=\s*).*$'
     replace: '\g<0> remember={{ var_password_pam_unix_remember }}'
+  when: pam_password_reuse_files.rc == 0
+
+{{%- endmacro %}}
+
+# this macro is used to insert pw_history module configuration of no prior unix
+# or pw_history configuration is found
+
+{{% macro prevent_password_reuse_no_module (file) -%}}
+- name: "Check that there is no unix or pw_history module in the file"
+  shell: grep '^\s*password.*\(pam_unix\|pam_pwhistory\)\.so.*$' /etc/pam.d/{{{ file }}}
+  register: pam_password_reuse_no_module_files
+  ignore_errors: true
+
+- name: "Insert correct line with pwhistory pam module"
+  lineinfile:
+    path: "/etc/pam.d/{{{ file }}}"
+    line: "password requisite pam_pwhistory.so remember={{ var_password_pam_unix_remember }}"
+    insertafter: '^password.*$'
+    firstmatch: yes
+  when: pam_password_reuse_no_module_files.rc == 1
+
+{{%- endmacro %}}
+
+{{{ prevent_password_reuse(file="system-auth", module="pam_unix") }}}
+{{{ prevent_password_reuse(file="system-auth", module="pam_pwhistory") }}}
+{{{ prevent_password_reuse(file="password-auth", module="pam_unix") }}}
+{{{ prevent_password_reuse(file="password-auth", module="pam_pwhistory") }}}
+{{{ prevent_password_reuse_no_module(file="system-auth") }}}
+{{{ prevent_password_reuse_no_module(file="password-auth") }}}
