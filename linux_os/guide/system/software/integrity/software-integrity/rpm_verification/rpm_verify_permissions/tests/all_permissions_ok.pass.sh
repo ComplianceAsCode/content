@@ -14,8 +14,10 @@ FILES_WITH_INCORRECT_PERMS=($(rpm -Va --nofiledigest | awk '{ if (substr($0,2,1)
 
 for FILE_PATH in "${FILES_WITH_INCORRECT_PERMS[@]}"
 do
-	RPM_PACKAGE=$(rpm -qf "$FILE_PATH")
-	SETPERMS_RPM_LIST["$RPM_PACKAGE"]=1
+	RPM_PACKAGES=$(rpm -qf "$FILE_PATH")
+	for pkg in $RPM_PACKAGES; do
+		SETPERMS_RPM_LIST["$pkg"]=1
+	done
 done
 
 # For each of the RPM packages left in the list -- reset its permissions to the
