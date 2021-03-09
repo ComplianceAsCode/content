@@ -4,8 +4,8 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 set(PRODUCT "sle15")
-ssg_build_product("sle15")
+set(DISA_SRG_TYPE "os")
 
-ssg_build_html_nistrefs_table(${PRODUCT} "standard")
+ssg_build_product(${PRODUCT})
 
-ssg_build_html_cce_table(${PRODUCT})
+ssg_build_html_stig_tables(${PRODUCT} "stig")

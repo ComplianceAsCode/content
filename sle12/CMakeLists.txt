@@ -3,4 +3,9 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see the Building ComplianceAsCode section in the Developer Guide!")
 endif()
 
-ssg_build_product("sle12")
+set(PRODUCT "sle12")
+set(DISA_SRG_TYPE "os")
+
+ssg_build_product(${PRODUCT})
+
+ssg_build_html_stig_tables(${PRODUCT} "stig")
