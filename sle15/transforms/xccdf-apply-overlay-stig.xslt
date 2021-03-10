@@ -3,6 +3,6 @@
 
 <xsl:include href="../../shared/transforms/shared_xccdf-apply-overlay-stig.xslt"/>
 <xsl:include href="constants.xslt"/>
-<xsl:variable name="overlays" select="document()/xccdf:overlays" />
+<xsl:variable name="overlays" select="document($overlay)/xccdf:overlays" />
 
 </xsl:stylesheet>

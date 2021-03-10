@@ -10,7 +10,7 @@
 
 <!-- Define URI of official Center for Internet Security Benchmark for SUSE Linux Enterprise 15 -->
 <xsl:variable name="cisuri" />
-<xsl:variable name="disa-stigs-uri" select="-stigs-os-unix-linux-uri"/>
+<xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
 <!--xsl:variable name="custom-cce-uri">https://www.example.org</xsl:variable-->
