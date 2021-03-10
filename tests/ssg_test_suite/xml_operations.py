@@ -101,12 +101,14 @@ def remove_machine_remediation_condition(root):
 
 
 def remove_bash_machine_remediation_condition(root):
-    query = BENCHMARK_QUERY + 'xccdf-1.2:fix[@system="urn:xccdf:fix:script:sh"]'
+    query = BENCHMARK_QUERY + '//xccdf-1.2:fix[@system="urn:xccdf:fix:script:sh"]'
     fix_elements = root.findall(query, PREFIX_TO_NS)
     considered_machine_platform_checks = [
         r"\[\s+!\s+-f\s+/\.dockerenv\s+\]\s+&&\s+\[\s+!\s+-f\s+/run/\.containerenv\s+\]",
     ]
     for el in fix_elements:
+        if not el.text:
+            continue
         for check in considered_machine_platform_checks:
             el.text = re.sub(check, "true", el.text)
 
