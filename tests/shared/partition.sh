@@ -38,6 +38,16 @@ mount_bind_partition() {
 	mount -B "$PARTITION" "$1"
 }
 
+umount_partition() {
+	local _mount_point="$1"
+	if mount | grep -E "\s+${_mount_point}\s+"; then
+		echo "'$_mount_point' is mounted, will unmount it.."
+		umount -nl "$_mount_point"
+	else
+		echo "'$_mount_point' is not mounted, skipping"
+	fi
+}
+
 # $1: The path to umount and remove from /etc/fstab
 clean_up_partition() {
     path="$1"
