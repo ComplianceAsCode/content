@@ -306,7 +306,7 @@ class BashRemediation(Remediation):
                 all_conditions += " && ".join(inherited_conditionals)
             if rule_specific_conditionals:
                 if all_conditions:
-                    all_conditions += " && ( " + " || ".join(rule_specific_conditionals) + " )"
+                    all_conditions += " && { " + " || ".join(rule_specific_conditionals) + "; }"
                 else:
                     all_conditions = " || ".join(rule_specific_conditionals)
             wrapped_fix_text.append("if {0}; then".format(all_conditions))
