@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="susefirewall2_ddos_protection" version="1">
-    <metadata>
-      <title>Enable DoS Protections in SuSEfirewall2</title>
-      <affected family="unix">
-        <platform>multi_platform_sle</platform>
-      </affected>
-      <description>Verify "SuSEfirewall2" is configured to protect the SUSE operating system against or limit the effects of DoS attacks.</description>
-    </metadata>
+    {{{ oval_metadata("Verify \"SuSEfirewall2\" is configured to protect the SUSE operating system against or limit the effects of DoS attacks.") }}}
     <criteria operator="AND">
       <extend_definition comment="SuSEfirewall2 is installed" definition_ref="package_SuSEfirewall2_installed" />
       <extend_definition comment="SuSEfirewall2 is enabled" definition_ref="service_SuSEfirewall2_enabled" />
