@@ -2,30 +2,39 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Limit Access to Cluster Admin'
+title: 'Ensure that the cluster-admin role is only used where required'
 
 description: |-
-    The <tt>cluster-admin</tt> role provides superuser or privilaged
-    access to an OpenShift cluster. As such, it should be limited to
-    a small subset of trusted users. To remove users from the <tt>cluster-admin</tt>
-    role, run the following command where <tt><i>username</i></tt> is the name
-    of the user to remove:
-    <pre>$ oc adm policy remove-cluster-role-from-user cluster-admin <i>username</i></pre>
+    The RBAC role cluster-admin provides wide-ranging powers over the
+    environment and should be used only where and when needed.
 
 rationale: |-
-    The RBAC role cluster-admin provides superuser or privilaged
-    access to an OpenShift cluster. As such, it should be limited to
-    a small subset of trusted users.
+    Kubernetes provides a set of default roles where RBAC is used. Some of these
+    roles such as cluster-admin provide wide-ranging privileges which should
+    only be applied where absolutely necessary. Roles such as cluster-admin
+    allow super-user access to perform any action on any resource. When used in
+    a ClusterRoleBinding, it gives full control over every resource in the
+    cluster and in all namespaces. When used in a RoleBinding, it gives full
+    control over every resource in the rolebinding's namespace, including the
+    namespace itself.
 
 severity: medium
 
 references:
     cis@ocp4: 5.1.1
 
-ocil_clause: 'cluster-admin role is in use by more personnel then necessary'
+ocil_clause: 'cluster-admin clusterrolebindings need review'
 
 ocil: |-
-    To review the <tt>cluster-admin</tt> role, run the following command:
-    <pre>$ oc get clusterrolebinding -o json | jq '.items[] | select(.metadata.name |  startswith("cluster-admin"))'</pre>
-    Review the output and ensure that authorized users have
-    the <tt>cluster-admin</tt> role.
+    Review users and groups bound to cluster-admin and decide whether they
+    require such access. Consider creating least-privilege roles for users and
+    service accounts. Obtain a list of the users who have access to the
+    cluster-admin role by reviewing the clusterrolebinding output for each role
+    binding that has access to the cluster-admin role. To do this, run the
+    following command:
+    <pre>$ oc get clusterrolebindings -o=custom-columns=NAME:.metadata.name,ROLE:.roleRef.name,SUBJECT:.subjects[*].kind | grep cluster-admin</pre>
+
+    Care should be taken before removing any clusterrolebindings from the
+    environment to ensure they are not required for operation of the cluster.
+    Specifically, modifications should not be made to the default
+    clusterrolebindings including those with the "system:" prefix.
