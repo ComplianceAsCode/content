@@ -248,7 +248,7 @@ selections:
     - security_patches_up_to_date
 
     ## 1.10 Ensure system-wide crypto policy is not legacy (Scored)
-    #- var_system_crypto_policy
+    - var_system_crypto_policy=future
     - configure_crypto_policy
 
     ## 1.11 Ensure system-wide crytpo policy is FUTURE or FIPS (Scored)
