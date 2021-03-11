@@ -24,14 +24,20 @@ identifiers:
 references:
     cis@ocp4: 5.2.3
 
-ocil_clause: 'allowHostIPC is set to true or too many SCCs have allowHostIPC enabled'
+ocil_clause: 'allowHostIPC usage in SCCs needs review'
 
 ocil: |-
     Inspect each SCC returned from running the following command:
     <pre>$ oc get scc</pre>
-    Review each SCC and determine that <tt>allowHostIPC</tt> is either
-    completely disabled, or that <tt>allowHostIPC</tt> is only enabled to
-    a small set of containers and SCCs.
+    Review each SCC for those that have <tt>allowHostIPC</tt> set to <tt>true</tt>.
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that have <tt>allowHostIPC</tt>, examine the associated
+    rolebindings to account for the users that are bound to the role. Review the
+    account to determine if <tt>allowHostIPC</tt> is truly required.
 
 #template:
 #    name: yamlfile_value
