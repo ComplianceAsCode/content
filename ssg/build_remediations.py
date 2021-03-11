@@ -17,7 +17,6 @@ from . import constants
 from .jinja import process_file_with_macros as jinja_process_file
 
 from .xml import ElementTree
-from concurrent.futures._base import ALL_COMPLETED
 
 REMEDIATION_TO_EXT_MAP = {
     'anaconda': '.anaconda',
