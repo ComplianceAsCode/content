@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12
+prodtype: rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15
 
 title: 'Disable Kernel Parameter for Accepting Source-Routed Packets on IPv6 Interfaces by Default'
 
@@ -23,6 +23,7 @@ identifiers:
     cce@rhel8: CCE-81015-0
     cce@rhcos4: CCE-82481-3
     cce@sle12: CCE-83087-7 
+    cce@sle15: CCE-85653-4
 
 references:
     anssi: BP28(R22)
@@ -37,6 +38,7 @@ references:
     cis-csc: 1,12,13,14,15,16,18,4,6,8,9
     srg: SRG-OS-000480-GPOS-00227
     stigid@sle12: SLES-12-030401
+    stigid@sle15: SLES-15-040350
     cis@rhel8: 3.2.1
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_source_route", value="0") }}}

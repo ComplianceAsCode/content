@@ -15,7 +15,7 @@ if [ -f /var/spool/cron/root ]; then
 fi
 
 if ! grep -qR '^.*\/usr\/sbin\/aide\s*\-\-check.*|.*\/bin\/mail\s*-s\s*".*"\s*root@.*$' $CRONTAB_EXIST $VARSPOOL $CRONDIRS; then
-{{% if product == "sle12" %}}
+{{% if product in ["sle12", "sle15"] %}}
 	echo '0 5 * * * root /usr/bin/aide  --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost' >> $CRONTAB
 {{% else %}}
 	echo '0 5 * * * root /usr/sbin/aide  --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost' >> $CRONTAB

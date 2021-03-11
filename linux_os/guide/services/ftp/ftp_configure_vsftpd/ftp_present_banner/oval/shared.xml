@@ -12,7 +12,7 @@
     <ind:object object_ref="object_test_ftp_present_banner" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Banner for FTP Users" id="object_test_ftp_present_banner" version="1">
-    {{% if product == "sle12" %}}
+    {{% if product in ['sle12', 'sle15'] %}}
     <ind:filepath>/etc/vsftpd.conf</ind:filepath>
     {{% else %}}
     <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>

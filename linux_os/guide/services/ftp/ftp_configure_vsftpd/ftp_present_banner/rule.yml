@@ -5,7 +5,7 @@ prodtype: fedora,rhel7,rhel8,sle12
 title: 'Create Warning Banners for All FTP Users'
 
 description: |-
-    {{% if product == "sle12" %}}
+    {{% if product in ["sle12", "sle15"] %}}
     Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd.conf</tt>
     {{% else %}}
     Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd/vsftpd.conf</tt>
@@ -31,14 +31,14 @@ ocil: |-
     If FTP services are not installed, this is not applicable.
     <br /><br />
     To verify this configuration, run the following command:
-    {{% if product == "sle12" %}}
+    {{% if product in ["sle12", "sle15"] %}}
     <pre>grep "banner_file" /etc/vsftpd.conf</pre>
     {{% else %}}
     <pre>grep "banner_file" /etc/vsftpd/vsftpd.conf</pre>
     {{% endif %}}
 
     The output should show the value of <tt>banner_file</tt> is set to <tt>/etc/issue</tt>, an example of which is shown below:
-    {{% if product == "sle12" %}}
+    {{% if product in ["sle12", "sle15"] %}}
     <pre>$ sudo grep "banner_file" /etc/vsftpd.conf
     {{% else %}}
     <pre>$ sudo grep "banner_file" /etc/vsftpd/vsftpd.conf
