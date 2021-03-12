@@ -53,5 +53,7 @@ clean_up_partition() {
     path="$1"
     escaped_path=${path//$'/'/$'\/'}
     sed -i "/${escaped_path}/d" /etc/fstab
-    umount ${path} || true  # no problem if not mounted
+    if mountpoint -q -- "${path}"; then
+        umount -l ${path}
+    fi
 }
