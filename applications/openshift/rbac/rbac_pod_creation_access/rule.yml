@@ -19,11 +19,13 @@ severity: medium
 references:
     cis@ocp4: 5.1.4
 
-ocil_clause: 'pod creation privileges are in use by more roles than necessary'
+ocil_clause: 'pod creation privileges in roles needs review'
 
 ocil: |-
     To review the pod creation privileges in roles, run the following commands:
-    <pre>$ oc get roles --all-namespaces -o yaml</pre>
-    <pre>$ oc get clusterroles -o yaml</pre>
-    Review the output and ensure that pod creation privileged use is limited to
-    as small subset as possible.
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    Review the output, and for any role/clusterrole defining create permissions
+    for pods that are NOT an OpenShift "system:" or other system-provided
+    role/clusterrole, determine if the users bound to the role truly have the
+    need to create pods.

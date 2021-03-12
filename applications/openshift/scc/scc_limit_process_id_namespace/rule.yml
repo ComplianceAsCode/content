@@ -20,14 +20,21 @@ severity: medium
 references:
     cis@ocp4: 5.2.2
 
-ocil_clause: 'allowHostPID is set to true or too many SCCs have allowHostPID enabled'
+ocil_clause: 'allowHostPID usage in SCCs needs review'
 
 ocil: |-
     Inspect each SCC returned from running the following command:
     <pre>$ oc get scc</pre>
-    Review each SCC and determine that <tt>allowHostPID</tt> is either
-    completely disabled, or that <tt>allowHostPID</tt> is only enabled to
-    a small set of containers and SCCs.
+    Review each SCC for those that have <tt>allowHostPID</tt> set to <tt>true</tt>.
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that have <tt>allowHostPID</tt>, examine the associated
+    rolebindings to account for the users that are bound to the role. Review the
+    account to determine if <tt>allowHostPID</tt> is truly required.
+
 
 #template:
 #    name: yamlfile_value
