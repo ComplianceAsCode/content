@@ -1,7 +1,6 @@
 #!/bin/bash
-OUT=/tmp/console-notification.yml
 
-cat <<EOF >$OUT
+cat << EOF | oc apply -f -
 apiVersion: console.openshift.io/v1
 kind: ConsoleNotification
 metadata:
@@ -13,7 +12,6 @@ spec:
  backgroundColor: '#008000' ##Hexcode for banner background color
 EOF
 
-oc apply -f $OUT
 while true; do 
     status=$(oc get consolenotification classification-banner -o=jsonpath='{.spec.text}')
     if [ "$status" == "Unclassified" ]; then
