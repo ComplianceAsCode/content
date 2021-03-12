@@ -42,6 +42,7 @@ template:
     ocp_data: "true"
     filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance
     yamlpath: "spec.pipelines[:].inputRefs[:]"
+    entity_check: "at least one"
     values:
     - value: "audit"
       entity_check: "at least one"
