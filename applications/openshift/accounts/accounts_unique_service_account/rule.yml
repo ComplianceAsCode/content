@@ -6,7 +6,7 @@ title: 'Ensure Usage of Unique Service Accounts '
 
 description: |-
     Using the <tt>default</tt> service account prevents accurate application
-    rights review and audit tracing. For each namespace, create
+    rights review and audit tracing. Instead of <tt>default</tt>, create
     a new and unique service account with the following command:
     <pre>$ oc create sa <i>service_account_name></i></pre>
     where <i>service_account_name></i> is the name of a service account
@@ -26,7 +26,7 @@ severity: medium
 references:
     cis@ocp4: 5.1.5
 
-ocil_clause: 'default service account is used and is not unique'
+ocil_clause: 'default service account usage needs review'
 
 ocil: |-
     For each namespace in the cluster, review the rights assigned
