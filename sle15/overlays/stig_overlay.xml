@@ -64,7 +64,7 @@
     <VMSinfo VKey="234815" SVKey="234815r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must log SSH connection attempts and failures to the server."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_use_approved_ciphers" ownerid="SLES-15-010160" disa="68" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_use_approved_ciphers_ordered_stig" ownerid="SLES-15-010160" disa="68" severity="medium">
     <VMSinfo VKey="234816" SVKey="234816r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must implement DoD-approved encryption to protect the confidentiality of SSH remote connections."/>
   </overlay>
@@ -96,7 +96,7 @@
     <VMSinfo VKey="234823" SVKey="234823r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must disable the file system automounter unless required."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_use_approved_ciphers" ownerid="SLES-15-010250" disa="803" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_use_approved_ciphers_ordered_stig" ownerid="SLES-15-010250" disa="803" severity="medium">
     <VMSinfo VKey="234824" SVKey="234824r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must employ FIPS 140-2 approved cryptographic hashing algorithm for system authentication (system-auth)."/>
   </overlay>
@@ -104,7 +104,7 @@
     <VMSinfo VKey="234825" SVKey="234825r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must employ FIPS 140-2 approved cryptographic hashing algorithm for system authentication (login.defs)."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_use_approved_macs" ownerid="SLES-15-010270" disa="3123" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_use_approved_macs_ordered_stig" ownerid="SLES-15-010270" disa="3123" severity="medium">
     <VMSinfo VKey="234826" SVKey="234826r6221" VRelease="r622137"/>
     <title text="The SUSE operating system SSH daemon must be configured to only use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms."/>
   </overlay>
@@ -440,7 +440,7 @@
     <VMSinfo VKey="234909" SVKey="234909r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for a uses of the chsh command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030110" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030110" disa="2884" severity="medium">
     <VMSinfo VKey="234910" SVKey="234910r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the unix_chkpwd or unix2_chkpwd commands."/>
   </overlay>
@@ -452,83 +452,83 @@
     <VMSinfo VKey="234912" SVKey="234912r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the crontab command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030140" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030140" disa="2884" severity="medium">
     <VMSinfo VKey="234913" SVKey="234913r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must audit all uses of the sudoers file and all files in the /etc/sudoers.d/ directory."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030150" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030150" disa="2884" severity="medium">
     <VMSinfo VKey="234914" SVKey="234914r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the open system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030160" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030160" disa="2884" severity="medium">
     <VMSinfo VKey="234915" SVKey="234915r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the creat system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030170" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030170" disa="2884" severity="medium">
     <VMSinfo VKey="234916" SVKey="234916r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the openat system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030180" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030180" disa="2884" severity="medium">
     <VMSinfo VKey="234917" SVKey="234917r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the open_by_handle_at system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030190" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030190" disa="2884" severity="medium">
     <VMSinfo VKey="234918" SVKey="234918r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the removexattr system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030200" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030200" disa="2884" severity="medium">
     <VMSinfo VKey="234919" SVKey="234919r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the lremovexattr system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030210" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030210" disa="2884" severity="medium">
     <VMSinfo VKey="234920" SVKey="234920r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the fremovexattr system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030220" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030220" disa="2884" severity="medium">
     <VMSinfo VKey="234921" SVKey="234921r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the setxattr system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030230" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030230" disa="2884" severity="medium">
     <VMSinfo VKey="234922" SVKey="234922r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the fsetxattr system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030240" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030240" disa="2884" severity="medium">
     <VMSinfo VKey="234923" SVKey="234923r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the lsetxattr system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030250" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030250" disa="2884" severity="medium">
     <VMSinfo VKey="234924" SVKey="234924r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the chown system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030260" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030260" disa="2884" severity="medium">
     <VMSinfo VKey="234925" SVKey="234925r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the fchown system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030270" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030270" disa="2884" severity="medium">
     <VMSinfo VKey="234926" SVKey="234926r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the lchown system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030280" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030280" disa="2884" severity="medium">
     <VMSinfo VKey="234927" SVKey="234927r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the fchownat system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030290" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030290" disa="2884" severity="medium">
     <VMSinfo VKey="234928" SVKey="234928r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the chmod system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030300" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030300" disa="2884" severity="medium">
     <VMSinfo VKey="234929" SVKey="234929r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the fchmod system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030310" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030310" disa="2884" severity="medium">
     <VMSinfo VKey="234930" SVKey="234930r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the fchmodat system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030320" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030320" disa="2884" severity="medium">
     <VMSinfo VKey="234931" SVKey="234931r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the ftruncate system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030330" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030330" disa="2884" severity="medium">
     <VMSinfo VKey="234932" SVKey="234932r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the sudoedit command."/>
   </overlay>
@@ -536,11 +536,11 @@
     <VMSinfo VKey="234933" SVKey="234933r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the chfn command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030350" disa="2884" severity="low">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030350" disa="2884" severity="low">
     <VMSinfo VKey="234934" SVKey="234934r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the mount system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030360" disa="2884" severity="low">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030360" disa="2884" severity="low">
     <VMSinfo VKey="234935" SVKey="234935r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the umount system call."/>
   </overlay>
@@ -548,15 +548,15 @@
     <VMSinfo VKey="234936" SVKey="234936r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the ssh-agent command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030380" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030380" disa="2884" severity="medium">
     <VMSinfo VKey="234937" SVKey="234937r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the insmod command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030390" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030390" disa="2884" severity="medium">
     <VMSinfo VKey="234938" SVKey="234938r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the rmmod command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030400" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030400" disa="2884" severity="medium">
     <VMSinfo VKey="234939" SVKey="234939r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the modprobe command."/>
   </overlay>
@@ -576,7 +576,7 @@
     <VMSinfo VKey="234943" SVKey="234943r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the chacl command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030450" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030450" disa="2884" severity="medium">
     <VMSinfo VKey="234944" SVKey="234944r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the chcon command."/>
   </overlay>
@@ -604,15 +604,15 @@
     <VMSinfo VKey="234950" SVKey="234950r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the pam_timestamp_check command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030520" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030520" disa="2884" severity="medium">
     <VMSinfo VKey="234951" SVKey="234951r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the delete_module system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030530" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030530" disa="2884" severity="medium">
     <VMSinfo VKey="234952" SVKey="234952r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the finit_module system call."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_newgrp" ownerid="SLES-15-030540" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="SLES-15-030540" disa="2884" severity="medium">
     <VMSinfo VKey="234953" SVKey="234953r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for all uses of the init_module system call."/>
   </overlay>
@@ -712,7 +712,7 @@
     <VMSinfo VKey="234977" SVKey="234977r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must generate audit records for the /var/log/btmp file."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_audispd_encrypt_sent_records" ownerid="SLES-15-030790" disa="1851" severity="medium">
+  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="SLES-15-030790" disa="1851" severity="medium">
     <VMSinfo VKey="234978" SVKey="234978r6221" VRelease="r622137"/>
     <title text="The SUSE operating system must off-load audit records onto a different system or media from the system being audited."/>
   </overlay>
