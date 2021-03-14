@@ -3,8 +3,11 @@ import logging
 import os
 from glob import glob
 
+import ssg.build_yaml
 import ssg.yaml
 import ssg.utils
+
+from ssg.rules import get_rule_path_by_id
 
 
 class Control():
@@ -19,7 +22,7 @@ class Control():
         self.automated = ""
 
     @classmethod
-    def from_control_dict(cls, control_dict, default_level=""):
+    def from_control_dict(cls, control_dict, env_yaml, default_level=""):
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
@@ -34,12 +37,20 @@ class Control():
         control.level = control_dict.get("level", default_level)
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", [])
+
+        product = env_yaml.get('product')
+        ssg_root = env_yaml.get('ssg_root')
+
         for item in selections:
             if "=" in item:
                 varname, value = item.split("=", 1)
                 control.variables[varname] = value
             else:
-                control.rules.append(item)
+                # Check if rule is applicable to product, i.e.: prodtype has product id
+                rule_yaml = get_rule_path_by_id(ssg_root, item)
+                rule =  ssg.build_yaml.Rule.from_yaml(rule_yaml)
+                if rule.prodtype == "all" or product in rule.prodtype:
+                    control.rules.append(item)
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
         return control
@@ -64,7 +75,7 @@ class Policy():
 
         for node in tree:
             control = Control.from_control_dict(
-                node, default_level=default_level)
+                node, self.env_yaml, default_level=default_level)
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
