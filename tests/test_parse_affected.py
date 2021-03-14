@@ -22,13 +22,14 @@ def main():
     ssg.oval.parse_affected(...).
     """
 
-    if len(sys.argv) != 3:
-        print("Error! Must supply only path to root of ssg directory and the build_config.yml file path",
+    if len(sys.argv) != 2:
+        print("Error! Must supply only the build_config.yml file path",
               file=sys.stderr)
         sys.exit(1)
 
-    ssg_root = sys.argv[1]
-    ssg_build_config_yaml = sys.argv[2]
+    ssg_build_config_yaml = sys.argv[1]
+    build_config = ssg.yaml.open_raw(ssg_build_config_yaml)
+    ssg_root = build_config["ssg_root"]
 
     known_dirs = set()
     for product in ssg.constants.product_directories:
