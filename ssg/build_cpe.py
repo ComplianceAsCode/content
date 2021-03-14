@@ -25,10 +25,8 @@ class ProductCPEs(object):
     and provides them in a structured way.
     """
 
-    def __init__(self, product):
-        self.ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-        self.product_yaml = get_product_yaml(self.ssg_root, product)
+    def __init__(self, env_yaml):
+        self.env_yaml = env_yaml
 
         self.cpes_by_id = {}
         self.cpes_by_name = {}
@@ -45,19 +43,19 @@ class ProductCPEs(object):
     def load_product_cpes(self):
 
         try:
-            product_cpes_list = self.product_yaml["cpes"]
+            product_cpes_list = self.env_yaml["cpes"]
             self._load_cpes_list(self.product_cpes, product_cpes_list)
 
         except KeyError:
-            print("Product %s does not define 'cpes'" % (self.product_yaml["product"]))
+            print("Product %s does not define 'cpes'" % (self.env_yaml["product"]))
             raise
 
     def load_content_cpes(self):
 
-        cpes_root = required_key(self.product_yaml, "cpes_root")
-        # we have to "absolutize" the paths the right way, relative to the product_yaml path
+        cpes_root = required_key(self.env_yaml, "cpes_root")
+        # we have to "absolutize" the paths the right way, relative to the env_yaml path
         if not os.path.isabs(cpes_root):
-            cpes_root = os.path.join(self.ssg_root, self.product_yaml["product"], cpes_root)
+            cpes_root = os.path.join(self.env_yaml["ssg_root"], self.env_yaml["product"], cpes_root)
 
         for dir_item in sorted(os.listdir(cpes_root)):
             dir_item_path = os.path.join(cpes_root, dir_item)
@@ -97,7 +95,7 @@ class ProductCPEs(object):
             else:
                 return self.cpes_by_id[ref]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, self.product_yaml["cpes_root"]))
+            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, self.env_yaml["cpes_root"]))
 
 
     def get_cpe_name(self, cpe_id):

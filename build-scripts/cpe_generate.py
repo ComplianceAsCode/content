@@ -29,7 +29,16 @@ def parse_args():
         "definitions and the tests, states objects and variables it "
         "references, and then write them into a standalone OVAL CPE file, "
         "along with a synchronized CPE dictionary file.")
-    p.add_argument("product", help="Name of the product")
+    p.add_argument(
+        "--build-config-yaml", required=True, dest="build_config_yaml",
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml"
+    )
+    p.add_argument(
+        "--product-yaml", required=True, dest="product_yaml",
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel7/product.yml"
+    )
     p.add_argument("idname", help="Identifier prefix")
     p.add_argument("cpeoutdir", help="Artifact output directory")
     p.add_argument("shorthandfile", help="shorthand xml to generate "
@@ -41,6 +50,10 @@ def parse_args():
 
 def main():
     args = parse_args()
+
+    env_yaml = ssg.yaml.open_environment(
+        args.build_config_yaml, args.product_yaml)
+    product = env_yaml["product"]
 
     # parse oval file
     ovaltree = ssg.xml.parse_file(args.ovalfile)
@@ -106,7 +119,7 @@ def main():
     translator = ssg.id_translate.IDTranslator(args.idname)
     ovaltree = translator.translate(ovaltree)
 
-    newovalfile = args.idname + "-" + args.product + "-" + os.path.basename(args.ovalfile)
+    newovalfile = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
     newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
     ssg.xml.ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
 
@@ -117,12 +130,12 @@ def main():
         cpe_name = platform.get("idref")
         benchmark_cpe_names.add(cpe_name)
 
-    product_cpes = ssg.build_cpe.ProductCPEs(args.product)
+    product_cpes = ssg.build_cpe.ProductCPEs(env_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
         cpe_list.add(product_cpes.get_cpe(cpe_name))
 
-    cpedict_filename = "ssg-" + args.product + "-cpe-dictionary.xml"
+    cpedict_filename = "ssg-" + product + "-cpe-dictionary.xml"
     cpedict_path = os.path.join(args.cpeoutdir, cpedict_filename)
     cpe_list.to_file(cpedict_path, newovalfile)
 
