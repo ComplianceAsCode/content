@@ -125,14 +125,12 @@ controls:
     automated: yes
     rules:
     - security_patches_up_to_date
-{{% if product in ['fedora', 'ol8', 'rhel8'] %}}
     - package_dnf-automatic_installed
     - timer_dnf-automatic_enabled
     # Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
     # Configure dnf-automatic to Install Only Security Updates
     - dnf-automatic_security_updates_only
-{{% endif %}}
 
   - id: R9
     level: intermediary
@@ -750,11 +748,9 @@ controls:
     - rsyslog_remote_loghost
 
     # Derived from DAT-NT-012 R12
-{{% if product in ['fedora', 'ol8', 'rhel8'] %}}
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
-{{% endif %}}
 
     # Based on DAT-NT-012 R18
     # The rules sets the rotation frequency to daily
