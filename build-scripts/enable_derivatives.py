@@ -47,6 +47,11 @@ def parse_args():
                       action="store", help="XML Tree content")
     parser.add_option("--id-name", dest="id_name", default="ssg",
                       action="store", help="ID naming scheme")
+    parser.add_option("--build-config-yaml", dest="build_config_yaml",
+                      help="YAML file with information about the build configuration")
+    parser.add_option("--product-yaml", dest="product_yaml",
+                      help="YAML file with information about the product we are building"
+    )
     (options, args) = parser.parse_args()
 
     if options.centos and options.sl:
@@ -66,6 +71,9 @@ def parse_args():
 
 def main():
     options, args = parse_args()
+
+    env_yaml = ssg.yaml.open_environment(
+        options.build_config_yaml, options.product_yaml)
 
     if options.centos:
         mapping = ssg.constants.RHEL_CENTOS_CPE_MAPPING
@@ -112,7 +120,7 @@ def main():
             )
 
     ssg.build_derivatives.replace_platform(root, oval_ns, derivative)
-    ssg.build_derivatives.add_cpe_item_to_dictionary(root, args[0], args[1], "ssg-%s-cpe-oval.xml" % args[0], options.id_name)
+    ssg.build_derivatives.add_cpe_item_to_dictionary(root, env_yaml, args[0], "ssg-%s-cpe-oval.xml" % env_yaml["product"], options.id_name)
 
     tree.write(options.output)
 

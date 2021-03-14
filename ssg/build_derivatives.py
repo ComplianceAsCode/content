@@ -43,10 +43,10 @@ def add_cpes(elem, namespace, mapping):
     return affected
 
 
-def add_cpe_item_to_dictionary(tree_root, product, cpe_ref, cpe_oval_filename, id_name):
+def add_cpe_item_to_dictionary(tree_root, env_yaml, cpe_ref, cpe_oval_filename, id_name):
     cpe_list = tree_root.find(".//{%s}cpe-list" % (PREFIX_TO_NS["cpe-dict"]))
     if cpe_list:
-        product_cpes = ProductCPEs(product)
+        product_cpes = ProductCPEs(env_yaml)
         cpe_item = product_cpes.get_cpe(cpe_ref)
         translator = IDTranslator(id_name)
         cpe_item.check_id = translator.generate_id("{" + oval_namespace + "}definition", cpe_item.check_id)
