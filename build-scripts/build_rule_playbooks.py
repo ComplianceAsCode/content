@@ -36,14 +36,14 @@ def parse_args():
         "--ssg-root."
     )
     p.add_argument(
-        "--ssg-root", required=True,
-        help="Directory containing the source tree. "
-        "e.g. ~/scap-security-guide/"
+        "--build-config-yaml", required=True, dest="build_config_yaml",
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml"
     )
     p.add_argument(
-        "--product", required=True,
-        help="ID of the product for which we are building Playbooks. "
-        "e.g.: 'fedora'"
+        "--product-yaml", required=True, dest="product_yaml",
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
     p.add_argument(
         "--profile",
@@ -62,33 +62,36 @@ def parse_args():
 
 def main():
     args = parse_args()
-    product_yaml = os.path.join(args.ssg_root, args.product, "product.yml")
+    env_yaml = ssg.yaml.open_environment(
+        args.build_config_yaml, args.product_yaml)
+    ssg_root = env_yaml["ssg_root"]
+    product = env_yaml["product"]
     if args.input_dir:
         input_dir = args.input_dir
     else:
         input_dir = os.path.join(
-            args.ssg_root, "build", args.product, "fixes", "ansible"
+            ssg_root, "build", product, "fixes", "ansible"
         )
     if args.output_dir:
         output_dir = args.output_dir
     else:
         output_dir = os.path.join(
-            args.ssg_root, "build", args.product, "playbooks"
+            ssg_root, "build", product, "playbooks"
         )
     if args.resolved_rules_dir:
         resolved_rules_dir = args.resolved_rules_dir
     else:
         resolved_rules_dir = os.path.join(
-            args.ssg_root, "build", args.product, "rules"
+            ssg_root, "build", product, "rules"
         )
     if args.resolved_profiles_dir:
         resolved_profiles_dir = args.resolved_profiles_dir
     else:
         resolved_profiles_dir = os.path.join(
-            args.ssg_root, "build", args.product, "profiles"
+            ssg_root, "build", product, "profiles"
         )
     playbook_builder = ssg.playbook_builder.PlaybookBuilder(
-        product_yaml, input_dir, output_dir, resolved_rules_dir, resolved_profiles_dir
+        args.product_yaml, input_dir, output_dir, resolved_rules_dir, resolved_profiles_dir
     )
     playbook_builder.build(args.profile, args.rule)
 
