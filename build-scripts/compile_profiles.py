@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import argparse
+import logging
 import sys
 import os.path
 from glob import glob
@@ -71,6 +72,8 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
     env_yaml = get_env_yaml(args.build_config_yaml, args.product_yaml)
+
+    logging.basicConfig(filename=f"{env_yaml.get('ssg_root')}/build/{env_yaml.get('product')}/control_profiles.log", level=logging.INFO)
 
     if args.controls_dir:
         controls_manager = ssg.controls.ControlsManager(args.controls_dir, env_yaml)

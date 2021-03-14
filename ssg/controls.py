@@ -51,6 +51,9 @@ class Control():
                 rule =  ssg.build_yaml.Rule.from_yaml(rule_yaml)
                 if rule.prodtype == "all" or product in rule.prodtype:
                     control.rules.append(item)
+                else:
+                    logging.info(f"Rule {item} doesn't apply to {product}")
+
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
         return control
