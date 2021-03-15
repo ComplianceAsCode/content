@@ -2,9 +2,11 @@
 
 # Created by argbash-init v2.9.0
 # ARG_OPTIONAL_SINGLE([name],[n],[Name of the test image],[ssg_test_suite])
-# ARG_OPTIONAL_SINGLE([scenarios],[s],[Regex to reduce selection of tested scenarios],[.*])
+# ARG_OPTIONAL_SINGLE([scenarios],[s],[Regex to reduce selection of tested scenarios],[])
 # ARG_OPTIONAL_SINGLE([datastream],[d],[Path to the datastream to use in tests. Autodetected by default.])
 # ARG_OPTIONAL_SINGLE([remediate-using],[r],[What to remediate with],[oscap])
+# ARG_OPTIONAL_BOOLEAN([dontclean],[],[Dont remove HTML reports from the log directory.])
+# ARG_OPTIONAL_BOOLEAN([dry-run],[],[Just print the test suite command-line.])
 # ARG_POSITIONAL_SINGLE([rule],[The short rule ID. Wildcards are supported.])
 # ARG_TYPE_GROUP_SET([remediations],[REMEDIATION],[remediate-using],[oscap,bash,ansible])
 # ARG_DEFAULTS_POS([])
@@ -50,20 +52,24 @@ _positionals=()
 _arg_rule=
 # THE DEFAULTS INITIALIZATION - OPTIONALS
 _arg_name="ssg_test_suite"
-_arg_scenarios=".*"
+_arg_scenarios=""
 _arg_datastream=
 _arg_remediate_using="oscap"
+_arg_dontclean="off"
+_arg_dry_run="off"
 
 
 print_help()
 {
 	printf '%s\n' "Test a rule using the container backend."
-	printf 'Usage: %s [-n|--name <arg>] [-s|--scenarios <arg>] [-d|--datastream <arg>] [-r|--remediate-using <REMEDIATION>] [-h|--help] <rule>\n' "$0"
+	printf 'Usage: %s [-n|--name <arg>] [-s|--scenarios <arg>] [-d|--datastream <arg>] [-r|--remediate-using <REMEDIATION>] [--dontclean] [--dry-run] [-h|--help] <rule>\n' "$0"
 	printf '\t%s\n' "<rule>: The short rule ID. Wildcards are supported."
 	printf '\t%s\n' "-n, --name: Name of the test image (default: 'ssg_test_suite')"
-	printf '\t%s\n' "-s, --scenarios: Regex to reduce selection of tested scenarios (default: '.*')"
+	printf '\t%s\n' "-s, --scenarios: Regex to reduce selection of tested scenarios (default: '')"
 	printf '\t%s\n' "-d, --datastream: Path to the datastream to use in tests. Autodetected by default. (no default)"
 	printf '\t%s\n' "-r, --remediate-using: What to remediate with. Can be one of: 'oscap', 'bash' and 'ansible' (default: 'oscap')"
+	printf '\t%s\n' "--dontclean: Dont remove HTML reports from the log directory."
+	printf '\t%s\n' "--dry-run: Just print the test suite command-line."
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -118,6 +124,12 @@ parse_commandline()
 				;;
 			-r*)
 				_arg_remediate_using="$(remediations "${_key##-r}" "remediate-using")" || exit 1
+				;;
+			--dontclean)
+				_arg_dontclean="on"
+				;;
+			--dry-run)
+				_arg_dry_run="on"
 				;;
 			-h|--help)
 				print_help
@@ -176,15 +188,22 @@ podman images | grep -q "$_arg_name" || die "Couldn't find the podman image '$_a
 test_image_cpe_product=$(podman run --rm "$_arg_name" cat /etc/os-release | grep cpe | cut -d : -f 4)
 test -n "$test_image_cpe_product" || die "Unable to deduce the product CPE from the container's /etc/os-release file."
 
-scenario_args=()
-test -n "$_arg_scenarios" && scenario_args=(--scenario "$_arg_scenarios")
+additional_args=()
+test "$_arg_dontclean" = on && additional_args+=(--dontclean)
 
-datastream_args=()
-test -n "$_arg_datastream" && datastream_args=(--datastream "$_arg_datastream")
+# Don't act on the default value.
+test -n "$_arg_scenarios" && additional_args+=(--scenario "'$_arg_scenarios'")
 
-remediate_args=()
-test -n "$_arg_remediate_using" && datastream_args=(--remediate-using "$_arg_remediate_using")
+test -n "$_arg_datastream" && additional_args+=(--datastream "$_arg_datastream")
 
-python "${script_dir}/test_suite.py" rule --remove-machine-only "${remediate_args[@]}" "${datastream_args[@]}" "${scenario_args[@]}" --add-platform "$test_image_cpe_product" --container "$_arg_name" -- "${_arg_rule}"
+test -n "$_arg_remediate_using" && additional_args+=(--remediate-using "$_arg_remediate_using")
+
+command=(python3 "${script_dir}/test_suite.py" rule --remove-machine-only "${additional_args[@]}" --add-platform "$test_image_cpe_product" --container "$_arg_name" -- "${_arg_rule}")
+if test "$_arg_dry_run" = on; then
+	printf '%s\n' "${command[*]}"
+else
+	"${command[@]}"
+fi
+
 
 # ] <-- needed because of Argbash
