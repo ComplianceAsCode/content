@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12
+prodtype: sle12,sle15
 
 title: 'Verify that local /var/log/messages is not world-readable'
 
@@ -28,11 +28,13 @@ severity: medium
 
 identifiers:
     cce@sle12: CCE-83112-3
+    cce@sle15: CCE-83285-7
 
 references:
     disa@sle12: CCI-001314
     nist@sle12: SI-11(c)
     stigid@sle12: SLES-12-010890
+    stigid@sle15: SLES-15-010350
     srg@sle12: SRG-OS-000206-GPOS-00084
 
 ocil_clause: 'Make sure /var/log/messages is not world-readable'

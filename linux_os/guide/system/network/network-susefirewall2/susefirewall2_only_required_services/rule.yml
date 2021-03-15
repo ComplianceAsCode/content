@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12
+prodtype: sle12,sle15
 
 title: 'Only Allow Authorized Network Services in SuSEfirewall2'
 
@@ -42,11 +42,13 @@ severity: medium
 
 identifiers:
     cce@sle12: CCE-83165-1
+    cce@sle15: CCE-85660-9
 
 references:
     disa@sle12: CCI-000382
     nist@sle12: CM-7,CA-3(5),AC-17(1)
     stigid@sle12: SLES-12-030030
+    stigid@sle15: SLES-15-010220
     srg@sle12: SRG-OS-000096-GPOS-00050,SRG-OS-000297-GPOS-00115,SRG-OS-000480-GPOS-00231,SRG-OS-000480-GPOS-00232
 
 ocil_clause: 'unauthorized network services can be accessed from the network'
