@@ -716,8 +716,7 @@ selections:
     ### 4.2.3 Ensure permissions on all logfiles are configured (Scored)
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5523
 
-    ## 4.3 Ensure logrotate is conifgured (Not Scored)
-    - ensure_logrotate_activated
+    ## 4.3 Ensure logrotate is configured (Not Scored)
 
     # 5 Access, Authentication and Authorization
 
