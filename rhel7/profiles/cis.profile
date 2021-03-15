@@ -537,7 +537,6 @@ selections:
     ### 4.2.4 Ensure permissions on all logfiles are configured (Scored)
 
     ## 4.3 Ensure logrotate is configured (Not Scored)
-    - ensure_logrotate_activated
 
     # 5 Access, Authentication and Authorization
     ## 5.1 Configure cron

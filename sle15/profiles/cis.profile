@@ -575,8 +575,7 @@ selections:
 
     ### 4.2.3 Ensure permissions on all logfiles are configured (Scored)
 
-    ### 4.2.4 Ensure logrotate is conifgured (Not Scored)
-    - ensure_logrotate_activated
+    ### 4.2.4 Ensure logrotate is configured (Not Scored)
 
     # 5 Access, Authentication and Authorization
 
