@@ -25,14 +25,20 @@ identifiers:
 references:
     cis@ocp4: 5.2.5
 
-ocil_clause: 'allowPrivilegeEscalation is set to true or too many SCCs have allowPrivilegeEscalation enabled'
+ocil_clause: 'allowPrivilegeEscalation usage in SCCs needs review'
 
 ocil: |-
     Inspect each SCC returned from running the following command:
     <pre>$ oc get scc</pre>
-    Review each SCC and determine that <tt>allowPrivilegeEscalation</tt> is either
-    completely disabled, or that <tt>allowPrivilegeEscalation</tt> is only enabled to
-    a small set of containers and SCCs.
+    Review each SCC for those that have <tt>allowPrivilegeEscalation</tt> set to <tt>true</tt>.
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that have <tt>allowPrivilegeEscalation</tt>, examine the associated
+    rolebindings to account for the users that are bound to the role. Review the
+    account to determine if <tt>allowPrivilegeEscalation</tt> is truly required.
 
 #template:
 #    name: yamlfile_value

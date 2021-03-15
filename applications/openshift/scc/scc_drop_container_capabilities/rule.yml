@@ -23,11 +23,18 @@ severity: medium
 references:
     cis@ocp4: 5.2.9
 
-ocil_clause: 'requiredDropCapabilities are not configured or configured correctly'
+ocil_clause: 'requiredDropCapabilities use in SCCs needs review'
 
 ocil: |-
     Inspect each SCC returned from running the following command:
     <pre>$ oc get scc</pre>
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that do not list any <tt>requiredDropCapabilities</tt>, examine the
+    associated rolebindings to account for the users that are bound to the role.
     Review each SCC and determine that all capabilities are either
     completely disabled as a list entry under <tt>requiredDropCapabilities</tt>,
     or that all the un-required capabilities are dropped for containers and SCCs.
