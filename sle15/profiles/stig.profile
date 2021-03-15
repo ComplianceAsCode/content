@@ -14,7 +14,6 @@ description: |-
     DISA STIG for SUSE Linux Enterprise 15 V1R1.
 
 selections:
-    - sshd_approved_macs=stig
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
