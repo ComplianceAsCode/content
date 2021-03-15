@@ -2,7 +2,7 @@
 
 # Created by argbash-init v2.9.0
 # ARG_OPTIONAL_SINGLE([name],[n],[Name of the test image],[ssg_test_suite])
-# ARG_OPTIONAL_SINGLE([scenarios],[s],[Regex to reduce selection of tested scenarios],[.*])
+# ARG_OPTIONAL_SINGLE([scenarios],[s],[Regex to reduce selection of tested scenarios],[])
 # ARG_OPTIONAL_SINGLE([datastream],[d],[Path to the datastream to use in tests. Autodetected by default.])
 # ARG_OPTIONAL_SINGLE([remediate-using],[r],[What to remediate with],[oscap])
 # ARG_OPTIONAL_BOOLEAN([dontclean],[],[Dont remove HTML reports from the log directory.])
@@ -52,7 +52,7 @@ _positionals=()
 _arg_rule=
 # THE DEFAULTS INITIALIZATION - OPTIONALS
 _arg_name="ssg_test_suite"
-_arg_scenarios=".*"
+_arg_scenarios=""
 _arg_datastream=
 _arg_remediate_using="oscap"
 _arg_dontclean="off"
@@ -62,14 +62,14 @@ _arg_dry_run="off"
 print_help()
 {
 	printf '%s\n' "Test a rule using the container backend."
-	printf 'Usage: %s [-n|--name <arg>] [-s|--scenarios <arg>] [-d|--datastream <arg>] [-r|--remediate-using <REMEDIATION>] [--(no-)dontclean] [--(no-)dry-run] [-h|--help] <rule>\n' "$0"
+	printf 'Usage: %s [-n|--name <arg>] [-s|--scenarios <arg>] [-d|--datastream <arg>] [-r|--remediate-using <REMEDIATION>] [--dontclean] [--dry-run] [-h|--help] <rule>\n' "$0"
 	printf '\t%s\n' "<rule>: The short rule ID. Wildcards are supported."
 	printf '\t%s\n' "-n, --name: Name of the test image (default: 'ssg_test_suite')"
-	printf '\t%s\n' "-s, --scenarios: Regex to reduce selection of tested scenarios (default: '.*')"
+	printf '\t%s\n' "-s, --scenarios: Regex to reduce selection of tested scenarios (default: '')"
 	printf '\t%s\n' "-d, --datastream: Path to the datastream to use in tests. Autodetected by default. (no default)"
 	printf '\t%s\n' "-r, --remediate-using: What to remediate with. Can be one of: 'oscap', 'bash' and 'ansible' (default: 'oscap')"
-	printf '\t%s\n' "--dontclean, --no-dontclean: Dont remove HTML reports from the log directory. (off by default)"
-	printf '\t%s\n' "--dry-run, --no-dry-run: Just print the test suite command-line. (off by default)"
+	printf '\t%s\n' "--dontclean: Dont remove HTML reports from the log directory."
+	printf '\t%s\n' "--dry-run: Just print the test suite command-line."
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -125,13 +125,11 @@ parse_commandline()
 			-r*)
 				_arg_remediate_using="$(remediations "${_key##-r}" "remediate-using")" || exit 1
 				;;
-			--no-dontclean|--dontclean)
+			--dontclean)
 				_arg_dontclean="on"
-				test "${1:0:5}" = "--no-" && _arg_dontclean="off"
 				;;
-			--no-dry-run|--dry-run)
+			--dry-run)
 				_arg_dry_run="on"
-				test "${1:0:5}" = "--no-" && _arg_dry_run="off"
 				;;
 			-h|--help)
 				print_help
@@ -193,7 +191,8 @@ test -n "$test_image_cpe_product" || die "Unable to deduce the product CPE from 
 additional_args=()
 test "$_arg_dontclean" = on && additional_args+=(--dontclean)
 
-test -n "$_arg_scenarios" && additional_args+=(--scenario "$_arg_scenarios")
+# Don't act on the default value.
+test -n "$_arg_scenarios" && additional_args+=(--scenario "'$_arg_scenarios'")
 
 test -n "$_arg_datastream" && additional_args+=(--datastream "$_arg_datastream")
 
