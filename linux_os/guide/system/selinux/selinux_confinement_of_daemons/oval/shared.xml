@@ -2,20 +2,20 @@
   <definition class="compliance" id="selinux_confinement_of_daemons" version="1">
     {{{ oval_metadata("All pids in /proc should be assigned an SELinux security context other than 'unconfined_service_t'.") }}}
     <criteria>
-      <criterion comment="device_t in /dev" test_ref="test_selinux_confinement_of_daemons" />
+      <criterion comment="no unconfined_service_t in /proc" test_ref="test_selinux_confinement_of_daemons" />
     </criteria>
   </definition>
-  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="device_t in /dev" id="test_selinux_confinement_of_daemons" version="2">
+  <linux:selinuxsecuritycontext_test check="none satisfy" check_existence="any_exist" comment="none satisfy unconfined_service_t in /proc" id="test_selinux_confinement_of_daemons" version="2">
     <linux:object object_ref="object_selinux_confinement_of_daemons" />
     <linux:state state_ref="state_selinux_confinement_of_daemons" />
   </linux:selinuxsecuritycontext_test>
-  <linux:selinuxsecuritycontext_object comment="none satisfy unconfined_service_t in /proc" id="object_selinux_confinement_of_daemons" version="1">
+  <linux:selinuxsecuritycontext_object comment="find unconfined_service_t in /proc" id="object_selinux_confinement_of_daemons" version="1">
     <linux:behaviors max_depth="1" recurse_direction="down" />
     <linux:path>/proc</linux:path>
     <linux:filename operation="pattern match">^.*$</linux:filename>
     <filter action="include">state_selinux_confinement_of_daemons</filter>
   </linux:selinuxsecuritycontext_object>
-  <linux:selinuxsecuritycontext_state comment="do it" id="state_selinux_confinement_of_daemons" version="1">
+  <linux:selinuxsecuritycontext_state comment="state unconfined_service_t" id="state_selinux_confinement_of_daemons" version="1">
     <linux:type datatype="string" operation="equals">unconfined_service_t</linux:type>
   </linux:selinuxsecuritycontext_state>
 </def-group>
