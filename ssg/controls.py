@@ -22,7 +22,7 @@ class Control():
         self.automated = ""
 
     @classmethod
-    def from_control_dict(cls, control_dict, env_yaml, default_level=""):
+    def from_control_dict(cls, control_dict, env_yaml=None, default_level=""):
         control = cls()
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
@@ -38,8 +38,11 @@ class Control():
         control.notes = control_dict.get("notes", "")
         selections = control_dict.get("rules", [])
 
-        product = env_yaml.get('product')
-        ssg_root = env_yaml.get('ssg_root')
+        product = None
+        ssg_root =  None
+        if env_yaml is not None:
+            product = env_yaml.get('product', None)
+            ssg_root = env_yaml.get('ssg_root', None)
 
         for item in selections:
             if "=" in item:
@@ -47,12 +50,16 @@ class Control():
                 control.variables[varname] = value
             else:
                 # Check if rule is applicable to product, i.e.: prodtype has product id
-                rule_yaml = get_rule_path_by_id(ssg_root, item)
-                rule =  ssg.build_yaml.Rule.from_yaml(rule_yaml)
-                if rule.prodtype == "all" or product in rule.prodtype:
+                if product is None:
+                    # The product was not specified, simply add the rule
                     control.rules.append(item)
                 else:
-                    logging.info(f"Rule {item} doesn't apply to {product}")
+                    rule_yaml = get_rule_path_by_id(ssg_root, item)
+                    rule =  ssg.build_yaml.Rule.from_yaml(rule_yaml)
+                    if rule.prodtype == "all" or product in rule.prodtype:
+                        control.rules.append(item)
+                    else:
+                        logging.info(f"Rule {item} doesn't apply to {product}")
 
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")

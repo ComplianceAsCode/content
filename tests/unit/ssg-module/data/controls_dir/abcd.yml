@@ -14,9 +14,6 @@ controls:
     - sshd_set_idle_timeout
     - accounts_tmout
     - var_accounts_tmout=10_min
-{{% if product == "rhel9" %}}
-    - cockpit_session_timeout
-{{% endif %}}
     notes: >-
       Certain period of inactivity is vague.
   - id: R2
@@ -54,3 +51,14 @@ controls:
           - accounts_password_pam_minlen
           - accounts_password_pam_ocredit
           - var_password_pam_ocredit=1
+  - id: R5
+    title: Enable FIPS mode
+    description: >-
+      FIPS mode should be enabled
+    automated: yes
+    rules:
+    -  grub2_enable_fips_mode
+    -  enable_fips_mode
+    notes: >-
+      Each system has its own way of enabling FIPS mode.
+      The selected rules are applicable to their relevant systems.
