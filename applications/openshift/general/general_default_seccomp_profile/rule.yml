@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure Seccomp Profile Pod Definitions'
+
+description: |-
+    Enable <tt>default</tt> seccomp profiles in your pod definitions.
+
+rationale: |-
+    Seccomp (secure computing mode) is used to restrict the set of system calls
+    applications can make, allowing cluster administrators greater control over
+    the security of workloads running in the cluster. Kubernetes disables
+    seccomp profiles by default for historical reasons. You should enable it to
+    ensure that the workloads have restricted actions available within the
+    container.
+
+severity: medium
+
+ocil_clause: 'Seccomp Profile settings need review'
+
+ocil: |-
+   In OpenShift 4, CRI-O is the supported runtime. CRI-O runs unconfined by
+   default in order to meet CRI conformance criteria.  On RHEL CoreOS, the
+   default seccomp policy is associated with CRI-O and stored in
+   <tt>/etc/crio/seccomp.json</tt>.  The default profile is applied when the user asks
+   for the runtime/default profile via annotation to the pod and when the
+   associated SCC allows use of the specified seccomp profile.
+
+   Configuration of allowable seccomp profiles is managed through OpenShift
+   Security Context Constraints.
+
+references:
+    cis@ocp4: 5.6.2

@@ -22,11 +22,18 @@ severity: medium
 references:
     cis@ocp4: 5.2.8
 
-ocil_clause: 'allowed capabilities are not configured or limited in allowedCapabilities'
+ocil_clause: 'allowed capabilities listings in SCCs needs review'
 
 ocil: |-
     Inspect each SCC returned from running the following command:
     <pre>$ oc get scc</pre>
+    Next, examine the outputs of the following commands:
+    <pre>$ oc describe roles --all-namespaces</pre>
+    <pre>$ oc describe clusterroles</pre>
+    For any role/clusterrole that reference the
+    <tt>securitycontextconstraints</tt> resource with the <tt>resourceNames</tt>
+    of the SCCs that do not list an explicit <tt>allowedCapabilities</tt>, examine the
+    associated rolebindings to account for the users that are bound to the role.
     Review each SCC and determine that only required capabilities are either
     completely added as a list entry under <tt>allowedCapabilities</tt>,
     or that all the un-required capabilities are dropped for containers and SCCs.
