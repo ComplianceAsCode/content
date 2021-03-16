@@ -5,7 +5,68 @@ prodtype: ocp4
 title: 'kubelet - Enable Protect Kernel Defaults'
 
 description: |-
+  <p>
   Protect tuned kernel parameters from being overwritten by the kubelet.
+  </p>
+
+  <p>
+  Before enabling this kernel parameter, it's important and
+  necessary to first create a <tt>MachineConfig</tt> object that persist
+  the required sysctl's. The required sysctl's are the following:
+  </p>
+
+  <pre>
+  kernel.keys.root_maxbytes=25000000
+  kernel.keys.root_maxkeys=1000000
+  kernel.panic=10
+  kernel.panic_on_oops=1
+  vm.overcommit_memory=1
+  vm.panic_on_oom=0
+  </pre>
+  
+  <p>
+  The these need to be enabled via MachineConfig since they need to be
+  available as soon as the node starts and before the Kubelet does.
+  The manifest may look as follows:
+  </p>
+
+  <pre>
+  ---
+  apiVersion: machineconfiguration.openshift.io/v1
+  kind: MachineConfig
+  metadata:
+    labels:
+      machineconfiguration.openshift.io/role: master
+    name: 75-master-kubelet-sysctls
+  spec:
+    config:
+      ignition:
+        version: 3.1.0
+      storage:
+        files:
+        - contents:
+            source: data:,vm.overcommit_memory%3D1%0Avm.panic_on_oom%3D0%0Akernel.panic%3D10%0Akernel.panic_on_oops%3D1%0Akernel.keys.root_maxkeys%3D1000000%0Akernel.keys.root_maxbytes%3D25000000%0A
+          mode: 0644
+          path: /etc/sysctl.d/90-kubelet.conf
+          overwrite: true
+  </pre>
+  
+  <p>
+  This will need to be done for each relevant <tt>MachineConfigPool</tt>
+  in the cluster.
+  </p>
+
+  <p>
+  After enabling this and after the changes have successfully rolled out
+  to the whole cluster, it will now be possible to set the
+  <tt>protectKernelDefaults</tt> parameter. 
+  </p>
+
+  <p>
+  To configure, follow the directions in
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/nodes/nodes/nodes-nodes-managing.html",
+              text="the documentation") }}}
+  </p>
 
 rationale: |-
   Kernel parameters are usually tuned and hardened by the system administrators
@@ -15,26 +76,27 @@ rationale: |-
   state. Ignoring this could potentially lead to running pods with undesired
   kernel behavior.
 
+
 severity: medium
 
 ocil_clause: 'the kubelet can modify kernel parameters'
 
 ocil: |-
-    Run the following command on the kubelet node(s):
-    <pre>$ sudo grep protectKernelDefaults /etc/kubernetes/kubelet.conf</pre>
-    The output should return <tt>true</tt>.
+  Run the following command on the kubelet node(s):
+  <pre>$ sudo grep protectKernelDefaults /etc/kubernetes/kubelet.conf</pre>
+  The output should return <tt>true</tt>.
 
 #identifiers:
 #   cce@ocp4: 
 
 references:
-    cis@ocp4: 4.2.6
+  cis@ocp4: 4.2.6
 
 template:
-    name: yamlfile_value
-    vars:
-        filepath: /etc/kubernetes/kubelet.conf
-        yamlpath: ".protectKernelDefaults"
-        values:
-         - value: "true"
-           operation: "equals"
+  name: yamlfile_value
+  vars:
+    filepath: /etc/kubernetes/kubelet.conf
+    yamlpath: ".protectKernelDefaults"
+    values:
+     - value: "true"
+       operation: "equals"
