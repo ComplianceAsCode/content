@@ -25,27 +25,12 @@ selections:
     - mount_option_tmp_nodev
     - mount_option_tmp_noexec
     - mount_option_tmp_nosuid
-    - partition_for_var_tmp
     - mount_option_var_tmp_nodev
     - mount_option_var_tmp_noexec
     - mount_option_var_tmp_nosuid
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
-    - mount_option_nodev_nonroot_local_partitions
-    - mount_option_boot_nodev
-    - mount_option_boot_nosuid
-    - partition_for_home
-    - partition_for_var
-    - mount_option_var_nodev
-    - partition_for_var_log
-    - mount_option_var_log_nodev
-    - mount_option_var_log_nosuid
-    - mount_option_var_log_noexec
-    - partition_for_var_log_audit
-    - mount_option_var_log_audit_nodev
-    - mount_option_var_log_audit_nosuid
-    - mount_option_var_log_audit_noexec
 
     ### Services
     # sshd
@@ -58,15 +43,11 @@ selections:
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
     - sshd_enable_warning_banner
-    - sshd_rekey_limit
-    - var_rekey_limit_size=1G
-    - var_rekey_limit_time=1hour
-    - sshd_use_strong_rng
-    - openssl_use_strong_entropy
+    - sshd_disable_rhosts_rsa
+    - sshd_use_approved_ciphers
+    - sshd_use_approved_macs
 
     # Time Server
-    - chronyd_client_only
-    - chronyd_no_chronyc_network
 
     ### Network Settings
     - sysctl_net_ipv6_conf_all_accept_ra
@@ -96,9 +77,10 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
     - service_debug-shell_disabled
+    - service_kdump_disabled
+    - service_autofs_disabled
 
     ### umask
-    - var_accounts_user_umask=027
     - accounts_umask_etc_profile
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_csh_cshrc
@@ -119,28 +101,18 @@ selections:
 
     ### Kernel Config
     ## Boot prompt
+    - package_dracut-fips_installed
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
-    - grub2_vsyscall_argument.role=unscored
-    - grub2_vsyscall_argument.severity=info
-    - grub2_pti_argument
-    - grub2_kernel_trust_cpu_rng
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_kexec_load_disabled
     - sysctl_kernel_yama_ptrace_scope
-    - sysctl_kernel_perf_event_paranoid
-    - sysctl_user_max_user_namespaces
-    - sysctl_user_max_user_namespaces.role=unscored
-    - sysctl_user_max_user_namespaces.severity=info
-    - sysctl_kernel_unprivileged_bpf_disabled
-    - sysctl_net_core_bpf_jit_harden
-    - service_kdump_disabled
 
     ## File System Settings
     - sysctl_fs_protected_hardlinks
@@ -150,95 +122,43 @@ selections:
     - service_auditd_enabled
     - var_auditd_flush=incremental_async
     - auditd_data_retention_flush
-    - auditd_local_events
-    - auditd_write_logs
-    - auditd_log_format
-    - auditd_freq
-    - auditd_name_format
+
+    ### Misc Audit Configuration
+    ### (not required in OSPP)
 
     ### Module Blacklist
+    - kernel_module_usb-storage_disabled
     - kernel_module_cramfs_disabled
     - kernel_module_bluetooth_disabled
+    - kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
-    - kernel_module_firewire-core_disabled
-    - kernel_module_atm_disabled
-    - kernel_module_can_disabled
-    - kernel_module_tipc_disabled
 
     ### rpcbind
+    - service_rpcbind_disabled
 
     ### Install Required Packages
-    - package_aide_installed
-    - package_dnf-automatic_installed
-    - package_firewalld_installed
-    - package_openscap-scanner_installed
-    - package_policycoreutils_installed
-    - package_sudo_installed
-    - package_usbguard_installed
-    - package_scap-security-guide_installed
-    - package_audit_installed
-    - package_crypto-policies_installed
-    - package_openssh-server_installed
-    - package_openssh-clients_installed
-    - package_policycoreutils-python-utils_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
-    - package_audispd-plugins_installed
-    - package_chrony_installed
-    - package_gnutls-utils_installed
 
     ### Remove Prohibited Packages
-    - package_sendmail_removed
-    - package_iprutils_removed
-    - package_gssproxy_removed
-    - package_nfs-utils_removed
-    - package_krb5-workstation_removed
-    - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
-    - package_abrt-addon-ccpp_removed
-    - package_abrt-plugin-logger_removed
-    - package_abrt-plugin-sosreport_removed
-    - package_abrt-cli_removed
     - package_abrt_removed
 
     ### Login
     - disable_users_coredumps
-    - sysctl_kernel_core_pattern
-    - coredump_disable_storage
-    - coredump_disable_backtraces
-    - service_systemd-coredump_disabled
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
     - securetty_root_login_console_only
     - var_password_pam_unix_remember=5
     - accounts_password_pam_unix_remember
-    - use_pam_wheel_for_su
 
     ### SELinux Configuration
-    - var_selinux_state=enforcing
-    - selinux_state
-    - var_selinux_policy_name=targeted
-    - selinux_policytype
 
-    ### Application Whitelisting (OL8)
-    - package_fapolicyd_installed
-    - service_fapolicyd_enabled
+    ### Application Whitelisting (OL7)
+
+    ### Configure SSSD
 
     ### Configure USBGuard
-    - service_usbguard_enabled
-    - configure_usbguard_auditbackend
-    - usbguard_allow_hid_and_hub
 
     ### Enable / Configure FIPS
-    - enable_fips_mode
-    - var_system_crypto_policy=fips_ospp
-    - configure_crypto_policy
-    - configure_ssh_crypto_policy
-    - configure_bind_crypto_policy
-    - configure_openssl_crypto_policy
-    - configure_libreswan_crypto_policy
-    - configure_kerberos_crypto_policy
-    - enable_dracut_fips_module
+    -  grub2_enable_fips_mode
 
     #######################################################
     ### CONFIGURATION ANNEX TO THE PROTECTION PROFILE
@@ -278,16 +198,11 @@ selections:
 
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1
-    - package_tmux_installed
-    - configure_bashrc_exec_tmux
-    - no_tmux_in_shells
-    - configure_tmux_lock_command
-    - configure_tmux_lock_after_time
+    - package_screen_installed
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
-    ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
-    - sshd_idle_timeout_value=14_minutes
+    - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
@@ -317,7 +232,6 @@ selections:
     ## Configure the System to Offload Audit Records to a Log
     ##  Server
     ## AU-4(1) / FAU_GEN.1.1.c
-    # temporarily dropped
 
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
@@ -376,46 +290,14 @@ selections:
     ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - audit_basic_configuration
-    - audit_immutable_login_uids
-    - audit_create_failed
-    - audit_create_success
-    - audit_modify_failed
-    - audit_modify_success
-    - audit_access_failed
-    - audit_access_success
-    - audit_delete_failed
-    - audit_delete_success
-    - audit_perm_change_failed
-    - audit_perm_change_success
-    - audit_owner_change_failed
-    - audit_owner_change_success
-    - audit_ospp_general
-    - audit_module_load
+    - audit_rules_for_ospp
 
-    ## Enable Automatic Software Updates
-    ## SI-2 / FMT_MOF_EXT.1
-    # Configure dnf-automatic to Install Only Security Updates
-    - dnf-automatic_security_updates_only
+    ###  SELinux Configuration
 
-    # Configure dnf-automatic to Install Available Updates Automatically
-    - dnf-automatic_apply_updates
+    # Ensure SELinux is Enforcing
+    - var_selinux_state=enforcing
+    - selinux_state
 
-    # Enable dnf-automatic Timer
-    - timer_dnf-automatic_enabled
-
-    # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
-
-    # Prevent Kerberos use by system daemons
-    - kerberos_disable_no_keytab
-
-    # set ssh client rekey limit
-    - ssh_client_rekey_limit
-    - var_ssh_client_rekey_limit_size=1G
-    - var_ssh_client_rekey_limit_time=1hour
-
-    # configure ssh client to use strong entropy
-    - ssh_client_use_strong_rng_sh
-    - ssh_client_use_strong_rng_csh
+    # Configure SELinux Policy
+    - var_selinux_policy_name=targeted
+    - selinux_policytype
