@@ -1,9 +1,7 @@
+from ssg.utils import parse_template_boolean_value
+
 def _file_owner_groupowner_permissions_regex(data):
     data["is_directory"] = data["filepath"].endswith("/")
-    if "missing_file_pass" not in data:
-        data["missing_file_pass"] = False
-    if "allow_stricter_permissions" not in data:
-        data["allow_stricter_permissions"] = True
     if "file_regex" in data and not data["is_directory"]:
         raise ValueError(
             "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
@@ -13,6 +11,11 @@ def _file_owner_groupowner_permissions_regex(data):
 
 def preprocess(data, lang):
     _file_owner_groupowner_permissions_regex(data)
+
+    data["allow_stricter_permissions"] = parse_template_boolean_value(data, parameter="allow_stricter_permissions", default_value=True)
+
+    data["missing_file_pass"] = parse_template_boolean_value(data, parameter="missing_file_pass", default_value=False)
+
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_permissions", "")
         # build the state that describes our mode
