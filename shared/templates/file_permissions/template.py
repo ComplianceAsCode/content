@@ -3,7 +3,7 @@ def _file_owner_groupowner_permissions_regex(data):
     if "missing_file_pass" not in data:
         data["missing_file_pass"] = False
     if "allow_stricter_permissions" not in data:
-        data["allow_stricter_permissions"] = True
+        data["allow_stricter_permissions"] = False
     if "file_regex" in data and not data["is_directory"]:
         raise ValueError(
             "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "

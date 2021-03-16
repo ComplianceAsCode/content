@@ -1371,7 +1371,7 @@ the following to `rule.yml`:
 
     -   **allow_stricter_permissions** - If set to `"true"` the OVAL
         will also consider permissions stricter than **filemode** as compliant.
-        Default value is `"true"`.
+        Default value is `"false"`.
 
 -   Languages: Ansible, Bash, OVAL
 
