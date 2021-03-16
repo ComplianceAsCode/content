@@ -1,23 +1,27 @@
+{{%- if ALLOW_STRICTER_PERMISSIONS %}}
+    {{#
+        When allowing stricter permissions, the check looks for files that do not match the criteria.
+        In this case none_exist is used to make sure that there are no matches.
+    #}}
+  {{% set FILE_EXISTENCE = "none_exist" %}}
+{{%- else -%}}
+  {{%- if MISSING_FILE_PASS -%}}
+    {{# Any number of files can exist, from zero to any #}}
+    {{% set FILE_EXISTENCE = "any_exist" %}}
+  {{%- else -%}}
+    {{# All defined files must exist. When using regex, at least one file must match #}}
+    {{% set FILE_EXISTENCE = "all_exist" %}}
+  {{%- endif -%}}
+{{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("This test makes sure that " + FILEPATH + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
       ") }}}
     <criteria>
-      <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+      <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"/>
     </criteria>
   </definition>
-  {{%- if ALLOW_STRICTER_PERMISSIONS %}}
-    {{% set FILE_EXISTENCE = "at_least_one_exists" %}}
-  {{%- else -%}}
-    {{%- if MISSING_FILE_PASS -%}}
-      {{# Any number of files can exist, from zero to any #}}
-      {{% set FILE_EXISTENCE = "any_exist" %}}
-    {{%- else -%}}
-      {{# All defined files must exist. When using regex, at least one file must match #}}
-      {{% set FILE_EXISTENCE = "all_exist" %}}
-    {{%- endif -%}}
-  {{%- endif -%}}
       <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing mode of {{{ FILEPATH }}}" id="test_file_permissions{{{ FILEID }}}" version="2">
       <unix:object object_ref="object_file_permissions{{{ FILEID }}}" />
       <unix:state state_ref="state_file_permissions{{{ FILEID }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}" />
@@ -26,18 +30,26 @@
       {{{ STATEMODE | indent(6) }}}
     </unix:file_state>
     <unix:file_object comment="{{{ FILEPATH }}}" id="object_file_permissions{{{ FILEID }}}" version="1">
+
     {{%- if IS_DIRECTORY %}}
       <unix:path>{{{ FILEPATH }}}</unix:path>
       {{%- if FILE_REGEX %}}
-        <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
+      <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
       {{%- else %}}
-        <unix:filename xsi:nil="true" />
+      <unix:filename xsi:nil="true" />
       {{%- endif %}}
     {{%- else %}}
       <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ FILEPATH }}}</unix:filepath>
-      {{%- if ALLOW_STRICTER_PERMISSIONS %}}
-      <filter action="include">state_file_permissions{{{ FILEID }}}_mode_not_{{{ FILEMODE }}}</filter>
-      {{%- endif %}}
     {{%- endif %}}
+
+    {{%- if ALLOW_STRICTER_PERMISSIONS %}}
+      {{#
+          This filter is required because of an issue in OpenSCAP. The issue has been fixed in:
+          https://github.com/OpenSCAP/openscap/pull/1709 But this line should be kept until the
+          fix is widely available. The fix is expected to be part of OpenSCAP >= 1.3.5.
+      #}}
+      <filter action="include">state_file_permissions{{{ FILEID }}}_mode_not_{{{ FILEMODE }}}</filter>
+    {{%- endif %}}
+
     </unix:file_object>
 </def-group>
