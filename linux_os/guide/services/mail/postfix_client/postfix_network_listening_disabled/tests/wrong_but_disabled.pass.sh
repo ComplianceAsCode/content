@@ -2,5 +2,5 @@
 # packages = postfix
 
 echo "inet_interfaces = all" > /etc/postfix/main.cf
-systemctl enable postfix
-systemctl start postfix
+systemctl stop postfix
+systemctl disable postfix

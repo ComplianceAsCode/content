@@ -1,6 +1,6 @@
 #!/bin/bash
 # packages = postfix
 
-echo "inet_interfaces = loopback-only" > /etc/postfix/main.cf
 systemctl enable postfix
 systemctl start postfix
+echo "inet_interfaces = all,loopback-only" > /etc/postfix/main.cf
