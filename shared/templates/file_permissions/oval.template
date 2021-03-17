@@ -1,8 +1,8 @@
 {{%- if ALLOW_STRICTER_PERMISSIONS %}}
     {{#
-        When allowing stricter permissions, the check looks for files/directories that
-        do not match the permissions (STATEMODE). The criterion is then negated to make
-        sure there are no files/directories matched.
+        When allowing stricter permissions, the check looks for files/directories
+        that have any extra permission bit set. The permissions mode (STATEMODE)
+        is negated (inverted) and becomes a mask for permissions that should not be set.
     #}}
   {{% set FILE_EXISTENCE = "at_least_one_exists" %}}
 {{%- else -%}}
