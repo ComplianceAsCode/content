@@ -1,0 +1,35 @@
+<def-group>
+     <definition class="compliance" id="{{{ rule_id }}}" version="1">
+     {{{ oval_metadata("Check that sudoers doesn't allow all users to run commands via sudo") }}}
+     <criteria operator="AND">
+        <criterion comment="Make sure that sudoers has restrictions on which users can run sudo for any target user" test_ref="test_not_all_users_can_sudo" />
+        <criterion comment="Make sure that sudoers has restrictions on which users can run sudo for any target group" test_ref="test_not_all_users_can_sudo_to_group" />
+     </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that sudoers has restrictions on which users can run sudo"
+  id="test_not_all_users_can_sudo" version="1">
+    <ind:object object_ref="object_sudoers_cfg_spec_all_users" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sudoers_cfg_spec_all_users" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*ALL\s+ALL\=\(ALL\)\s+ALL\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Make sure that sudoers has restrictions on which users can run sudo"
+  id="test_not_all_users_can_sudo_to_group" version="1">
+    <ind:object object_ref="object_sudoers_cfg_spec_all_group" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sudoers_cfg_spec_all_group" version="1">
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*ALL\s+ALL\=\(ALL\:ALL\)\s+ALL\s*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
