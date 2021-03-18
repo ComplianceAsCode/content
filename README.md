@@ -15,7 +15,7 @@
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 The purpose of this project is to create *security policy content* for various
-platforms -- *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, ... --
+platforms -- *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, *SUSE Linux Enterprise Server (SLES)*,... --
 as well as products -- *Firefox*, *Chromium*, *JRE*, ...
 We aim to make it as easy as possible to write new and maintain existing
 security content in all the commonly used formats.
