@@ -75,7 +75,8 @@ def main():
 
     build_root = os.path.dirname(args.build_config_yaml)
 
-    logging.basicConfig(filename=f"{build_root}/{env_yaml.get('product')}/control_profiles.log", level=logging.INFO)
+    logfile = "{build_root}/{product}/control_profiles.log".format(build_root=build_root, product=env_yaml["product"])
+    logging.basicConfig(filename=logfile, level=logging.INFO)
 
     if args.controls_dir:
         controls_manager = ssg.controls.ControlsManager(args.controls_dir, env_yaml)

@@ -65,7 +65,7 @@ class Control():
                     if rule.prodtype == "all" or product in rule.prodtype:
                         control.rules.append(item)
                     else:
-                        logging.info(f"Rule {item} doesn't apply to {product}")
+                        logging.info("Rule {item} doesn't apply to {product}".format(item=item, product=product))
 
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")

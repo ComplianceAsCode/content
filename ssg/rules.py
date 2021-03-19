@@ -107,7 +107,8 @@ def find_rule_dirs_in_paths(base_dirs):
 
 
 def get_rule_path_by_id(base_dir, rule_id):
-    paths = glob(f'{base_dir}/**/{rule_id}/rule.yml', recursive=True)
+    rule_path = '{base_dir}/**/{rule_id}/rule.yml'.format(base_dir=base_dir, rule_id=rule_id)
+    paths = glob(rule_path, recursive=True)
     if len(paths) == 1:
         return paths[0]
     else:
