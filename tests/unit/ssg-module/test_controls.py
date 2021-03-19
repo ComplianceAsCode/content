@@ -4,6 +4,8 @@ import os
 
 import ssg.controls
 import ssg.build_yaml
+from ssg.yaml import open_environment
+from ssg.products import get_product_yaml
 
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 controls_dir = os.path.join(data_dir, "controls_dir")
@@ -25,8 +27,8 @@ def test_controls_load():
     assert "var_accounts_tmout" in c_r1.variables
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
     # we haven't specified product but this rule should appear
-    # only if product is rhel9
-    assert "cockpit_session_timeout" not in c_r1.rules
+    # only if product is rhel8
+    assert "configure_crypto_policy" not in c_r1.rules
 
     # abcd is a level-less policy
     assert c_r1.level == "default"
@@ -87,7 +89,12 @@ def test_controls_levels():
 
 
 def test_controls_load_product():
-    env_yaml = {"product": "rhel9"}
+    ssg_root = \
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
+    env_yaml = open_environment(build_config_yaml, product_yaml)
+
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
 
@@ -101,9 +108,9 @@ def test_controls_load_product():
     assert "var_accounts_tmout=10_min" not in c_r1.rules
     assert "var_accounts_tmout" in c_r1.variables
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
-    # The rule cockpit_session_timeout is guarded by Jinja macro
-    # that allows it only on rhel9 product.
-    assert "cockpit_session_timeout" in c_r1.rules
+    # The rule configure_crypto_policy is guarded by Jinja macro
+    # that allows it only on rhel8 product.
+    assert "configure_crypto_policy" in c_r1.rules
 
 
 def test_profile_resolution_separate():
@@ -137,7 +144,12 @@ def test_profile_resolution_all_inline():
 
 
 def profile_resolution(cls, profile_low):
-    env_yaml = {"product": "rhel9"}
+    ssg_root = \
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
+    env_yaml = open_environment(build_config_yaml, product_yaml)
+
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
     low_profile_path = os.path.join(profiles_dir, profile_low + ".profile")
@@ -149,7 +161,7 @@ def profile_resolution(cls, profile_low):
     # which should add the following rules to the profile:
     assert "sshd_set_idle_timeout" in profile.selected
     assert "accounts_tmout" in profile.selected
-    assert "cockpit_session_timeout" in profile.selected
+    assert "configure_crypto_policy" in profile.selected
     assert "var_accounts_tmout" in profile.variables
 
     # The rule "security_patches_up_to_date" has been selected directly
@@ -159,8 +171,13 @@ def profile_resolution(cls, profile_low):
 
 
 def profile_resolution_extends(cls, profile_low, profile_high):
+    ssg_root = \
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
+    env_yaml = open_environment(build_config_yaml, product_yaml)
+
     # tests ABCD High profile which is defined as an extension of ABCD Low
-    env_yaml = {"product": "rhel9"}
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
 
@@ -175,7 +192,7 @@ def profile_resolution_extends(cls, profile_low, profile_high):
     # which should add the following rules to the profile:
     assert "sshd_set_idle_timeout" in high_profile.selected
     assert "accounts_tmout" in high_profile.selected
-    assert "cockpit_session_timeout" in high_profile.selected
+    assert "configure_crypto_policy" in high_profile.selected
     assert "var_accounts_tmout" in high_profile.variables
 
     # The rule "security_patches_up_to_date" has been selected directly by the
@@ -191,7 +208,12 @@ def profile_resolution_extends(cls, profile_low, profile_high):
 
 
 def profile_resolution_all(cls, profile_all):
-    env_yaml = {"product": "rhel9"}
+    ssg_root = \
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
+    env_yaml = open_environment(build_config_yaml, product_yaml)
+
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
     profile_path = os.path.join(profiles_dir, profile_all + ".profile")
@@ -205,7 +227,7 @@ def profile_resolution_all(cls, profile_all):
     assert "accounts_tmout" in profile.selected
     assert "var_accounts_tmout" in profile.variables
     assert profile.variables["var_accounts_tmout"] == "10_min"
-    assert "cockpit_session_timeout" in profile.selected
+    assert "configure_crypto_policy" in profile.selected
     # Rule "systemd_target_multi_user" is only "related_rules"
     # therefore it should not appear in the resolved profile.
     assert "systemd_target_multi_user" not in profile.selected

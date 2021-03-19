@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
+from glob import glob
 
 
 def get_rule_dir_yaml(dir_path):
@@ -103,3 +104,12 @@ def find_rule_dirs_in_paths(base_dirs):
         for cur_dir in base_dirs:
             for d in find_rule_dirs(cur_dir):
                 yield d
+
+
+def get_rule_path_by_id(base_dir, rule_id):
+    paths = glob(f'{base_dir}/**/{rule_id}/rule.yml', recursive=True)
+    if len(paths) == 1:
+        return paths[0]
+    else:
+        # Muliple rules were found, the rule_id is not specific enough
+        return None

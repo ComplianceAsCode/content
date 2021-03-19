@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import codecs
 import yaml
+import os
 import sys
 import re
 
@@ -153,6 +154,7 @@ def _validate_product_oval_feed_url(contents):
 def open_environment(build_config_yaml, product_yaml):
     contents = open_raw(build_config_yaml)
     contents.update(open_raw(product_yaml))
+    contents["product_dir"] = os.path.dirname(product_yaml)
     _validate_product_oval_feed_url(contents)
     platform_package_overrides = contents.get("platform_package_overrides", {})
     # Merge common platform package mappings, while keeping product specific mappings

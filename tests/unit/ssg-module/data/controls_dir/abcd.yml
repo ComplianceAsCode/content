@@ -14,8 +14,8 @@ controls:
     - sshd_set_idle_timeout
     - accounts_tmout
     - var_accounts_tmout=10_min
-{{% if product == "rhel9" %}}
-    - cockpit_session_timeout
+{{% if product == "rhel8" %}}
+    - configure_crypto_policy
 {{% endif %}}
     notes: >-
       Certain period of inactivity is vague.
