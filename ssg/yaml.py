@@ -2,19 +2,13 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import codecs
-import yaml
-import os
-import sys
 import re
+import sys
+import yaml
 
 from collections import OrderedDict
 
 from .jinja import load_macros, process_file
-from .constants import (PKG_MANAGER_TO_SYSTEM,
-                        PKG_MANAGER_TO_CONFIG_FILE,
-                        XCCDF_PLATFORM_TO_PACKAGE)
-from .constants import DEFAULT_UID_MIN
-from .utils import merge_dicts
 
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
@@ -76,25 +70,6 @@ def _open_yaml(stream, original_file=None, substitutions_dict={}):
         raise e
 
 
-def _get_implied_properties(existing_properties):
-    result = dict()
-    if "pkg_manager" in existing_properties:
-        pkg_manager = existing_properties["pkg_manager"]
-        if "pkg_system" not in existing_properties:
-            result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[pkg_manager]
-        if "pkg_manager_config_file" not in existing_properties:
-            if pkg_manager in PKG_MANAGER_TO_CONFIG_FILE:
-                result["pkg_manager_config_file"] = PKG_MANAGER_TO_CONFIG_FILE[pkg_manager]
-
-    if "uid_min" not in existing_properties:
-        result["uid_min"] = DEFAULT_UID_MIN
-
-    if "auid" not in existing_properties:
-        result["auid"] = existing_properties.get("uid_min", DEFAULT_UID_MIN)
-
-    return result
-
-
 def open_and_expand(yaml_file, substitutions_dict=None):
     """
     Process the file as a template, using substitutions_dict to perform
@@ -137,31 +112,6 @@ def open_raw(yaml_file):
     with codecs.open(yaml_file, "r", "utf8") as stream:
         yaml_contents = _open_yaml(stream, original_file=yaml_file)
     return yaml_contents
-
-
-def _validate_product_oval_feed_url(contents):
-    if "oval_feed_url" not in contents:
-        return
-    url = contents["oval_feed_url"]
-    if not url.startswith("https"):
-        msg = (
-            "OVAL feed of product '{product}' is not available through an encrypted channel: {url}"
-            .format(product=contents["product"], url=url)
-        )
-        raise ValueError(msg)
-
-
-def open_environment(build_config_yaml, product_yaml):
-    contents = open_raw(build_config_yaml)
-    contents.update(open_raw(product_yaml))
-    contents["product_dir"] = os.path.dirname(product_yaml)
-    _validate_product_oval_feed_url(contents)
-    platform_package_overrides = contents.get("platform_package_overrides", {})
-    # Merge common platform package mappings, while keeping product specific mappings
-    contents["platform_package_overrides"] = merge_dicts(XCCDF_PLATFORM_TO_PACKAGE,
-                                                         platform_package_overrides)
-    contents.update(_get_implied_properties(contents))
-    return contents
 
 
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
