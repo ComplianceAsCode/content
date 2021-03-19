@@ -26,9 +26,6 @@ def test_controls_load():
     assert "var_accounts_tmout=10_min" not in c_r1.rules
     assert "var_accounts_tmout" in c_r1.variables
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
-    # we haven't specified product but this rule should appear
-    # only if product is rhel8
-    assert "configure_crypto_policy" not in c_r1.rules
 
     # abcd is a level-less policy
     assert c_r1.level == "default"
@@ -108,9 +105,6 @@ def test_controls_load_product():
     assert "var_accounts_tmout=10_min" not in c_r1.rules
     assert "var_accounts_tmout" in c_r1.variables
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
-    # The rule configure_crypto_policy is guarded by Jinja macro
-    # that allows it only on rhel8 product.
-    assert "configure_crypto_policy" in c_r1.rules
 
 
 def test_profile_resolution_separate():
