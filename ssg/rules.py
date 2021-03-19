@@ -106,11 +106,10 @@ def find_rule_dirs_in_paths(base_dirs):
                 yield d
 
 
-def get_rule_path_by_id(base_dir, rule_id):
-    rule_path = '{base_dir}/**/{rule_id}/rule.yml'.format(base_dir=base_dir, rule_id=rule_id)
-    paths = glob(rule_path, recursive=True)
-    if len(paths) == 1:
-        return paths[0]
-    else:
-        # Muliple rules were found, the rule_id is not specific enough
-        return None
+def get_rule_path_by_id(benchmark_dir, rule_id):
+    for root, _, files in os.walk(benchmark_dir):
+        if os.path.basename(root) == rule_id:
+            for f in files:
+                if f == "rule.yml":
+                    return os.path.join(root, f)
+    return None
