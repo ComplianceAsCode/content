@@ -13,7 +13,7 @@ import ssg.build_ovals
 import ssg.constants
 import ssg.utils
 import ssg.xml
-import ssg.yaml
+import ssg.environment
 
 
 def parse_args():
@@ -45,7 +45,7 @@ def main():
 
     oval_ns = ssg.constants.oval_namespace
     footer = ssg.constants.oval_footer
-    env_yaml = ssg.yaml.open_environment(
+    env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
 
     header = ssg.xml.oval_generated_header(

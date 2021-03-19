@@ -9,7 +9,7 @@ import argparse
 
 import ssg.build_yaml
 import ssg.controls
-import ssg.yaml
+import ssg.environment
 import ssg.jinja
 import template_renderer
 

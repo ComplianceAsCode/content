@@ -10,6 +10,7 @@ import argparse
 
 import ssg.build_cpe
 import ssg.id_translate
+import ssg.products
 import ssg.xml
 import ssg.yaml
 
@@ -29,7 +30,12 @@ def parse_args():
         "definitions and the tests, states objects and variables it "
         "references, and then write them into a standalone OVAL CPE file, "
         "along with a synchronized CPE dictionary file.")
-    p.add_argument("product", help="Name of the product")
+    p.add_argument(
+        "--product-yaml",
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel7/product.yml "
+        "needed for autodetection of profile root"
+    )
     p.add_argument("idname", help="Identifier prefix")
     p.add_argument("cpeoutdir", help="Artifact output directory")
     p.add_argument("shorthandfile", help="shorthand xml to generate "
@@ -106,7 +112,9 @@ def main():
     translator = ssg.id_translate.IDTranslator(args.idname)
     ovaltree = translator.translate(ovaltree)
 
-    newovalfile = args.idname + "-" + args.product + "-" + os.path.basename(args.ovalfile)
+    product_yaml = ssg.products.get_product_yaml(args.product_yaml)
+    product = product_yaml["product"]
+    newovalfile = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
     newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
     ssg.xml.ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
 
@@ -117,12 +125,12 @@ def main():
         cpe_name = platform.get("idref")
         benchmark_cpe_names.add(cpe_name)
 
-    product_cpes = ssg.build_cpe.ProductCPEs(args.product)
+    product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
         cpe_list.add(product_cpes.get_cpe(cpe_name))
 
-    cpedict_filename = "ssg-" + args.product + "-cpe-dictionary.xml"
+    cpedict_filename = "ssg-" + product + "-cpe-dictionary.xml"
     cpedict_path = os.path.join(args.cpeoutdir, cpedict_filename)
     cpe_list.to_file(cpedict_path, newovalfile)
 

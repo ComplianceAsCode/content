@@ -4,7 +4,7 @@ import os
 
 import ssg.controls
 import ssg.build_yaml
-from ssg.yaml import open_environment
+from ssg.environment import open_environment
 from ssg.products import get_product_yaml
 
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
