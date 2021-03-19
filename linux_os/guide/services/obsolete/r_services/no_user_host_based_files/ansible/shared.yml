@@ -5,7 +5,9 @@
 # disruption = low
 - block:
     - name: "Find local mount points"
-      shell: df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev'
+      shell: |
+          set -o pipefail
+          df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev'
       register: local_mount_points
 
     - name: "Detect the .shosts files on the system"

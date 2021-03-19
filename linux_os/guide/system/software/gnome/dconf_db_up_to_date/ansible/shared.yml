@@ -4,4 +4,6 @@
 # complexity = low
 # disruption = medium
 - name: "Run dconf update"
-  shell: dconf update
+  shell: |
+    set -o pipefail
+    dconf update

@@ -10,6 +10,7 @@
 
 - name: Check to see if 'pam_pkcs11' module is configured in '/etc/pam.d/common-auth'
   shell: |
+    set -o pipefail
     grep -E '^\s*auth\s+\S+\s+pam_pkcs11\.so' /etc/pam.d/common-auth | cat
   register: check_pam_pkcs11_module_result
   when: '"pam_pkcs11" in ansible_facts.packages'

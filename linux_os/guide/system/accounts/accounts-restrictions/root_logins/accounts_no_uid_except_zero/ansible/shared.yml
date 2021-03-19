@@ -11,6 +11,7 @@
 
 - name: lock the password of the user accounts other than root with uid 0
   shell: |
+    set -o pipefail
     passwd -l {{ item.key }}
   loop: "{{ getent_passwd | dict2items | rejectattr('key', 'search', 'root') | list }}"
   when: item.value.1  == '0'

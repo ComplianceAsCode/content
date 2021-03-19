@@ -8,5 +8,6 @@
 
 - name: "Correct file permissions after update /etc/permissions.local"
   shell: >
+    set -o pipefail
     chkstat --set --system
   when: update_permissions_local_result.changed
