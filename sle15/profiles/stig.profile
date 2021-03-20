@@ -201,6 +201,7 @@ selections:
     - partition_for_var_log_audit
     - permissions_local_audit_binaries
     - permissions_local_var_log_audit
+    - permissions_local_var_log
     - postfix_client_configure_mail_alias
     - rsyslog_remote_loghost
     - security_patches_up_to_date

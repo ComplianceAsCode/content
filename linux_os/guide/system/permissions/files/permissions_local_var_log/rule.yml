@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Verify permissions of log files'
+
+description: |-
+    Any operating system providing too much information in error messages
+    risks compromising the data and security of the structure, and content
+    of error messages needs to be carefully considered by the organization.
+
+    Organizations carefully consider the structure/content of error messages.
+    The extent to which information systems are able to identify and handle
+    error conditions is guided by organizational policy and operational
+    requirements. Information that could be exploited by adversaries includes,
+    for example, erroneous logon attempts with passwords entered by mistake
+    as the username, mission/business information that can be derived from
+    (if not stated explicitly by) information recorded, and personal
+    information, such as account numbers, social security numbers, and credit
+    card numbers.
+
+rationale: |-
+    The {{{ full_name }}} must generate error messages that provide information
+    necessary for corrective actions without revealing information that could
+    be exploited by adversaries.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-85755-7
+
+references:
+    disa@sle15: CCI-001312
+    nist: SI-11(a),SI-11(b),SI-11.1(iii)
+    nist-csf: PR.AC-4,PR.DS-5
+    stigid@sle15: SLES-15-010340
+    srg@sle15: SRG-OS-000205-GPOS-00083
+
+ocil_clause: 'all log files are with permission at least 640'
+
+ocil: |-
+    All files in
+    <pre>/var/log/
+    </pre>
+    directory should be with permissions
+    <tt>640</tt> or more restrictive. If any of the log files under
+    <pre>/var/log</pre> directory does not match the criteria, this should be
+    fixed by using the following command:
+    <pre>
+    > sudo find /var/log -perm /137 -type f -exec chmod 640 '{}' \;
+    </pre>
