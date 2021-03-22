@@ -1,6 +1,12 @@
+from ssg.utils import parse_template_boolean_value
+
+
 def preprocess(data, lang):
 
-    if data.get("xccdf_variable") and data.get("embedded_data") == "true":
+    embedded_data = parse_template_boolean_value(data, parameter="embedded_data", default_value=False)
+    data["embedded_data"] = embedded_data
+
+    if data.get("xccdf_variable") and embedded_data:
         values = data.get("values", [{}])
         if len(values) > 1:
             raise ValueError(
@@ -13,13 +19,13 @@ def preprocess(data, lang):
                 "when querying for a 'xccdf_value' that returns an embedded value. "
                 "Rule ID: {}".format(data["_rule_id"]))
 
-    if data.get("xccdf_variable") and data.get("embedded_data") != "true":
+    if data.get("xccdf_variable") and not embedded_data:
         if data.get("values"):
             raise ValueError(
                 "You cannot specify the 'value' field when querying "
                 "for a 'xccdf_value' that doesn't return an embedded value. "
                 "Rule ID: {}".format(data["_rule_id"]))
 
-    data["embedded_data"] = data.get("embedded_data", "false") == "true"
-    data["ocp_data"] = data.get("ocp_data", "false") == "true"
+    data["ocp_data"] = parse_template_boolean_value(data, parameter="ocp_data", default_value=False)
+
     return data
