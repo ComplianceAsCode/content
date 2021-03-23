@@ -1268,6 +1268,21 @@ the following to `rule.yml`:
 
 -   Languages: OVAL
 
+#### coreos_kernel_option
+-   Checks that `argument=value` pair is present in the kernel arguments.
+    Note that this applies to Red Hat CoreOS.
+
+-   Parameters:
+
+    -   **arg_name** - Argument name, eg. `audit`
+
+    -   **arg_value** - Argument value, eg. `'1'`
+
+    -   **negate** - negates the check, which then ensures that
+        `argument=value` is not present in the kernel arguments.
+
+-   Languages: OVAL, Kubernetes
+
 #### dconf_ini_file
 -   Checks for `dconf` configuration. Additionally checks if the
     configuration is locked so it cannot be overriden by the user.
