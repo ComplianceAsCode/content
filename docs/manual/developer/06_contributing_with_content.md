@@ -1278,7 +1278,7 @@ the following to `rule.yml`:
 
     -   **arg_value** - Argument value, eg. `'1'`
 
-    -   **negate** - negates the check, which then ensures that
+    -   **arg_negate** - negates the check, which then ensures that
         `argument=value` is not present in the kernel arguments.
 
 -   Languages: OVAL, Kubernetes
