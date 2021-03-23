@@ -540,7 +540,7 @@ selections:
     - sshd_limit_user_access
     - sshd_disable_rhosts
     #- xwindows_runlevel_target
-    - grub2_enable_selinux
+    - coreos_enable_selinux_kernel_argument
     #- require_emergency_target_auth
     - no_netrc_files
 

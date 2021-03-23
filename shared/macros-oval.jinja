@@ -275,11 +275,12 @@
     - name (String): Argument name
     - value (String): Argument value
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
+    - negate (Boolean): Whether to negate this criterion or not
 #}}
-{{%- macro oval_argument_value_in_line_criterion(filepath, name, value, application='') -%}}
+{{%- macro oval_argument_value_in_line_criterion(filepath, name, value, application='', negate=False) -%}}
 {{%- set name_value = name+"="+value -%}}
-  <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is present in {{{ filepath }}}" 
-  test_ref="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}"/>
+  <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is {{% if negate %}}not {{% endif %}}present in {{{ filepath }}}" 
+  test_ref="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" {{% if negate %}}negate="true" {{% endif %}}/>
 {{%- endmacro -%}}
 
 {{#
