@@ -8,7 +8,12 @@ description: |-
     If any files are not owned by a user, then the
     cause of their lack of ownership should be investigated.
     Following this, the files should be deleted or assigned to an
-    appropriate user.
+    appropriate user. The following command will discover and print
+    any files on local partitions which do not belong to a valid user:
+    <pre>$ df --local -P | awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -nouser</pre>
+    To search all filesystems on a system including network mounted
+    filesystems the following command can be run manually for each partition:
+    <pre>$ sudo find PARTITION -xdev -nouser</pre>
 
 rationale: |-
     Unowned files do not directly imply a security problem, but they are generally
@@ -51,7 +56,7 @@ ocil_clause: 'files exist that are not owned by a valid user'
 ocil: |-
     The following command will discover and print any
     files on local partitions which do not belong to a valid user.
-    <pre>$ sudo find / -xdev -fstype local -nouser</pre>
+    <pre>$ df --local -P | awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -nouser</pre>
     <br /><br />
     Either remove all files and directories from the system that do not have a
     valid user, or assign a valid user to all unowned files and directories on

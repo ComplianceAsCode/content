@@ -8,7 +8,12 @@ description: |-
     If any files are not owned by a group, then the
     cause of their lack of group-ownership should be investigated.
     Following this, the files should be deleted or assigned to an
-    appropriate group.
+    appropriate group. The following command will discover and print
+    any files on local partitions which do not belong to a valid group:
+    <pre>$ df --local -P | awk '{if (NR!=1) print $6}' | sudo xargs -I '{}' find '{}' -xdev -nogroup</pre>
+    To search all filesystems on a system including network mounted
+    filesystems the following command can be run manually for each partition:
+    <pre>$ sudo find PARTITION -xdev -nogroup</pre>
 
 rationale: |-
     Unowned files do not directly imply a security problem, but they are generally
@@ -51,7 +56,7 @@ ocil_clause: 'there is output'
 ocil: |-
     The following command will discover and print any
     files on local partitions which do not belong to a valid group.
-    <pre>$ sudo find / -xdev -fstype local -nogroup</pre>
+    <pre>$ df --local -P | awk '{if (NR!=1) print $6}' | sudo xargs -I '{}' find '{}' -xdev -nogroup</pre>
     <br />
     Either remove all files and directories from the system that do not have a valid group,
     or assign a valid group with the chgrp command:
