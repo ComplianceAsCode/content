@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 # OpenSCAP as of version 1.2.8 doesn't support OCIL check system yet. For
 # example attempt to build rhel7 SSG benchmark produces the following error:
