@@ -1,18 +1,23 @@
+{{% if ARG_NEGATE %}}
+{{% set negate_string = "not " %}}
+{{%- else %}}
+{{% set negate_string = "" %}}
+{{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    {{{ oval_metadata("Ensure " + ARG_NAME + "=" + ARG_VALUE +" argument is present in the 'options' line of /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if there is no ostree-2-*.conf as ostree has only two enries at the most, with *-2-*.conf entry always being the most recent). Also, ensure that kernel is currently running with this argument by checking /proc/cmdline.") }}}
+    {{{ oval_metadata("Ensure " + ARG_NAME + "=" + ARG_VALUE +" argument is " + negate_string + "present in the 'options' line of /boot/loader/entries/ostree-2-*.conf (or ostree-1-*.conf if there is no ostree-2-*.conf as ostree has only two enries at the most, with *-2-*.conf entry always being the most recent). Also, ensure that kernel is currently running with this argument by checking /proc/cmdline.") }}}
     <criteria operator="AND">
       <criteria operator="OR">
         <criteria operator="AND">
             {{{- oval_file_absent_criterion('/boot/loader/entries/ostree-2-.*.conf')}}}
-            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel', negate=ARG_NEGATE) }}}
         </criteria>
         <criteria operator="AND">
-            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+            {{{- oval_argument_value_in_line_criterion('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'Linux kernel', negate=ARG_NEGATE) }}}
         </criteria>
       </criteria>
       <criteria operator="AND">
-        {{{- oval_argument_value_in_line_criterion('/proc/cmdline', ARG_NAME, ARG_VALUE, 'Linux kernel') }}}
+        {{{- oval_argument_value_in_line_criterion('/proc/cmdline', ARG_NAME, ARG_VALUE, 'Linux kernel', negate=ARG_NEGATE) }}}
       </criteria>
     </criteria>
   </definition>
