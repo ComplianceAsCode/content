@@ -514,7 +514,7 @@ selections:
     - wireless_disable_interfaces
 
     # AC-19
-    - grub2_nousb_argument
+    - coreos_nousb_kernel_argument
     - bios_disable_usb_boot
     - service_autofs_disabled
     #- mount_option_nosuid_removable_partitions
