@@ -114,7 +114,7 @@ class Profile(object):
         self.refine_rules = defaultdict(list)
         self.metadata = None
         self.reference = None
-        self.platforms = []
+        self.platforms = None
 
     def read_yaml_contents(self, yaml_contents):
         self.title = required_key(yaml_contents, "title")
@@ -143,10 +143,12 @@ class Profile(object):
         # platforms
         platform = yaml_contents.pop("platform", None)
         platforms = yaml_contents.pop("platforms", None)
-        if platforms:
+        if platforms is not None:
             profile.platforms = platforms
-        if platform:
-            profile.platforms.append(platform)
+            if platform is not None:
+                profile.platforms.append(platform)
+        elif platform is not None:
+            profile.platforms = [platform]
 
         # At the moment, metadata is not used to build content
         if "metadata" in yaml_contents:
@@ -830,7 +832,7 @@ class Group(object):
         self.values = {}
         self.groups = {}
         self.rules = {}
-        self.platforms = []
+        self.platforms = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -850,12 +852,16 @@ class Group(object):
         group.requires = yaml_contents.pop("requires", [])
         # check both platform and platforms keyword and construct list of
         # platforms
+        # platforms keyword is expected to be a list of strings platform should
+        # represent only single platform as a string
         platform = yaml_contents.pop("platform", None)
         platforms = yaml_contents.pop("platforms", None)
-        if platforms:
+        if platforms is not None:
             group.platforms = platforms
-        if platform:
-            group.platforms.append(platform)
+            if platform is not None:
+                group.platforms.append(platform)
+        elif platform is not None:
+            group.platforms = [platform]
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
@@ -1033,7 +1039,7 @@ class Rule(object):
         self.requires = []
         self.conflicts = []
         self.platform = None
-        self.platforms = []
+        self.platforms = None
         self.inherited_platforms = [] # platforms inherited from the group
         self.template = None
 
@@ -1066,10 +1072,12 @@ class Rule(object):
         # platforms
         platform = yaml_contents.pop("platform", None)
         platforms = yaml_contents.pop("platforms", None)
-        if platforms:
+        if platforms is not None:
             rule.platforms = platforms
-        if platform:
-            rule.platforms.append(platform)
+            if platform is not None:
+                rule.platforms.append(platform)
+        elif platform is not None:
+            rule.platforms = [platform]
 
 
         if yaml_contents:
