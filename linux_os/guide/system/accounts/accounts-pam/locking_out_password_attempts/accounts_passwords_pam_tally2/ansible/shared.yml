@@ -5,8 +5,7 @@
 # disruption = low
 
 - name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-auth
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this case
     grep -e '^\s*auth\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-auth | cat
   register: check_pam_tally2_result
 
@@ -18,8 +17,7 @@
   when: '"pam_tally2" not in check_pam_tally2_result.stdout'
 
 - name: Check to see if 'onerr' parameter is present
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this case
     grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sonerr=.*' /etc/pam.d/common-auth | cat
   register: check_onerr_result
 
@@ -41,8 +39,7 @@
   when: '"onerr=" not in check_onerr_result.stdout'
 
 - name: Check to see if 'deny' parameter is present
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this case
     grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sdeny=.*' /etc/pam.d/common-auth | cat
   register: check_deny_result
 
@@ -64,8 +61,7 @@
   when: '"deny=" not in check_deny_result.stdout'
 
 - name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-account
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this case
     grep -e '^\s*account\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-account | cat
   register: check_account_pam_tally2_result
 

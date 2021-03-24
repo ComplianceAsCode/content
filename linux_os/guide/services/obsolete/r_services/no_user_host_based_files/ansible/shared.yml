@@ -5,8 +5,7 @@
 # disruption = low
 - block:
     - name: "Find local mount points"
-      shell: |
-          set -o pipefail
+      shell: | #noqa 306 we don't care about grep failure in this case
           df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev'
       register: local_mount_points
 

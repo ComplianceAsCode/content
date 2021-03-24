@@ -9,8 +9,7 @@
     manager: auto
 
 - name: get rules groups
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this case
     LC_ALL=C grep "^[A-Z][A-Za-z_]*" /etc/aide.conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u
   when: "'aide' in ansible_facts.packages"
   register: find_rules_groups_results

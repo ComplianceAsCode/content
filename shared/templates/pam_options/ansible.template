@@ -23,8 +23,7 @@
     control_flag: '{{{ CONTROL_FLAG }}}'
 
 - name: Check to see if '{{{ MODULE }}}' module is configured in '{{{ PATH }}}'
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this casen
     grep -E '^\s*{{{ TYPE }}}\s+\S+\s+{{{ MODULE }}}' {{{ PATH }}} | cat
   register: check_pam_module_result
 
@@ -65,8 +64,7 @@
     backrefs: yes
 
 - name: Check the presence of "{{{ arg['variable'] }}}" argument in "{{{ MODULE }}}" module
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this case
     grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['variable'] }}}(=|\s|\s*$)' {{{ PATH }}} | cat
   register: check_pam_module_argument_result
 
@@ -91,8 +89,7 @@
   when: argument_value|length
 
 - name: Check the presence of "{{{ arg['argument'] }}}" argument in "{{{ MODULE }}}" module
-  shell: |
-    set -o pipefail
+  shell: | #noqa 306 we don't care about grep failure in this case
     grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['argument'] }}}(=|\s|\s*$)' {{{ PATH }}} | cat
   register: check_pam_module_argument_result
 
