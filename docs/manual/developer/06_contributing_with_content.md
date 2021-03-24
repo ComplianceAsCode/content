@@ -1277,7 +1277,7 @@ the following to `rule.yml`:
     -   **arg_name** - Argument name, eg. `audit`
 
     -   **arg_value** - Argument value, eg. `'1'`. This parameter is optional,
-        and if ommited, this template will only use **arg_name**.
+        and if omitted, this template will only use **arg_name**.
 
     -   **arg_negate** - negates the check, which then ensures that
         `argument=value` is not present in the kernel arguments.
