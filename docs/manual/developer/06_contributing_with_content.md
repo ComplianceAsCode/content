@@ -1282,6 +1282,9 @@ the following to `rule.yml`:
     -   **arg_negate** - negates the check, which then ensures that
         `argument=value` is not present in the kernel arguments.
 
+    -   **arg_is_regex** - Specifies that the given `arg_name` and `arg_value`
+        are regexes.
+
 -   Languages: OVAL, Kubernetes
 
 #### dconf_ini_file

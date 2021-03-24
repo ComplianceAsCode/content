@@ -28,9 +28,10 @@
   </definition>
 
   {{{- oval_file_absent('/boot/loader/entries/ostree-2-.*.conf') }}}
-  {{{- oval_argument_value_in_line_test('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
+  {{{-
+  oval_argument_value_in_line_test('/boot/loader/entries/ostree-1-.*.conf', ARG_NAME, ARG_VALUE, 'options ', is_regex=ARG_IS_REGEX) }}}
 
-  {{{- oval_argument_value_in_line_test('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'options ') }}}
+  {{{- oval_argument_value_in_line_test('/boot/loader/entries/ostree-2-.*.conf', ARG_NAME, ARG_VALUE, 'options ', is_regex=ARG_IS_REGEX) }}}
 
-  {{{- oval_argument_value_in_line_test('/proc/cmdline', ARG_NAME, ARG_VALUE, 'BOOT_IMAGE') }}}
+  {{{- oval_argument_value_in_line_test('/proc/cmdline', ARG_NAME, ARG_VALUE, 'BOOT_IMAGE', is_regex=ARG_IS_REGEX) }}}
 </def-group>
