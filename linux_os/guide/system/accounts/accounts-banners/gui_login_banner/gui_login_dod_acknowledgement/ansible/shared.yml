@@ -30,4 +30,6 @@
       fi
     insertafter: "#!/bin/sh"
     state: present
-  when: presence.changed == false and file_stat.stat.executable == true
+  when:
+    - not presence.changed | bool
+    - file_stat.stat.executable | bool

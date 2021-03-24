@@ -6,6 +6,7 @@
 
 - name: Get all world-writable directories with no sticky bits set
   shell: |
+    set -o pipefail
     df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null
   register: dir_output
 
