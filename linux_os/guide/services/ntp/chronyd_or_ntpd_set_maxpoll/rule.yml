@@ -21,7 +21,9 @@ rationale: |-
 
 severity: medium
 
-platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
+platforms:
+    - ntp
+    - chrony
 
 identifiers:
     cce@rhel7: CCE-80439-3

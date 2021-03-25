@@ -114,7 +114,7 @@ class Profile(object):
         self.refine_rules = defaultdict(list)
         self.metadata = None
         self.reference = None
-        self.platform = None
+        self.platforms = None
 
     def read_yaml_contents(self, yaml_contents):
         self.title = required_key(yaml_contents, "title")
@@ -139,7 +139,16 @@ class Profile(object):
         profile.read_yaml_contents(yaml_contents)
 
         profile.reference = yaml_contents.pop("reference", None)
-        profile.platform = yaml_contents.pop("platform", None)
+        # check both platform and platforms keyword and construct list of
+        # platforms
+        platform = yaml_contents.pop("platform", None)
+        platforms = yaml_contents.pop("platforms", None)
+        if platforms is not None:
+            profile.platforms = platforms
+            if platform is not None:
+                profile.platforms.append(platform)
+        elif platform is not None:
+            profile.platforms = [platform]
 
         # At the moment, metadata is not used to build content
         if "metadata" in yaml_contents:
@@ -163,8 +172,8 @@ class Profile(object):
         if self.extends is not None:
             to_dump["extends"] = self.extends
 
-        if self.platform is not None:
-            to_dump["platform"] = self.platform
+        if self.platforms is not None:
+            to_dump["platforms"] = self.platforms
 
         selections = []
         for item in self.selected:
@@ -219,13 +228,15 @@ class Profile(object):
         if self.reference:
             add_sub_element(element, "reference", escape(self.reference))
 
-        if self.platform:
-            try:
-                platform_cpe = product_cpes.get_cpe_name(self.platform)
-            except KeyError:
-                raise ValueError("Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
-            plat = ET.SubElement(element, "platform")
-            plat.set("idref", platform_cpe)
+        if self.platforms:
+            for platform in self.platforms:
+                try:
+                    platform_cpe = product_cpes.get_cpe_name(platform)
+                except KeyError:
+                    raise ValueError(
+                        "Unsupported platform '%s' in profile '%s'." % (self.platform, self.id_))
+                plat = ET.SubElement(element, "platform")
+                plat.set("idref", platform_cpe)
 
         for selection in self.selected:
             select = ET.Element("select")
@@ -346,7 +357,7 @@ class Profile(object):
         profile.title = self.title
         profile.description = self.description
         profile.extends = self.extends
-        profile.platform = self.platform
+        profile.platforms = self.platforms
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
@@ -807,7 +818,7 @@ class Group(object):
     """Represents XCCDF Group
     """
     ATTRIBUTES_TO_PASS_ON = (
-        "platform",
+        "platforms",
     )
 
     def __init__(self, id_):
@@ -821,7 +832,7 @@ class Group(object):
         self.values = {}
         self.groups = {}
         self.rules = {}
-        self.platform = None
+        self.platforms = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -839,7 +850,18 @@ class Group(object):
         group.warnings = yaml_contents.pop("warnings", [])
         group.conflicts = yaml_contents.pop("conflicts", [])
         group.requires = yaml_contents.pop("requires", [])
-        group.platform = yaml_contents.pop("platform", None)
+        # check both platform and platforms keyword and construct list of
+        # platforms
+        # platforms keyword is expected to be a list of strings platform should
+        # represent only single platform as a string
+        platform = yaml_contents.pop("platform", None)
+        platforms = yaml_contents.pop("platforms", None)
+        if platforms is not None:
+            group.platforms = platforms
+            if platform is not None:
+                group.platforms.append(platform)
+        elif platform is not None:
+            group.platforms = [platform]
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
@@ -872,14 +894,15 @@ class Group(object):
         add_nondata_subelements(group, "requires", "id", self.requires)
         add_nondata_subelements(group, "conflicts", "id", self.conflicts)
 
-        if self.platform:
+        if self.platforms:
             platform_el = ET.SubElement(group, "platform")
-            try:
-                platform_cpe = product_cpes.get_cpe_name(self.platform)
-            except CPEDoesNotExist:
-                print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
-                raise
-            platform_el.set("idref", platform_cpe)
+            for platform in self.platforms:
+                try:
+                    platform_cpe = product_cpes.get_cpe_name(platform)
+                except CPEDoesNotExist:
+                    print("Unsupported platform '%s' in rule '%s'." % (platform, self.id_))
+                    raise
+                platform_el.set("idref", platform_cpe)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -953,8 +976,8 @@ class Group(object):
     def add_group(self, group):
         if group is None:
             return
-        if self.platform and not group.platform:
-            group.platform = self.platform
+        if self.platforms and not group.platforms:
+            group.platforms = self.platforms
         self.groups[group.id_] = group
         self._pass_our_properties_on_to(group)
 
@@ -966,8 +989,8 @@ class Group(object):
     def add_rule(self, rule):
         if rule is None:
             return
-        if self.platform and not rule.platform:
-            rule.platform = self.platform
+        if self.platforms and not rule.platforms:
+            rule.platforms = self.platforms
         self.rules[rule.id_] = rule
         self._pass_our_properties_on_to(rule)
 
@@ -993,6 +1016,7 @@ class Rule(object):
         "conflicts": lambda: list(),
         "requires": lambda: list(),
         "platform": lambda: None,
+        "platforms": lambda: list(),
         "inherited_platforms": lambda: list(),
         "template": lambda: None,
         "definition_location": lambda: None,
@@ -1015,6 +1039,7 @@ class Rule(object):
         self.requires = []
         self.conflicts = []
         self.platform = None
+        self.platforms = None
         self.inherited_platforms = [] # platforms inherited from the group
         self.template = None
 
@@ -1042,6 +1067,18 @@ class Rule(object):
         for warning_list in rule.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
+
+        # check both platform and platforms keyword and construct list of
+        # platforms
+        platform = yaml_contents.pop("platform", None)
+        platforms = yaml_contents.pop("platforms", None)
+        if platforms is not None:
+            rule.platforms = platforms
+            if platform is not None:
+                rule.platforms.append(platform)
+        elif platform is not None:
+            rule.platforms = [platform]
+
 
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
@@ -1306,14 +1343,15 @@ class Rule(object):
         add_nondata_subelements(rule, "requires", "id", self.requires)
         add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
 
-        if self.platform:
-            platform_el = ET.SubElement(rule, "platform")
-            try:
-                platform_cpe = product_cpes.get_cpe_name(self.platform)
-            except CPEDoesNotExist:
-                print("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
-                raise
-            platform_el.set("idref", platform_cpe)
+        if self.platforms:
+            for platform in self.platforms:
+                platform_el = ET.SubElement(rule, "platform")
+                try:
+                    platform_cpe = product_cpes.get_cpe_name(platform)
+                except CPEDoesNotExist:
+                    print("Unsupported platform '%s' in rule '%s'." % (platform, self.id_))
+                    raise
+                platform_el.set("idref", platform_cpe)
 
         return rule
 
@@ -1463,7 +1501,8 @@ class BuildLoader(DirectoryLoader):
             self.all_rules.add(rule)
             self.loaded_group.add_rule(rule)
 
-            rule.inherited_platforms.append(self.loaded_group.platform)
+            if self.loaded_group.platforms is not None:
+                rule.inherited_platforms += self.loaded_group.platforms
 
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
