@@ -12,8 +12,10 @@ description: |-
     Note: The <tt>ntpd</tt> daemon is not enabled by default. Though as mentioned
     in the previous sections in certain environments the <tt>ntpd</tt> daemon might
     be preferred to be used rather than the <tt>chronyd</tt> one. Refer to:
-    {{% if product in ["ol7", "ol8"] %}}
+    {{% if product == "ol7" %}}
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/network/ol7-nettime.html") }}}
+    {{% elif product == "ol8" %}}
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/network/ol-nettime.html") }}}
     {{% else %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html") }}}
     {{% endif %}}
