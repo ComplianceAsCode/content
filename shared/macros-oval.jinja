@@ -292,15 +292,21 @@
   Parameters:
     - filepath (String): Path to the configuration file to be checked. The operation is "pattern match"
     - name (String): Argument name
-    - value (String): Argument value
+    - value (String): Argument value (Optional)
     - line_prefix (String): The starting part of the line with the list of arguments, default is empty
     - line_suffix (String): The ending part of the line with the list of arguments, default is empty
+    - is_regex (Boolean): Defines whether the given name or value is a regex
 #}}
-{{%- macro oval_argument_value_in_line_test(filepath, name, value, line_prefix='', line_suffix='') -%}}
+{{%- macro oval_argument_value_in_line_test(filepath, name, value, line_prefix='', line_suffix='', is_regex=False) -%}}
 {{%- if value -%}}
-{{%- set name_value = name+"="+value -%}}
+  {{%- set name_value = name+"="+value -%}}
 {{%- else -%}}
-{{%- set name_value = name -%}}
+  {{%- set name_value = name -%}}
+{{%- endif -%}}
+{{%- if is_regex -%}}
+  {{%- set processed_name_value = name_value -%}}
+{{%- else -%}}
+  {{%- set processed_name_value = name_value|escape_regex -%}}
 {{%- endif -%}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}"
   comment="Check if argument {{{ name_value }}} is present{{% if line_prefix %}} in the line starting with '{{{ line_prefix }}}'{{% endif %}} in {{{ filepath }}}"
@@ -314,7 +320,7 @@
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ name_value|escape_regex }}}(?:\s.*)?$</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ processed_name_value }}}(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
 {{%- endmacro -%}}
 
