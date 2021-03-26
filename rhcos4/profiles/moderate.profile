@@ -305,8 +305,11 @@ selections:
     ## FIA_UAU.1
     - require_singleuser_auth
     - coreos_disable_interactive_boot
-    - grub2_uefi_password
     - no_empty_passwords
+
+    # This is not currently officially supported in RHCOS; Once we have a
+    # documented workaround this will be re-enabled.
+    #- grub2_uefi_password
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes
     ## AC-7 / FIA_AFL.1
