@@ -18,13 +18,17 @@
     </criteria>
   </definition>
 
+{{% if product in ["sle12", "sle15"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="audit augenrules {{{ NAME }}}" id="test_{{{ ID }}}_augenrules" version="1">
+{{% else %}}
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="audit augenrules {{{ NAME }}}" id="test_{{{ ID }}}_augenrules" version="1">
+{{% endif %}}
     <ind:object object_ref="object_{{{ ID }}}_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_{{{ ID }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
 {{% if product in ["sle12", "sle15"] %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+path={{{ PATH }}}(?:[\s]+-F[\s]+perm=x)?[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(-S[\s]+all[\s]+)*-F[\s]+path={{{ PATH }}}(?:[\s]+-F[\s]+perm=x)?[\s]+-F[\s]+auid\>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
 {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+path={{{ PATH }}}[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
 {{% endif %}}
