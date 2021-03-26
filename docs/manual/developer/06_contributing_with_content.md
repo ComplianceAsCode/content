@@ -56,7 +56,9 @@ A rule itself contains these attributes:
     The &lt;tt&gt;/tmp&lt;/tt&gt; partition is used as temporary storage
     by many programs. Placing &lt;tt&gt;/tmp&lt;/tt&gt; in its own
     partition enables the setting of more restrictive mount options,
-    which can help protect programs which use it. \* `description`:
+    which can help protect programs which use it.
+
+-   `description`:
     Human-readable HTML description, which provides broader context for
     non-experts than the rationale. For example, description of the
     `partition_for_tmp` rule states that:
@@ -70,7 +72,9 @@ A rule itself contains these attributes:
     The &lt;tt&gt;/var/tmp&lt;/tt&gt; directory is a world-writable
     directory used for temporary file storage. Ensure it has its own
     partition or logical volume at installation time, or migrate it
-    using LVM. \* `severity`: Is used for metrics and tracking. It can
+    using LVM. 
+
+-   `severity`: Is used for metrics and tracking. It can
     have one of the following values: `unknown`, `info`, `low`,
     `medium`, or `high`.
 
@@ -110,9 +114,10 @@ A rule itself contains these attributes:
     </table>
 
     When deciding on severity levels, it is best to follow the following
-    guidelines: .Table Vulnerability Severity Category Code Definitions
+    guidelines:
 
     <table>
+    <caption>Table Vulnerability Severity Category Code Definitions</caption>
     <colgroup>
     <col style="width: 33%" />
     <col style="width: 33%" />
@@ -143,8 +148,11 @@ A rule itself contains these attributes:
     </table>
 
     The severity of the rule can be overridden by a profile with
-    `refine-rule` selector. \* `platform`: Defines applicability of a
-    rule. It is specified as a list of platforms. For example, if a rule is not
+    `refine-rule` selector.
+
+-   `platform` or `platforms`: Defines applicability of a
+    rule. It is specified either as a single platform or as a list of platforms.
+    For example, if a rule is not
     applicable to containers, the list should contain the item `machine`, which
     means it will be evaluated only if the targeted scan environment is either
     bare-metal or virtual
@@ -157,15 +165,19 @@ A rule itself contains these attributes:
     new value, an OVAL check (of `inventory` class) must be created
     under `shared/checks/oval/` and referenced in the dictionary file. It is
     possible to specify multiple platforms in the list. In that case, they are
-    implicitly connected with "OR" operand. \* `ocil`: Defines asserting
-    statements to check whether or not the rule is valid. \* `ocil_clause`: This
+    implicitly connected with "OR" operand. 
+    
+-   `ocil`: Defines asserting
+    statements to check whether or not the rule is valid.
+
+-   `ocil_clause`: This
     attribute contains the
     statement which describes how to determine whether the statement is
     true or false. Check out `rule.yml` in
     `linux_os/guide/system/software/disk_partitioning/encrypt_partitions/`:
     this contains a `partitions do not have a type of crypto_LUKS` value
-    for `ocil_clause`. This clause is prefixed with the phrase "It is
-    the case that".
+    for `ocil_clause`. This clause is prefixed with the phrase `Is it
+    the case that <ocil_clause> ?`.
 
 A rule may contain those reference-type attributes:
 
@@ -2108,13 +2120,15 @@ The current workflow is as follows:
 
 -   Run second scan
 
-The test will pass if: \* There are no errors in the scan runs \* We
-have less rule failures after the remediations have been applied \* The
-cluster status is not inconsistent
+The test will pass if: 
+- There are no errors in the scan runs
+- We have less rule failures after the remediations have been applied
+- The cluster status is not inconsistent
 
 Rules may have extra verifications on them. For instance, one is able to
-verify if: \* The rule’s expected result is gotten on a clean run. \*
-The rule’s result changes after a remediation has been applied.
+verify if:
+- The rule’s expected result is gotten on a clean run.
+- The rule’s result changes after a remediation has been applied.
 
 If an automated remediation is not possible, one is also able to created
 a "manual" remediation that will be run as a bash script. The end-to-end
