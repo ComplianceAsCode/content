@@ -15,7 +15,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@ocp4: CCE-84017-3
+  cce@ocp4: CCE-84017-3
 
 references:
   cis@ocp4: 1.1.16
@@ -25,7 +25,8 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resour
 ocil: |-
   {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/configmaps/scheduler-kubeconfig/kubeconfig", owner="root") }}}
 
-platform: ocp4-master-node
+platforms:
+  - ocp4-master-node
 
 template:
   name: file_owner

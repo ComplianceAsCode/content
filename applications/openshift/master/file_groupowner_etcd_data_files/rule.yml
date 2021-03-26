@@ -25,7 +25,8 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/etcd/member/wal/*"
 ocil: |-
     {{{ ocil_file_group_owner(file="/var/lib/etcd/member/wal/*", group="root") }}}
 
-platform: ocp4-master-node
+platforms:
+    - ocp4-master-node
 
 template:
     name: file_groupowner

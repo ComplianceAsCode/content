@@ -28,7 +28,8 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", perms="-rw-r--r--") }}}
 
-platform: ocp4-master-node
+platforms:
+    - ocp4-master-node
 
 template:
     name: file_permissions

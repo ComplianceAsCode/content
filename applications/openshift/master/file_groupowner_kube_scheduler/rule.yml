@@ -23,7 +23,8 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-scheduler-pod-*/kube-scheduler-pod.yaml", group="root") }}}'
 
-platform: ocp4-master-node
+platforms:
+    - ocp4-master-node
 
 template:
     name: file_groupowner
