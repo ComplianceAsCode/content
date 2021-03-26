@@ -12,8 +12,7 @@ ocil: 'Check the file <tt>/etc/selinux/config</tt> and ensure the following line
   <pre>SELINUX=<sub idref="var_selinux_state" /></pre>'
 ocil_clause: SELINUX is not set to enforcing
 oval_external_content: null
-platforms:
-  - machine
+platform: machine
 prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 rationale: 'Setting the SELinux state to enforcing ensures SELinux is able to confine
 

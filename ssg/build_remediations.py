@@ -280,34 +280,39 @@ class BashRemediation(Remediation):
         if stripped_fix_text == "":
             return result
 
-        rule_specific_platforms = set()
-        inherited_platforms = set()
+        rule_platforms = set()
         if self.associated_rule:
             # There can be repeated inherited platforms and rule platforms
-            inherited_platforms.update(self.associated_rule.inherited_platforms)
-            if self.associated_rule.platforms is not None:
-                rule_specific_platforms = {
-                    p for p in self.associated_rule.platforms if p not in inherited_platforms}
+            rule_platforms.update(self.associated_rule.inherited_platforms)
+            rule_platforms.add(self.associated_rule.platform)
 
-        inherited_conditionals = [
-            self.generate_platform_conditional(p) for p in inherited_platforms]
-        rule_specific_conditionals = [
-            self.generate_platform_conditional(p) for p in rule_specific_platforms]
-        # remove potential "None" from lists
-        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
-        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
+        platform_conditionals = []
+        for platform in rule_platforms:
+            if platform == "machine":
+                # Based on check installed_env_is_a_container
+                platform_conditionals.append('[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
 
-        if inherited_conditionals or rule_specific_conditionals:
+                # Some package names are different from the platform names
+                if platform in self.local_env_yaml["platform_package_overrides"]:
+                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
+
+                    # Workaround for plaforms that are not Package CPEs
+                    # Skip platforms that are not about packages installed
+                    # These should be handled in the remediation itself
+                    if not platform:
+                        continue
+
+                # Adjust package check command according to the pkg_manager
+                pkg_manager = self.local_env_yaml["pkg_manager"]
+                pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
+                platform_conditionals.append(pkg_check_command.format(platform))
+
+        if platform_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
 
-            all_conditions = ""
-            if inherited_conditionals:
-                all_conditions += " && ".join(inherited_conditionals)
-            if rule_specific_conditionals:
-                if all_conditions:
-                    all_conditions += " && { " + " || ".join(rule_specific_conditionals) + "; }"
-                else:
-                    all_conditions = " || ".join(rule_specific_conditionals)
+            all_conditions = " && ".join(platform_conditionals)
             wrapped_fix_text.append("if {0}; then".format(all_conditions))
             wrapped_fix_text.append("")
             # It is possible to indent the original body of the remediation with textwrap.indent(),
@@ -323,28 +328,6 @@ class BashRemediation(Remediation):
             result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
 
         return result
-
-    def generate_platform_conditional(self, platform):
-        if platform == "machine":
-            # Based on check installed_env_is_a_container
-            return '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
-        elif platform is not None:
-            # Assume any other platform is a Package CPE
-
-            # Some package names are different from the platform names
-            if platform in self.local_env_yaml["platform_package_overrides"]:
-                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
-
-                # Workaround for platforms that are not Package CPEs
-                # Skip platforms that are not about packages installed
-                # These should be handled in the remediation itself
-                if not platform:
-                    return
-
-            # Adjust package check command according to the pkg_manager
-            pkg_manager = self.local_env_yaml["pkg_manager"]
-            pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
-            return pkg_check_command.format(platform)
 
 class AnsibleRemediation(Remediation):
     def __init__(self, file_path):
@@ -458,34 +441,32 @@ class AnsibleRemediation(Remediation):
         additional_when = []
 
         # There can be repeated inherited platforms and rule platforms
-        inherited_platforms = set()
-        rule_specific_platforms = set()
-        inherited_platforms.update(self.associated_rule.inherited_platforms)
-        if self.associated_rule.platforms is not None:
-            rule_specific_platforms = {
-                p for p in self.associated_rule.platforms if p not in inherited_platforms}
+        rule_platforms = set(self.associated_rule.inherited_platforms)
+        rule_platforms.add(self.associated_rule.platform)
 
-        inherited_conditionals = [
-            self.generate_platform_conditional(p) for p in inherited_platforms]
-        rule_specific_conditionals = [
-            self.generate_platform_conditional(p) for p in rule_specific_platforms]
-        # remove potential "None" from lists
-        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
-        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
+        for platform in rule_platforms:
+            if platform == "machine":
+                additional_when.append('ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]')
+            elif platform is not None:
+                # Assume any other platform is a Package CPE
 
-        # remove conditionals related to package CPEs if the updated task
-        # collects package facts
-        if "package_facts" in to_update:
-            inherited_conditionals = [
-                c for c in inherited_conditionals if "in ansible_facts.packages" not in c]
-            rule_specific_conditionals = [
-                c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
+                # It doesn't make sense to add a conditional on the task that
+                # gathers data for the conditional
+                if "package_facts" in to_update:
+                    continue
 
-        if inherited_conditionals:
-            additional_when = additional_when + inherited_conditionals
+                if platform in self.local_env_yaml["platform_package_overrides"]:
+                    platform = self.local_env_yaml["platform_package_overrides"].get(platform)
 
-        if rule_specific_conditionals:
-            additional_when.append(" or ".join(rule_specific_conditionals))
+                    # Workaround for plaforms that are not Package CPEs
+                    # Skip platforms that are not about packages installed
+                    # These should be handled in the remediation itself
+                    if not platform:
+                        continue
+
+                additional_when.append('"' + platform + '" in ansible_facts.packages')
+                # After adding the conditional, we need to make sure package_facts are collected.
+                # This is done via inject_package_facts_task()
 
         to_update.setdefault("when", "")
         new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
@@ -523,25 +504,6 @@ class AnsibleRemediation(Remediation):
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 return None
             return result
-
-    def generate_platform_conditional(self, platform):
-        if platform == "machine":
-            return 'ansible_virtualization_type not in '\
-                '["docker", "lxc", "openvz", "podman", "container"]'
-        elif platform is not None:
-            # Assume any other platform is a Package CPE
-
-            if platform in self.local_env_yaml["platform_package_overrides"]:
-                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
-
-                # Workaround for platforms that are not Package CPEs
-                # Skip platforms that are not about packages installed
-                # These should be handled in the remediation itself
-                if not platform:
-                    return
-
-            return '"' + platform + '" in ansible_facts.packages'
-
 
 
 class AnacondaRemediation(Remediation):
