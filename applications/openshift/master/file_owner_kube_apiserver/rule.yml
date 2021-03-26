@@ -23,7 +23,8 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resour
 
 ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", owner="root") }}}'
 
-platform: ocp4-master-node
+platforms:
+    - ocp4-master-node
 
 template:
     name: file_owner

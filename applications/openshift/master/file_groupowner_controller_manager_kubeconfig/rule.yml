@@ -26,7 +26,8 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-
 ocil: |-
   {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-controller-manager-pod-*/configmaps/controller-manager-kubeconfig/kubeconfig", group="root") }}}
 
-platform: ocp4-master-node
+platforms:
+  - ocp4-master-node
 
 template:
   name: file_groupowner

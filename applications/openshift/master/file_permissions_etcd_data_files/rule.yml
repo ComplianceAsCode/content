@@ -26,7 +26,8 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/lib/etcd/member/wal/*"
 ocil: |-
     {{{ ocil_file_permissions(file="/var/lib/etcd/member/wal/*", perms="-rw-------") }}}
 
-platform: ocp4-master-node
+platforms:
+    - ocp4-master-node
 
 template:
     name: file_permissions

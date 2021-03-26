@@ -26,7 +26,8 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/static-pod-
 ocil: |-
   {{{ ocil_file_permissions(file="/etc/kubernetes/static-pod-resources/kube-*/secrets/*/tls.crt", perms="-rw-------") }}}
 
-platform: ocp4-master-node
+platforms:
+  - ocp4-master-node
 
 # Note that this recursively checks for files, and the form is as follows:
 #
