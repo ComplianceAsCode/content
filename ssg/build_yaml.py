@@ -114,7 +114,12 @@ class Profile(object):
         self.refine_rules = defaultdict(list)
         self.metadata = None
         self.reference = None
+        # self.platforms is used further in the build system
+        # self.platform is merged into self.platforms
+        # it is here for backward compatibility
         self.platforms = None
+        self.platform = None
+
 
     def read_yaml_contents(self, yaml_contents):
         self.title = required_key(yaml_contents, "title")
@@ -139,16 +144,14 @@ class Profile(object):
         profile.read_yaml_contents(yaml_contents)
 
         profile.reference = yaml_contents.pop("reference", None)
-        # check both platform and platforms keyword and construct list of
-        # platforms
-        platform = yaml_contents.pop("platform", None)
-        platforms = yaml_contents.pop("platforms", None)
-        if platforms is not None:
-            profile.platforms = platforms
-            if platform is not None:
-                profile.platforms.append(platform)
-        elif platform is not None:
-            profile.platforms = [platform]
+        # ensure that content of profile.platform is in profile.platforms as
+        # well
+        if profile.platform is not None:
+            if profile.platforms is not None and profile.platform not in profile.platforms:
+                profile.platforms.append(profile.platform)
+            elif profile.platforms is None:
+                profile.platforms = [profile.platform]
+
 
         # At the moment, metadata is not used to build content
         if "metadata" in yaml_contents:
@@ -358,6 +361,7 @@ class Profile(object):
         profile.description = self.description
         profile.extends = self.extends
         profile.platforms = self.platforms
+        profile.platform = self.platform
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
@@ -832,7 +836,11 @@ class Group(object):
         self.values = {}
         self.groups = {}
         self.rules = {}
+        # self.platforms is used further in the build system
+        # self.platform is merged into self.platforms
+        # it is here for backward compatibility
         self.platforms = None
+        self.platform = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -850,18 +858,15 @@ class Group(object):
         group.warnings = yaml_contents.pop("warnings", [])
         group.conflicts = yaml_contents.pop("conflicts", [])
         group.requires = yaml_contents.pop("requires", [])
-        # check both platform and platforms keyword and construct list of
-        # platforms
-        # platforms keyword is expected to be a list of strings platform should
-        # represent only single platform as a string
-        platform = yaml_contents.pop("platform", None)
-        platforms = yaml_contents.pop("platforms", None)
-        if platforms is not None:
-            group.platforms = platforms
-            if platform is not None:
-                group.platforms.append(platform)
-        elif platform is not None:
-            group.platforms = [platform]
+        group.platform = yaml_contents.pop("platform", None)
+        group.platfors = yaml_contents.pop("platforms", None)
+        # ensure that content of group.platform is in group.platforms as
+        # well
+        if group.platform is not None:
+            if group.platforms is not None and group.platform not in group.platforms:
+                group.platforms.append(group.platform)
+            elif group.platforms is None:
+                group.platforms = [group.platform]
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
@@ -1016,7 +1021,7 @@ class Rule(object):
         "conflicts": lambda: list(),
         "requires": lambda: list(),
         "platform": lambda: None,
-        "platforms": lambda: list(),
+        "platforms": lambda: None,
         "inherited_platforms": lambda: list(),
         "template": lambda: None,
         "definition_location": lambda: None,
@@ -1038,6 +1043,9 @@ class Rule(object):
         self.warnings = []
         self.requires = []
         self.conflicts = []
+        # self.platforms is used further in the build system
+        # self.platform is merged into self.platforms
+        # it is here for backward compatibility
         self.platform = None
         self.platforms = None
         self.inherited_platforms = [] # platforms inherited from the group
@@ -1068,16 +1076,13 @@ class Rule(object):
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
 
-        # check both platform and platforms keyword and construct list of
-        # platforms
-        platform = yaml_contents.pop("platform", None)
-        platforms = yaml_contents.pop("platforms", None)
-        if platforms is not None:
-            rule.platforms = platforms
-            if platform is not None:
-                rule.platforms.append(platform)
-        elif platform is not None:
-            rule.platforms = [platform]
+        # ensure that content of rule.platform is in rule.platforms as
+        # well
+        if rule.platform is not None:
+            if rule.platforms is not None and rule.platform not in rule.platforms:
+                rule.platforms.append(rule.platform)
+            elif rule.platforms is None:
+                rule.platforms = [rule.platform]
 
 
         if yaml_contents:
