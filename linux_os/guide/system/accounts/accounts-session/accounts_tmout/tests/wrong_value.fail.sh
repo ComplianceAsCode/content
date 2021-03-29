@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# variables = var_accounts_tmout=200
+# variables = var_accounts_tmout=900
 
 if grep -q "^TMOUT" /etc/profile; then
-	sed -i "s/^TMOUT.*/TMOUT=250/" /etc/profile
+	sed -i "s/^TMOUT.*/TMOUT=950/" /etc/profile
 else
-	echo "TMOUT=250" >> /etc/profile
+	echo "TMOUT=950" >> /etc/profile
 fi
