@@ -11,7 +11,7 @@
   <ind:textfilecontent54_object id="obj_umask_from_etc_bashrc"
   comment="Umask value from /etc/bashrc" version="1">
     <ind:filepath>/etc/bashrc</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)UMASK(?-i)[\s]+([^#\s]*)</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*umask[\s]+([^#\s]*)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
