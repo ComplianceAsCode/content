@@ -437,3 +437,17 @@ AuditBackend=LinuxAudit
 {{%- set audit_watch_rule_path = "/etc/audit/rules.d/75-" + path | replace('/', '')  + "-" + permissions + "-" + key + ".rules" -%}}
 {{{ kubernetes_machine_config_file(path=audit_watch_rule_path, file_permissions_mode='0600', source=audit_watch_rule) }}}
 {{%- endmacro %}}
+
+{{% macro audit_syscalls_rule(syscalls=[], key='', fields='') %}}
+{{%- for syscall in syscalls -%}}
+-a always,exit -F arch=b64 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}} -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}}{{% if fields %}} -F {{{ fields }}}{{% endif %}} -k {{{ key }}}
+{{% endfor %}}
+{{%- endmacro %}}
+
+{{#
+  Macro to generate MachineConfig adding an auditd rule for syscall watching
+#}}
+{{% macro kubernetes_machineconfig_audit_add_syscall_rule(path='', syscalls=[], key='', fields='') -%}}
+{{{ kubernetes_machine_config_file(path=path, file_permissions_mode='0600', source=audit_syscalls_rule(syscalls, key, fields)) }}}
+{{%- endmacro %}}
