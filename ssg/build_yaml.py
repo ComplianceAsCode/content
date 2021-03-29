@@ -117,7 +117,7 @@ class Profile(object):
         # self.platforms is used further in the build system
         # self.platform is merged into self.platforms
         # it is here for backward compatibility
-        self.platforms = None
+        self.platforms = set()
         self.platform = None
 
 
@@ -147,10 +147,7 @@ class Profile(object):
         # ensure that content of profile.platform is in profile.platforms as
         # well
         if profile.platform is not None:
-            if profile.platforms is not None and profile.platform not in profile.platforms:
-                profile.platforms.append(profile.platform)
-            elif profile.platforms is None:
-                profile.platforms = [profile.platform]
+            profile.platforms.add(profile.platform)
 
 
         # At the moment, metadata is not used to build content
@@ -175,7 +172,7 @@ class Profile(object):
         if self.extends is not None:
             to_dump["extends"] = self.extends
 
-        if self.platforms is not None:
+        if self.platforms:
             to_dump["platforms"] = self.platforms
 
         selections = []
@@ -839,7 +836,7 @@ class Group(object):
         # self.platforms is used further in the build system
         # self.platform is merged into self.platforms
         # it is here for backward compatibility
-        self.platforms = None
+        self.platforms = set()
         self.platform = None
 
     @classmethod
@@ -859,14 +856,11 @@ class Group(object):
         group.conflicts = yaml_contents.pop("conflicts", [])
         group.requires = yaml_contents.pop("requires", [])
         group.platform = yaml_contents.pop("platform", None)
-        group.platfors = yaml_contents.pop("platforms", None)
+        group.platforms = yaml_contents.pop("platforms", set())
         # ensure that content of group.platform is in group.platforms as
         # well
         if group.platform is not None:
-            if group.platforms is not None and group.platform not in group.platforms:
-                group.platforms.append(group.platform)
-            elif group.platforms is None:
-                group.platforms = [group.platform]
+            group.platforms.add(group.platform)
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
@@ -1021,7 +1015,7 @@ class Rule(object):
         "conflicts": lambda: list(),
         "requires": lambda: list(),
         "platform": lambda: None,
-        "platforms": lambda: None,
+        "platforms": lambda: set(),
         "inherited_platforms": lambda: list(),
         "template": lambda: None,
         "definition_location": lambda: None,
@@ -1047,7 +1041,7 @@ class Rule(object):
         # self.platform is merged into self.platforms
         # it is here for backward compatibility
         self.platform = None
-        self.platforms = None
+        self.platforms = set()
         self.inherited_platforms = [] # platforms inherited from the group
         self.template = None
 
@@ -1079,11 +1073,7 @@ class Rule(object):
         # ensure that content of rule.platform is in rule.platforms as
         # well
         if rule.platform is not None:
-            if rule.platforms is not None and rule.platform not in rule.platforms:
-                rule.platforms.append(rule.platform)
-            elif rule.platforms is None:
-                rule.platforms = [rule.platform]
-
+            rule.platforms.add(rule.platform)
 
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
@@ -1506,7 +1496,7 @@ class BuildLoader(DirectoryLoader):
             self.all_rules.add(rule)
             self.loaded_group.add_rule(rule)
 
-            if self.loaded_group.platforms is not None:
+            if self.loaded_group.platforms:
                 rule.inherited_platforms += self.loaded_group.platforms
 
             if self.resolved_rules_dir:
