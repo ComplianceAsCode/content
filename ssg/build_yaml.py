@@ -131,6 +131,8 @@ class Profile(object):
         if selection_entries:
             self._parse_selections(selection_entries)
         del yaml_contents["selections"]
+        self.platforms = yaml_contents.pop("platforms", set())
+        self.platform = yaml_contents.pop("platform", None)
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
