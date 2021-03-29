@@ -30,12 +30,9 @@
   </unix:file_state>
 
   <unix:file_object comment="all local files" id="object_file_permissions_ungroupowned" version="1">
-    <!-- We can't traverse symlinks here since e.g. /sys file system might contain symlink loops
-         resulting into excessive memory use by the scanner process & possible subsequent OOM killer
-         termination of it. See e.g.: https://www.redhat.com/archives/open-scap-list/2014-May/msg00005.html
-         Therefore traverse only directories -->
-    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
-    <unix:path>/</unix:path>
+    <unix:behaviors recurse_file_system="local" />
+    <!-- don't search /proc, /sys -->
+    <unix:path operation="pattern match">^\/(?!(proc|sys)(\/|$)).*$</unix:path>
     <unix:filename operation="pattern match">.*</unix:filename>
     <filter action="exclude">state_file_permissions_ungroupowned</filter>
   </unix:file_object>

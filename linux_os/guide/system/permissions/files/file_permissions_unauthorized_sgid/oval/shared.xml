@@ -11,8 +11,9 @@
     </unix:file_test>
 
     <unix:file_object comment="files with sgid set which are not owned by any RPM package" id="obj_file_permissions_unauthorized_sgid_unowned" version="1">
-        <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
-        <unix:path operation="equals">/</unix:path>
+        <unix:behaviors recurse_file_system="local" />
+        <!-- don't search /dev, /proc, /sys -->
+        <unix:path operation="pattern match">^\/(?!(dev|proc|sys)(\/|$)).*$</unix:path>
         <unix:filename operation="pattern match">^.*$</unix:filename>
         <filter action="include">state_file_permissions_unauthorized_sgid_sgid_set</filter>
         <filter action="exclude">state_file_permissions_unauthorized_sgid_filepaths</filter>

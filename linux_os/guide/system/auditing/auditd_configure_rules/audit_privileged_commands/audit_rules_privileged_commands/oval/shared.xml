@@ -23,21 +23,17 @@
 
   <!-- First define OVAL entities that can be reused across tests below -->
   <unix:file_object id="object_system_privileged_commands" comment="system files with setuid or setgid permission set" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" max_depth="-1" />
-    <unix:path operation="equals">/</unix:path>
+    <unix:behaviors recurse_file_system="local"/>
+    <!-- don't search /dev, /proc, /sys -->
+    <unix:path operation="pattern match">^\/(?!(dev|proc|sys)(\/|$)).*$</unix:path>
     <!-- [a-z]+ regex below is a workaround for OpenSCAP https://fedorahosted.org/openscap/ticket/457 bug -->
     <unix:filename operation="pattern match">[a-z]+</unix:filename>
     <filter action="include">state_setuid_or_setgid_set</filter>
-    <filter action="exclude">state_dev_proc_sys_dirs</filter>
   </unix:file_object>
 
   <unix:file_state id="state_setuid_or_setgid_set" version="1" operator="OR">
     <unix:suid datatype="boolean">true</unix:suid>
     <unix:sgid datatype="boolean">true</unix:sgid>
-  </unix:file_state>
-
-  <unix:file_state id="state_dev_proc_sys_dirs" version="1">
-    <unix:filepath operation="pattern match">^\/(dev|proc|sys)\/.*$</unix:filepath>
   </unix:file_state>
 
   <local_variable id="variable_all_privileged_commands" comment="All privileged commands" datatype="string" version="1">
