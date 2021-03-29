@@ -4,6 +4,7 @@ from __future__ import print_function
 import os
 from collections import namedtuple
 
+from .build_cpe import ProductCPEs
 from .constants import (product_directories,
                         DEFAULT_UID_MIN,
                         PKG_MANAGER_TO_SYSTEM,
@@ -62,6 +63,10 @@ def get_product_yaml(product_yaml_path):
     product_yaml["platform_package_overrides"] = merge_dicts(XCCDF_PLATFORM_TO_PACKAGE,
                                                          platform_package_overrides)
     product_yaml.update(_get_implied_properties(product_yaml))
+
+    # The product_yaml should be aware of the ProductCPEs
+    product_yaml["product_cpes"] = ProductCPEs(product_yaml)
+
     return product_yaml
 
 

@@ -7,7 +7,6 @@ import os
 import os.path
 import sys
 
-import ssg.build_cpe
 import ssg.build_yaml
 import ssg.utils
 import ssg.environment
@@ -75,8 +74,7 @@ def main():
         p.validate_rules(loader.all_rules, loader.all_groups)
         p.validate_refine_rules(loader.all_rules)
 
-    product_cpes = ssg.build_cpe.ProductCPEs(env_yaml)
-    loader.export_group_to_file(args.output, product_cpes)
+    loader.export_group_to_file(args.output)
 
 
 if __name__ == "__main__":

@@ -9,7 +9,6 @@ import sys
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
-from .products import get_product_yaml
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .yaml import open_raw
