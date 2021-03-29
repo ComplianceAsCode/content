@@ -431,3 +431,9 @@ AuditBackend=LinuxAudit
 {{%- macro kubernetes_usbguard_set(deps=[]) -%}}
 {{{ kubernetes_machine_config_file_with_dependencies(path='/etc/usbguard/usbguard-daemon.conf', file_permissions_mode='0600', source=usbguard_config_source(), deps=deps) }}}
 {{%- endmacro -%}}
+
+{{% macro kubernetes_machineconfig_audit_add_watch_rule(path='', permissions='', key='') -%}}
+{{%- set audit_watch_rule = "-w " + path + " -p " + permissions + " -k " + key + "\n" -%}}
+{{%- set audit_watch_rule_path = "/etc/audit/rules.d/75-" + path | replace('/', '')  + "-" + permissions + "-" + key + ".rules" -%}}
+{{{ kubernetes_machine_config_file(path=audit_watch_rule_path, file_permissions_mode='0600', source=audit_watch_rule) }}}
+{{%- endmacro %}}
