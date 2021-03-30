@@ -840,6 +840,7 @@ class Group(object):
         # it is here for backward compatibility
         self.platforms = set()
         self.platform = None
+        self.inherited_platforms = set()
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -1018,7 +1019,7 @@ class Rule(object):
         "requires": lambda: list(),
         "platform": lambda: None,
         "platforms": lambda: set(),
-        "inherited_platforms": lambda: list(),
+        "inherited_platforms": lambda: set(),
         "template": lambda: None,
         "definition_location": lambda: None,
     }
@@ -1441,6 +1442,8 @@ class DirectoryLoader(object):
         if self.loaded_group:
             if self.parent_group:
                 self.parent_group.add_group(self.loaded_group)
+                if hasattr(self.parent_group, "platforms") and self.parent_group.platforms:
+                    self.loaded_group.inherited_platforms.update(self.parent_group.platforms)
 
             self._process_values()
             self._recurse_into_subdirs()
@@ -1499,8 +1502,12 @@ class BuildLoader(DirectoryLoader):
             self.loaded_group.add_rule(rule)
 
             if self.loaded_group.platforms:
-                rule.inherited_platforms += self.loaded_group.platforms
+                rule.inherited_platforms.update(self.loaded_group.platforms)
 
+            if self.loaded_group.inherited_platforms:
+                rule.inherited_platforms.update(self.loaded_group.inherited_platforms)
+
+            
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
