@@ -554,8 +554,6 @@ selections:
     - chronyd_or_ntpd_specify_multiple_servers
 
     # AU-9
-    #- rpm_verify_ownership
-    #- rpm_verify_permissions
     - selinux_confinement_of_daemons
     #- ensure_logrotate_activated
     - file_permissions_var_log_audit
