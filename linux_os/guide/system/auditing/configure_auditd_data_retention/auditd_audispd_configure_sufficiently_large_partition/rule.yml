@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12
+prodtype: sle12,sle15
 
 title: 'Configure a Sufficiently Large Partition for Audit Logs'
 
@@ -35,11 +35,15 @@ severity: medium
 
 identifiers:
     cce@sle12: CCE-83114-9
+    cce@sle15: CCE-85697-1
 
 references:
     disa@sle12: CCI-001849
     srg@sle12: SRG-OS-000342-GPOS-00133
+    srg@sle15: SRG-OS-000341-GPOS-00132
+    nist@sle15: AU-4
     stigid@sle12: SLES-12-020020 
+    stigid@sle15: SLES-15-030660
 
 ocil_clause: 'audispd is not sending logs to a remote system and the local partition has inadequate'
 

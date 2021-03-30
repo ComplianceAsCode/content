@@ -206,6 +206,7 @@ selections:
     - service_auditd_enabled
     - service_autofs_disabled
     - service_kdump_disabled
+    - service_sshd_enabled
     - service_SuSEfirewall2_enabled
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
@@ -247,6 +248,6 @@ selections:
     - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv4_tcp_syncookies
     - sysctl_net_ipv6_conf_all_accept_source_route
-    - sysctl_net_ipv6_conf_default_accept_source_route
+    - sysctl_net_ipv6_conf_default_accept_redirects
     - vlock_installed
     - wireless_disable_interfaces
