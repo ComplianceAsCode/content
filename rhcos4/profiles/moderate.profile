@@ -235,7 +235,7 @@ selections:
     - selinux_policytype
 
     ### Configure SSSD
-    - sssd_run_as_sssd_user
+    #- sssd_run_as_sssd_user
 
     ### Configure USBGuard
     - service_usbguard_enabled
