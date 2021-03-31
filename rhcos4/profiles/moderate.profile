@@ -161,8 +161,6 @@ selections:
     - auditd_log_format
     - auditd_freq
     - auditd_name_format
-    - var_auditd_action_mail_acct=root
-    - var_auditd_space_left_action=email
     
     #####
     # Need to replace with fluentd checks
@@ -560,12 +558,16 @@ selections:
     - coreos_vsyscall_kernel_argument.severity=info
 
     # AU-4
-    - auditd_data_retention_action_mail_acct
     - auditd_data_disk_full_action
+    - var_auditd_disk_full_action=syslog
     - auditd_data_retention_admin_space_left_action
+    - var_auditd_admin_space_left_action=syslog
     - auditd_data_retention_space_left_action
+    - var_auditd_space_left_action=syslog
     - auditd_data_disk_error_action
+    - var_auditd_disk_error_action=syslog
     - auditd_data_retention_max_log_file_action
+    - var_auditd_max_log_file_action=rotate
     - auditd_data_retention_space_left
 
     # AU-8
