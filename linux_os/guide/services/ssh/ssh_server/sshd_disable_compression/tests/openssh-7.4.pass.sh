@@ -1,6 +1,7 @@
 #!/bin/bash
+# platform = Red Hat Enterprise Linux 7
+# packages = openssh-7.4p1 openssh-clients-7.4p1 openssh-server-7.4p1
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 if grep -q "^Compression" /etc/ssh/sshd_config; then
 	sed -i "s/^Compression.*/Compression yes/" /etc/ssh/sshd_config
