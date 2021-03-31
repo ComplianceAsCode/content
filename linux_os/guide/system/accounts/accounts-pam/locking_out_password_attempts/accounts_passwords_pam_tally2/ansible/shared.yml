@@ -5,8 +5,7 @@
 # disruption = low
 
 - name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-auth
-  shell: | #noqa 306 we don't care about grep failure in this case
-    grep -e '^\s*auth\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-auth | cat
+  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-auth || true
   register: check_pam_tally2_result
 
 - name: Configure pam_tally2.so module in /etc/pam.d/common-auth
@@ -17,8 +16,7 @@
   when: '"pam_tally2" not in check_pam_tally2_result.stdout'
 
 - name: Check to see if 'onerr' parameter is present
-  shell: | #noqa 306 we don't care about grep failure in this case
-    grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sonerr=.*' /etc/pam.d/common-auth | cat
+  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sonerr=.*' /etc/pam.d/common-auth || true
   register: check_onerr_result
 
 - name: Make sure pam_tally2.so has 'onerr' parameter set 'fail'
@@ -39,8 +37,7 @@
   when: '"onerr=" not in check_onerr_result.stdout'
 
 - name: Check to see if 'deny' parameter is present
-  shell: | #noqa 306 we don't care about grep failure in this case
-    grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sdeny=.*' /etc/pam.d/common-auth | cat
+  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sdeny=.*' /etc/pam.d/common-auth || true
   register: check_deny_result
 
 - name: Make sure pam_tally2.so has 'deny' parameter set to less than 4
@@ -61,8 +58,7 @@
   when: '"deny=" not in check_deny_result.stdout'
 
 - name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-account
-  shell: | #noqa 306 we don't care about grep failure in this case
-    grep -e '^\s*account\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-account | cat
+  shell: grep -e '^\s*account\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-account || true
   register: check_account_pam_tally2_result
 
 - name: Configure pam_tally2.so module in /etc/pam.d/common-account

@@ -12,8 +12,7 @@
     backup: no
 
 - name: Check to see if SHA_CRYPT_MIN_ROUNDS is explicitly configured
-  shell: | #noqa 306 we don't care about grep failure in this case
-    grep -e '^\s*SHA_CRYPT_MIN_ROUNDS\s\+' /etc/login.defs | cat
+  shell: grep -e '^\s*SHA_CRYPT_MIN_ROUNDS\s\+' /etc/login.defs || true
   register: check_sha_crypt_min_rounds_result
 
 # NOTE(gyee): there's a possibility that the value of SHA_CRYPT_MIN_ROUNDS is

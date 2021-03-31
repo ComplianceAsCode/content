@@ -5,8 +5,9 @@
 # disruption = low
 - block:
     - name: "Find local mount points"
-      shell: | #noqa 306 we don't care about grep failure in this case
-          df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev'
+      shell: |
+          set -o pipefail
+          { df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev' || true; }
       register: local_mount_points
 
     - name: "Detect the shosts.equiv files on the system"

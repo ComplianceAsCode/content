@@ -9,8 +9,7 @@
     manager: auto
 
 - name: Check to see if 'pam_pkcs11' module is configured in '/etc/pam.d/common-auth'
-  shell: | #noqa 306 we don't care about grep failure in this case
-    grep -E '^\s*auth\s+\S+\s+pam_pkcs11\.so' /etc/pam.d/common-auth | cat
+  shell: grep -E '^\s*auth\s+\S+\s+pam_pkcs11\.so' /etc/pam.d/common-auth || true
   register: check_pam_pkcs11_module_result
   when: '"pam_pkcs11" in ansible_facts.packages'
 
