@@ -244,8 +244,8 @@ selections:
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
-    - harden_sshd_crypto_policy
-    - harden_ssh_client_crypto_policy
+    #- harden_sshd_crypto_policy
+    #- harden_ssh_client_crypto_policy
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
 
