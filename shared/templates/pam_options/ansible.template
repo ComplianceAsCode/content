@@ -65,7 +65,7 @@
     backrefs: yes
 
 - name: Check the presence of "{{{ arg['variable'] }}}" argument in "{{{ MODULE }}}" module
-  shell: 
+  shell: |
      set -o pipefail
      { grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['variable'] }}}(=|\s|\s*$)' {{{ PATH }}} || true; }
   register: check_pam_module_argument_result
@@ -91,7 +91,7 @@
   when: argument_value|length
 
 - name: Check the presence of "{{{ arg['argument'] }}}" argument in "{{{ MODULE }}}" module
-  shell: 
+  shell: |
      set -o pipefail
      { grep -E '^\s*{{{ TYPE }}}\s+{{{ CONTROL_FLAG }}}\s+{{{ MODULE }}}.*\s+{{{ arg['argument'] }}}(=|\s|\s*$)' {{{ PATH }}} || true; }
   register: check_pam_module_argument_result
