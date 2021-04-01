@@ -39,7 +39,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
     all_profiles.append(OSCAP_PROFILE_ALL_ID)
 
     for ds_profile in all_profiles:
-        if 'ALL' in selected_profiles:
+        if 'ALL' in selected_profiles or OSCAP_PROFILE_ALL_ID in selected_profiles:
             valid_profiles += [ds_profile]
             continue
         for sel_profile in selected_profiles:
