@@ -20,7 +20,7 @@
 
   <ind:textfilecontent54_object comment="Ensure more than one chronyd NTP server is set"
   id="object_chronyd_multiple_servers" version="1">
-    <ind:filepath>/etc/chrony.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^([\s]*server[\s]+.+$){2,}$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

@@ -11,6 +11,54 @@ description: |-
     <tt>maxpoll</tt> in <tt>/etc/ntp.conf</tt> or <tt>/etc/chrony.conf</tt>
     add the following:
     <pre>maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>
+    {{% if product == "rhcos4" %}}
+    <p>
+    Note that if the remediation shipping with this content is being used, the
+    <b>MachineConfig</b> shipped does not include reference NTP servers to point
+    to. It is up to the admin to set these which will vary depending on the
+    cluster's requirements.
+    </p>
+
+    <p>
+    The aforementioned remediation does include the directory <tt>/etc/chrony.d</tt>
+    which would allow the creation of configuration files to set these servers.
+    </p>
+
+    If we'd like to set a configuration like the following:
+
+    <pre>
+    pool 2.rhel.pool.ntp.org iburst
+
+    server 0.rhel.pool.ntp.org minpoll 4 maxpoll 10
+    server 1.rhel.pool.ntp.org minpoll 4 maxpoll 10
+    server 2.rhel.pool.ntp.org minpoll 4 maxpoll 10
+    server 3.rhel.pool.ntp.org minpoll 4 maxpoll 10
+    </pre>
+
+    This could be done with to the following manifest:
+
+    <pre>
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-chrony-servers
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        storage:
+          files:
+          - contents:
+              source: data:,pool%202.rhel.pool.ntp.org%20iburst%0A%0Aserver%200.rhel.pool.ntp.org%20minpoll%204%20maxpoll%2010%0Aserver%201.rhel.pool.ntp.org%20minpoll%204%20maxpoll%2010%0Aserver%202.rhel.pool.ntp.org%20minpoll%204%20maxpoll%2010%0Aserver%203.rhel.pool.ntp.org%20minpoll%204%20maxpoll%2010
+            mode: 0600
+            path: /etc/chrony.d/10-rhel-pool-and-servers.conf
+            overwrite: true
+    </pre>
+
+    Note that this needs to be done for each <pre>MachineConfigPool</pre>
+    {{% endif %}}
 
 rationale: |-
     Inaccurate time stamps make it more difficult to correlate

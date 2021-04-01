@@ -37,7 +37,7 @@
     <ind:state state_ref="state_time_service_set_maxpoll" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_set_maxpoll" version="1">
-    <ind:filepath>/etc/chrony.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^server[\s]+[\S]+.*maxpoll[\s]+(\d+)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -68,7 +68,7 @@
     <ind:state state_ref="state_server_has_maxpoll" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_all_server_has_maxpoll" version="1">
-    <ind:filepath>/etc/chrony.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/chrony\.(conf|d/.+\.conf)$</ind:filepath>
     <ind:pattern operation="pattern match">^server[\s]+[\S]+[\s]+(.*)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
