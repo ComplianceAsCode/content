@@ -12,7 +12,7 @@
     backup: no
 
 - name: Check to see if SHA_CRYPT_MIN_ROUNDS is explicitly configured
-  shell:
+  shell: |
     set -o pipefail
     { grep -e '^\s*SHA_CRYPT_MIN_ROUNDS\s\+' /etc/login.defs || true; }
   register: check_sha_crypt_min_rounds_result
