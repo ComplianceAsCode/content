@@ -502,6 +502,36 @@ AuditBackend=LinuxAudit
 {{{ kubernetes_machine_config_file(path='/etc/audit/rules.d/30-ospp-v42-remediation.rules', file_permissions_mode='0600', source=rhcos_ospp_audit_rules()) }}}
 {{%- endmacro %}}
 
+{{% macro rhcos_logrotate_config() -%}}
+# see "man logrotate" for details
+# rotate log files daily
+daily
+
+# keep 4 weeks worth of backlogs
+rotate 30
+
+# create new (empty) log files after rotating old ones
+create
+
+# use date as a suffix of the rotated file
+dateext
+
+# uncomment this if you want your log files compressed
+#compress
+
+# RPM packages drop log rotation information into this directory
+include /etc/logrotate.d
+
+# system-specific logs may be also be configured here.
+{{%- endmacro %}}
+
+{{#
+  Macro to generate MachineConfig setting our recommended logrotate.conf
+#}}
+{{% macro kubernetes_machineconfig_logrotate_config() -%}}
+{{{ kubernetes_machine_config_file(path='/etc/logrotate.conf', file_permissions_mode='0644', source=rhcos_logrotate_config()) }}}
+{{%- endmacro %}}
+
 {{% macro rhcos_auditd_config() -%}}
 #
 # This file controls the configuration of the audit daemon
