@@ -75,7 +75,9 @@ def main():
 
     build_root = os.path.dirname(args.build_config_yaml)
 
-    logfile = "{build_root}/{product}/control_profiles.log".format(build_root=build_root, product=env_yaml["product"])
+    logfile = "{build_root}/{product}/control_profiles.log".format(
+            build_root=build_root,
+            product=env_yaml["product"])
     logging.basicConfig(filename=logfile, level=logging.INFO)
 
     if args.controls_dir:

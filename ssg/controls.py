@@ -39,9 +39,9 @@ class Control():
         selections = control_dict.get("rules", [])
 
         product = None
-        product_dir =  None
-        benchmark_root =  None
-        if env_yaml is not None:
+        product_dir = None
+        benchmark_root = None
+        if env_yaml:
             product = env_yaml.get('product', None)
             product_dir = env_yaml.get('product_dir', None)
             benchmark_root = env_yaml.get('benchmark_root', None)
@@ -61,11 +61,13 @@ class Control():
                     if rule_yaml is None:
                         # item not found in benchmark_root
                         continue
-                    rule =  ssg.build_yaml.Rule.from_yaml(rule_yaml)
+                    rule = ssg.build_yaml.Rule.from_yaml(rule_yaml)
                     if rule.prodtype == "all" or product in rule.prodtype:
                         control.rules.append(item)
                     else:
-                        logging.info("Rule {item} doesn't apply to {product}".format(item=item, product=product))
+                        logging.info("Rule {item} doesn't apply to {product}".format(
+                            item=item,
+                            product=product))
 
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
