@@ -589,9 +589,6 @@ selections:
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
 
-    # AC-2(3)
-    - account_disable_post_pw_expiration
-
     # AC-2(5), AC-12
     #- accounts_tmout
 
