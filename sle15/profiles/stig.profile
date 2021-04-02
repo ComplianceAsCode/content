@@ -17,6 +17,7 @@ selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
+    - inactivity_timeout_value=15_minutes
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled

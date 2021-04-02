@@ -18,6 +18,7 @@ selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
+    - inactivity_timeout_value=15_minutes
     - var_password_pam_dcredit=1
     - var_password_pam_delay=4000000
     - var_password_pam_difok=8

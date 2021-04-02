@@ -60,34 +60,10 @@ ocil_clause: 'idle-delay is not equal to or less than the expected value'
 
 ocil: |-
     To check the current idle time-out value, run the following command:
-
-    {{% if product in ['sle12', 'sle15'] %}}
-
-     Verify the SUSE operating system initiates a session lock after a 15-minute period of inactivity via
-     the graphical user interface (GUI) by running the following command:
-
-     Note: If the system does not have GNOME installed, this requirement is Not Applicable. This command
-     must be run from an X11 session, otherwise the command will not work correctly.
-
-     <pre># gsettings get org.gnome.desktop.session idle-delay
-            uint32 900</pre>
-
-     If the command does not return a value less than or equal to "900", this is a finding.
-     Fix Text: Configure the SUSE operating system to initiate a session lock after a 15-minute period of
-     inactivity of the graphical user interface (GUI) by running the following command:
-
-     Note: If the system does not have GNOME installed, this requirement is Not Applicable. This command
-     must be run from an X11 session, otherwise the command will not work correctly.
-
-     <pre># gsettings set org.gnome.desktop.session idle-delay 900</pre>
-
-    {{% else %}}
-    To check the current idle time-out value, run the following command:
       <pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
     If properly configured, the output should be <tt>'uint32 {{{ xccdf_value("inactivity_timeout_value") }}}'</tt>.
     To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
     <pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
-    {{% endif %}}
 
 platform: machine

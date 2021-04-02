@@ -8,17 +8,17 @@
 - name: "Set GNOME3 Screensaver Inactivity Timeout"
   ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
-    section: "org/gnome/desktop/screensaver"
+    section: "org/gnome/desktop/session"
     option: idle-delay
-    value: "{{ inactivity_timeout_value }}"
+    value: "uint32 {{ inactivity_timeout_value }}"
     create: yes
     no_extra_spaces: yes
 
 - name: "Prevent user modification of GNOME idle-delay"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/screensaver/idle-delay'
-    line: '/org/gnome/desktop/screensaver/idle-delay'
+    regexp: '^/org/gnome/desktop/session/idle-delay'
+    line: '/org/gnome/desktop/session/idle-delay'
     create: yes
 
 - name: Dconf Update
