@@ -56,10 +56,10 @@ class CombinedChecker(rule.RuleChecker):
         # be tested using the self.profile and we return empty profiles
         # metadata.
         if not params["profiles"]:
-            params["profiles"].append(rule.OSCAP_PROFILE_ALL_ID)
+            params["profiles"].extend(self.profile)
             logging.debug(
                 "Added the {0} profile to the list of available profiles for {1}"
-                .format(rule.OSCAP_PROFILE_ALL_ID, script))
+                .format(self.profile, script))
         else:
             params['profiles'] = [item for item in params['profiles'] if re.search(self.profile, item)]
         return params
