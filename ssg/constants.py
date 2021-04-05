@@ -90,6 +90,7 @@ standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
 xslt_ns = "http://www.w3.org/1999/XSL/Transform"
 generic_stig_ns = "https://public.cyber.mil/stigs/downloads/" + \
                   "?_dl_facet_stigs=operating-systems%2Cunix-linux"
+SCE_SYSTEM = "http://open-scap.org/page/SCE"
 
 
 OVAL_SUB_NS = dict(
