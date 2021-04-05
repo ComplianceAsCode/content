@@ -383,6 +383,27 @@ macro(ssg_build_oval_unlinked PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_sce PRODUCT)
+    set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
+    # Unlike build_oval_unlinked, here we're ignoring the existing checks from
+    # templates and other places and we're merely appending/templating the
+    # content from the rules directories. That's why we ignore BUILD_CHECKS_DIR
+    # in the combine paths below.
+    set(SCE_COMBINE_PATHS "${SSG_SHARED}/checks/sce" "${CMAKE_CURRENT_SOURCE_DIR}/checks/sce")
+
+    add_custom_command(
+        OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
+        DEPENDS generate-internal-templated-content-${PRODUCT}
+        DEPENDS "${SSG_BUILD_SCRIPTS}/build_sce.py"
+        COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
+    )
+    add_custom_target(
+        generate-internal-${PRODUCT}-sce-metadata.json
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+    )
+endmacro()
+
 macro(ssg_build_cpe_dictionary PRODUCT)
 
     add_custom_command(
@@ -391,6 +412,8 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/cpe_generate.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-shorthand.xml
@@ -426,6 +449,8 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         DEPENDS generate-internal-${PRODUCT}-ocil-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/relabel_ids.py"
@@ -800,6 +825,7 @@ macro(ssg_build_product PRODUCT)
     endif()
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
+    ssg_build_sce(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
     ssg_build_xccdf_final(${PRODUCT})
