@@ -38,6 +38,7 @@
 <xsl:variable name="ssg-project-name">SCAP Security Guide Project</xsl:variable>
 
 <!-- misc language URI's -->
+<xsl:variable name="sceuri">http://open-scap.org/page/SCE</xsl:variable>
 <xsl:variable name="ovaluri">http://oval.mitre.org/XMLSchema/oval-definitions-5</xsl:variable>
 
 <xsl:variable name="ociltransitional">ocil-transitional</xsl:variable>
