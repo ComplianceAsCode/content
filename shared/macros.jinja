@@ -679,3 +679,15 @@ openssl()
 )
 
 {{%- endmacro %}}
+
+{{% macro machineconfig_description_footer() -%}}
+<p>
+Note that this needs to be done for each <tt>MachineConfigPool</tt>
+</p>
+<p>
+For more information on how to configure nodes with the Machine Config
+Operator see
+{{{ weblink(link="https://docs.openshift.com/container-platform/4.6/post_installation_configuration/machine-configuration-tasks.html",
+            text="the relevant documentation") }}}.
+</p>
+{{% endmacro %}}
