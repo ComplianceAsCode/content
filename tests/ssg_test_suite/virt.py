@@ -139,7 +139,7 @@ def determine_ip(domain):
         domain_xml = ET.fromstring(domain.XMLDesc())
         for guest_agent_node in domain_xml.iter('channel'):
             if guest_agent_node.attrib['type'] == 'unix':
-                guest_agent_xml_string = ET.tostring(guest_agent_node)
+                guest_agent_xml_string = ET.tostring(guest_agent_node, encoding='unicode')
                 break
         if guest_agent_xml_string:
             domain.detachDevice(guest_agent_xml_string)
