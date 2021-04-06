@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,ol7,rhel8,ol8,fedora,rhv4,rhcos4,sle15
+prodtype: rhel7,ol7,rhel8,ol8,fedora,rhv4,sle15
 
 title: 'Ensure rsyncd service is diabled'
 
@@ -33,4 +33,7 @@ template:
     name: service_disabled
     vars:
         servicename: rsyncd
-        packagename: rsync
+        packagename: rsync-daemon
+        packagename@rhel7: rsync
+        packagename@ol7: rsync
+        packagename@sle15: rsync
