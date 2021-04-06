@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15,sle12
 
 title: 'Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv6 Interfaces'
 
@@ -14,12 +14,18 @@ identifiers:
     cce@rhel7: CCE-80183-7
     cce@rhel8: CCE-81010-1
     cce@rhcos4: CCE-82477-1
+    cce@sle15: CCE-85722-7
+    cce@sle12: CCE-83223-8
 
 references:
     anssi: BP28(R22)
     cis: 3.3.2
     cui: 3.1.20
     disa: CCI-001551
+    disa@sle15: CCI-000366
+    disa@sle12: CCI-000366
+    nist@sle15: CM-6(b),CM-6.1(iv)
+    nist@sle12: CM-6(b),CM-6.1(iv)
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
@@ -28,6 +34,8 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
     cis-csc: 11,14,3,9
     srg: SRG-OS-000480-GPOS-00227
+    stigid@sle15: SLES-15-040350
+    stigid@sle12: SLES-12-030401
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_redirects", value="0") }}}
 

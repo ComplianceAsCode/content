@@ -13,6 +13,7 @@ description: |-
     This profile contains configuration checks that align to the
     DISA STIG for SUSE Linux Enterprise 15 V1R1.
 
+
 selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
@@ -29,6 +30,7 @@ selections:
     - var_removable_partition=dev_cdrom
     - var_sssd_memcache_timeout=1_day
     - var_time_service_set_maxpoll=system_default
+    - var_accounts_minimum_age_login_defs=7
     - account_disable_post_pw_expiration
     - account_emergency_admin
     #
@@ -42,10 +44,12 @@ selections:
     - accounts_have_homedir_login_defs
     - accounts_max_concurrent_login_sessions
     - accounts_maximum_age_login_defs
+    - accounts_no_uid_except_zero
     - accounts_password_all_shadowed_sha512
     - accounts_password_set_max_life_existing
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
+    - accounts_password_pam_unix_remember
     - accounts_tmout
     - accounts_umask_etc_login_defs
     - accounts_user_dot_no_world_writable_programs
@@ -57,17 +61,33 @@ selections:
     - aide_check_audit_tools
     - aide_verify_acls
     - aide_verify_ext_attributes
+    - aide_periodic_cron_checking
     #
     # NOTE: must configure "var_audispd_remote_server" when
     # "auditd_audispd_configure_remote_server" rule is enabled
     #
     # - auditd_audispd_configure_remote_server
+    - auditd_audispd_configure_sufficiently_large_partition
     - auditd_audispd_disk_full_action
     - auditd_audispd_encrypt_sent_records
+    - auditd_audispd_network_failure_action
     - auditd_data_disk_full_action
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_space_left
     - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_setxattr
+    - audit_rules_enable_syscall_auditing
     - audit_rules_execution_chacl
     - audit_rules_execution_chmod
     - audit_rules_execution_rm
@@ -80,6 +100,7 @@ selections:
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_gpasswd
     - audit_rules_privileged_commands_kmod
+    - audit_rules_privileged_commands_mount
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_pam_timestamp_check
     - audit_rules_privileged_commands_passmass
@@ -89,8 +110,19 @@ selections:
     - audit_rules_privileged_commands_su
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_usermod
+    - audit_rules_privileged_commands_sudoedit
     - audit_rules_suid_privilege_function
+    - audit_rules_sysadmin_actions
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_ftruncate
+    - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_renameat
+    - audit_rules_unsuccessful_file_modification_rename
     - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_unlink
+    - audit_rules_unsuccessful_file_modification_unlinkat
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
     - audit_rules_usergroup_modification_passwd
@@ -100,21 +132,27 @@ selections:
     - chronyd_or_ntpd_set_maxpoll
     - clean_components_post_updating
     - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_difok
+    - cracklib_accounts_password_pam_lcredit
     - cracklib_accounts_password_pam_minlen
     - cracklib_accounts_password_pam_ocredit
     - cracklib_accounts_password_pam_retry
+    - cracklib_accounts_password_pam_ucredit
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_system_owned_group
+    - disable_ctrlaltdel_burstaction
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_reboot
     - display_login_attempts
     - enable_dconf_user_profile
     - ensure_gpgcheck_globally_activated
     - file_etc_security_opasswd
+    - file_groupownership_home_directories
     - file_permissions_home_directories
+    - file_permissions_library_dirs
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
     - file_permissions_ungroupowned
@@ -122,6 +160,7 @@ selections:
     - file_permission_user_init_files
     - grub2_password
     - grub2_uefi_password
+    - gui_login_dod_acknowledgement
     - installed_OS_is_vendor_supported
     - install_smartcard_packages
     - kernel_module_dccp_disabled
@@ -134,6 +173,7 @@ selections:
     - no_empty_passwords
     - no_files_unowned_by_user
     - no_host_based_files
+    - no_shelllogin_for_systemaccounts
     - no_user_host_based_files
     - package_aide_installed
     - package_audit-audispd-plugins_installed
@@ -161,8 +201,11 @@ selections:
     - smartcard_configure_cert_checking
     - smartcard_pam_enabled
     - sshd_disable_compression
+    - sshd_disable_empty_passwords
     - sshd_disable_root_login
     - sshd_disable_user_known_hosts
+    - sshd_disable_x11_forwarding
+    - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - sshd_print_last_log
@@ -187,8 +230,11 @@ selections:
     - sysctl_net_ipv4_conf_default_accept_redirects
     - sysctl_net_ipv4_conf_default_accept_source_route
     - sysctl_net_ipv4_conf_default_send_redirects
+    - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv6_conf_all_accept_redirects
     - sysctl_net_ipv6_conf_all_accept_source_route
+    - sysctl_net_ipv6_conf_default_accept_redirects
     - sysctl_net_ipv6_conf_default_accept_source_route
     - vlock_installed
     - wireless_disable_interfaces
