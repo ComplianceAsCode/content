@@ -404,8 +404,34 @@ ocil_clause: "the package is installed"
 
 
 {{%- macro systemd_describe_service_enable(service) %}}
+    {{% if product != "rhcos4" -%}}
     The <code>{{{ service }}}</code> service can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ service }}}.service</pre>
+    {{%- else -%}}
+    The <code>{{{ service }}}</code> service can be enabled with the following manifest:
+    <pre>
+    ---
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-{{{ service }}}-install
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        systemd:
+          units:
+          - name: {{{ service }}}.service
+            enabled: true
+    </pre>
+    <p>
+    This will enable the <tt>{{{ service }}}</tt> service in all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{%- endif %}}
 {{%- endmacro %}}
 
 
