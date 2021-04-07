@@ -7,7 +7,7 @@
     - name: "Find local mount points"
       shell: |
           set -o pipefail
-          df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev'
+          df --local | awk '{print $6}' | grep -v Mounted | grep -v '^/dev' || true
       register: local_mount_points
 
     - name: "Detect the .shosts files on the system"

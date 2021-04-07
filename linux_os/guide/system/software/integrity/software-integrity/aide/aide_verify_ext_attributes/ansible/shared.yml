@@ -11,7 +11,7 @@
 - name: get rules groups
   shell: |
     set -o pipefail
-    LC_ALL=C grep "^[A-Z][A-Za-z_]*" /etc/aide.conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u
+    LC_ALL=C grep "^[A-Z][A-Za-z_]*" /etc/aide.conf | grep -v "^ALLXTRAHASHES" | cut -f1 -d '=' | tr -d ' ' | sort -u || true
   when: "'aide' in ansible_facts.packages"
   register: find_rules_groups_results
 
