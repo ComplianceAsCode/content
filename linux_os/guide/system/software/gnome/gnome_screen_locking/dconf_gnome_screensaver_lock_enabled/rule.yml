@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12
 
 title: 'Enable GNOME3 Screensaver Lock After Idle Period'
 
@@ -26,13 +26,16 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80112-6
     cce@rhel8: CCE-80777-6
+    cce@sle12: CCE-83222-0
 
 references:
     stigid@ol7: OL07-00-010060
     cjis: 5.5.5
     cui: 3.1.10
     disa: CCI-000056,CCI-000058
+    disa@sle12: CCI-000060
     nist: CM-6(a)
+    nist@sle12: AC-11(b),AC-11(a),AC-11(1),AC-11(1).1,AC-11.1(iii),AC-11
     nist-csf: PR.AC-7
     ospp: FMT_MOF_EXT.1
     pcidss: Req-8.1.8
@@ -44,15 +47,24 @@ references:
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16
     stigid@rhel8: RHEL-08-020030
+    stigid@sle12: SLES-12-010060
 
 ocil_clause: 'screensaver locking is not enabled and/or has not been set or configured correctly'
 
 ocil: |-
     To check the status of the idle screen lock activation, run the following command:
+    {{% if product in ['sle12','sle15'] %}}
+    <pre>gsettings get org.gnome.desktop.lockdown disable-lock-screen</pre>
+    If the result is "true", this is a finding.
+    Configure the SUSE operating system to allow the user to lock the GUI.
+    Run the following command to configure the SUSE operating system to allow the user to lock the GUI:
+    <pre>gsettings set org.gnome.desktop.lockdown disable-lock-screen false</pre>
+    {{% else %}}
     <pre>$ gsettings get org.gnome.desktop.screensaver lock-enabled</pre>
     If properly configured, the output should be <tt>true</tt>.
     To ensure that users cannot change how long until the the screensaver locks, run the following:
     <pre>$ grep lock-enabled /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>
+    {{% endif %}}
 
 platform: machine
