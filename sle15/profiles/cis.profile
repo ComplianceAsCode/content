@@ -261,9 +261,6 @@ selections:
     ### 2.2.6 Ensure LDAP server is not enabled (Scored)
     - package_openldap-servers_removed
 
-    ### 2.2.7 Ensure NFS and RPC are not enabled (Scored)
-    - service_nfs_disabled
-
     ### 2.2.8 Ensure rpcbind is not enabled (Scored)
     - service_rpcbind_disabled
 
