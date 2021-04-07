@@ -326,6 +326,7 @@ INSTALL_COMMANDS = dict(
     fedora=("dnf", "install", "-y"),
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
+    ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
 
 
@@ -355,5 +356,7 @@ def cpes_to_platform(cpes):
             if match:
                 major_version = match.groups()[0].split(".")[0]
                 return "rhel" + major_version
+        if "ubuntu" in cpe:
+            return "ubuntu"
     msg = "Unable to deduce a platform from these CPEs: {cpes}".format(cpes=cpes)
     raise ValueError(msg)
