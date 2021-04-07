@@ -47,6 +47,7 @@ selections:
     - accounts_no_uid_except_zero
     - accounts_password_all_shadowed_sha512
     - accounts_password_set_max_life_existing
+    - accounts_password_set_min_life_existing
     - accounts_passwords_pam_faildelay_delay
     - accounts_passwords_pam_tally2
     - accounts_password_pam_unix_remember
@@ -90,8 +91,11 @@ selections:
     - audit_rules_enable_syscall_auditing
     - audit_rules_execution_chacl
     - audit_rules_execution_chmod
+    - audit_rules_execution_chcon
     - audit_rules_execution_rm
     - audit_rules_execution_setfacl
+    - audit_rules_kernel_module_loading_finit
+    - audit_rules_kernel_module_loading_init
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog
     - audit_rules_privileged_commands_chage
@@ -111,6 +115,7 @@ selections:
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_usermod
     - audit_rules_privileged_commands_sudoedit
+    - audit_rules_privileged_commands_umount
     - audit_rules_suid_privilege_function
     - audit_rules_sysadmin_actions
     - audit_rules_unsuccessful_file_modification_creat
@@ -125,6 +130,7 @@ selections:
     - audit_rules_unsuccessful_file_modification_unlinkat
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
     - banner_etc_gdm_banner
@@ -148,9 +154,12 @@ selections:
     - disable_ctrlaltdel_reboot
     - display_login_attempts
     - enable_dconf_user_profile
+    - encrypt_partitions
     - ensure_gpgcheck_globally_activated
     - file_etc_security_opasswd
     - file_groupownership_home_directories
+    - file_ownership_binary_dirs
+    - file_permissions_binary_dirs
     - file_permissions_home_directories
     - file_permissions_library_dirs
     - file_permissions_sshd_private_key
@@ -191,6 +200,7 @@ selections:
     - security_patches_up_to_date
     - service_auditd_enabled
     - service_autofs_disabled
+    - service_firewalld_enabled
     - service_kdump_disabled
     - service_sshd_enabled
     - service_SuSEfirewall2_enabled
@@ -221,6 +231,7 @@ selections:
     - sudo_remove_no_authenticate
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
+    - sudo_require_authentication
     - susefirewall2_only_required_services
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
@@ -232,6 +243,7 @@ selections:
     - sysctl_net_ipv4_conf_default_send_redirects
     - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv6_conf_all_forwarding
     - sysctl_net_ipv6_conf_all_accept_redirects
     - sysctl_net_ipv6_conf_all_accept_source_route
     - sysctl_net_ipv6_conf_default_accept_redirects

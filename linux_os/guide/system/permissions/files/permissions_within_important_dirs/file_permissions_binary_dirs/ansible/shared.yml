@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel,multi_platform_ol
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel,multi_platform_ol,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = medium
@@ -16,3 +16,4 @@
     mode: "go-w"
   with_items: "{{ world_writable_library_files.stdout_lines }}"
   when: world_writable_library_files.stdout_lines | length > 0
+

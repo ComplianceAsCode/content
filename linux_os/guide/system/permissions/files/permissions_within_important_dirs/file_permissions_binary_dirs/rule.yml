@@ -27,9 +27,12 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-82040-7
     cce@rhel8: CCE-80809-7
+    cce@sle15: CCE-85729-2
 
 references:
     nist: CM-6(a),AC-6(1)
+    nist@sle15: CM-5(6),CM-5(6).1
+    cci@sle15: CCI-001499
     nist-csf: PR.AC-4,PR.DS-5
     isa-62443-2013: 'SR 2.1,SR 5.2'
     isa-62443-2009: 4.3.3.7.3
@@ -38,6 +41,7 @@ references:
     cis-csc: 12,13,14,15,16,18,3,5
     stigid@rhel8: RHEL-08-010300
     srg: SRG-OS-000259-GPOS-00100
+    stigid@sle15: SLES-15-010358
 
 ocil_clause: 'any system executables are found to be group or world writable'
 
@@ -53,3 +57,4 @@ ocil: |-
     To find system executables that are group-writable or world-writable,
     run the following command for each directory <i>DIR</i> which contains system executables:
     <pre>$ sudo find -L <i>DIR</i> -perm /022 -type f</pre>
+
