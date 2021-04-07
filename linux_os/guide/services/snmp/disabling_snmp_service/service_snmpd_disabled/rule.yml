@@ -24,7 +24,8 @@ references:
     cis@sle15: 2.2.14
     ism: "1311"
 
-ocil: '{{{ ocil_service_disabled(service="snmpd") }}}'
+ocil: |-
+    {{{ ocil_service_disabled(service="snmpd") }}}
 
 platform: machine
 

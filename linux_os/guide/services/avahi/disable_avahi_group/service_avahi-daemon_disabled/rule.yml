@@ -32,7 +32,8 @@ references:
     cis-csc: 11,14,3,9
     cis@sle15: 2.2.3
 
-ocil: '{{{ ocil_service_disabled(service="avahi-daemon") }}}'
+ocil: |-
+    {{{ ocil_service_disabled(service="avahi-daemon") }}}
 
 platform: machine
 

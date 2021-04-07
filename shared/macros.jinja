@@ -321,7 +321,13 @@ ocil_clause: "the package is installed"
 
 
 {{%- macro systemd_ocil_service_disabled(service) %}}
-    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration,
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    run the following command:
     <pre>$ systemctl is-enabled <code>{{{ service }}}</code></pre>
     Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
@@ -346,6 +352,9 @@ ocil_clause: "the package is installed"
 
 
 {{%- macro systemd_ocil_service_enabled(service) %}}
+    {{% if product == "rhcos4" -%}}
+    {{{ rhcos_node_login_instructions() }}}
+    {{%- endif %}}
     Run the following command to determine the current status of the
     <code>{{{ service }}}</code> service:
     <pre>$ systemctl is-active {{{ service }}}</pre>
@@ -742,4 +751,12 @@ Operator see
 {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/post_installation_configuration/machine-configuration-tasks.html",
             text="the relevant documentation") }}}.
 </p>
+{{% endmacro %}}
+
+{{% macro rhcos_node_login_instructions() -%}}
+    As a user with administrator privileges, log into a node in the relevant pool:
+    <pre>
+    $ oc debug node/$NODE_NAME
+    sh-4.4# chroot /host
+    </pre>
 {{% endmacro %}}

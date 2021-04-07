@@ -43,7 +43,8 @@ references:
     cis-csc: 13,14
     stigid@rhel8: RHEL-08-040160
 
-ocil: '{{{ ocil_service_enabled(service="sshd") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="sshd") }}}
 
 template:
     name: service_enabled

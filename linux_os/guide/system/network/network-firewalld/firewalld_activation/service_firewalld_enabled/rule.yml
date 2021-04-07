@@ -37,7 +37,8 @@ references:
     cis@sle15: 3.5.1.4
     stigid@rhel8: RHEL-08-040100
 
-ocil: '{{{ ocil_service_enabled(service="firewalld") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="firewalld") }}}
 
 template:
     name: service_enabled

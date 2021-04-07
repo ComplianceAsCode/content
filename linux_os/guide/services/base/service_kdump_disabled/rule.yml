@@ -43,7 +43,8 @@ references:
     ospp: FMT_SMF_EXT.1.1
     stigid@rhel8: RHEL-08-010670
 
-ocil: '{{{ ocil_service_disabled(service="kdump") }}}'
+ocil: |-
+    {{{ ocil_service_disabled(service="kdump") }}}
 
 platform: machine
 

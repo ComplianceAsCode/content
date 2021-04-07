@@ -57,7 +57,8 @@ references:
     nist@sle12: AU-3,AU-3(1),AU-3(1).1(ii),AU-3.1,AU-6(4),AU-6(4).1,AU-7(1),AU-7(1).1,AU-7(a),AU-14(1),AU-14(1).1,CM-6(b),CM-6.1(iv),MA-4(1)(a)
     stigid@rhel8: RHEL-08-010560
 
-ocil: '{{{ ocil_service_enabled(service="auditd") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="auditd") }}}
 
 template:
     name: service_enabled

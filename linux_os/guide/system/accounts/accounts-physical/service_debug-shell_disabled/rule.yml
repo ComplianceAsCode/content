@@ -34,7 +34,8 @@ references:
     srg: SRG-OS-000324-GPOS-00125
     stigid@rhel8: RHEL-08-040180
 
-ocil: '{{{ ocil_service_disabled(service="debug-shell") }}}'
+ocil: |-
+    {{{ ocil_service_disabled(service="debug-shell") }}}
 
 platform: machine
 

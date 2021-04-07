@@ -33,7 +33,8 @@ references:
     stigid@sle12: SLES-12-030030
     stigid@sle15: SLES-15-010220
 
-ocil: '{{{ ocil_service_enabled(service="SuSEfirewall2") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="SuSEfirewall2") }}}
 
 template:
     name: service_enabled
