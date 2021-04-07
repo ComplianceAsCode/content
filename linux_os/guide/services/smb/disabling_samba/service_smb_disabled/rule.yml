@@ -4,7 +4,8 @@ prodtype: rhel7,rhel8,sle15
 
 title: 'Disable Samba'
 
-description: '{{{ describe_service_disable(service="smb") }}}'
+description: |-
+    {{{ describe_service_disable(service="smb") }}}
 
 rationale: |-
     Running a Samba server provides a network-based avenue of attack, and

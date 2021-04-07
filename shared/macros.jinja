@@ -398,8 +398,34 @@ ocil_clause: "the package is installed"
 
 
 {{%- macro systemd_describe_service_disable(service) %}}
+    {{% if product != "rhcos4" -%}}
     The <code>{{{ service }}}</code> service can be disabled with the following command:
     <pre>$ sudo systemctl mask --now {{{ service }}}.service</pre>
+    {{%- else -%}}
+    The <code>{{{ service }}}</code> service can be disabled with the following manifest:
+    <pre>
+    ---
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-{{{ service }}}-disable
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        systemd:
+          units:
+          - enabled: false
+            name: {{{ service }}}.service
+    </pre>
+    <p>
+    This will disable the <tt>{{{ service }}}</tt> service in all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{%- endif %}}
 {{%- endmacro %}}
 
 
@@ -416,7 +442,7 @@ ocil_clause: "the package is installed"
     metadata:
       labels:
         machineconfiguration.openshift.io/role: master
-      name: 75-master-{{{ service }}}-install
+      name: 75-master-{{{ service }}}-enable
     spec:
       config:
         ignition:
