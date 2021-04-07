@@ -48,7 +48,10 @@ def applies_to_product(file_name, product):
     contents of the fix or check, only by the name of the file.
     """
 
-    return not product or (file_name == "shared" or file_name == product)
+    if not product:
+        return True
+
+    return file_name == "shared" or file_name == product or product.startswith(file_name)
 
 
 def get_rule_dir_ovals(dir_path, product=None):
@@ -70,18 +73,40 @@ def get_rule_dir_ovals(dir_path, product=None):
     if not has_oval_dir:
         return []
 
-    results = []
+    # Two categories of results: those for a product and those that are shared
+    # to multiple products. Within common results, there's two types:
+    # those shared to multiple versions of the same type (added up front) and
+    # those shared across multiple product types (e.g., RHEL and Ubuntu).
+    product_results = []
+    common_results = []
     for oval_file in sorted(os.listdir(oval_dir)):
         file_name, ext = os.path.splitext(oval_file)
         oval_path = os.path.join(oval_dir, oval_file)
 
         if ext == ".xml" and applies_to_product(file_name, product):
+            # applies_to_product ensures we only have three entries:
+            # 1. shared
+            # 2. <product>
+            # 3. <product><version>
             if file_name == 'shared':
-                results.append(oval_path)
+                # Shared are the lowest priority items, add them to the end of
+                # the common results.
+                common_results.append(oval_path)
+            elif file_name != product:
+                # Here, the filename is a subset of the product, but isn't
+                # the full product. Product here is both the product name
+                # (e.g., ubuntu) and its version (2004). Filename could be
+                # either "ubuntu" or "ubuntu2004" so we want this branch
+                # to trigger when it is the former, not the latter. It is
+                # the highest priority of common results, so insert it
+                # before any shared ones.
+                common_results.insert(0, oval_path)
             else:
-                results.insert(0, oval_path)
+                # Finally, this must be a product-specific result.
+                product_results.append(oval_path)
 
-    return results
+    # Combine the two sets in priority order.
+    return product_results + common_results
 
 
 def find_rule_dirs(base_dir):

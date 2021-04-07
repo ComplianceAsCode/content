@@ -655,18 +655,42 @@ def get_rule_dir_remediations(dir_path, remediation_type, product=None):
     if not has_remediations_dir:
         return []
 
-    results = []
+    # Two categories of results: those for a product and those that are
+    # shared to multiple products. Within common results, there's two types:
+    # those shared to multiple versions of the same type (added up front) and
+    # those shared across multiple product types (e.g., RHEL and Ubuntu).
+    product_results = []
+    common_results = []
     for remediation_file in sorted(os.listdir(remediations_dir)):
         file_name, file_ext = os.path.splitext(remediation_file)
         remediation_path = os.path.join(remediations_dir, remediation_file)
 
         if file_ext == ext and rules.applies_to_product(file_name, product):
+            # rules.applies_to_product ensures we only have three entries:
+            # 1. shared
+            # 2. <product>
+            # 3. <product><version>
+            #
+            # Note that the product variable holds <product><version>.
             if file_name == 'shared':
-                results.append(remediation_path)
+                # Shared are the lowest priority items, add them to the end
+                # of the common results.
+                common_results.append(remediation_path)
+            elif file_name != product:
+                # Here, the filename is a subset of the product, but isn't
+                # the full product. Product here is both the product name
+                # (e.g., ubuntu) and its version (2004). Filename could be
+                # either "ubuntu" or "ubuntu2004" so we want this branch
+                # to trigger when it is the former, not the latter. It is
+                # the highest priority of common results, so insert it
+                # before any shared ones.
+                common_results.insert(0, remediation_path)
             else:
-                results.insert(0, remediation_path)
+                # Finally, this must be product-specific result.
+                product_results.append(remediation_path)
 
-    return results
+    # Combine the two sets in priority order.
+    return product_results + common_results
 
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
