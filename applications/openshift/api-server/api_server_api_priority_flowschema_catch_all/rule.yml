@@ -43,13 +43,13 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1alpha1/flowschemas/catch-all") | indent(4) }}}
+    {{{ openshift_cluster_setting("/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1alpha1/flowschemas/catch-all"
+    filepath: "/apis/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas/catch-all"
     yamlpath: '.spec.rules[0].subjects[:].group["name"]'
     check_existence: "at_least_one_exists"
     entity_check: "at least one"
