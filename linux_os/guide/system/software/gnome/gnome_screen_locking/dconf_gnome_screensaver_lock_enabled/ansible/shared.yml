@@ -4,10 +4,9 @@
 # complexity = low
 # disruption = medium
 
-{{% if product in ["sle12", "sle15"] %}}
 - name: Dconf Update
   command: dconf update
-{{% endif %}}
+  when: ansible_distribution == 'SLES'
 
 - name: "Enable GNOME3 Screensaver Lock After Idle Period"
   ini_file:
