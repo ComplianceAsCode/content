@@ -9,6 +9,7 @@ description: |-
     key sequence is pressed.
     <br /><br />
     To configure the system to ignore the <tt>Ctrl-Alt-Del</tt> key sequence from the
+    {{% if product != "rhcos4" %}}
     command line instead of rebooting the system, do either of the following:
     <pre>ln -sf /dev/null /etc/systemd/system/ctrl-alt-del.target</pre>
     or
@@ -16,13 +17,39 @@ description: |-
     <br /><br />
     Do not simply delete the <tt>/usr/lib/systemd/system/ctrl-alt-del.service</tt> file,
     as this file may be restored during future system updates.
+    {{% else %}}
+    command line instead of rebooting the system, create a <tt>MachineConfig</tt>
+    similar to the following:
+    <pre>
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-disable-ctrlaltdel-reboot
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        systemd:
+          units:
+          - name: ctrl-alt-del.target
+            mask: true
+    EOF
+    </pre>
+    <p>
+    This will mask the <tt>ctrl-alt-del.target</tt> systemd target for all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{% endif %}}
 
 rationale: |-
     A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
     can reboot the system. If accidentally pressed, as could happen in
     the case of mixed OS environment, this can create the risk of short-term
     loss of availability of systems due to unintentional reboot.
-    
+
 severity: high
 
 identifiers:

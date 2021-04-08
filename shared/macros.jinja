@@ -321,7 +321,13 @@ ocil_clause: "the package is installed"
 
 
 {{%- macro systemd_ocil_service_disabled(service) %}}
-    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration,
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    run the following command:
     <pre>$ systemctl is-enabled <code>{{{ service }}}</code></pre>
     Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
@@ -346,6 +352,9 @@ ocil_clause: "the package is installed"
 
 
 {{%- macro systemd_ocil_service_enabled(service) %}}
+    {{% if product == "rhcos4" -%}}
+    {{{ rhcos_node_login_instructions() }}}
+    {{%- endif %}}
     Run the following command to determine the current status of the
     <code>{{{ service }}}</code> service:
     <pre>$ systemctl is-active {{{ service }}}</pre>
@@ -398,14 +407,66 @@ ocil_clause: "the package is installed"
 
 
 {{%- macro systemd_describe_service_disable(service) %}}
+    {{% if product != "rhcos4" -%}}
     The <code>{{{ service }}}</code> service can be disabled with the following command:
     <pre>$ sudo systemctl mask --now {{{ service }}}.service</pre>
+    {{%- else -%}}
+    The <code>{{{ service }}}</code> service can be disabled with the following manifest:
+    <pre>
+    ---
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-{{{ service }}}-disable
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        systemd:
+          units:
+          - enabled: false
+            name: {{{ service }}}.service
+    </pre>
+    <p>
+    This will disable the <tt>{{{ service }}}</tt> service in all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{%- endif %}}
 {{%- endmacro %}}
 
 
 {{%- macro systemd_describe_service_enable(service) %}}
+    {{% if product != "rhcos4" -%}}
     The <code>{{{ service }}}</code> service can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ service }}}.service</pre>
+    {{%- else -%}}
+    The <code>{{{ service }}}</code> service can be enabled with the following manifest:
+    <pre>
+    ---
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-{{{ service }}}-enable
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        systemd:
+          units:
+          - name: {{{ service }}}.service
+            enabled: true
+    </pre>
+    <p>
+    This will enable the <tt>{{{ service }}}</tt> service in all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{%- endif %}}
 {{%- endmacro %}}
 
 
@@ -679,3 +740,26 @@ openssl()
 )
 
 {{%- endmacro %}}
+
+{{% macro machineconfig_description_footer() -%}}
+<p>
+Note that this needs to be done for each <tt>MachineConfigPool</tt>
+</p>
+<p>
+For more information on how to configure nodes with the Machine Config
+Operator see
+{{{ weblink(link="https://docs.openshift.com/container-platform/4.6/post_installation_configuration/machine-configuration-tasks.html",
+            text="the relevant documentation") }}}.
+</p>
+{{% endmacro %}}
+
+{{% macro rhcos_node_login_instructions() -%}}
+    As a user with administrator privileges, log into a node in the relevant pool:
+    <pre>
+    $ oc debug node/$NODE_NAME
+    </pre>
+    At the <pre>sh-4.4#</pre> prompt, run:
+    <pre>
+    # chroot /host
+    </pre>
+{{% endmacro %}}

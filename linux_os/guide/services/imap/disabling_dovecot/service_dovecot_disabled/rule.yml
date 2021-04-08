@@ -4,7 +4,8 @@ prodtype: rhel7,rhel8,sle15
 
 title: 'Disable Dovecot Service'
 
-description: '{{{ describe_service_disable(service="dovecot") }}}'
+description: |-
+    {{{ describe_service_disable(service="dovecot") }}}
 
 rationale: |-
     Running an IMAP or POP3 server provides a network-based
@@ -22,7 +23,8 @@ references:
     cis@sle15: 2.2.11
 
 
-ocil: '{{{ ocil_service_disabled(service="dovecot") }}}'
+ocil: |-
+    {{{ ocil_service_disabled(service="dovecot") }}}
 
 platform: machine
 

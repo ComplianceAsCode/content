@@ -4,7 +4,8 @@ prodtype: rhel7,rhel8,sle15
 
 title: 'Disable vsftpd Service'
 
-description: '{{{ describe_service_disable(service="vsftpd") }}}'
+description: |-
+    {{{ describe_service_disable(service="vsftpd") }}}
 
 rationale: |-
     Running FTP server software provides a network-based avenue
@@ -31,7 +32,8 @@ references:
     cis-csc: 11,14,3,9
     cis@sle15: 2.2.9
 
-ocil: '{{{ ocil_service_disabled(service="vsftpd") }}}'
+ocil: |-
+    {{{ ocil_service_disabled(service="vsftpd") }}}
 
 platform: machine
 

@@ -33,7 +33,8 @@ references:
     stigid@rhel8: RHEL-08-010561
     srg: SRG-OS-000480-GPOS-00227
 
-ocil: '{{{ ocil_service_enabled(service="rsyslog") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="rsyslog") }}}
 
 template:
     name: service_enabled

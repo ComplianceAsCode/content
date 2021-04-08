@@ -4,7 +4,8 @@ prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019
 
 title: 'Verify firewalld Enabled'
 
-description: '{{{ describe_service_enable(service="firewalld") }}}'
+description: |-
+    {{{ describe_service_enable(service="firewalld") }}}
 
 rationale: |-
     Access control methods provide the ability to enhance system security posture
@@ -41,7 +42,8 @@ references:
     nist@sle15: AC-17(9)
     disa@sle15: CCI-002322
 
-ocil: '{{{ ocil_service_enabled(service="firewalld") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="firewalld") }}}
 
 template:
     name: service_enabled

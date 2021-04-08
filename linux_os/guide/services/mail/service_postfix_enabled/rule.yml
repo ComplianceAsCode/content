@@ -22,7 +22,8 @@ identifiers:
 
 ocil_clause: 'the system is not a cross domain solution and the service is not enabled'
 
-ocil: '{{{ ocil_service_enabled(service="postfix") }}}'
+ocil: |-
+    {{{ ocil_service_enabled(service="postfix") }}}
 
 template:
     name: service_enabled

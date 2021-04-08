@@ -9,8 +9,37 @@ description: |-
     key sequence is pressed Ctrl-Alt-Delete more than 7 times in 2 seconds.
     <br /><br />
     To configure the system to ignore the <tt>CtrlAltDelBurstAction</tt>
+    {{% if product != "rhcos4" %}}
     setting, add or modify the following to <tt>/etc/systemd/system.conf</tt>:
     <pre>CtrlAltDelBurstAction=none</pre>
+    {{% else %}}
+    setting, create a <tt>MachineConfig</tt> similar to the following:
+    <pre>
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-disable-ctrlaltdel-burstaction
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+        storage:
+          files:
+          - contents:
+              source: data:,CtrlAltDelBurstAction%3Dnone
+            mode: 0644
+            path: /etc/systemd/system.conf.d/disable_ctrlaltdelete_burstaction.conf
+            overwrite: true
+    EOF
+    </pre>
+    <p>
+    This will add the relevant configuration to <tt>/etc/systemd/system.conf.d/</tt>,
+    thus configuring Systemd apropriately.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{% endif %}}
 
 rationale: |-
     A locally logged-in user who presses Ctrl-Alt-Del, when at the console,

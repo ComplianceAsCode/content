@@ -5,7 +5,31 @@ prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4
 title: 'Install usbguard Package'
 
 description: |-
+    {{% if product != "rhcos4" %}}
     {{{ describe_package_install(package="usbguard") }}}
+    {{% else %}}
+    The <tt>usbguard</tt> package can be installed with the following manifest: 
+    <pre>
+    ---
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: master
+      name: 75-master-usbguard-install
+    spec:
+      config:
+        ignition:
+          version: 3.1.0
+      extensions:
+        - usbguard
+    </pre>
+    <p>
+    This will install the <tt>usbguard</tt> package in all the
+    nodes labeled with the "master" role.
+    </p>
+    {{{ machineconfig_description_footer() | indent(4) }}}
+    {{% endif %}}
 
 rationale: |-
     <tt>usbguard</tt> is a software framework that helps to protect
