@@ -820,6 +820,9 @@ class Benchmark(object):
 class Group(object):
     """Represents XCCDF Group
     """
+    ATTRIBUTES_TO_PASS_ON = (
+        "platforms",
+    )
 
     def __init__(self, id_):
         self.id_ = id_
@@ -837,7 +840,6 @@ class Group(object):
         # it is here for backward compatibility
         self.platforms = set()
         self.platform = None
-        self.inherited_platforms = set()
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
@@ -975,20 +977,23 @@ class Group(object):
     def add_group(self, group):
         if group is None:
             return
-        if self.platforms:
-            group.inherited_platforms.update(self.platforms)
-        if not group.platforms:
-            group.platforms = group.inherited_platforms
+        if self.platforms and not group.platforms:
+            group.platforms = self.platforms
         self.groups[group.id_] = group
+        self._pass_our_properties_on_to(group)
+
+    def _pass_our_properties_on_to(self, obj):
+        for attr in self.ATTRIBUTES_TO_PASS_ON:
+            if hasattr(obj, attr) and getattr(obj, attr) is None:
+                setattr(obj, attr, getattr(self, attr))
 
     def add_rule(self, rule):
         if rule is None:
             return
-        if self.platforms:
-            rule.inherited_platforms.update(self.platforms)
-        if self.inherited_platforms:
-            rule.inherited_platforms.update(self.inherited_platforms)
+        if self.platforms and not rule.platforms:
+            rule.platforms = self.platforms
         self.rules[rule.id_] = rule
+        self._pass_our_properties_on_to(rule)
 
     def __str__(self):
         return self.id_
@@ -1013,7 +1018,7 @@ class Rule(object):
         "requires": lambda: list(),
         "platform": lambda: None,
         "platforms": lambda: set(),
-        "inherited_platforms": lambda: set(),
+        "inherited_platforms": lambda: list(),
         "template": lambda: None,
         "definition_location": lambda: None,
     }
@@ -1492,6 +1497,9 @@ class BuildLoader(DirectoryLoader):
                 continue
             self.all_rules.add(rule)
             self.loaded_group.add_rule(rule)
+
+            if self.loaded_group.platforms:
+                rule.inherited_platforms += self.loaded_group.platforms
 
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
