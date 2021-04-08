@@ -16,4 +16,3 @@
     mode: "go-w"
   with_items: "{{ world_writable_library_files.stdout_lines }}"
   when: world_writable_library_files.stdout_lines | length > 0
-
