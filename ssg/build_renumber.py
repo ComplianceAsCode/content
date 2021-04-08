@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import sys
+import collections
 
 
 from .constants import oval_namespace, XCCDF11_NS, cce_uri, ocil_cs, ocil_namespace
@@ -139,8 +140,14 @@ class OVALFileLinker(FileLinker):
         indexed_oval_defs = map_elements_to_their_ids(
             self.tree, ".//{0}".format(self._get_checkid_string()))
 
-        drop_oval_checks_extending_non_existing_checks(
-            self.tree, self.oval_groups, indexed_oval_defs)
+        defs_miss = get_oval_checks_extending_non_existing_checks(self.tree, indexed_oval_defs)
+        if defs_miss:
+            msg = ["Following extending definitions are missing:"]
+            for missing, broken in transpose_dict_with_sets(defs_miss).items():
+                broken = [b.get("id") for b in broken]
+                msg.append("\t'{missing}' needed by: {broken}"
+                           .format(missing=missing, broken=broken))
+            raise RuntimeError("\n".join(msg))
 
         self._add_cce_id_refs_to_oval_checks(xccdf_to_cce_id_mapping)
 
@@ -316,20 +323,33 @@ def get_nonexisting_check_definition_extends(definition, indexed_oval_defs):
     return None
 
 
-def drop_oval_checks_extending_non_existing_checks(ovaltree, oval_groups, indexed_oval_defs):
+def get_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
     # Incomplete OVAL checks are as useful as non existing checks
     # Here we check if all extend_definition refs from a definition exists in local OVAL file
     definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
-    defstoremove = set()
+    definitions_misses = collections.defaultdict(set)
     for definition in definitions:
         nonexisting_ref = get_nonexisting_check_definition_extends(definition, indexed_oval_defs)
         if nonexisting_ref is not None:
-            print("WARNING: OVAL definition '{0}' extends non-existing '{1}', "
-                  "removing it from OVAL definitions."
-                  .format(definition.get("id"), nonexisting_ref),
-                  file=sys.stderr)
-            defstoremove.add(definition)
+            definitions_misses[definition].add(nonexisting_ref)
 
+    return definitions_misses
+
+
+def transpose_dict_with_sets(dict_in):
+    """
+    Given a mapping X: key -> set of values, produce a mapping Y of the same type, where
+        for every combination of a, b for which a in X[b], the following holds: b in Y[a].
+    """
+    result = collections.defaultdict(set)
+    for key, values in dict_in.items():
+        for val in values:
+            result[val].add(key)
+    return result
+
+
+def drop_oval_definitions(ovaltree, defstoremove, oval_groups, indexed_oval_defs):
+    definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
     for definition in defstoremove:
         del oval_groups["definitions"][definition.get("id")]
         del indexed_oval_defs[definition.get("id")]
