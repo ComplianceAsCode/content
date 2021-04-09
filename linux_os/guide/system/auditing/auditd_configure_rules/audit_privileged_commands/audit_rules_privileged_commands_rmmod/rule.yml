@@ -42,7 +42,6 @@ ocil: |-
     following command:
     <pre>
        sudo auditctl -l | grep -w '/sbin/rmmod'
-       -w /sbin/rmmod -p x -k modules
     </pre>
     If the system is configured to audit the execution of the module management program "rmmod",
     the command will return a line.
