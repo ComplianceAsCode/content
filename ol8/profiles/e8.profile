@@ -1,5 +1,7 @@
 documentation_complete: true
 
+reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers 
+
 title: '[DRAFT] Australian Cyber Security Centre (ACSC) Essential Eight'
 
 description: |-
@@ -121,7 +123,6 @@ selections:
   - sshd_disable_root_login
   - sshd_disable_gssapi_auth
   - sshd_print_last_log
-  - sshd_use_priv_separation
   - sshd_do_not_permit_user_env
   - sshd_disable_rhosts
   - sshd_set_loglevel_info
@@ -138,3 +139,5 @@ selections:
   - package_fapolicyd_installed
   - service_fapolicyd_enabled
 
+  ### Backup
+  - package_rear_installed
