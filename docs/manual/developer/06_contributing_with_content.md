@@ -610,15 +610,22 @@ Tips:
 
 ### Checks
 
-Checks are used to evaluate a Rule. They are written using a custom OVAL
-syntax and are stored as xml files inside the *checks/oval* directory
-for the desired platform. During the building process, the system will
-transform the checks in OVAL compliant checks.
+Checks are used to evaluate a Rule.
+They are written using a custom OVAL syntax and during the building process
+the system will transform them into OVAL compliant checks.
 
-In order to create a new check, you must create a file in the
-appropriate directory, and name it the same as the Rule *id*. This *id*
-will also be used as the OVAL *id* attribute. The content of the file
-should follow the OVAL specification with these exceptions:
+The OVAL checks are stored as XML files and the build system can source
+them from:
+
+- the `oval` directory of a rule
+- the shared pool of checks `shared/checks/oval`
+- a template
+
+In order to create a new check you must create a file in the
+appropriate directory. The *id* attribute of the check needs to match the *id*
+of the its rule.
+The content of the file should follow the OVAL specification with these
+exceptions:
 
 -   The root tag must be `<def-group>`
 
