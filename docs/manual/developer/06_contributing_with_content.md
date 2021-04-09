@@ -611,8 +611,8 @@ Tips:
 ### Checks
 
 Checks are used to evaluate a Rule.
-They are written using a custom OVAL syntax and during the building process
-the system will transform them into OVAL compliant checks.
+They are written using a custom OVAL syntax and are transformed by the system
+during the building process into OVAL compliant checks.
 
 The OVAL checks are stored as XML files and the build system can source
 them from:
@@ -623,7 +623,7 @@ them from:
 
 In order to create a new check you must create a file in the
 appropriate directory. The *id* attribute of the check needs to match the *id*
-of the its rule.
+of its rule.
 The content of the file should follow the OVAL specification with these
 exceptions:
 
@@ -710,7 +710,7 @@ oval_config_file_exists_object
 
 #### Limitations and pitfalls
 
-This section aims to list known OVAL limitations and sutations that OVAL can't
+This section aims to list known OVAL limitations and situations that OVAL can't
 handle well or at all.
 
 ##### Checking that all objects exist based on a variable
