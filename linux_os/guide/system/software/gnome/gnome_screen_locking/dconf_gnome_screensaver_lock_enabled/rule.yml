@@ -5,6 +5,13 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12
 title: 'Enable GNOME3 Screensaver Lock After Idle Period'
 
 description: |-
+    {{% if product in ['sle12','sle15'] %}}
+    To activate locking of the screensaver in the GNOME3 desktop when it is activated,
+    run the following command to configure the SUSE operating system to allow the user to lock the GUI:
+    <pre>gsettings set org.gnome.desktop.lockdown disable-lock-screen false</pre>
+    Validate that <tt>disable-lock-screen</tt> has been set to <tt>false</tt> with the command:
+    <pre>gsettings get org.gnome.desktop.lockdown disable-lock-screen</pre>
+    {{% else %}}
     To activate locking of the screensaver in the GNOME3 desktop when it is activated,
     add or set <tt>lock-enabled</tt> to <tt>true</tt> in
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
@@ -16,6 +23,7 @@ description: |-
     For example:
     <pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
     After the settings have been set, run <tt>dconf update</tt>.
+    {{% endif %}}
 
 rationale: |-
     A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
