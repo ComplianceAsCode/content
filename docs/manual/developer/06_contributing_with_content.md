@@ -708,6 +708,42 @@ oval_config_file_exists_test
 oval_config_file_exists_object
 ```
 
+#### Limitations and pitfalls
+
+This section aims to list known OVAL limitations and sutations that OVAL can't
+handle well or at all.
+
+##### Checking that all objects exist based on a variable
+
+A test with *check_existence="all_exist"* attribute will not ensure that all
+objects defined based on a variable exist.
+
+This happens because in the test context *all_exist* defaults to
+*at_least_one_exists*.
+Reference: OVAL [ExistenceEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---existenceenumeration---)
+
+This means that an object defined based on a variable with multiple values will
+result in *pass* if just one of the expected objects exist.
+Example, lets say there is a variable containing multiple paths, and you'd like
+to check that all of them are present in the file system. The following snippet
+would work if *all_exist* didn't default to *at_least_one_exists*.
+
+```xml
+  <unix:file_test id="" check="all" check_existence="all_exist" comment="This test fails to ensure that all paths from variable exist" version="1">
+    <unix:object object_ref="collect_objects_based_on_variable" />
+  </unix:file_test>
+
+  <unix:file_object id="collect_objects_based_on_variable" version="1">
+    <unix:path datatype="string" var_ref="variable_containing_a_list_of_paths" var_check="at least one"/>
+  </unix:file_object>
+```
+
+A workaround is to add a second test to count the number of objects
+collected and compare the sum against the number of values in the variable.
+This works well, except when none of the files exist, which leads to a
+result of *unknown*. Counting the number of collected items of an
+object definition that doesn't exist is *unknown* (not 0, for example).
+
 ###### Platform applicability
 
 Whenever possible, please reuse the macros and form high-level
