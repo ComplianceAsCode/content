@@ -310,34 +310,35 @@ class XCCDFBenchmark(object):
         impl_cces_count = len(profile_stats['assigned_cces'])
 
         if options.format == "plain":
-            print("\nProfile %s:" % profile)
-            print("* rules:            %d" % rules_count)
-            print("* checks (OVAL):    %d\t[%d%% complete]" %
-                  (impl_ovals_count,
-                   profile_stats['implemented_ovals_pct']))
+            if not options.skip_overall_stats:
+                print("\nProfile %s:" % profile)
+                print("* rules:            %d" % rules_count)
+                print("* checks (OVAL):    %d\t[%d%% complete]" %
+                      (impl_ovals_count,
+                       profile_stats['implemented_ovals_pct']))
 
-            print("* fixes (bash):     %d\t[%d%% complete]" %
-                  (impl_bash_fixes_count,
-                   profile_stats['implemented_bash_fixes_pct']))
-            print("* fixes (ansible):  %d\t[%d%% complete]" %
-                  (impl_ansible_fixes_count,
-                   profile_stats['implemented_ansible_fixes_pct']))
-            print("* fixes (ignition):  %d\t[%d%% complete]" %
-                  (impl_ignition_fixes_count,
-                   profile_stats['implemented_ignition_fixes_pct']))
-            print("* fixes (kubernetes):  %d\t[%d%% complete]" %
-                  (impl_kubernetes_fixes_count,
-                   profile_stats['implemented_kubernetes_fixes_pct']))
-            print("* fixes (puppet):   %d\t[%d%% complete]" %
-                  (impl_puppet_fixes_count,
-                   profile_stats['implemented_puppet_fixes_pct']))
-            print("* fixes (anaconda): %d\t[%d%% complete]" %
-                  (impl_anaconda_fixes_count,
-                   profile_stats['implemented_anaconda_fixes_pct']))
+                print("* fixes (bash):     %d\t[%d%% complete]" %
+                      (impl_bash_fixes_count,
+                       profile_stats['implemented_bash_fixes_pct']))
+                print("* fixes (ansible):  %d\t[%d%% complete]" %
+                      (impl_ansible_fixes_count,
+                       profile_stats['implemented_ansible_fixes_pct']))
+                print("* fixes (ignition):  %d\t[%d%% complete]" %
+                      (impl_ignition_fixes_count,
+                       profile_stats['implemented_ignition_fixes_pct']))
+                print("* fixes (kubernetes):  %d\t[%d%% complete]" %
+                      (impl_kubernetes_fixes_count,
+                       profile_stats['implemented_kubernetes_fixes_pct']))
+                print("* fixes (puppet):   %d\t[%d%% complete]" %
+                      (impl_puppet_fixes_count,
+                       profile_stats['implemented_puppet_fixes_pct']))
+                print("* fixes (anaconda): %d\t[%d%% complete]" %
+                      (impl_anaconda_fixes_count,
+                       profile_stats['implemented_anaconda_fixes_pct']))
 
-            print("* CCEs:             %d\t[%d%% complete]" %
-                  (impl_cces_count,
-                   profile_stats['assigned_cces_pct']))
+                print("* CCEs:             %d\t[%d%% complete]" %
+                      (impl_cces_count,
+                       profile_stats['assigned_cces_pct']))
 
             if options.implemented_ovals and \
                profile_stats['implemented_ovals']:
