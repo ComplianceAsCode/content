@@ -87,6 +87,9 @@ def parse_args():
     parser_stats.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
+    parser_stats.add_argument("--skip-stats", default=False,
+                              action="store_true", dest="skip_overall_stats",
+                              help="Do not show overall statistics.")
     parser_stats.add_argument("--format", default="plain",
                         choices=["plain", "json", "csv", "html"],
                         help="Which format to use for output.")
