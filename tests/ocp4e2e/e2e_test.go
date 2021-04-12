@@ -13,6 +13,7 @@ func TestE2e(t *testing.T) {
 		ctx.assertProfile(t)
 		ctx.assertContentImage(t)
 		ctx.assertKubeClient(t)
+		ctx.assertVersion(t)
 	})
 
 	t.Run("Operator setup", func(t *testing.T) {

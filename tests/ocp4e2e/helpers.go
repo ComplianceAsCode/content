@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"regexp"
 	"strings"
 	"sync"
 	"testing"
@@ -83,6 +84,7 @@ type e2econtext struct {
 	product         string
 	resourcespath   string
 	benchmarkRoot   string
+	version         string
 	installOperator bool
 	dynclient       dynclient.Client
 	kubecfg         *rest.Config
@@ -211,6 +213,23 @@ func (ctx *e2econtext) assertKubeClient(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to build the dynamic client: %s", err)
 	}
+}
+
+func (ctx *e2econtext) assertVersion(t *testing.T) {
+	// TODO(jaosorior): Make this pluggable (we might want to use
+	//                  kubectl instead in the future)
+	rawversion, err := exec.Command("oc", "version").Output()
+	if err != nil {
+		t.Fatalf("E2E-FAILURE: failed get cluster version: %s", err)
+	}
+
+	r := regexp.MustCompile(`Server Version: ([1-9]\.[0-9]+)\..*`)
+	matches := r.FindSubmatch(rawversion)
+
+	if len(matches) < 2 {
+		t.Fatalf("E2E-FAILURE: Couldn't get server version from output: %s", rawversion)
+	}
+	ctx.version = string(matches[1])
 }
 
 func (ctx *e2econtext) resetClientMappings() {
@@ -701,9 +720,8 @@ func (ctx *e2econtext) verifyRule(t *testing.T, result cmpv1alpha1.ComplianceChe
 		return "", err
 	}
 	rulePath := strings.Trim(string(rulePathBytes), "\n")
-	testFilePath := path.Join(rulePath, ruleTestFilePath)
 
-	buf, err := ioutil.ReadFile(testFilePath)
+	buf, err := ctx.getTestDefinition(rulePath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			// There's no test file, so no need to verify
@@ -717,12 +735,7 @@ func (ctx *e2econtext) verifyRule(t *testing.T, result cmpv1alpha1.ComplianceChe
 		return "", err
 	}
 
-	remPath := path.Join(rulePath, ruleManualRemediationFilePath)
-	_, err = os.Stat(remPath)
-	if os.IsNotExist(err) {
-		// We reset the path to return in case there isn't a remediation
-		remPath = ""
-	}
+	remPath := ctx.getManualRemediationPath(rulePath)
 
 	// Initial run
 	if !afterRemediations {
@@ -746,6 +759,47 @@ func (ctx *e2econtext) verifyRule(t *testing.T, result cmpv1alpha1.ComplianceChe
 
 	t.Logf("Rule %s matched expected result", ruleName)
 	return remPath, nil
+}
+
+// getTestDefinition attempts to use a versioned test (<version>.yml)
+// definition, if it fails it'll try to use the standard test
+// definition (e2e.yml).
+func (ctx *e2econtext) getTestDefinition(rulePath string) ([]byte, error) {
+	versionedManifest := fmt.Sprintf("%s.yml", ctx.version)
+	versionedRuleTestFilePath := path.Join(ruleTestDir, versionedManifest)
+	vbuf, verr := ioutil.ReadFile(versionedRuleTestFilePath)
+
+	if verr == nil {
+		return vbuf, nil
+	}
+
+	if verr != nil && !os.IsNotExist(verr) {
+		return nil, verr
+	}
+
+	testFilePath := path.Join(rulePath, ruleTestFilePath)
+	return ioutil.ReadFile(testFilePath)
+}
+
+// getManualRemediationPath attempts to get a versioned remediation
+// (<version>-remediation.sh) path, if it fails it'll try to use the
+// standard test remediation path (e2e-remediation.sh).
+// If both instances are not present, it'll return an empty string.
+func (ctx *e2econtext) getManualRemediationPath(rulePath string) string {
+	versionedRemediation := fmt.Sprintf("%s-remediation.sh", ctx.version)
+	versionedRemediationPath := path.Join(ruleTestDir, versionedRemediation)
+	_, err := os.Stat(versionedRemediationPath)
+	if err == nil {
+		return versionedRemediationPath
+	}
+
+	remPath := path.Join(rulePath, ruleManualRemediationFilePath)
+	_, err = os.Stat(remPath)
+	if err == nil {
+		// We reset the path to return in case there isn't a remediation
+		return remPath
+	}
+	return ""
 }
 
 func verifyRuleResult(foundResult cmpv1alpha1.ComplianceCheckResult, expectedResult interface{}, testDef RuleTest, ruleName string) error {
