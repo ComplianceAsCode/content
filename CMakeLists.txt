@@ -155,6 +155,14 @@ if (SSG_SVG_IN_XCCDF_ENABLED AND NOT OSCAP_SVG_SUPPORT_RESULT EQUAL 0)
     message(WARNING "Your version of OpenSCAP does not support having the SVG logo in the XCCDF, disabling SVG logo.")
 endif()
 
+# OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
+# it. See also: https://github.com/ComplianceAsCode/content/issues/6798
+if ("${OSCAP_VERSION}" VERSION_LESS "1.3.4" AND SSG_PRODUCT_OCP4)
+    set(SSG_PRODUCT_OCP4 OFF)
+    message(WARNING "Won't build OCP4 content as it requires an OpenSCAP version with OCP4 support. See also: https://github.com/ComplianceAsCode/content/issues/6798. n.b.: if 1.3.4 fails to build OCP4 content, please update to 1.3.5")
+endif()
+
+
 if (SSG_JINJA2_CACHE_ENABLED)
     file(MAKE_DIRECTORY "${SSG_JINJA2_CACHE_DIR}")
     if (NOT EXISTS "${SSG_JINJA2_CACHE_DIR}")
