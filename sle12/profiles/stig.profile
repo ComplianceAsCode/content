@@ -18,6 +18,7 @@ selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
+    - inactivity_timeout_value=15_minutes
     - var_password_pam_dcredit=1
     - var_password_pam_delay=4000000
     - var_password_pam_difok=8
@@ -170,6 +171,7 @@ selections:
     - file_permission_user_init_files
     - ftp_present_banner
     - gnome_gdm_disable_automatic_login
+    - dconf_gnome_screensaver_idle_delay
     - grub2_password
     - grub2_uefi_password
     - gui_login_dod_acknowledgement

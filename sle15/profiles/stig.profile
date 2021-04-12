@@ -18,6 +18,7 @@ selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
+    - inactivity_timeout_value=15_minutes
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
@@ -147,6 +148,7 @@ selections:
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
+    - dconf_gnome_screensaver_idle_delay
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_system_owned_group
     - disable_ctrlaltdel_burstaction
