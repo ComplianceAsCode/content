@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'Verify User Who Owns The etcd Member Pod Specification File'
+title: 'Verify User Who Owns The Etcd Member Pod Specification File'
 
 description: '{{{ describe_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
 
@@ -28,6 +28,12 @@ ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*
 
 platforms:
     - ocp4-master-node
+
+warnings:
+    - dependency: |-
+        This rule is only applicable for nodes that run the Etcd service.
+        The aforementioned service is only running on the nodes labeled
+        "master" by default.
 
 template:
     name: file_owner
