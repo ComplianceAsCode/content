@@ -1,11 +1,7 @@
 documentation_complete: true
 
 title: |-
-{{% if product in ["sle15"] %}}
-    The SUSE operating system library directories must have mode 0755 or less permissive.
-{{% else %}}
     Verify that Shared Library Directories Have Restrictive Permissions
-{{% endif %}}
 
 description: |-
     System-wide shared library directories, which contain are linked to executables
@@ -24,11 +20,11 @@ description: |-
     <pre>$ sudo chmod go-w <i>DIR</i></pre>
 
 rationale: |-
-    If the SUSE operating system were to allow any user to make changes to software libraries,
+    If the operating system were to allow any user to make changes to software libraries,
     then those changes might be implemented without undergoing the appropriate testing
     and approvals that are part of a robust change management process.
 
-    This requirement applies to SUSE operating systems with software libraries that are accessible
+    This requirement applies to operating systems with software libraries that are accessible
     and configurable, as in the case of interpreted languages. Software libraries also include
     privileged programs which execute with escalated privileges. Only qualified and authorized
     individuals must be allowed to obtain access to information system components for purposes
