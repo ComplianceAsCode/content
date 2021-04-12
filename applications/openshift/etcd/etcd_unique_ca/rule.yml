@@ -25,6 +25,12 @@ references:
 platforms:
   - ocp4-master-node
 
+warnings:
+  - dependency: |-
+      This rule is only applicable for nodes that run the Etcd service.
+      The aforementioned service is only running on the nodes labeled
+      "master" by default.
+
 ocil_clause: 'The etcd CA certificate is not unique'
 
 ocil: |-

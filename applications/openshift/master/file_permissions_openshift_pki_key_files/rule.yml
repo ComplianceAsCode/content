@@ -29,6 +29,12 @@ ocil: |-
 platforms:
   - ocp4-master-node
 
+warnings:
+  - dependency: |-
+      This rule is only applicable for nodes that run the Kubernetes Control Plane.
+      The aforementioned service is only running on the nodes labeled
+      "master" by default.
+
 # Note that this recursively checks for files, and the form is as follows:
 #
 #  /etc/kubernetes/static-pod-resources/.*/.*/.*/.*\.key
