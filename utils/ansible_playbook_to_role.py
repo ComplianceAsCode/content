@@ -57,11 +57,19 @@ yaml.add_constructor(_mapping_tag, dict_constructor)
 PRODUCT_WHITELIST = set([
     "rhel7",
     "rhel8",
-    "rhv4",
 ])
 
 PROFILE_WHITELIST = set([
+    "anssi_nt28_enhanced",
+    "anssi_nt28_high",
+    "anssi_nt28_intermediary",
+    "anssi_nt28_minimal",
+    "anssi_bp28_enhanced",
+    "anssi_bp28_high",
+    "anssi_bp28_intermediary",
+    "anssi_bp28_minimal",
     "C2S",
+    "cis",
     "cjis",
     "hipaa",
     "cui",
@@ -102,7 +110,7 @@ def create_empty_repositories(github_new_repos, github_org):
 
 def clone_and_init_repository(parent_dir, organization, repo):
     os.system(
-        "git clone https://github.com/%s/%s" % (organization, repo))
+        "git clone git@github.com:%s/%s" % (organization, repo))
     os.system("ansible-galaxy init " + repo + " --force")
     os.chdir(repo)
     try:
@@ -157,7 +165,23 @@ class PlaybookToRoleConverter():
     def name(self):
         root, _ = os.path.splitext(os.path.basename(self._local_playbook_filename))
         product, _, profile = root.split("-", 2)
-        return "%s_%s" % (product, profile.replace("-", "_"))
+        return "%s_%s" % (product, profile.replace("-", "_").lower())
+
+    @property
+    @memoize
+    def product(self):
+        # Returns the first part [product] of name.
+        # ex: rhel7_stig
+        # returns: rhel7
+        return self.name.split("_")[0]
+
+    @property
+    @memoize
+    def profile(self):
+        # Returns the second part [profile] of name.
+        # ex: rhe7_anssi_nt28_enhanced
+        # returns: anssi_nt28_enhanced
+        return self.name.split("_", 1)[1]
 
     @property
     @memoize
@@ -231,6 +255,18 @@ class PlaybookToRoleConverter():
 
     @property
     @memoize
+    def platform_version(self):
+        platform = self.product
+        # Check to see if this is RHEL product
+        if platform in PRODUCT_WHITELIST:
+            # For RHEL, we can get what version
+            if 'rhel' in platform:
+                return platform[len(platform)-1]
+            return "7\n    - 8"
+        return "TBD"
+
+    @property
+    @memoize
     def _description(self):
         separator = "#" * 79
         offset_from_separator = 3
@@ -251,6 +287,37 @@ class PlaybookToRoleConverter():
             else:
                 desc += (line + "\n")
         return desc.strip("\n\n")
+
+    @property
+    def _update_galaxy_tags(self):
+        galaxy_tags = {}
+        # These are the default tags that all roles share
+        tags = [
+            "system",
+            "hardening",
+            "openscap",
+            "ssg",
+            "scap",
+            "security",
+            "compliance",
+            "complianceascode",
+            "redhatofficial",
+            "redhat",
+        ]
+        prod = self.product
+        prof = self.profile
+
+        tags.append(prod)
+        tags.append(prof.replace("_", ""))
+
+        if prof == 'stig':
+            tags.append("disa")
+
+        if 'anssi' in prof:
+            tags.append("anssi")
+
+        galaxy_tags['galaxy_tags'] = tags
+        return galaxy_tags
 
     def _tag_is_valid_variable(self, tag):
         return '-' not in tag and tag != 'always'
@@ -287,10 +354,16 @@ class PlaybookToRoleConverter():
     def _generate_meta_content(self):
         with open(META_TEMPLATE_PATH, 'r') as f:
             meta_template = f.read()
-        local_meta_content = meta_template.replace("@ROLE_NAME@",
-                                                   self.name)
-        local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
-        return local_meta_content.replace("@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
+        local_meta_content = meta_template.replace(
+            "@ROLE_NAME@", self.name)
+        local_meta_content = local_meta_content.replace(
+            "@DESCRIPTION@", self.title)
+        local_meta_content = local_meta_content.replace(
+            "@PLATFORM_VERSION@", self.platform_version)
+        local_meta_content = local_meta_content.replace(
+            "@GALAXY_TAGS@", yaml.dump(self._update_galaxy_tags).replace("- ", "  - "))
+        return local_meta_content.replace(
+            "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
 
     def _generate_defaults_content(self):
         default_vars_to_add = sorted(self.added_variables)
@@ -319,44 +392,6 @@ class RoleGithubUpdater(object):
 
     def _local_content(self, filepath):
         new_content = self.role.file(filepath)
-
-        if filepath == 'README.md':
-            remote_readme_file, _ = self._remote_content("README.md")
-            if not remote_readme_file:
-                return new_content
-
-            local_readme_content = re.sub(r'Ansible version (\d*\.\d+|\d+)',
-                                          "Ansible version %s" % ssg.ansible.min_ansible_version,
-                                          remote_readme_file)
-            return re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
-                          "%s.%s" % (ORGANIZATION_NAME, self.role.name),
-                          local_readme_content)
-        elif filepath == 'meta/main.yml':
-            remote_meta_file, _ = self._remote_content(filepath)
-            if not remote_meta_file:
-                return new_content
-
-            with open(META_TEMPLATE_PATH, 'r') as f:
-                meta_template = f.read()
-            author = re.search(r'author:.*', meta_template).group(0)
-            description = re.search(r'description:.*', meta_template).group(0)
-            issue_tracker_url = re.search(r'issue_tracker_url:.*', meta_template).group(0)
-            local_meta_content = remote_meta_file
-            local_meta_content = re.sub(r'role_name:.*',
-                                        "role_name: %s" % self.role.name,
-                                        local_meta_content)
-            local_meta_content = re.sub(r'author:.*',
-                                        author,
-                                        local_meta_content)
-            local_meta_content = re.sub(r'min_ansible_version: (\d*\.\d+|\d+)',
-                                        "min_ansible_version: %s" % ssg.ansible.min_ansible_version,
-                                        local_meta_content)
-            local_meta_content = re.sub(r'description:.*',
-                                        "description: %s" % self.role.title,
-                                        local_meta_content)
-            return re.sub(r'issue_tracker_url:.*',
-                          issue_tracker_url,
-                          local_meta_content)
         return new_content
 
     def _remote_content(self, filepath):
@@ -371,8 +406,8 @@ class RoleGithubUpdater(object):
 
         if self._local_content(filepath) != remote_content:
             self.remote_repo.update_file(
-                "/" + filepath,
-                "Updates " + filepath,
+                filepath,
+                "Updated " + filepath,
                 self._local_content(filepath),
                 sha,
                 author=InputGitAuthor(
@@ -483,7 +518,7 @@ def main():
     else:
         if not args.token:
             print("Input your GitHub credentials:")
-            username = raw_input("username or token: ")
+            username = input("username or token: ")
             password = getpass.getpass("password (or empty for token): ")
         else:
             username = args.token
@@ -494,7 +529,7 @@ def main():
         github_repositories = [repo.name for repo in github_org.get_repos()]
 
         # Create empty repositories
-        github_new_repos = sorted(list(set(map(str.lower, selected_roles.keys())) - set(map(unicode.lower, github_repositories))))
+        github_new_repos = sorted(list(set(map(str.lower, selected_roles.keys())) - set(map(str.lower, github_repositories))))
         if github_new_repos:
             create_empty_repositories(github_new_repos, github_org)
 

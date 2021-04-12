@@ -10,24 +10,10 @@ galaxy_info:
   min_ansible_version: @MIN_ANSIBLE_VERSION@
 
   platforms:
-  - name: GenericBSD
+  - name: EL
     versions:
-    - any
-  - name: GenericLinux
-    versions:
-    - any
-  - name: GenericUNIX
-    versions:
-    - any
+    - @PLATFORM_VERSION@
 
-  galaxy_tags:
-  - system
-  - hardening
-  - openscap
-  - ssg
-  - scap
-  - security
-  - compliance
-  - compliaceascode
+  @GALAXY_TAGS@
 
 dependencies: []
