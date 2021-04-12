@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,rhel8
+
+title: 'Enable the GNOME3 Screen Locking On Smartcard Removal'
+
+description: |-
+    In the default graphical environment, screen locking on smartcard removal
+    can be enabled by setting <tt>removal-action</tt>
+    to <tt>lock-screen</tt>.
+    <br /><br />
+    To enable, add or edit <tt>removal-action</tt> to
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/settings-daemon/peripherals/smartcard]
+    removal-action=lock-screen</pre>
+    Once the setting has been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/settings-daemon/peripherals/smartcard/removal-action</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Locking the screen automatically when removing the smartcard can
+    prevent undesired access to system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83910-0
+
+references:
+    disa: CCI-000056
+    srg: SRG-OS-000028-GPOS-00009,SRG-OS-000030-GPOS-00011
+    stigid@rhel8: RHEL-08-020050
+
+ocil_clause: 'removal-action has not been configured'
+
+ocil: |-
+    To ensure screen locking on smartcard removal is enabled, run the following command:
+    <pre>$ grep removal-action /etc/dconf/db/local.d/*</pre>
+    The output should be <tt>lock-screen</tt>.
+    To ensure that users cannot disable screen locking on smartcard removal, run the following:
+    <pre>$ grep removal-action /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/settings-daemon/peripherals/smartcard/removal-action</tt>
+
+platform: machine
+
+template:
+    name: dconf_ini_file
+    vars:
+        parameter: removal-action
+        value: "lock-screen"
+        section: "org/gnome/settings-daemon/peripherals/smartcard"
+        path: /etc/dconf/db/local.d/
