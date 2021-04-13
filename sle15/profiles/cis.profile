@@ -365,7 +365,7 @@ selections:
 
     ## 3.4 Uncommon Network Protocols
     ### 3.4.1 Ensure DCCP is disabled (Not Scored)
-    - kernel_module_dccp_disabled
+    ##- kernel_module_dccp_disabled
 
     ### 3.4.2 Ensure SCTP is disabled (Not Scored)
     - kernel_module_sctp_disabled

@@ -175,7 +175,6 @@ selections:
     - gui_login_dod_acknowledgement
     - installed_OS_is_vendor_supported
     - install_smartcard_packages
-    - kernel_module_dccp_disabled
     - kernel_module_usb-storage_disabled
     - mount_option_home_nosuid
     - mount_option_noexec_remote_filesystems
@@ -190,9 +189,8 @@ selections:
     - package_aide_installed
     - package_audit-audispd-plugins_installed
     - package_audit_installed
-    - package_SuSEfirewall2_installed
     - package_telnet-server_removed
-    - package_vsftpd_removed
+    - package_firewalld_installed
     - pam_disable_automatic_configuration
     - partition_for_home
     - partition_for_var
@@ -207,7 +205,6 @@ selections:
     - service_firewalld_enabled
     - service_kdump_disabled
     - service_sshd_enabled
-    - service_SuSEfirewall2_enabled
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_min_rounds_logindefs
@@ -236,7 +233,6 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_require_authentication
-    - susefirewall2_only_required_services
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_net_ipv4_conf_all_accept_redirects
