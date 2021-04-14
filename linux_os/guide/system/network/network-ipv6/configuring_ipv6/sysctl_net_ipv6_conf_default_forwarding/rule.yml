@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'Disable Kernel Parameter for IPv6 Forwarding by default'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.default.forwarding", value="0") }}}'
+
+rationale: |-
+    IP forwarding permits the kernel to forward packets from one network
+    interface to another. The ability to forward packets between two networks is
+    only appropriate for systems acting as routers.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-85725-0 
+
+references:
+    disa@sle15: CCI-000366
+    srg@sle15: SRG-OS-000480-GPOS-00227
+    nist@sle15: CM-6(b),CM-6.1(iv)
+    stigid@sle15: SLES-15-040382
+
+ocil_clause: 'IPv6 Forwading is not disabled'
+
+ocil: |-
+    {{{ ocil_sysctl_option_value(sysctl="net.ipv6.conf.default.forwarding", value="0") }}}
+    The ability to forward packets is only appropriate for routers.
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.default.forwarding
+        datatype: int
