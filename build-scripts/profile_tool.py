@@ -59,6 +59,9 @@ def parse_args():
     parser_stats.add_argument("--missing-ospp-refs", default=False,
                         action="store_true", dest="missing_ospp_refs",
                         help="Show rules in OSPP profiles that don't have OSPP references.")
+    parser_stats.add_argument("--missing-cui-refs", default=False,
+                              action="store_true", dest="missing_cui_refs",
+                              help="Show rules in CUI profiles that don't have CUI references.")
     parser_stats.add_argument("--missing-ovals", default=False,
                         action="store_true", dest="missing_ovals",
                         help="Show IDs of unimplemented OVAL checks.")
@@ -136,6 +139,7 @@ def parse_args():
             args.missing_hipaa_refs = True
             args.missing_anssi_refs = True
             args.missing_ospp_refs = True
+            args.missing_cui_refs = True
 
     return args
 
@@ -213,6 +217,7 @@ def main():
             'missing_hipaa_refs',
             'missing_anssi_refs',
             'missing_ospp_refs',
+            'missing_cui_refs',
             'missing_ovals',
             'missing_bash_fixes',
             'missing_ansible_fixes',
