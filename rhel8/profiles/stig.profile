@@ -338,3 +338,4 @@ selections:
     - package_usbguard_installed
     - service_usbguard_enabled
     - network_sniffer_disabled
+    - dconf_gnome_lock_screen_on_smartcard_removal

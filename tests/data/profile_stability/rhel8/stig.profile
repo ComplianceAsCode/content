@@ -87,6 +87,7 @@ selections:
 - coredump_disable_storage
 - dconf_gnome_banner_enabled
 - dconf_gnome_disable_ctrlaltdel_reboot
+- dconf_gnome_lock_screen_on_smartcard_removal
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
