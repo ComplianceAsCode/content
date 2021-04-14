@@ -16,7 +16,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r-----") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r-----") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r-----") }}}
 
 template:
     name: file_permissions

@@ -21,7 +21,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/kubelet/kubeconfig", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/var/lib/kubelet/kubeconfig", owner="root") }}}'
+ocil: |-
+    {{{ ocil_file_owner(file="/var/lib/kubelet/kubeconfig", owner="root") }}}
 
 template:
     name: file_owner

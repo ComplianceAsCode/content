@@ -22,10 +22,10 @@ references:
     cis@ocp4: 4.1.2
 
 ocil_clause: |-
-  '{{{ ocil_clause_file_owner(file="/etc/systemd/system/kubelet.service", owner="root") }}}'
+    {{{ ocil_clause_file_owner(file="/etc/systemd/system/kubelet.service", owner="root") }}}
 
-ocil:
-  '{{{ ocil_file_owner(file="/etc/systemd/system/kubelet.service", owner="root") }}}'
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/systemd/system/kubelet.service", owner="root") }}}
 
 template:
     name: file_owner

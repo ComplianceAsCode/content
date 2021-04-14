@@ -24,7 +24,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}'
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/kubernetes/static-pod-resources/etcd-pod-*/etcd-pod.yaml", owner="root") }}}
 
 platforms:
     - ocp4-master-node

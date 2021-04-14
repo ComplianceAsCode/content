@@ -25,4 +25,5 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_owner(file="/config/kube-proxy-config.yaml", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/config/kube-proxy-config.yaml", owner="root") }}}'
+ocil: |-
+    {{{ ocil_file_owner(file="/config/kube-proxy-config.yaml", owner="root") }}}

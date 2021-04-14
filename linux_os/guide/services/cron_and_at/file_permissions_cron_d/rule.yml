@@ -32,7 +32,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cron.d", perms="-rwx------") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/cron.d", perms="-rwx------") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/cron.d", perms="-rwx------") }}}
 
 template:
     name: file_permissions

@@ -21,7 +21,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", group="root") }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/kubernetes/static-pod-resources/kube-apiserver-pod-*/kube-apiserver-pod.yaml", group="root") }}}
 
 platforms:
     - ocp4-master-node

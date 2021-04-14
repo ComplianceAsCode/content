@@ -30,4 +30,5 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}
