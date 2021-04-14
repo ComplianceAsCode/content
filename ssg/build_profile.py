@@ -179,7 +179,7 @@ class XCCDFBenchmark(object):
                 anssi_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (xccdf_ns, anssi_ns))
                 ospp_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, ospp_ns))
+                                     (xccdf_ns, ospp_ns))
                 cui_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (xccdf_ns, cui_ns))
 

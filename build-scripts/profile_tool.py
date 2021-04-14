@@ -57,8 +57,8 @@ def parse_args():
                         action="store_true", dest="missing_anssi_refs",
                         help="Show rules in ANSSI profiles that don't have ANSSI references.")
     parser_stats.add_argument("--missing-ospp-refs", default=False,
-                        action="store_true", dest="missing_ospp_refs",
-                        help="Show rules in OSPP profiles that don't have OSPP references.")
+                              action="store_true", dest="missing_ospp_refs",
+                              help="Show rules in OSPP profiles that don't have OSPP references.")
     parser_stats.add_argument("--missing-cui-refs", default=False,
                               action="store_true", dest="missing_cui_refs",
                               help="Show rules in CUI profiles that don't have CUI references.")
