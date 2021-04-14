@@ -14,7 +14,7 @@ from .constants import puppet_system as puppet_rem_system
 from .constants import anaconda_system as anaconda_rem_system
 from .constants import cce_uri
 from .constants import ssg_version_uri
-from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns
+from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns, ospp_ns
 console_width = 80
 
 
@@ -27,7 +27,8 @@ class RuleStats(object):
                  rbash_fix=None, ransible_fix=None,
                  rignition_fix=None, rkubernetes_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None, rcce=None,
-                 stig_id=None, cis_ref=None, hipaa_ref=None, anssi_ref=None):
+                 stig_id=None, cis_ref=None, hipaa_ref=None,
+                 anssi_ref=None, ospp_ref=None):
         self.dict = {
             'id': rid,
             'oval': roval,
@@ -42,6 +43,7 @@ class RuleStats(object):
             'cis_ref': cis_ref,
             'hipaa_ref': hipaa_ref,
             'anssi_ref': anssi_ref,
+            'ospp_ref': ospp_ref,
         }
 
 
@@ -110,6 +112,7 @@ class XCCDFBenchmark(object):
             'missing_cis_refs': [],
             'missing_hipaa_refs': [],
             'missing_anssi_refs': [],
+            'missing_ospp_refs': [],
             'ansible_parity': [],
         }
 
@@ -173,12 +176,15 @@ class XCCDFBenchmark(object):
                                     (xccdf_ns, hipaa_ns))
                 anssi_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (xccdf_ns, anssi_ns))
+                ospp_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
+                                    (xccdf_ns, ospp_ns))
 
                 rule_stats.append(
                     RuleStats(rule.get("id"), oval,
                               bash_fix, ansible_fix, ignition_fix,
                               kubernetes_fix, puppet_fix, anaconda_fix,
-                              cce, stig_id, cis_ref, hipaa_ref, anssi_ref)
+                              cce, stig_id, cis_ref, hipaa_ref, anssi_ref,
+                              ospp_ref)
                 )
 
         if not rule_stats:
@@ -266,6 +272,11 @@ class XCCDFBenchmark(object):
             profile_stats['missing_anssi_refs'] = \
                 [x.dict['id'] for x in rule_stats if x.dict['anssi_ref'] is None]
 
+        profile_stats['missing_ospp_refs'] = []
+        if 'ospp' in profile_stats['profile_id']:
+            profile_stats['missing_ospp_refs'] = \
+                [x.dict['id'] for x in rule_stats if x.dict['ospp_ref'] is None]
+
         profile_stats['implemented_anaconda_fixes_pct'] = \
             float(len(profile_stats['implemented_anaconda_fixes'])) / \
             profile_stats['rules_count'] * 100
@@ -307,6 +318,7 @@ class XCCDFBenchmark(object):
         missing_cis_refs_count = len(profile_stats['missing_cis_refs'])
         missing_hipaa_refs_count = len(profile_stats['missing_hipaa_refs'])
         missing_anssi_refs_count = len(profile_stats['missing_anssi_refs'])
+        missing_ospp_refs_count = len(profile_stats['missing_ospp_refs'])
         impl_cces_count = len(profile_stats['assigned_cces'])
 
         if options.format == "plain":
@@ -510,6 +522,15 @@ class XCCDFBenchmark(object):
                 self.console_print(profile_stats['missing_anssi_refs'],
                                    console_width)
 
+            if options.missing_ospp_refs and profile_stats['missing_ospp_refs']:
+                print("*** rules of '%s' profile missing "
+                      "OSPP Refs: %d of %d have them [%d%% missing]"
+                      % (profile, rules_count - missing_ospp_refs_count,
+                         rules_count,
+                         (100.0 * missing_ospp_refs_count / rules_count)))
+                self.console_print(profile_stats['missing_ospp_refs'],
+                                   console_width)
+
             if options.missing_cces and profile_stats['missing_cces']:
                 print("***Rules of '%s' " % profile + "profile missing " +
                       "CCE identifier: %d of %d [%d%% complete]" %
@@ -541,6 +562,7 @@ class XCCDFBenchmark(object):
             profile_stats['missing_cis_refs_count'] = missing_cis_refs_count
             profile_stats['missing_hipaa_refs_count'] = missing_hipaa_refs_count
             profile_stats['missing_anssi_refs_count'] = missing_anssi_refs_count
+            profile_stats['missing_ospp_refs_count'] = missing_ospp_refs_count
             profile_stats['missing_ovals_count'] = len(profile_stats['missing_ovals'])
             profile_stats['missing_bash_fixes_count'] = len(profile_stats['missing_bash_fixes'])
             profile_stats['missing_ansible_fixes_count'] = len(profile_stats['missing_ansible_fixes'])
@@ -578,6 +600,7 @@ class XCCDFBenchmark(object):
                 del profile_stats['missing_cis_refs']
                 del profile_stats['missing_hipaa_refs']
                 del profile_stats['missing_anssi_refs']
+                del profile_stats['missing_ospp_refs']
             if not options.missing_cces:
                 del profile_stats['missing_cces']
             if not options.implemented_ovals:
