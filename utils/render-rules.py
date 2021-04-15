@@ -3,6 +3,7 @@
 from glob import glob
 import collections
 import os
+import re
 import pathlib
 
 import argparse
@@ -30,7 +31,10 @@ class HtmlOutput(template_renderer.Renderer):
             if rule.id_ in p.selected:
                 rule.in_profiles.append(p)
 
-    def process_rules(self, rule_files, component):
+    def _resolve_var_substitutions(self, rule):
+        rule.description = re.sub('<sub\s+idref="([^"]*)"\s*/>', r"<tt>$\1</tt>", rule.description)
+
+    def process_rules(self, rule_files):
         rules = []
         profiles = self._get_all_compiled_profiles()
 
@@ -38,20 +42,17 @@ class HtmlOutput(template_renderer.Renderer):
             rule = ssg.build_yaml.Rule.from_yaml(r_file, self.env_yaml)
             self._set_rule_relative_definition_location(rule)
             self._set_rule_profiles_membership(rule, profiles)
-
+            self._resolve_var_substitutions(rule)
             rules.append(rule)
 
         self.template_data["rules"] = rules
-        self.template_data["component"] = component
 
 
 def parse_args():
     parser = HtmlOutput.create_parser(
-        "Pass a list of rule YAMLs (that are related to a component), and the script will "
+        "Pass a list of rule YAMLs, and the script will "
         "render their summary as an HTML along with links to the usage of these rules in profiles "
         "and with links to the upstream rule source.")
-    parser.add_argument(
-        "--component", help="Name of the component.")
     parser.add_argument(
         "rule", metavar="FILENAME", nargs="+", help="The rule YAML files")
     return parser.parse_args()
@@ -60,5 +61,5 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     renderer = HtmlOutput(args.product, args.build_dir)
-    renderer.process_rules(args.rule, args.component)
+    renderer.process_rules(args.rule)
     renderer.output_results(args)

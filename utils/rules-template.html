@@ -1,28 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Rules related to {{{ component }}} on {{{ product }}}</title>
-<style>
-</style>
-</head>
-<body>
+{{% extends "html-template.html" %}}
 
-<h1>Rules related to {{{ component }}}</h1>
-
+{{% block body %}}
+{{{ super() }}}
 <div class="rules">
 {{% for rule in rules -%}}
 <div class="one_rule">
 	<h2>{{{ loop.index }}}. {{{ rule.title }}}</h2>
-  <p>{{{ rule.description | safe }}}</p>
+	<p>{{{ rule.description | safe }}}</p>
 {{% if rule.in_profiles -%}}
 Used in {{{ rule.in_profiles.__len__() }}} profiles:
   <ul>
   {{% for p in rule.in_profiles %}}
-  <li><a href="https://static.open-scap.org/ssg-guides/ssg-{{{ product }}}-guide-{{{ p.id_ }}}.html#xccdf_org.ssgproject.content_rule_{{{ rule.id_ }}}">{{{ p.title }}}</a></li>
-  {{% endfor %}}
+    <li><a href="https://static.open-scap.org/ssg-guides/ssg-{{{ product }}}-guide-{{{ p.id_ }}}.html#xccdf_org.ssgproject.content_rule_{{{ rule.id_ }}}">{{{ p.title }}}</a></li>
+  {{%- endfor %}}
   </ul>
-{{% else %}}
+{{%- else %}}
 <p>
 <strong>Not used in any {{{ product }}} profiles.</strong>
 </p>
@@ -31,6 +23,4 @@ Used in {{{ rule.in_profiles.__len__() }}} profiles:
 </div>  
 {{% endfor -%}}
 </div>  
-
-</body>
-</html>
+{{% endblock %}}
