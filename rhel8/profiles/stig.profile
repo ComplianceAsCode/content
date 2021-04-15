@@ -332,7 +332,6 @@ selections:
     # - audit_rules_sysadmin_actions
     - package_audit_installed
     - service_auditd_enabled
-    - sshd_allow_only_protocol2
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
     - package_usbguard_installed
