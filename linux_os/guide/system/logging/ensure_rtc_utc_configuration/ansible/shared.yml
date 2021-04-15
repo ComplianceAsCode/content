@@ -1,6 +1,8 @@
 # platform = multi_platform_sle
 - name: Check 'UTC' timezone is set
-  shell: timedatectl status | grep -i 'Time zone'| grep -iv 'UTC\|GMT'
+  shell: |
+    set -o pipefail
+    timedatectl status | grep -i 'Time zone'| grep -iv 'UTC\|GMT' || true
   register: check_tz
   failed_when: "check_tz.rc not in [ 0 , 1 ]"
  
