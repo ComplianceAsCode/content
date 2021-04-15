@@ -164,6 +164,7 @@ selections:
     - file_groupownership_home_directories
     - file_ownership_binary_dirs
     - file_permissions_binary_dirs
+    - file_ownership_library_dirs
     - file_permissions_home_directories
     - file_permissions_library_dirs
     - file_permissions_sshd_private_key
