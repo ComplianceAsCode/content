@@ -13,7 +13,8 @@ description: |-
     readonly TMOUT
     export TMOUT
     {{% else %}}
-    setting in <tt>/etc/profile</tt> should read as follows:
+    setting in a file loaded by <tt>/etc/profile</tt>, e.g.
+    <tt>/etc/profile.d/tmout.sh</tt> should read as follows:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
     {{% endif %}}
 
@@ -62,7 +63,7 @@ ocil: |-
     {{% if product in ["sle12", "sle15"] %}}
     <pre>$ sudo grep TMOUT /etc/profile.d/autologout.sh</pre>
     {{% else %}}
-    <pre>$ sudo grep TMOUT /etc/profile</pre>
+    <pre>$ sudo grep TMOUT /etc/profile /etc/profile.d/*.sh</pre>
     {{% endif %}}
     The output should return the following:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
