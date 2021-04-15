@@ -224,7 +224,6 @@ selections:
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
 - ssh_client_rekey_limit
-- sshd_allow_only_protocol2
 - sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
