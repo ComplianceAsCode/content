@@ -596,7 +596,13 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 
 
 {{%- macro ocil_file_permissions(file, perms) -%}}
-    To check the permissions of <code>{{{ file }}}</code>, run the command:
+    To check the permissions of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
     <pre>$ ls -l {{{ file }}}</pre>
     If properly configured, the output should indicate the following permissions:
     <code>{{{ perms }}}</code>
@@ -604,7 +610,13 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 
 
 {{%- macro ocil_file_owner(file, owner) -%}}
-    To check the ownership of <code>{{{ file }}}</code>, run the command:
+    To check the ownership of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
     <pre>$ ls -lL {{{ file }}}</pre>
     If properly configured, the output should indicate the following owner:
     <code>{{{ owner }}}</code>
@@ -612,7 +624,13 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 
 
 {{%- macro ocil_file_group_owner(file, group) -%}}
-    To check the group ownership of <code>{{{ file }}}</code>, run the command:
+    To check the group ownership of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
     <pre>$ ls -lL {{{ file }}}</pre>
     If properly configured, the output should indicate the following group-owner:
     <code>{{{ group }}}</code>

@@ -33,7 +33,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/ssh/sshd_config", group="root") }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/ssh/sshd_config", group="root") }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/ssh/sshd_config", group="root") }}}
 
 template:
     name: file_groupowner

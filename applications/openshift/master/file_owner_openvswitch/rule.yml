@@ -22,7 +22,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/openvswitch/.*", owner="root") }}}'
 
-ocil: '{{{ ocil_file_owner(file="/etc/openvswitch/.*", owner="root") }}}'
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/openvswitch/.*", owner="root") }}}
 
 template:
     name: file_owner

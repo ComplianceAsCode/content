@@ -27,7 +27,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
 
-ocil: '{{{ ocil_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/shadow-", group=target_group) }}}
 
 template:
     name: file_groupowner

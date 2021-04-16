@@ -36,7 +36,8 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*.pub", perms="-rw-r--r--") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/ssh/*.pub", perms="-rw-r--r--") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/ssh/*.pub", perms="-rw-r--r--") }}}
 
 template:
     name: file_permissions

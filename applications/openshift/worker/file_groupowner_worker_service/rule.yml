@@ -22,10 +22,10 @@ references:
     cis@ocp4: 4.1.2
 
 ocil_clause: |-
-  '{{{ ocil_clause_file_group_owner(file="/etc/systemd/system/kubelet.service", group="root") }}}'
+    {{{ ocil_clause_file_group_owner(file="/etc/systemd/system/kubelet.service", group="root") }}}
 
-ocil:
-  '{{{ ocil_file_group_owner(file="/etc/systemd/system/kubelet.service", group="root") }}}'
+ocil: |-
+    {{{ ocil_file_group_owner(file="/etc/systemd/system/kubelet.service", group="root") }}}
 
 template:
     name: file_groupowner
