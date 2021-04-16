@@ -9,7 +9,7 @@
 <xsl:variable name="prod_type">sle15</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for SUSE Linux Enterprise 15 -->
-<xsl:variable name="cisuri" />
+<xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/suse_linux/</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
