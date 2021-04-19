@@ -276,6 +276,7 @@ selections:
 - sysctl_user_max_user_namespaces
 - tftpd_uses_secure_mode
 - wireless_disable_interfaces
+- xwindows_remove_packages
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=077

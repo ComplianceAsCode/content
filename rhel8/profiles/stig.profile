@@ -1024,7 +1024,7 @@ selections:
     - aide_verify_acls
 
     # RHEL-08-040320
-    # - package_xorg-x11-server-common_removed
+    - xwindows_remove_packages
 
     # RHEL-08-040330
     - network_sniffer_disabled

@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="xwindows_remove_packages" version="1">
+    {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.") }}}
+    <criteria>
+      <extend_definition comment="system is configured to boot into multi-user.target"
+        definition_ref="xwindows_runlevel_target" />
+      <criterion comment="package xorg-x11-server-Xorg is not installed"
+        test_ref="package_xorg-x11-server-Xorg_removed" />
+      <extend_definition comment="package xorg-x11-server-common is removed"
+        definition_ref="package_xorg-x11-server-common_removed" />
+      <criterion comment="package xorg-x11-server-utils is removed"
+        test_ref="package_xorg-x11-server-utils_removed" />
+{{% if product not in ["rhel7", "ol7"] %}}
+      <criterion comment="package xorg-x11-server-Xwayland is removed"
+        test_ref="package_xorg-x11-server-Xwayland_removed" />
+{{% endif %}}
+    </criteria>
+  </definition>
+
+  {{{ oval_test_package_removed(package='xorg-x11-server-Xorg', test_id='package_xorg-x11-server-Xorg_removed') }}}
+  {{{ oval_test_package_removed(package='xorg-x11-server-utils', test_id='package_xorg-x11-server-utils_removed') }}}
+{{% if product not in ["rhel7", "ol7"] %}}
+  {{{ oval_test_package_removed(package='xorg-x11-server-Xwayland', test_id='package_xorg-x11-server-Xwayland_removed') }}}
+{{% endif %}}
+
+</def-group>
