@@ -1025,7 +1025,7 @@ selections:
     - aide_verify_acls
 
     # RHEL-08-040320
-    - xwindows_remove_packages_and_set_runlevel
+    - xwindows_remove_packages
 
     # RHEL-08-040330
     - network_sniffer_disabled

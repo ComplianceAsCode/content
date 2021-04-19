@@ -287,7 +287,7 @@ selections:
     - sshd_disable_x11_forwarding
     - sshd_x11_use_localhost
     - tftpd_uses_secure_mode
-    - xwindows_remove_packages_and_set_runlevel
+    - xwindows_remove_packages
     - sysctl_net_ipv4_ip_forward
     - mount_option_krb_sec_remote_filesystems
     - snmpd_not_default_password
