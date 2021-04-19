@@ -488,7 +488,8 @@ class AnsibleRemediation(Remediation):
             additional_when.append(" or ".join(rule_specific_conditionals))
 
         to_update.setdefault("when", "")
-        new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
+        new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when,
+                                                       prepend=True)
         if not new_when:
             to_update.pop("when")
         else:
