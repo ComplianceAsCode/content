@@ -170,7 +170,7 @@ selections:
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
     - file_permissions_ungroupowned
-    - file_permissions_var_log_messages
+    - file_permissions_local_var_log_messages
     - file_permission_user_init_files
     - grub2_password
     - grub2_uefi_password
