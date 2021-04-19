@@ -225,12 +225,15 @@ def _strings_to_list(one_or_more_strings):
         return list(one_or_more_strings)
 
 
-def update_yaml_list_or_string(current_contents, new_contents):
+def update_yaml_list_or_string(current_contents, new_contents, prepend=False):
     result = []
     if current_contents:
         result += _strings_to_list(current_contents)
     if new_contents:
-        result += _strings_to_list(new_contents)
+        if prepend:
+            result = _strings_to_list(new_contents) + result
+        else:
+            result += _strings_to_list(new_contents)
     if not result:
         result = ""
     if len(result) == 1:
