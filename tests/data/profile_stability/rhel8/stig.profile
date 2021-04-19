@@ -128,7 +128,6 @@ selections:
 - grub2_uefi_admin_username
 - grub2_uefi_password
 - grub2_vsyscall_argument
-- harden_sshd_crypto_policy
 - install_smartcard_packages
 - installed_OS_is_vendor_supported
 - kerberos_disable_no_keytab

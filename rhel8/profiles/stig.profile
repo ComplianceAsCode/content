@@ -164,7 +164,6 @@ selections:
     # RHEL-08-010290 && RHEL-08-010291
     ### NOTE: This will get split out in future STIG releases, as well as we will break
     ### these rules up to be more flexible in meeting the requirements.
-    - harden_sshd_crypto_policy
     - configure_ssh_crypto_policy
 
     # RHEL-08-010292
