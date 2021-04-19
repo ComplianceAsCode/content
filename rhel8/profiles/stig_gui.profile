@@ -32,4 +32,5 @@ description: |-
 extends: stig
 
 selections:
+    # RHEL-08-040320
     - '!xwindows_remove_packages'
