@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
+title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Virtualization Host (RHVH)'
 
 description: |-
     Ensures PCI-DSS v3.2.1 security configuration settings are applied.
@@ -133,10 +133,8 @@ selections:
     - file_permissions_etc_passwd
     - file_owner_grub2_cfg
     - file_groupowner_grub2_cfg
-    - package_libreswan_installed
     - configure_crypto_policy
     - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
-    - configure_libreswan_crypto_policy
     - configure_ssh_crypto_policy
     - configure_kerberos_crypto_policy
