@@ -2,13 +2,16 @@ documentation_complete: true
 
 title: 'The operating system must restrict privilege elevation to authorized personnel'
 
-prodtype: sle15
+prodtype: ol7,rhel7,sle15
 
 description: |-
     The sudo command allows a user to execute programs with elevated
     (administrator) privileges. It prompts the user for their password
     and confirms your request to execute a command by checking a file,
     called sudoers.
+    Restrict privileged actions by removing the following entries from the sudoers file:
+    <tt>ALL ALL=(ALL) ALL</tt>
+    <tt>ALL ALL=(ALL:ALL) ALL</tt>
 
 rationale: |-
     If the "sudoers" file is not configured correctly, any user defined
@@ -18,11 +21,15 @@ severity: medium
 
 identifiers:
     cce@sle15: CCE-85712-8
+    cce@rhel7: CCE-83423-4
 
 references:
     nist: CM-6(b),CM-6(iv)
     disa: CCI-000366
     stig@sle15: SLES-15-020101
+    disa@rhel7: CCI-000366
+    stigid@rhel7: CCI-000366
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: '/etc/sudoers file does not restrict sudo access to authorized personnel'
 
