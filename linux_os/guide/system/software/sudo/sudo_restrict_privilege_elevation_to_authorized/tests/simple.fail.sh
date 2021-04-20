@@ -1,3 +1,4 @@
+#!/bin/bash
 # platform = SUSE Linux Enterprise 15
 # packages = sudo
 
