@@ -1,16 +1,24 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12,sle15
 
 title: 'Implement Blank Screensaver'
 
 description: |-
+    {{# The SLE12 and SLE15 STIG unfortunately only requires per-user settings, #}}
+    {{# not a globally locked one, so we don't require but only suggest the latter. #}}
+    {{% if product in ["sle12","sle15"]%}}
+    To set the screensaver mode in the GNOME3 desktop to a blank screen,
+    add or set <tt>picture-uri</tt> to <tt>''</tt> for each user:
+    <pre>gsettings set org.gnome.desktop.screensaver picture-uri ''</pre>
+    {{% else %}}
     To set the screensaver mode in the GNOME3 desktop to a blank screen,
     add or set <tt>picture-uri</tt> to <tt>string ''</tt> in
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
     <pre>[org/gnome/desktop/screensaver]
     picture-uri=''
     </pre>
+    {{% endif %}}
     Once the settings have been added, add a lock to
     <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
@@ -26,6 +34,8 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80113-4
     cce@rhel8: CCE-80778-4
+    cce@sle12: CCE-83221-2
+    cce@sle15: CCE-85715-1
 
 references:
     cjis: 5.5.5
@@ -33,6 +43,12 @@ references:
     disa: CCI-000060
     nist: AC-11(1),CM-6(a)
     nist-csf: PR.AC-7
+    nist@sle15: AC-11(1),AC-11(1).1
+    nist@sle12: AC-11(1),AC-11(1).1
+    stigid@sle15: SLES-15-010140
+    stigid@sle12: SLES-12-010100
+    srg@sle15: SRG-OS-000031-GPOS-00012
+    srg@sle12: SRG-OS-000031-GPOS-00012
     ospp: FMT_MOF_EXT.1
     pcidss: Req-8.1.8
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
