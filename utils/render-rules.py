@@ -26,13 +26,15 @@ class HtmlOutput(template_renderer.Renderer):
         return profiles
 
     def _set_rule_profiles_membership(self, rule, profiles):
-        rule.in_profiles = []
-        for p in profiles:
-            if rule.id_ in p.selected:
-                rule.in_profiles.append(p)
+        rule.in_profiles = [p for p in profiles if rule.id_ in p.selected]
 
     def _resolve_var_substitutions(self, rule):
-        rule.description = re.sub('<sub\s+idref="([^"]*)"\s*/>', r"<tt>$\1</tt>", rule.description)
+        # The <sub .../> here is not the HTML subscript element <sub>...</sub>,
+        # and therefore is invalid HTML.
+        # so this code substitutes the whole sub element with contents of its idref prefixed by $
+        # as occurrence of sub with idref implies that substitution of XCCDF values takes place
+        rule.description = re.sub(
+            r'<sub\s+idref="([^"]*)"\s*/>', r"<tt>$\1</tt>", rule.description)
 
     def process_rules(self, rule_files):
         rules = []
