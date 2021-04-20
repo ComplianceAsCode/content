@@ -104,6 +104,7 @@ selections:
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_deny_root
     - sudo_remove_nopasswd
+    - sudo_restrict_privilege_elevation_to_authorized
     - sudo_remove_no_authenticate
     - sudoers_validate_passwd
     - accounts_logon_fail_delay
