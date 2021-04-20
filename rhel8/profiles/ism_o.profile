@@ -6,17 +6,20 @@ metadata:
         - wcushen
         - ahamilto156
 
-reference: https://www.cyber.gov.au/acsc/view-all-content/publications/essential-eight-linux-environments
+reference: https://www.cyber.gov.au/ism
 
-title: 'Australian Cyber Security Centre (ACSC) Information Security Manual (ISM) Official'
+title: 'Australian Cyber Security Centre (ACSC) ISM Official'
 
 description: |-
   This profile contains configuration checks for Red Hat Enterprise Linux 8
   that align to the Australian Cyber Security Centre (ACSC) Information Security Manual (ISM)
-  with the Attorney-General’s Department (AGD)’s applicability marking of OFFICIAL.
+  with the applicability marking of OFFICIAL.
 
-  A overview and list of Cyber security guidelines of the 
-  Information Security Manual can be found at the ACSC website:
+  The ISM uses a risk-based approach to cyber security. This profile provides a guide to aligning 
+  Red Hat Enterprise Linux security controls with the ISM, which can be used to select controls 
+  specific to an organisation's security posture and risk profile.
+
+  A copy of the ISM can be found at the ACSC website:
 
   https://www.cyber.gov.au/ism
 
@@ -29,11 +32,12 @@ selections:
   - no_shelllogin_for_systemaccounts
 
   ## Local administrator accounts
-  ## Identifiers 1410
+  ## Identifiers 1382 / 1410
   - accounts_password_all_shadowed
+  - package_sudo_installed
 
   ## Content filtering & Anti virus
-  ## Identifiers 1341 / 1034 / 1417 / 1288
+  ## Identifiers  0576 / 1341 / 1034 / 1417 / 1288
   - package_aide_installed
 
   ## Software firewall
@@ -51,60 +55,28 @@ selections:
 
   ## Authentication hardening
   ## Identifiers 1546 / 0974 / 1173 / 1504 / 1505 / 1401 / 1559 / 1560
-  ## 1561 / 0421 / 1557 / 0422 / 1558 / 1403 / 0431
+  ## 1561 / 1546 / 0421 / 1557 / 0422 / 1558 / 1403 / 0431
+  - sshd_max_auth_tries_value=5
   - disable_host_auth
   - require_emergency_target_auth
   - require_singleuser_auth
-  - sebool_authlogin_nsswitch_use_ldap
-  - sebool_authlogin_radius
   - sshd_disable_kerb_auth
   - sshd_set_max_auth_tries
-  - sssd_enable_smartcards
-  - accounts_password_minlen_login_defs
-  - var_password_pam_minlen=14
-  - accounts_password_pam_minlen
-  - accounts_password_pam_minclass
-  - accounts_password_pam_dcredit
-  - accounts_password_pam_lcredit
-  - accounts_password_pam_ocredit
-  - accounts_password_pam_ucredit
-  - accounts_password_pam_maxrepeat
-  - accounts_passwords_pam_faillock_deny
-  - accounts_passwords_pam_faillock_deny_root
-  - accounts_passwords_pam_faillock_interval
-  - accounts_passwords_pam_faillock_unlock_time
 
   ## Password authentication & Protecting credentials
-  ## Identifiers 1055 / 0418 / 1402
-  - network_nmcli_permissions
-  - configure_kerberos_crypto_policy
-  - kerberos_disable_no_keytab
-  - sebool_kerberos_enabled
-  - sshd_disable_gssapi_auth
-  - enable_ldap_client
-  - set_password_hashing_algorithm_libuserconf
-  - set_password_hashing_algorithm_logindefs
-  - set_password_hashing_algorithm_systemauth
+  ## Identifiers 0421 / 0431 / 0418 / 1402
+  - var_password_pam_minlen=14
+  - var_accounts_password_warn_age_login_defs=7
+  - var_accounts_minimum_age_login_defs=1
+  - var_accounts_maximum_age_login_defs=60
   - accounts_password_warn_age_login_defs
   - accounts_maximum_age_login_defs
   - accounts_minimum_age_login_defs
- 
-  ## System administration & MFA
-  ## Identifiers 1382 / 1384 / 1386
-  - package_sudo_installed
-  - package_opensc_installed
-  - var_smartcard_drivers=cac
-  - configure_opensc_card_drivers
-  - force_opensc_card_drivers
-  - package_pcsc-lite_installed
-  - service_pcscd_enabled
-  - sssd_enable_smartcards
-
-  ## System patching & Applicatoin versions
-  ## Identifiers 1493 / 1144 / 0940 / 1472 / 1494 / 1495 / 1467 / 1483 
-  - dnf-automatic_apply_updates
-  - package_dnf-plugin-subscription-manager_installed
-  - package_subscription-manager_installed
+  - accounts_passwords_pam_faillock_interval
+  - accounts_passwords_pam_faillock_unlock_time
+  - accounts_passwords_pam_faillock_deny
+  - accounts_passwords_pam_faillock_deny_root
+  - accounts_password_pam_minlen
 
   ## Centralised logging facility
   ## Identifiers 1405 / 0988 
@@ -123,7 +95,7 @@ selections:
   - service_chronyd_or_ntpd_enabled
 
   ## Events to be logged
-  ## Identifiers 0584 / 0582 / 0585 / 0586 / 0846 / 0957
+  ## Identifiers 0580 / 0584 / 0582 / 0585 / 0586 / 0846 / 0957
   - display_login_attempts
   - sebool_auditadm_exec_content
   - audit_rules_privileged_commands
@@ -137,22 +109,26 @@ selections:
   - openssl_use_strong_entropy
 
   ## Network design and configuration
-  ## Identifiers 1311 
+  ## Identifiers 1055 / 1311 
+  - network_nmcli_permissions
   - service_snmpd_disabled
   - snmpd_use_newer_protocol
 
   ## Wireless networks
-  ## Identifiers 1315 / 1319
+  ## Identifiers 1315
   - wireless_disable_interfaces
-  - network_ipv6_static_address
 
-  ## ASD Approved Cryptopgraphic Algorithims
-  ## Identifiers 1446
-  - enable_dracut_fips_module
+  ## ASD Approved Cryptographic Algorithms
+  ## Identifiers 0471 / 0472 / 0473 / 0474 / 0475 / 0476 / 0477 / 
+  ## 0479 / 0480 / 0481 / 0489 / 0497 / 0994 / 0998 / 1001 /  1139 / 
+  ## 1372 / 1373 / 1374 / 1375
   - enable_fips_mode
   - var_system_crypto_policy=fips
   - configure_crypto_policy
 
   ## Secure Shell access
-  ## Identifiers 1506 / 1449 / 0487 
+  ## Identifiers 0484 / 1506 / 1449 / 0487
   - sshd_allow_only_protocol2
+  - sshd_enable_warning_banner
+  - sshd_disable_x11_forwarding
+  - file_permissions_sshd_private_key
