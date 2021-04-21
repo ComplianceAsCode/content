@@ -1,0 +1,26 @@
+{{% extends "html-template.html" %}}
+
+{{% block body %}}
+{{{ super() }}}
+<div class="rules">
+{{% for rule in rules -%}}
+<div class="one_rule">
+	<h2>{{{ loop.index }}}. {{{ rule.title }}}</h2>
+	<p>{{{ rule.description | safe }}}</p>
+{{% if rule.in_profiles -%}}
+Used in {{{ rule.in_profiles.__len__() }}} profiles:
+  <ul>
+  {{% for p in rule.in_profiles %}}
+    <li><a href="https://static.open-scap.org/ssg-guides/ssg-{{{ product }}}-guide-{{{ p.id_ }}}.html#xccdf_org.ssgproject.content_rule_{{{ rule.id_ }}}">{{{ p.title }}}</a></li>
+  {{%- endfor %}}
+  </ul>
+{{%- else %}}
+<p>
+<strong>Not used in any {{{ product }}} profiles.</strong>
+</p>
+{{% endif %}}
+  Link to upstream: <a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rule.relative_definition_location }}}">{{{ rule.id_ }}}</a>
+</div>  
+{{% endfor -%}}
+</div>  
+{{% endblock %}}
