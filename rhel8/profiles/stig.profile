@@ -150,16 +150,22 @@ selections:
     - sshd_set_keepalive_0
 
     # RHEL-08-010210
+    - file_permissions_var_log_messages
 
     # RHEL-08-010220
+    - file_owner_var_log_messages
 
     # RHEL-08-010230
+    - file_groupowner_var_log_messages
 
     # RHEL-08-010240
+    - file_permissions_var_log
 
     # RHEL-08-010250
+    - file_owner_var_log
 
     # RHEL-08-010260
+    - file_groupowner_var_log
 
     # RHEL-08-010290 && RHEL-08-010291
     ### NOTE: This will get split out in future STIG releases, as well as we will break

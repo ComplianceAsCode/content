@@ -105,7 +105,11 @@ selections:
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
+- file_groupowner_var_log
+- file_groupowner_var_log_messages
 - file_groupownership_home_directories
+- file_owner_var_log
+- file_owner_var_log_messages
 - file_ownership_binary_dirs
 - file_ownership_library_dirs
 - file_ownership_var_log_audit
@@ -116,7 +120,9 @@ selections:
 - file_permissions_sshd_private_key
 - file_permissions_sshd_pub_key
 - file_permissions_ungroupowned
+- file_permissions_var_log
 - file_permissions_var_log_audit
+- file_permissions_var_log_messages
 - gnome_gdm_disable_automatic_login
 - grub2_admin_username
 - grub2_audit_argument
