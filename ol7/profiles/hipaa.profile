@@ -20,11 +20,8 @@ selections:
     - grub2_password
     - grub2_uefi_password
     - file_groupowner_grub2_cfg
-    - file_groupowner_efi_grub2_cfg
     - file_permissions_grub2_cfg
-    - file_permissions_efi_grub2_cfg
     - file_owner_grub2_cfg
-    - file_owner_efi_grub2_cfg
     - grub2_disable_interactive_boot
     - no_direct_root_logins
     - no_empty_passwords
@@ -41,17 +38,22 @@ selections:
     - sshd_disable_root_login
     - libreswan_approved_tunnels
     - no_rsh_trust_files
+    - package_rsh_removed
     - package_rsh-server_removed
     - package_talk_removed
     - package_talk-server_removed
     - package_telnet_removed
     - package_telnet-server_removed
     - package_xinetd_removed
+    - package_ypbind_removed
+    - package_ypserv_removed
     - service_crond_enabled
     - service_rexec_disabled
     - service_rlogin_disabled
+    - service_rsh_disabled
     - service_telnet_disabled
     - service_xinetd_disabled
+    - service_ypbind_disabled
     - service_zebra_disabled
     - use_kerberos_security_all_exports
     - disable_host_auth
@@ -59,16 +61,15 @@ selections:
     - sshd_disable_compression
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
+    - sshd_disable_rhosts_rsa
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
-    - sshd_use_priv_separation
     - encrypt_partitions
-    - var_system_crypto_policy=fips
-    - configure_crypto_policy
-    - configure_ssh_crypto_policy
+    - sshd_use_approved_ciphers
+    - sshd_use_approved_macs
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
     - grub2_enable_selinux
