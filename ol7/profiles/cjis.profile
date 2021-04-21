@@ -84,9 +84,7 @@ selections:
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
     - file_owner_grub2_cfg
-    - file_owner_efi_grub2_cfg
     - file_groupowner_grub2_cfg
-    - file_groupowner_efi_grub2_cfg
     - var_password_pam_retry=5
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_passwords_pam_faillock_unlock_time=600
@@ -94,7 +92,6 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
-    - dconf_db_up_to_date
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
@@ -104,6 +101,7 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_enable_warning_banner
     - sshd_do_not_permit_user_env
+    - sshd_use_approved_ciphers
     - kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
     - service_firewalld_enabled
@@ -123,6 +121,7 @@ selections:
     - var_password_pam_ucredit=1
     - var_password_pam_lcredit=1
     - package_aide_installed
+    - disable_prelink
     - aide_build_database
     - aide_periodic_cron_checking
     - rpm_verify_permissions
@@ -132,6 +131,3 @@ selections:
     - ensure_gpgcheck_never_disabled
     - security_patches_up_to_date
     - kernel_module_bluetooth_disabled
-    - configure_crypto_policy
-    - configure_ssh_crypto_policy
-    - var_system_crypto_policy=fips
