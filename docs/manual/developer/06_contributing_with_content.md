@@ -610,15 +610,22 @@ Tips:
 
 ### Checks
 
-Checks are used to evaluate a Rule. They are written using a custom OVAL
-syntax and are stored as xml files inside the *checks/oval* directory
-for the desired platform. During the building process, the system will
-transform the checks in OVAL compliant checks.
+Checks are used to evaluate a Rule.
+They are written using a custom OVAL syntax and are transformed by the system
+during the building process into OVAL compliant checks.
 
-In order to create a new check, you must create a file in the
-appropriate directory, and name it the same as the Rule *id*. This *id*
-will also be used as the OVAL *id* attribute. The content of the file
-should follow the OVAL specification with these exceptions:
+The OVAL checks are stored as XML files and the build system can source
+them from:
+
+- the `oval` directory of a rule
+- the shared pool of checks `shared/checks/oval`
+- a template
+
+In order to create a new check you must create a file in the
+appropriate directory. The *id* attribute of the check needs to match the *id*
+of its rule.
+The content of the file should follow the OVAL specification with these
+exceptions:
 
 -   The root tag must be `<def-group>`
 
@@ -700,6 +707,42 @@ oval_config_file_exists_criterion
 oval_config_file_exists_test
 oval_config_file_exists_object
 ```
+
+#### Limitations and pitfalls
+
+This section aims to list known OVAL limitations and situations that OVAL can't
+handle well or at all.
+
+##### Checking that all objects exist based on a variable
+
+A test with *check_existence="all_exist"* attribute will not ensure that all
+objects defined based on a variable exist.
+
+This happens because in the test context *all_exist* defaults to
+*at_least_one_exists*.
+Reference: OVAL [ExistenceEnumeration](https://github.com/OVALProject/Language/blob/master/docs/oval-common-schema.md#---existenceenumeration---)
+
+This means that an object defined based on a variable with multiple values will
+result in *pass* if just one of the expected objects exist.
+Example, lets say there is a variable containing multiple paths, and you'd like
+to check that all of them are present in the file system. The following snippet
+would work if *all_exist* didn't default to *at_least_one_exists*.
+
+```xml
+  <unix:file_test id="" check="all" check_existence="all_exist" comment="This test fails to ensure that all paths from variable exist" version="1">
+    <unix:object object_ref="collect_objects_based_on_variable" />
+  </unix:file_test>
+
+  <unix:file_object id="collect_objects_based_on_variable" version="1">
+    <unix:path datatype="string" var_ref="variable_containing_a_list_of_paths" var_check="at least one"/>
+  </unix:file_object>
+```
+
+A workaround is to add a second test to count the number of objects
+collected and compare the sum against the number of values in the variable.
+This works well, except when none of the files exist, which leads to a
+result of *unknown*. Counting the number of collected items of an
+object definition that doesn't exist is *unknown* (not 0, for example).
 
 ###### Platform applicability
 
