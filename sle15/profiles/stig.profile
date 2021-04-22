@@ -95,6 +95,7 @@ selections:
     - audit_rules_execution_chcon
     - audit_rules_execution_rm
     - audit_rules_execution_setfacl
+    - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
     - audit_rules_login_events_lastlog
