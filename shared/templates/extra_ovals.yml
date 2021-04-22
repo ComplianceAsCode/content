@@ -42,7 +42,9 @@ service_sssd_disabled:
   name: service_disabled
   vars:
     servicename: sssd
-    packagename: "{{% if product in ['sle12', 'sle15'] %}}sssd{{% else %}}sssd-common{{% endif %}}"
+    packagename: sssd-common
+    packagename@sle12: sssd
+    packagename@sle15: sssd
 
 service_syslog_disabled:
   name: service_disabled

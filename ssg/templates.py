@@ -167,6 +167,21 @@ class Builder(object):
         else:
             return languages
 
+    def process_product_vars(self, all_variables):
+        """
+        Given a dictionary with the format key[@<product>]=value, filter out
+        and only take keys that apply to this product (unqualified or qualified
+        to exactly this product). Returns a new dict.
+        """
+        processed = dict(filter(lambda item: '@' not in item[0], all_variables.items()))
+        suffix = '@' + self.env_yaml['product']
+        for variable in filter(lambda key: key.endswith(suffix), all_variables):
+            new_variable = variable[:-len(suffix)]
+            value = all_variables[variable]
+            processed[new_variable] = value
+
+        return processed
+
     def build_rule(self, rule_id, rule_title, template, langs_to_generate):
         """
         Builds templated content for a given rule for selected languages,
@@ -183,7 +198,7 @@ class Builder(object):
                 "Rule {0} uses template {1} which does not exist.".format(
                     rule_id, template_name))
         try:
-            template_vars = template["vars"]
+            template_vars = self.process_product_vars(template["vars"])
         except KeyError:
             raise ValueError(
                 "Rule {0} does not contain mandatory 'vars:' key under "
