@@ -157,7 +157,7 @@ class Profile(object):
                 try:
                     profile.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
                 except CPEDoesNotExist:
-                    print( "Unsupported platform '%s' in profile '%s'." % (platform, profile.id_))
+                    print("Unsupported platform '%s' in profile '%s'." % (platform, profile.id_))
                     raise
 
         # At the moment, metadata is not used to build content
@@ -802,7 +802,8 @@ class Benchmark(object):
             return
         self.values[value.id_] = value
 
-    # The benchmark is also considered a group, so this function signature needs to match Group()'s add_group()
+    # The benchmark is also considered a group, so this function signature needs to match
+    # Group()'s add_group()
     def add_group(self, group, env_yaml=None):
         if group is None:
             return
@@ -876,7 +877,7 @@ class Group(object):
                 try:
                     group.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
                 except CPEDoesNotExist:
-                    print( "Unsupported platform '%s' in group '%s'." % (platform, group.id_))
+                    print("Unsupported platform '%s' in group '%s'." % (platform, group.id_))
                     raise
 
         for warning_list in group.warnings:
@@ -997,7 +998,7 @@ class Group(object):
                 try:
                     group.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
                 except CPEDoesNotExist:
-                    print( "Unsupported platform '%s' in group '%s'." % (platform, self.id_))
+                    print("Unsupported platform '%s' in group '%s'." % (platform, self.id_))
                     raise
 
 

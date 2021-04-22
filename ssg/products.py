@@ -54,14 +54,14 @@ def get_product_yaml(product_yaml_path):
     product_yaml = open_raw(product_yaml_path)
     _validate_product_oval_feed_url(product_yaml)
 
-    # The product directory is necessary to get absolute paths to benchmark, profile and cpe directories,
-    # which are all relative to the product directory
+    # The product directory is necessary to get absolute paths to benchmark, profile and
+    # cpe directories, which are all relative to the product directory
     product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
 
     platform_package_overrides = product_yaml.get("platform_package_overrides", {})
     # Merge common platform package mappings, while keeping product specific mappings
     product_yaml["platform_package_overrides"] = merge_dicts(XCCDF_PLATFORM_TO_PACKAGE,
-                                                         platform_package_overrides)
+                                                             platform_package_overrides)
     product_yaml.update(_get_implied_properties(product_yaml))
 
     # The product_yaml should be aware of the ProductCPEs

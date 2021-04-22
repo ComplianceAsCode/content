@@ -13,7 +13,7 @@ from ssg.build_cpe import ProductCPEs
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
-from ssg.products  import get_product_yaml
+from ssg.products import get_product_yaml
 from ssg_test_suite.log import LogHelper
 
 Scenario_run = namedtuple(
