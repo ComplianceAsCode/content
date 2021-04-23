@@ -24,7 +24,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_test_sudoers_targetpw_config" version="1">
-    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
     <ind:pattern operation="pattern match">^Defaults !targetpw$\r?\n</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
