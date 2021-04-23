@@ -11,12 +11,12 @@ description: |-
     default), add the following lines to a file with suffix <tt>.rules</tt> in the
     directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
     edits of files involved in storing such process information:
-    <pre>-w /var/run/utmp -p wa -k session</pre>
+    <pre>-w /run/utmp -p wa -k session</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file in order to watch for attempted manual
     edits of files involved in storing such process information:
-    <pre>-w /var/run/utmp -p wa -k session</pre>
+    <pre>-w /run/utmp -p wa -k session</pre>
 
 rationale: |-
     Manual editing of these files may indicate nefarious activity, such
@@ -30,16 +30,19 @@ identifiers:
 references:
     stigid@sle15: SLES-15-030760
     srg@sle15: SRG-OS-000472-GPOS-00217
-    disa@sle15: CCI-000172
+    disa: CCI-000172
     nist@sle15: AU-12(c),AU-12.1(iv)
 
-ocil_clause: 'Record attempt to alter and session information for utmp'
+ocil_clause: 'Audit rule is not present'
 
 ocil: |-
-    To Configure the operating system to generate an audit record for the "/run/utmp" file.
-    Add or update the following rules to "/etc/audit/rules.d/audit.rules":
-    <pre>-w /run/utmp -p wa -k login_mod</pre>
-    To reload the rules file, restart the audit daemon
-    <pre>sudo systemctl restart auditd.service</pre>
-    or issue the following command:
-    <pre>sudo augenrules --load</pre>
+    To Check the file is being audited by performing the following command
+    <pre> sudo auditctl -l | grep -w '/run/utmp'</pre>
+
+template:
+    name: audit_rules_login_events
+    vars:
+        path: /run/utmp
+    backends:
+        ansible: "off"
+        bash: "off"
