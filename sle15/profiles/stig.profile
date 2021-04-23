@@ -239,7 +239,6 @@ selections:
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_require_authentication
     - sudoers_validate_passwd
-    - susefirewall2_only_required_services
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_net_ipv4_conf_all_accept_redirects
