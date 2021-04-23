@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Ensure AppArmor is installed'
+
+description: |-
+    AppArmor provide Mandatory Access Controls.
+
+rationale: |-
+    Without a Mandatory Access Control system installed only the default
+    Discretionary Access Control system will be available.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 1.7.1.1
+
+template:
+    name: package_installed
+    vars:
+        pkgname: apparmor
