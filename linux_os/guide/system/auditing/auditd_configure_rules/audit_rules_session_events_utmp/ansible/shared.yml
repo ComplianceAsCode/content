@@ -4,5 +4,5 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_audit_augenrules_add_watch_rule(path='/var/run/utmp', permissions='wa', key='session') }}}
-{{{ ansible_audit_auditctl_add_watch_rule(path='/var/run/utmp', permissions='wa', key='session') }}}
+{{{ ansible_audit_augenrules_add_watch_rule(path='/run/utmp', permissions='wa', key='session') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/run/utmp', permissions='wa', key='session') }}}
