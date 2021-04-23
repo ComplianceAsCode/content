@@ -36,7 +36,7 @@ identifiers:
     cce@sle15: CCE-85754-0
 
 references:
-    disa@sle15: CCI-000803
+    disa: CCI-000803
     nist@sle15: IA-7,IA-7.1
     srg@sle15: SRG-OS-000120-GPOS-00061
     vmmsrg@sle15: SRG-OS-000480-VMM-002000
@@ -56,7 +56,7 @@ template:
     name: pam_options
     vars:
       path: /etc/pam.d/common-auth
-      type: password
+      type: auth
       control_flag: required
       module: pam_unix.so
       arguments:
