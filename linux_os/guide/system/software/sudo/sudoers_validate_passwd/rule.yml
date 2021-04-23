@@ -28,7 +28,7 @@ ocil: |-
     Run the following command to Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalatiob:
 
     <pre> sudo egrep -i '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'</pre>
-
+The expected output is:
     <pre> /etc/sudoers:Defaults !targetpw
           /etc/sudoers:Defaults !rootpw
           /etc/sudoers:Defaults !runaspw </pre>
