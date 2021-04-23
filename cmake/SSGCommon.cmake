@@ -474,6 +474,18 @@ macro(ssg_build_xccdf_final PRODUCT)
         PROPERTIES
         WILL_FAIL true
     )
+    if("${PRODUCT}" MATCHES "rhel")
+        if("${PRODUCT}" MATCHES "rhel7")
+            set(REFERENCES_CHECK_PROFILE_LIST "cis anssi_nt28_high hipaa")
+        elseif("${PRODUCT}" MATCHES "rhel8")
+            set(REFERENCES_CHECK_PROFILE_LIST "cis anssi_bp28_high hipaa")
+        endif()
+        add_test(
+                NAME "missing-references-ssg-${PRODUCT}-xccdf.xml"
+                COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${CMAKE_SOURCE_DIR}/tests/missing_refs.sh" "${PYTHON_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" ${REFERENCES_CHECK_PROFILE_LIST}
+        )
+        set_tests_properties("missing-references-ssg-${PRODUCT}-xccdf.xml" PROPERTIES LABELS quick)
+    endif()
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
