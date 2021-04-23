@@ -217,7 +217,7 @@ class Builder(object):
                 self.build_lang(
                     rule_id, template_name, template_vars, lang, local_env_yaml)
             except Exception as e:
-                print("Error building rule {0}".format(rule_id), file=sys.stderr)
+                print("Error building templated {0} content for rule {1}".format(lang, rule_id), file=sys.stderr)
                 raise e
 
     def build_extra_ovals(self):
