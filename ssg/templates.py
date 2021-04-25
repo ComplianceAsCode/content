@@ -213,8 +213,12 @@ class Builder(object):
         local_env_yaml["rule_title"] = rule_title
         local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
-            self.build_lang(
-                rule_id, template_name, template_vars, lang, local_env_yaml)
+            try:
+                self.build_lang(
+                    rule_id, template_name, template_vars, lang, local_env_yaml)
+            except Exception as e:
+                print("Error building templated {0} content for rule {1}".format(lang, rule_id), file=sys.stderr)
+                raise e
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
