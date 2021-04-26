@@ -10,6 +10,9 @@ from ssg.shims import input_func
 import ssg
 
 
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+
 def has_empty_identifier(yaml_file, product_yaml=None):
     rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
     if 'identifiers' in rule and rule['identifiers'] is None:
@@ -101,6 +104,7 @@ def find_rules(directory, func):
         if "product.yml" in files:
             product_yaml_path = os.path.join(root, "product.yml")
             product_yaml = yaml.open_raw(product_yaml_path)
+            product_yaml['cmake_build_type'] = 'Debug'
             product_yamls[root] = product_yaml
             product_yaml_paths[root] = product_yaml_path
             # for d in dirs:
@@ -490,7 +494,8 @@ Commands:
                         choices=['empty_identifiers', 'prefixed_identifiers',
                                  'invalid_identifiers', 'int_identifiers',
                                  'empty_references', 'int_references'])
-    parser.add_argument("ssg_root", help="Path to root of ssg git directory")
+    parser.add_argument("ssg_root", default=SSG_ROOT, nargs='?',
+                        help="Path to root of ssg git directory")
     return parser.parse_args()
 
 
