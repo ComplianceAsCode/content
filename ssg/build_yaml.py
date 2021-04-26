@@ -1023,6 +1023,8 @@ class Rule(object):
         "definition_location": lambda: None,
     }
 
+    PRODUCT_REFERENCES = ("stigid", "cis",)
+
     def __init__(self, id_):
         self.id_ = id_
         self.prodtype = "all"
@@ -1120,11 +1122,9 @@ class Rule(object):
             raise RuntimeError(msg)
 
     def _get_product_only_references(self):
-        PRODUCT_REFERENCES = ("stigid",)
-
         product_references = dict()
 
-        for ref in PRODUCT_REFERENCES:
+        for ref in Rule.PRODUCT_REFERENCES:
             start = "{0}@".format(ref)
             for gref, gval in self.references.items():
                 if ref == gref or gref.startswith(start):
@@ -1154,6 +1154,13 @@ class Rule(object):
         general_references = self.references.copy()
         for todel in product_references:
             general_references.pop(todel)
+        for ref in Rule.PRODUCT_REFERENCES:
+            if ref in general_references:
+                msg = "Unexpected reference identifier ({0}) without "
+                msg += "product qualifier ({0}@{1}) while building rule "
+                msg += "{2}"
+                msg = msg.format(ref, product, self.id_)
+                raise ValueError(msg)
 
         to_set = dict(
             identifiers=(self.identifiers, False),
