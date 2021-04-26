@@ -5,20 +5,25 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12,sle15
 title: 'Implement Blank Screensaver'
 
 description: |-
-    {{# The SLE12 and SLE15 STIG unfortunately only requires per-user settings, #}}
+    {{# The SLE12 and SLE15 STIG unfortunately requires per-user settings, #}}
     {{# not a globally locked one, so we don't require but only suggest the latter. #}}
     {{% if product in ["sle12","sle15"]%}}
-    To set the screensaver mode in the GNOME3 desktop to a blank screen,
-    add or set <tt>picture-uri</tt> to <tt>''</tt> for each user:
-    <pre>gsettings set org.gnome.desktop.screensaver picture-uri ''</pre>
-    {{% else %}}
+    On SUSE users should set the screensaver to use publicly viewable images or blank screen
+    by doing the following to configure the system.  Find the
+    Settings menu and then navigate to the Background selection section:
+    <tt>- Click "Activities" on the top left.</tt>
+    <tt>- Click "Show Applications" at the bottom of the Activities menu.</tt>
+    <tt>- Click the "Settings" icon.</tt>
+    <tt>- Click "Background" from left hand menu.</tt>
+    <tt>- Select image and set the Lock Screen image to the user's choice.</tt>
+    <tt>- Exit Settings Dialog.</tt>
+    {{% endif %}}
     To set the screensaver mode in the GNOME3 desktop to a blank screen,
     add or set <tt>picture-uri</tt> to <tt>string ''</tt> in
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
     <pre>[org/gnome/desktop/screensaver]
     picture-uri=''
     </pre>
-    {{% endif %}}
     Once the settings have been added, add a lock to
     <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
