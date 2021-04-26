@@ -1,4 +1,4 @@
-# platform = SUSE Linux Enterprise 15
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,SUSE Linux Enterprise 15
 # packages = sudo
 
 if [ $(sudo egrep -i '(!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#' | wc -l) -ne 0 ]

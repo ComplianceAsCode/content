@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Ensure invoking users password for privilege escalation when using sudo'
 
-prodtype: sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,sle15
 
 description: |-
     The sudoers security policy requires that users authenticate themselves before they can use sudo.
@@ -20,6 +20,8 @@ rationale: |-
     the invoking user for the "root" user password.
 
 identifiers:
+    cce@rhel7: CCE-83421-8
+    cce@rhel8: CCE-83422-6
     cce@sle15: CCE-85747-4
 
 references:
@@ -27,6 +29,8 @@ references:
     nist@sle15: CM-6(b),CM-6.1(iv)
     srg@sle15: SRG-OS-000480-GPOS-00227
     stigid@sle15: SLES-15-020103
+    stigid@rhel7: RHEL-07-010342
+    stigid@rhel8: RHEL-08-010383
 
 ocil_clause: 'invoke user passwd when using sudo'
 
