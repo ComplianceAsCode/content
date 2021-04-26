@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Definition of {{{ policy.title }}} for {{{ full_name }}}</title>
-<style>
-</style>
-</head>
-<body>
+{{% extends "html-template.html" %}}
 
-<h1>Definition of {{{ policy.title }}} for {{{ full_name }}}</h1>
+{{% block body %}}
+{{{ super() }}}
 
 {{% if policy.source %}}
 based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
@@ -40,6 +33,4 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
 </div>  
 {{% endfor -%}}
 </div>  
-
-</body>
-</html>
+{{% endblock %}}
