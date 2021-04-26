@@ -238,6 +238,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_require_authentication
+    - sudoers_validate_passwd
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
     - sysctl_net_ipv4_conf_all_accept_redirects

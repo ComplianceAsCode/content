@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Ensure invoking users password for privilege escalation when using sudo'
+
+prodtype: sle15
+
+description: |-
+    The sudoers security policy requires that users authenticate themselves before they can use sudo.
+    When sudoers requires authentication, it validates the invoking user's credentials.
+    The expected output for:
+    <pre>sudo egrep -i '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'</pre>
+    <pre> /etc/sudoers:Defaults !targetpw
+          /etc/sudoers:Defaults !rootpw
+          /etc/sudoers:Defaults !runaspw </pre>
+
+severity: medium
+
+rationale: |-
+    If the rootpw, targetpw, or runaspw flags are defined and not disabled, by default the operating system will prompt
+    the invoking user for the "root" user password.
+
+identifiers:
+    cce@sle15: CCE-85747-4
+
+references:
+    disa: CCI-000366
+    nist@sle15: CM-6(b),CM-6.1(iv)
+    srg@sle15: SRG-OS-000480-GPOS-00227
+    stigid@sle15: SLES-15-020103
+
+ocil_clause: 'invoke user passwd when using sudo'
+
+ocil: |-
+    Run the following command to Verify that the sudoers security policy is configured to use the invoking user's password for privilege escalation:
+    <pre> sudo egrep -i '(!rootpw|!targetpw|!runaspw)' /etc/sudoers /etc/sudoers.d/* | grep -v '#'</pre>
+    If no results are returned, this is a finding
+    If "Defaults !targetpw" is not defined, this is a finding.
+    If "Defaults !rootpw" is not defined, this is a finding.
+    If "Defaults !runaspw" is not defined, this is a finding.
