@@ -105,6 +105,7 @@ selections:
     - accounts_passwords_pam_faillock_deny_root
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
+    - sudoers_validate_passwd
     - accounts_logon_fail_delay
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
