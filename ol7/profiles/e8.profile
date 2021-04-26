@@ -1,6 +1,6 @@
 documentation_complete: true
 
-reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers 
+reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers
 
 title: '[DRAFT] Australian Cyber Security Centre (ACSC) Essential Eight'
 
@@ -38,7 +38,6 @@ selections:
   - ensure_gpgcheck_local_packages
   - ensure_gpgcheck_globally_activated
   - security_patches_up_to_date
-  - dnf-automatic_security_updates_only
 
   ### System security settings
   - sysctl_kernel_randomize_va_space
@@ -46,8 +45,6 @@ selections:
   - sysctl_kernel_dmesg_restrict
   - sysctl_kernel_kexec_load_disabled
   - sysctl_kernel_yama_ptrace_scope
-  - sysctl_kernel_unprivileged_bpf_disabled
-  - sysctl_net_core_bpf_jit_harden
 
   ### SELinux
   - var_selinux_state=enforcing
@@ -101,6 +98,7 @@ selections:
   - audit_rules_login_events_tallylog
   - audit_rules_login_events_faillock
   - audit_rules_login_events_lastlog
+  - audit_rules_login_events
   - audit_rules_time_adjtimex
   - audit_rules_time_clock_settime
   - audit_rules_time_watch_localtime
@@ -122,22 +120,17 @@ selections:
   ### Secure access
   - sshd_disable_root_login
   - sshd_disable_gssapi_auth
+  - sshd_use_strong_ciphers
   - sshd_print_last_log
   - sshd_do_not_permit_user_env
+  - sshd_disable_rhosts_rsa
   - sshd_disable_rhosts
+  - sshd_allow_only_protocol2
   - sshd_set_loglevel_info
   - sshd_disable_empty_passwords
   - sshd_disable_user_known_hosts
   - sshd_enable_strictmodes
-
-  # See also: https://www.cyber.gov.au/ism/guidelines-using-cryptography
-  - var_system_crypto_policy=default_nosha1
-  - configure_crypto_policy
-  - configure_ssh_crypto_policy
-
-  ### Application whitelisting
-  - package_fapolicyd_installed
-  - service_fapolicyd_enabled
+  - sshd_use_strong_macs
 
   ### Backup
   - package_rear_installed
