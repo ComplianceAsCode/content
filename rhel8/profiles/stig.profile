@@ -229,6 +229,9 @@ selections:
     # RHEL-08-010381
     - sudo_remove_no_authenticate
 
+    # RHEL-08-010383
+    - sudoers_validate_passwd
+
     # RHEL-08-010390
     - install_smartcard_packages
 
