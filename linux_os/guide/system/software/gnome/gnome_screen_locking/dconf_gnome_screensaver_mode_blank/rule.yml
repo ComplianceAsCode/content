@@ -11,7 +11,7 @@ description: |-
     On SUSE users should set the screensaver to use publicly viewable images or blank screen
     by doing the following:
     Find the Settings menu and then navigate to the Background selection section
-    {{% if product == "sle15" }}
+    {{% if product == "sle15" %}}
     <tt>- Click "Activities" on the top left.</tt>
     <tt>- Click "Show Applications" at the bottom of the Activities menu.</tt>
     <tt>- Click the "Settings" icon.</tt>
@@ -26,8 +26,8 @@ description: |-
     <tt>- Select image and set the Lock Screen image to the user's choice.</tt>
     <tt>- Click "Select".</tt>
     <tt>- Exit Settings Dialog.</tt>
-    {{%- endif %}}
-    {{%- endif %}}
+    {{% endif %}}
+    {{% endif %}}
     To set the screensaver mode in the GNOME3 desktop to a blank screen,
     add or set <tt>picture-uri</tt> to <tt>string ''</tt> in
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
