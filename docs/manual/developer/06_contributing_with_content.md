@@ -252,10 +252,10 @@ A rule may contain those reference-type attributes:
     `srg`, `nist`, etc., whose keys may be modified with a product
     (e.g., `stigid@rhel7`) to restrict what products a reference
     identifier applies to. Depending on the type of reference (e.g.
-    catalog, rulei, etc.) will depend on how many can be added to a
+    catalog, ruleid, etc.) will depend on how many can be added to a
     single rule. In addition, certain references in a rule such as
-    `stigid` only apply to a certain product and product version; they
-    cannot be used for multiple products and versions
+    `stigid` or `cis` only apply to a certain product and product version; they
+    cannot be used for multiple products and versions.
 
     <table>
     <colgroup>
@@ -274,7 +274,7 @@ A rule may contain those reference-type attributes:
     </thead>
     <tbody>
     <tr class="odd">
-    <td><p>cis</p></td>
+    <td><p>cis@&lt;product&gt;&lt;product_version&gt;</p></td>
     <td><p>Center for Internet Security (catalog identifier)</p></td>
     <td><p>0-to-many, 0-to-1 is preferred</p></td>
     <td><p>5.2.5</p></td>
