@@ -122,8 +122,10 @@ selections:
     - grub2_admin_username
 
     # RHEL-08-010151
-    - require_emergency_target_auth
     - require_singleuser_auth
+
+    # RHEL-08-010152
+    - require_emergency_target_auth
 
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
