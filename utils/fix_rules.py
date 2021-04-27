@@ -119,7 +119,12 @@ def find_rules(directory, func):
     product_yaml_paths = {}
     product_yaml = None
     product_yaml_path = None
+    build_dir = os.path.join(directory, 'build')
     for root, dirs, files in os.walk(directory):
+        if root.startswith(build_dir):
+            # Skip files in the build directory.
+            continue
+
         dirs.sort()
         files.sort()
         if "product.yml" in files:
