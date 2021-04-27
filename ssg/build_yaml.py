@@ -1101,8 +1101,9 @@ class Rule(object):
             rule.platforms.add(rule.platform)
 
         # Convert the platform names to CPE names
-        # But there is no reason to do it without an env_yaml, as there are no product CPEs defined
-        if env_yaml:
+        # But only do it if an env_yaml was specified (otherwise there would be no product CPEs
+        # to lookup), and the rule's prodtype matches the product being built
+        if env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype):
             for platform in rule.platforms:
                 try:
                     rule.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
