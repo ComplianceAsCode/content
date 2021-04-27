@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux8,wrlinux1019
+prodtype: fedora,rhcos4,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux8,ubuntu1604,ubuntu1804,ubuntu2004,wrlinux1019
 
 title: 'The Installed Operating System Is FIPS 140-2 Certified'
 
@@ -15,6 +15,13 @@ description: |-
     SUSE Enterprise Linux is supported by SUSE Software Solutions Germany GmbH. As the SUSE Enterprise
     Linux vendor, SUSE Software Solutions Germany GmbH is responsible for maintaining government
     certifications and standards.
+{{% elif product in ["ubuntu1604", "ubuntu1804", "ubuntu2004"] %}}
+    Ubuntu Linux is supported by Canonical Ltd. As the Ubuntu Linux Vendor, Canonical Ltd. is
+    responsible for government certifications and standards.
+
+    Users of Ubuntu Linux either need an Ubuntu Advantage subscription or need
+    to be using Ubuntu Pro from a sponsored vendor in order to have access to
+    FIPS content supported by Canonical.
 {{% endif %}}
 
 rationale: |-
@@ -74,6 +81,8 @@ ocil: |-
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
 {{% elif product in ["sle12", "sle15"] %}}
     <pre>$ grep -i "suse" /etc/os-release</pre>
+{{% elif product in ["ubuntu1604", "ubuntu1804", "ubuntu2004"] %}}
+    <pre>$ grep -i "ubuntu" /etc/os-release</pre>
 {{% endif %}}
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
