@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Enable PAM'
+
+description: |-
+    UsePAM Enables the Pluggable Authentication Module interface. If set to “yes” this will
+    enable PAM authentication using ChallengeResponseAuthentication and
+    PasswordAuthentication in addition to PAM account and session module processing for all
+    authentication types.
+
+    To enable PAM authentication, add or correct the following line in the
+    <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>UsePAM yes</pre>
+
+rationale: |-
+    When UsePAM is set to yes, PAM runs through account and session types properly. This is
+    important if you want to restrict access to services based off of IP, time or other factors of
+    the account. Additionally, you can make sure users inherit certain environment variables
+    on login or disallow access to the server.
+
+references:
+    cis@ubuntu2004: 5.2.19
+
+severity: medium
+
+ocil_clause: 'it is commented out or is not enabled'
+
+ocil: |-
+    To check if UsePAM is enabled or set correctly, run the following
+    command:
+    <pre>$ sudo grep UsePAM /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>yes</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: UsePAM
+        rule_id: sshd_enable_pam
+        value: 'yes'
