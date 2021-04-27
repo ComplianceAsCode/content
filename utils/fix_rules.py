@@ -387,29 +387,32 @@ def sort_rule_subkeys(file_contents, yaml_contents):
     return ssg.rule_yaml.sort_section_keys(None, file_contents, TO_SORT)
 
 
-def fix_file(path, product_yaml, func, assume_yes):
+def fix_file(path, product_yaml, func, args):
     file_contents = open(path, 'r').read().split("\n")
     if file_contents[-1] == '':
         file_contents = file_contents[:-1]
 
     yaml_contents = yaml.open_and_macro_expand(path, product_yaml)
 
-    if not assume_yes:
+    need_input = not args.assume_yes and not args.dry_run
+
+    if need_input:
         print("====BEGIN BEFORE====")
         print_file(file_contents)
         print("====END BEFORE====")
 
     file_contents = func(file_contents, yaml_contents)
 
-    if not assume_yes:
+    if need_input:
         print("====BEGIN AFTER====")
         print_file(file_contents)
         print("====END AFTER====")
 
-    if not assume_yes:
+    response = 'n'
+    if need_input:
         response = input_func("Confirm writing output to %s: (y/n): " % path)
 
-    if assume_yes or response.strip().lower() == 'y':
+    if args.assume_yes or response.strip().lower() == 'y':
         f = open(path, 'w')
         for line in file_contents:
             f.write(line)
@@ -418,117 +421,154 @@ def fix_file(path, product_yaml, func, assume_yes):
         f.close()
 
 
-def fix_empty_identifiers(directory, assume_yes):
-    results = find_rules(directory, has_empty_identifier)
+def fix_empty_identifiers(args):
+    results = find_rules(args.ssg_root, has_empty_identifier)
     print("Number of rules with empty identifiers: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
         product_yaml_path = result[1]
 
+        if args.dry_run:
+            print(rule_path + " has one or more empty identifiers")
+
         product_yaml = None
         if product_yaml_path is not None:
             product_yaml = yaml.open_raw(product_yaml_path)
 
-        fix_file(rule_path, product_yaml, fix_empty_identifier, assume_yes)
+        fix_file(rule_path, product_yaml, fix_empty_identifier, args)
+
+    return int(len(results) > 0)
 
 
-def fix_empty_references(directory, assume_yes):
-    results = find_rules(directory, has_empty_references)
+def fix_empty_references(args):
+    results = find_rules(args.ssg_root, has_empty_references)
     print("Number of rules with empty references: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
         product_yaml_path = result[1]
 
+        if args.dry_run:
+            print(rule_path + " has one or more empty references")
+
         product_yaml = None
         if product_yaml_path is not None:
             product_yaml = yaml.open_raw(product_yaml_path)
 
-        fix_file(rule_path, product_yaml, fix_empty_reference, assume_yes)
+        fix_file(rule_path, product_yaml, fix_empty_reference, args)
+
+    return int(len(results) > 0)
 
 
-def find_prefix_cce(directory, assume_yes):
-    results = find_rules(directory, has_prefix_cce)
+def find_prefix_cce(args):
+    results = find_rules(args.ssg_root, has_prefix_cce)
     print("Number of rules with prefixed CCEs: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
         product_yaml_path = result[1]
 
+        if args.dry_run:
+            print(rule_path + " has one or more CCE with CCE- prefix")
+
         product_yaml = None
         if product_yaml_path is not None:
             product_yaml = yaml.open_raw(product_yaml_path)
 
-        fix_file(rule_path, product_yaml, fix_prefix_cce, assume_yes)
+        fix_file(rule_path, product_yaml, fix_prefix_cce, args)
+
+    return int(len(results) > 0)
 
 
-def find_invalid_cce(directory, assume_yes):
-    results = find_rules(directory, has_invalid_cce)
+def find_invalid_cce(args):
+    results = find_rules(args.ssg_root, has_invalid_cce)
     print("Number of rules with invalid CCEs: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
         product_yaml_path = result[1]
 
+        if args.dry_run:
+            print(rule_path + " has one or more invalid CCEs")
+
         product_yaml = None
         if product_yaml_path is not None:
             product_yaml = yaml.open_raw(product_yaml_path)
 
-        fix_file(rule_path, product_yaml, fix_invalid_cce, assume_yes)
+        fix_file(rule_path, product_yaml, fix_invalid_cce, args)
+
+    return int(len(results) > 0)
 
 
-def find_int_identifiers(directory, assume_yes):
-    results = find_rules(directory, has_int_identifier)
+def find_int_identifiers(args):
+    results = find_rules(args.ssg_root, has_int_identifier)
     print("Number of rules with integer identifiers: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
         product_yaml_path = result[1]
 
+        if args.dry_run:
+            print(rule_path + " has one or more integer references")
+
         product_yaml = None
         if product_yaml_path is not None:
             product_yaml = yaml.open_raw(product_yaml_path)
 
-        fix_file(rule_path, product_yaml, fix_int_identifier, assume_yes)
+        fix_file(rule_path, product_yaml, fix_int_identifier, args)
+
+    return int(len(results) > 0)
 
 
-def find_int_references(directory, assume_yes):
-    results = find_rules(directory, has_int_reference)
+def find_int_references(args):
+    results = find_rules(args.ssg_root, has_int_reference)
     print("Number of rules with integer references: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
         product_yaml_path = result[1]
 
+        if args.dry_run:
+            print(rule_path + " has one or more unsorted references")
+
         product_yaml = None
         if product_yaml_path is not None:
             product_yaml = yaml.open_raw(product_yaml_path)
 
-        fix_file(rule_path, product_yaml, fix_int_reference, assume_yes)
+        fix_file(rule_path, product_yaml, fix_int_reference, args)
+
+    return int(len(results) > 0)
 
 
-def duplicate_subkeys(directory, assume_yes):
-    results = find_rules(directory, has_duplicated_subkeys)
+def duplicate_subkeys(args):
+    results = find_rules(args.ssg_root, has_duplicated_subkeys)
     print("Number of rules with duplicated subkeys: %d" % len(results))
 
     for result in results:
-        print(result[0])
+        print(result[0] + " has one or more duplicated subkeys")
+
+    return int(len(results) > 0)
 
 
-def sort_subkeys(directory, assume_yes):
-    results = find_rules(directory, has_unordered_sections)
+def sort_subkeys(args):
+    results = find_rules(args.ssg_root, has_unordered_sections)
     print("Number of modified rules: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
         product_yaml_path = result[1]
 
+        if args.dry_run:
+            print(rule_path + " has one or more unsorted references")
+
         product_yaml = None
         if product_yaml_path is not None:
             product_yaml = yaml.open_raw(product_yaml_path)
 
-        fix_file(rule_path, product_yaml, sort_rule_subkeys, assume_yes)
+        fix_file(rule_path, product_yaml, sort_rule_subkeys, args)
+
+    return int(len(results) > 0)
 
 
 def parse_args():
@@ -547,6 +587,8 @@ Commands:
                                      """)
     parser.add_argument("-y", "--assume-yes", default=False, action="store_true",
                         help="Assume yes and overwrite all files (no prompt)")
+    parser.add_argument("-d", "--dry-run", default=False, action="store_true",
+                        help="Assume no and don't overwrite any files")
     parser.add_argument("command", help="Which fix to perform.",
                         choices=['empty_identifiers', 'prefixed_identifiers',
                                  'invalid_identifiers', 'int_identifiers',
@@ -560,24 +602,25 @@ Commands:
 def __main__():
     args = parse_args()
 
+    ret = 1
     if args.command == 'empty_identifiers':
-        fix_empty_identifiers(args.ssg_root, args.assume_yes)
+        ret = fix_empty_identifiers(args)
     elif args.command == 'prefixed_identifiers':
-        find_prefix_cce(args.ssg_root, args.assume_yes)
+        ret = find_prefix_cce(args)
     elif args.command == 'invalid_identifiers':
-        find_invalid_cce(args.ssg_root, args.assume_yes)
+        ret = find_invalid_cce(args)
     elif args.command == 'int_identifiers':
-        find_int_identifiers(args.ssg_root, args.assume_yes)
+        ret = find_int_identifiers(args)
     elif args.command == 'empty_references':
-        fix_empty_references(args.ssg_root, args.assume_yes)
+        ret = fix_empty_references(args)
     elif args.command == 'int_references':
-        find_int_references(args.ssg_root, args.assume_yes)
+        ret = find_int_references(args)
     elif args.command == 'duplicate_subkeys':
-        duplicate_subkeys(args.ssg_root, args.assume_yes)
+        ret = duplicate_subkeys(args)
     elif args.command == 'sort_subkeys':
-        sort_subkeys(args.ssg_root, args.assume_yes)
-    else:
-        sys.exit(1)
+        ret = sort_subkeys(args)
+
+    sys.exit(ret)
 
 if __name__ == "__main__":
     __main__()
