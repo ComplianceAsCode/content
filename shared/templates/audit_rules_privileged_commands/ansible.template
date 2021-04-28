@@ -26,7 +26,7 @@
       - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
   when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched > 0
 
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["rhel8", "sle12", "sle15"] %}}
 
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d
   lineinfile:
