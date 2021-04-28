@@ -112,7 +112,7 @@ def main():
     translator = ssg.id_translate.IDTranslator(args.idname)
     ovaltree = translator.translate(ovaltree)
 
-    product_yaml = ssg.products.get_product_yaml(args.product_yaml)
+    product_yaml = ssg.products.load_product_yaml(args.product_yaml)
     product = product_yaml["product"]
     newovalfile = args.idname + "-" + product + "-" + os.path.basename(args.ovalfile)
     newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")

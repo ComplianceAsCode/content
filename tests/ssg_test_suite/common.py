@@ -13,7 +13,7 @@ from ssg.build_cpe import ProductCPEs
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
-from ssg.products import get_product_yaml
+from ssg.products import load_product_yaml
 from ssg_test_suite.log import LogHelper
 
 Scenario_run = namedtuple(
@@ -174,7 +174,7 @@ def _get_platform_cpes(platform):
         platform_cpes = set()
         for p in products:
             product_yaml_path = os.path.join(ssg_root, p, "product.yml")
-            product_yaml = get_product_yaml(product_yaml_path)
+            product_yaml = load_product_yaml(product_yaml_path)
             p_cpes = ProductCPEs(product_yaml)
             platform_cpes |= set(p_cpes.get_product_cpe_names())
         return platform_cpes
@@ -188,7 +188,7 @@ def _get_platform_cpes(platform):
                 % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
             raise ValueError
         product_yaml_path = os.path.join(ssg_root, product, "product.yml")
-        product_yaml = get_product_yaml(product_yaml_path)
+        product_yaml = load_product_yaml(product_yaml_path)
         product_cpes = ProductCPEs(product_yaml)
         platform_cpes = set(product_cpes.get_product_cpe_names())
         return platform_cpes

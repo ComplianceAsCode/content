@@ -45,7 +45,7 @@ def _get_implied_properties(existing_properties):
     return result
 
 
-def get_product_yaml(product_yaml_path):
+def load_product_yaml(product_yaml_path):
     """
     Reads a product data from disk and returns it.
     The returned product dictionary also contains derived useful information.
@@ -82,7 +82,7 @@ def get_all(ssg_root):
 
     for product in product_directories:
         product_yaml_path = os.path.join(ssg_root, product, "product.yml")
-        product_yaml = get_product_yaml(product_yaml_path)
+        product_yaml = load_product_yaml(product_yaml_path)
 
         guide_dir = os.path.join(product_yaml["product_dir"], product_yaml['benchmark_root'])
         guide_dir = os.path.abspath(guide_dir)

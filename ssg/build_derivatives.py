@@ -10,7 +10,7 @@ from .xml import ElementTree
 from .constants import standard_profiles, OSCAP_VENDOR, PREFIX_TO_NS, oval_namespace
 from .build_cpe import ProductCPEs
 from .id_translate import IDTranslator
-from .products import get_product_yaml
+from .products import load_product_yaml
 
 
 def add_cpes(elem, namespace, mapping):
@@ -47,7 +47,7 @@ def add_cpes(elem, namespace, mapping):
 def add_cpe_item_to_dictionary(tree_root, product_yaml_path, cpe_ref, cpe_oval_filename, id_name):
     cpe_list = tree_root.find(".//{%s}cpe-list" % (PREFIX_TO_NS["cpe-dict"]))
     if cpe_list:
-        product_yaml = get_product_yaml(product_yaml_path)
+        product_yaml = load_product_yaml(product_yaml_path)
         product_cpes = ProductCPEs(product_yaml)
         cpe_item = product_cpes.get_cpe(cpe_ref)
         translator = IDTranslator(id_name)
