@@ -652,167 +652,206 @@ selections:
     # ************ #
 
     # RHEL-08-030121
-    # - audit_rules_immutable
+    - audit_rules_immutable
 
     # RHEL-08-030122
-    # - audit_immutable_login_uids
+    - audit_immutable_login_uids
 
     # RHEL-08-030130
-    # - audit_rules_usergroup_modification_shadow
+    - audit_rules_usergroup_modification_shadow
 
     # RHEL-08-030140
-    # - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_opasswd
 
     # RHEL-08-030150
-    # - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_passwd
 
     # RHEL-08-030160
-    # - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_gshadow
 
     # RHEL-08-030170
-    # - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_group
 
-    # RHEL-08-030171, RHEL-08-030172
+    # RHEL-08-030171
+    # should be split
     # - audit_rules_sysadmin_actions
+
+    # RHEL-08-030172
+    - audit_rules_sysadmin_actions
 
     # RHEL-08-030180
     - package_audit_installed
     - service_auditd_enabled
 
     # RHEL-08-030190
-    # - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_su
 
-    # RHEL-08-030200, RHEL-08-030210, RHEL-08-030220, RHEL-08-030230, RHEL-08-030240
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    # RHEL-08-030200
+    - audit_rules_dac_modification_lremovexattr
+
+    # RHEL-08-030210
+    - audit_rules_dac_modification_removexattr
+
+    # RHEL-08-030220
+    - audit_rules_dac_modification_lsetxattr
+
+    # RHEL-08-030230
+    - audit_rules_dac_modification_fsetxattr
+
+    # RHEL-08-030240
+    - audit_rules_dac_modification_fremovexattr
 
     # RHEL-08-030250
-    # - audit_rules_privileged_commands_chage
+    - audit_rules_privileged_commands_chage
 
     # RHEL-08-030260
-    # - audit_rules_execution_chcon
+    - audit_rules_execution_chcon
 
     # RHEL-08-030270
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    - audit_rules_dac_modification_setxattr
 
     # RHEL-08-030280
+    - audit_rules_privileged_commands_ssh_agent
 
-    # RHEL-08-030290, RHEL-08-030300, RHEL-08-030301
-    # - audit_ospp_general
+    # RHEL-08-030290
+    - audit_rules_privileged_commands_passwd
+
+    # RHEL-08-030300
+    - audit_rules_privileged_commands_mount
+
+    # RHEL-08-030301
+    - audit_rules_privileged_commands_umount
 
     # RHEL-08-030302
-    # - audit_rules_media_export
+    - audit_rules_media_export
 
     # RHEL-08-030310
+    # missing rule
 
     # RHEL-08-030311
-    # - audit_rules_privileged_commands_postdrop
+    - audit_rules_privileged_commands_postdrop
 
     # RHEL-08-030312
-    # - audit_rules_privileged_commands_postqueue
+    - audit_rules_privileged_commands_postqueue
 
     # RHEL-08-030313
-    # - audit_rules_execution_semanage
+    - audit_rules_execution_semanage
 
     # RHEL-08-030314
-    # - audit_rules_execution_setfiles
+    - audit_rules_execution_setfiles
 
     # RHEL-08-030315
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_userhelper
 
     # RHEL-08-030316
-    # - audit_rules_execution_setsebool
+    - audit_rules_execution_setsebool
 
     # RHEL-08-030317
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_unix_chkpwd
 
     # RHEL-08-030320
-    # - audit_rules_privileged_commands_ssh_keysign
+    - audit_rules_privileged_commands_ssh_keysign
 
     # RHEL-08-030330
+    - audit_rules_execution_setfacl
 
     # RHEL-08-030340
-    # - audit_rules_privileged_commands_pam_timestamp_check
+    - audit_rules_privileged_commands_pam_timestamp_check
 
     # RHEL-08-030350
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_newgrp
 
     # RHEL-08-030360
-    # - audit_module_load
+    - audit_rules_kernel_module_loading_init
 
-    # RHEL-08-030361, RHEL-08-030362
-    # - audit_delete_failed
-    # - audit_delete_success
+    # RHEL-08-030361
+    - audit_rules_file_deletion_events_rename
+
+    # RHEL-08-030362
+    - audit_rules_file_deletion_events_renameat
 
     # RHEL-08-030363
+    - audit_rules_file_deletion_events_rmdir
 
-    # RHEL-08-030364, RHEL-08-030365
-    # - audit_delete_failed
-    # - audit_delete_success
+    # RHEL-08-030364
+    - audit_rules_file_deletion_events_unlink
+
+    # RHEL-08-030365
+    - audit_rules_file_deletion_events_unlinkat
 
     # RHEL-08-030370
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_gpasswd
 
-    # RHEL-08-030380, RHEL-08-030390
-    # - audit_module_load
+    # RHEL-08-030380
+    - audit_rules_kernel_module_loading_finit
+
+    # RHEL-08-030390
+    - audit_rules_kernel_module_loading_delete
 
     # RHEL-08-030400
-    # - audit_ospp_general
+    - audit_rules_privileged_commands_crontab
 
     # RHEL-08-030410
-    # - audit_rules_privileged_commands_chsh
+    - audit_rules_privileged_commands_chsh
 
     # RHEL-08-030420
-    # - audit_modify_failed
-    # - audit_modify_success
+    - audit_rules_unsuccessful_file_modification_truncate
 
-    # RHEL-08-030430, RHEL-08-030440, RHEL-08-030450
-    # - audit_create_failed
-    # - audit_create_success
-    # - audit_modify_failed
-    # - audit_modify_success
-    # - audit_access_failed
-    # - audit_access_success
+    # RHEL-08-030430
+    - audit_rules_unsuccessful_file_modification_openat
+
+    # RHEL-08-030440
+    - audit_rules_unsuccessful_file_modification_open
+
+    # RHEL-08-030450
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
 
     # RHEL-08-030460
-    # - audit_modify_failed
-    # - audit_modify_success
+    - audit_rules_unsuccessful_file_modification_ftruncate
 
     # RHEL-08-030470
-    # - audit_create_failed
-    # - audit_create_success
+    - audit_rules_unsuccessful_file_modification_creat
 
     # RHEL-08-030480
-    # - audit_owner_change_failed
-    # - audit_owner_change_success
+    - audit_rules_dac_modification_chown
 
     # RHEL-08-030490
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    - audit_rules_dac_modification_chmod
 
-    # RHEL-08-030500, RHEL-08-030510, RHEL-08-030520
-    # - audit_owner_change_failed
-    # - audit_owner_change_success
+    # RHEL-08-030500
+    - audit_rules_dac_modification_lchown
 
-    # RHEL-08-030530, RHEL-08-030540
-    # - audit_perm_change_failed
-    # - audit_perm_change_success
+    # RHEL-08-030510
+    - audit_rules_dac_modification_fchownat
+
+    # RHEL-08-030520
+    - audit_rules_dac_modification_fchown
+
+    # RHEL-08-030530
+    - audit_rules_dac_modification_fchmodat
+
+    # RHEL-08-030540
+    - audit_rules_dac_modification_fchmod
 
     # RHEL-08-030550
-    # - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_sudo
 
     # RHEL-08-030560
+    - audit_rules_privileged_commands_usermod
 
     # RHEL-08-030570
+    - audit_rules_execution_chacl
 
     # RHEL-08-030580
+    - audit_rules_privileged_commands_kmod
 
     # RHEL-08-030590
+    # This one needs to be updated to use /var/log/faillock, but first RHEL-08-020017 should be
+    # implemented as it is the one that configures a different patch for the events of failing locks
     # - audit_rules_login_events_faillock
 
     # RHEL-08-030600
-    # - audit_rules_login_events_lastlog
+    - audit_rules_login_events_lastlog
 
     # RHEL-08-030601
     - grub2_audit_argument
