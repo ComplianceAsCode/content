@@ -5,7 +5,19 @@ prodtype: ocp4
 title: 'Verify Permissions on the Worker Proxy Kubeconfig File'
 
 description: |-
-  {{{ describe_file_permissions(file="/config/kube-proxy-config.yaml", perms="0644") }}}
+  To ensure the Kubernetes ConfigMap is mounted into the sdn daemonset pods with the
+  correct permissions, make sure that the <tt>sdn-config</tt> ConfigMap is mounted using
+  restrictive permissions. Check that the <tt>config</tt> VolumeMount mounts the
+  <tt>sdn-config</tt> configMap with permissions set to 420:
+  <pre>
+  {
+  "configMap": {
+    "defaultMode": 420,
+    "name": "sdn-config"
+    },
+  "name": "config"
+  }
+  </pre>
 
 rationale: |-
   The kube-proxy kubeconfig file controls various parameters of the kube-proxy
@@ -27,10 +39,12 @@ identifiers:
 references:
   cis@ocp4: 4.1.3
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/config/kube-proxy-config.yaml", perms="-rw-r--r--") }}}'
+ocil_clause: 'The kube-proxy configuration ConfigMap mount is mounted using wrong permissions'
 
 ocil: |-
-  {{{ ocil_file_permissions(file="/config/kube-proxy-config.yaml", perms="-rw-r--r--") }}}
+    Run the following command:
+    <pre>$ oc get -nopenshift-sdn ds sdn -ojson | jq -r '.spec.template.spec.volumes[] | select(.configMap.name == "sdn-config") | .configMap.defaultMode'</pre>
+    The output should return a value of <pre>420</pre>.
 
 warnings:
 - general: |-

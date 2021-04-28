@@ -4,7 +4,16 @@ prodtype: ocp4
 
 title: 'Verify User Who Owns The Worker Proxy Kubeconfig File'
 
-description: '{{{ describe_file_owner(file="/config/kube-proxy-config.yaml", owner="root") }}}'
+description: |-
+  To ensure the Kubernetes ConfigMap is mounted into the sdn daemonset pods with the
+  correct ownership, make sure that the <tt>sdn-config</tt> ConfigMap is mounted using
+  a ConfigMap at the <tt>/config</tt> mount point and that the <tt>sdn</tt> container
+  points to that configuration using the <tt>--proxy-config</tt> command line option.
+  Run:
+  <pre> oc get -nopenshift-sdn ds sdn -ojson | jq -r '.spec.template.spec.containers[] | select(.name == "sdn")'</pre>
+  and ensure the <tt>--proxy-config</tt> parameter points to 
+  <tt>/config/kube-proxy-config.yaml</tt> and that the <tt>config</tt> mount point is
+  mounted from the <tt>sdn-config</tt> ConfigMap.
 
 rationale: |-
   The kubeconfig file for kube-proxy provides permissions to the kube-proxy service.
@@ -23,7 +32,14 @@ severity: medium
 references:
   cis@ocp4: 4.1.4
 
-ocil_clause: '{{{ ocil_clause_file_owner(file="/config/kube-proxy-config.yaml", owner="root") }}}'
+ocil_clause: 'The kube-proxy configuration ConfigMap mount is mounted with wrong ownership'
 
 ocil: |-
-    {{{ ocil_file_owner(file="/config/kube-proxy-config.yaml", owner="root") }}}
+  Run the following command:
+  <pre>
+   $ for i in $(oc get pods -n openshift-sdn -l app=sdn -oname)
+     do
+        oc exec -n openshift-sdn $i -- stat -Lc %U:%G /config/kube-proxy-config.yaml
+     done
+  </pre>
+  The output should be <tt>root:root</tt>
