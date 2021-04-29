@@ -20,7 +20,8 @@
 
   <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Oracle JRE is installed" id="test_oracle_java" version="1">
     <linux:object object_ref="obj_oracle_java" />
-    <linux:state state_ref="state_java_version" />
+    <linux:state state_ref="state_java_version_minimum" />
+    <linux:state state_ref="state_java_version_maximum" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="obj_oracle_java" version="1">
     <linux:name datatype="string" operation="pattern match">^jre.*$</linux:name>
@@ -68,5 +69,11 @@
 
   <linux:rpminfo_state id="state_java_version" version="1">
     <linux:version datatype="version" operation="equals">1.8.0</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_java_version_minimum" version="1">
+    <linux:version datatype="version" operation="greater than or equal">1.8.0</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_state id="state_java_version_maximum" version="1">
+    <linux:version datatype="version" operation="less than">1.9.0</linux:version>
   </linux:rpminfo_state>
 </def-group>
