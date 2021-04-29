@@ -175,3 +175,112 @@ def get_section_lines(file_path, file_contents, key_name):
         return section[0]
 
     return None
+
+
+def get_line_whitespace(line):
+    """
+    Get the exact whitespace used at the start of this line.
+    """
+    stripped_line = line.lstrip()
+    delta = len(line) - len(stripped_line)
+    return line[:delta]
+
+
+def guess_section_whitespace(file_contents, section_range, default='    '):
+    """
+    Hack: we need to figure out how much whitespace to add when adding a new key to
+    an existing section. Since different files might be parsed differently, take the
+    minimum key's whitespace length in this section.
+    """
+    whitespace = None
+    for line_num in range(section_range.start+1, section_range.end):
+        line = file_contents[line_num]
+        if line and ':' in line:
+            # Assume this is a key, so update our assumptions of whitespace. We ignore
+            # non-key lines.
+            this_whitespace = get_line_whitespace(line)
+
+            # Only take it if we have _less_ whitespace (to avoid dealing with nested
+            # sections) or if we have no whitespace yet.
+            if whitespace is None or len(this_whitespace) < len(whitespace):
+                whitespace = this_whitespace
+
+    # If we don't have any whitespace, use the default to show the YAML parser it
+    # is a nested section.
+    if whitespace is None:
+        whitespace = default
+
+    return whitespace
+
+
+def add_or_modify_nested_section_key(file_path, file_contents, section_title,
+                                     key, value, new_section_after_if_missing=None):
+    """
+    Either modify an existing nested section key (in key: value) form or
+    add it if missing. Optionally, take a section and add our new section
+    after the existing section.
+    """
+    new_contents = file_contents[:]
+    section = get_section_lines(file_path, file_contents, section_title)
+
+    if not section:
+        if not new_section_after_if_missing:
+            msg = "File %s lacks all instances of section %s; refusing to modify file."
+            msg = msg.format(file_path, section)
+            raise ValueError(msg)
+
+        previous_section = get_section_lines(file_path, file_contents,
+                                             new_section_after_if_missing)
+        if not previous_section:
+            msg = "File %s lacks all instances of sections %s and %s; refusing to modify file."
+            msg = msg.format(file_path, section, new_section_after_if_missing)
+            raise ValueError(msg)
+
+        new_section_header = get_line_whitespace(file_contents[previous_section.start])
+        new_section_header += section_title + ':'
+        new_section_kv = guess_section_whitespace(file_contents, previous_section)
+        new_section_kv += key + ': ' + value
+
+        new_section = [new_section_header, new_section_kv, '']
+
+        tmp_contents = new_contents[:previous_section.end+1]
+        tmp_contents += new_section
+        tmp_contents += new_contents[previous_section.end+1:]
+        new_contents = tmp_contents
+
+        return new_contents
+
+    # Nasty hacky assumption: assume key is 'unique' within the section and we can
+    # ignore whitespaces issues with this approach. Also assume (and validate!) that
+    # : does not appear in the key. This allows us to split the line by ':' and take
+    # the first as the actual key in the file.
+    assert ':' not in key
+    key_match = ' ' + key + ':'
+
+    found = None
+    for line_num in range(section.start, section.end+1):
+        line = file_contents[line_num]
+        if key_match in line:
+            if found:
+                msg = "Expected to only have key {0} appear once in file, but appeared "
+                msg += "twice: once on line {1} and once on line {2}."
+                msg = msg.format(key, found, line_num)
+                raise ValueError(msg)
+
+            # Preserve leading whitespace. :-)
+            key_prefix = line.split(':', maxsplit=1)[0]
+            new_line = key_prefix + ': ' + value
+            new_contents[line_num] = new_line
+            found = line
+
+    if not found:
+        # Be lazy and add it right after the section heading. Worst case we'll just
+        # come back and sort the section at a later time.
+        whitespace = guess_section_whitespace(file_contents, section)
+        new_line = whitespace + key + ': ' + value
+        tmp_contents = new_contents[:section.start+1]
+        tmp_contents += [new_line]
+        tmp_contents += new_contents[section.start+1:]
+        new_contents = tmp_contents
+
+    return new_contents
