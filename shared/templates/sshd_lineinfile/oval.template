@@ -1,7 +1,61 @@
-{{{
-oval_sshd_config(
-	parameter=PARAMETER,
-	value=VALUE,
-	missing_parameter_pass=MISSING_PARAMETER_PASS
-)
-}}}
+{{%- set config_path = "/etc/ssh/sshd_config" %}}
+{{%- set config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set products_with_distributed_configuration = ("rhel9", "fedora") -%}}
+{{%- set description = "Ensure '" ~ PARAMETER ~ "' is configured with value '" ~ VALUE ~ "' in " ~ config_path %}}
+{{%- if product in products_with_distributed_configuration %}}
+{{%- set description = description  ~ " and in " ~ config_dir -%}}
+{{%- endif %}}
+{{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+   {{{ oval_metadata(description) }}}
+   <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+     <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
+     </criteria>
+     <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        <criteria comment="sshd is configured correctly" operator="OR">
+          {{{- oval_line_in_file_criterion(config_path, PARAMETER) | indent(8) }}}
+          {{%- if MISSING_PARAMETER_PASS %}}
+          <criteria comment="sshd is not configured incorrectly" operator="AND">
+          {{{- oval_line_in_file_criterion(config_path, PARAMETER, MISSING_PARAMETER_PASS) | indent(10)}}}
+          {{%- if product in products_with_distributed_configuration %}}
+          {{{- oval_line_in_directory_criterion(config_dir, PARAMETER, MISSING_PARAMETER_PASS) | indent(10) }}}
+          {{%- endif %}}
+          </criteria>
+          {{%- endif %}}
+          {{%- if product in products_with_distributed_configuration %}}
+          {{{- oval_line_in_directory_criterion(config_dir, PARAMETER) | indent(8) }}}
+          {{%- endif %}}
+        </criteria>
+      </criteria>
+    </criteria> 
+  </definition>
+  {{{ oval_line_in_file_test(config_path, PARAMETER) | indent (2) }}}
+  {{{ oval_line_in_file_object(config_path, parameter=PARAMETER, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_state(VALUE) | indent (2) }}}
+
+  {{%- if MISSING_PARAMETER_PASS %}}
+  {{{ oval_line_in_file_test(config_path, PARAMETER, MISSING_PARAMETER_PASS) | indent(2) }}}
+  {{{ oval_line_in_file_object(config_path, parameter=PARAMETER, missing_parameter_pass=MISSING_PARAMETER_PASS, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{%- endif %}}
+
+  {{%- if product in products_with_distributed_configuration %}}
+  {{{ oval_line_in_directory_test(config_dir, PARAMETER) | indent (2) }}}
+  {{{ oval_line_in_directory_object(config_dir, parameter=PARAMETER, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{{ oval_line_in_directory_state(VALUE) | indent (2) }}}
+
+  {{%- if MISSING_PARAMETER_PASS %}}
+  {{{ oval_line_in_directory_test(config_path, PARAMETER, MISSING_PARAMETER_PASS) | indent(2) }}}
+  {{{ oval_line_in_directory_object(config_path, parameter=PARAMETER, missing_parameter_pass=MISSING_PARAMETER_PASS, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{%- endif %}}
+  {{%- endif %}}
+</def-group>

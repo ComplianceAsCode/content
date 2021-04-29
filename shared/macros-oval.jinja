@@ -92,15 +92,18 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
-{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem=rule_id) -%}}
 {{%- set suffix_id = "" -%}}
 {{%- set prefix_text = "Check the" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{%- set prefix_text = prefix_text + " absence of" -%}}
 {{%- endif %}}
-      <criterion comment="{{{ prefix_text }}} {{{ parameter }}} in {{{ path }}}"
-      test_ref="test_{{{ rule_id }}}{{{ suffix_id }}}" />
+{{%- if not comment -%}}
+{{%- set comment = prefix_text ~ " " ~ parameter ~ " in " ~ path -%}}
+{{%- endif -%}}
+<criterion comment="{{{ comment }}}"
+  test_ref="test_{{{ id_stem }}}{{{ suffix_id }}}" />
 {{%- endmacro %}}
 
 {{#
@@ -110,7 +113,7 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
-{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem=rule_id) -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set check_existence = "none_exist" -%}}
@@ -120,14 +123,14 @@
 {{%- set check_existence = "all_exist" -%}}
 {{%- set prefix_text = "value" -%}}
 {{%- endif %}}
-  <ind:textfilecontent54_test check="all" check_existence="{{{ check_existence }}}"
+<ind:textfilecontent54_test check="all" check_existence="{{{ check_existence }}}"
   comment="tests the {{{ prefix_text }}} of {{{ parameter }}} setting in the {{{ path }}} file"
-  id="test_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
-  <ind:object object_ref="obj_{{{ rule_id }}}{{{ suffix_id }}}" />
+  id="test_{{{ id_stem }}}{{{ suffix_id }}}" version="1">
+  <ind:object object_ref="obj_{{{ id_stem }}}{{{ suffix_id }}}" />
   {{%- if not missing_parameter_pass %}}
-  <ind:state state_ref="state_{{{ rule_id }}}{{{ suffix_id }}}" />
+  <ind:state state_ref="state_{{{ id_stem }}}{{{ suffix_id }}}" />
   {{%- endif %}}
-  </ind:textfilecontent54_test>
+</ind:textfilecontent54_test>
 {{%- endmacro %}}
 
 {{#
@@ -141,7 +144,7 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
-{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filepath_regex='') -%}}
+{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filepath_regex='', id_stem=rule_id) -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
 {{%- set group_regex = "([^#]*).*$" -%}}
@@ -173,16 +176,16 @@
 {{%- set regex = prefix_regex+parameter+separator_regex+group_regex -%}}
 {{%- endif %}}
 {{%- endif %}}
-  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
+<ind:textfilecontent54_object id="obj_{{{ id_stem }}}{{{ suffix_id }}}" version="1">
 {{%- if filepath_regex %}}
-    <ind:path>{{{ path }}}</ind:path>
-    <ind:filename operation="pattern match">{{{ filepath_regex }}}</ind:filename>
+  <ind:path>{{{ path }}}</ind:path>
+  <ind:filename operation="pattern match">{{{ filepath_regex }}}</ind:filename>
 {{%- else %}}
-    <ind:filepath>{{{ path }}}</ind:filepath>
+  <ind:filepath>{{{ path }}}</ind:filepath>
 {{%- endif %}}
-    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
+  <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
+  <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+</ind:textfilecontent54_object>
 {{%- endmacro %}}
 
 {{#
@@ -193,7 +196,7 @@
     - quotes (String): If non-empty, one level of matching quotes is considered when checking the value. Specify one or more quote types as a string.
       For example, for shell quoting, specify quotes="'\""), which will make sure that value, 'value' and "value" are matched, but 'value" or '"value"' won't be.
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem=rule_id) -%}}
 {{%- set regex = value -%}}
 {{%- if quotes != "" %}}
 {{%- if "\\1" in value > 0 %}}
@@ -206,9 +209,25 @@
 {{%- else %}}
 {{%- set regex = "^"+regex+"$" -%}}
 {{%- endif %}}
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
-    <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
-  </ind:textfilecontent54_state>
+<ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
+  <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
+</ind:textfilecontent54_state>
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
+{{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir") -}}}
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_test(path='', parameter='', missing_parameter_pass=false) -%}}
+{{{ oval_line_in_file_test(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir") }}}
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
+{{{- oval_line_in_file_object(path=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filepath_regex=".*", id_stem=rule_id ~ "_config_dir") -}}}
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_state(value='', multi_value='', quotes='') -%}}
+{{{- oval_line_in_file_state(value, multi_value, quotes, id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
 
 {{#

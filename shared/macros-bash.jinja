@@ -471,6 +471,15 @@ fi
 LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ path }}}"
 {{%- endmacro -%}}
 
+{{%- macro lineinfile_absent_in_directory(dirname, regex, insensitive=true) -%}}
+    {{%- if insensitive -%}}
+        {{%- set modifier="Id" -%}}
+    {{%- else -%}}
+        {{%- set modifier="d" -%}}
+    {{%- endif -%}}
+LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ dirname }}}"/*
+{{%- endmacro -%}}
+
 {{%- macro lineinfile_present(path, line, insert_after="", insert_before="", insensitive=true) -%}}
     {{%- if insensitive -%}}
         {{%- set grep_args="-q -m 1 -i" -%}}
