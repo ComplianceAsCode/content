@@ -26,3 +26,4 @@ selections:
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
+    - package_audit_installed
