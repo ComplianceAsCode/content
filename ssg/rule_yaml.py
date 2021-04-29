@@ -281,7 +281,9 @@ def sort_section_keys(file_path, file_contents, sections, sort_func=None):
                         # Not supposed to be possible to have multiple keys
                         # matching the same value in this file. We should've
                         # already fixed this with fix-rules.py's duplicate_subkeys.
-                        assert False
+                        msg = "File {0} has duplicated key {1}: {2} vs {3}"
+                        msg = msg.format(file_path, key, our_line, this_line)
+                        raise ValueError(msg)
                     our_line = this_line
             assert our_line
             subkey_mapping[key] = our_line
