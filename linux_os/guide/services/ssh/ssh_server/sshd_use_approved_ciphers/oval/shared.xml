@@ -1,8 +1,7 @@
 <def-group>
   <definition class="compliance" id="sshd_use_approved_ciphers" version="1">
-    {{{ oval_metadata("Limit the ciphers to those which are FIPS-approved.") }}}
+    {{{ oval_metadata("Limit the ciphers to those which are approved.") }}}
     <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <criteria comment="SSH is configured correctly or is not installed"
       operator="OR">
         <criteria comment="sshd is not installed" operator="AND">
@@ -56,5 +55,5 @@
     </split>
   </local_variable>
 
-  <external_variable comment="SSH Approved Ciphers by FIPS" datatype="string" id="sshd_approved_ciphers" version="1" />
+  <external_variable comment="SSH Approved Ciphers" datatype="string" id="sshd_approved_ciphers" version="1" />
 </def-group>
