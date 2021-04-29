@@ -75,3 +75,167 @@ custom Jinja filter `banner_regexify`.
 If customizing content via SCAP Workbench, or directly writing your
 tailoring XML, use `utils/regexify_banner.py` to generate the
 appropriate regular expression.
+
+## Modifying `rule.yml` files
+
+Several utilities discussed below for automatically modifying `rule.yml`
+require information about the existing rules for fast operation. We've
+provided the `utils/rule_dir_json.py` script to build this information.
+
+To execute it:
+
+    $ ./utils/rule_dir_json.py
+
+Optionally, provide a path to a CaC root and destination YAML file:
+
+    $ ./utils/rule_dir_json.py --root /path/to/ComplianceAsCode/content \
+                               --output /tmp/rule_dirs.json
+
+Utilities that require `rule_dirs.json` to exist and be up-to-date will be
+notated below.
+
+### `utils/fix_rules.py` -- automatically fix-up rules
+
+`utils/fix_rules.py` includes various sub-commands for automatically fixing
+common problems in rules.
+
+These sub-commands are:
+
+ - `empty_identifiers`: removes any `identifiers` which are empty.
+ - `invalid_identifiers`: removes any invalid CCE `identifiers` (due to
+   incorrect format).
+ - `int_identifiers`: turns any identifiers which are an integer into a
+   string.
+ - `empty_references`: removes any `references` which are empty.
+ - `int_references`: turns any references which are an integer into a string.
+ - `duplicate_subkeys`: finds (but doesn't fix!) any rules with duplicated
+   `identifiers` or `references`.
+ - `sort_subkeys`: sorts all subkeys under `identifiers` and `references`.
+
+To execute:
+
+    $ ./utils/fix_rules.py [--assume-yes] [--dry-run] <command>
+
+For example:
+
+    $ ./utils/fix_rules.py -y sort_subkeys
+
+Note that it is generally good practice to commit all changes prior to running
+one of these commands and then commit the results separately.
+
+### `utils/autoprodtyper.py` -- automatically add product to `prodtype`
+
+When building a profile for a new product version (such as forking
+`ubuntu1804` into `ubuntu2004`), it is helpful to be able to build a
+profile (adding in all rules that are necessary) and then attempt a
+build.
+
+However, usually lots of rules will lack the new product in its `prodtype`
+field.
+
+This is where `utils/autoprodtyper.py` comes in: point it at a product and
+a profile and it will automatically modify the prodtype, adding this product.
+
+To execute:
+
+    $ ./utils/autoprodtyper.py <product> <profile>
+
+For example:
+
+    $ ./utils/autoprodtyper.py ubuntu2004 cis_level1_server
+
+Note that it is generally good practice to commit all changes prior to running
+one of these commands and then commit the results separately.
+
+### `utils/autorefer.py` -- automatically add and update references in rules
+
+When building a profile for a product-specific benchmark such as CIS or STIG,
+it is helpful to ensure all selected rules have that reference added. Usually
+these types of profiles are constructed by copying the benchmark's structure
+as a comment in the profile YAML file. For example:
+
+```yaml
+selections:
+    # 1 Initial Setup #
+    ## 1.1 Filesystem Configuration ##
+    ### 1.1.1 Disable unused filesystems ###
+    #### 1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Automated)
+    - kernel_module_cramfs_disabled
+
+    #### 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Automated)
+    - kernel_module_freevxfs_disabled
+```
+
+This utility automatically updates the rules below each section identifier with
+the relevant references. Currently CIS is the most supported reference format.
+
+Iterating through each rule in the profile, we grab the reference identifier
+from the immediately preceding rule. The reference identifier MUST be the first
+token after the comment character(s) after a space. Another space character MAY
+follow, and then any additional content (such as the actual heading of this
+section in the benchmark).
+
+Variable definitions are ignored.
+
+To execute:
+
+    $ ./utils/autorefer.py <product> <profile> <reference>
+
+For example:
+
+    $ ./utils/autorefer.py ubuntu2004 cis_level1_server cis
+
+Note that it is generally good practice to commit all changes prior to running
+one of these commands and then commit the results separately.
+
+### `utils/refchecker.py` -- automatically check `rule.yml` for references
+
+This utility checks all `rule.yml` referenced from a given profile for the
+specified reference.  Unlike `build-scripts/profile_tool.py`, which operates
+on the built XCCDF information, `utils/refchecker.py` operates on the contents
+of the `rule.yml` files.
+
+To execute:
+
+    $ ./utils/refchecker.py <product> <profile> <reference>
+
+For example:
+
+    $ ./utils/refchecker.py ubuntu2004 cis_level1_server cis
+
+This utility has some knowledge of which references are product-specific
+(checking for `cis@ubuntu2004` in the above example) and which are
+product-independent.
+
+Note that this utility does not modify the rule directories at all.
+
+### `utils/mod_prodtype.py` -- programmatically modify prodtype in `rule.yml`
+
+`utils/mod_prodtype.py` is a command-based utility for modifying `rule.yml`
+files. It supports the following sub-commands:
+
+ - `add`: add the given product(s) to the specified rule's prodtype.
+ - `list`: list computed and actual products in the specified rule's prodtype.
+ - `replace`: perform a pattern-match replacement on the specified rule's
+   prodtype.
+ - `remove`: remove the given product(s) from the specified rule's prodtype.
+
+To execute:
+
+    $ ./utils/mod_prodtype.py <rule_id> <command> [...other arguments...]
+
+For an example of `add`:
+
+    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 add ubuntu2004
+
+For an example of `list`:
+
+    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 list
+
+For an example of `replace`:
+
+    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 replace ubuntu2004~ubuntu1604,ubuntu1804,ubuntu2004
+
+For an example of `remove`:
+
+    $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 remove ubuntu1604 ubuntu1804 ubuntu2004
