@@ -5,7 +5,9 @@ prodtype: ocp4
 title: 'Verify Group Who Owns The Open vSwitch Process ID File'
 
 description: |-
-    {{{ describe_file_group_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", group="openvswitch") }}}
+    Ensure that the file <pre>/var/run/openvswitch/ovs-vswitchd.pid</pre>,
+    is owned by the group <pre>openvswitch</pre> or <pre>hugetlbfs</pre>,
+    depending on your settings and Open vSwitch version.
 
 rationale: |-
     CNI (Container Network Interface) files consist of a specification and libraries for
@@ -21,13 +23,26 @@ identifiers:
 references:
     cis@ocp4: 1.1.9
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", group="openvswitch") }}}'
+ocil_clause: '/var/run/openvswitch/ovs-vswitchd.pid has group owner openvswitch or hugetlbfs'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/var/run/openvswitch/ovs-vswitchd.pid", group="openvswitch") }}}
+    To check the group ownership of <pre>/var/run/openvswitch/ovs-vswitchd.pid</pre>,
+    you'll need to log into a node in the cluster.
+    As a user with administrator privileges, log into a node in the relevant pool:
 
-template:
-    name: file_groupowner
-    vars:
-        filepath: /var/run/openvswitch/ovs-vswitchd.pid
-        filegid: '800'
+    <pre>
+    $ oc debug node/$NODE_NAME
+    </pre>
+
+    At the <tt>sh-4.4#</tt> prompt, run:
+
+    <pre>
+    # chroot /host
+    </pre>
+
+    Then,run the command:
+    <pre>
+    $ ls -l /var/run/openvswitch/ovs-vswitchd.pid
+    </pre>
+    If properly configured, the output should indicate one of the following group-owners:
+    openvswitch or hugetlbfs
