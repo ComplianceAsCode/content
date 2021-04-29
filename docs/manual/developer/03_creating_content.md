@@ -355,3 +355,303 @@ A profile should define these attributes:
     or
 
 -   rule refinements, e.g. `accounts_tmout.severity=high`.
+
+
+## Controls
+
+The controls adds another layer on top of profiles. Controls files store the
+metadata for security controls and, more importantly, concentrate the mapping
+from requirement to rule at a single place.
+
+We will explain the format using the expected workflow and we will show examples
+of the format.
+
+### Storing controls data
+
+When we develop a new SCAP profile, usually we first get a PDF document with a
+policy that consists of controls (requirements). For example NIST 800-53
+controls, ANSSI requirements, CIS Benchmark, etc.
+
+To add the policy to our project repository, we will create a YAML
+file that represents this policy. There is a special directory, called
+`controls`, in the repository root to store these files. These files serve as a
+database of controls (requirements). They are independent from profiles and
+products. We can extract the interesting data from the PDF and save them in a
+YAML file. We can also create this file manually, or it can be converted from
+some other format (XML, OpenControl) if available and then submitted.
+
+There is a YAML file that represents the whole policy. Initially, the
+YAML file can look like this:
+
+```
+$ cat controls/abcd.yml
+
+id: abcd
+title: ABCD Benchmark for securing Linux systems
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+controls:
+  - id: R1
+    title: User session timeout
+    description: |-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+  - id: R2
+    title: Minimization of configuration
+    description: |-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+  - id: R3
+    title: Enabling SELinux targeted Policy
+    description: |-
+      It is recommended to enable SELinux in enforcing mode
+      and to use the targeted policy.
+```
+
+In the real world, controls (requirements) can be nested. For example, PCI-DSS
+has tree structure, within requirement 2.3 we can find 2.3.a, 2.3.b, etc.
+Therefore, each item in `controls` list can contain a `controls` list.
+
+Once we have the file, we can read through the policy requirements and assess
+each requirement. For the controls we will have to identify whether it can be
+automated by SCAP. If yes, we should look if we already have existing XCCDF
+rules in our project. 
+
+For example, let’s say that we identified that:
+
+* R1 can be automatically scanned by SCAP and we already have 3 existing rules
+in our repository. However, we want one of them to be selected only on RHEL 9,
+but the rule is applicable to all platforms.
+* R2 is up to manual checking, but we have systemd_target_multi_user which is
+related to this control.
+* R3 can be automatically scanned by SCAP but unfortunately we don’t have any
+rules and checks implemented yet.
+
+For each control we will add the `automated` key, which describes whether the
+control requirement can be automated by SCAP and scanning. Possible values are:
+`yes`, `no`, `partially`.
+
+When XCCDF rules exist, we will assign them to the controls. We will distinguish
+between XCCDF rules which directly implement the given controls (represented by
+`rules` YAML key) and rules that are only related or relevant to the control
+(represented by `related_rules` YAML key).
+
+The `rules` and `related_rules` keys consist of a list of rule IDs. If a rule
+needs to be chosen only in some of products despite its `prodtype` we can use
+Jinja macros inside the controls file to choose products.
+
+After we finish our analysys, we will insert our findings to the controls file,
+the file will look like this:
+
+```
+$ cat controls/abcd.yml
+ 
+id: abcd
+title: ABCD Benchmark for securing Linux systems
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+controls:
+  - id: R1
+    title: User session timeout
+    description: |-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    automated: yes
+    rules:
+    - sshd_set_idle_timeout
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+{{% if product == “rhel9” %}}
+    - cockpit_session_timeout
+{{% endif %}}
+  - id: R2
+    title: Minimization of configuration
+    description: |-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+    automated: no
+    note: |- 
+      This is individual depending on the system workload
+      therefore needs to be audited manually.
+    related_rules:
+       - systemd_target_multi_user
+  - id: R3
+    title: Enabling SELinux targeted Policy
+    description: |-
+      It is recommended to enable SELinux in enforcing mode
+      and to use the targeted policy.
+    automated: yes
+```
+
+Notice that the `rules` key in control R1 references the rules. Therefore we can
+use the controls YAML file to assign references instead of adding references to
+each `rule.yml` file. This isn't implemented at the moment.
+
+
+### Defining levels
+
+Some real world policies, eg. ANSSI, have a concept of levels. This means that
+for some use cases a certain set of requirements is required and for other use
+cases a superset of the previous set is required.
+
+Control files can work with the levels concept.
+
+For example, let's say that ABCD benchmark would define 2 levels: low and high.
+The low level would contain R1 and R2. The high level would contain everything
+from the low level and R3, ie. the high level would contain R1, R2 and R3.
+
+First, add the `levels` key to the YAML file and list the level names from
+lowest to highest. The tools working with the controls file assume that every
+control included in a level are also included in all subseqent levels listed in
+the `levels` list.
+
+Second, add `level` key to every control ID to specify level the control belongs to.
+
+```
+$ cat controls/abcd.yml
+
+id: abcd
+title: ABCD Benchmark for securing Linux systems
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+levels:
+  - low
+  - high
+controls:
+  - id: R1
+    level: low
+    title: User session timeout
+    description: |-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+  - id: R2
+    level: low
+    title: Minimization of configuration
+    description: |-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+  - id: R3
+    level: high
+    title: Enabling SELinux targeted Policy
+    description: |-
+      It is recommended to enable SELinux in enforcing mode
+      and to use the targeted policy.
+```
+
+### Controls file format
+
+```
+id: policy ID (required key)
+title: short title (required key)
+source: a link to the original policy, eg. a URL of a PDF document
+levels: a list of levels, sorted from lowest to highest
+controls: a list of controls (required key)
+  - id: control ID (required key)
+    title: control title
+    description: description of the control in a few sentences
+    automated: Can be one of: ["yes", "no", "partially"]. Default value: "yes".
+    level: The policy level that the control belongs to.
+    notes: a short paragraph of text
+    rules: a list of rule IDs that cover this control
+    related_rules: a list of related rules
+    note: a short paragraph of text
+    controls: a nested list of controls
+```
+
+### Using controls in profiles
+
+Later, we can use the policy requirements in profile YAML. Let’s say that we
+will define a “Desktop” profile built from the controls.
+
+To use controls, we add them under `selection` keys in the profile. The entry
+has the form `policy_id:control_id`.
+
+```
+$ cat rhel8/profiles/abcd-desktop.profile
+ 
+documentation_complete: true
+title: ABCD Desktop for Red Hat Enterprise Linux 8
+description: |-
+  This profile contains configuration checks that align to
+  the ABCD benchmark.
+selections:
+  - abcd:R1
+  - abcd:R2
+  - abcd:R3
+  - security_patches_uptodate
+```
+
+Notice we can mix the controls selections with normal rule selections.
+
+In a similar way, we could define another profile that selects only some of the
+requirements.
+
+In the example we have selected all controls from `controls/abcd.yml` by listing
+them explicitly. It is possible to shorten it using the `“all”` value which
+means that all controls will be selected. Let’s show how it will be easier:
+
+```
+$ cat rhel8/profiles/abcd-high.profile
+ 
+documentation_complete: true
+title: ABCD High for Red Hat Enterprise Linux 8
+description: |-
+  This profile contains configuration checks that align to
+  the ABCD benchmark.
+selections:
+  - abcd:all
+  - security_patches_uptodate
+```
+
+It is possible to use levels if the levels are defined in the controls file. For
+example, `abcd:all:low` selects all rules for the ABCD low level or
+`abcd:all:high` selects all rules from the ABCD high level.
+
+Finally, when we build the content we will automatically get a SCAP profile
+which contains XCCDF rules and variables from all controls selected in profile
+YAML.
+
+The build system adds all XCCDF rules listed under `rules` key in the control to
+the built profile. The rules listed under `related_rules` key are not be added.
+Also, the selections from `selection` key in profile file are included.
+
+In our example, the generated profile will contain rules
+`sshd_set_idle_timeout`, `accounts_tmout`, `var_accounts_tmout=10_min` and
+`security_patches_uptodate`. The profile will not contain
+`systemd_target_multi_user` even if control `R2` is selected because that is
+listed under `related_rules`.  The profile will be compiled to a canonical
+form.
+
+Example of a compiled profile:
+
+```
+$ cat build/rhel8/profiles/abcd-desktop.profile
+
+documentation_complete: true
+title: ABCD Desktop for Red Hat Enterprise Linux 8
+description: |-
+  This profile contains configuration checks that align to
+  the ABCD benchmark.
+selections:
+  - sshd_set_idle_timeout
+  - accounts_tmout
+  - var_accounts_tmout=10_min
+  - security_patches_uptodate
+```
+
+We got a profile file that we could create manually and it's used seamleassly to
+build SCAP source data stream containing the profile and other artifacts.
+
+### Presentation of data
+
+Apart to the build system, the controls files can be also processed by the
+`render-policy.py` utility. It creates a HTML file where the controls are
+resolved in the context of a given product. The file contains links to rule
+definitions in the upstream repository. The generated file can be distributed to
+subject matter experts for a review.
+
+```
+$ utils/render-policy.py --output doc.html rhel8 controls/abcd.yml
+```
+
+For more details about the `render_policy.py` tool, run `utils/render-policy.py --help`.
