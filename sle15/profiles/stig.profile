@@ -107,6 +107,7 @@ selections:
     - audit_rules_privileged_commands_gpasswd
     - audit_rules_privileged_commands_kmod
     - audit_rules_privileged_commands_mount
+    - audit_rules_privileged_commands_modprobe
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_pam_timestamp_check
     - audit_rules_privileged_commands_passmass
