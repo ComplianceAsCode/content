@@ -176,7 +176,10 @@ def main():
         for key in oval_products:
             oval_products[key] = sorted(oval_products[key])
             if len(oval_products[key]) > 1:
-                print("product has multiple ovals: %s - %s" % (key, ','.join(oval_products[key])), file=sys.stderr)
+                all_ovals = ','.join(oval_products[key])
+                msg = "Product {0} has multiple ovals in rule {1}: {2}"
+                msg = msg.format(key, rule_id, all_ovals)
+                print(msg, file=sys.stderr)
 
         rule_obj['oval_products'] = oval_products
 
@@ -186,7 +189,11 @@ def main():
             if len(r_products[key]) > 1:
                 exts = sorted(map(lambda x: os.path.splitext(x)[1], r_products[key]))
                 if len(exts) != len(set(exts)):
-                    print("product has multiple remediations of the same type: %s - %s" % (key, ','.join(r_products[key])), file=sys.stderr)
+                    all_fixes = ','.join(r_products[key])
+                    msg = "Product {0} has multiple remediations of the same type "
+                    msg += "in rule {1}: {2}"
+                    msg = msg.format(key, rule_id, all_fixes)
+                    print(msg, file=sys.stderr)
 
         rule_obj['remediation_products'] = r_products
 
