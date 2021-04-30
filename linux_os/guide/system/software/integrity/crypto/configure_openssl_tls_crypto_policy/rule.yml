@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure OpenSSL library to use TLS Encryption'
+
+description: |-
+    Crypto Policies are means of enforcing certain cryptographic settings for
+    selected applications including OpenSSL. OpenSSL is by default configured to
+    modify its configuration based on currently configured Crypto Policy.
+    However, in certain cases it might be needed to override the Crypto Policy
+    specific to OpenSSL and leave rest of the Crypto Policy intact.
+
+rationale: |-
+    Without cryptographic integrity protections, information can be altered by
+    unauthorized users without detection.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84255-9
+
+references:
+    nist: AC-17(2)
+    srg: SRG-OS-000250-GPOS-00093
+    stigid@rhel8: RHEL-08-010294
+
+ocil_clause: 'cryptographic policy for openssl is not configured or is configured incorrectly'
+
+ocil: |-
+    To verify if the OpenSSL uses defined TLS Crypto Policy, run:
+    <pre>$ grep 'MinProtocol' /etc/crypto-policies/back-ends/opensslcnf.config | tail -n 1</pre>
+    and verify that the line matches
+    <pre>MinProtocol = TLSv1.2</pre>
