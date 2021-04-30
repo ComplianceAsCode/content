@@ -9,7 +9,6 @@ import sys
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
-from .products import get_product_yaml
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .yaml import open_raw
@@ -25,10 +24,8 @@ class ProductCPEs(object):
     and provides them in a structured way.
     """
 
-    def __init__(self, product):
-        self.ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-        self.product_yaml = get_product_yaml(self.ssg_root, product)
+    def __init__(self, product_yaml):
+        self.product_yaml = product_yaml
 
         self.cpes_by_id = {}
         self.cpes_by_name = {}
@@ -57,7 +54,7 @@ class ProductCPEs(object):
         cpes_root = required_key(self.product_yaml, "cpes_root")
         # we have to "absolutize" the paths the right way, relative to the product_yaml path
         if not os.path.isabs(cpes_root):
-            cpes_root = os.path.join(self.ssg_root, self.product_yaml["product"], cpes_root)
+            cpes_root = os.path.join(self.product_yaml["product_dir"], cpes_root)
 
         for dir_item in sorted(os.listdir(cpes_root)):
             dir_item_path = os.path.join(cpes_root, dir_item)

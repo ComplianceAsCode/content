@@ -11,7 +11,7 @@ import codecs
 import ssg.build_remediations as remediation
 import ssg.rules
 import ssg.jinja
-import ssg.yaml
+import ssg.environment
 import ssg.utils
 import ssg.xml
 
@@ -49,7 +49,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    env_yaml = ssg.yaml.open_environment(
+    env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
 
     product = ssg.utils.required_key(env_yaml, "product")

@@ -14,7 +14,7 @@ from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from .xml import ElementTree as ET
 from .xml import oval_generated_header
 from .jinja import process_file_with_macros, add_python_functions
-from .yaml import open_environment
+from .environment import open_environment
 from .id_translate import IDTranslator
 
 SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'

@@ -6,6 +6,7 @@ import os
 import sys
 
 import ssg.constants
+import ssg.environment
 import ssg.jinja
 import ssg.oval
 import ssg.rules
@@ -36,7 +37,7 @@ def main():
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
-        env_yaml = ssg.yaml.open_environment(ssg_build_config_yaml, product_yaml_path)
+        env_yaml = ssg.environment.open_environment(ssg_build_config_yaml, product_yaml_path)
         ssg.jinja.add_python_functions(env_yaml)
 
         guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])

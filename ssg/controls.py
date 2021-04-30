@@ -61,7 +61,7 @@ class Control():
                     if rule_yaml is None:
                         # item not found in benchmark_root
                         continue
-                    rule = ssg.build_yaml.Rule.from_yaml(rule_yaml)
+                    rule = ssg.build_yaml.Rule.from_yaml(rule_yaml, env_yaml)
                     if rule.prodtype == "all" or product in rule.prodtype:
                         control.rules.append(item)
                     else:

@@ -7,10 +7,9 @@ import os
 import os.path
 import sys
 
-import ssg.build_cpe
 import ssg.build_yaml
 import ssg.utils
-import ssg.yaml
+import ssg.environment
 
 
 def parse_args():
@@ -45,7 +44,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    env_yaml = ssg.yaml.open_environment(
+    env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
@@ -75,8 +74,7 @@ def main():
         p.validate_rules(loader.all_rules, loader.all_groups)
         p.validate_refine_rules(loader.all_rules)
 
-    product_cpes = ssg.build_cpe.ProductCPEs(env_yaml["product"])
-    loader.export_group_to_file(args.output, product_cpes)
+    loader.export_group_to_file(args.output)
 
 
 if __name__ == "__main__":

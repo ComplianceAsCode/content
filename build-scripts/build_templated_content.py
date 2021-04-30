@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 import argparse
 
-import ssg.yaml
+import ssg.environment
 import ssg.templates
 
 
@@ -48,7 +48,7 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
-    env_yaml = ssg.yaml.open_environment(
+    env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
     builder = ssg.templates.Builder(
         env_yaml, args.resolved_rules_dir, args.templates_dir,

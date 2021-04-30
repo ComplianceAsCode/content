@@ -13,6 +13,7 @@ from ssg.build_cpe import ProductCPEs
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
+from ssg.products import load_product_yaml
 from ssg_test_suite.log import LogHelper
 
 Scenario_run = namedtuple(
@@ -161,6 +162,7 @@ def _run_cmd(command_list, verbose_path, env=None):
 
 
 def _get_platform_cpes(platform):
+    ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     if platform.startswith("multi_platform_"):
         try:
             products = MULTI_PLATFORM_MAPPING[platform]
@@ -171,7 +173,9 @@ def _get_platform_cpes(platform):
             raise ValueError
         platform_cpes = set()
         for p in products:
-            p_cpes = ProductCPEs(p)
+            product_yaml_path = os.path.join(ssg_root, p, "product.yml")
+            product_yaml = load_product_yaml(product_yaml_path)
+            p_cpes = ProductCPEs(product_yaml)
             platform_cpes |= set(p_cpes.get_product_cpe_names())
         return platform_cpes
     else:
@@ -183,7 +187,9 @@ def _get_platform_cpes(platform):
                 "Unknown product name: %s is not from %s"
                 % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
             raise ValueError
-        product_cpes = ProductCPEs(product)
+        product_yaml_path = os.path.join(ssg_root, product, "product.yml")
+        product_yaml = load_product_yaml(product_yaml_path)
+        product_cpes = ProductCPEs(product_yaml)
         platform_cpes = set(product_cpes.get_product_cpe_names())
         return platform_cpes
 
