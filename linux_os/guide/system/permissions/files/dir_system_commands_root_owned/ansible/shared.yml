@@ -1,0 +1,14 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+-  name: "Set ownership of directories that contain system commands to root"
+   file: 
+     path: "{{ item }}"
+     owner: "root"
+     recurse: "yes"
+     state: "directory"
+     follow: "no"
+   with_items: [ '/bin','/sbin','/usr/bin','usr/sbin','usr/local/bin','/usr/local/sbin'  ]
