@@ -1,0 +1,8 @@
+# platform = multi_platform_sle
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_audit_augenrules_add_watch_rule(path='/var/log/btmp', permissions='wa', key='session') }}}
+{{{ ansible_audit_auditctl_add_watch_rule(path='/var/log/btmp', permissions='wa', key='session') }}}
