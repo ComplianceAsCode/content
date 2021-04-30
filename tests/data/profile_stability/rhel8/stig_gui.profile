@@ -92,6 +92,7 @@ selections:
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_openssl_crypto_policy
+- configure_openssl_tls_crypto_policy
 - configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
