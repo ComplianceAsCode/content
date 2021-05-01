@@ -255,6 +255,10 @@ set_no_derivatives_options() {
 	if grep -q 'rhel\(6\|7\)' <<< "${_arg_product[*]}"; then
 		CMAKE_OPTIONS+=("-DSSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED:BOOL=OFF")
 	fi
+
+	if grep -q 'rhel\(8\)' <<< "${_arg_product[*]}"; then
+		CMAKE_OPTIONS+=("-DSSG_ROCKY_LINUX_DERIVATIVES_ENABLED:BOOL=OFF")
+	fi
 }
 
 set_explict_build_targets() {
