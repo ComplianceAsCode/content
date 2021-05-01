@@ -224,6 +224,11 @@ RHEL_SL_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
 }
 
+RHEL_ROCKY_CPE_MAPPING = {
+    "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:rocky:rocky:8",
+}
+
+
 CENTOS_NOTICE = \
     "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
     "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
@@ -287,6 +292,47 @@ SL_NOTICE = \
     "</ul>\n" \
     "\n" \
     "<p>Members of the <i>Scientifc Linux</i> community are invited to participate in " \
+    "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
+    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "SCAP Security Guide</a> development. Bug reports and patches " \
+    "can be sent to GitHub: " \
+    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "https://github.com/OpenSCAP/scap-security-guide</a>. " \
+    "The mailing list is at " \
+    "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
+    "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
+    ".</p>" \
+    "</div>"
+
+
+ROCKY_NOTICE = \
+    "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" \
+    "<p>This benchmark is a direct port of a <i>SCAP Security Guide </i> " \
+    "benchmark developed for <i>Red Hat Enterprise Linux</i>. It has been " \
+    "modified through an automated process to remove specific dependencies " \
+    "on <i>Red Hat Enterprise Linux</i> and to function with <i>Rocky Linux</i>. " \
+    "The result is a generally useful <i>SCAP Security Guide</i> benchmark " \
+    "with the following caveats:</p>\n" \
+    "<ul>\n" \
+    "<li><i>Rocky Linux</i> is not an exact copy of " \
+    "<i>Red Hat Enterprise Linux</i>. Rocky Linux is a Linux distribution " \
+    "produced by the <i>Rocky Enterprise Software Foundation</i>. It is a free and " \
+    "open source operating system based on <i>Red Hat Enterprise Linux</i> and aims " \
+    "to be \"as close to the commercial enterprise distribution as we can get it.\" " \
+    "There may be configuration differences that produce false positives and/or " \
+    "false negatives. If this occurs please file a bug report.</li>\n" \
+    "\n" \
+    "<li><i>Rocky Linux</i> is derived from the free and open source software " \
+    "made available by Red Hat, but it is not produced, maintained or supported by <i>Red Hat</i>. " \
+    "<i>Rocky Linux</i> has its own build system, compiler options, patchsets, " \
+    "and is a community supported, non-commercial operating system. " \
+    "<i>Rocky Linux</i> does not inherit " \
+    "certifications or evaluations from <i>Red Hat Enterprise Linux</i>. As " \
+    "such, some configuration rules (such as those requiring " \
+    "<i>FIPS 140-2</i> encryption) will continue to fail on <i>Rocky Linux</i>.</li>\n" \
+    "</ul>\n" \
+    "\n" \
+    "<p>Members of the <i>Rocky Linux</i> community are invited to participate in " \
     "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
     "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
     "SCAP Security Guide</a> development. Bug reports and patches " \

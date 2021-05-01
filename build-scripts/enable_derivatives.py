@@ -28,7 +28,9 @@ oval_ns = ssg.constants.oval_namespace
 
 CENTOS_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.CENTOS_NOTICE)
 SL_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.SL_NOTICE)
+ROCKY_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.ROCKY_NOTICE)
 
+ROCKY_WARNING = 'rocky_warning'
 CENTOS_WARNING = 'centos_warning'
 SL_WARNING = 'sl_warning'
 
@@ -36,6 +38,8 @@ SL_WARNING = 'sl_warning'
 def parse_args():
     usage = "usage: %prog [options]"
     parser = OptionParser(usage=usage)
+    parser.add_option("--enable-rocky", dest="rocky", default=False,
+                      action="store_true", help="Enable Rocky Linux")
     parser.add_option("--enable-centos", dest="centos", default=False,
                       action="store_true", help="Enable CentOS")
     parser.add_option("--enable-sl", dest="sl", default=False,
@@ -49,9 +53,9 @@ def parse_args():
                       action="store", help="ID naming scheme")
     (options, args) = parser.parse_args()
 
-    if options.centos and options.sl:
+    if options.centos + options.sl + options.rocky >= 2:
         sys.stderr.write(
-            "Cannot enable two derivative OS(s) at the same time\n"
+            "Cannot enable two or more derivative OS(s) at the same time\n"
         )
         parser.print_help()
         sys.exit(1)
@@ -78,6 +82,12 @@ def main():
         notice = SL_NOTICE_ELEMENT
         warning = SL_WARNING
         derivative = "Scientific Linux"
+
+    if options.rocky:
+        mapping = ssg.constants.RHEL_ROCKY_CPE_MAPPING
+        notice = ROCKY_NOTICE_ELEMENT
+        warning = ROCKY_WARNING
+        derivative = "Rocky Linux"
 
     tree = ssg.xml.open_xml(options.input_content)
     root = tree.getroot()
