@@ -25,6 +25,13 @@
         test_ref="test_package_gpgkey-{{{ centos_pkg_version }}}-{{{ centos_pkg_release }}}_installed" />
       </criteria>
       {{%- endif %}}
+      {{%- if rocky_major_version %}}
+      <criteria comment="Rocky Linux Vendor Keys" operator="AND">
+        <extend_definition comment="Rocky Linux {{{ rocky_major_version }}} installed" definition_ref="installed_OS_is_rocky{{{ rocky_major_version }}}" />
+        <criterion comment="package gpg-pubkey-{{{ rocky_pkg_version }}}-{{{ rocky_pkg_release }}} is installed"
+        test_ref="test_package_gpgkey-{{{ rocky_pkg_version }}}-{{{ rocky_pkg_release }}}_installed" />
+      </criteria>
+      {{%- endif %}}
     </criteria>
   </definition>
 
@@ -74,5 +81,19 @@
   </linux:rpminfo_state>
   {{%- endif %}}
 
+  {{%- if rocky_major_version %}}
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-{{{ rocky_pkg_version }}}-{{{ rocky_pkg_release }}}_installed" version="1"
+  comment="Rocky Linux {{{ rocky_major_version }}} key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-{{{ rocky_pkg_version }}}-{{{ rocky_pkg_release }}}" />
+  </linux:rpminfo_test>
+  
+  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ rocky_pkg_version }}}-{{{ rocky_pkg_release }}}" version="1">
+    <linux:release>{{{ rocky_pkg_release }}}</linux:release>
+    <linux:version>{{{ rocky_pkg_version }}}</linux:version>
+  </linux:rpminfo_state>
+  {{%- endif %}}
+  
 </def-group>
 {{% endif %}}
