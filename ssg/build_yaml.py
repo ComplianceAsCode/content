@@ -1007,13 +1007,22 @@ class Group(object):
             if hasattr(obj, attr) and getattr(obj, attr) is None:
                 setattr(obj, attr, getattr(self, attr))
 
-    def add_rule(self, rule):
+    def add_rule(self, rule, env_yaml=None):
         if rule is None:
             return
         if self.platforms and not rule.platforms:
             rule.platforms = self.platforms
         self.rules[rule.id_] = rule
         self._pass_our_properties_on_to(rule)
+
+        # Once the rule has inherited properties, update cpe_names
+        if env_yaml:
+            for platform in rule.platforms:
+                try:
+                    rule.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
+                except CPEDoesNotExist:
+                    print("Unsupported platform '%s' in rule '%s'." % (platform, rule.id_))
+                    raise
 
     def __str__(self):
         return self.id_
@@ -1529,7 +1538,7 @@ class BuildLoader(DirectoryLoader):
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue
             self.all_rules.add(rule)
-            self.loaded_group.add_rule(rule)
+            self.loaded_group.add_rule(rule, env_yaml=self.env_yaml)
 
             if self.loaded_group.platforms:
                 rule.inherited_platforms += self.loaded_group.platforms
