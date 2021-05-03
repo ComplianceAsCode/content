@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import sys
 
+from .build_yaml import ProfileWithInlinePolicies
 from .xml import ElementTree
 from .constants import XCCDF11_NS as xccdf_ns
 from .constants import oval_namespace as oval_ns
@@ -16,6 +17,20 @@ from .constants import cce_uri
 from .constants import ssg_version_uri
 from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns, ospp_ns, cui_ns
 console_width = 80
+
+
+def make_name_to_profile_mapping(profile_files, env_yaml):
+    name_to_profile = {}
+    for f in profile_files:
+        try:
+            p = ProfileWithInlinePolicies.from_yaml(f, env_yaml)
+            name_to_profile[p.id_] = p
+        except Exception as exc:
+            # The profile is probably doc-incomplete
+            msg = "Not building profile from {fname}: {err}".format(
+                fname=f, err=str(exc))
+            print(msg, file=sys.stderr)
+    return name_to_profile
 
 
 class RuleStats(object):
