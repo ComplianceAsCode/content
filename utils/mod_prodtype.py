@@ -49,7 +49,7 @@ def list_products(rule_obj):
         print("Empty listed prodtype in the file")
 
 
-def add_products(rule_obj, products):
+def add_products(rule_obj, products, silent=False):
     yaml_file, yaml_contents = ssg.rule_yaml.get_yaml_contents(rule_obj)
     prodtype_section = ssg.rule_yaml.get_section_lines(yaml_file, yaml_contents, 'prodtype')
 
@@ -66,7 +66,8 @@ def add_products(rule_obj, products):
 
         start_line = doc_complete_section[1]+1
 
-        print("Current prodtype is empty, not adding the new prodtype.")
+        if not silent:
+            print("Current prodtype is empty, not adding the new prodtype.")
     else:
         prodtype_contents = ssg.rule_yaml.parse_from_yaml(yaml_contents, prodtype_section)
         prodtype = prodtype_contents['prodtype']
@@ -75,8 +76,9 @@ def add_products(rule_obj, products):
         new_prodtype.update(products)
         new_prodtype_str = ','.join(sorted(new_prodtype))
 
-        print("Current prodtype: %s" % prodtype)
-        print("New prodtype: %s" % new_prodtype_str)
+        print("Modifying %s:" % yaml_file)
+        print("  Current prodtype: %s" % prodtype)
+        print("  New prodtype: %s" % new_prodtype_str)
 
         yaml_contents = ssg.rule_yaml.update_key_value(yaml_contents, 'prodtype',
                                                        prodtype, new_prodtype_str)
