@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R1
+    version: V1R2
     SMEs:
         - carlosmmatos
 
@@ -11,7 +11,7 @@ title: 'DISA STIG with GUI for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R1.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R2.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
