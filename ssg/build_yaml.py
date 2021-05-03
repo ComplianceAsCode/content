@@ -998,7 +998,7 @@ class Group(object):
                 try:
                     group.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
                 except CPEDoesNotExist:
-                    print("Unsupported platform '%s' in group '%s'." % (platform, self.id_))
+                    print("Unsupported platform '%s' in group '%s'." % (platform, group.id_))
                     raise
 
 
