@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import os
 from collections import namedtuple
+from glob import glob
 
 from .build_cpe import ProductCPEs
 from .constants import (product_directories,
@@ -10,7 +11,7 @@ from .constants import (product_directories,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE)
-from .utils import merge_dicts
+from .utils import merge_dicts, required_key
 from .yaml import open_raw
 
 
@@ -94,3 +95,13 @@ def get_all(ssg_root):
 
     products = namedtuple('products', ['linux', 'other'])
     return products(linux_products, other_products)
+
+
+def get_profile_files_from_root(env_yaml, product_yaml):
+    profile_files = []
+    if env_yaml:
+        base_dir = os.path.dirname(product_yaml)
+        profiles_root = required_key(env_yaml, "profiles_root")
+        profile_files = sorted(glob("{base_dir}/{profiles_root}/*.profile"
+                               .format(profiles_root=profiles_root, base_dir=base_dir)))
+    return profile_files

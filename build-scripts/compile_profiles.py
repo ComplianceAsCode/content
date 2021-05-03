@@ -6,8 +6,10 @@ import sys
 import os.path
 from glob import glob
 
+import ssg.build_profile
 import ssg.build_yaml
 import ssg.controls
+import ssg.products
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -36,36 +38,12 @@ def create_parser():
     return parser
 
 
-def make_name_to_profile_mapping(profile_files, env_yaml):
-    name_to_profile = {}
-    for f in profile_files:
-        try:
-            p = ssg.build_yaml.ProfileWithInlinePolicies.from_yaml(f, env_yaml)
-            name_to_profile[p.id_] = p
-        except Exception as exc:
-            # The profile is probably doc-incomplete
-            msg = "Not building profile from {fname}: {err}".format(
-                fname=f, err=str(exc))
-            print(msg, file=sys.stderr)
-    return name_to_profile
-
-
 def get_env_yaml(build_config_yaml, product_yaml):
     if build_config_yaml is None or product_yaml is None:
         return None
 
     env_yaml = ssg.environment.open_environment(build_config_yaml, product_yaml)
     return env_yaml
-
-
-def get_profile_files_from_root(env_yaml, product_yaml):
-    profile_files = []
-    if env_yaml:
-        base_dir = os.path.dirname(product_yaml)
-        profiles_root = ssg.utils.required_key(env_yaml, "profiles_root")
-        profile_files = sorted(glob("{base_dir}/{profiles_root}/*.profile"
-                             .format(profiles_root=profiles_root, base_dir=base_dir)))
-    return profile_files
 
 
 def main():
@@ -84,9 +62,9 @@ def main():
         controls_manager = ssg.controls.ControlsManager(args.controls_dir, env_yaml)
         controls_manager.load()
 
-    profile_files = get_profile_files_from_root(env_yaml, args.product_yaml)
+    profile_files = ssg.products.get_profile_files_from_root(env_yaml, args.product_yaml)
     profile_files.extend(args.profile_file)
-    profiles = make_name_to_profile_mapping(profile_files, env_yaml)
+    profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml)
     for pname in profiles:
         profiles[pname].resolve(profiles, controls_manager)
 
