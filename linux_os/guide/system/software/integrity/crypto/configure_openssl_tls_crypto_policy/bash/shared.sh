@@ -1,10 +1,19 @@
-# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 8
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
 
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
-
-CONFIG_FILE=/etc/crypto-policies/back-ends/opensslcnf.config
-
-replace_or_append "$CONFIG_FILE" '^MinProtocol' 'TLSv1.2' '@CCENUM@'
-
-update-crypto-policies
+{{{ set_config_file(
+        path="/etc/crypto-policies/back-ends/opensslcnf.config",
+        parameter="MinProtocol",
+        value="TLSv1.2",
+        create=true,
+        insert_after="",
+        insert_before="",
+        insensitive=false,
+        separator="=",
+        separator_regex="\s*=\s*",
+        prefix_regex="^"
+	)
+}}}

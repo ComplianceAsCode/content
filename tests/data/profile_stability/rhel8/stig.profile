@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R1.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R2.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes

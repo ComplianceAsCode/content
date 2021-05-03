@@ -4,13 +4,14 @@
 # complexity = low
 # disruption = low
 
-- name: "Ensure system crypto policy has OpenSSL library using TLS encryption"
-  lineinfile:
-    path: "/etc/crypto-policies/back-ends/opensslcnf.config"
-    line: "MinProtocol = TLSv1.2"
-    create: yes
-    insertafter: EOF
-
-- name: "Update system crypto policy for changes to take effect"
-  command:
-    cmd: "update-crypto-policies"
+{{{ ansible_set_config_file(
+        msg='Ensure system crypto policy has OpenSSL library using TLS encryption',
+        file='/etc/crypto-policies/back-ends/opensslcnf.config',
+        parameter="MinProtocol",
+        value='TLSv1.2',
+        create='yes',
+        separator="=",
+        separator_regex="\s*=\s*",
+        prefix_regex="^"
+    )
+}}}
