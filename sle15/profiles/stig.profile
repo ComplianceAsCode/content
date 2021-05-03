@@ -215,6 +215,7 @@ selections:
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_min_rounds_logindefs
+    - set_password_hashing_algorithm_commonauth
     - smartcard_configure_ca
     - smartcard_configure_cert_checking
     - smartcard_pam_enabled
