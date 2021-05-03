@@ -153,6 +153,7 @@ selections:
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
     - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_screensaver_mode_blank
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_system_owned_group
     - disable_ctrlaltdel_burstaction
