@@ -264,6 +264,7 @@ selections:
 - sssd_offline_cred_expiration
 - sudo_remove_no_authenticate
 - sudo_remove_nopasswd
+- sudo_restrict_privilege_elevation_to_authorized
 - sudoers_validate_passwd
 - sysctl_crypto_fips_enabled
 - sysctl_fs_protected_hardlinks

@@ -233,6 +233,9 @@ selections:
     # RHEL-08-010381
     - sudo_remove_no_authenticate
 
+    # RHEL-08-010382
+    - sudo_restrict_privilege_elevation_to_authorized
+
     # RHEL-08-010383
     - sudoers_validate_passwd
 

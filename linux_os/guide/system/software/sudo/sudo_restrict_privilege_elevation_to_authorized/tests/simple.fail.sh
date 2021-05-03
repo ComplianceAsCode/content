@@ -1,4 +1,4 @@
-# platform = SUSE Linux Enterprise 15
+#!/bin/bash
 # packages = sudo
 
 echo 'ALL ALL=(ALL) ALL' > /etc/sudoers
