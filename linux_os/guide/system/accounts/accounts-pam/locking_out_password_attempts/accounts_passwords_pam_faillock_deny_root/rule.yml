@@ -55,4 +55,11 @@ ocil: |-
     <pre>$ grep even_deny_root /etc/pam.d/system-auth</pre>
     The output should show <tt>even_deny_root</tt>.
 
+{{% if product == "rhel8" %}}
+platforms:
+    - pam
+    - rhel8_0
+    - rhel8_1
+{{% else %}}
 platform: pam
+{{% endif %}}
