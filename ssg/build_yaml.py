@@ -1091,6 +1091,10 @@ class Rule(object):
                    .format(fname=yaml_file, err=str(exc)))
             raise RuntimeError(msg)
 
+        # platforms are read as list from the yaml file
+        # we need them to convert to set again
+        rule.platforms = set(rule.platforms)
+
         for warning_list in rule.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
