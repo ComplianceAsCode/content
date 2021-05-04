@@ -1044,7 +1044,7 @@ class Rule(object):
     }
 
     PRODUCT_REFERENCES = ("stigid", "cis",)
-    GLOBAL_REFERENCES = ("srg", "disa", "cis-csc",)
+    GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
 
     def __init__(self, id_):
         self.id_ = id_
