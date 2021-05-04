@@ -76,11 +76,11 @@ If customizing content via SCAP Workbench, or directly writing your
 tailoring XML, use `utils/regexify_banner.py` to generate the
 appropriate regular expression.
 
-## Modifying `rule.yml` files
+## Modifying rule directory content files
 
-Several utilities discussed below for automatically modifying `rule.yml`
-require information about the existing rules for fast operation. We've
-provided the `utils/rule_dir_json.py` script to build this information.
+All utilities discussed below require information about the existing rules
+for fast operation. We've provided the `utils/rule_dir_json.py` script to
+build this information in a format understood by these scripts.
 
 To execute it:
 
@@ -90,9 +90,6 @@ Optionally, provide a path to a CaC root and destination YAML file:
 
     $ ./utils/rule_dir_json.py --root /path/to/ComplianceAsCode/content \
                                --output /tmp/rule_dirs.json
-
-Utilities that require `rule_dirs.json` to exist and be up-to-date will be
-notated below.
 
 ### `utils/fix_rules.py` -- automatically fix-up rules
 
@@ -239,3 +236,96 @@ For an example of `replace`:
 For an example of `remove`:
 
     $ ./utils/mod_prodtype.py accounts_passwords_pam_tally2 remove ubuntu1604 ubuntu1804 ubuntu2004
+
+### `utils/mod_checks.py` and `utils/mod_fixes.py` -- programmatically modify check and fix applicability
+
+These two utilities have identical usage. Both modifies the platform/product
+applicability of various files (either OVAL or hardening content), similar to
+`utils/mod_prodtype.py` above. They supports the following sub-commands:
+
+ - `add`: add the given platform(s) to the specified rule's OVAL check.
+   **Note**: Only applies to shared content.
+ - `list`: list the given OVAL(s) and the products that apply to them; empty
+   if product-independent.
+ - `remove`: remove the given platform(s) from the specified rule's OVAL check.
+   **Note**: Only applies to shared content.
+ - `replace`: perform a pattern-match replacement on the specified rule's
+   platform applicability. **Note**: Only applies to shared content.
+ - `diff`: perform a textual diff between content for the specified products.
+ - `delete`: remove an OVAL for the specified product.
+ - `make_shared`: move a product-specific OVAL into a shared OVAL.
+
+To execute:
+
+    $ ./utils/mod_checks.py <rule_id> <command> [...other arguments...]
+    $ ./utils/mod_fixes.py <rule_id> <type> <command> [...other arguments...]
+
+For an example of `add`:
+
+    $ ./utils/mod_checks.py clean_components_post_updating add multi_platform_sle
+    $ ./utils/mod_fixes.py clean_components_post_updating bash add multi_platform_sle
+
+For an example of `list`:
+
+    $ ./utils/mod_checks.py clean_components_post_updating list
+    $ ./utils/mod_fixes.py clean_components_post_updating ansible list
+
+For an example of `remove`:
+
+    $ ./utils/mod_checks.py file_permissions_local_var_log_messages remove multi_platform_sle
+    $ ./utils/mod_fixes.py file_permissions_local_var_log_messages bash remove multi_platform_sle
+
+For an example of `replace`:
+
+    $ ./utils/mod_checks.py file_permissions_local_var_log_messages replace multi_platform_sle~multi_platform_sle,multi_platform_ubuntu
+    $ ./utils/mod_fixes.py file_permissions_local_var_log_messages bash replace multi_platform_sle~multi_platform_sle,multi_platform_ubuntu
+
+For an example of `diff`:
+
+    $ ./utils/mod_checks.py clean_components_post_updating diff sle12 sle15
+    $ ./utils/mod_fixes.py clean_components_post_updating bash diff sle12 sle15
+
+For an example of `delete`:
+
+    $ ./utils/mod_checks.py clean_components_post_updating delete sle12
+    $ ./utils/mod_fixes.py clean_components_post_updating bash delete sle12
+
+For an example of `make_shared`:
+
+    $ ./utils/mod_checks.py clean_components_post_updating make_shared sle12
+    $ ./utils/mod_fixes.py clean_components_post_updating bash make_shared sle12
+
+### `utils/rule_dir_diff.py` and `utils/rule_dir_stats.py` -- comparison of rule directories
+
+`utils/rule_dir_stats.py` is a utility for extracting various statistics out
+of the `rule_dir.json` file. `utils/rule_dir_diff.py` is its counterpart,
+operating on two separate JSON blobs, presumably at different points in time
+or from different content trees. They support the following arguments which
+affect output:
+
+ - `--products`: limit results to only the specified product(s)
+ - `--strict`: enforce product applicability strictly on the `rule.yml`
+   level, discarding results from rules which lack specified product in the
+   `rule.yml` file.
+ - `--missing`: List rules which are missing OVALs or fixes.
+ - `--two-plus`: List rules which have two or more OVALs or fixes.
+ - `--prodtypes`: List rules which have different prodtypes/platform
+   applicability between `rule.yml` and its OVALs/fixes.
+ - `--product-names`: List rules which have product-specific names (e.g.,
+   a `sle15.xml` with `multi_platform_sle` applicability.
+ - `--introspect`: Dump raw objects for explicitly queried rules.
+ - `--unassociated`: Search for rules without any product association (e.g.,
+   missing or empty prodtype).
+ - `--ovals-only`: Only output information about OVALs.
+ - `--fixes-only`: Only output information about fixes.
+ - `--summary-only`: Only output summary information.
+
+Options specific to `utils/rule_dir_stats.py`:
+
+ - `--left`: old JSON artifact; displayed on the left of diffs.
+ - `--right`: new JSON artifact; displayed on the right of diffs.
+
+To execute:
+
+    $ ./utils/rule_dir_stats.py [...any options...]
+    $ ./utils/rule_dir_diff.py [...any options...]
