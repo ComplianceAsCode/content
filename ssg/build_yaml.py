@@ -1232,9 +1232,13 @@ class Rule(object):
             label = full_label.split("@")[0]
 
             if label in Rule.GLOBAL_REFERENCES:
-                raise ValueError(
-                    "You cannot use product-qualified for '{item_u}' reference. Please remove the product-qualifier and merge values with existing reference. Original line: {item_q}: {value_q}"
-                    .format(item_u=label, item_q=full_label, value_q=value))
+                msg = (
+                    "You cannot use product-qualified for the '{item_u}' reference. "
+                    "Please remove the product-qualifier and merge values with "
+                    "the existing reference. Original line: {item_q}: {value_q}"
+                    .format(item_u=label, item_q=full_label, value_q=value)
+                )
+                raise ValueError(msg)
 
             if label in items_dict and not allow_overwrites and value != items_dict[label]:
                 msg = (
