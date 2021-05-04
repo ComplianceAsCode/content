@@ -28,7 +28,8 @@ REMEDIATION_TO_EXT_MAP = {
 }
 
 PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
-    'apt_get': 'dpkg-query -s {0} &>/dev/null',
+    'apt_get': "dpkg-query --show --showformat='${{db:Status-Status}}\\n' '{0}' 2>/dev/null " +
+               "| grep -q installed",
     'dnf': 'rpm --quiet -q {0}',
     'yum': 'rpm --quiet -q {0}',
     'zypper': 'rpm --quiet -q {0}',
