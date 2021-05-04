@@ -118,7 +118,12 @@ def applicable_platforms(oval_file, oval_version_string=None):
 
     body = process_file_with_macros(oval_file, subst_dict)
 
-    oval_tree = ET.fromstring(header + body + footer)
+    try:
+        oval_tree = ET.fromstring(header + body + footer)
+    except Exception as e:
+        msg = "Error while loading " + oval_file
+        print(msg, file=sys.stderr)
+        raise e
 
     element_path = "./{%s}def-group/{%s}definition/{%s}metadata/{%s}affected/{%s}platform"
     element_ns_path = element_path % (ovalns, ovalns, ovalns, ovalns, ovalns)
