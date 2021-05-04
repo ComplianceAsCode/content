@@ -429,7 +429,8 @@ rules and checks implemented yet.
 
 For each control we will add the `automated` key, which describes whether the
 control requirement can be automated by SCAP and scanning. Possible values are:
-`yes`, `no`, `partially`.
+`yes`, `no`, `partially`. The `automated` key is just for informational purposes
+and does not have any impact on the processing.
 
 When XCCDF rules exist, we will assign them to the controls. We will distinguish
 between XCCDF rules which directly implement the given controls (represented by
@@ -470,7 +471,7 @@ controls:
       The features configured at the level of launched services
       should be limited to the strict minimum.
     automated: no
-    note: |- 
+    note: |-
       This is individual depending on the system workload
       therefore needs to be audited manually.
     related_rules:
@@ -540,6 +541,8 @@ controls:
 
 ### Controls file format
 
+This is a complete schema of the YAML file format.
+
 ```
 id: policy ID (required key)
 title: short title (required key)
@@ -556,6 +559,71 @@ controls: a list of controls (required key)
     related_rules: a list of related rules
     note: a short paragraph of text
     controls: a nested list of controls
+```
+
+Full example of a controls file:
+
+```
+id: abcd
+title: ABCD Benchmark for securing Linux systems
+source: https://www.abcd.com/linux.pdf
+levels:
+  - low
+  - high
+controls:
+  - id: R1
+    level: low
+    title: User session timeout
+    description: >-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    automated: yes
+    rules:
+    - sshd_set_idle_timeout
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+    - configure_crypto_policy
+    notes: >-
+      Certain period of inactivity is vague.
+  - id: R2
+    title: Minimization of configuration
+    description: >-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+    automated: no
+    note: >-
+      This is individual depending on the system workload
+      therefore needs to be audited manually.
+    related_rules:
+       - systemd_target_multi_user
+  - id: R3
+    title: Enabling SELinux targeted Policy
+    description: >-
+      It is recommended to enable SELinux in enforcing mode
+      and to use the targeted policy.
+    automated: yes
+    rules:
+      - selinux_state
+  - id: R4
+    title: Configure authentication
+    description: >-
+      Ensure authentication methods are functional to prevent
+      unauthorized access to the system.
+    controls:
+      - id: R4.a
+        title: Disable administrator accounts
+        automated: yes
+        level: low
+        rules:
+          -  accounts_passwords_pam_faillock_deny_root
+      - id: R4.b
+        title: Enforce password quality standards
+        automated: yes
+        level: high
+        rules:
+          - accounts_password_pam_minlen
+          - accounts_password_pam_ocredit
+          - var_password_pam_ocredit=1
 ```
 
 ### Using controls in profiles
@@ -612,7 +680,8 @@ which contains XCCDF rules and variables from all controls selected in profile
 YAML.
 
 The build system adds all XCCDF rules listed under `rules` key in the control to
-the built profile. The rules listed under `related_rules` key are not be added.
+the built profile. The rules listed under `related_rules` key are not added.
+Therefore, the `related_rules` don't affect the generated source data stream.
 Also, the selections from `selection` key in profile file are included.
 
 In our example, the generated profile will contain rules
