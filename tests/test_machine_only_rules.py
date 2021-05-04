@@ -30,6 +30,8 @@ def check_product(build_dir, product, rules_dirs):
     ds_path = os.path.join(build_dir, "ssg-" + product + "-ds.xml")
     if not check_ds(ds_path, "groups", input_groups):
         return False
+    if not check_ds(ds_path, "rules", input_rules):
+        return False
     return True
 
 
@@ -59,10 +61,13 @@ def check_ds(ds_path, what, input_elems):
             idref = p.get("idref")
             if idref == machine_cpe:
                 machine_platform = True
-        if not machine_platform:
-            sys.stderr.write("%s %s in %s is missing <platform> element" %
+        # If the rule already has any platform,
+        # it is not required to inherit machine CPE from its parent group
+        if not platforms and not machine_platform:
+            sys.stderr.write("\n%s %s in %s is missing <platform> element" %
                              (what, elem_short_id, ds_path))
             return False
+
     return True
 
 
