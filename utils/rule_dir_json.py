@@ -37,7 +37,14 @@ def walk_products(root, all_products):
     all_rule_dirs = []
     product_yamls = {}
 
-    for product in all_products:
+    # There is a one-to-many mapping of guide_dir->product. This means that
+    # we first need to walk all products, gather their guide_dirs, and then
+    # come back and walk the guide_dirs so we have a complete list of products
+    # to evaluate each under.
+    product_to_guide = dict()
+    guide_to_products = defaultdict(set)
+
+    for product in sorted(all_products):
         product_dir = os.path.join(root, product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.products.load_product_yaml(product_yaml_path)
@@ -46,13 +53,29 @@ def walk_products(root, all_products):
         guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
         guide_dir = os.path.abspath(guide_dir)
 
-        additional_content_directories = product_yaml.get("additional_content_directories", [])
-        add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+        product_to_guide[product] = guide_dir
+        guide_to_products[guide_dir].add(product)
 
-        for cur_dir in [guide_dir] + add_content_dirs:
+    for product in sorted(all_products):
+        product_dir = os.path.join(root, product)
+        product_yaml = product_yamls[product]
+        guide_dir = product_to_guide[product]
+
+        potential_products = list(guide_to_products[guide_dir])
+        if guide_dir not in visited_dirs:
+            for rule_id, rule_dir in collect_rule_ids_and_dirs(guide_dir):
+                all_rule_dirs.append((rule_id, rule_dir, guide_dir, potential_products))
+            visited_dirs.add(guide_dir)
+
+        additional_content_directories = product_yaml.get("additional_content_directories", [])
+        if not additional_content_directories:
+            continue
+
+        for add_content_dirs in additional_content_directories:
+            cur_dir = os.path.abspath(os.path.join(product_dir, add_content_dirs))
             if cur_dir not in visited_dirs:
                 for rule_id, rule_dir in collect_rule_ids_and_dirs(cur_dir):
-                    all_rule_dirs.append((rule_id, rule_dir, cur_dir, product))
+                    all_rule_dirs.append((rule_id, rule_dir, cur_dir, [product]))
                 visited_dirs.add(cur_dir)
 
     return all_rule_dirs, product_yamls
@@ -158,19 +181,17 @@ def main():
     all_rule_dirs, product_yamls = walk_products(args.root, all_products)
 
     known_rules = {}
-    for rule_id, rule_dir, guide_dir, given_product in all_rule_dirs:
-        product_list = sorted(linux_products)
-        if 'linux_os' not in guide_dir:
-            product_list = [given_product]
-
+    for rule_id, rule_dir, guide_dir, given_products in all_rule_dirs:
         try:
-            rule_obj = handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir)
+            rule_obj = handle_rule_yaml(given_products, product_yamls, rule_id,
+                                        rule_dir, guide_dir)
         except ssg.yaml.DocumentationNotComplete:
             # Happens on non-debug build when a rule is "documentation-incomplete"
             continue
 
-        rule_obj['ovals'], oval_products = handle_ovals(product_list, product_yamls, rule_obj)
-        rule_obj['remediations'], r_products = handle_remediations(product_list, product_yamls, rule_obj)
+        rule_obj['ovals'], oval_products = handle_ovals(given_products, product_yamls, rule_obj)
+        rule_obj['remediations'], r_products = handle_remediations(given_products, product_yamls,
+                                                                   rule_obj)
 
         # Validate oval products
         for key in oval_products:
