@@ -368,20 +368,26 @@ of the format.
 
 ### Storing controls data
 
-When we develop a new SCAP profile, usually we first get a PDF document with a
-policy that consists of controls (requirements). For example NIST 800-53
-controls, ANSSI requirements, CIS Benchmark, etc.
+When we develop a new SCAP profile, we usually base it off an external standard.
+Standard documents define a policy that consists of controls (or requirements).
+For example, the `rhel8/profiles/cis.profile` profile was based off of the CIS
+Benchmark for RHEL 8, published as a PDF document by the CIS organization. This
+document is organized by sections, with each "rule" being a specific piece of
+guidance. For instance, CIS for RHEL 8 1.1.1.1 "Ensure mounting of cramfs
+filesystems is disabled" would map to our `kernel_module_cramfs_disabled` rule.
+Other benchmarks like NIST 800-53 controls, ANSSI requirements, and STIG have
+different organization, specific to their benchmark document.
 
-To add the policy to our project repository, we will create a YAML
-file that represents this policy. There is a special directory, called
-`controls`, in the repository root to store these files. These files serve as a
-database of controls (requirements). They are independent from profiles and
-products. We can extract the interesting data from the PDF and save them in a
-YAML file. We can also create this file manually, or it can be converted from
-some other format (XML, OpenControl) if available and then submitted.
+To add the policy to our project repository, we will create a YAML file that
+represents this policy. There is a special directory, called `controls`, in the
+repository root to store these files. These files serve as a database of
+controls (requirements). They are independent from profiles and products. We can
+extract the relevant data from the standard document and save them in a YAML
+file. Presently, control files are created manually. In the future, automatic
+conversions from XML or OpenControl formats into the YAML control file format
+could be used.
 
-There is a YAML file that represents the whole policy. Initially, the
-YAML file can look like this:
+For example, a YAML control file would look like this:
 
 ```
 $ cat controls/abcd.yml
@@ -409,15 +415,15 @@ controls:
 ```
 
 In the real world, controls (requirements) can be nested. For example, PCI-DSS
-has tree structure, within requirement 2.3 we can find 2.3.a, 2.3.b, etc.
-Therefore, each item in `controls` list can contain a `controls` list.
+has a tree-like structure, within requirement 2.3, we can find 2.3.a, 2.3.b,
+etc. Therefore, each item in `controls` list can contain a `controls` list.
 
-Once we have the file, we can read through the policy requirements and assess
-each requirement. For the controls we will have to identify whether it can be
-automated by SCAP. If yes, we should look if we already have existing XCCDF
-rules in our project. 
+Once we have the initial file, we can read through the policy requirements and
+assess each requirement. For each control, we will have to identify whether it
+can be automated by SCAP. If so, we should look if we already have existing
+XCCDF rules in our project.
 
-For example, let’s say that we identified that:
+In the example below we identified that:
 
 * R1 can be automatically scanned by SCAP and we already have 3 existing rules
 in our repository. However, we want one of them to be selected only on RHEL 9,
@@ -425,7 +431,7 @@ but the rule is applicable to all platforms.
 * R2 is up to manual checking, but we have systemd_target_multi_user which is
 related to this control.
 * R3 can be automatically scanned by SCAP but unfortunately we don’t have any
-rules and checks implemented yet.
+rules implemented yet.
 
 For each control we will add the `automated` key, which describes whether the
 control requirement can be automated by SCAP and scanning. Possible values are:
@@ -437,11 +443,13 @@ between XCCDF rules which directly implement the given controls (represented by
 `rules` YAML key) and rules that are only related or relevant to the control
 (represented by `related_rules` YAML key).
 
-The `rules` and `related_rules` keys consist of a list of rule IDs. If a rule
-needs to be chosen only in some of products despite its `prodtype` we can use
-Jinja macros inside the controls file to choose products.
+The `rules` and `related_rules` keys consist of a list of rule IDs and variable
+selections.
 
-After we finish our analysys, we will insert our findings to the controls file,
+If a rule needs to be chosen only in some of products despite its `prodtype` we
+can use Jinja macros inside the controls file to choose products.
+
+After we finish our analysis, we will insert our findings to the controls file,
 the file will look like this:
 
 ```
@@ -462,7 +470,7 @@ controls:
     - sshd_set_idle_timeout
     - accounts_tmout
     - var_accounts_tmout=10_min
-{{% if product == “rhel9” %}}
+{{% if product == "rhel9" %}}
     - cockpit_session_timeout
 {{% endif %}}
   - id: R2
@@ -484,10 +492,10 @@ controls:
     automated: yes
 ```
 
-Notice that the `rules` key in control R1 references the rules. Therefore we can
-use the controls YAML file to assign references instead of adding references to
-each `rule.yml` file. This isn't implemented at the moment.
-
+Notice that each section identifier is a reference in the standard's benchmark.
+Each of the values under the `rules` key maps onto a rule identifier in the
+project. In the future, we could automatically assign references to rules via
+this control file.
 
 ### Defining levels
 
@@ -495,7 +503,7 @@ Some real world policies, eg. ANSSI, have a concept of levels. This means that
 for some use cases a certain set of requirements is required and for other use
 cases a superset of the previous set is required.
 
-Control files can work with the levels concept.
+Control files can work with the concept of levels.
 
 For example, let's say that ABCD benchmark would define 2 levels: low and high.
 The low level would contain R1 and R2. The high level would contain everything
@@ -503,7 +511,7 @@ from the low level and R3, ie. the high level would contain R1, R2 and R3.
 
 First, add the `levels` key to the YAML file and list the level names from
 lowest to highest. The tools working with the controls file assume that every
-control included in a level are also included in all subseqent levels listed in
+control included in a level are also included in all subsequent levels listed in
 the `levels` list.
 
 Second, add `level` key to every control ID to specify level the control belongs to.
@@ -632,7 +640,7 @@ Later, we can use the policy requirements in profile YAML. Let’s say that we
 will define a “Desktop” profile built from the controls.
 
 To use controls, we add them under `selection` keys in the profile. The entry
-has the form `policy_id:control_id`.
+has the form `policy_id:control_id[:level_id]`, where `level_id` is optional.
 
 ```
 $ cat rhel8/profiles/abcd-desktop.profile
@@ -675,7 +683,7 @@ It is possible to use levels if the levels are defined in the controls file. For
 example, `abcd:all:low` selects all rules for the ABCD low level or
 `abcd:all:high` selects all rules from the ABCD high level.
 
-Finally, when we build the content we will automatically get a SCAP profile
+Finally, when we build the content, we will automatically get a SCAP profile
 which contains XCCDF rules and variables from all controls selected in profile
 YAML.
 
@@ -688,8 +696,10 @@ In our example, the generated profile will contain rules
 `sshd_set_idle_timeout`, `accounts_tmout`, `var_accounts_tmout=10_min` and
 `security_patches_uptodate`. The profile will not contain
 `systemd_target_multi_user` even if control `R2` is selected because that is
-listed under `related_rules`.  The profile will be compiled to a canonical
-form.
+listed under `related_rules`.
+
+The profile will be compiled to a canonical form during the build. The compiled
+profiles are located in the `/build/${PRODUCT_ID}/profiles/` directory.
 
 Example of a compiled profile:
 
@@ -708,8 +718,10 @@ selections:
   - security_patches_uptodate
 ```
 
-We got a profile file that we could create manually and it's used seamleassly to
-build SCAP source data stream containing the profile and other artifacts.
+This profile is similar in content to one we could've created manually, but
+instead is automatically generated during build from a semantic data source. It
+seamlessly integrates with the build system to include the generated profile in
+the resulting SCAP source data stream.
 
 ### Presentation of data
 
