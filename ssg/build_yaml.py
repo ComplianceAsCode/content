@@ -1044,6 +1044,7 @@ class Rule(object):
     }
 
     PRODUCT_REFERENCES = ("stigid", "cis",)
+    GLOBAL_REFERENCES = ("srg", "vmmsrg", "disa", "cis-csc",)
 
     def __init__(self, id_):
         self.id_ = id_
@@ -1225,10 +1226,23 @@ class Rule(object):
                 new_items[full_label] = value
                 continue
 
+            label = full_label.split("@")[0]
+
+            # this test should occur before matching product_suffix with the product qualifier
+            # present in the reference, so it catches problems even for products that are not
+            # being built at the moment
+            if label in Rule.GLOBAL_REFERENCES:
+                msg = (
+                    "You cannot use product-qualified for the '{item_u}' reference. "
+                    "Please remove the product-qualifier and merge values with the "
+                    "existing reference if there is any. Original line: {item_q}: {value_q}"
+                    .format(item_u=label, item_q=full_label, value_q=value)
+                )
+                raise ValueError(msg)
+
             if not full_label.endswith(product_suffix):
                 continue
 
-            label = full_label.split("@")[0]
             if label in items_dict and not allow_overwrites and value != items_dict[label]:
                 msg = (
                     "There is a product-qualified '{item_q}' item, "
