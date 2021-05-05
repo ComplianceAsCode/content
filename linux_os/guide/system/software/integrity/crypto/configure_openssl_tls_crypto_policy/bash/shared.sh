@@ -10,9 +10,9 @@
         value="TLSv1.2",
         create=true,
         insert_after="",
-        insert_before="",
+        insert_before="^MaxProtocol ",
         insensitive=false,
-        separator="=",
+        separator=" = ",
         separator_regex="\s*=\s*",
         prefix_regex="^"
 	)

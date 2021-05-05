@@ -3,4 +3,4 @@
 
 configfile=/etc/crypto-policies/back-ends/opensslcnf.config
 
-echo "Minprotocol =" > "$configfile"
+echo "minnothing =" > "$configfile"

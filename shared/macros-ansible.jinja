@@ -23,7 +23,7 @@ value: "Setting={{ varname1 }}"
 
   Note that all string-like parameters are single quoted in the YAML.
 #}}
-{{%- macro ansible_lineinfile(msg='', path='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='') -%}}
+{{%- macro ansible_lineinfile(msg='', path='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False) -%}}
 - name: "{{{ msg or rule_title }}}"
   lineinfile:
     path: '{{{ path }}}'
@@ -47,6 +47,10 @@ value: "Setting={{ varname1 }}"
     {{%- endif %}}
   {{%- if with_items %}}
   with_items: '{{{ with_items }}}'
+  {{%- endif %}}
+  {{%- if check_mode %}}
+  check_mode: yes
+  changed_when: no
   {{%- endif %}}
   {{%- if register %}}
   register: '{{{ register }}}'
@@ -99,7 +103,8 @@ value: "Setting={{ varname1 }}"
 {{%- if block %}}
 - name: "{{{ msg or rule_title }}}"
   block:
-    {{{ ansible_lineinfile("Deduplicate values from " + path, path, regex=line_regex, new_line=None, create='no', state='absent')|indent }}}
+    {{{ ansible_lineinfile("Check for duplicate values", path, regex=line_regex, new_line=None, create='no', state='absent', register='dupes', check_mode=True)|indent }}}
+    {{{ ansible_lineinfile("Deduplicate values from " + path, path, regex=line_regex, new_line=None, create='no', state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
     {{{ ansible_lineinfile("Insert correct line to " + path, path, regex=None, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
 {{%- else %}}
 {{{ ansible_lineinfile("Deduplicate values from " + path, path, regex=line_regex, new_line=None, create='no', state='absent') }}}
@@ -352,7 +357,7 @@ The following macro remediates one audit watch rule in /etc/audit/audit.rules.
 The macro requires following parameters:
 - path: path to watch
 - permissions: permissions changes to watch for
-- key: key to use as identifier. 
+- key: key to use as identifier.
 #}}
 {{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='') -%}}
 - name: Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
