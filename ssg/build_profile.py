@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import os
 import sys
 
 from .build_yaml import ProfileWithInlinePolicies
@@ -15,7 +16,8 @@ from .constants import puppet_system as puppet_rem_system
 from .constants import anaconda_system as anaconda_rem_system
 from .constants import cce_uri
 from .constants import ssg_version_uri
-from .constants import stig_ns, cis_ns, hipaa_ns, anssi_ns, ospp_ns, cui_ns
+from .constants import stig_ns, cis_ns, generic_stig_ns, hipaa_ns, anssi_ns
+from .constants import ospp_ns, cui_ns, xslt_ns
 console_width = 80
 
 
@@ -69,7 +71,7 @@ class XCCDFBenchmark(object):
     statistics about the profiles contained within it.
     """
 
-    def __init__(self, filepath):
+    def __init__(self, filepath, product=""):
         self.tree = None
         try:
             with open(filepath, 'r') as xccdf_file:
@@ -90,6 +92,24 @@ class XCCDFBenchmark(object):
                 raise RuntimeError("Multiple rules exist with same id attribute: %s!" % rule_id)
 
             self.indexed_rules[rule_id] = rule
+
+        self.cis_ns = cis_ns
+        self.stig_ns = stig_ns
+        if product:
+            constants_path = os.path.join(product, "transforms/constants.xslt")
+            if os.path.exists(constants_path):
+                root = ElementTree.parse(constants_path)
+                cis_var = root.find('./{%s}variable[@name="cisuri"]' % (xslt_ns))
+                if cis_var is not None and cis_var.text:
+                    self.cis_ns = cis_var.text
+
+                stig_var = root.find('./{%s}variable[@name="disa-stigs-uri"]' % (xslt_ns))
+                if stig_var is not None and stig_var.text:
+                    self.stig_ns = stig_var.text
+                elif (stig_var and 'select' in stig_var.attrib and
+                      stig_var.attrib['select'] == '$disa-stigs-os-unix-linux-uri'):
+                    self.stig_ns = generic_stig_ns
+
 
     def get_profile_stats(self, profile):
         """Obtain statistics for the profile"""
@@ -186,9 +206,9 @@ class XCCDFBenchmark(object):
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
                                 (xccdf_ns, cce_uri))
                 stig_id = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, stig_ns))
+                                    (xccdf_ns, self.stig_ns))
                 cis_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, cis_ns))
+                                    (xccdf_ns, self.cis_ns))
                 hipaa_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (xccdf_ns, hipaa_ns))
                 anssi_ref = rule.find("./{%s}reference[@href=\"%s\"]" %

@@ -93,6 +93,9 @@ def parse_args():
     parser_stats.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
+    parser_stats.add_argument("--product", action="store", dest="product",
+                              help="Product directory to evaluate XCCDF under "
+                              "(e.g., ~/scap-security-guide/rhel8)")
     parser_stats.add_argument("--skip-stats", default=False,
                               action="store_true", dest="skip_overall_stats",
                               help="Do not show overall statistics.")
@@ -186,7 +189,7 @@ def main():
             print("Subtraction would produce an empty profile. No new profile was generated")
         exit(0)
 
-    benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark)
+    benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark, args.product)
     ret = []
     if args.profile:
         ret.append(benchmark.show_profile_stats(args.profile, args))
