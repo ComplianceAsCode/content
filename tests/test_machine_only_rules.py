@@ -13,6 +13,7 @@ machine_cpe = "cpe:/a:machine"
 
 def main():
     args = parse_command_line_args()
+    test_result = 0
     for product in ssg.constants.product_directories:
         product_dir = os.path.join(args.source_dir, product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
@@ -22,13 +23,16 @@ def main():
         additional_content_directories = product_yaml.get("additional_content_directories", [])
         add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
         if not check_product(args.build_dir, product, [guide_dir] + add_content_dirs):
-            sys.exit(1)
-
+            test_result = 1
+    if test_result:
+        sys.exit(1)
 
 def check_product(build_dir, product, rules_dirs):
     input_groups, input_rules = scan_rules_groups(rules_dirs, False)
     ds_path = os.path.join(build_dir, "ssg-" + product + "-ds.xml")
-    if not check_ds(ds_path, "groups", input_groups):
+    if not check_ds(ds_path, "Group", input_groups):
+        return False
+    if not check_ds(ds_path, "Rule", input_rules):
         return False
     return True
 
@@ -38,13 +42,15 @@ def check_ds(ds_path, what, input_elems):
         tree = ET.parse(ds_path)
     except IOError as e:
         sys.stderr.write("The product datastream '%s' hasn't been build, "
-                         "skipping the test." % (ds_path))
+                         "skipping the test.\n" % (ds_path))
         return True
+
+    platform_missing = False
     root = tree.getroot()
-    if what == "groups":
+    if what == "Group":
         replacement = "xccdf_org.ssgproject.content_group_"
         xpath_query = ".//{%s}Group" % ssg.constants.XCCDF12_NS
-    if what == "rules":
+    if what == "Rule":
         replacement = "xccdf_org.ssgproject.content_rule_"
         xpath_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
     benchmark = root.find(".//{%s}Benchmark" % ssg.constants.XCCDF12_NS)
@@ -59,11 +65,14 @@ def check_ds(ds_path, what, input_elems):
             idref = p.get("idref")
             if idref == machine_cpe:
                 machine_platform = True
-        if not machine_platform:
-            sys.stderr.write("%s %s in %s is missing <platform> element" %
+        # If the rule already has any platform,
+        # it is not required to inherit machine CPE from its parent group
+        if not platforms and not machine_platform:
+            sys.stderr.write("%s %s in %s is missing a machine <platform> element\n" %
                              (what, elem_short_id, ds_path))
-            return False
-    return True
+            platform_missing = True
+
+    return not platform_missing
 
 
 def parse_command_line_args():
