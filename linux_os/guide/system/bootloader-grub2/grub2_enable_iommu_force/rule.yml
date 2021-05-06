@@ -20,3 +20,14 @@ references:
     anssi: BP28(R11)
 
 platform: machine
+
+warnings:
+  - functionality:
+      Depending on the hardware, devices and operating system used, enabling IOMMU can cause hardware instabilities.
+      Proper function and stability should be assessed before applying remediation to production systems.
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: iommu
+        arg_value: 'force'
