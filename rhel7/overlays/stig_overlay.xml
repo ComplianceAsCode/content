@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
   <overlay owner="disastig" ruleid="rpm_verify_ownership" ownerid="RHEL-07-010010" disa="2235" severity="high">
-    <VMSinfo VKey="204392" SVKey="204392r6032" VRelease="r603261"/>
+    <VMSinfo VKey="204392" SVKey="204392r6468" VRelease="r646841"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values."/>
   </overlay>
   <overlay owner="disastig" ruleid="rpm_verify_hashes" ownerid="RHEL-07-010020" disa="1749" severity="high">
@@ -56,7 +56,7 @@
     <VMSinfo VKey="204404" SVKey="204404r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must initiate a session lock for graphical user interfaces when the screensaver is activated."/>
   </overlay>
-  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-07-010118" disa="192" severity="medium">
+  <overlay owner="disastig" ruleid="accounts_password_pam_retry" ownerid="RHEL-07-010118" disa="192" severity="medium">
     <VMSinfo VKey="204405" SVKey="204405r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that /etc/pam.d/passwd implements /etc/pam.d/system-auth when changing passwords."/>
   </overlay>
@@ -155,6 +155,18 @@
   <overlay owner="disastig" ruleid="sudo_remove_nopasswd" ownerid="RHEL-07-010340" disa="2038" severity="medium">
     <VMSinfo VKey="204429" SVKey="204429r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that users must provide a password for privilege escalation."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="sudo_restrict_privilege_elevation_to_authorized" ownerid="RHEL-07-010341" disa="366" severity="medium">
+    <VMSinfo VKey="237633" SVKey="237633r6468" VRelease="r646850"/>
+    <title text="The Red Hat Enterprise Linux operating system must restrict privilege elevation to authorized personnel."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="sudoers_validate_passwd" ownerid="RHEL-07-010342" disa="2227" severity="medium">
+    <VMSinfo VKey="237634" SVKey="237634r6468" VRelease="r646853"/>
+    <title text="The Red Hat Enterprise Linux operating system must use the invoking user's password for privilege escalation when using &quot;sudo&quot;."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="sudo_remove_nopasswd" ownerid="RHEL-07-010343" disa="2038" severity="medium">
+    <VMSinfo VKey="237635" SVKey="237635r6468" VRelease="r646856"/>
+    <title text="The Red Hat Enterprise Linux operating system must require re-authentication when using the &quot;sudo&quot; command."/>
   </overlay>
   <overlay owner="disastig" ruleid="sudo_remove_no_authenticate" ownerid="RHEL-07-010350" disa="2038" severity="medium">
     <VMSinfo VKey="204430" SVKey="204430r6032" VRelease="r603261"/>
@@ -284,7 +296,7 @@
     <VMSinfo VKey="204459" SVKey="204459r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system security patches and updates must be installed and up to date."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_allow_only_protocol2" ownerid="RHEL-07-020270" disa="366" severity="medium">
+  <overlay owner="disastig" ruleid="package_vsftpd_removed" ownerid="RHEL-07-020270" disa="366" severity="medium">
     <VMSinfo VKey="204460" SVKey="204460r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must not have unnecessary accounts."/>
   </overlay>
@@ -456,15 +468,15 @@
     <VMSinfo VKey="204504" SVKey="204504r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must shut down upon audit processing failure, unless availability is an overriding concern. If availability is a concern, the system must alert the designated staff (System Administrator [SA] and Information System Security Officer [ISSO] at a minimum) in the event of an audit processing failure."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="RHEL-07-030201" disa="1851" severity="medium">
+  <overlay owner="disastig" ruleid="rsyslog_remote_loghost" ownerid="RHEL-07-030201" disa="1851" severity="medium">
     <VMSinfo VKey="204506" SVKey="204506r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured to off-load audit logs onto a different system or storage media from the system being audited."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="RHEL-07-030210" disa="1851" severity="medium">
+  <overlay owner="disastig" ruleid="rsyslog_remote_loghost" ownerid="RHEL-07-030210" disa="1851" severity="medium">
     <VMSinfo VKey="204507" SVKey="204507r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must take appropriate action when the remote logging buffer is full."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_audispd_configure_remote_server" ownerid="RHEL-07-030211" disa="1851" severity="medium">
+  <overlay owner="disastig" ruleid="rsyslog_remote_loghost" ownerid="RHEL-07-030211" disa="1851" severity="medium">
     <VMSinfo VKey="204508" SVKey="204508r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must label all off-loaded audit logs before sending them to the central log server."/>
   </overlay>
@@ -488,7 +500,7 @@
     <VMSinfo VKey="204513" SVKey="204513r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must initiate an action to notify the System Administrator (SA) and Information System Security Officer ISSO, at a minimum, when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_data_retention_space_left_action" ownerid="RHEL-07-030340" disa="1855" severity="medium">
+  <overlay owner="disastig" ruleid="auditd_data_retention_admin_space_left_action" ownerid="RHEL-07-030340" disa="1855" severity="medium">
     <VMSinfo VKey="204514" SVKey="204514r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached."/>
   </overlay>
@@ -668,7 +680,7 @@
     <VMSinfo VKey="204558" SVKey="204558r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the pam_timestamp_check command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_finit" ownerid="RHEL-07-030819" disa="172" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_delete" ownerid="RHEL-07-030819" disa="172" severity="medium">
     <VMSinfo VKey="204559" SVKey="204559r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the create_module syscall."/>
   </overlay>
@@ -684,7 +696,7 @@
     <VMSinfo VKey="204562" SVKey="204562r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the delete_module syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_finit" ownerid="RHEL-07-030840" disa="172" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_delete" ownerid="RHEL-07-030840" disa="172" severity="medium">
     <VMSinfo VKey="204563" SVKey="204563r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the kmod command."/>
   </overlay>
@@ -753,7 +765,7 @@
     <title text="The Red Hat Enterprise Linux 7 operating system must implement DoD-approved encryption to protect the confidentiality of SSH connections."/>
   </overlay>
   <overlay owner="disastig" ruleid="accounts_tmout" ownerid="RHEL-07-040160" disa="2361" severity="medium">
-    <VMSinfo VKey="204579" SVKey="204579r6032" VRelease="r603261"/>
+    <VMSinfo VKey="204579" SVKey="204579r6468" VRelease="r646844"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 15 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements."/>
   </overlay>
   <overlay owner="disastig" ruleid="sshd_enable_warning_banner" ownerid="RHEL-07-040170" disa="50" severity="medium">
@@ -792,7 +804,7 @@
     <VMSinfo VKey="204588" SVKey="204588r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using RSA rhosts authentication."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_set_keepalive" ownerid="RHEL-07-040340" disa="2361" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_set_keepalive_0" ownerid="RHEL-07-040340" disa="2361" severity="medium">
     <VMSinfo VKey="204589" SVKey="204589r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with SSH traffic terminate after a period of inactivity."/>
   </overlay>
@@ -928,7 +940,7 @@
     <VMSinfo VKey="204622" SVKey="204622r6038" VRelease="r603849"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that remote X connections are disabled except to fulfill documented and validated mission requirements."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_allow_only_protocol2" ownerid="RHEL-07-040711" disa="366" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_x11_use_localhost" ownerid="RHEL-07-040711" disa="366" severity="medium">
     <VMSinfo VKey="233307" SVKey="233307r6033" VRelease="r603301"/>
     <title text="The Red Hat Enterprise Linux operating system SSH daemon must prevent remote hosts from connecting to the proxy display."/>
   </overlay>
@@ -936,8 +948,8 @@
     <VMSinfo VKey="204623" SVKey="204623r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode."/>
   </overlay>
-  <overlay owner="disastig" ruleid="package_xorg-x11-server-common_removed" ownerid="RHEL-07-040730" disa="366" severity="medium">
-    <VMSinfo VKey="204624" SVKey="204624r6032" VRelease="r603261"/>
+  <overlay owner="disastig" ruleid="xwindows_remove_packages" ownerid="RHEL-07-040730" disa="366" severity="medium">
+    <VMSinfo VKey="204624" SVKey="204624r6468" VRelease="r646847"/>
     <title text="The Red Hat Enterprise Linux operating system must not have a graphical display manager installed unless approved."/>
   </overlay>
   <overlay owner="disastig" ruleid="sysctl_net_ipv4_ip_forward" ownerid="RHEL-07-040740" disa="366" severity="medium">
