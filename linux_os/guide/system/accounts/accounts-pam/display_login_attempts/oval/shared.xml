@@ -3,8 +3,8 @@
     {{{ oval_metadata("Configure the system to notify users of last login/access using pam_lastlog.") }}}
     <criteria operator="AND">
       <criterion comment="Conditions for pam_lastlog are satisfied" test_ref="test_display_login_attempts" />
-      {{% if product in ['sle12', 'sle15'] %}}
-      <criterion comment="silent option for pam_lastlog is set" test_ref="test_display_login_attempts_silent" />
+      {{% if product in ['sle12', 'sle15', 'ol7', 'ol8', 'rhel7', 'rhel8'] %}}
+      <criterion comment="silent option for pam_lastlog is not set" test_ref="test_display_login_attempts_silent" />
       {{% endif %}}
     </criteria>
   </definition>
@@ -13,10 +13,28 @@
     <ind:object object_ref="obj_display_login_attempts" />
   </ind:textfilecontent54_test>
 
-  {{% if product in ['sle12', 'sle15'] %}}
+  {{% if product in ['sle12', 'sle15', 'ol7', 'ol8', 'rhel7', 'rhel8'] %}}
   <ind:textfilecontent54_object id="obj_display_login_attempts" version="1">
+    {{% if product in ['sle12', 'sle15'] %}}
     <ind:filepath>/etc/pam.d/login</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*session\s+(required|requisite)?\s+pam_lastlog.so[\s\w\d\=]+showfailed(\s|$)</ind:pattern>
+    {{% else %}}
+    <ind:filepath>/etc/pam.d/postlogin</ind:filepath>
+    {{% endif %}}
+    <ind:pattern operation="pattern match">^\s*session\s+required\s+pam_lastlog.so[\s\w\d\=]+showfailed(\s|$)</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- DISA STIG forbids the 'silent' option for SLE12/SLE15, OL7, RHEL7/RHEL8 -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Forbid 'silent' option for pam_lastlog" id="test_display_login_attempts_silent" version="1">
+    <ind:object object_ref="obj_display_login_attempts_silent" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_display_login_attempts_silent" version="1">
+    {{% if product in ['sle12', 'sle15'] %}}
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
+    {{% else %}}
+    <ind:filepath>/etc/pam.d/postlogin</ind:filepath>
+    {{% endif %}}
+    <ind:pattern operation="pattern match">^\s*session\s+required\s+pam_lastlog.so[\s\w\d\=]+silent(\s|$)</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% else %}}
@@ -29,14 +47,4 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
   {{% endif %}}
-
-  <!-- on SLE12/SLE15, the STIG forbids the 'silent' option -->
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Forbid 'silent' option for pam_lastlog" id="test_display_login_attempts_silent" version="1">
-    <ind:object object_ref="obj_display_login_attempts_silent" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_display_login_attempts_silent" version="1">
-    <ind:filepath>/etc/pam.d/login</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*session\s+(required|requisite)?\s+pam_lastlog.so[\s\w\d\=]+silent(\s|$)</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
-  </ind:textfilecontent54_object>
 </def-group>

@@ -6,7 +6,7 @@ description: |-
     To configure the system to notify users of last logon/access
     using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt>
     settings in
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+    {{% if product in ['sle12', 'sle15', 'ol7', 'ol8', 'rhel7', 'rhel8'] or 'ubuntu' in product %}}
     <tt>/etc/pam.d/login</tt> to read as follows:
     <pre>session     required pam_lastlog.so showfailed</pre>
     And make sure that the <tt>silent</tt> option is not set.
@@ -57,7 +57,7 @@ ocil_clause: 'that is not the case'
 ocil: |-
     To ensure that last logon/access notification is configured correctly, run
     the following command:
-    {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+    {{% if product in ['sle12', 'sle15', 'ol7', 'ol8', 'rhel7', 'rhel8'] or 'ubuntu' in product %}}
     <pre>$ grep pam_lastlog.so /etc/pam.d/login</pre>
     The output should show output <tt>showfailed</tt> and must not contain
     <tt>silent</tt>.
