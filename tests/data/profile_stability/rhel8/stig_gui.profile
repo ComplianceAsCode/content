@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R1.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R2.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -199,7 +199,6 @@ selections:
 - package_audit_installed
 - package_fapolicyd_installed
 - package_firewalld_installed
-- package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
 - package_opensc_installed
