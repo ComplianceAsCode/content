@@ -183,6 +183,7 @@ selections:
     - configure_openssl_crypto_policy
 
     # RHEL-08-010294
+    - configure_openssl_tls_crypto_policy
 
     # RHEL-08-010295
 

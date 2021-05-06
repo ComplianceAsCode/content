@@ -1,0 +1,18 @@
+# platform = Red Hat Enterprise Linux 8
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_set_config_file(
+        msg='Ensure system crypto policy has OpenSSL library using TLS encryption',
+        file='/etc/crypto-policies/back-ends/opensslcnf.config',
+        parameter='MinProtocol',
+        value='TLSv1.2',
+        create='yes',
+        separator=' = ',
+        separator_regex="\s*=\s*",
+        insert_before='^#?MaxProtocol ',
+        prefix_regex="^"
+    )
+}}}

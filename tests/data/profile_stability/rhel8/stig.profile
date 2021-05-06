@@ -1,6 +1,6 @@
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R2.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -81,6 +81,7 @@ selections:
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_openssl_crypto_policy
+- configure_openssl_tls_crypto_policy
 - configure_ssh_crypto_policy
 - configure_tmux_lock_after_time
 - configure_tmux_lock_command
