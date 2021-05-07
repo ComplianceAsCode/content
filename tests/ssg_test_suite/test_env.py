@@ -290,7 +290,16 @@ class ContainerTestEnv(TestEnv):
 
     def get_ssh_port(self):
         if self.domain_ip == 'localhost':
-            ports = self._get_container_ports(self.current_container)
+            try:
+                ports = self._get_container_ports(self.current_container)
+            except Exception as exc:
+                msg = (
+                    "Unable to extract SSH ports from the container. "
+                    "This usually means that the container backend reported its configuration "
+                    "in an unexpected format."
+                )
+                raise RuntimeError(msg)
+
             if self.internal_ssh_port in ports:
                 ssh_port = ports[self.internal_ssh_port]
             else:
