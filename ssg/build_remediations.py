@@ -121,7 +121,7 @@ def get_fixgroup_for_type(fixcontent, remediation_type):
     elif remediation_type == 'osbuild_blueprint':
         return ElementTree.SubElement(
             fixcontent, "fix-group", id="osbuild_blueprint",
-            system="urn:xccdf:fix:script:osbuild_blueprint",
+            system="urn:redhat:osbuild:blueprint",
             xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
