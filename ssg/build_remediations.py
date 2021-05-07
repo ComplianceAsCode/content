@@ -575,6 +575,7 @@ class KubernetesRemediation(Remediation):
         super(KubernetesRemediation, self).__init__(
               file_path, "kubernetes")
 
+
 class OsbuildBlueprintRemediation(Remediation):
     def __init__(self, file_path):
         super(OsbuildBlueprintRemediation, self).__init__(
