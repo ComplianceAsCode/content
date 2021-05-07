@@ -361,7 +361,7 @@ The following macro remediates one audit watch rule in /etc/audit/audit.rules.
 The macro requires following parameters:
 - path: path to watch
 - permissions: permissions changes to watch for
-- key: key to use as identifier.
+- key: key to use as identifier
 #}}
 {{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='') -%}}
 - name: Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
