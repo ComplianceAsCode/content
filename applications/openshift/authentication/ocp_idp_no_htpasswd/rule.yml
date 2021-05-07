@@ -1,13 +1,71 @@
 prodtype: ocp4
 
-title: "Do Not Use htpasswd-based Authentication"
+title: "Do Not Use htpasswd-based IdP"
 
-description: TBD
+description: |-
+  <p>
+  For users to interact with OpenShift Container Platform, they must first
+  authenticate to the cluster. The authentication layer identifies the user
+  associated with requests to the OpenShift Container Platform API. The
+  authorization layer then uses information about the requesting user to
+  determine if the request is allowed.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html",
+              text="Understanding authentication | Authentication | OpenShift Container Platform") }}}
+  </p>
 
-rationale: TBD
+  <p>
+  The OpenShift Container Platform includes a built-in OAuth server for
+  token-based authentication. Developers and administrators obtain OAuth
+  access tokens to authenticate themselves to the API. It is recommended for
+  an administrator to configure OAuth to specify an identity provider after
+  the cluster is installed. User access to the cluster is managed through the
+  identity provider.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html",
+              text="Understanding identity provider configuration | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  However, not all Identity Providers supported by OpenShift provide the same
+  level of capabilities. As an example, the htpasswd Identity Provider only
+  checks the username and password match and provides no means of 2FA, account
+  lockout or notification mechanism. This rule therefore only allows a subset
+  of identity providers.
+  </p>
+
+
+rationale: |-
+  <p>
+  With any authentication mechanism the ability to revoke credentials if they
+  are compromised or no longer required, is a key control. Kubernetes client
+  certificate authentication does not allow for this due to a lack of support
+  for certificate revocation.
+  </p>
+
+  <p>
+  OpenShift's built-in OAuth server allows credential revocation by relying on
+  the Identity provider, as well as giving the administrators the ability to
+  revoke any tokens given to a specific user.
+  </p>
+
+  <p>
+  In addition, using an external Identity provider allows for setting up notifications
+  on account creation or deletion, multi-factor authentication, disabling inactive
+  accounts or other features required by different compliance standards.
+  </p>
+
+references:
+  nist: AC-2(1),AC-2(2),AC-2(3),AC-2(4),AC-2(7),AC-2(8)
 
 identifiers:
     cce@ocp4: CCE-84209-6
+
+ocil_clause: 'A compliant identity provider is not configured'
+
+ocil: |-
+    Run the following command to list the identity providers configured:
+    <pre>$ oc get oauths cluster -ojsonpath='{.spec.identityProviders}' | jq </pre>
+    Make sure that there exists at least one item referenced by the above path
+    and that the value is not <pre>HTPasswd</pre>
 
 severity: medium
 
