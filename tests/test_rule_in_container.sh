@@ -185,7 +185,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" || { echo "Couldn't d
 # [ <-- needed because of Argbash
 
 podman images | grep -q "$_arg_name" || die "Couldn't find the podman image '$_arg_name'"
-test_image_cpe_product=$(podman run --rm "$_arg_name" cat /etc/os-release | grep cpe | cut -d : -f 4)
+test_image_cpe_product=$(podman run --rm "$_arg_name" sh -c '. /etc/os-release && echo "$CPE_NAME"')
 test -n "$test_image_cpe_product" || die "Unable to deduce the product CPE from the container's /etc/os-release file."
 
 additional_args=()
