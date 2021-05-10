@@ -15,7 +15,7 @@
 
   <unix:file_object comment="system commands directories" id="object_system_commands_dirs_group_ownership" version="1">
     <!-- Check that bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin directories belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/[s?]bin|^\/usr\/[s?]bin|^\/usr\/local\/[s?]bin</unix:path>
+    <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_system_commands_dirs_group_owner_not_root</filter>
   </unix:file_object>
