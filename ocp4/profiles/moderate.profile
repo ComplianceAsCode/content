@@ -65,5 +65,8 @@ selections:
     - kubelet_configure_tls_cert
     - kubelet_configure_tls_key
 
+    # SC-13: CRYPTOGRAPHIC PROTECTION
+    - fips_mode_enabled
+
     # AC-8: SYSTEM USE NOTIFICATION
     - classification_banner
