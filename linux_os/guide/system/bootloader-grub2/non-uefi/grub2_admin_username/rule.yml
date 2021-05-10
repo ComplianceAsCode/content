@@ -20,7 +20,7 @@ description: |-
     Once the superuser account has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre>
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.

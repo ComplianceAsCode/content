@@ -41,11 +41,11 @@ ocil: |-
     <pre>CONFIG_RANDOM_TRUST_CPU=y</pre>,
     it means that the option is compiled into the kernel. Make sure that the
     option is not overridden through a boot parameter:
-    <pre>sudo grep 'kernelopts.*random\.trust_cpu=off.*' /boot/grub2/grubenv</pre>
+    <pre>sudo grep 'kernelopts.*random\.trust_cpu=off.*' {{{ grub2_boot_path }}}/grubenv</pre>
     The command should not return any output. If the option is not compiled into
     the kernel, check that the option is configured through boot parameter with
     the following command:
-    <pre>sudo grep 'kernelopts.*random\.trust_cpu=on.*' /boot/grub2/grubenv</pre>
+    <pre>sudo grep 'kernelopts.*random\.trust_cpu=on.*' {{{ grub2_boot_path }}}/grubenv</pre>
     If the command does not return any output, then the boot parameter is
     missing.
 

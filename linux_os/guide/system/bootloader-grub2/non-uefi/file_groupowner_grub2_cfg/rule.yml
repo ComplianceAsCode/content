@@ -2,13 +2,13 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle15
 
-title: 'Verify /boot/grub2/grub.cfg Group Ownership'
+title: 'Verify {{{ grub2_boot_path }}}/grub.cfg Group Ownership'
 
 description: |-
-    The file <tt>/boot/grub2/grub.cfg</tt> should
+    The file <tt>{{{ grub2_boot_path }}}/grub.cfg</tt> should
     be group-owned by the <tt>root</tt> group to prevent
     destruction or modification of the file.
-    {{{ describe_file_group_owner(file="/boot/grub2/grub.cfg", group="root") }}}
+    {{{ describe_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}
 
 rationale: |-
     The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
@@ -36,15 +36,15 @@ references:
     iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.13.1.1,A.13.1.3,A.13.2.1,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
     cis-csc: 12,13,14,15,16,18,3,5
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/boot/grub2/grub.cfg", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/boot/grub2/grub.cfg", group="root") }}}
+    {{{ ocil_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}
 
 platform: machine
 
 template:
     name: file_groupowner
     vars:
-        filepath: /boot/grub2/grub.cfg
+        filepath: {{{ grub2_boot_path }}}/grub.cfg
         filegid: '0'
