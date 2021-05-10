@@ -577,6 +577,9 @@ class KubernetesRemediation(Remediation):
 
 
 class BlueprintRemediation(Remediation):
+    """
+    This provides class for OSBuild Blueprint remediations
+    """
     def __init__(self, file_path):
         super(BlueprintRemediation, self).__init__(
             file_path, "blueprint")
