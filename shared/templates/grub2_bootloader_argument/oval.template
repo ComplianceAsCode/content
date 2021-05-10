@@ -4,7 +4,7 @@
     <criteria operator="AND">
       {{% if product in ["rhel7", "ol7"] %}}
         <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/grub2/grub.cfg for all kernels" />
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
         <criteria operator="OR">
           <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
           comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
@@ -17,7 +17,7 @@
         </criteria>
       {{% else %}}
         <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in /boot/grub2/grubenv" />
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_boot_path }}}/grubenv" />
       {{% endif %}}
     </criteria>
   </definition>
@@ -51,7 +51,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
-  comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} in /boot/grub2/grub.cfg for all kernels"
+  comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} in {{{ grub2_boot_path }}}/grub.cfg for all kernels"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg" />
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
@@ -59,7 +59,7 @@
 
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
   version="1">
-    <ind:filepath>/boot/grub2/grub.cfg</ind:filepath>
+    <ind:filepath>{{{ grub2_boot_path }}}/grub.cfg</ind:filepath>
     {{% if product == "rhel7" %}}
       <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
     {{% else %}}
@@ -71,7 +71,7 @@
 {{% else %}}
 
   <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
-  comment="check forkernel command line parameters {{{ ARG_NAME_VALUE }}} in /boot/grub2/grubenv for all kernels"
+  comment="check forkernel command line parameters {{{ ARG_NAME_VALUE }}} in {{{ grub2_boot_path }}}/grubenv for all kernels"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env" />
     <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
@@ -79,7 +79,7 @@
 
   <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
   version="1">
-    <ind:filepath>/boot/grub2/grubenv</ind:filepath>
+    <ind:filepath>{{{ grub2_boot_path }}}/grubenv</ind:filepath>
     <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
