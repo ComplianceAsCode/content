@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
   <overlay owner="disastig" ruleid="rpm_verify_ownership" ownerid="OL07-00-010010" disa="1496" severity="high">
-    <VMSinfo VKey="221652" SVKey="221652r6032" VRelease="r603260"/>
+    <VMSinfo VKey="221652" SVKey="221652r6469" VRelease="r646955"/>
     <title text="The Oracle Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values."/>
   </overlay>
   <overlay owner="disastig" ruleid="rpm_verify_hashes" ownerid="OL07-00-010020" disa="1749" severity="high">
     <VMSinfo VKey="221653" SVKey="221653r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that the cryptographic hash of system files and commands matches vendor values."/>
   </overlay>
-  <overlay owner="disastig" ruleid="dconf_gnome_banner_enabled" ownerid="OL07-00-010030" disa="1388" severity="medium">
+  <overlay owner="disastig" ruleid="dconf_gnome_banner_enabled" ownerid="OL07-00-010030" disa="50" severity="medium">
     <VMSinfo VKey="221654" SVKey="221654r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon."/>
   </overlay>
@@ -56,7 +56,7 @@
     <VMSinfo VKey="221666" SVKey="221666r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must initiate a session lock for graphical user interfaces when the screensaver is activated."/>
   </overlay>
-  <overlay owner="disastig" ruleid="XXXX" ownerid="OL07-00-010118" disa="192" severity="medium">
+  <overlay owner="disastig" ruleid="accounts_password_pam_retry" ownerid="OL07-00-010118" disa="192" severity="medium">
     <VMSinfo VKey="221667" SVKey="221667r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that /etc/pam.d/passwd implements /etc/pam.d/system-auth when changing passwords."/>
   </overlay>
@@ -144,7 +144,7 @@
     <VMSinfo VKey="221689" SVKey="221689r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must disable account identifiers (individuals, groups, roles, and devices) if the password expires."/>
   </overlay>
-  <overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_deny" ownerid="OL07-00-010320" disa="2237" severity="medium">
+  <overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_unlock_time" ownerid="OL07-00-010320" disa="44" severity="medium">
     <VMSinfo VKey="221690" SVKey="221690r6037" VRelease="r603787"/>
     <title text="The Oracle Linux operating system must be configured to lock accounts for a minimum of 15 minutes after three unsuccessful logon attempts within a 15-minute timeframe."/>
   </overlay>
@@ -155,6 +155,18 @@
   <overlay owner="disastig" ruleid="sudo_remove_nopasswd" ownerid="OL07-00-010340" disa="2038" severity="medium">
     <VMSinfo VKey="221692" SVKey="221692r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that users must provide a password for privilege escalation."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="sudo_restrict_privilege_elevation_to_authorized" ownerid="OL07-00-010341" disa="366" severity="medium">
+    <VMSinfo VKey="237627" SVKey="237627r6469" VRelease="r646964"/>
+    <title text="The Oracle Linux operating system must restrict privilege elevation to authorized personnel."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="sudoers_validate_passwd" ownerid="OL07-00-010342" disa="2227" severity="medium">
+    <VMSinfo VKey="237628" SVKey="237628r6469" VRelease="r646967"/>
+    <title text="The Oracle Linux operating system must use the invoking user's password for privilege escalation when using &quot;sudo&quot;."/>
+  </overlay>
+  <overlay owner="disastig" ruleid="sudo_remove_nopasswd" ownerid="OL07-00-010343" disa="2038" severity="medium">
+    <VMSinfo VKey="237629" SVKey="237629r6469" VRelease="r646970"/>
+    <title text="The Oracle Linux operating system must require re-authentication when using the &quot;sudo&quot; command."/>
   </overlay>
   <overlay owner="disastig" ruleid="sudo_remove_no_authenticate" ownerid="OL07-00-010350" disa="2038" severity="medium">
     <VMSinfo VKey="228569" SVKey="228569r6032" VRelease="r603260"/>
@@ -184,7 +196,7 @@
     <VMSinfo VKey="221698" SVKey="221698r6032" VRelease="r603260"/>
     <title text="Oracle Linux operating systems prior to version 7.2 with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
-  <overlay owner="disastig" ruleid="require_emergency_target_auth" ownerid="OL07-00-010481" disa="213" severity="medium">
+  <overlay owner="disastig" ruleid="require_singleuser_auth" ownerid="OL07-00-010481" disa="213" severity="medium">
     <VMSinfo VKey="221699" SVKey="221699r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must require authentication upon booting into single-user and maintenance modes."/>
   </overlay>
@@ -248,7 +260,7 @@
     <VMSinfo VKey="221714" SVKey="221714r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must disable the file system automounter unless required."/>
   </overlay>
-  <overlay owner="disastig" ruleid="kernel_module_usb-storage_disabled" ownerid="OL07-00-020111" disa="778" severity="medium">
+  <overlay owner="disastig" ruleid="kernel_module_usb-storage_disabled" ownerid="OL07-00-020111" disa="1958" severity="medium">
     <VMSinfo VKey="228567" SVKey="228567r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must disable the graphical user interface automounter unless required."/>
   </overlay>
@@ -284,7 +296,7 @@
     <VMSinfo VKey="221720" SVKey="221720r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system security patches and updates must be installed and up to date."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_disable_root_login" ownerid="OL07-00-020270" disa="366" severity="medium">
+  <overlay owner="disastig" ruleid="package_vsftpd_removed" ownerid="OL07-00-020270" disa="366" severity="medium">
     <VMSinfo VKey="221721" SVKey="221721r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must not have unnecessary accounts."/>
   </overlay>
@@ -440,7 +452,7 @@
     <VMSinfo VKey="221761" SVKey="221761r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories."/>
   </overlay>
-  <overlay owner="disastig" ruleid="uefi_no_removeable_media" ownerid="OL07-00-021700" disa="1813" severity="medium">
+  <overlay owner="disastig" ruleid="grub2_no_removeable_media" ownerid="OL07-00-021700" disa="1813" severity="medium">
     <VMSinfo VKey="221762" SVKey="221762r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must not allow removable media to be used as the boot loader unless approved."/>
   </overlay>
@@ -448,7 +460,7 @@
     <VMSinfo VKey="221763" SVKey="221763r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must not have the telnet-server package installed."/>
   </overlay>
-  <overlay owner="disastig" ruleid="service_auditd_enabled" ownerid="OL07-00-030000" disa="1814" severity="medium">
+  <overlay owner="disastig" ruleid="service_auditd_enabled" ownerid="OL07-00-030000" disa="135" severity="medium">
     <VMSinfo VKey="221764" SVKey="221764r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that auditing is configured to produce records containing information to establish what type of events occurred, where the events occurred, the source of the events, and the outcome of the events. These audit records must also identify individual identities of group account users."/>
   </overlay>
@@ -456,11 +468,11 @@
     <VMSinfo VKey="221765" SVKey="221765r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must shut down upon audit processing failure, unless availability is an overriding concern. If availability is a concern, the system must alert the designated staff (System Administrator [SA] and Information System Security Officer [ISSO] at a minimum) in the event of an audit processing failure."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_name_format" ownerid="OL07-00-030201" disa="1851" severity="medium">
+  <overlay owner="disastig" ruleid="rsyslog_remote_loghost" ownerid="OL07-00-030201" disa="1851" severity="medium">
     <VMSinfo VKey="221767" SVKey="221767r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured to off-load audit logs onto a different system or storage media from the system being audited."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_name_format" ownerid="OL07-00-030210" disa="1851" severity="medium">
+  <overlay owner="disastig" ruleid="rsyslog_remote_loghost" ownerid="OL07-00-030210" disa="1851" severity="medium">
     <VMSinfo VKey="221768" SVKey="221768r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must take appropriate action when the remote logging buffer is full."/>
   </overlay>
@@ -488,7 +500,7 @@
     <VMSinfo VKey="221774" SVKey="221774r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must initiate an action to notify the System Administrator (SA) and Information System Security Officer (ISSO), at a minimum, when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_data_retention_space_left_action" ownerid="OL07-00-030340" disa="1855" severity="medium">
+  <overlay owner="disastig" ruleid="auditd_data_retention_admin_space_left_action" ownerid="OL07-00-030340" disa="1855" severity="medium">
     <VMSinfo VKey="221775" SVKey="221775r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached."/>
   </overlay>
@@ -500,7 +512,7 @@
     <VMSinfo VKey="221777" SVKey="221777r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all executions of privileged functions."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_dac_modification_chown" ownerid="OL07-00-030370" disa="172" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_dac_modification_chown" ownerid="OL07-00-030370" disa="126" severity="medium">
     <VMSinfo VKey="221778" SVKey="221778r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the chown syscall."/>
   </overlay>
@@ -556,7 +568,7 @@
     <VMSinfo VKey="221791" SVKey="221791r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the creat syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_open" ownerid="OL07-00-030510" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_open" ownerid="OL07-00-030510" disa="172" severity="medium">
     <VMSinfo VKey="221792" SVKey="221792r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the open syscall."/>
   </overlay>
@@ -564,7 +576,7 @@
     <VMSinfo VKey="221793" SVKey="221793r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the openat syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_open_by_handle_at" ownerid="OL07-00-030530" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_open_by_handle_at" ownerid="OL07-00-030530" disa="172" severity="medium">
     <VMSinfo VKey="221794" SVKey="221794r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the open_by_handle_at syscall."/>
   </overlay>
@@ -572,11 +584,11 @@
     <VMSinfo VKey="221795" SVKey="221795r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the truncate syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_ftruncate" ownerid="OL07-00-030550" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_unsuccessful_file_modification_ftruncate" ownerid="OL07-00-030550" disa="172" severity="medium">
     <VMSinfo VKey="221796" SVKey="221796r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the ftruncate syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_execution_semanage" ownerid="OL07-00-030560" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_execution_semanage" ownerid="OL07-00-030560" disa="172" severity="medium">
     <VMSinfo VKey="221797" SVKey="221797r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the semanage command."/>
   </overlay>
@@ -592,11 +604,11 @@
     <VMSinfo VKey="221800" SVKey="221800r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the setfiles command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_login_events_faillock" ownerid="OL07-00-030610" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_login_events_faillock" ownerid="OL07-00-030610" disa="172" severity="medium">
     <VMSinfo VKey="221801" SVKey="221801r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must generate audit records for all unsuccessful account access events."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_login_events_lastlog" ownerid="OL07-00-030620" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_login_events_lastlog" ownerid="OL07-00-030620" disa="172" severity="medium">
     <VMSinfo VKey="221802" SVKey="221802r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must generate audit records for all successful account access events."/>
   </overlay>
@@ -620,15 +632,15 @@
     <VMSinfo VKey="221807" SVKey="221807r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the userhelper command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_su" ownerid="OL07-00-030680" disa="130" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_su" ownerid="OL07-00-030680" disa="172" severity="medium">
     <VMSinfo VKey="221808" SVKey="221808r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the su command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="OL07-00-030690" disa="172" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_privileged_commands_sudo" ownerid="OL07-00-030690" disa="130" severity="medium">
     <VMSinfo VKey="221809" SVKey="221809r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the sudo command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_sysadmin_actions" ownerid="OL07-00-030700" disa="130" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_sysadmin_actions" ownerid="OL07-00-030700" disa="172" severity="medium">
     <VMSinfo VKey="221810" SVKey="221810r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the sudoers file and all files in the /etc/sudoers.d/ directory."/>
   </overlay>
@@ -712,7 +724,7 @@
     <VMSinfo VKey="221830" SVKey="221830r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the rename syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_renameat" ownerid="OL07-00-030890" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_renameat" ownerid="OL07-00-030890" disa="172" severity="medium">
     <VMSinfo VKey="221831" SVKey="221831r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the renameat syscall."/>
   </overlay>
@@ -720,7 +732,7 @@
     <VMSinfo VKey="221832" SVKey="221832r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the rmdir syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_unlink" ownerid="OL07-00-030910" disa="2884" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_file_deletion_events_unlink" ownerid="OL07-00-030910" disa="172" severity="medium">
     <VMSinfo VKey="221833" SVKey="221833r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must audit all uses of the unlink syscall."/>
   </overlay>
@@ -748,13 +760,13 @@
     <VMSinfo VKey="221839" SVKey="221839r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA) and vulnerability assessments."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_use_approved_ciphers_ordered_stig" ownerid="OL07-00-040110" disa="877" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_use_approved_ciphers_ordered_stig" ownerid="OL07-00-040110" disa="68" severity="medium">
     <VMSinfo VKey="221840" SVKey="221840r6038" VRelease="r603806"/>
     <title text="The Oracle Linux 7 operating system must implement DoD-approved encryption to protect the confidentiality of SSH connections."/>
   </overlay>
   <overlay owner="disastig" ruleid="accounts_tmout" ownerid="OL07-00-040160" disa="1133" severity="medium">
-    <VMSinfo VKey="221841" SVKey="221841r6032" VRelease="r603260"/>
-    <title text="The Oracle Linux operating system must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 10 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements."/>
+    <VMSinfo VKey="221841" SVKey="221841r6469" VRelease="r646958"/>
+    <title text="The Oracle Linux operating system must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 15 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements."/>
   </overlay>
   <overlay owner="disastig" ruleid="sshd_enable_warning_banner" ownerid="OL07-00-040170" disa="48" severity="medium">
     <VMSinfo VKey="221842" SVKey="221842r6032" VRelease="r603260"/>
@@ -768,7 +780,7 @@
     <VMSinfo VKey="221844" SVKey="221844r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sssd_ldap_configure_tls_ca" ownerid="OL07-00-040200" disa="1453" severity="medium">
+  <overlay owner="disastig" ruleid="sssd_ldap_configure_tls_ca_dir" ownerid="OL07-00-040200" disa="1453" severity="medium">
     <VMSinfo VKey="221845" SVKey="221845r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications."/>
   </overlay>
@@ -776,7 +788,7 @@
     <VMSinfo VKey="221846" SVKey="221846r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must implement virtual address space randomization."/>
   </overlay>
-  <overlay owner="disastig" ruleid="package_openssh-server_installed" ownerid="OL07-00-040300" disa="2420" severity="medium">
+  <overlay owner="disastig" ruleid="package_openssh-server_installed" ownerid="OL07-00-040300" disa="2422" severity="medium">
     <VMSinfo VKey="221847" SVKey="221847r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that all networked systems have SSH installed."/>
   </overlay>
@@ -792,7 +804,7 @@
     <VMSinfo VKey="221850" SVKey="221850r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that the SSH daemon does not allow authentication using RSA rhosts authentication."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_set_keepalive" ownerid="OL07-00-040340" disa="1133" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_set_keepalive_0" ownerid="OL07-00-040340" disa="1133" severity="medium">
     <VMSinfo VKey="221851" SVKey="221851r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that all network connections associated with SSH traffic terminate after a period of inactivity."/>
   </overlay>
@@ -848,7 +860,7 @@
     <VMSinfo VKey="221864" SVKey="221864r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that the SSH daemon does not allow compression or only allows compression after successful authentication."/>
   </overlay>
-  <overlay owner="disastig" ruleid="chronyd_or_ntpd_set_maxpoll" ownerid="OL07-00-040500" disa="1891" severity="medium">
+  <overlay owner="disastig" ruleid="chronyd_or_ntpd_set_maxpoll" ownerid="OL07-00-040500" disa="2046" severity="medium">
     <VMSinfo VKey="221866" SVKey="221866r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must, for networked systems, synchronize clocks with a server that is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS)."/>
   </overlay>
@@ -932,7 +944,7 @@
     <VMSinfo VKey="221886" SVKey="221886r6038" VRelease="r603812"/>
     <title text="The Oracle Linux operating system must be configured so that remote X connections are disabled, unless to fulfill documented and validated mission requirements."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sshd_disable_root_login" ownerid="OL07-00-040711" disa="366" severity="medium">
+  <overlay owner="disastig" ruleid="sshd_x11_use_localhost" ownerid="OL07-00-040711" disa="366" severity="medium">
     <VMSinfo VKey="233306" SVKey="233306r6032" VRelease="r603298"/>
     <title text="The Oracle Linux operating system SSH daemon must prevent remote hosts from connecting to the proxy display."/>
   </overlay>
@@ -941,7 +953,7 @@
     <title text="The Oracle Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode."/>
   </overlay>
   <overlay owner="disastig" ruleid="package_xorg-x11-server-common_removed" ownerid="OL07-00-040730" disa="366" severity="medium">
-    <VMSinfo VKey="221888" SVKey="221888r6032" VRelease="r603260"/>
+    <VMSinfo VKey="221888" SVKey="221888r6469" VRelease="r646961"/>
     <title text="The Oracle Linux operating system must not have a graphical display manager installed unless approved."/>
   </overlay>
   <overlay owner="disastig" ruleid="sysctl_net_ipv4_ip_forward" ownerid="OL07-00-040740" disa="366" severity="medium">
@@ -968,15 +980,15 @@
     <VMSinfo VKey="221894" SVKey="221894r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must not forward IPv6 source-routed packets."/>
   </overlay>
-  <overlay owner="disastig" ruleid="install_smartcard_packages" ownerid="OL07-00-041001" disa="1954" severity="medium">
+  <overlay owner="disastig" ruleid="install_smartcard_packages" ownerid="OL07-00-041001" disa="1948" severity="medium">
     <VMSinfo VKey="221895" SVKey="221895r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must have the required packages for multifactor authentication installed."/>
   </overlay>
-  <overlay owner="disastig" ruleid="sssd_enable_pam_services" ownerid="OL07-00-041002" disa="1948" severity="medium">
+  <overlay owner="disastig" ruleid="sssd_enable_pam_services" ownerid="OL07-00-041002" disa="1954" severity="medium">
     <VMSinfo VKey="221896" SVKey="221896r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must implement multifactor authentication for access to privileged accounts via pluggable authentication modules (PAM)."/>
   </overlay>
-  <overlay owner="disastig" ruleid="smartcard_configure_cert_checking" ownerid="OL07-00-041003" disa="1953" severity="medium">
+  <overlay owner="disastig" ruleid="smartcard_configure_cert_checking" ownerid="OL07-00-041003" disa="1948" severity="medium">
     <VMSinfo VKey="221897" SVKey="221897r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must implement certificate status checking for PKI authentication."/>
   </overlay>
@@ -984,7 +996,7 @@
     <VMSinfo VKey="221898" SVKey="221898r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must be configured so that all wireless network adapters are disabled."/>
   </overlay>
-  <overlay owner="disastig" ruleid="file_permissions_var_log_audit" ownerid="OL07-00-910055" disa="1314" severity="medium">
+  <overlay owner="disastig" ruleid="file_ownership_var_log_audit" ownerid="OL07-00-910055" disa="164" severity="medium">
     <VMSinfo VKey="221899" SVKey="221899r6032" VRelease="r603260"/>
     <title text="The Oracle Linux operating system must protect audit information from unauthorized read, modification, or deletion."/>
   </overlay>
