@@ -25,7 +25,7 @@ REMEDIATION_TO_EXT_MAP = {
     'puppet': '.pp',
     'ignition': '.yml',
     'kubernetes': '.yml',
-    'osbuild_blueprint': '.toml'
+    'blueprint': '.toml'
 }
 
 PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
@@ -118,9 +118,9 @@ def get_fixgroup_for_type(fixcontent, remediation_type):
             system="urn:xccdf:fix:script:kubernetes",
             xmlns="http://checklists.nist.gov/xccdf/1.1")
 
-    elif remediation_type == 'osbuild_blueprint':
+    elif remediation_type == 'blueprint':
         return ElementTree.SubElement(
-            fixcontent, "fix-group", id="osbuild_blueprint",
+            fixcontent, "fix-group", id="blueprint",
             system="urn:redhat:osbuild:blueprint",
             xmlns="http://checklists.nist.gov/xccdf/1.1")
 
@@ -579,7 +579,7 @@ class KubernetesRemediation(Remediation):
 class OsbuildBlueprintRemediation(Remediation):
     def __init__(self, file_path):
         super(OsbuildBlueprintRemediation, self).__init__(
-            file_path, "osbuild_blueprint")
+            file_path, "blueprint")
 
 
 REMEDIATION_TO_CLASS = {
@@ -589,7 +589,7 @@ REMEDIATION_TO_CLASS = {
     'puppet': PuppetRemediation,
     'ignition': IgnitionRemediation,
     'kubernetes': KubernetesRemediation,
-    'osbuild_blueprint': OsbuildBlueprintRemediation,
+    'blueprint': OsbuildBlueprintRemediation,
 }
 
 
@@ -744,7 +744,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         return
     elif remediation_type == "kubernetes":
         return
-    elif remediation_type == "osbuild_blueprint":
+    elif remediation_type == "blueprint":
         return
     elif remediation_type == "ansible":
         fix_text = fix.text
