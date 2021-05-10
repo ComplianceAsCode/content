@@ -24,7 +24,8 @@ REMEDIATION_TO_EXT_MAP = {
     'bash': '.sh',
     'puppet': '.pp',
     'ignition': '.yml',
-    'kubernetes': '.yml'
+    'kubernetes': '.yml',
+    'blueprint': '.toml'
 }
 
 PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
@@ -116,6 +117,12 @@ def get_fixgroup_for_type(fixcontent, remediation_type):
         return ElementTree.SubElement(
             fixcontent, "fix-group", id="kubernetes",
             system="urn:xccdf:fix:script:kubernetes",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
+
+    elif remediation_type == 'blueprint':
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="blueprint",
+            system="urn:redhat:osbuild:blueprint",
             xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
@@ -570,6 +577,15 @@ class KubernetesRemediation(Remediation):
               file_path, "kubernetes")
 
 
+class BlueprintRemediation(Remediation):
+    """
+    This provides class for OSBuild Blueprint remediations
+    """
+    def __init__(self, file_path):
+        super(BlueprintRemediation, self).__init__(
+            file_path, "blueprint")
+
+
 REMEDIATION_TO_CLASS = {
     'anaconda': AnacondaRemediation,
     'ansible': AnsibleRemediation,
@@ -577,6 +593,7 @@ REMEDIATION_TO_CLASS = {
     'puppet': PuppetRemediation,
     'ignition': IgnitionRemediation,
     'kubernetes': KubernetesRemediation,
+    'blueprint': BlueprintRemediation,
 }
 
 
@@ -729,7 +746,9 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
     if remediation_type == "ignition":
         return
-    if remediation_type == "kubernetes":
+    elif remediation_type == "kubernetes":
+        return
+    elif remediation_type == "blueprint":
         return
     elif remediation_type == "ansible":
         fix_text = fix.text

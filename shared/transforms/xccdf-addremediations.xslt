@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
 <!-- This transform expects stringparams "bash_remediations", "ansible_remediations", "puppet_remediations",
-     "anaconda_remediations", "ignition_remediations", "kubernetes_remediations"
+     "anaconda_remediations", "ignition_remediations", "kubernetes_remediations", "blueprint_remediations"
      specifying a filenames containing a list of remediations.  It inserts these into the Rules
      specified inside the remediations file. -->
 <xsl:param name="bash_remediations"/>
@@ -11,6 +11,7 @@
 <xsl:param name="anaconda_remediations"/>
 <xsl:param name="ignition_remediations"/>
 <xsl:param name="kubernetes_remediations"/>
+<xsl:param name="blueprint_remediations"/>
 
 <xsl:variable name="bash_remediations_doc" select="document($bash_remediations)" />
 <xsl:variable name="bash_fixgroup" select="$bash_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
@@ -36,10 +37,13 @@
 <xsl:variable name="kubernetes_fixgroup" select="$kubernetes_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
 <xsl:variable name="kubernetes_fixcommongroup" select="$kubernetes_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
 
+<xsl:variable name="blueprint_remediations_doc" select="document($blueprint_remediations)" />
+<xsl:variable name="blueprint_fixgroup" select="$blueprint_remediations_doc/xccdf:fix-content/xccdf:fix-group" />
+<xsl:variable name="blueprint_fixcommongroup" select="$blueprint_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
 
 
-<xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup | $puppet_fixgroup | $anaconda_fixgroup | $ignition_fixgroup | $kubernetes_fixgroup" />
-<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup | $puppet_fixcommongroup | $anaconda_fixcommongroup | $ignition_fixcommongroup | $kubernetes_fixcommongroup" />
+<xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup | $puppet_fixgroup | $anaconda_fixgroup | $ignition_fixgroup | $kubernetes_fixgroup| $blueprint_fixgroup" />
+<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup | $puppet_fixcommongroup | $anaconda_fixcommongroup | $ignition_fixcommongroup | $kubernetes_fixcommongroup| $blueprint_fixcommongroup" />
 
 <xsl:template name="find-and-replace">
   <xsl:param name="text"/>

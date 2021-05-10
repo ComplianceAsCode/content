@@ -15,7 +15,7 @@ try:
 except ImportError:
     from urllib import quote
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes", "blueprint"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -24,7 +24,8 @@ lang_to_ext_map = {
     "oval": ".xml",
     "puppet": ".pp",
     "ignition": ".yml",
-    "kubernetes": ".yml"
+    "kubernetes": ".yml",
+    "blueprint": ".toml"
 }
 
 
