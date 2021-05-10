@@ -6,6 +6,7 @@ import argparse
 import json
 
 import ssg.build_yaml
+import ssg.environment
 import ssg.products
 import ssg.rules
 import ssg.yaml
@@ -63,7 +64,7 @@ def main():
 
     product_base = os.path.join(SSG_ROOT, args.product)
     product_yaml = os.path.join(product_base, "product.yml")
-    env_yaml = ssg.yaml.open_environment(args.build_config_yaml, product_yaml)
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
 
     profiles_root = os.path.join(product_base, "profiles")
     if args.profiles_root:
