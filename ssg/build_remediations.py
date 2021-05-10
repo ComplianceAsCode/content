@@ -576,9 +576,9 @@ class KubernetesRemediation(Remediation):
               file_path, "kubernetes")
 
 
-class OsbuildBlueprintRemediation(Remediation):
+class BlueprintRemediation(Remediation):
     def __init__(self, file_path):
-        super(OsbuildBlueprintRemediation, self).__init__(
+        super(BlueprintRemediation, self).__init__(
             file_path, "blueprint")
 
 
@@ -589,7 +589,7 @@ REMEDIATION_TO_CLASS = {
     'puppet': PuppetRemediation,
     'ignition': IgnitionRemediation,
     'kubernetes': KubernetesRemediation,
-    'blueprint': OsbuildBlueprintRemediation,
+    'blueprint': BlueprintRemediation,
 }
 
 

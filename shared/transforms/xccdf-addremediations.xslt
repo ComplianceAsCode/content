@@ -42,8 +42,8 @@
 <xsl:variable name="blueprint_fixcommongroup" select="$blueprint_remediations_doc/xccdf:fix-content/xccdf:fix-common-group" />
 
 
-<xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup | $puppet_fixgroup | $anaconda_fixgroup | $ignition_fixgroup | $kubernetes_fixgroup|$blueprint_fixgroup" />
-<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup | $puppet_fixcommongroup | $anaconda_fixcommongroup | $ignition_fixcommongroup | $kubernetes_fixcommongroup|$blueprint_fixcommongroup" />
+<xsl:variable name="fixgroups" select="$bash_fixgroup | $ansible_fixgroup | $puppet_fixgroup | $anaconda_fixgroup | $ignition_fixgroup | $kubernetes_fixgroup| $blueprint_fixgroup" />
+<xsl:variable name="fixcommongroups" select="$bash_fixcommongroup | $ansible_fixcommongroup | $puppet_fixcommongroup | $anaconda_fixcommongroup | $ignition_fixcommongroup | $kubernetes_fixcommongroup| $blueprint_fixcommongroup" />
 
 <xsl:template name="find-and-replace">
   <xsl:param name="text"/>
