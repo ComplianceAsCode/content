@@ -16,7 +16,7 @@
   <unix:file_object comment="system commands files" id="object_file_ownership_system_commands_files" version="1">
     <!-- Check that system commands within directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
          belong to user with uid 0 (root) -->
-    <unix:path operation="pattern match">^\/[s?]bin|^\/usr\/[s?]bin|^\/usr\/local\/[s?]bin</unix:path>
+    <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_owner_system_commands_not_root</filter>
   </unix:file_object>
