@@ -200,7 +200,6 @@ selections:
 - package_audit_installed
 - package_fapolicyd_installed
 - package_firewalld_installed
-- package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
 - package_opensc_installed
