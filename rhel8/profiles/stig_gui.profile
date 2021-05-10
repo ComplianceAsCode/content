@@ -34,7 +34,3 @@ extends: stig
 selections:
     # RHEL-08-040320
     - '!xwindows_remove_packages'
-
-    # RHEL-08-040370
-    # conflicts with nfs-utils package required by GUI installations
-    - '!package_gssproxy_removed'
