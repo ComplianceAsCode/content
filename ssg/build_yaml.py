@@ -1203,6 +1203,7 @@ class Group(XCCDFEntity):
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 group.cpe_platform_names.add(cpe_platform.id_)
 
+
     def _pass_our_properties_on_to(self, obj):
         for attr in self.ATTRIBUTES_TO_PASS_ON:
             if hasattr(obj, attr) and getattr(obj, attr) is None:
@@ -1222,6 +1223,7 @@ class Group(XCCDFEntity):
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
+
 
     def __str__(self):
         return self.id_
@@ -1314,6 +1316,12 @@ class Rule(XCCDFEntity):
         # ensure that content of rule.platform is in rule.platforms as
         # well
         if rule.platform is not None:
+            if not isinstance(rule.platform, str):
+                msg = "Unknown platform content; did you mean platforms for "
+                msg += "list content on rule {0}, value: {1}"
+                msg.format(rule.id_, rule.platform)
+                raise ValueError(msg)
+
             rule.platforms.add(rule.platform)
 
         # Convert the platform names to CPE names
