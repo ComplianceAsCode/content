@@ -92,7 +92,8 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
-{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem=rule_id) -%}}
+{{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- set prefix_text = "Check the" -%}}
 {{%- if missing_parameter_pass %}}
@@ -113,7 +114,8 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
-{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem=rule_id) -%}}
+{{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set check_existence = "none_exist" -%}}
@@ -144,7 +146,8 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
-{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filepath_regex='', id_stem=rule_id) -%}}
+{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filepath_regex='', id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if multi_value -%}}
 {{%- set group_regex = "([^#]*).*$" -%}}
@@ -196,7 +199,8 @@
     - quotes (String): If non-empty, one level of matching quotes is considered when checking the value. Specify one or more quote types as a string.
       For example, for shell quoting, specify quotes="'\""), which will make sure that value, 'value' and "value" are matched, but 'value" or '"value"' won't be.
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem=rule_id) -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
 {{%- set regex = value -%}}
 {{%- if quotes != "" %}}
 {{%- if "\\1" in value > 0 %}}
