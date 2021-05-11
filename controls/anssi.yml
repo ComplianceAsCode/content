@@ -892,7 +892,8 @@ controls:
     - var_sudo_umask=0027
     - sudo_add_ignore_dot
     - sudo_add_env_reset
-    # passwd_timeout=1
+    - sudo_add_passwd_timeout
+    - var_sudo_passwd_timeout=1_minute
 
   - id: R59
     level: minimal
