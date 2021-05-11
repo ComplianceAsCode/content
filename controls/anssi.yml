@@ -968,10 +968,18 @@ controls:
       allow_execstack to off, forbids processes to make their stack executable;
       secure_mode_insmod to on, prohibits dynamic loading of modules by any process;
       ssh_sysadm_login to off, forbids SSH logins to connect directly in sysadmin role.
+    notes:
+      In RHEL, the SELinux boolean allow_execheap is renamed to selinuxuser_execheap, and the
+      boolean allow_execstack is renamed to selinuxuser_execstack. And allow_execmem is not
+      available, deny_execmem provides the same functionality.
+    automated: yes
     rules:
-    # Add rule for sebool allow_execheap
-    # Add rule for sebool allow_execmem
-    # Add rule for sebool allow_execstack
+    - var_selinuxuser_execheap=off
+    - sebool_selinuxuser_execheap
+    - var_deny_execmem=on
+    - sebool_deny_execmem
+    - var_selinuxuser_execstack=off
+    - sebool_selinuxuser_execstack
     - var_secure_mode_insmod=on
     - sebool_secure_mode_insmod
     - sebool_ssh_sysadm_login

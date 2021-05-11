@@ -2,14 +2,16 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,rhel9,rhv4
 
-title: 'Disable the deny_execmem SELinux Boolean'
+title: 'Enable the deny_execmem SELinux Boolean'
 
 description: |-
     By default, the SELinux boolean <tt>deny_execmem</tt> is disabled.
-    If this setting is enabled, it should be disabled.
+    If this setting is disabled, it should be enabled.
     {{{ describe_sebool_disable(sebool="deny_execmem") }}}
 
-rationale: ""
+rationale: |-
+    Allowing user domain applications to map a memory region as both writable and
+    executable makes them more susceptible to data execution attacks.
 
 severity: medium
 
@@ -19,10 +21,20 @@ identifiers:
 
 references:
     anssi: BP28(R67)
-    
-{{{ complete_ocil_entry_sebool_disabled(sebool="deny_execmem") }}}
+
+{{{ complete_ocil_entry_sebool_enabled(sebool="deny_execmem") }}}
+
+warnings:
+    - general: |-
+        This rule doesn't come with a remediation, as enabling this SELinux boolean can cause
+        applications to malfunction, for example Graphical login managers and Firefox.
+    - functionality: |-
+        Proper function and stability should be assessed before applying enabling the SELinux boolean in production systems.
 
 template:
     name: sebool
     vars:
         seboolid: deny_execmem
+    backends:
+        bash: "off"
+        ansible: "off"

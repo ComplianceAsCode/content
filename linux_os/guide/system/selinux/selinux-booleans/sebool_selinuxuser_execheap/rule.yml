@@ -6,10 +6,12 @@ title: 'Disable the selinuxuser_execheap SELinux Boolean'
 
 description: |-
     By default, the SELinux boolean <tt>selinuxuser_execheap</tt> is disabled.
+    When enabled this boolean is enabled it allows selinuxusers to execute code from the heap.
     If this setting is enabled, it should be disabled.
     {{{ describe_sebool_disable(sebool="selinuxuser_execheap") }}}
 
-rationale: ""
+rationale: |-
+    Disabling code execution from the heap blocks buffer overflow attacks.
 
 severity: medium
 
