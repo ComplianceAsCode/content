@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
+
+title: 'Uninstall setroubleshoot-server Package'
+
+description: |-
+    The SETroubleshoot service notifies desktop users of SELinux
+    denials. The service provides information around configuration errors,
+    unauthorized intrusions, and other potential errors.
+    {{{ describe_package_remove(package="setroubleshoot-server") }}}
+
+rationale: |-
+    The SETroubleshoot service is an unnecessary daemon to have
+    running on a server.
+
+severity: low
+
+identifiers:
+    cce@rhcos4: CCE-84093-4
+    cce@rhel7: CCE-83488-7
+    cce@rhel8: CCE-83490-3
+    cce@rhel9: CCE-84252-6
+
+references:
+    anssi: BP28(R68)
+
+{{{ complete_ocil_entry_package(package="setroubleshoot-server") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: setroubleshoot-server
