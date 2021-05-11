@@ -1,4 +1,7 @@
-This directory contains SSG Test Suite, effort separate to the main SSG code.
+# Introduction
+
+In this document, we will describe the SSG Test Suite.
+
 Goal of this Test Suite is primarily to ensure Remediation scripts are usable,
 and to define scenarios in which these should work.
 

@@ -10,6 +10,13 @@ ComplianceAsCode/content
     manual/developer/*
 
 .. toctree::
+    :maxdepth: 2
+    :glob:
+    :caption: Testing Content Using SSG Test Suite
+
+    tests/README
+
+.. toctree::
     :maxdepth: 1
     :glob:
     :caption: Jinja Macros Reference
@@ -22,13 +29,6 @@ ComplianceAsCode/content
     :caption: Python Modules Reference
 
     modules/*
-
-.. toctree::
-    :maxdepth: 2
-    :glob:
-    :caption: SSG Test Suite Developer Guide
-
-    tests/README
 
 .. toctree::
     :maxdepth: 2
