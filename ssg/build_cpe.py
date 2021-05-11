@@ -9,7 +9,7 @@ import sys
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
-from .utils import merge_dicts, required_key
+from .utils import merge_dicts, required_key, parse_template_boolean_value
 from .xml import ElementTree as ET
 from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
@@ -102,6 +102,10 @@ class ProductCPEs(object):
         cpe = self.get_cpe(cpe_id)
         return cpe.name
 
+    def get_check_id(self, cpe_id):
+        cpe = self.get_cpe(cpe_id)
+        return cpe.check_id
+
     def get_product_cpe_names(self):
         return [ cpe.name for cpe in self.product_cpes.values() ]
 
@@ -130,6 +134,9 @@ class CPEList(object):
 
         self.cpe_items.sort(key=lambda cpe: cpe.name)
         for cpe_item in self.cpe_items:
+            if cpe_item.variable:
+                continue
+
             cpe_list.append(cpe_item.to_xml_element(cpe_oval_file))
 
         return cpe_list
@@ -155,6 +162,9 @@ class CPEItem(object):
         self.check_id = cpeitem_data["check_id"]
         self.bash_conditional = cpeitem_data.get("bash_conditional", "")
         self.ansible_conditional = cpeitem_data.get("ansible_conditional", "")
+        self.variable = cpeitem_data.get("variable", None)
+        self.value = cpeitem_data.get("value", None)
+        self.negated = parse_template_boolean_value(cpeitem_data, "negated", False)
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
