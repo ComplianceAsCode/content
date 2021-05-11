@@ -25,14 +25,16 @@ substituting the correct package management software.
 
 :param package: Name of package
 :type package: str
+:param removed: Boolean condition for ocil_clause
+:type removed: bool
 
 #}}
-{{% macro complete_ocil_entry_package(package) -%}}
+{{% macro complete_ocil_entry_package(package, removed=False) -%}}
   {{% if pkg_system is defined %}}
     {{%- if pkg_system == "rpm" %}}
-        {{{ rpm_complete_ocil_entry_package(package) }}}
+        {{{ rpm_complete_ocil_entry_package(package, removed=removed) }}}
     {{%- elif pkg_system == "dpkg" %}}
-        {{{ dpkg_complete_ocil_entry_package(package) }}}
+        {{{ dpkg_complete_ocil_entry_package(package, removed=removed) }}}
     {{%- else -%}}
 ocil: |-
     JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.

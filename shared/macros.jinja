@@ -656,13 +656,19 @@ ocil_clause: "service and/or socket are running"
 
 :param package: The package to check
 :type package: str
+:param removed: Boolean condition for ocil_clause
+:type removed: bool
 
 #}}
-{{%- macro rpm_complete_ocil_entry_package(package) %}}
+{{%- macro rpm_complete_ocil_entry_package(package, removed=False) %}}
 ocil: |-
     {{{ rpm_ocil_package(package) }}}
 
+{{% if removed %}}
+ocil_clause: "the package is removed"
+{{% else %}}
 ocil_clause: "the package is installed"
+{{% endif %}}
 {{%- endmacro %}}
 
 
@@ -671,12 +677,18 @@ ocil_clause: "the package is installed"
 
 :param package: The package to check
 :type package: str
+:param removed: Boolean condition for ocil_clause
+:type removed: bool
 #}}
-{{%- macro dpkg_complete_ocil_entry_package(package) %}}
+{{%- macro dpkg_complete_ocil_entry_package(package, removed=False) %}}
 ocil: |-
     {{{ dpkg_ocil_package(package) }}}
 
+{{% if removed %}}
+ocil_clause: "the package is removed"
+{{% else %}}
 ocil_clause: "the package is installed"
+{{% endif %}}
 {{%- endmacro %}}
 
 
