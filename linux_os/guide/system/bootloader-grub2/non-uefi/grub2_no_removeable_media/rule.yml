@@ -31,7 +31,7 @@ ocil_clause: 'it is not'
 ocil: |-
     To verify the system is not configured to use a boot loader on removable media,
     run the following command:
-    <pre>$ sudo grep "set root='hd0" /boot/grub2/grub.cfg</pre>
+    <pre>$ sudo grep "set root='hd0" {{{ grub2_boot_path }}}/grub.cfg</pre>
     The output should return something similar to:
     <pre>set root='hd0,msdos1'</pre>
     <tt>usb0</tt>, <tt>cd</tt>, <tt>fd0</tt>, etc. are some examples of removeable

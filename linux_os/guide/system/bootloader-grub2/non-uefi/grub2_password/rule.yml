@@ -30,7 +30,7 @@ description: |-
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre>
 
 rationale: |-
     Password protection on the boot loader configuration ensures
@@ -74,7 +74,7 @@ ocil: |-
     To verify the boot loader superuser password has been set, run the following
     command:
     {{% if product in ["sle12", "sle15"] %}}
-    <pre>sudo grep "boot" /boot/grub2/grub.cfg</pre>
+    <pre>sudo grep "boot" {{{ grub2_boot_path }}}/grub.cfg</pre>
     {{% else %}}
     <pre>sudo grep "superusers" /etc/grub2.cfg</pre>
     {{% endif %}}
@@ -88,7 +88,7 @@ ocil: |-
     <pre>set superusers="boot"
     password_pbkdf2 boot grub.pbkdf2.sha512.10000.5DE5DF6E01A52E17A8C2FEDF585A3916B345F654C9D19C9ECD0BC958DF8C8A5E1AB15862D9C0B6DCE1F3209D8E8B46101DB3AE7146BB9D7D6C1D379E1854AF9E.CD75F981FE5223C583FB7887544C3A4C96431B5C089801D26855B93A1CB0BC0A508D189F1799A1CC40036B069C36EAD51DAE6A2EE6C0732353B2B5B4F5C49088</pre>
     {{% else %}}
-    <pre>sudo cat /boot/grub2/user.cfg</pre>
+    <pre>sudo cat {{{ grub2_boot_path }}}/user.cfg</pre>
     The output should be similar to:
     <pre>GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
     2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0

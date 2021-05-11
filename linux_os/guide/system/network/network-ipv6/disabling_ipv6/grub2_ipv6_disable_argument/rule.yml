@@ -13,11 +13,11 @@ description: |-
     <pre>GRUB_CMDLINE_LINUX="... ipv6.disable=1 ..."</pre>
     In case the <tt>GRUB_DISABLE_RECOVERY</tt> is set to true, then the parameter should be added to the <tt>GRUB_CMDLINE_LINUX_DEFAULT</tt> instead.
     Run one of following command to ensure that the configuration is applied when booting currently installed kernels:
-    <pre>sudo grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>sudo grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre>
     or
     <pre>sudo /sbin/grubby --update-kernel=ALL --args="ipv6.disable=1"</pre>
 {{% else %}}
-    <tt>/boot/grub2/grubenv</tt>, in the manner below:
+    <tt>{{{ grub2_boot_path }}}/grubenv</tt>, in the manner below:
     <pre>sudo  grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) ipv6.disable=1"</pre>
 {{% endif %}}
 
@@ -50,16 +50,16 @@ ocil: |-
     If the recovery is disabled, check the line with
     <pre>grep 'GRUB_CMDLINE_LINUX.*ipv6.disable=1.*' /etc/default/grub</pre>.
     Moreover, current GRUB2 config file in <tt>/etc/grub2/grub.cfg</tt> must be checked.
-    <pre>sudo grep vmlinuz /boot/grub2/grub.cfg | grep -v 'ipv6.disable=1'</pre>
+    <pre>sudo grep vmlinuz {{{ grub2_boot_path }}}/grub.cfg | grep -v 'ipv6.disable=1'</pre>
     This command should not return any output. If it does, update the configuration with one of following commands:
-    <pre>sudo grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>sudo grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre>
     or
     <pre>sudo /sbin/grubby --update-kernel=ALL --args="ipv6.disable=1"</pre>
     <br />
 {{% else %}}
     Inspect the form of default GRUB2 command line for the Linux operating system
-    in <tt>/boot/grub2/grubenv</tt>. Check if it includes <tt>ipv6.disable=1</tt>.
-    <pre>sudo grep 'kernelopts.*ipv6.disable=1.*' /boot/grub2/grubenv</pre>
+    in <tt>{{{ grub2_boot_path }}}/grubenv</tt>. Check if it includes <tt>ipv6.disable=1</tt>.
+    <pre>sudo grep 'kernelopts.*ipv6.disable=1.*' {{{ grub2_boot_path }}}/grubenv</pre>
     <br /><br />
     To ensure <tt>ipv6.disable=1</tt> is configured on all installed kernels, the
     following command may be used:
@@ -78,7 +78,7 @@ warnings:
         <pre>grub2-mkconfig -o</pre> command as follows:
         <ul>
         <li>On BIOS-based machines, issue the following command:
-        <pre>sudo grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+        <pre>sudo grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre></li>
         <li>On UEFI-based machines, issue the following command:
 {{% if product in ["rhel7", "ol7", "rhel8", "ol8"] %}}
         <pre>sudo grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>

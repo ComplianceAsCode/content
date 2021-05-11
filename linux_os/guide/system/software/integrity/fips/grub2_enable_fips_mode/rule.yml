@@ -16,7 +16,7 @@ description: |-
     <pre>grub2-mkconfig -o</pre> command as follows:
     <ul>
     <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
-    <pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+    <pre>~]# grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre></li>
     <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
     <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
     </ul>

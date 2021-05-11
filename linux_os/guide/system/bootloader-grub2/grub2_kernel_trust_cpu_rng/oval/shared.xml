@@ -30,7 +30,7 @@
   </ind:textfilecontent54_object>
 
 <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_off"
-  comment="check forkernel command line parameters random.trust_cpu=off in /boot/grub2/grubenv for all kernels"
+  comment="check forkernel command line parameters random.trust_cpu=off in {{{ grub2_boot_path }}}/grubenv for all kernels"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_trust_cpu_rng_boot_param" />
     <ind:state state_ref="state_trust_cpu_rng_boot_param_off" />
@@ -38,7 +38,7 @@
 
 
   <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_on"
-  comment="check forkernel command line parameters random.trust_cpu=on in /boot/grub2/grubenv for all kernels"
+  comment="check forkernel command line parameters random.trust_cpu=on in {{{ grub2_boot_path }}}/grubenv for all kernels"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_trust_cpu_rng_boot_param" />
     <ind:state state_ref="state_trust_cpu_rng_boot_param_on" />
@@ -46,7 +46,7 @@
 
   <ind:textfilecontent54_object id="object_trust_cpu_rng_boot_param"
   version="1">
-    <ind:filepath>/boot/grub2/grubenv</ind:filepath>
+    <ind:filepath>{{{ grub2_boot_path }}}/grubenv</ind:filepath>
     <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>

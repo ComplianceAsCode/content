@@ -51,7 +51,7 @@ ocil: |-
     The output should not contain <tt>'disabled by kernel command line option'</tt>.
     To verify that ExecShield has not been disabled in the kernel configuration,
     run the following command:
-    <pre>$ sudo grep noexec /boot/grub2/grub.cfg</pre>
+    <pre>$ sudo grep noexec {{{ grub2_boot_path }}}/grub.cfg</pre>
     The output should not return <tt>noexec=off</tt>.
     For 32-bit Red Hat Enterprise Linux 7 systems, run the following command:
     <pre>$ sysctl kernel.exec-shield</pre>
