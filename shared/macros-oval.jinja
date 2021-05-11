@@ -902,3 +902,49 @@
   {{%- endif %}}
 </def-group>
 {{%- endmacro %}}
+
+{{#
+  Macro which generates a complete check for a variable having a value.
+#}}
+{{%- macro oval_check_var_is_value(variable, value, negate=False) -%}}
+<def-group>
+  {{% if not negate %}}
+  <definition class="compliance" id="{{{ variable }}}_is_{{{ value }}}" version="1">
+  {{% else %}}
+  <definition class="compliance" id="{{{ variable }}}_is_not_{{{ value }}}" version="1">
+  {{% endif %}}
+    <metadata>
+      <title>Check {{{ variable }}} against {{{ value }}} (negated: {{{ negate }}})</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>
+        {{% if not negate %}}
+          Compare whether {{{ variable }}} is presently {{{ value }}}.
+        {{% else %}}
+          Compare whether {{{ variable }}} is not {{{ value }}}.
+        {{% endif %}}
+      </description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_{{{ variable }}}_against_{{{ value }}}_negated_{{{ negate|lower }}}" negate="{{{ negate|lower }}}" />
+    </criteria>
+  </definition>
+
+  <external_variable id="{{{ variable }}}" datatype="string" version="1" comment="Value of {{{ variable }}} as a string" />
+
+  <ind:variable_object id="obj_{{{ variable }}}_against_{{{ value }}}_negated_{{{ negate|lower }}}" version="1">
+    <ind:var_ref>{{{ variable }}}</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="ste_{{{ variable }}}_against_{{{ value }}}_negated_{{{ negate|lower }}}" version="1">
+    <ind:value datatype="string" operation="equals">{{{ value }}}</ind:value>
+  </ind:variable_state>
+
+  <ind:variable_test id="test_{{{ variable }}}_against_{{{ value }}}_negated_{{{ negate|lower }}}"
+                     check="all" comment="test {{{ variable }}} against {{{ value }}} (negated {{{ negated|lower }}})" version="1">
+    <ind:object object_ref="obj_{{{ variable }}}_against_{{{ value }}}_negated_{{{ negate|lower }}}" />
+    <ind:state state_ref="ste_{{{ variable }}}_against_{{{ value }}}_negated_{{{ negate|lower }}}" />
+  </ind:variable_test>
+</def-group>
+{{%- endmacro -%}}
