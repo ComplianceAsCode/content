@@ -70,6 +70,10 @@ controls:
       It is recommended to use the mandatory access control (MAC) features in
       addition to the traditional Unix user model (DAC), or possibly combine
       them with partitioning mechanisms.
+    notes: >-
+      Other partitioning mechanisms can include chroot and containers and are not contemplated
+      in this requirement.
+    automated: partially
     rules:
     - selinux_state
     - var_selinux_state=enforcing
@@ -161,6 +165,7 @@ controls:
       The iommu = force directive must be added to the list of kernel parameters
       during startup in addition to those already present in the configuration
       files of the bootloader (/boot/grub/menu.lst or /etc/default/grub).
+    automated: yes
     rules:
     - grub2_enable_iommu_force
 
@@ -837,8 +842,8 @@ controls:
       not locally stored in clear), or possibly stored on a separate machine
       of the one on which the sealing is done.
       Check section "Database and config signing in AIDE manual"
-      https://github.com/aide/aide/blob/master/doc/manual.html
-    # rules: TBD
+      https://aide.github.io/doc/#signing
+    automated: no
 
   - id: R53
     level: enhanced
@@ -946,7 +951,7 @@ controls:
     title: Enable AppArmor security profiles
     description: >-
       All AppArmor security profiles on the system must be enabled by default.
-    # rules: TBD
+    automated: no
 
   - id: R66
     level: high
@@ -990,6 +995,7 @@ controls:
     description: >-
       SELinux policy manipulation and debugging tools should not be installed
       on a machine in production.
+    automated: yes
     rules:
     - package_setroubleshoot_removed
     - package_setroubleshoot-server_removed
@@ -1000,4 +1006,5 @@ controls:
     title: Confining interactive non-privileged users
     description: >-
       Interactive non-privileged users of a system must be confined by associating them with a SELinux confined user.
-    # rules: TBD
+    notes: Interactive users who still need to perform administrative tasks should not be confined with user_u.
+    automated: no
