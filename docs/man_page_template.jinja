@@ -7,7 +7,7 @@ Automation Protocol (SCAP).
 
 
 .SH DESCRIPTION
-The project provides practical security hardening advice for Red Hat products,
+The project provides practical security hardening advice
 and also links it to compliance requirements in order to ease deployment
 activities, such as certification and accreditation. These include requirements
 in the U.S. government (Federal, Defense, and Intelligence Community) as well
@@ -51,7 +51,7 @@ oscap xccdf eval --profile ospp \
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
 --oval-results \
-/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml
+/usr/share/xml/scap/ssg/content/ssg-{product}-xccdf.xml
 .PP
 Additional details can be found on the projects wiki page:
 https://www.github.com/OpenSCAP/scap-security-guide/wiki
@@ -92,27 +92,6 @@ Contains Ansible Playbooks for SSG profiles.
 .RS
 Contains Bash remediation scripts for SSG profiles.
 .RE
-
-.SH STATEMENT OF SUPPORT
-The SCAP Security Guide, an open source project jointly maintained by Red Hat
-and the NSA, provides XCCDF and OVAL content for Red Hat technologies. As an open
-source project, community participation extends into U.S. Department of Defense
-agencies, civilian agencies, academia, and other industrial partners.
-
-SCAP Security Guide is provided to consumers through Red Hat's Extended
-Packages for Enterprise Linux (EPEL) repository. As such, SCAP Security Guide
-content is considered "vendor provided."
-
-Note that while Red Hat hosts the infrastructure for this project and
-Red Hat engineers are involved as maintainers and leaders, there is no
-commercial support contracts or service level agreements provided by Red Hat.
-
-Support, for both users and developers, is provided through the SCAP Security
-Guide community.
-
-Homepage: https://www.open-scap.org/security-policies/scap-security-guide
-.PP
-Mailing List: https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide
 
 
 .SH DEPLOYMENT TO U.S. CIVILIAN GOVERNMENT SYSTEMS
