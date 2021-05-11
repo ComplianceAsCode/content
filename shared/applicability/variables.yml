@@ -1,0 +1,32 @@
+cpes:
+  - var_chrony:
+      name: "cpe:/a:var_chrony"
+      title: "Chrony is selected"
+      check_id: var_time_synchronization_daemon_is_chrony
+      variable: var_time_synchronization_daemon
+      value: chrony
+      negated: false
+
+  - not_var_chrony:
+      name: "cpe:/a:not_var_chrony"
+      title: "Chrony is not selected"
+      check_id: var_time_synchronization_daemon_is_not_chrony
+      variable: var_time_synchronization_daemon
+      value: chrony
+      negated: true
+
+  - var_ntp:
+      name: "cpe:/a:var_ntp"
+      title: "ntp is selected"
+      check_id: var_time_synchronization_daemon_is_ntp
+      variable: var_time_synchronization_daemon
+      value: ntp
+      negated: false
+
+  - not_var_ntp:
+      name: "cpe:/a:not_var_ntp"
+      title: "ntp is not selected"
+      check_id: var_time_synchronization_daemon_is_not_ntp
+      variable: var_time_synchronization_daemon
+      value: ntp
+      negated: true
