@@ -44,6 +44,9 @@ selections:
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
 
+    # AU
+    - audit_profile_set
+
     # AU-9
     - audit_log_forwarding_enabled
 
