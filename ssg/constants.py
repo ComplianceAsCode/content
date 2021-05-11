@@ -381,3 +381,4 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
 
 # Application constants
 DEFAULT_UID_MIN = 1000
+DEFAULT_GRUB2_BOOT_PATH = '/boot/grub2'

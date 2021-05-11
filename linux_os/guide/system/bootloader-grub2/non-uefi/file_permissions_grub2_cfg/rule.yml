@@ -2,11 +2,11 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
 
-title: 'Verify /boot/grub2/grub.cfg Permissions'
+title: 'Verify {{{ grub2_boot_path }}}/grub.cfg Permissions'
 
 description: |-
-    File permissions for <tt>/boot/grub2/grub.cfg</tt> should be set to 600.
-    {{{ describe_file_permissions(file="/boot/grub2/grub.cfg", perms="600") }}}
+    File permissions for <tt>{{{ grub2_boot_path }}}/grub.cfg</tt> should be set to 600.
+    {{{ describe_file_permissions(file="{{{ grub2_boot_path }}}/grub.cfg", perms="600") }}}
 
 rationale: |-
     Proper permissions ensure that only the root user can modify important boot
@@ -35,8 +35,8 @@ references:
 ocil_clause: 'it does not'
 
 ocil: |-
-    To check the permissions of /boot/grub2/grub.cfg, run the command:
-    <pre>$ sudo ls -lL /boot/grub2/grub.cfg</pre>
+    To check the permissions of {{{ grub2_boot_path }}}/grub.cfg, run the command:
+    <pre>$ sudo ls -lL {{{ grub2_boot_path }}}/grub.cfg</pre>
     If properly configured, the output should indicate the following
     permissions: <tt>-rw-------</tt>
 
@@ -45,5 +45,5 @@ platform: machine
 template:
     name: file_permissions
     vars:
-        filepath: /boot/grub2/grub.cfg
+        filepath: {{{ grub2_boot_path }}}/grub.cfg
         filemode: '0600'
