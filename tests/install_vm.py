@@ -115,7 +115,7 @@ def main():
 
     if not data.url:
         if data.distro == "fedora":
-            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/31/Everything/x86_64/os"
+            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Everything/x86_64/os"
         elif data.distro == "centos7":
             data.url = "http://mirror.centos.org/centos/7/os/x86_64"
     if not data.url:
