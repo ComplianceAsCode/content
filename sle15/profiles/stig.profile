@@ -120,6 +120,7 @@ selections:
     - audit_rules_privileged_commands_sudoedit
     - audit_rules_privileged_commands_umount
     - audit_rules_session_events_utmp
+    - audit_rules_session_events_wtmp
     - audit_rules_suid_privilege_function
     - audit_rules_sysadmin_actions
     - audit_rules_unsuccessful_file_modification_creat
