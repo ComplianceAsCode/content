@@ -9,19 +9,18 @@ Priority is to provide very simple system of test scenarios, easily extendable
 so everyone contributing remediation can also provide cases where this
 remediation works.
 
-The Test Suite executes the scans, remediations, and test scenarios on VMs or containers.\
-To test content using VMs, *Libvirt backend* is used;\
+The Test Suite executes the scans, remediations, and test scenarios on VMs or containers.
+To test content using VMs, *Libvirt backend* is used;
 to test content using containers, either *Podman* or *Docker* backend can be used.
 
 Once a domain or container is prepared it can be used indefinitely.\
 The Test Suite can perform tests focused on a profile or a specific rule.\
 Typically, for a test run, a sequence of scan, remediation and scan is peformed.
 
-# How to prepare a backend for testing
-For the Test Suite to work, you need to have a backend image prepared for testing.\
-You can use a powerful full-blown VM backend, or a lightweight container backend.
+# Preparing a backend for testing
 
-SSG Test Suite currently does not provide automated provisioning of VMs or containers.
+For the test suite to work, you need to have a backend image prepared for testing.
+You can use a powerful full-blown VM backend, or a lightweight container backend.
 
 ## Libvirt backend
 
@@ -38,14 +37,13 @@ To use Libvirt backend, you need to have:
   - `virt-viewer`       (optional, to access graphical console of VMs)
   - `ansible`           (required if remediating via Ansible)
   - `edk2-ovmf`         (required if you want to install UEFI based machine)
-- A VM that fullfils following requirements:
+- A VM that fulfils the following requirements:
   - Package `qemu-guest-agent` installed
   - Package `openscap` version 1.2.15 or higher installed
   - `root` can login via ssh (it is recommended to setup key-based authentication)
   - `root` can install packages (for RHEL7, it means subscription enabled).
 
-An easy way to install your VM is via `install_vm.py` script. It will setup a VM\
-according to the requirements, including configuration of a key for SSH login.
+An easy way to install your VM is via `install_vm.py` script. It will setup a VM according to the requirements, including configuration of a key for SSH login.
 
 Common usage looks like:
 ```
@@ -130,16 +128,116 @@ To use Docker backend, you need to have:
 
 The procedure is same as using Podman, you just swap the `podman` call with `docker`. But since Docker does not support rootless containers you will have to take superuser route of the guide.
 
-# How to run the tests
 
-To test you profile or rule use `test_suite.py` script. It can take your DataStream, and test it on the specified backend.
+# Test scenarios
+
+The test scenarios are used to test rules. They modify the system configuration
+so that OpenSCAP can return expected results.
+
+The test scenarios for a rule are located in `tests` subdirectory in rule
+directory. The test scenarios are written in Bash. The format of the file name
+is `scenario_name.expected_scan_result.sh`, where `scenario_name` is an
+arbitrary name, and `expected_scan_result` is the result of the evaluation of
+the rule that `oscap` should return when the rule is evaluated.
+`expected_scan_result` can be one of `pass`, `fail`  or `notapplicable`. It's
+very important to keep this naming form.
+
+For example:
+* `something.pass.sh`: Success scenario - script is expected to prepare machine
+  in such way that the rule is expected to pass.
+* `something.fail.sh`: Fail scenario - script is expected to break machine so
+  the rule fails. Test Suite than, if initial scan fails as expected, tries to
+  remediate machine and expects evaluation to pass after the remediation.
+
+## Scenarios format
+
+Scenarios are simple Bash scripts. A scenario starts with a header which
+provides metadata. The metadata are parsed by the test framework and affect the
+test runs. After the header, arbitrary Bash commands can follow.
+
+The header consists of comments (starting by `#`). Possible keys are:
+
+- `packages` is a comma-separated list of packages to install.
+- `platform` is a comma-separated list of platforms where the test scenario can
+  be run. This is similar to `platform` used in our remediations. Examples of
+  values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`,
+  `multi_platform_all`. If `platform` is not specified in the header,
+  `multi_platform_all` is assumed.
+- `profiles` is a comma-separated list of profiles to which this scenario is
+  restricted. Use this only if the scenario makes sense only in a specific
+  profile. Typically, a rule doesn't depend on a profile and behaves the same
+  way regardless the profile it's a part of. If the rule is parametrized by
+  variables (XCCDF Values), use the `variables` key instead. This key is
+  intended to be used in regression testing of bugs in profiles, it isn't
+  intended for casual use.
+- `remediation` is a string specifying one of the allowed remediation types (eg.
+  `bash`, `ansible`, `none`). The `none` value means that the tested rule has no
+  implemented remediation.
+- `templates` has no effect at the moment.
+- `variables` is a comma-separated list of XCCDF values that sets a different
+  default value for XCCDF variables in a form `<variable name>=<value>`.
+  Typically, you use only one of `profile` or `variables` in scenario metadata -
+  default values are effective only if the variable is not defined using a
+  selector, which is exactly what profiles do.
+
+Examples of test scenario:
+
+Using `platform` and `variables` metadata:
+
+```bash
+#!/bin/bash
+#
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# variables = auth_enabled=yes,var_example_1=value_example
+
+echo "KerberosAuthentication $auth_enabled" >> /etc/ssh/sshd_config
+```
+
+## Example of adding new test scenarios
+
+Let's add test scenarios for rule `accounts_password_minlen_login_defs`.
+
+1. Create `tests` directory within rule directory (in this case
+  `/linux_os/guide/system/accounts/accounts-restrictions/password_expiration/accounts_password_minlen_login_defs/tests` further referenced as *DIR*).
+2. write a few fail scripts - for example removing the line, commenting it, wrong value, etc.
+ into *DIR*
+3. write a pass script into *DIR* - (some rules can have more than one pass scenario)
+4. build the data stream by running `./build_product --datastream-only fedora`
+5. run `test_suite.py` with command:
+```
+./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
+```
+
+Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
+
+## Sharing code among test scenarios
+
+Test scenarios can use files from `/tests/shared` directory. This directory
+and its contents is copied to the target VM or container together with the
+test scenarios. The path to the directory is accessible in Bash using `$SHARED`
+variable.
+
+For example, script `/tests/shared/setup_config_files.sh` can be sourced in
+the following way:
+
+```
+. $SHARED/setup_config_files.sh
+```
+
+If you happen to have many similar test scenarios, consider extracting the
+common code to the shared directory.
+
+
+# Running tests
+
+To test you profile or rule use `test_suite.py` script. It can take your SCAP source data stream, and test it on the specified backend.
 The Test Suite can test a whole profile or just a specific rule within a profile.
 
-# Argument summary
+## Argument summary
 
 Mode of operation, specify one of the following commands;
-- `profile`: Evaluate, remediate and evalute again using selected profile
 - `rule`: Evaluate a rule, remediate, and evaluate again in context of test scenarios.
+- `profile`: Evaluate, remediate and evaluate again using selected profile
 - `combined`: Evaluate, remediate, and evaluate again the rules from a profile in context of test scenarios.
 
 Specify backend and image to use:
@@ -182,10 +280,10 @@ into a file ending with .conf and placed into the /etc/modprobe.d/ directory.
   - Podman - `--container <base image name>`
   - Docker - `--docker <base image name>`
 
-Specify DataStream to use:
-- `--datastream`: Path to the datastream that you want to use for scanning.
+Specify SCAP source data stream to use:
+- `--datastream`: Path to the data stream that you want to use for scanning.
   It will be transferred to the scanned system via SSH.
-  The option can be omitted if there is only one datastream in the build directory.
+  The option can be omitted if there is only one data stream in the build directory.
 
 Specify as last argument the id of a profile or rule to be tested.
 
@@ -208,6 +306,73 @@ UserKnownHostsFile /dev/null
 ```
 
 All logs of Test Suite are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
+
+## Rule-based testing
+
+```
+./test_suite.py rule RULE ...
+```
+
+In this mode, you supply one or more rule IDs or wildcards as positional
+arguments. Unlike the profile mode, each rule is evaluated and tested
+independently, one-by-one.
+
+Rule-based testing enables to perform two kinds of tests:
+
+- Check tests: The system is set up into a compliant, or a non-compliant state.
+
+  Typically, the compliant state is different from the default or
+  post-remediation state. The scanner is supposed to correctly identify the
+  state of the system, so it is checked against false positives and false
+  negatives.
+
+- Remediation tests: The system is set up into a non-compliant state, and
+  remediation is performed.
+
+If you would like to test the rule `sshd_disable_kerb_auth`:
+
+Using Libvirt:
+```
+./test_suite.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+```
+
+Using Podman:
+```
+./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+```
+
+or just call the `test_rule_in_container.sh` script that passes the backend options for you
+in addition to `--remove-machine-only` and `--add-platform`
+that remove some testing limitations of the container backend.
+
+Using Docker:
+```
+./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+```
+
+Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
+
+It is possible to use wildcards, eg `accounts_passwords*` will run test scenarios for all
+rules which ID starts with `accounts_passwords`.
+
+If the data stream file path is not supplied, auto detection is attempted by
+looking into the `/build` directory.
+
+In the rule mode, the test suite follows the `profiles` metadata key from the
+scenario headers. It will run test scenario for each profile listed in this
+`profile` key. If there is no `profiles` key in the test scenario header the
+test suite will use the virtual `(all)` profile. It is a profile that contains
+all the rules.
+
+Moreover, there is the `--profile` option which can be used to override the
+profile selection from profiles metadata so every test scenario will be executed
+only against the profile selected by this command-line argument and variable
+selections will be done according to this profile.
+
+### Debug mode
+
+Use `--debug` option, to investigate a test scenario which is not evaluating to expected result.
+The Test Suite will pause its execution, and you will be able to SSH into the environment to inspect its state manually.
 
 ## Profile-based testing
 
@@ -238,14 +403,14 @@ Note that `profile-id` is matched by the suffix, so it works the same as in `osc
 Sometimes you would like to skip a rule in the profile because they are too slow to test,\
 or you know a rule doesn't have a remediation and you get less value by testing it.
 
-For these situations, use `ds_unselect_rules.sh` to unselect these rules in all profiles of the datastream.
-It will copy your `datastream` to `/tmp` and unselect rules listed in `rules_list`
+For these situations, use `ds_unselect_rules.sh` to unselect these rules in all profiles of the data stream.
+It will copy your data stream to `/tmp` and unselect rules listed in `rules_list`
 
 ```
 ./ds_unselect_rules.sh <datastream> <rules_list>
 ```
 Where:
-- `datastream`: is the DataStream to unselect rules from
+- `datastream`: is the data stream to unselect rules from
 - `rules_list`: is a file with list of complete rule IDs, one per line
 
 Example usage:
@@ -255,85 +420,34 @@ Example usage:
 
 *Tip*: file `unselect_rules_list` contains a few typical rules you may want to skip
 
-## Rule-based testing
-
-In this mode, you specify the `rule` command and you supply one or more rule
-IDs or wildcards as positional arguments. Unlike the profile mode, here each
-rule from the matching rule set is addressed independently, one-by-one.
-
-Rule-based testing enables to perform two kinds of tests:
-
-- Check tests: The system is set up into a compliant, or a non-compliant state.
-
-  Typically, the compliant state is different from the default or
-  post-remediation state. The scanner is supposed to correctly identify the
-  state of the system, so it is checked against false positives and false
-  negatives.
-
-- Remediation tests: The system is set up into a non-compliant state, and
-  remediation is performed.
-
-If you would like to evaluate the rule `sshd_disable_kerb_auth`:
-
-Using Libvirt:
-```
-./test_suite.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
-```
-
-Using Podman:
-```
-./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
-```
-
-or just call the `test_rule_in_container.sh` script that passes the backend options for you
-in addition to `--remove-machine-only` and `--add-platform`
-that remove some testing limitations of the container backend.
-
-Using Docker:
-```
-./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
-```
-
-Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
-
-It is possible to use wildcards, eg `accounts_passwords*` will run test scenarios for all
-rules which ID starts with `accounts_passwords`.
-
-### Debug mode
-
-Use `--debug` option, to investigate a test scenario which is not evaluating to expected result.
-The Test Suite will pause its execution, and you will be able to SSH into the environment to inspect its state manually.
-
-### How rule validation scenarios work
-
-The test scenarios for a rule are located in `tests` subdirectory in rule directory.
-
-
-Scenarios are currently supported only in `bash`. And type of scenario is
-defined by its file name.
-
-#### (something).pass.sh
-
-Success scenario - script is expected to prepare machine in such way that the
-rule is expected to pass.
-
-#### (something).fail.sh
-
-Fail scenario - script is expected to break machine so the rule fails. Test
-Suite than, if initial scan fails as expected, tries to remediate machine and
-expects evaluation to pass.
-
-#### (something).sh
-
-Support files, these are available to the scenarios during their runtime. Can
-be used as common libraries.
 
 ## Combined testing mode
 
 In this mode, you are testing the rules selected by a profile, using the contexts provided by each rule's test scenarios.
 This mode provides an easy way of performing rule-based testing on all rules that are part of a profile.
 
-Any `# profiles` metadata in the test scenarios will be ignored, the Test Suite will assume that the test scenarios apply for the Profile, since the rule is selected by the profile.
+In the combined mode, all rules selected by the given profile are tested.
+However, each rule is evaluated and tested separately.
+
+The test scenarios are chosen to execute based on the presence and contents of
+the `profiles` metadata key in the test scenario header. If there is no
+`profiles` metadata key in a test scenario the test scenario will be executed
+using the virtual `(all)` profile. If there is a `profiles` key in a test
+scenario and the tested profile is listed under the `profiles` key, the test
+scenario will be executed using the tested profile. If there is the `profiles`
+key but it doesn't contain the tested profile the test scenario will be skipped
+and won't be executed. Most of the test scenarios do not have `profiles` key,
+therefore using the virtual `(all)` profile is the most frequent behavior.
+This way we can re-use test scenarios when testing any profile.
+
+If you want to have a specific regression test only for a certain profile(s)
+which relies on a specific value being selected by some variable in this profile
+you need to use the `profiles` key in the test scenarios metadata to limit test
+scenario so it is executed only when testing profiles listed there.
+
+```
+# profiles = xccdf_org.ssgproject.content_profile_ID1,xccdf_org.ssgproject.content_profile_ID2,...
+```
 
 If a rule doesn't have any test scenario, it will be skipped and a `INFO` message printed at the end.
 
@@ -342,68 +456,7 @@ If you would like to test all profile's rules against their test scenarios:
 ./test_suite.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
 ```
 
-# How to write new test scenarios
 
-## Scenarios format
-
-Scenarios are simple bash scripts. A scenario starts with a header which provides metadata.
-The header consists of comments (starting by `#`). Possible values are:
-- `packages` is a comma-separated list of packages to install.
-- `platform` is a comma-separated list of platforms where the test scenario can be run. This is similar to `platform` used in our remediations. Examples of values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`, `multi_platform_all`. If `platform` is not specified in the header, `multi_platform_all` is assumed.
-- `profiles` is a comma-separated list of profiles to which this scenario applies to.
-- `remediation` is a string specifying one of the allowed remediation types (eg. `bash`, `ansible`, `none`).
-  The `none` value means that the tested rule has no implemented remediation.
-- `templates` has no effect at the moment.
-- `variables` is a comma-separated list of XCCDF values that sets a different default value for XCCDF variables in a form `<variable name>=<value>`. Typically, you use only one of `profile` or `variables` in scenario metadata - default values are effective only if the variable is not defined using a selector, which is exactly what profiles do.
-
-After the header, bash commands that prepare the scenario follow.
-
-Examples of test scenario:
-
-Using `platform` and `profiles` metadata:
-
-```bash
-#!/bin/bash
-#
-# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
-# profiles = xccdf_org.ssgproject.content_profile_ospp
-# variables = auth_enabled=yes,var_example_1=value_example
-
-echo "KerberosAuthentication $auth_enabled" >> /etc/ssh/sshd_config
-```
-
-# Example of incorporating new test scenario
-
-Let's add test scenarios for rule `accounts_password_minlen_login_defs`
-
-1. Create `tests` directory within rule directory (in this case
-  `/linux_os/guide/system/accounts/accounts-restrictions/password_expiration/accounts_password_minlen_login_defs/tests` further referenced as *DIR*).
-1. write a few fail scripts - for example removing the line, commenting it, wrong value, etc.
- into *DIR*
-1. write a pass script into *DIR* - (some rules can have more than one pass scenario)
-1. build the datastream by running `./build_product --datastream-only fedora`
-1. run `test_suite.py` with command:
-```
-./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
-```
-Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
-
-# Sharing code among test scenarios
-
-Test scenarios can use files from `/tests/shared` directory. This directory
-and its contents is copied to the target VM or container together with the
-test scenarios. The path to the directory is accessible in Bash using `$SHARED`
-variable.
-
-For example, script `/tests/shared/setup_config_files.sh` can be sourced in
-the following way:
-
-```
-. $SHARED/setup_config_files.sh
-```
-
-If you happen to have many similar test scenarios, consider extracting the
-common code to the shared directory.
 
 # Analysis of results
 
