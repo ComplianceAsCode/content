@@ -58,6 +58,8 @@ def main():
     for el in defs.findall(".//{%s}definition" % oval_ns):
         if el.get("class") != "inventory":
             continue
+        if el.get("id").startswith("var_"):
+            continue
         inventory_defs.append(el)
 
     # Keep the list of 'id' attributes from untranslated inventory def elements
@@ -145,6 +147,8 @@ def main():
     product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
+        if cpe_name.startswith("var_") or cpe_name.startswith("not_var_"):
+            continue
         cpe_list.add(product_cpes.get_cpe(cpe_name))
 
     cpedict_filename = "ssg-" + product + "-cpe-dictionary.xml"
