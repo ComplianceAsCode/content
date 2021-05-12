@@ -38,7 +38,7 @@ description: |-
     consensus and release processes.
 
 selections:
-    # AC-2
+    # AC-2, AC-7
     - ocp_idp_no_htpasswd
 
     - ocp_allowed_registries_for_import
