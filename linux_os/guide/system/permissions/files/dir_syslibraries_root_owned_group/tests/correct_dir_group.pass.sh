@@ -2,8 +2,5 @@
 
 for SYSLIBDIRS in /lib /lib64 /usr/lib /usr/lib64
 do
-    if [[ -d $SYSLIBDIRS  ]]
-    then
-        find $SYSLIBDIRS ! -group root -type d -exec chgrp root '{}' \;
-    fi
+    find $SYSLIBDIRS ! -group root -type d -exec chgrp root '{}' \;
 done
