@@ -94,6 +94,12 @@ def parse_args():
         choices=['secureboot', 'normal'],
         help="Perform UEFI based installation, optionally with secure boot support."
     )
+    parser.add_argument(
+        "--install-gui",
+        dest="install_gui",
+        action='store_true',
+        help="Perform a GUI installation (default is installation without GUI)."
+    )
 
     return parser.parse_args()
 
@@ -156,6 +162,16 @@ def main():
                 "part /boot --fstype=xfs --size=512",
                 "part /boot --fstype=xfs --size=312\npart /boot/efi --fstype=efi --size=200"
             )
+        if data.install_gui:
+            gui_group="\n%packages\n@^graphical-server-environment\n"
+            if data.distro == "fedora":
+                gui_group="\n%packages\n@^Fedora Workstation\n"
+            content = content.replace("\n%packages\n", gui_group)
+            data.graphics_opt = "vnc"
+            data.inst_opt = "inst.graphical"
+        else:
+            data.graphics_opt = "none"
+            data.inst_opt = "inst.cmdline"
         outfile.write(content)
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
@@ -169,7 +185,7 @@ def main():
     # The kernel option 'net.ifnames=0' is used to disable predictable network
     # interface names, for more details see:
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
-    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics=none --noautoconsole --rng /dev/random --wait=-1 --location={url}'.format(**data.__dict__)
+    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} ksdevice=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait=-1 --location={url}'.format(**data.__dict__)
     if data.uefi == "normal":
         command = command+" --boot uefi"
     if data.uefi == "secureboot":
