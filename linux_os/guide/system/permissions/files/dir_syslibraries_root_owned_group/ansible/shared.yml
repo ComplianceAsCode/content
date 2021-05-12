@@ -1,0 +1,13 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
+-  name: "Set root as group-owner of system-wide directories"
+   file: 
+     path: "{{ item }}"
+     group: "root"
+     recurse: "yes"
+     state: "directory"
+     follow: "no"
+   with_items: [ '/lib','/lib64','/usr/lib','/usr/lib64' ]

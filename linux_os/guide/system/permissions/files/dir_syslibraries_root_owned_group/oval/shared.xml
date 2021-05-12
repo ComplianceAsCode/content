@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="dir_syslibraries_root_owned_group" version="2">
+    {{{ oval_metadata("
+        Checks that system-wide directories /lib, /lib64, /usr/lib, /usr/lib64 
+        are group-owned by root.
+      ") }}}
+    <criteria >
+      <criterion test_ref="test_root_group_ownership_for_syslibrary_dirs" />
+    </criteria>
+  </definition>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="test if system-wide directories are group-owned by root" id="test_root_group_ownership_for_syslibrary_dirs" version="1">
+    <unix:object object_ref="root_group_ownership_for_syslibrary_dirs" />
+  </unix:file_test>
+
+  <unix:file_object comment="system-wide directories" id="root_group_ownership_for_syslibrary_dirs" version="1">
+    <!-- Check that system-wide directories /lib, /lib64, /usr/lib, /usr/lib64,  
+         are group-owned by root -->
+    <unix:path operation="pattern match">^\/lib(64)?\/|^\/usr\/lib(64)?\/</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">group_owner_for_system_wide_dirs_not_root</filter>
+  </unix:file_object>
+
+  <unix:file_state id="group_owner_for_system_wide_dirs_not_root" version="1" >
+    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
+  </unix:file_state>
+</def-group>
