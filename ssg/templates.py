@@ -6,6 +6,7 @@ import sys
 import imp
 import glob
 
+import ssg.build_ovals
 import ssg.build_yaml
 import ssg.utils
 import ssg.yaml
