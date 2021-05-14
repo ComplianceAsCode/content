@@ -266,7 +266,6 @@ selections:
     - package_tftp-server_removed
     - sshd_disable_x11_forwarding
     - tftpd_uses_secure_mode
-    - package_xorg-x11-server-common_removed
     - sysctl_net_ipv4_ip_forward
     - mount_option_krb_sec_remote_filesystems
     - snmpd_not_default_password
@@ -298,7 +297,6 @@ selections:
     - package_MFEhiplsm_installed
     - sssd_ldap_configure_tls_reqcert
     - uefi_no_removeable_media
-    - xwindows_runlevel_target
     - require_emergency_target_auth
     - grub2_admin_username
     - grub2_uefi_admin_username
