@@ -172,7 +172,10 @@ The header consists of comments (starting by `#`). Possible keys are:
   intended for casual use.
 - `remediation` is a string specifying one of the allowed remediation types (eg.
   `bash`, `ansible`, `none`). The `none` value means that the tested rule has no
-  implemented remediation.
+  implemented remediation. The `none` value can also be used in case that
+  remediation breaks test environment (for example unmounting /tmp in a test
+  scenario would break test suite because OpenSCAP generates reports into the
+  /tmp directory).
 - `templates` has no effect at the moment.
 - `variables` is a comma-separated list of XCCDF values that sets a different
   default value for XCCDF variables in a form `<variable name>=<value>`.
