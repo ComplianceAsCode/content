@@ -88,20 +88,22 @@ controls:
     automated: partially
     notes: >-
       Defense in-depth can be broadly divided into three areas - physical, technical and
-      administrative. The security profile is best suitedto protect the technical area.
+      administrative. The security profile is best suited to protect the technical area.
       Among the barriers that can be implemented within the technical area are antivirus software,
       authentication, multi-factor authentication, encryption, logging, auditing, sandboxing,
       intrusion detection systems, firewalls and vulnerability scanners.
+      The selection below is not in any way exaustive and should be adapted to the system's needs.
     rules:
-    #- package_audit_installed
-    #- service_auditd_enabled
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
     - service_rsyslog_enabled
-    #- package_ntp_installed
-    #- package_firewalld_installed
-    #- service_firewalld_enabled
-    #- sssd_enable_smartcards
+    related_rules:
+    - package_audit_installed
+    - service_auditd_enabled
+    - package_ntp_installed
+    - package_firewalld_installed
+    - service_firewalld_enabled
+    - sssd_enable_smartcards
 
   - id: R6
     level: enhanced
