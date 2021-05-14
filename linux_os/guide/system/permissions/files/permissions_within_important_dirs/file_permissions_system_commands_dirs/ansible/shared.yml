@@ -5,7 +5,7 @@
 # disruption = medium
 
 
-- name: "Retrive the system command files and protect them from unautorized access"
+- name: "Retrieve the system command files and protect them from unautorized access"
   command: "find -L {{ item }} -perm /022 -type f -exec chmod go-w '{}' \\;"
   with_items: ['/bin','/sbin','/usr/bin','/usr/sbin','/usr/local/bin','/usr/local/sbin']
   changed_when: False
