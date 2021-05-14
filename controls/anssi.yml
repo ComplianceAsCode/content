@@ -19,25 +19,25 @@ controls:
       Those whose presence can not be justified should be disabled, removed or deleted.
     automated: partially  # The list of essential services is not objective.
     notes: >-
-      Manual review is required to assess if the installed services are minimal.
-      In general, use of obsolete or insecure services is not recommended.
       Performing a minimal install is a good starting point, but doesn't provide any assurance
       over any package installed later.
+      Manual review is required to assess if the installed services are minimal.
+      In general, use of obsolete or insecure services is not recommended and we remove some
+      of these in this recommendation.
     rules:
     - package_dhcp_removed
-    #- package_rsh_removed
-    #- package_rsh-server_removed
+    - package_rsh_removed
+    - package_rsh-server_removed
     - package_sendmail_removed
-    - package_telnetd_removed
-    #- package_talk_removed
-    #- package_talk-server_removed
-    #- package_telnet_removed
-    #- package_telnet-server_removed
-    #- package_tftp_removed
-    #- package_tftp-server_removed
-    #- package_xinetd_removed
-    #- package_ypbind_removed
-    #- package_ypserv_removed
+    - package_talk_removed
+    - package_talk-server_removed
+    - package_telnet_removed
+    - package_telnet-server_removed
+    - package_tftp_removed
+    - package_tftp-server_removed
+    - package_xinetd_removed
+    - package_ypbind_removed
+    - package_ypserv_removed
 
   - id: R2
     level: intermediary
