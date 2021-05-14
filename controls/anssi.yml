@@ -581,7 +581,7 @@ controls:
     notes: >-
       The definition of unused user accounts is broad. It can include accounts
       whose owners don't use the system anymore, or users created by services
-      or applicatons that should not be used.
+      or applications that should not be used.
     automated: no
 
   - id: R27
@@ -589,7 +589,7 @@ controls:
     level: intermediary
     notes: >-
       It is difficult to generally identify the system's service accounts.
-      UID of such accounts are generally between SYS_UID_MIN and UID_SYS_MAX, but its values
+      UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
       are not enforced by the OS and can be changed over time.
       Assisting rules could list users which are not disabled for manual review.
     automated: no
@@ -600,8 +600,8 @@ controls:
     description: >-
       Each service must have its own system account and be dedicated to it exclusively.
     notes: >-
-      It is not trivial to identify wether a user account is a service account.
-      UID of such accounts are generally between SYS_UID_MIN and UID_SYS_MAX, but its values
+      It is not trivial to identify whether a user account is a service account.
+      UIDs of such accounts are generally between SYS_UID_MIN and SYS_UID_MAX, but their values
       are not enforced by the OS and can be changed over time.
     automated: no
 
@@ -889,7 +889,7 @@ controls:
       The deployed services must have their access restricted to the system
       strict minimum, especially when it comes to files, processes or network.
     notes: >-
-      SELinux policies limit the privileges of services and daemons to only what they require.
+      SELinux policies limit the privileges of services and daemons just to those which are required.
     automated: partially
     rules:
     - selinux_policytype
@@ -902,7 +902,7 @@ controls:
       Each component supporting the virtualization must be hardened, especially
       by applying technical measures to counter the exploit attempts.
     notes: >-
-      It may be interesting to point out virtulization components that are installed and
+      It may be interesting to point out virtualization components that are installed and
       should be hardened.
     automated: no
 
@@ -910,14 +910,14 @@ controls:
     level: intermediary
     title: chroot jail and access right for partitioned service
     notes: >-
-      Automation to restrict access and chroot services is not generally reliable.
-    autmated: no
+      Using automation to restrict access and chroot services is not generally reliable.
+    automated: no
 
   - id: R56
     level: intermediary
     title: Enablement and usage of chroot by a service
     notes: >-
-      Automation to restrict access and chroot services is not generally reliable.
+      Using automation to restrict access and chroot services is not generally reliable.
     automated: no
 
   - id: R57
@@ -974,7 +974,7 @@ controls:
       The commands requiring the execution of sub-processes (EXEC tag) must be
       explicitly listed and their use should be reduced to a strict minimum.
     notes: >-
-      Human review is required to assess if the commands requiring EXEC is minimal.
+      Human review is required to assess if the set of commands requiring EXEC is minimal.
       An auxiliary rule could list rules containing EXEC tag, for analysis.
     automated: no
 
