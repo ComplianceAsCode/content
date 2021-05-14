@@ -224,6 +224,14 @@ def _check_is_loaded(loaded_dict, filename, version):
 
 def _create_oval_tree_from_string(xml_content):
     try:
+        for prefix, uri in PREFIX_TO_NS.items():
+            ElementTree.register_namespace(prefix, uri)
+    except Exception:
+        # Probably an old version of Python
+        # Doesn't matter, as this is non-essential.
+        pass
+
+    try:
         argument = oval_header + xml_content + oval_footer
         oval_file_tree = ElementTree.fromstring(argument)
     except ElementTree.ParseError as error:
@@ -235,6 +243,7 @@ def _create_oval_tree_from_string(xml_content):
             "%s\n%s\nError when parsing OVAL file.\n" %
             (before, column_pointer))
         sys.exit(1)
+
     return oval_file_tree
 
 
@@ -258,6 +267,66 @@ def _check_rule_id(oval_file_tree, rule_id):
         definition_id = definition.get("id")
         return definition_id == rule_id
     return False
+
+def update_with_var_platforms(original_xml, local_env_yaml, platforms):
+    if not platforms:
+        return original_xml
+
+    # If we don't have a variable-based platform, there is nothing we
+    # need to do here, so we can exit early.
+    have_var_platform = False
+    for platform in platforms:
+        if platform.startswith("var_") or platform.startswith("not_var_"):
+            have_var_platform = True
+            break
+    if not have_var_platform:
+        return original_xml
+
+    # OK this is horrible. Because we don't have proper support for the
+    # applicability_check attribute (on e.g., extend_definition), we have
+    # to add an OR clause with the negated form. This lets the OVAL check
+    # pass IF the variable isn't at the correct value.
+    #
+    # We do this by finding all definitions, checking that they have only
+    # a single criteria, remove this criteria, insert our own new OR criteria
+    # that wraps the existing criteria and the new extend_definitions we
+    # add referencing the check_id from the pseudo-var-CPE.
+    oval_file_tree = _create_oval_tree_from_string(original_xml)
+    for definition in oval_file_tree.findall(".//{%s}definition" % oval_ns):
+        existing_criteria = list(definition.findall("./{%s}criteria" % oval_ns))
+        # Assumption: there's only one criteria child of a definition element.
+        assert len(existing_criteria) == 1
+        existing_criteria = existing_criteria[0]
+
+        # Remove this child.
+        definition.remove(existing_criteria)
+
+        # Create our own new child.
+        tag = "{%s}criteria" % oval_ns
+        attribs = {'operator': "OR"}
+        new_criteria = ElementTree.SubElement(definition, tag, attrib=attribs)
+
+        # Append all our variable CPEs.
+        for platform in platforms:
+            if not platform.startswith("var_") and not platform.startswith("not_var_"):
+                continue
+
+            tag = "{%s}extend_definition" % oval_ns
+            attribs = {
+                "comment": "variable is not selected",
+                "definition_ref": local_env_yaml["product_cpes"].get_check_id(platform),
+                "negate": "true"
+            }
+            ext_def = ElementTree.SubElement(new_criteria, tag, attrib=attribs)
+
+        # Then append the existing criteria to the new criteria.
+        new_criteria.append(existing_criteria)
+
+    new_xml = ""
+    for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
+        new_xml += ElementTree.tostring(defgroup, encoding="unicode") + "\n"
+
+    return new_xml
 
 
 def checks(env_yaml, yaml_path, oval_version, oval_dirs):
@@ -319,6 +388,8 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
                 print(msg, file=sys.stderr)
             if not _check_oval_version_from_oval(oval_file_tree, oval_version):
                 continue
+
+            xml_content = update_with_var_platforms(xml_content, local_env_yaml, rule.platforms)
 
             body.append(xml_content)
             included_checks_count += 1
