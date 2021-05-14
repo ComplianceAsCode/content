@@ -403,8 +403,14 @@ Note that `profile-id` is matched by the suffix, so it works the same as in `osc
 
 ### Unselecting problematic rules
 
-Sometimes you would like to skip a rule in the profile because they are too slow to test,\
-or you know a rule doesn't have a remediation and you get less value by testing it.
+Sometimes you would like to skip a rule in the profile because they are too slow
+to test, or you know a rule doesn't have a remediation and you get less value by
+testing it.
+
+Also, some rules need to be skipped in the profile mode because they might break
+the test backend. For example, the rule `sshd_disable_root_login` which disables
+root login to the tested VM will prevent the test suite from execution because
+the test suite uses root user in all underlying SSH commands.
 
 For these situations, use `ds_unselect_rules.sh` to unselect these rules in all profiles of the data stream.
 It will copy your data stream to `/tmp` and unselect rules listed in `rules_list`
