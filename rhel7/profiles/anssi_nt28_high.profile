@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'DRAFT - ANSSI-BP-028 (high)'
+title: 'ANSSI-BP-028 (high)'
 
 description: |-
     This profile contains configurations that align to ANSSI-BP-028 at the high hardening level.
