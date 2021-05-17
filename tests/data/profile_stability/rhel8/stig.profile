@@ -78,6 +78,7 @@ selections:
 - configure_bind_crypto_policy
 - configure_crypto_policy
 - configure_firewalld_ports
+- configure_gnutls_tls_crypto_policy
 - configure_kerberos_crypto_policy
 - configure_libreswan_crypto_policy
 - configure_openssl_crypto_policy
