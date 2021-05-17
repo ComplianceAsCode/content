@@ -5,7 +5,7 @@ prodtype: rhel7,rhel8,sle12,sle15
 title: 'Record Events When Privileged Executables Are Run'
 
 description: |-
-    Verify the SUSE operating system generates an audit record when privileged functions are executed.
+    Verify the system generates an audit record when privileged functions are executed.
     <pre># grep -iw execve <tt>/etc/audit/audit.rules</tt></pre>
 
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
