@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R2.
+    DISA STIG for Oracle Linux V2R3.
 
 selections:
     - login_banner_text=dod_banners
@@ -36,7 +36,7 @@ selections:
     - var_accounts_user_umask=077
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
-    - var_accounts_tmout=10_min
+    - var_accounts_tmout=15_min
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
@@ -266,7 +266,6 @@ selections:
     - package_tftp-server_removed
     - sshd_disable_x11_forwarding
     - tftpd_uses_secure_mode
-    - package_xorg-x11-server-common_removed
     - sysctl_net_ipv4_ip_forward
     - mount_option_krb_sec_remote_filesystems
     - snmpd_not_default_password
@@ -298,8 +297,10 @@ selections:
     - package_MFEhiplsm_installed
     - sssd_ldap_configure_tls_reqcert
     - uefi_no_removeable_media
-    - xwindows_runlevel_target
     - require_emergency_target_auth
     - grub2_admin_username
     - grub2_uefi_admin_username
     - sshd_x11_use_localhost
+    - sudoers_validate_passwd
+    - sudo_restrict_privilege_elevation_to_authorized
+    - xwindows_remove_packages
