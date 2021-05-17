@@ -181,7 +181,6 @@ selections:
     - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
     - auditd_data_retention_action_mail_acct
-    - audit_rules_privileged_commands
     - audit_rules_dac_modification_chown
     - audit_rules_dac_modification_fchown
     - audit_rules_dac_modification_lchown
