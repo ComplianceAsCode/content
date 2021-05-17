@@ -11,11 +11,11 @@ description: |-
     to <tt>true</tt>.
     <br /><br />
     To disable, add or edit <tt>disable-user-list</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     disable-user-list=true</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent
     user modification. For example:
     <pre>/org/gnome/login-screen/disable-user-list</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -39,10 +39,10 @@ ocil_clause: 'disable-user-list has not been configured or is not disabled'
 
 ocil: |-
     To ensure the user list is disabled, run the following command:
-    <pre>$ grep disable-user-list /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep disable-user-list /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     The output should be <tt>true</tt>.
     To ensure that users cannot enable displaying the user list, run the following:
-    <pre>$ grep disable-user-list /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep disable-user-list /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/disable-user-list</tt>
 
 platform: machine

@@ -11,11 +11,11 @@ description: |-
     where <i>APPROVED_BANNER</i> is the approved banner for your environment.
     <br /><br />
     To enable, add or edit <tt>banner-message-text</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     banner-message-text='<i>APPROVED_BANNER</i>'</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/login-screen/banner-message-text</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -60,8 +60,8 @@ ocil_clause: 'it does not'
 
 ocil: |-
     To ensure the login warning banner text is properly set, run the following:
-    <pre>$ grep banner-message-text /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep banner-message-text /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     If properly configured, the proper banner text will appear.
     To ensure the login warning banner text is locked and cannot be changed by a user, run the following:
-    <pre>$ grep banner-message-text /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep banner-message-text /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-text</tt>.

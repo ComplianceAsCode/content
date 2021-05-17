@@ -9,6 +9,7 @@ from .build_cpe import ProductCPEs
 from .constants import (product_directories,
                         DEFAULT_UID_MIN,
                         DEFAULT_GRUB2_BOOT_PATH,
+                        DEFAULT_DCONF_GDM_DIR,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE)
@@ -46,6 +47,9 @@ def _get_implied_properties(existing_properties):
 
     if "grub2_boot_path" not in existing_properties:
         result["grub2_boot_path"] = DEFAULT_GRUB2_BOOT_PATH
+
+    if "dconf_gdm_dir" not in existing_properties:
+        result["dconf_gdm_dir"] = DEFAULT_DCONF_GDM_DIR
 
     return result
 

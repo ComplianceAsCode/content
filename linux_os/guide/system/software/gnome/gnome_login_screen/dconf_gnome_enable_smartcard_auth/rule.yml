@@ -10,11 +10,11 @@ description: |-
     to <tt>true</tt>.
     <br /><br />
     To enable, add or edit <tt>enable-smartcard-authentication</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     enable-smartcard-authentication=true</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/login-screen/enable-smartcard-authentication</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -41,10 +41,10 @@ ocil_clause: 'enable-smartcard-authentication has not been configured or is disa
 
 ocil: |-
     To ensure smart card authentication on the login screen is enabled, run the following command:
-    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     The output should be <tt>true</tt>.
     To ensure that users cannot disable smart card authentication on the login screen, run the following:
-    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/enable-smartcard-authentication</tt>
 
 platform: machine

@@ -10,7 +10,7 @@ login_banner_text="--[\s\n]+WARNING[\s\n]+--[\s\n]*This[\s\n]+system[\s\n]+is[\s
 expanded=$(echo "$login_banner_text" | sed 's/(\\\\\x27)\*/\\\x27/g;s/(\\\x27)\*//g;s/(\\\\\x27)/tamere/g;s/(\^\(.*\)\$|.*$/\1/g;s/\[\\s\\n\][+*]/ /g;s/\\//g;s/(n)\*/\\n/g;s/\x27/\\\x27/g;')
 
 clean_dconf_settings
-add_dconf_setting "org/gnome/login-screen" "banner-message-text" "'${expanded}'" "gdm.d" "00-security-settings"
-add_dconf_lock "org/gnome/login-screen" "banner-message-text" "gdm.d" "00-security-settings-lock"
+add_dconf_setting "org/gnome/login-screen" "banner-message-text" "'${expanded}'" "distro.d" "00-security-settings"
+add_dconf_lock "org/gnome/login-screen" "banner-message-text" "distro.d" "00-security-settings-lock"
 
 dconf update

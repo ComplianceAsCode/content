@@ -5,7 +5,7 @@
 # disruption = medium
 - name: "Disable the GNOME3 Login Restart and Shutdown Buttons"
   ini_file:
-    dest: /etc/dconf/db/gdm.d/00-security-settings
+    dest: /etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings
     section: org/gnome/login-screen
     option: disable-restart-buttons
     value: "true"
@@ -14,7 +14,7 @@
 
 - name: "Prevent user modification of GNOME disablement of Login Restart and Shutdown Buttons"
   lineinfile:
-    path: /etc/dconf/db/gdm.d/locks/00-security-settings-lock
+    path: /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock
     regexp: '^/org/gnome/login-screen/disable-restart-buttons'
     line: '/org/gnome/login-screen/disable-restart-buttons'
     create: yes

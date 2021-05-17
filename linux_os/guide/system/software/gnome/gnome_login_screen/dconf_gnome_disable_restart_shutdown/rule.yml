@@ -12,11 +12,11 @@ description: |-
     <tt>disable-restart-buttons</tt> to <tt>true</tt>.
     <br /><br />
     To disable, add or edit <tt>disable-restart-buttons</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     disable-restart-buttons=true</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent
     user modification. For example:
     <pre>/org/gnome/login-screen/disable-restart-buttons</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -47,10 +47,10 @@ ocil_clause: 'disable-restart-buttons has not been configured or is not disabled
 
 ocil: |-
     To ensure disable and restart on the login screen are disabled, run the following command:
-    <pre>$ grep disable-restart-buttons /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep disable-restart-buttons /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     The output should be <tt>true</tt>.
     To ensure that users cannot enable disable and restart on the login screen, run the following:
-    <pre>$ grep disable-restart-buttons /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep disable-restart-buttons /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/disable-restart-buttons</tt>
 
 platform: machine

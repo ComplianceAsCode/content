@@ -13,12 +13,12 @@
     mode: 0755
     state: directory
   with_items:
-    - gdm.d
-    - gdm.d/locks
+    - "{{{ dconf_gdm_dir }}}"
+    - "{{{ dconf_gdm_dir }}}/locks"
 
 - name: "{{{ rule_title }}}"
   file:
-    path: "/etc/dconf/db/gdm.d/{{ item }}"
+    path: "/etc/dconf/db/{{{ dconf_gdm_dir }}}/{{ item }}"
     owner: root
     group: root
     mode: 0644
@@ -29,7 +29,7 @@
 
 - name: "{{{ rule_title }}}"
   ini_file:
-    dest: /etc/dconf/db/gdm.d/00-security-settings
+    dest: /etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings
     section: org/gnome/login-screen
     option: banner-message-text
     value: '{{{ ansible_deregexify_banner_dconf_gnome("login_banner_text") }}}'
@@ -38,7 +38,7 @@
 
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
   lineinfile:
-    path: '/etc/dconf/db/gdm.d/locks/00-security-settings-lock'
+    path: '/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock'
     regexp: '^/org/gnome/login-screen/banner-message-text$'
     line: '/org/gnome/login-screen/banner-message-text'
     create: yes
