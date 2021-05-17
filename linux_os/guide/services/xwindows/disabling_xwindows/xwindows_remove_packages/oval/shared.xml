@@ -2,8 +2,10 @@
   <definition class="compliance" id="xwindows_remove_packages" version="1">
     {{{ oval_metadata("Ensure that the default runlevel target is set to multi-user.target.") }}}
     <criteria>
+      {{%- if init_system == "systemd" and target_oval_version != [5, 10] %}}
       <extend_definition comment="system is configured to boot into multi-user.target"
         definition_ref="xwindows_runlevel_target" />
+      {{%- endif %}}
       <criterion comment="package xorg-x11-server-Xorg is not installed"
         test_ref="package_xorg-x11-server-Xorg_removed" />
       <extend_definition comment="package xorg-x11-server-common is removed"
