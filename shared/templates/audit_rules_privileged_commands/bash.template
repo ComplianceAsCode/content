@@ -1,3 +1,6 @@
+{{%- if product in ["rhel8", "sle12", "sle15"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
 
 # Include source function library.
@@ -7,7 +10,7 @@ PATTERN="-a always,exit -F path={{{ PATH }}}\\s\\+.*"
 GROUP="privileged"
 # Although the fix doesn't use ARCH, we reset it because it could have been set by some other remediation
 ARCH=""
-FULL_RULE="-a always,exit -F path={{{ PATH }}} {{{ "-F perm=x " if product in ["rhel8"]}}}-F auid>={{{ auid }}} -F auid!=unset -F key=privileged"
+FULL_RULE="-a always,exit -F path={{{ PATH }}} {{{ perm_x }}}-F auid>={{{ auid }}} -F auid!=unset -F key=privileged"
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
