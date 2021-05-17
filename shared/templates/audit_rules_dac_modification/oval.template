@@ -10,14 +10,14 @@
 {{% if CHECK_ROOT_USER %}}
         <criterion comment="audit augenrules 32-bit {{{ ATTR }}}" test_ref="test_32bit_ardm_{{{ ATTR }}}_augenrules_auid_0" />
 {{% endif %}}
-        
+
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of 32-bit version of {{{ ATTR }}} audit DAC rule -->
           <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
           <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit version of {{{ ATTR }}} audit DAC rule -->
           <criterion comment="audit augenrules 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_augenrules" />
 {{% if CHECK_ROOT_USER %}}
-          <criterion comment="audit augenrules 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_augenrules" />
+          <criterion comment="audit augenrules 64-bit {{{ ATTR }}}" test_ref="test_64bit_ardm_{{{ ATTR }}}_augenrules_auid_0" />
 {{% endif %}}
 
         </criteria>
