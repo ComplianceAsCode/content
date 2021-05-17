@@ -42,6 +42,9 @@ To use Libvirt backend, you need to have:
   - Package `openscap` version 1.2.15 or higher installed
   - `root` can login via ssh (it is recommended to setup key-based authentication)
   - `root` can install packages (for RHEL7, it means subscription enabled).
+  - `CPE_NAME` is present in `/etc/os-release`. Currently, Ubuntu doesn't ship
+    it in the stock image. See [this Ubuntu
+    bug](https://bugs.launchpad.net/ubuntu/+source/base-files/+bug/1472288).
 
 An easy way to install your VM is via `install_vm.py` script. It will setup a VM according to the requirements, including configuration of a key for SSH login.
 
