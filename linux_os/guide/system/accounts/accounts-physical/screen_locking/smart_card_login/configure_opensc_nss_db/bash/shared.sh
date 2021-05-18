@@ -4,8 +4,11 @@
 # complexity = low
 # disruption = low
 
-PKCSSW=$(/usr/bin/pkcs11-switch)
+PKCSSW="/usr/bin/pkcs11-switch"
+MODULE=$(${PKCSSW})
 
-if [ ${PKCSSW} != "opensc" ] ; then
-    ${PKCSSW} opensc
+if [ "$MODULE" != "opensc" ] ; then
+    echo | ${PKCSSW} opensc
 fi
+
+modutil -force -add opensc -dbdir sql:/etc/pki/nssdb -libfile opensc-pkcs11.so
