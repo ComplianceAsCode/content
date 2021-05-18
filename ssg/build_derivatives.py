@@ -44,7 +44,7 @@ def add_cpes(elem, namespace, mapping):
     return affected
 
 
-def add_cpe_item_to_dictionary(tree_root, product_yaml_path, cpe_ref, cpe_oval_filename, id_name):
+def add_cpe_item_to_dictionary(tree_root, product_yaml_path, cpe_ref, id_name):
     cpe_list = tree_root.find(".//{%s}cpe-list" % (PREFIX_TO_NS["cpe-dict"]))
     if cpe_list:
         product_yaml = load_product_yaml(product_yaml_path)
@@ -52,7 +52,7 @@ def add_cpe_item_to_dictionary(tree_root, product_yaml_path, cpe_ref, cpe_oval_f
         cpe_item = product_cpes.get_cpe(cpe_ref)
         translator = IDTranslator(id_name)
         cpe_item.check_id = translator.generate_id("{" + oval_namespace + "}definition", cpe_item.check_id)
-        cpe_list.append(cpe_item.to_xml_element(cpe_oval_filename))
+        cpe_list.append(cpe_item.to_xml_element("ssg-%s-cpe-oval.xml" % product_yaml.get("product")))
 
 
 def add_notice(benchmark, namespace, notice, warning):
