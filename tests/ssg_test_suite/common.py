@@ -173,7 +173,7 @@ def _get_platform_cpes(platform):
             raise ValueError
         platform_cpes = set()
         for p in products:
-            product_yaml_path = os.path.join(ssg_root, p, "product.yml")
+            product_yaml_path = os.path.join(ssg_root, "products", p, "product.yml")
             product_yaml = load_product_yaml(product_yaml_path)
             p_cpes = ProductCPEs(product_yaml)
             platform_cpes |= set(p_cpes.get_product_cpe_names())
@@ -187,7 +187,7 @@ def _get_platform_cpes(platform):
                 "Unknown product name: %s is not from %s"
                 % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
             raise ValueError
-        product_yaml_path = os.path.join(ssg_root, product, "product.yml")
+        product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
         product_yaml = load_product_yaml(product_yaml_path)
         product_cpes = ProductCPEs(product_yaml)
         platform_cpes = set(product_cpes.get_product_cpe_names())

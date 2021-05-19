@@ -766,7 +766,7 @@ macro(ssg_build_product PRODUCT)
     # Enforce folder naming rules, we require SSG contributors to use
     # scap-security-guide/${PRODUCT}/ for all products. This makes it easier
     # to find relevant source-code and build just the relevant product.
-    get_filename_component(EXPECTED_CMAKELISTS "${CMAKE_SOURCE_DIR}/${PRODUCT}/CMakeLists.txt" ABSOLUTE)
+    get_filename_component(EXPECTED_CMAKELISTS "${CMAKE_SOURCE_DIR}/products/${PRODUCT}/CMakeLists.txt" ABSOLUTE)
     get_filename_component(ACTUAL_CMAKELISTS "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt" ABSOLUTE)
 
     if (NOT "${ACTUAL_CMAKELISTS}" STREQUAL "${EXPECTED_CMAKELISTS}")

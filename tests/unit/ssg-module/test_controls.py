@@ -91,7 +91,7 @@ def test_controls_levels():
 def test_controls_load_product():
     ssg_root = \
             os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
 
@@ -143,7 +143,7 @@ def test_profile_resolution_all_inline():
 def profile_resolution(cls, profile_low):
     ssg_root = \
             os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
 
@@ -170,7 +170,7 @@ def profile_resolution(cls, profile_low):
 def profile_resolution_extends(cls, profile_low, profile_high):
     ssg_root = \
             os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
 
@@ -207,7 +207,7 @@ def profile_resolution_extends(cls, profile_low, profile_high):
 def profile_resolution_all(cls, profile_all):
     ssg_root = \
             os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    product_yaml = os.path.join(ssg_root, "rhel8", "product.yml")
+    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
 

@@ -86,7 +86,7 @@ def get_all(ssg_root):
     other_products = set()
 
     for product in product_directories:
-        product_yaml_path = os.path.join(ssg_root, product, "product.yml")
+        product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
         product_yaml = load_product_yaml(product_yaml_path)
 
         guide_dir = os.path.join(product_yaml["product_dir"], product_yaml['benchmark_root'])
