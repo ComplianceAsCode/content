@@ -789,7 +789,7 @@ macro(ssg_build_product PRODUCT)
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
-    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
         add_dependencies(
             ${PRODUCT}-content
             generate-${PRODUCT}-ansible-playbooks
@@ -803,7 +803,7 @@ macro(ssg_build_product PRODUCT)
         add_dependencies(zipfile ${PRODUCT}-profile-playbooks)
     endif()
 
-    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
         ssg_build_profile_bash_scripts(${PRODUCT})
         add_custom_target(
             ${PRODUCT}-profile-bash-scripts
@@ -873,30 +873,34 @@ macro(ssg_build_product PRODUCT)
         endif()
         "
     )
-    install(
-        CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/ansible/${PRODUCT}-playbook-*.yml\") \n
-        if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
-                TYPE FILE FILES \${ROLE_FILES})
-        else()
-            file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
-                TYPE FILE FILES \${ROLE_FILES})
-        endif()
-        "
-    )
-    install(
-        CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash/${PRODUCT}-script-*.sh\") \n
-        if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
-                TYPE FILE FILES \${ROLE_FILES})
-        else()
-            file(INSTALL DESTINATION \"${SSG_BASH_ROLE_INSTALL_DIR}\"
-                TYPE FILE FILES \${ROLE_FILES})
-        endif()
-        "
-    )
+    if(SSG_ANSIBLE_PLAYBOOKS_ENABLED)
+        install(
+            CODE "
+            file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/ansible/${PRODUCT}-playbook-*.yml\") \n
+            if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
+                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
+                    TYPE FILE FILES \${ROLE_FILES})
+            else()
+                file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
+                    TYPE FILE FILES \${ROLE_FILES})
+            endif()
+            "
+        )
+    endif()
+    if(SSG_BASH_SCRIPTS_ENABLED)
+        install(
+            CODE "
+            file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash/${PRODUCT}-script-*.sh\") \n
+            if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
+                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
+                    TYPE FILE FILES \${ROLE_FILES})
+            else()
+                file(INSTALL DESTINATION \"${SSG_BASH_ROLE_INSTALL_DIR}\"
+                    TYPE FILE FILES \${ROLE_FILES})
+            endif()
+            "
+        )
+    endif()
 
     # grab all the kickstarts (if any) and install them
     file(GLOB KICKSTART_FILES "${CMAKE_CURRENT_SOURCE_DIR}/kickstart/ssg-${PRODUCT}-*-ks.cfg")
@@ -968,7 +972,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
 
     ssg_build_html_guides(${DERIVATIVE})
 
-    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
+    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}" AND SSG_BASH_SCRIPTS_ENABLED)
         ssg_build_profile_bash_scripts(${DERIVATIVE})
         add_custom_target(
             ${DERIVATIVE}-profile-bash-scripts
@@ -977,7 +981,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         add_dependencies(${DERIVATIVE} ${DERIVATIVE}-profile-bash-scripts)
     endif()
 
-    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
+    if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
         ssg_build_profile_playbooks(${DERIVATIVE})
         add_custom_target(
             ${DERIVATIVE}-profile-playbooks
