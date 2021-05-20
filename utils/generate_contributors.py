@@ -9,7 +9,7 @@ import ssg.contributors
 def main():
     contributors_md, contributors_xml = ssg.contributors.generate()
 
-    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    root_dir = os.path.dirname(os.path.dirname(__file__))
     with codecs.open(os.path.join(root_dir, "Contributors.md"),
                      mode="w", encoding="utf-8") as f:
         f.write(contributors_md)
