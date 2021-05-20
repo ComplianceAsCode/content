@@ -2,20 +2,37 @@
   <definition class="compliance" id="accounts_password_pam_retry" version="1">
     {{{ oval_metadata("The password retry should meet minimum requirements") }}}
     <criteria operator="AND" comment="Conditions for retry are satisfied">
-      <criterion comment="pam_pwquality" test_ref="test_password_pam_pwquality_retry" />
+      <criterion comment="pam_pwquality system-auth" test_ref="test_password_pam_pwquality_retry_system_auth" />
+      {{% if product == "rhel8" -%}}
+      <criterion comment="pam_pwquality password-auth" test_ref="test_password_pam_pwquality_retry_password_auth" />
+      {{%- endif %}}
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="check the configuration of /etc/pam.d/system-auth" id="test_password_pam_pwquality_retry" version="1">
-    <ind:object object_ref="obj_password_pam_pwquality_retry" />
+  {{% macro test_pwquality_retry(path, test_ref) %}}
+  <ind:textfilecontent54_test check="all" comment="check the configuration of {{{ path }}}" id="test_{{{ test_ref }}}" version="1">
+    <ind:object object_ref="obj_{{{ test_ref }}}" />
     <ind:state state_ref="state_password_pam_retry" />
   </ind:textfilecontent54_test>
+  {{% endmacro %}}
 
-  <ind:textfilecontent54_object id="obj_password_pam_pwquality_retry" version="1">
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+  {{{ test_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_system_auth") }}}
+  {{% if product == "rhel8" -%}}
+  {{{ test_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
+  {{%- endif %}}
+
+  {{% macro object_pwquality_retry(path, test_ref) %}}
+  <ind:textfilecontent54_object id="obj_{{{ test_ref }}}" version="1">
+    <ind:filepath>{{{ path }}}</ind:filepath>
     <ind:pattern operation="pattern match">^\s*password\s+(?:(?:required)|(?:requisite))\s+pam_pwquality\.so.*retry=([0-9]*).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{% endmacro %}}
+
+  {{{ object_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_system_auth") }}}
+  {{% if product == "rhel8" -%}}
+  {{{ object_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
+  {{%- endif %}}
 
   <ind:textfilecontent54_state id="state_password_pam_retry" version="1">
     <ind:subexpression datatype="int" operation="less than or equal" var_ref="var_password_pam_retry" />
