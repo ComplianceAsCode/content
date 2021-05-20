@@ -29,7 +29,9 @@ def _check_is_applicable_for_product(oval_check_def, product):
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',
-                       '<platform>multi_platform_' + product]
+                       '<platform>multi_platform_' + product,
+                       ':platform>multi_platform_all',
+                       ':platform>multi_platform_' + product]
 
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
@@ -41,7 +43,7 @@ def _check_is_applicable_for_product(oval_check_def, product):
     # and '<product>' to use as OVAL AffectedType metadata element,
     # e.g. Chromium content uses both of them across the various checks
     # Thus for now check both of them when checking concrete platform / product
-    affected_type_elements = ['<platform>', '<product>']
+    affected_type_elements = ['<platform>', '<product>', ':platform>', ':product>']
 
     for afftype in affected_type_elements:
         # Get official name for product (prefixed with content of afftype)
