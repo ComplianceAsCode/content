@@ -30,3 +30,53 @@ cpes:
       variable: var_time_synchronization_daemon
       value: ntp
       negated: true
+
+  # The following variables are for var_firewall_package, choosing between
+  # iptables, nftables, and ufw.
+  - var_iptables:
+      name: "cpe:/a:var_iptables"
+      title: "iptables is selected"
+      check_id: var_firewall_package_is_iptables
+      variable: var_firewall_package
+      value: iptables
+      negated: false
+
+  - not_var_iptables:
+      name: "cpe:/a:not_var_iptables"
+      title: "iptables is not selected"
+      check_id: var_firewall_package_is_not_iptables
+      variable: var_firewall_package
+      value: iptables
+      negated: true
+
+  - var_nftables:
+      name: "cpe:/a:var_nftables"
+      title: "nftables is selected"
+      check_id: var_firewall_package_is_nftables
+      variable: var_firewall_package
+      value: nftables
+      negated: false
+
+  - not_var_nftables:
+      name: "cpe:/a:not_var_nftables"
+      title: "nftables is not selected"
+      check_id: var_firewall_package_is_not_nftables
+      variable: var_firewall_package
+      value: nftables
+      negated: true
+
+  - var_ufw:
+      name: "cpe:/a:var_ufw"
+      title: "ufw is selected"
+      check_id: var_firewall_package_is_ufw
+      variable: var_firewall_package
+      value: ufw
+      negated: false
+
+  - not_var_ufw:
+      name: "cpe:/a:not_var_ufw"
+      title: "ufw is not selected"
+      check_id: var_firewall_package_is_not_ufw
+      variable: var_firewall_package
+      value: ufw
+      negated: true
