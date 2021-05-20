@@ -41,6 +41,7 @@ set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL
 
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
 
+option(SSG_BUILD_SCAP_12_DS "If enabled, ssg-*-ds-1.2.xml will be built along with ssg-*-ds.xml" TRUE)
 option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
 option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests. Shellcheck tests don't pass right now, this option is discouraged until that's fixed." FALSE)
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
@@ -238,6 +239,7 @@ message(STATUS " ")
 message(STATUS "Build options:")
 message(STATUS "SSG vendor string: ${SSG_VENDOR}")
 message(STATUS "Target OVAL version: ${SSG_TARGET_OVAL_VERSION}")
+message(STATUS "Build SCAP 1.2 source data streams: ${SSG_BUILD_SCAP_12_DS}")
 message(STATUS "OVAL schematron validation: ${SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED}")
 message(STATUS "shellcheck bash fixes validation: ${SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED}")
 message(STATUS "SVG logo in XCCDFs: ${SSG_SVG_IN_XCCDF_ENABLED}")
