@@ -105,10 +105,6 @@ def get_benchmark_profile_pairs(input_tree, benchmarks):
     for benchmark_id in benchmarks.keys():
         profiles = get_profile_choices_for_input(input_tree, benchmark_id,
                                                  None)
-
-        # add the default profile
-        profiles[""] = "(default)"
-
         for profile_id in profiles:
             pair = (benchmark_id, profile_id, profiles[profile_id])
             benchmark_profile_pairs.append(pair)
