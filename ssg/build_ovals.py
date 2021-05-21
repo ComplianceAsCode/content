@@ -13,6 +13,7 @@ from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
 from .constants import MULTI_PLATFORM_LIST
+from .constants import PREFIX_TO_NS, OVAL_SUB_NS
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_in_paths
@@ -227,7 +228,12 @@ def _check_is_loaded(loaded_dict, filename, version):
 def _create_oval_tree_from_string(xml_content):
     try:
         for prefix, uri in PREFIX_TO_NS.items():
+            if prefix == 'oval-def':
+                ElementTree.register_namespace("", uri)
+                continue
             ElementTree.register_namespace(prefix, uri)
+        for prefix, suffix in OVAL_SUB_NS.items():
+            ElementTree.register_namespace(prefix, oval_ns + "#" + suffix)
     except Exception:
         # Probably an old version of Python
         # Doesn't matter, as this is non-essential.
