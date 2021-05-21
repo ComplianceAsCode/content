@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8
+# platform = Red Hat Enterprise Linux 8,Fedora
 # reboot = true
 # strategy = restrict
 # complexity = low
