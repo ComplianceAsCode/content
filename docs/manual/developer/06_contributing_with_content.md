@@ -1227,9 +1227,7 @@ the following to `rule.yml`:
 -   Parameters:
 
     -   **path** - the path of the privileged command - eg.
-        `/usr/bin/mount`. Note: The path parameter can be also
-        a list of paths to privileged commands to be checked -
-        eg. `(/sbin/unix_chkpwd|/sbin/unix2_chkpwd)`.
+        `/usr/bin/mount`
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 

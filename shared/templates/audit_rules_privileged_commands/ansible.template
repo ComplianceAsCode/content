@@ -31,18 +31,16 @@
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: '-a always,exit -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
-  with_items: "{{ {{{ PATH.split('|')  | replace(')', '')| replace('(', '') }}} }}"
 
 # Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{ item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
-  with_items: "{{ {{{ PATH.split('|') | replace(')', '')| replace('(', '') }}} }}"
 
 {{% else %}}
 
