@@ -118,6 +118,7 @@ selections:
     - audit_rules_privileged_commands_su
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_unix_chkpwd
+    - audit_rules_privileged_commands_unix2_chkpwd
     - audit_rules_privileged_commands_usermod
     - audit_rules_privileged_commands_sudoedit
     - audit_rules_privileged_commands_umount
