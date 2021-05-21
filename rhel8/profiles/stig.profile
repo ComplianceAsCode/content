@@ -186,6 +186,7 @@ selections:
     - configure_openssl_tls_crypto_policy
 
     # RHEL-08-010295
+    - configure_gnutls_tls_crypto_policy
 
     # RHEL-08-010300
     - file_permissions_binary_dirs

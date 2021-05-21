@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora
+
+title: 'Configure GnuTLS library to use DoD-approved TLS Encryption'
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    GnuTLS is supported by system crypto policy, but the GnuTLS configuration may be
+    set up to ignore it.
+
+    To check that Crypto Policies settings are configured correctly, ensure that
+    <tt>/etc/crypto-policies/back-ends/gnutls.config</tt> contains the following
+    line and is not commented out:
+    <tt>+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0</tt>
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of the GnuTLS
+    library violate expectations, and makes system configuration more
+    fragmented.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-84254-2
+
+references:
+    nist: AC-17(2)
+    disa: CCI-001453
+    srg: SRG-OS-000250-GPOS-00093,SRG-OS-000423-GPOS-00187
+    stigid@rhel8: RHEL-08-010295
+
+ocil_clause: 'cryptographic policy for gnutls is not configured or is configured incorrectly'
+
+ocil: |-
+    To verify if GnuTLS uses defined DoD-approved TLS Crypto Policy, run:
+    <pre>$ grep
+    '+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0'
+    /etc/crypto-policies/back-ends/gnutls.config</pre> and verify that a match exists.
