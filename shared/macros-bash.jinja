@@ -644,3 +644,14 @@ if grep -qvzosP $AD_REGEX $SSSD_CONF; then
         fi
 fi
 {{%- endmacro %}}
+
+{{#
+  # Check whether or not a package is installed.
+  #}}
+{{%- macro bash_package_installed(pkgname) -%}}
+{{%- if pkg_manager == "apt_get" -%}}
+dpkg-query --show --showformat='${db:Status-Status}\n' "{{{ pkgname }}}" 2>/dev/null | grep -q installed
+{{%- else -%}}
+rpm --quiet -q "{{{ pkgname }}}"
+{{%- endif -%}}
+{{%- endmacro -%}}
