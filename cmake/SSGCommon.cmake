@@ -914,6 +914,20 @@ macro(ssg_build_product PRODUCT)
             "
         )
     endif()
+    if(SSG_ANSIBLE_TASKS_ENABLED)
+        install(
+            CODE "
+            file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/*.yml\") \n
+            if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR}/tasks)
+                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}/tasks\"
+                    TYPE FILE FILES \${ROLE_FILES})
+            else()
+                file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}/tasks\"
+                    TYPE FILE FILES \${ROLE_FILES})
+            endif()
+            "
+        )
+    endif()
 
     # grab all the kickstarts (if any) and install them
     file(GLOB KICKSTART_FILES "${CMAKE_CURRENT_SOURCE_DIR}/kickstart/ssg-${PRODUCT}-*-ks.cfg")

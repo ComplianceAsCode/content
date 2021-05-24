@@ -49,6 +49,7 @@ option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the S
 option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_ENABLED "If enabled, Ansible Playbooks for each profile will be built and installed." TRUE)
 option(SSG_BASH_SCRIPTS_ENABLED "If enabled, Bash remediation scripts for each profile will be built and installed." TRUE)
+option(SSG_ANSIBLE_TASKS_ENABLED "If enabled, Ansible Tasks for each rule will be installed." FALSE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
