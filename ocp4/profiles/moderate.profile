@@ -50,6 +50,9 @@ selections:
     # AU-9
     - audit_log_forwarding_enabled
 
+    # RA-5 VULNERABILITY SCANNING
+    - compliancesuite_exists
+
     # SC-28 PROTECTION OF INFORMATION AT REST
     # SC-28 (1) PROTECTION OF INFORMATION AT REST | CRYPTOGRAPHIC PROTECTION
     - api_server_encryption_provider_config

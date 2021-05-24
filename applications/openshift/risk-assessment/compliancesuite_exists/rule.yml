@@ -1,0 +1,48 @@
+prodtype: ocp4
+
+title: Ensure that Compliance Operator is scanning the cluster
+
+description: |-
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/security/compliance_operator/compliance-operator-understanding.html#compliance-operator-understanding",
+              text="The Compliance Operator") }}}
+  scans the hosts and the platform (OCP)
+  configurations for software flaws and improper configurations according
+  to different compliance benchmarks. It uses OpenSCAP as a backend,
+  which is a known and certified tool to do such scans.
+  
+rationale: |-
+  Vulnerability scanning and risk management are important detective controls
+  for all systems, to detect potential flaws and unauthorised access.
+
+identifiers:
+  cce@ocp4: CCE-83697-3
+
+references:
+  nist: CM-6,CM-6(1),RA-5,RA-5(5)
+
+ocil_clause: 'The proper audit profile is not set'
+
+ocil: |-
+    Run the following command to retrieve the compliancesuites in the system:
+    <pre>$ oc get compliancesuites --all-namespaces</pre>
+    Make sure the Compliance Operator is installed and there are
+    scans running in the system.
+
+severity: medium
+
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/compliance.openshift.io/v1alpha1/compliancesuites?limit=5") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/compliance.openshift.io/v1alpha1/compliancesuites?limit=5
+    yamlpath: ".items[:].metadata.name"
+    entity_check: "at least one"
+    values:
+      - value: ".*"
+        operation: "pattern match"
+
