@@ -396,9 +396,8 @@ class RoleGithubUpdater(object):
 
     def _remote_content(self, filepath):
         remote = self.remote_repo.get_contents(filepath)
-        content = remote.decoded_content
-        if filepath == 'README.md':
-            content = content.decode("utf-8")
+        # We want the raw string to compare against _local_content
+        content = remote.decoded_content.decode("utf-8")
         return content, remote.sha
 
     def _update_content_if_needed(self, filepath):
