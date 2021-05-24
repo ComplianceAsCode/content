@@ -64,6 +64,7 @@ selections:
     - aide_verify_acls
     - aide_verify_ext_attributes
     - aide_periodic_cron_checking
+    - apparmor_configured
     #
     # NOTE: must configure "var_audispd_remote_server" when
     # "auditd_audispd_configure_remote_server" rule is enabled

@@ -1,0 +1,7 @@
+# platform = multi_platform_sle
+
+- name: Start apparmor.service
+  systemd:
+    name: apparmor.service
+    state: started
+    enabled: yes

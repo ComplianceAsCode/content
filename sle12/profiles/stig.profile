@@ -71,6 +71,7 @@ selections:
     - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
+    - apparmor_configured
     - audit_rules_dac_modification_chmod
     - audit_rules_dac_modification_chown
     - audit_rules_dac_modification_fchmod
