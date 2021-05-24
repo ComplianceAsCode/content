@@ -1887,6 +1887,15 @@ The selected value can be changed in the profile (consult the actual variable fo
     -   **embedded_data** - if set to `"true"` and used combined with `xccdf_variable`, the data retrieved by `yamlpath`
         is considered as a blob and the field `value` has to contain a capture regex.
 
+    -   **check_existence_yamlpath** - optional YAML Path that could be set to ensure that the target sequence from `yamlpath` has all
+        required sub-elements. It is helpful when the `yamlpath` is targeting a map inside a sequence, and the document could be
+        missing a key in that map (i.e. `$.seq[:].obj.item.key_that_might_be_missing`). When `check_existence_yamlpath` is set to a path
+        like `$.seq[:].obj.item.key_that_always_exists` (or `$.seq[:].obj.key_that_always_exists`) the template will create a check,
+        that will count elements in both paths and would fail if amounts are not equal.
+
+        This check has a limitation: both `check_existence_yamlpath` and `yamlpath` have to point to a scalar value for it to work
+        correctly (that is, the path `$.seq[:].obj.item` won't work).
+
     -   **values** - a list of dictionaries with values to check, where:
 
         -   **key** - the yaml key to check, optional. Used when the
