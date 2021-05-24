@@ -212,7 +212,7 @@ class PlaybookToRoleConverter():
                 task["when"] = [task["when"]]
 
             variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
-            task["when"] = ["{varname} | bool".format(varname=v) for v in variables_to_add] + task["when"]
+            task["when"] = ["{varname} | bool".format(varname=v) for v in sorted(variables_to_add)] + task["when"]
             variables.update(variables_to_add)
 
             if not task["when"]:
