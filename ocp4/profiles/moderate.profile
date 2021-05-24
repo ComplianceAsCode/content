@@ -58,6 +58,8 @@ selections:
     - api_server_encryption_provider_config
     - api_server_encryption_provider_cipher
 
+
+    # SC-8: TRANSMISSION CONFIDENTIALITY AND INTEGRITY
     # SC-8(1): TRANSMISSION CONFIDENTIALITY AND INTEGRITY | CRYPTOGRAPHIC OR ALTERNATE PHYSICAL PROTECTION
     - api_server_client_ca
     - api_server_etcd_ca
@@ -67,6 +69,7 @@ selections:
     - etcd_peer_key_file
     - kubelet_configure_tls_cert
     - kubelet_configure_tls_key
+    - routes_protected_by_tls
 
     # SC-13: CRYPTOGRAPHIC PROTECTION
     - fips_mode_enabled
