@@ -4,8 +4,9 @@
 # complexity = low
 # disruption = low
 
+yum install -y opensc
 PKCSSW=$(/usr/bin/pkcs11-switch)
 
-if [ ${PKCSSW} != "opensc" ] ; then
-    ${PKCSSW} opensc
+if [ "${PKCSSW}" != "opensc" ] ; then
+    /usr/bin/pkcs11-switch opensc
 fi
