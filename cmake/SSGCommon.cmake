@@ -917,12 +917,12 @@ macro(ssg_build_product PRODUCT)
     if(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
         install(
             CODE "
-            file(GLOB PLAYBOOK_PER_RULE_FILES \"${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/*.yml\") \n
-            if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR}/playbooks)
-                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}/playbooks\"
+            file(GLOB PLAYBOOK_PER_RULE_FILES \"${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/*\") \n
+            if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks)
+                file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks/${PRODUCT}\"
                     TYPE FILE FILES \${PLAYBOOK_PER_RULE_FILES})
             else()
-                file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}/playbooks\"
+                file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}/rule_playbooks/${PRODUCT}\"
                     TYPE FILE FILES \${PLAYBOOK_PER_RULE_FILES})
             endif()
             "
