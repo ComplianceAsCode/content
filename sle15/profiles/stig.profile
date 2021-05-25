@@ -187,7 +187,6 @@ selections:
     - installed_OS_is_vendor_supported
     - install_smartcard_packages
     - is_fips_mode_enabled
-    - kernel_module_dccp_disabled
     - kernel_module_usb-storage_disabled
     - mount_option_home_nosuid
     - mount_option_noexec_remote_filesystems
