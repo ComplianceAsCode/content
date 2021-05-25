@@ -63,7 +63,8 @@ references:
 ocil_clause: 'it is not'
 
 
-ocil: '{{{ describe_service_enable(service="apparmor") }}}'
+ocil: |-
+    {{{ describe_service_enable(service="apparmor") }}}
 
 template:
     name: service_enabled
