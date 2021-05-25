@@ -16,7 +16,6 @@
   <unix:file_object comment="system-wide directories" id="root_permissions_for_system_wide_library_files" version="1">
     <!-- Checks that system-wide library files in /lib, /lib64, /usr/lib, /usr/lib64
         are owned by root. -->
-    <unix:behaviors recurse_direction="down" />
     <unix:path operation="pattern match">^\/lib(64)?|^\/usr\/lib(64)?</unix:path >    
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">group_permissions_for_system_wide_files_are_not_root</filter>
