@@ -246,6 +246,7 @@ message(STATUS "shellcheck bash fixes validation: ${SSG_SHELLCHECK_BASH_FIXES_VA
 message(STATUS "SVG logo in XCCDFs: ${SSG_SVG_IN_XCCDF_ENABLED}")
 message(STATUS "Separate SCAP files: ${SSG_SEPARATE_SCAP_FILES_ENABLED}")
 message(STATUS "Ansible Playbooks: ${SSG_ANSIBLE_PLAYBOOKS_ENABLED}")
+message(STATUS "Ansible Playbooks Per Rule: ${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}")
 message(STATUS "Bash scripts: ${SSG_BASH_SCRIPTS_ENABLED}")
 if (SSG_JINJA2_CACHE_ENABLED)
     message(STATUS "jinja2 cache: enabled")
