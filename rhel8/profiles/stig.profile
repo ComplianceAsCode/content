@@ -570,6 +570,7 @@ selections:
     - accounts_umask_etc_bashrc
 
     # RHEL-08-030000
+    - audit_rules_suid_privilege_function
 
     # RHEL-08-030010
     - rsyslog_cron_logging
