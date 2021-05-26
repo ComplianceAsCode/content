@@ -7,12 +7,12 @@
   ini_file:
     dest: "/etc/dconf/db/local.d/00-security-settings"
     section: "org/gnome/desktop/screensaver"
-    option: idle_activation_enabled
+    option: "idle-activation-enabled"
     value: "true"
     create: yes
     no_extra_spaces: yes
 
-- name: "Prevent user modification of GNOME idle_activation_enabled"
+- name: "Prevent user modification of GNOME idle-activation-enabled"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/desktop/screensaver/idle-activation-enabled'
