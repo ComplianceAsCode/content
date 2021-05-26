@@ -45,11 +45,7 @@
   comment="Tests for existance of the ^[\s]*\*[\s]+(hard|-)[\s]+core setting in the /etc/security/limits.d directory"
   id="test_core_dumps_limits_d_exists" version="1">
     <ind:object object_ref="object_core_dumps_limits_d_exists" />
-    <ind:state state_ref="state_core_dumps_limits_d_exists" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_state id="state_core_dumps_limits_d_exists" version="1">
-    <ind:subexpression operation="equals">0</ind:subexpression>
-  </ind:textfilecontent54_state>
   <ind:textfilecontent54_object id="object_core_dumps_limits_d_exists" version="1">
     <ind:path>/etc/security/limits.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
