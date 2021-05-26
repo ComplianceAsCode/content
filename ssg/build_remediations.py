@@ -334,7 +334,9 @@ class BashRemediation(Remediation):
 
             cpe = self.local_env_yaml["product_cpes"].get_cpe(platform)
             assert cpe.variable
-            return "populate {0}".format(cpe.variable)
+            var_include = ". /usr/share/scap-security-guide/remediation_functions\n"
+            var_include += "populate {0}".format(cpe.variable)
+            return var_include
 
 
 class AnsibleRemediation(Remediation):
