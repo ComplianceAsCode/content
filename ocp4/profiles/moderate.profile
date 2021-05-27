@@ -160,3 +160,6 @@ selections:
 
     # AC-8: SYSTEM USE NOTIFICATION
     - classification_banner
+
+    # SI-7: SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY
+    - file_integrity_exists
