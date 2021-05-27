@@ -1,39 +1,37 @@
 <def-group>
   <definition class="compliance" id="accounts_password_pam_unix_remember" version="2">
     {{{ oval_metadata("The passwords to remember should be set correctly.") }}}
-    <criteria comment="remember parameter of pam_unix.so or pam_pwhistory.so is set correctly" operator="OR">
-      <criterion comment="remember parameter of pam_unix.so is set correctly" test_ref="test_accounts_password_pam_unix_remember" />
-      <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember" />
+    <criteria comment="remember parameter of pam_pwhistory.so is set correctly" operator="AND">
+      <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember_system_auth" />
+      <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember_password_auth" />
     </criteria>
   </definition>
 
-  <!-- Check the pam_unix.so remember case -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_unix_remember" check="all" check_existence="all_exist"
-  comment="Test if remember attribute of pam_unix.so is set correctly in /etc/pam.d/system-auth" version="1">
-    <ind:object object_ref="object_accounts_password_pam_unix_remember" />
+  {{% macro test_pwhistory_remember(path, test_ref) %}}
+  <ind:textfilecontent54_test check="all" comment="check the configuration of {{{ path }}}" id="test_{{{ test_ref }}}" version="1">
+    <ind:object object_ref="obj_{{{ test_ref }}}" />
     <ind:state state_ref="state_accounts_password_pam_unix_remember" />
   </ind:textfilecontent54_test>
+  {{% endmacro %}}
 
-  <ind:textfilecontent54_object id="object_accounts_password_pam_unix_remember" version="1">
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:sufficient)|(?:required))\s+pam_unix\.so.*remember=([0-9]*).*$</ind:pattern>
+  {{{ test_pwhistory_remember( path="/etc/pam.d/system-auth", test_ref="accounts_password_pam_pwhistory_remember_system_auth") }}}
+  {{{ test_pwhistory_remember( path="/etc/pam.d/password-auth", test_ref="accounts_password_pam_pwhistory_remember_password_auth") }}}
+
+  {{% macro object_pwhistory_remember(path, test_ref) %}}
+  <ind:textfilecontent54_object id="obj_{{{ test_ref }}}" version="1">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    {{% if product == "rhel8" -%}}
+    <ind:pattern operation="pattern match">^\s*password\s+(?:required)\s+pam_pwhistory\.so.*remember=([0-9]*).*$</ind:pattern>
+    {{%- else -%}}
+    <ind:pattern operation="pattern match">^\s*password\s+(?:requisite)\s+pam_pwhistory\.so.*remember=([0-9]*).*$</ind:pattern>
+    {{%- endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{% endmacro %}}
 
-  <!-- Check the pam_pwhistory.so remember case -->
-  <ind:textfilecontent54_test id="test_accounts_password_pam_pwhistory_remember" check="all" check_existence="all_exist"
-  comment="Test if remember attribute of pam_pwhistory.so is set correctly in /etc/pam.d/system-auth" version="1">
-    <ind:object object_ref="object_accounts_password_pam_pwhistory_remember" />
-    <ind:state state_ref="state_accounts_password_pam_unix_remember" />
-  </ind:textfilecontent54_test>
+  {{{ object_pwhistory_remember( path="/etc/pam.d/system-auth", test_ref="accounts_password_pam_pwhistory_remember_system_auth") }}}
+  {{{ object_pwhistory_remember( path="/etc/pam.d/password-auth", test_ref="accounts_password_pam_pwhistory_remember_password_auth") }}}
 
-  <ind:textfilecontent54_object id="object_accounts_password_pam_pwhistory_remember" version="1">
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:requisite)|(?:required))\s+pam_pwhistory\.so.*remember=([0-9]*).*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <!-- Common state - shared by both of 'remember' tests above -->
   <ind:textfilecontent54_state id="state_accounts_password_pam_unix_remember" version="1">
     <ind:subexpression datatype="int" operation="greater than or equal" var_ref="var_password_pam_unix_remember" />
   </ind:textfilecontent54_state>
