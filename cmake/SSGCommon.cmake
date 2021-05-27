@@ -769,8 +769,13 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
+
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
         ssg_build_ansible_playbooks(${PRODUCT})
+        add_dependencies(
+            ${PRODUCT}-content
+            generate-${PRODUCT}-ansible-playbooks
+        )
     endif()
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
@@ -801,10 +806,6 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_ENABLED)
-        add_dependencies(
-            ${PRODUCT}-content
-            generate-${PRODUCT}-ansible-playbooks
-        )
         ssg_build_profile_playbooks(${PRODUCT})
         add_custom_target(
             ${PRODUCT}-profile-playbooks
