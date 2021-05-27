@@ -250,6 +250,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_require_authentication
+    - sudo_require_reauthentication
     - sudoers_validate_passwd
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space
