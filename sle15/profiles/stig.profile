@@ -214,6 +214,7 @@ selections:
     - permissions_local_var_log
     - postfix_client_configure_mail_alias
     - rsyslog_remote_loghost
+    - root_permissions_syslibrary_files
     - security_patches_up_to_date
     - service_auditd_enabled
     - service_autofs_disabled
