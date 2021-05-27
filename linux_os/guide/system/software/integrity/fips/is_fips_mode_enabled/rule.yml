@@ -1,0 +1,60 @@
+documentation_complete: true
+
+prodtype: sle12,sle15
+
+title: Verify '/proc/sys/crypto/fips_enabled' exists  
+
+description: |-
+    On a system where FIPS 140-2 mode is enabled, <tt>/proc/sys/crypto/fips_enabled</tt> must exist.
+    To verify FIPS mode, run the following command:
+    <pre>cat /proc/sys/crypto/fips_enabled</pre>
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@sle12: CCE-83224-6
+    cce@sle15: CCE-85763-1
+
+references:
+    disa: CCI-002450
+    nist: SC-13
+    stigid@sle12: SLES-12-010420
+    stigid@sle15: SLES-15-010510
+    srg: SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223
+
+ocil_clause: the command 'cat /proc/sys/crypto/fips_enabled' returns nothing or '0' or the file does not exist
+
+ocil: |-
+    To verify <tt>/proc/sys/crypto/fips_enabled</tt> exists, run the following command:
+    <pre>cat /proc/sys/crypto/fips_enabled</pre>
+    The output should be:
+    <pre>1</pre>
+
+warnings:
+    - general: |-
+        To configure the OS to run in FIPS 140-2 mode, the kernel parameter "fips=1" needs to be added during its installation.
+        Enabling FIPS mode on a preexisting system involves a number of modifications to it. Refer to the vendor installation 
+        guidances.
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.
