@@ -5,25 +5,11 @@ prodtype: sle12,sle15
 title: 'Ensure AppArmor is Active and Configured'
 
 description: |-
-    Verify that the SUSE operating system Apparmor tool is configured to
+    Verify that the operating system Apparmor tool is configured to
     control whitelisted applications and user home directory access
     control.<br/><br/>
+    {{{ describe_service_enable(service="apparmor") }}}
 
-    Check that <tt>pam_apparmor</tt> is installed on the system with the following
-    command:
-
-    <pre># rpm -q pam_apparmor</pre>
-
-    Check that the "apparmor" daemon is running with the following command:
-
-    <pre># systemctl status apparmor.service | grep -i active
-
-    Active: active (exited) since Fri 2017-01-13 01:01:01 GMT; 1day 1h ago</pre>
-
-    <strong>Note:</strong> <tt>pam_apparmor</tt> must have properly configured
-    profiles. All configurations will be based on the actual system setup and
-    organization.  See the <tt>pam_apparmor</tt> documentation for more
-    information on configuring profiles.
 
 rationale: |-
     Using a whitelist provides a configuration management method for allowing
@@ -62,9 +48,8 @@ references:
 
 ocil_clause: 'it is not'
 
-
 ocil: |-
-    {{{ describe_service_enable(service="apparmor") }}}
+    {{{ ocil_service_enabled(service="apparmor") }}}
 
 template:
     name: service_enabled
