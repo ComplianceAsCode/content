@@ -36,7 +36,7 @@
         control: "{{ item.1 }}"
         module_path: pam_pwhistory.so
         new_control: "{{ control }}"
-      loop: "{{ mod_files|subelements('controls')}}"
+      loop: "{{ mod_files|subelements('controls') }}"
       vars:
         mod_files:
           - { path: system-auth, controls: "{{ mod_controls }}" }
