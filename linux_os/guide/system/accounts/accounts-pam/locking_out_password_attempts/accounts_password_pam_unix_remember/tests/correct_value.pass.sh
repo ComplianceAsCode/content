@@ -10,7 +10,7 @@ do
 	if grep -q "^password.*pam_pwhistory.so.*" $config_file; then
 		# is the remember option set?
 		option=$(sed -rn 's/^(.*pam_pwhistory\.so.*)(remember=[0-9]+)(.*)$/\2/p' $config_file)
-		if -z $option; then
+		if [[ -z $option ]]; then
 			# option is not set, append to module
 			sed -i --follow-symlinks "/pam_pwhistory.so/ s/$/ remember=$remember_cnt/"
 		else
