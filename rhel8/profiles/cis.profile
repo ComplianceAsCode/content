@@ -132,7 +132,7 @@ selections:
     # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5220
 
     ### 1.3.3 Ensure sudo log file exists (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5221
+    - sudo_custom_logfile
 
     ## 1.4 Filesystem Integrity Checking
 
