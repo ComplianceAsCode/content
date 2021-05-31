@@ -1,0 +1,114 @@
+<def-group>
+  <definition class="compliance" id="dir_system_commands_root_owned" version="1">
+    {{{ oval_metadata("
+        Checks that directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
+        are owned by root.
+      ") }}}
+    <criteria operator="AND" comment="system commands directories are root owned"  >
+      <criterion test_ref="test_ownership_system_commands_directory_bin" />
+      <criterion test_ref="test_ownership_system_commands_directory_sbin" />
+      <criterion test_ref="test_ownership_system_commands_directory_usr_bin" />
+      <criterion test_ref="test_ownership_system_commands_directory_usr_sbin" />
+      <criterion test_ref="test_ownership_system_commands_directory_usr_local_bin" />
+      <criterion test_ref="test_ownership_system_commands_directory_usr_local_sbin" />
+    </criteria>
+  </definition>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="system commands directories uid root" id="test_ownership_system_commands_directory_bin" version="1">
+    <unix:object object_ref="object_ownership_system_commands_directory_bin_ownership" />
+  </unix:file_test>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="system commands directories uid root" id="test_ownership_system_commands_directory_sbin" version="1">
+    <unix:object object_ref="object_ownership_system_commands_directory_sbin_ownership" />
+  </unix:file_test>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="system commands directories uid root" id="test_ownership_system_commands_directory_usr_bin" version="1">
+    <unix:object object_ref="object_ownership_system_commands_directory_usr_bin_ownership" />
+  </unix:file_test>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="system commands directories uid root" id="test_ownership_system_commands_directory_usr_sbin" version="1">
+    <unix:object object_ref="object_ownership_system_commands_directory_usr_sbin_ownership" />
+  </unix:file_test>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="system commands directories uid root" id="test_ownership_system_commands_directory_usr_local_bin" version="1">
+    <unix:object object_ref="object_ownership_system_commands_directory_usr_local_bin_ownership" />
+  </unix:file_test>
+
+  <unix:file_test  check="all" check_existence="none_exist" comment="system commands directories uid root" id="test_ownership_system_commands_directory_usr_local_sbin" version="1">
+    <unix:object object_ref="object_ownership_system_commands_directory_usr_local_sbin_ownership" />
+  </unix:file_test>
+
+  <unix:file_object comment="system commands directories have root ownership" id="object_ownership_system_commands_directory_bin_ownership" version="1">
+    <!-- Check that /bin directory belong to user with uid 0 (root) -->
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/bin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_system_commands_directory_bin_owner_not_root</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="system commands directories have root ownership" id="object_ownership_system_commands_directory_sbin_ownership" version="1">
+    <!-- Check that /sbin directory belong to user with uid 0 (root) -->
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/sbin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_system_commands_directory_sbin_owner_not_root</filter>
+  </unix:file_object>
+
+
+  <unix:file_object comment="system commands directories have root ownership" id="object_ownership_system_commands_directory_usr_bin_ownership" version="1">
+    <!-- Check that /usr/bin directory belong to user with uid 0 (root) -->
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/bin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_system_commands_directory_usr_bin_owner_not_root</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="system commands directories have root ownership" id="object_ownership_system_commands_directory_usr_sbin_ownership" version="1">
+    <!-- Check that /usr/sbin directory belong to user with uid 0 (root) -->
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/sbin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_system_commands_directory_usr_sbin_owner_not_root</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="system commands directories have root ownership" id="object_ownership_system_commands_directory_usr_local_bin_ownership" version="1">
+    <!-- Check that /usr/local/bin directory belong to user with uid 0 (root) -->
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/local/bin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_system_commands_directory_usr_local_bin_owner_not_root</filter>
+  </unix:file_object>
+
+  <unix:file_object comment="system commands directories have root ownership" id="object_ownership_system_commands_directory_usr_local_sbin_ownership" version="1">
+    <!-- Check that /usr/local/sbin directory belong to user with uid 0 (root) -->
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/usr/local/sbin</unix:path>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_system_commands_directory_usr_local_sbin_owner_not_root</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_system_commands_directory_bin_owner_not_root" version="1">
+    <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_system_commands_directory_sbin_owner_not_root" version="1">
+    <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_system_commands_directory_usr_bin_owner_not_root" version="1">
+    <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_system_commands_directory_usr_sbin_owner_not_root" version="1">
+    <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_system_commands_directory_usr_local_bin_owner_not_root" version="1">
+    <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_system_commands_directory_usr_local_sbin_owner_not_root" version="1">
+    <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
+  </unix:file_state>
+
+</def-group>
