@@ -182,6 +182,7 @@ selections:
     - file_permissions_ungroupowned
     - file_permissions_local_var_log_messages
     - file_permission_user_init_files
+    - gnome_gdm_disable_unattended_automatic_login
     - grub2_password
     - grub2_uefi_password
     - gui_login_dod_acknowledgement
