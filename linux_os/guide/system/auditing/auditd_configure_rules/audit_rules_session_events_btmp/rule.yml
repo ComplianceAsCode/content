@@ -38,6 +38,7 @@ ocil_clause: 'Audit rule is not present'
 ocil: |-
     Check that the file is being audited by running the following command:
     <pre> sudo auditctl -l | grep -w '/var/log/btmp'</pre>
+
 template:
     name: audit_rules_login_events
     vars:
