@@ -201,6 +201,7 @@ selections:
     - package_aide_installed
     - package_audit-audispd-plugins_installed
     - package_audit_installed
+    - package_pam_apparmor_installed
     - package_telnet-server_removed
     - package_firewalld_installed
     - package_vsftpd_removed
