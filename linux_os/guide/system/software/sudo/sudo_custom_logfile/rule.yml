@@ -3,14 +3,21 @@ documentation_complete: true
 title: 'Ensure Sudo Logfile Exists - sudo logfile'
 
 description: |-
-    A custom logfile can be configured for sudo with the logfile tag.
+    A custom log sudo file can be configured with the 'logfile' tag. This rule configures
+    a sudo custom logfile at the default location suggested by CIS, which uses
+    /var/log/sudo.log.
 
 rationale: |-
     A sudo log file simplifies auditing of sudo commands.
 
 severity: low
 
+identifiers:
+    cce@rhel7: CCE-83600-7
+    cce@rhel8: CCE-83601-5
+
 references:
+    cis@rhel7: 5.2.3
     cis@rhel8: 1.3.3
 
 ocil_clause: 'logfile is not enabled in sudo'
