@@ -14,6 +14,13 @@ Contributions can be made for rules, checks, remediations or even
 utilities. There are different sets of guidelines for each type, for
 this reason there is a different topic for each of them.
 
+Following lines are rather reference material. If you are completely new and
+would like to try more guided approach, we recommend you to go through materials
+prepared for our Content creation workshop. They can be found
+[here](https://gitlab.com/2020-summit-labs/rhel-custom-security-content/-/tree/master/fedora-setup).
+They guide you step by step through the process of creating new rules, profiles,
+checks and remediations.
+
 ### Rules
 
 Rules are input described in YAML which mirrors the XCCDF format (an XML
