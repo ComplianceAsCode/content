@@ -685,41 +685,10 @@ root:
         <unix:filepath>/etc/cron.allow</unix:filepath>
       </unix:file_object>
 
-##### Macros
-
--   `oval_sshd_config` - check a parameter and value in the sshd
-    configuration file
-
--   `oval_grub_config` - check a parameter and value in the grub
-    configuration file
-
--   `oval_check_config_file` - check a parameter and value in a given
-    configuration file
-
--   `oval_check_ini_file` - check a parameter and value in a given
-    section of a given configuration file in "INI" format
-
-Always consider reusing `oval_check_config_file` when creating new
-macros, it has some logic that will save you some time (e.g.: platform
-applicability).
-
-They also include several low-level macros which are used to build the
-high level macros:
-
--   set of low-level macros to build the OVAL checks for line in file:
-```
-oval_line_in_file_criterion
-oval_line_in_file_test
-oval_line_in_file_object
-oval_line_in_file_state
-```
-
-- set of low-level macros to build the OVAL checks to test if a file exists:
-```
-oval_config_file_exists_criterion
-oval_config_file_exists_test
-oval_config_file_exists_object
-```
+Before you start creating an OVAL check, please consult our [list of JINJA
+macros](jinja_macros/oval)
+specific for OVAL. It might save time for you as an author as well as for
+reviewers.
 
 ##### Limitations and pitfalls
 
@@ -977,59 +946,8 @@ profile. The Playbook is generated in
 `/build/ansible/<product>-playbook-<profile_id>.yml`.
 
 Jinja macros for Ansible content are located in
-`/shared/macros-ansible.jinja`. These currently include the following
-high-level macros:
-
--   `ansible_sshd_set` - set a parameter in the sshd configuration
-
--   `ansible_etc_profile_set` - ensure a command gets executed or a
-    variable gets set in /etc/profile or /etc/profile.d
-
--   `ansible_tmux_set` - set a command in tmux configuration
-
--   `ansible_deregexify_banner_etc_issue` - Formats a banner regex for
-    use in /etc/issue
-
--   `ansible_deregexify_banner_dconf_gnome` - Formats a banner regex for
-    use in dconf
-
-They also include several low-level macros:
-
--   `ansible_lineinfile` - ensure a line is in a given file
-
--   `ansible_stat` - check the status of a path on the file system
-
--   `ansible_find` - find all files with matched content
-
--   `ansible_only_lineinfile` - ensure that no lines matching the regex
-    are present and add the given line
-
--   `ansible_set_config_file` - for configuration files; set the given
-    configuration value and ensure no conflicting values
-
--   `ansible_set_config_file_dir` - for configuration files and files in
-    configuration directories; set the given configuration value and
-    ensure no conflicting values
-
-Low level macros to make login banner regular expressions usable in
-Ansible remediations
-
--   `ansible_deregexify_multiple_banners` - Strips multibanner regex and
-    keeps only the first banner
-
--   `ansible_deregexify_banner_space` - Strips whitespace or newline
-    regex
-
--   `ansible_deregexify_banner_newline` - Strips newline or newline
-    escape sequence regex
-
--   `ansible_deregexify_banner_newline_token` - Strips newline token for
-    a newline escape sequence regex
-
--   `ansible_deregexify_banner_backslash` - Strips backslash regex
-
-When `msg` is absent from any of the above macros, rule title will be
-substituted instead.
+`/shared/macros-ansible.jinja`. You can see their reference
+[here](jinja_macros/ansible)
 
 Whenever possible, please reuse the macros and form high-level
 simplifications. This ensures consistent, high quality remediations that
@@ -1094,76 +1012,14 @@ guidelines:
     `grep '^[[:space:]]*something'` over `grep '^\s*something'`.
 
 Jinja macros that generate Bash remediations can be found in
-`shared/macros-bash.jinja`.
-
-Available high-level Jinja macros to generate Bash remediations:
-
--   `bash_sshd_config_set` - Set SSH Daemon configuration option in
-    `/etc/ssh/sshd_config`.
-
--   `bash_auditd_config_set` - Set Audit Daemon option in
-    `/etc/audit/auditd.conf`.
-
--   `bash_coredump_config_set` - Set Coredump configuration in
-    `/etc/systemd/coredump.conf`
-
--   `bash_package_install` - Install a package
-
--   `bash_package_remove` - Remove a package
-
--   `bash_disable_prelink` - disables prelinking
-
--   `bash_dconf_settings` - configure DConf settings for RHEL and Fedora
-    systems
-
--   `bash_dconf_lock` - configure DConf locks for RHEL and Fedora
-    systems
-
--   `bash_service_command` - enable or disable a service (either with
-    systemctl or xinet.d)
-
--   `bash_firefox_js_setting` - configure a setting in a Mozilla Firefox
-    JavaScript configuration file.
-
--   `bash_firefox_cfg_setting` - configure a setting in a Mozilla
-    Firefox configuration file.
-
-Available low-level Jinja macros that can be used in Bash remediations:
-
--   `die` - Function to terminate the remediation
-
--   `set_config_file` - Add an entry to a text configuration file
-
-Low level macros to make login banner regular expressions usable in Bash
-remediations
-
--   `bash_deregexify_multiple_banners` - Strips multibanner regex and
-    keeps only the first banner
-
--   `bash_deregexify_banner_space` - Strips whitespace or newline regex
-
--   `bash_deregexify_banner_newline` - Strips newline or newline escape
-    sequence regex
-
--   `bash_deregexify_banner_newline_token` - Strips newline token for a
-    newline escape sequence regex
-
--   `bash_deregexify_banner_backslash` - Strips backslash regex
+`shared/macros-bash.jinja`. You can see their reference
+[here](jinja_macros/bash)
 
 ### Kubernetes
 
 Jinja macros for Kubernetes content are located in
-`/shared/macros-kubernetes.jinja`. These currently include the following
-high-level macros:
-
--   `kubernetes_sshd_set` - Set SSH Daemon configuration file in
-    `/etc/ssh/sshd_config`.
-
-Available low-level Jinja macros that can be used in Kubernetes
-remediations:
-
--   `kubernetes_machine_config_file` - Set a configuration file to a
-    given path
+`/shared/macros-kubernetes.jinja`. You can see their reference
+[here](jinja_macros/kubernetes)
 
 Templating
 ----------
