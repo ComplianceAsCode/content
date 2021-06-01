@@ -127,14 +127,6 @@ Download pre-built SSG zip archive from
 [the release page](https://github.com/ComplianceAsCode/content/releases/latest).
 Each zip file is an archive with ready-made SCAP source datastreams.
 
-### From COPR
-
-We maintain a COPR repository that provides unofficial builds of latest versions
-of openscap, scap-security-guide, scap-workbench, and openscap-daemon.
-The packages are suitable for use on Red Hat Enterprise Linux and CentOS.
-
-See https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/ for
-detailed instructions.
 
 ### From source
 
