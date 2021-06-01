@@ -40,3 +40,11 @@ ocil: |-
     <pre>sudo grep -ri '^Defaults.*timestamp_timeout' /etc/sudoers /etc/sudoers.d</pre>
     The output should be:
     <pre>/etc/sudoers:Defaults timestamp_timout=0</pre> or "timestamp_timout" is set to a positive number.
+
+template:
+    name: sudo_defaults_option
+    vars:
+        option: timestamp_timeout
+        variable_name: "var_sudo_timestamp_timeout"
+    backends:
+        oval: "off"

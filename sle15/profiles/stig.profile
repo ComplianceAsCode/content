@@ -19,6 +19,7 @@ selections:
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
     - inactivity_timeout_value=15_minutes
+    - var_sudo_timestamp_timeout=1_minute
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
