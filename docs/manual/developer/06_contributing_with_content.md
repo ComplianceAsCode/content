@@ -447,6 +447,8 @@ then contain the following subdirectories:
 
 -   `sce` - for Script Check Engine content, with any file extension
 
+- `blueprint` - for OSBuild blueprint content, ending in `.toml`
+
 In each of these subdirectories, a file named `shared.ext` will apply to
 all products and be included in all builds, but `{{{ product }}}.ext`
 will only get included in the build for `{{{ product }}}` (e.g.,
