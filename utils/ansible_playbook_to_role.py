@@ -212,7 +212,7 @@ class PlaybookToRoleConverter():
                 task["when"] = [task["when"]]
 
             variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
-            task["when"] = ["{varname} | bool".format(varname=v) for v in variables_to_add] + task["when"]
+            task["when"] = ["{varname} | bool".format(varname=v) for v in sorted(variables_to_add)] + task["when"]
             variables.update(variables_to_add)
 
             if not task["when"]:
@@ -396,9 +396,8 @@ class RoleGithubUpdater(object):
 
     def _remote_content(self, filepath):
         remote = self.remote_repo.get_contents(filepath)
-        content = remote.decoded_content
-        if filepath == 'README.md':
-            content = content.decode("utf-8")
+        # We want the raw string to compare against _local_content
+        content = remote.decoded_content.decode("utf-8")
         return content, remote.sha
 
     def _update_content_if_needed(self, filepath):
