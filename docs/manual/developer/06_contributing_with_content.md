@@ -369,6 +369,8 @@ contains general macros s.a. `ocil_service_enabled`, that decide which
 one of the specialized macros to call based on the actual product being
 used.
 
+You can see references of high level macros [here](jinja_macros/highlevel).
+
 The macros that are likely to be used in descriptions begin by
 `describe_`, whereas macros likely to be used in OCIL entries begin with
 `ocil_`. Sometimes, a rule requires `ocil` and `ocil_clause` to be
