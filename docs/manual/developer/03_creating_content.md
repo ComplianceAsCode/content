@@ -252,9 +252,6 @@ layout:
 -   If the content does not depend on specific versions,
     **do not** add version numbers. For example: `fedora`, `firefox`, etc.
 
--   See the [README](https://github.com/ComplianceAsCode/content/tree/master/example/README.md) for more information about
-    the changes needed.
-
 Following these guidelines help with the usability and browsability of
 using and navigating the content.
 
