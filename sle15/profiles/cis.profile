@@ -921,7 +921,9 @@ selections:
     # Need Rule
 
     ### 6.2.4 Ensure root PATH Integrity (Automated)
-    - root_path_default
+    # Rules are not 100% fitting the need. Might need additional rules.
+    #- root_path_default
+    #- accounts_root_path_dirs_no_write
 
     ### 6.2.5 Ensure all users' home directories exist (Automated)
     - accounts_user_interactive_home_directory_exists
