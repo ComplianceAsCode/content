@@ -126,6 +126,7 @@ selections:
 
 
     # SC-8: TRANSMISSION CONFIDENTIALITY AND INTEGRITY
+    - ocp_no_ldap_insecure
     # SC-8(1): TRANSMISSION CONFIDENTIALITY AND INTEGRITY | CRYPTOGRAPHIC OR ALTERNATE PHYSICAL PROTECTION
     - api_server_client_ca
     - api_server_etcd_ca

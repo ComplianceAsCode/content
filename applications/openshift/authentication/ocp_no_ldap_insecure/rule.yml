@@ -1,0 +1,71 @@
+prodtype: ocp4
+
+title: "Only Use LDAP-based IdPs with TLS"
+
+description: |-
+  <p>
+  For users to interact with OpenShift Container Platform, they must first
+  authenticate to the cluster. The authentication layer identifies the user
+  associated with requests to the OpenShift Container Platform API. The
+  authorization layer then uses information about the requesting user to
+  determine if the request is allowed.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html",
+              text="Understanding authentication | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  The OpenShift Container Platform includes a built-in OAuth server for
+  token-based authentication. Developers and administrators obtain OAuth
+  access tokens to authenticate themselves to the API. It is recommended for
+  an administrator to configure OAuth to specify an identity provider after
+  the cluster is installed. User access to the cluster is managed through the
+  identity provider.
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html",
+              text="Understanding identity provider configuration | Authentication | OpenShift Container Platform") }}}
+  </p>
+
+  <p>
+  If the identity provider is LDAP, setting the <tt>insecure</tt> flag to true
+  would mean that passwords, such as the one used to authenticate the OAuth
+  proxy to the LDAP server would be transmitted in the clear, potentially
+  allowing an attacker to read the password if they captured the network
+  traffic.
+  </p>
+
+
+rationale: |-
+  Transmitting authentication tokens as clear-text may leak them to
+  an attacker.
+
+identifiers:
+  cce@ocp4: CCE-83699-9
+
+references:
+  nist: IA-2(8),SC-8
+
+severity: high
+
+ocil_clause: 'LDAP IDP provider is using the insecure flag'
+
+ocil: |-
+    Run the following command to list the identity providers configured:
+    <pre>$ oc get oauths cluster -ojsonpath='{.spec.identityProviders}' | jq </pre>
+    If any of the IDP providers' type is LDAP, make sure the <tt>insecure</tt>
+    flag is not set or is set to <tt>false</tt>.
+
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(4) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/oauths/cluster
+        yamlpath: ".spec.identityProviders[:].ldap.insecure"
+        check_existence: "any_exist"
+        values:
+            - value: true
+              type: boolean
+              operation: "not equal"
