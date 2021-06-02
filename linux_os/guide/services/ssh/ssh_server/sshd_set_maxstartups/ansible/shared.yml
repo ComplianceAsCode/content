@@ -5,4 +5,4 @@
 # disruption = low
 - (xccdf-var var_sshd_set_maxstartups)
 
-{{{ ansible_sshd_set(parameter="UsePrivilegeSeparation", value="{{ var_sshd_set_maxstartups }}") }}}
+{{{ ansible_sshd_set(parameter="MaxStartups", value="{{ var_sshd_set_maxstartups }}") }}}

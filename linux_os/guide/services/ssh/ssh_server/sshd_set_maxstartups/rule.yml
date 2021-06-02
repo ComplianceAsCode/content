@@ -3,17 +3,18 @@ documentation_complete: true
 title: 'Ensure SSH MaxStartups is configured'
 
 description: |-
-    To protect a system from denial of service due to a large number of pending
-    authentication connection attempts, use the rate limiting function of MaxStartups
-    to protect availability of sshd logins and prevent overwhelming the daemon.
-
-rationale: |-
     The MaxStartups parameter specifies the maximum number of concurrent
     unauthenticated connections to the SSH daemon. Additional connections will be
     dropped until authentication succeeds or the LoginGraceTime expires for a
-    connection. The sshd default is 10. By default, this rule uses the
-    CIS-recommended value of 'MaxStartups 10:30:60', which adds 'random early drop'
-    functionality.
+    connection. To confgure MaxStartups, you should add or correct the following
+    line in the
+    <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>MaxStartups {{{ xccdf_value("var_sshd_set_maxstartups") }}}</pre>
+
+rationale: |-
+    To protect a system from denial of service due to a large number of pending
+    authentication connection attempts, use the rate limiting function of MaxStartups
+    to protect availability of sshd logins and prevent overwhelming the daemon.
 
 severity: low
 
