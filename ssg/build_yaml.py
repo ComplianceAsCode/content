@@ -479,7 +479,7 @@ class ProfileWithSeparatePolicies(ResolvableProfile):
             elif ":" in cid:
                 _, level_id = cid.split(":", 1)
                 controls.extend(
-                    controls_manager.get_all_controls_of_level_at_least(policy_id, level_id))
+                    controls_manager.get_all_controls_of_level(policy_id, level_id))
             else:
                 controls.extend(controls_manager.get_all_controls(policy_id))
         return controls
@@ -529,7 +529,7 @@ class ProfileWithInlinePolicies(ResolvableProfile):
             elif ":" in cid:
                 _, level_id = cid.split(":", 1)
                 controls.extend(
-                    controls_manager.get_all_controls_of_level_at_least(policy_id, level_id))
+                    controls_manager.get_all_controls_of_level(policy_id, level_id))
             else:
                 controls.extend(
                     controls_manager.get_all_controls(policy_id))
