@@ -218,6 +218,8 @@ def main():
 
         rule_obj['remediation_products'] = r_products
 
+        if rule_id in known_rules:
+            raise ValueError("Two rules with same identifier exist: " + rule_id)
         known_rules[rule_id] = rule_obj
 
     f = open(args.output, 'w')
