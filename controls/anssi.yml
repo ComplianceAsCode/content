@@ -6,11 +6,14 @@ source: https://www.ssi.gouv.fr/uploads/2019/03/linux_configuration-en-v1.2.pdf
 levels:
   - id: minimal
   - id: intermediary
-    inherits_from: minimal
+    inherits_from:
+    - minimal
   - id: enhanced
-    inherits_from: intermediary
+    inherits_from: 
+    - intermediary
   - id: high
-    inherits_from: enhanced
+    inherits_from:
+    - enhanced
 
 controls:
   - id: R1

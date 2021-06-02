@@ -151,18 +151,12 @@ class Policy():
             raise ValueError(msg)
 
     def get_level_with_ancestors(self, level_id):
-        levels = []
+        levels = set()
         level = self.get_level(level_id)
-        while True:
-            if level not in levels:
-                levels.append(level)
-            else:
-                msg = "Circular inheritance of levels detected."
-                raise RuntimeError(msg)
-            if level.inherits_from is not None:
-                level = self.get_level(level.inherits_from)
-            else:
-                break
+        levels.add(level)
+        if level.inherits_from:
+            for l in level.inherits_from:
+                levels.update(self.get_level_with_ancestors(l))
         return levels
 
 
