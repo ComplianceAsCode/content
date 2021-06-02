@@ -10,13 +10,15 @@ description: |-
     line in the
     <tt>/etc/ssh/sshd_config</tt> file:
     <pre>MaxStartups {{{ xccdf_value("var_sshd_set_maxstartups") }}}</pre>
+    CIS recommends a MaxStartups value of '10:30:60', or more restrictive where
+    dictated by site policy.
 
 rationale: |-
     To protect a system from denial of service due to a large number of pending
     authentication connection attempts, use the rate limiting function of MaxStartups
     to protect availability of sshd logins and prevent overwhelming the daemon.
 
-severity: low
+severity: medium
 
 identifiers:
     cce@rhel7: CCE-83610-6
