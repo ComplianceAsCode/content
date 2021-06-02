@@ -28,5 +28,5 @@ description: |-
     consensus and release processes.
 
 selections:
-    - service_auditd_enabled
+    - service_com_apple_auditd_enabled
     - audit_failure_halt
