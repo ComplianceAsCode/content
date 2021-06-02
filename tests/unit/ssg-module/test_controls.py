@@ -28,7 +28,7 @@ def test_controls_load():
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
 
     # abcd is a level-less policy
-    assert c_r1.level == "default"
+    assert c_r1.levels == ["default"]
 
     assert "vague" in c_r1.notes
 
@@ -55,28 +55,28 @@ def test_controls_levels():
 
     # Default level is the lowest level
     c_1 = controls_manager.get_control("abcd-levels", "S1")
-    assert c_1.level == "low"
+    assert c_1.levels == ["low"]
     c_4 = controls_manager.get_control("abcd-levels", "S4")
-    assert c_4.level == "low"
+    assert c_4.levels == ["low"]
 
     # Explicit levels
     c_2 = controls_manager.get_control("abcd-levels", "S2")
-    assert c_2.level == "low"
+    assert c_2.levels == ["low"]
 
     c_3 = controls_manager.get_control("abcd-levels", "S3")
-    assert c_3.level == "high"
+    assert c_3.levels == ["high"]
 
     c_4a = controls_manager.get_control("abcd-levels", "S4.a")
-    assert c_4a.level == "low"
+    assert c_4a.levels == ["low"]
 
     c_4a = controls_manager.get_control("abcd-levels", "S4.b")
-    assert c_4a.level == "high"
+    assert c_4a.levels == ["high"]
 
     # just the essential controls
-    low_controls = controls_manager.get_all_controls_of_level_at_least(
+    low_controls = controls_manager.get_all_controls_of_level(
         "abcd-levels", "low")
     # essential and more advanced together
-    high_controls = controls_manager.get_all_controls_of_level_at_least(
+    high_controls = controls_manager.get_all_controls_of_level(
         "abcd-levels", "high")
     all_controls = controls_manager.get_all_controls("abcd-levels")
 

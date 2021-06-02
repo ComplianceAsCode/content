@@ -4,26 +4,31 @@ id: abcd-levels
 version: 1.2.3
 source: https://www.abcd.com/linux.pdf
 levels:
-  - low
-  - high
+  - id: low
+  - id: high
+    inherits_from: low
 
 controls:
   - id: S1
     title: User session timeout
 
   - id: S2
-    level: low
+    leves:
+    - low
 
   - id: S3
-    level: high
+    levels:
+    - high
 
   - id: S4
     title: Configure authentication
     controls:
       - id: S4.a
         title: Disable administrator accounts
-        level: low
+        levels:
+        - low
 
       - id: S4.b
         title: Enforce password quality standards
-        level: high
+        levels:
+        - high
