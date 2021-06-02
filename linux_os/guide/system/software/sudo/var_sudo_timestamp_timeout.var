@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: 'Sudo - passwd_timeout value'
+title: 'Sudo - timestamp_timeout value'
 
 description: |-
-    Defines the number of minutes before the <tt>sudo</tt> password prompt times out.
-    Defining negative number means no timeout. Defining 0 means always prompt for a 
+    Defines the number of minutes that can elapse before <tt>sudo</tt> will ask for a passwd again.
+    If set to a value less than 0 the user's time stamp will never expire. Defining 0 means always prompt for a 
     password. The default timeout value is 5 minutes.
 
 interactive: false
