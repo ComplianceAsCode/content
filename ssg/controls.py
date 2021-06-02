@@ -204,16 +204,12 @@ class ControlsManager():
         policy = self._get_policy(policy_id)
         levels = policy.get_level_with_ancestors(level_id)
         level_ids = set([l.id for l in levels])
-        print (level_ids)
 
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
         for c in all_policy_controls:
-            print (c.id)
-            print (c.levels)
             if len(level_ids.intersection(c.levels)) > 0:
                 eligible_controls.append(c)
-                print ("accepted")
         return eligible_controls
 
     def get_all_controls(self, policy_id):
