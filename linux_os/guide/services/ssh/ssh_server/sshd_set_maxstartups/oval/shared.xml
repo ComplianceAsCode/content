@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="sshd_set_maxstartups" version="1">
+    {{{ oval_metadata("Ensure 'MaxStartups' is configured in '/etc/ssh/sshd_config'") }}}
+    <criteria comment="sshd is configured correctly or is not installed"
+    operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
+      </criteria>
+      <criterion comment="Check the MaxStartups value in /etc/ssh/sshd_config"
+      test_ref="test_sshd_set_maxstartups" />
+    </criteria>
+  </definition>
+  
+  {{{ oval_line_in_file_test(path='/etc/ssh/sshd_config', parameter='MaxStartups') }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/sshd_config', prefix_regex="^[ \\t]*(?i)", parameter='MaxStartups', separator_regex='(?-i)[ \\t]+') }}}
+  
+  <ind:textfilecontent54_state id="state_sshd_set_maxstartups" version="1">
+    <ind:subexpression operation="equals" var_ref="var_sshd_set_maxstartups" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="external variable for the desired value of MaxStartups" datatype="string" id="var_sshd_set_maxstartups" version="1" />
+</def-group>

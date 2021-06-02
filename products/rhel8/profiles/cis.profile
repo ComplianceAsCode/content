@@ -842,8 +842,9 @@ selections:
     ### 5.2.17 Ensure SSH AllowTcpForwarding is disabled (Scored)
     - sshd_disable_tcp_forwarding
 
-    ### 5.2.18 Ensure SSH MaxStarups is configured (Scored)
-    # NEEDS RULE - https://github.com/ComplianceAsCode/content/issues/5528
+    ### 5.2.18 Ensure SSH MaxStartups is configured (Scored)
+    - sshd_set_maxstartups
+    - var_sshd_maxstartups='10:30:60'
 
     ### 5.2.19 Ensure SSH MaxSessions is set to 4 or less (Scored)
     - sshd_set_max_sessions
