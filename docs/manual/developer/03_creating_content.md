@@ -512,8 +512,8 @@ from the low level and R3, ie. the high level would contain R1, R2 and R3.
 First, add the `levels` key to the YAML file. This key will contain list of
 dictionaries - one per level. Each level must have its `id` defined.
 Furthermore, the level can contain a key called `inherits_from` which contains a
-level ID. If a level is selected, all controls belonging to level within
-`inherits_from` are included as well.
+list of level IDs. If a level is selected, all controls belonging to levels
+within `inherits_from` are included as well.
 
 
 Then add `levels` key to every control ID to specify a list of levels the
@@ -532,7 +532,8 @@ source: https://www.abcd.com/linux.pdf
 levels:
   - id: low
   - id: high
-    inherits_from: low
+    inherits_from:
+    - low
 controls:
   - id: R1
     levels:
@@ -567,7 +568,7 @@ title: short title (required key)
 source: a link to the original policy, eg. a URL of a PDF document
 levels: a list of levels, the first one is default.
   -id: level ID (required key)
-    inherits_from: a level ID of a parent level
+    inherits_from: a list of IDs of levels inheriting from
 
 controls: a list of controls (required key)
   - id: control ID (required key)
@@ -591,7 +592,8 @@ source: https://www.abcd.com/linux.pdf
 levels:
   - id: low
   - id: high
-    inherits_from: low
+    inherits_from:
+    - low
 controls:
   - id: R1
     levels:
