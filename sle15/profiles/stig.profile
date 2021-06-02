@@ -19,6 +19,7 @@ selections:
     - var_accounts_fail_delay=4
     - var_accounts_tmout=15_min
     - inactivity_timeout_value=15_minutes
+    - var_sudo_timestamp_timeout=always_prompt
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
@@ -252,6 +253,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_require_authentication
+    - sudo_require_reauthentication
     - sudoers_validate_passwd
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_randomize_va_space

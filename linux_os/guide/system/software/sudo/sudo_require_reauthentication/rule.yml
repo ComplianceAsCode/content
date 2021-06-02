@@ -1,0 +1,51 @@
+documentation_complete: true
+
+prodtype: sle15
+
+title: 'The operating system must require Re-Authentication when using the sudo command.
+ Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout'
+
+description: |-
+    The sudo <tt>timestamp_timeout</tt> tag sets the amount of time sudo password prompt waits.
+    The default <tt>timestamp_timeout</tt> value is 5 minutes.
+    The timestamp_timeout should be configured by making sure that the
+    <tt>timestamp_timeout</tt> tag exists in
+    <tt>/etc/sudoers</tt> configuration file or any sudo configuration snippets
+    in <tt>/etc/sudoers.d/</tt>.
+    If the value is set to an integer less than 0, the user's time stamp will not expire 
+    and the user will not have to re-authenticate for privileged actions until the user's session is terminated.
+
+rationale: |-
+    Without re-authentication, users may access resources or perform tasks for which they
+    do not have authorization.
+    <br /><br />
+    When operating systems provide the capability to escalate a functional capability, it
+    is critical that the user re-authenticate.
+
+severity: medium
+
+identifiers:
+    cce@sle15: CCE-85764-9
+
+references:
+    disa: CCI-002038
+    stigid@sle15: SLES-15-020102
+    srgid: SRG-OS-000373-GPOS-00156
+
+ocil_clause: 'timestamp_timeout is not set with the appropriate value for sudo'
+
+ocil: |-
+    Verify the operating system requires re-authentication 
+    when using the "sudo" command to elevate privileges, run the following command:
+    <pre>sudo grep -ri '^Defaults.*timestamp_timeout' /etc/sudoers /etc/sudoers.d</pre>
+    The output should be:
+    <pre>/etc/sudoers:Defaults timestamp_timeout=0</pre> or "timestamp_timeout" is set to a positive number.
+
+template:
+    name: sudo_defaults_option
+    vars:
+        option: timestamp_timeout
+        variable_name: "var_sudo_timestamp_timeout"
+    backends:
+        oval: "off"
+        
