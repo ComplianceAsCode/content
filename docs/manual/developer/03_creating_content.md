@@ -359,7 +359,7 @@ A profile should define these attributes:
 
 ## Controls
 
-The controls adds another layer on top of profiles. Controls files store the
+The controls add another layer on top of profiles. Controls files store the
 metadata for security controls and, more importantly, concentrate the mapping
 from requirement to rule at a single place.
 
@@ -509,12 +509,18 @@ For example, let's say that ABCD benchmark would define 2 levels: low and high.
 The low level would contain R1 and R2. The high level would contain everything
 from the low level and R3, ie. the high level would contain R1, R2 and R3.
 
-First, add the `levels` key to the YAML file and list the level names from
-lowest to highest. The tools working with the controls file assume that every
-control included in a level are also included in all subsequent levels listed in
-the `levels` list.
+First, add the `levels` key to the YAML file. This key will contain list of
+dictionaries - one per level. Each level must have its `id` defined.
+Furthermore, the level can contain a key called `inherits_from` which contains a
+level ID. If a level is selected, all controls belonging to level within
+`inherits_from` are included as well.
 
-Second, add `level` key to every control ID to specify level the control belongs to.
+
+Then add `levels` key to every control ID to specify a list of levels the
+control belongs to.
+
+Note that if a control does not have any level specified, it is assigned to the
+default level, which is the first in the list of levels.
 
 ```
 $ cat controls/abcd.yml
@@ -524,23 +530,27 @@ title: ABCD Benchmark for securing Linux systems
 version: 1.2.3
 source: https://www.abcd.com/linux.pdf
 levels:
-  - low
-  - high
+  - id: low
+  - id: high
+    inherits_from: low
 controls:
   - id: R1
-    level: low
+    levels:
+    - low
     title: User session timeout
     description: |-
       Remote user sessions must be closed after a certain
       period of inactivity.
   - id: R2
-    level: low
+    levels:
+    - low
     title: Minimization of configuration
     description: |-
       The features configured at the level of launched services
       should be limited to the strict minimum.
   - id: R3
-    level: high
+    levels:
+    - high
     title: Enabling SELinux targeted Policy
     description: |-
       It is recommended to enable SELinux in enforcing mode
@@ -555,13 +565,16 @@ This is a complete schema of the YAML file format.
 id: policy ID (required key)
 title: short title (required key)
 source: a link to the original policy, eg. a URL of a PDF document
-levels: a list of levels, sorted from lowest to highest
+levels: a list of levels, the first one is default.
+  -id: level ID (required key)
+    inherits_from: a level ID of a parent level
+
 controls: a list of controls (required key)
   - id: control ID (required key)
     title: control title
     description: description of the control in a few sentences
     automated: Can be one of: ["yes", "no", "partially"]. Default value: "yes".
-    level: The policy level that the control belongs to.
+    levels: The list of policy levels that the control belongs to.
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
     related_rules: a list of related rules
@@ -576,11 +589,13 @@ id: abcd
 title: ABCD Benchmark for securing Linux systems
 source: https://www.abcd.com/linux.pdf
 levels:
-  - low
-  - high
+  - id: low
+  - id: high
+    inherits_from: low
 controls:
   - id: R1
-    level: low
+    levels:
+    - low
     title: User session timeout
     description: >-
       Remote user sessions must be closed after a certain
@@ -621,13 +636,15 @@ controls:
       - id: R4.a
         title: Disable administrator accounts
         automated: yes
-        level: low
+        levels:
+        - low
         rules:
           -  accounts_passwords_pam_faillock_deny_root
       - id: R4.b
         title: Enforce password quality standards
         automated: yes
-        level: high
+        levels:
+        - high
         rules:
           - accounts_password_pam_minlen
           - accounts_password_pam_ocredit
