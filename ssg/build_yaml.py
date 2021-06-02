@@ -514,7 +514,8 @@ class ProfileWithInlinePolicies(ResolvableProfile):
         self.controls_by_policy = defaultdict(list)
 
     def apply_selection(self, item):
-        if ":" in item:
+        # ":" is the delimiter for controls but not when the item is a variable
+        if ":" in item and "=" not in item:
             policy_id, control_id = item.split(":", 1)
             self.controls_by_policy[policy_id].append(control_id)
         else:
