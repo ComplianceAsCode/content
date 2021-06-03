@@ -1,0 +1,47 @@
+prodtype: ocp4
+
+title: Ensure that File Integrity Operator is scanning the cluster
+
+description: |-
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/security/file_integrity_operator/file-integrity-operator-understanding.html",
+              text="The File Integrity Operator") }}}
+  continually runs file integrity checks on the cluster nodes.
+  It deploys a daemon set that initializes and runs privileged AIDE
+  containers on each node, providing a status object with a log of files
+  that are modified during the initial run of the daemon set pods.
+
+rationale: |-
+  File integrity scanning able to detect potential and unauthorised access.
+
+identifiers:
+  cce@ocp4: CCE-83657-7
+
+references:
+  nist: SC-4(23),SI-6,SI-7,SI-7(1),CM-6(a)
+
+ocil_clause: 'File integrity Operator is not installed'
+
+ocil: |-
+    Run the following command to retrieve the fileintegrity objects in the system:
+    <pre>$ oc get fileintegrities --all-namespaces</pre>
+    Make sure the File Integrity Operator is installed and there exists
+    at least one active FileIntegrity object in the cluster.
+
+severity: medium
+
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/fileintegrity.openshift.io/v1alpha1/fileintegrities?limit=5") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/fileintegrity.openshift.io/v1alpha1/fileintegrities?limit=5
+    yamlpath: ".items[:].metadata.name"
+    entity_check: "at least one"
+    values:
+      - value: ".*"
+        operation: "pattern match"
+
