@@ -11,7 +11,11 @@ description: |-
     Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
     <tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
     The newly-generated database can be installed as follows:
+    {{% if 'ubuntu' not in product %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+    {{% else %}}
+    <pre>$ sudo cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db</pre>
+    {{% endif %}}
     To initiate a manual check, run the following command:
     <pre>$ sudo /usr/sbin/aide --check</pre>
     If this check produces any unexpected output, investigate.
