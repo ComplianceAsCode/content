@@ -62,6 +62,10 @@ ocil: |-
     To determine that periodic AIDE execution has been scheduled, run the following command:
     <pre>$ grep aide /etc/crontab</pre>
     The output should return something similar to the following:
+    {{% if 'ubuntu' not in product %}}
     <pre>05 4 * * * root /usr/sbin/aide --check</pre>
+    {{% else %}}
+    <pre>05 4 * * * root /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check</pre>
+    {{% endif %}}
 
     NOTE: The usage of special cron times, such as @daily or @weekly, is acceptable.
