@@ -73,6 +73,7 @@ class Control():
         control.note = control_dict.get("note")
         return control
 
+
 class Level():
     def __init__(self):
         self.id = None
@@ -120,8 +121,8 @@ class Policy():
         self.source = yaml_contents.get("source", "")
 
         level_list = yaml_contents.get("levels", [])
-        for l in level_list:
-            level = Level.from_level_dict(l)
+        for lv in level_list:
+            level = Level.from_level_dict(lv)
             self.levels.append(level)
             self.levels_by_id[level.id] = level
 
@@ -142,8 +143,8 @@ class Policy():
 
     def get_level(self, level_id):
         try:
-            l = self.levels_by_id[level_id]
-            return l
+            lv = self.levels_by_id[level_id]
+            return lv
         except KeyError:
             msg = "%s not found in policy %s" % (
                 level_id, self.id
@@ -155,8 +156,8 @@ class Policy():
         level = self.get_level(level_id)
         levels.add(level)
         if level.inherits_from:
-            for l in level.inherits_from:
-                levels.update(self.get_level_with_ancestors(l))
+            for lv in level.inherits_from:
+                levels.update(self.get_level_with_ancestors(lv))
         return levels
 
 
@@ -197,7 +198,7 @@ class ControlsManager():
     def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
         levels = policy.get_level_with_ancestors(level_id)
-        level_ids = set([l.id for l in levels])
+        level_ids = set([lv.id for lv in levels])
 
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
