@@ -13,12 +13,12 @@ description: |-
     /usr/local/bin 
     /usr/local/sbin
     </pre>
-    All files in these directories should be owned by the <tt>root</tt> user. 
+    All files in these directories should be owned by the <tt>root</tt> group. 
     If the directory, or any file in these directories, is found to be owned 
-    by a user other than root correct its ownership with the following command:
+    by a group other than root correct its ownership with the following command:
     <pre>$ sudo chgrp root <i>FILE</i></pre>
 rationale: |-
-    If the operating system were to allow any user to make changes to software
+    If the operating system allows any user to make changes to software
     libraries, then those changes might be implemented without undergoing the 
     appropriate testing and approvals that are part of a robust change management 
     process.
@@ -40,10 +40,10 @@ references:
     stigid@sle15: SLES-15-010361
     srg: SRG-OS-000259-GPOS-00100
 
-ocil_clause: 'any of these files are not owned by root'
+ocil_clause: 'any of these files are not owned by root group'
 
 ocil: |-
-    Sysem commands are stored in the following directories:
+    System commands are stored in the following directories:
     <pre>/bin 
     /sbin 
     /usr/bin 
@@ -51,5 +51,5 @@ ocil: |-
     /usr/local/bin 
     /usr/local/sbin</pre>
     For each of these directories, run the following command to find files not
-    owned by root:
+    owned by root group:
     <pre>$ sudo find -L <i>$DIR</i> ! -group root -type f \;</pre>

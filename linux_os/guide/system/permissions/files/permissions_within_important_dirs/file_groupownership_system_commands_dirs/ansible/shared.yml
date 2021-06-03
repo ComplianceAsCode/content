@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 
-- name: "Retrive the system command files and set their ownership to root"
+- name: "Retrieve the system command files and set their group ownership to root"
   command: "find -L {{ item }}  ! -group root -type f -exec chgrp root '{}' \\;"
   with_items: ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin']
   changed_when: False

@@ -1,8 +1,8 @@
 <def-group>
-  <definition class="compliance" id="file_ownership_system_commands_dirs" version="1">
+  <definition class="compliance" id="file_groupownership_system_commands_dirs" version="1">
     {{{ oval_metadata("
         Checks that system commands in /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
-        are owned by root.
+        are owned by root group.
       ") }}}
     <criteria >
       <criterion test_ref="test_ownership_system_commands_files" />
@@ -15,7 +15,7 @@
 
   <unix:file_object comment="system commands files" id="object_file_ownership_system_commands_files" version="1">
     <!-- Check that system commands within directories /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin 
-         belong to user with uid 0 (root) -->
+         belong to group with gid 0 (root) -->
     <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
    <filter action="include">state_owner_system_commands_not_root</filter>

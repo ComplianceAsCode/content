@@ -167,10 +167,10 @@ selections:
     - ensure_rtc_utc_configuration
     - file_etc_security_opasswd
     - file_groupownership_home_directories
+    - file_groupownership_system_commands_dirs
     - file_ownership_binary_dirs
     - file_permissions_binary_dirs
     - file_ownership_library_dirs
-    - file_ownership_system_commands_dirs 
     - file_permissions_home_directories
     - file_permissions_library_dirs
     - file_permissions_sshd_private_key
