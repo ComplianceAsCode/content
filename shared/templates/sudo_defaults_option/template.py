@@ -16,12 +16,16 @@ def preprocess(data, lang):
 
     if lang == "oval":
         if data.get("variable_name"):
-            data["option_regex"] = data["option"] + r"=(\w+)"
+            if 'option_regex_suffix' not in data:
+                data['option_regex_suffix'] = r"=(\w+)"
+            data["option_regex"] = data["option"] + data['option_regex_suffix']
         else:
             data["option_regex"] = data["option"]
     elif lang == "bash":
         if data.get("variable_name"):
-            data["option_regex"] = data["option"] + r"=\w+"
+            if 'option_regex_suffix' not in data:
+                data['option_regex_suffix'] = r"=\w+"
+            data["option_regex"] = data["option"] + data['option_regex_suffix']
             data["option_value"] = "{opt}=${{{var}}}".format(opt=data["option"],
                                                              var=data["variable_name"])
         else:
