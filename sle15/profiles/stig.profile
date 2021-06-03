@@ -131,6 +131,7 @@ selections:
     - audit_rules_unsuccessful_file_modification_open
     - audit_rules_unsuccessful_file_modification_openat
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_session_events_btmp
     - audit_rules_unsuccessful_file_modification_renameat
     - audit_rules_unsuccessful_file_modification_renameat2
     - audit_rules_unsuccessful_file_modification_rename
