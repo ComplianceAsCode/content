@@ -1,0 +1,65 @@
+prodtype: ocp4
+
+title: "Configure OAuth server so that tokens expire after a set period of inactivity"
+
+description: |-
+    <p>
+    You can configure OAuth tokens to expire after a set period of
+    inactivity. By default, no token inactivity timeout is set.
+    </p>
+    <p>
+    The inactivity timeout can be either set in the OAuth server
+    configuration or in any of the OAuth clients. The client settings
+    override the OAuth server setting.
+    </p>
+    <p>
+    To set the OAuth server inactivity timeout, edit the OAuth server
+    object: <tt>oc edit oauth cluster</tt>
+    and set the <tt>.spec.tokenConfig.accessTokenInactivityTimeout</tt>
+    parameter to the desired value:
+    <pre>
+    apiVersion: config.openshift.io/v1
+    kind: OAuth
+    metadata:
+    ...
+    spec:
+       tokenConfig:
+         accessTokenInactivityTimeout: {{{ xccdf_value("var_oauth_inactivity_timeout") }}}
+    </pre>
+    For more information on configuring the OAuth server, consult the
+    OpenShift documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/authentication/configuring-oauth-clients.html") }}}
+    </p>
+
+rationale: |-
+    Terminating an idle session within a short time period reduces the window
+    of opportunity for unauthorized personnel to take control of a session
+    that has been left unattended.
+
+references:
+  nist: AC-2(5),SC-10
+
+identifiers:
+    cce@ocp4: CCE-83511-6
+
+ocil_clause: 'OAuth server inactivity timeout is not configured'
+
+ocil: |-
+  To check if the OAuth server timeout is configured, run the following command:
+  <pre>oc get oauth cluster -ojsonpath='{.spec.tokenConfig.accessTokenInactivityTimeout}'</pre>
+  the output should return <pre> {{{ xccdf_value("var_oauth_inactivity_timeout") }}} </pre>.
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/oauths/cluster") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/config.openshift.io/v1/oauths/cluster
+        yamlpath: ".spec.tokenConfig.accessTokenInactivityTimeout"
+        check_existence: "only_one_exists"
+        xccdf_variable: var_oauth_inactivity_timeout
