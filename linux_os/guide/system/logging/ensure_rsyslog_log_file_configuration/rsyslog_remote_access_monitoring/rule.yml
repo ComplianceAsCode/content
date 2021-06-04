@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8
+
+title: 'Ensure remote access methods are monitored in Rsyslog'
+
+description: |-
+    Logging of remote access methods must be implemented to help identify cyber
+    attacks and ensure ongoing compliance with remote access policies are being
+    audited and upheld. An examples of a remote access method is the use of the
+    Remote Desktop Protocol (RDP) from an external, non-organization controlled
+    network. The <tt>/etc/rsyslog.conf</tt> or
+    <tt>/etc/rsyslog.d/*.conf</tt> file should contain a match for the following
+    selectors: <tt>auth.*</tt>, <tt>authpriv.*</tt>, and <tt>daemon.*</tt>. If
+    not, use the following as an example configuration:
+    <pre>auth.*;authpriv.*;daemon.*                              /var/log/secure</pre>
+
+rationale: |-
+    Logging remote access methods can be used to trace the decrease the risks
+    associated with remote user access management. It can also be used to spot
+    cyber attacks and ensure ongoing compliance with organizational policies
+    surrounding the use of remote access methods.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-83426-7
+
+references:
+    disa: CCI-000067
+    nist: AC-17(1)
+    srg: SRG-OS-000032-GPOS-00013
+    stigid@rhel8: RHEL-08-010070
+
+ocil_clause: 'remote access methods are not logging to rsyslog'
+
+ocil: |-
+    To verify that <tt>remote access methods</tt> are logging to <tt>rsyslog</tt>,
+    run the following command:
+    <pre>grep -rE '(auth.\*|authpriv.\*|daemon.\*)' /etc/rsyslog.*</pre>
+    The output should contain <tt>auth.*</tt>, <tt>authpriv.*</tt>, and <tt>daemon.*</tt>
+    pointing to a log file.
