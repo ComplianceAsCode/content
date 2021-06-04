@@ -509,18 +509,15 @@ For example, let's say that ABCD benchmark would define 2 levels: low and high.
 The low level would contain R1 and R2. The high level would contain everything
 from the low level and R3, ie. the high level would contain R1, R2 and R3.
 
-First, add the `levels` key to the YAML file. This key will contain list of
-dictionaries - one per level. Each level must have its `id` defined.
-Furthermore, the level can contain a key called `inherits_from` which contains a
-list of level IDs. If a level is selected, all controls belonging to levels
-within `inherits_from` are included as well.
+First, add the `levels` key to the YAML file.
+This key will contain list of dictionaries - one per level.
+Each level must have its `id` defined.
+Furthermore, the level can contain a key called `inherits_from` which contains a list of level IDs.
+If a level is selected, all controls belonging to levels within `inherits_from` are included as well.
 
+Then add `levels` key to every control ID to specify a list of levels the control belongs to.
 
-Then add `levels` key to every control ID to specify a list of levels the
-control belongs to.
-
-Note that if a control does not have any level specified, it is assigned to the
-default level, which is the first in the list of levels.
+Note that if a control does not have any level specified, it is assigned to the default level, which is the first in the list of levels.
 
 ```
 $ cat controls/abcd.yml
