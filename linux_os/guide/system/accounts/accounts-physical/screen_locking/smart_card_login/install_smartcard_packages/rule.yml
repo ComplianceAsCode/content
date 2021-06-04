@@ -2,6 +2,8 @@
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
 {{% elif product in ["rhel7", "ol7"] %}}
 {{% set smartcard_packages = ['pam_pkcs11'] %}}
+{{% elif 'ubuntu' in product %}}
+{{% set smartcard_packages = ['libpam-pkcs11'] %}}
 {{% else %}}
 {{% set smartcard_packages = ['openssl-pkcs11'] %}}
 {{% endif %}}
@@ -65,4 +67,7 @@ template:
         pkgname: openssl-pkcs11
         pkgname@rhel7: pam_pkcs11
         pkgname@ol7: pam_pkcs11
+        pkgname@ubuntu1604: libpam-pkcs11
+        pkgname@ubuntu1804: libpam-pkcs11
+        pkgname@ubuntu2004: libpam-pkcs11
 {{% endif %}}
