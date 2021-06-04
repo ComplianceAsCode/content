@@ -7,5 +7,10 @@ grubby --update-kernel=ALL --args="{{{ ARG_NAME }}}={{{ ARG_VALUE }}}"
 if [ ! -f /etc/kernel/cmdline ]; then
     echo "{{{ ARG_NAME }}}={{{ ARG_VALUE }}}" > /etc/kernel/cmdline
 elif ! grep -q '^(.*\s)?{{{ ARG_NAME }}}={{{ ARG_VALUE }}}(\s.*)?$' /etc/kernel/cmdline; then
+    {{% if '/' in ARG_NAME %}}
+    {{{ raise("ARG_NAME (" + ARG_NAME + ") uses sed path separator (" + sed_separator + ") in " + rule_id) }}}
+    {{% elif '/' in ARG_VALUE %}}
+    {{{ raise("ARG_VALUE (" + ARG_VALUE + ") uses sed path separator (" + sed_separator + ") in " + rule_id) }}}
+    {{% endif %}}
     sed -Ei 's/^(.*)$/\1 {{{ ARG_NAME }}}={{{ ARG_VALUE }}}/' /etc/kernel/cmdline
 fi
