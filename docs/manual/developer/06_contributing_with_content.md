@@ -1773,7 +1773,7 @@ The remediations add the `Defaults` option  to `/etc/sudoers` file.
 -   Parameters:
 
     - **option** - name of sudo `Defaults` option to enable.
-    - **option_regex_suffix** - suffix to the pattern-match to use after **option**; defaults to `=(\w+)`.
+    - **option_regex_suffix** - suffix to the pattern-match to use after **option**; defaults to `=(\w+)\b`.
     - **parameter_variable** - name of the XCCDF variable to get the value for the option parameter.\
       (optional, if not set the check and remediation won't use parameters)
     - **default_is_enabled** -  set to `"true"` if the option is enabled by default for the product.
