@@ -26,6 +26,13 @@ ComplianceAsCode/content
 .. toctree::
     :maxdepth: 1
     :glob:
+    :caption: Templates Reference
+
+    templates/*
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
     :caption: Python Modules Reference
 
     modules/*
