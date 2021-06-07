@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhv4,sle12,sle15
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Encrypt Partitions'
 
@@ -37,8 +37,10 @@ description: |-
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/install/ol8-install-basic.html#install-storage-network") }}}.
     {{% elif product in ["sle12", "sle15"] %}}
         {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
-    {{% else %}}
+    {{% elif product == "rhel7" %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html") }}}.
+    {{% else %}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/encrypting-block-devices-using-luks_security-hardening") }}}.
     {{% endif %}}
 
 rationale: |-

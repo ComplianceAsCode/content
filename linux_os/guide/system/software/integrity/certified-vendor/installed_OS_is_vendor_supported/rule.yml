@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
 
 title: 'The Installed Operating System Is Vendor Supported'
 
@@ -56,7 +56,7 @@ ocil_clause: 'the installed operating system is not supported'
 ocil: |-
     To verify that the installed operating system is supported, run
     the following command:
-{{% if product in ["rhel7", "rhel8"] %}}
+{{% if product.startswith("rhel") %}}
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
 {{% elif product in ["ol7", "ol8"] %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
