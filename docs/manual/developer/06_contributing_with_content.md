@@ -376,7 +376,7 @@ contains general macros s.a. `ocil_service_enabled`, that decide which
 one of the specialized macros to call based on the actual product being
 used.
 
-You can see references of high level macros [here](jinja_macros/highlevel).
+You can see references of high level macros [here](jinja_macros/highlevel:high%20level).
 
 The macros that are likely to be used in descriptions begin by
 `describe_`, whereas macros likely to be used in OCIL entries begin with
@@ -697,7 +697,7 @@ root:
       </unix:file_object>
 
 Before you start creating an OVAL check, please consult our [list of JINJA
-macros](jinja_macros/oval)
+macros](jinja_macros/oval:oval)
 specific for OVAL. It might save time for you as an author as well as for
 reviewers.
 
@@ -958,7 +958,7 @@ profile. The Playbook is generated in
 
 Jinja macros for Ansible content are located in
 `/shared/macros-ansible.jinja`. You can see their reference
-[here](jinja_macros/ansible)
+[here](	jinja_macros/ansible:ansible).
 
 Whenever possible, please reuse the macros and form high-level
 simplifications. This ensures consistent, high quality remediations that
@@ -1024,13 +1024,13 @@ guidelines:
 
 Jinja macros that generate Bash remediations can be found in
 `shared/macros-bash.jinja`. You can see their reference
-[here](jinja_macros/bash)
+[here](jinja_macros/bash:bash).
 
 ### Kubernetes
 
 Jinja macros for Kubernetes content are located in
 `/shared/macros-kubernetes.jinja`. You can see their reference
-[here](jinja_macros/kubernetes)
+[here](jinja_macros/kubernetes:kubernetes)
 
 Templating
 ----------
