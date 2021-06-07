@@ -62,6 +62,7 @@ selections:
 - aide_verify_acls
 - aide_verify_ext_attributes
 - audit_rules_suid_privilege_function
+- auditd_audispd_configure_sufficiently_large_partition
 - auditd_data_disk_error_action
 - auditd_data_disk_full_action
 - auditd_data_retention_action_mail_acct
