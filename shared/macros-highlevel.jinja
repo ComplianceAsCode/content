@@ -1,6 +1,6 @@
 {{#
-Insert general ocil clause for a package which should be installed, substituting
-the correct package management software.
+Insert general ocil clause to check if a package is installed, substituting the
+correct package management software.
 #}}
 {{% macro ocil_package(package) -%}}
   {{% if pkg_system is defined %}}
@@ -15,7 +15,7 @@ JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
 {{%- endmacro %}}
 
 {{#
-Insert a complete OCIL block for a case when a package should be installed,
+Insert a complete OCIL block for a case when a package should be removed,
 substituting the correct package management software.
 #}}
 {{% macro complete_ocil_entry_package(package) -%}}
