@@ -7,7 +7,13 @@ title: 'Uninstall DHCP Server Package'
 description: |-
     If the system does not need to act as a DHCP server,
     the dhcp package can be uninstalled.
+    {{% if 'ubuntu' in product %}}
+    {{{ describe_package_remove(package="isc-dhcp-server") }}}
+    {{% elif product == 'rhel8' %}}
+    {{{ describe_package_remove(package="dhcp-server") }}}
+    {{% else %}}
     {{{ describe_package_remove(package="dhcp") }}}
+    {{% endif %}}
 
 rationale: |-
     Removing the DHCP server ensures that it cannot be easily or
@@ -30,10 +36,19 @@ references:
     cis-csc: 11,14,3,9
     anssi: BP28(R1)
 
+{{% if 'ubuntu' in product %}}
+{{{ complete_ocil_entry_package(package="isc-dhcp-server") }}}
+{{% elif product == 'rhel8' %}}
+{{{ complete_ocil_entry_package(package="dhcp-server") }}}
+{{% else %}}
 {{{ complete_ocil_entry_package(package="dhcp") }}}
+{{% endif %}}
 
 template:
     name: package_removed
     vars:
         pkgname: dhcp
         pkgname@rhel8: dhcp-server
+        pkgname@ubuntu1604: isc-dhcp-server
+        pkgname@ubuntu1804: isc-dhcp-server
+        pkgname@ubuntu2004: isc-dhcp-server

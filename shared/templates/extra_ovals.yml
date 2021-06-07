@@ -2,6 +2,9 @@ package_avahi_installed:
   name: package_installed
   vars:
     pkgname: avahi
+    pkgname@ubuntu1604: avahi-daemon
+    pkgname@ubuntu1804: avahi-daemon
+    pkgname@ubuntu2004: avahi-daemon
 
 package_esc_installed:
   name: package_installed
@@ -22,6 +25,9 @@ package_gdm_installed:
   name: package_installed
   vars:
     pkgname: gdm
+    pkgname@ubuntu1604: gdm3
+    pkgname@ubuntu1804: gdm3
+    pkgname@ubuntu2004: gdm3
 
 package_pam_ldap_removed:
   name: package_removed

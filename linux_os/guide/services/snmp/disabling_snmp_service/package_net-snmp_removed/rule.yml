@@ -5,8 +5,13 @@ prodtype: debian10,debian9,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,wr
 title: 'Uninstall net-snmp Package'
 
 description: |-
+    {{% if pkg_manager != "apt_get" %}}
     The <tt>net-snmp</tt> package provides the snmpd service.
     {{{ describe_package_remove(package="net-snmp") }}}
+    {{% else %}}
+    The <tt>snmp</tt> package provides the snmpd service.
+    {{{ describe_package_remove(package="snmp") }}}
+    {{% endif %}}
 
 rationale: |-
     If there is no need to run SNMP server software,
@@ -18,11 +23,18 @@ severity: unknown
 identifiers:
     cce@rhel7: CCE-80275-1
 
+{{% if pkg_manager != "apt_get" %}}
 {{{ complete_ocil_entry_package(package="net-snmp") }}}
+{{% else %}}
+{{{ complete_ocil_entry_package(package="snmp") }}}
+{{% endif %}}
 
 template:
     name: package_removed
     vars:
+        pkgname: net-snmp
         pkgname@debian9: snmp
         pkgname@debian10: snmp
-        pkgname: net-snmp
+        pkgname@ubuntu1604: snmp
+        pkgname@ubuntu1804: snmp
+        pkgname@ubuntu2004: snmp

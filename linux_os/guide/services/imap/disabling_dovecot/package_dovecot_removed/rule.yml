@@ -5,7 +5,11 @@ prodtype: rhel7,rhel8,rhel9,sle15
 title: 'Uninstall dovecot Package'
 
 description: |-
+    {{% if 'ubuntu' not in product %}}
     {{{ describe_package_remove(package="dovecot") }}}
+    {{% else %}}
+    {{{ describe_package_remove(package="dovecot-core") }}}
+    {{% endif %}}
 
 rationale: |-
     If there is no need to make the Dovecot software available,
@@ -16,9 +20,16 @@ severity: unknown
 identifiers:
     cce@rhel7: CCE-80295-9
 
+{{% if 'ubuntu' not in product %}}
 {{{ complete_ocil_entry_package(package="dovecot") }}}
+{{% else %}}
+{{{ complete_ocil_entry_package(package="dovecot-core") }}}
+{{% endif %}}
 
 template:
     name: package_removed
     vars:
         pkgname: dovecot
+        pkgname@ubuntu1604: dovecot-core
+        pkgname@ubuntu1804: dovecot-core
+        pkgname@ubuntu2004: dovecot-core

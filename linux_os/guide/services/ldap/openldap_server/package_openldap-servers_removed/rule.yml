@@ -5,7 +5,11 @@ prodtype: rhel7,rhel8,rhel9,sle15
 title: 'Uninstall openldap-servers Package'
 
 description: |-
-    The openldap-servers RPM is not installed by default on a {{{ full_name }}}
+    {{% if 'ubuntu' not in product %}}
+    The openldap-servers package is not installed by default on a {{{ full_name }}}
+    {{% else %}}
+    The slapd package is not installed by default on a {{{ full_name }}}
+    {{% endif %}}
     system. It is needed only by the OpenLDAP server, not by the
     clients which use LDAP for authentication. If the system is not
     intended for use as an LDAP Server it should be removed.
@@ -36,13 +40,24 @@ references:
 ocil_clause: 'it does not'
 
 ocil: |-
+    {{% if 'ubuntu' not in product %}}
     To verify the <tt>openldap-servers</tt> package is not installed, run the
     following command:
     <pre>$ rpm -q openldap-servers</pre>
     The output should show the following:
     <pre>package openldap-servers is not installed</pre>
+    {{% else %}}
+    To verify the <tt>slapd</tt> package is not installed, run the
+    following command:
+    <pre>$ dpkg -l slapd</pre>
+    The output should show the following:
+    <pre>package slapd is not installed</pre>
+    {{% endif %}}
 
 template:
     name: package_removed
     vars:
         pkgname: openldap-servers
+        pkgname@ubuntu1604: slapd
+        pkgname@ubuntu1804: slapd
+        pkgname@ubuntu2004: slapd

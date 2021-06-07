@@ -4,7 +4,12 @@ prodtype: rhel7,rhel8,rhel9,sle15
 
 title: 'Uninstall httpd Package'
 
-description: '{{{ describe_package_remove(package="httpd") }}}'
+description: |-
+  {{% if 'ubuntu' not in product %}}
+  {{{ describe_package_remove(package="httpd") }}}
+  {{% else %}}
+  {{{ describe_package_remove(package="apache2") }}}
+  {{% endif %}}
 
 rationale: |-
     If there is no need to make the web server software available,
@@ -24,9 +29,16 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
     cis-csc: 11,14,3,9
 
+{{% if 'ubuntu' not in product %}}
 {{{ complete_ocil_entry_package(package="httpd") }}}
+{{% else %}}
+{{{ complete_ocil_entry_package(package="apache2") }}}
+{{% endif %}}
 
 template:
     name: package_removed
     vars:
         pkgname: httpd
+        pkgname@ubuntu1604: apache2
+        pkgname@ubuntu1804: apache2
+        pkgname@ubuntu2004: apache2
