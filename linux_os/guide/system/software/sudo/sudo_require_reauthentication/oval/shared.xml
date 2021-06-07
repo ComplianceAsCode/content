@@ -13,7 +13,7 @@
 
   <ind:textfilecontent54_object id="obj_sudo_timestamp_timeout" version="1">
     <ind:filepath>/etc/sudoers</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout=([\d]+)$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*Defaults[\s]+timestamp_timeout=([-]?[\d]+)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
