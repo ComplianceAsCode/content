@@ -114,6 +114,7 @@ selections:
     - audit_rules_privileged_commands_pam_timestamp_check
     - audit_rules_privileged_commands_passmass
     - audit_rules_privileged_commands_passwd
+    - audit_rules_privileged_commands_insmod
     - audit_rules_privileged_commands_rmmod
     - audit_rules_privileged_commands_ssh_agent
     - audit_rules_privileged_commands_ssh_keysign
