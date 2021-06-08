@@ -43,7 +43,7 @@ def parse_args():
     parser.add_argument(
         "--ram",
         dest="ram",
-        default=2048,
+        default=3072,
         type=int,
         help="Amount of RAM configured for the VM."
     )
