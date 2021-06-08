@@ -5,77 +5,14 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("var_password_pam_unix_remember") }}}
 
-- name: "{{{ rule_title }}}: set_fact"
-  set_fact:
-    {{% if product == "rhel8" -%}}
-    control: 'required'
-    {{%- else -%}}
-    control: 'requisite'
-    {{%- endif %}}
+- name: "Do not allow users to reuse recent passwords - system-auth (change)"
+  replace:
+    dest: /etc/pam.d/system-auth
+    regexp: '^(password\s+sufficient\s+pam_unix\.so\s.*remember\s*=\s*)(\S+)(.*)$'
+    replace: '\g<1>{{ var_password_pam_unix_remember }}\g<3>'
 
-- name: "{{{ rule_title }}}: Check for existing entry"
-  lineinfile:
-    path: "/etc/pam.d/{{ item }}"
-    create: no
-    regexp: '^password.*pam_pwhistory.so.*'
-    state: absent
-  check_mode: true
-  changed_when: false
-  register: pam_pwhistory
-  loop:
-    - system-auth
-    - password-auth
-
-# if entry exists:
-- name: "{{{ rule_title }}}: Update accordingly"
-  block:
-    - name: "{{{ rule_title }}}: Ensure correct control value for pam_pwhistory"
-      pamd:
-        name: "{{ item.0.path }}"
-        type: password
-        control: "{{ item.1 }}"
-        module_path: pam_pwhistory.so
-        new_control: "{{ control }}"
-      loop: "{{ mod_files|subelements('controls') }}"
-      vars:
-        mod_files:
-          - { path: system-auth, controls: "{{ mod_controls }}" }
-          - { path: password-auth, controls: "{{ mod_controls }}" }
-        mod_controls:
-          - required
-          - optional
-          - requisite
-          - sufficient
-          - binding
-
-    - name: "{{{ rule_title }}}: Ensure remember argument in pam_pwhistory"
-      pamd:
-        name: "{{ item }}"
-        type: password
-        control: "{{ control }}"
-        module_path: pam_pwhistory.so
-        module_arguments: 'use_authtok
-            remember={{ var_password_pam_unix_remember }}'
-        state: args_present
-      loop:
-        - system-auth
-        - password-auth
-  when: pam_pwhistory.results[0].found == 1 or pam_pwhistory.results[1].found == 1
-
-# if entry does not exist - also to prevent duplicating
-- name: "{{{ rule_title }}}: Add pam_pwhistory"
-  pamd:
-    name: "{{ item }}"
-    type: password
-    control: required
-    module_path: pam_deny.so
-    new_type: password
-    new_control: "{{ control }}"
-    new_module_path: pam_pwhistory.so
-    module_arguments: 'use_authtok
-        remember={{ var_password_pam_unix_remember }}'
-    state: before
-  when: pam_pwhistory.results[0].found == 0 or pam_pwhistory.results[1].found == 0
-  loop:
-    - system-auth
-    - password-auth
+- name: "Do not allow users to reuse recent passwords - system-auth (add)"
+  replace:
+    dest: /etc/pam.d/system-auth
+    regexp: '^password\s+sufficient\s+pam_unix\.so\s(?!.*remember\s*=\s*).*$'
+    replace: '\g<0> remember={{ var_password_pam_unix_remember }}'

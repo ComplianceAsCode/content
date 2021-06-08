@@ -1,0 +1,59 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+{{{ ansible_instantiate_variables("var_password_pam_remember", "var_password_pam_remember_control_flag") }}}
+
+- name: "{{{ rule_title }}}: Check for existing entry"
+  lineinfile:
+    path: "/etc/pam.d/password-auth"
+    create: no
+    regexp: '^password.*pam_pwhistory.so.*'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: pam_pwhistory
+
+# if entry exists:
+- name: "{{{ rule_title }}}: Update accordingly"
+  block:
+    - name: "{{{ rule_title }}}: Ensure correct control value for pam_pwhistory"
+      pamd:
+        name: password-auth
+        type: password
+        control: "{{ item }}"
+        module_path: pam_pwhistory.so
+        new_control: "{{ var_password_pam_remember_control_flag }}"
+      loop:
+        - required
+        - optional
+        - requisite
+        - sufficient
+        - binding
+
+    - name: "{{{ rule_title }}}: Ensure remember argument in pam_pwhistory"
+      pamd:
+        name: password-auth
+        type: password
+        control: "{{ var_password_pam_remember_control_flag }}"
+        module_path: pam_pwhistory.so
+        module_arguments: 'use_authtok
+            remember={{ var_password_pam_remember }}'
+        state: args_present
+  when: pam_pwhistory.found == 1
+
+# if entry does not exist - also to prevent duplicating
+- name: "{{{ rule_title }}}: Add pam_pwhistory"
+  pamd:
+    name: password-auth
+    type: password
+    control: sufficient
+    module_path: pam_unix.so
+    new_type: password
+    new_control: "{{ var_password_pam_remember_control_flag }}"
+    new_module_path: pam_pwhistory.so
+    module_arguments: 'use_authtok
+        remember={{ var_password_pam_remember }}'
+    state: before
+  when: pam_pwhistory.found == 0

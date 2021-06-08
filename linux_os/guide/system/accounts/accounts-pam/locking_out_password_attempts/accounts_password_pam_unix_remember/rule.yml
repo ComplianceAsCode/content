@@ -5,13 +5,20 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
 title: 'Limit Password Reuse'
 
 description: |-
-    Do not allow users to reuse recent passwords. This can be accomplished by using the
-    <tt>remember</tt> option for the <tt>pam_pwhistory</tt> PAM module.
+    Do not allow users to reuse recent passwords. This can be
+    accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt>
+    or <tt>pam_pwhistory</tt> PAM modules.
     <br /><br />
-    In the files <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>, append
-    <tt>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</tt>
-    to the line which refers to the <tt>pam_pwhistory.so</tt>module, as shown follows:
-    <pre>password {{% if product == "rhel8" %}}required{{% else %}}requisite{{% endif %}} pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
+    In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</tt>
+    to the line which refers to the <tt>pam_unix.so</tt> or <tt>pam_pwhistory.so</tt>module, as shown below:
+    <ul>
+    <li>for the <tt>pam_unix.so</tt> case:
+    <pre>password sufficient pam_unix.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
+    </li>
+    <li>for the <tt>pam_pwhistory.so</tt> case:
+    <pre>password requisite pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
+    </li>
+    </ul>
     The DoD STIG requirement is 5 passwords.
 
 rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
@@ -50,7 +57,7 @@ ocil_clause: 'the value of remember is not set equal to or greater than the expe
 
 ocil: |-
     To verify the password reuse setting is compliant, run the following command:
-    <pre>$ grep remember /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+    <pre>$ grep remember /etc/pam.d/system-auth</pre>
     The output should show the following at the end of the line:
     <pre>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
 
