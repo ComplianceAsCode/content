@@ -312,7 +312,7 @@ class RuleChecker(oscap.Checker):
         with open(script, 'r') as script_file:
             script_content = script_file.read()
             for parameter in params:
-                found = re.search(r'^# {0} = ([ =,_\.\-\w\(\)]*)$'.format(parameter),
+                found = re.search(r'^# {0} = (.*)$'.format(parameter),
                                   script_content,
                                   re.MULTILINE)
                 if found is None:
