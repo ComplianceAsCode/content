@@ -1408,17 +1408,7 @@ class Rule(object):
         if main_ref.attrib:
             rule.append(main_ref)
 
-        if self.oval_external_content:
-            check = ET.SubElement(rule, 'check')
-            check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
-            external_content = ET.SubElement(check, "check-content-ref")
-            external_content.set("href", self.oval_external_content)
-        else:
-            # TODO: This is pretty much a hack, oval ID will be the same as rule ID
-            #       and we don't want the developers to have to keep them in sync.
-            #       Therefore let's just add an OVAL ref of that ID.
-            oval_ref = ET.SubElement(rule, "oval")
-            oval_ref.set("id", self.id_)
+        check_parent = rule
 
         if self.sce_metadata:
             # TODO: This is pretty much another hack, just like the previous OVAL
@@ -1427,7 +1417,7 @@ class Rule(object):
             #
             # Additionally, we build the content (check subelement) here rather
             # than in xslt due to the nature of our SCE metadata.
-            check = ET.SubElement(rule, "check")
+            check = ET.SubElement(check_parent, "check")
             check.set("system", SCE_SYSTEM)
 
             if 'check-import' in self.sce_metadata:
@@ -1451,6 +1441,18 @@ class Rule(object):
             check_ref = ET.SubElement(check, "check-content-ref")
             href = self.current_product + "/checks/sce/" + self.sce_metadata['filename']
             check_ref.set("href", href)
+
+        if self.oval_external_content:
+            check = ET.SubElement(check_parent, 'check')
+            check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
+            external_content = ET.SubElement(check, "check-content-ref")
+            external_content.set("href", self.oval_external_content)
+        else:
+            # TODO: This is pretty much a hack, oval ID will be the same as rule ID
+            #       and we don't want the developers to have to keep them in sync.
+            #       Therefore let's just add an OVAL ref of that ID.
+            oval_ref = ET.SubElement(rule, "oval")
+            oval_ref.set("id", self.id_)
 
         if self.ocil or self.ocil_clause:
             ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
