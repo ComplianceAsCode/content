@@ -5,9 +5,12 @@ version: 1.2.3
 source: https://www.abcd.com/linux.pdf
 levels:
   - id: low
-  - id: high
+  - id: medium
     inherits_from:
     - low
+  - id: high
+    inherits_from:
+    - medium
 
 controls:
   - id: S1
@@ -19,7 +22,7 @@ controls:
 
   - id: S3
     levels:
-    - high
+    - medium
 
   - id: S4
     title: Configure authentication

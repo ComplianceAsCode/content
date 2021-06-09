@@ -64,18 +64,20 @@ def test_controls_levels():
     assert c_2.levels == ["low"]
 
     c_3 = controls_manager.get_control("abcd-levels", "S3")
-    assert c_3.levels == ["high"]
+    assert c_3.levels == ["medium"]
 
     c_4a = controls_manager.get_control("abcd-levels", "S4.a")
     assert c_4a.levels == ["low"]
 
-    c_4a = controls_manager.get_control("abcd-levels", "S4.b")
-    assert c_4a.levels == ["high"]
+    c_4b = controls_manager.get_control("abcd-levels", "S4.b")
+    assert c_4b.levels == ["high"]
 
     # just the essential controls
     low_controls = controls_manager.get_all_controls_of_level(
         "abcd-levels", "low")
     # essential and more advanced together
+    medium_controls = controls_manager.get_all_controls_of_level(
+        "abcd-levels", "medium")
     high_controls = controls_manager.get_all_controls_of_level(
         "abcd-levels", "high")
     all_controls = controls_manager.get_all_controls("abcd-levels")
@@ -83,6 +85,7 @@ def test_controls_levels():
     assert len(high_controls) == len(all_controls)
     assert len(low_controls) <= len(high_controls)
     assert len(low_controls) == 4
+    assert len(medium_controls) == 5
 
 
 def test_controls_load_product():
