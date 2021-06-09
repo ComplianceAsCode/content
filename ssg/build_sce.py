@@ -4,7 +4,7 @@ from __future__ import print_function
 import os
 import os.path
 import json
-
+import sys
 
 from .build_yaml import Rule, DocumentationNotComplete
 from .constants import MULTI_PLATFORM_LIST
@@ -25,7 +25,9 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     """
 
     raw_content = process_file_with_macros(file_path, local_env_yaml)
+    return load_sce_and_metadata_parsed(raw_content)
 
+def load_sce_and_metadata_parsed(raw_content):
     metadata = dict()
     sce_content = []
 
@@ -79,7 +81,7 @@ def _check_is_loaded(already_loaded, filename):
     return filename in already_loaded
 
 
-def checks(env_yaml, yaml_path, sce_dirs, output):
+def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
     """
     Walks the build system and builds all SCE checks (and metadata entry)
     into the output directory.
@@ -140,7 +142,7 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
 
             if not _check_is_applicable_for_product(metadata, product):
                 continue
-            if _check_is_loaded(already_loaded, filename):
+            if _check_is_loaded(already_loaded, rule_id):
                 continue
 
             output_file = open(os.path.join(output, filename), 'w')
@@ -148,6 +150,39 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
 
             included_checks_count += 1
             already_loaded[rule_id] = metadata
+
+        if rule.template:
+            langs = template_builder.get_resolved_langs_to_generate(rule)
+            if 'sce-bash' in langs:
+                # Here we know the specified rule has a template and this
+                # template actually generates (bash) SCE content. We
+                # prioritize bespoke SCE content over templated content,
+                # however, while we add this to our metadata, we do not
+                # bother (yet!) with generating the SCE content. This is done
+                # at a later time by build-scripts/build_templated_content.py.
+                if _check_is_loaded(already_loaded, rule_id):
+                    continue
+
+                # While we don't _write_ it, we still need to parse SCE
+                # metadata from the templated content. Render it internally.
+                raw_sce_content = template_builder.get_lang_for_rule(
+                    rule_id, rule.title, rule.template, 'sce-bash')
+
+                ext = '.sh'
+                filename = rule_id + ext
+
+                # Load metadata and infer correct file name.
+                _, metadata = load_sce_and_metadata_parsed(raw_sce_content)
+                metadata['filename'] = filename
+
+                # Skip the check if it isn't applicable for this product.
+                if not _check_is_applicable_for_product(metadata, product):
+                    continue
+
+                # Finally, include it in our loaded content
+                included_checks_count += 1
+                already_loaded[rule_id] = metadata
+                print(rule_id, metadata, file=sys.stderr)
 
     # Finally take any shared SCE checks and build them as well. Note that
     # there's no way for shorthand generation to include them if they do NOT
@@ -165,7 +200,7 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
 
             if not _check_is_applicable_for_product(metadata, product):
                 continue
-            if _check_is_loaded(already_loaded, filename):
+            if _check_is_loaded(already_loaded, rule_id):
                 continue
 
             output_file = open(os.path.join(output, filename), 'w')
