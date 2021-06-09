@@ -499,11 +499,11 @@ this control file.
 
 ### Defining levels
 
-Some real world policies, eg. ANSSI, have a concept of levels. This means that
-for some use cases a certain set of requirements is required and for other use
-cases a superset of the previous set is required.
+Some real world policies, e.g.,  ANSSI, have a concept of levels.
+Level can be defined as a group of controls which logically form a single unit.
 
 Control files can work with the concept of levels.
+You can define explicit inheritance between levels e.g., the "high" level inherits all controls from "low" level adding some more controls on the top of it.
 
 For example, let's say that ABCD benchmark would define 2 levels: low and high.
 The low level would contain R1 and R2. The high level would contain everything
@@ -512,12 +512,14 @@ from the low level and R3, ie. the high level would contain R1, R2 and R3.
 First, add the `levels` key to the YAML file.
 This key will contain list of dictionaries - one per level.
 Each level must have its `id` defined.
-Furthermore, the level can contain a key called `inherits_from` which contains a list of level IDs.
-If a level is selected, all controls belonging to levels within `inherits_from` are included as well.
-
+You can specify that the level should inherit all controls of a different level.
+It can be done by adding a key called `inherits_from` to the level definition.
+This key contains a list of level IDs.
 Then add `levels` key to every control ID to specify a list of levels the control belongs to.
-
 Note that if a control does not have any level specified, it is assigned to the default level, which is the first in the list of levels.
+
+If a level is selected, all controls which are assigned to this level (see example below) are included in the resulting profile.
+If a level with `inherits_from` key specified is selected, all controls from inherited levels are included together with controls assigned to the inheriting level.
 
 ```
 $ cat controls/abcd.yml
@@ -564,7 +566,7 @@ id: policy ID (required key)
 title: short title (required key)
 source: a link to the original policy, eg. a URL of a PDF document
 levels: a list of levels, the first one is default.
-  -id: level ID (required key)
+  - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
 
 controls: a list of controls (required key)
