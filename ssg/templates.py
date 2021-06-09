@@ -198,7 +198,7 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
-        if lang not in templates[template_name].langs:
+        if lang not in templates[template_name].langs or lang.startswith("sce-"):
             return
 
         filled_template = self.build_lang_file(rule_id, template_name,

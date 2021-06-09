@@ -145,8 +145,8 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
             if _check_is_loaded(already_loaded, rule_id):
                 continue
 
-            output_file = open(os.path.join(output, filename), 'w')
-            print(sce_content, file=output_file)
+            with open(os.path.join(output, filename), 'w') as output_file:
+                print(sce_content, file=output_file)
 
             included_checks_count += 1
             already_loaded[rule_id] = metadata
@@ -172,17 +172,19 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
                 filename = rule_id + ext
 
                 # Load metadata and infer correct file name.
-                _, metadata = load_sce_and_metadata_parsed(raw_sce_content)
+                sce_content, metadata = load_sce_and_metadata_parsed(raw_sce_content)
                 metadata['filename'] = filename
 
                 # Skip the check if it isn't applicable for this product.
                 if not _check_is_applicable_for_product(metadata, product):
                     continue
 
+                with open(os.path.join(output, filename), 'w') as output_file:
+                    print(sce_content, file=output_file)
+
                 # Finally, include it in our loaded content
                 included_checks_count += 1
                 already_loaded[rule_id] = metadata
-                print(rule_id, metadata, file=sys.stderr)
 
     # Finally take any shared SCE checks and build them as well. Note that
     # there's no way for shorthand generation to include them if they do NOT
@@ -203,8 +205,8 @@ def checks(env_yaml, yaml_path, sce_dirs, template_builder, output):
             if _check_is_loaded(already_loaded, rule_id):
                 continue
 
-            output_file = open(os.path.join(output, filename), 'w')
-            print(sce_content, file=output_file)
+            with open(os.path.join(output, filename), 'w') as output_file:
+                print(sce_content, file=output_file)
 
             included_checks_count += 1
             already_loaded[rule_id] = metadata
