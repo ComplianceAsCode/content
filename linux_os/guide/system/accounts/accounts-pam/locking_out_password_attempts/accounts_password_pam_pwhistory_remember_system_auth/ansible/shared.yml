@@ -16,9 +16,9 @@
   register: pam_pwhistory
 
 # if entry exists:
-- name: "{{{ rule_title }}}: Update accordingly"
+- name: "{{{ rule_title }}}"
   block:
-    - name: "{{{ rule_title }}}: Ensure correct control value for pam_pwhistory"
+    - name: "{{{ rule_title }}} - Ensure correct control value"
       pamd:
         name: system-auth
         type: password
@@ -32,7 +32,7 @@
         - sufficient
         - binding
 
-    - name: "{{{ rule_title }}}: Ensure remember argument in pam_pwhistory"
+    - name: "{{{ rule_title }}} - Ensure remember argument in pam_pwhistory"
       pamd:
         name: system-auth
         type: password
@@ -44,7 +44,7 @@
   when: pam_pwhistory.found == 1
 
 # if entry does not exist - also to prevent duplicating
-- name: "{{{ rule_title }}}: Add pam_pwhistory"
+- name: "{{{ rule_title }}} - Add pam_pwhistory"
   pamd:
     name: system-auth
     type: password
