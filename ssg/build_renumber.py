@@ -470,7 +470,7 @@ def assert_that_check_ids_match_rule_id(checks, xccdf_rule):
 
 def check_that_oval_and_rule_id_match(xccdftree):
     for xccdfid, rule in rules_with_ids_generator(xccdftree):
-        checks = rule.find("./{%s}check" % XCCDF11_NS)
+        checks = rule.find(".//{%s}check" % XCCDF11_NS)
         if checks is None:
             print("Rule {0} doesn't have checks."
                   .format(xccdfid), file=sys.stderr)
