@@ -146,7 +146,7 @@ class Policy():
             lv = self.levels_by_id[level_id]
             return lv
         except KeyError:
-            msg = "%s not found in policy %s" % (
+            msg = "Level %s not found in policy %s" % (
                 level_id, self.id
             )
             raise ValueError(msg)
