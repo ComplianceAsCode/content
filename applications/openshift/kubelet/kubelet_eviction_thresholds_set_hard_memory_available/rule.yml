@@ -38,7 +38,10 @@ description: |-
 
   <p>
   This rule pertains to the <tt>memory.available</tt> setting of the <tt>evictionHard</tt>
-  section.
+  section. The value the rule checks can be tuned using the variable with the
+  XCCDF ID <tt>xccdf_org.ssgproject.content_value_var_kubelet_evictionhard_memory_available</tt>.
+  When used through the Compliance Operator, the variable would be named
+  <tt>$profile-var-kubelet-evictionhard-memory-available</tt>
   </p>
 
 rationale: |-
