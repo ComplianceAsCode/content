@@ -1,0 +1,37 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Check that the /etc/usbguard/rules.conf exists
+  stat:
+    path: "/etc/usbguard/rules.conf"
+  register: policy_file
+
+- name: Generate USBGuard Policy
+  command: usbguard generate-policy
+  register: policy
+  when: not policy_file.stat.exists or policy_file.stat.size == 0
+
+- name: Copy the Generated Policy to persistent file
+  copy:
+    content: "{{ policy.stdout }}"
+    dest: "/etc/usbguard/rules.conf"
+    mode: 0600
+  when: not policy_file.stat.exists or policy_file.stat.size == 0
+
+- name: Enable service usbguard
+  block:
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+  - name: Enable service usbguard
+    service:
+      name: "usbguard"
+      enabled: "yes"
+      state: "started"
+      masked: "no"
+    when:
+    - '"usbguard" in ansible_facts.packages'

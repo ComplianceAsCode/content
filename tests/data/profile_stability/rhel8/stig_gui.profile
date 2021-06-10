@@ -297,6 +297,7 @@ selections:
 - sysctl_net_ipv6_conf_default_accept_source_route
 - sysctl_user_max_user_namespaces
 - tftpd_uses_secure_mode
+- usbguard_generate_policy
 - wireless_disable_interfaces
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
