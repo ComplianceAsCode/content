@@ -246,3 +246,48 @@ controls:
     automated: yes
     rules:
     - kernel_module_usb-storage_disabled
+
+  - id: 1.2.1
+    title: Ensure GPG keys are configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 1.2.2
+    title: Ensure package manager repositories are configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 1.2.3
+    title: Ensure gpgcheck is globally activated (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - ensure_gpgcheck_globally_activated
+    - ensure_gpgcheck_never_disabled
+
+  - id: 1.2.4
+    title: Ensure Red Hat Subscription Manager connection is configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 1.2.4
+    title: Ensure Red Hat Subscription Manager connection is configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 1.2.5
+    title: Disable the rhnsd Daemon (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
