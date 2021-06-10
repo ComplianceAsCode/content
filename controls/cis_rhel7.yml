@@ -454,3 +454,59 @@ controls:
     automated: yes
     rules:
     - package_mcstrans_removed
+
+  - id: 1.7.1
+    title: Ensure message of the day is configured properly (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - banner_etc_motd
+    - login_banner_text=usgcb_default
+
+  - id: 1.7.2
+    title: Ensure local login warning banner is configured properly (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - banner_etc_issue
+    - login_banner_text=usgcb_default
+
+  - id: 1.7.2
+    title: Ensure remote login warning banner is configured properly (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule is missing
+
+  - id: 1.7.4
+    title: Ensure permissions on /etc/motd are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - file_groupowner_etc_motd
+    - file_owner_etc_motd
+    - file_permissions_etc_motd
+
+  - id: 1.7.5
+    title: Ensure permissions on /etc/issue are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - file_groupowner_etc_issue
+    - file_owner_etc_issue
+    - file_permissions_etc_issue
+
+  - id: 1.7.6
+    title: Ensure permissions on /etc/issue.net are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
