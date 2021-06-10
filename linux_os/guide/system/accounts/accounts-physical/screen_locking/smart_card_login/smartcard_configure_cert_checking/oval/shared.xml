@@ -8,9 +8,7 @@
       <description>Enable Smart Card logins</description>
     </metadata>
     <criteria comment="smart card authentication is configured" operator="AND">
-      {{% if product in ['sle12', 'sle15'] %}}
-      <extend_definition comment="pam_pkcs11 package is installed" definition_ref="install_smartcard_packages" />
-      {{% endif %}}
+      <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_smartcard_installed" />
       <criterion comment="cert_policy directive contains ocsp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
     </criteria>
   </definition>

@@ -1,7 +1,7 @@
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
 
 <def-group>
-  <definition class="compliance" id="install_smartcard_packages"
+  <definition class="compliance" id="package_smartcard_installed"
   version="1">
     {{{ oval_metadata("The " + pkg_system|upper + " packages " + smartcard_packages|join(',') + " should be installed.", affected_platforms=["multi_platform_sle"]) }}}
     <criteria operator="AND" comment="Make sure all smartcard packages are installed">

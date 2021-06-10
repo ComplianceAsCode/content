@@ -2,7 +2,7 @@
   <definition class="compliance" id="smartcard_configure_ca" version="3">
     {{{ oval_metadata("Enable Smart Card CA Checks") }}}
     <criteria comment="smart card authentication is configured" operator="AND">
-      <extend_definition comment="smartcard package is installed" definition_ref="install_smartcard_packages" />
+      <extend_definition comment="smartcard package is installed" definition_ref="package_smartcard_installed" />
       <criterion comment="cert_policy directive contains ca" test_ref="test_pam_pkcs11_cert_policy_ca" />
     </criteria>
   </definition>
