@@ -291,3 +291,22 @@ controls:
     - l1_server
     - l1_workstation
     automated: no
+
+  - id: 1.3.1
+    title: Ensure AIDE is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_aide_installed
+    - aide_build_database
+
+  - id: 1.3.2
+    title: Ensure filesystem integrity is regularly checked (Automated)
+    levels:
+    l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - aide_periodic_cron_checking
