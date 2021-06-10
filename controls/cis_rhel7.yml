@@ -388,3 +388,69 @@ controls:
       The rule to remove prelink package is missing.
     rules:
     - disable_prelink
+
+  - id: 1.6.1.1
+    title: Ensure SELinux is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_libselinux_installed
+
+  - id: 1.6.1.2
+    title: Ensure SELinux is not disabled in bootloader configuration (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - grub2_enable_selinux # the rule does not check for uefi configuration
+
+  - id: 1.6.1.3
+    title: Ensure SELinux policy is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - selinux_policytype
+    - var_selinux_policy_name=targeted
+
+  - id: 1.6.1.4
+    title: Ensure the SELinux mode is enforcing or permissive (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    notes: >-
+      This control covers also 1.6.1.5, set the variable appropriately.
+    rules:
+    - selinux_state
+    - var_selinux_state=enforcing
+
+  - id: 1.6.1.6
+    title: Ensure no unconfined services exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - selinux_confinement_of_daemons
+
+  - id: 1.6.1.7
+    title: Ensure SETroubleshoot is not installed (Automated)
+    levels:
+    - l1_server
+    automated: yes
+    rules:
+    - package_setroubleshoot_removed
+
+  - id: 1.6.1.8
+    title: Ensure the MCS Translation Service (mcstrans) is not installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_mcstrans_removed
