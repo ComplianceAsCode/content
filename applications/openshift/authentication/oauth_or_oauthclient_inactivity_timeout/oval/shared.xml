@@ -1,0 +1,11 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="oauth_or_oauthclient_inactivity_timeout" version="1">
+    {{{ oval_metadata("The inactivity timeout must be specified either per client or globally") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="global inactivity timeout" definition_ref="oauth_inactivity_timeout" />
+      <extend_definition comment="per client inactivity timeout" definition_ref="oauthclient_inactivity_timeout" />
+    </criteria>
+
+  </definition>
+</def-group>

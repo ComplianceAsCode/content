@@ -1,0 +1,78 @@
+prodtype: ocp4
+
+title: "Configure OAuth tokens to expire after a set period of inactivity"
+
+description: |-
+    <p>
+    You can configure OAuth tokens to expire after a set period of
+    inactivity. By default, no token inactivity timeout is set.
+    </p>
+    <p>
+    The inactivity timeout can be either set in the OAuth server
+    configuration or in any of the OAuth clients. The client settings
+    override the OAuth server setting.
+    </p>
+    <p>
+    To set the OAuth server inactivity timeout, edit the OAuth server
+    object: <tt>oc edit oauth cluster</tt>
+    and set the <tt>.spec.tokenConfig.accessTokenInactivityTimeout</tt>
+    parameter to the desired value:
+    <pre>
+    apiVersion: config.openshift.io/v1
+    kind: OAuth
+    metadata:
+    ...
+    spec:
+       tokenConfig:
+         accessTokenInactivityTimeout: 400s 
+    </pre>
+    For more information on configuring the OAuth server, consult the
+    OpenShift documentation:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/authentication/configuring-oauth-clients.html") }}}
+    </p>
+    <p>
+    To edit the OAuth client inactivity timeout, edit the OAuth client
+    object: <tt>oc edit oauthclient $clientname</tt>
+    and set the top-level <tt>accessTokenInactivityTimeoutSeconds</tt>
+    attribute.
+    <pre>
+    apiVersion: oauth.openshift.io/v1
+    grantMethod: auto
+    kind: OAuthClient
+    metadata:
+    ...
+    accessTokenInactivityTimeoutSeconds: 600 
+    </pre>
+    For more information on configuring the OAuth clients, consult the
+    OpenShift documentation:
+    {{{ weblink(link="https://access.redhat.com/documentation/en-us/openshift_container_platform/4.7/html-single/authentication_and_authorization/index#oauth-token-inactivity-timeout_configuring-internal-oauth") }}}
+    </p>
+
+
+rationale: |-
+    Terminating an idle session within a short time period reduces the window
+    of opportunity for unauthorized personnel to take control of a session
+    that has been left unattended.
+
+references:
+  nist: AC-2(5),SC-10
+
+identifiers:
+    cce@ocp4: CCE-83702-1
+
+ocil_clause: 'OAuth server or client inactivity timeout is not configured'
+
+ocil: |-
+  To check if the OAuth server timeout is configured, run the following command:
+  <pre>oc get oauth cluster -ojsonpath='{.spec.tokenConfig.accessTokenInactivityTimeout}'</pre>
+  the output should return a timeout value.
+
+  To check if the OAuth client timeout is configured, run the following command:
+  <pre>oc get oauthclients -ojson | jq -r '.items[] | { accessTokenInactivityTimeoutSeconds: .accessTokenInactivityTimeoutSeconds}'</pre>
+  the output should return a timeout value per client.
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting(["/apis/oauth.openshift.io/v1/oauthclients", "/apis/config.openshift.io/v1/oauths/cluster"]) | indent(8) }}}
