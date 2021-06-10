@@ -14,3 +14,8 @@ sed -i "s/^\(server.*maxpoll\) [0-9][0-9]*\(.*\)$/\1 $var_time_service_set_maxpo
 grep "^server" "$config_file" | grep -v maxpoll | while read -r line ; do
         sed -i "s/$line/& maxpoll $var_time_service_set_maxpoll/" "$config_file"
 done
+
+# Add maxpoll to peer entries without maxpoll
+grep "^peer" "$config_file" | grep -v maxpoll | while read -r line ; do
+        sed -i "s/$line/& maxpoll $var_time_service_set_maxpoll/" "$config_file"
+done
