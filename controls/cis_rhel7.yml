@@ -305,8 +305,42 @@ controls:
   - id: 1.3.2
     title: Ensure filesystem integrity is regularly checked (Automated)
     levels:
-    l1_server
+    - l1_server
     - l1_workstation
     automated: yes
     rules:
     - aide_periodic_cron_checking
+
+  - id: 1.4.1
+    title: Ensure bootloader password is set (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - grub2_password
+    - grub2_uefi_password
+
+  - id: 1.4.2
+    title: Ensure permissions on bootloader config are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - file_groupowner_grub2_cfg
+    - file_owner_grub2_cfg
+    - file_permissions_grub2_cfg
+    - file_groupowner_efi_grub2_cfg
+    - file_owner_efi_grub2_cfg
+    - file_permissions_efi_grub2_cfg
+
+  - id: 1.4.3
+    title: Ensure authentication required for single user mode (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - require_emergency_target_auth
+    - require_singleuser_auth
