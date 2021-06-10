@@ -7,7 +7,7 @@ metadata:
 
 reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 
-title: 'Health Insurance Portability and Accountability Act (HIPAA)'
+title: '[RHEL9 DRAFT] Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
     The HIPAA Security Rule establishes U.S. national standards to protect individuals’
@@ -17,7 +17,7 @@ description: |-
     confidentiality, integrity, and security of electronic protected health
     information.
 
-    This profile configures Red Hat Enterprise Linux 8 to the HIPAA Security
+    This profile configures Red Hat Enterprise Linux 9 to the HIPAA Security
     Rule identified for securing of electronic protected health information.
     Use of this profile in no way guarantees or makes claims against legal compliance against the HIPAA Security Rule(s).   
 

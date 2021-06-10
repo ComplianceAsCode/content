@@ -6,10 +6,10 @@ metadata:
 
 reference: https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers 
 
-title: 'Australian Cyber Security Centre (ACSC) Essential Eight'
+title: '[DRAFT] Australian Cyber Security Centre (ACSC) Essential Eight'
 
 description: |-
-  This profile contains configuration checks for Red Hat Enterprise Linux 8
+  This profile contains configuration checks for Red Hat Enterprise Linux 9
   that align to the Australian Cyber Security Centre (ACSC) Essential Eight.
 
   A copy of the Essential Eight in Linux Environments guide can be found at the

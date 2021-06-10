@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Standard System Security Profile for Red Hat Enterprise Linux 8'
+title: 'Standard System Security Profile for Red Hat Enterprise Linux 9'
 
 description: |-
     This profile contains rules to ensure standard security baseline

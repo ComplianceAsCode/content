@@ -1,11 +1,11 @@
 documentation_complete: true
 
-title: 'Red Hat Corporate Profile for Certified Cloud Providers (RH CCP)'
+title: '[RHEL9 DRAFT] Red Hat Corporate Profile for Certified Cloud Providers (RH CCP)'
 
 description: |-
     This profile contains the minimum security relevant
     configuration settings recommended by Red Hat, Inc for
-    Red Hat Enterprise Linux 8 instances deployed by Red Hat Certified
+    Red Hat Enterprise Linux 9 instances deployed by Red Hat Certified
     Cloud Providers.
 
 selections:

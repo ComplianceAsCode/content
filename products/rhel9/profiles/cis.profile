@@ -1,21 +1,17 @@
 documentation_complete: true
 
 metadata:
-    version: 1.0.0
+    version: 0.0.0
     SMEs:
         - vojtapolasek
         - yuumasato
 
 reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 
-title: 'CIS Red Hat Enterprise Linux 8 Benchmark'
+title: '[DRAFT] CIS Red Hat Enterprise Linux 9 Benchmark'
 
 description: |-
-    This profile defines a baseline that aligns to the Center for Internet Security®
-    Red Hat Enterprise Linux 8 Benchmark™, v1.0.0, released 09-30-2019.
-
-    This profile includes Center for Internet Security®
-    Red Hat Enterprise Linux 8 CIS Benchmarks™ content.
+    This is a draft CIS profile based on the RHEL8 CIS
 
 selections:
     # Necessary for dconf rules

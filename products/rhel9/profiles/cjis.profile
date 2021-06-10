@@ -7,7 +7,7 @@ metadata:
 
 reference: https://www.fbi.gov/services/cjis/cjis-security-policy-resource-center
 
-title: 'Criminal Justice Information Services (CJIS) Security Policy'
+title: '[RHEL9 DRAFT] Criminal Justice Information Services (CJIS) Security Policy'
 
 description: |-
     This profile is derived from FBI's CJIS v5.4

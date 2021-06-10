@@ -1,17 +1,16 @@
 documentation_complete: true
 
 metadata:
-    version: V1R2
+    version: NA
     SMEs:
         - carlosmmatos
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'DISA STIG for Red Hat Enterprise Linux 8'
+title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 9'
 
 description: |-
-    This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R2.
+    This profile contains configuration checks that are based on the RHEL8 STIG
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
