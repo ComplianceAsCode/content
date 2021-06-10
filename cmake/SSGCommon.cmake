@@ -302,24 +302,40 @@ macro(ssg_build_remediations PRODUCT)
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
         # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
-        if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+        if (SSG_ANSIBLE_PLAYBOOKS_ENABLED AND ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
                 NAME "ansible-playbook-syntax-check-${PRODUCT}"
                 COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
             )
         endif()
         if (ANSIBLE_CHECKS)
-            if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
-                add_test(
-                    NAME "ansible-playbook-ansible-lint-check-${PRODUCT}"
-                    COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
-                )
+            if (SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
+                if (ANSIBLE_LINT_EXECUTABLE)
+                    add_test(
+                        NAME "ansible-playbook-per-rule-ansible-lint-check-${PRODUCT}"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                    )
+                endif()
+                if (YAMLLINT_EXECUTABLE)
+                    add_test(
+                        NAME "ansible-playbook-per-rule-yamllint-check-${PRODUCT}"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+                    )
+                endif()
             endif()
-            if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
-                add_test(
-                    NAME "ansible-playbook-yamllint-check-${PRODUCT}"
-                    COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
-                )
+            if (SSG_ANSIBLE_PLAYBOOKS_ENABLED)
+                if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+                    add_test(
+                        NAME "ansible-playbook-per-profile-ansible-lint-check-${PRODUCT}"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                    )
+                endif()
+                if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+                    add_test(
+                        NAME "ansible-playbook-per-profile-yamllint-check-${PRODUCT}"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+                    )
+                endif()
             endif()
         endif()
     endif()
