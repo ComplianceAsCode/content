@@ -1,7 +1,10 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 
 found=false
-for f in $( ls /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf 2> /dev/null ) ; do
+for f in /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf; do
+	if [ ! -e "$f" ]; then
+		continue
+	fi
 	user=$( awk '/^\s*\[/{f=0} /^\s*\[sssd\]/{f=1} f{nu=gensub("^\\s*user\\s*=\\s*(\\S+).*","\\1",1); if($0!=nu){user=nu}} END{print user}' $f )
 	if [ -n "$user" ] ; then
 		if [ "$user" != sssd ] ; then
