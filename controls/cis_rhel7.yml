@@ -819,3 +819,19 @@ controls:
     - l1_server
     - l1_workstation
     automated: no
+
+  - id: 3.1.1
+    title: Disable IPv6 (Manual)
+    levels:
+    - l2_server
+    - l2_workstation
+    automated: no
+
+  - id: 3.1.2
+    title: Ensure wireless interfaces are disabled (Automated)
+    levels:
+    - l1_server
+    - l2_workstation
+    automated: yes
+    rules:
+    - wireless_disable_interfaces # the rule remediation is not exactly on par with the benchmark
