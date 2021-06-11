@@ -1418,10 +1418,10 @@ macro(ssg_build_vendor_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-ocp*" -DDEST="vendor-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E chdir "vendor-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-RedHat.zip" --format=zip "${ZIPNAME}"
         COMMENT "Building Red Hat zipfile at ${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
-        DEPENDS rhel7
-        DEPENDS rhel8
-        DEPENDS rhosp13
-        DEPENDS rhv4
+        DEPENDS products/rhel7
+        DEPENDS products/rhel8
+        DEPENDS products/rhosp13
+        DEPENDS products/rhv4
         )
     add_custom_target(
         redhat-zipfile
