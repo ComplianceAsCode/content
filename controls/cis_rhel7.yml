@@ -767,3 +767,48 @@ controls:
     automated: yes
     rules:
     - service_rsyncd_disabled
+
+  - id: 2.3.1
+    title: Ensure NIS Client is not installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_ypbind_removed
+
+  - id: 2.3.2
+    title: Ensure rsh client is not installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_rsh_removed
+
+  - id: 2.3.3
+    title: Ensure talk client is not installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_talk_removed
+
+  - id: 2.3.4
+    title: Ensure telnet client is not installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_telnet_removed
+
+  - id: 2.3.5
+    title: Ensure LDAP client is not installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_openldap-clients_removed
