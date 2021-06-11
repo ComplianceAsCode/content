@@ -510,3 +510,45 @@ controls:
     - l1_server
     - l1_workstation
     automated: no # rule missing
+
+  - id: 1.8.1
+    title: Ensure GNOME Display Manager is removed (Manual)
+    levels:
+    - l2_server
+    automated: no
+
+  - id: 1.8.2
+    title: Ensure GDM login banner is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - dconf_gnome_banner_enabled
+    - dconf_gnome_login_banner_text
+    - login_banner_text=usgcb_default
+
+  - id: 1.8.3
+    title: Ensure last logged in user display is disabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - dconf_gnome_disable_user_list
+
+  - id: 1.8.4
+    title: Ensure XDCMP is not enabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - gnome_gdm_disable_xdmcp
+
+  - id: 1.9
+    title: Ensure updates, patches, and additional security software are installed (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
