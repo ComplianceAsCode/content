@@ -980,3 +980,245 @@ controls:
     automated: yes
     rules:
     - kernel_module_sctp_disabled
+
+  - id: 3.5.1.1
+    title: Ensure firewalld is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_iptables_installed
+    - package_firewalld_installed
+
+  - id: 3.5.1.2
+    title: Ensure iptables-services not installed with firewalld (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # missing rule
+
+  - id: 3.5.1.3
+    title: Ensure nftables either not installed or masked with firewalld (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.1.4
+    title: Ensure firewalld service enabled and running (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # only checking systemd service, not running "firewall-cmd --state"
+    rules:
+    - service_firewalld_enabled
+
+  - id: 3.5.1.5
+    title: Ensure firewalld default zone is set (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # no exact rule is present
+
+  - id: 3.5.1.6
+    title: Ensure network interfaces are assigned to appropriate zone (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 3.5.1.7
+    title: Ensure firewalld drops unnecessary services and ports (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 3.5.2.1
+    title: Ensure nftables is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.2
+    title: Ensure firewalld is either not installed or masked with nftables (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.3
+    title: Ensure iptables-services not installed with nftables (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.4
+    title:  Ensure iptables are flushed with nftables (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 3.5.2.5
+    title: Ensure an nftables table exists (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.6
+    title: Ensure nftables base chains exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.7
+    title: Ensure nftables loopback traffic is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.8
+    title: Ensure nftables outbound and established connections are configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 3.5.2.9
+    title: Ensure nftables default deny firewall policy (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.10
+    title: Ensure nftables service is enabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.2.11
+    title: Ensure nftables rules are permanent (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.1.1
+    title: Ensure iptables packages are installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    # rules:
+    # - package_iptables_installed
+
+  - id: 3.5.3.1.2
+    title: Ensure nftables is not installed with iptables (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.1.3
+    title: Ensure firewalld is either not installed or masked with iptables
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.2.1
+    title: Ensure iptables loopback traffic is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.2.2
+    title: Ensure iptables outbound and established connections are configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 3.5.3.2.3
+    title: Ensure iptables rules exist for all open ports (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.2.4
+    title: Ensure iptables default deny firewall policy (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule not completed
+
+  - id: 3.5.3.2.5
+    title: Ensure iptables rules are saved (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.2.6
+    title: Ensure iptables is enabled and running (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    # rules:
+    # - service_iptables_enabled
+
+  - id: 3.5.3.3.1
+    title: Ensure ip6tables loopback traffic is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.3.2
+    title: Ensure ip6tables outbound and established connections are configured (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 3.5.3.3.3
+    title: Ensure ip6tables firewall rules exist for all open ports (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.3.4
+    title: Ensure ip6tables default deny firewall policy (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.3.5
+    title: Ensure ip6tables rules are saved (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 3.5.3.3.6
+    title: Ensure ip6tables is enabled and running (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    # rules:
+    #    - service_ip6tables_enabled
