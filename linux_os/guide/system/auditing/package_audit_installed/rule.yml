@@ -16,12 +16,11 @@ identifiers:
     cce@sle12: CCE-83023-2
     cce@sle15: CCE-85612-0
 
-ocil_clause: 'the package is not installed'
-
 references:
     nist: AC-7(a),AU-7(1),AU-7(2),AU-14,AU-12(2),AU-2(a),CM-6(a)
     anssi: BP28(R50)
     srg: SRG-OS-000122-GPOS-00063,SRG-OS-000337-GPOS-00129,SRG-OS-000348-GPOS-00136,SRG-OS-000349-GPOS-00137,SRG-OS-000350-GPOS-00138,SRG-OS-000351-GPOS-00139,SRG-OS-000352-GPOS-00140,SRG-OS-000353-GPOS-00141,SRG-OS-000354-GPOS-00142,SRG-OS-000358-GPOS-00145,SRG-OS-000359-GPOS-00146,SRG-OS-000365-GPOS-00152,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220,SRG-OS-000480-GPOS-00227,SRG-OS-000062-GPOS-00031
+    cis@rhel7: 4.1.1.1
     cis@rhel8: 4.1.1.1
     cis@ubuntu2004: 4.1.1.1
     stigid@sle12: SLES-12-020000
@@ -29,6 +28,10 @@ references:
     disa: CCI-000172,CCI-001814,CCI-001875,CCI-001877,CCI-001878,CCI-001879,CCI-001880,CCI-001881,CCI-001882,CCI-001889,CCI-001914,CCI-000169
     nist@sle12: AU-7(a),AU-7(b),AU-8(b),AU-12.1(iv),AU-12(3),AU-12(c),CM-5(1)
     stigid@rhel8: RHEL-08-030180
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package("audit") }}}'
 
 template:
     name: package_installed
