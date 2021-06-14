@@ -144,47 +144,6 @@ For example:
 Note that it is generally good practice to commit all changes prior to running
 one of these commands and then commit the results separately.
 
-### `utils/autorefer.py` -- automatically add and update references in rules
-
-When building a profile for a product-specific benchmark such as CIS or STIG,
-it is helpful to ensure all selected rules have that reference added. Usually
-these types of profiles are constructed by copying the benchmark's structure
-as a comment in the profile YAML file. For example:
-
-```yaml
-selections:
-    # 1 Initial Setup #
-    ## 1.1 Filesystem Configuration ##
-    ### 1.1.1 Disable unused filesystems ###
-    #### 1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Automated)
-    - kernel_module_cramfs_disabled
-
-    #### 1.1.1.2 Ensure mounting of freevxfs filesystems is disabled (Automated)
-    - kernel_module_freevxfs_disabled
-```
-
-This utility automatically updates the rules below each section identifier with
-the relevant references. Currently CIS is the most supported reference format.
-
-Iterating through each rule in the profile, we grab the reference identifier
-from the immediately preceding rule. The reference identifier MUST be the first
-token after the comment character(s) after a space. Another space character MAY
-follow, and then any additional content (such as the actual heading of this
-section in the benchmark).
-
-Variable definitions are ignored.
-
-To execute:
-
-    $ ./utils/autorefer.py <product> <profile> <reference>
-
-For example:
-
-    $ ./utils/autorefer.py ubuntu2004 cis_level1_server cis
-
-Note that it is generally good practice to commit all changes prior to running
-one of these commands and then commit the results separately.
-
 ### `utils/refchecker.py` -- automatically check `rule.yml` for references
 
 This utility checks all `rule.yml` referenced from a given profile for the
