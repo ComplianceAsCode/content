@@ -62,7 +62,7 @@ def main():
         msg = msg.format(args.product)
         raise ValueError(msg)
 
-    product_base = os.path.join(SSG_ROOT, args.product)
+    product_base = os.path.join(SSG_ROOT, "products", args.product)
     product_yaml = os.path.join(product_base, "product.yml")
     env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
 
