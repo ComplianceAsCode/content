@@ -412,6 +412,7 @@ def fix_empty_identifiers(args):
 
         if args.dry_run:
             print(rule_path + " has one or more empty identifiers")
+            continue
 
         fix_file(rule_path, product_yaml, fix_empty_identifier, args)
 
@@ -428,6 +429,7 @@ def fix_empty_references(args):
 
         if args.dry_run:
             print(rule_path + " has one or more empty references")
+            continue
 
         fix_file(rule_path, product_yaml, fix_empty_reference, args)
 
@@ -444,6 +446,7 @@ def find_prefix_cce(args):
 
         if args.dry_run:
             print(rule_path + " has one or more CCE with CCE- prefix")
+            continue
 
         fix_file(rule_path, product_yaml, fix_prefix_cce, args)
 
@@ -460,6 +463,7 @@ def find_invalid_cce(args):
 
         if args.dry_run:
             print(rule_path + " has one or more invalid CCEs")
+            continue
 
         fix_file(rule_path, product_yaml, fix_invalid_cce, args)
 
@@ -476,6 +480,7 @@ def find_int_identifiers(args):
 
         if args.dry_run:
             print(rule_path + " has one or more integer references")
+            continue
 
         fix_file(rule_path, product_yaml, fix_int_identifier, args)
 
@@ -492,6 +497,7 @@ def find_int_references(args):
 
         if args.dry_run:
             print(rule_path + " has one or more unsorted references")
+            continue
 
         fix_file(rule_path, product_yaml, fix_int_reference, args)
 
@@ -518,6 +524,7 @@ def sort_subkeys(args):
 
         if args.dry_run:
             print(rule_path + " has one or more unsorted references")
+            continue
 
         fix_file(rule_path, product_yaml, sort_rule_subkeys, args)
 
