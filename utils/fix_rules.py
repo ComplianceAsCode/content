@@ -120,7 +120,7 @@ def find_rules_generator(args, func):
         assert rule_obj['products']
         product = rule_obj['products'][0]
 
-        product_path = os.path.join(args.root, product, 'product.yml')
+        product_path = os.path.join(args.root, "products", product, 'product.yml')
         product_yaml = ssg.products.load_product_yaml(product_path)
         assert 'auid' in product_yaml
         product_yaml['cmake_build_type'] = 'Debug'
