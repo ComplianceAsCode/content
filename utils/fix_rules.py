@@ -257,6 +257,68 @@ def rewrite_value_remove_prefix(line):
     return key + ": " + new_value
 
 
+class CCEFile:
+    def __init__(self, project_root):
+        self.project_root = project_root
+
+    @property
+    def absolute_path(self):
+        raise NotImplementedError()
+
+    def line_to_cce(self, line):
+        return line
+
+    def line_isnt_cce(self, cce, line):
+        return line != cce
+
+    def read_cces(self):
+        with open(self.absolute_path, "r") as f:
+            cces = f.read().splitlines()
+        return cces
+
+    def remove_cce_from_file(self, cce):
+        file_lines = self.read_cces()
+        lines_except_cce = [
+            line for line in file_lines
+            if self.line_isnt_cce(cce, line)
+        ]
+        with open(self.absolute_path, "w") as f:
+            f.write("\n".join(lines_except_cce) + "\n")
+
+    def random_cce(self):
+        cces = self.read_cces()
+        random.shuffle(cces)
+        return cces[0].strip()
+
+
+class RedhatCCEFile(CCEFile):
+    @property
+    def absolute_path(self):
+        return os.path.join(self.project_root, "shared", "references", "cce-redhat-avail.txt")
+
+
+def add_to_the_section(file_contents, yaml_contents, section, new_keys):
+    to_insert = []
+
+    sec_ranges = find_section_lines(file_contents, section)
+    if len(sec_ranges) != 1:
+        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
+                           % (path, sec_ranges))
+
+    begin, end = sec_ranges[0]
+    r_lines = set()
+
+    assert end > begin, "We need at least one identifier there already"
+    template_line = str(file_contents[end - 1])
+    print(f"{template_line}")
+    leading_whitespace = re.match(r"^\s*", template_line).group()
+    for key, value in new_keys.items():
+        to_insert.append(leading_whitespace + key + ": " + value)
+
+    new_contents = file_contents[:end] + to_insert + file_contents[end:]
+    return new_contents
+
+
 def rewrite_section_value(file_contents, yaml_contents, section, keys, transform):
     # For a given section, rewrite the keys in int_keys to be strings. Refuses to
     # operate if the given section appears more than once in the file. Assumes all
@@ -347,6 +409,33 @@ def fix_invalid_cce(file_contents, yaml_contents):
                     invalid_identifiers.append(i_type)
 
     return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)
+
+
+def has_product_cce(yaml_contents, product):
+    section = 'identifiers'
+
+    invalid_identifiers = []
+
+    if not yaml_contents[section]:
+        return False
+
+    for i_type, i_value in yaml_contents[section].items():
+        if i_type[0:3] != 'cce' or "@" not in i_type:
+            continue
+
+        _, cce_product = i_type.split("@", 1)
+        if product == cce_product:
+            return True
+
+    return False
+
+
+def add_product_cce(file_contents, yaml_contents, product, cce):
+    section = 'identifiers'
+
+    return add_to_the_section(
+        file_contents, yaml_contents, section, {f"cce@{product}": f"{cce}"})
+
 
 
 def fix_int_identifier(file_contents, yaml_contents):
