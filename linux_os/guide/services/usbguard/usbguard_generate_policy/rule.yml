@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Generate USBGuard Policy'
+
+description: |-
+    By default USBGuard when enabled prevents access to all USB devices and this lead
+    to inaccessible system if they use USB mouse/keyboard. To prevent this scenario,
+    the initial policy configuration must be generated based on current connected USB
+    devices.
+
+rationale: |-
+    The <tt>usbguard</tt> must be configured to allow connected USB devices to work
+    properly, avoiding the system to become inaccessible.
+
+severity: medium
+
+platform: machine
+
+identifiers:
+    cce@rhel8: CCE-83774-0
+
+references:
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000378-GPOS-00163
+    stigid@rhel8: RHEL-08-040140
+    disa: CCI-000416,CCI-001958
+    nist: CM-8(3)(a),IA-3
+
+ocil_clause: '/etc/usbguard/rules.conf does not exist or is empty'
+
+ocil: Check that the file /etc/usbguard/rules.conf exists and contains a valid configuration

@@ -951,6 +951,7 @@ selections:
     # RHEL-08-040140
     - package_usbguard_installed
     - service_usbguard_enabled
+    - usbguard_generate_policy
 
     # RHEL-08-040150
 
