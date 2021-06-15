@@ -1,23 +1,59 @@
-name: Build Content
+name: Gating
 on:
   push:
-    branches: [ master ]
+    branches: [ '*' ]
   pull_request:
     branches: [ master ]
 jobs:
-  validate:
-    name: Build Content
+  validate-ubuntu:
+    name: Build, Test, Lint Ansible Roles on Ubuntu 20.04
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
         uses: mstksg/get-package@master
         with:
-                apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Build
-        run: |
-          ./build_product rhel7 rhel8
+        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
+
+  validate-fedora:
+    name: Build, Test on Fedora 33 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:33
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004 ocp4
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
+  content-test-filtering:
+    name: Content Test Filtering on Ubuntu Latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Deps
+        uses: mstksg/get-package@master
+        with:
+          apt-get: git python3-jinja2 python3-yaml python3-deepdiff python3-git python3-github python3-requests xmldiff
+      # TODO: Use action's checkout along with --local and --repository options of ctf
+      #- name: Checkout
+      #  uses: actions/checkout@v2
+      - name: Checkout (CTF)
+        uses: actions/checkout@v2
+        with:
+          repository: mildas/content-test-filtering
+          path: ctf
+      - name: Process
+        run: python3 ./ctf/content_test_filtering.py pr --output-format markdown ${{ github.event.pull_request.number }} > ctf.md
+      - name: Update the PR
+        run: python3 ./ctf/utility_scripts/comment_pr.py --token ${{ github.token }} --pr ${{ github.event.pull_request.number }} --comment ctf.md
