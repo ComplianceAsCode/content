@@ -14,6 +14,19 @@ levels:
     - l1_workstation
 
 controls:
+  - id: reload_dconf_db
+    title: Reload Dconf database
+    levels:
+    - l1_server
+    - l1_workstation
+    - l2_server
+    - l2_workstation
+    notes: <-
+      This is a helper rule to reload Dconf datbase correctly.
+    automated: yes
+    rules:
+    - dconf_db_up_to_date
+
   - id: 1.1.1.1
     title: Ensure mounting of cramfs filesystems is disabled (Automated)
     levels:
