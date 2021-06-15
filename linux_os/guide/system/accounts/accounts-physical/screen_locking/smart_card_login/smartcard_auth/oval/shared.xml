@@ -2,7 +2,7 @@
   <definition class="compliance" id="smartcard_auth" version="3">
     {{{ oval_metadata("Enable Smart Card logins") }}}
     <criteria comment="smart card authentication is configured" operator="AND">
-      <extend_definition comment="packages needed for smartcard support are installed" definition_ref="install_smartcard_packages" />
+      <extend_definition comment="packages needed for smartcard support are installed" definition_ref="package_smartcard_installed" />
       <extend_definition comment="pcscd service is enabled" definition_ref="service_pcscd_enabled" />
       <criteria operator="OR">
         <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
