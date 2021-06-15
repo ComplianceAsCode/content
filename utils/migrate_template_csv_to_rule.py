@@ -619,7 +619,7 @@ class ProductCSVData(object):
         self.product = product
         self.ssg_root = ssg_root  # Needed?
 
-        self.csv_dir = os.path.join(ssg_root, product, "templates/csv")
+        self.csv_dir = os.path.join(ssg_root, "products", product, "templates/csv")
         self.csv_files = self._identify_csv_files(self.csv_dir)
 
         self.csv_data = self._load_csv_files(self.csv_files)
