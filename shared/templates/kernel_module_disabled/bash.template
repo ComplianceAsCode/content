@@ -10,7 +10,10 @@ if ! LC_ALL=C grep -q -m 1 "^blacklist {{{ KERNMODULE }}}$" /etc/modprobe.d/50-b
 fi
 {{% else %}}
 if LC_ALL=C grep -q -m 1 "^install {{{ KERNMODULE }}}" /etc/modprobe.d/{{{ KERNMODULE }}}.conf ; then
-	sed -i 's/^install {{{ KERNMODULE }}}.*/install {{{ KERNMODULE }}} /bin/true/g' /etc/modprobe.d/{{{ KERNMODULE }}}.conf
+	{{% if '#' in KERNMODULE %}}
+	{{{ raise("KERNMODULE (" + KERNMODULE + ") uses sed path separator (#) in " + rule_id) }}}
+	{{% endif %}}
+	sed -i 's#^install {{{ KERNMODULE }}}.*#install {{{ KERNMODULE }}} /bin/true#g' /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 else
 	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf
 	echo "install {{{ KERNMODULE }}} /bin/true" >> /etc/modprobe.d/{{{ KERNMODULE }}}.conf

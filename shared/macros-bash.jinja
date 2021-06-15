@@ -191,6 +191,9 @@ else
     escaped_value="$(sed -e 's/\\/\\\\/g' <<< "{{{ value }}}")"
     if grep -q "^\\s*{{{ key }}}\\s*=" "${SETTINGSFILES[@]}"
     then
+        {{% if '/' in key %}}
+        {{{ raise("Key (" + key + ") uses sed path separator (/) in " + rule_id) }}}
+        {{% endif %}}
         sed -i "s/\\s*{{{ key }}}\\s*=\\s*.*/{{{ key }}}=${escaped_value}/g" "${SETTINGSFILES[@]}"
     else
         sed -i "\\|\\[{{{ path }}}\\]|a\\{{{ key }}}=${escaped_value}" "${SETTINGSFILES[@]}"
@@ -268,6 +271,11 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 {{%- macro _put_into_firefox_cfg(config_item, key, value_varname, where, sed_separator) -%}}
 # If the key exists, change it. Otherwise, add it to the config_file.
 if LC_ALL=C grep -m 1 -q '^{{{ config_item }}}("{{{ key }}}", ' "{{{ where }}}"; then
+    {{% if sed_separator in config_item %}}
+    {{{ raise("config_item (" + config_item + ") uses sed path separator (" + sed_separator + ") in " + rule_id) }}}
+    {{% elif sed_separator in key %}}
+    {{{ raise("key (" + key + ") uses sed path separator (" + sed_separator + ") in " + rule_id) }}}
+    {{% endif %}}
     sed -i 's{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}".*{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}})"';{{{ sed_separator }}}g' "{{{ where }}}"
 else
     echo '{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}}"');' >> "{{{ where }}}"
@@ -457,6 +465,9 @@ fi
     {{%- else -%}}
         {{%- set modifier="d" -%}}
     {{%- endif -%}}
+    {{% if '/' in regex %}}
+    {{{ raise("regex (" + regex + ") uses sed path separator (/) in " + rule_id) }}}
+    {{% endif %}}
 LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ path }}}"
 {{%- endmacro -%}}
 
@@ -594,6 +605,11 @@ EOF
 # Try find '[{{{ section }}}]' and '{{{ key }}}' in '{{{ filename }}}', if it exists, set
 # to '{{{ value }}}', if it isn't here, add it, if '[{{{ section }}}]' doesn't exist, add it there
 if grep -qzosP '[[:space:]]*\[{{{ section }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}' '{{{ filename }}}'; then
+    {{% if '/' in key %}}
+    {{{ raise("key (" + key + ") uses sed path separator (/) in " + rule_id) }}}
+    {{% elif '/' in value %}}
+    {{{ raise("value (" + value + ") uses sed path separator (/) in " + rule_id) }}}
+    {{% endif %}}
     sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/' '{{{ filename }}}'
 elif grep -qs '[[:space:]]*\[{{{ section }}}]' '{{{ filename }}}'; then
     sed -i '/[[:space:]]*\[{{{ section }}}]/a {{{ key }}}={{{ value }}}' '{{{ filename }}}'
@@ -632,6 +648,9 @@ DOMAIN_REGEX="[[:space:]]*\[domain\/[^]]*]"
 # if [domain/..] doesn't exist, add it here for default domain
 if grep -qvzosP $AD_REGEX $SSSD_CONF; then
         if grep -qzosP $LDAP_REGEX $SSSD_CONF; then
+                {{% if '#' in parameter %}}
+                {{{ raise("parameter (" + parameter + ") uses sed path separator (#) in " + rule_id) }}}
+                {{% endif %}}
                 sed -i "s#{{{ parameter }}}[^(\n)]*#{{{ parameter }}} = {{{ value }}}#" $SSSD_CONF
         elif grep -qs $DOMAIN_REGEX $SSSD_CONF; then
                 sed -i "/$DOMAIN_REGEX/a {{{ parameter }}} = {{{ value }}}" $SSSD_CONF
@@ -640,7 +659,7 @@ if grep -qvzosP $AD_REGEX $SSSD_CONF; then
                         echo -e "[domain/default]\n{{{ parameter }}} = {{{ value }}}" >> $SSSD_CONF
                 else
                         echo "Config file '$SSSD_CONF' doesnt exist, not remediating, assuming non-applicability." >&2
-                fi        
+                fi
         fi
 fi
 {{%- endmacro %}}
