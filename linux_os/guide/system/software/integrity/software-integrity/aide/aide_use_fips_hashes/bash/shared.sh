@@ -16,7 +16,7 @@ do
 		config=$config"+sha512"
 	fi
 
-	for hash in ${forbidden_hashes[@]}
+	for hash in "${forbidden_hashes[@]}"
 	do
 		config=$(echo $config | sed "s/$hash//")
 	done

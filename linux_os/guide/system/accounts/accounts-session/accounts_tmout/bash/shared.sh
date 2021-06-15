@@ -8,7 +8,7 @@ tmout_found=0
 for f in /etc/profile /etc/profile.d/*.sh; do
     if grep --silent '^\s*TMOUT' $f; then
         sed -i -E "s/^(\s*)TMOUT\s*=\s*(\w|\$)*(.*)$/\1TMOUT=$var_accounts_tmout\3/g" $f
-        $tmout_found=1
+        tmout_found=1
     fi
 done
 
