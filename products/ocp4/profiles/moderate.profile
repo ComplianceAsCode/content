@@ -39,7 +39,7 @@ description: |-
 
 selections:
     # AC-2(5)
-    - var_oauth_inactivity_timeout=600s
+    - var_oauth_inactivity_timeout=10m0s
     - oauth_or_oauthclient_inactivity_timeout
     # AC-2, AC-7
     - ocp_idp_no_htpasswd
