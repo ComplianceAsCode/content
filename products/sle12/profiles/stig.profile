@@ -186,7 +186,7 @@ selections:
     - gui_login_dod_acknowledgement
     - installed_OS_is_FIPS_certified
     - installed_OS_is_vendor_supported
-    - install_smartcard_packages
+    - package_smartcard_installed
     - is_fips_mode_enabled
     - kernel_module_usb-storage_disabled
     - mount_option_home_nosuid
