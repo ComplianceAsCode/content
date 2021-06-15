@@ -9,10 +9,17 @@ description: |-
     new versions have been installed. To configure <tt>{{{ pkg_manager }}}</tt> to remove the
     {{% if product in ["sle12", "sle15"] %}}
     previous software components after updating, set the <tt>solver.upgradeRemoveDroppedPackages</tt>
+    {{% elif 'ubuntu' in product %}}
+    previous software components after updating, set the <tt>::Remove-Unused-Dependencies</tt> and
+    <tt>::Remove-Unused-Kernel-Packages</tt>
     {{% else %}}
     previous software components after updating, set the <tt>clean_requirements_on_remove</tt>
     {{% endif %}}
+    {{% if 'ubuntu' in product %}}
+    to <tt>true</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
+    {{% else %}}
     to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
+    {{% endif %}}
 
 rationale: |-
     Previous versions of software components that are not removed from the information
@@ -47,6 +54,9 @@ references:
 ocil_clause: |-
     {{% if product in ["sle12", "sle15"] %}}
     'solver.upgradeRemoveDroppedPackages is not enabled or configured correctly'
+    {{% elif 'ubuntu' in product %}}
+    '::Remove-Unused-Dependencies and ::Remove-Unused-Kernel-Packages is not
+    enabled or configured correctly'
     {{% else %}}
     'clean_requirements_on_remove is not enabled or configured correctly'
     {{% endif %}}
@@ -58,6 +68,11 @@ ocil: |-
     <pre>$ grep -i upgradeRemoveDroppedPackages {{{ pkg_manager_config_file }}}</pre>
     The output should return something similar to:
     <pre>solver.upgradeRemoveDroppedPackages=true</pre>
+    {{% elif 'ubuntu' in product %}}
+    <pre>$ grep -i remove-unused {{{ pkg_manager_config_file }}}</pre>
+    The output should return something similar to:
+    <pre>Unattended-Upgrade::Remove-Unused-Dependencies "true";
+    Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";</pre>
     {{% else %}}
     To verify that <tt>clean_requirements_on_remove</tt> is configured properly, run the
     following command:
