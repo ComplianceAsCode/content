@@ -76,7 +76,7 @@ selections:
     - enable_dracut_fips_module
 
     ### Rules:
-    # RHEL-08-010070
+    # RHEL-08-010000
     - installed_OS_is_vendor_supported
 
     # RHEL-08-010010
