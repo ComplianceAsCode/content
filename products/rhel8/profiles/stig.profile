@@ -99,6 +99,7 @@ selections:
     - banner_etc_issue
 
     # RHEL-08-010070
+    - rsyslog_remote_access_monitoring
 
     # RHEL-08-010090
 
