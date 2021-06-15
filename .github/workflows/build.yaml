@@ -20,10 +20,6 @@ jobs:
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
-      - name: Build Ansible Roles
-        run: PYTHONPATH=. python3 utils/ansible_playbook_to_role.py --build-playbooks-dir ./build/ansible/ --dry-run ./build/ansible_roles
-      - name: Lint Ansible Roles
-        run: ansible-lint -x 204 -x experimental ./build/ansible_roles/*
 
   validate-fedora:
     name: Build, Test on Fedora 33 (Container)
