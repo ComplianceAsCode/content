@@ -1635,3 +1635,31 @@ controls:
     - l1_server
     - l1_workstation
     automated: no # rules missing
+
+  - id: 5.2.1
+    title: Ensure sudo is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_sudo_installed
+
+  - id: 5.2.2
+    title: Ensure sudo commands use pty (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sudo_add_use_pty
+
+  - id: 5.2.3
+    title: Ensure sudo log file exists (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sudo_custom_logfile
+    - var_sudo_logfile=default
