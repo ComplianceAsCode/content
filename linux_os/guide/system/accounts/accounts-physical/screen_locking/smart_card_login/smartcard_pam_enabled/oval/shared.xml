@@ -3,7 +3,7 @@
    {{{ oval_metadata("Enable Smart Card logins using PAM") }}}
 
     <criteria operator="OR" comment="smart card authentication is configured">
-      <extend_definition comment="packages needed for smartcard support are installed" definition_ref="install_smartcard_packages" negate="true" />
+      <extend_definition comment="packages needed for smartcard support are installed" definition_ref="package_smartcard_installed" negate="true" />
       <criterion comment="smart card is configured in /etc/pam.d/common-auth" test_ref="test_smart_card_common_auth" />
     </criteria>
   </definition>
