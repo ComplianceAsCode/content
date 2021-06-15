@@ -250,7 +250,7 @@ selections:
     - var_sudo_timestamp_timeout=always_prompt
 
     # RHEL-08-010390
-    - install_smartcard_packages
+    - package_smartcard_installed
 
     # RHEL-08-010400
 

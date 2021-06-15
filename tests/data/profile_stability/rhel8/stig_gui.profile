@@ -152,7 +152,7 @@ selections:
 - grub2_uefi_admin_username
 - grub2_uefi_password
 - grub2_vsyscall_argument
-- install_smartcard_packages
+- package_smartcard_installed
 - installed_OS_is_vendor_supported
 - kerberos_disable_no_keytab
 - kernel_module_atm_disabled
