@@ -293,7 +293,7 @@ selections:
     - set_firewalld_default_zone
     - libreswan_approved_tunnels
     - sysctl_net_ipv6_conf_all_accept_source_route
-    - install_smartcard_packages
+    - package_smartcard_installed
     - sssd_enable_pam_services
     - smartcard_configure_cert_checking
     - dconf_gnome_screensaver_user_locks
