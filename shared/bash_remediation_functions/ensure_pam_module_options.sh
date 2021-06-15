@@ -42,7 +42,7 @@ function ensure_pam_module_options {
 
 	# fix the value for 'option' if one exists but does not match '_valueRegex'
     if grep -q -P "^\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s+${_option}(?"'!'"${_valueRegex}(\\s|\$))" < "${_pamFile}" ; then
-		sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s)${_option}=[^[:space:]]+/\\1${_option}${_defaultValue}/" "${_pamFile}"
+		sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s)${_option}=[^[:space:]]*/\\1${_option}${_defaultValue}/" "${_pamFile}"
 
     # add 'option=default' if option is not set
 	elif grep -q -E "^\\s*${_type}\\s+${_control}\\s+${_module}" < "${_pamFile}" &&
