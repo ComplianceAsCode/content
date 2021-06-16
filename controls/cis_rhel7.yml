@@ -1711,6 +1711,9 @@ controls:
     - sshd_set_loglevel_info
     rules:
     - sshd_set_loglevel_verbose
+=======
+    automated: no # we have two rules either for info or verbose, no way to select
+>>>>>>> 6948e91ef6 (cover section 5.3)
 
   - id: 5.3.6
     title: Ensure SSH X11 forwarding is disabled (Automated)
@@ -1781,31 +1784,43 @@ controls:
     levels:
     - l1_server
     - l1_workstation
+<<<<<<< HEAD
     automated: yes
     notes: <-
       The rule checks for default list of ciphers provided in the benchmark.
     rules:
     - sshd_approved_ciphers=cis_rhel7
     - sshd_use_approved_ciphers
+=======
+    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+>>>>>>> 6948e91ef6 (cover section 5.3)
 
   - id: 5.3.14
     title: Ensure only strong MAC algorithms are used (Automated)
     levels:
     - l1_server
     - l1_workstation
+<<<<<<< HEAD
     automated: yes
     notes: <-
       The rule checks for default list of MACs provided in the benchmark.
     rules:
     - sshd_approved_macs=cis_rhel7
     - sshd_use_approved_macs
+=======
+    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+>>>>>>> 6948e91ef6 (cover section 5.3)
 
   - id: 5.3.15
     title: Ensure only strong Key Exchange algorithms are used (Automated)
     levels:
     - l1_server
     - l1_workstation
+<<<<<<< HEAD
     automated: no # rule missing
+=======
+    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+>>>>>>> 6948e91ef6 (cover section 5.3)
 
   - id: 5.3.16
     title: Ensure SSH Idle Timeout Interval is configured (Automated)
@@ -1854,10 +1869,14 @@ controls:
     levels:
     - l1_server
     - l1_workstation
+<<<<<<< HEAD
     automated: yes
     rules:
     - sshd_set_maxstartups
     - var_sshd_set_maxstartups=10:30:60
+=======
+    automated: no # rule missing
+>>>>>>> 6948e91ef6 (cover section 5.3)
 
   - id: 5.3.22
     title: Ensure SSH MaxSessions is limited (Automated)
@@ -1868,6 +1887,7 @@ controls:
     rules:
     - sshd_set_max_sessions
     - var_sshd_max_sessions=10
+<<<<<<< HEAD
 
   - id: 5.4.1
     title: Ensure password creation requirements are configured (Automated)
