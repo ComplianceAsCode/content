@@ -800,6 +800,7 @@ selections:
     # RHEL-08-030650
 
     # RHEL-08-030660
+    - auditd_audispd_configure_sufficiently_large_partition
 
     # RHEL-08-030670
     - package_rsyslog_installed
