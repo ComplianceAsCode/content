@@ -113,6 +113,8 @@ selections:
     - accounts_password_pam_ocredit
 
     # UBTU-20-010056 The Ubuntu operating system must prevent the use of dictionary words for passwords.
+    - var_password_pam_dictcheck=1
+    - accounts_password_pam_dictcheck
 
     # UBTU-20-010057 The Ubuntu operating system must be configured so that when passwords are changed or new passwords are established, pwquality must be used.
     - var_password_pam_retry=3
