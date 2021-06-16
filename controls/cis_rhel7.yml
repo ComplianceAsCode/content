@@ -1663,3 +1663,188 @@ controls:
     rules:
     - sudo_custom_logfile
     - var_sudo_logfile=default
+
+  - id: 5.3.1
+    title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - file_groupowner_sshd_config
+    - file_owner_sshd_config
+    - file_permissions_sshd_config
+
+  - id: 5.3.2
+    title: Ensure permissions on SSH private host key files are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing (we have similar)
+
+  - id: 5.3.3
+    title: Ensure permissions on SSH public host key files are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # missing rules for ownership
+    rules:
+    - file_permissions_sshd_pub_key
+
+  - id: 5.3.4
+    title: Ensure SSH access is limited (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 5.3.5
+    title: Ensure SSH LogLevel is appropriate (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # we have two rules either for info or verbose, no way to select
+
+  - id: 5.3.6
+    title: Ensure SSH X11 forwarding is disabled (Automated)
+    levels:
+    - l2_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_disable_x11_forwarding
+
+  - id: 5.3.7
+    title: Ensure SSH MaxAuthTries is set to 4 or less (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_set_max_auth_tries
+    - sshd_max_auth_tries_value=4
+
+  - id: 5.3.8
+    title: Ensure SSH IgnoreRhosts is enabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_disable_rhosts
+
+  - id: 5.3.9
+    title: Ensure SSH HostbasedAuthentication is disabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - disable_host_auth
+
+  - id: 5.3.10
+    title: Ensure SSH root login is disabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_disable_root_login
+
+  - id: 5.3.11
+    title: Ensure SSH PermitEmptyPasswords is disabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_disable_empty_passwords
+
+  - id: 5.3.12
+    title: Ensure SSH PermitUserEnvironment is disabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_do_not_permit_user_env
+
+  - id: 5.3.13
+    title: Ensure only strong Ciphers are used (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+
+  - id: 5.3.14
+    title: Ensure only strong MAC algorithms are used (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+
+  - id: 5.3.15
+    title: Ensure only strong Key Exchange algorithms are used (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+
+  - id: 5.3.16
+    title: Ensure SSH Idle Timeout Interval is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_set_idle_timeout
+    - sshd_idle_timeout_value=15_minutes
+    - sshd_set_keepalive
+    - var_sshd_set_keepalive=0
+
+  - id: 5.3.17
+    title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 5.3.18
+    title: Ensure SSH warning banner is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # our rule configures /etc/issue, /etc/issue.net is required
+
+  - id: 5.3.19
+    title: Ensure SSH PAM is enabled (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 5.3.20
+    title: Ensure SSH AllowTcpForwarding is disabled (Automated)
+    levels:
+    - l2_server
+    - l2_workstation
+    automated: yes
+    rules:
+    - sshd_disable_tcp_forwarding
+
+  - id: 5.3.21
+    title: Ensure SSH MaxStartups is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 5.3.22
+    title: Ensure SSH MaxSessions is limited (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_set_max_sessions
+    - var_sshd_max_sessions=10
