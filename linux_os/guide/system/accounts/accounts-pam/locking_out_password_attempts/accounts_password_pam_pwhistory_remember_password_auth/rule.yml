@@ -1,0 +1,60 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
+
+title: 'Limit Password Reuse: password-auth'
+
+description: |-
+    Do not allow users to reuse recent passwords. This can be
+    accomplished by using the <tt>remember</tt> option for the
+    <tt>pam_pwhistory</tt> PAM modules.
+    <br /><br />
+    In the file <tt>/etc/pam.d/password-auth</tt>, make sure the parameter
+    <tt>remember</tt> is present, and that the value
+    for the <tt>remember</tt> parameter is {{{ xccdf_value("var_password_pam_remember") }}} or greater. For example:
+    <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
+    The DoD STIG requirement is 5 passwords.
+
+rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-83476-2
+    cce@rhel8: CCE-83478-8
+
+references:
+    stigid@ol7: OL07-00-010270
+    cis@rhel7: 5.3.3
+    cis@rhel8: 5.4.3
+    cjis: 5.6.2.1.1
+    cui: 3.5.8
+    disa: CCI-000200
+    nist: IA-5(f),IA-5(1)(e)
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
+    nist@sle15: IA-5(1)(e),IA-5(1).1(v)
+    pcidss: Req-8.2.5
+    srg: SRG-OS-000077-GPOS-00045
+    vmmsrg: SRG-OS-000077-VMM-000440
+    stigid@rhel7: RHEL-07-010270
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
+    cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16,5
+    stigid@rhel8: RHEL-08-020220
+
+ocil_clause: |-
+     the value of remember is not set equal to or greater than {{{ xccdf_value("var_password_pam_remember") }}}
+
+ocil: |-
+    Check that the operating system prohibits the reuse of a password for
+    a minimum of <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt> generations with the following command:
+    <pre># grep pam_pwhistory.so /etc/pam.d/password-auth
+    password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
+    If the command does not return a result, or the returned line is commented
+    out, has a second column value different from <tt>{{{ xccdf_value("var_password_pam_remember_control_flag") }}}</tt>, does not contain
+    "remember" value, or the value is less than
+    <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt>, this is a finding.
+
+platform: pam

@@ -52,9 +52,10 @@ selections:
 - accounts_password_pam_minclass
 - accounts_password_pam_minlen
 - accounts_password_pam_ocredit
+- accounts_password_pam_pwhistory_remember_password_auth
+- accounts_password_pam_pwhistory_remember_system_auth
 - accounts_password_pam_retry
 - accounts_password_pam_ucredit
-- accounts_password_pam_unix_remember
 - accounts_password_pam_unix_rounds_password_auth
 - accounts_password_pam_unix_rounds_system_auth
 - accounts_password_set_max_life_existing
@@ -313,7 +314,8 @@ selections:
 - var_password_pam_minclass=4
 - var_accounts_minimum_age_login_defs=1
 - var_accounts_max_concurrent_login_sessions=10
-- var_password_pam_unix_remember=5
+- var_password_pam_remember=5
+- var_password_pam_remember_control_flag=required
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_accounts_password_minlen_login_defs=15
