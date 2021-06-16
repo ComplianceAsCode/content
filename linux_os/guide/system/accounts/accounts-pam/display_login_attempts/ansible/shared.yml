@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,multi_platform_ol
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -6,14 +6,22 @@
 
 - name: Make sure pam_lastlog.so control is required
   replace:
+    {{% if product in ['ol7', 'ol8'] -%}}
+    path: /etc/pam.d/postlogin
+    {{%- else -%}}
     path: /etc/pam.d/login
+    {{%- endif %}}
     regexp: ^\s*(session)(\s+)[^\s]+(\s+)(pam_lastlog\.so)(\s+)(.*)
     replace: '\1\2required\3\4\5\6'
   register: control_update_result
 
 - name: Add control for pam_lastlog.so module
   lineinfile:
+    {{% if product in ['ol7', 'ol8'] -%}}
+    path: /etc/pam.d/postlogin
+    {{%- else -%}}
     path: /etc/pam.d/login
+    {{%- endif %}}
     line: 'session required pam_lastlog.so showfailed'
   when: not control_update_result.changed
   register: add_new_pam_lastlog_control_result
