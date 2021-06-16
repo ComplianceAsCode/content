@@ -109,6 +109,7 @@ selections:
     - set_password_hashing_algorithm_logindefs
 
     # RHEL-08-010120
+    - accounts_password_all_shadowed_sha512
 
     # RHEL-08-010130
     - accounts_password_pam_unix_rounds_system_auth

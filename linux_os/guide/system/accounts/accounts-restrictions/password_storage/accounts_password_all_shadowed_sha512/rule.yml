@@ -1,11 +1,11 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: sle12,sle15,rhel8,fedora
 
 title: 'Verify All Account Password Hashes are Shadowed with SHA512'
 
 description: |-
-    Verify the SUSE operating system requires the shadow password suite
+    Verify the operating system requires the shadow password suite
     configuration be set to encrypt interactive user passwords using a strong
     cryptographic hash.
     Check that the interactive user account passwords are using a strong
@@ -27,6 +27,7 @@ severity: medium
 identifiers:
     cce@sle12: CCE-83038-0
     cce@sle15: CCE-85566-8
+    cce@rhel8: CCE-83484-6
 
 references:
     nist: IA-5(1)(c),IA-5(1).1(v),IA-7,IA-7.1
@@ -34,6 +35,7 @@ references:
     stigid@sle15: SLES-15-020180
     disa: CCI-000196,CCI-000803
     srg:  SRG-OS-000073-GPOS-00041,SRG-OS-000120-GPOS-00061
+    stigid@rhel8: RHEL-08-010120
 
 
 ocil_clause: 'passwords hashed with an unauthorized algorithm are found in /etc/shadow'
