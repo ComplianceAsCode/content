@@ -191,7 +191,7 @@ selections:
     #- package_openscap-scanner_installed
     #- package_policycoreutils_installed
     - package_sudo_installed
-    #- package_usbguard_installed
+    - package_usbguard_installed
     ####
     # Need to replace with fluentd checks
     #- package_audispd-plugins_installed
@@ -236,9 +236,9 @@ selections:
     #- sssd_run_as_sssd_user
 
     ### Configure USBGuard
-    #- service_usbguard_enabled
-    #- configure_usbguard_auditbackend
-    #- usbguard_allow_hid_and_hub
+    - service_usbguard_enabled
+    - configure_usbguard_auditbackend
+    - usbguard_allow_hid_and_hub
 
     ### Enable / Configure FIPS
     - enable_fips_mode
