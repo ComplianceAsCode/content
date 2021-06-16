@@ -9,7 +9,7 @@ metadata:
 reference: https://www.cisecurity.org/cis-benchmarks/#red_hat_linux
 
 
-title: 'CIS Red Hat Enterprise Linux 7 Benchmark'
+title: 'CIS Red Hat Enterprise Linux 7 Benchmark: Level 2 - Workstation'
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
