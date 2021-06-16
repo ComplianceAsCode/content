@@ -437,7 +437,9 @@ controls:
     - l1_workstation
     automated: yes
     notes: >-
-      This control covers also 1.6.1.5, set the variable appropriately.
+      The SELinux mode is set to "enforcing" by default.
+      Configuring the "permissive" mode greatly lowers security of the system.
+      If necessary, the mode can be changed by tailoring the "var_selinux_state" XCCDF variable.
     rules:
     - selinux_state
     - var_selinux_state=enforcing
