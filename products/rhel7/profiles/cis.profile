@@ -9,7 +9,7 @@ metadata:
 reference: https://www.cisecurity.org/cis-benchmarks/#red_hat_linux
 
 
-title: 'CIS Red Hat Enterprise Linux 7 Benchmark: Level 2 - Server'
+title: 'CIS Red Hat Enterprise Linux 7 Benchmark for Level 2 - Server'
 
 description: |-
     This profile defines a baseline that aligns to the "Level 2 - Server"
