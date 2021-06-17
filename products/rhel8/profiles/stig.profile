@@ -625,10 +625,17 @@ selections:
     # RHEL-08-030070
     - file_permissions_var_log_audit
 
-    # RHEL-08-030080, RHEL-08-030090, RHEL-08-030100, RHEL-08-030110
-    ### NOTE: These might get broken up, but currently the following
-    ### rule accounts for these STIG ID's
-    - file_ownership_var_log_audit
+    # RHEL-08-030080
+    - file_ownership_var_log_audit_stig
+
+    # RHEL-08-030090
+    - file_group_ownership_var_log_audit
+
+    # RHEL-08-030100
+    - directory_ownership_var_log_audit
+
+    # RHEL-08-030110
+    - directory_group_ownership_var_log_audit
 
     # RHEL-08-030120
     - directory_permissions_var_log_audit

@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="file_ownership_var_log_audit_stig" version="1">
+    {{{ oval_metadata("Checks that all /var/log/audit files are owned by the root user.") }}}
+    <criteria comment="files are root owned">
+      <criterion test_ref="test_user_ownership_var_log_audit_files" />
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files uid root" id="test_user_ownership_var_log_audit_files" version="1">
+    <unix:object object_ref="object_user_ownership_var_log_audit_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log/audit files" id="object_user_ownership_var_log_audit_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_group_user_owner_not_root_var_log_audit</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_group_user_owner_not_root_var_log_audit" version="1" operator="OR">
+    <unix:user_id datatype="int" operation="not equal">0</unix:user_id>
+  </unix:file_state>
+
+</def-group>
