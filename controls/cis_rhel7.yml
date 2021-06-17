@@ -1848,3 +1848,53 @@ controls:
     rules:
     - sshd_set_max_sessions
     - var_sshd_max_sessions=10
+
+  - id: 5.4.1
+    title: Ensure password creation requirements are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # rule checking for retry needs modification and we are missing rule for try_first_pass
+    notes: <-
+      There are two ways how to check this control.
+      One way is to check for minclass, this is currently selected.
+      Another way is to check for dcredit, lcredit,ocredit, ucredit, this is shown in rleated_rules.
+    related_rules:
+    - accounts_password_pam_dcredit
+    - var_password_pam_dcredit=1
+    - accounts_password_pam_ucredit
+    - var_password_pam_ucredit=1
+    - accounts_password_pam_lcredit
+    - var_password_pam_lcredit=1
+    - accounts_password_pam_ocredit
+    - var_password_pam_ocredit=1
+    rules:
+    - accounts_password_pam_minlen
+    - var_password_pam_minlen=14
+    - accounts_password_pam_minclass
+    - var_password_pam_minclass=4
+
+  - id: 5.4.2
+    title: Ensure lockout for failed password attempts is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # we can check only certain parts, we need probably some complex rule for this
+
+  - id: 5.4.3
+    title: Ensure password hashing algorithm is SHA-512 (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # our rule does not check for password-auth
+    rules:
+    - set_password_hashing_algorithm_systemauth
+
+  - id: 5.4.4
+    title: Ensure password reuse is limited (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # for pam_unix we check only for system-auth, for pam_pwhistory rules are not in the repo at the time of writing
+    related_rules:
+    - accounts_password_pam_unix_remember
