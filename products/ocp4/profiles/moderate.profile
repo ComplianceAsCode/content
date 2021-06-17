@@ -48,9 +48,8 @@ selections:
     - ocp_allowed_registries
 
     # AC-8: SYSTEM USE NOTIFICATION
-    - classification_banner
     - openshift_motd_exists
-    - oauth_login_template_set
+    - banner_or_login_template_set
 
     # AU
     - audit_profile_set
