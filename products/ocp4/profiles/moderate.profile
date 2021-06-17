@@ -47,8 +47,10 @@ selections:
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
 
-    # AC-8
+    # AC-8: SYSTEM USE NOTIFICATION
+    - classification_banner
     - openshift_motd_exists
+    - oauth_login_template_set
 
     # AU
     - audit_profile_set
@@ -163,9 +165,6 @@ selections:
 
     # SC-13: CRYPTOGRAPHIC PROTECTION
     - fips_mode_enabled
-
-    # AC-8: SYSTEM USE NOTIFICATION
-    - classification_banner
 
     # SI-7: SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY
     - file_integrity_exists
