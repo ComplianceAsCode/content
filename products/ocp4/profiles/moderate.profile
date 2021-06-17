@@ -47,6 +47,9 @@ selections:
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
 
+    # AC-8
+    - openshift_motd_exists
+
     # AU
     - audit_profile_set
 
