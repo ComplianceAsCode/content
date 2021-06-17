@@ -1,0 +1,27 @@
+name: Gating (AR / RHEL)
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  validate-fedora-ar:
+    name: Build, Lint Ansible Roles on Fedora Latest (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake make ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pygithub ansible ansible-lint expat libxslt
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure
+        run: cmake -DSSG_PRODUCT_DEFAULT=OFF -DSSG_PRODUCT_RHEL7=ON -DSSG_PRODUCT_RHEL8=ON -G "Ninja" ..
+        working-directory: ./build
+      - name: Build
+        run: ninja -j2 rhel8-profile-playbooks rhel7-profile-playbooks
+        working-directory: ./build
+      - name: Build Ansible Roles
+        run: PYTHONPATH=. python3 utils/ansible_playbook_to_role.py --build-playbooks-dir ./build/ansible/ --dry-run ./build/ansible_roles
+      - name: Lint Ansible Roles
+        run: ansible-lint -x 204 -x experimental ./build/ansible_roles/*
