@@ -5,11 +5,11 @@ prodtype: rhel7,rhel8,rhel9,sle15
 title: 'Uninstall httpd Package'
 
 description: |-
-  {{% if 'ubuntu' not in product %}}
-  {{{ describe_package_remove(package="httpd") }}}
-  {{% else %}}
-  {{{ describe_package_remove(package="apache2") }}}
-  {{% endif %}}
+    {{% if 'ubuntu' not in product %}}
+    {{{ describe_package_remove(package="httpd") }}}
+    {{% else %}}
+    {{{ describe_package_remove(package="apache2") }}}
+    {{% endif %}}
 
 rationale: |-
     If there is no need to make the web server software available,
