@@ -19,9 +19,15 @@ description: |-
 
     For general information about enabling smart card authentication, consult
     the documentation at:
+    {{% if 'ubuntu' in product %}}
+    <ul>
+    <li><b>{{{ weblink(link="https://pages.ubuntu.com/rs/066-EOV-335/images/SmartCardLogin_WhitePapaer_04.03.20.pdf") }}}</b></li>
+    </ul>
+    {{% else %}}
     <ul>
     <li><b>{{{ weblink(link="https://www.suse.com/c/configuring-smart-card-authentication-suse-linux-enterprise/") }}}</b></li>
     </ul>
+    {{% endif %}}
 
 rationale: |-
     Smart card login provides two-factor authentication stronger than
