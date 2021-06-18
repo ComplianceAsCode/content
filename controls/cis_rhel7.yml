@@ -1898,3 +1898,98 @@ controls:
     automated: partially # for pam_unix we check only for system-auth, for pam_pwhistory rules are not in the repo at the time of writing
     related_rules:
     - accounts_password_pam_unix_remember
+
+  - id: 5.5.1.1
+    title: Ensure password expiration is 365 days or less (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # missing rule for checking of /etc/shadow
+    rules:
+    - accounts_maximum_age_login_defs
+    - var_accounts_maximum_age_login_defs=365
+
+  - id: 5.5.1.2
+    title: Ensure minimum days between password changes is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # missing rule for checking of /etc/shadow
+    rules:
+    - accounts_minimum_age_login_defs
+    - var_accounts_minimum_age_login_defs=1
+
+  - id: 5.5.1.3
+    title: Ensure password expiration warning days is 7 or more (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # missing rule for checking of /etc/shadow
+    rules:
+    - accounts_password_warn_age_login_defs
+    - var_accounts_password_warn_age_login_defs=7
+
+  - id: 5.5.1.4
+    title: Ensure inactive password lock is 30 days or less (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # missing rule which would conform to the benchmark, maybe account_disable_post_pw_expiration
+
+  - id: 5.5.1.5
+    title: Ensure all users last password change date is in the past (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 5.5.2
+    title: Ensure system accounts are secured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # missing rule for locking of accounts
+    rules:
+    - no_shelllogin_for_systemaccounts
+
+  - id: 5.5.3
+    title: Ensure default group for the root account is GID 0 (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 5.5.4
+    title: Ensure default user shell timeout is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # we do not have rule to check for all required file
+
+  - id: 5.5.5
+    title: Ensure default user umask is configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # checking only for numeric umask and we do not check for user_enab in /etc/login.defs
+    rules:
+    - accounts_umask_etc_bashrc
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
+    - var_accounts_user_umask=027
+
+  - id: 5.6
+    title: Ensure root login is restricted to system console (Manual)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no
+
+  - id: 5.7
+    title: Ensure access to the su command is restricted (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially  # we check only for usage of use_uid with pam_su, not for the group
+    rules:
+    - use_pam_wheel_for_su
