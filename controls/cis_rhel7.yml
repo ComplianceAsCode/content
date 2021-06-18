@@ -1703,7 +1703,14 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # we have two rules either for info or verbose, no way to select
+    notes: <-
+      The default rule is configured to enforce the "verbose" log level. Use
+      tailoring to change it to "info" level.
+    automated: yes # we have two rules either for info or verbose, no way to select
+    related_rules:
+    - sshd_set_loglevel_info
+    rules:
+    - sshd_set_loglevel_verbose
 
   - id: 5.3.6
     title: Ensure SSH X11 forwarding is disabled (Automated)
@@ -1964,7 +1971,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # we do not have rule to check for all required file
+    automated: partially # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
+    rules:
+    - accounts_tmout
+    - var_accounts_tmout=15_min
 
   - id: 5.5.5
     title: Ensure default user umask is configured (Automated)
