@@ -5,7 +5,11 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
 title: 'Install the opensc Package For Multifactor Authentication'
 
 description: |-
+    {{% if 'ubuntu' not in product %}}
     {{{ describe_package_install(package="opensc") }}}
+    {{% else %}}
+    {{{ describe_package_install(package="opensc-pkcs11") }}}
+    {{% endif %}}
 
 rationale: |-
     Using an authentication device, such as a CAC or token that is separate from
@@ -35,9 +39,16 @@ references:
 
 ocil_clause: 'the package is not installed'
 
+{{% if 'ubuntu' not in product %}}
 ocil: '{{{ ocil_package(package="opensc") }}}'
+{{% else %}}
+ocil: '{{{ ocil_package(package="opensc-pkcs11") }}}'
+{{% endif %}}
 
 template:
     name: package_installed
     vars:
         pkgname: opensc
+        pkgname@ubuntu1604: opensc-pkcs11
+        pkgname@ubuntu1804: opensc-pkcs11
+        pkgname@ubuntu2004: opensc-pkcs11
