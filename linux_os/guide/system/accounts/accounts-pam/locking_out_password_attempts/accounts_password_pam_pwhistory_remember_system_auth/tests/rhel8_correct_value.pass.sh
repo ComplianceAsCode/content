@@ -14,7 +14,7 @@ if grep -q "^password.*pam_pwhistory.so.*" $config_file; then
 	option=$(sed -rn 's/^(.*pam_pwhistory\.so.*)(remember=[0-9]+)(.*)$/\2/p' $config_file)
 	if [[ -z $option ]]; then
 		# option is not set, append to module
-		sed -i --follow-symlinks "/pam_pwhistory.so/ s/$/ remember=$remember_cnt/"
+		sed -i --follow-symlinks "/pam_pwhistory.so/ s/$/ remember=$remember_cnt/"  $config_file
 	else
 		# option is set, replace value
 		sed -r -i --follow-symlinks "s/^(.*pam_pwhistory\.so.*)(remember=[0-9]+)(.*)$/\1remember=$remember_cnt\3/" $config_file

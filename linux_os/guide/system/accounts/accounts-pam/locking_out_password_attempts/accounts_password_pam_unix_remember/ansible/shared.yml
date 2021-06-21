@@ -5,14 +5,19 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("var_password_pam_unix_remember") }}}
 
-- name: "Do not allow users to reuse recent passwords - system-auth (change)"
+{{% macro ansible_pam_remember(path, module, control) %}}
+- name: "Do not allow users to reuse recent passwords ({{{ module }}}) - {{{ path }}} (change)"
   replace:
-    dest: /etc/pam.d/system-auth
-    regexp: '^(password\s+sufficient\s+pam_unix\.so\s.*remember\s*=\s*)(\S+)(.*)$'
+    dest: {{{ path }}}
+    regexp: '^(password\s+{{{ control }}}\s+{{{ module }}}\.so\s.*remember\s*=\s*)(\S+)(.*)$'
     replace: '\g<1>{{ var_password_pam_unix_remember }}\g<3>'
 
-- name: "Do not allow users to reuse recent passwords - system-auth (add)"
+- name: "Do not allow users to reuse recent passwords ({{{ module }}}) - {{{ path }}} (add)"
   replace:
-    dest: /etc/pam.d/system-auth
-    regexp: '^password\s+sufficient\s+pam_unix\.so\s(?!.*remember\s*=\s*).*$'
+    dest: {{{ path }}}
+    regexp: '^password\s+{{{ control }}}\s+{{{ module }}}\.so\s(?!.*remember\s*=\s*).*$'
     replace: '\g<0> remember={{ var_password_pam_unix_remember }}'
+{{%- endmacro -%}}
+
+{{{ ansible_pam_remember(path="/etc/pam.d/system-auth", module="pam_unix", control="sufficient") }}}
+{{{ ansible_pam_remember(path="/etc/pam.d/password-auth", module="pam_unix", control="sufficient") }}}
