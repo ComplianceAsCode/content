@@ -905,9 +905,9 @@ controls:
     automated: yes
     rules:
     - sysctl_net_ipv4_conf_all_log_martians
-    - sysctl_net_ipv4_conf_all_log_martians_valueenabled
+    - sysctl_net_ipv4_conf_all_log_martians_value=enabled
     - sysctl_net_ipv4_conf_default_log_martians
-    - sysctl_net_ipv4_conf_default_log_martians_valueenabled
+    - sysctl_net_ipv4_conf_default_log_martians_value=enabled
 
   - id: 3.3.5
     title: Ensure broadcast ICMP requests are ignored (Automated)
@@ -917,7 +917,7 @@ controls:
     automated: yes
     rules:
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_valueenabled
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
 
   - id: 3.3.6
     title: Ensure bogus ICMP responses are ignored (Automated)
@@ -927,7 +927,7 @@ controls:
     automated: yes
     rules:
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_valueenabled
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
 
   - id: 3.3.7
     title: Ensure Reverse Path Filtering is enabled (Automated)
@@ -937,9 +937,9 @@ controls:
     automated: yes
     rules:
     - sysctl_net_ipv4_conf_all_rp_filter
-    - sysctl_net_ipv4_conf_all_rp_filter_valueenabled
+    - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
     - sysctl_net_ipv4_conf_default_rp_filter
-    - sysctl_net_ipv4_conf_default_rp_filter_valueenabled
+    - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
 
   - id: 3.3.8
     title: Ensure TCP SYN Cookies is enabled (Automated)
@@ -949,7 +949,7 @@ controls:
     automated: yes
     rules:
     - sysctl_net_ipv4_tcp_syncookies
-    - sysctl_net_ipv4_tcp_syncookies_valueenabled
+    - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
   - id: 3.3.9
     title: Ensure IPv6 router advertisements are not accepted (Automated)
