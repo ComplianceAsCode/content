@@ -1,0 +1,11 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="oauth_or_oauthclient_token_maxage" version="1">
+    {{{ oval_metadata("The tokan max age must be specified either per client or globally") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="global token max age" definition_ref="oauth_token_maxage" />
+      <extend_definition comment="per client token max age" definition_ref="oauthclient_token_maxage" />
+    </criteria>
+
+  </definition>
+</def-group>

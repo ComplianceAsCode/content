@@ -1,0 +1,8 @@
+# platform = multi_platform_ocp
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  tokenConfig:
+    accessTokenMaxAgeSeconds: 28800

@@ -1,0 +1,69 @@
+prodtype: ocp4
+
+title: "Configure OAuth clients so that tokens have a maximum age set"
+
+description: |-
+    <p>
+    You can configure OAuth tokens to have have a custom duration.
+    By default, the tokens are valid for 24 hours (86400 seconds).
+    </p>
+    <p>
+    The maximum age can be either set in the OAuth server
+    configuration or in any of the OAuth clients. The client settings
+    override the OAuth server setting.
+    </p>
+    <p>
+    To set the OAuth client token max age, edit the OAuth client
+    object: <tt>oc edit oauthclient $clientname</tt>
+    and set the top-level <tt>accessTokenMaxAgeSeconds</tt>
+    attribute.
+    <pre>
+    apiVersion: oauth.openshift.io/v1
+    grantMethod: auto
+    kind: OAuthClient
+    metadata:
+    ...
+    accessTokenMaxAgeSeconds: 28800
+    </pre>
+    For more information on configuring the OAuth clients, consult the
+    OpenShift documentation:
+      {{{ weblink(link="https://docs.openshift.com/container-platform/4.7/authentication/configuring-internal-oauth.html") }}}
+    </p>
+
+
+
+rationale: |-
+    Setting a token maximum age to a shorter time period reduces the window
+    of opportunity for unauthorized personnel to take control of the session.
+
+references:
+  nist: AC-12
+
+identifiers:
+    cce@ocp4: CCE-84022-3
+
+ocil_clause: 'OAuth client token max age is not configured'
+
+ocil: |-
+  To check if the OAuth client token max age is configured, run the following command:
+  <pre>oc get oauthclients -ojson | jq -r '.items[] | { accessTokenMaxAgeSeconds: .accessTokenMaxAgeSeconds}'</pre>
+  the output should return a timeout value per client.
+
+severity: medium
+
+warnings:
+    - general: |-
+        {{{ openshift_cluster_setting("/apis/oauth.openshift.io/v1/oauthclients") | indent(8) }}}
+
+template:
+    name: yamlfile_value
+    vars:
+        ocp_data: 'true'
+        filepath: /apis/oauth.openshift.io/v1/oauthclients
+        yamlpath: ".items[:].accessTokenMaxAgeSeconds"
+        check_existence_yamlpath: ".items[:].grantMethod"
+        check_existence: "all_exist"
+        entity_check: "all"
+        values:
+            - value: ".*"
+              operation: "pattern match"

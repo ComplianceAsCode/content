@@ -43,6 +43,8 @@ selections:
     - oauth_or_oauthclient_inactivity_timeout
     # AC-2, AC-7
     - ocp_idp_no_htpasswd
+    # AC-12
+    - oauth_or_oauthclient_token_maxage
 
     - ocp_allowed_registries_for_import
     - ocp_allowed_registries
