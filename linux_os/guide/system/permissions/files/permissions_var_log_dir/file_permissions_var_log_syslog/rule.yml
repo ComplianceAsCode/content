@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Verify Permissions on /var/log/syslog File'
+
+description: |-
+    {{{ describe_file_permissions(file="/var/log/syslog", perms="0640") }}}
+
+rationale: |-
+    The <tt>/var/log/syslog</tt> file contains logs of error messages in
+    the system and should only be accessed by authorized personnel.
+
+severity: medium
+
+references:
+    disa: CCI-001314
+    srg: SRG-OS-000206-GPOS-00084
+    stigid@ubuntu2004: UBTU-20-010422
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/var/log/syslog", perms="-rw-r-----") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/syslog", perms="-rw-r-----") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/syslog
+        filemode: '0640'
