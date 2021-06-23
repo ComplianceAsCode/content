@@ -820,7 +820,7 @@ selections:
 
     # RHEL-08-030740
     # remediation fails because default configuration file contains pool instead of server keyword
-#    - chronyd_or_ntpd_set_maxpoll  # not supported in RHEL9 ATM
+    # - chronyd_set_maxpoll  # Doesn't exist in RHEL9, but it should
 
     # RHEL-08-030741
 #    - chronyd_client_only  # not supported in RHEL9 ATM

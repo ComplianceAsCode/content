@@ -90,9 +90,8 @@ selections:
   - rsyslog_remote_tls_cacert
   - package_chrony_installed
   - service_chronyd_enabled
-#  - chronyd_or_ntpd_specify_multiple_servers  # not supported in RHEL9 ATM
+  # - chronyd_specify_multiple_servers
   - chronyd_specify_remote_server
-#  - service_chronyd_or_ntpd_enabled  # not supported in RHEL9 ATM
 
   ## Events to be logged
   ## Identifiers 0580 / 0584 / 0582 / 0585 / 0586 / 0846 / 0957

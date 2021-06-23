@@ -79,9 +79,9 @@ selections:
     - audit_rules_kernel_module_loading_init
     - audit_rules_immutable
     - var_multiple_time_servers=rhel
-#    - service_chronyd_or_ntpd_enabled  # not supported in RHEL9 ATM
-#    - chronyd_or_ntpd_specify_remote_server  # not supported in RHEL9 ATM
-#    - chronyd_or_ntpd_specify_multiple_servers  # not supported in RHEL9 ATM
+    - service_chronyd_enabled
+    - chronyd_specify_remote_server
+    # - chronyd_specify_multiple_servers
     - rpm_verify_permissions
     - rpm_verify_hashes
 #    - install_hids  # not supported in RHEL9 ATM
