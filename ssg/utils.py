@@ -6,6 +6,7 @@ import errno
 import os
 import re
 from collections import namedtuple
+import hashlib
 
 from .constants import (FULL_NAME_TO_PRODUCT_MAPPING,
                         MAKEFILE_ID_TO_PRODUCT_MAP,
@@ -273,6 +274,10 @@ def escape_yaml_key(text):
     # them with '^' symbol.
     # myCamelCase^Key -> my^camel^case^^^key
     return re.sub(r'([A-Z^])', '^\\1', text).lower()
+
+
+def sha256(text):
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
 
 def banner_regexify(banner_text):

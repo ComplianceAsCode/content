@@ -3,11 +3,53 @@ ocil_clause: "the required value is not set"
 {{%- endmacro %}}
 
 
+{{#
+  Macro which generates a warning indicating how to make use of a
+  Kubernetes/OpenShift-related rule. This is used by the Compliance
+  Operator to automatically figure out what resources to fetch.
+    - endpoint (String/Array): The Kubernetes object path(s) to fetch
+#}}
 {{% macro openshift_cluster_setting(endpoint) -%}}
 This rule's check operates on the cluster configuration dump.
 Therefore, you need to use a tool that can query the OCP API, retrieve the {{% if endpoint is string %}}<code class="ocp-api-endpoint">{{{ endpoint }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ endpoint.lstrip("/") }}}</code> file.{{% else %}}{{% for item in endpoint %}}<code class="ocp-api-endpoint">{{{ item }}}</code> API endpoint to the local <code class="ocp-dump-location">{{{ xccdf_value("ocp_data_root") }}}/{{{ item.lstrip("/") }}}</code> file{{% endfor %}}.{{% endif %}}
 {{%- endmacro %}}
 
+{{#
+  Macro which generates a warning indicating how to make use of a
+  Kubernetes/OpenShift-related rule as well as how to filter it. This
+  is used by the Compliance Operator to automatically figure
+  out what resources to fetch. The filtering directive can be used
+  by the jq command ( https://stedolan.github.io/jq/manual/ ).
+    - path_filter_pairs (dict): Kubernetes object path/filter directive pairs
+#}}
+{{% macro openshift_filtered_cluster_setting(path_filter_pairs) -%}}
+This rule's check operates on the cluster configuration dump.
+Therefore, you need to use a tool that can query the OCP API, retrieve the following:
+<ul>
+{{% for path, filter in path_filter_pairs.items() %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (rule_id+path+filter)|sha256 }}}">{{{ path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (rule_id+path+filter)|sha256 }}}">{{{ filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (rule_id+path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (rule_id+path+filter)|sha256 }}}</code>
+    file.
+  </li>
+{{% endfor %}}
+</ul>
+{{%- endmacro %}}
+
+{{#
+  Macro which generates a unique path for a filtered Kubernetes
+  resource. The path and the filter are used to generate a unique
+  identifier in such a way that it won't conflict with unfiltered
+  resources
+    - path (String): The Kubernetes object path to fetch
+    - filter (String): A filtering directive
+#}}
+{{% macro openshift_filtered_path(path, filter) -%}}
+{{{ path }}}#{{{ (rule_id+path+filter)|sha256 }}}
+{{%- endmacro %}}
 
 {{# Example usage: ocil_sshd_option(default="no", option="Banner", value="/etc/issue") #}}
 {{% macro ocil_sshd_option(default, option, value) -%}}
