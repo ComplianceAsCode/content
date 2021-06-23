@@ -164,6 +164,7 @@ selections:
     - dconf_gnome_screensaver_mode_blank
     - dir_ownership_library_dirs
     - dir_permissions_library_dirs
+    - dconf_gnome_screensaver_lock_enabled
     - dir_perms_world_writable_sticky_bits
     - dir_system_commands_group_root_owned
     - dir_system_commands_root_owned
