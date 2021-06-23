@@ -13,7 +13,7 @@ from ssg.build_cpe import ProductCPEs
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
-from ssg.products import load_product_yaml
+from ssg.products import product_yaml_path, load_product_yaml
 from ssg_test_suite.log import LogHelper
 
 Scenario_run = namedtuple(
@@ -25,9 +25,11 @@ Scenario_conditions = namedtuple(
 Rule = namedtuple(
     "Rule", ["directory", "id", "short_id", "files"])
 
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
 _BENCHMARK_DIRS = [
-        os.path.abspath(os.path.join(os.path.dirname(__file__), '../../linux_os/guide')),
-        os.path.abspath(os.path.join(os.path.dirname(__file__), '../../applications')),
+        os.path.abspath(os.path.join(SSG_ROOT, 'linux_os', 'guide')),
+        os.path.abspath(os.path.join(SSG_ROOT, 'applications')),
         ]
 
 _SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared'))
@@ -48,8 +50,16 @@ SSH_ADDITIONAL_OPTS = (
 ) + SSH_ADDITIONAL_OPTS
 
 
-def walk_through_benchmark_dirs():
-    for dirname in _BENCHMARK_DIRS:
+def walk_through_benchmark_dirs(product=None):
+    directories = _BENCHMARK_DIRS
+    if product is not None:
+        yaml_path = product_yaml_path(SSG_ROOT, product)
+        product_base = os.path.basename(yaml_path)
+        product_yaml = load_product_yaml(yaml_path)
+        benchmark_root = os.path.join(product_base, product_yaml['benchmark_root'])
+        directories = [os.path.abspath(benchmark_root)]
+
+    for dirname in directories:
         for dirpath, dirnames, filenames in os.walk(dirname):
             yield dirpath, dirnames, filenames
 
@@ -233,7 +243,7 @@ def _make_file_root_owned(tarinfo):
     return tarinfo
 
 
-def create_tarball():
+def create_tarball(product):
     """Create a tarball which contains all test scenarios for every rule.
     Tarball contains directories with the test scenarios. The name of the
     directories is the same as short rule ID. There is no tree structure.
@@ -242,7 +252,7 @@ def create_tarball():
             "wb", suffix=".tar.gz", delete=False) as fp:
         with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
             tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
-            for dirpath, dirnames, _ in walk_through_benchmark_dirs():
+            for dirpath, dirnames, _ in walk_through_benchmark_dirs(product):
                 rule_id = os.path.basename(dirpath)
                 if "tests" in dirnames:
                     tests_dir_path = os.path.join(dirpath, "tests")
@@ -255,7 +265,7 @@ def create_tarball():
 
 def send_scripts(test_env):
     remote_dir = REMOTE_TEST_SCENARIOS_DIRECTORY
-    archive_file = create_tarball()
+    archive_file = create_tarball(test_env.product)
     archive_file_basename = os.path.basename(archive_file)
     remote_archive_file = os.path.join(remote_dir, archive_file_basename)
     logging.debug("Uploading scripts.")
@@ -279,7 +289,7 @@ def send_scripts(test_env):
     return remote_dir
 
 
-def iterate_over_rules():
+def iterate_over_rules(product=None):
     """Iterate over rule directories which have test scenarios".
 
     Returns:
@@ -291,7 +301,7 @@ def iterate_over_rules():
                         containing the test scenarios in Bash
             files -- list of executable .sh files in the "tests" directory
     """
-    for dirpath, dirnames, filenames in walk_through_benchmark_dirs():
+    for dirpath, dirnames, filenames in walk_through_benchmark_dirs(product):
         if "rule.yml" in filenames and "tests" in dirnames:
             short_rule_id = os.path.basename(dirpath)
             tests_dir = os.path.join(dirpath, "tests")

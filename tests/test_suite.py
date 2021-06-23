@@ -51,6 +51,11 @@ def parse_args():
         help="Path to the Source DataStream on this machine which is going to be tested. "
         "If not supplied, autodetection is attempted by looking into the build directory.")
 
+    common_parser.add_argument(
+        "--product", dest="product", metavar="PRODUCT", default=None,
+        help="Product to interpret tests as being run under; autodetected from datastream "
+        "if it follows the ssg-<product>-ds*.xml naming convention.")
+
     benchmarks = common_parser.add_mutually_exclusive_group()
     benchmarks.add_argument("--xccdf-id",
                                dest="xccdf_id",
@@ -195,7 +200,15 @@ def parse_args():
                                        "in the profile will be evaluated against all its test "
                                        "scenarios."))
 
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    if not args.product and args.datastream:
+        product_regex = re.compile(r'^.*ssg-([a-zA-Z0-9]*)-(ds|ds-1\.2)\.xml$')
+        match = product_regex.match(args.datastream)
+        if match:
+            args.product = match.group(1)
+
+    return args
 
 
 def get_logging_dir(options):
@@ -319,6 +332,10 @@ def normalize_passed_arguments(options):
         logging.info(
             "The base image option has not been specified, "
             "choosing libvirt-based test environment.")
+
+    # Add in product to the test environment. This is independent of actual
+    # test environment type so we do it after creation.
+    options.test_env.product = options.product
 
     try:
         benchmark_cpes = xml_operations.benchmark_get_applicable_platforms(

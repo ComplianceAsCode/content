@@ -67,6 +67,8 @@ class TestEnv(object):
         self.domain_ip = None
         self.ssh_additional_options = []
 
+        self.product = None
+
     def start(self):
         """
         Run the environment and
