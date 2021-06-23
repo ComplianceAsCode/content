@@ -42,10 +42,10 @@ selections:
 
   ## Software firewall
   ## Identifiers 1416
-#  - configure_firewalld_ports  # not supported in RHEL9 ATM
+  - configure_firewalld_ports
   ## Removing due to build error
   ## - configure_firewalld_rate_limiting
-#  - firewalld_sshd_port_enabled  # not supported in RHEL9 ATM
+  - firewalld_sshd_port_enabled
   - set_firewalld_default_zone
 
   ## Endpoint device control software
@@ -109,7 +109,7 @@ selections:
 
   ## Network design and configuration
   ## Identifiers 1055 / 1311 
-#  - network_nmcli_permissions  # not supported in RHEL9 ATM
+  - network_nmcli_permissions
   - service_snmpd_disabled
 #  - snmpd_use_newer_protocol  # not supported in RHEL9 ATM
 

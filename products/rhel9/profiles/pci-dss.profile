@@ -84,7 +84,7 @@ selections:
     # - chronyd_specify_multiple_servers
     - rpm_verify_permissions
     - rpm_verify_hashes
-#    - install_hids  # not supported in RHEL9 ATM
+    - install_hids
     - rsyslog_files_permissions
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
@@ -125,8 +125,8 @@ selections:
 #    - service_pcscd_enabled  # not supported in RHEL9 ATM
 #    - sssd_enable_smartcards  # not supported in RHEL9 ATM
     - set_password_hashing_algorithm_systemauth
-#    - set_password_hashing_algorithm_logindefs  # not supported in RHEL9 ATM
-#    - set_password_hashing_algorithm_libuserconf  # not supported in RHEL9 ATM
+    - set_password_hashing_algorithm_logindefs
+    - set_password_hashing_algorithm_libuserconf
     - file_owner_etc_shadow
     - file_groupowner_etc_shadow
     - file_permissions_etc_shadow

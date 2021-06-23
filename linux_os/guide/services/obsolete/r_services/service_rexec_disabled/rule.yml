@@ -1,6 +1,7 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4
+# potentially outdated requirement, rsh-server may not be a RHEL9 package
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Disable rexec Service'
 
@@ -21,6 +22,7 @@ severity: high
 identifiers:
     cce@rhel7: CCE-27408-4
     cce@rhel8: CCE-80884-0
+    cce@rhel9: CCE-88104-5
 
 references:
     cis-csc: 11,12,14,15,3,8,9

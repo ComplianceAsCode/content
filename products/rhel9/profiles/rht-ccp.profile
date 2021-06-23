@@ -54,8 +54,8 @@ selections:
     - accounts_password_pam_difok
     - accounts_passwords_pam_faillock_deny
     - set_password_hashing_algorithm_systemauth
-#    - set_password_hashing_algorithm_logindefs  # not supported in RHEL9 ATM
-#    - set_password_hashing_algorithm_libuserconf  # not supported in RHEL9 ATM
+    - set_password_hashing_algorithm_logindefs
+    - set_password_hashing_algorithm_libuserconf
     - require_singleuser_auth
     - file_owner_etc_shadow
     - file_groupowner_etc_shadow
@@ -82,7 +82,7 @@ selections:
     - kernel_module_sctp_disabled
     - service_firewalld_enabled
     - set_firewalld_default_zone
-#    - firewalld_sshd_port_enabled  # not supported in RHEL9 ATM
+    - firewalld_sshd_port_enabled
     - service_abrtd_disabled
     - service_telnet_disabled
     - package_telnet-server_removed

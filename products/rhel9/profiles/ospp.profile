@@ -101,9 +101,9 @@ selections:
     - sysctl_net_ipv4_tcp_syncookies
 
     ### systemd
-#    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
-#    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
-#    - service_debug-shell_disabled  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_reboot
+    - disable_ctrlaltdel_burstaction
+    - service_debug-shell_disabled
 
     ### umask
     - var_accounts_user_umask=027
@@ -305,8 +305,8 @@ selections:
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
     - require_singleuser_auth
-#    - grub2_disable_interactive_boot  # not supported in RHEL9 ATM
-#    - grub2_uefi_password  # not supported in RHEL9 ATM
+    - grub2_disable_interactive_boot
+    - grub2_uefi_password
     - no_empty_passwords
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes

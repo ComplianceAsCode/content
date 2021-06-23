@@ -23,25 +23,25 @@ description: |-
 
 selections:
     - grub2_password
-#    - grub2_uefi_password  # not supported in RHEL9 ATM
+    - grub2_uefi_password
     - file_groupowner_grub2_cfg
     - file_permissions_grub2_cfg
     - file_owner_grub2_cfg
-#    - grub2_disable_interactive_boot  # not supported in RHEL9 ATM
+    - grub2_disable_interactive_boot
     - no_direct_root_logins
     - no_empty_passwords
     - require_singleuser_auth
     - restrict_serial_port_logins
     - securetty_root_login_console_only
-#    - service_debug-shell_disabled  # not supported in RHEL9 ATM
-#    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
-#    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
+    - service_debug-shell_disabled  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
     - dconf_db_up_to_date
     - dconf_gnome_remote_access_credential_prompt
     - dconf_gnome_remote_access_encryption
     - sshd_disable_empty_passwords
     - sshd_disable_root_login
-#    - libreswan_approved_tunnels  # not supported in RHEL9 ATM
+    - libreswan_approved_tunnels
     - no_rsh_trust_files
     - package_rsh-server_removed
     - package_talk_removed
@@ -50,12 +50,12 @@ selections:
     - package_telnet-server_removed
     - package_xinetd_removed
     - service_crond_enabled
-#    - service_rexec_disabled  # not supported in RHEL9 ATM
-#    - service_rlogin_disabled  # not supported in RHEL9 ATM
+    - service_rexec_disabled
+    - service_rlogin_disabled
     - service_telnet_disabled
     - service_xinetd_disabled
     - service_zebra_disabled
-#    - use_kerberos_security_all_exports  # not supported in RHEL9 ATM
+    - use_kerberos_security_all_exports
     - disable_host_auth
     - sshd_allow_only_protocol2
     - sshd_disable_compression

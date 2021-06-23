@@ -104,7 +104,7 @@ selections:
     # RHEL-08-010100
 
     # RHEL-08-010110
-#    - set_password_hashing_algorithm_logindefs  # not supported in RHEL9 ATM
+    - set_password_hashing_algorithm_logindefs
 
     # RHEL-08-010120
 
@@ -113,7 +113,7 @@ selections:
     - accounts_password_pam_unix_rounds_password_auth
 
     # RHEL-08-010140
-#    - grub2_uefi_password  # not supported in RHEL9 ATM
+    - grub2_uefi_password
 #    - grub2_uefi_admin_username  # not supported in RHEL9 ATM
 
     # RHEL-08-010150
@@ -874,7 +874,7 @@ selections:
     - kernel_module_firewire-core_disabled
 
     # RHEL-08-040030
-#    - configure_firewalld_ports  # not supported in RHEL9 ATM
+    - configure_firewalld_ports
 
     # RHEL-08-040060
     ### NOTE: Will be removed in V1R2
@@ -963,16 +963,16 @@ selections:
 #    - ssh_client_rekey_limit  # not supported in RHEL9 ATM
 
     # RHEL-08-040170
-#    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_reboot
 
     # RHEL-08-040171
     - dconf_gnome_disable_ctrlaltdel_reboot
 
     # RHEL-08-040172
-#    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_burstaction
 
     # RHEL-08-040180
-#    - service_debug-shell_disabled  # not supported in RHEL9 ATM
+    - service_debug-shell_disabled
 
     # RHEL-08-040190
     - package_tftp-server_removed
