@@ -1,11 +1,17 @@
 <def-group>
+  <definition class="compliance" id="password_has_interactive_users" version="1"> 
+    {{{ oval_metadata("Checks /etc/passwd for interactive users.") }}}
+    <criteria operator="AND">
+      <criterion comment="Interactive users exist." test_ref="test_has_interactive_users" negate="true"/>
+    </criteria>
+  </definition>
 
   <definition class="compliance" id="accounts_password_set_min_life_existing" version="1">
-      {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
+      {{{ oval_metadata("Passwords for existing accounts much satisfy minimum age requirements") }}}
     <criteria operator="OR" comment="Interactive users must satisfy the requirement">
-      <criterion comment="Interactive users exist." test_ref="test_has_interactive_users" negate="true"/>
+      <extend_definition definition_ref="password_has_interactive_users" />
       <criteria operator="AND">
-          <criterion comment="Passwords must be a restricted to the appropriate maximum age for existing accounts." test_ref="test_password_min_life_existing" />
+          <criterion comment="Passwords must be a restricted to the appropriate minimum age for existing accounts." test_ref="test_password_min_life_existing" />
           <criterion comment="Passwords must have a minimum lifetime less than or equal to the defined maximum." test_ref="test_password_min_life_existing_maximum" />
         <criterion comment="Passwords must not not have a blank max life for existing accounts." test_ref="test_password_min_life_existing_blank" />
       </criteria>
