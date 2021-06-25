@@ -19,18 +19,18 @@
   </definition>
 
   <!-- import XCCDF variable for filepath -->
-  {{% if FILEPATH_XCCDF_VARIABLE %}}}
+  {{% if FILEPATH_XCCDF_VARIABLE %}}
   <external_variable comment="filepath_variable" datatype="string" id="{{{ FILEPATH_XCCDF_VARIABLE }}}" version="1" />
-  {{% endif %}}}
+  {{% endif %}}
   <local_variable id="{{{ rule_id }}}_file_location" datatype="string" comment="The actual path of the file to scan." version="1">
     {{% if OCP_DATA %}}
     <concat>
       <variable_component var_ref="ocp_data_root"/>
-      {{% if FILEPATH_XCCDF_VARIABLE %}}}
+      {{% if FILEPATH_XCCDF_VARIABLE %}}
       <variable_component var_ref="{{{ FILEPATH_XCCDF_VARIABLE }}}"/>
-      {{% else %}}}
+      {{% else %}}
       <literal_component>{{{ FILEPATH }}}</literal_component>
-      {{% endif %}}}
+      {{% endif %}}
     </concat>
     {{% else %}}
     <literal_component>{{{ FILEPATH }}}</literal_component>
