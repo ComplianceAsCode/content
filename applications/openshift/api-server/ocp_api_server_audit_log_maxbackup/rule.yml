@@ -44,7 +44,7 @@ ocil: |-
 
 warnings:
   - general: |-
-      {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-apiserver/configmaps/config") | indent(4) }}}
+      {{{ openshift_resource_path_xccdf("var_openshift_apiserver_config") | indent(4)}}}
 
 template:
   name: yamlfile_value
