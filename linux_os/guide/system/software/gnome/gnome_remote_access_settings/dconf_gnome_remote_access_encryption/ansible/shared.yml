@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 Encryption for Remote Access"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/Vino/require-encryption'
+    regexp: '^/org/gnome/Vino/require-encryption$'
     line: '/org/gnome/Vino/require-encryption'
     create: yes
 

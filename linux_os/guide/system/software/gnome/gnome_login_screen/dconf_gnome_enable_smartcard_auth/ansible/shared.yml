@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 disablement of Smartcard Authentication"
   lineinfile:
     path: /etc/dconf/db/gdm.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/login-screen/enable-smartcard-authentication'
+    regexp: '^/org/gnome/login-screen/enable-smartcard-authentication$'
     line: '/org/gnome/login-screen/enable-smartcard-authentication'
     create: yes
 

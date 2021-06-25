@@ -6,7 +6,7 @@
 - name: "Prevent user modification of GNOME Screensaver idle-activation-enabled"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/screensaver/idle-activation-enabled'
+    regexp: '^/org/gnome/desktop/screensaver/idle-activation-enabled$'
     line: '/org/gnome/desktop/screensaver/idle-activation-enabled'
     create: yes
 

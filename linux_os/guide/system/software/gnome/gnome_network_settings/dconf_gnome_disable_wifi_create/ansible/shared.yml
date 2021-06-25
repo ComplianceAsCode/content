@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 disablement of WiFi"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/nm-applet/disable-wifi-create'
+    regexp: '^/org/gnome/nm-applet/disable-wifi-create$'
     line: '/org/gnome/nm-applet/disable-wifi-create'
     create: yes
 

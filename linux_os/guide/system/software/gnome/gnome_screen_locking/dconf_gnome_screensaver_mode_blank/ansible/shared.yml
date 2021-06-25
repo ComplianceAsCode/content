@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME picture-uri"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/screensaver/picture-uri'
+    regexp: '^/org/gnome/desktop/screensaver/picture-uri$'
     line: '/org/gnome/desktop/screensaver/picture-uri'
     create: yes
 
