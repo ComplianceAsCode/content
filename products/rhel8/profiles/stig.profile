@@ -50,6 +50,7 @@ selections:
     - var_password_pam_retry=3
     - var_password_pam_minlen=15
     - var_sshd_set_keepalive=0
+    - sshd_approved_macs=stig
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_passwords_pam_faillock_deny=3
     - var_accounts_passwords_pam_faillock_fail_interval=900
@@ -174,10 +175,16 @@ selections:
     # RHEL-08-010260
     - file_groupowner_var_log
 
+    # *** SHARED *** #
     # RHEL-08-010290 && RHEL-08-010291
-    ### NOTE: This will get split out in future STIG releases, as well as we will break
-    ### these rules up to be more flexible in meeting the requirements.
+    # *** SHARED *** #
     - configure_ssh_crypto_policy
+
+    # RHEL-08-010290
+    - harden_sshd_macs_openssh_conf_crypto_policy
+    #- harden_sshd_macs_opensshserver_conf_crypto_policy
+
+    # RHEL-08-010291
 
     # RHEL-08-010292
     - sshd_use_strong_rng

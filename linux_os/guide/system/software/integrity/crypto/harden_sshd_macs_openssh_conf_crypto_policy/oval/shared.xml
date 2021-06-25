@@ -1,0 +1,31 @@
+{{%- set PATH = "/etc/crypto-policies/back-ends/openssh.config" -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.") }}}
+    <criteria operator="AND" comment="Test conditions - presence of the file plus.">
+      <criterion comment="Check that {{{ PATH }}} contains FIPS-approved SSHD MACs" test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="test the value of MACs setting in the {{{ PATH }}} file"
+  id="test_{{{ rule_id }}}" version="1">
+  <ind:object object_ref="obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ PATH }}}</ind:filepath>
+    <ind:pattern var_ref="sshd_macs_crypto_regex" operation="pattern match"></ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="sshd_macs_crypto_regex" datatype="string" comment="The regex of the directive" version="1">
+    <concat>
+      <literal_component>^MACs[\s]</literal_component>
+      <variable_component var_ref="sshd_approved_macs"/>
+      <literal_component>$</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="SSH Approved MACs by FIPS" datatype="string" id="sshd_approved_macs" version="1" />
+</def-group>
