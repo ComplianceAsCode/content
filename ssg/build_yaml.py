@@ -1080,20 +1080,30 @@ class Rule(object):
         self.cpe_names = set()
         self.inherited_platforms = [] # platforms inherited from the group
         self.template = None
+        self.local_env_yaml = None
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
         yaml_file = os.path.normpath(yaml_file)
 
-        yaml_contents = open_and_macro_expand(yaml_file, env_yaml)
-        if yaml_contents is None:
-            return None
-
         rule_id, ext = os.path.splitext(os.path.basename(yaml_file))
         if rule_id == "rule" and ext == ".yml":
             rule_id = get_rule_dir_id(yaml_file)
 
+        local_env_yaml = None
+        if env_yaml:
+            local_env_yaml = dict()
+            local_env_yaml.update(env_yaml)
+            local_env_yaml["rule_id"] = rule_id
+
+        yaml_contents = open_and_macro_expand(yaml_file, local_env_yaml)
+        if yaml_contents is None:
+            return None
+
         rule = cls(rule_id)
+
+        if local_env_yaml:
+            rule.local_env_yaml = local_env_yaml
 
         try:
             rule._set_attributes_from_dict(yaml_contents)
