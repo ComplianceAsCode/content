@@ -39,6 +39,7 @@ ocil: |-
     Run the following command:
     <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-client-certificate"]'</pre>
     The output should return <tt>/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt</tt>
+    or <tt>/etc/kubernetes/static-pod-certs/secrets/kubelet-client/tls.crt</tt>
 
 warnings:
 - general: |-
@@ -52,6 +53,6 @@ template:
     filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
     yamlpath: '.data["config.yaml"]'
     values:
-    - value: '"kubelet-client-certificate":\["/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.crt"\]'
+    - value: '"kubelet-client-certificate":\["/etc/kubernetes/static-pod-(resources|certs)/secrets/kubelet-client/tls.crt"\]'
       type: "string"
       operation: "pattern match"
