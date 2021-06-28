@@ -41,6 +41,14 @@ selections:
     - directory_permissions_var_log_kube_audit
     - file_ownership_var_log_kube_audit
     - file_permissions_var_log_kube_audit
+    - directory_access_var_log_ocp_audit
+    - directory_permissions_var_log_ocp_audit
+    - file_ownership_var_log_ocp_audit
+    - file_permissions_var_log_ocp_audit
+    - directory_access_var_log_oauth_audit
+    - directory_permissions_var_log_oauth_audit
+    - file_ownership_var_log_oauth_audit
+    - file_permissions_var_log_oauth_audit
 
     # CM-6 CONFIGURATION SETTINGS
     # CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION

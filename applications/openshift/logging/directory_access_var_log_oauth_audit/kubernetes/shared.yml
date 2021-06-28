@@ -1,0 +1,11 @@
+---
+# platform = multi_platform_ocp,multi_platform_rhcos
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+#
+{{% macro rhcos_access_var_log_oauth_audit_rules() -%}}
+-a always,exit -F dir=/var/log/oauth-apiserver/ -F perm=r -F auid>={{{ auid }}} -F auid!=unset -F key=access-audit-trail
+{{% endmacro %}}
+{{{ kubernetes_machine_config_file(path='/etc/audit/rules.d/30-access-var-log-oauth-audit.rules', file_permissions_mode='0600', source=rhcos_access_var_log_oauth_audit_rules()) }}}
