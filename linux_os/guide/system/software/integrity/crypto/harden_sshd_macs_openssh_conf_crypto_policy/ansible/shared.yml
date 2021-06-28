@@ -9,7 +9,7 @@
         msg='Configure SSH Daemon to Use FIPS 140-2 Validated MACs: openssh.config',
         file='/etc/crypto-policies/back-ends/openssh.config',
         parameter='MACs',
-        value="{{ sshd_approved_macs}}",
+        value="{{ sshd_approved_macs }}",
         create='yes',
         prefix_regex='^.*'
     )

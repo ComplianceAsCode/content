@@ -10,20 +10,24 @@
   <ind:textfilecontent54_test check="all"
   comment="test the value of MACs setting in the {{{ PATH }}} file"
   id="test_{{{ rule_id }}}" version="1">
-  <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="ste_{{{ rule_id }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ PATH }}}</ind:filepath>
-    <ind:pattern var_ref="sshd_macs_crypto_regex" operation="pattern match"></ind:pattern>
+    <ind:pattern operation="pattern match">^MACs.*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <local_variable id="sshd_macs_crypto_regex" datatype="string" comment="The regex of the directive" version="1">
+  <ind:textfilecontent54_state id="ste_{{{ rule_id }}}" version="1">
+    <ind:text var_ref="sshd_macs_crypto" operation="equals"></ind:text>
+  </ind:textfilecontent54_state>
+
+  <local_variable id="sshd_macs_crypto" datatype="string" comment="The regex of the directive" version="1">
     <concat>
-      <literal_component>^MACs[\s]</literal_component>
+      <literal_component>MACs </literal_component>
       <variable_component var_ref="sshd_approved_macs"/>
-      <literal_component>$</literal_component>
     </concat>
   </local_variable>
 
