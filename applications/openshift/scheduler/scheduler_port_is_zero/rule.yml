@@ -32,13 +32,14 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod") | indent(4) }}}
+    {{{ openshift_resource_path_xccdf("var_openshift_kube_scheduler_pod") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: /api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod
+    filepath_xccdf_variable: var_openshift_kube_scheduler_pod
     yamlpath: '.data["pod.yaml"]'
     values:
     - value: '"--port=0",'
