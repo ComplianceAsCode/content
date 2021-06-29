@@ -239,6 +239,7 @@ selections:
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs
     - sshd_use_priv_separation
+    - sshd_x11_use_localhost
     - sssd_offline_cred_expiration
     - sudo_remove_no_authenticate
     - sudo_remove_nopasswd

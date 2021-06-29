@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12
 
 title: 'Prevent remote hosts from connecting to the proxy display'
 
@@ -23,6 +23,7 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-83404-4
     cce@rhel8: CCE-84058-7
+    cce@sle12: CCE-83228-7
 
 references:
     srg: SRG-OS-000480-GPOS-00227
@@ -31,6 +32,7 @@ references:
     disa: CCI-000366
     nist: CM-6(b)
     stigid@rhel8: RHEL-08-040341
+    stigid@sle12: SLES-12-030261
 
 ocil_clause: "the display proxy is listening on wildcard address"
 
