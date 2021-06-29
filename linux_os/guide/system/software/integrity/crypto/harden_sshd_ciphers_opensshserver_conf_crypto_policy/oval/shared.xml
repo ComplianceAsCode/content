@@ -1,7 +1,7 @@
 {{%- set PATH = "/etc/crypto-policies/back-ends/opensshserver.config" -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Limit the Message Authentication Codes (Ciphers) to those which are FIPS-approved.") }}}
+    {{{ oval_metadata("Limit the Ciphers to those which are FIPS-approved.") }}}
     <criteria operator="AND" comment="Test conditions - presence of the file plus.">
       <criterion comment="Check that {{{ PATH }}} contains FIPS-approved SSHD Ciphers" test_ref="test_{{{ rule_id }}}" />
     </criteria>

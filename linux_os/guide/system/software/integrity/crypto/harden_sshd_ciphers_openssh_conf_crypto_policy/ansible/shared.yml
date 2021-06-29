@@ -6,7 +6,7 @@
 {{{ ansible_instantiate_variables("sshd_approved_ciphers") }}}
 
 {{{ ansible_set_config_file(
-        msg='Configure SSH Daemon to Use FIPS 140-2 Validated MACs: openssh.config',
+        msg='Configure SSH Daemon to Use FIPS 140-2 Validated Ciphers: openssh.config',
         file='/etc/crypto-policies/back-ends/openssh.config',
         parameter='Ciphers',
         value="{{ sshd_approved_ciphers }}",
