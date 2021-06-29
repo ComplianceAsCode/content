@@ -260,6 +260,7 @@ selections:
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
     - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv4_tcp_syncookies
+    - sysctl_net_ipv6_conf_all_accept_redirects
     - sysctl_net_ipv6_conf_all_accept_source_route
     - sysctl_net_ipv6_conf_default_accept_redirects
     - vlock_installed
