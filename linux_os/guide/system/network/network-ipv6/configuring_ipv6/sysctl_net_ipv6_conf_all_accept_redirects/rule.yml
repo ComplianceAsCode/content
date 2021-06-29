@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,sle12
 
 title: 'Disable Accepting ICMP Redirects for All IPv6 Interfaces'
 
@@ -16,6 +16,7 @@ identifiers:
     cce@rhel9: CCE-84125-4
     cce@rhcos4: CCE-82471-4
     cce@sle15: CCE-85708-6
+    cce@sle12: CCE-83246-9
 
 references:
     anssi: BP28(R22)
@@ -23,8 +24,7 @@ references:
     cis@rhel8: 3.3.2
     cui: 3.1.20
     disa: CCI-000366,CCI-001551
-    nist: CM-7(a),CM-7(b),CM-6(a)
-    nist@sle15: CM-6(b),CM-6.1(iv)
+    nist: CM-7(a),CM-7(b),CM-6(a),CM-6(b),CM-6.1(iv)
     nist-csf: PR.IP-1,PR.PT-3
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7,SR 7.6'
     isa-62443-2009: 4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.2,4.3.4.3.3
@@ -33,6 +33,7 @@ references:
     cis-csc: 11,14,3,9
     srg: SRG-OS-000480-GPOS-00227
     stigid@sle15: SLES-15-040341
+    stigid@sle12: SLES-12-030363
     stigid@rhel8: RHEL-08-040280
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_redirects", value="0") }}}
