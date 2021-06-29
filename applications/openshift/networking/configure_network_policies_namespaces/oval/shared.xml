@@ -1,0 +1,94 @@
+<def-group>
+{{% set networkpolicies_api_path = '/apis/networking.k8s.io/v1/networkpolicies?limit=500' %}}
+{{% set namespaces_api_path = '/api/v1/namespaces?limit=500' %}}
+{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
+  <definition class="compliance" id="configure_network_policies_namespaces" version="1">
+    {{{ oval_metadata("Ensure that application Namespaces have Network Policies defined") }}}
+    <criteria>
+      <criterion comment="Make sure that the file '{{{ openshift_filtered_path(networkpolicies_api_path, networkpolicies_for_non_ctlplane_namespaces_filter) }}} exists."
+                 test_ref="test_file_for_configure_network_policies_namespaces"/>
+      <criterion comment="Make sure that the file '{{{ openshift_filtered_path(namespaces_api_path, non_ctlplane_namespaces_filter) }}}' exists."
+                 test_ref="test_file_for_configure_network_policies_filtered_namespaces"/>
+      <criterion comment="Make sure that all target elements exists for elements at path &#39;.items[:].spec.host&#39;"
+                 test_ref="test_elements_count_for_configure_network_policies_namespaces"/>
+    </criteria>
+  </definition>
+
+  <!-- OCP object file locations -->
+  <local_variable id="configure_network_policies_namespaces_file_location" datatype="string"
+                  comment="Path of file containing filtered non-ctlplane namespaces with network policies." version="1">
+    <concat>
+      <variable_component var_ref="ocp_data_root"/>
+      <literal_component>{{{ openshift_filtered_path(networkpolicies_api_path, networkpolicies_for_non_ctlplane_namespaces_filter) }}}</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="configure_network_policies_filtered_namespaces_file_location" datatype="string"
+                  comment="Path of file containing filtered non-ctlplane namespaces." version="1">
+    <concat>
+      <variable_component var_ref="ocp_data_root"/>
+      <literal_component>{{{ openshift_filtered_path(namespaces_api_path, non_ctlplane_namespaces_filter) }}}</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- File existence checks -->
+  <unix:file_test id="test_file_for_configure_network_policies_namespaces" check="all" check_existence="only_one_exists"
+    comment="Find the file to be checked ('{{{ openshift_filtered_path(networkpolicies_api_path, networkpolicies_for_non_ctlplane_namespaces_filter) }}}')." version="1">
+    <unix:object object_ref="object_file_for_configure_network_policies_namespaces"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_file_for_configure_network_policies_namespaces" version="1">
+    <unix:filepath var_ref="configure_network_policies_namespaces_file_location"/>
+  </unix:file_object>
+
+  <unix:file_test id="test_file_for_configure_network_policies_filtered_namespaces" check="all" check_existence="only_one_exists"
+    comment="Find the file to be checked ('{{{ openshift_filtered_path(namespaces_api_path, non_ctlplane_namespaces_filter) }}}')." version="1">
+    <unix:object object_ref="object_file_for_configure_network_policies_filtered_namespaces"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_file_for_configure_network_policies_filtered_namespaces" version="1">
+    <unix:filepath var_ref="configure_network_policies_filtered_namespaces_file_location"/>
+  </unix:file_object>
+
+  <!-- Object gathering --> 
+  <ind:yamlfilecontent_object id="object_configure_network_policies_namespaces" version="1">
+    <ind:filepath var_ref="configure_network_policies_namespaces_file_location"/>
+    <ind:yamlpath>[:]</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+  <local_variable comment="Items counter" datatype="int" id="local_variable_counter_configure_network_policies_namespaces" version="1">
+    <count>
+      <object_component object_ref="object_configure_network_policies_namespaces" item_field="value" record_field="#"/>
+    </count>
+  </local_variable>
+
+  <ind:yamlfilecontent_object id="object_configure_network_policies_filtered_namespaces" version="1">
+    <ind:filepath var_ref="configure_network_policies_filtered_namespaces_file_location"/>
+    <ind:yamlpath>[:].metadata.name</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+  <local_variable comment="Items counter control" datatype="int" id="local_variable_counter_configure_network_policies_filtered_namespaces" version="1">
+    <count>
+      <object_component object_ref="object_configure_network_policies_filtered_namespaces" item_field="value" record_field="#"/>
+    </count>
+  </local_variable>
+  
+  <!-- Object counts -->
+  <ind:variable_test version="1" id="test_elements_count_for_configure_network_policies_namespaces" check="all"
+    comment="Count elements at both paths and compare">
+    <ind:object object_ref="object_elements_count_for_configure_network_policies_namespaces"/>
+    <ind:state state_ref="state_elements_count_for_configure_network_policies_namespaces"/>
+  </ind:variable_test>
+  
+  <ind:variable_object id="object_elements_count_for_configure_network_policies_namespaces" version="1">
+    <ind:var_ref>local_variable_counter_configure_network_policies_namespaces</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Comparison -->
+  <!-- This verifies that the filtered namespaces are equal to the namespaces with NetworkPolicies -->
+  <ind:variable_state id="state_elements_count_for_configure_network_policies_namespaces" version="1">
+    <ind:value var_ref="local_variable_counter_configure_network_policies_filtered_namespaces"/>
+  </ind:variable_state>
+  
+  <!-- OCP data root declaration -->
+  <external_variable comment="Root of OCP data dump" datatype="string" id="ocp_data_root" version="1" />
+</def-group>

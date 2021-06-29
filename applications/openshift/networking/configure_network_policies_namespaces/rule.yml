@@ -17,13 +17,32 @@ rationale: |-
 
 severity: high
 
+references:
+    cis@ocp4: 5.3.2
+    nist: AC-4,AC-4(21),CA-3(5),CM-6,CM-6(1),CM-7,CM-7(1),SC-7(3),SC-7(5),SC-7(8),SC-7(12),SC-7(13),SC-7(18)
+
+{{% set networkpolicies_api_path = '/apis/networking.k8s.io/v1/networkpolicies?limit=500' %}}
+{{% set namespaces_api_path = '/api/v1/namespaces?limit=500' %}}
+{{% set networkpolicies_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
+
 ocil_clause: 'Namespaced Network Policies needs review'
 
 ocil: |-
-    Verify on OpenShift namespaces that network policies are in use:
-    <pre>$ oc get networkpolicy --all-namespaces</pre>
-    Ensure that each namespace defined in the cluster has at least one NetworkPolicy.
+    Verify that the every non-control plane namespace has an appropriate
+    NetworkPolicy.
 
-references:
-    cis@ocp4: 5.3.2
-    nist: CM-6,CM-6(1)
+    To get all the non-control plane namespaces, you can do the
+    following command <tt>{{{ ocil_oc_pipe_jq_filter('namespaces', non_ctlplane_namespaces_filter) }}}</tt>
+
+    To get all the non-control plane namespaces with a NetworkPolicy, you can do the
+    following command <tt>{{{ ocil_oc_pipe_jq_filter('networkpolicies', networkpolicies_for_non_ctlplane_namespaces_filter, all_namespaces=true) }}}</tt>
+
+    Make sure that the namespaces displayed in the commands of the commands match.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({
+            networkpolicies_api_path: networkpolicies_for_non_ctlplane_namespaces_filter,
+            namespaces_api_path: non_ctlplane_namespaces_filter,
+        }) | indent(4) }}}
