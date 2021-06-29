@@ -37,7 +37,7 @@ ocil: |-
 
 warnings:
     - general: |-
-        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-etcd/configmaps/etcd-pod") | indent(8) }}}
+        {{{ openshift_resource_path_xccdf("var_openshift_etcd_pod") | indent(8) }}}
 
 
 template:
@@ -45,6 +45,7 @@ template:
     vars:
         ocp_data: "true"
         filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
+        filepath_xccdf_variable: var_openshift_etcd_pod
         yamlpath: ".data['pod.yaml']"
         values:
           - value: ".*--client-cert-auth=true \\.*"
