@@ -51,13 +51,14 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/apps/v1/namespaces/openshift-sdn/daemonsets/sdn") | indent(4) }}}
+    {{{ openshift_resource_path_xccdf("var_openshift_sdn_daemonsets_sdn") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: /apis/apps/v1/namespaces/openshift-sdn/daemonsets/sdn
+    filepath_xccdf_variable: var_openshift_sdn_daemonsets_sdn
     yamlpath: spec.template.spec.volumes[:].configMap['defaultMode','name']
     entity_check: "at least one"
     values:
