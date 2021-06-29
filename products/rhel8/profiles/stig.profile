@@ -244,6 +244,10 @@ selections:
     # RHEL-08-010383
     - sudoers_validate_passwd
 
+    # RHEL-08-010384
+    - sudo_require_reauthentication
+    - var_sudo_timestamp_timeout=always_prompt
+
     # RHEL-08-010390
     - install_smartcard_packages
 

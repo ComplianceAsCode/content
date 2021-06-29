@@ -23,7 +23,7 @@ if /usr/sbin/visudo -qcf /etc/sudoers; then
             {{% if '/' in OPTION %}}
             {{{ raise("OPTION (" + OPTION + ") uses sed path separator (/) in " + rule_id) }}}
             {{% endif %}}
-            sed -Ei "s/(^[\s]*Defaults.*\b{{{ OPTION }}}=)\w+(\b.*$)/\1{{{ '${' ~ VARIABLE_NAME ~ '}' }}}\2/" /etc/sudoers
+            sed -Ei "s/(^[\s]*Defaults.*\b{{{ OPTION }}}=)[-]?\w+(\b.*$)/\1{{{ '${' ~ VARIABLE_NAME ~ '}' }}}\2/" /etc/sudoers
         fi
     fi
     {{% endif %}}

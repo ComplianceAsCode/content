@@ -260,6 +260,7 @@ selections:
 - sssd_offline_cred_expiration
 - sudo_remove_no_authenticate
 - sudo_remove_nopasswd
+- sudo_require_reauthentication
 - sudo_restrict_privilege_elevation_to_authorized
 - sudoers_validate_passwd
 - sysctl_crypto_fips_enabled
@@ -334,4 +335,5 @@ selections:
 - var_auditd_max_log_file_action=syslog
 - var_auditd_disk_full_action=halt
 - var_system_crypto_policy=fips
+- var_sudo_timestamp_timeout=always_prompt
 title: DISA STIG for Red Hat Enterprise Linux 8
