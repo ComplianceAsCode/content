@@ -1,0 +1,62 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8
+
+title: 'Configure SSH Daemon to Use FIPS 140-2 Validated Ciphers: openssh.config'
+
+description: |-
+    Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
+    OpenSSH is supported by system crypto policy, but the OpenSSH configuration may be
+    set up incorrectly.
+
+    To check that Crypto Policies settings for ciphers are configured correctly, ensure that
+    <tt>/etc/crypto-policies/back-ends/openssh.config</tt> contains the following
+    line and is not commented out:
+    <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
+
+rationale: |-
+    Overriding the system crypto policy makes the behavior of the OpenSSH daemon
+    violate expectations, and makes system configuration more fragmented. By
+    specifying a cipher list with the order of ciphers being in a “strongest to
+    weakest” orientation, the system will automatically attempt to use the
+    strongest cipher for securing SSH connections.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85870-4
+
+references:
+    nist: AC-17(2)
+    srg: SRG-OS-000250-GPOS-00093
+    disa: CCI-001453
+    stigid@rhel8: RHEL-08-010291
+
+ocil_clause: 'Crypto Policy for OpenSSH Server is not configured correctly'
+
+ocil: |-
+    To verify if the OpenSSH daemon uses defined Cipher suite in the Crypto Policy, run:
+    <pre>$ grep -i ciphers /etc/crypto-policies/back-ends/openssh.config</pre>
+    and verify that the line matches:
+    <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.
