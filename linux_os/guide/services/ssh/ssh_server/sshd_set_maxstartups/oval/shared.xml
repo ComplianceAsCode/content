@@ -60,12 +60,4 @@
     <ind:object object_ref="obj_sshd_config_maxstartups_third_parameter" />
     <ind:state state_ref="ste_sshd_config_full_parameter_valid" />
   </ind:textfilecontent54_test>
-
-  <local_variable id="variable_sshd_config_maxstartups" datatype="int"
-  comment="Value of last MaxStartups from /etc/ssh/sshd_config" version="1">
-    <regex_capture pattern="^\s*MaxStartups\s+(\d+:\d+:\d+\s*$(?!\s*MaxStartups\s+(\d+:\d+:\d+\s*$)))">
-      <object_component item_field="subexpression"
-      object_ref="object_last_maxstartups_from_sshd_config" />
-    </regex_capture>
-  </local_variable>
 </def-group>
