@@ -182,7 +182,7 @@ selections:
 
     # RHEL-08-010290
     - harden_sshd_macs_openssh_conf_crypto_policy
-    #- harden_sshd_macs_opensshserver_conf_crypto_policy
+    - harden_sshd_macs_opensshserver_conf_crypto_policy
 
     # RHEL-08-010291
 

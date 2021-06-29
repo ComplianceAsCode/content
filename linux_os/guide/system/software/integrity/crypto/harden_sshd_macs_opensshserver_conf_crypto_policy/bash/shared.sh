@@ -1,9 +1,25 @@
-# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 8,multi_platform_fedora
+. /usr/share/scap-security-guide/remediation_functions
+{{{ bash_instantiate_variables("sshd_approved_macs") }}}
 
-cp="CRYPTO_POLICY='-oCiphers=aes256-ctr,aes128-ctr,aes256-cbc,aes128-cbc -oMACs=hmac-sha2-512,hmac-sha2-256 -oGSSAPIKeyExchange=no -oKexAlgorithms=ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1 -oHostKeyAlgorithms=ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256 -oPubkeyAcceptedKeyTypes=rsa-sha2-512,rsa-sha2-256,ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256'"
-file=/etc/crypto-policies/local.d/opensshserver-ospp.config
+CONF_FILE=/etc/crypto-policies/back-ends/opensshserver.config
+correct_value="-oMACs=${sshd_approved_macs}"
 
-#blank line at the begining to ease later readibility
-echo '' > "$file"
-echo "$cp" >> "$file"
-update-crypto-policies
+grep -q ${correct_value} ${CONF_FILE}
+
+if [[ $? -ne 0 ]]; then
+    # We need to get the existing value, using PCRE to maintain same regex
+    existing_value=$(grep -Po '(-oMACs=\S+)' ${CONF_FILE})
+
+    if [[ ! -z ${existing_value} ]]; then
+        # replace existing_value with correct_value
+        sed -i "s/${existing_value}/${correct_value}/g" ${CONF_FILE}
+    else
+        # ***NOTE*** #
+        # This probably means this file is not here or it's been modified
+        # unintentionally.
+        # ********** #
+        # echo correct_value to end
+        echo ${correct_value} >> ${CONF_FILE}
+    fi
+fi

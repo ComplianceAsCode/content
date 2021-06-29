@@ -1,1 +1,35 @@
-{{{ oval_check_config_file(path="/etc/crypto-policies/back-ends/opensshserver.config", prefix_regex="^(?:.*\\n)*\s*", parameter="CRYPTO_POLICY", value="'-oCiphers=aes256-ctr,aes128-ctr,aes256-cbc,aes128-cbc -oMACs=hmac-sha2-512,hmac-sha2-256 -oGSSAPIKeyExchange=no -oKexAlgorithms=ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1 -oHostKeyAlgorithms=ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256 -oPubkeyAcceptedKeyTypes=rsa-sha2-512,rsa-sha2-256,ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256'", separator_regex="=", application="sshd") }}}
+{{%- set PATH = "/etc/crypto-policies/back-ends/opensshserver.config" -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.") }}}
+    <criteria operator="AND" comment="Test conditions - presence of the file plus.">
+      <criterion comment="Check that {{{ PATH }}} contains FIPS-approved SSHD MACs" test_ref="test_{{{ rule_id }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all"
+  comment="test the value of MACs setting in the {{{ PATH }}} file"
+  id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="ste_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ PATH }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^.*(-oMACs=\S+).*$</ind:pattern>
+    <ind:instance operation="equals" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="ste_{{{ rule_id }}}" version="1">
+    <ind:subexpression var_ref="sshd_macs_crypto_opensshserver" operation="equals" />
+  </ind:textfilecontent54_state>
+
+  <local_variable id="sshd_macs_crypto_opensshserver" datatype="string" comment="The regex of the directive" version="1">
+    <concat>
+      <literal_component>-oMACs=</literal_component>
+      <variable_component var_ref="sshd_approved_macs"/>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="SSH Approved MACs by FIPS" datatype="string" id="sshd_approved_macs" version="1" />
+</def-group>

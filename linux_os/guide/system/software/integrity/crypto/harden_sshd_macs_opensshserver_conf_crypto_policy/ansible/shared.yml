@@ -1,0 +1,45 @@
+# platform = Red Hat Enterprise Linux 8,multi_platform_fedora
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("sshd_approved_macs") }}}
+
+- name: "{{{ rule_title }}}: Set facts"
+  set_fact:
+    path: /etc/crypto-policies/back-ends/opensshserver.config
+    correct_value: "-oMACs={{ sshd_approved_macs }}"
+
+- name: "{{{ rule_title }}}: Stat"
+  stat:
+    path: "{{ path }}"
+    follow: yes
+  register: opensshserver_file
+
+- name: "{{{ rule_title }}}: Create"
+  lineinfile:
+    path: "{{ path }}"
+    line: "{{ correct_value }}"
+    create: yes
+  when: not opensshserver_file.stat.exists or opensshserver_file.stat.size <= correct_value|length
+
+- name: "{{{ rule_title }}}"
+  block:
+    - name: "Existing value check"
+      lineinfile:
+        path: "{{ path }}"
+        create: false
+        regexp: "{{ correct_value }}"
+        state: absent
+      check_mode: true
+      changed_when: false
+      register: opensshserver
+
+    - name: "Update/Correct value"
+      replace:
+        path: "{{ path }}"
+        regexp: (-oMACs=\S+)
+        replace: "{{ correct_value }}"
+      when: opensshserver.found is defined and opensshserver.found != 1
+
+  when: opensshserver_file.stat.exists and opensshserver_file.stat.size > correct_value|length
