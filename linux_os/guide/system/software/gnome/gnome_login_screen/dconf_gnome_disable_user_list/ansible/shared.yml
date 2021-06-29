@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 disablement of Login User List"
   lineinfile:
     path: /etc/dconf/db/gdm.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/login-screen/disable-user-list'
+    regexp: '^/org/gnome/login-screen/disable-user-list$'
     line: '/org/gnome/login-screen/disable-user-list'
     create: yes
 

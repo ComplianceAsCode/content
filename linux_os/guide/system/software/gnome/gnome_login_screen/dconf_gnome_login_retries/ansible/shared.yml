@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME3 Login Number of Failures"
   lineinfile:
     path: /etc/dconf/db/gdm.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/login-screen/allowed-failures'
+    regexp: '^/org/gnome/login-screen/allowed-failures$'
     line: '/org/gnome/login-screen/allowed-failures'
     create: yes
 

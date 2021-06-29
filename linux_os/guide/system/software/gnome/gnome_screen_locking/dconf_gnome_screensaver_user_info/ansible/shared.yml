@@ -15,7 +15,7 @@
 - name: "Prevent user modification of GNOME show-full-name-in-top-bar"
   lineinfile:
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/screensaver/show-full-name-in-top-bar'
+    regexp: '^/org/gnome/desktop/screensaver/show-full-name-in-top-bar$'
     line: '/org/gnome/desktop/screensaver/show-full-name-in-top-bar'
     create: yes
 
