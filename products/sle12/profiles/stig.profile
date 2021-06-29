@@ -247,6 +247,7 @@ selections:
     - sudo_remove_no_authenticate
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
+    - sudoers_validate_passwd
     - susefirewall2_ddos_protection
     - susefirewall2_only_required_services
     - sysctl_kernel_kptr_restrict
