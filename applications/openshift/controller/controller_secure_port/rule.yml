@@ -46,13 +46,14 @@ references:
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+    {{{ openshift_resource_path_xccdf("var_openshift_kube_controller_manager_config") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
+    filepath_xccdf_variable: var_openshift_kube_controller_manager_config
     yamlpath: '.data["config.yaml"]'
     values:
     - value: '(\"secure-port\":\[\"10257\"\])'
