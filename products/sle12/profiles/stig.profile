@@ -192,6 +192,7 @@ selections:
     - no_empty_passwords
     - no_files_unowned_by_user
     - no_host_based_files
+    - no_shelllogin_for_systemaccounts
     - no_user_host_based_files
     - package_aide_installed
     - package_audit-audispd-plugins_installed
