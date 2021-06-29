@@ -36,13 +36,14 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance") | indent(4) }}}
+    {{{ openshift_resource_path_xccdf("var_openshift_logging_clusterlogforwarders_instance") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: /apis/logging.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance
+    filepath_xccdf_variable: var_openshift_logging_clusterlogforwarders_instance.openshift.io/v1/namespaces/openshift-logging/clusterlogforwarders/instance
     yamlpath: "spec.pipelines[:].inputRefs[:]"
     entity_check: "at least one"
     values:
