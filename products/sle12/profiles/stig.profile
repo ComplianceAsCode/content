@@ -171,6 +171,7 @@ selections:
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
     - file_permissions_ungroupowned
+    - file_permissions_library_dirs
     - file_permissions_local_var_log_messages
     - file_permission_user_init_files
     - ftp_present_banner
