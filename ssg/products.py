@@ -29,7 +29,7 @@ def _validate_product_oval_feed_url(contents):
 
 
 def _get_implied_properties(existing_properties):
-    result = dict()
+    result = existing_properties.copy()
     if "pkg_manager" in existing_properties:
         pkg_manager = existing_properties["pkg_manager"]
         if "pkg_system" not in existing_properties:
