@@ -920,6 +920,9 @@ macro(ssg_build_product PRODUCT)
             DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     endif()
 
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}/checks/sce/"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}/${PRODUCT}/checks/sce")
+
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
