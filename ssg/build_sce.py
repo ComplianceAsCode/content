@@ -31,6 +31,7 @@ def load_sce_and_metadata(file_path, local_env_yaml):
 
     return "\n".join(sce_content), metadata
 
+
 def _check_is_applicable_for_product(metadata, product):
     if 'platform' not in metadata:
         return True
@@ -83,7 +84,12 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
             # don't want to build the SCE check for this rule yet so skip it
             # and move on.
             continue
+
         prodtypes = parse_prodtype(rule.prodtype)
+        if prodtypes and 'all' not in prodtypes and product not in prodtypes:
+            # The prodtype exists, isn't all and doesn't contain this current
+            # product, so we're best to skip this rule altogether.
+            continue
 
         local_env_yaml['rule_id'] = rule.id_
         local_env_yaml['rule_title'] = rule.title
@@ -133,12 +139,8 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
             included_checks_count += 1
             already_loaded[rule_id] = metadata
 
-    # n.b.: Templated SCE checks don't yet exist.
-    templates_metadata = os.path.join(output, 'templates_metadata.json')
-    if os.path.exists(templates_metadata):
-        templates = json.load(open(templates_metadata, 'r'))
-        templates.update(already_loaded)
-        already_loaded = templates
+    # Finally, write out our metadata to disk so that we can reference it in
+    # later build stages (such as during building shorthand content).
     metadata_path = os.path.join(output, 'metadata.json')
     json.dump(already_loaded, open(metadata_path, 'w'))
 
