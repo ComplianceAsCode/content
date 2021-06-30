@@ -197,7 +197,7 @@ class XCCDFBenchmark(object):
                 oval = rule.find("./{%s}check[@system=\"%s\"]" %
                                  (xccdf_ns, oval_ns))
                 sce = rule.find("./{%s}check[@system=\"%s\"]" %
-                                 (xccdf_ns, sce_ns))
+                                (xccdf_ns, sce_ns))
                 bash_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
                                      (xccdf_ns, bash_rem_system))
                 ansible_fix = rule.find("./{%s}fix[@system=\"%s\"]" %

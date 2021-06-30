@@ -1447,7 +1447,8 @@ class Rule(object):
                     check_export.set('export-name', export)
 
             check_ref = ET.SubElement(check, "check-content-ref")
-            check_ref.set("href", self.current_product + "/checks/sce/" + self.sce_metadata['filename'])
+            href = self.current_product + "/checks/sce/" + self.sce_metadata['filename']
+            check_ref.set("href", href)
 
         if self.ocil or self.ocil_clause:
             ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
@@ -1584,7 +1585,8 @@ class DirectoryLoader(object):
 
 
 class BuildLoader(DirectoryLoader):
-    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml, resolved_rules_dir=None, sce_metadata_path=None):
+    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml,
+                 resolved_rules_dir=None, sce_metadata_path=None):
         super(BuildLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
 
         self.resolved_rules_dir = resolved_rules_dir

@@ -215,8 +215,10 @@ def main():
             if check_system == sce_cs:
                 check_path = os.path.join(options.base_dir, check_content_ref_href_attr)
                 if not os.path.exists(check_path):
-                    print("ERROR: Invalid or missing SCE definition (%s) referenced by XCCDF Rule: %s"
-                          % (check_path, rule.get("id")))
+                    msg = "ERROR: Invalid or missing SCE definition (%s) "
+                    msg += "referenced by XCCDF Rule: %s"
+                    msg = msg % (check_path, rule.get("id"))
+                    print(msg)
                     exit_value = 1
             else:
                 refname = check_content_ref.get("name")

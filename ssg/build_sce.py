@@ -13,6 +13,7 @@ from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_sces, find_rule_dirs_in_paths
 from . import utils
 
+
 def load_sce_and_metadata(file_path, local_env_yaml):
     raw_content = process_file_with_macros(file_path, local_env_yaml)
 
@@ -99,7 +100,7 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
 
         local_env_yaml['rule_id'] = rule.id_
         local_env_yaml['rule_title'] = rule.title
-        local_env_yaml['products'] = prodtypes # default is all
+        local_env_yaml['products'] = prodtypes  # default is all
 
         for _path in get_rule_dir_sces(_dir_path, product):
             # To be compatible with later checks, use the rule_id (i.e., the
