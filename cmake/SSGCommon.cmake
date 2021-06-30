@@ -1264,7 +1264,7 @@ macro(ssg_build_html_srgmap_tables PRODUCT PROFILE_ID DISA_SRG_TYPE)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE)
+macro(ssg_build_html_stig_tables PRODUCT)
     file(GLOB DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-manual.xml")
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
@@ -1273,15 +1273,6 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE)
         DEPENDS "${DISA_STIG_REF}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML MANUAL STIG table"
-    )
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt"
-        COMMENT "[${PRODUCT}-tables] generating HTML STIG test info document"
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
@@ -1314,7 +1305,24 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
-    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
+endmacro()
+
+macro(ssg_build_html_stig_tables_per_profile PRODUCT STIG_PROFILE)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt"
+        COMMENT "[${PRODUCT}-tables] generating HTML STIG test info document for ${STIG_PROFILE}"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-table-stig_per_profile_${STIG_PROFILE}
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html"
+    )
+    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig_per_profile_${STIG_PROFILE})
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 

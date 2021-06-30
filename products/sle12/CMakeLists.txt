@@ -8,4 +8,5 @@ set(DISA_SRG_TYPE "os")
 
 ssg_build_product(${PRODUCT})
 
-ssg_build_html_stig_tables(${PRODUCT} "stig")
+ssg_build_html_stig_tables(${PRODUCT} )
+ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig")
