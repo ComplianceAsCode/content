@@ -275,6 +275,7 @@ selections:
     - sysctl_net_ipv6_conf_all_accept_redirects
     - sysctl_net_ipv6_conf_all_accept_source_route
     - sysctl_net_ipv6_conf_default_accept_source_route
+    - sysctl_net_ipv6_conf_default_forwarding
     - sysctl_net_ipv6_conf_default_accept_redirects
     - sysctl_net_ipv6_conf_all_forwarding
     - vlock_installed
