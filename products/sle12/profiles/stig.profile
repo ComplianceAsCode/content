@@ -203,6 +203,7 @@ selections:
     - package_pam_apparmor_installed
     - package_SuSEfirewall2_installed
     - package_telnet-server_removed
+    - package_vsftpd_removed
     - pam_disable_automatic_configuration
     - partition_for_home
     - partition_for_var
