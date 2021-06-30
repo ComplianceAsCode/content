@@ -20,13 +20,19 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     sce_content = []
 
     for line in raw_content.split("\n"):
-        if line.startswith('##ssg##'):
-            key, value = line[7:].split('=', maxsplit=1)
-            values = value.strip()
-            if ',' in values:
-                values.split(',')
-            metadata[key.strip()] = values
-        else:
+        found_metadata = False
+        keywords = ['platform', 'check-import', 'check-export', 'complex-check']
+        for keyword in keywords:
+            if line.startswith('# ' + keyword + ' = '):
+                # Strip off the initial comment marker
+                _, value = line[2:].split('=', maxsplit=1)
+                values = value.strip()
+                if ',' in values:
+                    values.split(',')
+                metadata[keyword] = values
+                found_metadata = True
+                break
+        if not found_metadata:
             sce_content.append(line)
 
     return "\n".join(sce_content), metadata

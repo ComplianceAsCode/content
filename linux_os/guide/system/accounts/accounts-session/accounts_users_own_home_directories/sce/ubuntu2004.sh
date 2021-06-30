@@ -1,11 +1,13 @@
-##ssg## platform = multi_platform_ubuntu
-##ssg## check-import = stdout
 #!/bin/bash
 #
 # Contributed by Canonical.
 #
 # Disable job control and run the last command of a pipeline in the current shell environment
 # Require Bash 4.2 and later
+#
+# platform = multi_platform_ubuntu
+# check-import = stdout
+
 set +m
 shopt -s lastpipe
 
