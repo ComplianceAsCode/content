@@ -27,7 +27,9 @@ ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_srgmap_tables(${PRODUCT} "stig" ${DISA_SRG_TYPE})
 
-ssg_build_html_stig_tables(${PRODUCT} "stig")
+ssg_build_html_stig_tables(${PRODUCT})
+ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig")
+ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig_gui")
 
 #ssg_build_html_stig_tables(${PRODUCT} "ospp")
 
