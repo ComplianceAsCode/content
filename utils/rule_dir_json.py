@@ -93,7 +93,9 @@ def handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir):
     prod_type = product_list[0]
     product_yaml = product_yamls[prod_type]
 
-    rule_yaml = ssg.build_yaml.Rule.from_yaml(rule_file, product_yaml)
+    env_yaml = dict(rule_id=rule_id)
+    rule_yaml = ssg.build_yaml.Rule.from_yaml(rule_file, product_yaml,
+                                              env_yaml=env_yaml)
     rule_products = set()
     for product in product_list:
         if ssg.utils.is_applicable(rule_yaml.prodtype, product):
