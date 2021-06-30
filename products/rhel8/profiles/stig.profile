@@ -198,6 +198,7 @@ selections:
     - file_ownership_binary_dirs
 
     # RHEL-08-010320
+    - file_groupownership_system_commands_dirs
 
     # RHEL-08-010330
     - file_permissions_library_dirs
