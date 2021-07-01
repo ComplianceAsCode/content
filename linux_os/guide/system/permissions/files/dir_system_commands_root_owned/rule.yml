@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15
+prodtype: sle12,sle15
 
 title: 'Verify that system commands directories have root ownership'
 
@@ -34,11 +34,13 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@sle12: CCE-83242-8
     cce@sle15: CCE-85741-7
 
 references:
     nist: CM-5(6),CM-5(6).1
     disa: CCI-001499
+    stigid@sle12: SLES-15-010881
     stigid@sle15: SLES-15-010360
     srg: SRG-OS-000259-GPOS-00100
 
