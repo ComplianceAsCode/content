@@ -51,6 +51,13 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{{ path }}}#{{{ (rule_id+path+filter)|sha256 }}}
 {{%- endmacro %}}
 
+{{#
+  Macro which generates a warning indicating how to make use of a
+#}}
+{{% macro ocil_oc_pipe_jq_filter(object, jqfilter, namespace=none, all_namespaces=false) -%}}
+oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ namespace }}}{{% endif %}} {{{ object }}} -o json | jq '{{{ jqfilter }}}'
+{{%- endmacro %}}
+
 {{# Example usage: ocil_sshd_option(default="no", option="Banner", value="/etc/issue") #}}
 {{% macro ocil_sshd_option(default, option, value) -%}}
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
