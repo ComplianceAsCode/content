@@ -114,6 +114,7 @@ selections:
 - file_groupowner_var_log
 - file_groupowner_var_log_messages
 - file_groupownership_home_directories
+- file_groupownership_system_commands_dirs
 - file_owner_var_log
 - file_owner_var_log_messages
 - file_ownership_binary_dirs
