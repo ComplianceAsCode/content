@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15,rhel8,fedora
+prodtype: sle12,sle15,rhel8,fedora
 
 title: 'Verify that system commands files are group owned by root '
 
@@ -33,12 +33,14 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@sle12: CCE-83243-6
     cce@sle15: CCE-85742-5
     cce@rhel8: CCE-86519-6
 
 references:
     disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
+    stigid@sle12: SLES-12-010882
     stigid@sle15: SLES-15-010361
     stigid@rhel8: RHEL-08-010320
     srg: SRG-OS-000259-GPOS-00100
