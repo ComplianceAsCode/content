@@ -16,7 +16,7 @@
   <unix:file_object comment="binary files" id="object_file_permissions_system_commands_files" version="1">
     <!-- Check that binary files under /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin,
          and /usr/local/sbin directories have safe permissions (go-w) -->
-    <unix:path operation="pattern match">^\/s?bin|^\/usr\/s?bin|^\/usr\/local\/s?bin</unix:path>
+    <unix:path operation="pattern match">^\/(s|)bin|^\/usr\/(s|)bin|^\/usr\/local\/(s|)bin</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
     <filter action="include">state_perms_system_commands_files_nogroupwrite_noworldwrite</filter>
     <filter action="exclude">state_perms_system_commands_files_symlink</filter>
