@@ -1,12 +1,12 @@
 name: Gating
 on:
   push:
-    branches: [ master, stabilization-* ]
+    branches: [ master, stabilization* ]
   pull_request:
     branches: [ master ]
 jobs:
   validate-ubuntu:
-    name: Build, Test, Lint Ansible Roles on Ubuntu 20.04
+    name: Build, Test on Ubuntu 20.04
     runs-on: ubuntu-20.04
     steps:
       - name: Install Deps
