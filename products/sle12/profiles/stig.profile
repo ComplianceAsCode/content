@@ -161,6 +161,7 @@ selections:
     - dir_permissions_library_dirs
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_system_owned_group
+    - dir_system_commands_group_root_owned
     - dir_system_commands_root_owned
     - disable_ctrlaltdel_reboot
     - display_login_attempts

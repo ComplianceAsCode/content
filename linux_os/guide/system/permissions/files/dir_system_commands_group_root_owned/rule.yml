@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify that system commands directories have root as a group owner'
 
-prodtype: sle15
+prodtype: sle12,sle15
 
 
 description: |-
@@ -36,11 +36,13 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@sle12: CCE-83244-4
     cce@sle15: CCE-85743-3
 
 references:
     disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
+    stigid@sle12: SLES-12-010883
     stigid@sle15: SLES-15-010362
     srgid: SRG-OS-000259-GPOS-00100 
 
