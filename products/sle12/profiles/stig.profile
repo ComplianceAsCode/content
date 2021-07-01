@@ -214,6 +214,7 @@ selections:
     - permissions_local_var_log_audit
     - policy_temp_passwords_immediate_change
     - postfix_client_configure_mail_alias
+    - root_permissions_syslibrary_files
     - rsyslog_remote_loghost
     - run_chkstat
     - security_patches_up_to_date
