@@ -175,6 +175,7 @@ selections:
     - file_permissions_ungroupowned
     - file_permissions_library_dirs
     - file_permissions_local_var_log_messages
+    - file_permissions_system_commands_dirs
     - file_permission_user_init_files
     - ftp_present_banner
     - gnome_gdm_disable_automatic_login
