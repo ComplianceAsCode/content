@@ -1,6 +1,12 @@
 <def-group>
   <definition class="compliance" id="accounts_passwd_has_interactive_users" version="1"> 
-    {{{ oval_metadata("Checks /etc/passwd for interactive users.") }}}
+    <metadata>
+      <title>Check for Interactive Users</title>
+      <affected family="unix">
+        <platform>multi_platform_all></platform>
+        <description>Checks /etc/passwd for interactive users (UID &gt; 1000, not nobody).</description>
+      </affected>
+    </metadata>
     <criteria operator="AND">
       <criterion comment="Interactive users exist." test_ref="test_has_interactive_users" negate="true"/>
     </criteria>
