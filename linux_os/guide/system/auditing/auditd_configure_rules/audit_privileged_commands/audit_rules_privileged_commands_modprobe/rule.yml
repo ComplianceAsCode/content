@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle15
+prodtype: rhel7,sle15
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - modprobe'
 
@@ -31,9 +31,11 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-85853-0
     cce@sle15: CCE-85731-8
 
 references:
+    cis@rhel7: 4.1.16
     disa: CCI-000130,CCI-000169,CCI-000172,CCI-002884
     nist: AU-12(a),AU-12.1(ii),AU-3,AU-3.1,AU-12(c),AU-12.1(iv),MA-4(1)(a)
     srg: SRG-OS-000037-GPOS-00015,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
