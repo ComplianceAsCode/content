@@ -1,0 +1,64 @@
+<def-group>
+  <definition class="compliance" id="accounts_passwd_has_interactive_users" version="1"> 
+    {{{ oval_metadata("Checks /etc/passwd for interactive users.") }}}
+    <criteria operator="AND">
+      <criterion comment="Interactive users exist." test_ref="test_has_interactive_users" negate="true"/>
+    </criteria>
+  </definition>
+
+  <!-- Define a test for interactive users. -->
+  <unix:password_test
+      id="test_has_interactive_users" 
+      check="all" 
+      check_existence="at_least_one_exists" 
+      version="1"
+      comment="At least one interactive user exists.">
+    <unix:object object_ref="object_has_interactive_users"/>
+  </unix:password_test>
+
+  <unix:shadow_object id="object_shadow_interactive_users"
+    version="1">
+    <unix:username
+      operation="equals"
+      var_ref="var_has_interactive_users"
+      var_check="at least one"/>
+  </unix:shadow_object>
+
+  <!-- Define a variable to return over interactive (non-system) users. -->
+  <local_variable id="var_has_interactive_users"
+    version="1"
+    datatype="string"
+    comment="non-system users.">
+    <object_component
+      item_field="username"
+      object_ref="object_has_interactive_users" />
+  </local_variable>
+
+  <unix:password_object id="object_has_interactive_users" version="1">
+    <unix:username operation="pattern match" datatype="string">.*</unix:username>
+    <filter action="include">interactive_user</filter>
+    <filter action="include">anonymous_user</filter>
+  </unix:password_object>
+
+  <!-- By convention, interactive user UIDs are > 1000 -->
+  <unix:password_state id="interactive_user" version="1">
+    <unix:user_id operation="greater than or equal" datatype="int">1000</unix:user_id>
+  </unix:password_state>
+
+  <!-- State check that none of our users are anonymous/invalid UIDs -->
+  <unix:password_state id="anonymous_user" version="1">
+    <unix:user_id
+        operation="not equal"
+        datatype="int"
+        var_ref="var_anonymous_users" 
+        var_check="all"/>
+  </unix:password_state>
+
+  <!-- these UID values refer to "nobody" or "no UID", nobody should have these. -->
+  <constant_variable id="var_anonymous_users" datatype="int" comment="anonymous UIDs" version="1">
+    <value>65534</value>
+    <value>65535</value>
+    <value>4294967294</value>
+    <value>4294967295</value>
+  </constant_variable>
+</def-group>

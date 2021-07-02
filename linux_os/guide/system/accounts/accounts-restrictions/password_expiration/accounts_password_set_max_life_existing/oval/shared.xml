@@ -1,9 +1,8 @@
 <def-group>
-
   <definition class="compliance" id="accounts_password_set_max_life_existing" version="1">
       {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
     <criteria operator="OR" comment="Interactive users must satisfy the requirement">
-      <extend_definition definition_ref="password_has_interactive_users" />
+      <extend_definition definition_ref="accounts_passwd_has_interactive_users" />
       <criteria operator="AND">
           <criterion comment="Passwords must be a restricted to the appropriate maximum age for existing accounts." test_ref="test_password_max_life_existing" />
           <criterion comment="Passwords must have a maximum lifetime greater than or equal to one." test_ref="test_password_max_life_existing_minimum" />
