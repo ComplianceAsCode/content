@@ -712,8 +712,8 @@ controls:
     rules:
       - service_cups_disabled
 
-    # NEEDS RULE
-    # https://github.com/ComplianceAsCode/content/issues/5232
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5232
   - id: 2.2.17
     title: Ensure NIS Server is not enabled (Automated)
     levels:
@@ -756,3 +756,727 @@ controls:
     automated: yes
     rules:
       - package_openldap-clients_removed
+
+  - id: 3.1.1
+    title: Ensure IP forwarding is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_ip_forward
+      - sysctl_net_ipv6_conf_all_forwarding
+
+  - id: 3.1.2
+    title: Ensure packet redirect sending is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_conf_all_send_redirects
+      - sysctl_net_ipv4_conf_default_send_redirects
+
+  - id: 3.2.1
+    title: Ensure source routed packets are not accepted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv6_conf_all_accept_source_route
+      - sysctl_net_ipv6_conf_default_accept_source_route
+
+  - id: 3.2.2
+    title: Ensure ICMP redirects are not accepted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv6_conf_all_accept_redirects
+      - sysctl_net_ipv6_conf_default_accept_redirects
+
+  - id: 3.2.3
+    title: Ensure secure ICMP redirects are not accepted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_default_secure_redirects
+
+  - id: 3.2.4
+    title: Ensure suspicious packets are logged (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_default_log_martians
+
+  - id: 3.2.5
+    title: Ensure broadcast ICMP requests are ignored (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+
+  - id: 3.2.6
+    title: Ensure bogus ICMP responses are ignored (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+
+  - id: 3.2.7
+    title: Ensure Reverse Path Filtering is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_default_rp_filter
+
+  - id: 3.2.8
+    title: Ensure TCP SYN Cookies is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_tcp_syncookies
+
+  - id: 3.2.8
+    title: Ensure TCP SYN Cookies is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv4_tcp_syncookies
+
+  - id: 3.2.9
+    title: Ensure IPv6 router advertisements are not accepted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_ra
+
+  - id: 3.3.1
+    title: Ensure DCCP is disabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - kernel_module_dccp_disabled
+
+  - id: 3.3.2
+    title: Ensure SCTP is disabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - kernel_module_sctp_disabled
+
+  - id: 3.3.3
+    title: Ensure RDS is disabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - kernel_module_rds_disabled
+
+  - id: 3.3.4
+    title: Ensure TIPC is disabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - kernel_module_tipc_disabled
+
+  # NEEDS RULE
+  # This rule is currently quite opinionated and expects firewalld
+  # as the installed firewall package. But, as per the CIS control,
+  # this rule should also be satisfied by nftables or iptables.
+  - id: 3.4.1.1
+    title: Ensure a Firewall package is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - package_firewalld_installed
+
+  - id: 3.4.2.1
+    title: Ensure firewalld service is enabled and running (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - service_firewalld_enabled
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5238
+  - id: 3.4.2.2
+    title: Ensure iptables service is not enabled with firewalld (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5239
+  - id: 3.4.2.3
+    title: Ensure nftables is not enabled with firewalld (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 3.4.2.4
+    title: Ensure firewalld default zone is set (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - set_firewalld_default_zone
+
+  - id: 3.4.2.5
+    title: Ensure network interfaces are assigned to appropriate zone (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 3.4.2.6
+    title: Ensure firewalld drops unnecessary services and ports (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 3.4.3.1
+    title: Ensure iptables are flushed with nftables (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5244
+  - id: 3.4.3.2
+    title: Ensure an nftables table exists (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5245
+  - id: 3.4.3.3
+    title: Ensure nftables base chains exist (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5246
+  - id: 3.4.3.4
+    title: Ensure nftables loopback traffic is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 3.4.3.5
+    title: Ensure nftables outbound and established connections are configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5248
+  - id: 3.4.3.6
+    title: Ensure nftables default deny firewall policy (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5249
+  - id: 3.4.3.7
+    title: Ensure nftables service is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5250
+  - id: 3.4.3.8
+    title: Ensure nftables rules are permanent (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5252
+  - id: 3.4.4.1.1
+    title: Ensure iptables default deny firewall policy (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5253
+  - id: 3.4.4.1.2
+    title: Ensure iptables loopback traffic is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 3.4.4.1.3
+    title: Ensure iptables outbound and established connections are configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5255
+  - id: 3.4.4.1.4
+    title: Ensure iptables firewall rules exist for all open ports (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/7190
+  - id: 3.4.4.1.5
+    title: Ensure iptables is enabled and active (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5257
+  - id: 3.4.4.2.1
+    title: Ensure ip6tables default deny firewall policy (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5258
+  - id: 3.4.4.2.2
+    title: Ensure ip6tables loopback traffic is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 3.4.4.2.3
+    title: Ensure ip6tables outbound and established connections are configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/7191
+  - id: 3.4.4.2.4
+    title: Ensure ip6tables firewall rules exist for all open ports (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/7192
+  - id: 3.4.4.2.5
+    title: Ensure ip6tables is enabled and active (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 3.5
+    title: Ensure wireless interfaces are disabled (Automated)
+    levels:
+      - l1_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - wireless_disable_interfaces
+
+  - id: 3.6
+    title: Disable IPv6 (Manual)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - kernel_module_ipv6_option_disabled
+
+  - id: 4.1.1.1
+    title: Ensure auditd is installed (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - package_audit_installed
+
+  - id: 4.1.1.2
+    title: Ensure auditd service is enabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - service_auditd_enabled
+
+  - id: 4.1.1.3
+    title: Ensure auditing for processes that start prior to auditd is enabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - grub2_audit_argument
+
+  - id: 4.1.1.4
+    title: Ensure audit_backlog_limit is sufficient (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - grub2_audit_backlog_limit_argument
+
+  - id: 4.1.2.1
+    title: Ensure audit log storage size is configured (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - auditd_data_retention_max_log_file
+
+  - id: 4.1.2.2
+    title: Ensure audit logs are not automatically deleted (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - auditd_data_retention_max_log_file_action
+
+  - id: 4.1.2.3
+    title: Ensure system is disabled when audit logs are full (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - auditd_data_retention_action_mail_acct
+      - auditd_data_retention_admin_space_left_action
+      - auditd_data_retention_space_left_action
+      - var_auditd_action_mail_acct=root
+      - var_auditd_admin_space_left_action=halt
+      - var_auditd_space_left_action=email
+
+  - id: 4.1.3
+    title: Ensure changes to system administration scope (sudoers) is collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_sysadmin_actions
+
+  - id: 4.1.4
+    title: Ensure login and logout events are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_login_events_faillock
+      - audit_rules_login_events_lastlog
+
+  - id: 4.1.5
+    title: Ensure session initiation information is collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_session_events
+
+  - id: 4.1.6
+    title: Ensure events that modify date and time information are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_time_adjtimex
+      - audit_rules_time_clock_settime
+      - audit_rules_time_settimeofday
+      - audit_rules_time_stime
+      - audit_rules_time_watch_localtime
+
+  # NEEDS RULE
+  # -w /usr/share/selinux/ -p wa
+  # https://github.com/ComplianceAsCode/content/issues/5264
+  - id: 4.1.7
+    title: Ensure events that modify the system's Mandatory Access Controls are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_mac_modification
+
+  - id: 4.1.8
+    title: Ensure events that modify the system's network environment are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_networkconfig_modification
+
+  - id: 4.1.9
+    title: Ensure discretionary access control permission modification events are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_dac_modification_chmod
+      - audit_rules_dac_modification_chown
+      - audit_rules_dac_modification_fchmod
+      - audit_rules_dac_modification_fchmodat
+      - audit_rules_dac_modification_fchown
+      - audit_rules_dac_modification_fchownat
+      - audit_rules_dac_modification_fremovexattr
+      - audit_rules_dac_modification_fsetxattr
+      - audit_rules_dac_modification_lchown
+      - audit_rules_dac_modification_lremovexattr
+      - audit_rules_dac_modification_lsetxattr
+      - audit_rules_dac_modification_removexattr
+      - audit_rules_dac_modification_setxattr
+
+  - id: 4.1.10
+    title: Ensure unsuccessful unauthorized file access attempts are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_unsuccessful_file_modification_creat
+      - audit_rules_unsuccessful_file_modification_ftruncate
+      - audit_rules_unsuccessful_file_modification_open
+      - audit_rules_unsuccessful_file_modification_openat
+      - audit_rules_unsuccessful_file_modification_truncate
+      # Opinionated selection
+      - audit_rules_unsuccessful_file_modification_open_by_handle_at
+
+  - id: 4.1.11
+    title: Ensure events that modify user/group information are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_usergroup_modification_group
+      - audit_rules_usergroup_modification_gshadow
+      - audit_rules_usergroup_modification_opasswd
+      - audit_rules_usergroup_modification_passwd
+      - audit_rules_usergroup_modification_shadow
+
+  - id: 4.1.12
+    title: Ensure successful file system mounts are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_media_export
+
+  - id: 4.1.13
+    title: Ensure use of privileged commands is collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_privileged_commands
+
+  - id: 4.1.14
+    title: Ensure file deletion events by users are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_file_deletion_events_rename
+      - audit_rules_file_deletion_events_renameat
+      - audit_rules_file_deletion_events_unlink
+      - audit_rules_file_deletion_events_unlinkat
+      # Opinionated selection
+      - audit_rules_file_deletion_events_rmdir
+
+  - id: 4.1.15
+    title: Ensure kernel module loading and unloading is collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_kernel_module_loading
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5516
+  - id: 4.1.16
+    title: Ensure system administrator actions (sudolog) are collected (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: no
+
+  - id: 4.1.17
+    title: Ensure the audit configuration is immutable (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - audit_rules_immutable
+
+  - id: 4.2.1.1
+    title: Ensure rsyslog is installed (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - package_rsyslog_installed
+
+  - id: 4.2.1.2
+    title: Ensure rsyslog Service is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - service_rsyslog_enabled
+
+  - id: 4.2.1.3
+    title: Ensure rsyslog default file permissions configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - rsyslog_files_permissions
+
+  - id: 4.2.1.4
+    title: Ensure logging is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 4.2.1.5
+    title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - rsyslog_remote_loghost
+
+  - id: 4.2.1.6
+    title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+    related_rules:
+      - rsyslog_nolisten
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5520
+  - id: 4.2.2.1
+    title: Ensure journald is configured to send logs to rsyslog (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5521
+  - id: 4.2.2.2
+    title: Ensure journald is configured to compress large log files (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5522
+  - id: 4.2.2.3
+    title: Ensure journald is configured to write logfiles to persistent disk (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5523
+  - id: 4.2.3
+    title: Ensure permissions on all logfiles are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 4.3
+    title: Ensure logrotate is configured (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
