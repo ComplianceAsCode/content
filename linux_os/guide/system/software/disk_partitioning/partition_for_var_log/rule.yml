@@ -4,8 +4,7 @@ title: 'Ensure /var/log Located On Separate Partition'
 
 description: |-
     System logs are stored in the <tt>/var/log</tt> directory.
-    Ensure that it has its own partition or logical
-    volume at installation time, or migrate it using LVM.
+    {{{ partition_description(part="/var/log") }}}
 
 rationale: |-
     Placing <tt>/var/log</tt> in its own partition
@@ -43,7 +42,12 @@ references:
 
 platform: machine
 
+# (jhrozek): at the moment, the mount probe checks the /proc filesystem
+# even if openscap looks at a chroot, which doesn't allow to check for
+# mount points when checking RHCOS4 via CO
+{{% if product != "rhcos4" %}}
 template:
     name: mount
     vars:
         mountpoint: /var/log
+{{% endif %}}

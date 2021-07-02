@@ -59,11 +59,11 @@ selections:
     #- partition_for_home
     #- partition_for_var
     #- mount_option_var_nodev
-    #- partition_for_var_log
+    - partition_for_var_log
     #- mount_option_var_log_nodev
     #- mount_option_var_log_nosuid
     #- mount_option_var_log_noexec
-    #- partition_for_var_log_audit
+    - partition_for_var_log_audit
     #- mount_option_var_log_audit_nodev
     #- mount_option_var_log_audit_nosuid
     #- mount_option_var_log_audit_noexec
