@@ -16,13 +16,59 @@
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("This test makes sure that " + FILEPATH + " has mode " + FILEMODE + ".
+  {{% if FILEPATH is not string %}}
+    {{{ oval_metadata("This test makes sure that FILEPATH has mode " + FILEMODE + ".
+      If the target file or directory has an extended ACL, then it will fail the mode check.
+      ") }}}
+    <criteria>
+  {{% for filepath in FILEPATH %}}
+      <criterion comment="Check file mode of {{{ filepath }}}" test_ref="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+  {{% endfor %}}
+  {{% else %}}
+    {{{ oval_metadata("This test makes sure that " +  FILEPATH + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
       ") }}}
     <criteria>
       <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+  {{% endif %}}
     </criteria>
   </definition>
+
+  {{% if FILEPATH is not string %}}
+  {{% for filepath in FILEPATH %}}
+  <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing mode of {{{ filepath }}}" id="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="2">
+    <unix:object object_ref="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" />
+    <unix:state state_ref="state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}" />
+  </unix:file_test>
+  <unix:file_state id="state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}"{{{ ' operator="OR"' if ALLOW_STRICTER_PERMISSIONS }}} version="2">
+      {{{ STATEMODE | indent(6) }}}
+  </unix:file_state>
+  <unix:file_object comment="{{{ filepath }}}" id="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+
+    {{%- if IS_DIRECTORY %}}
+      <unix:path>{{{ filepath }}}</unix:path>
+      {{%- if FILE_REGEX is not string %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
+      {{%- elif FILE_REGEX %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
+      {{%- else %}}
+      <unix:filename xsi:nil="true" />
+      {{%- endif %}}
+    {{%- else %}}
+      <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
+    {{%- endif %}}
+
+    {{%- if ALLOW_STRICTER_PERMISSIONS %}}
+      {{#
+          This filter is required because of an issue in OpenSCAP. The issue has been fixed in:
+          https://github.com/OpenSCAP/openscap/pull/1709 but this line should be kept until the
+          fix is widely available. The fix is expected to be part of OpenSCAP >= 1.3.5.
+      #}}
+      <filter action="include">state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_not_{{{ FILEMODE }}}</filter>
+    {{%- endif %}}
+  </unix:file_object>
+  {{% endfor %}}
+  {{% else %}}
       <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing mode of {{{ FILEPATH }}}" id="test_file_permissions{{{ FILEID }}}" version="2">
       <unix:object object_ref="object_file_permissions{{{ FILEID }}}" />
       <unix:state state_ref="state_file_permissions{{{ FILEID }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}" />
@@ -51,6 +97,6 @@
       #}}
       <filter action="include">state_file_permissions{{{ FILEID }}}_mode_not_{{{ FILEMODE }}}</filter>
     {{%- endif %}}
-
-    </unix:file_object>
+  </unix:file_object>
+  {{% endif %}}
 </def-group>
