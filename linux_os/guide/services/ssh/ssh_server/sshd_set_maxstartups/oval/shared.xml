@@ -1,0 +1,63 @@
+<def-group>
+  <definition class="compliance" id="sshd_set_maxstartups" version="1">
+    {{{ oval_metadata("Ensure 'MaxStartups' is configured in
+      '/etc/ssh/sshd_config'") }}}
+    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle12', 'sle15'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
+      </criteria>
+      <criteria operator="AND">
+        <criterion test_ref="tst_maxstartups_start_parameter" comment="SSH MaxStartups start parameter is less than or equal to 10" />
+        <criterion test_ref="tst_maxstartups_rate_parameter" comment="SSH MaxStartups rate parameter is greater than or equal to 30" />
+        <criterion test_ref="tst_maxstartups_full_parameter" comment="SSH MaxStartups full parameter is less than or equal to 100" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_first_parameter" version="1">
+    <ind:filepath operation="equals">/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+(\d+):\d+:\d+\s*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_second_parameter" version="1">
+    <ind:filepath operation="equals">/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+\d+:(\d+):\d+\s*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_sshd_config_maxstartups_third_parameter" version="1">
+    <ind:filepath operation="equals">/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">(?i)^\s*MaxStartups\s+\d+:\d+:(\d+)\s*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="ste_sshd_config_start_parameter_valid" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal">10</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="ste_sshd_config_rate_parameter_valid" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal">30</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="ste_sshd_config_full_parameter_valid" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal">100</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" id="tst_maxstartups_start_parameter" version="1" comment="SSH MaxStartups start parameter is less than or equal to 10">
+    <ind:object object_ref="obj_sshd_config_maxstartups_first_parameter" />
+    <ind:state state_ref="ste_sshd_config_start_parameter_valid" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" id="tst_maxstartups_rate_parameter" version="1" comment="SSH MaxStartups rate parameter is greater than or equal to 30">
+    <ind:object object_ref="obj_sshd_config_maxstartups_second_parameter" />
+    <ind:state state_ref="ste_sshd_config_rate_parameter_valid" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" id="tst_maxstartups_full_parameter" version="1" comment="SSH MaxStartups full parameter is less than or equal to 100">
+    <ind:object object_ref="obj_sshd_config_maxstartups_third_parameter" />
+    <ind:state state_ref="ste_sshd_config_full_parameter_valid" />
+  </ind:textfilecontent54_test>
+</def-group>
