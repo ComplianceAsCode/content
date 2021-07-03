@@ -1480,3 +1480,463 @@ controls:
       - l1_server
       - l1_workstation
     automated: no
+
+  - id: 5.1.1
+    title: Ensure cron daemon is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - service_crond_enabled
+
+  - id: 5.1.2
+    title: Ensure permissions on /etc/crontab are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - file_groupowner_crontab
+      - file_owner_crontab
+      - file_permissions_crontab
+
+  - id: 5.1.3
+    title: Ensure permissions on /etc/cron.hourly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - file_groupowner_cron_hourly
+      - file_owner_cron_hourly
+      - file_permissions_cron_hourly
+
+  - id: 5.1.4
+    title: Ensure permissions on /etc/cron.daily are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - file_groupowner_cron_daily
+      - file_owner_cron_daily
+      - file_permissions_cron_daily
+
+  - id: 5.1.5
+    title: Ensure permissions on /etc/cron.weekly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - file_groupowner_cron_weekly
+      - file_owner_cron_weekly
+      - file_permissions_cron_weekly
+
+  - id: 5.1.6
+    title: Ensure permissions on /etc/cron.monthly are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - file_groupowner_cron_monthly
+      - file_owner_cron_monthly
+      - file_permissions_cron_monthly
+
+  - id: 5.1.7
+    title: Ensure permissions on /etc/cron.d are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - file_groupowner_cron_d
+      - file_owner_cron_d
+      - file_permissions_cron_d
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/7195
+  - id: 5.1.8
+    title: Ensure at/cron is restricted to authorized users (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 5.2.1
+    title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - file_groupowner_sshd_config
+      - file_owner_sshd_config
+      - file_permissions_sshd_config
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/7196
+  - id: 5.2.2
+    title: Ensure SSH access is limited (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # TODO
+  # Rule sets permissions to 0640 but benchmark wants it to be 0600
+  #
+  # TODO
+  # Check owner of private keys in /etc/ssh is root:root
+  - id: 5.2.3
+    title: Ensure permissions on SSH private host key files are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      -  file_permissions_sshd_private_key
+
+  # TODO
+  # Check owner of public keys in /etc/ssh is root:root
+  - id: 5.2.4
+    title: Ensure permissions on SSH public host key files are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      -  file_permissions_sshd_pub_key
+
+  - id: 5.2.5
+    title: Ensure SSH LogLevel is appropriate (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      -  sshd_set_loglevel_info
+
+  - id: 5.2.6
+    title: Ensure SSH X11 forwarding is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      -  sshd_disable_x11_forwarding
+
+  - id: 5.2.7
+    title: Ensure SSH MaxAuthTries is set to 4 or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_max_auth_tries_value=4
+      - sshd_set_max_auth_tries
+
+  - id: 5.2.8
+    title: Ensure SSH IgnoreRhosts is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_disable_rhosts
+
+  - id: 5.2.9
+    title: Ensure SSH HostbasedAuthentication is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - disable_host_auth
+
+  - id: 5.2.10
+    title: Ensure SSH root login is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_disable_root_login
+
+  - id: 5.2.11
+    title: Ensure SSH PermitEmptyPasswords is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_disable_empty_passwords
+
+  - id: 5.2.12
+    title: Ensure SSH PermitUserEnvironment is disabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_do_not_permit_user_env
+
+  - id: 5.2.13
+    title: Ensure SSH Idle Timeout Interval is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_idle_timeout_value=5_minutes
+      - sshd_set_idle_timeout
+      - sshd_set_keepalive_0
+      - var_sshd_set_keepalive=0
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5525
+  - id: 5.2.14
+    title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 5.2.15
+    title: Ensure SSH warning banner is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_enable_warning_banner
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5526
+  - id: 5.2.16
+    title: Ensure SSH PAM is enabled (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 5.2.17
+    title: Ensure SSH AllowTcpForwarding is disabled (Automated)
+    levels:
+      - l2_server
+      - l2_workstation
+    automated: yes
+    rules:
+      - sshd_disable_tcp_forwarding
+
+  - id: 5.2.18
+    title: Ensure SSH MaxStartups is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_set_maxstartups
+
+  - id: 5.2.19
+    title: Ensure SSH MaxSessions is set to 4 or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - sshd_set_max_sessions
+      - var_sshd_max_sessions=4
+
+  - id: 5.2.20
+    title: Ensure system-wide crypto policy is not over-ridden (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - configure_ssh_crypto_policy
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5530
+  - id: 5.3.1
+    title: Create custom authselect profile (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5531
+  - id: 5.3.2
+    title: Select authselect profile (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5532
+  - id: 5.3.2
+    title: Ensure authselect includes with-faillock (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  # NEEDS RULE: try_first_pass
+  # https://github.com/ComplianceAsCode/content/issues/5533
+  - id: 5.4.1
+    title: Ensure password creation requirements are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_password_pam_minclass
+      - accounts_password_pam_minlen
+      - accounts_password_pam_retry
+      - var_password_pam_minclass=4
+      - var_password_pam_minlen=14
+
+  - id: 5.4.2
+    title: Ensure lockout for failed password attempts is configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_passwords_pam_faillock_deny
+      - accounts_passwords_pam_faillock_unlock_time
+      - var_accounts_passwords_pam_faillock_deny=5
+      - var_accounts_passwords_pam_faillock_unlock_time=900
+
+  - id: 5.4.3
+    title: Ensure password reuse is limited (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_password_pam_unix_remember
+      - var_password_pam_unix_remember=5
+
+  - id: 5.4.4
+    title: Ensure password hashing algorithm is SHA-512 (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - set_password_hashing_algorithm_systemauth
+
+  - id: 5.5.1.1
+    title: Ensure password expiration is 365 days or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_maximum_age_login_defs
+      - var_accounts_maximum_age_login_defs=365
+
+  - id: 5.5.1.2
+    title: Ensure minimum days between password changes is 7 or more (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_minimum_age_login_defs
+      - var_accounts_minimum_age_login_defs=7
+
+  - id: 5.5.1.3
+    title: Ensure password expiration warning days is 7 or more (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_password_warn_age_login_defs
+      - var_accounts_password_warn_age_login_defs=7
+
+  # TODO
+  # Rule doesn't check list of users
+  - id: 5.5.1.4
+    title: Ensure inactive password lock is 30 days or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - account_disable_post_pw_expiration
+      - var_account_disable_post_pw_expiration=30
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5537
+  - id: 5.5.1.5
+    title: Ensure all users last password change date is in the past (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 5.5.2
+    title: Ensure system accounts are secured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - no_shelllogin_for_systemaccounts
+
+  - id: 5.5.3
+    title: Ensure default user shell timeout is 900 seconds or less (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_tmout
+      - var_accounts_tmout=15_min
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5539
+  - id: 5.5.4
+    title: Ensure default group for the root account is GID 0 (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+
+  - id: 5.5.5
+    title: Ensure default user umask is 027 or more restrictive (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - accounts_umask_etc_bashrc
+      - accounts_umask_etc_profile
+      - var_accounts_user_umask=027
+
+  - id: 5.6
+    title: Ensure root login is restricted to system console (Manual)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
+    related_rules:
+      - no_direct_root_logins
+      - securetty_root_login_console_only
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5541
+  - id: 5.7
+    title: Ensure access to the su command is restricted (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
