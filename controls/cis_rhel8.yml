@@ -1,3 +1,4 @@
+---
 policy: 'CIS Benchmark for Red Hat Enterprise Linux 8'
 title: 'CIS Benchmark for Red Hat Enterprise Linux 8'
 id: cis_rhel8
@@ -1597,7 +1598,7 @@ controls:
       - l1_workstation
     automated: yes
     rules:
-      -  file_permissions_sshd_private_key
+      - file_permissions_sshd_private_key
 
   # TODO
   # Check owner of public keys in /etc/ssh is root:root
@@ -1608,7 +1609,7 @@ controls:
       - l1_workstation
     automated: yes
     rules:
-      -  file_permissions_sshd_pub_key
+      - file_permissions_sshd_pub_key
 
   - id: 5.2.5
     title: Ensure SSH LogLevel is appropriate (Automated)
@@ -1617,7 +1618,7 @@ controls:
       - l1_workstation
     automated: yes
     rules:
-      -  sshd_set_loglevel_info
+      - sshd_set_loglevel_info
 
   - id: 5.2.6
     title: Ensure SSH X11 forwarding is disabled (Automated)
@@ -1626,7 +1627,7 @@ controls:
       - l1_workstation
     automated: yes
     rules:
-      -  sshd_disable_x11_forwarding
+      - sshd_disable_x11_forwarding
 
   - id: 5.2.7
     title: Ensure SSH MaxAuthTries is set to 4 or less (Automated)
