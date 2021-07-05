@@ -51,6 +51,9 @@ template:
     name: service_enabled
     vars:
         servicename: sshd
+        servicename@ubuntu1604: ssh
+        servicename@ubuntu1804: ssh
+        servicename@ubuntu2004: ssh
         packagename: openssh-server
         packagename@sle12: openssh
         packagename@sle15: openssh
