@@ -43,6 +43,7 @@ selections:
     - oauth_or_oauthclient_inactivity_timeout
     # AC-2, AC-7
     - ocp_idp_no_htpasswd
+    - kubeadmin_removed
     # AC-12
     - oauth_or_oauthclient_token_maxage
 

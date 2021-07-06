@@ -1,0 +1,33 @@
+prodtype: ocp4
+
+title: Ensure that the kubeadmin secret has been removed
+
+description: |-
+  The kubeadmin user is meant to be a temporary user used for
+  bootstrapping purposes. It is preferable to assign system
+  administrators whose users are backed by an Identity Provider.
+
+  <br />
+  Make sure to remove the user as
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/remove-kubeadmin.html",
+              text="described in the documentation") }}}
+
+rationale: |-
+  The kubeadmin user has an auto-generated password
+  and a self-signed certificate, and has effectively <pre>cluster-admin</pre>
+  permissions; therefore, it's considered a security liability.
+
+identifiers:
+  cce@ocp4: CCE-90387-2
+
+severity: medium
+
+references:
+  nist: AC-2(2),AC-2(7),AC-2(9),AC-2(10),IA-2(5),MA-4
+
+ocil_clause: 'the kubeadmin secret has not been deleted'
+
+ocil: |-
+  To verify that the kubeadmin secret has been deleted, make sure
+  that <pre>oc get secrets kubeadmin -n kube-system</pre>
+  returns a <pre>NotFound</pre> error.
