@@ -1,12 +1,6 @@
 <def-group>
   <definition class="compliance" id="smartcard_configure_cert_checking" version="4">
-    <metadata>
-      <title>Enable Smart Card Login</title>
-      <affected family="unix">
-        <platform>multi_platform_sle</platform>
-      </affected>
-      <description>Enable Smart Card logins</description>
-    </metadata>
+    {{{ oval_metadata("Enable Smart Card Login") }}}
     <criteria comment="smart card authentication is configured" operator="AND">
       {{% if product in ['sle12', 'sle15'] %}}
       <extend_definition comment="pam_pkcs11 package is installed" definition_ref="install_smartcard_packages" />
