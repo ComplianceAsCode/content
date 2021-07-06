@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = low
 
-{{% if product in ["rhel7", "ol7"] %}}
+{{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
 - name: check {{{ ARG_NAME }}} argument exists
   command: grep 'GRUB_CMDLINE_LINUX.*{{{ ARG_NAME }}}=' /etc/default/grub
   failed_when: False

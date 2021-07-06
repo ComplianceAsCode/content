@@ -1,6 +1,6 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ubuntu
 
-{{% if product in ["rhel7", "ol7"] %}}
+{{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
 {{% if '/' in ARG_NAME %}}
 {{{ raise("ARG_NAME (" + ARG_NAME + ") uses sed path separator (/) in " + rule_id) }}}
 {{% elif '/' in ARG_NAME_VALUE %}}
@@ -15,8 +15,12 @@ else
 	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 {{{ ARG_NAME_VALUE }}}"/'  '/etc/default/grub'
 fi
 
+{{% if 'ubuntu' in product %}}
+update-grub
+{{% else %}}
 # Correct the form of kernel command line for each installed kernel in the bootloader
 grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
+{{% endif %}}
 {{% else %}}
 # Correct grub2 kernelopts value using grub2-editenv
 if ! grub2-editenv - list | grep -qE '^kernelopts=(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$'; then

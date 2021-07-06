@@ -10,14 +10,14 @@ description: |-
     <br /><br />
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "ubuntu2004"] %}}
     <pre>$ grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
     <pre>$ grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "ubuntu2004"] %}}
     Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
     file with the following content:
     <pre>set superusers="boot"
@@ -29,7 +29,9 @@ description: |-
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if "ubuntu" in product %}}
+    <pre>update-grub</pre>
+    {{% elif product in ["sle12", "sle15"] %}}
     <pre>grub2-mkconfig -o /boot/efi/EFI/sles/grub.cfg</pre>
     {{% else %}}
     <pre>grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre>
@@ -77,7 +79,7 @@ ocil_clause: 'it does not'
 ocil: |-
     To verify the boot loader superuser password has been set, run the following
     command:
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15", "ubuntu2004"] %}}
     <pre>sudo grep -A1 "superusers\|password" /etc/grub.d/40_custom</pre>
     {{% else %}}
     <pre>sudo grep "password" /etc/grub2-efi.cfg</pre>
@@ -93,6 +95,10 @@ ocil: |-
     2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
     916F7AB46E0D.1302284FCCC52CD73BA3671C6C12C26FF50BA873293B24EE2A96EE3B57963E6D7
     0C83964B473EC8F93B07FE749AA6710269E904A9B08A6BBACB00A2D242AD828</pre>
+    {{% elif "ubuntu" in product %}}
+    <pre>grep -i password /boot/grub/grub.cfg</pre>
+    The output should contain something similar to:
+    <pre>password_pbkdf2 root grub.pbkdf2.sha512.10000.MFU48934NJA87HF8NSD34493GDHF84NG</pre>
     {{% else %}}
     <pre>sudo cat /boot/efi/EFI/redhat/user.cfg</pre>
     The output should be similar to:
