@@ -1,0 +1,49 @@
+prodtype: ocp4
+
+title: Ensure that cluster-wide proxy is set
+
+description: |-
+  <p>
+  Production environments can deny direct access to the Internet and instead have
+  an HTTP or HTTPS proxy available.
+  </p>
+  <p>
+  The Proxy object is used to manage the cluster-wide egress proxy. Setting this
+  will ensure that containers get the appropriate environment variables set
+  to ensure traffic goes to the proxy per organizational requirements.
+  </p>
+  <p>
+  For more information, see {{{ weblink(link="https://docs.openshift.com/container-platform/latest/networking/enable-cluster-wide-proxy.html",
+                                        text="the relevant documentation.") }}}
+  </p>
+
+rationale: |-
+  External networks tend to be outside of organizational control. By ensuring
+  that egress traffic goes through an authorized proxy, one is able to ensure
+  that expected and safe traffic is coming out, and malicious actors
+  aren't leaking sensitive information, or calling back from a central command
+  center to get further instructions upon intrusion.
+
+references:
+  nist: SC-7(8)
+
+identifiers:
+  cce@ocp4: CCE-90765-9
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/proxies/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/config.openshift.io/v1/proxies/cluster
+    yamlpath: ".spec.httpsProxy"  # The value that we're checking for
+    check_existence_yamlpath: ".metadata.name"  # The value that should always be there
+    values:
+    - value: ".+"
+      operation: "pattern match"
+      type: "string"

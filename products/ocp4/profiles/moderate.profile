@@ -133,6 +133,8 @@ selections:
     - api_server_encryption_provider_config
     - api_server_encryption_provider_cipher
 
+    # SC-7(8)
+    - cluster_wide_proxy_set
 
     # SC-8: TRANSMISSION CONFIDENTIALITY AND INTEGRITY
     - ocp_no_ldap_insecure
