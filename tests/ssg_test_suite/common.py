@@ -21,6 +21,9 @@ from ssg.rules import get_rule_dir_yaml, is_rule_dir
 from ssg.rule_yaml import parse_prodtype
 from ssg_test_suite.log import LogHelper
 
+import ssg.templates
+
+
 Scenario_run = namedtuple(
     "Scenario_run",
     ("rule_id", "script"))
@@ -38,6 +41,8 @@ _BENCHMARK_DIRS = [
         ]
 
 _SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared'))
+
+_SHARED_TEMPLATES = os.path.abspath(os.path.join(SSG_ROOT, 'shared/templates'))
 
 REMOTE_USER = "root"
 REMOTE_USER_HOME_DIRECTORY = "/root"
@@ -278,6 +283,11 @@ def template_tests(product=None):
             yaml_path = product_yaml_path(SSG_ROOT, product)
             product_yaml = load_product_yaml(yaml_path)
 
+        # Initialize a mock template_builder.
+        empty = "/ssgts/empty/placeholder"
+        template_builder = ssg.templates.Builder(product_yaml, empty,
+            _SHARED_TEMPLATES, empty, empty)
+
         # Below we could run into a DocumentationNotComplete error. However,
         # because the test suite isn't executed in the context of a particular
         # build (though, ideally it would be linked), we may not know exactly
@@ -299,8 +309,11 @@ def template_tests(product=None):
 
             # Load rule content in our environment. We use this to satisfy
             # some implied properties that might be used in the test suite.
+            # Make sure we normalize to a specific product as well so that
+            # when we load templated content it is correct.
             rule_path = get_rule_dir_yaml(dirpath)
             rule = RuleYAML.from_yaml(rule_path, product_yaml)
+            rule.normalize(product)
 
             # Note that most places would check prodtype, but we don't care
             # about that here: if the rule is available to the product, we
@@ -319,6 +332,36 @@ def template_tests(product=None):
             # Create the destination directory.
             dest_path = os.path.join(tmpdir, rule.id_)
             os.mkdir(dest_path)
+
+            # The priority order is rule-specific tests over templated tests.
+            # That is, for any test under rule_id/tests with a name matching a
+            # test under shared/templates/<template_name>/tests/, the former
+            # will preferred. This means we need to process templates first,
+            # so they'll be overwritten later if necessary.
+            if rule.template:
+                templated_tests = template_builder.get_all_tests(
+                    rule.id_, rule.template, local_env_yaml)
+
+                for relative_path in templated_tests:
+                    output_path = os.path.join(dest_path, relative_path)
+
+                    # If there's a separator in the file name, it means we
+                    # have nested directories to deal with.
+                    if os.path.sep in relative_path:
+                        parts = os.path.split(relative_path)[:-1]
+                        for subdir_index in range(len(parts)):
+                            # We need to expand all directories in correct
+                            # order, preserving any previous directories (as
+                            # they're nested). Use the star operator to splat
+                            # array parts into arguments to os.path.join(...).
+                            new_directory = os.path.join(dest_path, *parts[:subdir_index])
+                            os.mkdir(new_directory)
+
+                    # Write out the test content to the desired location on
+                    # disk.
+                    with open(output_path, 'w') as output_fp:
+                        test_content = templated_tests[relative_path]
+                        print(test_content, file=output_fp)
 
             # Walk the test directory, writing all tests into the output
             # directory, recursively.
