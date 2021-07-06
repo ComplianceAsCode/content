@@ -240,7 +240,7 @@ selections:
     - sudoers_validate_passwd
 
     # RHEL-08-010390
-    - install_smartcard_packages
+    - package_smartcard_installed
 
     # RHEL-08-010400
 
