@@ -58,6 +58,7 @@ selections:
 
     # AU-9
     - audit_log_forwarding_enabled
+    - audit_log_forwarding_uses_tls
 
     # CM-6 CONFIGURATION SETTINGS
     # CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
