@@ -545,8 +545,7 @@ def iterate_over_rules(product=None):
                 if os.path.isdir(test_path):
                     continue
 
-                with open(test_path) as fp:
-                    all_tests[test_case] = fp.read()
+                all_tests[test_case] = process_file(test_path, local_env_yaml)
 
             # Filter out everything except the shell test scenarios.
             # Other files in rule directories are editor swap files
