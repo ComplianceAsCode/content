@@ -59,7 +59,7 @@ def walk_through_benchmark_dirs(product=None):
     directories = _BENCHMARK_DIRS
     if product is not None:
         yaml_path = product_yaml_path(SSG_ROOT, product)
-        product_base = os.path.basename(yaml_path)
+        product_base = os.path.dirname(yaml_path)
         product_yaml = load_product_yaml(yaml_path)
         benchmark_root = os.path.join(product_base, product_yaml['benchmark_root'])
         directories = [os.path.abspath(benchmark_root)]
@@ -276,7 +276,6 @@ def template_tests(product=None):
         product_yaml = dict()
         if product:
             yaml_path = product_yaml_path(SSG_ROOT, product)
-            product_base = os.path.basename(yaml_path)
             product_yaml = load_product_yaml(yaml_path)
 
         # Below we could run into a DocumentationNotComplete error. However,
