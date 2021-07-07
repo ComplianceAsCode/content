@@ -24,7 +24,7 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 Scenario = collections.namedtuple(
-    "Scenario", ["script", "context", "script_params"])
+    "Scenario", ["script", "context", "script_params", "contents"])
 
 
 def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
@@ -250,7 +250,7 @@ class RuleChecker(oscap.Checker):
 
     def _get_rules_to_test(self, target):
         rules_to_test = []
-        for rule in common.iterate_over_rules():
+        for rule in common.iterate_over_rules(self.test_env.product):
             if not self._rule_should_be_tested(rule, target):
                 continue
             if not xml_operations.find_rule_in_benchmark(
@@ -300,7 +300,7 @@ class RuleChecker(oscap.Checker):
                 .format(OSCAP_PROFILE_ALL_ID, script))
         return params
 
-    def _parse_parameters(self, script):
+    def _parse_parameters(self, script_content):
         """Parse parameters from script header"""
         params = {'profiles': [],
                   'templates': [],
@@ -309,16 +309,15 @@ class RuleChecker(oscap.Checker):
                   'remediation': ['all'],
                   'variables': [],
                   }
-        with open(script, 'r') as script_file:
-            script_content = script_file.read()
-            for parameter in params:
-                found = re.search(r'^# {0} = (.*)$'.format(parameter),
-                                  script_content,
-                                  re.MULTILINE)
-                if found is None:
-                    continue
-                splitted = found.group(1).split(',')
-                params[parameter] = [value.strip() for value in splitted]
+
+        for parameter in params:
+            found = re.search(r'^# {0} = (.*)$'.format(parameter),
+                              script_content, re.MULTILINE)
+            if found is None:
+                continue
+            splitted = found.group(1).split(',')
+            params[parameter] = [value.strip() for value in splitted]
+
         return params
 
     def _get_scenarios(self, rule_dir, scripts, scenarios_regex, benchmark_cpes):
@@ -331,6 +330,7 @@ class RuleChecker(oscap.Checker):
 
         scenarios = []
         for script in scripts:
+            script_contents = scripts[script]
             if scenarios_regex is not None:
                 if scenarios_pattern.match(script) is None:
                     logging.debug("Skipping script %s - it did not match "
@@ -338,10 +338,10 @@ class RuleChecker(oscap.Checker):
                     continue
             script_context = _get_script_context(script)
             if script_context is not None:
-                script_params = self._parse_parameters(os.path.join(rule_dir, script))
+                script_params = self._parse_parameters(script_contents)
                 script_params = self._modify_parameters(script, script_params)
                 if common.matches_platform(script_params["platform"], benchmark_cpes):
-                    scenarios += [Scenario(script, script_context, script_params)]
+                    scenarios += [Scenario(script, script_context, script_params, script_contents)]
                 else:
                     logging.warning("Script %s is not applicable on given platform" % script)
 
