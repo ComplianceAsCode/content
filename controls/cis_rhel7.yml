@@ -1781,21 +1781,31 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+    automated: yes
+    notes: <-
+      The rule checks for default list of ciphers provided in the benchmark.
+    rules:
+    - sshd_approved_ciphers=cis_rhel7
+    - sshd_use_approved_ciphers
 
   - id: 5.3.14
     title: Ensure only strong MAC algorithms are used (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+    automated: yes
+    notes: <-
+      The rule checks for default list of MACs provided in the benchmark.
+    rules:
+    - sshd_approved_macs=cis_rhel7
+    - sshd_use_approved_macs
 
   - id: 5.3.15
     title: Ensure only strong Key Exchange algorithms are used (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # I think we don't have rule for this case where remediation is not exactly spelled out
+    automated: no # rule missing
 
   - id: 5.3.16
     title: Ensure SSH Idle Timeout Interval is configured (Automated)
