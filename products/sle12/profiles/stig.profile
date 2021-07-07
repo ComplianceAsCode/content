@@ -161,6 +161,8 @@ selections:
     - dir_permissions_library_dirs
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_system_owned_group
+    - dir_system_commands_group_root_owned
+    - dir_system_commands_root_owned
     - disable_ctrlaltdel_reboot
     - display_login_attempts
     - enable_dconf_user_profile
@@ -169,7 +171,10 @@ selections:
     - ensure_rtc_utc_configuration
     - file_etc_security_opasswd
     - file_groupownership_home_directories
+    - file_groupownership_system_commands_dirs
+    - file_ownership_binary_dirs
     - file_ownership_library_dirs
+    - file_permissions_binary_dirs
     - file_permissions_home_directories
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
