@@ -200,15 +200,7 @@ def parse_args():
                                        "in the profile will be evaluated against all its test "
                                        "scenarios."))
 
-    args = parser.parse_args()
-
-    if not args.product and args.datastream:
-        product_regex = re.compile(r'^.*ssg-([a-zA-Z0-9]*)-(ds|ds-1\.2)\.xml$')
-        match = product_regex.match(args.datastream)
-        if match:
-            args.product = match.group(1)
-
-    return args
+    return parser.parse_args()
 
 
 def get_logging_dir(options):
@@ -298,6 +290,15 @@ def normalize_passed_arguments(options):
 
     if not options.datastream:
         options.datastream = get_unique_datastream()
+
+    if not options.product and options.datastream:
+        product_regex = re.compile(r'^.*ssg-([a-zA-Z0-9]*)-(ds|ds-1\.2)\.xml$')
+        match = product_regex.match(options.datastream)
+        if not match:
+            msg = "Unable to detect product without explicit --product: "
+            msg += "datastream {0} lacks product name".format(datastream)
+            raise RuntimeError(msg)
+        options.product = match.group(1)
 
     if options.xccdf_id is None:
         options.xccdf_id = auto_select_xccdf_id(options.datastream,
