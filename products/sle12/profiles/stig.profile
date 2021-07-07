@@ -157,6 +157,7 @@ selections:
     - dconf_gnome_login_banner_text
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
+    - dir_group_ownership_library_dirs
     - dir_ownership_library_dirs
     - dir_permissions_library_dirs
     - dir_perms_world_writable_sticky_bits
