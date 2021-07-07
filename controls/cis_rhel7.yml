@@ -1854,7 +1854,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    automated: yes
+    rules:
+    - sshd_set_maxstartups
+    - var_sshd_set_maxstartups=10:30:60
 
   - id: 5.3.22
     title: Ensure SSH MaxSessions is limited (Automated)
