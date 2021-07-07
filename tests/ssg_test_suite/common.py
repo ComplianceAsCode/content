@@ -264,6 +264,62 @@ def _rel_abs_path(current_path, base_path):
     return os.path.relpath(current_path, base_path)
 
 
+def get_product_context(product=None):
+    """
+    Returns a product YAML context if any product is specified. Hard-coded to
+    assume a debug build.
+    """
+    # Load product's YAML file if present. This will allow us to parse
+    # tests in the context of the product we're executing under.
+    product_yaml = dict()
+    if product:
+        yaml_path = product_yaml_path(SSG_ROOT, product)
+        product_yaml = load_product_yaml(yaml_path)
+
+    # We could run into a DocumentationNotComplete error when loading a
+    # rule's YAML contents. However, because the test suite isn't executed
+    # in the context of a particular build (though, ideally it would be
+    # linked), we may not know exactly whether the top-level rule/profile
+    # we're testing is actually completed. Thus, forcibly set the required
+    # property to bypass this error.
+    product_yaml['cmake_build_type'] = 'Debug'
+
+    return product_yaml
+
+
+def load_rule_and_env(rule_dir_path, env_yaml, product=None):
+    """
+    Loads a rule and returns the combination of the RuleYAML class and
+    the corresponding local environment for that rule.
+    """
+
+    # First build the path to the rule.yml file
+    rule_path = get_rule_dir_yaml(rule_dir_path)
+
+    # Load rule content in our environment. We use this to satisfy
+    # some implied properties that might be used in the test suite.
+    # Make sure we normalize to a specific product as well so that
+    # when we load templated content it is correct.
+    rule = RuleYAML.from_yaml(rule_path, env_yaml)
+    rule.normalize(product)
+
+    # Note that most places would check prodtype, but we don't care
+    # about that here: if the rule is available to the product, we
+    # load and parse it anyways as we have no knowledge of the
+    # top-level profile or rule passed into the test suite.
+    prodtypes = parse_prodtype(rule.prodtype)
+
+    # Our local copy of env_yaml needs some properties from rule.yml
+    # for completeness.
+    local_env_yaml = dict()
+    local_env_yaml.update(env_yaml)
+    local_env_yaml['rule_id'] = rule.id_
+    local_env_yaml['rule_title'] = rule.title
+    local_env_yaml['products'] = prodtypes
+
+    return rule, local_env_yaml
+
+
 def template_tests(product=None):
     """
     Create a temporary directory with test cases parsed via jinja using
@@ -276,25 +332,13 @@ def template_tests(product=None):
     # it on success. Wrap in a try/except block and reraise the original
     # exception after removing the temporary directory.
     try:
-        # Load product's YAML file if present. This will allow us to parse
-        # tests in the context of the product we're executing under.
-        product_yaml = dict()
-        if product:
-            yaml_path = product_yaml_path(SSG_ROOT, product)
-            product_yaml = load_product_yaml(yaml_path)
+        # Load the product context we're executing under, if any.
+        product_yaml = get_product_context(product)
 
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
         template_builder = ssg.templates.Builder(product_yaml, empty,
             _SHARED_TEMPLATES, empty, empty)
-
-        # Below we could run into a DocumentationNotComplete error. However,
-        # because the test suite isn't executed in the context of a particular
-        # build (though, ideally it would be linked), we may not know exactly
-        # whether the top-level rule/profile we're testing is actually
-        # completed. Thus, forcibly set the required property to bypass this
-        # error.
-        product_yaml['cmake_build_type'] = 'Debug'
 
         # Note that we're not exactly copying 1-for-1 the contents of the
         # directory structure into the temporary one. Instead we want a
@@ -307,27 +351,8 @@ def template_tests(product=None):
             if "tests" not in dirnames or not is_rule_dir(dirpath):
                 continue
 
-            # Load rule content in our environment. We use this to satisfy
-            # some implied properties that might be used in the test suite.
-            # Make sure we normalize to a specific product as well so that
-            # when we load templated content it is correct.
-            rule_path = get_rule_dir_yaml(dirpath)
-            rule = RuleYAML.from_yaml(rule_path, product_yaml)
-            rule.normalize(product)
-
-            # Note that most places would check prodtype, but we don't care
-            # about that here: if the rule is available to the product, we
-            # load and parse it anyways as we have no knowledge of the
-            # top-level profile or rule passed into the test suite.
-            prodtypes = parse_prodtype(rule.prodtype)
-
-            # Our local copy of env_yaml needs some properties from rule.yml
-            # for completeness.
-            local_env_yaml = dict()
-            local_env_yaml.update(product_yaml)
-            local_env_yaml['rule_id'] = rule.id_
-            local_env_yaml['rule_title'] = rule.title
-            local_env_yaml['products'] = prodtypes
+            # Load the rule and its environment
+            rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
 
             # Create the destination directory.
             dest_path = os.path.join(tmpdir, rule.id_)
@@ -473,21 +498,66 @@ def iterate_over_rules(product=None):
             id -- full rule id as it is present in datastream
             short_id -- short rule ID, the same as basename of the directory
                         containing the test scenarios in Bash
-            files -- list of executable .sh files in the "tests" directory
+            files -- list of executable .sh files in the uploaded tarball
     """
+
+    # Here we need to perform some magic to handle parsing the rule (from a
+    # product perspective) and loading any templated tests. In particular,
+    # identifying which tests to potentially run involves invoking the
+    # templating engine.
+    #
+    # Begin by loading context about our execution environment, if any.
+    product_yaml = get_product_context(product)
+
+    # Initialize a mock template_builder.
+    empty = "/ssgts/empty/placeholder"
+    template_builder = ssg.templates.Builder(product_yaml, empty,
+        _SHARED_TEMPLATES, empty, empty)
+
     for dirpath, dirnames, filenames in walk_through_benchmark_dirs(product):
         if "rule.yml" in filenames and "tests" in dirnames:
             short_rule_id = os.path.basename(dirpath)
+
+            # Load the rule itself to check for a template.
+            rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
+
+            # All tests is a mapping from path (in the tarball) to contents
+            # of the test case. This is necessary because later code (which
+            # attempts to parse headers from the test case) don't have easy
+            # access to templated content. By reading it and returning it
+            # here, we can save later code from having to understand the
+            # templating system.
+            all_tests = dict()
+
+            # Start
+            if rule.template:
+                templated_tests = template_builder.get_all_tests(
+                    rule.id_, rule.template, local_env_yaml)
+                all_tests.update(templated_tests)
+
+            # Add additional tests from the local rule directory. Note that,
+            # like the behavior in template_tests, this will overwrite any
+            # templated tests with the same file name.
             tests_dir = os.path.join(dirpath, "tests")
             tests_dir_files = os.listdir(tests_dir)
+            for test_case in tests_dir_files:
+                test_path = os.path.join(tests_dir, test_case)
+                if os.path.isdir(test_path):
+                    continue
+
+                with open(test_path) as fp:
+                    all_tests[test_case] = fp.read()
+
             # Filter out everything except the shell test scenarios.
             # Other files in rule directories are editor swap files
             # or other content than a test case.
-            scripts = filter(lambda x: x.endswith(".sh"), tests_dir_files)
+            allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
+            content_mapping = {x: all_tests[x] for x in allowed_scripts}
+
             full_rule_id = OSCAP_RULE + short_rule_id
             result = Rule(
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
-                files=scripts)
+                files=content_mapping)
             yield result
 
 
