@@ -70,7 +70,7 @@ def reorder_according_to_ordering(unordered, ordering, regex=None):
             if priority_type in item and item in unordered:
                 ordered.append(item)
                 unordered.remove(item)
-    ordered.extend(list(unordered))
+    ordered.extend(sorted(unordered))
     return ordered
 
 
