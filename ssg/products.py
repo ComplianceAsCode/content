@@ -17,6 +17,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_AIDE_CONF_PATH,
                         DEFAULT_AIDE_BIN_PATH,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
+                        DEFAULT_CHRONY_CONF_PATH,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE,
@@ -82,6 +83,9 @@ def _get_implied_properties(existing_properties):
 
     if "product" not in existing_properties:
         result["product"] = DEFAULT_PRODUCT
+
+    if "chrony_conf_path" not in existing_properties:
+        result["chrony_conf_path"] = DEFAULT_CHRONY_CONF_PATH
 
     return result
 
