@@ -50,6 +50,10 @@ def _get_implied_properties(existing_properties):
     return result
 
 
+def product_yaml_path(ssg_root, product):
+    return os.path.join(ssg_root, "products", product, "product.yml")
+
+
 def load_product_yaml(product_yaml_path):
     """
     Reads a product data from disk and returns it.

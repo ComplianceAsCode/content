@@ -51,6 +51,11 @@ def parse_args():
         help="Path to the Source DataStream on this machine which is going to be tested. "
         "If not supplied, autodetection is attempted by looking into the build directory.")
 
+    common_parser.add_argument(
+        "--product", dest="product", metavar="PRODUCT", default=None,
+        help="Product to interpret tests as being run under; autodetected from datastream "
+        "if it follows the ssg-<product>-ds*.xml naming convention.")
+
     benchmarks = common_parser.add_mutually_exclusive_group()
     benchmarks.add_argument("--xccdf-id",
                                dest="xccdf_id",
@@ -286,6 +291,15 @@ def normalize_passed_arguments(options):
     if not options.datastream:
         options.datastream = get_unique_datastream()
 
+    if not options.product and options.datastream:
+        product_regex = re.compile(r'^.*ssg-([a-zA-Z0-9]*)-(ds|ds-1\.2)\.xml$')
+        match = product_regex.match(options.datastream)
+        if not match:
+            msg = "Unable to detect product without explicit --product: "
+            msg += "datastream {0} lacks product name".format(datastream)
+            raise RuntimeError(msg)
+        options.product = match.group(1)
+
     if options.xccdf_id is None:
         options.xccdf_id = auto_select_xccdf_id(options.datastream,
                                                 options.xccdf_id_number)
@@ -319,6 +333,10 @@ def normalize_passed_arguments(options):
         logging.info(
             "The base image option has not been specified, "
             "choosing libvirt-based test environment.")
+
+    # Add in product to the test environment. This is independent of actual
+    # test environment type so we do it after creation.
+    options.test_env.product = options.product
 
     try:
         benchmark_cpes = xml_operations.benchmark_get_applicable_platforms(

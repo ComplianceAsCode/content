@@ -8,12 +8,17 @@ import functools
 import tarfile
 import tempfile
 import re
+import shutil
 
 from ssg.build_cpe import ProductCPEs
+from ssg.build_yaml import Rule as RuleYAML
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
-from ssg.products import load_product_yaml
+from ssg.jinja import process_file
+from ssg.products import product_yaml_path, load_product_yaml
+from ssg.rules import get_rule_dir_yaml, is_rule_dir
+from ssg.rule_yaml import parse_prodtype
 from ssg_test_suite.log import LogHelper
 
 Scenario_run = namedtuple(
@@ -25,9 +30,11 @@ Scenario_conditions = namedtuple(
 Rule = namedtuple(
     "Rule", ["directory", "id", "short_id", "files"])
 
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
 _BENCHMARK_DIRS = [
-        os.path.abspath(os.path.join(os.path.dirname(__file__), '../../linux_os/guide')),
-        os.path.abspath(os.path.join(os.path.dirname(__file__), '../../applications')),
+        os.path.abspath(os.path.join(SSG_ROOT, 'linux_os', 'guide')),
+        os.path.abspath(os.path.join(SSG_ROOT, 'applications')),
         ]
 
 _SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared'))
@@ -48,8 +55,16 @@ SSH_ADDITIONAL_OPTS = (
 ) + SSH_ADDITIONAL_OPTS
 
 
-def walk_through_benchmark_dirs():
-    for dirname in _BENCHMARK_DIRS:
+def walk_through_benchmark_dirs(product=None):
+    directories = _BENCHMARK_DIRS
+    if product is not None:
+        yaml_path = product_yaml_path(SSG_ROOT, product)
+        product_base = os.path.dirname(yaml_path)
+        product_yaml = load_product_yaml(yaml_path)
+        benchmark_root = os.path.join(product_base, product_yaml['benchmark_root'])
+        directories = [os.path.abspath(benchmark_root)]
+
+    for dirname in directories:
         for dirpath, dirnames, filenames in os.walk(dirname):
             yield dirpath, dirnames, filenames
 
@@ -233,29 +248,155 @@ def _make_file_root_owned(tarinfo):
     return tarinfo
 
 
-def create_tarball():
+def _rel_abs_path(current_path, base_path):
+    """
+    Return the value of the current path, relative to the base path, but
+    resolving paths absolutely first. This helps when walking a nested
+    directory structure and want to get the subtree relative to the original
+    path
+    """
+    tmp_path = os.path.abspath(current_path)
+    return os.path.relpath(current_path, base_path)
+
+
+def template_tests(product=None):
+    """
+    Create a temporary directory with test cases parsed via jinja using
+    product-specific context.
+    """
+    # Set up an empty temp directory
+    tmpdir = tempfile.mkdtemp()
+
+    # We want to remove the temporary directory on failure, but preserve
+    # it on success. Wrap in a try/except block and reraise the original
+    # exception after removing the temporary directory.
+    try:
+        # Load product's YAML file if present. This will allow us to parse
+        # tests in the context of the product we're executing under.
+        product_yaml = dict()
+        if product:
+            yaml_path = product_yaml_path(SSG_ROOT, product)
+            product_yaml = load_product_yaml(yaml_path)
+
+        # Below we could run into a DocumentationNotComplete error. However,
+        # because the test suite isn't executed in the context of a particular
+        # build (though, ideally it would be linked), we may not know exactly
+        # whether the top-level rule/profile we're testing is actually
+        # completed. Thus, forcibly set the required property to bypass this
+        # error.
+        product_yaml['cmake_build_type'] = 'Debug'
+
+        # Note that we're not exactly copying 1-for-1 the contents of the
+        # directory structure into the temporary one. Instead we want a
+        # flattened mapping with all rules in a single top-level directory
+        # and all tests immediately contained within it. That is:
+        #
+        # /group_a/rule_a/tests/something.pass.sh -> /rule_a/something.pass.sh
+        for dirpath, dirnames, _ in walk_through_benchmark_dirs(product):
+            # Skip anything that isn't obviously a rule.
+            if "tests" not in dirnames or not is_rule_dir(dirpath):
+                continue
+
+            # Load rule content in our environment. We use this to satisfy
+            # some implied properties that might be used in the test suite.
+            rule_path = get_rule_dir_yaml(dirpath)
+            rule = RuleYAML.from_yaml(rule_path, product_yaml)
+
+            # Note that most places would check prodtype, but we don't care
+            # about that here: if the rule is available to the product, we
+            # load and parse it anyways as we have no knowledge of the
+            # top-level profile or rule passed into the test suite.
+            prodtypes = parse_prodtype(rule.prodtype)
+
+            # Our local copy of env_yaml needs some properties from rule.yml
+            # for completeness.
+            local_env_yaml = dict()
+            local_env_yaml.update(product_yaml)
+            local_env_yaml['rule_id'] = rule.id_
+            local_env_yaml['rule_title'] = rule.title
+            local_env_yaml['products'] = prodtypes
+
+            # Create the destination directory.
+            dest_path = os.path.join(tmpdir, rule.id_)
+            os.mkdir(dest_path)
+
+            # Walk the test directory, writing all tests into the output
+            # directory, recursively.
+            tests_dir_path = os.path.join(dirpath, "tests")
+            tests_dir_path = os.path.abspath(tests_dir_path)
+            for dirpath, dirnames, filenames in os.walk(tests_dir_path):
+                for dirname in dirnames:
+                    # We want to recreate the correct path under the temporary
+                    # directory. Resolve it to a relative path from the tests/
+                    # directory.
+                    dir_path = _rel_abs_path(os.path.join(dirpath, dirname), tests_dir_path)
+                    assert '../' not in dir_path
+                    tmp_dir_path = os.path.join(dest_path, dir_path)
+                    os.mkdir(tmp_dir_path)
+
+                for filename in filenames:
+                    # We want to recreate the correct path under the temporary
+                    # directory. Resolve it to a relative path from the tests/
+                    # directory. Assumption: directories should be created
+                    # prior to recursing into them, so we don't need to handle
+                    # if a file's parent directory doesn't yet exist under the
+                    # destination.
+                    src_test_path = os.path.join(dirpath, filename)
+                    rel_test_path = _rel_abs_path(src_test_path, tests_dir_path)
+                    dest_test_path = os.path.join(dest_path, rel_test_path)
+
+                    # Rather than performing an OS-level copy, we need to
+                    # first parse the test with jinja and then write it back
+                    # out to the destination.
+                    parsed_test = process_file(src_test_path, local_env_yaml)
+                    with open(dest_test_path, 'w') as output_fp:
+                        print(parsed_test, file=output_fp)
+
+    except Exception as exp:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+        raise exp
+
+    return tmpdir
+
+
+def create_tarball(product):
     """Create a tarball which contains all test scenarios for every rule.
     Tarball contains directories with the test scenarios. The name of the
     directories is the same as short rule ID. There is no tree structure.
     """
-    with tempfile.NamedTemporaryFile(
-            "wb", suffix=".tar.gz", delete=False) as fp:
-        with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
-            tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
-            for dirpath, dirnames, _ in walk_through_benchmark_dirs():
-                rule_id = os.path.basename(dirpath)
-                if "tests" in dirnames:
-                    tests_dir_path = os.path.join(dirpath, "tests")
+    templated_tests = template_tests(product=product)
+
+    try:
+        with tempfile.NamedTemporaryFile(
+                "wb", suffix=".tar.gz", delete=False) as fp:
+            with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
+                tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
+                for rule_id in os.listdir(templated_tests):
+                    # When a top-level directory exists under the temporary
+                    # templated tests directory, we've already validated that
+                    # it is a valid rule directory. Thus we can simply add it
+                    # to the tarball.
+                    absolute_dir = os.path.join(templated_tests, rule_id)
+                    if not os.path.isdir(absolute_dir):
+                        continue
+
                     tarball.add(
-                        tests_dir_path, arcname=rule_id,
+                        absolute_dir, arcname=rule_id,
                         filter=lambda tinfo: _exclude_garbage(_make_file_root_owned(tinfo))
                     )
-        return fp.name
+
+            # Since we've added the templated contents into the tarball, we
+            # can now delete the tree.
+            shutil.rmtree(templated_tests, ignore_errors=True)
+            return fp.name
+    except Exception as exp:
+        shutil.rmtree(templated_tests, ignore_errors=True)
+        raise exp
 
 
 def send_scripts(test_env):
     remote_dir = REMOTE_TEST_SCENARIOS_DIRECTORY
-    archive_file = create_tarball()
+    archive_file = create_tarball(test_env.product)
     archive_file_basename = os.path.basename(archive_file)
     remote_archive_file = os.path.join(remote_dir, archive_file_basename)
     logging.debug("Uploading scripts.")
@@ -279,7 +420,7 @@ def send_scripts(test_env):
     return remote_dir
 
 
-def iterate_over_rules():
+def iterate_over_rules(product=None):
     """Iterate over rule directories which have test scenarios".
 
     Returns:
@@ -291,7 +432,7 @@ def iterate_over_rules():
                         containing the test scenarios in Bash
             files -- list of executable .sh files in the "tests" directory
     """
-    for dirpath, dirnames, filenames in walk_through_benchmark_dirs():
+    for dirpath, dirnames, filenames in walk_through_benchmark_dirs(product):
         if "rule.yml" in filenames and "tests" in dirnames:
             short_rule_id = os.path.basename(dirpath)
             tests_dir = os.path.join(dirpath, "tests")
