@@ -925,8 +925,11 @@ class Group(object):
         # The Rules are ordered in more logical way, and
         # remediation order is natural, first the package is installed, then configured.
         rules_in_group = list(self.rules.keys())
-        regex = r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$'
-        priority_order = ["installed", "removed", "enabled", "disabled"]
+        regex = (r'(package_.*_(installed|removed))|' +
+                 r'(service_.*_(enabled|disabled))|' +
+                 r'install_smartcard_packages$')
+        priority_order = ["installed", "install_smartcard_packages", "removed",
+                          "enabled", "disabled"]
         rules_in_group = reorder_according_to_ordering(rules_in_group, priority_order, regex)
 
         # Add rules in priority order, first all packages installed, then removed,
