@@ -170,7 +170,7 @@ controls:
     rules:
       - partition_for_home
 
-  - id: 1.1.18
+  - id: 1.1.14
     title: Ensure nodev option set on /home partition (Automated)
     levels:
       - l1_server
@@ -212,7 +212,7 @@ controls:
       - l1_server
       - l1_workstation
     automated: no
-    rules:
+    related_rules:
       - mount_option_nodev_removable_partitions
 
   - id: 1.1.19
@@ -221,7 +221,7 @@ controls:
       - l1_server
       - l1_workstation
     automated: no
-    rules:
+    related_rules:
       - mount_option_nosuid_removable_partitions
 
   - id: 1.1.20
@@ -230,8 +230,17 @@ controls:
       - l1_server
       - l1_workstation
     automated: no
-    rules:
+    related_rules:
       - mount_option_noexec_removable_partitions
+
+  - id: 1.1.21
+    title: Ensure sticky bit is set on all world-writable directories (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: yes
+    rules:
+      - dir_perms_world_writable_sticky_bits
 
   - id: 1.1.22
     title: Disable Automounting (Automated)
@@ -348,7 +357,7 @@ controls:
       - file_groupowner_grub2_cfg
       - file_permissions_grub2_cfg
 
-  - id: 1.5.1
+  - id: 1.5.2
     title: Ensure bootloader password is set (Automated)
     levels:
       - l1_server
@@ -356,6 +365,7 @@ controls:
     automated: yes
     rules:
       - grub2_password
+      - grub2_uefi_password
 
   - id: 1.5.3
     title: Ensure authentication required for single user mode (Automated)
@@ -387,15 +397,6 @@ controls:
     automated: yes
     rules:
       - sysctl_kernel_randomize_va_space
-
-  - id: 1.7.1.1
-    title: Ensure SELinux is installed (Automated)
-    levels:
-      - l2_server
-      - l2_workstation
-    automated: yes
-    rules:
-      - package_libselinux_installed
 
   - id: 1.7.1.1
     title: Ensure SELinux is installed (Automated)
@@ -469,6 +470,7 @@ controls:
     automated: yes
     rules:
       - banner_etc_motd
+      - login_banner_text=usgcb_default
 
   - id: 1.8.1.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -478,6 +480,7 @@ controls:
     automated: yes
     rules:
       - banner_etc_issue
+      - login_banner_text=usgcb_default
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5225
@@ -495,6 +498,8 @@ controls:
       - l1_workstation
     automated: yes
     rules:
+      - file_groupowner_etc_motd
+      - file_owner_etc_motd
       - file_permissions_etc_motd
 
   - id: 1.8.1.5
@@ -504,7 +509,18 @@ controls:
       - l1_workstation
     automated: yes
     rules:
+      - file_groupowner_etc_issue
+      - file_owner_etc_issue
       - file_permissions_etc_issue
+
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/7225
+  - id: 1.8.1.6
+    title: Ensure permissions on /etc/issue.net are configured (Automated)
+    levels:
+      - l1_server
+      - l1_workstation
+    automated: no
 
   - id: 1.8.2
     title: Ensure GDM login banner is configured (Automated)
@@ -515,6 +531,7 @@ controls:
     rules:
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
+      - login_banner_text=usgcb_default
 
   - id: 1.9
     title: Ensure updates, patches, and additional security software are installed (Manual)
