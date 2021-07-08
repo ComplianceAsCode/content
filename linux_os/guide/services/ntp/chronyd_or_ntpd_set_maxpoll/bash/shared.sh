@@ -4,7 +4,7 @@
 
 
 config_file="/etc/ntp.conf"
-/usr/sbin/pidof ntpd || config_file="/etc/chrony.conf"
+/usr/sbin/pidof ntpd || config_file="{{{ chrony_conf_path }}}"
 
 
 # Set maxpoll values to var_time_service_set_maxpoll
