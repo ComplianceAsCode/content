@@ -338,7 +338,8 @@ def template_tests(product=None):
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
         template_builder = ssg.templates.Builder(product_yaml, empty,
-            _SHARED_TEMPLATES, empty, empty)
+                                                 _SHARED_TEMPLATES, empty,
+                                                 empty)
 
         # Note that we're not exactly copying 1-for-1 the contents of the
         # directory structure into the temporary one. Instead we want a
@@ -512,7 +513,7 @@ def iterate_over_rules(product=None):
     # Initialize a mock template_builder.
     empty = "/ssgts/empty/placeholder"
     template_builder = ssg.templates.Builder(product_yaml, empty,
-        _SHARED_TEMPLATES, empty, empty)
+                                             _SHARED_TEMPLATES, empty, empty)
 
     for dirpath, dirnames, filenames in walk_through_benchmark_dirs(product):
         if "rule.yml" in filenames and "tests" in dirnames:
