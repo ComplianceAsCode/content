@@ -201,7 +201,8 @@ class Builder(object):
             return
 
         filled_template = self.build_lang_file(rule_id, template_name,
-            template_vars, lang, local_env_yaml)
+                                               template_vars, lang,
+                                               local_env_yaml)
 
         ext = lang_to_ext_map[lang]
         output_file_name = rule_id + ext
@@ -331,7 +332,7 @@ class Builder(object):
         local_env_yaml["products"] = self.env_yaml["product"]
 
         return self.build_lang_file(rule_id, template_name, template_vars,
-            language, local_env_yaml)
+                                    language, local_env_yaml)
 
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
