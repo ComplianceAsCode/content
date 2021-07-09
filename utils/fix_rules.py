@@ -111,6 +111,8 @@ def find_rules_generator(args, func):
     # Note: this has become a generator rather than returning a list of
     # results.
 
+    product_yamls = dict()
+
     rule_dirs = json.load(open(args.json))
     for rule_id in rule_dirs:
         rule_obj = rule_dirs[rule_id]
@@ -120,15 +122,20 @@ def find_rules_generator(args, func):
         assert rule_obj['products']
         product = rule_obj['products'][0]
 
-        product_path = os.path.join(args.root, "products", product, 'product.yml')
-        product_yaml = ssg.products.load_product_yaml(product_path)
-        assert 'auid' in product_yaml
-        product_yaml['cmake_build_type'] = 'Debug'
+        if product not in product_yamls:
+            product_path = os.path.join(args.root, "products", product, 'product.yml')
+            product_yaml = ssg.products.load_product_yaml(product_path)
+            product_yaml['cmake_build_type'] = 'Debug'
+            product_yamls[product] = product_yaml
+
+        local_env_yaml = dict()
+        local_env_yaml.update(product_yamls[product])
+        local_env_yaml['rule_id'] = rule_id
 
         rule_path = ssg.rules.get_rule_dir_yaml(rule_obj['dir'])
         try:
-            if func(rule_path, product_yaml):
-                yield (rule_path, product_path, product_yaml)
+            if func(rule_path, local_env_yaml):
+                yield (rule_path, product_path, local_env_yaml)
         except jinja2.exceptions.UndefinedError as ue:
             msg = "Failed to parse file {0} (with product.yml: {1}). Skipping. {2}"
             msg = msg.format(rule_path, product_path, ue)
