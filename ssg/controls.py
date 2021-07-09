@@ -202,9 +202,16 @@ class ControlsManager():
 
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
-        for c in all_policy_controls:
-            if len(level_ids.intersection(c.levels)) > 0:
-                eligible_controls.append(c)
+        defined_variables = []
+        # we will go level by level, from top to bottom
+        # this is done to enable overriding of variables by higher levels
+        for lv in level_ids:
+            for c in all_policy_controls:
+                if lv in c.levels:
+                    # if the control has a variable, check if it is not already defined
+                    if c.variables.keys().isdisjoint(defined_variables):
+                        eligible_controls.append(c)
+                        defined_variables += [*c.variables.keys()]
         return eligible_controls
 
     def get_all_controls(self, policy_id):
