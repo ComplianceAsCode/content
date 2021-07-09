@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,sle12,sle15
 
 title: 'Ensure All Accounts on the System Have Unique User IDs'
 
@@ -11,10 +11,12 @@ rationale: 'To assure accountability and prevent unauthenticated access, interac
 severity: medium
 
 identifiers:
+    cce@rhel7: CCE-85857-1
     cce@sle12: CCE-83196-6
     cce@sle15: CCE-83277-4
 
 references:
+    cis@rhel7: 6.2.7
     stigid@sle12: SLES-12-010640
     stigid@sle15: SLES-15-010230
     disa: CCI-000764,CCI-000804
