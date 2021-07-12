@@ -3,7 +3,45 @@
 # strategy = configure
 # complexity = low
 # disruption = low
+
+{{% if FILEPATH is not string %}}
+{{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY and FILE_REGEX %}}
+
+- name: Find {{{ path }}} file(s)
+  find:
+    paths: "{{{ path }}}"
+    {{% if FILE_REGEX is not string %}}
+    patterns: {{{ FILE_REGEX[loop.index0] }}}
+    {{% else %}}
+    patterns: {{{ FILE_REGEX }}}
+    {{% endif %}}
+    use_regex: yes
+  register: files_found
+
+- name: Set permissions for {{{ path }}} file(s)
+  file:
+    path: "{{ item.path }}"
+    mode: "{{{ FILEMODE }}}"
+  with_items:
+    - "{{ files_found.files }}"
+
+{{% else %}}
+
+- name: Test for existence {{{ path }}}
+  stat:
+    path: "{{{ path }}}"
+  register: file_exists
+  
+- name: Ensure permission {{{ FILEMODE }}} on {{{ path }}}
+  file:
+    path: "{{{ path }}}"
+    mode: "{{{ FILEMODE }}}"
+  when: file_exists.stat is defined and file_exists.stat.exists
+
+{{% endif %}}
+{{% endfor %}}
+{{% elif IS_DIRECTORY and FILE_REGEX %}}
 
 - name: Find {{{ FILEPATH }}} file(s)
   find:

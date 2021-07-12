@@ -47,7 +47,7 @@
 
     {{%- if IS_DIRECTORY %}}
       <unix:path>{{{ filepath }}}</unix:path>
-      {{%- if FILE_REGEX is not string %}}
+      {{%- if FILE_REGEX and FILE_REGEX is not string %}}
       <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
       {{%- elif FILE_REGEX %}}
       <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>

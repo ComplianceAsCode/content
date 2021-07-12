@@ -6,12 +6,20 @@
 
 {{% if FILEPATH is not string %}}
 {{% for path in FILEPATH %}}
+{{% if IS_DIRECTORY and FILE_REGEX %}}
 readarray -t files < <(find {{{ path }}})
 for file in "${files[@]}"; do
+    {{% if FILE_REGEX is not string %}}
     if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
+    {{% else %}}
+    if basename $file | grep -qE '{{{ FILE_REGEX }}}'; then
+    {{% endif %}}
         chmod {{{ FILEMODE }}} $file
     fi    
 done
+{{% else %}}
+chmod {{{ FILEMODE }}} {{{ path }}}
+{{% endif %}}
 {{% endfor %}}
 {{% elif IS_DIRECTORY and FILE_REGEX %}}
 readarray -t files < <(find {{{ FILEPATH }}})
