@@ -4,10 +4,27 @@
 # complexity = low
 # disruption = low
 
+{{% if FILEPATH is not string %}}
+{{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY and FILE_REGEX %}}
+readarray -t files < <(find {{{ path }}})
+for file in "${files[@]}"; do
+    {{% if FILE_REGEX is not string %}}
+    if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
+    {{% else %}}
+    if basename $file | grep -qE '{{{ FILE_REGEX }}}'; then
+    {{% endif %}}
+        chgrp {{{ FILEGID }}} $file
+    fi
+done
+{{% else %}}
+chgrp {{{ FILEGID }}} {{{ path }}}
+{{% endif %}}
+{{% endfor %}}
+{{% elif IS_DIRECTORY and FILE_REGEX %}}
 readarray -t files < <(find {{{ FILEPATH }}})
 for file in "${files[@]}"; do
-    if basename $file | grep -q '{{{ FILE_REGEX }}}'; then
+    if basename $file | grep -qE '{{{ FILE_REGEX }}}'; then
         chgrp {{{ FILEGID }}} $file
     fi
 done
