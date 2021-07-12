@@ -207,6 +207,7 @@ selections:
     - file_ownership_library_dirs
 
     # RHEL-08-010350
+    - file_groupownership_library_dirs
 
     # RHEL-08-010360
     - package_aide_installed
