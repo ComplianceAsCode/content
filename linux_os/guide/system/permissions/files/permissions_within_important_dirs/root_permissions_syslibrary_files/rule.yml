@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: sle12,sle15,rhel8,fedora
 
 title: |-
     Verify the system-wide library files in directories
@@ -17,33 +17,35 @@ description: |-
     All system-wide shared library files should be protected from unauthorised
     access. If any of these files is not owned by root, correct its owner with
     the following command:
-    <pre>$ sudo chgrp root <i>DIR</i></pre>
+    <pre>$ sudo chgrp root <i>FILE</i></pre>
 
 rationale: |-
-  If the operating system were to allow any user to make changes to software libraries,
-  then those changes might be implemented without undergoing the appropriate testing and
-  approvals that are part of a robust change management process.
+    If the operating system were to allow any user to make changes to software libraries,
+    then those changes might be implemented without undergoing the appropriate testing and
+    approvals that are part of a robust change management process.
 
-  This requirement applies to operating systems with software libraries that are
-  accessible and configurable, as in the case of interpreted languages. Software libraries
-  also include privileged programs which execute with escalated privileges. Only qualified
-  and authorized individuals must be allowed to obtain access to information system components
-  for purposes of initiating changes, including upgrades and modifications.
+    This requirement applies to operating systems with software libraries that are
+    accessible and configurable, as in the case of interpreted languages. Software libraries
+    also include privileged programs which execute with escalated privileges. Only qualified
+    and authorized individuals must be allowed to obtain access to information system components
+    for purposes of initiating changes, including upgrades and modifications.
 
 severity: medium
 
 identifiers:
     cce@sle15: CCE-85736-7
     cce@sle12: CCE-83237-8
+    cce@rhel8: CCE-86523-8
 
 references:
     nist: CM-5(6),CM-5(6).1
     disa: CCI-001499
     stigid@sle12: SLES-12-010875
     stigid@sle15: SLES-15-010355
+    stigid@rhel8: RHEL-08-010350
     srg: SRG-OS-000259-GPOS-00100
 
-ocil_clause: 'any system wide library directory is returned'
+ocil_clause: 'system wide library files are not group owned by root'
 
 ocil: |-
     System-wide library files are stored in the following directories:
@@ -52,6 +54,6 @@ ocil: |-
     /usr/lib
     /usr/lib64
     </pre>
-    To find if system-wide library files stored in these directories are group-owned by
+    To find if system-wide library files stored in these directories are not group-owned by
     root run the following command for each directory <i>DIR</i>:
     <pre>$ sudo find -L <i>DIR</i> ! -group root -type f </pre>

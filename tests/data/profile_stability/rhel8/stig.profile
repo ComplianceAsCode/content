@@ -221,6 +221,7 @@ selections:
 - postfix_client_configure_mail_alias
 - require_emergency_target_auth
 - require_singleuser_auth
+- root_permissions_syslibrary_files
 - rsyslog_cron_logging
 - rsyslog_remote_access_monitoring
 - rsyslog_remote_loghost
