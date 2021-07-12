@@ -1,8 +1,16 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+   {{% if FILEPATH is not string %}}
+      {{{ oval_metadata("This test makes sure that FILEPATH is group owned by " + FILEGID + ".") }}}
+      <criteria>
+    {{% for filepath in FILEPATH %}}
+      <criterion comment="Check file group ownership of {{{ filepath }}}" test_ref="test_file_groupowner{{{ FILEID }}}_{{{ loop.index0 }}}" />
+    {{% endfor %}}
+   {{% else %}}
     {{{ oval_metadata("This test makes sure that " + FILEPATH + " is group owned by " + FILEGID + ".") }}}
     <criteria>
       <criterion comment="Check file group ownership of {{{ FILEPATH }}}" test_ref="test_file_groupowner{{{ FILEID }}}" />
+   {{% endif %}}
     </criteria>
   </definition>
   {{%- if MISSING_FILE_PASS -%}}
@@ -12,6 +20,33 @@
     {{# All defined files must exist. When using regex, at least one file must match #}}
     {{% set FILE_EXISTENCE = "all_exist" %}}
   {{%- endif -%}}
+
+
+  {{% if FILEPATH is not string %}}
+  {{% for filepath in FILEPATH %}}
+  <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing group ownership of {{{ filepath }}}" id="test_file_groupowner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+    <unix:object object_ref="object_file_groupowner{{{ FILEID }}}_{{{ loop.index0 }}}" />
+    <unix:state state_ref="state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}_{{{ loop.index0 }}}" />
+  </unix:file_test>
+  <unix:file_state id="state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}_{{{ loop.index0 }}}" version="1">
+    <unix:group_id datatype="int">{{{ FILEGID }}}</unix:group_id>
+  </unix:file_state>
+  <unix:file_object comment="{{{ filepath }}}" id="object_file_groupowner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
+    {{%- if IS_DIRECTORY -%}}
+      <unix:path>{{{ filepath }}}</unix:path>
+      {{%- if FILE_REGEX and FILE_REGEX is not string %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
+      {{%- elif FILE_REGEX %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
+      {{%- else %}}
+      <unix:filename xsi:nil="true" />
+      {{%- endif %}}
+    {{%- else %}}
+      <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
+    {{%- endif %}}
+  </unix:file_object>
+  {{% endfor %}}
+  {{% else %}}
   <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing group ownership of {{{ FILEPATH }}}" id="test_file_groupowner{{{ FILEID }}}" version="1">
     <unix:object object_ref="object_file_groupowner{{{ FILEID }}}" />
     <unix:state state_ref="state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}" />
@@ -22,13 +57,14 @@
   <unix:file_object comment="{{{ FILEPATH }}}" id="object_file_groupowner{{{ FILEID }}}" version="1">
     {{%- if IS_DIRECTORY -%}}
       <unix:path>{{{ FILEPATH }}}</unix:path>
-      {{%- if FILE_REGEX -%}}
-        <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
-      {{%- else -%}}
-        <unix:filename xsi:nil="true" />
-      {{%- endif -%}}
-    {{%- else -%}}
+      {{%- if FILE_REGEX %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
+      {{%- else %}}
+      <unix:filename xsi:nil="true" />
+      {{%- endif %}}
+    {{%- else %}}
       <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ FILEPATH }}}</unix:filepath>
-    {{%- endif -%}}
+    {{%- endif %}}
   </unix:file_object>
+  {{% endif %}}
 </def-group>
