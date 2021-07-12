@@ -1,45 +1,27 @@
 <def-group>
-  <definition class="compliance" id="root_permissions_syslibrary_files" version="1">
+  <definition class="compliance" id="root_permissions_syslibrary_files" version="2">
     {{{ oval_metadata("
-        Checks that /lib, /lib64, /usr/lib, /usr/lib64, and
-        objects therein, are group-owned by root.
+        Checks that system-wide library files in /lib, /lib64, /usr/lib, /usr/lib64
+        are owned by root.
       ") }}}
-    <criteria operator="AND">
-      <criterion test_ref="test_group_ownership_lib_dir" />
-      <criterion test_ref="test_group_ownership_lib_files" />
+    <criteria >
+      <criterion test_ref="test_root_permissions_for_syslibrary_files" />
     </criteria>
   </definition>
 
-  <unix:file_test  check="all" check_existence="none_exist" comment="library directories gid root" id="test_group_ownership_lib_dir" version="1">
-    <unix:object object_ref="object_group_ownership_lib_dir" />
+  <unix:file_test  check="all" check_existence="none_exist" comment="test if system-wide files have root permissions" id="test_root_permissions_for_syslibrary_files" version="1">
+    <unix:object object_ref="root_permissions_for_system_wide_library_files" />
   </unix:file_test>
 
-  <unix:file_test  check="all" check_existence="none_exist" comment="library files gid root" id="test_group_ownership_lib_files" version="1">
-    <unix:object object_ref="object_group_ownership_lib_files" />
-  </unix:file_test>
-
-  <unix:file_object comment="library directories" id="object_group_ownership_lib_dir" version="1">
-    <!-- Check that /lib, /lib64, /usr/lib, and /usr/lib64 directories belong to group with gid 0 (root) -->
-    <unix:path operation="pattern match">^\/lib(|64)?\/|^\/usr\/lib(|64)?\/</unix:path>
-    <unix:filename xsi:nil="true" />
-    <filter action="include">state_group_ownership_libraries_not_root</filter>
-    <filter action="exclude">group_dir_perms_state_symlink</filter>
-  </unix:file_object>
-
-  <unix:file_object comment="library files" id="object_group_ownership_lib_files" version="1">
-    <!-- Check that files within /lib, /lib64, /usr/lib, and /usr/lib64 directories belong to group with gid 0 (root) -->
-    <unix:path operation="pattern match">^\/lib(|64)?\/|^\/usr\/lib(|64)?\/</unix:path>
+  <unix:file_object comment="system-wide directories" id="root_permissions_for_system_wide_library_files" version="1">
+    <!-- Checks that system-wide library files in /lib, /lib64, /usr/lib, /usr/lib64
+        are owned by root. -->
+    <unix:path operation="pattern match">^\/lib\/|^\/lib64\/|^\/usr\/lib\/|^\/usr\/lib64\/</unix:path>
     <unix:filename operation="pattern match">^.*$</unix:filename>
-   <filter action="include">state_group_ownership_libraries_not_root</filter>
-   <filter action="exclude">group_dir_perms_state_symlink</filter>
+    <filter action="include">group_permissions_for_system_wide_files_are_not_root</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_group_ownership_libraries_not_root" version="1">
+  <unix:file_state id="group_permissions_for_system_wide_files_are_not_root" version="1" >
     <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
   </unix:file_state>
-
-  <unix:file_state id="group_dir_perms_state_symlink" version="1">
-    <unix:type operation="equals">symbolic link</unix:type>
-  </unix:file_state>
-
 </def-group>

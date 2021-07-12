@@ -208,6 +208,7 @@ selections:
 
     # RHEL-08-010350
     - root_permissions_syslibrary_files
+    - dir_group_ownership_library_dirs
 
     # RHEL-08-010360
     - package_aide_installed

@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,Red Hat Enterprise Linux 8,multi_platform_fedora
 # reboot = false
 # strategy = restrict
 # complexity = medium
@@ -20,4 +20,6 @@
     state: "directory"
     mode: "{{ item.mode }}"
   with_items: "{{ library_dirs_not_group_owned_by_root.files }}"
-  when: library_dirs_not_group_owned_by_root.matched > 0
+  when:
+    - library_dirs_not_group_owned_by_root.matched > 0
+    - item.gid != 0
