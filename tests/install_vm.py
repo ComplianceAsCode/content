@@ -25,7 +25,7 @@ def parse_args():
         "--distro",
         dest="distro",
         required=True,
-        choices=['fedora', 'rhel7', 'centos7', 'rhel8'],
+        choices=['fedora', 'rhel7', 'centos7', 'rhel8', 'rhel9'],
         help="What distribution to install."
     )
     parser.add_argument(
