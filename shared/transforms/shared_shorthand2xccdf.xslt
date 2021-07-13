@@ -326,6 +326,9 @@
               <xsl:value-of select="$cisuri" />
             </xsl:if>
           </xsl:if>
+          <xsl:if test="$refsource = 'nerc-cip'">
+            <xsl:value-of select="$nerc-cipuri" />
+          </xsl:if>
           <xsl:if test="$refsource = 'srg'">
             <xsl:if test="starts-with($refitem, 'SRG-OS-')">
               <xsl:value-of select="$disa-ossrguri" />
