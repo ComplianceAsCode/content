@@ -302,8 +302,10 @@ class BashRemediation(Remediation):
         rule_specific_conditionals = [
             self.generate_platform_conditional(p) for p in rule_specific_platforms]
         # remove potential "None" from lists
-        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
-        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
+        inherited_conditionals = sorted([
+            p for p in inherited_conditionals if p is not None])
+        rule_specific_conditionals = sorted([
+            p for p in rule_specific_conditionals if p is not None])
 
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
@@ -478,8 +480,10 @@ class AnsibleRemediation(Remediation):
         rule_specific_conditionals = [
             self.generate_platform_conditional(p) for p in rule_specific_platforms]
         # remove potential "None" from lists
-        inherited_conditionals = [p for p in inherited_conditionals if p is not None]
-        rule_specific_conditionals = [p for p in rule_specific_conditionals if p is not None]
+        inherited_conditionals = sorted([
+            p for p in inherited_conditionals if p is not None])
+        rule_specific_conditionals = sorted([
+            p for p in rule_specific_conditionals if p is not None])
 
         # remove conditionals related to package CPEs if the updated task
         # collects package facts
