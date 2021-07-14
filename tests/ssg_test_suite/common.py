@@ -320,6 +320,82 @@ def load_rule_and_env(rule_dir_path, env_yaml, product=None):
     return rule, local_env_yaml
 
 
+def template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath):
+    """
+    For a given rule directory, templates all contained tests into the output
+    (tmpdir) directory.
+    """
+
+    # Load the rule and its environment
+    rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
+
+    # Create the destination directory.
+    dest_path = os.path.join(tmpdir, rule.id_)
+    os.mkdir(dest_path)
+
+    # The priority order is rule-specific tests over templated tests.
+    # That is, for any test under rule_id/tests with a name matching a
+    # test under shared/templates/<template_name>/tests/, the former
+    # will preferred. This means we need to process templates first,
+    # so they'll be overwritten later if necessary.
+    if rule.template:
+        templated_tests = template_builder.get_all_tests(rule.id_, rule.template,
+                                                         local_env_yaml)
+
+        for relative_path in templated_tests:
+            output_path = os.path.join(dest_path, relative_path)
+
+            # If there's a separator in the file name, it means we
+            # have nested directories to deal with.
+            if os.path.sep in relative_path:
+                parts = os.path.split(relative_path)[:-1]
+                for subdir_index in range(len(parts)):
+                    # We need to expand all directories in correct
+                    # order, preserving any previous directories (as
+                    # they're nested). Use the star operator to splat
+                    # array parts into arguments to os.path.join(...).
+                    new_directory = os.path.join(dest_path, *parts[:subdir_index])
+                    os.mkdir(new_directory)
+
+            # Write out the test content to the desired location on
+            # disk.
+            with open(output_path, 'w') as output_fp:
+                test_content = templated_tests[relative_path]
+                print(test_content, file=output_fp)
+
+    # Walk the test directory, writing all tests into the output
+    # directory, recursively.
+    tests_dir_path = os.path.join(dirpath, "tests")
+    tests_dir_path = os.path.abspath(tests_dir_path)
+    for dirpath, dirnames, filenames in os.walk(tests_dir_path):
+        for dirname in dirnames:
+            # We want to recreate the correct path under the temporary
+            # directory. Resolve it to a relative path from the tests/
+            # directory.
+            dir_path = _rel_abs_path(os.path.join(dirpath, dirname), tests_dir_path)
+            assert '../' not in dir_path
+            tmp_dir_path = os.path.join(dest_path, dir_path)
+            os.mkdir(tmp_dir_path)
+
+        for filename in filenames:
+            # We want to recreate the correct path under the temporary
+            # directory. Resolve it to a relative path from the tests/
+            # directory. Assumption: directories should be created
+            # prior to recursing into them, so we don't need to handle
+            # if a file's parent directory doesn't yet exist under the
+            # destination.
+            src_test_path = os.path.join(dirpath, filename)
+            rel_test_path = _rel_abs_path(src_test_path, tests_dir_path)
+            dest_test_path = os.path.join(dest_path, rel_test_path)
+
+            # Rather than performing an OS-level copy, we need to
+            # first parse the test with jinja and then write it back
+            # out to the destination.
+            parsed_test = process_file(src_test_path, local_env_yaml)
+            with open(dest_test_path, 'w') as output_fp:
+                print(parsed_test, file=output_fp)
+
+
 def template_tests(product=None):
     """
     Create a temporary directory with test cases parsed via jinja using
@@ -352,75 +428,7 @@ def template_tests(product=None):
             if "tests" not in dirnames or not is_rule_dir(dirpath):
                 continue
 
-            # Load the rule and its environment
-            rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
-
-            # Create the destination directory.
-            dest_path = os.path.join(tmpdir, rule.id_)
-            os.mkdir(dest_path)
-
-            # The priority order is rule-specific tests over templated tests.
-            # That is, for any test under rule_id/tests with a name matching a
-            # test under shared/templates/<template_name>/tests/, the former
-            # will preferred. This means we need to process templates first,
-            # so they'll be overwritten later if necessary.
-            if rule.template:
-                templated_tests = template_builder.get_all_tests(
-                    rule.id_, rule.template, local_env_yaml)
-
-                for relative_path in templated_tests:
-                    output_path = os.path.join(dest_path, relative_path)
-
-                    # If there's a separator in the file name, it means we
-                    # have nested directories to deal with.
-                    if os.path.sep in relative_path:
-                        parts = os.path.split(relative_path)[:-1]
-                        for subdir_index in range(len(parts)):
-                            # We need to expand all directories in correct
-                            # order, preserving any previous directories (as
-                            # they're nested). Use the star operator to splat
-                            # array parts into arguments to os.path.join(...).
-                            new_directory = os.path.join(dest_path, *parts[:subdir_index])
-                            os.mkdir(new_directory)
-
-                    # Write out the test content to the desired location on
-                    # disk.
-                    with open(output_path, 'w') as output_fp:
-                        test_content = templated_tests[relative_path]
-                        print(test_content, file=output_fp)
-
-            # Walk the test directory, writing all tests into the output
-            # directory, recursively.
-            tests_dir_path = os.path.join(dirpath, "tests")
-            tests_dir_path = os.path.abspath(tests_dir_path)
-            for dirpath, dirnames, filenames in os.walk(tests_dir_path):
-                for dirname in dirnames:
-                    # We want to recreate the correct path under the temporary
-                    # directory. Resolve it to a relative path from the tests/
-                    # directory.
-                    dir_path = _rel_abs_path(os.path.join(dirpath, dirname), tests_dir_path)
-                    assert '../' not in dir_path
-                    tmp_dir_path = os.path.join(dest_path, dir_path)
-                    os.mkdir(tmp_dir_path)
-
-                for filename in filenames:
-                    # We want to recreate the correct path under the temporary
-                    # directory. Resolve it to a relative path from the tests/
-                    # directory. Assumption: directories should be created
-                    # prior to recursing into them, so we don't need to handle
-                    # if a file's parent directory doesn't yet exist under the
-                    # destination.
-                    src_test_path = os.path.join(dirpath, filename)
-                    rel_test_path = _rel_abs_path(src_test_path, tests_dir_path)
-                    dest_test_path = os.path.join(dest_path, rel_test_path)
-
-                    # Rather than performing an OS-level copy, we need to
-                    # first parse the test with jinja and then write it back
-                    # out to the destination.
-                    parsed_test = process_file(src_test_path, local_env_yaml)
-                    with open(dest_test_path, 'w') as output_fp:
-                        print(parsed_test, file=output_fp)
-
+            template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath)
     except Exception as exp:
         shutil.rmtree(tmpdir, ignore_errors=True)
         raise exp
