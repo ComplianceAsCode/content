@@ -1,18 +1,17 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Force opensc To Use Defined Smart Card Driver'
 
 description: |-
-    The OpenSC smart card tool can auto-detect smart card drivers; however by
+    The OpenSC smart card middleware can auto-detect smart card drivers; however by
     forcing the smart card driver in use by your organization, opensc will no longer
     autodetect or use other drivers unless specified. This helps to prevent
     users from using unauthorized smart cards. The default smart card driver for this
     profile is <tt>{{{ xccdf_value("var_smartcard_drivers") }}}</tt>.
-    To force the OpenSC driver, edit the <tt>/etc/opensc-<i>ARCH</i>.conf</tt> (where
-    <i>ARCH</i> is the architecture of your operating system) file. Look for a line
-    similar to:
+    To force the OpenSC driver, edit the <tt>/etc/opensc.conf</tt>.
+    Look for a line similar to:
     <pre># force_card_driver = customcos;</pre>
     and change it to:
     <pre>force_card_driver = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>
@@ -29,6 +28,7 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-81002-8
     cce@rhel8: CCE-80821-2
+    cce@rhel9: CCE-89151-5
 
 references:
     cis-csc: 1,12,15,16,5
@@ -48,8 +48,7 @@ ocil_clause: 'the smart card driver is not configured correctly'
 
 ocil: |-
     To verify that <tt>{{{ xccdf_value("var_smartcard_drivers") }}}</tt> is configured
-    as the smart card driver, run the following command changing <i>ARCH</i> for
-    the architecture of your operating system:
-    <pre>$ grep force_card_driver /etc/opensc-<i>ARCH</i></pre>
+    as the smart card driver, run the following command:
+    <pre>$ grep force_card_driver /etc/opensc.conf</pre>
     The output should return something similar to:
     <pre>force_card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>

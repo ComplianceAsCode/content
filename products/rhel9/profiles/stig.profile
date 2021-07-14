@@ -527,7 +527,7 @@ selections:
     # RHEL-08-020240
 
     # RHEL-08-020250
-#    - sssd_enable_smartcards  # not supported in RHEL9 ATM
+    - sssd_enable_smartcards
 
     # RHEL-08-020260
     - account_disable_post_pw_expiration

@@ -119,11 +119,11 @@ selections:
     - security_patches_up_to_date
     - package_opensc_installed
     - var_smartcard_drivers=cac
-#    - configure_opensc_card_drivers  # not supported in RHEL9 ATM
-#    - force_opensc_card_drivers  # not supported in RHEL9 ATM
+    - configure_opensc_card_drivers
+    - force_opensc_card_drivers
 #    - package_pcsc-lite_installed  # not supported in RHEL9 ATM
 #    - service_pcscd_enabled  # not supported in RHEL9 ATM
-#    - sssd_enable_smartcards  # not supported in RHEL9 ATM
+    - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
