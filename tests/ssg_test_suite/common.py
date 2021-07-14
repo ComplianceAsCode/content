@@ -320,49 +320,27 @@ def load_rule_and_env(rule_dir_path, env_yaml, product=None):
     return rule, local_env_yaml
 
 
-def template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath):
-    """
-    For a given rule directory, templates all contained tests into the output
-    (tmpdir) directory.
-    """
+def write_rule_templated_tests(dest_path, relative_path, test_content):
+    output_path = os.path.join(dest_path, relative_path)
 
-    # Load the rule and its environment
-    rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
+    # If there's a separator in the file name, it means we have nested
+    # directories to deal with.
+    if os.path.sep in relative_path:
+        parts = os.path.split(relative_path)[:-1]
+        for subdir_index in range(len(parts)):
+            # We need to expand all directories in the correct order,
+            # preserving any previous directories (as they're nested).
+            # Use the star operator to splat array parts into arguments
+            # to os.path.join(...).
+            new_directory = os.path.join(dest_path, *parts[:subdir_index])
+            os.mkdir(new_directory)
 
-    # Create the destination directory.
-    dest_path = os.path.join(tmpdir, rule.id_)
-    os.mkdir(dest_path)
+    # Write out the test content to the desired location on disk.
+    with open(output_path, 'w') as output_fp:
+        print(test_content, file=output_fp)
 
-    # The priority order is rule-specific tests over templated tests.
-    # That is, for any test under rule_id/tests with a name matching a
-    # test under shared/templates/<template_name>/tests/, the former
-    # will preferred. This means we need to process templates first,
-    # so they'll be overwritten later if necessary.
-    if rule.template:
-        templated_tests = template_builder.get_all_tests(rule.id_, rule.template,
-                                                         local_env_yaml)
 
-        for relative_path in templated_tests:
-            output_path = os.path.join(dest_path, relative_path)
-
-            # If there's a separator in the file name, it means we
-            # have nested directories to deal with.
-            if os.path.sep in relative_path:
-                parts = os.path.split(relative_path)[:-1]
-                for subdir_index in range(len(parts)):
-                    # We need to expand all directories in correct
-                    # order, preserving any previous directories (as
-                    # they're nested). Use the star operator to splat
-                    # array parts into arguments to os.path.join(...).
-                    new_directory = os.path.join(dest_path, *parts[:subdir_index])
-                    os.mkdir(new_directory)
-
-            # Write out the test content to the desired location on
-            # disk.
-            with open(output_path, 'w') as output_fp:
-                test_content = templated_tests[relative_path]
-                print(test_content, file=output_fp)
-
+def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
     # Walk the test directory, writing all tests into the output
     # directory, recursively.
     tests_dir_path = os.path.join(dirpath, "tests")
@@ -394,6 +372,35 @@ def template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath
             parsed_test = process_file(src_test_path, local_env_yaml)
             with open(dest_test_path, 'w') as output_fp:
                 print(parsed_test, file=output_fp)
+
+
+def template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath):
+    """
+    For a given rule directory, templates all contained tests into the output
+    (tmpdir) directory.
+    """
+
+    # Load the rule and its environment
+    rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
+
+    # Create the destination directory.
+    dest_path = os.path.join(tmpdir, rule.id_)
+    os.mkdir(dest_path)
+
+    # The priority order is rule-specific tests over templated tests.
+    # That is, for any test under rule_id/tests with a name matching a
+    # test under shared/templates/<template_name>/tests/, the former
+    # will preferred. This means we need to process templates first,
+    # so they'll be overwritten later if necessary.
+    if rule.template:
+        templated_tests = template_builder.get_all_tests(rule.id_, rule.template,
+                                                         local_env_yaml)
+
+        for relative_path in templated_tests:
+            test_content = templated_tests[relative_path]
+            write_rule_templated_tests(dest_path, relative_path, test_content)
+
+    write_rule_dir_tests(local_env_yaml, dest_path, dirpath)
 
 
 def template_tests(product=None):
