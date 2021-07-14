@@ -4,11 +4,9 @@
 # complexity = low
 # disruption = low
 
-{{% if FILEPATH is not string %}}
 {{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY and FILE_REGEX %}}
 
-  {{% if FILE_REGEX is not string %}}
 - name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
   find:
     paths: "{{{ path }}}"
@@ -22,22 +20,6 @@
     group: "{{{ FILEGID }}}"
   with_items:
     - "{{ files_found.files }}"
-
-  {{% else %}}
-- name: Find {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
-  find:
-    paths: "{{{ FILEPATH }}}"
-    patterns: {{{ FILE_REGEX }}}
-    use_regex: yes
-  register: files_found
-
-- name: Ensure group owner on {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
-  file:
-    path: "{{ item.path }}"
-    group: "{{{ FILEGID }}}"
-  with_items:
-    - "{{ files_found.files }}"
-  {{% endif %}}
 
 {{% else %}}
 
@@ -54,33 +36,3 @@
 
 {{% endif %}}
 {{% endfor %}}
-{{% elif IS_DIRECTORY and FILE_REGEX %}}
-
-- name: Find {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
-  find:
-    paths: "{{{ FILEPATH }}}"
-    patterns: "{{{ FILE_REGEX }}}"
-    use_regex: yes
-  register: files_found
-
-- name: Ensure group owner on {{{ FILEPATH }}} file(s) matching {{{ FILE_REGEX }}}
-  file:
-    path: "{{ item.path }}"
-    group: "{{{ FILEGID }}}"
-  with_items:
-    - "{{ files_found.files }}"
-
-{{% else %}}
-
-- name: Test for existence {{{ FILEPATH }}}
-  stat:
-    path: "{{{ FILEPATH }}}"
-  register: file_exists
-
-- name: Ensure group owner {{{ FILEGID }}} on {{{ FILEPATH }}}
-  file:
-    path: "{{{ FILEPATH }}}"
-    group: "{{{ FILEGID }}}"
-  when: file_exists.stat is defined and file_exists.stat.exists
-
-{{% endif %}}
