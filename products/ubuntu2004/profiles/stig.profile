@@ -494,6 +494,7 @@ selections:
     # UBTU-20-010430 The Ubuntu operating system library files must be group-owned by root.
 
     # UBTU-20-010431 The Ubuntu operating system library directories must be group-owned by root.
+    - dir_group_ownership_library_dirs
 
     # UBTU-20-010432 The Ubuntu operating system must be configured to preserve log records from failure events.
     - service_rsyslog_enabled
