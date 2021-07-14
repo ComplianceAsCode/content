@@ -253,17 +253,6 @@ def _make_file_root_owned(tarinfo):
     return tarinfo
 
 
-def _rel_abs_path(current_path, base_path):
-    """
-    Return the value of the current path, relative to the base path, but
-    resolving paths absolutely first. This helps when walking a nested
-    directory structure and want to get the subtree relative to the original
-    path
-    """
-    tmp_path = os.path.abspath(current_path)
-    return os.path.relpath(current_path, base_path)
-
-
 def get_product_context(product=None):
     """
     Returns a product YAML context if any product is specified. Hard-coded to
@@ -350,7 +339,7 @@ def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
             # We want to recreate the correct path under the temporary
             # directory. Resolve it to a relative path from the tests/
             # directory.
-            dir_path = _rel_abs_path(os.path.join(dirpath, dirname), tests_dir_path)
+            dir_path = os.path.relpath(os.path.join(dirpath, dirname), tests_dir_path)
             tmp_dir_path = os.path.join(dest_path, dir_path)
             os.mkdir(tmp_dir_path)
 
@@ -362,7 +351,7 @@ def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
             # if a file's parent directory doesn't yet exist under the
             # destination.
             src_test_path = os.path.join(dirpath, filename)
-            rel_test_path = _rel_abs_path(src_test_path, tests_dir_path)
+            rel_test_path = os.path.relpath(src_test_path, tests_dir_path)
             dest_test_path = os.path.join(dest_path, rel_test_path)
 
             # Rather than performing an OS-level copy, we need to
