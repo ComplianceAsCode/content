@@ -68,6 +68,7 @@ class TestEnv(object):
         self.ssh_additional_options = []
 
         self.product = None
+        self.cleanup = True
 
     def start(self):
         """
@@ -217,6 +218,9 @@ class VMTestEnv(TestEnv):
         virt.reboot_domain(self.domain, self.domain_ip, self.ssh_port)
 
     def finalize(self):
+        if not self.cleanup:
+            return
+
         self._delete_saved_state(self._origin)
         # self.domain.shutdown()
         # logging.debug('Shut the domain off')
@@ -260,6 +264,9 @@ class ContainerTestEnv(TestEnv):
         super().start()
 
     def finalize(self):
+        if not self.cleanup:
+            return
+
         self._terminate_current_running_container_if_applicable()
 
     def image_stem2fqn(self, stem):
