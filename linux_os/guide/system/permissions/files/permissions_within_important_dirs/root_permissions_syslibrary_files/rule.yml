@@ -60,3 +60,14 @@ ocil: |-
     To find if system-wide library files stored in these directories are not group-owned by
     root run the following command for each directory <i>DIR</i>:
     <pre>$ sudo find -L <i>DIR</i> ! -group root -type f </pre>
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        file_regex: ^.*$
+        filegid: '0'
