@@ -351,7 +351,6 @@ def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
             # directory. Resolve it to a relative path from the tests/
             # directory.
             dir_path = _rel_abs_path(os.path.join(dirpath, dirname), tests_dir_path)
-            assert '../' not in dir_path
             tmp_dir_path = os.path.join(dest_path, dir_path)
             os.mkdir(tmp_dir_path)
 
