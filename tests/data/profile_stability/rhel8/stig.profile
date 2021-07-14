@@ -156,6 +156,7 @@ selections:
 - mount_option_dev_shm_nodev
 - mount_option_dev_shm_noexec
 - mount_option_dev_shm_nosuid
+- mount_option_home_noexec
 - mount_option_home_nosuid
 - mount_option_nodev_nonroot_local_partitions
 - mount_option_nodev_remote_filesystems
