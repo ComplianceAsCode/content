@@ -4,7 +4,6 @@
 # complexity = low
 # disruption = low
 
-{{% if FILEPATH is not string %}}
 {{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY and FILE_REGEX %}}
 
@@ -41,33 +40,3 @@
 
 {{% endif %}}
 {{% endfor %}}
-{{% elif IS_DIRECTORY and FILE_REGEX %}}
-
-- name: Find {{{ FILEPATH }}} file(s)
-  find:
-    paths: "{{{ FILEPATH }}}"
-    patterns: "{{{ FILE_REGEX }}}"
-    use_regex: yes
-  register: files_found
-
-- name: Set permissions for {{{ FILEPATH }}} file(s)
-  file:
-    path: "{{ item.path }}"
-    mode: "{{{ FILEMODE }}}"
-  with_items:
-    - "{{ files_found.files }}"
-
-{{% else %}}
-
-- name: Test for existence {{{ FILEPATH }}}
-  stat:
-    path: "{{{ FILEPATH }}}"
-  register: file_exists
-  
-- name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
-  file:
-    path: "{{{ FILEPATH }}}"
-    mode: "{{{ FILEMODE }}}"
-  when: file_exists.stat is defined and file_exists.stat.exists
-
-{{% endif %}}
