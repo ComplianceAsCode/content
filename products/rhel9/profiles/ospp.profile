@@ -71,8 +71,8 @@ selections:
     - var_rekey_limit_time=1hour
 
     # Time Server
-#    - chronyd_client_only  # not supported in RHEL9 ATM
-#    - chronyd_no_chronyc_network  # not supported in RHEL9 ATM
+    - chronyd_client_only
+    - chronyd_no_chronyc_network
 
     ### Network Settings
     - sysctl_net_ipv6_conf_all_accept_ra
@@ -240,7 +240,7 @@ selections:
 
 
     ### Enable / Configure FIPS
-#    - enable_fips_mode  # not supported in RHEL9 ATM
+    - enable_fips_mode
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
     - configure_ssh_crypto_policy
@@ -248,7 +248,7 @@ selections:
     - configure_openssl_crypto_policy
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
-#    - enable_dracut_fips_module  # not supported in RHEL9 ATM
+    - enable_dracut_fips_module
 
     #######################################################
     ### CONFIGURATION ANNEX TO THE PROTECTION PROFILE

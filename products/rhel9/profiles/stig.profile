@@ -66,13 +66,13 @@ selections:
     - var_auditd_disk_full_action=halt
 
     ### Enable / Configure FIPS
-#    - enable_fips_mode  # not supported in RHEL9 ATM
+    - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
     - configure_bind_crypto_policy
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
-#    - enable_dracut_fips_module  # not supported in RHEL9 ATM
+    - enable_dracut_fips_module
 
     ### Rules:
     # RHEL-08-010070
@@ -114,11 +114,11 @@ selections:
 
     # RHEL-08-010140
     - grub2_uefi_password
-#    - grub2_uefi_admin_username  # not supported in RHEL9 ATM
+    - grub2_uefi_admin_username
 
     # RHEL-08-010150
     - grub2_password
-#    - grub2_admin_username  # not supported in RHEL9 ATM
+    - grub2_admin_username
 
     # RHEL-08-010151
     - require_singleuser_auth
@@ -410,7 +410,7 @@ selections:
     - partition_for_home
 
     # RHEL-08-010820
-#    - gnome_gdm_disable_automatic_login  # not supported in RHEL9 ATM
+    - gnome_gdm_disable_automatic_login
 
     # RHEL-08-010830
     - sshd_do_not_permit_user_env
@@ -823,10 +823,10 @@ selections:
     # - chronyd_set_maxpoll  # Doesn't exist in RHEL9, but it should
 
     # RHEL-08-030741
-#    - chronyd_client_only  # not supported in RHEL9 ATM
+    - chronyd_client_only
 
     # RHEL-08-030742
-#    - chronyd_no_chronyc_network  # not supported in RHEL9 ATM
+    - chronyd_no_chronyc_network
 
     # RHEL-08-040000
     - package_telnet-server_removed
