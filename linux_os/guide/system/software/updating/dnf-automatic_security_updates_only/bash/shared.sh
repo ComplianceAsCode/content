@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# platform = multi_platform_all
 
 CONF="/etc/dnf/automatic.conf"
 APPLY_UPDATES_REGEX="[[:space:]]*\[commands]([^\n\[]*\n+)+?[[:space:]]*upgrade_type"

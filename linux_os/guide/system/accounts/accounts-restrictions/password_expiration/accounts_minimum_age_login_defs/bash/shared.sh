@@ -1,4 +1,4 @@
-# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_all
 . /usr/share/scap-security-guide/remediation_functions
 {{{ bash_instantiate_variables("var_accounts_minimum_age_login_defs") }}}
 
