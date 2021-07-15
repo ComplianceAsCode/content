@@ -458,13 +458,13 @@ selections:
 
     # RHEL-08-020040
     - package_tmux_installed
-#    - configure_tmux_lock_command  # not supported in RHEL9 ATM
+    - configure_tmux_lock_command
 
     # RHEL-08-020041
-#    - configure_bashrc_exec_tmux  # not supported in RHEL9 ATM
+    - configure_bashrc_exec_tmux
 
     # RHEL-08-020042
-#    - no_tmux_in_shells  # not supported in RHEL9 ATM
+    - no_tmux_in_shells
 
     # RHEL-08-020050
     - dconf_gnome_lock_screen_on_smartcard_removal
@@ -473,7 +473,7 @@ selections:
     - dconf_gnome_screensaver_idle_delay
 
     # RHEL-08-020070
-#    - configure_tmux_lock_after_time  # not supported in RHEL9 ATM
+    - configure_tmux_lock_after_time
 
     # RHEL-08-020080
 

@@ -289,10 +289,10 @@ selections:
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1
     - package_tmux_installed
-#    - configure_bashrc_exec_tmux  # not supported in RHEL9 ATM
-#    - no_tmux_in_shells  # not supported in RHEL9 ATM
-#    - configure_tmux_lock_command  # not supported in RHEL9 ATM
-#    - configure_tmux_lock_after_time  # not supported in RHEL9 ATM
+    - configure_bashrc_exec_tmux
+    - no_tmux_in_shells
+    - configure_tmux_lock_command
+    - configure_tmux_lock_after_time
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
