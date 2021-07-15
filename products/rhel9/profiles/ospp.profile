@@ -69,8 +69,6 @@ selections:
     - sshd_rekey_limit
     - var_rekey_limit_size=1G
     - var_rekey_limit_time=1hour
-#    - sshd_use_strong_rng  # not supported in RHEL9 ATM
-#    - openssl_use_strong_entropy  # not supported in RHEL9 ATM
 
     # Time Server
 #    - chronyd_client_only  # not supported in RHEL9 ATM
@@ -427,10 +425,6 @@ selections:
 #    - ssh_client_rekey_limit  # not supported in RHEL9 ATM
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
-
-# configure ssh client to use strong entropy
-#    - ssh_client_use_strong_rng_sh  # not supported in RHEL9 ATM
-#    - ssh_client_use_strong_rng_csh  # not supported in RHEL9 ATM
 
     # zIPl specific rules
     - zipl_bls_entries_only

@@ -105,7 +105,6 @@ selections:
 
   ## Web application & Database servers
   ## Identifiers 1552 / 1277
-#  - openssl_use_strong_entropy  # not supported in RHEL9 ATM
 
   ## Network design and configuration
   ## Identifiers 1055 / 1311 

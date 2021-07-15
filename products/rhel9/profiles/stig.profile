@@ -175,7 +175,7 @@ selections:
     - configure_ssh_crypto_policy
 
     # RHEL-08-010292
-#    - sshd_use_strong_rng  # not supported in RHEL9 ATM
+#    - sshd_use_strong_rng  # not needed in RHEL9
 
     # RHEL-08-010293
     - configure_openssl_crypto_policy
