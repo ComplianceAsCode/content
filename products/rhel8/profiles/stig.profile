@@ -341,6 +341,7 @@ selections:
     - mount_option_nodev_nonroot_local_partitions
 
     # RHEL-08-010590
+    - mount_option_home_noexec
 
     # RHEL-08-010600
     - mount_option_nodev_removable_partitions
