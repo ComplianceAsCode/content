@@ -1,11 +1,12 @@
 documentation_complete: true
 
-title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux Virtualization Host (RHELH)'
+title: 'RHV hardening based on STIG for Red Hat Enterprise Linux 7'
 
 description: |-
-    This *draft* profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux Virtualization Host (RHELH).
-    
+    This profile contains configuration checks for
+    Red Hat Virtualization based on the
+    the DISA STIG for Red Hat Enterprise Linux 7.
+
 selections:
     - installed_OS_is_FIPS_certified
     - login_banner_text=dod_banners
