@@ -4,4 +4,4 @@ find /lib \
 /lib64 \
 /usr/lib \
 /usr/lib64 \
-\! -group root -type f -exec chgrp root '{}' \;
+\! -group root -type d -exec chgrp root '{}' \;

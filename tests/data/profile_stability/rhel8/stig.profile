@@ -99,6 +99,7 @@ selections:
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
+- dir_group_ownership_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
 - directory_permissions_var_log_audit
@@ -222,6 +223,7 @@ selections:
 - postfix_client_configure_mail_alias
 - require_emergency_target_auth
 - require_singleuser_auth
+- root_permissions_syslibrary_files
 - rsyslog_cron_logging
 - rsyslog_remote_access_monitoring
 - rsyslog_remote_loghost
