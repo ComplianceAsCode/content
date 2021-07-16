@@ -6,7 +6,7 @@
 - name: "Print error message if user is not root"
   fail:
     msg: 'Root account required to read root $PATH'
-  when: ansible_user != "root"
+  when: ansible_env.USER != "root"
   ignore_errors: true
 
 - name: "Get root paths which are not symbolic links"
@@ -16,7 +16,7 @@
   failed_when: False
   register: root_paths
   with_items: "{{ ansible_env.PATH.split(':') }}"
-  when: ansible_user == "root"
+  when: ansible_env.USER == "root"
 
 - name: "Disable writability to root directories"
   file:
