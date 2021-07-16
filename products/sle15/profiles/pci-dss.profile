@@ -17,6 +17,7 @@ selections:
     - var_accounts_passwords_pam_faillock_unlock_time=1800
     ### Rules:
     - accounts_password_pam_lcredit
+    - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_unlock_time
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
