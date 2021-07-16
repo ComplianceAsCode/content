@@ -26,3 +26,5 @@ selections:
     - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_unlink
     - audit_rules_file_deletion_events_unlinkat
+    - display_login_attempts
+
