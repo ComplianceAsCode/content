@@ -585,7 +585,7 @@ controls:
     related_rules:
       - package_chrony_installed
 
-  - id: 2.1.1
+  - id: 2.2.1.2
     title: Ensure chrony is configured (Automated)
     levels:
       - l1_server
@@ -597,13 +597,12 @@ controls:
       - chronyd_run_as_chrony_user
 
   - id: 2.2.2
-    title: Ensure chrony is configured (Automated)
+    title: Ensure X Window System is not installed (Automated)
     levels:
       - l1_server
     automated: yes
     rules:
-      - package_xorg-x11-server-common_removed
-      - xwindows_runlevel_target
+      - xwindows_remove_packages
 
   - id: 2.2.3
     title: Ensure rsync service is not enabled (Automated)
@@ -639,7 +638,7 @@ controls:
       - l1_workstation
     automated: yes
     rules:
-      - package_squid_removed
+      - package_squid_disabled
 
   - id: 2.2.7
     title: Ensure Samba is not enabled (Automated)
@@ -707,7 +706,7 @@ controls:
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5231
   - id: 2.2.14
-    title: Ensure RPC is not enabled (Automated)
+    title: Ensure LDAP server is not enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
@@ -748,6 +747,7 @@ controls:
     automated: yes
     rules:
       - postfix_network_listening_disabled
+      - var_postfix_inet_interfaces=loopback-only
 
   - id: 2.3.1
     title: Ensure NIS Client is not installed (Automated)
