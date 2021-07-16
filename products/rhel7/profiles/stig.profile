@@ -314,3 +314,5 @@ selections:
     - package_MFEhiplsm_installed
     - file_ownership_var_log_audit
     - file_permissions_var_log_audit
+    - sysctl_net_ipv4_conf_all_rp_filter
+    - sysctl_net_ipv4_conf_default_rp_filter
