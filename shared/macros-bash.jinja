@@ -623,7 +623,7 @@ fi
 {{%- endmacro %}}
 
 {{%- macro bash_sudo_remove_config(parameter, pattern) -%}}
-for f in $( ls /etc/sudoers /etc/sudoers.d/* 2> /dev/null ) ; do
+for f in /etc/sudoers /etc/sudoers.d/* ; do
   matching_list=$(grep -P '^(?!#).*[\s]+{{{ pattern }}}.*$' $f | uniq )
   if ! test -z "$matching_list"; then
     while IFS= read -r entry; do
