@@ -3,13 +3,13 @@ from ssg.utils import parse_template_boolean_value
 def _file_owner_groupowner_permissions_regex(data):
     # this avoids code duplicates
     if isinstance(data["filepath"], str):
-        data["filepath"] = [ data["filepath"] ]
+        data["filepath"] = [data["filepath"]]
 
     if "file_regex" in data:
         # we can have a list of filepaths, but only one regex
         # instead of declaring the same regex multiple times
         if isinstance(data["file_regex"], str):
-            data["file_regex"] = [ data["file_regex"] ] * len(data["filepath"])
+            data["file_regex"] = [data["file_regex"]] * len(data["filepath"])
 
         # if the length of filepaths and file_regex are not the same, then error.
         # in case we have multiple regexes for just one filepath, than we need
