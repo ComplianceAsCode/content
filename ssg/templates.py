@@ -209,6 +209,11 @@ class Builder(object):
                                                template_vars, lang,
                                                local_env_yaml)
 
+        if lang == "oval" and platforms:
+            filled_template = ssg.build_ovals.update_with_var_platforms(filled_template,
+                                                                        local_env_yaml,
+                                                                        platforms)
+
         ext = lang_to_ext_map[lang]
         output_file_name = rule_id + ext
         output_filepath = os.path.join(
