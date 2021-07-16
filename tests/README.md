@@ -32,6 +32,7 @@ To use Libvirt backend, you need to have:
   - `libvirt-daemon`
   - `python2-libvirt/python3-libvirt`
   - `virt-install`      (recommended, used by `install_vm.py` script)
+  - `expect`            (recommended, used by `install_vm.py` script with `--console` option)
   - `libvirt-client`    (optional, to manage VMs via console)
   - `virt-manager`      (optional, to manage VMs via GUI)
   - `virt-viewer`       (optional, to access graphical console of VMs)
