@@ -13,16 +13,16 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-82504-2
     cce@rhel7: CCE-82203-1
     cce@rhel8: CCE-82974-7
     cce@rhel9: CCE-83957-1
-    cce@rhcos4: CCE-82504-2
 
 references:
+    disa: CCI-000366
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000132-GPOS-00067,SRG-OS-000480-GPOS-00227
     stigid@rhel8: RHEL-08-040281
-    disa: CCI-000366
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
 

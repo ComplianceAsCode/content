@@ -22,16 +22,16 @@ warnings:
 severity: low
 
 identifiers:
+    cce@rhcos4: CCE-82503-4
     cce@rhel8: CCE-82211-4
     cce@rhel9: CCE-83956-3
-    cce@rhcos4: CCE-82503-4
 
 references:
-    ospp: FMT_SMF_EXT.1
+    disa: CCI-000366
     nist: SC-39,CM-6(a)
+    ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel8: RHEL-08-040284
-    disa: CCI-000366
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="user.max_user_namespaces", value="0") }}}
 

@@ -1,13 +1,24 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import sys
 import os
 import jinja2
 import argparse
+import json
 
 from ssg import yaml, checks
 from ssg.shims import input_func
+from ssg.utils import read_file_list
 import ssg
+import ssg.products
+import ssg.rules
+import ssg.rule_yaml
+
+
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+TO_SORT = ['identifiers', 'references']
 
 
 def has_empty_identifier(yaml_file, product_yaml=None):
@@ -74,64 +85,66 @@ def has_int_reference(yaml_file, product_yaml=None):
     return False
 
 
-def find_rules(directory, func):
-    # Iterates over passed directory to correctly parse rules (which are
-    # YAML files with internal macros). The most recently seen product.yml
-    # takes precedence over previous product.yml, e.g.:
-    #
-    # a/product.yml
-    # a/b/product.yml       -- will be selected for the following rule:
-    # a/b/c/something.rule
-    #
-    # The corresponding rule and contents of the product.yml are then passed
-    # into func(/path/to/rule, product_yaml_contents); if the result evaluates
-    # to true, the tuple (/path/to/rule, /path/to/product.yml) is saved as a
-    # result.
-    #
-    # This process mimics the build system and allows us to find rule files
-    # which satisfy the constraints of the passed func.
-    results = []
-    product_yamls = {}
-    product_yaml_paths = {}
-    product_yaml = None
-    product_yaml_path = None
-    for root, dirs, files in os.walk(directory):
-        dirs.sort()
-        files.sort()
-        if "product.yml" in files:
-            product_yaml_path = os.path.join(root, "product.yml")
-            product_yaml = yaml.open_raw(product_yaml_path)
-            product_yamls[root] = product_yaml
-            product_yaml_paths[root] = product_yaml_path
-            # for d in dirs:
-            #     product_yamls[os.path.join(root, d)] = product_yaml
-            #     product_yaml_paths[os.path.join(root, d)] = product_yaml_path
-        elif root in product_yamls:
-            product_yaml = product_yamls[root]
-            product_yaml_path = product_yaml_paths[root]
-            # for d in dirs:
-            #     product_yamls[os.path.join(root, d)] = product_yaml
-            #     product_yaml_paths[os.path.join(root, d)] = product_yaml_path
-        else:
-            pass
+def has_duplicated_subkeys(yaml_file, product_yaml=None):
+    rule_lines = read_file_list(yaml_file)
+    return ssg.rule_yaml.has_duplicated_subkeys(yaml_file, rule_lines, TO_SORT)
 
-        for filename in files:
-            path = os.path.join(root, filename)
-            rule_filename_id = 'rule.yml'
-            rule_filename_id_len = len(rule_filename_id)
-            if len(path) < rule_filename_id_len \
-                or path[-(rule_filename_id_len):] != rule_filename_id \
-                or "tests/" in path:
-                continue
-            try:
-                if func(path, product_yaml):
-                    results.append((path, product_yaml_path))
-            except jinja2.exceptions.UndefinedError:
-                print("Failed to parse file %s (with product.yml: %s). Skipping"
-                      % (path, product_yaml_path))
-                pass
 
-    return results
+def has_unordered_sections(yaml_file, product_yaml=None):
+    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+    if 'references' in rule or 'identifiers' in rule:
+        rule_lines = read_file_list(yaml_file)
+        new_lines = ssg.rule_yaml.sort_section_keys(yaml_file, rule_lines, TO_SORT)
+
+        # Compare string representations to avoid issues with references being
+        # different.
+        return "\n".join(rule_lines) != "\n".join(new_lines)
+
+    return False
+
+
+def find_rules_generator(args, func):
+    # Iterates over all know rules in the build system (according to
+    # rule_dir_json.py) and attempts to load the resulting YAML files.
+    # If they parse correctly, yield them as a result.
+    #
+    # Note: this has become a generator rather than returning a list of
+    # results.
+
+    product_yamls = dict()
+
+    rule_dirs = json.load(open(args.json))
+    for rule_id in rule_dirs:
+        rule_obj = rule_dirs[rule_id]
+
+        if 'products' not in rule_obj or not rule_obj['products']:
+            print(rule_id, rule_obj)
+        assert rule_obj['products']
+        product = rule_obj['products'][0]
+
+        if product not in product_yamls:
+            product_path = os.path.join(args.root, "products", product, 'product.yml')
+            product_yaml = ssg.products.load_product_yaml(product_path)
+            product_yaml['cmake_build_type'] = 'Debug'
+            product_yamls[product] = product_yaml
+
+        local_env_yaml = dict()
+        local_env_yaml.update(product_yamls[product])
+        local_env_yaml['rule_id'] = rule_id
+
+        rule_path = ssg.rules.get_rule_dir_yaml(rule_obj['dir'])
+        try:
+            if func(rule_path, local_env_yaml):
+                yield (rule_path, product_path, local_env_yaml)
+        except jinja2.exceptions.UndefinedError as ue:
+            msg = "Failed to parse file {0} (with product.yml: {1}). Skipping. {2}"
+            msg = msg.format(rule_path, product_path, ue)
+            print(msg, file=sys.stderr)
+
+
+def find_rules(args, func):
+    # Returns find_rules_generator as a list
+    return list(find_rules_generator(args, func))
 
 
 def print_file(file_contents):
@@ -358,24 +371,36 @@ def fix_int_reference(file_contents, yaml_contents):
     return rewrite_section_value_int_str(file_contents, yaml_contents, section, int_identifiers)
 
 
-def fix_file(path, product_yaml, func):
+def sort_rule_subkeys(file_contents, yaml_contents):
+    return ssg.rule_yaml.sort_section_keys(None, file_contents, TO_SORT)
+
+
+def fix_file(path, product_yaml, func, args):
     file_contents = open(path, 'r').read().split("\n")
     if file_contents[-1] == '':
         file_contents = file_contents[:-1]
 
     yaml_contents = yaml.open_and_macro_expand(path, product_yaml)
 
-    print("====BEGIN BEFORE====")
-    print_file(file_contents)
-    print("====END BEFORE====")
+    need_input = not args.assume_yes and not args.dry_run
+
+    if need_input:
+        print("====BEGIN BEFORE====")
+        print_file(file_contents)
+        print("====END BEFORE====")
 
     file_contents = func(file_contents, yaml_contents)
 
-    print("====BEGIN AFTER====")
-    print_file(file_contents)
-    print("====END AFTER====")
-    response = input_func("Confirm writing output to %s: (y/n): " % path)
-    if response.strip() == 'y':
+    if need_input:
+        print("====BEGIN AFTER====")
+        print_file(file_contents)
+        print("====END AFTER====")
+
+    response = 'n'
+    if need_input:
+        response = input_func("Confirm writing output to %s: (y/n): " % path)
+
+    if args.assume_yes or response.strip().lower() == 'y':
         f = open(path, 'w')
         for line in file_contents:
             f.write(line)
@@ -384,94 +409,133 @@ def fix_file(path, product_yaml, func):
         f.close()
 
 
-def fix_empty_identifiers(directory):
-    results = find_rules(directory, has_empty_identifier)
+def fix_empty_identifiers(args):
+    results = find_rules(args, has_empty_identifier)
     print("Number of rules with empty identifiers: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
-        product_yaml_path = result[1]
+        product_yaml = result[2]
 
-        product_yaml = None
-        if product_yaml_path is not None:
-            product_yaml = yaml.open_raw(product_yaml_path)
+        if args.dry_run:
+            print(rule_path + " has one or more empty identifiers")
+            continue
 
-        fix_file(rule_path, product_yaml, fix_empty_identifier)
+        fix_file(rule_path, product_yaml, fix_empty_identifier, args)
+
+    return int(len(results) > 0)
 
 
-def fix_empty_references(directory):
-    results = find_rules(directory, has_empty_references)
+def fix_empty_references(args):
+    results = find_rules(args, has_empty_references)
     print("Number of rules with empty references: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
-        product_yaml_path = result[1]
+        product_yaml = result[2]
 
-        product_yaml = None
-        if product_yaml_path is not None:
-            product_yaml = yaml.open_raw(product_yaml_path)
+        if args.dry_run:
+            print(rule_path + " has one or more empty references")
+            continue
 
-        fix_file(rule_path, product_yaml, fix_empty_reference)
+        fix_file(rule_path, product_yaml, fix_empty_reference, args)
+
+    return int(len(results) > 0)
 
 
-def find_prefix_cce(directory):
-    results = find_rules(directory, has_prefix_cce)
+def find_prefix_cce(args):
+    results = find_rules(args, has_prefix_cce)
     print("Number of rules with prefixed CCEs: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
-        product_yaml_path = result[1]
+        product_yaml = result[2]
 
-        product_yaml = None
-        if product_yaml_path is not None:
-            product_yaml = yaml.open_raw(product_yaml_path)
+        if args.dry_run:
+            print(rule_path + " has one or more CCE with CCE- prefix")
+            continue
 
-        fix_file(rule_path, product_yaml, fix_prefix_cce)
+        fix_file(rule_path, product_yaml, fix_prefix_cce, args)
+
+    return int(len(results) > 0)
 
 
-def find_invalid_cce(directory):
-    results = find_rules(directory, has_invalid_cce)
+def find_invalid_cce(args):
+    results = find_rules(args, has_invalid_cce)
     print("Number of rules with invalid CCEs: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
-        product_yaml_path = result[1]
+        product_yaml = result[2]
 
-        product_yaml = None
-        if product_yaml_path is not None:
-            product_yaml = yaml.open_raw(product_yaml_path)
+        if args.dry_run:
+            print(rule_path + " has one or more invalid CCEs")
+            continue
 
-        fix_file(rule_path, product_yaml, fix_invalid_cce)
+        fix_file(rule_path, product_yaml, fix_invalid_cce, args)
+
+    return int(len(results) > 0)
 
 
-def find_int_identifiers(directory):
-    results = find_rules(directory, has_int_identifier)
+def find_int_identifiers(args):
+    results = find_rules(args, has_int_identifier)
     print("Number of rules with integer identifiers: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
-        product_yaml_path = result[1]
+        product_yaml = result[2]
 
-        product_yaml = None
-        if product_yaml_path is not None:
-            product_yaml = yaml.open_raw(product_yaml_path)
+        if args.dry_run:
+            print(rule_path + " has one or more integer references")
+            continue
 
-        fix_file(rule_path, product_yaml, fix_int_identifier)
+        fix_file(rule_path, product_yaml, fix_int_identifier, args)
+
+    return int(len(results) > 0)
 
 
-def find_int_references(directory):
-    results = find_rules(directory, has_int_reference)
+def find_int_references(args):
+    results = find_rules(args, has_int_reference)
     print("Number of rules with integer references: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
-        product_yaml_path = result[1]
+        product_yaml = result[2]
 
-        product_yaml = None
-        if product_yaml_path is not None:
-            product_yaml = yaml.open_raw(product_yaml_path)
+        if args.dry_run:
+            print(rule_path + " has one or more unsorted references")
+            continue
 
-        fix_file(rule_path, product_yaml, fix_int_reference)
+        fix_file(rule_path, product_yaml, fix_int_reference, args)
+
+    return int(len(results) > 0)
+
+
+def duplicate_subkeys(args):
+    results = find_rules(args, has_duplicated_subkeys)
+    print("Number of rules with duplicated subkeys: %d" % len(results))
+
+    for result in results:
+        print(result[0] + " has one or more duplicated subkeys")
+
+    return int(len(results) > 0)
+
+
+def sort_subkeys(args):
+    results = find_rules(args, has_unordered_sections)
+    print("Number of modified rules: %d" % len(results))
+
+    for result in results:
+        rule_path = result[0]
+        product_yaml = result[2]
+
+        if args.dry_run:
+            print(rule_path + " has one or more unsorted references")
+            continue
+
+        fix_file(rule_path, product_yaml, sort_rule_subkeys, args)
+
+    return int(len(results) > 0)
 
 
 def parse_args():
@@ -485,32 +549,53 @@ Commands:
 \tint_identifiers - check and fix rules with pseudo-integer identifiers
 \tempty_references - check and fix rules with empty references
 \tint_references - check and fix rules with pseudo-integer references
+\tduplicate_subkeys - check for duplicated references and identifiers
+\tsort_subkeys - sort references and identifiers
                                      """)
+    parser.add_argument("-y", "--assume-yes", default=False, action="store_true",
+                        help="Assume yes and overwrite all files (no prompt)")
+    parser.add_argument("-d", "--dry-run", default=False, action="store_true",
+                        help="Assume no and don't overwrite any files")
+    parser.add_argument("-j", "--json", type=str, action="store",
+                        default="build/rule_dirs.json", help="File to read json "
+                        "output of rule_dir_json.py from (defaults to "
+                        "build/rule_dirs.json")
+    parser.add_argument("-r", "--root", default=SSG_ROOT, action="store", type=str,
+                        help="Path to root of ssg git directory")
     parser.add_argument("command", help="Which fix to perform.",
                         choices=['empty_identifiers', 'prefixed_identifiers',
                                  'invalid_identifiers', 'int_identifiers',
-                                 'empty_references', 'int_references'])
-    parser.add_argument("ssg_root", help="Path to root of ssg git directory")
+                                 'empty_references', 'int_references',
+                                 'duplicate_subkeys', 'sort_subkeys'])
     return parser.parse_args()
 
 
 def __main__():
     args = parse_args()
 
+    abs_json = os.path.join(args.root, args.json)
+    if not os.path.exists(args.json) and os.path.exists(abs_json):
+        args.json = abs_json
+
+    ret = 1
     if args.command == 'empty_identifiers':
-        fix_empty_identifiers(args.ssg_root)
+        ret = fix_empty_identifiers(args)
     elif args.command == 'prefixed_identifiers':
-        find_prefix_cce(args.ssg_root)
+        ret = find_prefix_cce(args)
     elif args.command == 'invalid_identifiers':
-        find_invalid_cce(args.ssg_root)
+        ret = find_invalid_cce(args)
     elif args.command == 'int_identifiers':
-        find_int_identifiers(args.ssg_root)
+        ret = find_int_identifiers(args)
     elif args.command == 'empty_references':
-        fix_empty_references(args.ssg_root)
+        ret = fix_empty_references(args)
     elif args.command == 'int_references':
-        find_int_references(args.ssg_root)
-    else:
-        sys.exit(1)
+        ret = find_int_references(args)
+    elif args.command == 'duplicate_subkeys':
+        ret = duplicate_subkeys(args)
+    elif args.command == 'sort_subkeys':
+        ret = sort_subkeys(args)
+
+    sys.exit(ret)
 
 if __name__ == "__main__":
     __main__()
