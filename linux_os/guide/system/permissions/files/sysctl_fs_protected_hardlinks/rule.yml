@@ -13,18 +13,18 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-82506-7
     cce@rhel7: CCE-81026-7
     cce@rhel8: CCE-81027-5
     cce@rhel9: CCE-84110-6
-    cce@rhcos4: CCE-82506-7
 
 references:
     anssi: BP28(R23)
-    nist: CM-6(a),AC-6(1)
+    disa: CCI-002165
     nerc-cip: CIP-003-3 R5.1.1,CIP-003-3 R5.3,CIP-004-3 R2.3,CIP-007-3 R2.1,CIP-007-3 R2.2,CIP-007-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+    nist: CM-6(a),AC-6(1)
     srg: SRG-OS-000324-GPOS-00125
     stigid@rhel8: RHEL-08-010374
-    disa: CCI-002165
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}
 

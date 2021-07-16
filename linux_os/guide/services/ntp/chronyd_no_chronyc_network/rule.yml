@@ -18,14 +18,14 @@ severity: low
 platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
 
 identifiers:
-    cce@rhel8: CCE-82840-0
     cce@rhcos4: CCE-82466-4
+    cce@rhel8: CCE-82840-0
 
 references:
+    disa: CCI-000381
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000096-GPOS-00050,SRG-OS-000095-GPOS-00049
     stigid@rhel8: RHEL-08-030742
-    disa: CCI-000381
 
 ocil_clause: 'it does not exist or port is set to non-zero value'
 

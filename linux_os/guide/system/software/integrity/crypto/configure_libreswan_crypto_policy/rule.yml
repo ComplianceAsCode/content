@@ -23,15 +23,15 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-82546-3
     cce@rhel8: CCE-80937-6
     cce@rhel9: CCE-83446-5
-    cce@rhcos4: CCE-82546-3
 
 references:
-    nist: CM-6(a),MA-4(6),SC-13,SC-12(2),SC-12(3)
     nerc-cip: CIP-003-3 R4.2,CIP-007-3 R5.1
-    srg: SRG-OS-000033-GPOS-00014
+    nist: CM-6(a),MA-4(6),SC-13,SC-12(2),SC-12(3)
     ospp: FCS_IPSEC_EXT.1.4,FCS_IPSEC_EXT.1.6
+    srg: SRG-OS-000033-GPOS-00014
 
 ocil_clause: |-
     Libreswan is installed and <tt>/etc/ipsec.conf</tt> does not contain <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
