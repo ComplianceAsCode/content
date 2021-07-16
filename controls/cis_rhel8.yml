@@ -785,6 +785,7 @@ controls:
     rules:
       - sysctl_net_ipv4_ip_forward
       - sysctl_net_ipv6_conf_all_forwarding
+      - sysctl_net_ipv6_conf_all_forwarding_value=disabled
 
   - id: 3.1.2
     title: Ensure packet redirect sending is disabled (Automated)
@@ -804,9 +805,13 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_conf_all_accept_source_route
+      - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
       - sysctl_net_ipv4_conf_default_accept_source_route
+      - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
       - sysctl_net_ipv6_conf_all_accept_source_route
+      - sysctl_net_ipv6_conf_all_accept_source_route_value=disabled
       - sysctl_net_ipv6_conf_default_accept_source_route
+      - sysctl_net_ipv6_conf_default_accept_source_route_value=disabled
 
   - id: 3.2.2
     title: Ensure ICMP redirects are not accepted (Automated)
@@ -816,9 +821,13 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_conf_all_accept_redirects
+      - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
       - sysctl_net_ipv4_conf_default_accept_redirects
+      - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
       - sysctl_net_ipv6_conf_all_accept_redirects
+      - sysctl_net_ipv6_conf_all_accept_redirects_value=disabled
       - sysctl_net_ipv6_conf_default_accept_redirects
+      - sysctl_net_ipv6_conf_default_accept_redirects_value=disabled
 
   - id: 3.2.3
     title: Ensure secure ICMP redirects are not accepted (Automated)
@@ -828,7 +837,9 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_conf_all_secure_redirects
+      - sysctl_net_ipv4_conf_all_secure_redirects_value=disabled
       - sysctl_net_ipv4_conf_default_secure_redirects
+      - sysctl_net_ipv4_conf_default_secure_redirects_value=disabled
 
   - id: 3.2.4
     title: Ensure suspicious packets are logged (Automated)
@@ -838,7 +849,9 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_conf_all_log_martians
+      - sysctl_net_ipv4_conf_all_log_martians_value=enabled
       - sysctl_net_ipv4_conf_default_log_martians
+      - sysctl_net_ipv4_conf_default_log_martians_value=enabled
 
   - id: 3.2.5
     title: Ensure broadcast ICMP requests are ignored (Automated)
@@ -848,6 +861,7 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
 
   - id: 3.2.6
     title: Ensure bogus ICMP responses are ignored (Automated)
@@ -857,6 +871,7 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+      - sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value=enabled
 
   - id: 3.2.7
     title: Ensure Reverse Path Filtering is enabled (Automated)
@@ -866,7 +881,9 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_conf_all_rp_filter
+      - sysctl_net_ipv4_conf_all_rp_filter_value=enabled
       - sysctl_net_ipv4_conf_default_rp_filter
+      - sysctl_net_ipv4_conf_default_rp_filter_value=enabled
 
   - id: 3.2.8
     title: Ensure TCP SYN Cookies is enabled (Automated)
@@ -876,15 +893,7 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv4_tcp_syncookies
-
-  - id: 3.2.8
-    title: Ensure TCP SYN Cookies is enabled (Automated)
-    levels:
-      - l1_server
-      - l1_workstation
-    automated: yes
-    rules:
-      - sysctl_net_ipv4_tcp_syncookies
+      - sysctl_net_ipv4_tcp_syncookies_value=enabled
 
   - id: 3.2.9
     title: Ensure IPv6 router advertisements are not accepted (Automated)
@@ -894,7 +903,9 @@ controls:
     automated: yes
     rules:
       - sysctl_net_ipv6_conf_all_accept_ra
+      - sysctl_net_ipv6_conf_all_accept_ra_value=disabled
       - sysctl_net_ipv6_conf_default_accept_ra
+      - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
 
   - id: 3.3.1
     title: Ensure DCCP is disabled (Automated)
