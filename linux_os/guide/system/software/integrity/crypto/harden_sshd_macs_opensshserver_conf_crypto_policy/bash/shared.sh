@@ -5,7 +5,13 @@
 CONF_FILE=/etc/crypto-policies/back-ends/opensshserver.config
 correct_value="-oMACs=${sshd_approved_macs}"
 
-grep -q ${correct_value} ${CONF_FILE}
+# Test if file exists
+test -f ${CONF_FILE} || touch ${CONF_FILE}
+
+# Ensure CRYPTO_POLICY is not commented out
+sed -i 's/#CRYPTO_POLICY=/CRYPTO_POLICY=/' ${CONF_FILE}
+
+grep -q "'${correct_value}'" ${CONF_FILE}
 
 if [[ $? -ne 0 ]]; then
     # We need to get the existing value, using PCRE to maintain same regex
@@ -20,6 +26,6 @@ if [[ $? -ne 0 ]]; then
         # unintentionally.
         # ********** #
         # echo correct_value to end
-        echo ${correct_value} >> ${CONF_FILE}
+        echo "CRYPTO_POLICY='${correct_value}'" >> ${CONF_FILE}
     fi
 fi

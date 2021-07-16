@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,rhel8
 
-title: 'Configure SSH Daemon to Use FIPS 140-2 Validated MACs: openssh.config'
+title: 'Configure SSH Client to Use FIPS 140-2 Validated MACs: openssh.config'
 
 description: |-
     Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
@@ -16,7 +16,7 @@ description: |-
 
 rationale: |-
     Overriding the system crypto policy makes the behavior of the OpenSSH
-    daemon violate expectations, and makes system configuration more
+    client violate expectations, and makes system configuration more
     fragmented.
 
 severity: medium
@@ -30,10 +30,10 @@ references:
     disa: CCI-001453
     stigid@rhel8: RHEL-08-010290
 
-ocil_clause: 'Crypto Policy for OpenSSH Server is not configured correctly'
+ocil_clause: 'Crypto Policy for OpenSSH client is not configured correctly'
 
 ocil: |-
-    To verify if the OpenSSH daemon uses defined MACs in the Crypto Policy, run:
+    To verify if the OpenSSH client uses defined MACs in the Crypto Policy, run:
     <pre>$ grep -i macs /etc/crypto-policies/back-ends/openssh.config</pre>
     and verify that the line matches:
     <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>

@@ -19,7 +19,7 @@
 - name: "{{{ rule_title }}}: Create"
   lineinfile:
     path: "{{ path }}"
-    line: "{{ correct_value }}"
+    line: "CRYPTO_POLICY='{{ correct_value }}'"
     create: yes
   when: not opensshserver_file.stat.exists or opensshserver_file.stat.size <= correct_value|length
 
