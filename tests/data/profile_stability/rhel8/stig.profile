@@ -123,6 +123,8 @@ selections:
 - file_ownership_var_log_audit
 - file_permission_user_init_files
 - file_permissions_binary_dirs
+- file_permissions_etc_audit_auditd
+- file_permissions_etc_audit_rulesd
 - file_permissions_home_directories
 - file_permissions_library_dirs
 - file_permissions_sshd_private_key

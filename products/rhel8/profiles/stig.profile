@@ -801,6 +801,8 @@ selections:
     - configure_usbguard_auditbackend
 
     # RHEL-08-030610
+    - file_permissions_etc_audit_auditd
+    - file_permissions_etc_audit_rulesd
 
     # RHEL-08-030620
 
