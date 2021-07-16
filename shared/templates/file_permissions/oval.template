@@ -16,11 +16,21 @@
 {{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
-    {{{ oval_metadata("This test makes sure that " + FILEPATH + " has mode " + FILEMODE + ".
+  {{% if FILEPATH is not string %}}
+    {{{ oval_metadata("This test makes sure that FILEPATH has mode " + FILEMODE + ".
+      If the target file or directory has an extended ACL, then it will fail the mode check.
+      ") }}}
+    <criteria>
+  {{% for filepath in FILEPATH %}}
+      <criterion comment="Check file mode of {{{ filepath }}}" test_ref="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+  {{% endfor %}}
+  {{% else %}}
+    {{{ oval_metadata("This test makes sure that " +  FILEPATH + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
       ") }}}
     <criteria>
       <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+  {{% endif %}}
     </criteria>
   </definition>
 
