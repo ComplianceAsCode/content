@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,rhel8
 
-title: 'Configure SSH Daemon to Use FIPS 140-2 Validated Ciphers: openssh.config'
+title: 'Configure SSH Client to Use FIPS 140-2 Validated Ciphers: openssh.config'
 
 description: |-
     Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
@@ -15,7 +15,7 @@ description: |-
     <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
 
 rationale: |-
-    Overriding the system crypto policy makes the behavior of the OpenSSH daemon
+    Overriding the system crypto policy makes the behavior of the OpenSSH client
     violate expectations, and makes system configuration more fragmented. By
     specifying a cipher list with the order of ciphers being in a “strongest to
     weakest” orientation, the system will automatically attempt to use the
@@ -32,10 +32,10 @@ references:
     disa: CCI-001453
     stigid@rhel8: RHEL-08-010291
 
-ocil_clause: 'Crypto Policy for OpenSSH Server is not configured correctly'
+ocil_clause: 'Crypto Policy for OpenSSH client is not configured correctly'
 
 ocil: |-
-    To verify if the OpenSSH daemon uses defined Cipher suite in the Crypto Policy, run:
+    To verify if the OpenSSH client uses defined Cipher suite in the Crypto Policy, run:
     <pre>$ grep -i ciphers /etc/crypto-policies/back-ends/openssh.config</pre>
     and verify that the line matches:
     <pre>Ciphers {{{ xccdf_value("sshd_approved_ciphers") }}}</pre>

@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel8
 
-title: 'Configure SSH Daemon to Use FIPS 140-2 Validated MACs: opensshserver.config'
+title: 'Configure SSH Server to Use FIPS 140-2 Validated MACs: opensshserver.config'
 
 description: |-
     Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
@@ -15,7 +15,7 @@ description: |-
     <pre>-oCiphers={{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
 
 rationale: |-
-    Overriding the system crypto policy makes the behavior of the OpenSSH daemon
+    Overriding the system crypto policy makes the behavior of the OpenSSH server
     violate expectations, and makes system configuration more fragmented. By
     specifying a cipher list with the order of ciphers being in a “strongest to
     weakest” orientation, the system will automatically attempt to use the
@@ -35,7 +35,7 @@ references:
 ocil_clause: 'Crypto Policy for OpenSSH Server is not configured correctly'
 
 ocil: |-
-    To verify if the OpenSSH daemon uses defined MACs in the Crypto Policy, run:
+    To verify if the OpenSSH server uses defined MACs in the Crypto Policy, run:
     <pre>$ grep -Po '(-oCiphers=\S+)' /etc/crypto-policies/back-ends/opensshserver.config</pre>
     and verify that the line matches:
     <pre>-oCiphers={{{ xccdf_value("sshd_approved_ciphers") }}}</pre>
