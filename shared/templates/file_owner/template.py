@@ -1,4 +1,4 @@
-from ssg.utils import parse_template_boolean_value
+from ssg.utils import parse_template_boolean_value, check_conflict_regex_directory
 
 def _file_owner_groupowner_permissions_regex(data):
     # this avoids code duplicates
@@ -19,20 +19,7 @@ def _file_owner_groupowner_permissions_regex(data):
                 "You should have one file_path per file_regex. Please check "
                 "rule '{0}'".format(data["_rule_id"]))
 
-    for f in data["filepath"]:
-        if "is_directory" in data and data["is_directory"] != f.endswith("/"):
-            raise ValueError(
-                "If passing a list of filepaths, all of them need to be "
-                "either directories or files. Mixing is not possible. "
-                "Please fix rules '{0}' filepath '{1}'".format(data["_rule_id"], f))
-
-        data["is_directory"] = f.endswith("/")
-
-        if "file_regex" in data and not data["is_directory"]:
-            raise ValueError(
-                "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
-                "specify a directory. Append '/' to the filepath or remove the "
-                "'file_regex' key.".format(data["_rule_id"], f))
+    check_conflict_regex_directory(data)
 
 
 def preprocess(data, lang):
