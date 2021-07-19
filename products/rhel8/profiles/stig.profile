@@ -260,6 +260,7 @@ selections:
     - package_opensc_installed
 
     # RHEL-08-010420
+    - bios_enable_execution_restrictions
 
     # RHEL-08-010421
     - grub2_page_poison_argument

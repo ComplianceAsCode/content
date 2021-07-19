@@ -74,6 +74,7 @@ selections:
 - auditd_log_format
 - auditd_name_format
 - banner_etc_issue
+- bios_enable_execution_restrictions
 - chronyd_client_only
 - chronyd_no_chronyc_network
 - chronyd_or_ntpd_set_maxpoll
