@@ -44,7 +44,7 @@
     <linux:name>redhat-release</linux:name>
   </linux:rpminfo_object>
 
-  {{% for minorversion in range(0, 9) %}}
+  {{% for minorversion in range(0, 11) %}}
   <definition class="inventory" id="installed_OS_is_rhel8_{{{ minorversion }}}" version="1">
     <metadata>
       <title>Red Hat Enterprise Linux 8.{{{ minorversion }}}</title>
@@ -52,13 +52,13 @@
         <platform>Red Hat Enterprise Linux 8.{{{ minorversion }}}</platform>
       </affected>
       <reference ref_id="cpe:/o:redhat:enterprise_linux:8.{{{ minorversion }}}" source="CPE" />
-      <description>The operating system installed on the system is Red Hat Enterprise Linux 8.{{{  minorversion}}}</description>
+      <description>The operating system installed on the system is Red Hat Enterprise Linux 8.{{{ minorversion }}}</description>
     </metadata>
+    <criteria>
+      <criterion comment="RHEL 8.{{{ minorversion }}} is installed" test_ref="test_rhel8_{{{ minorversion }}}" />
+    </criteria>
   </definition>
 
-  <criteria>
-    <criterion comment="RHEL.{{{ minorversion }}} 8 is installed" test_ref="test_rhel8_{{{ minorversion }}}" />
-  </criteria>
 
   <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release is version 8.{{{ minorversion }}}"
    id="test_rhel8_{{{ minorversion }}}" version="1">
