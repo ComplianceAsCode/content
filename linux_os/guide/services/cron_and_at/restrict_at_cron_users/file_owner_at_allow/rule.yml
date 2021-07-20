@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Verify User Who Owns /etc/at.allow file'
+
+description: |-
+    If <tt>/etc/at.allow</tt> exists, it must be owned by <tt>root</tt>.
+    {{{ describe_file_owner(file="/etc/at.allow", owner="root") }}}
+
+rationale: |-
+    If the owner of the at.allow file is not set to root, the possibility exists for an
+    unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 5.1.9
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/at.allow", owner="root") }}}'
+
+ocil: |-
+    {{{ ocil_file_owner(file="/etc/at.allow", owner="root") }}}
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/at.allow
+        missing_file_pass: 'true'
+        fileuid: '0'

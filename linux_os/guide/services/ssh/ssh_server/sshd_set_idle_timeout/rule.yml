@@ -25,37 +25,39 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-82549-7
     cce@rhel7: CCE-27433-2
     cce@rhel8: CCE-80906-1
     cce@rhel9: CCE-90811-1
-    cce@rhcos4: CCE-82549-7
     cce@sle12: CCE-83027-3
     cce@sle15: CCE-83281-6
 
 references:
-    stigid@ol7: OL07-00-040320
+    anssi: BP28(R29)
+    cis-csc: 1,12,13,14,15,16,18,3,5,7,8
     cis@rhel7: 5.3.16
     cis@rhel8: 5.2.13
     cis@sle15: 5.2.16
     cis@ubuntu2004: 5.2.15
     cjis: 5.5.6
+    cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03,DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
     cui: 3.1.11
     disa: CCI-000879,CCI-001133,CCI-002361
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 6.2'
+    iso27001-2013: A.12.4.1,A.12.4.3,A.14.1.1,A.14.2.1,A.14.2.5,A.18.1.4,A.6.1.2,A.6.1.5,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
+    nerc-cip: CIP-004-3 R2.2.3,CIP-007-3 R5.1,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3
     nist: CM-6(a),AC-17(a),AC-2(5),AC-12,AC-17(a),SC-10,CM-6(a)
     nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.IP-2
     pcidss: Req-8.1.8
     srg: SRG-OS-000126-GPOS-00066,SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109,SRG-OS-000395-GPOS-00175
-    vmmsrg: SRG-OS-000480-VMM-002000
+    stigid@ol7: OL07-00-040320
     stigid@rhel7: RHEL-07-040320
+    stigid@rhel8: RHEL-08-010200
     stigid@sle12: SLES-12-030190
     stigid@sle15: SLES-15-010280
-    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 6.2'
-    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4,4.3.4.3.3
-    cobit5: APO13.01,BAI03.01,BAI03.02,BAI03.03,DSS01.03,DSS03.05,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
-    iso27001-2013: A.12.4.1,A.12.4.3,A.14.1.1,A.14.2.1,A.14.2.5,A.18.1.4,A.6.1.2,A.6.1.5,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
-    cis-csc: 1,12,13,14,15,16,18,3,5,7,8
-    anssi: BP28(R29)
-    stigid@rhel8: RHEL-08-010200
+    stigid@ubuntu2004: UBTU-20-010037
+    vmmsrg: SRG-OS-000480-VMM-002000
 
 requires:
     - sshd_set_keepalive

@@ -31,34 +31,32 @@ rationale: |-
     maintaining accurate logs and auditing possible security breaches.
     <br /><br />
     The <tt>chronyd</tt> and <tt>ntpd</tt> NTP daemons offer all of the
-    functionality of <tt>ntpdate</tt>, which is now deprecated. Additional
-    information on this is available at
-    {{{ weblink(link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate") }}}
+    functionality of <tt>ntpdate</tt>, which is now deprecated.
 
 severity: medium
 
 platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
 
 identifiers:
+    cce@rhcos4: CCE-82682-6
     cce@rhel7: CCE-27444-9
     cce@rhel8: CCE-80874-1
-    cce@rhcos4: CCE-82682-6
 
 references:
-    cis@ubuntu2004: 2.2.1.1
+    cis-csc: 1,14,15,16,3,5,6
     cis@rhel8: 2.2.1.1
+    cis@ubuntu2004: 2.2.1.1
+    cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
     cui: 3.3.7
     disa: CCI-000160
+    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
+    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9'
+    ism: 0988,1405
+    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
     nist: CM-6(a),AU-8(1)(a)
     nist-csf: PR.PT-1
-    vmmsrg: SRG-OS-000356-VMM-001340
     pcidss: Req-10.4
-    isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9'
-    isa-62443-2009: 4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
-    cobit5: APO11.04,BAI03.05,DSS05.04,DSS05.07,MEA02.01
-    iso27001-2013: A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1
-    cis-csc: 1,14,15,16,3,5,6
-    ism: 0988,1405
+    vmmsrg: SRG-OS-000356-VMM-001340
 
 ocil: |-
     {{{ ocil_service_enabled(service="chronyd") }}}

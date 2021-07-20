@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15
+prodtype: sle12,sle15,ubuntu2004
 
 title: Verify '/proc/sys/crypto/fips_enabled' exists  
 
@@ -24,9 +24,10 @@ identifiers:
 references:
     disa: CCI-002450
     nist: SC-13
+    srg: SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223
     stigid@sle12: SLES-12-010420
     stigid@sle15: SLES-15-010510
-    srg: SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223
+    stigid@ubuntu2004: UBTU-20-010442
 
 ocil_clause: the command 'cat /proc/sys/crypto/fips_enabled' returns nothing or '0' or the file does not exist
 

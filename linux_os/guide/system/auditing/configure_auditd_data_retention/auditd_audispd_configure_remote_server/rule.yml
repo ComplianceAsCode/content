@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
 
 title: 'Configure audispd Plugin To Send Logs To Remote Server'
 
@@ -32,15 +32,16 @@ identifiers:
     cce@sle15: CCE-85615-3
 
 references:
-    stigid@ol7: OL07-00-030300
     disa: CCI-001851
-    srg: SRG-OS-000342-GPOS-00133,SRG-OS-000479-GPOS-00224
-    vmmsrg: SRG-OS-000051-VMM-000230,SRG-OS-000058-VMM-000270,SRG-OS-000059-VMM-000280,SRG-OS-000479-VMM-001990,SRG-OS-000479-VMM-001990
-    stigid@rhel7: RHEL-07-030300
+    nist@sle12: AU-4(1)
     ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000342-GPOS-00133,SRG-OS-000479-GPOS-00224
+    stigid@ol7: OL07-00-030300
+    stigid@rhel7: RHEL-07-030300
     stigid@sle12: SLES-12-020090
     stigid@sle15: SLES-15-030690
-    nist@sle12: AU-4(1)
+    stigid@ubuntu2004: UBTU-20-010216
+    vmmsrg: SRG-OS-000051-VMM-000230,SRG-OS-000058-VMM-000270,SRG-OS-000059-VMM-000280,SRG-OS-000479-VMM-001990,SRG-OS-000479-VMM-001990
 
 ocil_clause: 'audispd is not sending logs to a remote system'
 

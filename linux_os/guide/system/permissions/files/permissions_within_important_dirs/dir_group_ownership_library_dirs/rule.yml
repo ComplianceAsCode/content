@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: sle12,sle15,rhel8,fedora
+
 title: 'Verify that Shared Library Directories Have Root Group Ownership'
 
 description: |-
@@ -27,15 +29,17 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-85894-4
     cce@sle12: CCE-83238-6
     cce@sle15: CCE-85737-5
 
 references:
+    disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
     srg: SRG-OS-000259-GPOS-00100
+    stigid@rhel8: RHEL-08-010350
     stigid@sle12: SLES-12-010876
     stigid@sle15: SLES-15-010356
-    disa: CCI-001499
 
 ocil_clause: 'any of these directories are not group-owned by root'
 

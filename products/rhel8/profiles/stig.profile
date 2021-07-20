@@ -207,6 +207,8 @@ selections:
     - file_ownership_library_dirs
 
     # RHEL-08-010350
+    - root_permissions_syslibrary_files
+    - dir_group_ownership_library_dirs
 
     # RHEL-08-010360
     - package_aide_installed
@@ -258,6 +260,7 @@ selections:
     - package_opensc_installed
 
     # RHEL-08-010420
+    - bios_enable_execution_restrictions
 
     # RHEL-08-010421
     - grub2_page_poison_argument
@@ -341,6 +344,7 @@ selections:
     - mount_option_nodev_nonroot_local_partitions
 
     # RHEL-08-010590
+    - mount_option_home_noexec
 
     # RHEL-08-010600
     - mount_option_nodev_removable_partitions
@@ -798,6 +802,8 @@ selections:
     - configure_usbguard_auditbackend
 
     # RHEL-08-030610
+    - file_permissions_etc_audit_auditd
+    - file_permissions_etc_audit_rulesd
 
     # RHEL-08-030620
 

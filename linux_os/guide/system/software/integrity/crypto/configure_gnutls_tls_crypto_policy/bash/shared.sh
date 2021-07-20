@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8,Fedora
+# platform = multi_platform_all
 # reboot = true
 # strategy = restrict
 # complexity = low

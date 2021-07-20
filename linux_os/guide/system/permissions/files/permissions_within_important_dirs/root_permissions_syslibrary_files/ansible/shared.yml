@@ -1,10 +1,27 @@
-# platform = multi_platform_sle
+# platform = multi_platform_sle,Red Hat Enterprise Linux 8,multi_platform_fedora
 # reboot = false
 # strategy = restrict
 # complexity = high
 # disruption = medium
 
-- name: "Set ownership to root of system-wide library files"
-  command: "find {{ item }} ! -group root -type f -exec chgrp root '{}' \\;"
-  with_items: [ '/lib', '/lib64', '/usr/lib', '/usr/lib64' ]
+- name: "Read list libraries without root ownership"
+  find:
+    paths:
+      - "/usr/lib"
+      - "/usr/lib64"
+      - "/lib"
+      - "/lib64"
+    file_type: "file"
+  register: library_files_not_group_owned_by_root
+
+- name: "Set group ownership of system library files to root"
+  file:
+    path: "{{ item.path }}"
+    group: "root"
+    state: "file"
+    mode: "{{ item.mode }}"
+  with_items: "{{ library_files_not_group_owned_by_root.files }}"
+  when:
+    - library_files_not_group_owned_by_root.matched > 0
+    - item.gid != 0
 

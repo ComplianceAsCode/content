@@ -12,17 +12,17 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-82502-6
     cce@rhel7: CCE-81053-1
     cce@rhel8: CCE-81054-9
     cce@rhel9: CCE-83959-7
-    cce@rhcos4: CCE-82502-6
 
 references:
     anssi: BP28(R23)
+    disa: CCI-001090
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000132-GPOS-00067,SRG-OS-000138-GPOS-00069
     stigid@rhel8: RHEL-08-010376
-    disa: CCI-001090
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
 

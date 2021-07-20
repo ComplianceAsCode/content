@@ -12,23 +12,22 @@ rationale: 'The firewalld package should be installed to provide access control 
 severity: medium
 
 identifiers:
+    cce@rhcos4: CCE-82521-6
     cce@rhel7: CCE-82999-4
     cce@rhel8: CCE-82998-6
     cce@rhel9: CCE-84021-5
-    cce@rhcos4: CCE-82521-6
     cce@sle15: CCE-85698-9
 
 references:
+    cis@rhel7: 3.5.1.1
+    cis@rhel8: 3.4.1.1
+    cis@sle15: 3.5.1.1
+    disa: CCI-002314
     nist: CM-6(a)
     nist@sle15: CM-7,CM-7.1(iii),CM-7(b),AC-17(1)
     srg: SRG-OS-000096-GPOS-00050,SRG-OS-000297-GPOS-00115,SRG-OS-000298-GPOS-00116,SRG-OS-000480-GPOS-00227,SRG-OS-000480-GPOS-00232
-    stigid@sle15:  SLES-15-010220
-    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000298-GPOS-00116,SRG-OS-000297-GPOS-00115
-    cis@rhel7: 3.5.1.1
-    cis@rhel8: 3.4.1.1
     stigid@rhel8: RHEL-08-040100
-    disa: CCI-002314
-    cis@sle15: 3.5.1.1
+    stigid@sle15:  SLES-15-010220
 
 ocil_clause: 'the package is not installed'
 

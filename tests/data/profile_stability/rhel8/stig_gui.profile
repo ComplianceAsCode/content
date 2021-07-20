@@ -85,6 +85,7 @@ selections:
 - auditd_log_format
 - auditd_name_format
 - banner_etc_issue
+- bios_enable_execution_restrictions
 - chronyd_client_only
 - chronyd_no_chronyc_network
 - chronyd_or_ntpd_set_maxpoll
@@ -110,6 +111,7 @@ selections:
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
+- dir_group_ownership_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
 - directory_permissions_var_log_audit
@@ -133,6 +135,8 @@ selections:
 - file_ownership_var_log_audit
 - file_permission_user_init_files
 - file_permissions_binary_dirs
+- file_permissions_etc_audit_auditd
+- file_permissions_etc_audit_rulesd
 - file_permissions_home_directories
 - file_permissions_library_dirs
 - file_permissions_sshd_private_key
@@ -167,6 +171,7 @@ selections:
 - mount_option_dev_shm_nodev
 - mount_option_dev_shm_noexec
 - mount_option_dev_shm_nosuid
+- mount_option_home_noexec
 - mount_option_home_nosuid
 - mount_option_nodev_nonroot_local_partitions
 - mount_option_nodev_remote_filesystems
@@ -232,6 +237,7 @@ selections:
 - postfix_client_configure_mail_alias
 - require_emergency_target_auth
 - require_singleuser_auth
+- root_permissions_syslibrary_files
 - rsyslog_cron_logging
 - rsyslog_remote_access_monitoring
 - rsyslog_remote_loghost

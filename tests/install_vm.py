@@ -25,7 +25,7 @@ def parse_args():
         "--distro",
         dest="distro",
         required=True,
-        choices=['fedora', 'rhel7', 'centos7', 'rhel8'],
+        choices=['fedora', 'rhel7', 'centos7', 'rhel8', 'rhel9'],
         help="What distribution to install."
     )
     parser.add_argument(
@@ -99,6 +99,12 @@ def parse_args():
         dest="install_gui",
         action='store_true',
         help="Perform a GUI installation (default is installation without GUI)."
+    )
+    parser.add_argument(
+        "--console",
+        dest="console",
+        action='store_true',
+        help="Connect to a serial console of the VM (to monitor installation progress)."
     )
 
     return parser.parse_args()
@@ -181,11 +187,15 @@ def main():
             data.network = "network=default"
         else:
             data.network = "bridge=virbr0"
+    if data.console:
+        data.wait_opt = 0
+    else:
+        data.wait_opt = -1
 
     # The kernel option 'net.ifnames=0' is used to disable predictable network
     # interface names, for more details see:
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
-    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} ksdevice=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait=-1 --location={url}'.format(**data.__dict__)
+    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} ksdevice=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
     if data.uefi == "normal":
         command = command+" --boot uefi"
     if data.uefi == "secureboot":
@@ -198,6 +208,9 @@ nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
         print(command)
     else:
         os.system(command)
+        if data.console:
+            os.system("unbuffer virsh console {0}".format(data.domain))
+            os.system("virsh start {0}".format(data.domain))
 
     print("\nTo determine the IP address of the {0} VM use:".format(data.domain))
     if data.libvirt == "qemu:///system":

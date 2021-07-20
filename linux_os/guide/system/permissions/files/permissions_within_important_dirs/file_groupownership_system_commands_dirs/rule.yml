@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,rhel8,fedora
+prodtype: fedora,rhel8,sle12,sle15,ubuntu2004
 
 title: 'Verify that system commands files are group owned by root '
 
@@ -33,17 +33,18 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-86519-6
     cce@sle12: CCE-83243-6
     cce@sle15: CCE-85742-5
-    cce@rhel8: CCE-86519-6
 
 references:
     disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
+    srg: SRG-OS-000259-GPOS-00100
+    stigid@rhel8: RHEL-08-010320
     stigid@sle12: SLES-12-010882
     stigid@sle15: SLES-15-010361
-    stigid@rhel8: RHEL-08-010320
-    srg: SRG-OS-000259-GPOS-00100
+    stigid@ubuntu2004: UBTU-20-010458
 
 ocil_clause: 'any of these files are not owned by root group'
 

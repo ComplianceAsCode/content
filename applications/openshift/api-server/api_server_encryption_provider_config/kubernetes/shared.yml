@@ -7,3 +7,47 @@ metadata:
 spec:
   encryption:
     type: aescbc
+---
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: etcdencryptedonly
+  annotations:
+    description: Requires etcd to use encryption.
+    complianceascode.io/remediation-type: Enforcement
+    complianceascode.io/optional: ""
+    complianceascode.io/enforcement-type: gatekeeper
+spec:
+  crd:
+    spec:
+      names:
+        kind: EtcdEncryptedOnly
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package etcdencryptedonly
+        violation[{"msg": msg}] {
+          input.review.object.kind == "APIServer"
+          input.review.object.metadata.name == "cluster"
+          apiserverobj := input.review.object
+          not etcd_encryption_type_set(apiserverobj)
+          msg := sprintf("encryption type must be set to 'aescbc' in apiserver object %v", [apiserverobj.metadata.name])
+        }
+        etcd_encryption_type_set(apiserverobj) = true {
+          apiserverobj.spec.encryption.type == "aescbc"
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: EtcdEncryptedOnly
+metadata:
+  name: etcd-encrypted-only
+  annotations:
+    complianceascode.io/remediation-type: Enforcement
+    complianceascode.io/optional: ""
+    complianceascode.io/depends-on-obj: '[{"apiVersion":"templates.gatekeeper.sh/v1beta1","kind":"ConstraintTemplate","name":"etcdencryptedonly"}]'
+    complianceascode.io/enforcement-type: gatekeeper
+spec:
+  match:
+    kinds:
+      - apiGroups: ["config.openshift.io"]
+        kinds: ["APIServer"]
