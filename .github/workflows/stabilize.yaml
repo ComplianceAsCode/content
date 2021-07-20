@@ -21,11 +21,11 @@ jobs:
       - name: Build All
         run: make -j2 all
         working-directory: ./build
-        # Performs linkcheck across all build tables and html guides to ensure there are no broken references.
-      - name: Link Check
-        run: ctest -j2 -R linkchecker --output-on-failure
-        working-directory: ./build
-        # Performs ansible-lint and yamllint checks on generated ansible playbooks
       - name: Lint Check
+        # Performs ansible-lint and yamllint checks on generated ansible playbooks
         run: ctest -j2 -R ansible-playbook --output-on-failure
+        working-directory: ./build
+      - name: Link Check
+        # Performs linkcheck across all build tables and html guides to ensure there are no broken references.
+        run: ctest -j2 -R linkchecker --output-on-failure
         working-directory: ./build
