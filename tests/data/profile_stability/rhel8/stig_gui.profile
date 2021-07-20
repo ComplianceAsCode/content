@@ -156,6 +156,8 @@ selections:
 - grub2_uefi_admin_username
 - grub2_uefi_password
 - grub2_vsyscall_argument
+- harden_sshd_ciphers_openssh_conf_crypto_policy
+- harden_sshd_ciphers_opensshserver_conf_crypto_policy
 - harden_sshd_macs_openssh_conf_crypto_policy
 - harden_sshd_macs_opensshserver_conf_crypto_policy
 - install_smartcard_packages
@@ -338,6 +340,7 @@ selections:
 - var_password_pam_retry=3
 - var_sshd_set_keepalive=0
 - sshd_approved_macs=stig
+- sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
