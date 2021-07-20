@@ -34,6 +34,9 @@ references:
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
     pcidss: Req-8.2.1
 
+# The rule check uses password probe, which doesn't support offline mode
+platform: machine
+
 ocil_clause: 'any stored hashes are found in /etc/passwd'
 
 ocil: |-
