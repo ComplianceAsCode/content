@@ -16,4 +16,4 @@ else
 fi
 
 # follow up with correct value
-echo "Ciphers ${sshd_approved_ciphers}" >> $configfile
+echo "#Ciphers ${sshd_approved_ciphers}" >> $configfile
