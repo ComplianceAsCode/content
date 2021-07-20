@@ -1,0 +1,31 @@
+name: Stabilize
+on:
+  push:
+    branches: [ 'stabilization*' ]
+jobs:
+  stabilize-ubuntu:
+    name: Build and Stabilization Tests on Ubuntu 20.04
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install Deps
+        uses: mstksg/get-package@master
+        with:
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint
+      - name: Install PIP Deps
+        run: pip3 install git+https://github.com/linkchecker/linkchecker.git
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure
+        run: cmake -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF ..
+        working-directory: ./build
+      - name: Build All
+        run: make -j2 all
+        working-directory: ./build
+        # Performs linkcheck across all build tables and html guides to ensure there are no broken references.
+      - name: Link Check
+        run: ctest -j2 -R linkchecker --output-on-failure
+        working-directory: ./build
+        # Performs ansible-lint and yamllint checks on generated ansible playbooks
+      - name: Lint Check
+        run: ctest -j2 -R ansible-playbook --output-on-failure
+        working-directory: ./build
