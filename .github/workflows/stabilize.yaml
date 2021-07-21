@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        run: cmake -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF ..
+        run: cmake -DSSG_OVAL_SCHEMATRON_VALIDATION_ENABLED=OFF -DANSIBLE_CHECKS=ON ..
         working-directory: ./build
       - name: Build All
         run: make -j2 all
