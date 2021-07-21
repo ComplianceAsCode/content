@@ -4,13 +4,13 @@ on:
     tags: [ 'v*.*.*' ]
 jobs:
   validate-ubuntu:
-    name: Release on Ubuntu 20.04
-    runs-on: ubuntu-20.04
+    name: Release on Fedora Latest
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
     steps:
       - name: Install Deps
-        uses: mstksg/get-package@master
-        with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github
+        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
