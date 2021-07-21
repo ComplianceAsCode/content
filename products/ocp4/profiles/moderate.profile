@@ -55,6 +55,7 @@ selections:
     - banner_or_login_template_set
 
     # AU
+    - var_openshift_audit_profile=WriteRequestBodies
     - audit_profile_set
 
     # AU-9
