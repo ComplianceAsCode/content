@@ -2,5 +2,7 @@
 - name: "{{{ rule_title }}}"
   lineinfile:
     path: /etc/audit/auditd.conf
-    regexp: '^overflow_action'
+    regexp: '^.*overflow_action'
     line: 'overflow_action = syslog'
+    create: yes
+    state: present
