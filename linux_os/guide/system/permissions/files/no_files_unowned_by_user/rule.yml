@@ -53,6 +53,9 @@ references:
     stigid@sle12: SLES-12-010690
     stigid@sle15: SLES-15-040400
 
+# The rule check uses password probe, which doesn't support offline mode
+platform: machine
+
 ocil_clause: 'files exist that are not owned by a valid user'
 
 ocil: |-
