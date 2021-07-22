@@ -10,11 +10,13 @@
 # complexity = low
 # disruption = low
 
-- name: "Check if pam_lastlog.so is set"
-  find:
-    path: /etc/pam.d/
-    pattern: '{{{ pam_lastlog_filename }}}'
-    contains: '^\s*(session)(\s+)[^\s]+(\s+)(pam_lastlog\.so)(\s+)(.*)'
+- name: Check if pam_lastlog.so is set
+  lineinfile:
+    path: /etc/pam.d/{{{ pam_lastlog_filename }}}
+    regexp: '^\s*(session)(\s+)[^\s]+(\s+)(pam_lastlog\.so)(\s+)(.*)'
+    state: absent
+  check_mode: yes
+  changed_when: false
   register: pam_lastlog_exists
 
 - name: Make sure pam_lastlog.so control is required
@@ -28,7 +30,7 @@
   lineinfile:
     path: /etc/pam.d/{{{ pam_lastlog_filename }}}
     line: 'session required pam_lastlog.so showfailed'
-  when: pam_lastlog_exists.matched == 0
+  when: not pam_lastlog_exists.found
   register: add_new_pam_lastlog_control_result
 
 - name: Add 'showfailed' arg to pam_lastlog.so module
