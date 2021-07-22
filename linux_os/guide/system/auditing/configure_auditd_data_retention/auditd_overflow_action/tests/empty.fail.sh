@@ -2,4 +2,6 @@
 # Ensure test system has proper directories/files for test scenario
 bash -x setup.sh
 
-touch /etc/audit/auditd.conf
+if [[ -f $config_file ]]; then
+    echo '' > $config_file
+fi
