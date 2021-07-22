@@ -31,6 +31,6 @@ ocil_clause: 'cryptographic policy for openssl is not configured or is configure
 
 ocil: |-
     To verify if the OpenSSL uses defined TLS Crypto Policy, run:
-    <pre>$ grep 'MinProtocol' /etc/crypto-policies/back-ends/opensslcnf.config | tail -n 1</pre>
-    and verify that the line matches
-    <pre>MinProtocol = TLSv1.2</pre>
+    <pre>$ grep -P '^(TLS\.)?MinProtocol' /etc/crypto-policies/back-ends/opensslcnf.config</pre>
+    and verify that the value is
+    <pre>TLSv1.2</pre>
