@@ -5,7 +5,7 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4
 title: 'Install vim Package'
 
 description: |-
-    {{{ describe_package_install(package="vim-common") }}}
+    {{{ describe_package_install(package="vim-enhanced") }}}
 
 rationale: |-
     Vim (Vi IMproved) is an almost compatible version of the UNIX editor <tt>vi</tt>. 
@@ -18,9 +18,9 @@ identifiers:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="vim-common") }}}'
+ocil: '{{{ ocil_package(package="vim-enhanced") }}}'
 
 template:
     name: package_installed
     vars:
-        pkgname: vim-common
+        pkgname: vim-enhanced
