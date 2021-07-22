@@ -558,6 +558,7 @@ selections:
     - account_disable_post_pw_expiration
 
     # RHEL-08-020270
+    - account_emergency_expire_date
 
     # RHEL-08-020280
     - accounts_password_pam_ocredit
