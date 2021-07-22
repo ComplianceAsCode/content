@@ -473,6 +473,7 @@ INSTALL_COMMANDS = dict(
     fedora=("dnf", "install", "-y"),
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
+    rhel9=("yum", "install", "-y"),
     ubuntu=("DEBIAN_FRONTEND=noninteractive", "apt", "install", "-y"),
 )
 
