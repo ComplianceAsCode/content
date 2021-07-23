@@ -1,0 +1,44 @@
+<def-group>
+  <definition class="compliance" id="file_group_ownership_var_log_audit" version="1">
+    {{{ oval_metadata("Checks that all /var/log/audit files are group owned by the root user.") }}}
+    <criteria operator="OR">
+      <criterion comment="files are root group owned" test_ref="test_group_ownership_var_log_audit_files"/>
+      <criteria operator="AND" comment="log_group in auditd.conf is not root">
+        <extend_definition comment="log_group in auditd.conf is not root"
+        definition_ref="auditd_conf_log_group_not_root" />
+        <criterion test_ref="test_group_ownership_var_log_audit_files-non_root" />
+      </criteria>
+    </criteria>
+  </definition>
+  
+  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files gid root" id="test_group_ownership_var_log_audit_files" version="1">
+    <unix:object object_ref="object_group_ownership_var_log_audit_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log/audit files" id="object_group_ownership_var_log_audit_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_group_owner_not_root_var_log_audit</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_group_owner_not_root_var_log_audit" version="1" operator="OR">
+    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
+  </unix:file_state>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit files uid root " id="test_group_ownership_var_log_audit_files-non_root" version="1">
+    <unix:object object_ref="object_group_ownership_var_log_audit_files-non_root" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log/audit files" id="object_group_ownership_var_log_audit_files-non_root" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/var/log/audit</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_group_owner_not_root_var_log_audit-non_root</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_group_owner_not_root_var_log_audit-non_root" version="1" operator="OR">
+    <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
+  </unix:file_state>
+
+</def-group>

@@ -114,6 +114,8 @@ selections:
 - dir_group_ownership_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
+- directory_group_ownership_var_log_audit
+- directory_ownership_var_log_audit
 - directory_permissions_var_log_audit
 - disable_ctrlaltdel_burstaction
 - disable_ctrlaltdel_reboot
@@ -124,6 +126,7 @@ selections:
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
+- file_group_ownership_var_log_audit
 - file_groupowner_var_log
 - file_groupowner_var_log_messages
 - file_groupownership_home_directories
@@ -132,7 +135,7 @@ selections:
 - file_owner_var_log_messages
 - file_ownership_binary_dirs
 - file_ownership_library_dirs
-- file_ownership_var_log_audit
+- file_ownership_var_log_audit_stig
 - file_permission_user_init_files
 - file_permissions_binary_dirs
 - file_permissions_etc_audit_auditd
