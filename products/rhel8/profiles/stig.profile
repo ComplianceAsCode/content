@@ -844,6 +844,7 @@ selections:
     - rsyslog_remote_loghost
 
     # RHEL-08-030700
+    - auditd_overflow_action
 
     # RHEL-08-030710
 
