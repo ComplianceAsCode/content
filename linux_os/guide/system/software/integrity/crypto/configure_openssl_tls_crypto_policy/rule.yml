@@ -8,8 +8,11 @@ description: |-
     Crypto Policies are means of enforcing certain cryptographic settings for
     selected applications including OpenSSL. OpenSSL is by default configured to
     modify its configuration based on currently configured Crypto Policy.
-    However, in certain cases it might be needed to override the Crypto Policy
-    specific to OpenSSL and leave rest of the Crypto Policy intact.
+    Editing the Crypto Policy back-end is not recommended.
+
+    Check the crypto-policies(7) man page and choose a policy that configures TLS
+    protocol to version 1.2 or higher, for example DEFAULT, FUTURE or FIPS policy.
+    Or create and apply a custom policy that restricts minimum TLS version to 1.2.
 
 rationale: |-
     Without cryptographic integrity protections, information can be altered by
@@ -34,3 +37,9 @@ ocil: |-
     <pre>$ grep -P '^(TLS\.)?MinProtocol' /etc/crypto-policies/back-ends/opensslcnf.config</pre>
     and verify that the value is
     <pre>TLSv1.2</pre>
+
+warnings:
+    - general: |-
+        This rule doesn't come with a remediation, automatically changing the crypto-policies may be too disruptive.
+        Ensure the variable <tt>xccdf_org.ssgproject.content_value_var_system_crypto_policy</tt> is set to a
+        Crypto Policy that satisfies OpenSSL minimum TLS protocol version 1.2. Custom policies may be applied too.
