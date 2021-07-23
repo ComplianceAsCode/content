@@ -35,6 +35,7 @@ documentation_complete: true
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
+- account_emergency_expire_date
 - account_temp_expire_date
 - accounts_have_homedir_login_defs
 - accounts_logon_fail_delay
