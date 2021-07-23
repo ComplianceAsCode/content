@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = avahi
+# packages = {{{- ssgts_package("avahi") -}}}
 #
 
 systemctl stop avahi-daemon.service
