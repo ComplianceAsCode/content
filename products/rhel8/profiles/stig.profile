@@ -828,6 +828,8 @@ selections:
     # RHEL-08-030700
 
     # RHEL-08-030710
+    - rsyslog_encrypt_offload_defaultnetstreamdriver
+    - rsyslog_encrypt_offload_actionsendstreamdrivermode
 
     # RHEL-08-030720
 
