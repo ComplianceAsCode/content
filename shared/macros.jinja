@@ -79,7 +79,13 @@ ocil: |
 
 
 {{% macro ocil_mount_option(point, option) -%}}
-    To verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point, run the following command:
+    To verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    run the following command:
     <pre>$ mount | grep '\s{{{ point }}}\s'</pre>
     The output should show the corresponding mount point along with the <tt>{{{ option }}}</tt> setting in parentheses.
 {{%- endmacro %}}
@@ -138,6 +144,11 @@ ocil: |
 
 
 {{% macro partition_check(part) -%}}
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
     Run the following command to determine if <code>{{{ part }}}</code>
     is on its own partition or logical volume:
     <pre>$ mount | grep "on {{{ part }}}"</pre>
@@ -706,6 +717,7 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 
 
 {{% macro describe_mount(option, part) -%}}
+    {{% if product != "rhcos4" -%}}
     Add the <code>{{{ option }}}</code> option to the fourth column of
     <tt>/etc/fstab</tt> for the line which controls mounting of
     {{% if part.startswith('/') -%}}
@@ -713,8 +725,47 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     {{%- else %}}
         {{{ part }}}.
     {{%- endif %}}
+    {{%- else -%}}
+    Add the <code>{{{ option }}}</code> option to the list of
+    <code>Options</code> in the <code>systemd.mount</code> unit that
+    controls mounting of
+    {{% if part.startswith('/') -%}}
+        <code>{{{ part }}}</code>.
+    {{%- else %}}
+        {{{ part }}}.
+    {{%- endif %}}
+    {{%- endif %}}
 {{%- endmacro %}}
 
+{{% macro partition_description(part) -%}}
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    <p>
+    Partitioning Red Hat CoreOS is a Day 1 operation and cannot
+    be changed afterwards. For documentation on how to add a
+    MachineConfig manifest that specifies a separate <code>{{{ part }}}</code>
+    partition, follow:
+    {{{ weblink(link="https://docs.openshift.com/container-platform/latest/installing/installing_platform_agnostic/installing-platform-agnostic.html#installation-user-infra-machines-advanced_disk_installing-platform-agnostic") }}}
+    </p>
+    <p>
+    Note that the Red Hat OpenShift documentation often references a block
+    device, such as <tt>/dev/vda</tt>. The name of the available block devices depends
+    on the underlying infrastructure (bare metal vs cloud), and often the specific
+    instance type. For example in AWS, some instance types have NVMe drives
+    (<tt>/dev/nvme*</tt>), others use <tt>/dev/xvda*</tt>.
+
+    You will need to look for relevant documentation for your infrastructure around this.
+    In many cases, the simplest thing is to boot a single machine with an Ignition
+    configuration that just gives you SSH access, and inspect the block devices via
+    e.g. the <tt>lsblk</tt> command.
+
+    For physical hardware, a good best practice is to reference devices via the
+    <tt>/dev/disk/by-id/</tt> or <tt>/dev/disk/by-path</tt> links.
+    </p>
+    {{% else %}}
+    Ensure that <code>{{{ part }}}</code> has its own partition or logical
+    volume at installation time, or migrate it using LVM.
+    {{%- endif %}}
+{{%- endmacro %}}
 
 {{% macro ocil_sysctl_option_value(sysctl, value) -%}}
     The runtime status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried

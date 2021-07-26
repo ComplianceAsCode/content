@@ -36,6 +36,11 @@ description: |-
     consensus and release processes.
 selections:
 
+    # AU-4
+    - partition_for_var_log_kube_apiserver
+    - partition_for_var_log_openshift_apiserver
+    - partition_for_var_log_oauth_apiserver
+
     # AU-9
     - directory_access_var_log_kube_audit
     - directory_permissions_var_log_kube_audit
