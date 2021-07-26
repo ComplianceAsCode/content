@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
-  <overlay owner="disastig" ruleid="rpm_verify_ownership" ownerid="RHEL-07-010010" disa="2235" severity="high">
+  <overlay owner="disastig" ruleid="rpm_verify_permissions" ownerid="RHEL-07-010010" disa="2235" severity="high">
     <VMSinfo VKey="204392" SVKey="204392r6468" VRelease="r646841"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values."/>
   </overlay>
@@ -144,7 +144,7 @@
     <VMSinfo VKey="204426" SVKey="204426r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must disable account identifiers (individuals, groups, roles, and devices) if the password expires."/>
   </overlay>
-  <overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_interval" ownerid="RHEL-07-010320" disa="2238" severity="medium">
+  <overlay owner="disastig" ruleid="accounts_passwords_pam_faillock_unlock_time" ownerid="RHEL-07-010320" disa="2238" severity="medium">
     <VMSinfo VKey="204427" SVKey="204427r6038" VRelease="r603824"/>
     <title text="The Red Hat Enterprise Linux operating system must be configured to lock accounts for a minimum of 15 minutes after three unsuccessful logon attempts within a 15-minute timeframe."/>
   </overlay>
@@ -296,7 +296,7 @@
     <VMSinfo VKey="204459" SVKey="204459r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system security patches and updates must be installed and up to date."/>
   </overlay>
-  <overlay owner="disastig" ruleid="package_vsftpd_removed" ownerid="RHEL-07-020270" disa="366" severity="medium">
+  <overlay owner="disastig" ruleid="XXXX" ownerid="RHEL-07-020270" disa="366" severity="medium">
     <VMSinfo VKey="204460" SVKey="204460r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must not have unnecessary accounts."/>
   </overlay>
@@ -452,7 +452,7 @@
     <VMSinfo VKey="204500" SVKey="204500r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories."/>
   </overlay>
-  <overlay owner="disastig" ruleid="grub2_no_removeable_media" ownerid="RHEL-07-021700" disa="318" severity="medium">
+  <overlay owner="disastig" ruleid="uefi_no_removeable_media" ownerid="RHEL-07-021700" disa="318" severity="medium">
     <VMSinfo VKey="204501" SVKey="204501r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must not allow removable media to be used as the boot loader unless approved."/>
   </overlay>
@@ -500,7 +500,7 @@
     <VMSinfo VKey="204513" SVKey="204513r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must initiate an action to notify the System Administrator (SA) and Information System Security Officer ISSO, at a minimum, when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity."/>
   </overlay>
-  <overlay owner="disastig" ruleid="auditd_data_retention_admin_space_left_action" ownerid="RHEL-07-030340" disa="1855" severity="medium">
+  <overlay owner="disastig" ruleid="auditd_data_retention_space_left_action" ownerid="RHEL-07-030340" disa="1855" severity="medium">
     <VMSinfo VKey="204514" SVKey="204514r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached."/>
   </overlay>
@@ -508,7 +508,7 @@
     <VMSinfo VKey="204515" SVKey="204515r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) when the threshold for the repository maximum audit record storage capacity is reached."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_privileged_commands" ownerid="RHEL-07-030360" disa="2234" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_suid_privilege_function" ownerid="RHEL-07-030360" disa="2234" severity="medium">
     <VMSinfo VKey="204516" SVKey="204516r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all executions of privileged functions."/>
   </overlay>
@@ -680,7 +680,7 @@
     <VMSinfo VKey="204558" SVKey="204558r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the pam_timestamp_check command."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_delete" ownerid="RHEL-07-030819" disa="172" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_init" ownerid="RHEL-07-030819" disa="172" severity="medium">
     <VMSinfo VKey="204559" SVKey="204559r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the create_module syscall."/>
   </overlay>
@@ -696,7 +696,7 @@
     <VMSinfo VKey="204562" SVKey="204562r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the delete_module syscall."/>
   </overlay>
-  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_delete" ownerid="RHEL-07-030840" disa="172" severity="medium">
+  <overlay owner="disastig" ruleid="audit_rules_kernel_module_loading_init" ownerid="RHEL-07-030840" disa="172" severity="medium">
     <VMSinfo VKey="204563" SVKey="204563r6032" VRelease="r603261"/>
     <title text="The Red Hat Enterprise Linux operating system must audit all uses of the kmod command."/>
   </overlay>
