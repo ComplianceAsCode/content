@@ -1,0 +1,11 @@
+{{#
+  # Grabs the correct package from platform_package_overrides if present,
+  # else returns the supplied name.
+  #}}
+{{%- macro ssgts_package(name) -%}}
+{{%- if name in platform_package_overrides -%}}
+{{{- platform_package_overrides[name] -}}}
+{{%- else -%}}
+{{{- name -}}}
+{{%- endif -%}}
+{{%- endmacro -%}}

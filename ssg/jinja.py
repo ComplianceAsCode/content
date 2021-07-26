@@ -17,6 +17,7 @@ from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_OVAL_DEFINITIONS,
                         JINJA_MACROS_IGNITION_DEFINITIONS,
                         JINJA_MACROS_KUBERNETES_DEFINITIONS,
+                        JINJA_MACROS_SSGTS_DEFINITIONS,
                         )
 from .utils import (required_key,
                     prodtype_to_name,
@@ -162,6 +163,7 @@ def load_macros(substitutions_dict=None):
             JINJA_MACROS_OVAL_DEFINITIONS,
             JINJA_MACROS_IGNITION_DEFINITIONS,
             JINJA_MACROS_KUBERNETES_DEFINITIONS,
+            JINJA_MACROS_SSGTS_DEFINITIONS,
         ]
         for filename in filenames:
             update_substitutions_dict(filename, substitutions_dict)

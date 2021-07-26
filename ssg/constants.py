@@ -41,6 +41,8 @@ JINJA_MACROS_OVAL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-oval.jinja")
 JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-bash.jinja")
+JINJA_MACROS_SSGTS_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros-ssgts.jinja")
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
