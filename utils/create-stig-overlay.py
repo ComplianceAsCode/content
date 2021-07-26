@@ -65,17 +65,6 @@ def ssg_xccdf_stigid_mapping(ssgtree):
     return xccdftostig_idmapping
 
 
-def get_nested_stig_items(ssg_mapping, srg):
-    mapped_id = "XXXX"
-    for rhid, srgs in ssg_mapping.items():
-        for xccdfid, srglist in srgs.items():
-            if srg in srglist and len(srglist) > 1:
-                mapped_id = xccdfid
-                break
-
-    return mapped_id
-
-
 def getkey(elem):
     return elem.get("ownerid")
 
@@ -106,7 +95,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
             try:
                 mapped_id = ''.join(ssg_mapping[version].keys())
             except KeyError as e:
-                mapped_id = get_nested_stig_items(ssg_mapping, srg)
+                mapped_id = "XXXX"
 
         overlay = ET.SubElement(new_stig_overlay, "overlay", owner=owner,
                                 ruleid=mapped_id, ownerid=version, disa=ident,
