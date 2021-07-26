@@ -892,6 +892,7 @@ selections:
     # RHEL-08-030640
 
     # RHEL-08-030650
+    - aide_check_audit_tools
 
     # RHEL-08-030660
     - auditd_audispd_configure_sufficiently_large_partition

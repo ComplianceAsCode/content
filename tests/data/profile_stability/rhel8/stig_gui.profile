@@ -74,6 +74,7 @@ selections:
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
+- aide_check_audit_tools
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes

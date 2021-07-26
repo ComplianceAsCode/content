@@ -1,11 +1,11 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,ubuntu2004
+prodtype: sle12,sle15,ubuntu2004,rhel8,fedora
 
 title: 'Configure AIDE to Verify the Audit Tools'
 
 description: |-
-    The SUSE operating system file integrity tool must be configured to protect the integrity of the audit tools.
+    The operating system file integrity tool must be configured to protect the integrity of the audit tools.
 
 rationale: |-
     Protecting the integrity of the tools used for auditing purposes is a
@@ -31,18 +31,26 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-85964-5
     cce@sle12: CCE-83204-8
     cce@sle15: CCE-85610-4
 
 references:
     disa: CCI-001496
-    nist@sle12: AU-9(3),AU-9(3).1
+    nist: AU-9(3),AU-9(3).1
     srg: SRG-OS-000278-GPOS-00108
+    stigid@rhel8: RHEL-08-030650
     stigid@sle12: SLES-12-010540
     stigid@sle15: SLES-15-030630
     stigid@ubuntu2004: UBTU-20-010205
 
 ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
+
+{{% if 'rhel' not in product %}}
+{{% set aide_string = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
+{{% else %}}
+{{% set aide_string = 'p+i+n+u+g+s+b+acl+xattrs+sha512' %}}
+{{% endif %}}
 
 ocil: |-
     Check that AIDE is properly configured to protect the integrity of the
@@ -50,13 +58,13 @@ ocil: |-
 
     <pre># sudo cat /etc/aide.conf | grep /usr/sbin/au
 
-    /usr/sbin/auditctl p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-    /usr/sbin/auditd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-    /usr/sbin/ausearch p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-    /usr/sbin/aureport p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-    /usr/sbin/autrace p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-    /usr/sbin/audispd p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
-    /usr/sbin/augenrules p+i+n+u+g+s+b+acl+selinux+xattrs+sha512</pre>
+    /usr/sbin/auditctl {{{ aide_string }}}
+    /usr/sbin/auditd {{{ aide_string }}}
+    /usr/sbin/ausearch {{{ aide_string }}}
+    /usr/sbin/aureport {{{ aide_string }}}
+    /usr/sbin/autrace {{{ aide_string }}}
+    {{% if 'rhel' not in product %}}/usr/sbin/audispd {{{ aide_string }}}{{% endif %}}
+    /usr/sbin/augenrules {{{ aide_string }}}</pre>
 
     If AIDE is configured properly to protect the integrity of the audit tools,
     all lines listed above will be returned from the command.
