@@ -4,13 +4,13 @@ on:
     branches: [ 'stabilization*' ]
 jobs:
   stabilize-ubuntu:
-    name: Build and Stabilization Tests on Ubuntu 20.04
-    runs-on: ubuntu-20.04
+    name: Build and Stabilization Tests on Fedora Latest (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
     steps:
       - name: Install Deps
-        uses: mstksg/get-package@master
-        with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-pytest ansible-lint
+        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt python3-ansible-lint
       - name: Install PIP Deps
         run: pip3 install git+https://github.com/linkchecker/linkchecker.git
       - name: Checkout
