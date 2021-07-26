@@ -93,9 +93,9 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
             srg = title.text
         for rule in group.findall("./{%s}Rule" % xccdf_ns):
             svkey_raw = rule.get("id")
-            svkey = svkey_raw.strip()[3:-7]
+            svkey = svkey_raw.strip()[3:9]
             severity = rule.get("severity")
-            release = svkey_raw.strip()[9:-5]
+            release = svkey_raw.strip()[10:-5]
             version = element_value("version", rule)
             rule_title = element_value("title", rule)
             ident = element_value("ident", rule).strip("CCI-").lstrip("0")
