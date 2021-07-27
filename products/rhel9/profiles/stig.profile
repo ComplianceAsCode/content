@@ -91,8 +91,8 @@ selections:
     - sshd_enable_warning_banner
 
     # RHEL-08-010050
-#    - dconf_gnome_banner_enabled  # not supported in RHEL9 ATM
-#    - dconf_gnome_login_banner_text  # not supported in RHEL9 ATM
+    - dconf_gnome_banner_enabled
+    - dconf_gnome_login_banner_text
 
     # RHEL-08-010060
     - banner_etc_issue
@@ -454,7 +454,7 @@ selections:
     - accounts_max_concurrent_login_sessions
 
     # RHEL-08-020030
-#    - dconf_gnome_screensaver_lock_enabled  # not supported in RHEL9 ATM
+    - dconf_gnome_screensaver_lock_enabled
 
     # RHEL-08-020040
     - package_tmux_installed
@@ -467,10 +467,10 @@ selections:
 #    - no_tmux_in_shells  # not supported in RHEL9 ATM
 
     # RHEL-08-020050
-#    - dconf_gnome_lock_screen_on_smartcard_removal  # not supported in RHEL9 ATM
+    - dconf_gnome_lock_screen_on_smartcard_removal
 
     # RHEL-08-020060
-#    - dconf_gnome_screensaver_idle_delay  # not supported in RHEL9 ATM
+    - dconf_gnome_screensaver_idle_delay
 
     # RHEL-08-020070
 #    - configure_tmux_lock_after_time  # not supported in RHEL9 ATM
@@ -966,7 +966,7 @@ selections:
 #    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
 
     # RHEL-08-040171
-#    - dconf_gnome_disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
+    - dconf_gnome_disable_ctrlaltdel_reboot
 
     # RHEL-08-040172
 #    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM

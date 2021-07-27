@@ -15,7 +15,7 @@ description: |-
 
 selections:
     # Necessary for dconf rules
-#    - dconf_db_up_to_date  # not supported in RHEL9 ATM
+    - dconf_db_up_to_date
 
     ### Partitioning
     - mount_option_home_nodev
@@ -235,10 +235,10 @@ selections:
 
     ### 1.8.2 Ensure GDM login banner is configured (Scored)
     #### banner-message-enable=true
-#    - dconf_gnome_banner_enabled  # not supported in RHEL9 ATM
+    - dconf_gnome_banner_enabled
 
     #### banner-message-text='<banner message>'
-#    - dconf_gnome_login_banner_text  # not supported in RHEL9 ATM
+    - dconf_gnome_login_banner_text
 
     ## 1.9 Ensure updates, patches, and additional security software are installed (Scored)
     - security_patches_up_to_date

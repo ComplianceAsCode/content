@@ -36,9 +36,9 @@ selections:
 #    - service_debug-shell_disabled  # not supported in RHEL9 ATM
 #    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
 #    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
-#    - dconf_db_up_to_date  # not supported in RHEL9 ATM
-#    - dconf_gnome_remote_access_credential_prompt  # not supported in RHEL9 ATM
-#    - dconf_gnome_remote_access_encryption  # not supported in RHEL9 ATM
+    - dconf_db_up_to_date
+    - dconf_gnome_remote_access_credential_prompt
+    - dconf_gnome_remote_access_encryption
     - sshd_disable_empty_passwords
     - sshd_disable_root_login
 #    - libreswan_approved_tunnels  # not supported in RHEL9 ATM

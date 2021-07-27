@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Set the GNOME3 Login Number of Failures'
 
@@ -11,11 +11,11 @@ description: |-
     <tt>allowed-failures</tt> to <tt>3</tt> or less.
     <br /><br />
     To enable, add or edit <tt>allowed-failures</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     allowed-failures=3</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/login-screen/allowed-failures</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -30,6 +30,7 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-80109-2
     cce@rhel8: CCE-80771-9
+    cce@rhel9: CCE-87638-3
 
 references:
     cui: 3.1.8
@@ -40,11 +41,11 @@ ocil_clause: 'allowed-failures is not equal to or less than the expected value'
 ocil: |-
     To ensure the login screen resets after a specified number of failures,
     run the following command:
-    <pre>$ grep allowed-failures /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep allowed-failures /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     The output should be <tt>3</tt> or less.
     To ensure that users cannot change or configure the resets after a specified
     number of failures on the login screen, run the following:
-    <pre>$ grep allowed-failures /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep allowed-failures /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/allowed-failures</tt>
 
 platform: machine

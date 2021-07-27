@@ -100,11 +100,11 @@ selections:
     - account_disable_post_pw_expiration
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
-#    - dconf_db_up_to_date  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_idle_delay  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_idle_activation_enabled  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_lock_enabled  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_mode_blank  # not supported in RHEL9 ATM
+    - dconf_db_up_to_date
+    - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_screensaver_idle_activation_enabled
+    - dconf_gnome_screensaver_lock_enabled
+    - dconf_gnome_screensaver_mode_blank
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
     - accounts_password_pam_minlen
