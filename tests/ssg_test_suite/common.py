@@ -15,7 +15,7 @@ from ssg.build_yaml import Rule as RuleYAML
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 from ssg.constants import OSCAP_RULE
-from ssg.jinja import process_file
+from ssg.jinja import process_file_with_macros
 from ssg.products import product_yaml_path, load_product_yaml
 from ssg.rules import get_rule_dir_yaml, is_rule_dir
 from ssg.rule_yaml import parse_prodtype
@@ -364,7 +364,7 @@ def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
             # Rather than performing an OS-level copy, we need to
             # first parse the test with jinja and then write it back
             # out to the destination.
-            parsed_test = process_file(src_test_path, local_env_yaml)
+            parsed_test = process_file_with_macros(src_test_path, local_env_yaml)
             with open(dest_test_path, 'w') as output_fp:
                 print(parsed_test, file=output_fp)
 
@@ -579,7 +579,7 @@ def iterate_over_rules(product=None):
                     if os.path.isdir(test_path):
                         continue
 
-                    all_tests[test_case] = process_file(test_path, local_env_yaml)
+                    all_tests[test_case] = process_file_with_macros(test_path, local_env_yaml)
 
             # Filter out everything except the shell test scenarios.
             # Other files in rule directories are editor swap files
