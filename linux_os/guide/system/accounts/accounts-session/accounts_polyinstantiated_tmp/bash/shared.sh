@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_ol
+# platform = multi_platform_all
 if ! [ -d /tmp/tmp-inst ] ; then
     mkdir --mode 000 /tmp/tmp-inst
 fi

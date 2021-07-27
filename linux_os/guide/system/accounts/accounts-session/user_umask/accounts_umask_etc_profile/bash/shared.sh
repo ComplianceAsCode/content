@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4,multi_platform_wrlinux,multi_platform_ol
+# platform = multi_platform_all
 . /usr/share/scap-security-guide/remediation_functions
 {{{ bash_instantiate_variables("var_accounts_user_umask") }}}
 
