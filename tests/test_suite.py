@@ -285,6 +285,14 @@ def datastream_in_stash(current_location):
 
 
 def normalize_passed_arguments(options):
+    targets = []
+    for target in options.target:
+        if ',' in target:
+            targets.extend(target.split(","))
+        else:
+            targets.append(target)
+    options.target = targets
+
     if 'ALL' in options.target:
         options.target = ['ALL']
 
