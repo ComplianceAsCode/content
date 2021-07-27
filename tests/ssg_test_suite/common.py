@@ -334,6 +334,13 @@ def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
     # directory, recursively.
     tests_dir_path = os.path.join(dirpath, "tests")
     tests_dir_path = os.path.abspath(tests_dir_path)
+
+    # Note that the tests/ directory may not always exist any more. In
+    # particular, when a rule uses a template, tests may be present there
+    # but not present in the actual rule directory.
+    if not os.path.exists(tests_dir_path):
+        return
+
     for dirpath, dirnames, filenames in os.walk(tests_dir_path):
         for dirname in dirnames:
             # We want to recreate the correct path under the temporary
@@ -420,7 +427,7 @@ def template_tests(product=None):
         # /group_a/rule_a/tests/something.pass.sh -> /rule_a/something.pass.sh
         for dirpath, dirnames, _ in walk_through_benchmark_dirs(product):
             # Skip anything that isn't obviously a rule.
-            if "tests" not in dirnames or not is_rule_dir(dirpath):
+            if not is_rule_dir(dirpath):
                 continue
 
             template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath)
@@ -519,7 +526,7 @@ def iterate_over_rules(product=None):
                                              _SHARED_TEMPLATES, empty, empty)
 
     for dirpath, dirnames, filenames in walk_through_benchmark_dirs(product):
-        if "rule.yml" in filenames and "tests" in dirnames:
+        if is_rule_dir(dirpath):
             short_rule_id = os.path.basename(dirpath)
 
             # Load the rule itself to check for a template.
@@ -543,19 +550,26 @@ def iterate_over_rules(product=None):
             # like the behavior in template_tests, this will overwrite any
             # templated tests with the same file name.
             tests_dir = os.path.join(dirpath, "tests")
-            tests_dir_files = os.listdir(tests_dir)
-            for test_case in tests_dir_files:
-                test_path = os.path.join(tests_dir, test_case)
-                if os.path.isdir(test_path):
-                    continue
+            if os.path.exists(tests_dir):
+                tests_dir_files = os.listdir(tests_dir)
+                for test_case in tests_dir_files:
+                    test_path = os.path.join(tests_dir, test_case)
+                    if os.path.isdir(test_path):
+                        continue
 
-                all_tests[test_case] = process_file(test_path, local_env_yaml)
+                    all_tests[test_case] = process_file(test_path, local_env_yaml)
 
             # Filter out everything except the shell test scenarios.
             # Other files in rule directories are editor swap files
             # or other content than a test case.
             allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
             content_mapping = {x: all_tests[x] for x in allowed_scripts}
+
+            # Skip any rules that lack any content. This ensures that if we
+            # end up with rules with a template lacking tests and without any
+            # rule directory tests, we don't include the empty rule here.
+            if not content_mapping:
+                continue
 
             full_rule_id = OSCAP_RULE + short_rule_id
             result = Rule(
