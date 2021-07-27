@@ -1,0 +1,126 @@
+name: SSGTS
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  build-content:
+    name: Build Content
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 git python3-deepdiff python3-requests jq python3-pip
+      - name: Install deps python
+        run: pip install gitpython xmldiff
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout (CTF)
+        uses: actions/checkout@v2
+        with:
+          repository: mildas/content-test-filtering
+          path: ctf
+      - name: Process
+        run: python3 ./ctf/content_test_filtering.py pr --output json ${{ github.event.pull_request.number }} > output.json
+      - name: Get product attribute
+        id: product
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'output.json'
+          prop_path: 'product'
+      - name: Build product
+        run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ssg-${{steps.product.outputs.prop}}-ds.xml
+          path: build/ssg-${{steps.product.outputs.prop}}-ds.xml
+  validate-ubuntu:
+    name: Run Tests
+    needs: build-content
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install Deps
+        uses: mstksg/get-package@master
+        with:
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github podman git python3-deepdiff python3-git python3-requests xmldiff jq
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Generate id_rsa key
+        run: ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
+      - name: Build test suite container
+        run: podman build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f test_suite-fedora
+        working-directory: ./Dockerfiles
+      - name: Get oscap-ssh
+        run: |
+          wget https://raw.githubusercontent.com/OpenSCAP/openscap/maint-1.2/utils/oscap-ssh
+          sudo chmod 755 oscap-ssh
+          sudo mv -v oscap-ssh /usr/local/bin
+          sudo chown root:root /usr/local/bin/oscap-ssh
+          rm -f oscap-ssh
+      - name: Checkout (CTF)
+        uses: actions/checkout@v2
+        with:
+          repository: mildas/content-test-filtering
+          path: ctf
+      - name: Process
+        run: python3 ./ctf/content_test_filtering.py pr --output json ${{ github.event.pull_request.number }} > output.json
+      - name: Get rule ids to be tested
+        id: rules
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'output.json'
+          prop_path: 'rules'
+      - name: Get product attribute
+        id: product
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'output.json'
+          prop_path: 'product'
+      - name: Get bash attribute
+        id: bash
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'output.json'
+          prop_path: 'bash'
+      - name: Get ansible attribute
+        id: ansible
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'output.json'
+          prop_path: 'ansible'
+      - uses: actions/download-artifact@v2
+        with:
+          name: ssg-${{steps.product.outputs.prop}}-ds.xml
+      - name: Run tests in a container - Bash
+        if: ${{steps.bash.outputs.prop == 'True' }}
+        run: tests/test_rule_in_container.sh --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
+      - name: Check for ERROR in logs
+        if: ${{steps.bash.outputs.prop == 'True' }}
+        run: grep -q "^ERROR" logs_bash/test_suite.log
+        id: check_results_bash
+      - name: Upload logs in case of failure
+        if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.conclusion == 'success' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs_bash
+          path: logs_bash/
+      - name: Run tests in a container - Ansible
+        if: ${{ steps.ansible.outputs.prop == 'True' }}
+        run: tests/test_rule_in_container.sh --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
+      - name: Check for ERROR in logs
+        if: ${{steps.ansible.outputs.prop == 'True' }}
+        run: grep -q "^ERROR" logs_ansible/test_suite.log
+        id: check_results_ansible
+      - name: Upload logs in case of failure
+        if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.conclusion == 'success' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs_ansible
+          path: logs_ansible/
+      - name: Delete datastream artifact
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: ssg-${{steps.product.outputs.prop}}-ds.xml
+      - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
+        if: ${{ steps.check_results_bash.conclusion == 'success' || steps.check_results_ansible.conclusion == 'success' }}
+        run: exit 1
