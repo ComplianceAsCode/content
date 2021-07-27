@@ -23,7 +23,12 @@ grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
 {{% endif %}}
 {{% else %}}
 # Correct grub2 kernelopts value using grub2-editenv
-if ! grub2-editenv - list | grep -qE '^kernelopts=(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$'; then
-  grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ ARG_NAME_VALUE }}}"
+existing_kernelopts="$(grub2-editenv - list | grep kernelopts)"
+if ! printf '%s' "$existing_kernelopts" | grep -qE '^kernelopts=(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$'; then
+  if test -n "$existing_kernelopts"; then
+    grub2-editenv - set "$existing_kernelopts {{{ ARG_NAME_VALUE }}}"
+  else
+    grub2-editenv - set "kernelopts={{{ ARG_NAME_VALUE }}}"
+  fi
 fi
 {{% endif %}}
