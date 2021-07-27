@@ -1,7 +1,7 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_rhv
+# platform = multi_platform_all
 if [ "$(getconf LONG_BIT)" = "32" ] ; then
   #
   # Set runtime for kernel.exec-shield
