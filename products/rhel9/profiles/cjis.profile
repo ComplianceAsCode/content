@@ -93,11 +93,11 @@ selections:
     - var_password_pam_retry=5
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_passwords_pam_faillock_unlock_time=600
-#    - dconf_db_up_to_date  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_idle_delay  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_idle_activation_enabled  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_lock_enabled  # not supported in RHEL9 ATM
-#    - dconf_gnome_screensaver_mode_blank  # not supported in RHEL9 ATM
+    - dconf_db_up_to_date
+    - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_screensaver_idle_activation_enabled
+    - dconf_gnome_screensaver_lock_enabled
+    - dconf_gnome_screensaver_mode_blank
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0

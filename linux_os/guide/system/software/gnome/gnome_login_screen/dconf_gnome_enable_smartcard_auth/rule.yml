@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
 
 title: 'Enable the GNOME3 Login Smartcard Authentication'
 
@@ -10,11 +10,11 @@ description: |-
     to <tt>true</tt>.
     <br /><br />
     To enable, add or edit <tt>enable-smartcard-authentication</tt> to
-    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/00-security-settings</tt>. For example:
     <pre>[org/gnome/login-screen]
     enable-smartcard-authentication=true</pre>
     Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    <tt>/etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
     <pre>/org/gnome/login-screen/enable-smartcard-authentication</pre>
     After the settings have been set, run <tt>dconf update</tt>.
@@ -28,6 +28,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: CCE-80108-4
+    cce@rhel9: CCE-86580-8
 
 references:
     disa: CCI-000765,CCI-000766,CCI-000767,CCI-000768,CCI-000771,CCI-000772,CCI-000884,CCI-001948,CCI-001954
@@ -41,10 +42,10 @@ ocil_clause: 'enable-smartcard-authentication has not been configured or is disa
 
 ocil: |-
     To ensure smart card authentication on the login screen is enabled, run the following command:
-    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/*</pre>
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/{{{ dconf_gdm_dir }}}/*</pre>
     The output should be <tt>true</tt>.
     To ensure that users cannot disable smart card authentication on the login screen, run the following:
-    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/locks/*</pre>
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/{{{ dconf_gdm_dir }}}/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/enable-smartcard-authentication</tt>
 
 platform: machine
