@@ -69,12 +69,10 @@ selections:
     - sshd_rekey_limit
     - var_rekey_limit_size=1G
     - var_rekey_limit_time=1hour
-#    - sshd_use_strong_rng  # not supported in RHEL9 ATM
-#    - openssl_use_strong_entropy  # not supported in RHEL9 ATM
 
     # Time Server
-#    - chronyd_client_only  # not supported in RHEL9 ATM
-#    - chronyd_no_chronyc_network  # not supported in RHEL9 ATM
+    - chronyd_client_only
+    - chronyd_no_chronyc_network
 
     ### Network Settings
     - sysctl_net_ipv6_conf_all_accept_ra
@@ -101,9 +99,9 @@ selections:
     - sysctl_net_ipv4_tcp_syncookies
 
     ### systemd
-#    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
-#    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
-#    - service_debug-shell_disabled  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_reboot
+    - disable_ctrlaltdel_burstaction
+    - service_debug-shell_disabled
 
     ### umask
     - var_accounts_user_umask=027
@@ -242,7 +240,7 @@ selections:
 
 
     ### Enable / Configure FIPS
-#    - enable_fips_mode  # not supported in RHEL9 ATM
+    - enable_fips_mode
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
     - configure_ssh_crypto_policy
@@ -250,7 +248,7 @@ selections:
     - configure_openssl_crypto_policy
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
-#    - enable_dracut_fips_module  # not supported in RHEL9 ATM
+    - enable_dracut_fips_module
 
     #######################################################
     ### CONFIGURATION ANNEX TO THE PROTECTION PROFILE
@@ -291,10 +289,10 @@ selections:
     ## Enable Screen Lock
     ## FMT_MOF_EXT.1
     - package_tmux_installed
-#    - configure_bashrc_exec_tmux  # not supported in RHEL9 ATM
-#    - no_tmux_in_shells  # not supported in RHEL9 ATM
-#    - configure_tmux_lock_command  # not supported in RHEL9 ATM
-#    - configure_tmux_lock_after_time  # not supported in RHEL9 ATM
+    - configure_bashrc_exec_tmux
+    - no_tmux_in_shells
+    - configure_tmux_lock_command
+    - configure_tmux_lock_after_time
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
@@ -305,8 +303,8 @@ selections:
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
     - require_singleuser_auth
-#    - grub2_disable_interactive_boot  # not supported in RHEL9 ATM
-#    - grub2_uefi_password  # not supported in RHEL9 ATM
+    - grub2_disable_interactive_boot
+    - grub2_uefi_password
     - no_empty_passwords
 
     ## Set Maximum Number of Authentication Failures to 3 Within 15 Minutes
@@ -427,10 +425,6 @@ selections:
 #    - ssh_client_rekey_limit  # not supported in RHEL9 ATM
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
-
-# configure ssh client to use strong entropy
-#    - ssh_client_use_strong_rng_sh  # not supported in RHEL9 ATM
-#    - ssh_client_use_strong_rng_csh  # not supported in RHEL9 ATM
 
     # zIPl specific rules
     - zipl_bls_entries_only

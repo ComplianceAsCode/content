@@ -42,10 +42,10 @@ selections:
 
   ## Software firewall
   ## Identifiers 1416
-#  - configure_firewalld_ports  # not supported in RHEL9 ATM
+  - configure_firewalld_ports
   ## Removing due to build error
   ## - configure_firewalld_rate_limiting
-#  - firewalld_sshd_port_enabled  # not supported in RHEL9 ATM
+  - firewalld_sshd_port_enabled
   - set_firewalld_default_zone
 
   ## Endpoint device control software
@@ -105,13 +105,12 @@ selections:
 
   ## Web application & Database servers
   ## Identifiers 1552 / 1277
-#  - openssl_use_strong_entropy  # not supported in RHEL9 ATM
 
   ## Network design and configuration
   ## Identifiers 1055 / 1311 
-#  - network_nmcli_permissions  # not supported in RHEL9 ATM
+  - network_nmcli_permissions
   - service_snmpd_disabled
-#  - snmpd_use_newer_protocol  # not supported in RHEL9 ATM
+  - snmpd_use_newer_protocol
 
   ## Wireless networks
   ## Identifiers 1315
@@ -121,7 +120,7 @@ selections:
   ## Identifiers 0471 / 0472 / 0473 / 0474 / 0475 / 0476 / 0477 / 
   ## 0479 / 0480 / 0481 / 0489 / 0497 / 0994 / 0998 / 1001 /  1139 / 
   ## 1372 / 1373 / 1374 / 1375
-#  - enable_fips_mode  # not supported in RHEL9 ATM
+  - enable_fips_mode
   - var_system_crypto_policy=fips
   - configure_crypto_policy
 
