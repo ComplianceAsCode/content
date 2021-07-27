@@ -66,13 +66,13 @@ selections:
     - var_auditd_disk_full_action=halt
 
     ### Enable / Configure FIPS
-#    - enable_fips_mode  # not supported in RHEL9 ATM
+    - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
     - configure_bind_crypto_policy
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
-#    - enable_dracut_fips_module  # not supported in RHEL9 ATM
+    - enable_dracut_fips_module
 
     ### Rules:
     # RHEL-08-010070
@@ -104,7 +104,7 @@ selections:
     # RHEL-08-010100
 
     # RHEL-08-010110
-#    - set_password_hashing_algorithm_logindefs  # not supported in RHEL9 ATM
+    - set_password_hashing_algorithm_logindefs
 
     # RHEL-08-010120
 
@@ -113,12 +113,12 @@ selections:
     - accounts_password_pam_unix_rounds_password_auth
 
     # RHEL-08-010140
-#    - grub2_uefi_password  # not supported in RHEL9 ATM
-#    - grub2_uefi_admin_username  # not supported in RHEL9 ATM
+    - grub2_uefi_password
+    - grub2_uefi_admin_username
 
     # RHEL-08-010150
     - grub2_password
-#    - grub2_admin_username  # not supported in RHEL9 ATM
+    - grub2_admin_username
 
     # RHEL-08-010151
     - require_singleuser_auth
@@ -175,7 +175,7 @@ selections:
     - configure_ssh_crypto_policy
 
     # RHEL-08-010292
-#    - sshd_use_strong_rng  # not supported in RHEL9 ATM
+#    - sshd_use_strong_rng  # not needed in RHEL9
 
     # RHEL-08-010293
     - configure_openssl_crypto_policy
@@ -410,7 +410,7 @@ selections:
     - partition_for_home
 
     # RHEL-08-010820
-#    - gnome_gdm_disable_automatic_login  # not supported in RHEL9 ATM
+    - gnome_gdm_disable_automatic_login
 
     # RHEL-08-010830
     - sshd_do_not_permit_user_env
@@ -458,13 +458,13 @@ selections:
 
     # RHEL-08-020040
     - package_tmux_installed
-#    - configure_tmux_lock_command  # not supported in RHEL9 ATM
+    - configure_tmux_lock_command
 
     # RHEL-08-020041
-#    - configure_bashrc_exec_tmux  # not supported in RHEL9 ATM
+    - configure_bashrc_exec_tmux
 
     # RHEL-08-020042
-#    - no_tmux_in_shells  # not supported in RHEL9 ATM
+    - no_tmux_in_shells
 
     # RHEL-08-020050
     - dconf_gnome_lock_screen_on_smartcard_removal
@@ -473,7 +473,7 @@ selections:
     - dconf_gnome_screensaver_idle_delay
 
     # RHEL-08-020070
-#    - configure_tmux_lock_after_time  # not supported in RHEL9 ATM
+    - configure_tmux_lock_after_time
 
     # RHEL-08-020080
 
@@ -527,7 +527,7 @@ selections:
     # RHEL-08-020240
 
     # RHEL-08-020250
-#    - sssd_enable_smartcards  # not supported in RHEL9 ATM
+    - sssd_enable_smartcards
 
     # RHEL-08-020260
     - account_disable_post_pw_expiration
@@ -823,10 +823,10 @@ selections:
     # - chronyd_set_maxpoll  # Doesn't exist in RHEL9, but it should
 
     # RHEL-08-030741
-#    - chronyd_client_only  # not supported in RHEL9 ATM
+    - chronyd_client_only
 
     # RHEL-08-030742
-#    - chronyd_no_chronyc_network  # not supported in RHEL9 ATM
+    - chronyd_no_chronyc_network
 
     # RHEL-08-040000
     - package_telnet-server_removed
@@ -874,7 +874,7 @@ selections:
     - kernel_module_firewire-core_disabled
 
     # RHEL-08-040030
-#    - configure_firewalld_ports  # not supported in RHEL9 ATM
+    - configure_firewalld_ports
 
     # RHEL-08-040060
     ### NOTE: Will be removed in V1R2
@@ -963,16 +963,16 @@ selections:
 #    - ssh_client_rekey_limit  # not supported in RHEL9 ATM
 
     # RHEL-08-040170
-#    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_reboot
 
     # RHEL-08-040171
     - dconf_gnome_disable_ctrlaltdel_reboot
 
     # RHEL-08-040172
-#    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
+    - disable_ctrlaltdel_burstaction
 
     # RHEL-08-040180
-#    - service_debug-shell_disabled  # not supported in RHEL9 ATM
+    - service_debug-shell_disabled
 
     # RHEL-08-040190
     - package_tftp-server_removed

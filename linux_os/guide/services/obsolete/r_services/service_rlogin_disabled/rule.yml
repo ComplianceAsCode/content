@@ -1,6 +1,7 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhv4
+# potentially obsolete, rsh-server is not available in RHEL9
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Disable rlogin Service'
 
@@ -22,6 +23,7 @@ severity: high
 identifiers:
     cce@rhel7: CCE-27336-7
     cce@rhel8: CCE-80885-7
+    cce@rhel9: CCE-88395-9
 
 references:
     cis-csc: 1,11,12,14,15,16,3,5,8,9
