@@ -1041,6 +1041,8 @@ selections:
 
     # RHEL-08-040135
     - package_fapolicyd_installed
+
+    # RHEL-08-040136
     - service_fapolicyd_enabled
 
     # RHEL-08-040139
