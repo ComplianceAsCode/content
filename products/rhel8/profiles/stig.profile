@@ -45,6 +45,7 @@ selections:
     - var_password_pam_minlen=15
     - var_password_pam_ocredit=1
     - var_password_pam_dcredit=1
+    - var_password_pam_dictcheck=1
     - var_password_pam_ucredit=1
     - var_password_pam_lcredit=1
     - var_password_pam_retry=3
@@ -567,6 +568,7 @@ selections:
     - sssd_offline_cred_expiration
 
     # RHEL-08-020300
+    - accounts_password_pam_dictcheck
 
     # RHEL-08-020310
     - accounts_logon_fail_delay

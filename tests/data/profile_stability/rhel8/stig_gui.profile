@@ -46,6 +46,7 @@ selections:
 - accounts_password_all_shadowed_sha512
 - accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
+- accounts_password_pam_dictcheck
 - accounts_password_pam_difok
 - accounts_password_pam_lcredit
 - accounts_password_pam_maxclassrepeat
@@ -342,6 +343,7 @@ selections:
 - var_password_pam_minlen=15
 - var_password_pam_ocredit=1
 - var_password_pam_dcredit=1
+- var_password_pam_dictcheck=1
 - var_password_pam_ucredit=1
 - var_password_pam_lcredit=1
 - var_password_pam_retry=3

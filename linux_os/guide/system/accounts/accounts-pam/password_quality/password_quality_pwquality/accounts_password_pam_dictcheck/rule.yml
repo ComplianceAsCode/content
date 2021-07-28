@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8
+
+title: 'Ensure PAM Enforces Password Requirements - Prevent the Use of Dictionary Words'
+
+description: |-
+    The pam_pwquality module's <tt>dictcheck</tt> check if passwords contains dictionary words. When
+    <tt>dictcheck</tt> is set to <tt>1</tt> passwords will be checked for dictionary words.
+
+rationale: |-
+    Use of a complex password helps to increase the time and resources required to compromise the password.
+    Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at
+    guessing and brute-force attacks.
+    <br /><br />
+    Password complexity is one factor of several that determines how long it takes to crack a password. The more
+    complex the password, the greater the number of possible combinations that need to be tested before the
+    password is compromised.
+    <br /><br />
+    Passwords with dictionary words may be more vulnerable to password-guessing attacks.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86233-4
+
+references:
+    disa: CCI-000366
+    nist: IA-5(c),IA-5(1)(a),CM-6(a),IA-5(4)
+    stigid@rhel8: RHEL-08-020300
+
+ocil_clause: 'dictcheck is not found or not equal to the required value'
+
+ocil: |-
+    To check if dictionary words are disallowed run the following command:
+    <pre>$ sudo grep dictcheck /etc/security/pwquality.conf /etc/pwquality.conf.d/*.conf</pre>
+    The <tt>dictcheck</tt> parameter should be equal to 1. The value should look like
+    <pre>dictcheck=1</pre>
+
+
+template:
+    name: accounts_password
+    vars:
+        variable: dictcheck
+        operation: equals
