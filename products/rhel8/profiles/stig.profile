@@ -1037,8 +1037,10 @@ selections:
 
     # RHEL-08-040150
 
-    # RHEL-08-040160
+    # RHEL-08-040159
     - package_openssh-server_installed
+
+    # RHEL-08-040160
     - service_sshd_enabled
 
     # RHEL-08-040161
