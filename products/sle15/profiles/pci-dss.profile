@@ -14,9 +14,16 @@ description: |-
 selections:
     ### Variables
     - var_password_pam_lcredit=1
+    - var_account_disable_post_pw_expiration=90
+    - var_accounts_maximum_age_login_defs=90
     - var_accounts_passwords_pam_faillock_deny=6
     - var_accounts_passwords_pam_faillock_unlock_time=1800
+    - var_sshd_set_keepalive=0
+    - sshd_idle_timeout_value=15_minutes
+    - var_auditd_action_mail_acct=root
     ### Rules:
+    - account_disable_post_pw_expiration
+    - accounts_maximum_age_login_defs
     - accounts_password_pam_lcredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
@@ -56,5 +63,8 @@ selections:
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
     - display_login_attempts
+    - no_empty_passwords
     - service_auditd_enabled
+    - sshd_set_idle_timeout
+    - sshd_set_keepalive_0
 
