@@ -5,4 +5,4 @@ We will guide you through the structure of the project.
 We will explain the directory layout, used formats and the build system.
 
 ## Mailing List
-Join the mailing list at [scap-security-guide](https://fedorahosted.org/mailman/listinfo/scap-security-guide).
+Join the mailing list at [scap-security-guide](https://lists.fedorahosted.org/archives/list/scap-security-guide@lists.fedorahosted.org/).
