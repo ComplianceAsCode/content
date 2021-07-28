@@ -1030,10 +1030,14 @@ selections:
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
 
-    # RHEL-08-040140
+    # RHEL-08-040139
     - package_usbguard_installed
-    - service_usbguard_enabled
+
+    # RHEL-08-040140
     - usbguard_generate_policy
+
+    # RHEL-08-040141
+    - service_usbguard_enabled
 
     # RHEL-08-040150
 
