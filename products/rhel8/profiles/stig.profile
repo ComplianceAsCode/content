@@ -125,9 +125,11 @@ selections:
     # RHEL-08-010141
     - grub2_uefi_admin_username
 
+    # RHEL-08-010149
+    - grub2_admin_username
+
     # RHEL-08-010150
     - grub2_password
-    - grub2_admin_username
 
     # RHEL-08-010151
     - require_singleuser_auth
