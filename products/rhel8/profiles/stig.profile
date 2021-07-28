@@ -968,8 +968,10 @@ selections:
     # RHEL-08-040090
 
     # RHEL-08-040100
-    - service_firewalld_enabled
     - package_firewalld_installed
+
+    # RHEL-08-040101
+    - service_firewalld_enabled
 
     # RHEL-08-040110
     - wireless_disable_interfaces
