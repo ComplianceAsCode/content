@@ -481,8 +481,10 @@ selections:
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
 
-    # RHEL-08-020040
+    # RHEL-08-020039
     - package_tmux_installed
+
+    # RHEL-08-020040
     - configure_tmux_lock_command
 
     # RHEL-08-020041
