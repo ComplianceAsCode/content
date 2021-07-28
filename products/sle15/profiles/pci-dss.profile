@@ -21,10 +21,40 @@ selections:
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - auditd_data_retention_action_mail_acct
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
     - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_unlink
     - audit_rules_file_deletion_events_unlinkat
+    - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_gshadow
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_setxattr
+    - audit_rules_kernel_module_loading_delete
+    - audit_rules_kernel_module_loading_finit
+    - audit_rules_kernel_module_loading_init
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_ftruncate
+    - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_shadow
+    - audit_rules_sysadmin_actions
     - display_login_attempts
+    - service_auditd_enabled
 
