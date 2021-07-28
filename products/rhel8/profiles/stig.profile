@@ -318,6 +318,8 @@ selections:
 
     # RHEL-08-010521
     - sshd_disable_kerb_auth
+
+    # RHEL-08-010522
     - sshd_disable_gssapi_auth
 
     # RHEL-08-010540
