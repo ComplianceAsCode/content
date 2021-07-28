@@ -156,8 +156,10 @@ selections:
     - dir_perms_world_writable_sticky_bits
 
     # RHEL-08-010200
-    - sshd_set_idle_timeout
     - sshd_set_keepalive_0
+
+    # RHEL-08-010201
+    - sshd_set_idle_timeout
 
     # RHEL-08-010210
     - file_permissions_var_log_messages
