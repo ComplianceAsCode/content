@@ -299,6 +299,8 @@ selections:
 
     # RHEL-08-010471
     - service_rngd_enabled
+
+    # RHEL-08-010472
     - package_rng-tools_installed
 
     # RHEL-08-010480
