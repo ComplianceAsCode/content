@@ -1436,6 +1436,7 @@ class Rule(object):
                 for entry in self.sce_metadata['check-import']:
                     check_import = ET.SubElement(check, 'check-import')
                     check_import.set('import-name', entry)
+                    check_import.text = None
 
             if 'check-export' in self.sce_metadata:
                 if isinstance(self.sce_metadata['check-export'], str):
@@ -1445,6 +1446,7 @@ class Rule(object):
                     check_export = ET.SubElement(check, 'check-export')
                     check_export.set('value-id', value)
                     check_export.set('export-name', export)
+                    check_export.text = None
 
             check_ref = ET.SubElement(check, "check-content-ref")
             href = self.current_product + "/checks/sce/" + self.sce_metadata['filename']
