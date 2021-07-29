@@ -211,13 +211,23 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
-    def _rule_should_be_tested(self, rule, rules_to_be_tested):
+    def _rule_template_been_tested(self, rule, tested_templates):
+        if rule.template is None:
+            return False
+        if self.test_env.duplicate_templates:
+            return False
+        if rule.template in tested_templates:
+            return True
+        tested_templates.add(rule.template)
+        return False
+
+    def _rule_should_be_tested(self, rule, rules_to_be_tested, tested_templates):
         if 'ALL' in rules_to_be_tested:
             # don't select rules that are not present in benchmark
             if not xml_operations.find_rule_in_benchmark(
                     self.datastream, self.benchmark_id, rule.id):
                 return False
-            return True
+            return not self._rule_template_been_tested(rule, tested_templates)
         else:
             for rule_to_be_tested in rules_to_be_tested:
                 # we check for a substring
@@ -226,7 +236,7 @@ class RuleChecker(oscap.Checker):
                 else:
                     pattern = OSCAP_RULE + rule_to_be_tested
                 if fnmatch.fnmatch(rule.id, pattern):
-                    return True
+                    return not self._rule_template_been_tested(rule, tested_templates)
             return False
 
     def _ensure_package_present_for_all_scenarios(self, scenarios_by_rule):
@@ -250,8 +260,9 @@ class RuleChecker(oscap.Checker):
 
     def _get_rules_to_test(self, target):
         rules_to_test = []
+        tested_templates = set()
         for rule in common.iterate_over_rules(self.test_env.product):
-            if not self._rule_should_be_tested(rule, target):
+            if not self._rule_should_be_tested(rule, target, tested_templates):
                 continue
             if not xml_operations.find_rule_in_benchmark(
                     self.datastream, self.benchmark_id, rule.id):
