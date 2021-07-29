@@ -75,4 +75,4 @@ if __name__ == "__main__":
     template_builder = ssg.templates.Builder(
         env_yaml, empty, args.templates_dir, empty, empty)
     ssg.build_sce.checks(env_yaml, args.product_yaml, args.scedirs,
-        template_builder, args.output)
+                         template_builder, args.output)

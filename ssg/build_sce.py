@@ -27,6 +27,7 @@ def load_sce_and_metadata(file_path, local_env_yaml):
     raw_content = process_file_with_macros(file_path, local_env_yaml)
     return load_sce_and_metadata_parsed(raw_content)
 
+
 def load_sce_and_metadata_parsed(raw_content):
     metadata = dict()
     sce_content = []
