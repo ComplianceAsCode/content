@@ -393,19 +393,31 @@ macro(ssg_build_sce PRODUCT)
     # in the combine paths below.
     set(SCE_COMBINE_PATHS "${SSG_SHARED}/checks/sce" "${CMAKE_CURRENT_SOURCE_DIR}/checks/sce")
 
-    # Unlike build_oval_unlinked, we don't depend on templated content yet.
-    #
-    # This is for two reasons:
-    # 1. Support for templated SCE isn't yet implemented.
-    # 2. Generating YAML->Shorthand (in ssg_build_shorthand_xml) relies on
-    #    our data, so we need it to occur earlier. However, templating depends
-    #    the Shorthand, so we'd have a dependency circle.
-    add_custom_command(
-        OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
-        DEPENDS "${SSG_BUILD_SCRIPTS}/build_sce.py"
-        COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
-    )
+    if (SSG_SCE_ENABLED)
+        # Unlike build_oval_unlinked, we don't depend on templated content yet.
+        #
+        # This is for two reasons:
+        # 1. Support for templated SCE isn't yet implemented.
+        # 2. Generating YAML->Shorthand (in ssg_build_shorthand_xml) relies on
+        #    our data, so we need it to occur earlier. However, templating depends
+        #    the Shorthand, so we'd have a dependency circle.
+        add_custom_command(
+            OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
+            DEPENDS "${SSG_BUILD_SCRIPTS}/build_sce.py"
+            COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
+        )
+    else()
+        # Here we fake generating SCE metadata by creating an empty file.
+        # Because every other step reads data from this metadata file, if
+        # it is empty, no SCE content will actually be generated.
+        add_custom_command(
+            OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${BUILD_CHECKS_DIR}/sce"
+            COMMAND ${CMAKE_COMMAND} -E touch "${BUILD_CHECKS_DIR}/sce/metadata.json"
+            COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
+        )
+    endif()
     add_custom_target(
         generate-internal-${PRODUCT}-sce-metadata.json
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
@@ -920,8 +932,10 @@ macro(ssg_build_product PRODUCT)
             DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     endif()
 
-    install(DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}/checks/sce/"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}/${PRODUCT}/checks/sce")
+    if (SSG_SCE_ENABLED)
+        install(DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}/checks/sce/"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}/${PRODUCT}/checks/sce")
+    endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")

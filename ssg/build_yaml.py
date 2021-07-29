@@ -1594,7 +1594,7 @@ class BuildLoader(DirectoryLoader):
             os.mkdir(resolved_rules_dir)
 
         self.sce_metadata = None
-        if sce_metadata_path:
+        if sce_metadata_path and os.path.getsize(sce_metadata_path):
             self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
 
     def _process_values(self):
