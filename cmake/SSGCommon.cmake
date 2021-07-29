@@ -121,11 +121,13 @@ macro(ssg_build_shorthand_xml PRODUCT)
         # The command also produces the directory with rules, but this is done before the the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
 
@@ -383,6 +385,45 @@ macro(ssg_build_oval_unlinked PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_sce PRODUCT)
+    set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
+    # Unlike build_oval_unlinked, here we're ignoring the existing checks from
+    # templates and other places and we're merely appending/templating the
+    # content from the rules directories. That's why we ignore BUILD_CHECKS_DIR
+    # in the combine paths below.
+    set(SCE_COMBINE_PATHS "${SSG_SHARED}/checks/sce" "${CMAKE_CURRENT_SOURCE_DIR}/checks/sce")
+
+    if (SSG_SCE_ENABLED)
+        # Unlike build_oval_unlinked, we don't depend on templated content yet.
+        #
+        # This is for two reasons:
+        # 1. Support for templated SCE isn't yet implemented.
+        # 2. Generating YAML->Shorthand (in ssg_build_shorthand_xml) relies on
+        #    our data, so we need it to occur earlier. However, templating depends
+        #    the Shorthand, so we'd have a dependency circle.
+        add_custom_command(
+            OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
+            DEPENDS "${SSG_BUILD_SCRIPTS}/build_sce.py"
+            COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
+        )
+    else()
+        # Here we fake generating SCE metadata by creating an empty file.
+        # Because every other step reads data from this metadata file, if
+        # it is empty, no SCE content will actually be generated.
+        add_custom_command(
+            OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${BUILD_CHECKS_DIR}/sce"
+            COMMAND ${CMAKE_COMMAND} -E touch "${BUILD_CHECKS_DIR}/sce/metadata.json"
+            COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
+        )
+    endif()
+    add_custom_target(
+        generate-internal-${PRODUCT}-sce-metadata.json
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+    )
+endmacro()
+
 macro(ssg_build_cpe_dictionary PRODUCT)
 
     add_custom_command(
@@ -468,7 +509,7 @@ macro(ssg_build_xccdf_final PRODUCT)
     endif()
     add_test(
         NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --base-dir "${CMAKE_BINARY_DIR}" --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
     set_tests_properties("verify-references-ssg-${PRODUCT}-xccdf.xml" PROPERTIES LABELS quick)
     add_test(
@@ -571,12 +612,13 @@ macro(ssg_build_sds PRODUCT)
     if("${PRODUCT}" MATCHES "rhel(6|7)")
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}"
             # use --skip-valid here to avoid repeatedly validating everything
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/sds_move_ocil_to_checks.py" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
@@ -594,11 +636,12 @@ macro(ssg_build_sds PRODUCT)
     else()
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}"
             # use --skip-valid here to avoid repeatedly validating everything
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
-            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/sds_move_ocil_to_checks.py" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
@@ -784,6 +827,7 @@ macro(ssg_build_product PRODUCT)
         set(PRODUCT_${_LANGUAGE}_REMEDIATION_ENABLED TRUE)
     endforeach()
 
+    ssg_build_sce(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
@@ -882,6 +926,11 @@ macro(ssg_build_product PRODUCT)
             DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
             DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    endif()
+
+    if (SSG_SCE_ENABLED)
+        install(DIRECTORY "${CMAKE_BINARY_DIR}/${PRODUCT}/checks/sce/"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}/${PRODUCT}/checks/sce")
     endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"

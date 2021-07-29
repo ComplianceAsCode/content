@@ -109,6 +109,42 @@ def get_rule_dir_ovals(dir_path, product=None):
     return product_results + common_results
 
 
+def get_rule_dir_sces(dir_path, product=None):
+    """
+    Get a list of SCEs contained in a rule directory. If product is None,
+    returns all SCEs. If product is not None, returns applicable SCEs in
+    order of priority:
+
+        {{{ product }}}.{{{ ext }}} -> shared.{{{ ext }}}
+
+    Only returns SCEs which exist.
+    """
+
+    if not is_rule_dir(dir_path):
+        return []
+
+    sce_dir = os.path.join(dir_path, "sce")
+    has_sce_dir = os.path.isdir(sce_dir)
+    if not has_sce_dir:
+        return []
+
+    results = []
+    common_results = []
+    for sce_file in sorted(os.listdir(sce_dir)):
+        file_name, ext = os.path.splitext(sce_file)
+        sce_path = os.path.join(sce_dir, sce_file)
+
+        if applies_to_product(file_name, product):
+            if file_name == 'shared':
+                common_results.append(sce_path)
+            elif file_name != product:
+                common_results.insert(0, sce_path)
+            else:
+                results.append(sce_path)
+
+    return results + common_results
+
+
 def find_rule_dirs(base_dir):
     """
     Generator which yields all rule directories within a given base_dir, recursively

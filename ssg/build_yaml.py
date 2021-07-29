@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import os
-import os.path
 from collections import defaultdict
 from copy import deepcopy
 import datetime
+import json
+import os
+import os.path
 import re
 import sys
 from xml.sax.saxutils import escape
@@ -13,7 +14,7 @@ from xml.sax.saxutils import escape
 import yaml
 
 from .build_cpe import CPEDoesNotExist
-from .constants import XCCDF_REFINABLE_PROPERTIES
+from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 from .controls import Control
@@ -1082,11 +1083,13 @@ class Rule(object):
         self.platforms = set()
         self.cpe_names = set()
         self.inherited_platforms = [] # platforms inherited from the group
+        self.sce_metadata = None
         self.template = None
         self.local_env_yaml = None
+        self.current_product = None
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, sce_metadata=None):
         yaml_file = os.path.normpath(yaml_file)
 
         rule_id, ext = os.path.splitext(os.path.basename(yaml_file))
@@ -1145,6 +1148,12 @@ class Rule(object):
 
         if not rule.definition_location:
             rule.definition_location = yaml_file
+
+        if sce_metadata and rule_id in sce_metadata:
+            rule.sce_metadata = sce_metadata[rule_id]
+
+        if env_yaml and 'product' in env_yaml:
+            rule.current_product = env_yaml['product']
 
         rule.validate_prodtype(yaml_file)
         rule.validate_identifiers(yaml_file)
@@ -1411,6 +1420,38 @@ class Rule(object):
             oval_ref = ET.SubElement(rule, "oval")
             oval_ref.set("id", self.id_)
 
+        if self.sce_metadata:
+            # TODO: This is pretty much another hack, just like the previous OVAL
+            # one. However, we avoided the external SCE content as I'm not sure it
+            # is generally useful (unlike say, CVE checking with external OVAL)
+            #
+            # Additionally, we build the content (check subelement) here rather
+            # than in xslt due to the nature of our SCE metadata.
+            check = ET.SubElement(rule, "check")
+            check.set("system", SCE_SYSTEM)
+
+            if 'check-import' in self.sce_metadata:
+                if isinstance(self.sce_metadata['check-import'], str):
+                    self.sce_metadata['check-import'] = [self.sce_metadata['check-import']]
+                for entry in self.sce_metadata['check-import']:
+                    check_import = ET.SubElement(check, 'check-import')
+                    check_import.set('import-name', entry)
+                    check_import.text = None
+
+            if 'check-export' in self.sce_metadata:
+                if isinstance(self.sce_metadata['check-export'], str):
+                    self.sce_metadata['check-export'] = [self.sce_metadata['check-export']]
+                for entry in self.sce_metadata['check-export']:
+                    value, export = entry.split('=')
+                    check_export = ET.SubElement(check, 'check-export')
+                    check_export.set('value-id', value)
+                    check_export.set('export-name', export)
+                    check_export.text = None
+
+            check_ref = ET.SubElement(check, "check-content-ref")
+            href = self.current_product + "/checks/sce/" + self.sce_metadata['filename']
+            check_ref.set("href", href)
+
         if self.ocil or self.ocil_clause:
             ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
             if self.ocil_clause:
@@ -1546,12 +1587,17 @@ class DirectoryLoader(object):
 
 
 class BuildLoader(DirectoryLoader):
-    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml, resolved_rules_dir=None):
+    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml,
+                 resolved_rules_dir=None, sce_metadata_path=None):
         super(BuildLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
 
         self.resolved_rules_dir = resolved_rules_dir
         if resolved_rules_dir and not os.path.isdir(resolved_rules_dir):
             os.mkdir(resolved_rules_dir)
+
+        self.sce_metadata = None
+        if sce_metadata_path and os.path.getsize(sce_metadata_path):
+            self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
 
     def _process_values(self):
         for value_yaml in self.value_files:
@@ -1562,7 +1608,7 @@ class BuildLoader(DirectoryLoader):
     def _process_rules(self):
         for rule_yaml in self.rule_files:
             try:
-                rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+                rule = Rule.from_yaml(rule_yaml, self.env_yaml, self.sce_metadata)
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
@@ -1584,8 +1630,11 @@ class BuildLoader(DirectoryLoader):
                     yaml.dump(rule.to_contents_dict(), f)
 
     def _get_new_loader(self):
-        return BuildLoader(
+        loader = BuildLoader(
             self.profiles_dir, self.bash_remediation_fns, self.env_yaml, self.resolved_rules_dir)
+        # Do it this way so we only have to parse the SCE metadata once.
+        loader.sce_metadata = self.sce_metadata
+        return loader
 
     def export_group_to_file(self, filename):
         return self.loaded_group.to_file(filename)
