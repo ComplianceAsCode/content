@@ -5,6 +5,7 @@
 # ARG_OPTIONAL_SINGLE([scenarios],[s],[Regex to reduce selection of tested scenarios],[])
 # ARG_OPTIONAL_SINGLE([datastream],[d],[Path to the datastream to use in tests. Autodetected by default.])
 # ARG_OPTIONAL_SINGLE([remediate-using],[r],[What to remediate with],[oscap])
+# ARG_OPTIONAL_SINGLE([logdir],[l],[Directory where logs will be stored])
 # ARG_OPTIONAL_BOOLEAN([dontclean],[],[Dont remove HTML reports from the log directory.])
 # ARG_OPTIONAL_BOOLEAN([dry-run],[],[Just print the test suite command-line.])
 # ARG_POSITIONAL_SINGLE([rule],[The short rule ID. Wildcards are supported.])
@@ -55,6 +56,7 @@ _arg_name="ssg_test_suite"
 _arg_scenarios=""
 _arg_datastream=
 _arg_remediate_using="oscap"
+_arg_logdir=
 _arg_dontclean="off"
 _arg_dry_run="off"
 
@@ -68,6 +70,7 @@ print_help()
 	printf '\t%s\n' "-s, --scenarios: Regex to reduce selection of tested scenarios (default: '')"
 	printf '\t%s\n' "-d, --datastream: Path to the datastream to use in tests. Autodetected by default. (no default)"
 	printf '\t%s\n' "-r, --remediate-using: What to remediate with. Can be one of: 'oscap', 'bash' and 'ansible' (default: 'oscap')"
+	printf '\t%s\n' "-l, --logdir: Directory where logs will be stored"
 	printf '\t%s\n' "--dontclean: Dont remove HTML reports from the log directory."
 	printf '\t%s\n' "--dry-run: Just print the test suite command-line."
 	printf '\t%s\n' "-h, --help: Prints help"
@@ -124,6 +127,17 @@ parse_commandline()
 				;;
 			-r*)
 				_arg_remediate_using="$(remediations "${_key##-r}" "remediate-using")" || exit 1
+				;;
+			-l|--logdir)
+				test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
+				_arg_logdir="$2"
+				shift
+				;;
+			--logdir=*)
+				_arg_logdir="${_key##--logdir=}"
+				;;
+			-l*)
+				_arg_logdir="${_key##-l}"
 				;;
 			--dontclean)
 				_arg_dontclean="on"
@@ -197,6 +211,8 @@ test -n "$_arg_scenarios" && additional_args+=(--scenario "'$_arg_scenarios'")
 test -n "$_arg_datastream" && additional_args+=(--datastream "$_arg_datastream")
 
 test -n "$_arg_remediate_using" && additional_args+=(--remediate-using "$_arg_remediate_using")
+
+test -n "$_arg_logdir" && additional_args+=(--logdir "$_arg_logdir")
 
 command=(python3 "${script_dir}/test_suite.py" rule --remove-machine-only "${additional_args[@]}" --add-platform "$test_image_cpe_product" --container "$_arg_name" -- "${_arg_rule}")
 if test "$_arg_dry_run" = on; then
