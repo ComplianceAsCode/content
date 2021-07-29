@@ -31,7 +31,7 @@ Scenario_conditions = namedtuple(
     "Scenario_conditions",
     ("backend", "scanning_mode", "remediated_by", "datastream"))
 Rule = namedtuple(
-    "Rule", ["directory", "id", "short_id", "files"])
+    "Rule", ["directory", "id", "short_id", "files", "template"])
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
@@ -542,6 +542,7 @@ def iterate_over_rules(product=None):
 
             # Load the rule itself to check for a template.
             rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
+            template_name = None
 
             # Before we get too far, we wish to search the rule YAML to see if
             # it is applicable to the current product. If we have a product
@@ -562,11 +563,13 @@ def iterate_over_rules(product=None):
             # templating system.
             all_tests = dict()
 
-            # Start
+            # Start by checking for templating tests and provision them if
+            # present.
             if rule.template and rule.template['vars']:
                 templated_tests = template_builder.get_all_tests(
                     rule.id_, rule.template, local_env_yaml)
                 all_tests.update(templated_tests)
+                template_name = rule.template['name']
 
             # Add additional tests from the local rule directory. Note that,
             # like the behavior in template_tests, this will overwrite any
@@ -596,7 +599,7 @@ def iterate_over_rules(product=None):
             full_rule_id = OSCAP_RULE + short_rule_id
             result = Rule(
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
-                files=content_mapping)
+                files=content_mapping, template=template_name)
             yield result
 
 
