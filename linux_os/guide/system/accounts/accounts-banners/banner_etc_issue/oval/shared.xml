@@ -2,7 +2,7 @@
   <definition class="compliance" id="banner_etc_issue" version="2">
     {{{ oval_metadata("The system login banner text should be set correctly.") }}}
     <criteria>
-      <criterion comment="/etc/issue is set appropriately" test_ref="test_banner_etc_issue" />
+      <criterion comment="/etc/issue is set appropriately - test comment" test_ref="test_banner_etc_issue" />
     </criteria>
   </definition>
 
@@ -12,7 +12,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_banner_etc_issue" version="1">
-    <ind:behaviors singleline="true" multiline="false" />
+    <ind:behaviors singleline="false" multiline="false" />
     <ind:filepath operation="pattern match">^/etc/issue(\.d/.*)?$</ind:filepath>
     <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
