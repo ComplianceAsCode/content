@@ -432,8 +432,6 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/cpe_generate.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-shorthand.xml
@@ -469,8 +467,6 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         DEPENDS generate-internal-${PRODUCT}-ocil-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/relabel_ids.py"
