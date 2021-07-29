@@ -46,6 +46,9 @@ ocil_clause: 'any are more permissive'
 
 ocil: |-
     Run the following command to check the mode of the system audit logs:
+    <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf</pre>
+    <pre>log_file=/var/log/audit/audit.log</pre>
+    <pre>$ sudo stat -c "%n %a" /var/log/audit/*</pre>
     <pre>$ sudo ls -l /var/log/audit</pre>
     Audit logs must be mode 0640 or less permissive.
 
