@@ -351,7 +351,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially  # This rule, as implemented here, does not check for a user.cfg file
     rules:
       - file_owner_grub2_cfg
       - file_groupowner_grub2_cfg
