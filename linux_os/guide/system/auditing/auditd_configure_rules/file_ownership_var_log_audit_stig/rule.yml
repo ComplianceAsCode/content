@@ -34,4 +34,8 @@ references:
     stigid@ubuntu2004: UBTU-20-010123
 
 ocil: |-
-    {{{ describe_file_owner(file="/var/log/audit/*", owner="root") }}}
+    Run the following commands to check who owns the system audit logs:
+    <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf</pre>
+    <pre>log_file = /var/log/audit/audit.log</pre>
+    <pre>sudo stat -c "%n %U" /var/log/audit/*</pre>
+    Audit logs must be owned by user root.
