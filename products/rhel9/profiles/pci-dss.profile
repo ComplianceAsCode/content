@@ -121,8 +121,8 @@ selections:
     - var_smartcard_drivers=cac
     - configure_opensc_card_drivers
     - force_opensc_card_drivers
-#    - package_pcsc-lite_installed  # not supported in RHEL9 ATM
-#    - service_pcscd_enabled  # not supported in RHEL9 ATM
+    - package_pcsc-lite_installed
+    - service_pcscd_enabled
     - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
