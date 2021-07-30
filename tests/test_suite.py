@@ -304,7 +304,7 @@ def normalize_passed_arguments(options):
         match = product_regex.match(options.datastream)
         if not match:
             msg = "Unable to detect product without explicit --product: "
-            msg += "datastream {0} lacks product name".format(datastream)
+            msg += "datastream {0} lacks product name".format(options.datastream)
             raise RuntimeError(msg)
         options.product = match.group(1)
 
