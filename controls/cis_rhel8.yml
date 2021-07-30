@@ -353,8 +353,11 @@ controls:
       - l1_workstation
     automated: partially  # This rule, as implemented here, does not check for a user.cfg file
     rules:
-      - file_owner_grub2_cfg
+      - file_groupowner_efi_grub2_cfg
       - file_groupowner_grub2_cfg
+      - file_owner_efi_grub2_cfg
+      - file_owner_grub2_cfg
+      - file_permissions_efi_grub2_cfg
       - file_permissions_grub2_cfg
 
   - id: 1.5.2
