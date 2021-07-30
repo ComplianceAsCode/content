@@ -33,9 +33,9 @@ selections:
     - require_singleuser_auth
     - restrict_serial_port_logins
     - securetty_root_login_console_only
-    - service_debug-shell_disabled  # not supported in RHEL9 ATM
-    - disable_ctrlaltdel_reboot  # not supported in RHEL9 ATM
-    - disable_ctrlaltdel_burstaction  # not supported in RHEL9 ATM
+    - service_debug-shell_disabled
+    - disable_ctrlaltdel_reboot
+    - disable_ctrlaltdel_burstaction
     - dconf_db_up_to_date
     - dconf_gnome_remote_access_credential_prompt
     - dconf_gnome_remote_access_encryption
