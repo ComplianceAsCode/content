@@ -321,7 +321,7 @@
           </xsl:if>
           <xsl:if test="$refsource = 'cis'">
             <!-- Precaution for repeated occurrence of issue:
-                 https://github.com/OpenSCAP/scap-security-guide/issues/1288 -->
+                 https://github.com/ComplianceAsCode/content/issues/1288 -->
             <xsl:if test="$cisuri != 'empty'">
               <xsl:value-of select="$cisuri" />
             </xsl:if>
