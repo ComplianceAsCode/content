@@ -15,7 +15,8 @@ takes the following structure:
 
     rule_id -> struct {
         platforms: str/list  // What platforms the specified script applies to.
-        check-import?: str/list in {stdout, stderr}, // Whether to preserve stdout or stderr (or both).
+        check-import?: str/list in {stdout, stderr}, // Whether to preserve stdout or
+                                                     // stderr (or both).
         check-export?: str/list of equals-separated values // List of env_var->xccdf_var mappings.
         complex-check?: str in {AND, OR} // Operator to use for combining SCE and OVAL
         filename: path under checks/sce that this script is in.
