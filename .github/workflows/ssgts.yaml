@@ -21,7 +21,7 @@ jobs:
           repository: mildas/content-test-filtering
           path: ctf
       - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --output json ${{ github.event.pull_request.number }} > output.json
+        run: python3 ./ctf/content_test_filtering.py pr --rule --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
         run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
         id: ctf
@@ -60,7 +60,7 @@ jobs:
           repository: mildas/content-test-filtering
           path: ctf
       - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --output json ${{ github.event.pull_request.number }} > output.json
+        run: python3 ./ctf/content_test_filtering.py pr --rule --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
         run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
         id: ctf
