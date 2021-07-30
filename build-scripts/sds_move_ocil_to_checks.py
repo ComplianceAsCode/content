@@ -18,8 +18,8 @@
 # check system should be placed into <ds:checks> element when building a datastream
 #
 # The current oscap behaviour leads to:
-# * [3] https://github.com/OpenSCAP/scap-security-guide/issues/1101 and
-# * [4] https://github.com/OpenSCAP/scap-security-guide/issues/1100
+# * [3] https://github.com/ComplianceAsCode/content/issues/1101 and
+# * [4] https://github.com/ComplianceAsCode/content/issues/1100
 # issues when validating the produced datastream using the NIST SCAP content
 # test suite
 #
