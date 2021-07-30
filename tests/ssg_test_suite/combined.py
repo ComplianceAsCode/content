@@ -64,6 +64,20 @@ class CombinedChecker(rule.RuleChecker):
             params['profiles'] = [item for item in params['profiles'] if re.search(self.profile, item)]
         return params
 
+    def _generate_target_rules(self, profile):
+        # check if target is a complete profile ID, if not prepend profile prefix
+        if not profile.startswith(OSCAP_PROFILE):
+            profile = OSCAP_PROFILE + profile
+        logging.info("Performing combined test using profile: {0}".format(profile))
+
+        # Fetch target list from rules selected in profile
+        target_rules = xml_operations.get_all_rule_ids_in_profile(
+                self.datastream, self.benchmark_id,
+                profile, logging)
+        logging.debug("Profile {0} expanded to following list of "
+                      "rules: {1}".format(profile, target_rules))
+        return target_rules
+
     def _test_target(self, target):
         self.rules_not_tested_yet = set(target)
 
@@ -93,20 +107,9 @@ def perform_combined_check(options):
     checker.manual_debug = False
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
-    # Let's keep track of originaly targeted profile
-    checker.profile = options.target
+    for profile in options.target:
+        # Let's keep track of originaly targeted profile
+        checker.profile = profile
+        target_rules = checker._generate_target_rules(profile)
 
-    profile = options.target
-    # check if target is a complete profile ID, if not prepend profile prefix
-    if not profile.startswith(OSCAP_PROFILE):
-        profile = OSCAP_PROFILE+profile
-    logging.info("Performing combined test using profile: {0}".format(profile))
-
-    # Fetch target list from rules selected in profile
-    target_rules = xml_operations.get_all_rule_ids_in_profile(
-            options.datastream, options.benchmark_id,
-            profile, logging)
-    logging.debug("Profile {0} expanded to following list of "
-                  "rules: {1}".format(profile, target_rules))
-
-    checker.test_target(target_rules)
+        checker.test_target(target_rules)
