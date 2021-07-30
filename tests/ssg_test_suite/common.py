@@ -245,6 +245,8 @@ def _make_file_root_owned(tarinfo):
     if tarinfo:
         tarinfo.uid = 0
         tarinfo.gid = 0
+        # set permission to 775
+        tarinfo.mode = 509
     return tarinfo
 
 
