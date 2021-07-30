@@ -70,7 +70,7 @@ cui_ns = 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.p
 stig_refs = 'https://public.cyber.mil/stigs/'
 disa_cciuri = "https://public.cyber.mil/stigs/cci/"
 ssg_version_uri = \
-    "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
+    "https://github.com/ComplianceAsCode/content/releases/latest"
 OSCAP_VENDOR = "org.ssgproject"
 OSCAP_DS_STRING = "xccdf_%s.content_benchmark_" % OSCAP_VENDOR
 OSCAP_PROFILE = "xccdf_%s.content_profile_" % OSCAP_VENDOR
@@ -249,11 +249,11 @@ CENTOS_NOTICE = \
     "\n" \
     "<p>Members of the <i>CentOS</i> community are invited to participate in " \
     "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
     "SCAP Security Guide</a> development. Bug reports and patches " \
     "can be sent to GitHub: " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
-    "https://github.com/OpenSCAP/scap-security-guide</a>. " \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
+    "https://github.com/ComplianceAsCode/content</a>. " \
     "The mailing list is at " \
     "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
     "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
@@ -289,11 +289,11 @@ SL_NOTICE = \
     "\n" \
     "<p>Members of the <i>Scientifc Linux</i> community are invited to participate in " \
     "<a href=\"http://open-scap.org\">OpenSCAP</a> and " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
     "SCAP Security Guide</a> development. Bug reports and patches " \
     "can be sent to GitHub: " \
-    "<a href=\"https://github.com/OpenSCAP/scap-security-guide\">" \
-    "https://github.com/OpenSCAP/scap-security-guide</a>. " \
+    "<a href=\"https://github.com/ComplianceAsCode/content\">" \
+    "https://github.com/ComplianceAsCode/content</a>. " \
     "The mailing list is at " \
     "<a href=\"https://fedorahosted.org/mailman/listinfo/scap-security-guide\">" \
     "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \

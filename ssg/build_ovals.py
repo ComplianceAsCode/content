@@ -92,8 +92,8 @@ def oval_entities_are_identical(firstelem, secondelem):
        Return: True if identical, False otherwise
        Based on: http://stackoverflow.com/a/24349916"""
 
-    # Per https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234541909
-    # and https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234545296
+    # Per https://github.com/ComplianceAsCode/content/pull/1343#issuecomment-234541909
+    # and https://github.com/ComplianceAsCode/content/pull/1343#issuecomment-234545296
     # ignore the differences in 'comment', 'version', 'state_operator', and
     # 'deprecated' attributes. Also ignore different nsmap, since all these
     # don't affect the semantics of the OVAL entities
@@ -173,7 +173,7 @@ def append(element, newchild):
                 sys.exit(1)
         # ID is identical, but OVAL entities are semantically difference =>
         # report and error and exit with failure
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1275
+        # Fixes: https://github.com/ComplianceAsCode/content/issues/1275
         else:
             if not oval_entity_is_extvar(existing) and \
               not oval_entity_is_extvar(newchild):
@@ -182,7 +182,7 @@ def append(element, newchild):
                 # we might evaluate wrong requirement for the second entity
                 # => report an error and exit with failure in that case
                 # See
-                #   https://github.com/OpenSCAP/scap-security-guide/issues/1275
+                #   https://github.com/ComplianceAsCode/content/issues/1275
                 # for a reproducer and what could happen in this case
                 sys.stderr.write("ERROR: it's not possible to use the " +
                                  "same ID: %s " % newid + "for two " +

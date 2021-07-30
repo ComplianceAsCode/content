@@ -8,7 +8,6 @@
 [![Nightly 5.10 ZIP Status](https://jenkins.complianceascode.io/job/scap-security-guide-nightly-oval510-zip/badge/icon?subject=Nightly%20OVAL-5.10%20ZIP&status=Download)](https://jenkins.complianceascode.io/job/scap-security-guide-nightly-oval510-zip/lastSuccessfulBuild/artifact/scap-security-guide-nightly-oval-510.zip)
 [![Link-checker Status](https://jenkins.complianceascode.io/job/scap-security-guide-linkcheck/badge/icon?subject=Link%20Checker)](https://jenkins.complianceascode.io/job/scap-security-guide-linkcheck/)
 [![CentOS CI Status](https://ci.centos.org/job/openscap-scap-security-guide/badge/icon?subject=CentOS%20CI%20Build)](https://ci.centos.org/job/openscap-scap-security-guide/)
-[![Travis CI Build Status](https://img.shields.io/travis/OpenSCAP/scap-security-guide/master.svg?label=Travis%20CI%20Build)](https://travis-ci.org/OpenSCAP/scap-security-guide)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ComplianceAsCode/content/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ComplianceAsCode/content/?branch=master)
 [![Profile Statistics](https://jenkins.complianceascode.io/job/scap-security-guide-stats/badge/icon?subject=Statistics)](https://jenkins.complianceascode.io/job/scap-security-guide-stats/Statistics/) [![Join the chat at https://gitter.im/Compliance-As-Code-The/content](https://badges.gitter.im/Compliance-As-Code-The/content.svg)](https://gitter.im/Compliance-As-Code-The/content?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

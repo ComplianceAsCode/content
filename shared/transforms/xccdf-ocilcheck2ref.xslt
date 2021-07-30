@@ -15,8 +15,8 @@
   <!-- Remove OCIL <check-export> nodes since they were used only to append the appropriate question
        to OCIL <check-content> nodes by previous run of $(SHARED)/$(TRANS)/xccdf-create-ocil.xslt.
        But at this state of building the content this has been already finished.
-       Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1189
-       Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1190 -->
+       Fixes: https://github.com/ComplianceAsCode/content/issues/1189
+       Fixes: https://github.com/ComplianceAsCode/content/issues/1190 -->
   <xsl:template match="xccdf:check-export[@value-id='conditional_clause']"/>
 
   <!-- Remove the "conditional_clause" <xccdf:Value> since it was required only to expand OCIL macros
