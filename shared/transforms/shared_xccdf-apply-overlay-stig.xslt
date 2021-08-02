@@ -21,7 +21,8 @@
 	<xsl:variable name="rules" select="//xccdf:Rule"/>
 
     <xsl:for-each select="$overlays/xccdf:overlay">  <!-- make sure overlays file namespace is XCCDF (hack) -->
-      <xsl:variable name="overlay_id" select="@ownerid"/>
+      <xsl:variable name="overlay_id" select="xccdf:VMSinfo/@VKey"/>
+      <xsl:variable name="overlay_version" select="@ownerid"/>
       <xsl:variable name="overlay_rule" select="@ruleid"/>
       <xsl:variable name="overlay_severity" select="@severity"/>
       <xsl:variable name="overlay_ref" select="@disa"/>
@@ -29,11 +30,11 @@
 
       <xsl:for-each select="$rules">
         <xsl:if test="@id=$overlay_rule">
-		  <Group id="{$overlay_id}">
+		  <Group id="V-{$overlay_id}">
 		    <title>SRG-OS-ID</title>
 		    <description></description>
             <Rule id="{$overlay_rule}" severity="{$overlay_severity}" >
-			<version><xsl:value-of select="$overlay_id"/></version>
+			<version><xsl:value-of select="$overlay_version"/></version>
           	<title><xsl:value-of select="$overlay_title"/></title>
           	<description><xsl:copy-of select="xccdf:rationale/node()" /></description>
           	<check system="C-{$overlay_id}_chk">

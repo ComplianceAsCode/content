@@ -53,6 +53,7 @@
 				<td>Check Procedures</td>
 				<td>Fixtext</td>
 				<td>Version</td>
+				<td>Mapped Rule</td>
 			<xsl:if test='$notes'>
 				<td>Notes</td>
 			</xsl:if>
@@ -89,6 +90,7 @@
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:check/cdf:check-content/node()"/> </td>
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:fixtext/node()"/> </td>
 			<td> <xsl:apply-templates select="cdf:Rule/cdf:version/node()"/> </td>
+			<td> <xsl:value-of select="cdf:Rule/@id"/> </td>
 			<xsl:if test='$notes'>
 				<td> <table><xsl:call-template name="print-notes"><xsl:with-param name="vulnid" select="@id"/></xsl:call-template> </table> </td>
 			</xsl:if>

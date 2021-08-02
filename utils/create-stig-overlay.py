@@ -65,22 +65,11 @@ def ssg_xccdf_stigid_mapping(ssgtree):
     return xccdftostig_idmapping
 
 
-def get_nested_stig_items(ssg_mapping, srg):
-    mapped_id = "XXXX"
-    for rhid, srgs in ssg_mapping.items():
-        for xccdfid, srglist in srgs.items():
-            if srg in srglist and len(srglist) > 1:
-                mapped_id = xccdfid
-                break
-
-    return mapped_id
-
-
 def getkey(elem):
     return elem.get("ownerid")
 
 
-def new_stig_overlay(xccdftree, ssgtree, outfile):
+def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
     if not ssgtree:
         ssg_mapping = False
     else:
@@ -93,9 +82,9 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
             srg = title.text
         for rule in group.findall("./{%s}Rule" % xccdf_ns):
             svkey_raw = rule.get("id")
-            svkey = svkey_raw.strip()[3:-7]
+            svkey = svkey_raw.strip()[3:9]
             severity = rule.get("severity")
-            release = svkey_raw.strip()[9:-5]
+            release = svkey_raw.strip()[10:-5]
             version = element_value("version", rule)
             rule_title = element_value("title", rule)
             ident = element_value("ident", rule).strip("CCI-").lstrip("0")
@@ -106,7 +95,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
             try:
                 mapped_id = ''.join(ssg_mapping[version].keys())
             except KeyError as e:
-                mapped_id = get_nested_stig_items(ssg_mapping, srg)
+                mapped_id = "XXXX"
 
         overlay = ET.SubElement(new_stig_overlay, "overlay", owner=owner,
                                 ruleid=mapped_id, ownerid=version, disa=ident,
@@ -124,11 +113,14 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
     overlay_directory = os.path.dirname(outfile)
     if not os.path.exists(overlay_directory):
         os.makedirs(overlay_directory)
-        print("\nOverlay directory created: %s" % overlay_directory)
+        if not quiet:
+            print("\nOverlay directory created: %s" % overlay_directory)
 
     with open(outfile, 'wb') as f:
         f.write(pretty_xml_as_string)
-    print("\nGenerated the new STIG overlay file: %s" % outfile)
+
+    if not quiet:
+        print("\nGenerated the new STIG overlay file: %s" % outfile)
 
 
 def parse_args():
@@ -145,6 +137,9 @@ def parse_args():
                         action="store", dest="output_file",
                         help="STIG overlay XML content file \
                              [default: %default]")
+    parser.add_argument("-q", "--quiet", dest="quiet", default=False,
+                      action="store_true", help="Do not print anything and assume yes for everything")
+
     return parser.parse_args()
 
 
@@ -154,9 +149,11 @@ def main():
     disa_xccdftree = ET.parse(args.disa_xccdf_filename)
 
     if not args.ssg_xccdf_filename:
-        print("WARNING: You are generating a STIG overlay XML file without mapping it "
-              "to existing SSG content.")
-        prompt = yes_no_prompt()
+        prompt = True
+        if not args.quiet:
+            print("WARNING: You are generating a STIG overlay XML file without mapping it "
+                "to existing SSG content.")
+            prompt = yes_no_prompt()
         if not prompt:
             sys.exit(0)
         ssg_xccdftree = False
@@ -164,13 +161,19 @@ def main():
         ssg_xccdftree = ET.parse(args.ssg_xccdf_filename)
         ssg = ssg_xccdftree.find(".//{%s}publisher" % dc_ns).text
         if ssg != "SCAP Security Guide Project":
-            sys.exit("%s is not a valid SSG generated XCCDF file." % args.ssg_xccdf_filename)
+            if not args.quiet:
+                sys.exit("%s is not a valid SSG generated XCCDF file." % args.ssg_xccdf_filename)
+            else:
+                sys.exit(1)
 
     disa = disa_xccdftree.find(".//{%s}source" % dc_ns).text
     if disa != "STIG.DOD.MIL":
-        sys.exit("%s is not a valid DISA generated manual XCCDF file." % args.disa_xccdf_filename)
+        if not args.quiet:
+            sys.exit("%s is not a valid DISA generated manual XCCDF file." % args.disa_xccdf_filename)
+        else:
+            sys.exit(2)
 
-    new_stig_overlay(disa_xccdftree, ssg_xccdftree, args.output_file)
+    new_stig_overlay(disa_xccdftree, ssg_xccdftree, args.output_file, args.quiet)
 
 
 if __name__ == "__main__":
