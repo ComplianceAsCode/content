@@ -659,7 +659,7 @@ macro(ssg_build_pci_dss_xccdf PRODUCT)
     )
 endmacro()
 
-# Build source datastreams (as opposed to result datastreams that occur after
+# Build source data streams (as opposed to result data streams that occur after
 # evaluation using e.g., OpenSCAP) by combining XCCDF, OVAL, SCE, and OCIL
 # content. This relies heavily on the OpenSCAP executable here.
 macro(ssg_build_sds PRODUCT)

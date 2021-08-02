@@ -20,7 +20,7 @@ relevant standards in this space are understood. Among others, these are:
    handling manual compliance checks.
  - [CPE](https://nvd.nist.gov/products/cpe), the Common Platform Enumeration;
    a scheme for identifying software and systems.
- - A DS, Datastream format, a mechanism for combining the above into a single
+ - SCAP source data stream format, a mechanism for combining the above into a single
    redistributable file.
 
 Additionally, some familiarity with the content layout (as discussed in
