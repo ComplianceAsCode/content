@@ -286,6 +286,7 @@ selections:
 - sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
+- sssd_enable_certmap
 - sssd_enable_smartcards
 - sssd_offline_cred_expiration
 - sudo_remove_no_authenticate

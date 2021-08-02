@@ -503,6 +503,7 @@ selections:
     # RHEL-08-020080
 
     # RHEL-08-020090
+    - sssd_enable_certmap
 
     # RHEL-08-020100
     - accounts_password_pam_retry
