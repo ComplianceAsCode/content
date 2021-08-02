@@ -441,15 +441,19 @@ In each of these subdirectories, a file named `shared.ext` will apply to
 all products and be included in all builds, but `{{{ product }}}.ext`
 will only get included in the build for `{{{ product }}}` (e.g.,
 `rhel7.xml` above will only be included in the build of the `rhel7`
-guide content and not in the `ol7` content). Note that `.ext` must be
-substituted for the correct extension for content of that type (e.g.,
-`.sh` for `bash` content). Further, all of these directories are
-optional and will only be searched for content if present. Lastly, the
-product naming of content will not override the contents of `platform`
-or `prodtype` fields in the content itself (e.g., if `rhel7` is not
-present in the `rhel7.xml` OVAL check platform specifier, it will be
-included in the build artifacts but later removed because it doesn’t
-match the platform).
+guide content and not in the `ol7` content). Additionally, we support
+the use of unversioned products here (e.g., `rhel` applies to `rhel7`,
+`rhel8`, and `rhel9`). Note that `.ext` must be substituted for the
+correct extension for content of that type (e.g., `.sh` for `bash`
+content). Further, all of these directories are optional and will only
+be searched for content if present. Lastly, the product naming of
+content will not override the contents of `platform` or `prodtype`
+fields in the content itself (e.g., if `rhel7` is not present in the
+`rhel7.xml` OVAL check platform specifier, it will be included in the
+build artifacts but later removed because it doesn't match the platform).
+This means that any shared (or templated) checks won't be searched if
+a product-specific file is present but has the wrong applicability;
+this includes shared checks being preferred above templated checks.
 
 Currently the build system supports both rule files (discussed above)
 and rule directories. For example content in this format, please see
