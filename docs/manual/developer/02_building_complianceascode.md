@@ -258,7 +258,7 @@ cmake -DSSG_SCE_ENABLED=ON ..
 make
 ```
 
-This will add SCE content into the datastream objects as well as create the
+This will add SCE content into the data stream files as well as create the
 `<product>/checks/sce` folder with individual SCE checks in it.
 
 ### Build outputs

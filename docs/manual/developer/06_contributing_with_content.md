@@ -761,7 +761,7 @@ simplifications.
 ### SCE Check Content
 
 [SCE](http://www.open-scap.org/features/other-standards/sce/) is a mechanism
-for running arbitrary scripts while delivering them via the same Datastream
+for running arbitrary scripts while delivering them via the same data stream
 as OVAL content. These checks (being written in a general-purpose programming
 language) can be more flexible than OVAL checks but at the downside of not
 being compliant with the relevant NIST standards (and thus losing
