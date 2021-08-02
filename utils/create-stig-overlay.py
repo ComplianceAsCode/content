@@ -107,7 +107,12 @@ def new_stig_overlay(xccdftree, ssgtree, outfile, quiet):
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
 
-    dom = xml.dom.minidom.parseString(ET.tostring(new_stig_overlay, encoding="UTF-8", xml_declaration=True))
+    try:
+        et_str = ET.tostring(new_stig_overlay, encoding="UTF-8", xml_declaration=True)
+    except TypeError:
+        et_str = ET.tostring(new_stig_overlay, encoding="UTF-8")
+
+    dom = xml.dom.minidom.parseString(et_str)
     pretty_xml_as_string = dom.toprettyxml(indent='  ', encoding="UTF-8")
 
     overlay_directory = os.path.dirname(outfile)
