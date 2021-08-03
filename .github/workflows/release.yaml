@@ -1,0 +1,66 @@
+name: Release
+on:
+  push:
+    tags: [ 'v*.*.*' ]
+jobs:
+  release-fedora:
+    name: Release on Fedora Latest (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure
+        run: cmake ..
+        working-directory: ./build
+      - name: Build All
+        run: make -j2 all
+        working-directory: ./build
+      - name: Build ZIP
+        run: make -j2 zipfile
+        working-directory: ./build
+      - name: Test
+        run: ctest -j2 --output-on-failure -E linkchecker
+        working-directory: ./build
+      - name: Build Package Source
+        run: make -j2 package_source
+        working-directory: ./build
+      - name: Create Build Dir (OVAL 5.10)
+        run: mkdir -p build-oval510
+      - name: Configure (OVAL 5.10)
+        run: cmake -DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10 ..
+        working-directory: ./build-oval510
+      - name: Build All (OVAL 5.10)
+        run: make -j2 all
+        working-directory: ./build-oval510
+      - name: Build ZIP (OVAL 5.10)
+        run: make -j2 zipfile
+        working-directory: ./build-oval510
+      - name: Set Version
+        id: set_version
+        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//} && echo ::set-output name=ver::${GITHUB_REF/refs\/tags\/v/}
+        env:
+          GITHUB_REF: ${{ github.ref }}
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v1
+        with:
+          configuration: .github/workflows/release-changelog.json
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: True
+          name: Content ${{ steps.set_version.outputs.ver }}
+          tag_name: ${{ steps.set_version.outputs.tag }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
+          files: |
+            build/scap-security-guide-*.tar.bz2
+            build/zipfile/scap-security-guide-*.zip
+            build-oval510/zipfile/scap-security-guide-*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
