@@ -1,4 +1,3 @@
-
 # Contributing with XCCDFs, OVALs and remediations
 
 There are three main types of content in the project, they are rules,
@@ -437,6 +436,8 @@ then contain the following subdirectories:
 
 -   `kubernetes` - for Kubernetes remediation content, ending in `.yml`
 
+-   `sce` - for Script Check Engine content, with any file extension
+
 In each of these subdirectories, a file named `shared.ext` will apply to
 all products and be included in all builds, but `{{{ product }}}.ext`
 will only get included in the build for `{{{ product }}}` (e.g.,
@@ -614,7 +615,15 @@ Tips:
 
 ### Checks
 
-Checks are used to evaluate a Rule.
+Checks are used to evaluate a Rule. There are two types of check content
+supported by ComplianceAsCode: OVAL and SCE. Note that OVAL is standardized
+by NIST and has better cross-scanner support than SCE does. However, because
+SCE can use any language on the target system (Bash, Python, ...) it is much
+more flexible and general-purpose than OVAL. This project generally encourages
+OVAL unless it lacks support for certain features.
+
+#### OVAL Check Content
+
 They are written using a custom OVAL syntax and are transformed by the system
 during the building process into OVAL compliant checks.
 
@@ -676,7 +685,7 @@ root:
         <unix:filepath>/etc/cron.allow</unix:filepath>
       </unix:file_object>
 
-#### Macros
+##### Macros
 
 -   `oval_sshd_config` - check a parameter and value in the sshd
     configuration file
@@ -712,12 +721,12 @@ oval_config_file_exists_test
 oval_config_file_exists_object
 ```
 
-#### Limitations and pitfalls
+##### Limitations and pitfalls
 
 This section aims to list known OVAL limitations and situations that OVAL can't
 handle well or at all.
 
-##### Checking that all objects exist based on a variable
+###### Checking that all objects exist based on a variable
 
 A test with *check_existence="all_exist"* attribute will not ensure that all
 objects defined based on a variable exist.
@@ -752,6 +761,79 @@ object definition that doesn't exist is *unknown* (not 0, for example).
 
 Whenever possible, please reuse the macros and form high-level
 simplifications.
+
+### SCE Check Content
+
+[SCE](http://www.open-scap.org/features/other-standards/sce/) is a mechanism
+for running arbitrary scripts while delivering them via the same data stream
+as OVAL content. These checks (being written in a general-purpose programming
+language) can be more flexible than OVAL checks but at the downside of not
+being compliant with the relevant NIST standards (and thus losing
+interoperability with other scanners). This project prefers Bash SCE content.
+
+Within a rule directory, SCE content is stored under the `sce/` subfolder;
+it doesn't have a single extension (taking the preferred extension of the
+language the check is written in, `.sh` for Bash content).
+
+To build SCE content, specify the `-DSSG_SCE_ENABLED=ON` option to CMake;
+note that we default to not building SCE content.
+
+We support the same comment-based mechanism for controlling script parameters
+as the test suite and rest of the content system. The following parameters
+are unique to SCE:
+
+ - `check-import`: can be `stdout` or `stderr` and corresponds to the XCCDF's
+   `<check-import />` element's `import-name` attribute.
+ - `check-export`: a comma-separated list of `env_variable=xccdf_variable`
+   pairs to export via XCCDF `<check-export />` elements.
+ - `complex-check`: an XCCDF operator (`AND` or `OR`) to be passed as the
+   `operator` attribute on the XCCDF element's `<complex-check />` element.
+   Note that this gets provisioned into the `<Rule />` element to handle
+   whether both the OVAL and SCE checks must pass (AND) or whether only one
+   is necessary (OR). If a rule only has one or the other check language,
+   it is not necessary. Additionally, OCIL checks, if any is present in the
+   `rule.yml`, are added as a top-level OR-operator `<complex-check />` with
+   the results of this `<complex-check />`.
+
+For an example of SCE content, consider the check:
+
+```bash
+$ cat ./linux_os/guide/system/accounts/accounts-session/accounts_users_own_home_directories/sce/ubuntu2004.sh
+#!/bin/bash
+#
+# Contributed by Canonical.
+#
+# Disable job control and run the last command of a pipeline in the current shell environment
+# Require Bash 4.2 and later
+#
+# platform = multi_platform_ubuntu
+# check-import = stdout
+
+set +m
+shopt -s lastpipe
+
+result=$XCCDF_RESULT_PASS
+
+cat /etc/passwd | egrep -v '^(root|halt|sync|shutdown)' | awk -F: '($7 != "/usr/sbin/nologin" && $7 != "/bin/false") { print $1 " " $6 }'| while read user dir; do
+	if [ ! -d "$dir" ]; then
+		echo "The home directory ($dir) of user $user does not exist."
+		result=$XCCDF_RESULT_FAIL
+		break
+	else
+		owner=$(stat -L -c "%U" "$dir")
+		if [ "$owner" != "$user" ]; then
+			echo "The home directory ($dir) of user $user is owned by $owner."
+			result=$XCCDF_RESULT_FAIL
+			break
+		fi
+	fi
+done
+exit $result
+```
+
+Since this rule lacks an OVAL, this rule does not need a `complex-check`
+attribute. Additionally, this rule doesn't use any XCCDF variables and
+thus doesn't need a `check-export` element.
 
 Remediations
 ------------
@@ -977,7 +1059,7 @@ maximum number of days a password may be used:
     fi
 
 When writing new bash remediations content, please follow the following
-guidelins:
+guidelines:
 
 -   Use four spaces for indentation rather than tabs.
 

@@ -246,6 +246,21 @@ make
 
 And use the datastream with suffix `-1.2.xml`.
 
+### Building SCE (non-compliant) content
+
+By default, the build system will try to build XCCDF/OVAL standards-compliant
+content. To enable SCE content, specify the `-DSSG_SCE_ENABLED=ON` option to
+CMake:
+
+```bash
+cd build
+cmake -DSSG_SCE_ENABLED=ON ..
+make
+```
+
+This will add SCE content into the data stream files as well as create the
+`<product>/checks/sce` folder with individual SCE checks in it.
+
 ### Build outputs
 
 When the build has completed, the output will be in the build folder.
@@ -328,6 +343,16 @@ rhel7/playbooks/pci-dss/accounts_maximum_age_login_defs.yml
 rhel7/playbooks/pci-dss/accounts_password_pam_dcredit.yml
 rhel7/playbooks/pci-dss/accounts_password_pam_lcredit.yml
 ...
+```
+
+#### Rule SCE Checks
+
+These scripts contain SCE content for the specified rule.
+
+```bash
+$ ls -1 ubuntu2004/checks/sce/
+accounts_users_own_home_directories.sh
+metadata.json
 ```
 
 ### Profile Bash Scripts
