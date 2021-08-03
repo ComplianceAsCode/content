@@ -65,6 +65,7 @@ selections:
     - display_login_attempts
     - no_empty_passwords
     - service_auditd_enabled
+    - service_pcscd_enabled
     - sshd_set_idle_timeout
     - sshd_set_keepalive_0
 
