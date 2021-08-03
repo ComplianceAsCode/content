@@ -57,3 +57,9 @@ service_syslog_disabled:
   vars:
     servicename: syslog
     packagename: rsyslog
+
+sshd_includes_config_files:
+  name: lineinfile
+  vars:
+    path: /etc/ssh/sshd_config
+    text: "Include /etc/ssh/sshd_config.d/*.conf"
