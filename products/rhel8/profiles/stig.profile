@@ -673,11 +673,10 @@ selections:
     - audit_rules_usergroup_modification_group
 
     # RHEL-08-030171
-    # should be split
-    # - audit_rules_sysadmin_actions
+    - audit_rules_sudoers
 
     # RHEL-08-030172
-    - audit_rules_sysadmin_actions
+    - audit_rules_sudoers_d
 
     # RHEL-08-030180
     - package_audit_installed
