@@ -75,4 +75,6 @@ ocil: |-
 template:
     name: audit_rules_privileged_commands
     vars:
-        path: {{% if product in ["sle12", "sle15"] %}}/usr/lib/ssh/ssh-keysign{{% else %}}/usr/libexec/openssh/ssh-keysign{{% endif %}}
+        path: /usr/libexec/openssh/ssh-keysign
+        path@sle12: /usr/lib/ssh/ssh-keysign
+        path@sle15: /usr/lib/ssh/ssh-keysign
