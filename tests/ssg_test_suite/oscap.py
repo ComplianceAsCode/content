@@ -687,7 +687,7 @@ class Checker(object):
 
     def finalize(self):
         if not self.executed_tests:
-            logging.error("Nothing has been tested!")
+            logging.warning("Nothing has been tested!")
 
         try:
             self.test_env.finalize()
