@@ -725,7 +725,7 @@ selections:
     - audit_rules_media_export
 
     # RHEL-08-030310
-    # missing rule
+    - audit_rules_privileged_commands_unix_update
 
     # RHEL-08-030311
     - audit_rules_privileged_commands_postdrop
