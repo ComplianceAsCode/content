@@ -26,7 +26,10 @@ selections:
     - account_unique_name
     - accounts_maximum_age_login_defs
     - accounts_password_all_shadowed
+    - accounts_password_pam_dcredit
     - accounts_password_pam_lcredit
+    - accounts_password_pam_minlen
+    - accounts_password_pam_ucredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
@@ -64,11 +67,13 @@ selections:
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
+    - dconf_gnome_screensaver_idle_activation_enabled
     - display_login_attempts
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - gid_passwd_group_same
     - no_empty_passwords
+    - rpm_verify_permissions
     - service_auditd_enabled
     - service_pcscd_enabled
     - sshd_set_idle_timeout
