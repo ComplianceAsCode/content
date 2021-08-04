@@ -137,11 +137,9 @@ selections:
 
     # RHEL-08-010151
     - require_singleuser_auth
-    - require_emergency_target_auth
 
     # RHEL-08-010152
-    # To be released in V1R3
-    # - require_emergency_target_auth
+    - require_emergency_target_auth
 
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
