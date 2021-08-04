@@ -9,7 +9,7 @@
 ACTION_ARCH_FILTERS="-a always,exit"
 OTHER_FILTERS="-F path={{{ PATH }}}{{{ perm_x }}}"
 AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
-SYSCALL="{{{ ATTR }}}"
+SYSCALL=""
 KEY="privileged"
 SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
