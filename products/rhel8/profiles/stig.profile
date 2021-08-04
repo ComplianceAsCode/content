@@ -1092,8 +1092,10 @@ selections:
     # RHEL-08-040200
     - accounts_no_uid_except_zero
 
-    # RHEL-08-040210
+    # RHEL-08-040209
     - sysctl_net_ipv4_conf_default_accept_redirects
+
+    # RHEL-08-040210
     - sysctl_net_ipv6_conf_default_accept_redirects
 
     # RHEL-08-040220
