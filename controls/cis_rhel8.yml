@@ -1452,14 +1452,15 @@ controls:
       - l1_workstation
     automated: no
 
+  # NEEDS RULE
+  # The rsyslog_remote_loghost rule is not sufficient
+  # https://github.com/ComplianceAsCode/content/issues/7333
   - id: 4.2.1.5
     title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
-    rules:
-      - rsyslog_remote_loghost
+    automated: no
 
   - id: 4.2.1.6
     title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)
@@ -1617,19 +1618,15 @@ controls:
       - l1_workstation
     automated: no
 
-  # TODO
-  # Rule sets permissions to 0640 but benchmark wants it to be 0600
-  #
-  # TODO
-  # Check owner of private keys in /etc/ssh is root:root
+  # NEEDS RULE
+  # The file_permissions_sshd_private_key rule is not aligned with the benchmark
+  # https://github.com/ComplianceAsCode/content/issues/7334
   - id: 5.2.3
     title: Ensure permissions on SSH private host key files are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
-    rules:
-      - file_permissions_sshd_private_key
+    automated: no
 
   # TODO
   # Check owner of public keys in /etc/ssh is root:root
