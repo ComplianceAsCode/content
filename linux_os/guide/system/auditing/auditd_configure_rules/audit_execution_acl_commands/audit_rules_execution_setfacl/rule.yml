@@ -42,10 +42,10 @@ references:
 
 ocil: |-
     To verify that execution of the command is being audited, run the following command:
-    Configure the SUSE operating system to generate an audit record for all uses of the "setfacl" command.
+    Configure the operating system to generate an audit record for all uses of the "setfacl" command.
     Add or update the following rules in the "/etc/audit/audit.rules" file:
-    -a always,exit -F arch=b32 path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
-    -a always,exit -F arch=b64 path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
+    -a always,exit -F arch=b32 path=/usr/bin/setfacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged
+    -a always,exit -F arch=b64 path=/usr/bin/setfacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged
     The audit daemon must be restarted for the changes to take effect.
     # sudo systemctl restart auditd.service
     <pre>$ sudo grep "path=/usr/bin/setfacl" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>

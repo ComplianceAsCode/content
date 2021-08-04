@@ -1,14 +1,19 @@
-documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
-
-title: 'Ensure auditd Collects Information on the Use of Privileged Commands - pam_timestamp_check'
+{{%- if product in ["rhel8", "rhel9", "sle12", "sle15"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
 
 {{% if product in ["sle12", "sle15"] %}}
 {{% set pam_bin_path = "/sbin/pam_timestamp_check" %}}
 {{% else %}}
 {{% set pam_bin_path = "/usr/sbin/pam_timestamp_check" %}}
 {{% endif %}}
+
+documentation_complete: true
+
+prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - pam_timestamp_check'
 
 description: |-
     At a minimum, the audit system should collect the execution of
@@ -17,12 +22,12 @@ description: |-
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-a always,exit -F path={{{ pam_bin_path }}}
-    -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
     <pre>-a always,exit -F path={{{ pam_bin_path }}}
-    -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
