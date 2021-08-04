@@ -95,8 +95,10 @@ selections:
     # RHEL-08-010040
     - sshd_enable_warning_banner
 
-    # RHEL-08-010050
+    # RHEL-08-010049
     - dconf_gnome_banner_enabled
+
+    # RHEL-08-010050
     - dconf_gnome_login_banner_text
 
     # RHEL-08-010060
