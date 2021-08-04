@@ -33,6 +33,7 @@ selections:
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - aide_periodic_cron_checking
     - auditd_data_retention_action_mail_acct
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
