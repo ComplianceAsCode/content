@@ -121,8 +121,9 @@ jobs:
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_bash/test_suite.log
         id: check_results_bash
+        continue-on-error: true
       - name: Upload logs in case of failure
-        if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.conclusion == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: actions/upload-artifact@v2
         with:
           name: logs_bash
@@ -134,8 +135,9 @@ jobs:
         if: ${{steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_ansible/test_suite.log
         id: check_results_ansible
+        continue-on-error: true
       - name: Upload logs in case of failure
-        if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.conclusion == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: actions/upload-artifact@v2
         with:
           name: logs_ansible
@@ -146,5 +148,5 @@ jobs:
         with:
           name: ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
-        if: ${{ (steps.check_results_bash.conclusion == 'success' || steps.check_results_ansible.conclusion == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{ (steps.check_results_bash.outcome == 'success' || steps.check_results_ansible.outcome == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: exit 1
