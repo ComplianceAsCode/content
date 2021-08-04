@@ -74,3 +74,7 @@ template:
     name: audit_rules_dac_modification
     vars:
         attr: fchmod
+        syscall_grouping:
+          - chmod
+          - fchmod
+          - fchmodat
