@@ -1128,8 +1128,10 @@ selections:
     # RHEL-08-040270
     - sysctl_net_ipv4_conf_default_send_redirects
 
-    # RHEL-08-040280
+    # RHEL-08-040279
     - sysctl_net_ipv4_conf_all_accept_redirects
+
+    # RHEL-08-040280
     - sysctl_net_ipv6_conf_all_accept_redirects
 
     # RHEL-08-040281
