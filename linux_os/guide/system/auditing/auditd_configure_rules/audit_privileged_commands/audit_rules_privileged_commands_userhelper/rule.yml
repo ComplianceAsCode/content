@@ -1,3 +1,7 @@
+{{%- if product in ["rhel8", "rhel9"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4
@@ -10,11 +14,11 @@ description: |-
     configured to use the <tt>augenrules</tt> program to read audit rules during
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/userhelper -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path=/usr/sbin/userhelper {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/userhelper -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path=/usr/sbin/userhelper {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by

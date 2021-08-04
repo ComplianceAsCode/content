@@ -1,3 +1,7 @@
+{{%- if product in ["rhel8", "rhel9", "sle12", "sle15"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
@@ -10,19 +14,11 @@ description: |-
     daemon is configured to use the <tt>augenrules</tt> program to read audit rules
     during daemon startup (the default), add the following lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% else %}}
-    <pre>-a always,exit -F path=/usr/bin/chcon -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% endif %}}
+    <pre>-a always,exit -F path=/usr/bin/chcon {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file:
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% else %}}
-    <pre>-a always,exit -F path=/usr/bin/chcon -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% endif %}}
+    <pre>-a always,exit -F path=/usr/bin/chcon {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -73,11 +69,7 @@ ocil: |-
     To verify that execution of the command is being audited, run the following command:
     <pre>$ sudo grep "path=/usr/bin/chcon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     The output should return something similar to:
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% else %}}
-    <pre>-a always,exit -F path=/usr/bin/chcon -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% endif %}}
+    <pre>-a always,exit -F path=/usr/bin/chcon {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 template:
     name: audit_rules_privileged_commands
