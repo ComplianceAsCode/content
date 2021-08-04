@@ -1104,8 +1104,10 @@ selections:
     # RHEL-08-040230
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
 
-    # RHEL-08-040240
+    # RHEL-08-040239
     - sysctl_net_ipv4_conf_all_accept_source_route
+
+    # RHEL-08-040240
     - sysctl_net_ipv6_conf_all_accept_source_route
 
     # RHEL-08-040250
