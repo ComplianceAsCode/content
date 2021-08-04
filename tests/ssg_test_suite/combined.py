@@ -112,7 +112,7 @@ def perform_combined_check(options):
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
     for profile in options.target:
-        # Let's keep track of originaly targeted profile
+        # Let's keep track of originally targeted profile
         checker.profile = profile
         target_rules = checker._generate_target_rules(profile)
 
