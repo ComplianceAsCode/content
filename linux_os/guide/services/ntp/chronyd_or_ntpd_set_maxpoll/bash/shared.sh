@@ -3,8 +3,14 @@
 {{{ bash_instantiate_variables("var_time_service_set_maxpoll") }}}
 
 
+{{% if 'ubuntu' not in product %}}
+pof="/usr/sbin/pidof"
+{{% else %}}
+pof="/bin/pidof"
+{{% endif %}}
+
 config_file="/etc/ntp.conf"
-/usr/sbin/pidof ntpd || config_file="{{{ chrony_conf_path }}}"
+$pof ntpd || config_file="{{{ chrony_conf_path }}}"
 
 
 # Set maxpoll values to var_time_service_set_maxpoll
