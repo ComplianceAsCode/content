@@ -140,28 +140,37 @@ do
 		fi
 	done
 
-	# Check if the syscall we want is present in any of the similar existing rules
-	for rule in "${candidate_rules[@]}"
-	do
-		rule_syscalls=$(echo "$rule" | grep -o -P '(-S [\w,]+)+' | xargs)
-		grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
-		if [ $? -eq 0 ]
+	if [[ $syscall ]]
+	then
+		# Check if the syscall we want is present in any of the similar existing rules
+		for rule in "${candidate_rules[@]}"
+		do
+			rule_syscalls=$(echo "$rule" | grep -o -P '(-S [\w,]+)+' | xargs)
+			grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
+			if [ $? -eq 0 ]
+			then
+				# We found a rule with the syscall we want
+				return $retval
+			fi
+
+			# Check if this rule can be grouped with our target syscall and keep track of it
+			for syscall_g in "${syscall_grouping[@]}"
+			do
+				if grep -q -- "\b${syscall_g}\b" <<< "$rule_syscalls"
+				then
+					local file_to_edit=${audit_file}
+					local rule_to_edit=${rule}
+					local rule_syscalls_to_edit=${rule_syscalls}
+				fi
+			done
+		done
+	else
+		# If there is any candidate rule, it is compliant.
+		if [[ $candidate_rules ]]
 		then
-			# We found a rule with the syscall we want
 			return $retval
 		fi
-
-		# Check if this rule can be grouped with our target syscall and keep track of it
-		for syscall_g in "${syscall_grouping[@]}"
-		do
-			if grep -q -- "\b${syscall_g}\b" <<< "$rule_syscalls"
-			then
-				local file_to_edit=${audit_file}
-				local rule_to_edit=${rule}
-				local rule_syscalls_to_edit=${rule_syscalls}
-			fi
-		done
-	done
+	fi
 done
 
 
@@ -173,7 +182,11 @@ done
 if [ -z ${rule_to_edit+x} ]
 then
 	# Build full_rule while avoid adding double spaces when other_filters is empty
-	local full_rule="$action_arch_filters -S $syscall $([[ $other_filters ]] && echo "$other_filters ")$auid_filters -F key=$key"
+	if [[ $syscall ]]
+	then
+		local syscall_filters="-S $syscall"
+	fi
+	local full_rule="$action_arch_filters $([[ $syscall_filters ]] && echo "$syscall_filters ")$([[ $other_filters ]] && echo "$other_filters ")$auid_filters -F key=$key"
 	echo "$full_rule" >> "$default_file"
 else
 	# Check if the syscalls are declared as a comma separated list or
