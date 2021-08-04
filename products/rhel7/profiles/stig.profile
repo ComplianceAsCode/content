@@ -1,9 +1,9 @@
 documentation_complete: true
 
 metadata:
-    version: V3R3
+    version: V3R4
     SMEs:
-        - carlosmmatos
+        - ggbecker
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R3.
+    DISA STIG for Red Hat Enterprise Linux V3R4.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
