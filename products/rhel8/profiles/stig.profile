@@ -591,8 +591,12 @@ selections:
     # - accounts_authorized_local_users
 
     # RHEL-08-020330
-    - no_empty_passwords
     - sshd_disable_empty_passwords
+
+    # RHEL-08-020331
+    - no_empty_passwords
+
+    # RHEL-08-020332
 
     # RHEL-08-020340
     - display_login_attempts
