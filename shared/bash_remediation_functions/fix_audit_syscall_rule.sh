@@ -1,4 +1,3 @@
-# Function to fix syscall audit rule for given system call. It is
 # based on example audit syscall rule definitions as outlined in
 # /usr/share/doc/audit-2.3.7/stig.rules file provided with the audit
 # package. It will combine multiple system calls belonging to the same
@@ -89,18 +88,14 @@ then
 # If rule isn't defined yet, add '/etc/audit/rules.d/$key.rules' to the list for inspection
 elif [ "$tool" == 'augenrules' ]
 then
-	matches=()
 	default_file="/etc/audit/rules.d/${key}.rules"
 	# As other_filters may include paths, lets use a different delimiter for it
-	readarray -t matches < <(sed -s -n -e "/${action_arch_filters}/!d" -e "\#${other_filters}#!d" -e "/${auid_filters}/!d" /etc/audit/rules.d/*.rules)
+	# The "F" script expression tells sed to print the filenames where the expressions matched
+	readarray -t files_to_inspect < <(sed -s -n -e "/${action_arch_filters}/!d" -e "\#${other_filters}#!d" -e "/${auid_filters}/!d" -e "F" /etc/audit/rules.d/*.rules)
 	if [ $? -ne 0 ]
 	then
 		retval=1
 	fi
-	for match in "${matches[@]}"
-	do
-		files_to_inspect+=("${match}")
-	done
 	# Case when particular rule isn't defined in /etc/audit/rules.d/*.rules yet
 	if [ ${#files_to_inspect[@]} -eq "0" ]
 	then
