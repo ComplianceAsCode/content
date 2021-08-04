@@ -15,6 +15,15 @@ from . import utils
 
 
 def load_sce_and_metadata(file_path, local_env_yaml):
+    """
+    For the given SCE audit file (file_path) under the specified environment
+    (local_env_yaml), parse the file while expanding Jinja macros and read any
+    metadata headers the file contains. Note that the last keyword of a
+    specified type is the recorded one.
+
+    Returns (audit_content, metadata).
+    """
+
     raw_content = process_file_with_macros(file_path, local_env_yaml)
 
     metadata = dict()
@@ -40,6 +49,13 @@ def load_sce_and_metadata(file_path, local_env_yaml):
 
 
 def _check_is_applicable_for_product(metadata, product):
+    """
+    Validates whether or not the specified check is applicable for this
+    product. Different from build_ovals.py in that this operates directly
+    on the parsed metadata and doesn't have to deal with matching XML
+    elements.
+    """
+
     if 'platform' not in metadata:
         return True
 
@@ -64,6 +80,10 @@ def _check_is_loaded(already_loaded, filename):
 
 
 def checks(env_yaml, yaml_path, sce_dirs, output):
+    """
+    Walks the build system and builds all SCE checks (and metadata entry)
+    into the output directory.
+    """
     product = utils.required_key(env_yaml, "product")
     included_checks_count = 0
     reversed_dirs = sce_dirs[::-1]
@@ -71,6 +91,8 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
     local_env_yaml = dict()
     local_env_yaml.update(env_yaml)
 
+    # We maintain the same search structure as build_ovals.py even though we
+    # don't currently have any content under shared/checks/sce.
     product_dir = os.path.dirname(yaml_path)
     relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
     guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
@@ -80,6 +102,8 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
         for rd in additional_content_directories
     ]
 
+    # First walk all rules under the product. These have higher priority than any
+    # out-of-tree SCE checks.
     for _dir_path in find_rule_dirs_in_paths([guide_dir] + add_content_dirs):
         rule_id = get_rule_dir_id(_dir_path)
 
@@ -125,6 +149,10 @@ def checks(env_yaml, yaml_path, sce_dirs, output):
             included_checks_count += 1
             already_loaded[rule_id] = metadata
 
+    # Finally take any shared SCE checks and build them as well. Note that
+    # there's no way for shorthand generation to include them if they do NOT
+    # align with a particular rule_id, so it is suggested that the former
+    # method be used.
     for sce_dir in reversed_dirs:
         if not os.path.isdir(sce_dir):
             continue

@@ -1,5 +1,31 @@
 #!/usr/bin/env python
 
+"""
+The build_sce.py script generates SCE (Script Check Engine) content that
+supplements the standardized OVAL-based checks. This script generates
+two major types of output artifacts:
+
+   - <build>/<product>/checks/sce/metadata.json
+   - <build>/<product>/checks/sce/<scripts>
+
+The former is a map of information about all included SCE content in the
+build system that is applicable for the specified product. It is used by
+the shorthand generation to place SCE elements in the correct places. It
+takes the following structure:
+
+    rule_id -> struct {
+        platforms: str/list  // What platforms the specified script applies to.
+        check-import?: str/list in {stdout, stderr}, // Whether to preserve stdout or
+                                                     // stderr (or both).
+        check-export?: str/list of equals-separated values // List of env_var->xccdf_var mappings.
+        complex-check?: str in {AND, OR} // Operator to use for combining SCE and OVAL
+        filename: path under checks/sce that this script is in.
+    }
+
+Note that every SCE script must begin with a shebang, otherwise OpenSCAP
+will fail to interpret (thinking it is XML)!
+"""
+
 from __future__ import print_function
 
 import os
