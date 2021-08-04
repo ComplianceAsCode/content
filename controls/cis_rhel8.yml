@@ -1373,8 +1373,9 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    automated: yes
-    rules:
+    automated: no
+    related_rules:
+      # The rule below is almost correct but cannot be used as it does not set the perm=x flag.
       - audit_rules_privileged_commands
 
   - id: 4.1.14
