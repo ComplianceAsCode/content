@@ -81,3 +81,10 @@ template:
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: truncate
+        syscall_grouping:
+          - creat
+          - ftruncate
+          - truncate
+          - open
+          - openat
+          - open_by_handle_at
