@@ -39,7 +39,7 @@ ocil_clause: 'there is no output'
 
 ocil: |-
     To verify that auditing is configured for system administrator actions, run the following command:
-    Configure the SUSE operating system to generate an audit record for any all modifications to the "faillog" file occur.
+    Configure the operating system to generate an audit record for any all modifications to the "faillog" file occur.
     Add or update the following rules in the "/etc/audit/audit.rules" file:
     -w /var/log/faillog -p wa -k logins
     The audit daemon must be restarted for the changes to take effect.
