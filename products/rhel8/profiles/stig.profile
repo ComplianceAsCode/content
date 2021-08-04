@@ -1110,8 +1110,10 @@ selections:
     # RHEL-08-040240
     - sysctl_net_ipv6_conf_all_accept_source_route
 
-    # RHEL-08-040250
+    # RHEL-08-040249
     - sysctl_net_ipv4_conf_default_accept_source_route
+
+    # RHEL-08-040250
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # RHEL-08-040260
