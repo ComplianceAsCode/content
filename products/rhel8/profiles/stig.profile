@@ -683,6 +683,9 @@ selections:
     # RHEL-08-030180
     - package_audit_installed
 
+    # RHEL-08-030181
+    - service_auditd_enabled
+
     # RHEL-08-030190
     - audit_rules_privileged_commands_su
 
