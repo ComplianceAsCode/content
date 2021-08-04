@@ -10,7 +10,7 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible expat libxslt python3-ansible-lint linkchecker
+        run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible expat libxslt python3-ansible-lint linkchecker java-latest-openjdk unar
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
@@ -19,6 +19,12 @@ jobs:
       - name: Build All
         run: make -j2 all
         working-directory: ./build
+      - name: Get SCAPVAL
+        run: wget https://csrc.nist.gov/CSRC/media/Projects/Security-Content-Automation-Protocol/tools/scap/1.3/SCAP-Content-Validation-Tool-1.3.5.zip
+      - name: Unpack SCAPVAL
+        run: mkdir -p /opt/scapval/ && unar SCAP-Content-Validation-Tool-1.3.5.zip -o /opt/scapval/
+      - name: Run SCAP Validation (1.3)
+        run: $GITHUB_WORKSPACE/tests/run_scapval.py --scap-version 1.3 --scapval-path /opt/scapval/scapval-1.3.5.jar --build-dir $GITHUB_WORKSPACE/build
       - name: Lint Check
         # Performs ansible-lint and yamllint checks on generated ansible playbooks
         run: ctest -j2 -R ansible-playbook --output-on-failure
