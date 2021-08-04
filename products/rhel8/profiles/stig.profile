@@ -118,8 +118,10 @@ selections:
     - accounts_password_all_shadowed_sha512
 
     # RHEL-08-010130
-    - accounts_password_pam_unix_rounds_system_auth
     - accounts_password_pam_unix_rounds_password_auth
+
+    # RHEL-08-010131
+    - accounts_password_pam_unix_rounds_system_auth
 
     # RHEL-08-010140
     - grub2_uefi_password
