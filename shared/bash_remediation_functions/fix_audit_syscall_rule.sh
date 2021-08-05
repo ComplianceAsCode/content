@@ -42,7 +42,8 @@ local tool="$1"
 local action_arch_filters="$2"
 local other_filters="$3"
 local auid_filters="$4"
-local syscall="$5"
+local syscall_a
+read -a syscall_a <<< "$5"
 local syscall_grouping
 read -a syscall_grouping <<< "$6"
 local key="$7"
@@ -140,16 +141,25 @@ do
 		fi
 	done
 
-	if [[ $syscall ]]
+	if [[ ${#syscall_a[@]} -ge 1 ]]
 	then
 		# Check if the syscall we want is present in any of the similar existing rules
 		for rule in "${candidate_rules[@]}"
 		do
 			rule_syscalls=$(echo "$rule" | grep -o -P '(-S [\w,]+)+' | xargs)
-			grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
-			if [ $? -eq 0 ]
+			local all_syscalls_found=0
+			for syscall in "${syscall_a[@]}"
+			do
+				grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
+				if [ $? -eq 1 ]
+				then
+					# A syscall was not found in the candidate rule
+					all_syscalls_found=1
+				fi
+			done
+			if [[ $all_syscalls_found -eq 0 ]]
 			then
-				# We found a rule with the syscall we want
+				# We found a rule with all the syscall(s) we want
 				return $retval
 			fi
 
@@ -182,21 +192,35 @@ done
 if [ -z ${rule_to_edit+x} ]
 then
 	# Build full_rule while avoid adding double spaces when other_filters is empty
-	if [[ $syscall ]]
+	if [[ ${syscall_a} ]]
 	then
-		local syscall_filters="-S $syscall"
+		local syscall_filters=""
+		for syscall in "${syscall_a[@]}"
+		do
+			syscall_filters+="-S $syscall "
+		done
 	fi
-	local full_rule="$action_arch_filters $([[ $syscall_filters ]] && echo "$syscall_filters ")$([[ $other_filters ]] && echo "$other_filters ")$auid_filters -F key=$key"
+	local full_rule="$action_arch_filters $([[ $syscall_filters ]] && echo "$syscall_filters")$([[ $other_filters ]] && echo "$other_filters ")$auid_filters -F key=$key"
 	echo "$full_rule" >> "$default_file"
 else
 	# Check if the syscalls are declared as a comma separated list or
 	# as multiple -S parameters
 	if grep -q -- "," <<< "${rule_syscalls_to_edit}"
 	then
-		new_grouped_syscalls="${rule_syscalls_to_edit},${syscall}"
+		delimiter=","
 	else
-		new_grouped_syscalls="${rule_syscalls_to_edit} -S ${syscall}"
+		delimiter=" -S "
 	fi
+	new_grouped_syscalls="${rule_syscalls_to_edit}"
+	for syscall in "${syscall_a[@]}"
+	do
+		grep -q -- "\b${syscall}\b" <<< "${rule_syscalls_to_edit}"
+		if [ $? -eq 1 ]
+		then
+			# A syscall was not found in the candidate rule
+			new_grouped_syscalls+="${delimiter}${syscall}"
+		fi
+	done
 
 	# Group the syscall in the rule
 	sed -i -e "\#${rule_to_edit}#s#${rule_syscalls_to_edit}#${new_grouped_syscalls}#" "$file_to_edit"
