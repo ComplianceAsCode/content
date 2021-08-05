@@ -87,6 +87,7 @@ selections:
     - service_telnet_disabled
     - package_telnet-server_removed
     - package_telnet_removed
+    - sshd_use_directory_configuration
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
