@@ -87,6 +87,11 @@ def test_controls_levels():
     assert len(low_controls) == 4
     assert len(medium_controls) == 5
 
+    # test overriding of variables in levels
+    assert c_2.variables["var_password_pam_minlen"] == "1"
+    assert c_3.variables["var_password_pam_minlen"] == "2"
+    assert c_4b.variables["var_password_pam_minlen"] == "3"
+
 
 def test_controls_load_product():
     ssg_root = \
