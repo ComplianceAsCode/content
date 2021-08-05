@@ -1845,17 +1845,14 @@ controls:
       - var_password_pam_minclass=4
       - var_password_pam_minlen=14
 
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/7337
   - id: 5.4.2
     title: Ensure lockout for failed password attempts is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
-    rules:
-      - accounts_passwords_pam_faillock_deny
-      - accounts_passwords_pam_faillock_unlock_time
-      - var_accounts_passwords_pam_faillock_deny=5
-      - var_accounts_passwords_pam_faillock_unlock_time=900
+    automated: no
 
   - id: 5.4.3
     title: Ensure password reuse is limited (Automated)
