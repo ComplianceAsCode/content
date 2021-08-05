@@ -1910,14 +1910,12 @@ controls:
       - accounts_password_warn_age_login_defs
       - var_accounts_password_warn_age_login_defs=7
 
-  # TODO
-  # Rule doesn't check list of users
   - id: 5.5.1.4
     title: Ensure inactive password lock is 30 days or less (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially  # The rule below does not validate wheter all current users' INACTIVE setting conforms to the control.
     rules:
       - account_disable_post_pw_expiration
       - var_account_disable_post_pw_expiration=30
