@@ -552,6 +552,7 @@ selections:
     - accounts_password_minlen_login_defs
 
     # RHEL-08-020240
+    - account_unique_id
 
     # RHEL-08-020250
     - sssd_enable_smartcards
