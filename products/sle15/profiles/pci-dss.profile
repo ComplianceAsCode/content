@@ -71,6 +71,12 @@ selections:
     - audit_rules_sysadmin_actions
     - dconf_gnome_screensaver_idle_activation_enabled
     - display_login_attempts
+    - configure_bind_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_kerberos_crypto_policy
+    - configure_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_ssh_crypto_policy
     - ensure_logrotate_activated
     - ensure_gpgcheck_never_disabled
     - file_groupowner_grub2_cfg
