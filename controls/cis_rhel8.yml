@@ -1905,7 +1905,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially  # The rule below does not validate whether all current users' PASS_WARN_AGE setting conforms to the control.
     rules:
       - accounts_password_warn_age_login_defs
       - var_accounts_password_warn_age_login_defs=7
