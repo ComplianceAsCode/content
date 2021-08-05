@@ -1645,7 +1645,12 @@ controls:
       - l1_server
       - l1_workstation
     automated: yes
+    # The CIS benchmark is not opinionated about which loglevel is selected
+    # here. Here, this profile uses VERBOSE by default, as it allows for
+    # the capture of login and logout activity as well as key fingerprints.
     rules:
+      - sshd_set_loglevel_verbose
+    related_rules:
       - sshd_set_loglevel_info
 
   - id: 5.2.6
