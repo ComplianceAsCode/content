@@ -1885,7 +1885,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially  # The rule below does not validate whether all current users' PASS_MAX_DAYS setting conforms to the control.
     rules:
       - accounts_maximum_age_login_defs
       - var_accounts_maximum_age_login_defs=365
