@@ -25,6 +25,7 @@ selections:
     - account_disable_post_pw_expiration
     - account_unique_name
     - accounts_maximum_age_login_defs
+    - accounts_password_all_shadowed
     - accounts_password_pam_lcredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
