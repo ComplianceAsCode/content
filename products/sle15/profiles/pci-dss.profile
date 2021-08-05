@@ -65,6 +65,7 @@ selections:
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
     - display_login_attempts
+    - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - gid_passwd_group_same
     - no_empty_passwords
