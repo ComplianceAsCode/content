@@ -1777,6 +1777,13 @@ controls:
       - sshd_set_maxstartups
       - var_sshd_set_maxstartups=10:30:60
 
+  # The title of this control does not appear to match the suggested audit and
+  # remediation in the CIS Benchmark version 1.0.1 - this profile uses the
+  # value from the audit and remediation sections of the benchmark rather than
+  # from the title.
+  #
+  # An upstream ticket has been opened about this issue:
+  # https://workbench.cisecurity.org/community/14/tickets/13414
   - id: 5.2.19
     title: Ensure SSH MaxSessions is set to 4 or less (Automated)
     levels:
@@ -1785,7 +1792,7 @@ controls:
     automated: yes
     rules:
       - sshd_set_max_sessions
-      - var_sshd_max_sessions=4
+      - var_sshd_max_sessions=10
 
   - id: 5.2.20
     title: Ensure system-wide crypto policy is not over-ridden (Automated)
