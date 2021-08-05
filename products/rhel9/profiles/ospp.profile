@@ -58,6 +58,7 @@ selections:
 
     ### Services
     # sshd
+    - sshd_use_directory_configuration
     - sshd_disable_root_login
     - sshd_enable_strictmodes
     - disable_host_auth

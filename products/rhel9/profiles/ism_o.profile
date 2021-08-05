@@ -56,6 +56,7 @@ selections:
   ## Authentication hardening
   ## Identifiers 1546 / 0974 / 1173 / 1504 / 1505 / 1401 / 1559 / 1560
   ## 1561 / 1546 / 0421 / 1557 / 0422 / 1558 / 1403 / 0431
+  - sshd_use_directory_configuration
   - sshd_max_auth_tries_value=5
   - disable_host_auth
   - require_emergency_target_auth
