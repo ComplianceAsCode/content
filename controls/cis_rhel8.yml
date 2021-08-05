@@ -1876,7 +1876,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially  # The rule below does not check the /etc/pam.d/password-auth file mentioned in the benchmark.
     rules:
       - set_password_hashing_algorithm_systemauth
 
