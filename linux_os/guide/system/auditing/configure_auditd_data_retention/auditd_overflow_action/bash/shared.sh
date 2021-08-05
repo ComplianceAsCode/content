@@ -7,6 +7,7 @@
 {{{set_config_file(path="/etc/audit/auditd.conf",
                   parameter="overflow_action",
                   value="syslog",
-                  separator="=",
-                  separator_regex="=",
+                  insensitive=true,
+                  separator=" = ",
+                  separator_regex="\s*=\s*",
                   prefix_regex="^\s*")}}}
