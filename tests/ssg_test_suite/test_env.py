@@ -3,6 +3,7 @@ from __future__ import print_function
 import contextlib
 import sys
 import os
+import re
 import time
 import subprocess
 import json
@@ -68,6 +69,21 @@ class TestEnv(object):
         self.ssh_additional_options = []
 
         self.product = None
+
+        self.have_local_oval_graph = False
+        p = subprocess.run(['arf-to-graph', '--version'], capture_output=True)
+        if p.returncode == 0:
+            self.have_local_oval_graph = True
+
+    def arf_to_html(self, arf_filename):
+        if not self.have_local_oval_graph:
+            return
+
+        html_filename = re.sub(r"\barf\b", "graph", arf_filename)
+        html_filename = re.sub(r".xml", ".html", html_filename)
+
+        cmd = ['arf-to-graph', '--all-in-one', '--output', html_filename, arf_filename, '.']
+        p = subprocess.run(cmd, capture_output=True)
 
     def start(self):
         """

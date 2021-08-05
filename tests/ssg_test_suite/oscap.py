@@ -11,6 +11,7 @@ import datetime
 import socket
 import sys
 import time
+import subprocess
 
 from ssg.constants import OSCAP_PROFILE_ALL_ID
 
@@ -365,8 +366,8 @@ class GenericRunner(object):
             LogHelper.log_preloaded('pass')
             if self.clean_files:
                 files_to_remove = [self.verbose_path]
-                if stage in ['initial', 'final']:
-                    files_to_remove.append(self.results_path)
+                if stage in ['initial', 'remediation', 'final']:
+                    files_to_remove.append(self.arf_path)
 
                 for fname in tuple(files_to_remove):
                     try:
@@ -392,7 +393,7 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def initial(self):
-        self.command_options += ['--results', self.results_path]
+        self.command_options += ['--results-arf', self.arf_path]
         result = self.make_oscap_call()
         return result
 
@@ -400,7 +401,7 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def final(self):
-        self.command_options += ['--results', self.results_path]
+        self.command_options += ['--results-arf', self.arf_path]
         result = self.make_oscap_call()
         return result
 
@@ -424,7 +425,7 @@ class GenericRunner(object):
 
 class ProfileRunner(GenericRunner):
     def _get_arf_file(self):
-        return '{0}-initial-arf.xml'.format(self.profile)
+        return '{0}-{self.stage}-arf.xml'.format(self.profile, self.stage)
 
     def _get_verbose_file(self):
         return '{0}-{1}'.format(self.profile, self.stage)
@@ -451,6 +452,8 @@ class ProfileRunner(GenericRunner):
         returncode, self._oscap_output = self.environment.scan(
             self.command_options + self.command_operands, self.verbose_path)
 
+        self.environment.arf_to_html(self.arf_path)
+
         if returncode not in [0, 2]:
             logging.error(('Profile run should end with return code 0 or 2 '
                            'not "{0}" as it did!').format(returncode))
@@ -467,6 +470,7 @@ class RuleRunner(GenericRunner):
         )
 
         self.rule_id = rule_id
+        self.short_rule_id = re.sub(r'.*content_rule_', '', self.rule_id)
         self.context = None
         self.script_name = script_name
         self.clean_files = not dont_clean
@@ -475,17 +479,17 @@ class RuleRunner(GenericRunner):
         self._oscap_output = ''
 
     def _get_arf_file(self):
-        return '{0}-initial-arf.xml'.format(self.rule_id)
+        return '{0}-{1}-{2}-arf.xml'.format(self.short_rule_id, self.script_name, self.stage)
 
     def _get_verbose_file(self):
-        return '{0}-{1}-{2}'.format(self.rule_id, self.script_name, self.stage)
+        return '{0}-{1}-{2}'.format(self.short_rule_id, self.script_name, self.stage)
 
     def _get_report_file(self):
-        return '{0}-{1}-{2}'.format(self.rule_id, self.script_name, self.stage)
+        return '{0}-{1}-{2}'.format(self.short_rule_id, self.script_name, self.stage)
 
     def _get_results_file(self):
         return '{0}-{1}-{2}-results-{3}'.format(
-            self.rule_id, self.script_name, self.profile, self.stage)
+            self.short_rule_id, self.script_name, self.profile, self.stage)
 
     def make_oscap_call(self):
         self.prepare_online_scanning_arguments()
@@ -494,6 +498,8 @@ class RuleRunner(GenericRunner):
             ['--rule', self.rule_id])
         returncode, self._oscap_output = self.environment.scan(
             self.command_options + self.command_operands, self.verbose_path)
+
+        self.environment.arf_to_html(self.arf_path)
 
         return self._analyze_output_of_oscap_call()
 
@@ -584,10 +590,6 @@ class AnsibleProfileRunner(ProfileRunner):
 
 
 class BashProfileRunner(ProfileRunner):
-    def initial(self):
-        self.command_options += ['--results-arf', self.arf_path]
-        return super(BashProfileRunner, self).initial()
-
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.profile)
@@ -598,6 +600,7 @@ class BashProfileRunner(ProfileRunner):
 class OscapRuleRunner(RuleRunner):
     def remediation(self):
         self.command_options += ['--remediate']
+        self.command_options += ['--results-arf', self.arf_path]
         return self.make_oscap_call()
 
     def final(self):
@@ -607,10 +610,6 @@ class OscapRuleRunner(RuleRunner):
 
 
 class BashRuleRunner(RuleRunner):
-    def initial(self):
-        self.command_options += ['--results-arf', self.arf_path]
-        return super(BashRuleRunner, self).initial()
-
     def remediation(self):
 
         formatting = self._get_formatting_dict_for_remediation()
@@ -621,10 +620,6 @@ class BashRuleRunner(RuleRunner):
 
 
 class AnsibleRuleRunner(RuleRunner):
-    def initial(self):
-        self.command_options += ['--results-arf', self.arf_path]
-        return super(AnsibleRuleRunner, self).initial()
-
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.rule_id)
