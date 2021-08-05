@@ -194,13 +194,15 @@ then
 	# Build full_rule while avoid adding double spaces when other_filters is empty
 	if [[ ${syscall_a} ]]
 	then
-		local syscall_filters=""
+		local syscall_string=""
 		for syscall in "${syscall_a[@]}"
 		do
-			syscall_filters+="-S $syscall "
+			syscall_string+=" -S $syscall"
 		done
 	fi
-	local full_rule="$action_arch_filters $([[ $syscall_filters ]] && echo "$syscall_filters")$([[ $other_filters ]] && echo "$other_filters ")$auid_filters -F key=$key"
+	local other_string=$([[ $other_filters ]] && echo " $other_filters")
+	local auid_string=$([[ $auid_filters ]] && echo " $auid_filters")
+	local full_rule="${action_arch_filters}${syscall_string}${other_string}${auid_string} -F key=${key}"
 	echo "$full_rule" >> "$default_file"
 else
 	# Check if the syscalls are declared as a comma separated list or
