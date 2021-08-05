@@ -1,8 +1,8 @@
 import collections
 import logging
 import os
+import copy
 from glob import glob
-from collections import OrderedDict
 
 import ssg.build_yaml
 import ssg.yaml
@@ -154,7 +154,7 @@ class Policy():
 
     def get_level_with_ancestors(self, level_id):
         # use OrderedDict for Python2 compatibility instead of ordered set
-        levels = OrderedDict()
+        levels = collections.OrderedDict()
         level = self.get_level(level_id)
         levels[level] = ""
         if level.inherits_from:
@@ -201,24 +201,39 @@ class ControlsManager():
     def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
         levels = policy.get_level_with_ancestors(level_id)
+        print ("getting levels of " + level_id)
+        print ([ l.id for l in levels.keys()])
         # we use OrderedDict here with empty values instead of ordered set
         # cause we want to be compatible with python 2
-        level_ids = OrderedDict()
+        level_ids = collections.OrderedDict()
         for lv in levels.keys():
             level_ids[lv.id] = ""
-
+        print (level_ids.keys())
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
         defined_variables = []
         # we will go level by level, from top to bottom
         # this is done to enable overriding of variables by higher levels
         for lv in level_ids.keys():
+            print ("going through level " +lv)
             for c in all_policy_controls:
+                print (c.levels)
                 if lv in c.levels:
                     # if the control has a variable, check if it is not already defined
-                    if c.variables.keys().isdisjoint(defined_variables):
+                    variables = list(c.variables.keys())
+                    if len(variables) == 0:
                         eligible_controls.append(c)
-                        defined_variables += list(c.variables.keys())
+                    for var in variables:
+                        if var in defined_variables:
+                            # if it is, create new instance of the control and remove the variable
+                            # we are going from the top level to the bottom
+                            # so we don't want to overwrite variables
+                            new_c = copy.deepcopy(c)
+                            del new_c.variables[var]
+                            eligible_controls.append(new_c)
+                        else:
+                            defined_variables.append(var)
+                            eligible_controls.append(c)
         return eligible_controls
 
     def get_all_controls(self, policy_id):
