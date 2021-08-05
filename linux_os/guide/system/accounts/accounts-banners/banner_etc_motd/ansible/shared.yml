@@ -5,13 +5,7 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("login_banner_text") }}}
 
-- name: "{{{ rule_title }}} - remove incorrect banner"
-  file:
-    state: absent
-    path: /etc/motd
-
-- name: "{{{ rule_title }}} - add correct banner"
-  lineinfile:
+- name: "{{{ rule_title }}} - ensure correct banner"
+  copy:
     dest: /etc/motd
-    line: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
-    create: yes
+    content: '{{{ ansible_deregexify_banner_etc_issue("login_banner_text") }}}'
