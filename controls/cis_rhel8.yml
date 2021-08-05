@@ -1861,9 +1861,15 @@ controls:
       - l1_server
       - l1_workstation
     automated: yes
+    notes: |-
+      Usage of pam_unix.so module together with "remember" option is deprecated and is not supported by this policy interpretation.
+      See here for more details about pam_unix.so:
+      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
     rules:
-      - accounts_password_pam_unix_remember
-      - var_password_pam_unix_remember=5
+      - accounts_password_pam_pwhistory_remember_password_auth
+      - accounts_password_pam_pwhistory_remember_system_auth
+      - var_password_pam_remember_control_flag=required
+      - var_password_pam_remember=5
 
   - id: 5.4.4
     title: Ensure password hashing algorithm is SHA-512 (Automated)
