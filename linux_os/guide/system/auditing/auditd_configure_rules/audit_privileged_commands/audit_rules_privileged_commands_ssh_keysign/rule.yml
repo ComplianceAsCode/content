@@ -1,3 +1,13 @@
+{{%- if product in ["rhel8", "rhel9", "sle12", "sle15"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
+
+{{%- if product in ["sle12", "sle15"] %}}
+  {{%- set ssh_keysign_path="/usr/lib/ssh/ssh-keysign" %}}
+{{%- else %}}
+  {{%- set ssh_keysign_path="/usr/libexec/openssh/ssh-keysign" %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
@@ -10,15 +20,11 @@ description: |-
     configured to use the <tt>augenrules</tt> program to read audit rules during
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path={{% if product in ["sle12", "sle15"] %}}/usr/lib/ssh/ssh-keysign
-    {{% else %}}/usr/libexec/openssh/ssh-keysign{{% endif %}} -F auid&gt;={{{ auid }}} 
-    -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ ssh_keysign_path }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
-    <pre>-a always,exit -F path={{% if product in ["sle12", "sle15"] %}}/usr/lib/ssh/ssh-keysign
-    {{% else %}}/usr/libexec/openssh/ssh-keysign{{% endif %}}
-    -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path={{{ ssh_keysign_path }}} {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -47,7 +53,7 @@ references:
     cis@ubuntu2004: 4.1.11
     cobit5: APO10.01,APO10.03,APO10.04,APO10.05,APO11.04,BAI03.05,DSS01.03,DSS03.05,DSS05.02,DSS05.04,DSS05.05,DSS05.07,MEA01.01,MEA01.02,MEA01.03,MEA01.04,MEA01.05,MEA02.01
     cui: 3.1.7
-    disa: CCI-000135,CCI-000172,CCI-002884
+    disa: CCI-000135,CCI-000169,CCI-000172,CCI-002884
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
     isa-62443-2009: 4.3.2.6.7,4.3.3.3.9,4.3.3.5.8,4.3.4.4.7,4.4.2.1,4.4.2.2,4.4.2.4
     isa-62443-2013: 'SR 2.10,SR 2.11,SR 2.12,SR 2.8,SR 2.9,SR 6.1,SR 6.2'
@@ -55,9 +61,10 @@ references:
     nist: AU-2(d),AU-12(c),AC-6(9),CM-6(a)
     nist-csf: DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.PT-1
     ospp: FAU_GEN.1.1.c
-    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
     stigid@ol7: OL07-00-030780
     stigid@rhel7: RHEL-07-030780
+    stigid@rhel8: RHEL-08-030320
     stigid@sle12: SLES-12-020320
     stigid@sle15: SLES-15-030060
     stigid@ubuntu2004: UBTU-20-010141
@@ -74,4 +81,6 @@ ocil: |-
 template:
     name: audit_rules_privileged_commands
     vars:
-        path: {{% if product in ["sle12", "sle15"] %}}/usr/lib/ssh/ssh-keysign{{% else %}}/usr/libexec/openssh/ssh-keysign{{% endif %}}
+        path: /usr/libexec/openssh/ssh-keysign
+        path@sle12: /usr/lib/ssh/ssh-keysign
+        path@sle15: /usr/lib/ssh/ssh-keysign

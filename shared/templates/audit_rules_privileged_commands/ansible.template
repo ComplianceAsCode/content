@@ -1,3 +1,6 @@
+{{%- if product in ["rhel8", "rhel9", "sle12", "sle15"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 # reboot = false
 # strategy = restrict
@@ -26,12 +29,11 @@
       - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
   when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched > 0
 
-{{% if product in ["sle12", "sle15"] %}}
 
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} {{{ perm_x }}}-F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
 
 # Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
@@ -39,23 +41,5 @@
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} {{{ perm_x }}}-F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
-
-{{% else %}}
-
-- name: Inserts/replaces the {{{ NAME }}} rule in rules.d
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: '-a always,exit -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
-    create: yes
-
-# Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
-
-- name: Inserts/replaces the {{{ NAME }}} rule in audit.rules
-  lineinfile:
-    path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
-    create: yes
-
-{{% endif %}}

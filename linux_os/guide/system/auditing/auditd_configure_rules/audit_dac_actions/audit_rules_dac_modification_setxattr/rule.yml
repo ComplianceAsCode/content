@@ -9,14 +9,26 @@ description: |-
     startup (the default), add the following line to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
+{{%- if product in ["rhel8", "rhel9"] %}}
+    <pre>-a always,exit -F arch=b32 -S setxattr -F auid=0 -F key=perm_mod</pre>
+{{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
+{{%- if product in ["rhel8", "rhel9"] %}}
+    <pre>-a always,exit -F arch=b64 -S setxattr -F auid=0 -F key=perm_mod</pre>
+{{%- endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file:
     <pre>-a always,exit -F arch=b32 -S setxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
+{{%- if product in ["rhel8", "rhel9"] %}}
+    <pre>-a always,exit -F arch=b32 -S setxattr -F auid=0 -F key=perm_mod</pre>
+{{%- endif %}}
     If the system is 64 bit then also add the following line:
     <pre>-a always,exit -F arch=b64 -S setxattr -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod</pre>
+{{%- if product in ["rhel8", "rhel9"] %}}
+    <pre>-a always,exit -F arch=b64 -S setxattr -F auid=0 -F key=perm_mod</pre>
+{{%- endif %}}
 
 rationale: |-
     The changing of file permissions could indicate that a user is attempting to
@@ -52,9 +64,10 @@ references:
     nist@sle15: AU-3,AU-3.1,AU-12(c),AU-12.1(iv),AU-12(a),AU-12.1(ii),MA-4(1)(a)
     ospp: FAU_GEN.1.1.c
     pcidss: Req-10.5.5
-    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000062-GPOS-00031,SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203
     stigid@ol7: OL07-00-030440
     stigid@rhel7: RHEL-07-030440
+    stigid@rhel8: RHEL-08-030270
     stigid@sle12: SLES-12-020370
     stigid@sle15: SLES-15-030220
     stigid@ubuntu2004: UBTU-20-010142
@@ -73,3 +86,5 @@ template:
     name: audit_rules_dac_modification
     vars:
         attr: setxattr
+        check_root_user@rhel8: "true"
+        check_root_user@rhel9: "true"

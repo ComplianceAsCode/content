@@ -1,3 +1,7 @@
+{{%- if product in ["rhel8", "rhel9", "sle12", "sle15"] %}}
+  {{%- set perm_x="-F perm=x " %}}
+{{%- endif %}}
+
 documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
@@ -10,11 +14,11 @@ description: |-
     configured to use the <tt>augenrules</tt> program to read audit rules during
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/unix_chkpwd -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path=/usr/sbin/unix_chkpwd {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
-    <pre>-a always,exit -F path=/usr/sbin/unix_chkpwd -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+    <pre>-a always,exit -F path=/usr/sbin/unix_chkpwd {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -52,9 +56,10 @@ references:
     nist: AC-2(4),AU-2(d),AU-3,AU-3.1,AU-12(a),AU-12(c),AU-12.1(ii),AU-12.1(iv),AC-6(9),CM-6(a),MA-4(1)(a)
     nist-csf: DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.PT-1
     ospp: FAU_GEN.1.1.c
-    srg: SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215,SRG-OS-000037-GPOS-00015
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215
     stigid@ol7: OL07-00-030640
     stigid@rhel7: RHEL-07-030640
+    stigid@rhel8: RHEL-08-030317
     stigid@sle12: SLES-12-020680
     stigid@sle15: SLES-15-030110
     vmmsrg: SRG-OS-000471-VMM-001910

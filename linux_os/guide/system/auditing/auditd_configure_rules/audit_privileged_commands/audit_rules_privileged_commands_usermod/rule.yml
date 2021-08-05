@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,ubuntu2004
+prodtype: rhel8,sle12,sle15,ubuntu2004
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - usermod'
 
@@ -10,19 +10,11 @@ description: |-
     configured to use the <tt>augenrules</tt> program to read audit rules during
     daemon startup (the default), add a line of the following form to a file with
     suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    {{% if 'ubuntu' in product %}}
     <pre>-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% else %}}
-    <pre>-a always,exit -F path=/usr/bin/usermod -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% endif %}}
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add a line of the following
     form to <tt>/etc/audit/audit.rules</tt>:
-    {{% if 'ubuntu' in product %}}
     <pre>-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% else %}}
-    <pre>-a always,exit -F path=/usr/bin/usermod -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
-    {{% endif %}}
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -39,13 +31,15 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-86027-0
     cce@sle12: CCE-83191-7
     cce@sle15: CCE-85600-5
 
 references:
     disa: CCI-000130,CCI-000169,CCI-000172,CCI-002884
     nist@sle12: AU-3,AU-12(a),AU-12(c),MA-4(1)(a)
-    srg: SRG-OS-000037-GPOS-00015
+    srg: SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215,SRG-OS-000466-GPOS-00210
+    stigid@rhel8: RHEL-08-030560
     stigid@sle12: SLES-12-020700
     stigid@sle15: SLES-15-030500
     stigid@ubuntu2004: UBTU-20-010176
@@ -61,7 +55,4 @@ ocil: |-
 template:
     name: audit_rules_privileged_commands
     vars:
-        path: /usr/bin/usermod
-        path@ubuntu1604: /usr/sbin/usermod
-        path@ubuntu1804: /usr/sbin/usermod
-        path@ubuntu2004: /usr/sbin/usermod
+        path: /usr/sbin/usermod

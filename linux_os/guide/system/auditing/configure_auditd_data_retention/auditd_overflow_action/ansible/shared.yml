@@ -3,6 +3,6 @@
 {{{ ansible_set_config_file(file="/etc/audit/auditd.conf",
                   parameter="overflow_action",
                   value="syslog",
-                  separator="=",
-                  separator_regex="=",
-                  prefix_regex="^\s*") }}}
+                  separator=" = ",
+                  separator_regex="\s*=\s*",
+                  prefix_regex="(?i)^\s*") }}}
