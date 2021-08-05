@@ -2,6 +2,7 @@ import collections
 import logging
 import os
 from glob import glob
+from collections import OrderedDict
 
 import ssg.build_yaml
 import ssg.yaml
@@ -152,14 +153,16 @@ class Policy():
             raise ValueError(msg)
 
     def get_level_with_ancestors(self, level_id):
-        levels = set()
+        # use OrderedDict for Python2 compatibility instead of ordered set
+        levels = OrderedDict()
         level = self.get_level(level_id)
-        levels.add(level)
+        levels[level] = ""
         if level.inherits_from:
             for lv in level.inherits_from:
-                levels.update(self.get_level_with_ancestors(lv))
+                eligible_levels = [l for l in self.get_level_with_ancestors(lv).keys() if l not in levels.keys()]
+                for l in eligible_levels:
+                    levels[l] = ""
         return levels
-
 
 
 class ControlsManager():
@@ -198,20 +201,24 @@ class ControlsManager():
     def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
         levels = policy.get_level_with_ancestors(level_id)
-        level_ids = set([lv.id for lv in levels])
+        # we use OrderedDict here with empty values instead of ordered set
+        # cause we want to be compatible with python 2
+        level_ids = OrderedDict()
+        for lv in levels.keys():
+            level_ids[lv.id] = ""
 
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
         defined_variables = []
         # we will go level by level, from top to bottom
         # this is done to enable overriding of variables by higher levels
-        for lv in level_ids:
+        for lv in level_ids.keys():
             for c in all_policy_controls:
                 if lv in c.levels:
                     # if the control has a variable, check if it is not already defined
                     if c.variables.keys().isdisjoint(defined_variables):
                         eligible_controls.append(c)
-                        defined_variables += [*c.variables.keys()]
+                        defined_variables += list(c.variables.keys())
         return eligible_controls
 
     def get_all_controls(self, policy_id):
