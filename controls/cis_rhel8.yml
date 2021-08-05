@@ -1830,14 +1830,15 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE: try_first_pass
+  # NEEDS RULE
+  # try_first_pass
   # https://github.com/ComplianceAsCode/content/issues/5533
   - id: 5.4.1
     title: Ensure password creation requirements are configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially
     rules:
       - accounts_password_pam_minclass
       - accounts_password_pam_minlen
