@@ -1738,14 +1738,16 @@ controls:
       - l1_workstation
     automated: no
 
+  # NEEDS RULE
+  # The current sshd_enable_warning_banner rule uses /etc/issue instead
+  # of the /etc/issue.net that the benchmark expects.
+  # 
   - id: 5.2.15
     title: Ensure SSH warning banner is configured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
-    rules:
-      - sshd_enable_warning_banner
+    automated: no
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5526
