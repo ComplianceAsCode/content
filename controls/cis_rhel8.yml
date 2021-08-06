@@ -1929,12 +1929,15 @@ controls:
       - l1_workstation
     automated: no
 
+  # NEEDS RULE
+  # We are missing the component of this control which locks non-root system accounts
+  # https://github.com/ComplianceAsCode/content/issues/7352
   - id: 5.5.2
     title: Ensure system accounts are secured (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially
     rules:
       - no_shelllogin_for_systemaccounts
 
