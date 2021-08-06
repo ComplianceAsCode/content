@@ -38,6 +38,7 @@ selections:
 - account_emergency_expire_date
 - account_temp_expire_date
 - account_unique_id
+- accounts_authorized_local_users
 - accounts_have_homedir_login_defs
 - accounts_logon_fail_delay
 - accounts_max_concurrent_login_sessions
@@ -434,6 +435,7 @@ selections:
 - var_auditd_disk_error_action=halt
 - var_auditd_max_log_file_action=syslog
 - var_auditd_disk_full_action=halt
+- var_accounts_authorized_local_users_regex=rhel8
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
 title: DISA STIG with GUI for Red Hat Enterprise Linux 8
