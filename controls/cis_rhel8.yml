@@ -2311,10 +2311,10 @@ controls:
     automated: no
 
   - id: 6.2.20
-    title: Ensure shadow group is empty (Automated)
+    title: Ensure all users' home directories exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
-    rules:
+    automated: no  # The rule below exists, but does not have any OVAL checks or remediations.
+    related_rules:
       - accounts_user_interactive_home_directory_exists
