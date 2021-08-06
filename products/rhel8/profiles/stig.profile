@@ -95,8 +95,10 @@ selections:
     # RHEL-08-010040
     - sshd_enable_warning_banner
 
-    # RHEL-08-010050
+    # RHEL-08-010049
     - dconf_gnome_banner_enabled
+
+    # RHEL-08-010050
     - dconf_gnome_login_banner_text
 
     # RHEL-08-010060
@@ -116,24 +118,28 @@ selections:
     - accounts_password_all_shadowed_sha512
 
     # RHEL-08-010130
-    - accounts_password_pam_unix_rounds_system_auth
     - accounts_password_pam_unix_rounds_password_auth
+
+    # RHEL-08-010131
+    - accounts_password_pam_unix_rounds_system_auth
 
     # RHEL-08-010140
     - grub2_uefi_password
+
+    # RHEL-08-010141
     - grub2_uefi_admin_username
+
+    # RHEL-08-010149
+    - grub2_admin_username
 
     # RHEL-08-010150
     - grub2_password
-    - grub2_admin_username
 
     # RHEL-08-010151
     - require_singleuser_auth
-    - require_emergency_target_auth
 
     # RHEL-08-010152
-    # To be released in V1R3
-    # - require_emergency_target_auth
+    - require_emergency_target_auth
 
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
@@ -156,8 +162,10 @@ selections:
     - dir_perms_world_writable_sticky_bits
 
     # RHEL-08-010200
-    - sshd_set_idle_timeout
     - sshd_set_keepalive_0
+
+    # RHEL-08-010201
+    - sshd_set_idle_timeout
 
     # RHEL-08-010210
     - file_permissions_var_log_messages
@@ -299,6 +307,8 @@ selections:
 
     # RHEL-08-010471
     - service_rngd_enabled
+
+    # RHEL-08-010472
     - package_rng-tools_installed
 
     # RHEL-08-010480
@@ -318,6 +328,8 @@ selections:
 
     # RHEL-08-010521
     - sshd_disable_kerb_auth
+
+    # RHEL-08-010522
     - sshd_disable_gssapi_auth
 
     # RHEL-08-010540
@@ -481,8 +493,10 @@ selections:
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
 
-    # RHEL-08-020040
+    # RHEL-08-020039
     - package_tmux_installed
+
+    # RHEL-08-020040
     - configure_tmux_lock_command
 
     # RHEL-08-020041
@@ -579,8 +593,12 @@ selections:
     # - accounts_authorized_local_users
 
     # RHEL-08-020330
-    - no_empty_passwords
     - sshd_disable_empty_passwords
+
+    # RHEL-08-020331
+    - no_empty_passwords
+
+    # RHEL-08-020332
 
     # RHEL-08-020340
     - display_login_attempts
@@ -680,6 +698,9 @@ selections:
 
     # RHEL-08-030180
     - package_audit_installed
+
+    # RHEL-08-030181
+    - service_auditd_enabled
 
     # RHEL-08-030190
     - audit_rules_privileged_commands_su
@@ -968,8 +989,10 @@ selections:
     # RHEL-08-040090
 
     # RHEL-08-040100
-    - service_firewalld_enabled
     - package_firewalld_installed
+
+    # RHEL-08-040101
+    - service_firewalld_enabled
 
     # RHEL-08-040110
     - wireless_disable_interfaces
@@ -1024,17 +1047,25 @@ selections:
 
     # RHEL-08-040135
     - package_fapolicyd_installed
+
+    # RHEL-08-040136
     - service_fapolicyd_enabled
 
-    # RHEL-08-040140
+    # RHEL-08-040139
     - package_usbguard_installed
-    - service_usbguard_enabled
+
+    # RHEL-08-040140
     - usbguard_generate_policy
+
+    # RHEL-08-040141
+    - service_usbguard_enabled
 
     # RHEL-08-040150
 
-    # RHEL-08-040160
+    # RHEL-08-040159
     - package_openssh-server_installed
+
+    # RHEL-08-040160
     - service_sshd_enabled
 
     # RHEL-08-040161
@@ -1061,8 +1092,10 @@ selections:
     # RHEL-08-040200
     - accounts_no_uid_except_zero
 
-    # RHEL-08-040210
+    # RHEL-08-040209
     - sysctl_net_ipv4_conf_default_accept_redirects
+
+    # RHEL-08-040210
     - sysctl_net_ipv6_conf_default_accept_redirects
 
     # RHEL-08-040220
@@ -1071,12 +1104,16 @@ selections:
     # RHEL-08-040230
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
 
-    # RHEL-08-040240
+    # RHEL-08-040239
     - sysctl_net_ipv4_conf_all_accept_source_route
+
+    # RHEL-08-040240
     - sysctl_net_ipv6_conf_all_accept_source_route
 
-    # RHEL-08-040250
+    # RHEL-08-040249
     - sysctl_net_ipv4_conf_default_accept_source_route
+
+    # RHEL-08-040250
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # RHEL-08-040260
@@ -1091,8 +1128,10 @@ selections:
     # RHEL-08-040270
     - sysctl_net_ipv4_conf_default_send_redirects
 
-    # RHEL-08-040280
+    # RHEL-08-040279
     - sysctl_net_ipv4_conf_all_accept_redirects
+
+    # RHEL-08-040280
     - sysctl_net_ipv6_conf_all_accept_redirects
 
     # RHEL-08-040281
