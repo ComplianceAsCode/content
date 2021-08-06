@@ -19,24 +19,28 @@ function perform_audit_adjtimex_settimeofday_stime_remediation {
 for ARCH in "${RULE_ARCHS[@]}"
 do
 
-	PATTERN="-a always,exit -F arch=${ARCH} -S .* -k *"
 	# Create expected audit group and audit rule form for particular system call & architecture
 	if [ ${ARCH} = "b32" ]
 	then
+		ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
 		# stime system call is known at 32-bit arch (see e.g "$ ausyscall i386 stime" 's output)
 		# so append it to the list of time group system calls to be audited
-		GROUP="\(adjtimex\|settimeofday\|stime\)"
-		FULL_RULE="-a always,exit -F arch=${ARCH} -S adjtimex -S settimeofday -S stime -k audit_time_rules"
+		SYSCALL="adjtimex settimeofday stime"
+		SYSCALL_GROUPING="adjtimex settimeofday stime"
 	elif [ ${ARCH} = "b64" ]
 	then
+		ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
 		# stime system call isn't known at 64-bit arch (see "$ ausyscall x86_64 stime" 's output)
 		# therefore don't add it to the list of time group system calls to be audited
-		GROUP="\(adjtimex\|settimeofday\)"
-		FULL_RULE="-a always,exit -F arch=${ARCH} -S adjtimex -S settimeofday -k audit_time_rules"
+		SYSCALL="adjtimex settimeofday"
+		SYSCALL_GROUPING="adjtimex settimeofday"
 	fi
+	OTHER_FILTERS=""
+	AUID_FILTERS=""
+	KEY="audit_time_rules"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 done
 
 }
