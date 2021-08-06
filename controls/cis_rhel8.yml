@@ -2154,14 +2154,15 @@ controls:
     rules:
       - no_legacy_plus_entries_etc_passwd
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/7198
   - id: 6.2.3
     title: Ensure root PATH Integrity (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    automated: yes
+    rules:
+      - accounts_root_path_dirs_no_write
+      - root_path_no_dot
 
   - id: 6.2.4
     title: Ensure no legacy "+" entries exist in /etc/shadow (Automated)
