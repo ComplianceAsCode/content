@@ -370,6 +370,7 @@ selections:
 - sysctl_kernel_randomize_va_space
 - sysctl_kernel_unprivileged_bpf_disabled
 - sysctl_kernel_yama_ptrace_scope
+- sysctl_net_core_bpf_jit_harden
 - sysctl_net_ipv4_conf_all_accept_redirects
 - sysctl_net_ipv4_conf_all_accept_source_route
 - sysctl_net_ipv4_conf_all_rp_filter

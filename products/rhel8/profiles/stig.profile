@@ -1149,6 +1149,9 @@ selections:
     # RHEL-08-040285
     - sysctl_net_ipv4_conf_all_rp_filter
 
+    # RHEL-08-040286
+    - sysctl_net_core_bpf_jit_harden
+
     # RHEL-08-040290
     # /etc/postfix/main.cf does not exist on default installation resulting in error during remediation
     # there needs to be a new platform check to identify when postfix is installed or not
