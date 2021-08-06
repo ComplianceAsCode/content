@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,sle12,sle15
+prodtype: ol7,sle12,sle15,fedora,rhel8
 
 title: 'Only Authorized Local User Accounts Exist on Operating System'
 
@@ -26,10 +26,9 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-85987-6
     cce@sle12: CCE-83195-8
     cce@sle15: CCE-85561-9
-
-severity: medium
 
 references:
     disa: CCI-000366
@@ -40,6 +39,13 @@ references:
     stigid@sle15: SLES-15-020090
 
 ocil_clause: 'there are unauthorized local user accounts on the system'
+
+{{% if 'rhel' in product %}}
+warnings:
+    - general: |-
+        Automatic remediation of this control is not available. Due the unique
+        requirements of each system.
+{{% endif %}}
 
 ocil: |-
     To verify that there are no unauthorized local user accounts, run the following command:

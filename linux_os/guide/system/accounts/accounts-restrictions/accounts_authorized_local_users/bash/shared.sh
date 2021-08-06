@@ -10,7 +10,7 @@ default_os_user="root"
 for username in $( sed 's/:.*//' /etc/passwd ) ; do
 	if [[ ! "$username" =~ ($default_os_user|$var_accounts_authorized_local_users_regex) ]];
         then
-		userdel $username ; 
+		userdel $username ;
 	fi
 done
 
