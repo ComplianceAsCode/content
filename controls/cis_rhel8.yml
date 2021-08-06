@@ -1946,7 +1946,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially  # The remediation for this rule does not implement the "TMOUT" variable as readonly so does not align fully with the benchmark
     rules:
       - accounts_tmout
       - var_accounts_tmout=15_min
