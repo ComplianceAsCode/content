@@ -23,7 +23,9 @@ selections:
     - var_auditd_action_mail_acct=root
     ### Rules:
     - account_disable_post_pw_expiration
+    - account_unique_name
     - accounts_maximum_age_login_defs
+    - accounts_password_all_shadowed
     - accounts_password_pam_lcredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
@@ -63,6 +65,9 @@ selections:
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
     - display_login_attempts
+    - file_groupowner_grub2_cfg
+    - file_owner_grub2_cfg
+    - gid_passwd_group_same
     - no_empty_passwords
     - service_auditd_enabled
     - service_pcscd_enabled
