@@ -91,6 +91,7 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_dac_modification_umount
     - audit_rules_enable_syscall_auditing
     - audit_rules_execution_chacl
     - audit_rules_execution_chmod
@@ -102,13 +103,13 @@ selections:
     - audit_rules_kernel_module_loading_init
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog
+    - audit_rules_media_export
     - audit_rules_privileged_commands_chage
     - audit_rules_privileged_commands_chfn
     - audit_rules_privileged_commands_chsh
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_gpasswd
     - audit_rules_privileged_commands_kmod
-    - audit_rules_privileged_commands_mount
     - audit_rules_privileged_commands_modprobe
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_pam_timestamp_check
@@ -124,7 +125,6 @@ selections:
     - audit_rules_privileged_commands_unix2_chkpwd
     - audit_rules_privileged_commands_usermod
     - audit_rules_privileged_commands_sudoedit
-    - audit_rules_privileged_commands_umount
     - audit_rules_session_events_utmp
     - audit_rules_session_events_wtmp
     - audit_rules_suid_privilege_function
