@@ -1965,9 +1965,10 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: partially  # The rules below do not take /etc/profile.d/* into account so are not perfectly aligned with the benchmark
     rules:
       - accounts_umask_etc_bashrc
+      - accounts_umask_etc_login_defs
       - accounts_umask_etc_profile
       - var_accounts_user_umask=027
 
