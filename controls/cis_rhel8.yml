@@ -2196,8 +2196,8 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
-    rules:
+    automated: no  # The rule below exists, but does not have any OVAL checks or remediations.
+    related_rules:
       - file_permissions_home_dirs
 
   # NEEDS RULE (for user ownership)
@@ -2207,7 +2207,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: yes
+    automated: no  # The rule below exists, but does not have any OVAL checks or remediations.
     rules:
       - file_groupownership_home_directories
 
