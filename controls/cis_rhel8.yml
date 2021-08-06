@@ -1989,7 +1989,9 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    automated: partially
+    rules:
+      - use_pam_wheel_for_su
 
   - id: 6.1.1
     title: Audit system file permissions (Manual)
