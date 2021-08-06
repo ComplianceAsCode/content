@@ -185,7 +185,7 @@ selections:
     - file_permissions_system_commands_dirs
     - file_permission_user_init_files
     - ftp_present_banner
-    - gnome_gdm_disable_automatic_login
+    - gnome_gdm_disable_unattended_automatic_login
     - dconf_gnome_screensaver_idle_delay
     - grub2_password
     - grub2_uefi_password
