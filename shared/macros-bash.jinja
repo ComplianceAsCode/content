@@ -444,11 +444,12 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 # separator_regex: regular expression that describes the separator and surrounding whitespace
 # prefix_regex: regular expression describing allowed leading characters at each line
 #}}
-{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*") -%}}
-    {{%- set line_regex = prefix_regex + ((parameter | escape_regex) | replace("/", "\/")) + separator_regex -%}}
+
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
     {{%- set new_line = parameter+separator+value -%}}
+    {{%- set line_regex = prefix_regex + ((parameter | escape_regex) | replace("/", "\/")) + separator_regex -%}}
 if [ -e "{{{ path }}}" ] ; then
-    {{{ lineinfile_absent(path, line_regex, insensitive) | indent(4) }}}
+    {{{ lineinfile_absent(path, line_regex, insensitive, sed_path_separator=sed_path_separator) | indent(4) }}}
 else
     {{%- if create %}}
     touch "{{{ path }}}"
@@ -456,19 +457,19 @@ else
     {{{ die("Path '" + path + "' wasn't found on this system. Refusing to continue.", action="return") | indent(4) }}}
     {{%- endif %}}
 fi
-{{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive) }}}
+{{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive, sed_path_separator=sed_path_separator) }}}
 {{%- endmacro -%}}
 
-{{%- macro lineinfile_absent(path, regex, insensitive=true) -%}}
+{{%- macro lineinfile_absent(path, regex, insensitive=true, sed_path_separator="/") -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
     {{%- else -%}}
         {{%- set modifier="d" -%}}
     {{%- endif -%}}
-    {{% if '/' in regex %}}
-    {{{ raise("regex (" + regex + ") uses sed path separator (/) in " + rule_id) }}}
+    {{% if sed_path_separator in regex %}}
+    {{{ raise("regex (" + regex + ") uses sed path separator (" + sed_path_separator + ") in " + rule_id) }}}
     {{% endif %}}
-LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ path }}}"
+LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
 {{%- endmacro -%}}
 
 {{%- macro lineinfile_absent_in_directory(dirname, regex, insensitive=true) -%}}
@@ -480,7 +481,7 @@ LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ path }}}"
 LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ dirname }}}"/*
 {{%- endmacro -%}}
 
-{{%- macro lineinfile_present(path, line, insert_after="", insert_before="", insensitive=true) -%}}
+{{%- macro lineinfile_present(path, line, insert_after="", insert_before="", insensitive=true, sed_path_separator="/") -%}}
     {{%- if insensitive -%}}
         {{%- set grep_args="-q -m 1 -i" -%}}
     {{%- else -%}}
@@ -496,7 +497,7 @@ printf '%s\n' "{{{ line }}}" > "{{{ path }}}"
 cat "{{{ path }}}.bak" >> "{{{ path }}}"
     {{%- elif insert_after %}}
 # Insert after the line matching the regex '{{{ insert_after }}}'
-line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
+line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's{{{sed_path_separator}}}:.*{{{sed_path_separator}}}{{{sed_path_separator}}}g')"
 if [ -z "$line_number" ]; then
     # There was no match of '{{{ insert_after }}}', insert at
     # the end of the file.
@@ -508,7 +509,7 @@ else
 fi
     {{%- elif insert_before %}}
 # Insert before the line matching the regex '{{{ insert_before }}}'.
-line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
+line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's{{{sed_path_separator}}}:.*{{{sed_path_separator}}}{{{sed_path_separator}}}g')"
 if [ -z "$line_number" ]; then
     # There was no match of '{{{ insert_before }}}', insert at
     # the end of the file.
