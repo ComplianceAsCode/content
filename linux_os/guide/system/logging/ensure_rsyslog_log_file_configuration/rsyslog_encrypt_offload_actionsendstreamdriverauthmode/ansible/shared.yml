@@ -1,0 +1,9 @@
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.conf", 
+                                "$ActionSendStreamDriverAuthMode", separator=' ', separator_regex='\s', 
+                                value="x509/name", create='yes') }}}
