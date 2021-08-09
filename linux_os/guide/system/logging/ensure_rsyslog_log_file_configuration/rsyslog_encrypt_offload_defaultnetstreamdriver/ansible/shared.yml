@@ -1,4 +1,8 @@
 # platform = Red Hat Enterprise Linux 8,multi_platform_fedora
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
 
 {{{ ansible_set_config_file(file="/etc/rsyslog.d/encrypt.conf",
                     parameter="\$DefaultNetstreamDriver", value="gtls", create=true, separator=" ", separator_regex=" ")
