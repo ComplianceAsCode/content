@@ -121,8 +121,14 @@ jobs:
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_bash/test_suite.log
         id: check_results_bash
+        # when grep returns 1 means it didn't find the ^ERROR string in the test_suite.log file
+        # and this means tests finished successfully without errors. So the job needs to keep going.
+        # By using continue-on-error: true the "conclusion" parameter is set to true so it's not possible to use
+        # it to determine whether the task has failed or succeed. The "outcome" parameter has to be used instead.
+        # See the step below
+        continue-on-error: true
       - name: Upload logs in case of failure
-        if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.conclusion == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: actions/upload-artifact@v2
         with:
           name: logs_bash
@@ -134,8 +140,9 @@ jobs:
         if: ${{steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_ansible/test_suite.log
         id: check_results_ansible
+        continue-on-error: true
       - name: Upload logs in case of failure
-        if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.conclusion == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: actions/upload-artifact@v2
         with:
           name: logs_ansible
@@ -146,5 +153,5 @@ jobs:
         with:
           name: ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
-        if: ${{ (steps.check_results_bash.conclusion == 'success' || steps.check_results_ansible.conclusion == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{ (steps.check_results_bash.outcome == 'success' || steps.check_results_ansible.outcome == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: exit 1
