@@ -26,10 +26,14 @@ selections:
     - account_unique_name
     - accounts_maximum_age_login_defs
     - accounts_password_all_shadowed
+    - accounts_password_pam_dcredit
     - accounts_password_pam_lcredit
+    - accounts_password_pam_minlen
+    - accounts_password_pam_ucredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - aide_periodic_cron_checking
     - auditd_data_retention_action_mail_acct
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
@@ -69,6 +73,7 @@ selections:
     - file_owner_grub2_cfg
     - gid_passwd_group_same
     - no_empty_passwords
+    - rpm_verify_permissions
     - service_auditd_enabled
     - service_pcscd_enabled
     - sshd_set_idle_timeout
