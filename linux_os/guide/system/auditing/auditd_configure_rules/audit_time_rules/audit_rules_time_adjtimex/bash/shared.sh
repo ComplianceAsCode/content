@@ -3,4 +3,4 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-perform_audit_adjtimex_settimeofday_stime_remediation
+{{{ bash_perform_audit_adjtimex_settimeofday_stime_remediation() }}}
