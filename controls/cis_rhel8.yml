@@ -2128,7 +2128,7 @@ controls:
       - l1_server
       - l1_workstation
     automated: no
-    rules:
+    related_rules:
       - file_permissions_unauthorized_suid
 
   - id: 6.1.14
@@ -2137,7 +2137,7 @@ controls:
       - l1_server
       - l1_workstation
     automated: no
-    rules:
+    related_rules:
       - file_permissions_unauthorized_sgid
 
   # NEEDS RULE
@@ -2212,7 +2212,7 @@ controls:
       - l1_server
       - l1_workstation
     automated: no  # The rule below exists, but does not have any OVAL checks or remediations.
-    rules:
+    related_rules:
       - file_groupownership_home_directories
 
   # NEEDS RULE
