@@ -1071,9 +1071,6 @@ selections:
     # RHEL-08-040161
     - sshd_rekey_limit
 
-    # RHEL-08-040162
-    - ssh_client_rekey_limit
-
     # RHEL-08-040170
     - disable_ctrlaltdel_reboot
 

@@ -334,7 +334,6 @@ selections:
 - service_usbguard_enabled
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_systemauth
-- ssh_client_rekey_limit
 - sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
