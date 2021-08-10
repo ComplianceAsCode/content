@@ -13,4 +13,3 @@
     passwd -x 60 {{ item }}
   with_items: "{{ user_names.stdout_lines }}"
   when: user_names.stdout_lines | length > 0
- 
