@@ -1,8 +1,5 @@
 # platform = multi_platform_all
 
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
-
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
 # Note: 32-bit and 64-bit kernel syscall numbers not always line up =>
@@ -17,6 +14,6 @@ do
         PATTERN="-a always,exit -F arch=$ARCH -S init_module -S delete_module -S finit_module \(-F key=\|-k \).*"
         FULL_RULE="-a always,exit -F arch=$ARCH -S init_module -S delete_module -S finit_module -k modules"
         # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-        fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-        fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+        {{{ bash_fix_audit_syscall_rule("auditctl", "$PATTERN", "$GROUP", "$ARCH", "$FULL_RULE") }}}
+        {{{ bash_fix_audit_syscall_rule("augenrules", "$PATTERN", "$GROUP", "$ARCH", "$FULL_RULE") }}}
 done

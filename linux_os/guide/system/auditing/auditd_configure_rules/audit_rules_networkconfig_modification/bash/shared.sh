@@ -14,8 +14,8 @@ do
 	GROUP="set\(host\|domain\)name"
 	FULL_RULE="-a always,exit -F arch=$ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	{{{ bash_fix_audit_syscall_rule("auditctl", "$PATTERN", "$GROUP", "$ARCH", "$FULL_RULE") }}}
+	{{{ bash_fix_audit_syscall_rule("augenrules", "$PATTERN", "$GROUP", "$ARCH", "$FULL_RULE") }}}
 done
 
 # Then perform the remediations for the watch rules
