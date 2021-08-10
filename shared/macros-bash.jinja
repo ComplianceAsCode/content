@@ -754,22 +754,7 @@ done
   group into one rule) to avoid the "single-syscall-per-audit-rule" performance
   penalty.
 #}}
-{{% macro bash_fix_audit_syscall_rule() -%}}
-
-# Load macro arguments into local variables
-local tool="$1"
-local pattern="$2"
-local group="$3"
-local arch="$4"
-local full_rule="$5"
-
-# Check sanity of the input
-if [ $# -ne "5" ]
-then
-	echo "Usage: fix_audit_syscall_rule 'tool' 'pattern' 'group' 'arch' 'full rule'"
-	echo "Aborting."
-	exit 1
-fi
+{{% macro bash_fix_audit_syscall_rule(tool, pattern, group, arch, full_rule) -%}}
 
 # Create a list of audit *.rules files that should be inspected for presence and correctness
 # of a particular audit rule. The scheme is as follows:
