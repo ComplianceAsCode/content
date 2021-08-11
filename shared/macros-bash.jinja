@@ -714,7 +714,7 @@ rpm --quiet -q "{{{ pkgname }}}"
       {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '@CCENUM@', '%s=%s') }}}
  
       With a variable:
-      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', $var_selinux_state, '@CCENUM@', '%s=%s') }}}
+      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '@CCENUM@', '%s=%s') }}}
  
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, cce, format='%s = %s') -%}}
