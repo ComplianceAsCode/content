@@ -200,7 +200,7 @@ class ControlsManager():
 
     def get_all_controls_of_level(self, policy_id, level_id, override_vars=True):
         # if override_vars is enabled, then variables from higher levels will
-        # override variables efined in controls of lower levels
+        # override variables defined in controls of lower levels
         policy = self._get_policy(policy_id)
         levels = policy.get_level_with_ancestors(level_id)
         # we use OrderedDict here with empty values instead of ordered set
