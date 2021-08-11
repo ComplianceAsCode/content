@@ -4,4 +4,4 @@
 
 {{{ bash_instantiate_variables("rsyslog_remote_loghost_address") }}}
 
-replace_or_append '/etc/rsyslog.conf' '^\*\.\*' "@@$rsyslog_remote_loghost_address" '@CCENUM@' '%s %s'
+{{{ bash_replace_or_append('/etc/rsyslog.conf', '^\*\.\*', "@@$rsyslog_remote_loghost_address", '@CCENUM@', '%s %s') }}}

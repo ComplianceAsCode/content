@@ -9,5 +9,5 @@ if  ! grep -q extensions.mode "$NAILS_CONFIG_FILE"; then
 	sed -i '$a nailsd.profile.ODS_default.filter.extensions.mode: all' "$NAILS_CONFIG_FILE"
 
 else
-	replace_or_append "$NAILS_CONFIG_FILE" 'extensions.mode' 'all' '@CCENUM@' '%s: %s'
+	{{{ bash_replace_or_append("$NAILS_CONFIG_FILE", 'extensions.mode', 'all', '@CCENUM@', '%s: %s') }}}
 fi

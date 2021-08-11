@@ -4,4 +4,4 @@
 . /usr/share/scap-security-guide/remediation_functions
 
 NAILS_CONFIG_FILE="/var/opt/NAI/LinuxShield/etc/nailsd.cfg"
-replace_or_append "$NAILS_CONFIG_FILE" '^nailsd.oasEnabled' 'true' '@CCENUM@' '%s: %s'
+{{{ bash_replace_or_append("$NAILS_CONFIG_FILE", '^nailsd.oasEnabled', 'true', '@CCENUM@', '%s: %s') }}}

@@ -6,4 +6,4 @@
 # Set variables
 {{{ bash_instantiate_variables("var_accounts_fail_delay") }}}
 
-replace_or_append '/etc/login.defs' '^FAIL_DELAY' "$var_accounts_fail_delay" '@CCENUM@' '%s %s'
+{{{ bash_replace_or_append('/etc/login.defs', '^FAIL_DELAY', "$var_accounts_fail_delay", '@CCENUM@', '%s %s') }}}

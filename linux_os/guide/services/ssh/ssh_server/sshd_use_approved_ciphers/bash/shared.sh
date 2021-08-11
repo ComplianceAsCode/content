@@ -5,4 +5,4 @@
 
 {{{ bash_instantiate_variables("sshd_approved_ciphers") }}}
 
-replace_or_append '/etc/ssh/sshd_config' '^Ciphers' "$sshd_approved_ciphers" '@CCENUM@' '%s %s'
+{{{ bash_replace_or_append('/etc/ssh/sshd_config', '^Ciphers', "$sshd_approved_ciphers", '@CCENUM@', '%s %s') }}}
