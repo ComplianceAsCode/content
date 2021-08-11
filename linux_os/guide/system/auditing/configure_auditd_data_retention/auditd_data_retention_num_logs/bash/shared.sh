@@ -4,4 +4,4 @@
 
 AUDITCONFIG=/etc/audit/auditd.conf
 
-{{{ bash_replace_or_append($AUDITCONFIG, '^num_logs', "$var_auditd_num_logs", "@CCENUM@") }}}
+"$AUDITCONFIG", '^num_logs', "$var_auditd_num_logs", "@CCENUM@") }}}

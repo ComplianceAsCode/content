@@ -5,4 +5,4 @@
 
 AUDITCONFIG=/etc/audit/auditd.conf
 
-{{{ bash_replace_or_append($AUDITCONFIG, '^admin_space_left_action', "$var_auditd_admin_space_left_action", "@CCENUM@") }}}
+"$AUDITCONFIG", '^admin_space_left_action', "$var_auditd_admin_space_left_action", "@CCENUM@") }}}

@@ -4,4 +4,4 @@
 
 AUDITCONFIG=/etc/audit/auditd.conf
 
-{{{ bash_replace_or_append($AUDITCONFIG, '^action_mail_acct', "$var_auditd_action_mail_acct", "@CCENUM@") }}}
+"$AUDITCONFIG", '^action_mail_acct', "$var_auditd_action_mail_acct", "@CCENUM@") }}}

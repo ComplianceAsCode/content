@@ -3,4 +3,4 @@
 # Include source function library
 . /usr/share/scap-security-guide/remediation_functions
 
-{{{ bash_replace_or_append(/etc/chrony.conf, '^cmdport', 0, '@CCENUM@', '%s %s') }}}
+"/etc/chrony.conf", '^cmdport', 0, '@CCENUM@', '%s %s') }}}

@@ -4,4 +4,4 @@
 
 AUDITCONFIG=/etc/audit/auditd.conf
 
-{{{ bash_replace_or_append($AUDITCONFIG, '^max_log_file_action', "$var_auditd_max_log_file_action", "@CCENUM@") }}}
+"$AUDITCONFIG", '^max_log_file_action', "$var_auditd_max_log_file_action", "@CCENUM@") }}}
