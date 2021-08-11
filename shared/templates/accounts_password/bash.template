@@ -6,4 +6,4 @@
 . /usr/share/scap-security-guide/remediation_functions
 {{{ bash_instantiate_variables("var_password_pam_" + VARIABLE) }}}
 
-replace_or_append '/etc/security/pwquality.conf' '^{{{ VARIABLE }}}' $var_password_pam_{{{ VARIABLE }}} '@CCENUM@' '%s = %s'
+{{{ bash_replace_or_append('/etc/security/pwquality.conf', '^{{{ VARIABLE }}}', $var_password_pam_{{{ VARIABLE }}}, '@CCENUM@', '%s = %s') }}}
