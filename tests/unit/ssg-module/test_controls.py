@@ -89,8 +89,20 @@ def test_controls_levels():
 
     # test overriding of variables in levels
     assert c_2.variables["var_password_pam_minlen"] == "1"
-    assert c_3.variables["var_password_pam_minlen"] == "2"
-    assert c_4b.variables["var_password_pam_minlen"] == "3"
+    assert "var_password_pam_minlen" not in c_3.variables.keys()
+    assert c_4b.variables["var_password_pam_minlen"] == "2"
+
+    for c in low_controls:
+        if "var_password_pam_minlen" in c.variables.keys():
+            assert c.variables["var_password_pam_minlen"] == "1"
+
+    for c in medium_controls:
+        if "var_password_pam_minlen" in c.variables.keys():
+            assert c.variables["var_password_pam_minlen"] == "1"
+
+    for c in high_controls:
+        if "var_password_pam_minlen" in c.variables.keys():
+            assert c.variables["var_password_pam_minlen"] == "2"
 
 
 def test_controls_load_product():
