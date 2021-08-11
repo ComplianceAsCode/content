@@ -198,9 +198,7 @@ class ControlsManager():
             raise ValueError(msg)
         return policy
 
-    def get_all_controls_of_level(self, policy_id, level_id, override_vars=True):
-        # if override_vars is enabled, then variables from higher levels will
-        # override variables defined in controls of lower levels
+    def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
         levels = policy.get_level_with_ancestors(level_id)
         # we use OrderedDict here with empty values instead of ordered set
@@ -216,24 +214,22 @@ class ControlsManager():
         for lv in level_ids.keys():
             for c in all_policy_controls:
                 if lv in c.levels:
-                    if override_vars == False:
+                    # if the control has a variable, check if it is not already defined
+                    variables = list(c.variables.keys())
+                    if len(variables) == 0:
                         eligible_controls.append(c)
-                    else:
-                        # if the control has a variable, check if it is not already defined
-                        variables = list(c.variables.keys())
-                        if len(variables) == 0:
+                        continue
+                    for var in variables:
+                        if var in defined_variables:
+                            # if it is, create new instance of the control and remove the variable
+                            # we are going from the top level to the bottom
+                            # so we don't want to overwrite variables
+                            new_c = copy.deepcopy(c)
+                            del new_c.variables[var]
+                            eligible_controls.append(new_c)
+                        else:
+                            defined_variables.append(var)
                             eligible_controls.append(c)
-                        for var in variables:
-                            if var in defined_variables:
-                                # if it is, create new instance of the control and remove the variable
-                                # we are going from the top level to the bottom
-                                # so we don't want to overwrite variables
-                                new_c = copy.deepcopy(c)
-                                del new_c.variables[var]
-                                eligible_controls.append(new_c)
-                            else:
-                                defined_variables.append(var)
-                                eligible_controls.append(c)
         return eligible_controls
 
     def get_all_controls(self, policy_id):
