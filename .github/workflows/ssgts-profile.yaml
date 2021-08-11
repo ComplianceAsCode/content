@@ -1,10 +1,10 @@
-name: SSGTS Rule
+name: SSGTS Profile
 on:
   pull_request:
     branches: [ master ]
 jobs:
   build-content:
-    name: Build Content - SSGTS Rule
+    name: Build Content - SSGTS Profile
     runs-on: ubuntu-latest
     container:
       image: fedora:latest
@@ -21,7 +21,7 @@ jobs:
           repository: mildas/content-test-filtering
           path: ctf
       - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --rule --output json ${{ github.event.pull_request.number }} > output.json
+        run: python3 ./ctf/content_test_filtering.py pr --profile --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
         run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
         id: ctf
@@ -41,10 +41,10 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
-          name: rule-ssg-${{steps.product.outputs.prop}}-ds.xml
+          name: profile-ssg-${{steps.product.outputs.prop}}-ds.xml
           path: build/ssg-${{steps.product.outputs.prop}}-ds.xml
-  run-rule-tests:
-    name: Run Tests - SSGTS Rule
+  run-profile-tests:
+    name: Run Tests - Profile Mode
     needs: build-content
     runs-on: ubuntu-20.04
     steps:
@@ -60,7 +60,7 @@ jobs:
           repository: mildas/content-test-filtering
           path: ctf
       - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --rule --output json ${{ github.event.pull_request.number }} > output.json
+        run: python3 ./ctf/content_test_filtering.py pr --profile --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
         run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
         id: ctf
@@ -82,13 +82,13 @@ jobs:
           sudo mv -v oscap-ssh /usr/local/bin
           sudo chown root:root /usr/local/bin/oscap-ssh
           rm -f oscap-ssh
-      - name: Get rule ids to be tested
+      - name: Get profile ids to be tested
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        id: rules
+        id: profiles
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'output.json'
-          prop_path: 'rules'
+          prop_path: 'profiles'
       - name: Get product attribute
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         id: product
@@ -96,29 +96,21 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'product'
-      - name: Get bash attribute
-        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        id: bash
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'output.json'
-          prop_path: 'bash'
-      - name: Get ansible attribute
-        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        id: ansible
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'output.json'
-          prop_path: 'ansible'
       - uses: actions/download-artifact@v2
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
-          name: rule-ssg-${{steps.product.outputs.prop}}-ds.xml
-      - name: Run tests in a container - Bash
-        if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
+          name: profile-ssg-${{steps.product.outputs.prop}}-ds.xml
+      - name: Add selinux_state to list of rules to be unselected
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: echo "xccdf_org.ssgproject.content_rule_selinux_state" >> tests/unselect_rules_list
+      - name: Unselect Problematic Rules
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: tests/ds_unselect_rules.sh ssg-${{steps.product.outputs.prop}}-ds.xml tests/unselect_rules_list
+      - name: Run profile tests in a container - Bash
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: tests/test_profile_in_container.sh --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream /tmp/ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.profiles.outputs.prop)}}
       - name: Check for ERROR in logs
-        if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_bash/test_suite.log
         id: check_results_bash
         # when grep returns 1 means it didn't find the ^ERROR string in the test_suite.log file
@@ -128,30 +120,31 @@ jobs:
         # See the step below
         continue-on-error: true
       - name: Upload logs in case of failure
-        if: ${{steps.bash.outputs.prop == 'True' && steps.check_results_bash.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{steps.check_results_bash.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: actions/upload-artifact@v2
         with:
-          name: rule_logs_bash
+          name: profile_logs_bash
           path: logs_bash/
-      - name: Run tests in a container - Ansible
-        if: ${{ steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
+      - name: Run profile tests in a container - Ansible
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: tests/test_profile_in_container.sh --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream /tmp/ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.profiles.outputs.prop)}}
       - name: Check for ERROR in logs
-        if: ${{steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_ansible/test_suite.log
         id: check_results_ansible
         continue-on-error: true
       - name: Upload logs in case of failure
-        if: ${{ steps.ansible.outputs.prop == 'True' && steps.check_results_ansible.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        if: ${{ steps.check_results_ansible.outcome == 'success' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: actions/upload-artifact@v2
         with:
-          name: rule_logs_ansible
+          name: profile_logs_ansible
           path: logs_ansible/
       - name: Delete datastream artifact
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: geekyeggo/delete-artifact@v1
         with:
-          name: rule-ssg-${{steps.product.outputs.prop}}-ds.xml
+          name: profile-ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
         if: ${{ (steps.check_results_bash.outcome == 'success' || steps.check_results_ansible.outcome == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: exit 1
+
