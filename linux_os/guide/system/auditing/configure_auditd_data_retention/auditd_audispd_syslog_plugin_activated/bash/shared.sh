@@ -8,4 +8,4 @@ AUDISP_SYSLOGCONFIG=/etc/audit/plugins.d/syslog.conf
 AUDISP_SYSLOGCONFIG=/etc/audisp/plugins.d/syslog.conf
 {{% endif %}}
 
-{{{ bash_replace_or_append($AUDISP_SYSLOGCONFIG, '^active', "$var_syslog_active", "@CCENUM@") }}}
+{{{ bash_replace_or_append("$AUDISP_SYSLOGCONFIG", '^active', "$var_syslog_active", "@CCENUM@") }}}
