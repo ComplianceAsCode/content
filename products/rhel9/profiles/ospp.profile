@@ -178,7 +178,6 @@ selections:
     - package_aide_installed
     - package_dnf-automatic_installed
     - package_subscription-manager_installed
-    - package_dnf-plugin-subscription-manager_installed
     - package_firewalld_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
