@@ -121,3 +121,11 @@ add_test(
 )
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
+
+if (PY_YAMLPATH)
+    add_test(
+        NAME "ansible-file-removed-and-added"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_ansible_file_removed_and_added.py" --ansible_dir "${CMAKE_BINARY_DIR}/ansible"
+    )
+    set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
+endif()
