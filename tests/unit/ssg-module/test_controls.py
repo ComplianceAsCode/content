@@ -104,6 +104,25 @@ def test_controls_levels():
         if "var_password_pam_minlen" in c.variables.keys():
             assert c.variables["var_password_pam_minlen"] == "2"
 
+    # now test if controls of lower level has the variable definition correctly removed
+    # because it is overriden by higher level controls
+    s2_high = [c for c in high_controls if c.id == "S2"]
+    assert len(s2_high) == 1
+    assert "var_some_variable" not in s2_high[0].variables.keys()
+    assert "var_password_pam_minlen" not in s2_high[0].variables.keys()
+    s4b_high = [c for c in high_controls if c.id == "S4.b"]
+    assert len(s4b_high) == 1
+    assert s4b_high[0].variables["var_some_variable"] == "3"
+    assert s4b_high[0].variables["var_password_pam_minlen"] == "2"
+
+    # check that in low level the variable is correctly placed there in S2
+    s2_low = [c for c in low_controls if c.id == "S2"]
+    assert len(s2_low) == 1
+    assert s2_low[0].variables["var_some_variable"] == "1"
+    assert s2_low[0].variables["var_password_pam_minlen"] == "1"
+
+
+
 
 def test_controls_load_product():
     ssg_root = \
