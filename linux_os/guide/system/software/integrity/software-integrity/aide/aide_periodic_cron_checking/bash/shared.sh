@@ -2,9 +2,9 @@
 
 {{{ bash_package_install("aide") }}}
 
-if ! grep -q "/usr/sbin/aide --check" /etc/crontab ; then
-    echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
+if ! grep -q "{{{ aide_bin_path }}} --check" /etc/crontab ; then
+    echo "05 4 * * * root {{{ aide_bin_path }}} --check" >> /etc/crontab
 else
-    sed -i '/^.*\/usr\/sbin\/aide --check.*$/d' /etc/crontab
-    echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
+    sed -i '\!^.*{{{ aide_bin_dir }}} --check.*$!d' /etc/crontab
+    echo "05 4 * * * root {{{ aide_bin_path }}} --check" >> /etc/crontab
 fi
