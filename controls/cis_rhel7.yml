@@ -1022,7 +1022,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # no exact rule is present
+    automated: yes
+    rules:
+    - set_firewalld_default_zone
 
   - id: 3.5.1.6
     title: Ensure network interfaces are assigned to appropriate zone (Manual)
