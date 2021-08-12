@@ -31,7 +31,7 @@ selections:
     # - var_audispd_remote_server=<remote audit server name/IP>
     - var_removable_partition=dev_cdrom
     - var_sssd_memcache_timeout=1_day
-    - var_time_service_set_maxpoll=system_default
+    - var_time_service_set_maxpoll=18_hours
     - var_accounts_minimum_age_login_defs=7
     - account_disable_post_pw_expiration
     - account_emergency_admin
@@ -44,6 +44,7 @@ selections:
     - account_emergency_admin
     - accounts_authorized_local_users
     - accounts_have_homedir_login_defs
+    - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
     - accounts_maximum_age_login_defs
     - accounts_no_uid_except_zero
@@ -155,7 +156,6 @@ selections:
     - cracklib_accounts_password_pam_lcredit
     - cracklib_accounts_password_pam_minlen
     - cracklib_accounts_password_pam_ocredit
-    - cracklib_accounts_password_pam_retry
     - cracklib_accounts_password_pam_ucredit
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
@@ -249,13 +249,13 @@ selections:
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
     - sshd_print_last_log
+    - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
     - sshd_set_loglevel_verbose
     - sshd_use_approved_ciphers_ordered_stig
     - sshd_use_approved_macs_ordered_stig
-    - sshd_use_priv_separation
     - sssd_memcache_timeout
     - sssd_offline_cred_expiration
     - sudo_remove_no_authenticate
