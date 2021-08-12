@@ -69,6 +69,7 @@ selections:
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
     - display_login_attempts
+    - ensure_logrotate_activated
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - gid_passwd_group_same
