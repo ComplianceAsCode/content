@@ -214,17 +214,19 @@ class ControlsManager():
                     if len(variables) == 0:
                         eligible_controls.append(c)
                         continue
+                    variables_to_remove = [] # contains list of variables which are already defined and should be removed from the control
                     for var in variables:
                         if var in defined_variables:
-                            # if it is, create new instance of the control and remove the variable
-                            # we are going from the top level to the bottom
-                            # so we don't want to overwrite variables
-                            new_c = copy.deepcopy(c)
-                            del new_c.variables[var]
-                            eligible_controls.append(new_c)
+                            variables_to_remove.append(var)
                         else:
                             defined_variables.append(var)
-                            eligible_controls.append(c)
+                    if len(variables_to_remove) == 0:
+                        eligible_controls.append(c)
+                    else:
+                        new_c = copy.deepcopy(c)
+                        for var in variables_to_remove:
+                            del new_c.variables[var]
+                        eligible_controls.append(new_c)
         return eligible_controls
 
     def get_all_controls(self, policy_id):
