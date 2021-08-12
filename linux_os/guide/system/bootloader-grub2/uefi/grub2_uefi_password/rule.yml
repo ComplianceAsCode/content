@@ -31,10 +31,8 @@ description: |-
     <tt>grub.cfg</tt> file by running:
     {{% if "ubuntu" in product %}}
     <pre>update-grub</pre>
-    {{% elif product in ["sle12", "sle15"] %}}
-    <pre>grub2-mkconfig -o /boot/efi/EFI/sles/grub.cfg</pre>
     {{% else %}}
-    <pre>grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre>
+    <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
     {{% endif %}}
 
 rationale: |-
@@ -91,18 +89,18 @@ ocil: |-
     To verify the boot loader superuser account password has been set,
     and the password encrypted, run the following command:
     {{% if product in ["sle12", "sle15"] %}}
-    <pre>sudo cat /boot/efi/EFI/sles/grub.cfg</pre>
+    <pre>sudo cat {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
     The output should be similar to:
     <pre>password_pbkdf2 superuser grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
     2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
     916F7AB46E0D.1302284FCCC52CD73BA3671C6C12C26FF50BA873293B24EE2A96EE3B57963E6D7
     0C83964B473EC8F93B07FE749AA6710269E904A9B08A6BBACB00A2D242AD828</pre>
     {{% elif "ubuntu" in product %}}
-    <pre>grep -i password /boot/grub/grub.cfg</pre>
+    <pre>grep -i password {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
     The output should contain something similar to:
     <pre>password_pbkdf2 root grub.pbkdf2.sha512.10000.MFU48934NJA87HF8NSD34493GDHF84NG</pre>
     {{% else %}}
-    <pre>sudo cat /boot/efi/EFI/redhat/user.cfg</pre>
+    <pre>sudo cat {{{ grub2_uefi_boot_path}}}/user.cfg</pre>
     The output should be similar to:
     <pre>GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
     2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
