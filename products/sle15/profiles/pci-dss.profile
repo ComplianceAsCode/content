@@ -74,6 +74,7 @@ selections:
     - audit_rules_sysadmin_actions
     - dconf_gnome_screensaver_idle_activation_enabled
     - display_login_attempts
+    - ensure_logrotate_activated
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - gid_passwd_group_same
