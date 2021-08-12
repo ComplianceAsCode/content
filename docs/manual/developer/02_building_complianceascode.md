@@ -64,6 +64,20 @@ yum install yamllint ansible-lint
 apt-get install yamllint ansible-lint
 ```
 
+### Static Ansible Playbooks tests
+
+Install `yamlpath` and `pytest` to run tests cases that analyse the Ansible
+Playbooks' yaml nodes.
+```bash
+pip3 install yamlpath
+
+# Fedora/RHEL
+yum install python3-pytest
+
+# Ubuntu/Debian
+apt-get install python-pytest
+```
+
 ### Ninja (Faster Builds)
 
 Install the `ninja` build system if you want to use it instead of
