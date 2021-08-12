@@ -201,19 +201,14 @@ class ControlsManager():
     def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
         levels = policy.get_level_with_ancestors(level_id)
-        # we use OrderedDict here with empty values instead of ordered set
-        # cause we want to be compatible with python 2
-        level_ids = collections.OrderedDict()
-        for lv in levels.keys():
-            level_ids[lv.id] = ""
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
         defined_variables = []
         # we will go level by level, from top to bottom
         # this is done to enable overriding of variables by higher levels
-        for lv in level_ids.keys():
+        for lv in levels.keys():
             for c in all_policy_controls:
-                if lv in c.levels:
+                if lv.id in c.levels:
                     # if the control has a variable, check if it is not already defined
                     variables = list(c.variables.keys())
                     if len(variables) == 0:
