@@ -4,8 +4,8 @@
       <title>Check for Interactive Users</title>
       <affected family="unix">
         <platform>multi_platform_all></platform>
-        <description>Checks /etc/passwd for interactive users (UID &gt; 1000, not nobody).</description>
       </affected>
+      <description>Checks /etc/passwd for interactive users (UID &gt; 1000, not nobody).</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="Interactive users exist." test_ref="test_has_interactive_users" negate="true"/>
