@@ -1,57 +1,31 @@
 <def-group>
-
-
   <definition class="compliance" id="accounts_password_set_min_life_existing" version="1">
       {{{ oval_metadata("Passwords for existing accounts much satisfy minimum age requirements") }}}
     <criteria operator="OR" comment="Interactive users must satisfy the requirement">
-      <extend_definition definition_ref="accounts_passwd_has_interactive_users" />
+      <extend_definition definition_ref="accounts_passwd_has_interactive_users" negate="true"/>
       <criteria operator="AND">
-          <criterion comment="Passwords must be a restricted to the appropriate minimum age for existing accounts." test_ref="test_password_min_life_existing" />
-          <criterion comment="Passwords must have a minimum lifetime less than or equal to the defined maximum." test_ref="test_password_min_life_existing_maximum" />
-        <criterion comment="Passwords must not not have a blank max life for existing accounts." test_ref="test_password_min_life_existing_blank" />
+        <criterion comment="Passwords must be a restricted to the appropriate minimum age for existing accounts." test_ref="test_password_min_life_existing" />
+        <criterion comment="Passwords must have a minimum lifetime less than or equal to the defined maximum." test_ref="test_password_min_life_existing_maximum" />
       </criteria>
     </criteria>
   </definition>
 
-
-  <!-- Define a test for the shadow file for non-system accounts to look for the maximum password change interval. -->
+  <!-- Define a test for the shadow file for accounts with passwords to look for the minimum password change interval. -->
   <unix:shadow_test
       id="test_password_min_life_existing" 
       check="all"
       check_existence="at_least_one_exists"
       version="1" 
-      comment="Password minimum lifetime for existing accounts is at most the maximum.">
-    <unix:object object_ref="object_shadow_interactive_users"/>
+      comment="Password minimum lifetime for existing accounts is at least what is defined by policy.">
+    <unix:object object_ref="object_shadow_password_users"/>
     <unix:state state_ref="min_password_change_interval"/>
   </unix:shadow_test>
 
-  <!-- Define a second test to ensure the maximum password life is at least the defined minimum (usually 1). -->
-  <unix:shadow_test id="test_password_min_life_existing_maximum"  check="all" check_existence="at_least_one_exists" version="1" comment="Password maximum life entry is at least a defined minimum">
-    <unix:object object_ref="object_shadow_interactive_users"/>
-    <unix:state state_ref="max_min_password_change_interval"/>
+  <!-- Define a second test to ensure the minimum password life is at less than the defined maximum. -->
+  <unix:shadow_test id="test_password_min_life_existing_maximum"  check="all" check_existence="at_least_one_exists" version="1" comment="Password minimum life entry is at mosta defined maximum">
+    <unix:object object_ref="object_shadow_password_users"/>
+    <unix:state state_ref="min_password_change_interval"/>
   </unix:shadow_test>
-
-  <!-- Define a test to check the shadow file for blank entries for max files. -->
-  <ind:textfilecontent54_test id="test_password_min_life_existing_blank" check="all" check_existence="none_exist" version="1" comment="Password minimum life entry is not blank.">
-    <ind:object object_ref="object_interactive_blank_min_life_existing"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object
-      comment="Null max password ages."
-      version="1"
-      id="object_interactive_blank_min_life_existing">
-    <ind:filepath datatype="string" operation="equals">/etc/shadow</ind:filepath>
-    <ind:pattern operation="pattern match" var_ref="var_interactive_no_min_password" var_check="at least one" />
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <local_variable id="var_interactive_no_min_password" version="1" datatype="string" comment="/etc/shadow entries for interactive users with null min password age">
-    <concat>
-      <literal_component datatype="string">^</literal_component>
-      <variable_component var_ref="var_has_interactive_users" />
-      <literal_component datatype="string">:[^:]*:[^:]*::</literal_component>
-    </concat>
-  </local_variable>
 
   <unix:shadow_state id="max_min_password_change_interval" version="1" comment="change passwords every maximum interval or less">
     <unix:chg_allow
@@ -66,7 +40,6 @@
       datatype="int"
       var_ref="var_accounts_minimum_age_login_defs"/>
   </unix:shadow_state>
-
 
   <!-- these external variables are defined at the group level, reusing the account-level definitions. -->
   <external_variable

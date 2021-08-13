@@ -2,11 +2,11 @@
   <definition class="compliance" id="accounts_password_set_max_life_existing" version="1">
       {{{ oval_metadata("Set Existing Passwords Maximum Age") }}}
     <criteria operator="OR" comment="Interactive users must satisfy the requirement">
-      <extend_definition definition_ref="accounts_passwd_has_interactive_users" />
+      <extend_definition definition_ref="accounts_passwd_has_interactive_users" negate="true"/>
       <criteria operator="AND">
           <criterion comment="Passwords must be a restricted to the appropriate maximum age for existing accounts." test_ref="test_password_max_life_existing" />
           <criterion comment="Passwords must have a maximum lifetime greater than or equal to one." test_ref="test_password_max_life_existing_minimum" />
-        <criterion comment="Passwords must not not have a blank max life for existing accounts." test_ref="test_password_max_life_existing_blank" />
+        <criterion comment="Passwords must not not have a blank max life for existing accounts." test_ref="test_password_max_life_existing_blank" /> 
       </criteria>
     </criteria>
   </definition>
@@ -18,13 +18,13 @@
       check_existence="at_least_one_exists"
       version="1" 
       comment="Password maximum lifetime for existing accounts is at least the minimum.">
-    <unix:object object_ref="object_shadow_interactive_users"/>
+    <unix:object object_ref="object_shadow_password_users"/>
     <unix:state state_ref="max_password_change_interval"/>
   </unix:shadow_test>
 
   <!-- Define a second test to ensure the maximum password life is at least the defined minimum (usually 1). -->
   <unix:shadow_test id="test_password_max_life_existing_minimum"  check="all" check_existence="at_least_one_exists" version="1" comment="Password maximum life entry is at least a defined minimum">
-    <unix:object object_ref="object_shadow_interactive_users"/>
+    <unix:object object_ref="object_shadow_password_users"/>
     <unix:state state_ref="min_max_password_change_interval"/>
   </unix:shadow_test>
 
