@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'IOMMU configuration directive'
+
+description: |-
+    On x86 architecture supporting VT-d, the IOMMU manages the access control policy between the hardware devices and some
+        of the system critical units such as the memory.
+
+rationale: |-
+    On x86 architectures, activating the I/OMMU prevents the system from arbritrary accesses potentially made by
+        hardware devices.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: CCE-82351-8
+    cce@rhel8: CCE-83920-9
+    cce@rhel9: CCE-83844-1
+
+references:
+    anssi: BP28(R11)
+
+platform: machine
+
+warnings:
+  - functionality:
+      Depending on the hardware, devices and operating system used, enabling IOMMU can cause hardware instabilities.
+      Proper function and stability should be assessed before applying remediation to production systems.
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: iommu
+        arg_value: 'force'
+        config_path: {{{ grub2_boot_path }}}

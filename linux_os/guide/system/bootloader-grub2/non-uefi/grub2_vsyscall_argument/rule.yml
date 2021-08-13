@@ -1,45 +1,44 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhel8,rhel9
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
 
-title: 'Enable Kernel Page-Table Isolation (KPTI)'
+title: 'Disable vsyscalls'
 
 description: |-
-    To enable Kernel page-table isolation,
-    add the argument <tt>pti=on</tt> to the default
+    To disable use of virtual syscalls,
+    add the argument <tt>vsyscall=none</tt> to the default
     GRUB 2 command line for the Linux operating system in
     <tt>/etc/default/grub</tt>, in the manner below:
-    <pre>GRUB_CMDLINE_LINUX="pti=on"</pre>
+    <pre>GRUB_CMDLINE_LINUX="vsyscall=none"</pre>
 
 rationale: |-
-    Kernel page-table isolation is a kernel feature that mitigates
-    the Meltdown security vulnerability and hardens the kernel
-    against attempts to bypass kernel address space layout
-    randomization (KASLR).
+    Virtual Syscalls provide an opportunity of attack for a user who has control
+    of the return instruction pointer.
 
-severity: high
+severity: medium
 
 identifiers:
-    cce@rhel8: CCE-82194-2
-    cce@rhel9: CCE-83843-3
+    cce@rhel7: CCE-82159-5
+    cce@rhel8: CCE-80946-7
+    cce@rhel9: CCE-83842-5
 
 references:
-    disa: CCI-000381
-    nist: SI-16
-    srg: SRG-OS-000433-GPOS-00193,SRG-OS-000095-GPOS-00049
-    stigid@rhel8: RHEL-08-040004
+    disa: CCI-001084
+    nist: CM-7(a)
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000134-GPOS-00068
+    stigid@rhel8: RHEL-08-010422
 
-ocil_clause: 'Kernel page-table isolation is not enabled'
+ocil_clause: 'vsyscalls are enabled'
 
 ocil: |-
     Inspect the form of default GRUB 2 command line for the Linux operating system
-    in <tt>/etc/default/grub</tt>. If they include <tt>pti=on</tt>,
-    then Kernel page-table isolation is enabled at boot time.
+    in <tt>/etc/default/grub</tt>. If they include <tt>vsyscall=none</tt>,
+    then virtyal syscalls are not enabled at boot time.
     <br /><br />
-    To ensure <tt>pti=on</tt> is configured on all installed kernels, the
+    To ensure <tt>vsyscall=none</tt> is configured on all installed kernels, the
     following command may be used:
     <br />
-    <pre>$ sudo /sbin/grubby --update-kernel=ALL --args="pti=on</pre>
+    <pre>$ sudo /sbin/grubby --update-kernel=ALL --args="vsyscall=none</pre>
     <br />
 
 warnings:
@@ -53,7 +52,7 @@ warnings:
         <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
         <pre>~]# grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre></li>
         <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
-{{% if product in ["rhel8", "ol8"] %}}
+{{% if product in ["rhel7", "rhel8", "ol7", "ol8"] %}}
         <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
 {{% else %}}
         <pre>~]# grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre></li>
@@ -65,5 +64,6 @@ platform: machine
 template:
     name: grub2_bootloader_argument
     vars:
-        arg_name: pti
-        arg_value: 'on'
+        arg_name: vsyscall
+        arg_value: none
+        config_path: {{{ grub2_boot_path }}}

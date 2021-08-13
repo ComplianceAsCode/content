@@ -8,4 +8,9 @@ def preprocess(data, lang):
         data["escaped_arg_name_value"] = data["arg_name_value"].replace(".", "\\.")
         # replace . with _, this is used in test / object / state ids
         data["sanitized_arg_name"] = ssg.utils.escape_id(data["arg_name"])
+
+        data['id_suffix'] = ''
+        if 'uefi' in data['_rule_id']:
+            data['id_suffix'] = 'uefi'
+
     return data

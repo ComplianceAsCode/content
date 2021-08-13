@@ -1,0 +1,69 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
+
+title: 'Disable vsyscalls'
+
+description: |-
+    To disable use of virtual syscalls,
+    add the argument <tt>vsyscall=none</tt> to the default
+    GRUB 2 command line for the Linux operating system in
+    <tt>/etc/default/grub</tt>, in the manner below:
+    <pre>GRUB_CMDLINE_LINUX="vsyscall=none"</pre>
+
+rationale: |-
+    Virtual Syscalls provide an opportunity of attack for a user who has control
+    of the return instruction pointer.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-82159-5
+    cce@rhel8: CCE-80946-7
+    cce@rhel9: CCE-83842-5
+
+references:
+    disa: CCI-001084
+    nist: CM-7(a)
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000134-GPOS-00068
+    stigid@rhel8: RHEL-08-010422
+
+ocil_clause: 'vsyscalls are enabled'
+
+ocil: |-
+    Inspect the form of default GRUB 2 command line for the Linux operating system
+    in <tt>/etc/default/grub</tt>. If they include <tt>vsyscall=none</tt>,
+    then virtyal syscalls are not enabled at boot time.
+    <br /><br />
+    To ensure <tt>vsyscall=none</tt> is configured on all installed kernels, the
+    following command may be used:
+    <br />
+    <pre>$ sudo /sbin/grubby --update-kernel=ALL --args="vsyscall=none</pre>
+    <br />
+
+warnings:
+    - management: |-
+        The GRUB 2 configuration file, <tt>grub.cfg</tt>,
+        is automatically updated each time a new kernel is installed. Note that any
+        changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
+        file. To update the GRUB 2 configuration file manually, use the
+        <pre>grub2-mkconfig -o</pre> command as follows:
+        <ul>
+        <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
+        <pre>~]# grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre></li>
+        <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
+{{% if product in ["rhel7", "rhel8", "ol7", "ol8"] %}}
+        <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+{{% else %}}
+        <pre>~]# grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre></li>
+{{% endif %}}
+        </ul>
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: vsyscall
+        arg_value: none
+        config_path: {{{ grub2_uefi_boot_path }}}
