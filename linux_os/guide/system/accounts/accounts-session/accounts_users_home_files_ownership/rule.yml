@@ -2,12 +2,13 @@ documentation_complete: true
 
 prodtype: ol7,ol8,rhel7,rhel8,rhv4,sle15,wrlinux1019
 
-title: 'All User Files and Directories In The Home Directory Must Be Owned By The Primary User'
+title: 'All User Files and Directories In The Home Directory Must Have a Valid Owner'
 
 description: |-
-    Change the owner of a interactive users files and directories to that
-    owner. To change the of a local interactive users files and
-    directories, use the following command:
+    Either remove all files and directories from the system that
+    do not have a valid user, or assign a valid user to all unowned
+    files and directories. To assign a valid owner to a local
+    interactive user's files and directories, use the following command:
     <pre>$ sudo chown -R <i>USER</i> /home/<i>USER</i></pre>
 
 rationale: |-
@@ -31,6 +32,6 @@ references:
 ocil_clause: 'the user ownership is incorrect'
 
 ocil: |-
-    To verify all files and directories in interactive users home directory
-    are owned by the user, run the following command:
+    To verify all files and directories in a local interactive user's
+    home directory have a valid owner, run the following command:
     <pre>$ sudo ls -lLR /home/<i>USER</i></pre>
