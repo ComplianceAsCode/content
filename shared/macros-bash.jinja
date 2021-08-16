@@ -754,7 +754,7 @@ if LC_ALL=C grep -q -m 1 $grep_case_insensitive_option -e "{{{ key }}}\\>" "{{{ 
     "${sed_command[@]}" "s/{{{ key }}}\\>.*/$formatted_output/g$sed_case_insensitive_option" "{{{ config_file }}}"
 else
     # \n is precaution for case where file ends without trailing newline
-    printf '\n# Per %s: Set %s in %s\n' "{{{ cce }}}" "$formatted_output" "{{{ config_file }}}" >> "{{{ config_file }}}"
+    printf '\n# Per %s: Set %s in %s\n' "$cce" "$formatted_output" "{{{ config_file }}}" >> "{{{ config_file }}}"
     printf '%s\n' "$formatted_output" >> "{{{ config_file }}}"
 fi
 {{%- endmacro -%}}
