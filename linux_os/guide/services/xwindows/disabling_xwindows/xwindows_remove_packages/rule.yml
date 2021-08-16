@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9
+prodtype: ol7,ol8,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Disable graphical user interface'
 
@@ -8,7 +8,7 @@ description: |-
     By removing the following packages,  the system no longer has X Windows installed.
     {{% if product in ["rhel7", "ol7"] %}}
     <tt>xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</tt>
-    {{% else %}} 
+    {{% else %}}
     <tt>xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland</tt>
     {{% endif %}}
     If X Windows is not installed then the system cannot boot into graphical user mode.
@@ -16,7 +16,7 @@ description: |-
     mode. To do so, run the following command:
     {{% if product in ["rhel7", "ol7"] %}}
     <pre>sudo {{{ pkg_manager }}} remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</pre>
-    {{% else %}} 
+    {{% else %}}
     <pre>sudo {{{ pkg_manager }}} remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland</pre>
     {{% endif %}}
     Additionally, setting the system's default target to
@@ -42,6 +42,8 @@ identifiers:
 references:
     cis@rhel7: 2.2.2
     cis@rhel8: 2.2.2
+    cis@sle12: 2.2.2
+    cis@sle15: 2.2.2
     disa: CCI-000366
     nist: CM-6(b)
     srg: SRG-OS-000480-GPOS-00227
@@ -55,7 +57,7 @@ ocil: |-
     To ensure the X Windows package group is removed, run the following command:
     {{% if product in ["rhel7", "ol7"] %}}
     <pre>$ rpm -qi xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</pre>
-    {{% else %}} 
+    {{% else %}}
     <pre>$ rpm -qi xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland</pre>
     {{% endif %}}
     For each <tt>package</tt> mentioned above you should receive following line:

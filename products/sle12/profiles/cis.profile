@@ -8,7 +8,7 @@ metadata:
 reference: https://www.cisecurity.org/cis-benchmarks/#suse_linux
 
 
-title: 'CIS SUSE Linux Enterprise 15 Benchmark'
+title: 'CIS SUSE Linux Enterprise 12 Benchmark'
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
@@ -28,9 +28,6 @@ selections:
     #### 1.1.1.2 Ensure mounting of udf filesystems is disabled (Automated)
     - kernel_module_udf_disabled
 
-    #### 1.1.1.3 Ensure mounting of FAT filesystems is limited (Manual)
-    - kernel_module_vfat_disabled
-
     ### 1.1.2 Ensure /tmp is configured (Automated)
     - partition_for_tmp
 
@@ -44,7 +41,7 @@ selections:
     - mount_option_tmp_nosuid
 
     ### 1.1.6 Ensure /dev/shm is configured (Automated)
-    # NEED RULE?
+    # No Rule required?
 
     ### 1.1.7 Ensure noexec option set on /dev/shm (Automated)
     - mount_option_dev_shm_noexec
@@ -89,7 +86,7 @@ selections:
     - mount_option_nodev_removable_partitions
 
     ### 1.1.21 Ensure nosuid option set on removable media partitions (Manual)
-    - mount_option_noexec_removable_partitions
+    - mount_option_nosuid_removable_partitions
 
     ### 1.1.22 Ensure sticky bit is set on all world-writable directories (Automated)
     - dir_perms_world_writable_sticky_bits
@@ -107,50 +104,40 @@ selections:
     ### 1.2.3 Ensure gpgcheck is globally activated (Automated)
     - ensure_gpgcheck_globally_activated
 
-    ## 1.3 Configure sudo
-    ### 1.3.1 Ensure sudo is installed (Automated)
-    - package_sudo_installed
-
-    ### 1.3.2 Ensure sudo commands use pty (Automated)
-    - sudo_add_use_pty
-
-    ### 1.3.3 Ensure sudo log file exists (Automated)
-    # NEED Rule -
-
-    ## 1.4 Filesystem Integrity Checking
-    ### 1.4.1 Ensure AIDE is installed (Automated)
+    ## 1.3 Filesystem Integrity Checking
+    ### 1.3.1 Ensure AIDE is installed (Automated)
     - package_aide_installed
 
-    ### 1.4.2 Ensure filesystem integrity is regularly checked (Automated)
+    ### 1.3.2 Ensure filesystem integrity is regularly checked (Automated)
     - aide_periodic_cron_checking
 
-    ## 1.5 Secure Boot Settings
-    ### 1.5.1 Ensure bootloader password is set (Automated)
+    ## 1.4 Secure Boot Settings
+    ### 1.4.1 Ensure bootloader password is set (Automated)
     - grub2_password
 
-    ### 1.5.2 Ensure permissions on bootloader config are configured (Automated)
+    ### 1.4.2 Ensure permissions on bootloader config are configured (Automated)
     #### chown root:root /boot/grub2/grub.cfg
     - file_owner_grub2_cfg
     - file_groupowner_grub2_cfg
 
-    #### chmod og-rwx /boot/grub2/grub.cfg
+    #### chmod 600 /boot/grub2/grub.cfg
     - file_permissions_grub2_cfg
 
     #### chown root:root /boot/grub2/grubenv
     # NEED RULE -
 
-    #### chmod og-rwx /boot/grub2/grubenv
+    #### chmod 600 /boot/grub2/grubenv
     # NEED RULE -
 
-    ### 1.5.3 Ensure authentication required for single user mode (Automated)
+    ### 1.4.3 Ensure authentication required for single user mode (Automated)
     #### ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
     - require_singleuser_auth
 
     #### ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
     - require_emergency_target_auth
 
-    ## 1.6 Additional Process Hardening
-    ### 1.6.1 Ensure core dumps are restricted (Automated)
+    ## 1.5 Additional Process Hardening
+    ### 1.5.1 Ensure core dumps are restricted (Automated)
     #### * hard core 0
     - disable_users_coredumps
 
@@ -163,13 +150,13 @@ selections:
     #### Storage=none
     - coredump_disable_storage
 
-    ### 1.6.2 Ensure XD/NS support is enabled (Automated)
+    ### 1.5.2 Ensure XD/NS support is enabled (Automated)
     #### No configuration required for 64-bit systems
 
-    ### 1.6.3 Ensure address space layout randomization (ASLR) is enabled (Automated)
+    ### 1.5.3 Ensure address space layout randomization (ASLR) is enabled (Automated)
     - sysctl_kernel_randomize_va_space
 
-    ### 1.6.4 Ensure prelink is disabled (Automated)
+    ### 1.5.4 Ensure prelink is disabled (Automated)
     # NEED RULE -
 
     ## 1.7 Mandatory Access Control
@@ -614,53 +601,53 @@ selections:
     # Manual check and remmdiation by admin required
 
     # 5 Access, Authentication and Authorization
-    ## 5.1 Configure time-based job schedulers
-    ### 5.1.1 Ensure cron daemon is enabled (Automated)
+    ## 5.2 Configure time-based job schedulers
+    ### 5.2.1 Ensure cron daemon is enabled (Automated)
     - service_cron_enabled
 
-    ### 5.1.2 Ensure permissions on /etc/crontab are configured (Automated)
+    ### 5.2.2 Ensure permissions on /etc/crontab are configured (Automated)
     # chown root:root /etc/crontab
     - file_owner_crontab
     - file_groupowner_crontab
     # chmod 600 /etc/crontab
     - file_permissions_crontab
 
-    ### 5.1.3 Ensure permissions on /etc/cron.hourly are configured (Automated)
+    ### 5.2.3 Ensure permissions on /etc/cron.hourly are configured (Automated)
     # chown root:root /etc/cron.hourly
     - file_owner_cron_hourly
     - file_groupowner_cron_hourly
     # chmod 700 /etc/cron.hourly
     - file_permissions_cron_hourly
 
-    ### 5.1.4 Ensure permissions on /etc/cron.daily are configured (Automated)
+    ### 5.2.4 Ensure permissions on /etc/cron.daily are configured (Automated)
     # chown root:root /etc/cron.daily
     - file_owner_cron_daily
     - file_groupowner_cron_daily
     # chmod 700 /etc/cron.daily
     - file_permissions_cron_daily
 
-    ### 5.1.5 Ensure permissions on /etc/cron.weekly are configured (Automated)
+    ### 5.2.5 Ensure permissions on /etc/cron.weekly are configured (Automated)
     # chown root:root /etc/cron.weekly
     - file_owner_cron_weekly
     - file_groupowner_cron_weekly
     # chmod 700 /etc/cron.weekly
     - file_permissions_cron_weekly
 
-    ### 5.1.6 Ensure permissions on /etc/cron.monthly are configured (Automated)
+    ### 5.2.6 Ensure permissions on /etc/cron.monthly are configured (Automated)
     # chown root:root /etc/cron.monthly
     - file_owner_cron_monthly
     - file_groupowner_cron_monthly
     # chmod 700 /etc/cron.monthly
     - file_permissions_cron_monthly
 
-    ### 5.1.7 Ensure permissions on /etc/cron.d are configured (Automated)
+    ### 5.2.7 Ensure permissions on /etc/cron.d are configured (Automated)
     # chown root:root /etc/cron.d
     - file_owner_cron_d
     - file_groupowner_cron_d
     # chmod 700 /etc/cron.d
     - file_permissions_cron_d
 
-    ### 5.1.8 Ensure cron is restricted to authorized users (Automated)
+    ### 5.2.8 Ensure cron is restricted to authorized users (Automated)
     # chown root:root /etc/cron.allow
     - file_owner_cron_allow
     - file_groupowner_cron_allow
@@ -669,65 +656,66 @@ selections:
     # not yet implemented
     #- file_permissions_cron_allow
 
-    ### 5.1.9 Ensure at is restricted to authorized users (Automated)
+    ### 5.2.9 Ensure at is restricted to authorized users (Automated)
     # Need Rule
 
-    ## 5.2 SSH Server Configuration
-    ### 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
+    ## 5.3 SSH Server Configuration
+    ### 5.3.1 Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
     # chown root:root /etc/ssh/sshd_config
     - file_owner_sshd_config
     - file_groupowner_sshd_config
     # chmod 600 /etc/ssh/sshd_config
     - file_permissions_sshd_config
 
-    ### 5.2.2 Ensure permissions on SSH private host key files are
+    ### 5.3.2 Ensure permissions on SSH private host key files are
     ###       configured (Automated)
     - file_permissions_sshd_private_key
     # TO DO: check owner of private keys in /etc/ssh is root:root
 
-    ### 5.2.3 Ensure permissions on SSH public host key files are configured
+    ### 5.3.3 Ensure permissions on SSH public host key files are configured
     ###      (Automated)
     - file_permissions_sshd_pub_key
     # TO DO: check owner of pub keys in /etc/ssh is root:root
 
-    ### 5.2.4 Ensure SSH access is limited (Automated)
+    ### 5.3.4 Ensure SSH access is limited (Automated)
+    # NEED RULE!
 
-    ### 5.2.5 Ensure SSH LogLevel is appropriate (Automated)
+    ### 5.3.5 Ensure SSH LogLevel is appropriate (Automated)
     - sshd_set_loglevel_info
 
     ### 5.2.6 Ensure SSH X11 forward is diabled (Automated)
     - sshd_disable_x11_forwarding
 
-    ### 5.2.7 Ensure SSH MaxAuthTries is set to 4 or less (Automated)
+    ### 5.3.7 Ensure SSH MaxAuthTries is set to 4 or less (Automated)
     - sshd_max_auth_tries_value=4
     - sshd_set_max_auth_tries
 
-    ### 5.2.8 Ensure SSH IgnoreRhosts is enabled (Automated)
+    ### 5.3.8 Ensure SSH IgnoreRhosts is enabled (Automated)
     - sshd_disable_rhosts
 
-    ### 5.2.9 Ensure SSH HostbasedAuthentication is disabled (Automated)
+    ### 5.3.9 Ensure SSH HostbasedAuthentication is disabled (Automated)
     - disable_host_auth
 
-    ### 5.2.10 Ensure SSH root login is disabled (Automated)
+    ### 5.3.10 Ensure SSH root login is disabled (Automated)
     - sshd_disable_root_login
 
-    ### 5.2.11 Ensure SSH PermitEmptyPasswords is disabled (Automated)
+    ### 5.3.11 Ensure SSH PermitEmptyPasswords is disabled (Automated)
     - sshd_disable_empty_passwords
 
-    ### 5.2.12 Ensure SSH PermitUserEnvironment is disabled (Automated)
+    ### 5.3.12 Ensure SSH PermitUserEnvironment is disabled (Automated)
     - sshd_do_not_permit_user_env
 
-    ### 5.2.13 Ensure only strong Ciphers are used (Automated)
+    ### 5.3.13 Ensure only strong Ciphers are used (Automated)
     - sshd_use_strong_ciphers
 
-    ### 5.2.14 Ensure only strong MAC algorithms are used (Automated)
+    ### 5.3.14 Ensure only strong MAC algorithms are used (Automated)
     - sshd_use_strong_macs
 
-    ### 5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)
+    ### 5.3.15 Ensure only strong Key Exchange algorithms are used (Automated)
     # Not yet implemented.
     #- sshd_use_strong_kex
 
-    ### 5.2.16 Ensure SSH Idle Timeout Interval is configured (Automated)
+    ### 5.3.16 Ensure SSH Idle Timeout Interval is configured (Automated)
     # ClientAliveInterval 300
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
@@ -736,33 +724,33 @@ selections:
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive_0
 
-    ### 5.2.17 Ensure SSH LoginGraceTime is set to one minute
+    ### 5.3.17 Ensure SSH LoginGraceTime is set to one minute
     ###        or less (Automated)
     # Not yet implemented.
     #- var_sshd_set_login_grace_time=60
     #- sshd_set_login_grace_time
 
-    ### 5.2.18 Ensure SSH warning banner is configured (Automated)
+    ### 5.3.18 Ensure SSH warning banner is configured (Automated)
     - sshd_enable_warning_banner
 
-    ### 5.2.19 Ensure SSH PAM is enabled (Automated)
+    ### 5.3.19 Ensure SSH PAM is enabled (Automated)
     # Not yet implemented.
     # - sshd_use_pam
 
-    ### 5.2.20 Ensure SSH AllowTcpForwarding is disabled (Automated)
+    ### 5.3.20 Ensure SSH AllowTcpForwarding is disabled (Automated)
     - sshd_disable_tcp_forwarding
 
-    ### 5.2.21 Ensure SSH MaxStartups is configured (Automated)
+    ### 5.3.21 Ensure SSH MaxStartups is configured (Automated)
     # Not yet implemented.
     #- var_sshd_set_max_startups=10:30:60
     #- sshd_set_max_startups
 
-    ### 5.2.22 Ensure SSH MaxSessions is limited (Automated)
+    ### 5.3.22 Ensure SSH MaxSessions is limited (Automated)
     - var_sshd_max_sessions=4
     - sshd_set_max_sessions
 
-    ## 5.3 Configure PAM
-    ### 5.3.1 Ensure password creation requirements are configured (Automated)
+    ## 5.4 Configure PAM
+    ### 5.4.1 Ensure password creation requirements are configured (Automated)
     # Configrure max retries
     - var_password_pam_retry=3
     - cracklib_accounts_password_pam_retry
@@ -783,52 +771,52 @@ selections:
     # Configure lcredit
     - cracklib_accounts_password_pam_lcredit
 
-    ### 5.3.2 Ensure lockout for failed password attempts is
+    ### 5.4.2 Ensure lockout for failed password attempts is
     ###       configured (Automated)
     - accounts_passwords_pam_tally2
 
-    ### 5.3.3Ensure password reuse is limited (Automated)
+    ### 5.4.3Ensure password reuse is limited (Automated)
     - var_password_pam_remember=5
     - accounts_password_pam_pwhistory_remember
 
-    ## 5.4 User Accountsand Environment
-    ### 5.4.1 Set Shadow Password Suite Parameters
-    #### 5.4.1.1 Ensure password hashing algorithm is SHA-512 (Automated)
+    ## 5.5 User Accountsand Environment
+    ### 5.5.1 Set Shadow Password Suite Parameters
+    #### 5.5.1.1 Ensure password hashing algorithm is SHA-512 (Automated)
     - set_password_hashing_algorithm_logindefs
 
-    #### 5.4.1.2 Ensure password expiration is 365 days or less (Automated)
+    #### 5.5.1.2 Ensure password expiration is 365 days or less (Automated)
     - var_accounts_maximum_age_login_defs=365
     - accounts_maximum_age_login_defs
 
-    #### 5.4.1.3 Ensure minimum days between password changes is 7
+    #### 5.5.1.3 Ensure minimum days between password changes is 7
     ####         or more (Automated)
     - var_accounts_minimum_age_login_defs=7
     - accounts_minimum_age_login_defs
 
-    #### 5.4.1.4 Ensure password expiration warning days is
+    #### 5.5.1.4 Ensure password expiration warning days is
     ####         7 or more (Automated)
     - var_accounts_password_warn_age_login_defs=7
     - accounts_password_warn_age_login_defs
 
-    #### 5.4.1.5 Ensure inactive password lock is 30 days or less (Automated)
+    #### 5.5.1.5 Ensure inactive password lock is 30 days or less (Automated)
     # Need Rule
 
-    #### 5.4.1.6 Ensure all users last password change date is
+    #### 5.5.1.6 Ensure all users last password change date is
     ####         in the past (Automated)
     # Need Rule
 
-    ### 5.4.2 Ensure system accounts are secured (Automated)
+    ### 5.5.2 Ensure system accounts are secured (Automated)
     # Need Rule
 
-    ### 5.4.3 Ensure default group for the root account is
+    ### 5.5.3 Ensure default group for the root account is
     ###       GID 0 (Automated)
     # Need Rule
 
-    ### 5.4.4 Ensure default user shell timeout is 900 seconds
+    ### 5.5.4 Ensure default user shell timeout is 900 seconds
     ###       or less (Automated)
     # Need Rule
 
-    ### 5.4.5 Ensure default user mask is 027 or more restrictive (Automated)
+    ### 5.5.5 Ensure default user mask is 027 or more restrictive (Automated)
     - var_accounts_user_umask=027
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_bashrc
