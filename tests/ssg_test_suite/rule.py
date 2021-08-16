@@ -24,7 +24,7 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 Scenario = collections.namedtuple(
-    "Scenario", ["script", "context", "script_params"])
+    "Scenario", ["script", "context", "script_params", "contents"])
 
 
 def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
@@ -211,13 +211,23 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
-    def _rule_should_be_tested(self, rule, rules_to_be_tested):
+    def _rule_template_been_tested(self, rule, tested_templates):
+        if rule.template is None:
+            return False
+        if self.test_env.duplicate_templates:
+            return False
+        if rule.template in tested_templates:
+            return True
+        tested_templates.add(rule.template)
+        return False
+
+    def _rule_should_be_tested(self, rule, rules_to_be_tested, tested_templates):
         if 'ALL' in rules_to_be_tested:
             # don't select rules that are not present in benchmark
             if not xml_operations.find_rule_in_benchmark(
                     self.datastream, self.benchmark_id, rule.id):
                 return False
-            return True
+            return not self._rule_template_been_tested(rule, tested_templates)
         else:
             for rule_to_be_tested in rules_to_be_tested:
                 # we check for a substring
@@ -226,7 +236,7 @@ class RuleChecker(oscap.Checker):
                 else:
                     pattern = OSCAP_RULE + rule_to_be_tested
                 if fnmatch.fnmatch(rule.id, pattern):
-                    return True
+                    return not self._rule_template_been_tested(rule, tested_templates)
             return False
 
     def _ensure_package_present_for_all_scenarios(self, scenarios_by_rule):
@@ -250,8 +260,9 @@ class RuleChecker(oscap.Checker):
 
     def _get_rules_to_test(self, target):
         rules_to_test = []
-        for rule in common.iterate_over_rules():
-            if not self._rule_should_be_tested(rule, target):
+        tested_templates = set()
+        for rule in common.iterate_over_rules(self.test_env.product):
+            if not self._rule_should_be_tested(rule, target, tested_templates):
                 continue
             if not xml_operations.find_rule_in_benchmark(
                     self.datastream, self.benchmark_id, rule.id):
@@ -300,7 +311,7 @@ class RuleChecker(oscap.Checker):
                 .format(OSCAP_PROFILE_ALL_ID, script))
         return params
 
-    def _parse_parameters(self, script):
+    def _parse_parameters(self, script_content):
         """Parse parameters from script header"""
         params = {'profiles': [],
                   'templates': [],
@@ -309,16 +320,15 @@ class RuleChecker(oscap.Checker):
                   'remediation': ['all'],
                   'variables': [],
                   }
-        with open(script, 'r') as script_file:
-            script_content = script_file.read()
-            for parameter in params:
-                found = re.search(r'^# {0} = (.*)$'.format(parameter),
-                                  script_content,
-                                  re.MULTILINE)
-                if found is None:
-                    continue
-                splitted = found.group(1).split(',')
-                params[parameter] = [value.strip() for value in splitted]
+
+        for parameter in params:
+            found = re.search(r'^# {0} = (.*)$'.format(parameter),
+                              script_content, re.MULTILINE)
+            if found is None:
+                continue
+            splitted = found.group(1).split(',')
+            params[parameter] = [value.strip() for value in splitted]
+
         return params
 
     def _get_scenarios(self, rule_dir, scripts, scenarios_regex, benchmark_cpes):
@@ -331,6 +341,7 @@ class RuleChecker(oscap.Checker):
 
         scenarios = []
         for script in scripts:
+            script_contents = scripts[script]
             if scenarios_regex is not None:
                 if scenarios_pattern.match(script) is None:
                     logging.debug("Skipping script %s - it did not match "
@@ -338,10 +349,10 @@ class RuleChecker(oscap.Checker):
                     continue
             script_context = _get_script_context(script)
             if script_context is not None:
-                script_params = self._parse_parameters(os.path.join(rule_dir, script))
+                script_params = self._parse_parameters(script_contents)
                 script_params = self._modify_parameters(script, script_params)
                 if common.matches_platform(script_params["platform"], benchmark_cpes):
-                    scenarios += [Scenario(script, script_context, script_params)]
+                    scenarios += [Scenario(script, script_context, script_params, script_contents)]
                 else:
                     logging.warning("Script %s is not applicable on given platform" % script)
 
