@@ -1,5 +1,4 @@
 # platform = multi_platform_all
-. /usr/share/scap-security-guide/remediation_functions
 var_syslog_active="yes"
 
 {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}

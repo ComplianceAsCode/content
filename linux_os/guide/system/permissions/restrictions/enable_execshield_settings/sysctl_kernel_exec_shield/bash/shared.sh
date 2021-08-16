@@ -1,5 +1,3 @@
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
 
 # platform = multi_platform_all
 if [ "$(getconf LONG_BIT)" = "32" ] ; then

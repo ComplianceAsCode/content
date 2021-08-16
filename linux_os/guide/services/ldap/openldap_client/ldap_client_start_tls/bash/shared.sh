@@ -1,7 +1,5 @@
 # platform = Red Hat Virtualization 4,multi_platform_rhel
 
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
 
 # Use LDAP for authentication
 {{{ bash_replace_or_append('/etc/sysconfig/authconfig', '^USELDAPAUTH', 'yes', '@CCENUM@', '%s=%s') }}}

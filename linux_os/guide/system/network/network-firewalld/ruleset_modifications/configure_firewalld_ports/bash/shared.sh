@@ -4,7 +4,6 @@
 # strategy = configure
 # disruption = low
 
-. /usr/share/scap-security-guide/remediation_functions
 
 {{{ bash_package_install("firewalld") }}}
 
