@@ -742,7 +742,7 @@ fi
 
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
-stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "$key")
+stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "{{{ key }}}")
 
 # shellcheck disable=SC2059
 printf -v formatted_output "{{{ format }}}" "$stripped_key" "{{{ value }}}"
