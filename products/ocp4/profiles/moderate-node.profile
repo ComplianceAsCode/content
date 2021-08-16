@@ -141,7 +141,6 @@ selections:
     - kubelet_configure_client_ca
     - kubelet_configure_event_creation
     - kubelet_configure_tls_cipher_suites
-    - kubelet_disable_hostname_override
     - kubelet_enable_cert_rotation
     - kubelet_enable_client_cert_rotation
     - kubelet_enable_iptables_util_chains
