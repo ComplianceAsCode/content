@@ -2,29 +2,25 @@ documentation_complete: true
 
 prodtype: ocp4
 
-title: 'kubelet - Disable Hostname Override'
+title: 'kubelet - Hostname Override handling'
 
 description: |-
-    To prevent the hostname from being overrided, edit the kubelet systemd service file
-    <tt>/etc/systemd/system/kubelet.service</tt> on the kubelet node(s) and
-    remove the <tt>--hostname-override</tt> flag if it exists.
+    Normally, OpenShift lets the kubelet get the hostname from either the
+    cloud provider itself, or from the node's hostname. This ensures that
+    the PKI allocated by the deployment uses the appropriate values, is valid
+    and keeps working throughout the lifecycle of the cluster. IP addresses
+    are not used, and hence this makes it easier for security analysts to
+    associate kubelet logs with the appropriate node.
 
 rationale: |-
-    Allowing hostnames to be overrided creates issues around resolving nodes
+    Allowing hostnames to be overridden creates issues around resolving nodes
     in addition to TLS configuration, certificate validation, and log correlation
-    and validation.
+    and validation. However, in some cases explicit overriding this parameter is
+    necessary to ensure that the appropriate node name stays as it is in case of
+    certain upgrade conditions. e.g. as is the case in AWS and OpenStack when migrating
+    to external cloud providers.
 
-severity: medium
-
-ocil_clause: 'the hostname cannot be overrided'
-
-ocil: |-
-    Run the following command on the kubelet node(s):
-    <pre>$ sudo grep hostname-override /etc/systemd/system/kubelet.service</pre>
-    The output should return no output.
-
-#identifiers:
-#    cce@ocp4:
+severity: low
 
 references:
     cis@ocp4: 4.2.8
