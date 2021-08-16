@@ -152,17 +152,17 @@ class Policy():
             )
             raise ValueError(msg)
 
-    def get_level_with_ancestors(self, level_id):
+    def get_level_with_ancestors_sequence(self, level_id):
         # use OrderedDict for Python2 compatibility instead of ordered set
         levels = collections.OrderedDict()
         level = self.get_level(level_id)
         levels[level] = ""
         if level.inherits_from:
             for lv in level.inherits_from:
-                eligible_levels = [l for l in self.get_level_with_ancestors(lv).keys() if l not in levels.keys()]
+                eligible_levels = [l for l in self.get_level_with_ancestors_sequence(lv) if l not in levels.keys()]
                 for l in eligible_levels:
                     levels[l] = ""
-        return levels
+        return list(levels.keys())
 
 
 class ControlsManager():
@@ -200,34 +200,36 @@ class ControlsManager():
 
     def get_all_controls_of_level(self, policy_id, level_id):
         policy = self._get_policy(policy_id)
-        levels = policy.get_level_with_ancestors(level_id)
+        levels = policy.get_level_with_ancestors_sequence(level_id)
         all_policy_controls = self.get_all_controls(policy_id)
         eligible_controls = []
-        defined_variables = []
+        already_defined_variables = set()
         # we will go level by level, from top to bottom
         # this is done to enable overriding of variables by higher levels
-        for lv in levels.keys():
-            for c in all_policy_controls:
-                if lv.id in c.levels:
-                    # if the control has a variable, check if it is not already defined
-                    variables = list(c.variables.keys())
-                    if len(variables) == 0:
-                        eligible_controls.append(c)
-                        continue
-                    variables_to_remove = [] # contains list of variables which are already defined and should be removed from the control
-                    for var in variables:
-                        if var in defined_variables:
-                            variables_to_remove.append(var)
-                        else:
-                            defined_variables.append(var)
-                    if len(variables_to_remove) == 0:
-                        eligible_controls.append(c)
-                    else:
-                        new_c = copy.deepcopy(c)
-                        for var in variables_to_remove:
-                            del new_c.variables[var]
-                        eligible_controls.append(new_c)
+        for lv in levels:
+            for control in all_policy_controls:
+                if lv.id not in control.levels:
+                    continue
+
+                variables = set(control.variables.keys())
+
+                variables_to_remove = variables.intersection(already_defined_variables)
+                already_defined_variables.update(variables)
+
+                new_c = self._get_control_without_variables(variables_to_remove, control)
+                eligible_controls.append(new_c)
+
         return eligible_controls
+
+    @staticmethod
+    def _get_control_without_variables(variables_to_remove, control):
+        if not variables_to_remove:
+            return control
+
+        new_c = copy.deepcopy(control)
+        for var in variables_to_remove:
+            del new_c.variables[var]
+        return new_c
 
     def get_all_controls(self, policy_id):
         policy = self._get_policy(policy_id)
