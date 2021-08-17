@@ -3,36 +3,21 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Search /etc/audit/rules.d for audit rule entries
-  find:
-    paths: /etc/audit/rules.d
-    recurse: false
-    contains: ^.*dir=/var/log/audit/.*$
-    patterns: '*.rules'
-  register: find_var_log_audit
-
-- name: Use /etc/audit/rules.d/access-audit-trail.rules as the recipient for the rule
-  set_fact:
-    all_files:
-    - /etc/audit/rules.d/access-audit-trail.rules
-  when: find_var_log_audit.matched == 0
-
-- name: Use matched file as the recipient for the rule
-  set_fact:
-    all_files:
-    - '{{ find_var_log_audit.files | map(attribute=''path'') | list | first }}'
-  when: find_var_log_audit.matched > 0
-
-- name: Inserts/replaces the /var/log/audit/ rule in rules.d
-  lineinfile:
-    path: '{{ all_files[0] }}'
-    line: -a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=unset
-      -F key=access-audit-trail
-    create: true
-
-- name: Inserts/replaces the /var/log/audit/ rule in audit.rules
-  lineinfile:
-    path: /etc/audit/audit.rules
-    line: -a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>={{{ auid }}} -F auid!=unset
-      -F key=access-audit-trail
-    create: true
+- name: Perform remediattion of Audit rules for /var/log/audit
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit",
+      other_filters="-F dir=/var/log/audit/ -F perm=r",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=[],
+      key="access-audit-trail",
+      syscall_grouping=[],
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit",
+      other_filters="-F dir=/var/log/audit/ -F perm=r",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=[],
+      key="access-audit-trail",
+      syscall_grouping=[],
+      )|indent(4) }}}

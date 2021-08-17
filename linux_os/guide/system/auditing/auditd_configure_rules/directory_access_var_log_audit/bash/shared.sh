@@ -3,7 +3,7 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+ACTION_ARCH_FILTERS="-a always,exit"
 OTHER_FILTERS="-F dir=/var/log/audit/ -F perm=r"
 AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
 SYSCALL=""
