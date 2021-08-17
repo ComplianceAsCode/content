@@ -19,4 +19,8 @@ def preprocess(data, lang):
         if "syscall_grouping" in data:
             # Make it easier to tranform the syscall_grouping into a Bash array
             data["syscall_grouping"] = " ".join(data["syscall_grouping"])
+    elif lang == "ansible":
+        # This template does not use the 'syscall' parameters
+        data["syscall"] = []
+        data["syscall_grouping"] = []
     return data

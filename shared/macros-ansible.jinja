@@ -404,6 +404,11 @@ The macro requires following parameters:
 {{% if auid_filters != "" %}}
     {{% set auid_filters = " " ~ auid_filters %}}
 {{% endif %}}
+{{% if syscalls == [] %}}
+    {{% set syscall_flag = "" %}}
+{{% else %}}
+    {{% set syscall_flag = " -S " %}}
+{{% endif %}}
 - name: Declare list of syscalls
   set_fact:
     syscalls: {{{ syscalls }}}
@@ -455,7 +460,7 @@ The macro requires following parameters:
 - name: Add the audit rule to {{ audit_file }}
   lineinfile:
     path: '{{ audit_file }}'
-    line: "{{{ action_arch_filters }}} -S {{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
+    line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
     state: present
   when: syscalls_found | length == 0
@@ -482,6 +487,11 @@ The macro requires following parameters:
 {{% endif %}}
 {{% if auid_filters!= "" %}}
     {{% set auid_filters = " " ~ auid_filters %}}
+{{% endif %}}
+{{% if syscalls == [] %}}
+    {{% set syscall_flag = "" %}}
+{{% else %}}
+    {{% set syscall_flag = " -S " %}}
 {{% endif %}}
 - name: Declare list of syscalls
   set_fact:
@@ -518,7 +528,7 @@ The macro requires following parameters:
 - name: Add the audit rule to {{ audit_file }}
   lineinfile:
     path: '{{ audit_file }}'
-    line: "{{{ action_arch_filters }}} -S {{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
+    line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
     state: present
   when: syscalls_found | length == 0
