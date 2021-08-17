@@ -1,9 +1,7 @@
 # platform = multi_platform_all
 # reboot = false
 
-. /usr/share/scap-security-guide/remediation_functions
-
-include_mount_options_functions
+{{{ bash_include_mount_options_functions() }}}
 
 function perform_remediation {
 	# test "$mount_has_to_exist" != 'no'
