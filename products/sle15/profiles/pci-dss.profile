@@ -87,6 +87,7 @@ selections:
     - no_empty_passwords
     - rpm_verify_hashes
     - rpm_verify_permissions
+    - rsyslog_files_ownership
     - service_auditd_enabled
     - service_pcscd_enabled
     - set_password_hashing_algorithm_libuserconf
