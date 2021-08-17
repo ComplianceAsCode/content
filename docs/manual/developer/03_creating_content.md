@@ -57,18 +57,21 @@ build files/configuration, etc.
 <td><p>Contains the User Guide and Developer Guide, manual page template, etc.</p></td>
 </tr>
 <tr class="odd">
+<td><p><code>products</code></p></td>
+<td><p>Contains per-product directories (such as <code>rhel8</code>) of product-specific information and profiles.</p></td>
+</tr>
+<tr class="even">
 <td><p><code>ssg</code></p></td>
 <td><p>Contains Python <code>ssg</code> module which is used by most of the scripts in this repository.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>utils</code></p></td>
 <td><p>Miscellaneous scripts used for development but not used by the build system.</p></td>
 </tr>
 </tbody>
 </table>
 
-The remaining directories such as `fedora`, `rhel7`, etc. are product
-directories.
+Note that product directories used to be top-level directories; these have now been reorganized under `products/`.
 
 #### Important Top Level File Descriptions
 
@@ -164,7 +167,7 @@ The products specify which benchmark they use as a source of content in
 their `product.yml` file using `benchmark_root` key. For example,
 `rhel7` product specifies that it uses the Linux OS benchmark.
 
-    $ cat rhel7/product.yml
+    $ cat products/rhel7/product.yml
     product: rhel7
     full_name: Red Hat Enterprise Linux 7
     type: platform
@@ -243,11 +246,11 @@ layout:
 
 -   **Do not** use capital letters
 
--   If product versions are required, use major versions only. For
-    example, `rhel7`, `ubuntu16`, etc.
+-   If product versions are required, use major or LTS versions only. For
+    example, `rhel7`, `ubuntu2004`, etc.
 
--   If the content to be produced does not matter on versions, **do
-    not** add version numbers. For example: `fedora`, `firefox`, etc.
+-   If the content does not depend on specific versions,
+    **do not** add version numbers. For example: `fedora`, `firefox`, etc.
 
 -   In addition, use only a maxdepth of 3 directories.
 
@@ -259,8 +262,8 @@ using and navigating the content.
 
 For example:
 
-    $ tree -d rhel7
-    rhel7
+    $ tree -d products/rhel7
+    products/rhel7
     ├── kickstart
     ├── overlays
     ├── profiles
