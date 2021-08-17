@@ -11,91 +11,77 @@
   set_fact:
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
-#
-# Inserts/replaces the rule in /etc/audit/rules.d
-#
-- name: Search /etc/audit/rules.d for other DAC audit rules
-  find:
-    paths: "/etc/audit/rules.d"
-    recurse: no
-    contains: "-F key=perm_mod$"
-    patterns: "*.rules"
-  register: find_{{{ ATTR }}}
-
-- name: If existing DAC ruleset not found, use /etc/audit/rules.d/privileged.rules as the recipient for the rule
-  set_fact:
-    all_files:
-      - /etc/audit/rules.d/privileged.rules
-  when: find_{{{ ATTR }}}.matched is defined and find_{{{ ATTR }}}.matched == 0
-
-- name: Use matched file as the recipient for the rule
-  set_fact:
-    all_files:
-      - "{{ find_{{{ ATTR }}}.files | map(attribute='path') | list | first }}"
-  when: find_{{{ ATTR }}}.matched is defined and find_{{{ ATTR }}}.matched > 0
-
-- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
-    create: yes
-
+- name: Perform remediattion of Audit rules for {{{ ATTR }}} for x86 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
 {{%- if CHECK_ROOT_USER %}}
-- name: Inserts/replaces the {{{ ATTR }}} rule with auid=0 in rules.d when on x86
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid=0 -F key=perm_mod"
-    create: yes
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid=0",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="-F auid=0",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
 {{%- endif %}}
 
-- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86_64
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
-    create: yes
-  when: audit_arch is defined and audit_arch == 'b64'
-
+- name: Perform remediattion of Audit rules for {{{ ATTR }}} for x86_64 platform
+  block:
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
 {{%- if CHECK_ROOT_USER %}}
-- name: Inserts/replaces the {{{ ATTR }}} rule with auid=0 in rules.d when on x86_64
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid=0 -F key=perm_mod"
-    create: yes
-  when: audit_arch is defined and audit_arch == 'b64'
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="-F auid=0",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="-F auid=0",
+      syscalls=ATTR,
+      key="perm_mod",
+      syscall_grouping=SYSCALL_GROUPING,
+      )|indent(4) }}}
 {{%- endif %}}
-#   
-# Inserts/replaces the rule in /etc/audit/audit.rules
-#
-- name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/audit.rules when on x86
-  lineinfile:
-    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
-    state: present
-    dest: /etc/audit/audit.rules
-    create: yes
-
-{{%- if CHECK_ROOT_USER %}}
-- name: Inserts/replaces the {{{ ATTR }}} rule with auid=0 in /etc/audit/audit.rules when on x86
-  lineinfile:
-    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid=0 -F key=perm_mod"
-    state: present
-    dest: /etc/audit/audit.rules
-    create: yes
-{{%- endif %}}
-
-- name: Inserts/replaces the {{{ ATTR }}} rule in audit.rules when on x86_64
-  lineinfile:
-    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
-    state: present
-    dest: /etc/audit/audit.rules
-    create: yes
-  when: audit_arch is defined and audit_arch == 'b64'
-
-{{%- if CHECK_ROOT_USER %}}
-- name: Inserts/replaces the {{{ ATTR }}} rule with auid=0 in audit.rules when on x86_64
-  lineinfile:
-    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid=0 -F auid!=unset -F key=perm_mod"
-    state: present
-    dest: /etc/audit/audit.rules
-    create: yes
-  when: audit_arch is defined and audit_arch == 'b64'
-{{%- endif %}}
+  when: audit_arch == "b64"
