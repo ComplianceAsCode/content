@@ -339,3 +339,5 @@ selections:
     - gnome_gdm_disable_guest_login
     - clean_components_post_updating
     - kernel_module_freevxfs_disabled
+    - kernel_module_jffs2_disabled
+    - kernel_module_squashfs_disabled
