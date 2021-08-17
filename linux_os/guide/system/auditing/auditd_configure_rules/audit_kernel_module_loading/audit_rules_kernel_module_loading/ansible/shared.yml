@@ -15,11 +15,39 @@
 
 - name: Perform remediation of Audit rules for kernel module loading for x86 platform
   block:
-    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b32", syscalls=audit_syscalls, key="modules")|indent(4) }}}
-    {{{ ansible_audit_auditctl_add_syscall_rule(arch="b32", syscalls=audit_syscalls, key="modules")|indent(4) }}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=audit_syscalls,
+      key="modules",
+      syscall_grouping=audit_syscalls,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b32",
+      other_filters="",
+      auid_filters="",
+      syscalls=audit_syscalls,
+      key="modules",
+      syscall_grouping=audit_syscalls,
+      )|indent(4) }}}
 
 - name: Perform remediation of Audit rules for kernel module loading for x86_64 platform
   block:
-    {{{ ansible_audit_augenrules_add_syscall_rule(arch="b64", syscalls=audit_syscalls, key="modules")|indent(4) }}}
-    {{{ ansible_audit_auditctl_add_syscall_rule(arch="b64", syscalls=audit_syscalls, key="modules")|indent(4) }}}
+    {{{ ansible_audit_augenrules_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=audit_syscalls,
+      key="modules",
+      syscall_grouping=audit_syscalls,
+      )|indent(4) }}}
+    {{{ ansible_audit_auditctl_add_syscall_rule(
+      action_arch_filters="-a always,exit -F arch=b64",
+      other_filters="",
+      auid_filters="",
+      syscalls=audit_syscalls,
+      key="modules",
+      syscall_grouping=audit_syscalls,
+      )|indent(4) }}}
   when: audit_arch == "b64"

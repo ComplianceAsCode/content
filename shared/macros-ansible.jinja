@@ -385,135 +385,147 @@ The macro requires following parameters:
 {{#
 The following macro remediates Audit syscall rule in /etc/audit/rules.d directory.
 The macro requires following parameters:
-- arch: an architecture to be used in the Audit rule (b32, b64)
-- syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
-- key: a key to use as rule identifier.
-- fields (optional): list of syscall fields to add (e.g.: auid=unset, exit=-EPERM, a0&0100);
-  Add them in the order you expect them to be in the audit rule.
-Note that if there  already exists a rule wit the same key in the /etc/audit/rules.d directory, the rule will be placed in the same file.
+- action_arch_filters:  The action and arch filters of the rule
+                        For example, "-a always,exit -F arch=b64"
+- other_filters:        Other filters that may characterize the rule:
+                        For example, "-F a2&03 -F path=/etc/passwd"
+- auid_filters:         The auid filters of the rule
+                        For example, "-F auid>=1000 -F auid!=unset"
+- syscalls:             List of syscalls to ensure presense among audit rules
+                        For example, "['fchown', 'lchown', 'fchownat']"
+- syscall_groupings:    List of other syscalls that can be grouped with 'syscalls'
+                        For example, "['fchown', 'lchown', 'fchownat']"
+- key:                  The key to use when appending a new rule
 #}}
-{{% macro ansible_audit_augenrules_add_syscall_rule(arch="", syscalls=[], key="", fields=[]) -%}}
-- name: Declare list of syscals
+{{% macro ansible_audit_augenrules_add_syscall_rule(action_arch_filters="", other_filters="", auid_filters="", syscalls=[], key="", syscall_grouping=[]) -%}}
+{{% if other_filters != "" %}}
+    {{% set other_filters = " " ~ other_filters %}}
+{{% endif %}}
+{{% if auid_filters != "" %}}
+    {{% set auid_filters = " " ~ auid_filters %}}
+{{% endif %}}
+- name: Declare list of syscalls
   set_fact:
     syscalls: {{{ syscalls }}}
+    syscall_grouping: {{{ syscall_grouping }}}
 
-- name: Declare number of syscalls
-  set_fact: audit_syscalls_number_of_syscalls="{{ syscalls|length|int }}"
-
-{{#
-This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope.
-See official documentation: https://jinja.palletsprojects.com/en/2.11.x/templates/#assignments
-#}}
-{{% set fields_data = { 'regex' : "", 'plain_text': "" } %}}
-{{% for field in fields %}}
-    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
-    {{% set not_used = fields_data.update({'plain_text': fields_data.plain_text + ' -F ' + field }) %}}
-{{% endfor %}}
-
-- name: Check existence of syscalls for architecture {{{ arch }}} in /etc/audit/rules.d/
+- name: Check existence of syscalls for in /etc/audit/rules.d/
   find:
-    paths: "/etc/audit/rules.d"
-    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch={{{ arch }}}[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*{{{ fields_data.regex }}}(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
-    patterns: "*.rules"
-  register: audit_syscalls_found_{{{ arch }}}_rules_d
-  loop: "{{ syscalls }}"
+    paths: /etc/audit/rules.d
+    contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
+    patterns: '*.rules'
+  register: find_command
+  loop: '{{ syscall_grouping }}'
 
-- name: Get number of matched syscalls for architecture {{{ arch }}} in /etc/audit/rules.d/
-  set_fact: audit_syscalls_matched_{{{ arch }}}_rules_d="{{ audit_syscalls_found_{{{ arch }}}_rules_d.results|sum(attribute='matched')|int }}"
+- name: Declare syscalls found per file
+  set_fact: syscalls_per_file="{{ syscalls_per_file | default({}) | combine( {item.files[0].path :[item.item]+(syscalls_per_file | default({})).get(item.files[0].path, []) } ) }}"
+  loop: "{{ find_command.results | selectattr('matched') | list}}"
 
-- name: Search /etc/audit/rules.d for other rules with the key {{{ key }}}
-  find:
-    paths: "/etc/audit/rules.d"
-    contains: '^.*(?:-F key=|-k\s+){{{ key }}}$'
-    patterns: "*.rules"
-  register: find_syscalls_files
+- name: Declare files where syscalls where found
+  set_fact: found_paths="{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
 
-- name: Use /etc/audit/rules.d/{{{ key }}}.rules as the recipient for the rule
+- name: Count occurrences of syscalls in paths
+  set_fact: found_paths_dict="{{ found_paths_dict | default({}) | combine({ item:1+(found_paths_dict | default({})).get(item, 0) }) }}"
+  loop: "{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
+
+- name: Get path with most syscalls
+  set_fact: audit_file="{{ (found_paths_dict | dict2items() | sort(attribute='value') | last).key }}"
+  when: found_paths | length >= 1
+
+- name: No file with syscall found, set path to /etc/audit/rules.d/{{{ key }}}.rules
+  set_fact: audit_file="/etc/audit/rules.d/{{{ key }}}.rules"
+  when: found_paths | length == 0
+
+- name: Declare found syscalls
+  set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+
+- name: Declare missing syscalls
   set_fact:
-    all_files:
-      - /etc/audit/rules.d/{{{ key }}}.rules
-  when: find_syscalls_files.matched is defined and find_syscalls_files.matched == 0
+    missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
 
-- name: Use matched file as the recipient for the rule
-  set_fact:
-    all_files:
-      - "{{ find_syscalls_files.files | map(attribute='path') | list | first }}"
-  when: find_syscalls_files.matched is defined and find_syscalls_files.matched > 0
+- name: Replace the audit rule in {{ audit_file }}
+  lineinfile:
+    path: '{{ audit_file }}'
+    regexp: '({{{ action_arch_filters }}})(?=.*(?:(?:-S |,)(?:{{ syscalls_per_file[audit_file] | join("|") }}))\b)((?:( -S |,)\w+)+)({{{ other_filters }}}{{{ auid_filters }}} (?:-k |-F key=)\w+)'
+    line: '\1\2\3{{ missing_syscalls | join("\3") }}\4'
+    backrefs: yes
+    state: present
+  when: syscalls_found | length > 0 and missing_syscalls | length > 0
 
-- name: "Insert the syscall rule in {{ all_files[0] }}"
-  block:
-    - name: "Construct rule: add rule list, action and arch"
-      set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
-    - name: "Construct rule: add syscalls"
-      set_fact: tmpline="{{ tmpline + ' -S ' + item.item }}"
-      loop: "{{ audit_syscalls_found_{{{ arch }}}_rules_d.results }}"
-      when: item.matched is defined and item.matched == 0
-    - name: "Construct rule: add fields and key"
-      set_fact: tmpline="{{ tmpline + '{{{ fields_data.plain_text }}} -k {{{ key }}}' }}"
-    - name: "Insert the line in {{ all_files[0] }}"
-      lineinfile:
-        path: "{{ all_files[0] }}"
-        line: "{{ tmpline }}"
-        create: true
-        state: present
-  when: audit_syscalls_matched_{{{ arch }}}_rules_d < audit_syscalls_number_of_syscalls
+- name: Add the audit rule to {{ audit_file }}
+  lineinfile:
+    path: '{{ audit_file }}'
+    line: "{{{ action_arch_filters }}} -S {{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
+    create: true
+    state: present
+  when: syscalls_found | length == 0
 {{%- endmacro %}}
 
 {{#
 The following macro remediates Audit syscall rule in /etc/audit/audit.rules file.
 The macro requires following parameters:
-- arch: an architecture to be used in the Audit rule (b32, b64)
-- syscalls: list of syscalls supplied as a list ["syscall1", "syscall2"] etc.
-- key: a key to use as rule identifier.
-- fields (optional): list of syscall fields to add (e.g.: auid=unset, exit=-EPERM, a0&0100);
-  Add them in the order you expect them to be in the audit rule.
+- action_arch_filters:  The action and arch filters of the rule
+                        For example, "-a always,exit -F arch=b64"
+- other_filters:        Other filters that may characterize the rule:
+                        For example, "-F a2&03 -F path=/etc/passwd"
+- auid_filters:         The auid filters of the rule
+                        For example, "-F auid>=1000 -F auid!=unset"
+- syscalls:             List of syscalls to ensure presense among audit rules
+                        For example, "['fchown', 'lchown', 'fchownat']"
+- syscall_groupings:    List of other syscalls that can be grouped with 'syscalls'
+                        For example, "['fchown', 'lchown', 'fchownat']"
+- key:                  The key to use when appending a new rule
 #}}
-{{% macro ansible_audit_auditctl_add_syscall_rule(arch="", syscalls=[], key="", fields=[]) -%}}
+{{% macro ansible_audit_auditctl_add_syscall_rule(action_arch_filters="", other_filters="", auid_filters="", syscalls=[], key="", syscall_grouping=[]) -%}}
+{{% if other_filters!= "" %}}
+    {{% set other_filters = " " ~ other_filters %}}
+{{% endif %}}
+{{% if auid_filters!= "" %}}
+    {{% set auid_filters = " " ~ auid_filters %}}
+{{% endif %}}
+- name: Declare list of syscalls
+  set_fact:
+    syscalls: {{{ syscalls }}}
+    syscall_grouping: {{{ syscall_grouping }}}
+
+- name: Check existence of syscalls for in /etc/audit/rules.d/
+  find:
+    paths: /etc/audit
+    contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
+    patterns: 'audit.rules'
+  register: find_command
+  loop: '{{ syscall_grouping }}'
+
+- name: Set path to /etc/audit/rules.d/{{{ key }}}.rules
+  set_fact: audit_file="/etc/audit/audit.rules"
+
+- name: Declare found syscalls
+  set_fact: syscalls_found="{{ find_command.results | selectattr('matched') | map(attribute='item') | list }}"
+
+- name: Declare missing syscalls
+  set_fact:
+    missing_syscalls="{{ syscalls | difference(syscalls_found) }}"
+
+- name: Replace the audit rule in {{ audit_file }}
+  lineinfile:
+    path: '{{ audit_file }}'
+    regexp: '({{{ action_arch_filters }}})(?=.*(?:(?:-S |,)(?:{{ syscalls_found | join("|") }}))\b)((?:( -S |,)\w+)+)({{{ other_filters }}}{{{ auid_filters }}} (?:-k |-F key=)\w+)'
+    line: '\1\2\3{{ missing_syscalls | join("\3") }}\4'
+    backrefs: yes
+    state: present
+  when: syscalls_found | length > 0 and missing_syscalls | length > 0
+
+- name: Add the audit rule to {{ audit_file }}
+  lineinfile:
+    path: '{{ audit_file }}'
+    line: "{{{ action_arch_filters }}} -S {{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
+    create: true
+    state: present
+  when: syscalls_found | length == 0
 - name: Declare list of syscals
   set_fact:
     syscalls: {{{ syscalls }}}
 
-- name: Declare number of syscalls
-  set_fact: audit_syscalls_number_of_syscalls="{{ syscalls|length|int }}"
-
-{{#
-This dictionary is a Jinja2 trick to allow loops to change variables defined out of its scope.
-See official documentation: https://jinja.palletsprojects.com/en/2.11.x/templates/#assignments
-#}}
-{{% set fields_data = { 'regex' : "", 'plain_text': "" } %}}
-{{% for field in fields %}}
-    {{% set not_used = fields_data.update({'regex': fields_data.regex + '(?:-F[\s]+' + field + '[\s]+)'}) %}}
-    {{% set not_used = fields_data.update({'plain_text': fields_data.plain_text + ' -F ' + field }) %}}
-{{% endfor %}}
-
-- name: Check existence of syscalls for architecture {{{ arch }}} in /etc/audit/audit.rules
-  find:
-    paths: "/etc/audit"
-    contains: '^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch={{{ arch }}}[\s]+)(?:.*(-S[\s]+{{ item }}[\s]+|([\s]+|[,]){{ item }}([\s]+|[,]))).*{{{ fields_data.regex }}}(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$'
-    patterns: "audit.rules"
-  register: audit_syscalls_found_{{{ arch }}}_audit_rules
-  loop: "{{ syscalls }}"
-
-- name: Get number of matched syscalls for architecture {{{ arch }}} in /etc/audit/audit.rules
-  set_fact: audit_syscalls_matched_{{{ arch }}}_audit_rules="{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results|sum(attribute='matched')|int }}"
-
-- name: Insert the syscall rule in /etc/audit/audit.rules
-  block:
-    - name: "Construct rule: add rule list, action and arch"
-      set_fact: tmpline="-a always,exit -F arch={{{ arch }}}"
-    - name: "Construct rule: add syscalls"
-      set_fact: tmpline="{{ tmpline + ' -S ' + item.item }}"
-      loop: "{{ audit_syscalls_found_{{{ arch }}}_audit_rules.results }}"
-      when: item.matched is defined and item.matched == 0
-    - name: "Construct rule: add fields and key"
-      set_fact: tmpline="{{ tmpline + '{{{ fields_data.plain_text }}} -k {{{ key }}}' }}"
-    - name: Insert the line in /etc/audit/audit.rules
-      lineinfile:
-        path: "/etc/audit/audit.rules"
-        line: "{{ tmpline }}"
-        create: true
-        state: present
-  when: audit_syscalls_matched_{{{ arch }}}_audit_rules < audit_syscalls_number_of_syscalls
 {{%- endmacro %}}
 
 {{% macro ansible_sssd_ldap_config(parameter, value) -%}}
