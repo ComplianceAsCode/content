@@ -51,3 +51,10 @@ template:
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: fchmod
+        syscall_grouping:
+          - chmod
+          - fchmod
+          - fchmodat
+          - fsetxattr
+          - lsetxattr
+          - setxattr
