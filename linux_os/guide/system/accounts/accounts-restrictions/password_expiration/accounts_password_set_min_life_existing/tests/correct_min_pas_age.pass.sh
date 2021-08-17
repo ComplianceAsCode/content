@@ -1,10 +1,6 @@
 #!/bin/bash
 
 # platform = multi_platform_sle
-# reboot = false
-# strategy = restrict
-# complexity = low
-# disruption = low
 
 SECURE_MIN_PASS_AGE=1
 
