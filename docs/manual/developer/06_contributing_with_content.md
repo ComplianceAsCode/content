@@ -1572,6 +1572,9 @@ the following to `rule.yml`:
     -   **oval_extend_definitions** - optional, list of additional OVAL
         definitions that have to pass along the generated check.
 
+        **sed_path_separator** - optional, default is `/`, sets the sed path separator. Set this
+        to a character like `#` if `/` is in use in your text.
+
 -   Languages: Ansible, Bash, OVAL
 
 

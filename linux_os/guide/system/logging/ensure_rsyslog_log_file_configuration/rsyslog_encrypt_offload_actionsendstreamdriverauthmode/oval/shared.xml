@@ -1,0 +1,43 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+        {{{ oval_metadata("Rsyslogd must authenticate remote system its sending logs to.") }}}
+        <criteria operator="AND">
+            <criteria operator="OR">
+                 <criterion comment="Check if $ActionSendStreamDriverAuthMode x509/name is set in /etc/rsyslog.conf"
+                            test_ref="test_{{{rule_id}}}_action_send_stream_driver_auth_mode" />
+                <criterion comment="Check if $ActionSendStreamDriverAuthMode x509/name is set in files in /etc/rsyslog.d"
+                            test_ref="test_{{{rule_id}}}_action_send_stream_driver_auth_mode_dir" />
+            </criteria>
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist"
+                                comment="Check if $ActionSendStreamDriverAuthMode x509/name is set in /etc/rsyslog.conf"
+                                id="test_{{{rule_id}}}_action_send_stream_driver_auth_mode" version="1">
+
+        <ind:object object_ref="obj_{{{rule_id}}}_action_send_stream_driver_auth_mode" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{rule_id}}}_action_send_stream_driver_auth_mode"
+                                    comment="Check if  $ActionSendStreamDriverAuthMode x509/name is set in /etc/rsyslog.conf"
+                                    version="1">
+        <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+        <ind:pattern operation="pattern match">^\$ActionSendStreamDriverAuthMode x509/name$</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist"
+                                comment="Check if $ActionSendStreamDriverAuthMode x509/name is set in /etc/rsyslog.conf"
+                                id="test_{{{rule_id}}}_action_send_stream_driver_auth_mode_dir" version="1">
+        <ind:object object_ref="obj_{{{rule_id}}}_action_send_stream_driver_auth_mode_dir" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{rule_id}}}_action_send_stream_driver_auth_mode_dir"
+                                    comment="Check if $ActionSendStreamDriverAuthMode x509/name is set in /etc/rsyslog.d"
+                                    version="1">
+        <ind:path>/etc/rsyslog.d</ind:path>
+        <ind:filename operation="pattern match">^.*conf$</ind:filename>
+        <ind:pattern operation="pattern match">^\$ActionSendStreamDriverAuthMode x509/name$</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+</def-group>
