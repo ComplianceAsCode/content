@@ -53,3 +53,13 @@ ocil: |-
     For each of these directories, run the following command to find files not
     owned by root:
     <pre>$ sudo find -L <i>$DIR</i> ! -user root -type d -exec chgrp root {} \;</pre>
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        filegid: '0'
