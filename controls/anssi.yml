@@ -384,6 +384,9 @@ controls:
     - package_sudo_installed
     - audit_rules_privileged_commands_sudo
 
+    # This rule should be present in the profile at least once
+    - sshd_use_directory_configuration
+
   - id: R20
     levels:
     - enhanced

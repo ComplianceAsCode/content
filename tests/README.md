@@ -147,6 +147,7 @@ the rule that `oscap` should return when the rule is evaluated.
 very important to keep this naming form.
 
 For example:
+
 * `something.pass.sh`: Success scenario - script is expected to prepare machine
   in such way that the rule is expected to pass.
 * `something.fail.sh`: Fail scenario - script is expected to break machine so
@@ -199,6 +200,37 @@ Using `platform` and `variables` metadata:
 
 echo "KerberosAuthentication $auth_enabled" >> /etc/ssh/sshd_config
 ```
+
+### Augmenting using Jinja macros
+
+Each scenario script is processed under the same jinja context as the
+corresponding OVAL and remediation content. This means that product-specific
+information is known to the scenario scripts at upload time (for example,
+`{{{ grub2_boot_path }}}`), allowing them to work across products. This
+also means Jinja macros such as `{{{ bash_package_install(...) }}}` work to
+install/remove specific packages during the course of testing (such as, if
+it is desired to both install and remove a package in the same scenario for
+the `package_installed` rules).
+
+Note that this does have some limitations: knowledge of the profile (and the
+variables it has and the values they take) is still not provided to the test
+scenario. The above `# profiles` or `# variables` directives will still have
+to be used to add any profile-specific information.
+
+### Augmenting using `shared/templates`
+
+Additionally, we have enabled test scenarios located under the templated
+directory, `shared/templates/.../tests`. Unlike with build-time content,
+`tests` does not need to be located in the template's manifest (at
+`template.yml`). Instead, SSGTS will automatically parse each rule and
+prefer rule-directory-specific test scenarios over any templated scenarios
+that the rule uses. (E.g., if `installed.pass.sh` is present in the
+template `package_installed` and in the `tests/` subdirectory of the rule
+directory, the latter takes precedence over the former).
+
+In addition to the Jinja context described above, the contents of the template
+variables (after processing in `template.py`) are also available to the
+test scenario. This enables template-specific checking.
 
 ## Example of adding new test scenarios
 

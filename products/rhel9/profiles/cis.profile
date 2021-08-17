@@ -791,6 +791,8 @@ selections:
     - file_permissions_sshd_pub_key
     # TO DO: check owner of pub keys in /etc/ssh is root:root
 
+    # Ensure that the configuration is done the right way
+    - sshd_use_directory_configuration
     ### 5.2.5 Ensure SSH LogLevel is appropriate (Scored)
     - sshd_set_loglevel_info
 

@@ -116,6 +116,8 @@ selections:
 
     # UBTU-20-010057 The Ubuntu operating system must be configured so that when passwords are changed or new passwords are established, pwquality must be used.
     - var_password_pam_retry=3
+    - package_pam_pwquality_installed
+    - accounts_password_pam_enforcing
     - accounts_password_pam_retry
 
     # UBTU-20-010060 The Ubuntu operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.

@@ -33,7 +33,11 @@ selections:
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - accounts_password_pam_ucredit
+    - accounts_password_pam_minlen
+    - accounts_password_pam_dcredit
     - aide_periodic_cron_checking
+    - aide_build_database
     - auditd_data_retention_action_mail_acct
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
@@ -68,11 +72,14 @@ selections:
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
+    - dconf_gnome_screensaver_idle_activation_enabled
     - display_login_attempts
     - file_groupowner_grub2_cfg
     - file_owner_grub2_cfg
     - gid_passwd_group_same
+    - install_hids
     - no_empty_passwords
+    - rpm_verify_hashes
     - rpm_verify_permissions
     - service_auditd_enabled
     - service_pcscd_enabled

@@ -58,6 +58,7 @@ selections:
 
     ### Services
     # sshd
+    - sshd_use_directory_configuration
     - sshd_disable_root_login
     - sshd_enable_strictmodes
     - disable_host_auth
@@ -107,7 +108,7 @@ selections:
     - var_accounts_user_umask=027
     - accounts_umask_etc_profile
     - accounts_umask_etc_bashrc
-#    - accounts_umask_etc_csh_cshrc  # not supported in RHEL9 ATM
+    - accounts_umask_etc_csh_cshrc
 
     ### Software update
     - ensure_redhat_gpgkey_installed
@@ -177,7 +178,6 @@ selections:
     - package_aide_installed
     - package_dnf-automatic_installed
     - package_subscription-manager_installed
-#    - package_dnf-plugin-subscription-manager_installed  # not supported in RHEL9 ATM
     - package_firewalld_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
@@ -221,7 +221,7 @@ selections:
     - securetty_root_login_console_only
     - var_password_pam_unix_remember=5
     - accounts_password_pam_unix_remember
-#    - use_pam_wheel_for_su  # not supported in RHEL9 ATM
+    - use_pam_wheel_for_su
 
     ### SELinux Configuration
     - var_selinux_state=enforcing
@@ -422,7 +422,7 @@ selections:
     - kerberos_disable_no_keytab
 
     # set ssh client rekey limit
-#    - ssh_client_rekey_limit  # not supported in RHEL9 ATM
+    - ssh_client_rekey_limit
     - var_ssh_client_rekey_limit_size=1G
     - var_ssh_client_rekey_limit_time=1hour
 

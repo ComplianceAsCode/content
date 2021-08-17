@@ -1,12 +1,8 @@
 # platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_wrlinux
-{{%- if init_system == "systemd" -%}}
-{{% if product in ["rhel7", "rhel8"] %}}
-# The process to disable ctrl+alt+del has changed in RHEL7. 
-# Reference: https://access.redhat.com/solutions/1123873
-{{% endif %}}
+{{% if init_system == "systemd" -%}}
 systemctl disable --now ctrl-alt-del.target
 systemctl mask --now ctrl-alt-del.target
-{{%- else -%}}
+{{%- else %}}
 # If system does not contain control-alt-delete.override,
 if [ ! -f /etc/init/control-alt-delete.override ]; then
 	# but does have control-alt-delete.conf file,
@@ -16,4 +12,4 @@ if [ ! -f /etc/init/control-alt-delete.override ]; then
 	fi
 fi
 sed -i 's,^exec.*$,exec /usr/bin/logger -p authpriv.notice -t init "Ctrl-Alt-Del was pressed and ignored",' /etc/init/control-alt-delete.override
-{{%- endif -%}}
+{{%- endif %}}
