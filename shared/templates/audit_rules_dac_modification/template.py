@@ -10,7 +10,7 @@ def preprocess(data, lang):
     elif lang == "ansible":
         if "attr" in data:
             # Tranform the syscall into a Ansible list
-            data["attr"] = [ data["attr"] ]
+            data["attr"] = [data["attr"]]
         if "syscall_grouping" not in data:
             # Ensure that syscall_grouping is a list
             data["syscall_grouping"] = []

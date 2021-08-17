@@ -10,7 +10,7 @@ def _audit_rules_file_deletion_events(data, lang):
         if "name" in data:
             # Tranform the syscall into a Ansible list
             # The syscall is under 'name'
-            data["name"] = [ data["name"] ]
+            data["name"] = [data["name"]]
         if "syscall_grouping" not in data:
             # Ensure that syscall_grouping is a list
             data["syscall_grouping"] = []
@@ -19,4 +19,3 @@ def _audit_rules_file_deletion_events(data, lang):
 
 def preprocess(data, lang):
     return _audit_rules_file_deletion_events(data, lang)
-
