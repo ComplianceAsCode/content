@@ -304,6 +304,7 @@ selections:
 - require_singleuser_auth
 - root_permissions_syslibrary_files
 - rsyslog_cron_logging
+- rsyslog_encrypt_offload_actionsendstreamdriverauthmode
 - rsyslog_encrypt_offload_actionsendstreamdrivermode
 - rsyslog_encrypt_offload_defaultnetstreamdriver
 - rsyslog_remote_access_monitoring

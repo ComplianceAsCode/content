@@ -914,6 +914,7 @@ selections:
     - rsyslog_encrypt_offload_actionsendstreamdrivermode
 
     # RHEL-08-030720
+    - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
 
     # RHEL-08-030730
     # this rule expects configuration in MB instead percentage as how STIG demands
