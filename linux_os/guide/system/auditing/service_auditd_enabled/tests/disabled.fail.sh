@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = audit
+# packages = {{{- ssgts_package("audit") -}}}
 
 systemctl stop auditd
 systemctl disable auditd
