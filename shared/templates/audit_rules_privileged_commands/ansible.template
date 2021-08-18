@@ -7,7 +7,7 @@
 # complexity = low
 # disruption = low
 
-- name: Perform remediattion of Audit rules for {{{ PATH }}}
+- name: Perform remediation of Audit rules for {{{ PATH }}}
   block:
     {{{ ansible_audit_augenrules_add_syscall_rule(
       action_arch_filters="-a always,exit",

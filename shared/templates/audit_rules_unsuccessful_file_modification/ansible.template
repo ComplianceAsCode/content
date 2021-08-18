@@ -31,7 +31,7 @@
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
 
-- name: Perform remediattion of Audit rules for {{{ NAME | join(", ") }}} {{{ EXIT_CODE }}} for x86_64 platform
+- name: Perform remediation of Audit rules for {{{ NAME | join(", ") }}} {{{ EXIT_CODE }}} for x86_64 platform
   block:
     {{{ ansible_audit_augenrules_add_syscall_rule(
       action_arch_filters="-a always,exit -F arch=b64",
