@@ -420,7 +420,7 @@ The macro requires following parameters:
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
     patterns: '*.rules'
   register: find_command
-  loop: '{{ syscall_grouping }}'
+  loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
 - name: Declare syscalls found per file
   set_fact: syscalls_per_file="{{ syscalls_per_file | default({}) | combine( {item.files[0].path :[item.item]+(syscalls_per_file | default({})).get(item.files[0].path, []) } ) }}"
@@ -504,7 +504,7 @@ The macro requires following parameters:
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
     patterns: 'audit.rules'
   register: find_command
-  loop: '{{ syscall_grouping }}'
+  loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
 - name: Set path to /etc/audit/rules.d/{{{ key }}}.rules
   set_fact: audit_file="/etc/audit/audit.rules"
@@ -532,10 +532,6 @@ The macro requires following parameters:
     create: true
     state: present
   when: syscalls_found | length == 0
-- name: Declare list of syscals
-  set_fact:
-    syscalls: {{{ syscalls }}}
-
 {{%- endmacro %}}
 
 {{% macro ansible_sssd_ldap_config(parameter, value) -%}}
