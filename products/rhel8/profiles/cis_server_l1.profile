@@ -8,10 +8,10 @@ metadata:
 
 reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 
-title: 'CIS Red Hat Enterprise Linux 8 Benchmark for Level 2 - Server'
+title: 'CIS Red Hat Enterprise Linux 8 Benchmark for Level 1 - Server'
 
 description: |-
-    This profile defines a baseline that aligns to the "Level 2 - Server"
+    This profile defines a baseline that aligns to the "Level 1 - Server"
     configuration from the Center for Internet Security® Red Hat Enterprise
     Linux 8 Benchmark™, v1.0.1, released 2021-05-19.
 
@@ -19,4 +19,4 @@ description: |-
     Red Hat Enterprise Linux 8 CIS Benchmarks™ content.
 
 selections:
-    - cis_rhel8:all:l2_server
+    - cis_rhel8:all:l1_server
