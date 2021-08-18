@@ -11,4 +11,4 @@ else
 	echo "# PubkeyAuthentication no" >> /etc/ssh/sshd_config
 fi
 
-echo "PubkeyAuthentication no" > /etc/ssh/sshd_config.d/correct
+echo "PubkeyAuthentication no" > /etc/ssh/sshd_config.d/correct.conf

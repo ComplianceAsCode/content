@@ -227,7 +227,7 @@
 {{%- endmacro %}}
 
 {{%- macro oval_line_in_directory_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
-{{{- oval_line_in_file_object(path=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filepath_regex=".*", id_stem=rule_id ~ "_config_dir") -}}}
+{{{- oval_line_in_file_object(path=path, section=section, prefix_regex=prefix_regex, parameter=parameter, separator_regex=separator_regex, missing_parameter_pass=missing_parameter_pass, multi_value=multi_value, filepath_regex=".*\.conf$", id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
 
 {{%- macro oval_line_in_directory_state(value='', multi_value='', quotes='') -%}}
