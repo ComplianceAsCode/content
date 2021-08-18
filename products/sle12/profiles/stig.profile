@@ -208,7 +208,6 @@ selections:
     - package_aide_installed
     - package_audit-audispd-plugins_installed
     - package_audit_installed
-    - package_MFEhiplsm_installed
     - package_pam_apparmor_installed
     - package_SuSEfirewall2_installed
     - package_telnet-server_removed
