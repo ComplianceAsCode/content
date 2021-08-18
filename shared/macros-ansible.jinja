@@ -422,15 +422,20 @@ The macro requires following parameters:
   register: find_command
   loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
+- name: Reset syscalls found per file
+  set_fact:
+    syscalls_per_file: {}
+    found_paths_dict: {}
+
 - name: Declare syscalls found per file
-  set_fact: syscalls_per_file="{{ syscalls_per_file | default({}) | combine( {item.files[0].path :[item.item]+(syscalls_per_file | default({})).get(item.files[0].path, []) } ) }}"
+  set_fact: syscalls_per_file="{{ syscalls_per_file | combine( {item.files[0].path :[item.item] + syscalls_per_file.get(item.files[0].path, []) } ) }}"
   loop: "{{ find_command.results | selectattr('matched') | list}}"
 
 - name: Declare files where syscalls where found
   set_fact: found_paths="{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
 
 - name: Count occurrences of syscalls in paths
-  set_fact: found_paths_dict="{{ found_paths_dict | default({}) | combine({ item:1+(found_paths_dict | default({})).get(item, 0) }) }}"
+  set_fact: found_paths_dict="{{ found_paths_dict | combine({ item:1+found_paths_dict.get(item, 0) }) }}"
   loop: "{{ find_command.results | map(attribute='files') | flatten | map(attribute='path') | list }}"
 
 - name: Get path with most syscalls
