@@ -414,7 +414,7 @@ The macro requires following parameters:
     syscalls: {{{ syscalls }}}
     syscall_grouping: {{{ syscall_grouping }}}
 
-- name: Check existence of syscalls for in /etc/audit/rules.d/
+- name: Check existence of {{{ syscalls | join(", ") }}} in /etc/audit/rules.d/
   find:
     paths: /etc/audit/rules.d
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
@@ -498,7 +498,7 @@ The macro requires following parameters:
     syscalls: {{{ syscalls }}}
     syscall_grouping: {{{ syscall_grouping }}}
 
-- name: Check existence of syscalls for in /etc/audit/rules.d/
+- name: Check existence of {{{ syscalls | join(", ") }}} in /etc/audit/audit.rules
   find:
     paths: /etc/audit
     contains: '{{{ action_arch_filters }}}(( -S |,)\w+)*(( -S |,){{ item }})+(( -S |,)\w+)*{{{ other_filters }}}{{{ auid_filters }}} (-k\s+|-F\s+key=)\S+\s*$'
@@ -506,7 +506,7 @@ The macro requires following parameters:
   register: find_command
   loop: '{{ (syscall_grouping + syscalls) | unique }}'
 
-- name: Set path to /etc/audit/rules.d/{{{ key }}}.rules
+- name: Set path to /etc/audit/audit.rules
   set_fact: audit_file="/etc/audit/audit.rules"
 
 - name: Declare found syscalls
