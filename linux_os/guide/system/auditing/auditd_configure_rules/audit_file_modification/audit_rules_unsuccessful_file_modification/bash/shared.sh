@@ -12,7 +12,7 @@ do
 
 	# First fix the -EACCES requirement
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-	OTHER_FILTERS="-F exit=EACCES"
+	OTHER_FILTERS="-F exit=-EACCES"
 	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
 	SYSCALL="creat open openat open_by_handle_at truncate ftruncate"
 	KEY="access"
@@ -24,7 +24,7 @@ do
 	# Then fix the -EPERM requirement
 	# No need to change content of $GROUP variable - it's the same as for -EACCES case above
 	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
-	OTHER_FILTERS="-F exit=EPERM"
+	OTHER_FILTERS="-F exit=-EPERM"
 	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
 	SYSCALL="creat open openat open_by_handle_at truncate ftruncate"
 	KEY="access"
