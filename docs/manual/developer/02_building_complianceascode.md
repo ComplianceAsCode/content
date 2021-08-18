@@ -152,6 +152,8 @@ whatever is in the `build` directory and builds a specific product:
 ./build_product rhel7
 ```
 
+For more information about available options, call `./build_product --help`.
+
 ### Building Specific Content
 
 To build specific content for a specific product:
