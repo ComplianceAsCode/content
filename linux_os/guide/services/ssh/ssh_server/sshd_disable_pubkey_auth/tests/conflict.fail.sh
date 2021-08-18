@@ -11,5 +11,5 @@ else
 	echo "# PubkeyAuthentication no" >> /etc/ssh/sshd_config
 fi
 
-echo "PubkeyAuthentication no" > /etc/ssh/sshd_config.d/good_config
-echo "PubkeyAuthentication yes" > /etc/ssh/sshd_config.d/rogue_config
+echo "PubkeyAuthentication no" > /etc/ssh/sshd_config.d/good_config.conf
+echo "PubkeyAuthentication yes" > /etc/ssh/sshd_config.d/rogue_config.conf
