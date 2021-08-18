@@ -11,8 +11,9 @@ mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/hardening
 {{{ lineinfile_absent("/etc/ssh/sshd_config", line_regex, insensitive=true) }}}
 {{{ lineinfile_absent_in_directory("/etc/ssh/sshd_config.d", line_regex, insensitive=true) }}}
+{{%- set hardening_config_basename = "00-complianceascode-hardening.conf" %}}
 {{{ set_config_file(
-        path="/etc/ssh/sshd_config.d/hardening",
+        path="/etc/ssh/sshd_config.d/" ~ hardening_config_basename,
         parameter=PARAMETER,
         value=VALUE,
         create=true,
