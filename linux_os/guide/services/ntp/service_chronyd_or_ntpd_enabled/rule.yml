@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,ubuntu2004
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhv4,ubuntu2004,sle12,sle15
 
 title: 'Enable the NTP Daemon'
 
@@ -16,6 +16,8 @@ description: |-
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/network/ol7-nettime.html") }}}
     {{% elif product == "ol8" %}}
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/network/ol-nettime.html") }}}
+    {{% elif product in ["sle12", "sle15"] %}}
+        {{{ weblink(link="https://documentation.suse.com/sles/15-SP1/html/SLES-all/cha-ntp.html") }}}
     {{% else %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/ch-configuring_ntp_using_the_chrony_suite") }}}
     {{% endif %}}
@@ -41,6 +43,7 @@ identifiers:
     cce@rhcos4: CCE-82682-6
     cce@rhel7: CCE-27444-9
     cce@rhel8: CCE-80874-1
+    cce@sle15: CCE-85836-5
 
 references:
     cis-csc: 1,14,15,16,3,5,6
