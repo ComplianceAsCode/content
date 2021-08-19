@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8
+
+title: 'Ensure McAfee Endpoint Security for Linux (ENSL) is running'
+
+description: |-
+    Install McAfee Endpoint Security for Linux antivirus software
+    which is provided for DoD systems and uses signatures to search for the
+    presence of viruses on the filesystem.
+
+rationale: |-
+    Virus scanning software can be used to detect if a system has been compromised by
+    computer viruses, as well as to limit their spread to other systems.
+
+severity: high
+
+identifiers:
+    cce@rhel7: CCE-86262-3
+    cce@rhel8: CCE-86261-5
+
+references:
+    disa: CCI-001233
+    nist: SI-2(2)
+    srg: SRG-OS-000191-GPOS-00080
+    stigid@rhel7: RHEL-07-020019
+    stigid@rhel8: RHEL-08-010001
+
+ocil_clause: 'virus scanning software is not running'
+
+ocil: |-
+    To verify that McAfee Endpoint Security for Linux is
+    running, run the following command:
+    <pre>$ sudo ps -ef | grep -i mfetpd</pre>
+
+warnings:
+    - general: |-
+        Due to McAfee Endpoint Security for Linux (ENSL) being 3rd party software,
+        automated remediation is not available for this configuration check.
