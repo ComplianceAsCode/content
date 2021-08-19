@@ -20,6 +20,34 @@
 			</div>
 			<br/>
 			<br/>
+
+			<div>
+			<table>
+				<thead>
+				  <tr>
+					<th>Total</th>
+					<th>Missing</th>
+					<th>Implemented</th>
+					<th>Coverage</th>
+					<th>STIG ids missing rule</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					<td><xsl:value-of select="number(count(/cdf:Benchmark/cdf:Group/cdf:Rule))"/></td>
+					<td><xsl:value-of select="number(count(/cdf:Benchmark/cdf:Group/cdf:Rule[@id='Missing Rule']))"/></td>
+					<td><xsl:value-of select="number(count(/cdf:Benchmark/cdf:Group/cdf:Rule[@id!='Missing Rule']))"/></td>
+					<td><xsl:value-of select="format-number(count(/cdf:Benchmark/cdf:Group/cdf:Rule[@id!='Missing Rule']) div count(/cdf:Benchmark/cdf:Group/cdf:Rule)*100, '#.00')"/>%</td>
+					<td>
+						<xsl:for-each select="/cdf:Benchmark/cdf:Group/cdf:Rule[@id='Missing Rule']">
+							<xsl:value-of select="cdf:version/node()"/><xsl:text>&#xd;</xsl:text>
+						</xsl:for-each>
+					</td>
+				  </tr>
+				</tbody>
+				</table>
+			</div>
+
 			<xsl:apply-templates select="cdf:Benchmark"/>
 		</body>
 		</html>
