@@ -718,12 +718,6 @@ rpm --quiet -q "{{{ pkgname }}}"
  
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, cce, format='%s = %s') -%}}
-case_insensitive_mode=yes sed_case_insensitive_option='' grep_case_insensitive_option=''
-
-if [ "$case_insensitive_mode" = yes ]; then
-    sed_case_insensitive_option="i"
-    grep_case_insensitive_option="-i"
-fi
 
 # Test if the config_file is a symbolic link. If so, use --follow-symlinks with sed.
 # Otherwise, regular sed command will do.
@@ -750,8 +744,8 @@ printf -v formatted_output "{{{ format }}}" "$stripped_key" "{{{ value }}}"
 # If the key exists, change it. Otherwise, add it to the config_file.
 # We search for the key string followed by a word boundary (matched by \>),
 # so if we search for 'setting', 'setting2' won't match.
-if LC_ALL=C grep -q -m 1 $grep_case_insensitive_option -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
-    "${sed_command[@]}" "s/{{{ key }}}\\>.*/$formatted_output/g$sed_case_insensitive_option" "{{{ config_file }}}"
+if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
+    "${sed_command[@]}" "s/{{{ key }}}\\>.*/$formatted_output/gi" "{{{ config_file }}}"
 else
     # \n is precaution for case where file ends without trailing newline
     printf '\n# Per %s: Set %s in %s\n' "$cce" "$formatted_output" "{{{ config_file }}}" >> "{{{ config_file }}}"
