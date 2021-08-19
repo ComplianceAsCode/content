@@ -467,6 +467,7 @@ The macro requires following parameters:
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
+    mode: o-rwx
     state: present
   when: syscalls_found | length == 0
 {{%- endmacro %}}
@@ -535,6 +536,7 @@ The macro requires following parameters:
     path: '{{ audit_file }}'
     line: "{{{ action_arch_filters }}}{{{ syscall_flag }}}{{ syscalls | join(',') }}{{{ other_filters }}}{{{ auid_filters}}} -F key={{{ key }}}"
     create: true
+    mode: o-rwx
     state: present
   when: syscalls_found | length == 0
 {{%- endmacro %}}

@@ -204,6 +204,7 @@ then
 	local auid_string=$([[ $auid_filters ]] && echo " $auid_filters")
 	local full_rule="${action_arch_filters}${syscall_string}${other_string}${auid_string} -F key=${key}"
 	echo "$full_rule" >> "$default_file"
+	chmod o-rwx ${default_file}
 else
 	# Check if the syscalls are declared as a comma separated list or
 	# as multiple -S parameters
