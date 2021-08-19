@@ -342,6 +342,7 @@ selections:
 - sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
+- sssd_certificate_verification
 - sssd_enable_certmap
 - sssd_enable_smartcards
 - sssd_offline_cred_expiration
@@ -410,6 +411,7 @@ selections:
 - sshd_approved_macs=stig
 - sshd_approved_ciphers=stig
 - sshd_idle_timeout_value=10_minutes
+- var_accounts_authorized_local_users_regex=rhel8
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never
@@ -425,7 +427,7 @@ selections:
 - var_auditd_disk_error_action=halt
 - var_auditd_max_log_file_action=syslog
 - var_auditd_disk_full_action=halt
-- var_accounts_authorized_local_users_regex=rhel8
+- var_sssd_certificate_verification_digest_function=sha1
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
 title: DISA STIG for Red Hat Enterprise Linux 8
