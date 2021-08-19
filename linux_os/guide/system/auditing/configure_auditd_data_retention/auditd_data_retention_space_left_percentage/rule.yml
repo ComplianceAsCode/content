@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
+prodtype:  fedora,rhel7,rhel8,rhel9
 
 title: 'Configure auditd space_left on Low Disk Space'
 
@@ -8,9 +8,9 @@ description: |-
     The <tt>auditd</tt> service can be configured to take an action
     when disk space is running low but prior to running out of space completely.
     Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
-    substituting <i>SIZE_in_MB</i> appropriately:
-    <pre>space_left = <i>SIZE_in_MB</i></pre>
-    Set this value to the appropriate size in Megabytes cause the system to
+    substituting <i>PERCENTAGE</i> appropriately:
+    <pre>space_left = <i>PERCENTAGE</i>%</pre>
+    Set this value to at least 25 to cause the system to
     notify the user of an issue.
 
 rationale: |-
@@ -20,11 +20,8 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhcos4: CCE-82681-8
-    cce@rhel7: CCE-80537-4
-    cce@rhel8: CCE-83619-7
-    cce@sle12: CCE-83026-5
-    cce@sle15: CCE-85616-1
+    cce@rhel7: CCE-86056-9
+    cce@rhel8: CCE-86055-1
 
 references:
     cis-csc: 1,11,12,13,14,15,16,19,2,3,4,5,6,7,8
@@ -35,19 +32,16 @@ references:
     iso27001-2013: A.12.1.3,A.12.4.1,A.12.4.2,A.12.4.3,A.12.4.4,A.12.7.1,A.16.1.4,A.16.1.5,A.16.1.7,A.17.2.1
     nist: AU-5(b),AU-5(2),AU-5(1),AU-5(4),CM-6(a)
     nist-csf: DE.AE-3,DE.AE-5,PR.DS-4,PR.PT-1,RS.AN-1,RS.AN-4
-    nist@sle12: AU-5(1)
     pcidss: Req-10.7
     srg: SRG-OS-000343-GPOS-00134
-    stigid@ol7: OL07-00-030330
-    stigid@sle12: SLES-12-020030
-    stigid@sle15: SLES-15-030700
-    stigid@ubuntu2004: UBTU-20-010217
+    stigid@rhel7: RHEL-07-030330
+    stigid@rhel8: RHEL-08-030730
     vmmsrg: SRG-OS-000343-VMM-001240
 
-ocil_clause: 'the system is not configured a specfic size in MB to notify administrators of an issue'
+ocil_clause: 'the system is not configured with a specific percentage to notify administrators of an issue'
 
 ocil: |-
     Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
     determine if the system is configured correctly:
-    <pre>space_left <i>SIZE_in_MB</i></pre>
+    <pre>space_left <i>PERCENTAGE</i>%</pre>
 

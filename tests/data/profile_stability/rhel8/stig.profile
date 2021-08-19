@@ -140,6 +140,7 @@ selections:
 - auditd_data_retention_action_mail_acct
 - auditd_data_retention_max_log_file_action
 - auditd_data_retention_space_left_action
+- auditd_data_retention_space_left_percentage
 - auditd_local_events
 - auditd_log_format
 - auditd_name_format
@@ -422,7 +423,7 @@ selections:
 - var_auditd_action_mail_acct=root
 - var_time_service_set_maxpoll=18_hours
 - var_accounts_maximum_age_login_defs=60
-- var_auditd_space_left=250MB
+- var_auditd_space_left_percentage=25pc
 - var_auditd_space_left_action=email
 - var_auditd_disk_error_action=halt
 - var_auditd_max_log_file_action=syslog
