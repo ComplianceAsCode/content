@@ -63,12 +63,14 @@ ocil_clause: '<tt>imagefs.inodesFree</tt> is not set in <tt>evictionHard</tt> se
 ocil: |-
   Run the following command on the kubelet node(s):
   <pre>$ oc debug -q node/$NODE -- jq -r '.evictionHard."imagefs.inodesFree"' /host/etc/kubernetes/kubelet.conf</pre>
-  and make sure it outputs
-  <pre>{{{ xccdf_value("var_kubelet_evictionhard_imagefs_inodesfree") }}}</pre>
+  and make sure it outputs a value.
 
 template:
   name: yamlfile_value
   vars:
     filepath: /etc/kubernetes/kubelet.conf
     yamlpath: ".evictionHard['imagefs.inodesFree']"
-    xccdf_variable: var_kubelet_evictionhard_imagefs_inodesfree
+    check_existence: "only_one_exists"
+    values:
+      - value: ".*"
+        operation: "pattern match"

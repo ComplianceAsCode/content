@@ -63,12 +63,14 @@ ocil_clause: '<tt>nodefs.available</tt> is not set in <tt>evictionHard</tt> sect
 ocil: |-
   Run the following command on the kubelet node(s):
   <pre>$ oc debug -q node/$NODE -- jq -r '.evictionHard."nodefs.available"' /host/etc/kubernetes/kubelet.conf</pre>
-  and make sure it outputs
-  <pre>{{{ xccdf_value("var_kubelet_evictionhard_nodefs_available") }}}</pre>
+  and make sure it outputs a value.
 
 template:
   name: yamlfile_value
   vars:
     filepath: /etc/kubernetes/kubelet.conf
     yamlpath: ".evictionHard['nodefs.available']"
-    xccdf_variable: var_kubelet_evictionhard_nodefs_available
+    check_existence: "only_one_exists"
+    values:
+      - value: ".*"
+        operation: "pattern match"
