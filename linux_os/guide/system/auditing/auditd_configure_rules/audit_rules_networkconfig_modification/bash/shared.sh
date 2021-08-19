@@ -9,13 +9,15 @@
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
-	PATTERN="-a always,exit -F arch=$ARCH -S .* -k *"
-	# Use escaped BRE regex to specify rule group
-	GROUP="set\(host\|domain\)name"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S sethostname -S setdomainname -k audit_rules_networkconfig_modification"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS=""
+	AUID_FILTERS=""
+	SYSCALL="sethostname setdomainname"
+	KEY="audit_rules_networkconfig_modification"
+	SYSCALL_GROUPING="sethostname setdomainname"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 done
 
 # Then perform the remediations for the watch rules

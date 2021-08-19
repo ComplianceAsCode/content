@@ -49,3 +49,9 @@ template:
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: renameat2
+        syscall_grouping:
+          - rename
+          - renameat
+          - renameat2
+          - unlink
+          - unlinkat

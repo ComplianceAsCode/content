@@ -93,3 +93,10 @@ template:
         attr: fremovexattr
         check_root_user@rhel8: "true"
         check_root_user@rhel9: "true"
+        syscall_grouping:
+          - fremovexattr
+          - lremovexattr
+          - removexattr
+          - fsetxattr
+          - lsetxattr
+          - setxattr

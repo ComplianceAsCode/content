@@ -7,22 +7,25 @@
 # Retrieve hardware architecture of the underlying system
 [ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 
+AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
+SYSCALL="{{{ NAME }}}"
+KEY="access"
+SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"
+
 for ARCH in "${RULE_ARCHS[@]}"
 do
-	PATTERN="-a always,exit -F arch=$ARCH -S {{{ NAME }}} -F exit=-EACCES.*"
-	GROUP="access"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS="-F exit=-EACCES"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 done
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
-        PATTERN="-a always,exit -F arch=$ARCH -S {{{ NAME }}} -F exit=-EPERM.*"
-        GROUP="access"
-        FULL_RULE="-a always,exit -F arch=$ARCH -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
-        # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-        fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-        fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS="-F exit=-EPERM"
+	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 done

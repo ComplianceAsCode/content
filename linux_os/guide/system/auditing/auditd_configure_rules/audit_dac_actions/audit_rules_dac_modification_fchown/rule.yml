@@ -77,3 +77,8 @@ template:
     name: audit_rules_dac_modification
     vars:
         attr: fchown
+        syscall_grouping:
+          - chown
+          - fchown
+          - fchownat
+          - lchown

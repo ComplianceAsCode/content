@@ -11,20 +11,26 @@ for ARCH in "${RULE_ARCHS[@]}"
 do
 
 	# First fix the -EACCES requirement
-	PATTERN="-a always,exit -F arch=$ARCH -S .* -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -k *"
-	# Use escaped BRE regex to specify rule group
-	GROUP="\(creat\|open\|truncate\)"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -k access"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS="-F exit=-EACCES"
+	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
+	SYSCALL="creat open openat open_by_handle_at truncate ftruncate"
+	KEY="access"
+	SYSCALL_GROUPING="creat open openat open_by_handle_at truncate ftruncate"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 
 	# Then fix the -EPERM requirement
-	PATTERN="-a always,exit -F arch=$ARCH -S .* -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -k *"
 	# No need to change content of $GROUP variable - it's the same as for -EACCES case above
-	FULL_RULE="-a always,exit -F arch=$ARCH -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -k access"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS="-F exit=-EPERM"
+	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
+	SYSCALL="creat open openat open_by_handle_at truncate ftruncate"
+	KEY="access"
+	SYSCALL_GROUPING="creat open openat open_by_handle_at truncate ftruncate"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 
 done

@@ -9,11 +9,13 @@
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
-	PATTERN="-a always,exit -F arch=$ARCH -S .* -F auid>={{{ auid }}} -F auid!=unset -k *"
-	# Use escaped BRE regex to specify rule group
-	GROUP="\(rmdir\|unlink\|rename\)"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid>={{{ auid }}} -F auid!=unset -k delete"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS=""
+	AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
+	SYSCALL="rmdir unlink unlinkat rename renameat"
+	KEY="delete"
+	SYSCALL_GROUPING="rmdir unlink unlinkat rename renameat"
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 done

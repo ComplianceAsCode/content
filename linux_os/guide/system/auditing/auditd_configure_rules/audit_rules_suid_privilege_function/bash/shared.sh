@@ -9,20 +9,26 @@
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
-	PATTERN="-a always,exit -F arch=$ARCH -S execve -C uid!=euid -F euid=0"
-	GROUP="privileged"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S execve -C uid!=euid -F euid=0 -k setuid"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS="-C uid!=euid -F euid=0"
+	AUID_FILTERS=""
+	SYSCALL="execve"
+	KEY="setuid"
+	SYSCALL_GROUPING=""
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 done
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
-	PATTERN="-a always,exit -F arch=$ARCH -S execve -C gid!=egid -F egid=0"
-	GROUP="privileged"
-	FULL_RULE="-a always,exit -F arch=$ARCH -S execve -C gid!=egid -F egid=0 -k setgid"
+	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+	OTHER_FILTERS="-C gid!=egid -F egid=0"
+	AUID_FILTERS=""
+	SYSCALL="execve"
+	KEY="setgid"
+	SYSCALL_GROUPING=""
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+	fix_audit_syscall_rule "augenrules" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
+	fix_audit_syscall_rule "auditctl" "$ACTION_ARCH_FILTERS" "$OTHER_FILTERS" "$AUID_FILTERS" "$SYSCALL" "$SYSCALL_GROUPING" "$KEY"
 done

@@ -59,3 +59,9 @@ template:
     name: audit_rules_file_deletion_events
     vars:
         name: renameat
+        syscall_grouping:
+          - unlink
+          - unlinkat
+          - rename
+          - renameat
+          - rmdir

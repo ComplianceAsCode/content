@@ -64,3 +64,8 @@ template:
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: renameat
+        syscall_grouping:
+          - rename
+          - renameat
+          - unlink
+          - unlinkat
