@@ -76,7 +76,14 @@ selections:
     - display_login_attempts
     - ensure_logrotate_activated
     - file_groupowner_grub2_cfg
+    - file_groupowner_etc_group
     - file_owner_grub2_cfg
+    - file_owner_etc_group
+    - file_owner_etc_passwd
+    - file_owner_etc_shadow
+    - file_permissions_etc_group
+    - file_permissions_etc_shadow
+    - file_permissions_etc_passwd
     - gid_passwd_group_same
     - install_hids
     - no_empty_passwords
