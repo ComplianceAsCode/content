@@ -85,6 +85,7 @@ selections:
     - gid_passwd_group_same
     - install_hids
     - no_empty_passwords
+    - package_strongswan_installed
     - rpm_verify_hashes
     - rpm_verify_permissions
     - service_auditd_enabled
