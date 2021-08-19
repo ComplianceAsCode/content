@@ -61,6 +61,14 @@ rules selected by another profile, run this command:
 This will result in a new YAML profile containing exclusive rules to the
 profile pointed by the `--profile1` option.
 
+## Generating Controls from DISA's XCCDF Files
+If you want a control file for product from DISA's XCCDF files you can run the following command:
+
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r3-xccdf-manual.xml
+
+Where `-p` is the id the comes after `stigid@` in the `references` section of a rule and `-m` is the path to the
+XCCDF Manual file from DISA.
+
 ## Generating login banner regular expressions
 
 Rules like `banner_etc_issue` and `dconf_gnome_login_banner_text` will
