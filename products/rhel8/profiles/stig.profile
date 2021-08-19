@@ -65,7 +65,7 @@ selections:
     - var_auditd_action_mail_acct=root
     - var_time_service_set_maxpoll=18_hours
     - var_accounts_maximum_age_login_defs=60
-    - var_auditd_space_left=250MB
+    - var_auditd_space_left_percentage=25pc
     - var_auditd_space_left_action=email
     - var_auditd_disk_error_action=halt
     - var_auditd_max_log_file_action=syslog
@@ -922,8 +922,9 @@ selections:
     - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
 
     # RHEL-08-030730
-    # this rule expects configuration in MB instead percentage as how STIG demands
-    # - auditd_data_retention_space_left
+    - auditd_data_retention_space_left_percentage
+
+    # RHEL-08-030731
     - auditd_data_retention_space_left_action
 
     # RHEL-08-030740

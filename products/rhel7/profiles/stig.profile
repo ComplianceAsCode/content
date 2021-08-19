@@ -50,6 +50,7 @@ selections:
     - var_removable_partition=dev_cdrom
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
+    - var_auditd_space_left_percentage=25pc
     - var_accounts_user_umask=077
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
@@ -178,8 +179,8 @@ selections:
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
-    - auditd_data_retention_space_left
     - auditd_data_retention_space_left_action
+    - auditd_data_retention_space_left_percentage
     - auditd_data_retention_action_mail_acct
     - audit_rules_suid_privilege_function
     - audit_rules_dac_modification_chown
