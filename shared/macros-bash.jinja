@@ -726,11 +726,8 @@ if test -L "{{{ config_file }}}"; then
     sed_command+=('--follow-symlinks')
 fi
 
-# Test that the cce arg is not empty or does not equal @CCENUM@.
-# If @CCENUM@ exists, it means that there is no CCE assigned.
-if [ -n "{{{ cce }}}" ] && [ "{{{ cce }}}" != '@CCENUM@' ]; then
-    cce="{{{ cce }}}"
-else
+# If the cce arg is empty, CCE is not assigned.
+if [ -z "{{{ cce }}}" ]; then
     cce="CCE"
 fi
 
