@@ -75,6 +75,8 @@ selections:
     - ensure_gpgcheck_never_disabled
     - file_groupowner_grub2_cfg
     - file_groupowner_etc_group
+    - file_groupowner_etc_passwd
+    - file_groupowner_etc_shadow
     - file_owner_grub2_cfg
     - file_owner_etc_group
     - file_owner_etc_passwd
