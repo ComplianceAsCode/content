@@ -84,6 +84,10 @@ selections:
     # RHEL-08-010000
     - installed_OS_is_vendor_supported
 
+    # RHEL-08-010001
+    - package_mcafeetp_installed
+    - agent_mfetpd_running
+
     # RHEL-08-010010
     - security_patches_up_to_date
 

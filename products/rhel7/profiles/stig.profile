@@ -316,3 +316,5 @@ selections:
     - file_permissions_var_log_audit
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_conf_default_rp_filter
+    - package_mcafeetp_installed
+    - agent_mfetpd_running
