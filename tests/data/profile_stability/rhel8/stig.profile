@@ -65,6 +65,7 @@ selections:
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
 - aide_check_audit_tools
+- agent_mfetpd_running
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes
@@ -280,6 +281,7 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
+- package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed
 - package_policycoreutils_installed
