@@ -729,6 +729,8 @@ fi
 # If the cce arg is empty, CCE is not assigned.
 if [ -z "{{{ cce }}}" ]; then
     cce="CCE"
+else
+    cce="{{{ cce }}}"
 fi
 
 # Strip any search characters in the key arg so that the key can be replaced without
