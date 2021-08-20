@@ -457,6 +457,39 @@ Currently, RPM and DEB packages are supported by this mechanism. We recommend
 only using it for testing. Please follow downstream workflows for production
 packages.
 
+#### Use of pip3 packages when building
+
+There may be situations during the development and testing phases where it is
+convenient to use Python modules installed via pip3, as in [this example](https://github.com/ComplianceAsCode/content/pull/7376/files),
+where the `yamlpath` module is needed for some tests, but it is not available
+in the official distro repositories and therefore needs to be installed via pip3.
+
+However, for some time now, Python modules installed via pip3 have been located
+in a different path, to reduce the risk of user installed modules conflicting
+or even breaking official distro packages that depend on related Python modules.
+More information and context can be found [here](https://fedoraproject.org/wiki/Changes/Making_sudo_pip_safe).
+
+The consequence of this is that in some situations, such as during the build
+time of an RPM package, modules installed via pip3 are not detected, because in
+the context of rpmbuild there is no influence from external commands (pip3).
+
+To work around this in test environments, an OS environment variable was created
+to be evaluated by CMake for this purpose. If the OS environment variable
+`SSG_USE_PIP_PACKAGES` is set and has a [positive value](https://cmake.org/cmake/help/latest/command/if.html#basic-expressions), CMake will ensure that
+the [PYTHONPATH](https://docs.python.org/3/tutorial/modules.html#the-module-search-path) variable is set in the Python context with the proper location
+of the python packages installed via pip3.
+
+If `SSG_USE_PIP_PACKAGES` is not set or is set to a negative value (0, Off, No, False, N),
+it will simply be ignored by CMake without any effect on the build process.
+
+In the following example, Python modules installed via pip3 will be found
+during the RPM build phase, in a test environment:
+
+```bash
+export SSG_USE_PIP_PACKAGES=1
+rpmbuild -v -bc /root/rpmbuild/SPECS/scap-security-guide.spec
+```
+
 ### Building a ZIP file
 
 To build a zip file with all generated source data streams and kickstarts:
