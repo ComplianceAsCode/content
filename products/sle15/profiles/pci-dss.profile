@@ -74,6 +74,7 @@ selections:
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_idle_delay
     - chronyd_or_ntpd_specify_multiple_servers
+    - chronyd_specify_remote_server
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_mode_blank
     - display_login_attempts
