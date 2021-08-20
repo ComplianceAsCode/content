@@ -78,12 +78,11 @@ selections:
     - file_groupowner_etc_passwd
     - file_groupowner_etc_shadow
     - file_owner_grub2_cfg
-    - file_owner_etc_group
-    - file_owner_etc_passwd
-    - file_owner_etc_shadow
+    - file_ownership_var_log_audit
     - file_permissions_etc_group
     - file_permissions_etc_shadow
     - file_permissions_etc_passwd
+    - file_permissions_var_log_audit
     - gid_passwd_group_same
     - install_hids
     - no_empty_passwords
