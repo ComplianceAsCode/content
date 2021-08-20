@@ -295,15 +295,6 @@ def datastream_in_stash(current_location):
 
 def normalize_passed_arguments(options):
     targets = []
-
-    # From here on out, we're assuming options.target is a list of targets,
-    # for all execution types (combined, rule, profile). If it isn't, coerce
-    # it to a list with a single item in it. Otherwise, when we iterate over
-    # options.target, if it remains a string, we'll iterate per-character,
-    # which isn't what we want.
-    if isinstance(options.target, str):
-        options.target = [options.target]
-
     for target in options.target:
         if ',' in target:
             targets.extend(target.split(","))
