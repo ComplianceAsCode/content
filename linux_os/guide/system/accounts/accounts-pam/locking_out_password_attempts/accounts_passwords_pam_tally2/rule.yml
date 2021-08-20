@@ -21,8 +21,8 @@ rationale: |-
     <ul>
     <li> add or modify the <tt>pam_tally2.so</tt> module line in
     <tt>/etc/pam.d/common-auth</tt> to ensure both <tt>onerr=fail</tt> and
-    <tt>deny=3</tt> are present. For example:
-    <pre>auth required pam_tally2.so onerr=fail silent audit deny=3</pre></li>
+    <tt>deny={{{ xccdf_value("var_password_pam_tally2") }}}</tt> are present. For example:
+    <pre>auth required pam_tally2.so onerr=fail silent audit deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre></li>
     <li> add or modify the following line in <tt>/etc/pam.d/common-account</tt>:
     <pre>account required pam_tally2.so</pre></li>
     </ul>
@@ -34,6 +34,8 @@ identifiers:
     cce@sle15: CCE-85554-4
 
 references:
+    cis@sle12: 5.4.2
+    cis@sle12: 5.3.2
     cis@ubuntu2004: 5.3.2
     disa: CCI-000044
     nist@sle12: AC-7(a)
@@ -49,17 +51,17 @@ ocil: |-
     login attempts with the following command:
 
     <pre># grep pam_tally2.so /etc/pam.d/common-auth
-    auth required pam_tally2.so onerr=fail deny=3</pre>
+    auth required pam_tally2.so onerr=fail deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre>
 
     If no line is returned, the line is commented out, or the line is missing
     "onerr=fail", this is a finding.
-    If the line has "deny" set to a value other than 1, 2, or 3, this is a
+    If the line has "deny" set to a value other than {{{ xccdf_value("var_password_pam_tally2") }}}, this is a
     finding.
 
     Check that the system resets the failed login attempts counter after a
     successful login using the following command:
 
     <pre># grep pam_tally2.so /etc/pam.d/common-account
-    account required pam_tally2.so deny=3</pre>
+    account required pam_tally2.so deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre>
 
     If the account option is missing, or commented out, this is a finding.

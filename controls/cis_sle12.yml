@@ -446,7 +446,7 @@ controls:
     - l1_workstation
     automated: no # rule missing
 
-- id: 1.9
+  - id: 1.9
     title: Ensure updates, patches, and additional security software are installed (Manual)
     levels:
     - l1_server
@@ -468,7 +468,7 @@ controls:
     rules:
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
-    - login_banner_text=usgcb_default
+    - login_banner_text=cis_default
 
   - id: 2.1.1
     title: Ensure xinetd is not installed (Automated)
@@ -1278,6 +1278,34 @@ controls:
     automated: no
 
   - id: 5.1.1
+    title: Ensure sudo is installed (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - package_sudo_installed
+
+  - id: 5.1.2
+    title: Ensure sudo commands use pty (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sudo_add_use_pty
+
+  - id: 5.1.3
+    title: Ensure sudo log file exists (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sudo_custom_logfile
+    - var_sudo_logfile=var_log_sudo_log
+
+  - id: 5.2.1
     title: Ensure cron daemon is enabled and running (Automated)
     levels:
     - l1_server
@@ -1286,7 +1314,7 @@ controls:
     rules:
     - service_crond_enabled
 
-  - id: 5.1.2
+  - id: 5.2.2
     title: Ensure permissions on /etc/crontab are configured (Automated)
     levels:
     - l1_server
@@ -1297,7 +1325,7 @@ controls:
     - file_owner_crontab
     - file_permissions_crontab
 
-  - id: 5.1.3
+  - id: 5.2.3
     title: Ensure permissions on /etc/cron.hourly are configured (Automated)
     levels:
     - l1_server
@@ -1308,7 +1336,7 @@ controls:
     - file_owner_cron_hourly
     - file_permissions_cron_hourly
 
-  - id: 5.1.4
+  - id: 5.2.4
     title: Ensure permissions on /etc/cron.daily are configured (Automated)
     levels:
     - l1_server
@@ -1319,7 +1347,7 @@ controls:
     - file_owner_cron_daily
     - file_permissions_cron_daily
 
-  - id: 5.1.5
+  - id: 5.2.5
     title: Ensure permissions on /etc/cron.weekly are configured (Automated)
     levels:
     - l1_server
@@ -1330,7 +1358,7 @@ controls:
     - file_owner_cron_weekly
     - file_permissions_cron_weekly
 
-  - id: 5.1.6
+  - id: 5.2.6
     title: Ensure permissions on /etc/cron.monthly are configured (Automated)
     levels:
     - l1_server
@@ -1341,7 +1369,7 @@ controls:
     - file_owner_cron_monthly
     - file_permissions_cron_monthly
 
-  - id: 5.1.7
+  - id: 5.2.7
     title: Ensure permissions on /etc/cron.d are configured (Automated)
     levels:
     - l1_server
@@ -1352,7 +1380,7 @@ controls:
     - file_owner_cron_d
     - file_permissions_cron_d
 
-  - id: 5.1.8
+  - id: 5.2.8
     title: Ensure cron is restricted to authorized users (Automated)
     levels:
     - l1_server
@@ -1362,40 +1390,16 @@ controls:
     - file_groupowner_cron_allow
     - file_owner_cron_allow
 
-  - id: 5.1.9
+  - id: 5.2.9
     title: Ensure at is restricted to authorized users (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rules missing
-
-  - id: 5.2.1
-    title: Ensure sudo is installed (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
     automated: yes
-    rules:
-    - package_sudo_installed
-
-  - id: 5.2.2
-    title: Ensure sudo commands use pty (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - sudo_add_use_pty
-
-  - id: 5.2.3
-    title: Ensure sudo log file exists (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - sudo_custom_logfile
-    - var_sudo_logfile=var_log_sudo_log
+    rule:
+    - file_groupowner_at_allow
+    - file_owner_at_allow
+    - file_permissions_at_allow
 
   - id: 5.3.1
     title: Ensure permissions on /etc/ssh/sshd_config are configured (Automated)
@@ -1413,7 +1417,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing (we have similar)
+    automated: partially # missing rules for ownership
+    rules:
+    - file_permissions_sshd_private_key
 
   - id: 5.3.3
     title: Ensure permissions on SSH public host key files are configured (Automated)
@@ -1425,13 +1431,22 @@ controls:
     - file_permissions_sshd_pub_key
 
   - id: 5.3.4
+    title: Ensure SSH Protocol is set to 2 (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - sshd_allow_only_protocol2
+
+  - id: 5.3.5
     title: Ensure SSH access is limited (Automated)
     levels:
     - l1_server
     - l1_workstation
     automated: no # rule missing
 
-  - id: 5.3.5
+  - id: 5.3.6
     title: Ensure SSH LogLevel is appropriate (Automated)
     levels:
     - l1_server
@@ -1445,7 +1460,7 @@ controls:
     rules:
     - sshd_set_loglevel_verbose
 
-  - id: 5.3.6
+  - id: 5.3.7
     title: Ensure SSH X11 forwarding is disabled (Automated)
     levels:
     - l2_server
@@ -1454,7 +1469,7 @@ controls:
     rules:
     - sshd_disable_x11_forwarding
 
-  - id: 5.3.7
+  - id: 5.3.8
     title: Ensure SSH MaxAuthTries is set to 4 or less (Automated)
     levels:
     - l1_server
@@ -1464,7 +1479,7 @@ controls:
     - sshd_set_max_auth_tries
     - sshd_max_auth_tries_value=4
 
-  - id: 5.3.8
+  - id: 5.3.9
     title: Ensure SSH IgnoreRhosts is enabled (Automated)
     levels:
     - l1_server
@@ -1473,7 +1488,7 @@ controls:
     rules:
     - sshd_disable_rhosts
 
-  - id: 5.3.9
+  - id: 5.3.10
     title: Ensure SSH HostbasedAuthentication is disabled (Automated)
     levels:
     - l1_server
@@ -1482,7 +1497,7 @@ controls:
     rules:
     - disable_host_auth
 
-  - id: 5.3.10
+  - id: 5.3.11
     title: Ensure SSH root login is disabled (Automated)
     levels:
     - l1_server
@@ -1491,7 +1506,7 @@ controls:
     rules:
     - sshd_disable_root_login
 
-  - id: 5.3.11
+  - id: 5.3.12
     title: Ensure SSH PermitEmptyPasswords is disabled (Automated)
     levels:
     - l1_server
@@ -1500,7 +1515,7 @@ controls:
     rules:
     - sshd_disable_empty_passwords
 
-  - id: 5.3.12
+  - id: 5.3.13
     title: Ensure SSH PermitUserEnvironment is disabled (Automated)
     levels:
     - l1_server
@@ -1509,7 +1524,7 @@ controls:
     rules:
     - sshd_do_not_permit_user_env
 
-  - id: 5.3.13
+  - id: 5.3.14
     title: Ensure only strong Ciphers are used (Automated)
     levels:
     - l1_server
@@ -1518,10 +1533,10 @@ controls:
     notes: <-
       The rule checks for default list of ciphers provided in the benchmark.
     rules:
-    - sshd_approved_ciphers=cis_rhel7
+    - sshd_approved_ciphers=cis_sle12
     - sshd_use_approved_ciphers
 
-  - id: 5.3.14
+  - id: 5.3.15
     title: Ensure only strong MAC algorithms are used (Automated)
     levels:
     - l1_server
@@ -1530,17 +1545,17 @@ controls:
     notes: <-
       The rule checks for default list of MACs provided in the benchmark.
     rules:
-    - sshd_approved_macs=cis_rhel7
+    - sshd_approved_macs=cis_sle12
     - sshd_use_approved_macs
 
-  - id: 5.3.15
+  - id: 5.3.16
     title: Ensure only strong Key Exchange algorithms are used (Automated)
     levels:
     - l1_server
     - l1_workstation
     automated: no # rule missing
 
-  - id: 5.3.16
+  - id: 5.3.17
     title: Ensure SSH Idle Timeout Interval is configured (Automated)
     levels:
     - l1_server
@@ -1552,28 +1567,30 @@ controls:
     - sshd_set_keepalive
     - var_sshd_set_keepalive=0
 
-  - id: 5.3.17
+  - id: 5.3.18
     title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
     levels:
     - l1_server
     - l1_workstation
     automated: no # rule missing
 
-  - id: 5.3.18
+  - id: 5.3.19
     title: Ensure SSH warning banner is configured (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # our rule configures /etc/issue, /etc/issue.net is required
+    automated: yes
+    rule:
+    - sshd_enable_warning_banner
 
-  - id: 5.3.19
+  - id: 5.3.20
     title: Ensure SSH PAM is enabled (Automated)
     levels:
     - l1_server
     - l1_workstation
     automated: no # rule missing
 
-  - id: 5.3.20
+  - id: 5.3.21
     title: Ensure SSH AllowTcpForwarding is disabled (Automated)
     levels:
     - l2_server
@@ -1582,7 +1599,7 @@ controls:
     rules:
     - sshd_disable_tcp_forwarding
 
-  - id: 5.3.21
+  - id: 5.3.22
     title: Ensure SSH MaxStartups is configured (Automated)
     levels:
     - l1_server
@@ -1592,7 +1609,7 @@ controls:
     - sshd_set_maxstartups
     - var_sshd_set_maxstartups=10:30:60
 
-  - id: 5.3.22
+  - id: 5.3.23
     title: Ensure SSH MaxSessions is limited (Automated)
     levels:
     - l1_server
@@ -1607,59 +1624,48 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # rule checking for retry needs modification and we are missing rule for try_first_pass
-    notes: <-
-      There are two ways how to check this control.
-      One way is to check for minclass, this is currently selected.
-      Another way is to check for dcredit, lcredit,ocredit, ucredit, this is shown in rleated_rules.
-    related_rules:
-    - accounts_password_pam_dcredit
-    - var_password_pam_dcredit=1
-    - accounts_password_pam_ucredit
-    - var_password_pam_ucredit=1
-    - accounts_password_pam_lcredit
-    - var_password_pam_lcredit=1
-    - accounts_password_pam_ocredit
-    - var_password_pam_ocredit=1
+    automated: yes
     rules:
-    - accounts_password_pam_minlen
+    - cracklib_accounts_password_pam_dcredit
+    - var_password_pam_dcredit=1
+    - cracklib_accounts_password_pam_ucredit
+    - var_password_pam_ucredit=1
+    - cracklib_accounts_password_pam_lcredit
+    - var_password_pam_lcredit=1
+    - cracklib_accounts_password_pam_ocredit
+    - var_password_pam_ocredit=1
+    - cracklib_accounts_password_pam_minlen
     - var_password_pam_minlen=14
-    - accounts_password_pam_minclass
-    - var_password_pam_minclass=4
+    - cracklib_accounts_password_pam_retry
+    - var_password_pam_retry=3
 
   - id: 5.4.2
     title: Ensure lockout for failed password attempts is configured (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # we can check only certain parts, we need probably some complex rule for this
+    automated: partially # Missing rules to for pam_tally2 unlock
+    rules:
+    - accounts_passwords_pam_tally2
+    - var_password_pam_tally2=5
 
   - id: 5.4.3
-    title: Ensure password hashing algorithm is SHA-512 (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: partially # our rule does not check for password-auth
-    rules:
-    - set_password_hashing_algorithm_systemauth
-
-  - id: 5.4.4
     title: Ensure password reuse is limited (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: yes
-    notes: |-
-      Usage of pam_unix.so module together with "remember" option is deprecated and is not supported by this policy interpretation.
-      See here for more details about pam_unix.so:
-      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
-    rules:
-    - var_password_pam_remember=5
-    - var_password_pam_remember_control_flag=required
-    - accounts_password_pam_pwhistory_remember_system_auth
-    - accounts_password_pam_pwhistory_remember_password_auth
+    automated: no # missing SLE specific rules.
 
   - id: 5.5.1.1
+    title: Ensure password hashing algorithm is SHA-512 (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: partially # missing rule for checking of /etc/shadow
+    rules:
+    - set_password_hashing_algorithm_logindefs
+
+  - id: 5.5.1.2
     title: Ensure password expiration is 365 days or less (Automated)
     levels:
     - l1_server
@@ -1669,7 +1675,7 @@ controls:
     - accounts_maximum_age_login_defs
     - var_accounts_maximum_age_login_defs=365
 
-  - id: 5.5.1.2
+  - id: 5.5.1.3
     title: Ensure minimum days between password changes is configured (Automated)
     levels:
     - l1_server
@@ -1679,7 +1685,7 @@ controls:
     - accounts_minimum_age_login_defs
     - var_accounts_minimum_age_login_defs=1
 
-  - id: 5.5.1.3
+  - id: 5.5.1.4
     title: Ensure password expiration warning days is 7 or more (Automated)
     levels:
     - l1_server
@@ -1689,7 +1695,7 @@ controls:
     - accounts_password_warn_age_login_defs
     - var_accounts_password_warn_age_login_defs=7
 
-  - id: 5.5.1.4
+  - id: 5.5.1.5
     title: Ensure inactive password lock is 30 days or less (Automated)
     levels:
     - l1_server
@@ -1699,7 +1705,7 @@ controls:
     - account_disable_post_pw_expiration
     - var_account_disable_post_pw_expiration=30
 
-  - id: 5.5.1.5
+  - id: 5.5.1.6
     title: Ensure all users last password change date is in the past (Automated)
     levels:
     - l1_server
@@ -1749,7 +1755,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no
+    automated: no # missing rule - can be automated
 
   - id: 5.7
     title: Ensure access to the su command is restricted (Automated)
@@ -1779,17 +1785,6 @@ controls:
     - file_permissions_etc_passwd
 
   - id: 6.1.3
-    title: Ensure permissions on /etc/passwd- are configured (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - file_groupowner_backup_etc_passwd
-    - file_owner_backup_etc_passwd
-    - file_permissions_backup_etc_passwd
-
-  - id: 6.1.4
     title: Ensure permissions on /etc/shadow are configured (Automated)
     levels:
     - l1_server
@@ -1800,40 +1795,7 @@ controls:
     - file_owner_etc_shadow
     - file_permissions_etc_shadow
 
-  - id: 6.1.5
-    title: Ensure permissions on /etc/shadow- are configured (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - file_groupowner_backup_etc_shadow
-    - file_owner_backup_etc_shadow
-    - file_permissions_backup_etc_shadow
-
-  - id: 6.1.6
-    title: Ensure permissions on /etc/gshadow- are configured (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - file_groupowner_backup_etc_gshadow
-    - file_owner_backup_etc_gshadow
-    - file_permissions_backup_etc_gshadow
-
-  - id: 6.1.7
-    title: Ensure permissions on /etc/gshadow are configured (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - file_groupowner_etc_gshadow
-    - file_owner_etc_gshadow
-    - file_permissions_etc_gshadow
-
-  - id: 6.1.8
+  - id: 6.1.4
     title: Ensure permissions on /etc/group are configured (Automated)
     levels:
     - l1_server
@@ -1844,7 +1806,29 @@ controls:
     - file_owner_etc_group
     - file_permissions_etc_group
 
-  - id: 6.1.9
+  - id: 6.1.5
+    title: Ensure permissions on /etc/passwd- are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - file_groupowner_backup_etc_passwd
+    - file_owner_backup_etc_passwd
+    - file_permissions_backup_etc_passwd
+
+  - id: 6.1.6
+    title: Ensure permissions on /etc/shadow- are configured (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - file_groupowner_backup_etc_shadow
+    - file_owner_backup_etc_shadow
+    - file_permissions_backup_etc_shadow
+
+  - id: 6.1.7
     title: Ensure permissions on /etc/group- are configured (Automated)
     levels:
     - l1_server
@@ -1855,7 +1839,7 @@ controls:
     - file_owner_backup_etc_group
     - file_permissions_backup_etc_group
 
-  - id: 6.1.10
+  - id: 6.1.8
     title: Ensure no world writable files exist (Automated)
     levels:
     - l1_server
@@ -1864,7 +1848,7 @@ controls:
     rules:
     - file_permissions_unauthorized_world_writable
 
-  - id: 6.1.11
+  - id: 6.1.9
     title: Ensure no unowned files or directories exist (Automated)
     levels:
     - l1_server
@@ -1873,7 +1857,7 @@ controls:
     rules:
     - no_files_unowned_by_user
 
-  - id: 6.1.12
+  - id: 6.1.10
     title: Ensure no ungrouped files or directories exist (Automated)
     levels:
     - l1_server
@@ -1913,54 +1897,6 @@ controls:
     automated: no # rule missing
 
   - id: 6.2.3
-    title: Ensure all groups in /etc/passwd exist in /etc/group (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - gid_passwd_group_same
-
-  - id: 6.2.4
-    title: Ensure shadow group is empty (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: no # rule missing
-
-  - id: 6.2.5
-    title: Ensure no duplicate user names exist (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - account_unique_name
-
-  - id: 6.2.6
-    title: Ensure no duplicate group names exist (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: no # rule missing
-
-  - id: 6.2.7
-    title: Ensure no duplicate UIDs exist (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: yes
-    rules:
-    - account_unique_id
-
-  - id: 6.2.8
-    title: Ensure no duplicate GIDs exist (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: no # rule missing
-
-  - id: 6.2.9
     title: Ensure root is the only UID 0 account (Automated)
     levels:
     - l1_server
@@ -1969,7 +1905,7 @@ controls:
     rules:
     - accounts_no_uid_except_zero
 
-  - id: 6.2.10
+  - id: 6.2.4
     title: Ensure root PATH Integrity (Automated)
     levels:
     - l1_server
@@ -1979,7 +1915,7 @@ controls:
     - accounts_root_path_dirs_no_write
     - root_path_no_dot
 
-  - id: 6.2.11
+  - id: 6.2.5
     title: Ensure all users' home directories exist (Automated)
     levels:
     - l1_server
@@ -1988,16 +1924,7 @@ controls:
     related_rules:
     - accounts_user_interactive_home_directory_exists
 
-  - id: 6.2.12
-    title: Ensure users own their home directories (Automated)
-    levels:
-    - l1_server
-    - l1_workstation
-    automated: no # rule missing checks and remediations
-    related_rules:
-    - file_ownership_home_directories
-
-  - id: 6.2.13
+  - id: 6.2.6
     title: Ensure users' home directories permissions are 750 or more restrictive (Automated)
     levels:
     - l1_server
@@ -2006,21 +1933,30 @@ controls:
     related_rules:
     - file_permissions_home_directories
 
-  - id: 6.2.14
+  - id: 6.2.7
+    title: Ensure users own their home directories (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing checks and remediations
+    related_rules:
+    - file_ownership_home_directories
+
+  - id: 6.2.8
     title: Ensure users' dot files are not group or world writable (Automated)
     levels:
     - l1_server
     - l1_workstation
     automated: no # rule missing
 
-  - id: 6.2.15
+  - id: 6.2.9
     title: Ensure no users have .forward files (Automated)
     levels:
     - l1_server
     - l1_workstation
     automated: no # rule missing
 
-  - id: 6.2.16
+  - id: 6.2.10
     title: Ensure no users have .netrc files (Automated)
     levels:
     - l1_server
@@ -2031,7 +1967,7 @@ controls:
     rules:
     - no_netrc_files
 
-  - id: 6.2.17
+  - id: 6.2.12
     title: Ensure no users have .rhosts files (Automated)
     levels:
     - l1_server
@@ -2039,3 +1975,58 @@ controls:
     automated: no # we have a rule but it removes additionally /etc/hosts.equiv
     related_rules:
     - no_rsh_trust_files
+
+  - id: 6.2.13
+    title: Ensure all groups in /etc/passwd exist in /etc/group (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - gid_passwd_group_same
+
+  - id: 6.2.14
+    title: Ensure no duplicate UIDs exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - account_unique_id
+
+  - id: 6.2.15
+    title: Ensure no duplicate GIDs exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 6.2.4
+    title: Ensure shadow group is empty (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 6.2.16
+    title: Ensure no duplicate user names exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: yes
+    rules:
+    - account_unique_name
+
+  - id: 6.2.17
+    title: Ensure no duplicate group names exist (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing
+
+  - id: 6.2.18
+    title: Ensure shadow group is empty (Automated)
+    levels:
+    - l1_server
+    - l1_workstation
+    automated: no # rule missing

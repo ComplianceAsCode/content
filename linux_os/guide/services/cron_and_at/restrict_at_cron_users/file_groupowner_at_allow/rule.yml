@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ubuntu2004
+prodtype: sle12,sle15ubuntu2004
 
 title: 'Verify Group Who Owns /etc/at.allow file'
 
@@ -15,6 +15,8 @@ rationale: |-
 severity: medium
 
 references:
+    cis@sle12: 5.2.9
+    cis@sle15: 5.1.9
     cis@ubuntu2004: 5.1.9
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/at.allow", group="root") }}}'

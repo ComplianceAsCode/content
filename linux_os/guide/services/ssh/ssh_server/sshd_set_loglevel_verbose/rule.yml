@@ -11,7 +11,7 @@ description: |-
 rationale: |-
     SSH provides several logging levels with varying amounts of verbosity. <tt>DEBUG</tt> is specifically
     not recommended other than strictly for debugging SSH communications since it provides
-    so much data that it is difficult to identify important security information. <tt>INFO</tt> or 
+    so much data that it is difficult to identify important security information. <tt>INFO</tt> or
     <tt>VERBOSE</tt> level is the basic level that only records login activity of SSH users. In many
     situations, such as Incident Response, it is important to determine when a particular user was active
     on a system. The logout record can eliminate those users who disconnected, which helps narrow the
@@ -29,6 +29,8 @@ identifiers:
 references:
     cis@rhel7: 5.3.5
     cis@rhel8: 5.2.5
+    cis@sle12: 5.3.6
+    cis@sle15: 5.3.5
     disa: CCI-000067
     nerc-cip: CIP-007-3 R7.1
     nist: AC-17(a),AC-17(1),CM-6(a)
