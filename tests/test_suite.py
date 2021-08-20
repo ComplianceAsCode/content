@@ -204,9 +204,10 @@ def parse_args():
                                  default=None,
                                  help="Regular expression matching test scenarios to run")
     parser_combined.add_argument("target",
+                                 nargs="+",
                                  metavar="TARGET",
-                                 help=("Profile whose rules are to be tested. Each rule selected "
-                                       "in the profile will be evaluated against all its test "
+                                 help=("Profiles whose rules are to be tested. Each rule selected "
+                                       "in a profile will be evaluated against all its test "
                                        "scenarios."))
 
     return parser.parse_args()
