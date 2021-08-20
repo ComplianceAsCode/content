@@ -76,6 +76,7 @@ selections:
     - auditd_audispd_disk_full_action
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_network_failure_action
+    - var_auditd_disk_full_action=syslog
     - auditd_data_disk_full_action
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_space_left
