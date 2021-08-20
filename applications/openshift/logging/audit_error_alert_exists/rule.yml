@@ -1,0 +1,66 @@
+prodtype: ocp4
+
+title: Ensure that Audit Log Errors Emit Alerts
+
+description: |-
+  <p>
+  OpenShift audit works at the API server level, logging all requests coming to the server.
+  However, if API server instance is unable to write errors, an alert must be issued
+  in order for the organization to take a relevant action. e.g. shutting down that instance.
+  </p>
+  <p>
+  Kubernetes by default has metrics that enable one to write such alerts:
+  </p>
+
+  <ul>
+    <li><tt>apiserver_audit_event_total</tt></li>
+    <li><tt>apiserver_audit_error_total</tt></li>
+  </ul>
+
+  <p>
+  For more information, consult the
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html",
+              text="official Kubernetes documentation") }}}.
+  </p>
+
+rationale: |-
+  When there are errors writing audit logs, security events will not be logged
+  by that specific API Server instance. Security Incident Response teams use
+  these audit logs, amongst other artifacts, to determine the impact of
+  security breaches or events. Without these logs, it becomes very difficult
+  to assess a situation and do appropriate root cause analysis in such incidents.
+
+references:
+  nerc-cip: CIP-003-3 R5.1.1,CIP-003-3 R5.3,CIP-004-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+  nist: AU-5
+
+identifiers:
+  cce@ocp4: CCE-90744-4
+
+severity: high
+
+ocil_clause: 'Audit log errors do not generate an alert'
+
+ocil: |-
+    Run the following command:
+    <pre>{{{ ocil_oc_pipe_jq_filter('prometheusrules instances', '[.items[].spec.groups[].rules[].expr]') }}}</pre>
+    The output should return a list of URL entries with <pre>https://</pre> or <pre>tls://</pre> transport.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({
+            "/apis/monitoring.coreos.com/v1/prometheusrules?limit=500": '[.items[].spec.groups[].rules[].expr]',
+        }) | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: "{{{ openshift_filtered_path('/apis/monitoring.coreos.com/v1/prometheusrules?limit=500', '[.items[].spec.groups[].rules[].expr]') }}}"
+    yamlpath: "[:]"
+    entity_check: "all"
+    values:
+    # Verify that the error ratio is calculated somehow
+    - value: "^.*apiserver_audit_error_total.*apiserver_audit_event_total.*$"
+      entity_check: "at least one"
+      operation: "pattern match"
