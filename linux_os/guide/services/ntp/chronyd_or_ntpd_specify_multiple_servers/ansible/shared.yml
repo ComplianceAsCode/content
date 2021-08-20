@@ -1,0 +1,37 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
+
+- name: "Detect if chrony configuration file is present"
+  find:
+    path: /etc
+    patterns: chrony.conf
+  register: chrony_server_config
+
+- name: "Configure multiple time servers in chrony config"
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'server {{ item }}'
+    state: present
+    create: True
+  loop: '{{ var_multiple_time_servers.split(",") }}'
+  when: chrony_server_config.matched == 1
+
+
+- name: "Detect if NTP configuration file is present"
+  find:
+    path: /etc
+    patterns: ntp.conf
+  register: ntp_server_config
+
+- name: "Configure multiple time servers in NTP config"
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'pool {{ item }}'
+    state: present
+    create: True
+  loop: '{{ var_multiple_time_servers.split(",") }}'
+  when: ntp_server_config.matched == 1
