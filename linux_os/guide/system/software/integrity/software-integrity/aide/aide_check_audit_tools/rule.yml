@@ -46,7 +46,7 @@ references:
 
 ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
 
-{{% if 'rhel' not in product %}}
+{{% if 'rhel' not in product and 'ubuntu' not in product %}}
 {{% set aide_string = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
 {{% else %}}
 {{% set aide_string = 'p+i+n+u+g+s+b+acl+xattrs+sha512' %}}
