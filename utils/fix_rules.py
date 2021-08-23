@@ -549,7 +549,14 @@ def _add_cce(directory, cce_pool, rules, product_yaml, args):
 
         def fix_callback(file_contents, yaml_contents):
             return add_product_cce(file_contents, yaml_contents, product_yaml["product"], cce)
-        changes = fix_file(rule_path, product_yaml, fix_callback)
+
+        try:
+            changes = fix_file(rule_path, product_yaml, fix_callback)
+        except RuntimeError as exc:
+            msg = (
+                "Error adding CCE into {rule_path}: {exc}"
+                .format(rule_path=rule_path, exc=str(exc)))
+            raise RuntimeError(exc)
 
         if changes:
             cce_pool.remove_cce_from_file(cce)
