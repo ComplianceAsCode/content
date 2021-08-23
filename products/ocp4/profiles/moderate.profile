@@ -58,6 +58,9 @@ selections:
     - var_openshift_audit_profile=WriteRequestBodies
     - audit_profile_set
 
+    # AU-5 RESPONSE TO AUDIT PROCESSING FAILURES
+    - audit_error_alert_exists
+
     # AU-9
     - audit_log_forwarding_enabled
     - audit_log_forwarding_uses_tls
