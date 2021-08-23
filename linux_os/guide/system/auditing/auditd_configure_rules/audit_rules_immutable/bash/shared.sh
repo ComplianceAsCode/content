@@ -20,4 +20,5 @@ do
 	echo '# Set the audit.rules configuration immutable per security requirements' >> $AUDIT_FILE
 	echo '# Reboot is required to change audit rules once this setting is applied' >> $AUDIT_FILE
 	echo '-e 2' >> $AUDIT_FILE
+	chmod o-rwx $AUDIT_FILE
 done
