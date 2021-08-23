@@ -90,6 +90,7 @@ selections:
     - rpm_verify_hashes
     - rpm_verify_permissions
     - service_auditd_enabled
+    - service_chronyd_or_ntpd_enabled
     - service_pcscd_enabled
     - set_password_hashing_algorithm_libuserconf
     - sshd_set_idle_timeout
