@@ -1,0 +1,30 @@
+<def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+           {{{ oval_metadata("SSSD should be configured with the correct ocsp_dgst
+            digest function") }}}
+        <criteria>
+            <criterion comment="check value of certificate_verification in sssd configuration"
+                       test_ref="test_{{{rule_id}}}" />
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="test the value of
+        certificate_verification in sssd configuration" id="test_{{{rule_id}}}" version="1">
+        <ind:object object_ref="obj_{{{rule_id}}}" />
+        <ind:state state_ref="state_{{{rule_id}}}" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="obj_{{{rule_id}}}" version="1">
+        <ind:filepath operation="pattern match">^/etc/sssd/(sssd|conf\.d/.*)\.conf$</ind:filepath>
+        <ind:pattern operation="pattern match">^[\s]*\[sssd](?:[^\n\[]*\n+)+?[\s]*certificate_verification\s*=\s*ocsp_dgst\s*=\s*(\w+)$</ind:pattern>
+        <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_state comment="value of certificate_verification" id="state_{{{rule_id}}}" version="1">
+        <ind:subexpression operation="equals" var_check="all"
+                           var_ref="var_sssd_certificate_verification_digest_function" />
+    </ind:textfilecontent54_state>
+
+    <external_variable comment="certificate_verification value" datatype="string"
+                       id="var_sssd_certificate_verification_digest_function" version="1" />
+</def-group>

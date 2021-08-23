@@ -1,0 +1,27 @@
+# platform = multi_platform_fedora,multi_platform_rhel
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: Ensure that "certificate_verification" is not set in /etc/sssd/sssd.conf
+  ini_file:
+      path: /etc/sssd/sssd.conf
+      section: sssd
+      option: certificate_verification
+      state: absent
+
+- name: 'Ensure that "certificate_verification" is not set in  /etc/sssd/conf.d/*.conf'
+  ini_file:
+      path: /etc/sssd/conf.d/*.conf
+      section: sssd
+      option: certificate_verification
+      state: absent
+
+- name: Ensure that "certificate_verification" is set
+  ini_file:
+      path: /etc/sssd/conf.d/certificate_verification.conf
+      section: sssd
+      option: certificate_verification
+      value: "ocsp_dgst = sha1"
+      state: present

@@ -70,6 +70,7 @@ selections:
     - var_auditd_disk_error_action=halt
     - var_auditd_max_log_file_action=syslog
     - var_auditd_disk_full_action=halt
+    - var_sssd_certificate_verification_digest_function=sha1
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -279,6 +280,7 @@ selections:
     - install_smartcard_packages
 
     # RHEL-08-010400
+    - sssd_certificate_verification
 
     # RHEL-08-010410
     - package_opensc_installed
