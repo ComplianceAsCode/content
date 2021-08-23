@@ -343,13 +343,13 @@ macro(ssg_build_remediations PRODUCT)
                 if (ANSIBLE_LINT_EXECUTABLE)
                     add_test(
                         NAME "ansible-playbook-per-rule-ansible-lint-check-${PRODUCT}"
-                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/all" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
                     )
                 endif()
                 if (YAMLLINT_EXECUTABLE)
                     add_test(
                         NAME "ansible-playbook-per-rule-yamllint-check-${PRODUCT}"
-                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+                        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/all" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
                     )
                 endif()
             endif()
