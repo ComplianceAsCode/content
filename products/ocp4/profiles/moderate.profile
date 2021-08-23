@@ -177,3 +177,6 @@ selections:
 
     # SI-7: SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY
     - file_integrity_exists
+
+    # SC-17: PUBLIC KEY INFRASTRUCTURE CERTIFICATES
+    - default_ingress_ca_replaced

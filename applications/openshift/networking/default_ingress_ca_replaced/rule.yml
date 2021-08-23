@@ -1,0 +1,49 @@
+prodtype: ocp4
+
+title: 'Ensure that the default Ingress CA (wildcard issuer) has been replaced'
+
+description: |-
+  Check that the default Ingress CA has been replaced.
+
+rationale: |-
+  OpenShift auto-generates several PKIs to serve TLS on different
+  endpoints of the system. It is possible and necessary to configure a
+  custom PKI which allows external clients to trust the endpoints.
+
+  The Ingress Operator is the component responsible for enabling external
+  access to OpenShift Container Platform cluster services. The aforementioned
+  operator creates an internal CA and issues a wildcard certificate that is
+  valid for applications under the .apps sub-domain. Both the web console
+  and CLI use this certificate as well. The certificate and key would need
+  to be replaced since a certificate coming from a trusted provider is
+  needed.
+
+  {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/certificates/replacing-default-ingress-certificate.html") }}}
+
+severity: medium
+
+references:
+  nerc-cip: CIP-007-3 R5.1
+  nist: SC-17
+
+ocil_clause: 'Ingress Operator default CA needs to be replaced'
+
+ocil: |-
+  Verify that the proxy/cluster resource contains the name of a trusted CA secret:
+    <tt>oc get proxy/cluster -ojsonpath='{ .spec."trustedCA"."name" }'</tt>
+  The result should be the name of a valid secret. If none, the default Ingress CA is in use.
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/config.openshift.io/v1/proxies/cluster") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/config.openshift.io/v1/proxies/cluster
+    yamlpath: ".spec.trustedCA.name"
+    check_existence_yamlpath: ".metadata.name"
+    values:
+    - value: ".+"
+      operation: "pattern match"
