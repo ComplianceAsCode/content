@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_ubuntu
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -7,19 +7,24 @@
 
 {{{ bash_package_install("aide") }}}
 
-{{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
-{{% set configFile = "/etc/aide.conf" %}}
-{{% for file in (
+{{% set auditfiles = [
       "/usr/sbin/auditctl",
       "/usr/sbin/auditd",
       "/usr/sbin/ausearch",
       "/usr/sbin/aureport",
       "/usr/sbin/autrace",
-      "/usr/sbin/augenrules" ) %}}
+      "/usr/sbin/augenrules" ] %}}
 
-if grep -i '^.*{{{file}}}.*$' {{{ configFile }}}; then
-sed -i "s#.*{{{file}}}.*#{{{file}}} {{{ configString }}}#" {{{ configFile }}}
+{{% if 'rhel' not in product %}}
+{{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
+{{% endif %}}
+
+{{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
+{{% for file in auditfiles %}}
+
+if grep -i '^.*{{{file}}}.*$' {{{ aide_conf_path }}}; then
+sed -i "s#.*{{{file}}}.*#{{{file}}} {{{ configString }}}#" {{{ aide_conf_path }}}
 else
-echo "{{{ file }}} {{{ configString }}}" >> {{{ configFile }}}
+echo "{{{ file }}} {{{ configString }}}" >> {{{ aide_conf_path }}}
 fi
 {{% endfor %}}

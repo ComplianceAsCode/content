@@ -11,6 +11,7 @@ from .constants import (product_directories,
                         DEFAULT_GRUB2_BOOT_PATH,
                         DEFAULT_GRUB2_UEFI_BOOT_PATH,
                         DEFAULT_DCONF_GDM_DIR,
+                        DEFAULT_AIDE_CONF_PATH,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE)
@@ -54,6 +55,9 @@ def _get_implied_properties(existing_properties):
 
     if "dconf_gdm_dir" not in existing_properties:
         result["dconf_gdm_dir"] = DEFAULT_DCONF_GDM_DIR
+
+    if "aide_conf_path" not in existing_properties:
+        result["aide_conf_path"] = DEFAULT_AIDE_CONF_PATH
 
     return result
 

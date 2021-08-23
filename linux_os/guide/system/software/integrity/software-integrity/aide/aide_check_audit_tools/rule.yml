@@ -46,7 +46,7 @@ references:
 
 ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
 
-{{% if 'rhel' not in product %}}
+{{% if 'rhel' not in product and 'ubuntu' not in product %}}
 {{% set aide_string = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
 {{% else %}}
 {{% set aide_string = 'p+i+n+u+g+s+b+acl+xattrs+sha512' %}}
@@ -56,7 +56,7 @@ ocil: |-
     Check that AIDE is properly configured to protect the integrity of the
     audit tools by running the following command:
 
-    <pre># sudo cat /etc/aide.conf | grep /usr/sbin/au
+    <pre># sudo cat {{{ aide_conf_path }}} | grep /usr/sbin/au
 
     /usr/sbin/auditctl {{{ aide_string }}}
     /usr/sbin/auditd {{{ aide_string }}}
