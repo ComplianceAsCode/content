@@ -10,7 +10,7 @@ import json
 import re
 import random
 
-from ssg import yaml, checks, products
+from ssg import yaml, cce, products
 from ssg.shims import input_func
 from ssg.utils import read_file_list
 import ssg
@@ -24,7 +24,6 @@ TO_SORT = ['identifiers', 'references']
 
 
 _COMMANDS = dict()
-CCE_POOLS = dict()
 
 
 def command(name, description):
@@ -80,8 +79,8 @@ def has_prefix_cce(yaml_file, product_yaml=None):
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
                 has_prefix = i_value[0:3].upper() == 'CCE'
-                remainder_valid = checks.is_cce_format_valid("CCE-" + i_value[3:])
-                remainder_valid |= checks.is_cce_format_valid("CCE-" + i_value[4:])
+                remainder_valid = cce.is_cce_format_valid("CCE-" + i_value[3:])
+                remainder_valid |= cce.is_cce_format_valid("CCE-" + i_value[4:])
                 return has_prefix and remainder_valid
     return False
 
@@ -91,7 +90,7 @@ def has_invalid_cce(yaml_file, product_yaml=None):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
-                if not checks.is_cce_value_valid("CCE-" + str(i_value)):
+                if not cce.is_cce_value_valid("CCE-" + str(i_value)):
                     return True
     return False
 
@@ -279,57 +278,11 @@ def rewrite_value_remove_prefix(line):
     key = line[0:key_end]
     value = line[key_end+1:].strip()
     new_value = value
-    if checks.is_cce_format_valid("CCE-" + value[3:]):
+    if cce.is_cce_format_valid("CCE-" + value[3:]):
         new_value = value[3:]
-    elif checks.is_cce_format_valid("CCE-" + value[4:]):
+    elif cce.is_cce_format_valid("CCE-" + value[4:]):
         new_value = value[4:]
     return key + ": " + new_value
-
-
-class CCEFile:
-    def __init__(self, project_root=None):
-        if not project_root:
-            project_root = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), "..")
-        self.project_root = project_root
-
-    @property
-    def absolute_path(self):
-        raise NotImplementedError()
-
-    def line_to_cce(self, line):
-        return line
-
-    def line_isnt_cce(self, cce, line):
-        return line != cce
-
-    def read_cces(self):
-        with open(self.absolute_path, "r") as f:
-            cces = f.read().splitlines()
-        return cces
-
-    def remove_cce_from_file(self, cce):
-        file_lines = self.read_cces()
-        lines_except_cce = [
-            line for line in file_lines
-            if self.line_isnt_cce(cce, line)
-        ]
-        with open(self.absolute_path, "w") as f:
-            f.write("\n".join(lines_except_cce) + "\n")
-
-    def random_cce(self):
-        cces = self.read_cces()
-        random.shuffle(cces)
-        return cces[0].strip()
-
-
-class RedhatCCEFile(CCEFile):
-    @property
-    def absolute_path(self):
-        return os.path.join(self.project_root, "shared", "references", "cce-redhat-avail.txt")
-
-
-CCE_POOLS["redhat"] = RedhatCCEFile
 
 
 def add_to_the_section(file_contents, yaml_contents, section, new_keys):
@@ -426,8 +379,8 @@ def fix_prefix_cce(file_contents, yaml_contents):
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
                 has_prefix = i_value[0:3].upper() == 'CCE'
-                remainder_valid = checks.is_cce_format_valid("CCE-" + str(i_value[3:]))
-                remainder_valid |= checks.is_cce_format_valid("CCE-" + str(i_value[4:]))
+                remainder_valid = cce.is_cce_format_valid("CCE-" + str(i_value[3:]))
+                remainder_valid |= cce.is_cce_format_valid("CCE-" + str(i_value[4:]))
                 if has_prefix and remainder_valid:
                     prefixed_identifiers.append(i_type)
 
@@ -443,7 +396,7 @@ def fix_invalid_cce(file_contents, yaml_contents):
     if yaml_contents[section] is not None:
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
-                if not checks.is_cce_value_valid("CCE-" + str(i_value)):
+                if not cce.is_cce_value_valid("CCE-" + str(i_value)):
                     invalid_identifiers.append(i_type)
 
     return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)
@@ -572,13 +525,12 @@ def fix_file_prompt(path, product_yaml, func, args):
 
 def add_cce(args, product_yaml):
     directory = os.path.join(args.root, args.subdirectory)
-    cce_pool = CCE_POOLS[args.cce_pool]
+    cce_pool = cce.CCE_POOLS[args.cce_pool]
     return _add_cce(directory, cce_pool, args.rule, product_yaml, args)
 
 
 def _add_cce(directory, cce_pool, rules, product_yaml, args):
     product = product_yaml["product"]
-    cce_pool = RedhatCCEFile()
 
     def is_relevant_rule(fname, _=None):
         for r in rules:
@@ -753,7 +705,9 @@ def create_other_parsers(subparsers):
     subparser = subparsers.add_parser("add-cce", description="Add CCE to rule files")
     subparser.add_argument("rule", nargs="+")
     subparser.add_argument("--subdirectory", default="linux_os")
-    subparser.add_argument("--cce-pool", "-p", default="redhat", choices=list(CCE_POOLS.keys()))
+    subparser.add_argument(
+        "--cce-pool", "-p", default="redhat", choices=list(cce.CCE_POOLS.keys()),
+    )
     subparser.set_defaults(func=add_cce)
 
 
