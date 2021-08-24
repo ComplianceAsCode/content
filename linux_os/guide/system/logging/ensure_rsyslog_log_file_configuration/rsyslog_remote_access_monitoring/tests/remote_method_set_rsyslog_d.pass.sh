@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ubuntu
 
 declare -A REMOTE_METHODS=( ['auth.*']='^.*auth\.\*.*$' ['authpriv.*']='^.*authpriv\.\*.*$' ['daemon.*']='^.*daemon\.\*.*$' )
 RSYSLOG_CONF='/etc/rsyslog.conf'
