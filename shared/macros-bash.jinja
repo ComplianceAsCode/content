@@ -753,65 +753,62 @@ else
 fi
 {{%- endmacro -%}}
 
-{{# Include various bash mount options functions #}}
-{{% macro bash_include_mount_options_functions() -%}}
-
-# $1: type of filesystem
-# $2: new mount point option
-# $3: filesystem of new mount point (used when adding new entry in fstab)
-# $4: mount type of new mount point (used when adding new entry in fstab)
+{{#
+# _vfstype:     type of filesystem
+# _new_opt:     new mount point option
+# _filesystem:  filesystem of new mount point (used when adding new entry in fstab)
+# _type:        mount type of new mount point (used when adding new entry in fstab)
 #}}
-{{% macro bash_ensure_mount_option_for_vfstype(_vfstype, _new_opt, _filesystem, _type, _vfstype_points) -%}}
-local _vfstype="$1" _new_opt="$2" _filesystem=$3 _type=$4 _vfstype_points=()
-readarray -t _vfstype_points < <(grep -E "[[:space:]]${_vfstype}[[:space:]]" /etc/fstab | awk '{print $2}')
+{{% macro bash_ensure_mount_option_for_vfstype(_vfstype, _new_opt, _filesystem, _type) -%}}
+_vfstype_points=()
+readarray -t _vfstype_points < <(grep -E "[[:space:]]{{{ _vfstype }}}[[:space:]]" /etc/fstab | awk '{print $2}')
 
 for _vfstype_point in "${_vfstype_points[@]}"
 do
-        {{{ bash_ensure_mount_option_in_fstab("$_vfstype_point", "$_new_opt", "$_filesystem", "$_type") }}}
+        {{{ bash_ensure_mount_option_in_fstab("$_vfstype_point", _new_opt , _filesystem , _type ) }}}
 done
 {{%- endmacro %}}
 
 {{#
-# $1: mount point
-# $2: new mount point option
-# $3: device or virtual string (used when adding new entry in fstab)
-# $4: mount type of mount point (used when adding new entry in fstab)
+# _mount_point: mount point
+# _new_opt:     new mount point option
+# _device:      device or virtual string (used when adding new entry in fstab)
+# _type:        mount type of mount point (used when adding new entry in fstab)
 #}}
-{{% macro bash_ensure_mount_option_in_fstab() -%}}
-local _mount_point="$1" _new_opt="$2" _device=$3 _type=$4
-local _mount_point_match_regexp="" _previous_mount_opts=""
-_mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "$_mount_point")"
+{{% macro bash_ensure_mount_option_in_fstab(_mount_point, _new_opt, _device, _type) -%}}
+_mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" {{{ _mount_point }}})"
 
 if [ "$(grep -c "$_mount_point_match_regexp" /etc/fstab)" -eq 0 ]; then
     # runtime opts without some automatic kernel/userspace-added defaults
     _previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/mtab | head -1 |  awk '{print $4}' \
-                | sed -E "s/(rw|defaults|seclabel|${_new_opt})(,|$)//g;s/,$//")
+                | sed -E "s/(rw|defaults|seclabel|{{{ _new_opt }}})(,|$)//g;s/,$//")
     [ "$_previous_mount_opts" ] && _previous_mount_opts+=","
-    echo "${_device} ${_mount_point} ${_type} defaults,${_previous_mount_opts}${_new_opt} 0 0" >> /etc/fstab
-elif [ "$(grep "$_mount_point_match_regexp" /etc/fstab | grep -c "$_new_opt")" -eq 0 ]; then
+    echo "{{{ _device }}} {{{ _mount_point }}} {{{ _type }}} defaults,${_previous_mount_opts}{{{ _new_opt }}} 0 0" >> /etc/fstab
+elif [ "$(grep "$_mount_point_match_regexp" /etc/fstab | grep -c "{{{ _new_opt }}}")" -eq 0 ]; then
     _previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/fstab | awk '{print $4}')
-    sed -i "s|\(${_mount_point_match_regexp}.*${_previous_mount_opts}\)|\1,${_new_opt}|" /etc/fstab
+    sed -i "s|\(${_mount_point_match_regexp}.*${_previous_mount_opts}\)|\1,{{{ _new_opt }}}|" /etc/fstab
 fi
 {{%- endmacro %}}
 
 {{#
-# $1: mount point
+# _mount_point: mount point
 #}}
-{{% macro bash_assert_mount_point_in_fstab() -%}}
-_mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "$1")"
+{{% macro bash_assert_mount_point_in_fstab(_mount_point) -%}}
+_mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "{{{ _mount_point }}}")"
 grep "$_mount_point_match_regexp" -q /etc/fstab \
-    || { echo "The mount point '$1' is not even in /etc/fstab, so we can't set up mount options" >&2; return 1; }
+    || { echo "The mount point '{{{ _mount_point }}}' is not even in /etc/fstab, so we can't set up mount options" >&2; 
+            echo "Not remediating, because there is no record of {{{ _mount_point }}} in /etc/fstab" >&2; return 1; }
 {{%- endmacro %}}
 
 {{#
-# $1: mount point
+# _mount_point: mount point
 #}}
-{{% macro bash_ensure_partition_is_mounted() -%}}
-local _mount_point="$1"
-mkdir -p "$_mount_point" || return 1
-if mountpoint -q "$_mount_point"; then
-    mount -o remount --target "$_mount_point"
-else
-    mount --target "$_mount_point"
+{{% macro bash_ensure_partition_is_mounted(_mount_point) -%}}
+if mkdir -p "{{{ _mount_point }}}"; then
+    if mountpoint -q "{{{ _mount_point }}}"; then
+        mount -o remount --target "{{{ _mount_point }}}"
+    else
+        mount --target "{{{ _mount_point }}}"
+    fi
 fi
 {{%- endmacro %}}

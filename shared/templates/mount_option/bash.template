@@ -6,7 +6,9 @@
 function perform_remediation {
 	# test "$mount_has_to_exist" != 'no'
 	if test "{{{ MOUNT_HAS_TO_EXIST }}}" != 'no'; then
-		assert_mount_point_in_fstab {{{ MOUNTPOINT }}} || { echo "Not remediating, because there is no record of {{{ MOUNTPOINT }}} in /etc/fstab" >&2; return 1; }
+		# This macro gets expanded to code that will return 1 if MOUNTPOINT is not in /etc/fstab;
+		# This is consistent with the behavior prior to converting this function to a jinja macro
+		{{{ bash_assert_mount_point_in_fstab( MOUNTPOINT) }}}
 	fi
 
 	ensure_mount_option_in_fstab "{{{ MOUNTPOINT }}}" "{{{ MOUNTOPTION }}}" "{{{ FILESYSTEM }}}" "{{{ TYPE }}}"
