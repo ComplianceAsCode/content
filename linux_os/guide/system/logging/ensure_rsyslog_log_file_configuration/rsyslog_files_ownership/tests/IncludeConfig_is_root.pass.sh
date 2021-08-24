@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
 
 # Check rsyslog.conf with root user log from rules and
 # root user log from $IncludeConfig passes.

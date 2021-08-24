@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8,multi_platform_fedora,Oracle Linux 8
+# platform = Red Hat Enterprise Linux 8,multi_platform_fedora,Oracle Linux 8,multi_platform_sle
 
 # Check rsyslog.conf with root user log from rules and
 # root user log from multiline include() passes.

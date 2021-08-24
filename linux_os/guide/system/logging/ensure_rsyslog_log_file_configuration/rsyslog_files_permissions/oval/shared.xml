@@ -74,7 +74,7 @@
          * the chunk was retrieved from a row not starting with space, '#',
            or '$' characters
     -->
-    <ind:pattern operation="pattern match">^[^\s#\$]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
     <filter action="exclude">state_permissions_ignore_include_paths</filter>
   </ind:textfilecontent54_object>
@@ -85,7 +85,7 @@
          These paths are conf files, not log files. Their permissions don't need to be as
          required for log files, thus, lets exclude them from the list of objects found
     -->
-    <ind:text operation="pattern match">(?:file="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+)</ind:text>
+    <ind:text operation="pattern match">(?:file="[^\s;]+"|\$IncludeConfig[\s]+[^\s;]+|\/dev\/.*)</ind:text>
   </ind:textfilecontent54_state>
 
   <!-- Define OVAL variable to hold all the various system log files locations
@@ -108,7 +108,7 @@
   <unix:file_state id="state_rsyslog_files_permissions" version="1">
     <unix:type operation="equals">regular</unix:type>
     <unix:uexec datatype="boolean">false</unix:uexec>
-    {{% if product in ["debian9", "debian10", "ubuntu1604", "ubuntu1804", "ubuntu2004"] %}}
+    {{% if product in ["debian9", "debian10", "ubuntu1604", "ubuntu1804", "ubuntu2004", "sle15", "sle12"] %}}
     <unix:gread datatype="boolean">true</unix:gread>
     {{% else %}}
     <unix:gread datatype="boolean">false</unix:gread>
