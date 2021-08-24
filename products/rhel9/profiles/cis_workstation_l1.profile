@@ -8,7 +8,7 @@ metadata:
 
 reference: https://www.cisecurity.org/benchmark/red_hat_linux/
 
-title: '[DRAFT] CIS Red Hat Enterprise Linux 9 Benchmark for Level 2 - Server'
+title: '[DRAFT] CIS Red Hat Enterprise Linux 9 Benchmark for Level 1 - Workstation'
 
 description: |-
     This is a draft profile based on its RHEL8 version for experimental purposes.
@@ -16,4 +16,4 @@ description: |-
     the release.
 
 selections:
-    - cis_rhel8:all:l2_server
+    - cis_rhel8:all:l1_workstation
