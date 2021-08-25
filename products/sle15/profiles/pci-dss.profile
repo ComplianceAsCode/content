@@ -63,6 +63,7 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_immutable
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
