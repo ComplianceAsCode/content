@@ -353,6 +353,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "uefi": None,
   "non-uefi": None,
   "not_s390x_arch": None,
+  "s390x_arch": None,
 }
 
 # _version_name_map = {
