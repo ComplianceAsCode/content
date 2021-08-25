@@ -69,6 +69,7 @@ selections:
     - audit_rules_kernel_module_loading_init
     - audit_rules_mac_modification
     - audit_rules_media_export
+    - audit_rules_networkconfig_modification
     - audit_rules_unsuccessful_file_modification_creat
     - audit_rules_unsuccessful_file_modification_ftruncate
     - audit_rules_unsuccessful_file_modification_open
