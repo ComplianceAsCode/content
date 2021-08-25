@@ -30,7 +30,7 @@
 {{% else %}}
 
 - name: get current kernel parameters
-  nsible.builtin.shell:
+  ansible.builtin.shell:
     cmd: '/usr/bin/grub2-editenv - list | echo "kernelopts="'
   register: kernelopts
   changed_when: False
