@@ -78,6 +78,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_rules_session_events
     - audit_rules_sysadmin_actions
     - audit_rules_time_adjtimex
     - audit_rules_time_clock_settime
