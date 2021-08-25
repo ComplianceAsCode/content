@@ -104,6 +104,7 @@ selections:
     - file_permissions_etc_passwd
     - file_permissions_var_log_audit
     - gid_passwd_group_same
+    - grub2_audit_argument
     - install_hids
     - no_empty_passwords
     - package_aide_installed
