@@ -72,6 +72,11 @@ selections:
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
+    - audit_rules_time_adjtimex
+    - audit_rules_time_clock_settime
+    - audit_rules_time_settimeofday
+    - audit_rules_time_stime
+    - audit_rules_time_watch_localtime
     - dconf_db_up_to_date
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_idle_delay
