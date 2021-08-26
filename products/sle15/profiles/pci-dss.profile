@@ -69,6 +69,8 @@ selections:
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
+    - dconf_gnome_screensaver_lock_enabled
+    - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_idle_activation_enabled
     - display_login_attempts
     - ensure_logrotate_activated
