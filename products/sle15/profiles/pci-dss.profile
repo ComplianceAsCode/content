@@ -92,6 +92,7 @@ selections:
     - rsyslog_files_groupownership
     - rsyslog_files_ownership
     - rsyslog_files_permissions
+    - security_patches_up_to_date
     - service_auditd_enabled
     - service_chronyd_or_ntpd_enabled
     - service_pcscd_enabled
