@@ -76,6 +76,7 @@ selections:
     - dconf_gnome_screensaver_mode_blank
     - display_login_attempts
     - ensure_logrotate_activated
+    - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
     - file_groupowner_grub2_cfg
     - file_groupowner_etc_group
@@ -97,6 +98,7 @@ selections:
     - rsyslog_files_groupownership
     - rsyslog_files_ownership
     - rsyslog_files_permissions
+    - security_patches_up_to_date
     - service_auditd_enabled
     - service_chronyd_or_ntpd_enabled
     - service_pcscd_enabled
