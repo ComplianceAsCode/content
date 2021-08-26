@@ -98,3 +98,4 @@ selections:
     - set_password_hashing_algorithm_libuserconf
     - sshd_set_idle_timeout
     - sshd_set_keepalive_0
+    - sssd_enable_smartcards
