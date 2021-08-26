@@ -21,6 +21,7 @@ selections:
     - var_sshd_set_keepalive=0
     - sshd_idle_timeout_value=15_minutes
     - var_auditd_action_mail_acct=root
+    - var_multiple_time_servers=suse
     ### Rules:
     - account_disable_post_pw_expiration
     - account_unique_name
@@ -72,6 +73,7 @@ selections:
     - dconf_db_up_to_date
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_idle_delay
+    - chronyd_or_ntpd_specify_multiple_servers
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_mode_blank
     - display_login_attempts
