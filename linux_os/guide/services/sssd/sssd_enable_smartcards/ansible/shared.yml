@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 - name: "Test for domain group"
-  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  command: grep '^\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   ignore_errors: yes
   changed_when: False
