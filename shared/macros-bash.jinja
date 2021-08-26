@@ -887,33 +887,19 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 #
 declare -a files_to_inspect
 
-retval=0
-
-# First check sanity of the specified audit tool
-if [ "{{{ tool }}}" != 'auditctl' ] && [ "{{{ tool }}}" != 'augenrules' ]
-then
-	echo "Unknown audit rules loading tool: {{{ tool }}}. Aborting."
-	echo "Use either 'auditctl' or 'augenrules'!"
-	return 1
 # If audit tool is 'auditctl', then add '/etc/audit/audit.rules'
 # file to the list of files to be inspected
-elif [ "{{{ tool }}}" == 'auditctl' ]
-then
+if [ "{{{ tool }}}" == 'auditctl' ]; then
 	default_file="/etc/audit/audit.rules"
 	files_to_inspect+=('/etc/audit/audit.rules' )
 # If audit tool is 'augenrules', then check if the audit rule is defined
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to the list for inspection
 # If rule isn't defined yet, add '/etc/audit/rules.d/$key.rules' to the list for inspection
-elif [ "{{{ tool }}}" == 'augenrules' ]
-then
+else
 	default_file="/etc/audit/rules.d/{{{ key }}}.rules"
 	# As other_filters may include paths, lets use a different delimiter for it
 	# The "F" script expression tells sed to print the filenames where the expressions matched
 	readarray -t files_to_inspect < <(sed -s -n -e "/{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" -e "F" /etc/audit/rules.d/*.rules)
-	if [ $? -ne 0 ]
-	then
-		retval=1
-	fi
 	# Case when particular rule isn't defined in /etc/audit/rules.d/*.rules yet
 	if [ ${#files_to_inspect[@]} -eq "0" ]
 	then
@@ -930,6 +916,9 @@ fi
 # Indicator that we want to append $full_rule into $audit_file or edit a rule in it
 append_expected_rule=0
 
+# After converting to jinja, we cannot exit; therefore we skip the rest of the macro instead
+skip='false'
+
 for audit_file in "${files_to_inspect[@]}"
 do
 	# Filter existing $audit_file rules' definitions to select those that satisfy the rule pattern,
@@ -938,10 +927,6 @@ do
 	# * the other filters, (3-rd argument)
 	# * the auid filters, (4-rd argument)
 	readarray -t similar_rules < <(sed -e "/{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" "$audit_file")
-	if [ $? -ne 0 ]
-	then
-		retval=1
-	fi
 
 	candidate_rules=()
 	# Filter out rules that have more fields then required. This will remove rules more specific than the required scope
@@ -975,8 +960,9 @@ do
 			done
 			if [[ $all_syscalls_found -eq 0 ]]
 			then
-				# We found a rule with all the syscall(s) we want
-				return $retval
+				# We found a rule with all the syscall(s) we want; skip rest of macro
+				skip='true'
+                break
 			fi
 
 			# Check if this rule can be grouped with our target syscall and keep track of it
@@ -991,64 +977,62 @@ do
 			done
 		done
 	else
-		# If there is any candidate rule, it is compliant.
+		# If there is any candidate rule, it is compliant; skip rest of macro
 		if [[ $candidate_rules ]]
 		then
-			return $retval
+            skip='true'
 		fi
 	fi
+
+    if [ skip == 'true' ]; then
+        break
+    fi
 done
 
+if [ skip != true ]; then
+    # We checked all rules that matched the expected resemblance patter (action, arch & auid)
+    # At this point we know if we need to either append the $full_rule or group
+    # the syscall together with an exsiting rule
 
-# We checked all rules that matched the expected resemblance patter (action, arch & auid)
-# At this point we know if we need to either append the $full_rule or group
-# the syscall together with an exsiting rule
+    # Append the full_rule if it cannot be grouped to any other rule
+    if [ -z ${rule_to_edit+x} ]
+    then
+        # Build full_rule while avoid adding double spaces when other_filters is empty
+        if [[ ${syscall_a} ]]
+        then
+            syscall_string=""
+            for syscall in "${syscall_a[@]}"
+            do
+                syscall_string+=" -S $syscall"
+            done
+        fi
+        other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}")
+        auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}")
+        full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}"
+        echo "$full_rule" >> "$default_file"
+        chmod o-rwx ${default_file}
+    else
+        # Check if the syscalls are declared as a comma separated list or
+        # as multiple -S parameters
+        if grep -q -- "," <<< "${rule_syscalls_to_edit}"
+        then
+            delimiter=","
+        else
+            delimiter=" -S "
+        fi
+        new_grouped_syscalls="${rule_syscalls_to_edit}"
+        for syscall in "${syscall_a[@]}"
+        do
+            grep -q -- "\b${syscall}\b" <<< "${rule_syscalls_to_edit}"
+            if [ $? -eq 1 ]
+            then
+                # A syscall was not found in the candidate rule
+                new_grouped_syscalls+="${delimiter}${syscall}"
+            fi
+        done
 
-# Append the full_rule if it cannot be grouped to any other rule
-if [ -z ${rule_to_edit+x} ]
-then
-	# Build full_rule while avoid adding double spaces when other_filters is empty
-	if [[ ${syscall_a} ]]
-	then
-		syscall_string=""
-		for syscall in "${syscall_a[@]}"
-		do
-			syscall_string+=" -S $syscall"
-		done
-	fi
-	other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}")
-	auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}")
-	full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}"
-	echo "$full_rule" >> "$default_file"
-	chmod o-rwx ${default_file}
-else
-	# Check if the syscalls are declared as a comma separated list or
-	# as multiple -S parameters
-	if grep -q -- "," <<< "${rule_syscalls_to_edit}"
-	then
-		delimiter=","
-	else
-		delimiter=" -S "
-	fi
-	new_grouped_syscalls="${rule_syscalls_to_edit}"
-	for syscall in "${syscall_a[@]}"
-	do
-		grep -q -- "\b${syscall}\b" <<< "${rule_syscalls_to_edit}"
-		if [ $? -eq 1 ]
-		then
-			# A syscall was not found in the candidate rule
-			new_grouped_syscalls+="${delimiter}${syscall}"
-		fi
-	done
-
-	# Group the syscall in the rule
-	sed -i -e "\#${rule_to_edit}#s#${rule_syscalls_to_edit}#${new_grouped_syscalls}#" "$file_to_edit"
-	if [ $? -ne 0 ]
-	then
-		retval=1
-	fi
+        # Group the syscall in the rule
+        sed -i -e "\#${rule_to_edit}#s#${rule_syscalls_to_edit}#${new_grouped_syscalls}#" "$file_to_edit"
+    fi
 fi
-
-return $retval
-
 {{%- endmacro %}}
