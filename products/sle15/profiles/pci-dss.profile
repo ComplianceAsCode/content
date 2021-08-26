@@ -69,9 +69,11 @@ selections:
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
     - audit_rules_sysadmin_actions
+    - dconf_db_up_to_date
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_idle_activation_enabled
+    - dconf_gnome_screensaver_mode_blank
     - display_login_attempts
     - ensure_logrotate_activated
     - ensure_gpgcheck_never_disabled
