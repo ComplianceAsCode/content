@@ -10,7 +10,8 @@ from .parse_oval import resolve_definition, find_extending_defs, get_container_g
 from .xml import parse_file, map_elements_to_their_ids
 
 
-from .checks import get_content_ref_if_exists_and_not_remote, is_cce_value_valid, is_cce_format_valid
+from .checks import get_content_ref_if_exists_and_not_remote
+from .cce import is_cce_value_valid, is_cce_format_valid
 from .utils import SSGError
 from .xml import ElementTree as ET
 oval_ns = oval_namespace

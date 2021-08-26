@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
-import re
 
 from .constants import XCCDF11_NS
 from .oval import parse_affected
@@ -43,48 +42,6 @@ def is_content_href_remote(check_content_ref):
         raise RuntimeError(msg)
 
     return hrefattr.startswith("http://") or hrefattr.startswith("https://")
-
-
-def is_cce_format_valid(cceid):
-    """
-    IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
-    where each X is a digit, and the final X is a check-digit)
-    based on Requirement A17:
-
-    http://people.redhat.com/swells/nist-scap-validation/scap-val-requirements-1.2.html
-    """
-    match = re.match(r'^CCE-\d{4,5}-\d$', cceid)
-    return match is not None
-
-
-def is_cce_value_valid(cceid):
-    # For context, see:
-    # https://github.com/ComplianceAsCode/content/issues/3044#issuecomment-420844095
-
-    # concat(substr ... , substr ...) -- just remove non-digit characters.
-    # Since we've already validated format, this hack suffices:
-    cce = re.sub(r'(CCE|-)', '', cceid)
-
-    # The below is an implementation of Luhn's algorithm as this is what the
-    # XPath code does.
-
-    # First, map string numbers to integers. List cast is necessary to be able
-    # to index it.
-    digits = list(map(int, cce))
-
-    # Even indices are doubled. Coerce to list for list addition. However,
-    # XPath uses 1-indexing so "evens" and "odds" are swapped from Python.
-    # We handle both the idiv and the mod here as well; note that we only
-    # hvae to do this for evens: no single digit is above 10, so the idiv
-    # always returns 0 and the mod always returns the original number.
-    evens = list(map(lambda i: (i*2)//10 + (i*2) % 10, digits[-2::-2]))
-    odds = digits[-1::-2]
-
-    # The checksum value is now the sum of the evens and the odds.
-    value = sum(evens + odds) % 10
-
-    # Valid CCE <=> value == 0
-    return value == 0
 
 
 def get_oval_path(rule_obj, oval_id):
