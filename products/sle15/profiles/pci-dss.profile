@@ -22,6 +22,7 @@ selections:
     - sshd_idle_timeout_value=15_minutes
     - var_auditd_action_mail_acct=root
     - var_multiple_time_servers=suse
+    - var_smartcard_drivers=cac
     ### Rules:
     - account_disable_post_pw_expiration
     - account_unique_name
@@ -81,8 +82,12 @@ selections:
     - dconf_db_up_to_date
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_idle_delay
+<<<<<<< HEAD
     - chronyd_or_ntpd_specify_multiple_servers
     - chronyd_specify_remote_server
+=======
+    - configure_opensc_card_drivers
+>>>>>>> cddcb61e6a... Add  configure_opensc_card_drivers, force_opensc_card_drivers and install_smartcard_packages rules to SLE15 PCI-DSS profile
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_mode_blank
     - display_login_attempts
@@ -103,8 +108,10 @@ selections:
     - file_permissions_etc_shadow
     - file_permissions_etc_passwd
     - file_permissions_var_log_audit
+    - force_opensc_card_drivers
     - gid_passwd_group_same
     - install_hids
+    - install_smartcard_packages
     - no_empty_passwords
     - package_aide_installed
     - package_strongswan_installed
