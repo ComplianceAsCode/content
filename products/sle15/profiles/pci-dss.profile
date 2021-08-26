@@ -72,6 +72,7 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - display_login_attempts
     - ensure_logrotate_activated
+    - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
     - file_groupowner_grub2_cfg
     - file_groupowner_etc_group
