@@ -102,6 +102,8 @@ selections:
     - service_auditd_enabled
     - service_chronyd_or_ntpd_enabled
     - service_pcscd_enabled
+    - set_password_hashing_algorithm_commonauth
     - set_password_hashing_algorithm_libuserconf
+    - set_password_hashing_algorithm_logindefs
     - sshd_set_idle_timeout
     - sshd_set_keepalive_0
