@@ -1,0 +1,2928 @@
+policy: PCI-DSS
+title: Configuration Recommendations of a GNU/Linux System
+id: pcidss
+version: '3.1'
+source: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf
+levels:
+- id: base
+- id: shared_hosting_provider
+  inherits_from:
+  - base
+- id: desv
+  inherits_from:
+  - base
+
+controls:
+- id: Req-1.1
+  title: '1.1 Establish and implement firewall and router configuration standards
+    that include the following:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.1.1
+  title: 1.1.1 A formal process for approving and testing all network connections
+    and changes to the firewall and router configurations
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.1.2
+  title: 1.1.2 Current network diagram that identifies all connections between the
+    cardholder data environment and other networks, including any wireless networks
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.1.3
+  title: 1.1.3 Current diagram that shows all cardholder data flows across systems
+    and networks
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.1.4
+  title: 1.1.4 Requirements for a firewall at each Internet connection and between
+    any demilitarized zone (DMZ) and the internal network zone
+  levels:
+  - base
+  notes: ''
+  automated: yes
+  rules:
+    - configure_network_policies
+    - configure_network_policies_namespaces
+
+- id: Req-1.1.5
+  title: 1.1.5 Description of groups, roles, and responsibilities for management of
+    network components
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.1.6
+  title: 1.1.6 Documentation and business justification for use of all services, protocols,
+    and ports allowed, including documentation of security features implemented for
+    those protocols considered to be insecure.
+  description: Examples of insecure services, protocols, or ports include but are
+    not limited to FTP, Telnet, POP3, IMAP, and SNMP v1 and v2.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.1.7
+  title: 1.1.7 Requirement to review firewall and router rule sets at least every
+    six months
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.2
+  title: 1.2 Build firewall and router configurations that restrict connections between
+    untrusted networks and any system components in the cardholder data environment.
+  description: |-
+    Note: An "untrusted network" is any network that is external
+    to the networks belonging to the entity under review, and/or which is out of
+    the entity's ability to control or manage.
+  levels:
+  - base
+  notes: ''
+  automated: yes
+  rules:
+    - configure_network_policies
+    - configure_network_policies_namespaces
+
+- id: Req-1.2.1
+  title: 1.2.1 Restrict inbound and outbound traffic to that which is necessary for
+    the cardholder data environment, and specifically deny all other traffic.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.2.2
+  title: 1.2.2 Secure and synchronize router configuration files.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.2.3
+  title: 1.2.3 Install perimeter firewalls between all wireless networks and the cardholder
+    data environment, and configure these firewalls to deny or, if traffic is necessary
+    for business purposes, permit only authorized traffic between the wireless environment
+    and the cardholder data environment.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3
+  title: 1.3 Prohibit direct public access between the Internet and any system component
+    in the cardholder data environment.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.1
+  title: 1.3.1 Implement a DMZ to limit inbound traffic to only system components
+    that provide authorized publicly accessible services, protocols, and ports.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.2
+  title: 1.3.2 Limit inbound Internet traffic to IP addresses within the DMZ.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.3
+  title: 1.3.3 Do not allow any direct connections inbound or outbound for traffic
+    between the Internet and the cardholder data environment.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.4
+  title: 1.3.4 Implement anti-spoofing measures to detect and block forged source
+    IP addresses from entering the network.
+  description: (For example, block traffic originating from the Internet with an internal
+    source address.)
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.5
+  title: 1.3.5 Do not allow unauthorized outbound traffic from the cardholder data
+    environment to the Internet.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.6
+  title: "1.3.6 Implement stateful inspection, also known as dynamic packet filtering.\
+    \ (That is, only \u201Cestablished\u201D connections are allowed into the network.)"
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.7
+  title: 1.3.7 Place system components that store cardholder data (such as a database)
+    in an internal network zone, segregated from the DMZ and other untrusted networks.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.3.8
+  title: 1.3.8 Do not disclose private IP addresses and routing information to unauthorized
+    parties.
+  description: "Note: Methods to obscure IP addressing may include, but are not limited\
+    \ to:\n\uF0B7    Network Address Translation (NAT)\n\uF0B7    Placing servers\
+    \ containing cardholder data behind proxy servers/firewalls,\n\uF0B7    Removal\
+    \ or filtering of route advertisements for private networks that employ registered\
+    \ addressing,\n\uF0B7    Internal use of RFC1918 address space instead of registered\
+    \ addresses."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.4
+  title: '1.4 Install personal firewall software on any mobile and/or employee-owned
+    devices that connect to the Internet when outside the network (for example, laptops
+    used by employees), and which are also used to access the network.'
+  description: "Firewall configurations include: \n\
+    \ \uF0B7    Specific configuration settings are defined for personal\
+    \ firewall software.\n\uF0B7    Personal firewall software is actively running.\n\
+    \uF0B7    Personal firewall software is not alterable by users of mobile and/or\
+    \ employee-owned devices."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-1.5
+  title: 1.5 Ensure that security policies and operational procedures for managing
+    firewalls are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.1
+  title: 2.1 Always change vendor-supplied defaults and remove or disable unnecessary
+    default accounts before installing a system on the network.
+  description: This applies to ALL default passwords, including but not limited to
+    those used by operating systems, software that provides security services, application
+    and system accounts, point-of-sale (POS) terminals, Simple Network Management
+    Protocol (SNMP) community strings, etc.).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.1.1
+  title: 2.1.1 For wireless environments connected to the cardholder data environment
+    or transmitting cardholder data, change ALL wireless vendor defaults at installation,
+    including but not limited to default wireless encryption keys, passwords, and
+    SNMP community strings.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.2
+  title: 2.2 Develop configuration standards for all system components. Assure that
+    these standards address all known security vulnerabilities and are consistent
+    with industry-accepted system hardening standards.
+  description: "Sources of industry-accepted system hardening standards may include,\
+    \ but are not limited to:\n\uF0B7    Center for Internet Security (CIS)\n\uF0B7\
+    \    International Organization for Standardization (ISO)\n\uF0B7    SysAdmin\
+    \ Audit Network Security (SANS) Institute\n\uF0B7    National Institute of Standards\
+    \ Technology (NIST)."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.2.1
+  title: 2.2.1 Implement only one primary function per server to prevent functions
+    that require different security levels from co-existing on the same server. (For
+    example, web servers, database servers, and DNS should be implemented on separate
+    servers.)
+  description: 'Note: Where virtualization technologies are in use, implement only
+    one primary function per virtual system component.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.2.2
+  title: 2.2.2 Enable only necessary services, protocols, daemons, etc., as required
+    for the function of the system.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.2.3
+  title: "2.2.3 Implement additional security features for any required services,\
+    \ protocols, or daemons that are considered to be insecure\u2014for example, use\
+    \ secured technologies such as SSH, S-FTP, TLS, or IPSec VPN to protect insecure\
+    \ services such as NetBIOS, file-sharing, Telnet, FTP, etc."
+  description: 'Note: SSL and early TLS are not considered strong cryptography and
+    cannot be used as a security control after June 30, 2016. Prior to this date,
+    existing implementations that use SSL and/or early TLS must have a formal Risk
+    Mitigation and Migration Plan in place.
+
+    Effective immediately, new implementations must not use SSL or early TLS.
+
+    POS POI terminals (and the SSL/TLS termination points to which they connect) that
+    can be verified as not being susceptible to any known exploits for SSL and early
+    TLS may continue using these as a security control after June 30, 2016.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.2.4
+  title: 2.2.4 Configure system security parameters to prevent misuse.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.2.5
+  title: 2.2.5 Remove all unnecessary functionality, such as scripts, drivers, features,
+    subsystems, file systems, and unnecessary web servers.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.3
+  title: 2.3 Encrypt all non-console administrative access using strong cryptography.
+    Use technologies such as SSH, VPN, or TLS for web-based management and other non-console
+    administrative access.
+  description: 'Note: SSL and early TLS are not considered strong cryptography and
+    cannot be used as a security control after June 30, 2016. Prior to this date,
+    existing implementations that use SSL and/or early TLS must have a formal Risk
+    Mitigation and Migration Plan in place.
+
+    Effective immediately, new implementations must not use SSL or early TLS.
+
+    POS POI terminals (and the SSL/TLS termination points to which they connect) that
+    can be verified as not being susceptible to any known exploits for SSL and early
+    TLS may continue using these as a security control after June 30, 2016.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.4
+  title: 2.4 Maintain an inventory of system components that are in scope for PCI
+    DSS.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.5
+  title: 2.5 Ensure that security policies and operational procedures for managing
+    vendor defaults and other security parameters are documented, in use, and known
+    to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-2.6
+  title: "2.6 Shared hosting providers must protect each entity\u2019s hosted environment\
+    \ and cardholder data. These providers must meet specific requirements as detailed\
+    \ in Appendix A: Additional PCI DSS Requirements for Shared Hosting Providers."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.1
+  title: '3.1 Keep cardholder data storage to a minimum by implementing data retention
+    and disposal policies, procedures and processes that include at least the following
+    for all cardholder data (CHD) storage:'
+  description: "\uF0B7    Limiting data storage amount and retention time to that\
+    \ which is required for legal, regulatory, and/or business requirements\n\uF0B7\
+    \    Specific retention requirements for cardholder data\n\uF0B7    Processes\
+    \ for secure deletion of data when no longer needed\n\uF0B7    A quarterly process\
+    \ for identifying and securely deleting stored cardholder data that exceeds defined\
+    \ retention."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.2
+  title: 3.2 Do not store sensitive authentication data after authorization (even
+    if encrypted). If sensitive authentication data is received, render all data unrecoverable
+    upon completion of the authorization process.
+  description: "It is permissible for issuers and companies that support issuing services\
+    \ to store sensitive authentication data if:\n\uF0B7    There is a business justification\
+    \ and\n\uF0B7    The data is stored securely.\nSensitive authentication data includes\
+    \ the data as cited in the following Requirements 3.2.1 through 3.2.3:"
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.2.1
+  title: 3.2.1 Do not store the full contents of any track (from the magnetic stripe
+    located on the back of a card, equivalent data contained on a chip, or elsewhere)
+    after authorization. This data is alternatively called full track, track, track
+    1, track 2, and magnetic- stripe data.
+  description: "Note: In the normal course of business, the following data elements\
+    \ from the magnetic stripe may need to be retained:\n\uF0B7      The cardholder\u2019\
+    s name\n\uF0B7      Primary account number (PAN)\n\uF0B7      Expiration date\n\
+    \uF0B7      Service code\nTo minimize risk, store only these data elements as\
+    \ needed for business."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.2.2
+  title: 3.2.2 Do not store the card verification code or value (three-digit or four-digit
+    number printed on the front or back of a payment card used to verify card-not-
+    present transactions) after authorization.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.2.3
+  title: 3.2.3 Do not store the personal identification number (PIN) or the encrypted
+    PIN block after authorization.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.3
+  title: 3.3 Mask PAN when displayed (the first six and last four digits are the maximum
+    number of digits to be displayed), such that only personnel with a legitimate
+    business need can see the full PAN.
+  description: "Note: This requirement does not supersede stricter requirements in\
+    \ place for displays of cardholder data\u2014for example, legal or payment card\
+    \ brand requirements for point-of-sale (POS) receipts."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.4
+  title: '3.4 Render PAN unreadable anywhere it is stored (including on portable digital
+    media, backup media, and in logs) by using any of the following approaches:'
+  description: "\uF0B7    One-way hashes based on strong cryptography, (hash must\
+    \ be of the entire PAN)\n\uF0B7  Truncation (hashing cannot be used to replace\
+    \ the truncated segment of PAN)\n\uF0B7    Index tokens and pads (pads must be\
+    \ securely stored)\n\uF0B7    Strong cryptography with associated key-management\
+    \ processes and procedures.\nNote: It is a relatively trivial effort for a malicious\
+    \ individual to reconstruct original PAN data if they have access to both the\
+    \ truncated and hashed version of a PAN. Where hashed and truncated versions of\
+    \ the same PAN are present in an entity\u2019s environment, additional controls\
+    \ must be in place to ensure that the hashed and truncated versions cannot be\
+    \ correlated to reconstruct the original PAN."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.4.1
+  title: 3.4.1 If disk encryption is used (rather than file- or column-level database
+    encryption), logical access must be managed separately and independently of native
+    operating system authentication and access control mechanisms (for example, by
+    not using local user account databases or general network login credentials).
+    Decryption keys must not be associated with user accounts.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.5
+  title: '3.5 Document and implement procedures to protect keys used to secure stored
+    cardholder data against disclosure and misuse:'
+  description: "Note: This requirement applies to keys used to encrypt stored cardholder\
+    \ data, and also applies to key-encrypting keys used to protect data-encrypting\
+    \ keys\u2014 such key-encrypting keys must be at least as strong as the data-encrypting\
+    \ key."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.5.1
+  title: 3.5.1 Restrict access to cryptographic keys to the fewest number of custodians
+    necessary.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.5.2
+  title: '3.5.2 Store secret and private keys used to encrypt/decrypt cardholder data
+    in one (or more) of the following forms at all times:'
+  description: "\uF0B7  Encrypted with a key-encrypting key that is at least as strong\
+    \ as the data-encrypting key, and that is stored separately from the data- encrypting\
+    \ key\n\uF0B7  Within a secure cryptographic device (such as a hardware (host)\
+    \ security module (HSM) or PTS- approved point-of-interaction device)\n\uF0B7\
+    \  As at least two full-length key components or key shares, in accordance with\
+    \ an industry- accepted method\nNote: It is not required that public keys be stored\
+    \ in one of these forms."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.5.3
+  title: 3.5.3 Store cryptographic keys in the fewest possible locations.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6
+  title: '3.6 Fully document and implement all key-management processes and procedures
+    for cryptographic keys used for encryption of cardholder data, including the following:'
+  description: 'Note: Numerous industry standards for key management are available
+    from various resources including NIST, which can be found at http://csrc.nist.gov.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.1
+  title: 3.6.1 Generation of strong cryptographic keys
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.2
+  title: 3.6.2 Secure cryptographic key distribution
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.3
+  title: 3.6.3 Secure cryptographic key storage
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.4
+  title: 3.6.4 Cryptographic key changes for keys that have reached the end of their
+    cryptoperiod (for example, after a defined period of time has passed and/or after
+    a certain amount of cipher- text has been produced by a given key), as defined
+    by the associated application vendor or key owner, and based on industry best
+    practices and guidelines (for example, NIST Special Publication 800-57).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.5
+  title: 3.6.5 Retirement or replacement (for example, archiving, destruction, and/or
+    revocation) of keys as deemed necessary when the integrity of the key has been
+    weakened (for example, departure of an employee with knowledge of a clear-text
+    key component), or keys are suspected of being compromised.
+  description: 'Note: If retired or replaced cryptographic keys need to be retained,
+    these keys must be securely archived (for example, by using a key-encryption key).
+    Archived cryptographic keys should only be used for decryption/verification purposes.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.6
+  title: 3.6.6 If manual clear-text cryptographic key-management operations are used,
+    these operations must be managed using split knowledge and dual control.
+  description: 'Note: Examples of manual key- management operations include, but are
+    not limited to: key generation, transmission, loading, storage and destruction.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.7
+  title: 3.6.7 Prevention of unauthorized substitution of cryptographic keys.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.6.8
+  title: 3.6.8 Requirement for cryptographic key custodians to formally acknowledge
+    that they understand and accept their key-custodian responsibilities.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-3.7
+  title: 3.7 Ensure that security policies and operational procedures for protecting
+    stored cardholder data are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-4.1
+  title: '4.1 Use strong cryptography and security protocols (for example, TLS, IPSEC,
+    SSH, etc.) to safeguard sensitive cardholder data during transmission over open,
+    public networks, including the following:'
+  description: "\uF0B7    Only trusted keys and certificates are accepted.\n\uF0B7\
+    \    The protocol in use only supports secure versions or configurations.\n\uF0B7\
+    \    The encryption strength is appropriate for the encryption methodology in\
+    \ use.\nNote: SSL and early TLS are not considered strong cryptography and cannot\
+    \ be used as a security control after June 30, 2016. Prior to this date, existing\
+    \ implementations that use SSL and/or early TLS must have a formal Risk Mitigation\
+    \ and Migration Plan in place.\nEffective immediately, new implementations must\
+    \ not use SSL or early TLS.\nPOS POI terminals (and the SSL/TLS termination points\
+    \ to which they connect) that can be verified as not being susceptible to any\
+    \ known exploits for SSL and early TLS may continue using these as a security\
+    \ control after June 30, 2016.\nExamples of open, public networks include but\
+    \ are not limited to:\n\uF0B7      The Internet\n\uF0B7      Wireless technologies,\
+    \ including 802.11 and Bluetooth\n\uF0B7      Cellular technologies, for example,\
+    \ Global System for Mobile communications (GSM), Code division multiple access\
+    \ (CDMA)\n\uF0B7      General Packet Radio Service (GPRS)\n\uF0B7      Satellite\
+    \ communications"
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-4.1.1
+  title: 4.1.1 Ensure wireless networks transmitting cardholder data or connected
+    to the cardholder data environment, use industry best practices (for example,
+    IEEE 802.11i) to implement strong encryption for authentication and transmission.
+  description: 'Note: The use of WEP as a security control is prohibited.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-4.2
+  title: 4.2 Never send unprotected PANs by end- user messaging technologies (for
+    example, e- mail, instant messaging, SMS, chat, etc.).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-4.3
+  title: 4.3 Ensure that security policies and operational procedures for encrypting
+    transmissions of cardholder data are documented, in use, and known to all affected
+    parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-5.1
+  title: 5.1 Deploy anti-virus software on all systems commonly affected by malicious
+    software (particularly personal computers and servers).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-5.1.1
+  title: 5.1.1 Ensure that anti-virus programs are capable of detecting, removing,
+    and protecting against all known types of malicious software.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-5.1.2
+  title: 5.1.2 For systems considered to be not commonly affected by malicious software,
+    perform periodic evaluations to identify and evaluate evolving malware threats
+    in order to confirm whether such systems continue to not require anti-virus software.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-5.2
+  title: '5.2 Ensure that all anti-virus mechanisms are maintained as follows:'
+  description: "\uF0B7    Are kept current,\n\uF0B7    Perform periodic scans\n\uF0B7\
+    \    Generate audit logs which are retained per PCI DSS Requirement 10.7."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-5.3
+  title: 5.3 Ensure that anti-virus mechanisms are actively running and cannot be
+    disabled or altered by users, unless specifically authorized by management on
+    a case-by-case basis for a limited time period.
+  description: 'Note: Anti-virus solutions may be temporarily disabled only if there
+    is legitimate technical need, as authorized by management on a case-by-case basis.
+    If anti-virus protection needs to be disabled for a specific purpose, it must
+    be formally authorized. Additional security measures may also need to be implemented
+    for the period of time during which anti-virus protection is not active.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-5.4
+  title: 5.4 Ensure that security policies and operational procedures for protecting
+    systems against malware are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.1
+  title: "6.1 Establish a process to identify security vulnerabilities, using reputable\
+    \ outside sources for security vulnerability information, and assign a risk ranking\
+    \ (for example, as \u201Chigh,\u201D \u201Cmedium,\u201D or \u201Clow\u201D) to\
+    \ newly discovered security vulnerabilities. Note: Risk rankings should be based\
+    \ on industry best practices as well as consideration of potential impact. For\
+    \ example, criteria for ranking vulnerabilities may include consideration of the\
+    \ CVSS base score, and/or the classification by the vendor, and/or type of systems\
+    \ affected."
+  description: "Methods for evaluating vulnerabilities and assigning risk ratings\
+    \ will vary based on an organization\u2019s environment and risk- assessment strategy.\
+    \ Risk rankings should, at a minimum, identify all vulnerabilities considered\
+    \ to be a \u201Chigh risk\u201D to the environment. In addition to the risk ranking,\
+    \ vulnerabilities may be considered \u201Ccritical\u201D if they pose an imminent\
+    \ threat to the environment, impact critical systems, and/or would result in a\
+    \ potential compromise if not addressed. Examples of critical systems may include\
+    \ security systems, public-facing devices and systems, databases, and other systems\
+    \ that store, process, or transmit cardholder data."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.2
+  title: 6.2 Ensure that all system components and software are protected from known
+    vulnerabilities by installing applicable vendor- supplied security patches. Install
+    critical security patches within one month of release.
+  description: 'Note: Critical security patches should be identified according to
+    the risk ranking process defined in Requirement 6.1.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.3
+  title: '6.3 Develop internal and external software applications (including web-based
+    administrative access to applications) securely, as follows:'
+  description: "\uF0B7    In accordance with PCI DSS (for example, secure authentication\
+    \ and logging)\n\uF0B7    Based on industry standards and/or best practices.\n\
+    \uF0B7    Incorporating information security throughout the software-development\
+    \ life cycle\nNote: this applies to all software developed internally as well\
+    \ as bespoke or custom software developed by a third party."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.3.1
+  title: 6.3.1 Remove development, test and/or custom application accounts, user IDs,
+    and passwords before applications become active or are released to customers.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.3.2
+  title: '6.3.2 Review custom code prior to release to production or customers in
+    order to identify any potential coding vulnerability (using either manual or automated
+    processes) to include at least the following:'
+  description: "\uF0B7  Code changes are reviewed by individuals other than the originating\
+    \ code author, and by individuals knowledgeable about code-review techniques and\
+    \ secure coding practices.\n\uF0B7  Code reviews ensure code is developed according\
+    \ to secure coding guidelines\n\uF0B7  Appropriate corrections are implemented\
+    \ prior to release.\n\uF0B7  Code-review results are reviewed and approved by\
+    \ management prior to release.\nNote: This requirement for code reviews applies\
+    \ to all custom code (both internal and public-facing), as part of the system\
+    \ development life cycle.\nCode reviews can be conducted by knowledgeable internal\
+    \ personnel or third parties. Public-facing web applications are also subject\
+    \ to additional controls, to address ongoing threats and vulnerabilities after\
+    \ implementation, as defined at PCI DSS Requirement 6.6."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4
+  title: '6.4 Follow change control processes and procedures for all changes to system
+    components. The processes must include the following:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.1
+  title: 6.4.1 Separate development/test environments from production environments,
+    and enforce the separation with access controls.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.2
+  title: 6.4.2 Separation of duties between development/test and production environments
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.3
+  title: 6.4.3 Production data (live PANs) are not used for testing or development
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.4
+  title: 6.4.4 Removal of test data and accounts before production systems become
+    active
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.5
+  title: '6.4.5 Change control procedures for the implementation of security patches
+    and software modifications must include the following:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.5.1
+  title: 6.4.5.1 Documentation of impact.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.5.2
+  title: 6.4.5.2 Documented change approval by authorized parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.5.3
+  title: 6.4.5.3 Functionality testing to verify that the change does not adversely
+    impact the security of the system.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.4.5.4
+  title: 6.4.5.4 Back-out procedures.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5
+  title: '6.5 Address common coding vulnerabilities in software-development processes
+    as follows:'
+  description: "\uF0B7    Train developers in secure coding techniques, including\
+    \ how to avoid common coding vulnerabilities, and understanding how sensitive\
+    \ data is handled in memory.\n\uF0B7    Develop applications based on secure coding\
+    \ guidelines.\nNote: The vulnerabilities listed at 6.5.1 through 6.5.10 were current\
+    \ with industry best practices when this version of PCI DSS was published. However,\
+    \ as industry best practices for vulnerability management are updated (for example,\
+    \ the OWASP Guide, SANS CWE Top 25, CERT Secure Coding, etc.), the current best\
+    \ practices must be used for these requirements."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.1
+  title: 6.5.1 Injection flaws, particularly SQL injection. Also consider OS Command
+    Injection, LDAP and XPath injection flaws as well as other injection flaws.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.2
+  title: 6.5.2 Buffer overflows
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.3
+  title: 6.5.3 Insecure cryptographic storage
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.4
+  title: 6.5.4 Insecure communications
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.5
+  title: 6.5.5 Improper error handling
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.6
+  title: "6.5.6 All \u201Chigh risk\u201D vulnerabilities identified in the vulnerability\
+    \ identification process (as defined in PCI DSS Requirement 6.1)."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.7
+  title: 6.5.7   Cross-site scripting (XSS)
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.8
+  title: 6.5.8 Improper access control (such as insecure direct object references,
+    failure to restrict URL access, directory traversal, and failure to restrict user
+    access to functions).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.9
+  title: 6.5.9 Cross-site request forgery (CSRF)
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.5.10
+  title: 6.5.10 Broken authentication and session management
+  description: 'Note: Requirement 6.5.10 is a best practice until June 30, 2015, after
+    which it becomes a requirement.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.6
+  title: '6.6 For public-facing web applications, address new threats and vulnerabilities
+    on an ongoing basis and ensure these applications are protected against known
+    attacks by either of the following methods:'
+  description: "\uF0B7    Reviewing public-facing web applications via manual or automated\
+    \ application vulnerability security assessment tools or methods, at least annually\
+    \ and after any changes\nNote: This assessment is not the same as the vulnerability\
+    \ scans performed for Requirement 11.2.\n\uF0B7    Installing an automated technical\
+    \ solution that detects and prevents web- based attacks (for example, a web- application\
+    \ firewall) in front of public- facing web applications, to continually check\
+    \ all traffic."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-6.7
+  title: 6.7 Ensure that security policies and operational procedures for developing
+    and maintaining secure systems and applications are documented, in use, and known
+    to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.1
+  title: 7.1 Limit access to system components and cardholder data to only those individuals
+    whose job requires such access.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.1.1
+  title: '7.1.1 Define access needs for each role, including:'
+  description: "\uF0B7  System components and data resources that each role needs\
+    \ to access for their job function\n\uF0B7  Level of privilege required (for example,\
+    \ user, administrator, etc.) for accessing resources."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.1.2
+  title: 7.1.2 Restrict access to privileged user IDs to least privileges necessary
+    to perform job responsibilities.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.1.3
+  title: "7.1.3 Assign access based on individual personnel\u2019s job classification\
+    \ and function."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.1.4
+  title: 7.1.4 Require documented approval by authorized parties specifying required
+    privileges.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.2
+  title: "7.2 Establish an access control system for systems components that restricts\
+    \ access based on a user\u2019s need to know, and is set to \u201Cdeny all\u201D\
+    \ unless specifically allowed."
+  description: 'This access control system must include the following:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.2.1
+  title: 7.2.1 Coverage of all system components
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.2.2
+  title: 7.2.2 Assignment of privileges to individuals based on job classification
+    and function.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.2.3
+  title: "7.2.3 Default \u201Cdeny-all\u201D setting."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-7.3
+  title: 7.3 Ensure that security policies and operational procedures for restricting
+    access to cardholder data are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1
+  title: '8.1 Define and implement policies and procedures to ensure proper user identification
+    management for non- consumer users and administrators on all system components
+    as follows:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.1
+  title: 8.1.1 Assign all users a unique ID before allowing them to access system
+    components or cardholder data.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.2
+  title: 8.1.2 Control addition, deletion, and modification of user IDs, credentials,
+    and other identifier objects.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.3
+  title: 8.1.3 Immediately revoke access for any terminated users.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.4
+  title: 8.1.4 Remove/disable inactive user accounts within 90 days.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.5
+  title: '8.1.5 Manage IDs used by vendors to access, support, or maintain system
+    components via remote access as follows:'
+  description: "\uF0B7  Enabled only during the time period needed and disabled when\
+    \ not in use.\n\uF0B7  Monitored when in use."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.6
+  title: 8.1.6 Limit repeated access attempts by locking out the user ID after not
+    more than six attempts.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.7
+  title: 8.1.7 Set the lockout duration to a minimum of 30 minutes or until an administrator
+    enables the user ID.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.1.8
+  title: 8.1.8 If a session has been idle for more than 15 minutes, require the user
+    to re-authenticate to re-activate the terminal or session.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.2
+  title: '8.2 In addition to assigning a unique ID, ensure proper user-authentication
+    management for non-consumer users and administrators on all system components
+    by employing at least one of the following methods to authenticate all users:'
+  description: "\uF0B7    Something you know, such as a password or passphrase\n\uF0B7\
+    \    Something you have, such as a token device or smart card\n\uF0B7    Something\
+    \ you are, such as a biometric."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.2.1
+  title: 8.2.1 Using strong cryptography, render all authentication credentials (such
+    as passwords/phrases) unreadable during transmission and storage on all system
+    components.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.2.2
+  title: "8.2.2 Verify user identity before modifying any authentication credential\u2014\
+    for example, performing password resets, provisioning new tokens, or generating\
+    \ new keys."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.2.3
+  title: '8.2.3 Passwords/phrases must meet the following:'
+  description: "\uF0B7  Require a minimum length of at least seven characters.\n\uF0B7\
+    \  Contain both numeric and alphabetic characters.\nAlternatively, the passwords/phrases\
+    \ must have complexity and strength at least equivalent to the parameters specified\
+    \ above."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.2.4
+  title: 8.2.4 Change user passwords/passphrases at least once every 90 days.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.2.5
+  title: 8.2.5 Do not allow an individual to submit a new password/phrase that is
+    the same as any of the last four passwords/phrases he or she has used.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.2.6
+  title: 8.2.6 Set passwords/phrases for first- time use and upon reset to a unique
+    value for each user, and change immediately after the first use.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.3
+  title: '8.3 Incorporate two-factor authentication for remote network access originating
+    from outside the network by personnel (including users and administrators) and
+    all third parties, (including vendor access for support or maintenance). Note:
+    Two-factor authentication requires that two of the three authentication methods
+    (see Requirement 8.2 for descriptions of authentication methods) be used for authentication.
+    Using one factor twice (for example, using two separate passwords) is not considered
+    two-factor authentication.'
+  description: Examples of two-factor technologies include remote authentication and
+    dial-in service (RADIUS) with tokens; terminal access controller access control
+    system (TACACS) with tokens; and other technologies that facilitate two-factor
+    authentication.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.4
+  title: '8.4 Document and communicate authentication policies and procedures to all
+    users including:'
+  description: "\uF0B7    Guidance on selecting strong authentication credentials\n\
+    \uF0B7    Guidance for how users should protect their authentication credentials\n\
+    \uF0B7    Instructions not to reuse previously used passwords\n\uF0B7 Instructions\
+    \ to change passwords if there is any suspicion the password could be compromised."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.5
+  title: '8.5 Do not use group, shared, or generic IDs, passwords, or other authentication
+    methods as follows:'
+  description: "\uF0B7    Generic user IDs are disabled or removed.\n\uF0B7 Shared\
+    \ user IDs do not exist for system administration and other critical functions.\n\
+    \uF0B7    Shared and generic user IDs are not used to administer any system components."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.5.1
+  title: '8.5.1 Additional requirement for service providers only: Service providers
+    with remote access to customer premises (for example, for support of POS systems
+    or servers) must use a unique authentication credential (such as a password/phrase)
+    for each customer.'
+  description: 'Note: This requirement is not intended to apply to shared hosting
+    providers accessing their own hosting environment, where multiple customer environments
+    are hosted.
+
+    Note: Requirement 8.5.1 is a best practice until June 30, 2015, after which it
+    becomes a requirement.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.6
+  title: '8.6 Where other authentication mechanisms are used (for example, physical
+    or logical security tokens, smart cards, certificates, etc.), use of these mechanisms
+    must be assigned as follows:'
+  description: "\uF0B7    Authentication mechanisms must be assigned to an individual\
+    \ account and not shared among multiple accounts.\n\uF0B7    Physical and/or logical\
+    \ controls must be in place to ensure only the intended account can use that mechanism\
+    \ to gain access."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.7
+  title: '8.7 All access to any database containing cardholder data (including access
+    by applications, administrators, and all other users) is restricted as follows:'
+  description: "\uF0B7 All user access to, user queries of, and user actions on databases\
+    \ are through programmatic methods.\n\uF0B7    Only database administrators have\
+    \ the ability to directly access or query databases.\n\uF0B7    Application IDs\
+    \ for database applications can only be used by the applications (and not by individual\
+    \ users or other non-application processes)."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-8.8
+  title: 8.8 Ensure that security policies and operational procedures for identification
+    and authentication are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.1
+  title: 9.1 Use appropriate facility entry controls to limit and monitor physical
+    access to systems in the cardholder data environment.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.1.1
+  title: 9.1.1 Use video cameras and/or access control mechanisms to monitor individual
+    physical access to sensitive areas. Review collected data and correlate with other
+    entries. Store for at least three months, unless otherwise restricted by law.
+  description: "Note: \u201CSensitive areas\u201D refers to any\ndata center, server\
+    \ room or any area that houses systems that store, process, or transmit cardholder\
+    \ data. This excludes public-facing areas where only point-of- sale terminals\
+    \ are present, such as the cashier areas in a retail store."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.1.2
+  title: 9.1.2 Implement physical and/or logical controls to restrict access to publicly
+    accessible network jacks.
+  description: For example, network jacks located in public areas and areas accessible
+    to visitors could be disabled and only enabled when network access is explicitly
+    authorized. Alternatively, processes could be implemented to ensure that visitors
+    are escorted at all times in areas with active network jacks.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.1.3
+  title: 9.1.3 Restrict physical access to wireless access points, gateways, handheld
+    devices, networking/communications hardware, and telecommunication lines.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.2
+  title: '9.2 Develop procedures to easily distinguish between onsite personnel and
+    visitors, to include:'
+  description: "\uF0B7    Identifying onsite personnel and visitors (for example,\
+    \ assigning badges)\n\uF0B7    Changes to access requirements\n\uF0B7    Revoking\
+    \ or terminating onsite personnel and expired visitor identification (such as\
+    \ ID badges)."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.3
+  title: '9.3 Control physical access for onsite personnel to sensitive areas as follows:'
+  description: "\uF0B7    Access must be authorized and based on individual job function.\n\
+    \uF0B7    Access is revoked immediately upon termination, and all physical access\
+    \ mechanisms, such as keys, access cards, etc., are returned or disabled."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.4
+  title: 9.4 Implement procedures to identify and authorize visitors.
+  description: 'Procedures should include the following:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.4.1
+  title: 9.4.1 Visitors are authorized before entering, and escorted at all times
+    within, areas where cardholder data is processed or maintained.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.4.2
+  title: 9.4.2 Visitors are identified and given a badge or other identification that
+    expires and that visibly distinguishes the visitors from onsite personnel.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.4.3
+  title: 9.4.3 Visitors are asked to surrender the badge or identification before
+    leaving the facility or at the date of expiration.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.4.4
+  title: 9.4.4 A visitor log is used to maintain a physical audit trail of visitor
+    activity to the facility as well as computer rooms and data centers where cardholder
+    data is stored or transmitted.
+  description: "Document the visitor\u2019s name, the firm represented, and the onsite\
+    \ personnel authorizing physical access on the log.\nRetain this log for a minimum\
+    \ of three months, unless otherwise restricted by law."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.5
+  title: 9.5 Physically secure all media.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.5.1
+  title: "9.5.1 Store media backups in a secure location, preferably an off-site facility,\
+    \ such as an alternate or backup site, or a commercial storage facility. Review\
+    \ the location\u2019s security at least annually."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.6
+  title: '9.6 Maintain strict control over the internal or external distribution of
+    any kind of media, including the following:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.6.1
+  title: 9.6.1 Classify media so the sensitivity of the data can be determined.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.6.2
+  title: 9.6.2 Send the media by secured courier or other delivery method that can
+    be accurately tracked.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.6.3
+  title: 9.6.3 Ensure management approves any and all media that is moved from a secured
+    area (including when media is distributed to individuals).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.7
+  title: 9.7 Maintain strict control over the storage and accessibility of media.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.7.1
+  title: 9.7.1 Properly maintain inventory logs of all media and conduct media inventories
+    at least annually.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.8
+  title: '9.8 Destroy media when it is no longer needed for business or legal reasons
+    as follows:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.8.1
+  title: 9.8.1 Shred, incinerate, or pulp hard- copy materials so that cardholder
+    data cannot be reconstructed. Secure storage containers used for materials that
+    are to be destroyed.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.8.2
+  title: 9.8.2 Render cardholder data on electronic media unrecoverable so that cardholder
+    data cannot be reconstructed.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.9
+  title: 9.9 Protect devices that capture payment card data via direct physical interaction
+    with the card from tampering and substitution.
+  description: 'Note: These requirements apply to card- reading devices used in card-present
+    transactions (that is, card swipe or dip) at the point of sale. This requirement
+    is not intended to apply to manual key-entry components such as computer keyboards
+    and POS keypads.
+
+    Note: Requirement 9.9 is a best practice until June 30, 2015, after which it becomes
+    a requirement.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.9.1
+  title: '9.9.1 Maintain an up-to-date list of devices. The list should include the
+    following:'
+  description: "\uF0B7  Make, model of device\n\uF0B7 Location of device (for example,\
+    \ the address of the site or facility where the device is located)\n\uF0B7 Device\
+    \ serial number or other method of unique identification."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.9.2
+  title: 9.9.2 Periodically inspect device surfaces to detect tampering (for example,
+    addition of card skimmers to devices), or substitution (for example, by checking
+    the serial number or other device characteristics to verify it has not been swapped
+    with a fraudulent device).
+  description: 'Note: Examples of signs that a device might have been tampered with
+    or substituted include unexpected attachments or cables plugged into the device,
+    missing or changed security labels, broken or differently colored casing, or changes
+    to the serial number or other external markings.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.9.3
+  title: '9.9.3 Provide training for personnel to be aware of attempted tampering
+    or replacement of devices. Training should include the following:'
+  description: "\uF0B7  Verify the identity of any third-party persons claiming to\
+    \ be repair or maintenance personnel, prior to granting them access to modify\
+    \ or troubleshoot devices.\n\uF0B7  Do not install, replace, or return devices\
+    \ without verification.\n\uF0B7  Be aware of suspicious behavior around devices\
+    \ (for example, attempts by unknown persons to unplug or open devices).\n\uF0B7\
+    \  Report suspicious behavior and indications of device tampering or substitution\
+    \ to appropriate personnel (for example, to a manager or security officer)."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-9.1
+  title: 9.10 Ensure that security policies and operational procedures for restricting
+    physical access to cardholder data are documented, in use, and known to all affected
+    parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.1
+  title: 10.1 Implement audit trails to link all access to system components to each
+    individual user.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2
+  title: '10.2 Implement automated audit trails for all system components to reconstruct
+    the following events:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2.1
+  title: 10.2.1 All individual user accesses to cardholder data
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2.2
+  title: 10.2.2 All actions taken by any individual with root or administrative privileges
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2.3
+  title: 10.2.3 Access to all audit trails
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2.4
+  title: 10.2.4 Invalid logical access attempts
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2.5
+  title: "10.2.5 Use of and changes to identification and authentication mechanisms\u2014\
+    including but not limited to creation of new accounts and elevation of privileges\u2014\
+    and all changes, additions, or deletions to accounts with root or administrative\
+    \ privileges"
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2.6
+  title: 10.2.6 Initialization, stopping, or pausing of the audit logs
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.2.7
+  title: 10.2.7 Creation and deletion of system- level objects
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.3
+  title: '10.3 Record at least the following audit trail entries for all system components
+    for each event:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.3.1
+  title: 10.3.1 User identification
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.3.2
+  title: 10.3.2 Type of event
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.3.3
+  title: 10.3.3 Date and time
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.3.4
+  title: 10.3.4 Success or failure indication
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.3.5
+  title: 10.3.5 Origination of event
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.3.6
+  title: 10.3.6 Identity or name of affected data, system component, or resource.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.4
+  title: 10.4 Using time-synchronization technology, synchronize all critical system
+    clocks and times and ensure that the following is implemented for acquiring, distributing,
+    and storing time.
+  description: 'Note: One example of time synchronization technology is Network Time
+    Protocol (NTP).'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.4.1
+  title: 10.4.1 Critical systems have the correct and consistent time.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.4.2
+  title: 10.4.2 Time data is protected.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.4.3
+  title: 10.4.3 Time settings are received from industry-accepted time sources.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.5
+  title: 10.5 Secure audit trails so they cannot be altered.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.5.1
+  title: 10.5.1 Limit viewing of audit trails to those with a job-related need.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.5.2
+  title: 10.5.2 Protect audit trail files from unauthorized modifications.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.5.3
+  title: 10.5.3 Promptly back up audit trail files to a centralized log server or
+    media that is difficult to alter.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.5.4
+  title: 10.5.4 Write logs for external-facing technologies onto a secure, centralized,
+    internal log server or media device.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.5.5
+  title: 10.5.5 Use file-integrity monitoring or change-detection software on logs
+    to ensure that existing log data cannot be changed without generating alerts (although
+    new data being added should not cause an alert).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.6
+  title: 10.6 Review logs and security events for all system components to identify
+    anomalies or suspicious activity.
+  description: 'Note: Log harvesting, parsing, and alerting tools may be used to meet
+    this Requirement.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.6.1
+  title: '10.6.1 Review the following at least daily:'
+  description: "\uF0B7  All security events\n\uF0B7  Logs of all system components\
+    \ that store, process, or transmit CHD and/or SAD\n\uF0B7  Logs of all critical\
+    \ system components\n\uF0B7  Logs of all servers and system components that perform\
+    \ security functions (for example, firewalls, intrusion-detection systems/intrusion-prevention\
+    \ systems (IDS/IPS), authentication servers, e-commerce redirection servers, etc.)."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.6.2
+  title: "10.6.2 Review logs of all other system components periodically based on\
+    \ the organization\u2019s policies and risk management strategy, as determined\
+    \ by the organization\u2019s annual risk assessment."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.6.3
+  title: 10.6.3 Follow up exceptions and anomalies identified during the review process.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.7
+  title: 10.7 Retain audit trail history for at least one year, with a minimum of
+    three months immediately available for analysis (for example, online, archived,
+    or restorable from backup).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-10.8
+  title: 10.8 Ensure that security policies and operational procedures for monitoring
+    all access to network resources and cardholder data are documented, in use, and
+    known to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.1
+  title: 11.1 Implement processes to test for the presence of wireless access points
+    (802.11), and detect and identify all authorized and unauthorized wireless access
+    points on a quarterly basis.
+  description: 'Note: Methods that may be used in the process include but are not
+    limited to wireless network scans, physical/logical inspections of system components
+    and infrastructure, network access control (NAC), or wireless IDS/IPS.
+
+    Whichever methods are used, they must be sufficient to detect and identify both
+    authorized and unauthorized devices.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.1.1
+  title: 11.1.1 Maintain an inventory of authorized wireless access points including
+    a documented business justification.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.1.2
+  title: 11.1.2 Implement incident response procedures in the event unauthorized wireless
+    access points are detected.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.2
+  title: 11.2 Run internal and external network vulnerability scans at least quarterly
+    and after any significant change in the network (such as new system component
+    installations, changes in network topology, firewall rule modifications, product
+    upgrades).
+  description: 'Note: Multiple scan reports can be combined for the quarterly scan
+    process to show that all systems were scanned and all applicable vulnerabilities
+    have been addressed. Additional documentation may be required to verify non-remediated
+    vulnerabilities are in the process of being addressed.
+
+    For initial PCI DSS compliance, it is not required that four quarters of passing
+    scans be completed if the assessor verifies 1) the most recent scan result was
+    a passing scan, 2) the entity has documented policies and procedures requiring
+    quarterly scanning, and 3) vulnerabilities noted in the scan results have been
+    corrected as shown in a re-scan(s). For subsequent years after the initial PCI
+    DSS review, four quarters of passing scans must have occurred.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.2.1
+  title: "11.2.1 Perform quarterly internal vulnerability scans and rescans as needed,\
+    \ until all \u201Chigh-risk\u201D vulnerabilities (as identified in Requirement\
+    \ 6.1) are resolved. Scans must be performed by qualified personnel."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.2.2
+  title: 11.2.2 Perform quarterly external vulnerability scans, via an Approved Scanning
+    Vendor (ASV) approved by the Payment Card Industry Security Standards Council
+    (PCI SSC). Perform rescans as needed, until passing scans are achieved.
+  description: 'Note: Quarterly external vulnerability scans must be performed by
+    an Approved Scanning Vendor (ASV), approved by the Payment Card Industry Security
+    Standards Council (PCI SSC).
+
+    Refer to the ASV Program Guide published on the PCI SSC website for scan customer
+    responsibilities, scan preparation, etc.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.2.3
+  title: 11.2.3 Perform internal and external scans, and rescans as needed, after
+    any significant change. Scans must be performed by qualified personnel.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.3
+  title: '11.3 Implement a methodology for penetration testing that includes the following:'
+  description: "\uF0B7    Is based on industry-accepted penetration testing approaches\
+    \ (for example, NIST SP800-115)\n\uF0B7    Includes coverage for the entire CDE\
+    \ perimeter and critical systems\n\uF0B7    Includes testing from both inside\
+    \ and outside the network\n\uF0B7    Includes testing to validate any segmentation\
+    \ and scope-reduction controls\n\uF0B7    Defines application-layer penetration\
+    \ tests to include, at a minimum, the vulnerabilities listed in Requirement 6.5\n\
+    \uF0B7    Defines network-layer penetration tests to include components that support\
+    \ network functions as well as operating systems\n\uF0B7    Includes review and\
+    \ consideration of threats and vulnerabilities experienced in the last 12 months\n\
+    \uF0B7    Specifies retention of penetration testing results and remediation activities\
+    \ results.\nNote: This update to Requirement 11.3 is a best practice until June\
+    \ 30, 2015, after which it becomes a requirement. Prior to this date, PCI DSS\
+    \ v2.0 requirements for penetration testing must be followed until version 3 is\
+    \ in place."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.3.1
+  title: 11.3.1 Perform external penetration testing at least annually and after any
+    significant infrastructure or application upgrade or modification (such as an
+    operating system upgrade, a sub-network added to the environment, or a web server
+    added to the environment).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.3.2
+  title: 11.3.2 Perform internal penetration testing at least annually and after any
+    significant infrastructure or application upgrade or modification (such as an
+    operating system upgrade, a sub-network added to the environment, or a web server
+    added to the environment).
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.3.3
+  title: 11.3.3 Exploitable vulnerabilities found during penetration testing are corrected
+    and testing is repeated to verify the corrections.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.3.4
+  title: 11.3.4 If segmentation is used to isolate the CDE from other networks, perform
+    penetration tests at least annually and after any changes to segmentation controls/methods
+    to verify that the segmentation methods are operational and effective, and isolate
+    all out-of-scope systems from systems in the CDE.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.4
+  title: 11.4 Use intrusion-detection and/or intrusion-prevention techniques to detect
+    and/or prevent intrusions into the network. Monitor all traffic at the perimeter
+    of the cardholder data environment as well as at critical points in the cardholder
+    data environment, and alert personnel to suspected compromises.
+  description: Keep all intrusion-detection and prevention engines, baselines, and
+    signatures up to date.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.5
+  title: 11.5 Deploy a change-detection mechanism (for example, file-integrity monitoring
+    tools) to alert personnel to unauthorized modification (including changes, additions,
+    and deletions) of critical system files, configuration files, or content files;
+    and configure the software to perform critical file comparisons at least weekly.
+  description: 'Note: For change-detection purposes, critical files are usually those
+    that do not regularly change, but the modification of which could indicate a system
+    compromise or risk of compromise. Change-detection mechanisms such as file-integrity
+    monitoring products usually come pre- configured with critical files for the related
+    operating system. Other critical files, such as those for custom applications,
+    must be evaluated and defined by the entity (that is, the merchant or service
+    provider).'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.5.1
+  title: 11.5.1 Implement a process to respond to any alerts generated by the change-
+    detection solution.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-11.6
+  title: 11.6 Ensure that security policies and operational procedures for security
+    monitoring and testing are documented, in use, and known to all affected parties.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.1
+  title: 12.1 Establish, publish, maintain, and disseminate a security policy.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.1.1
+  title: 12.1.1 Review the security policy at least annually and update the policy
+    when the environment changes.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.2
+  title: '12.2 Implement a risk-assessment process that:'
+  description: "\uF0B7    Is performed at least annually and upon significant changes\
+    \ to the environment (for example, acquisition, merger, relocation, etc.),\n\uF0B7\
+    \    Identifies critical assets, threats, and vulnerabilities, and\n\uF0B7   \
+    \ Results in a formal, documented analysis of risk.\nExamples of risk-assessment\
+    \ methodologies include but are not limited to OCTAVE, ISO 27005 and NIST SP 800-30."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3
+  title: 12.3 Develop usage policies for critical technologies and define proper use
+    of these technologies.
+  description: 'Note: Examples of critical technologies include, but are not limited
+    to, remote access and wireless technologies, laptops, tablets, removable electronic
+    media, e- mail usage and Internet usage.
+
+    Ensure these usage policies require the following:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.1
+  title: 12.3.1 Explicit approval by authorized parties
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.2
+  title: 12.3.2 Authentication for use of the technology
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.3
+  title: 12.3.3 A list of all such devices and personnel with access
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.4
+  title: 12.3.4 A method to accurately and readily determine owner, contact information,
+    and purpose (for example, labeling, coding, and/or inventorying of devices)
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.5
+  title: 12.3.5 Acceptable uses of the technology
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.6
+  title: 12.3.6 Acceptable network locations for the technologies
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.7
+  title: 12.3.7 List of company-approved products
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.8
+  title: 12.3.8 Automatic disconnect of sessions for remote-access technologies after
+    a specific period of inactivity
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.9
+  title: 12.3.9 Activation of remote-access technologies for vendors and business
+    partners only when needed by vendors and business partners, with immediate deactivation
+    after use
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.3.10
+  title: 12.3.10 For personnel accessing cardholder data via remote-access technologies,
+    prohibit the copying, moving, and storage of cardholder data onto local hard drives
+    and removable electronic media, unless explicitly authorized for a defined business
+    need.
+  description: Where there is an authorized business need, the usage policies must
+    require the data be protected in accordance with all applicable PCI DSS Requirements.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.4
+  title: 12.4 Ensure that the security policy and procedures clearly define information
+    security responsibilities for all personnel.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.5
+  title: '12.5 Assign to an individual or team the following information security
+    management responsibilities:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.5.1
+  title: 12.5.1 Establish, document, and distribute security policies and procedures.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.5.2
+  title: 12.5.2 Monitor and analyze security alerts and information, and distribute
+    to appropriate personnel.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.5.3
+  title: 12.5.3 Establish, document, and distribute security incident response and
+    escalation procedures to ensure timely and effective handling of all situations.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.5.4
+  title: 12.5.4 Administer user accounts, including additions, deletions, and modifications.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.5.5
+  title: 12.5.5 Monitor and control all access to data.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.6
+  title: 12.6 Implement a formal security awareness program to make all personnel
+    aware of the importance of cardholder data security.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.6.1
+  title: 12.6.1 Educate personnel upon hire and at least annually.
+  description: 'Note: Methods can vary depending on the role of the personnel and
+    their level of access to the cardholder data.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.6.2
+  title: 12.6.2 Require personnel to acknowledge at least annually that they have
+    read and understood the security policy and procedures.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.7
+  title: 12.7 Screen potential personnel prior to hire to minimize the risk of attacks
+    from internal sources. (Examples of background checks include previous employment
+    history, criminal record, credit history, and reference checks.)
+  description: 'Note: For those potential personnel to be hired for certain positions
+    such as store cashiers who only have access to one card number at a time when
+    facilitating a transaction, this requirement is a recommendation only.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.8
+  title: '12.8 Maintain and implement policies and procedures to manage service providers
+    with whom cardholder data is shared, or that could affect the security of cardholder
+    data, as follows:'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.8.1
+  title: 12.8.1 Maintain a list of service providers.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.8.2
+  title: "12.8.2 Maintain a written agreement that includes an acknowledgement that\
+    \ the service providers are responsible for the security of cardholder data the\
+    \ service providers possess or otherwise store, process or transmit on behalf\
+    \ of the customer, or to the extent that they could impact the security of the\
+    \ customer\u2019s cardholder data environment."
+  description: 'Note: The exact wording of an acknowledgement will depend on the agreement
+    between the two parties, the details of the service being provided, and the responsibilities
+    assigned to each party. The acknowledgement does not have to include the exact
+    wording provided in this requirement.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.8.3
+  title: 12.8.3 Ensure there is an established process for engaging service providers
+    including proper due diligence prior to engagement.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.8.4
+  title: "12.8.4 Maintain a program to monitor service providers\u2019 PCI DSS compliance\
+    \ status at least annually."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.8.5
+  title: 12.8.5 Maintain information about which PCI DSS requirements are managed
+    by each service provider, and which are managed by the entity.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.9
+  title: "12.9 Additional requirement for service providers only: Service providers\
+    \ acknowledge in writing to customers that they are responsible for the security\
+    \ of cardholder data the service provider possesses or otherwise stores, processes,\
+    \ or transmits on behalf of the customer, or to the extent that they could impact\
+    \ the security of the customer\u2019s cardholder data environment."
+  description: 'Note: This requirement is a best practice until June 30, 2015, after
+    which it becomes a requirement.
+
+    Note: The exact wording of an acknowledgement will depend on the agreement between
+    the two parties, the details of the service being provided, and the responsibilities
+    assigned to each party. The acknowledgement does not have to include the exact
+    wording provided in this requirement.'
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.1
+  title: 12.10 Implement an incident response plan. Be prepared to respond immediately
+    to a system breach.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.10.1
+  title: '12.10.1 Create the incident response plan to be implemented in the event
+    of system breach. Ensure the plan addresses the following, at a minimum:'
+  description: "\uF0B7  Roles, responsibilities, and communication and contact strategies\
+    \ in the event of a compromise including notification of the payment brands, at\
+    \ a minimum\n\uF0B7  Specific incident response procedures\n\uF0B7  Business recovery\
+    \ and continuity procedures\n\uF0B7  Data backup processes\n\uF0B7  Analysis of\
+    \ legal requirements for reporting compromises\n\uF0B7  Coverage and responses\
+    \ of all critical system components\n\uF0B7  Reference or inclusion of incident\
+    \ response procedures from the payment brands."
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.10.2
+  title: 12.10.2 Test the plan at least annually.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.10.3
+  title: 12.10.3 Designate specific personnel to be available on a 24/7 basis to respond
+    to alerts.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.10.4
+  title: 12.10.4 Provide appropriate training to staff with security breach response
+    responsibilities.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.10.5
+  title: 12.10.5 Include alerts from security monitoring systems, including but not
+    limited to intrusion-detection, intrusion- prevention, firewalls, and file-integrity
+    monitoring systems.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-12.10.6
+  title: 12.10.6 Develop a process to modify and evolve the incident response plan
+    according to lessons learned and to incorporate industry developments.
+  levels:
+  - base
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A.1
+  title: "A.1 Protect each entity\u2019s (that is, merchant, service provider, or\
+    \ other entity) hosted environment and data, per"
+  description: 'A.1.1 through A.1.4:
+
+    A hosting provider must fulfill these requirements as well as all other relevant
+    sections of the PCI DSS.
+
+    Note: Even though a hosting provider may meet these requirements, the compliance
+    of the entity that uses the hosting provider is not guaranteed. Each entity must
+    comply with the PCI DSS and validate compliance as applicable.'
+  levels:
+  - shared_hosting_provider
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A.1.1
+  title: "A.1.1 Ensure that each entity only runs processes that have access to that\
+    \ entity\u2019s cardholder data environment."
+  levels:
+  - shared_hosting_provider
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A.1.2
+  title: "A.1.2 Restrict each entity\u2019s access and privileges to its own cardholder\
+    \ data environment only."
+  levels:
+  - shared_hosting_provider
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A.1.3
+  title: "A.1.3 Ensure logging and audit trails are enabled and unique to each entity\u2019\
+    s cardholder data environment and consistent with PCI DSS Requirement 10."
+  levels:
+  - shared_hosting_provider
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A.1.4
+  title: A.1.4 Enable processes to provide for timely forensic investigation in the
+    event of a compromise to any hosted merchant or service provider.
+  levels:
+  - shared_hosting_provider
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.1.1
+  title: 'A3.1.1 Executive management shall establish responsibility for the protection
+    of cardholder data and a PCI DSS compliance program to include:'
+  description: "\uF0B7   Overall accountability for maintaining PCI DSS compliance\n\
+    \uF0B7    Defining a charter for a PCI DSS compliance program\n\uF0B7   Providing\
+    \ updates to executive management and board of directors on PCI DSS compliance\
+    \ initiatives and issues, including remediation activities, at least annually\n\
+    PCI DSS Reference: Requirement 12"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.1.2
+  title: 'A3.1.2 A formal PCI DSS compliance program must be in place to include:'
+  description: "\uF0B7   Definition of activities for maintaining and monitoring overall\
+    \ PCI DSS compliance, including business-as-usual activities\n\uF0B7   Annual\
+    \ PCI DSS assessment processes\n\uF0B7   Processes for the continuous validation\
+    \ of PCI DSS requirements (for example: daily, weekly, quarterly, etc. as applicable\
+    \ per requirement)\n\uF0B7   A process for performing business- impact analysis\
+    \ to determine potential PCI DSS impacts for strategic business decisions\nPCI\
+    \ DSS Reference: Requirements 1-12"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.1.3
+  title: 'A3.1.3 PCI DSS compliance roles and responsibilities must be specifically
+    defined and formally assigned to one or more personnel, including at least the
+    following:'
+  description: "\uF0B7   Managing PCI DSS business-as-usual activities\n\uF0B7   Managing\
+    \ annual PCI DSS assessments\n\uF0B7   Managing continuous validation of PCI DSS\
+    \ requirements (for example: daily, weekly, quarterly, etc. as applicable per\
+    \ requirement)\n\uF0B7   Managing business-impact analysis to determine potential\
+    \ PCI DSS impacts for strategic business decisions\nPCI DSS Reference: Requirement\
+    \ 12"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.1.4
+  title: A3.1.4 Provide up-to-date PCI DSS and/or information security training at
+    least annually to personnel with PCI DSS compliance responsibilities (as identified
+    in A3.1.3).
+  description: 'PCI DSS Reference: Requirement 12'
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.1
+  title: 'A3.2.1 Document and confirm the accuracy of PCI DSS scope at least quarterly
+    and upon significant changes to the in-scope environment. At a minimum, the quarterly
+    scoping validation should include:'
+  description: "\uF0B7   Identifying all in-scope networks and system components\n\
+    \uF0B7   Identifying all out-of-scope networks and justification for networks\
+    \ being out of scope, including descriptions of all segmentation controls implemented\n\
+    \uF0B7   Identifying all connected entities\u2014e.g., third-party entities with\
+    \ access to the cardholder data environment (CDE)\nPCI DSS Reference: Scope of\
+    \ PCI DSS Requirements"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.2
+  title: 'A3.2.2 Determine PCI DSS scope impact for all changes to systems or networks,
+    including additions of new systems and new network connections. Processes must
+    include:'
+  description: "\uF0B7   Performing a formal PCI DSS impact assessment\n\uF0B7   Identifying\
+    \ applicable PCI DSS requirements to the system or network\n\uF0B7   Updating\
+    \ PCI DSS scope as appropriate\n\uF0B7   Documented sign-off of the results of\
+    \ the impact assessment by responsible personnel (as defined in A3.1.3)\nPCI DSS\
+    \ Reference: Scope of PCI DSS Requirements; Requirements 1-12"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.2.1
+  title: 'A3.2.2.1 Upon completion of a change, all relevant PCI DSS requirements
+    must be verified on all new or changed systems and networks, and documentation
+    must be updated as applicable. Examples of PCI DSS requirements that should be
+    verified include, but are not limited to:'
+  description: "\uF0B7  Network diagram is updated to reflect changes.\n\uF0B7  Systems\
+    \ are configured per configuration standards, with all default passwords changed\
+    \ and unnecessary services disabled.\n\uF0B7  Systems are protected with required\
+    \ controls\u2014e.g., file-integrity monitoring (FIM), anti-virus, patches, audit\
+    \ logging.\n\uF0B7  Verify that sensitive authentication data (SAD) is not stored\
+    \ and that all cardholder data (CHD) storage is documented and incorporated into\n\
+    data-retention policy and procedures\n\uF0B7  New systems are included in the\
+    \ quarterly vulnerability scanning process.\nPCI DSS Reference: Scope of PCI DSS\
+    \ Requirements; Requirement 1-12"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.3
+  title: "A3.2.3 Changes to organizational structure\u2014 for example, a company\
+    \ merger or acquisition, change or reassignment of personnel with responsibility\
+    \ for security controls\u2014result in a formal (internal) review of the impact\
+    \ to PCI DSS scope and applicability of controls."
+  description: 'PCI DSS Reference: Requirement 12'
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.4
+  title: A3.2.4 If segmentation is used, confirm PCI DSS scope by performing penetration
+    testing on segmentation controls at least every six months and after any changes
+    to segmentation controls/methods.
+  description: 'PCI DSS Reference: Requirement 11'
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.5
+  title: A3.2.5 Implement a data-discovery methodology to confirm PCI DSS scope and
+    to locate all sources and locations of clear- text PAN at least quarterly, and
+    upon significant changes to the cardholder environment or processes.
+  description: 'Data-discovery methodology must take into consideration the potential
+    for clear-text PAN to reside on systems and networks outside of the currently
+    defined CA3.
+
+    PCI DSS Reference: Scope of PCI DSS Requirements'
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.5.1
+  title: "A3.2.5.1 Ensure effectiveness of methods used for data discovery\u2014\u2013\
+    e.g., methods must be able to discover clear-text PAN on all types of system components\
+    \ (for example, on each operating system or platform) and file formats in use."
+  description: 'The effectiveness of data-discovery methods must be confirmed at least
+    annually.
+
+    PCI DSS Reference: Scope of PCI DSS Requirements'
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.5.2
+  title: 'A3.2.5.2 Implement response procedures to be initiated upon the detection
+    of clear- text PAN outside of the CDE to include:'
+  description: "\uF0B7  Procedures for determining what to do if clear-text PAN is\
+    \ discovered outside of the CDE, including its retrieval, secure deletion and/or\
+    \ migration into the currently defined CDE, as applicable\n\uF0B7  Procedures\
+    \ for determining how the data ended up outside of the CDE\n\uF0B7  Procedures\
+    \ for remediating data leaks or process gaps that resulted in the data being outside\
+    \ of the CDE\n\uF0B7  Procedures for identifying the source of the data\n\uF0B7\
+    \  Procedures for identifying whether any track data is stored with the PANs"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.6
+  title: A3.2.6 Implement mechanisms for detecting and preventing clear-text PAN from
+    leaving the CDE via an unauthorized channel, method, or process, including generation
+    of audit logs and alerts.
+  description: 'PCI DSS Reference: Scope of PCI DSS Requirements'
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.2.6.1
+  title: 'A3.2.6.1 Implement response procedures to be initiated upon the detection
+    of attempts to remove clear-text PAN from the CDE via an unauthorized channel,
+    method, or process.'
+  description: |-
+    Response procedures must include:
+    *  Procedures for the timely investigation of alerts by responsible
+       personnel
+    *  Procedures for remediating data leaks\nor process gaps, as
+       necessary, to prevent any data loss
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.3.1
+  title: 'A3.3.1 Implement a process to immediately detect and alert on critical security
+    control failures.'
+  description: |-
+    Examples of critical security controls include, but are not
+    limited to:
+
+    * Firewalls
+    * IDS/IPS
+    * FIM
+    * Anti-virus
+    * Physical access controls
+    * Logical access controls
+    * Audit logging mechanisms
+    * Segmentation controls (if used)
+    
+    PCI DSS Reference: Requirements 1-12
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.3.1.1
+  title: A3.3.1.1 Respond to failures of any critical security controls in a timely
+    manner.
+  description: |-
+    Processes for responding to failures in security controls must include:
+
+    * Restoring security functions
+    * Identifying and documenting the duration (date and time start to end)
+      of the security failure
+    * Identifying and documenting cause(s) of failure, including root cause,
+      and documenting remediation required to address root cause
+    * Identifying and addressing any security issues that arose during the failure
+    * Performing a risk assessment to determine whether further actions are
+      required as a result of the security failure\n\
+    * Implementing controls to prevent cause of failure from reoccurring
+    * Resuming monitoring of security controls
+    
+    PCI DSS Reference: Requirements 1-12
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.3.2
+  title: "A3.3.2 Review hardware and software technologies at least annually to confirm\
+    \ whether they continue to meet the organization's PCI DSS requirements."
+  description: |-
+    (For example, a review of technologies that are no longer supported by the vendor
+    and/or no longer meet the security needs of the organization.)
+    The process includes a plan for remediating technologies that no longer
+    meet the organization\u2019s PCI DSS requirements, up to and including replacement
+    of the technology, as appropriate.
+    
+    PCI DSS Reference: Requirement 2, 6"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.3.3
+  title: 'A3.3.3 Perform reviews at least quarterly to verify BAU activities are being
+    followed.'
+    
+  description: "Reviews must be performed by personnel assigned to the PCI DSS compliance\
+    \ program (as identified in A3.1.3), and include the following:
+    \ \uF0B7   Confirmation that all BAU activities (e.g., A3.2.2, A3.2.6,\
+    \ and A3.3.1) are being performed\n\uF0B7   Confirmation that personnel are following\
+    \ security policies and operational procedures (for example, daily log reviews,\
+    \ firewall rule-set reviews, configuration standards for new systems, etc.)\n\uF0B7\
+    \   Documenting how the reviews were completed, including how all BAU activities\
+    \ were verified as being in place.\n\uF0B7   Collection of documented evidence\
+    \ as required for the annual PCI DSS assessment\n\uF0B7    Review and sign off\
+    \ of results by personnel assigned responsibility for the PCI DSS compliance program\
+    \ (as identified in A3.1.3)\n\uF0B7 Retention of records and documentation for\
+    \ at least 12 months, covering all BAU activities\nPCI DSS Reference: Requirements\
+    \ 1-12"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.4.1
+  title: A3.4.1 Review user accounts and access privileges to in-scope system components
+    at least every six months to ensure user accounts and access remain appropriate
+    based on job function, and authorized.
+  description: 'PCI DSS Reference: Requirement 7'
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+
+- id: Req-A3.5.1
+  title: "A3.5.1 Implement a methodology for the timely identification of attack patterns\
+    \ and undesirable behavior across systems\u2014for example, using coordinated\
+    \ manual reviews and/or centrally-managed or automated log correlation tools\u2014\
+    to include at least the following:"
+  description: "\uF0B7   Identification of anomalies or suspicious activity as they\
+    \ occur\n\uF0B7   Issuance of timely alerts upon detection of suspicious activity\
+    \ or anomaly to responsible personnel\n\uF0B7   Response to alerts in accordance\
+    \ with documented response procedures\nPCI DSS Reference: Requirements 10, 12"
+  levels:
+  - desv
+  notes: ''
+  automated: no
+  rules: []
+

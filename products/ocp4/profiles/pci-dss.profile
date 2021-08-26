@@ -16,5 +16,4 @@ description: |-
     Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 
 selections:
-    - configure_network_policies
-    - configure_network_policies_namespaces
+    - pcidss:all:base
