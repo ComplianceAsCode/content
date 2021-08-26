@@ -916,7 +916,7 @@ fi
 # Indicator that we want to append $full_rule into $audit_file or edit a rule in it
 append_expected_rule=0
 
-# After converting to jinja, we cannot exit; therefore we skip the rest of the macro instead
+# After converting to jinja, we cannot return; therefore we skip the rest of the macro if needed instead
 skip='false'
 
 for audit_file in "${files_to_inspect[@]}"
