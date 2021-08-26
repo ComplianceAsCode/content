@@ -754,61 +754,70 @@ fi
 {{%- endmacro -%}}
 
 {{#
-# _vfstype:     type of filesystem
-# _new_opt:     new mount point option
-# _filesystem:  filesystem of new mount point (used when adding new entry in fstab)
-# _type:        mount type of new mount point (used when adding new entry in fstab)
+# vfstype:     type of filesystem
+# mount_opt:   mount point option which we are checking
+# fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+# type:        mount type of new mount point (used when adding new entry in fstab)
+#
+# To see how args corresponds to an /etc/fstab entry, see bash_ensure_mount_option_in_fstab documentation
 #}}
-{{% macro bash_ensure_mount_option_for_vfstype(_vfstype, _new_opt, _filesystem, _type) -%}}
-_vfstype_points=()
-readarray -t _vfstype_points < <(grep -E "[[:space:]]{{{ _vfstype }}}[[:space:]]" /etc/fstab | awk '{print $2}')
+{{% macro bash_ensure_mount_option_for_vfstype(vfstype, mount_opt, filesystem, type) -%}}
+vfstype_points=()
+readarray -t vfstype_points < <(grep -E "[[:space:]]{{{ vfstype }}}[[:space:]]" /etc/fstab | awk '{print $2}')
 
-for _vfstype_point in "${_vfstype_points[@]}"
+for vfstype_point in "${vfstype_points[@]}"
 do
-    {{{ bash_ensure_mount_option_in_fstab("$_vfstype_point", _new_opt , _filesystem , _type ) | indent(4) }}}
+    {{{ bash_ensure_mount_option_in_fstab("$vfstype_point", mount_opt , fs_spec , type ) | indent(4) }}}
 done
 {{%- endmacro %}}
 
 {{#
-# _mount_point: mount point
-# _new_opt:     new mount point option
-# _device:      device or virtual string (used when adding new entry in fstab)
-# _type:        mount type of mount point (used when adding new entry in fstab)
+# mount_point: mount point
+# mount_opt:   mount point option whose presence in /etc/fstab we are ensuring
+# fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+# type:        mount type of mount point (used when adding new entry in fstab)
+#
+# If we look at an example invocation of this macro:
+#   {{{ bash_ensure_mount_option_in_fstab("/home", "auto_da_alloc", "LABEL=t-home2", "ext4") }}}}
+#
+# The resulting /etc/fstab entry could look like this:
+#   LABEL=t-home2   /home      ext4    defaults,auto_da_alloc      0  2
+#
 #}}
-{{% macro bash_ensure_mount_option_in_fstab(_mount_point, _new_opt, _device, _type) -%}}
-_mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" {{{ _mount_point }}})"
+{{% macro bash_ensure_mount_option_in_fstab(mount_point, mount_opt, fs_spec, type) -%}}
+mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
 
-if [ "$(grep -c "$_mount_point_match_regexp" /etc/fstab)" -eq 0 ]; then
+# If the mount point is not in /etc/fstab, get previous mount options from /etc/mtab
+if [ "$(grep -c "$mount_point_match_regexp" /etc/fstab)" -eq 0 ]; then
     # runtime opts without some automatic kernel/userspace-added defaults
-    _previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/mtab | head -1 |  awk '{print $4}' \
-                | sed -E "s/(rw|defaults|seclabel|{{{ _new_opt }}})(,|$)//g;s/,$//")
-    [ "$_previous_mount_opts" ] && _previous_mount_opts+=","
-    echo "{{{ _device }}} {{{ _mount_point }}} {{{ _type }}} defaults,${_previous_mount_opts}{{{ _new_opt }}} 0 0" >> /etc/fstab
-elif [ "$(grep "$_mount_point_match_regexp" /etc/fstab | grep -c "{{{ _new_opt }}}")" -eq 0 ]; then
-    _previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/fstab | awk '{print $4}')
-    sed -i "s|\(${_mount_point_match_regexp}.*${_previous_mount_opts}\)|\1,{{{ _new_opt }}}|" /etc/fstab
+    previous_mount_opts=$(grep "$mount_point_match_regexp" /etc/mtab | head -1 |  awk '{print $4}' \
+                | sed -E "s/(rw|defaults|seclabel|{{{ mount_opt }}})(,|$)//g;s/,$//")
+    [ "$previous_mount_opts" ] && previous_mount_opts+=","
+    echo "{{{ fs_spec }}} {{{ mount_point }}} {{{ type }}} defaults,${previous_mount_opts}{{{ mount_opt }}} 0 0" >> /etc/fstab
+# If the mount_opt option is not already in the mount point's /etc/fstab entry, add it
+elif [ "$(grep "$mount_point_match_regexp" /etc/fstab | grep -c "{{{ mount_opt }}}")" -eq 0 ]; then
+    previous_mount_opts=$(grep "$mount_point_match_regexp" /etc/fstab | awk '{print $4}')
+    sed -i "s|\(${mount_point_match_regexp}.*${previous_mount_opts}\)|\1,{{{ mount_opt }}}|" /etc/fstab
 fi
 {{%- endmacro %}}
 
+{{% macro bash_assert_mount_point_in_fstab(mount_point) -%}}
+mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
 {{#
-# _mount_point: mount point
+# This macro gets expanded to code that will return 1 if MOUNTPOINT is not in /etc/fstab;
+# This is consistent with the behavior prior to converting this function to a jinja macro
 #}}
-{{% macro bash_assert_mount_point_in_fstab(_mount_point) -%}}
-_mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "{{{ _mount_point }}}")"
-grep "$_mount_point_match_regexp" -q /etc/fstab \
-    || { echo "The mount point '{{{ _mount_point }}}' is not even in /etc/fstab, so we can't set up mount options" >&2; 
-            echo "Not remediating, because there is no record of {{{ _mount_point }}} in /etc/fstab" >&2; return 1; }
+grep "$mount_point_match_regexp" -q /etc/fstab \
+    || { echo "The mount point '{{{ mount_point }}}' is not even in /etc/fstab, so we can't set up mount options" >&2; 
+            echo "Not remediating, because there is no record of {{{ mount_point }}} in /etc/fstab" >&2; return 1; }
 {{%- endmacro %}}
 
-{{#
-# _mount_point: mount point
-#}}
-{{% macro bash_ensure_partition_is_mounted(_mount_point) -%}}
-if mkdir -p "{{{ _mount_point }}}"; then
-    if mountpoint -q "{{{ _mount_point }}}"; then
-        mount -o remount --target "{{{ _mount_point }}}"
+{{% macro bash_ensure_partition_is_mounted(mount_point) -%}}
+if mkdir -p "{{{ mount_point }}}"; then
+    if mountpoint -q "{{{ mount_point }}}"; then
+        mount -o remount --target "{{{ mount_point }}}"
     else
-        mount --target "{{{ _mount_point }}}"
+        mount --target "{{{ mount_point }}}"
     fi
 fi
 {{%- endmacro %}}
