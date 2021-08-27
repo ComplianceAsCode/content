@@ -285,11 +285,11 @@ fi
 
 {{%- macro _make_bash_variable_assignment(varname, value="", quoted_value="") -%}}
 {{% if value -%}}
-	{{{ varname }}}="{{{ value }}}"
+    {{{ varname }}}="{{{ value }}}"
 {{%- elif quoted_value -%}}
-	{{{ varname }}}="\"{{{ quoted_value }}}\""
+    {{{ varname }}}="\"{{{ quoted_value }}}\""
 {{%- else %}}
-	{{{ raise("Specify either 'value' or 'quoted_value' as macro arguments.") }}}
+    {{{ raise("Specify either 'value' or 'quoted_value' as macro arguments.") }}}
 {{%- endif -%}}
 {{%- endmacro -%}}
 
@@ -379,8 +379,8 @@ for firefox_dir in ${firefox_dirs}; do
         if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
             echo "//" "${firefox_dir}/${firefox_cfg}"
             chmod 644 "${firefox_dir}/${firefox_cfg}"
-		elif ! [ $(head -1 "${firefox_dir}/${firefox_cfg}" | grep "^//$") ]; then
-			sed -i '1 i\//' "${firefox_dir}/${firefox_cfg}"
+        elif ! [ $(head -1 "${firefox_dir}/${firefox_cfg}" | grep "^//$") ]; then
+            sed -i '1 i\//' "${firefox_dir}/${firefox_cfg}"
         fi
 
         {{{ _put_into_firefox_cfg(config_item="lockPref", key=key, value_varname="value", where="${firefox_dir}/${firefox_cfg}", sed_separator=sed_separator) | indent(4 * 2) }}}
@@ -699,12 +699,12 @@ rpm --quiet -q "{{{ pkgname }}}"
   value:		Value of the configuration option to change
   cce:			The CCE identifier or '@CCENUM@' if no CCE identifier exists
   format:		The printf-like format string that will be given stripped key and value as arguments,
- 			so e.g. '%s=%s' will result in key=value subsitution (i.e. without spaces around =)
+             so e.g. '%s=%s' will result in key=value subsitution (i.e. without spaces around =)
  
   Optional arugments:
  
   format:		Optional argument to specify the format of how key/value should be
-  			modified/appended in the configuration file. The default is key = value.
+              modified/appended in the configuration file. The default is key = value.
  
   Example Call(s):
  
@@ -887,110 +887,110 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 #
 declare -a files_to_inspect
 
+{{% if tool == "auditctl" %}}
 # If audit tool is 'auditctl', then add '/etc/audit/audit.rules'
 # file to the list of files to be inspected
-if [ "{{{ tool }}}" == 'auditctl' ]; then
-	default_file="/etc/audit/audit.rules"
-	files_to_inspect+=('/etc/audit/audit.rules' )
+default_file="/etc/audit/audit.rules"
+files_to_inspect+=('/etc/audit/audit.rules' )
+{{%- else -%}}
 # If audit tool is 'augenrules', then check if the audit rule is defined
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to the list for inspection
 # If rule isn't defined yet, add '/etc/audit/rules.d/$key.rules' to the list for inspection
-else
-	default_file="/etc/audit/rules.d/{{{ key }}}.rules"
-	# As other_filters may include paths, lets use a different delimiter for it
-	# The "F" script expression tells sed to print the filenames where the expressions matched
-	readarray -t files_to_inspect < <(sed -s -n -e "/{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" -e "F" /etc/audit/rules.d/*.rules)
-	# Case when particular rule isn't defined in /etc/audit/rules.d/*.rules yet
-	if [ ${#files_to_inspect[@]} -eq "0" ]
-	then
-		file_to_inspect="/etc/audit/rules.d/{{{ key }}}.rules"
-		files_to_inspect=("$file_to_inspect")
-		if [ ! -e "$file_to_inspect" ]
-		then
-			touch "$file_to_inspect"
-			chmod 0640 "$file_to_inspect"
-		fi
-	fi
+default_file="/etc/audit/rules.d/{{{ key }}}.rules"
+# As other_filters may include paths, lets use a different delimiter for it
+# The "F" script expression tells sed to print the filenames where the expressions matched
+readarray -t files_to_inspect < <(sed -s -n -e "/{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" -e "F" /etc/audit/rules.d/*.rules)
+# Case when particular rule isn't defined in /etc/audit/rules.d/*.rules yet
+if [ ${#files_to_inspect[@]} -eq "0" ]
+then
+    file_to_inspect="/etc/audit/rules.d/{{{ key }}}.rules"
+    files_to_inspect=("$file_to_inspect")
+    if [ ! -e "$file_to_inspect" ]
+    then
+        touch "$file_to_inspect"
+        chmod 0640 "$file_to_inspect"
+    fi
 fi
+{{%- endif %}}
 
 # Indicator that we want to append $full_rule into $audit_file or edit a rule in it
 append_expected_rule=0
 
 # After converting to jinja, we cannot return; therefore we skip the rest of the macro if needed instead
-skip='false'
+skip=1
 
 for audit_file in "${files_to_inspect[@]}"
 do
-	# Filter existing $audit_file rules' definitions to select those that satisfy the rule pattern,
-	# i.e, collect rules that match:
-	# * the action, list and arch, (2-nd argument)
-	# * the other filters, (3-rd argument)
-	# * the auid filters, (4-rd argument)
-	readarray -t similar_rules < <(sed -e "/{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" "$audit_file")
+    # Filter existing $audit_file rules' definitions to select those that satisfy the rule pattern,
+    # i.e, collect rules that match:
+    # * the action, list and arch, (2-nd argument)
+    # * the other filters, (3-rd argument)
+    # * the auid filters, (4-rd argument)
+    readarray -t similar_rules < <(sed -e "/{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" "$audit_file")
 
-	candidate_rules=()
-	# Filter out rules that have more fields then required. This will remove rules more specific than the required scope
-	for s_rule in "${similar_rules[@]}"
-	do
-		# Strip all the options and fields we know of,
-		# than check if there was any field left over
-		extra_fields=$(sed -E -e "s/{{{ action_arch_filters }}}//"  -e "s#{{{ other_filters }}}##" -e "s/{{{ auid_filters }}}//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/-F key=\w+|-k \w+//"<<< "$s_rule")
-		grep -q -- "-F" <<< "$extra_fields"
-		if [ $? -ne 0 ]
-		then
-			candidate_rules+=("$s_rule")
-		fi
-	done
+    candidate_rules=()
+    # Filter out rules that have more fields then required. This will remove rules more specific than the required scope
+    for s_rule in "${similar_rules[@]}"
+    do
+        # Strip all the options and fields we know of,
+        # than check if there was any field left over
+        extra_fields=$(sed -E -e "s/{{{ action_arch_filters }}}//"  -e "s#{{{ other_filters }}}##" -e "s/{{{ auid_filters }}}//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/-F key=\w+|-k \w+//"<<< "$s_rule")
+        grep -q -- "-F" <<< "$extra_fields"
+        if [ $? -ne 0 ]
+        then
+            candidate_rules+=("$s_rule")
+        fi
+    done
 
-	if [[ ${#syscall_a[@]} -ge 1 ]]
-	then
-		# Check if the syscall we want is present in any of the similar existing rules
-		for rule in "${candidate_rules[@]}"
-		do
-			rule_syscalls=$(echo "$rule" | grep -o -P '(-S [\w,]+)+' | xargs)
-			all_syscalls_found=0
-			for syscall in "${syscall_a[@]}"
-			do
-				grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
-				if [ $? -eq 1 ]
-				then
-					# A syscall was not found in the candidate rule
-					all_syscalls_found=1
-				fi
-			done
-			if [[ $all_syscalls_found -eq 0 ]]
-			then
-				# We found a rule with all the syscall(s) we want; skip rest of macro
-				skip='true'
+    if [[ ${#syscall_a[@]} -ge 1 ]]
+    then
+        # Check if the syscall we want is present in any of the similar existing rules
+        for rule in "${candidate_rules[@]}"
+        do
+            rule_syscalls=$(echo "$rule" | grep -o -P '(-S [\w,]+)+' | xargs)
+            all_syscalls_found=0
+            for syscall in "${syscall_a[@]}"
+            do
+                grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
+                if [ $? -eq 1 ]
+                then
+                    # A syscall was not found in the candidate rule
+                    all_syscalls_found=1
+                fi
+            done
+            if [[ $all_syscalls_found -eq 0 ]]
+            then
+                # We found a rule with all the syscall(s) we want; skip rest of macro
+                skip=0
                 break
-			fi
+            fi
 
-			# Check if this rule can be grouped with our target syscall and keep track of it
-			for syscall_g in "${syscall_grouping[@]}"
-			do
-				if grep -q -- "\b${syscall_g}\b" <<< "$rule_syscalls"
-				then
-					file_to_edit=${audit_file}
-					rule_to_edit=${rule}
-					rule_syscalls_to_edit=${rule_syscalls}
-				fi
-			done
-		done
-	else
-		# If there is any candidate rule, it is compliant; skip rest of macro
-		if [[ $candidate_rules ]]
-		then
-            skip='true'
-		fi
-	fi
+            # Check if this rule can be grouped with our target syscall and keep track of it
+            for syscall_g in "${syscall_grouping[@]}"
+            do
+                if grep -q -- "\b${syscall_g}\b" <<< "$rule_syscalls"
+                then
+                    file_to_edit=${audit_file}
+                    rule_to_edit=${rule}
+                    rule_syscalls_to_edit=${rule_syscalls}
+                fi
+            done
+        done
+    else
+        # If there is any candidate rule, it is compliant; skip rest of macro
+        if [[ $candidate_rules ]]
+        then
+            skip=0
+        fi
+    fi
 
-    if [ skip == 'true' ]; then
+    if [ skip -eq 0 ]; then
         break
     fi
 done
 
 if [ skip != true ]; then
-    # We checked all rules that matched the expected resemblance patter (action, arch & auid)
+    # We checked all rules that matched the expected resemblance pattern (action, arch & auid)
     # At this point we know if we need to either append the $full_rule or group
     # the syscall together with an exsiting rule
 
