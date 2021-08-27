@@ -989,7 +989,7 @@ do
     fi
 done
 
-if [ skip -ne 0 ]; then
+if [ "$skip" -ne 0 ]; then
     # We checked all rules that matched the expected resemblance pattern (action, arch & auid)
     # At this point we know if we need to either append the $full_rule or group
     # the syscall together with an exsiting rule
