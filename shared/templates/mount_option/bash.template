@@ -3,7 +3,7 @@
 
 function perform_remediation {
     {{% if MOUNT_HAS_TO_EXIST != "no" %}}
-        {{{ bash_assert_mount_point_in_fstab( MOUNTPOINT ) | indent(8) }}}
+        {{{ bash_assert_mount_point_in_fstab( MOUNTPOINT ) | indent(4) }}}
     {{% endif %}}
 
     {{{ bash_ensure_mount_option_in_fstab( MOUNTPOINT , MOUNTOPTION , FILESYSTEM , TYPE ) | indent(4) }}}

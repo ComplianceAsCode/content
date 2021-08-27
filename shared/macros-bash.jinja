@@ -767,7 +767,7 @@ readarray -t vfstype_points < <(grep -E "[[:space:]]{{{ vfstype }}}[[:space:]]" 
 
 for vfstype_point in "${vfstype_points[@]}"
 do
-    {{{ bash_ensure_mount_option_in_fstab("$vfstype_point", mount_opt , fs_spec , type ) | indent(4) }}}
+    {{{ bash_ensure_mount_option_in_fstab("$vfstype_point", mount_opt, fs_spec, type) | indent(4) }}}
 done
 {{%- endmacro %}}
 
@@ -801,6 +801,9 @@ elif [ "$(grep "$mount_point_match_regexp" /etc/fstab | grep -c "{{{ mount_opt }
 fi
 {{%- endmacro %}}
 
+{{#
+  # Check whether mount_point is present in /etc/fstab; print err to stderr and return 1 if not
+  #}}
 {{% macro bash_assert_mount_point_in_fstab(mount_point) -%}}
 mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "{{{ mount_point }}}")"
 {{#
@@ -812,6 +815,10 @@ grep "$mount_point_match_regexp" -q /etc/fstab \
             echo "Not remediating, because there is no record of {{{ mount_point }}} in /etc/fstab" >&2; return 1; }
 {{%- endmacro %}}
 
+{{#
+  # Ensure that partition is mounted at mount_point
+  # If partition already mounted at mount_point, then remount to apply option changes
+  #}}
 {{% macro bash_ensure_partition_is_mounted(mount_point) -%}}
 if mkdir -p "{{{ mount_point }}}"; then
     if mountpoint -q "{{{ mount_point }}}"; then
