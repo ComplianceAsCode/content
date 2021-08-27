@@ -35,9 +35,12 @@ selections:
     - accounts_passwords_pam_faillock_unlock_time
     - aide_build_database
     - aide_periodic_cron_checking
+    - auditd_audispd_syslog_plugin_activated
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_admin_space_left_action
     - auditd_data_retention_max_log_file
+    - auditd_data_retention_max_log_file_action
+    - auditd_data_retention_num_logs
     - auditd_data_retention_space_left_action
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
