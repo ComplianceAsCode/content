@@ -1,12 +1,12 @@
 documentation_complete: true
 
-title: 'Disable IPv6 Addressing on All IPv6 Interfaces'
+title: 'Disable IPv6 Addressing on IPv6 Interfaces by Default'
 
 description: |-
-    To disable support for (<tt>ipv6</tt>) addressing on all interface add the following line to
+    To disable support for (<tt>ipv6</tt>) addressing on interfaces by default add the following line to
     <tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in <tt>/etc/sysctl.d</tt>):
-    <pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
-    This disables IPv6 on all network interfaces as other services and system
+    <pre>net.ipv6.conf.default.disable_ipv6 = 1</pre>
+    This disables IPv6 on network interfaces by default as other services and system
     functionality require the IPv6 stack loaded to work.
 
 rationale: |-
@@ -16,8 +16,8 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-80175-3
-    cce@rhel8: CCE-85904-1
+    cce@rhel7: CCE-85975-1
+    cce@rhel8: CCE-86004-9
 
 references:
     cis-csc: 11,14,3,9
@@ -30,17 +30,17 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.IP-1,PR.PT-3
 
-ocil_clause: 'the ipv6 support is disabled on all network interfaces'
+ocil_clause: 'the ipv6 support is disabled by default on network interfaces'
 
 ocil: |-
     If the system uses IPv6, this is not applicable.
     <br /><br />
     If the system is configured to prevent the usage of the <tt>ipv6</tt> on
     network interfaces, it will contain a line of the form:
-    <pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
+    <pre>net.ipv6.conf.default.disable_ipv6 = 1</pre>
     Such lines may be inside any file in the <tt>/etc/sysctl.d</tt> directory.
     This permits insertion of the IPv6 kernel module (which other parts of the
-    system expect to be present), but otherwise keeps all network interfaces
+    system expect to be present), but otherwise keeps network interfaces
     from using IPv6. Run the following command to search for such lines in all
     files in <tt>/etc/sysctl.d</tt>:
     <pre>$ grep -r ipv6 /etc/sysctl.d</pre>
@@ -50,6 +50,6 @@ platform: machine
 template:
     name: sysctl
     vars:
-        sysctlvar: net.ipv6.conf.all.disable_ipv6
+        sysctlvar: net.ipv6.conf.default.disable_ipv6
         sysctlval: '1'
         datatype: int
