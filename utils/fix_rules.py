@@ -525,7 +525,7 @@ def fix_file_prompt(path, product_yaml, func, args):
 
 def add_cce(args, product_yaml):
     directory = os.path.join(args.root, args.subdirectory)
-    cce_pool = cce.CCE_POOLS[args.cce_pool]
+    cce_pool = cce.CCE_POOLS[args.cce_pool]()
     return _add_cce(directory, cce_pool, args.rule, product_yaml, args)
 
 
