@@ -85,8 +85,13 @@ template:
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: renameat
-        {{% else %}}
+    {{% else %}}
     name: audit_rules_syscal_events
     vars:
         attr: renameat
+        syscall_grouping:
+          - rename
+          - renameat
+          - unlink
+          - unlinkat
     {{% endif %}}
