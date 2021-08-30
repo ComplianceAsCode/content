@@ -45,7 +45,7 @@
   <unix:file_object comment="{{{ filepath }}}" id="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
 
     {{%- if IS_DIRECTORY %}}
-      <unix:path>{{{ filepath }}}</unix:path>
+      <unix:path>{{{ filepath[:-1] }}}</unix:path>
       {{%- if FILE_REGEX %}}
       <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
       {{%- else %}}
