@@ -14,56 +14,51 @@ populate {{{ name }}}
 {{%- endmacro -%}}
 
 {{#
-   make sure that we have a line like this in ${_pamFile} (additional options are left as-is):
-   ${_type} ${_control} ${_module} ${_option}=${_valueRegex}
-#}}
-{{%- macro bash_ensure_pam_module_options() -%}}
-local _pamFile="$1" _type="$2" _control="$3" _module="$4" _option="$5" _valueRegex="$6" _defaultValue="$7"
-local _remove_argument=""
-if [ $# -eq 8 ] ; then
-        _remove_argument="$8"
-    # convert it to lowercase
-    _remove_argument=${_remove_argument,,}
-fi
+   make sure that we have a line like this in pamFile (additional options are left as-is):
+   type control module option=valueRegexArg
 
-if ! [ -e "$_pamFile" ] ; then
-    echo "$_pamFile doesn't exist" >&2
+   remove_argument      optional argument, if set to "true", will only remove the option from pamFile and exit
+#}}
+{{%- macro bash_ensure_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg, remove_argument="") -%}}
+if ! [ -e "{{{ pamFile }}}" ] ; then
+    echo "{{{ pamFile }}} doesn't exist" >&2
     exit 1
 fi
 
 # if remove argument only
-if [ "${_remove_argument}" = "yes" -o "${_remove_argument}" = "true" ] ; then
-    sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+\\S+\\s+${_module}(\\s.+)?)\\s${_option}(=\\S+)?/\\1/" "${_pamFile}"
+if [ "{{{ remove_argument }}}" = "true" ] ; then
+    sed --follow-symlinks -i -E -e "s/^(\\s*{{{ type }}}\\s+\\S+\\s+{{{ module }}}(\\s.+)?)\\s{{{ option }}}(=\\S+)?/\\1/" "{{{ pamFile }}}"
     exit 0
 fi
 
+valueRegex="{{{ valueRegexArg }}}}" defaultValue="{{{ defaultValueArg }}}}"
 # non-empty values need to be preceded by an equals sign
-[ -n "${_valueRegex}" ] && _valueRegex="=${_valueRegex}"
+[ -n "${valueRegex}" ] && valueRegex="=${valueRegex}"
 # add an equals sign to non-empty values
-[ -n "${_defaultValue}" ] && _defaultValue="=${_defaultValue}"
+[ -n "${defaultValue}" ] && defaultValue="=${defaultValue}"
 
 # fix 'type' if it's wrong
-if grep -q -P "^\\s*(?"'!'"${_type}\\s)[[:alnum:]]+\\s+[[:alnum:]]+\\s+${_module}" < "${_pamFile}" ; then
-    sed --follow-symlinks -i -E -e "s/^(\\s*)[[:alnum:]]+(\\s+[[:alnum:]]+\\s+${_module})/\\1${_type}\\2/" "${_pamFile}"
+if grep -q -P "^\\s*(?"'!'"{{{ type }}}\\s)[[:alnum:]]+\\s+[[:alnum:]]+\\s+{{{ module }}}" < "{{{ pamFile }}}" ; then
+    sed --follow-symlinks -i -E -e "s/^(\\s*)[[:alnum:]]+(\\s+[[:alnum:]]+\\s+{{{ module }}})/\\1{{{ type }}}\\2/" "{{{ pamFile }}}"
 fi
 
 # fix 'control' if it's wrong
-if grep -q -P "^\\s*${_type}\\s+(?"'!'"${_control})[[:alnum:]]+\\s+${_module}" < "${_pamFile}" ; then
-    sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+)[[:alnum:]]+(\\s+${_module})/\\1${_control}\\2/" "${_pamFile}"
+if grep -q -P "^\\s*{{{ type }}}\\s+(?"'!'"{{{ control }}})[[:alnum:]]+\\s+{{{ module }}}" < "{{{ pamFile }}}" ; then
+    sed --follow-symlinks -i -E -e "s/^(\\s*{{{ type }}}\\s+)[[:alnum:]]+(\\s+{{{ module }}})/\\1{{{ control }}}\\2/" "{{{ pamFile }}}"
 fi
 
-# fix the value for 'option' if one exists but does not match '_valueRegex'
-if grep -q -P "^\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s+${_option}(?"'!'"${_valueRegex}(\\s|\$))" < "${_pamFile}" ; then
-    sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s)${_option}=[^[:space:]]*/\\1${_option}${_defaultValue}/" "${_pamFile}"
+# fix the value for 'option' if one exists but does not match 'valueRegex'
+if grep -q -P "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}(\\s.+)?\\s+{{{ option }}}(?"'!'"${valueRegex}(\\s|\$))" < "{{{ pamFile }}}" ; then
+    sed --follow-symlinks -i -E -e "s/^(\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}(\\s.+)?\\s){{{ option }}}=[^[:space:]]*/\\1{{{ option }}}${defaultValue}/" "{{{ pamFile }}}"
 
 # add 'option=default' if option is not set
-elif grep -q -E "^\\s*${_type}\\s+${_control}\\s+${_module}" < "${_pamFile}" &&
-        grep    -E "^\\s*${_type}\\s+${_control}\\s+${_module}" < "${_pamFile}" | grep -q -E -v "\\s${_option}(=|\\s|\$)" ; then
+elif grep -q -E "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}" < "{{{ pamFile }}}" &&
+        grep    -E "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}" < "{{{ pamFile }}}" | grep -q -E -v "\\s{{{ option }}}(=|\\s|\$)" ; then
 
-    sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}[^\\n]*)/\\1 ${_option}${_defaultValue}/" "${_pamFile}"
+    sed --follow-symlinks -i -E -e "s/^(\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}[^\\n]*)/\\1 {{{ option }}}${defaultValue}/" "{{{ pamFile }}}"
 # add a new entry if none exists
-elif ! grep -q -P "^\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s+${_option}${_valueRegex}(\\s|\$)" < "${_pamFile}" ; then
-    echo "${_type} ${_control} ${_module} ${_option}${_defaultValue}" >> "${_pamFile}"
+elif ! grep -q -P "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}(\\s.+)?\\s+{{{ option }}}${valueRegex}(\\s|\$)" < "{{{ pamFile }}}" ; then
+    echo "{{{ type }}} {{{ control }}} {{{ module }}} {{{ option }}}${defaultValue}" >> "{{{ pamFile }}}"
 fi
 {{%- endmacro -%}}
 
