@@ -325,3 +325,4 @@ selections:
     - agent_mfetpd_running
     - accounts_authorized_local_users
     - auditd_overflow_action
+    - auditd_name_format
