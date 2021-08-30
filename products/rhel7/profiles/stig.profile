@@ -107,6 +107,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_remove_no_authenticate
+    - sudo_require_reauthentication
     - sudoers_validate_passwd
     - accounts_logon_fail_delay
     - gnome_gdm_disable_automatic_login
