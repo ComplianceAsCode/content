@@ -55,6 +55,7 @@ selections:
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_tmout=15_min
+    - var_accounts_authorized_local_users_regex=rhel7
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
@@ -107,6 +108,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_remove_no_authenticate
+    - sudo_require_reauthentication
     - sudoers_validate_passwd
     - accounts_logon_fail_delay
     - gnome_gdm_disable_automatic_login
@@ -321,3 +323,6 @@ selections:
     - sysctl_net_ipv4_conf_default_rp_filter
     - package_mcafeetp_installed
     - agent_mfetpd_running
+    - accounts_authorized_local_users
+    - auditd_overflow_action
+    - auditd_name_format
