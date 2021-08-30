@@ -55,6 +55,7 @@ selections:
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_tmout=15_min
+    - var_accounts_authorized_local_users_regex=rhel7
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
@@ -322,3 +323,4 @@ selections:
     - sysctl_net_ipv4_conf_default_rp_filter
     - package_mcafeetp_installed
     - agent_mfetpd_running
+    - accounts_authorized_local_users
