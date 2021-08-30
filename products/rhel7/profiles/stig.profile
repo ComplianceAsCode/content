@@ -324,3 +324,4 @@ selections:
     - package_mcafeetp_installed
     - agent_mfetpd_running
     - accounts_authorized_local_users
+    - auditd_overflow_action
