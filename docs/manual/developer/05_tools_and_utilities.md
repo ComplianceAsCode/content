@@ -108,6 +108,7 @@ These sub-commands are:
  - `duplicate_subkeys`: finds (but doesn't fix!) any rules with duplicated
    `identifiers` or `references`.
  - `sort_subkeys`: sorts all subkeys under `identifiers` and `references`.
+ - `sort_prodtypes`: "sorts the products in prodtype"
 
 To execute:
 
