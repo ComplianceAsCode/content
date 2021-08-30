@@ -1,34 +1,26 @@
 <def-group>
   <definition class="compliance" id="smartcard_configure_cert_checking" version="4">
-    <metadata>
-      <title>Enable Smart Card Login</title>
-      <affected family="unix">
-        <platform>multi_platform_sle</platform>
-      </affected>
-      <description>Enable Smart Card logins</description>
-    </metadata>
+    {{{ oval_metadata("Enable Smart Card Login") }}}
     <criteria comment="smart card authentication is configured" operator="AND">
-      {{% if product in ['sle12', 'sle15'] %}}
       <extend_definition comment="pam_pkcs11 package is installed" definition_ref="install_smartcard_packages" />
-      {{% endif %}}
-      <criterion comment="cert_policy directive contains ocsp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
+      <criterion comment="cert_policy directive contains ocsp_on" test_ref="test_pam_pkcs11_all_cert_policy_ocsp_on" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_pam_pkcs11_cert_policy_ocsp_on" check="all" check_existence="all_exist"
+  <ind:textfilecontent54_test id="test_pam_pkcs11_all_cert_policy_ocsp_on" check="all" check_existence="all_exist"
   comment="Test ocsp_on in /etc/pam_pkcs11/pam_pkcs11.conf" version="1">
-    <ind:object object_ref="object_pam_pkcs11_cert_policy_ocsp_on" />
-    <ind:state state_ref="state_pam_pkcs11_cert_policy_ocsp_on" />
+    <ind:object object_ref="object_pam_pkcs11_all_cert_policy_ocsp_on" />
+    <ind:state state_ref="state_pam_pkcs11_all_cert_policy_ocsp_on" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_pam_pkcs11_cert_policy_ocsp_on" version="1">
+  <ind:textfilecontent54_object id="object_pam_pkcs11_all_cert_policy_ocsp_on" version="1">
     <ind:filepath>/etc/pam_pkcs11/pam_pkcs11.conf</ind:filepath>
     <!-- PKCS #11 module can be either CoolKey or OpenSC. Check cert_policy for all of them. -->
     <ind:pattern operation="pattern match">^[\s]*cert_policy[ ]=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_pam_pkcs11_cert_policy_ocsp_on" version="1">
+  <ind:textfilecontent54_state id="state_pam_pkcs11_all_cert_policy_ocsp_on" version="1">
     <ind:subexpression operation="pattern match">^.*ocsp_on.*$</ind:subexpression>
   </ind:textfilecontent54_state>
 
