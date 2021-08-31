@@ -885,7 +885,7 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 #        augenrules              |          No           |  /etc/audit/rules.d/$key.rules  |
 # -----------------------------------------------------------------------------------------
 #
-declare -a files_to_inspect
+files_to_inspect=()
 
 {{% if tool == "auditctl" %}}
 # If audit tool is 'auditctl', then add '/etc/audit/audit.rules'
