@@ -2,7 +2,7 @@
 
 # make existing entries pass
 for acct in $(grep -ve ':\(!!\|\*\):' /etc/shadow | awk -F: '{print $1}'); do
-    chage -M 30 $acct
+    chage -M 30 -d $(date +%Y-%m-%d) $acct
 done
 # Add  test entries
 # Noninteractive users are a pass
