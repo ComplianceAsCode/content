@@ -1030,9 +1030,7 @@ selections:
     - sysctl_net_ipv4_conf_all_rp_filter
 
     # RHEL-08-040290
-    # /etc/postfix/main.cf does not exist on default installation resulting in error during remediation
-    # there needs to be a new platform check to identify when postfix is installed or not
-    # - postfix_prevent_unrestricted_relay
+    - postfix_prevent_unrestricted_relay
 
     # RHEL-08-040300
     - aide_verify_ext_attributes

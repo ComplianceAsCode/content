@@ -75,8 +75,8 @@ selections:
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
-- aide_check_audit_tools
 - agent_mfetpd_running
+- aide_check_audit_tools
 - aide_scan_notification
 - aide_verify_acls
 - aide_verify_ext_attributes
@@ -315,6 +315,7 @@ selections:
 - partition_for_var_log_audit
 - partition_for_var_tmp
 - postfix_client_configure_mail_alias
+- postfix_prevent_unrestricted_relay
 - require_emergency_target_auth
 - require_singleuser_auth
 - root_permissions_syslibrary_files
