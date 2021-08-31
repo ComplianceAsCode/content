@@ -1086,9 +1086,9 @@ guidelines:
     they violate the previous point. `[ $x != 1 ] || echo "$x is one"`
     is OK.
 
--   Use the `die` function defined in `remediation_functions` to handle
-    exceptions, such as
-    `[ -f "$config_file" ] || die "Couldn't find the configuration file '$config_file'"`.
+-   Use the `die` macro defined in `shared/macros-bash.jinja` to handle
+    exceptions and terminate the remediation, such as
+    `{{{ die("An error was encountered during the remediation of rule.") }}}`.
 
 -   Run `shellcheck` over your remediation script. Make sure that you
     fix all warnings that are applicable. If you are not sure, mention
