@@ -92,6 +92,7 @@ selections:
     - ensure_logrotate_activated
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
+    - ensure_suse_gpgkey_installed
     - file_groupowner_grub2_cfg
     - file_groupowner_etc_group
     - file_groupowner_etc_passwd

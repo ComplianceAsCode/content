@@ -1,0 +1,36 @@
+# platform=multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+- name: "Read permission of GPG key directory"
+  stat:
+    path: /usr/lib/rpm/gnupg/keys
+  register: suse_gpg_key_directory_permission
+  check_mode: no
+
+
+- name: Set Valid fingerprint
+  set_fact:
+    suse_gpg_valid_fingerprints: "{{{ release_key_fingerprint }}}"
+
+
+- name: Read signatures in GPG key
+  shell: gpg --with-fingerprint --with-colons "{{ item }}" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10
+  changed_when: False
+  register: suse_gpg_fingerprints
+  check_mode: no
+  with_fileglob:
+    "/usr/lib/rpm/gnupg/keys/*.asc"
+
+
+- name: Import SUSE GPG key
+  rpm_key:
+    state: present
+    key: "{{ item.item }}"
+  when:
+    - suse_gpg_key_directory_permission.stat.mode <= '0755'
+    - item.stdout == suse_gpg_valid_fingerprints
+    - suse_gpg_fingerprints | length > 0
+  with_items:
+    "{{ suse_gpg_fingerprints.results }}"
