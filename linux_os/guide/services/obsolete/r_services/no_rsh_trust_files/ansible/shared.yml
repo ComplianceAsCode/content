@@ -4,17 +4,24 @@
 # complexity = low
 # disruption = low
 - block:
-    - name: "Detect shosts.equiv Files on the System"
+    - name: "Detect .rhosts files in users home directories"
       find:
-          paths: /
+          paths: ["/root","/home"]
           recurse: yes
-          patterns: shosts.equiv
+          patterns: .rhosts
+          hidden: yes
+          file_type: file
       check_mode: no
-      register: shosts_equiv_locations
+      register: rhosts_locations
 
-    - name: "Remove Rsh Trust Files"
+    - name: "Remove .rhosts files"
       file:
-          path: "{{ item.path }}"
+          path: "{{ item }}"
           state: absent
-      with_items: "{{ shosts_equiv_locations.files }}"
-      when: shosts_equiv_locations
+      with_items: "{{ rhosts_locations.files | map(attribute='path') | list }}"
+      when: rhosts_locations is success
+
+    - name: "Remove /etc/hosts.equiv file"
+      file:
+          path: /etc/hosts.equiv
+          state: absent
