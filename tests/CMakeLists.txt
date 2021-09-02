@@ -122,6 +122,13 @@ add_test(
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
 set_tests_properties("fix_rules-sort_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
 
+add_test(
+    NAME "fix_rules-sort_prodtypes"
+    COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/fix_rules.py" "--dry-run" "--root" "${CMAKE_SOURCE_DIR}" "--json" "${CMAKE_SOURCE_DIR}/build/rule_dirs.json" "sort_prodtypes"
+)
+set_tests_properties("fix_rules-sort_subkeys" PROPERTIES LABELS quick)
+set_tests_properties("fix_rules-sort_subkeys" PROPERTIES DEPENDS "test-rule-dir-json")
+
 if (PY_YAMLPATH)
     if (PY_PYTEST)
         add_test(

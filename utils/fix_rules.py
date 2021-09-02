@@ -272,6 +272,22 @@ def rewrite_value_int_str(line):
     return key + ": " + str_value
 
 
+def rewrite_keyless_section(file_contents, yaml_contents, section, content):
+    new_contents = file_contents[:]
+
+    sec_ranges = find_section_lines(file_contents, section)
+    if len(sec_ranges) != 1:
+        raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
+                           % (path, sec_ranges))
+
+    if len(sec_ranges[0]) != 2:
+        raise RuntimeError("Section has more than one line")
+
+    new_contents[sec_ranges[0][0]] = f"{section}: {content}"
+
+    return new_contents
+
+
 def rewrite_value_remove_prefix(line):
     # Rewrites a key's value to remove a "CCE" prefix.
     key_end = line.index(':')
@@ -400,6 +416,15 @@ def fix_invalid_cce(file_contents, yaml_contents):
                     invalid_identifiers.append(i_type)
 
     return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)
+
+
+def fix_prodtypes(file_contents, yaml_contents):
+    section = 'prodtype'
+    sorted_prodtypes = yaml_contents[section].split(",")
+    sorted_prodtypes.sort()
+    out = ",".join(sorted_prodtypes)
+
+    return rewrite_keyless_section(file_contents, yaml_contents, section, out)
 
 
 def has_product_cce(yaml_contents, product):
@@ -562,6 +587,14 @@ def _add_cce(directory, cce_pool, rules, product_yaml, args):
             cce_pool.remove_cce_from_file(cce)
 
 
+def has_unsorted_prodtype(yaml_file, product_yaml=None):
+    rule = yaml.open_and_macro_expand(yaml_file, product_yaml)
+    if 'prodtype' in rule:
+        prodtypes = rule['prodtype'].split(',')
+        return prodtypes != sorted(prodtypes)
+    return False
+
+
 @command("empty_identifiers", "check and fix rules with empty identifiers")
 def fix_empty_identifiers(args, product_yaml):
     results = find_rules(args, has_empty_identifier)
@@ -698,6 +731,22 @@ def sort_subkeys(args, product_yaml):
             continue
 
         fix_file_prompt(rule_path, product_yaml, sort_rule_subkeys, args)
+
+    return int(len(results) > 0)
+
+
+@command("sort_prodtypes", "sorts the products in the prodtype")
+def sort_prodtypes(args, product_yaml):
+    results = find_rules(args, has_unsorted_prodtype)
+    for result in results:
+        rule_path = result[0]
+        product_yaml = result[2]
+
+        if args.dry_run:
+            print(rule_path + " prodtype is unsorted")
+            continue
+
+        fix_file(rule_path, product_yaml, fix_prodtypes)
 
     return int(len(results) > 0)
 
