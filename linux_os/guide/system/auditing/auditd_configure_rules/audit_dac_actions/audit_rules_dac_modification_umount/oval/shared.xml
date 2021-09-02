@@ -1,0 +1,70 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_dac_modification_umount" version="1">
+    {{{ oval_metadata("The changing of file permissions and attributes should be audited.") }}}
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit augenrules 32-bit umount" test_ref="test_32bit_ardm_umount_augenrules" />
+{{% if CHECK_ROOT_USER %}}
+        <criterion comment="audit augenrules 32-bit umount" test_ref="test_32bit_ardm_umount_augenrules_auid_0" />
+{{% endif %}}
+      </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl 32-bit umount" test_ref="test_32bit_ardm_umount_auditctl" />
+{{% if CHECK_ROOT_USER %}}
+        <criterion comment="audit auditctl 32-bit umount" test_ref="test_32bit_ardm_umount_auditctl_auid_0" />
+{{% endif %}}
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit umount" id="test_32bit_ardm_umount_augenrules" version="1">
+    <ind:object object_ref="object_32bit_ardm_umount_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_ardm_umount_augenrules" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+umount[\s]+|([\s]+|[,])umount([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit umount" id="test_32bit_ardm_umount_auditctl" version="1">
+    <ind:object object_ref="object_32bit_ardm_umount_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_ardm_umount_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+umount[\s]+|([\s]+|[,])umount([\s]+|[,])))(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+{{% if CHECK_ROOT_USER %}}
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit umount auid=0" id="test_32bit_ardm_umount_augenrules_auid_0" version="1">
+    <ind:object object_ref="object_32bit_ardm_umount_augenrules_auid_0" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_ardm_umount_augenrules_auid_0" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+umount[\s]+|([\s]+|[,])umount([\s]+|[,])))(?:.*-F\s+auid=0[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit umount" id="test_32bit_ardm_umount_auditctl_auid_0" version="1">
+    <ind:object object_ref="object_32bit_ardm_umount_auditctl_auid_0" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_ardm_umount_auditctl_auid_0" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+umount[\s]+|([\s]+|[,])umount([\s]+|[,])))(?:.*-F\s+auid=0[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+{{% endif %}}
+
+</def-group>
