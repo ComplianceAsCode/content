@@ -558,6 +558,65 @@ controls:
       and to use the targeted policy.
 ```
 
+### Reporting status
+
+In some cases, it's useful to know the status of a certain control for a
+specific product. In order to better portray this, it's possible to set
+such information on each control using the `status` key.
+
+The `status` key may hold the following values:
+
+* `pending`: The control is not yet evaluated for the product.
+
+* `not applicable`: The control is not applicable to this product.
+
+* `inherently met`: The control is inherently met by the product.
+
+* `documentation`: The control is addressed by product documentation.
+
+* `planned`: The control is not yet implemented, but is planned.
+
+* `partial`: While work has been done to address this control, there is still
+             work needed to fully address it.
+
+* `supported`: The control is addressed by the product (but is missing content
+                automation).
+
+* `automated`: The control is addressed by the product and can be automatically
+               checked for.
+
+When there is work on-going to address a specific control, it may be portrayed
+via the `tickets` key. The aforementioned key shall contain a list of URLs that
+may help the reader track what work needs to be done to address a specific
+control.
+
+```
+$ cat controls/abcd.yml
+
+id: abcd
+title: ABCD Benchmark for securing Linux systems
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+levels:
+  - id: low
+  - id: high
+    inherits_from:
+    - low
+controls:
+  - id: R1
+    levels:
+    - low
+    title: User session timeout
+    description: |-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    status: partial
+    tickets:
+    - https://my-ticket-tracker.com/issue/1
+    - https://my-ticket-tracker.com/issue/2
+```
+
+
 ### Controls file format
 
 This is a complete schema of the YAML file format.
@@ -581,6 +640,8 @@ controls: a list of controls (required key)
     related_rules: a list of related rules
     note: a short paragraph of text
     controls: a nested list of controls
+    status: a keyword that reflects the current status of the implementation of this control
+    tickets: a list of URLs reflecting the work that still needs to be done to address this control
 ```
 
 Full example of a controls file:
