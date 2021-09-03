@@ -9,5 +9,5 @@ MAX_PAS_AGE=99999
 system_users=( $(awk -F: '{print $1}' /etc/shadow) )
 for i in ${system_users[@]}; 
 do 
-  passwd -x $MAX_PAS_AGE $i
+  chage -M $MAX_PAS_AGE $i
 done
