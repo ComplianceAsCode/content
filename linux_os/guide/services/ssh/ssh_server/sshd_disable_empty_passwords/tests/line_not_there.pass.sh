@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SSHD_PARAM="GSSAPIAuthentication"
+SSHD_PARAM="PermitEmptyPasswords"
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
