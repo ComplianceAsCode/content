@@ -310,7 +310,7 @@
 {{%- else -%}}
 {{%- set name_value = name -%}}
 {{%- endif -%}}
-  <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is {{% if negate %}}not {{% endif %}}present in {{{ filepath }}}" 
+  <criterion comment="Check if argument {{{ name_value }}}{{% if application %}} for {{{ application }}}{{% endif %}} is {{% if negate %}}not {{% endif %}}present in {{{ filepath }}}"
   test_ref="test_{{{ rule_id }}}_{{{ name_value|escape_id }}}_argument_in_{{{ filepath|escape_id }}}" {{% if negate %}}negate="true" {{% endif %}}/>
 {{%- endmacro -%}}
 
@@ -689,5 +689,69 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+</def-group>
+{{%- endmacro %}}
+
+
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed) -%}}
+{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path %}}
+{{%- if config_is_distributed %}}
+{{%- set description = description  ~ " and in " ~ sshd_config_dir -%}}
+{{%- endif %}}
+{{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+   {{{ oval_metadata(description) }}}
+   <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+     <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+          definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+          definition_ref="package_openssh-server_removed" />
+     </criteria>
+     <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+          definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed"
+          definition_ref="package_openssh-server_installed" />
+        <criteria comment="sshd is configured correctly" operator="OR">
+          {{{- oval_line_in_file_criterion(sshd_config_path, parameter) | indent(8) }}}
+          {{%- if missing_parameter_pass %}}
+          <criteria comment="sshd is not configured incorrectly" operator="AND">
+          {{{- oval_line_in_file_criterion(sshd_config_path, parameter, missing_parameter_pass) | indent(10)}}}
+          {{%- if config_is_distributed %}}
+          {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, missing_parameter_pass) | indent(10) }}}
+          {{%- endif %}}
+          </criteria>
+          {{%- endif %}}
+          {{%- if config_is_distributed %}}
+          {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
+          {{%- endif %}}
+        </criteria>
+      </criteria>
+    </criteria>
+  </definition>
+  {{{ oval_line_in_file_test(sshd_config_path, parameter) | indent (2) }}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, ** case_insensitivity_kwargs)| indent (2) }}}
+  {{{ oval_line_in_file_state(value) | indent (2) }}}
+
+  {{%- if missing_parameter_pass %}}
+  {{{ oval_line_in_file_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
+  {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{%- endif %}}
+
+  {{%- if config_is_distributed %}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter) | indent (2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, ** case_insensitivity_kwargs) | indent (2) }}}
+  {{{ oval_line_in_directory_state(value) | indent (2) }}}
+
+  {{%- if missing_parameter_pass %}}
+  {{{ oval_line_in_directory_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{%- endif %}}
+  {{%- endif %}}
 </def-group>
 {{%- endmacro %}}
