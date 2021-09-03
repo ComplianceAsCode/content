@@ -374,7 +374,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially
+    status: partial
     notes: >-
       Automatic remediation of these rules is not available.
     rules:
@@ -395,7 +395,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially
+    status: partial
     notes: >-
       The rule to remove prelink package is missing.
     rules:
@@ -621,7 +621,7 @@ controls:
     levels:
     - l1_server
     - l2_workstation
-    automated: partially # rule for package removal is missing
+    status: partial # rule for package removal is missing
     rules:
     - service_avahi-daemon_disabled
 
@@ -754,7 +754,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially
+    status: partial
     rules:
     - service_rpcbind_disabled
 
@@ -1013,7 +1013,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # only checking systemd service, not running "firewall-cmd --state"
+    status: partial # only checking systemd service, not running "firewall-cmd --state"
     rules:
     - service_firewalld_enabled
 
@@ -1237,7 +1237,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: partially # we do not check for audit-libs package
+    status: partial # we do not check for audit-libs package
     rules:
     - package_audit_installed
 
@@ -1309,7 +1309,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: partially # we do not have rule for clock_settime
+    status: partial # we do not have rule for clock_settime
     rules:
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
@@ -1343,7 +1343,7 @@ controls:
     levels:
     - l2_server
     - l2_workstation
-    automated: partially # rule for checking audit watch on /usr/share/selinux is missing
+    status: partial # rule for checking audit watch on /usr/share/selinux is missing
     rules:
     - audit_rules_mac_modification
 
@@ -1629,7 +1629,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # rules for removing cron.deny and checking permissions of cron.allow are missing
+    status: partial # rules for removing cron.deny and checking permissions of cron.allow are missing
     rules:
     - file_groupowner_cron_allow
     - file_owner_cron_allow
@@ -1692,7 +1692,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rules for ownership
+    status: partial # missing rules for ownership
     rules:
     - file_permissions_sshd_pub_key
 
@@ -1879,7 +1879,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # rule checking for retry needs modification and we are missing rule for try_first_pass
+    status: partial # rule checking for retry needs modification and we are missing rule for try_first_pass
     notes: <-
       There are two ways how to check this control.
       One way is to check for minclass, this is currently selected.
@@ -1911,7 +1911,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # our rule does not check for password-auth
+    status: partial # our rule does not check for password-auth
     rules:
     - set_password_hashing_algorithm_systemauth
 
@@ -1936,7 +1936,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: partial # missing rule for checking of /etc/shadow
     rules:
     - accounts_maximum_age_login_defs
     - var_accounts_maximum_age_login_defs=365
@@ -1946,7 +1946,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: partial # missing rule for checking of /etc/shadow
     rules:
     - accounts_minimum_age_login_defs
     - var_accounts_minimum_age_login_defs=1
@@ -1956,7 +1956,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for checking of /etc/shadow
+    status: partial # missing rule for checking of /etc/shadow
     rules:
     - accounts_password_warn_age_login_defs
     - var_accounts_password_warn_age_login_defs=7
@@ -1966,7 +1966,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # we do not check /et/shadow
+    status: partial # we do not check /et/shadow
     rules:
     - account_disable_post_pw_expiration
     - var_account_disable_post_pw_expiration=30
@@ -1983,7 +1983,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # missing rule for locking of accounts
+    status: partial # missing rule for locking of accounts
     rules:
     - no_shelllogin_for_systemaccounts
 
@@ -1999,7 +1999,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
+    status: partial # we check only for value of tmout variable, no export or readonly and we do not check /etc/bashrc
     rules:
     - accounts_tmout
     - var_accounts_tmout=15_min
@@ -2009,7 +2009,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially # checking only for numeric umask and we do not check for user_enab in /etc/login.defs
+    status: partial # checking only for numeric umask and we do not check for user_enab in /etc/login.defs
     rules:
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_login_defs
@@ -2028,7 +2028,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: partially  # we check only for usage of use_uid with pam_su, not for the group
+    status: partial  # we check only for usage of use_uid with pam_su, not for the group
     rules:
     - use_pam_wheel_for_su
 

@@ -24,7 +24,7 @@ controls:
       Only the components strictly necessary to the service provided by the system should
       be installed.
       Those whose presence can not be justified should be disabled, removed or deleted.
-    automated: partially  # The list of essential services is not objective.
+    status: partial  # The list of essential services is not objective.
     notes: >-
       Performing a minimal install is a good starting point, but doesn't provide any assurance
       over any package installed later.
@@ -67,7 +67,7 @@ controls:
       The services and executables available on the system must be analyzed in order to
       know the privileges they require, and must then be configured and integrated to use
       the bare necessities.
-    automated: partially # The system can be restricted even more with selinux-booleans or other technologies
+    status: partial # The system can be restricted even more with selinux-booleans or other technologies
     notes: >-
       SELinux policies limit the privileges of services and daemons to only what they require.
     rules:
@@ -84,7 +84,7 @@ controls:
     notes: >-
       Other partitioning mechanisms can include chroot and containers and are not contemplated
       in this requirement.
-    automated: partially
+    status: partial
     rules:
     - selinux_state
     - var_selinux_state=enforcing
@@ -96,7 +96,7 @@ controls:
     description: >-
       Under Unix and derivatives, defense in depth must be based on a combination of
       barriers that must be kept independent of each other.
-    automated: partially
+    status: partial
     notes: >-
       Defense in-depth can be broadly divided into three areas - physical, technical and
       administrative. The security profile is best suited to protect the technical area.
@@ -165,7 +165,7 @@ controls:
       Configurations recommended for this requirement are to be performed at the BIOS level.
       The content automation cannot really configure the BIOS, but can in some cases,
       check settings that are visible to the OS. Like for example the NX/DX setting.
-    automated: partially
+    status: partial
     rules:
     - sysctl_kernel_exec_shield
     - bios_enable_execution_restrictions
@@ -199,7 +199,7 @@ controls:
     title: Partitioning type
     notes: >- 
       The rule for the /proc file system is not implemented
-    automated: partially
+    status: partial
     rules:
     # this covers nodev options
     - mount_option_nodev_nonroot_local_partitions
@@ -287,7 +287,7 @@ controls:
       We cannot draw conclusions from the repo name or URL of the repo (as they can be arbitrary or behind a proxy).
       One approach to check the origin of installed packages is to check the signature of the packages.
       If the public key of a repository is not installed, the repo is not trusted.
-    automated: partially
+    status: partial
     rules:
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_globally_activated
@@ -329,7 +329,7 @@ controls:
       (https://www.ssi.gouv.fr/administration/precautions-elementaires/calculer-la-force-dun-mot-de-passe/).
 
       The baseline should be reviewed and tailored to the system's use case and needs.
-    automated: partially
+    status: partial
     rules:
     # Renew passwords every 90 days
     - var_accounts_maximum_age_login_defs=90
@@ -413,7 +413,7 @@ controls:
       basic integrity checking. System logs are configured as part of R43.
       Hardening of particular services should be done on a case by case basis and is
       not automated by this content.
-    automated: partially
+    status: partial
     rules:
     - selinux_state
     - var_selinux_state=enforcing
@@ -729,7 +729,7 @@ controls:
       The different values are set in a conditional clause in a shell script
       (e.g. /etc/profile or /etc/bashrc).
       The current implementation checks and fixes both umask to the same value.
-    automated: partially
+    status: partial
     rules:
     - var_accounts_user_umask=077
     - accounts_umask_etc_login_defs
@@ -828,7 +828,7 @@ controls:
       A lot of recommendations and requirements from the DAT-NT-012 document are administrative and hard to automate.
       The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
       be customized for the systems deployment requirements.
-    automated: partially
+    status: partial
     rules:
     # Based on DAT-NT-012 R3
     - package_chrony_installed
@@ -899,7 +899,7 @@ controls:
     levels:
     - intermediary
     title: Messaging Aliases for Service Accounts
-    automated: partially # it is hard to define what are "service accounts"
+    status: partial # it is hard to define what are "service accounts"
     notes: >-
       Only the alias for root user is currently covered.
     rules:
@@ -954,7 +954,7 @@ controls:
       strict minimum, especially when it comes to files, processes or network.
     notes: >-
       SELinux policies limit the privileges of services and daemons just to those which are required.
-    automated: partially
+    status: partial
     rules:
     - selinux_policytype
     - var_selinux_policy_name=targeted
@@ -1006,7 +1006,7 @@ controls:
     levels:
     - intermediary
     title: Sudo configuration guidelines
-    automated: partially
+    status: partial
     rules:
     - sudo_add_noexec
     - sudo_add_requiretty

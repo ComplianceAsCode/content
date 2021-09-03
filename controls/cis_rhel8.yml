@@ -351,7 +351,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # This rule, as implemented here, does not check for a user.cfg file
+    status: partial  # This rule, as implemented here, does not check for a user.cfg file
     rules:
       - file_groupowner_efi_grub2_cfg
       - file_groupowner_grub2_cfg
@@ -1282,7 +1282,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    automated: partially  # The CAC rule audit_rules_time_settimeofday uses additional parameters compared to the CIS benchmark and so is not used here. As a result, automated coverage is only partial for this control.
+    status: partial  # The CAC rule audit_rules_time_settimeofday uses additional parameters compared to the CIS benchmark and so is not used here. As a result, automated coverage is only partial for this control.
     rules:
       - audit_rules_time_adjtimex
       - audit_rules_time_clock_settime
@@ -1297,7 +1297,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    automated: partially
+    status: partial
     rules:
       - audit_rules_mac_modification
 
@@ -1637,7 +1637,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
+    status: partial
     rules:
       - file_permissions_sshd_pub_key
 
@@ -1840,7 +1840,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
+    status: partial
     rules:
       - accounts_password_pam_minclass
       - accounts_password_pam_minlen
@@ -1878,7 +1878,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # The rule below does not check the /etc/pam.d/password-auth file mentioned in the benchmark.
+    status: partial  # The rule below does not check the /etc/pam.d/password-auth file mentioned in the benchmark.
     rules:
       - set_password_hashing_algorithm_systemauth
 
@@ -1887,7 +1887,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # The rule below does not validate whether all current users' PASS_MAX_DAYS setting conforms to the control.
+    status: partial  # The rule below does not validate whether all current users' PASS_MAX_DAYS setting conforms to the control.
     rules:
       - accounts_maximum_age_login_defs
       - var_accounts_maximum_age_login_defs=365
@@ -1897,7 +1897,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # The rule below does not validate whether all current users' PASS_MIN_DAYS setting conforms to the control.
+    status: partial  # The rule below does not validate whether all current users' PASS_MIN_DAYS setting conforms to the control.
     rules:
       - accounts_minimum_age_login_defs
       - var_accounts_minimum_age_login_defs=7
@@ -1907,7 +1907,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # The rule below does not validate whether all current users' PASS_WARN_AGE setting conforms to the control.
+    status: partial  # The rule below does not validate whether all current users' PASS_WARN_AGE setting conforms to the control.
     rules:
       - accounts_password_warn_age_login_defs
       - var_accounts_password_warn_age_login_defs=7
@@ -1917,7 +1917,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # The rule below does not validate wheter all current users' INACTIVE setting conforms to the control.
+    status: partial  # The rule below does not validate wheter all current users' INACTIVE setting conforms to the control.
     rules:
       - account_disable_post_pw_expiration
       - var_account_disable_post_pw_expiration=30
@@ -1939,7 +1939,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
+    status: partial
     rules:
       - no_shelllogin_for_systemaccounts
 
@@ -1948,7 +1948,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # The remediation for this rule does not implement the "TMOUT" variable as readonly so does not align fully with the benchmark
+    status: partial  # The remediation for this rule does not implement the "TMOUT" variable as readonly so does not align fully with the benchmark
     rules:
       - accounts_tmout
       - var_accounts_tmout=15_min
@@ -1967,7 +1967,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially  # The rules below do not take /etc/profile.d/* into account so are not perfectly aligned with the benchmark
+    status: partial  # The rules below do not take /etc/profile.d/* into account so are not perfectly aligned with the benchmark
     rules:
       - accounts_umask_etc_bashrc
       - accounts_umask_etc_login_defs
@@ -1991,7 +1991,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: partially
+    status: partial
     rules:
       - use_pam_wheel_for_su
 
