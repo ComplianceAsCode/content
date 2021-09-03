@@ -2,9 +2,7 @@
   <definition class="compliance" id="smartcard_configure_cert_checking" version="4">
     {{{ oval_metadata("Enable Smart Card Login") }}}
     <criteria comment="smart card authentication is configured" operator="AND">
-      {{% if product not in ['ol8'] %}}
       <extend_definition comment="pam_pkcs11 package is installed" definition_ref="install_smartcard_packages" />
-      {{% endif %}}
       <criterion comment="cert_policy directive contains ocsp_on" test_ref="test_pam_pkcs11_all_cert_policy_ocsp_on" />
     </criteria>
   </definition>
