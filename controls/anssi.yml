@@ -136,7 +136,7 @@ controls:
     description: >-
       The activities of the running system and services must be logged and
       archived on an external, non-local system.
-    automated: yes
+    status: automated
     rules:
     # The default remote loghost is logcollector.
     # Change the default value to the hostname or IP of the system to send the logs to
@@ -147,7 +147,7 @@ controls:
     - minimal
     title: Regular updates
     notes: Check the vendor CVE feed and configure automatic install of security related updates.
-    automated: yes
+    status: automated
     rules:
     - security_patches_up_to_date
     - package_dnf-automatic_installed
@@ -177,7 +177,7 @@ controls:
     title: 32 and 64 bit architecture
     description: When the machine supports 64-bit operating systems, prefer it.
     notes: This requirement can be checked, but remediation requires manual reinstall of the OS.
-    automated: yes
+    status: automated
     rules:
      - prefer_64bit_os
 
@@ -189,7 +189,7 @@ controls:
       The iommu = force directive must be added to the list of kernel parameters
       during startup in addition to those already present in the configuration
       files of the bootloader (/boot/grub/menu.lst or /etc/default/grub).
-    automated: yes
+    status: automated
     rules:
     - grub2_enable_iommu_force
 
@@ -314,7 +314,7 @@ controls:
     description: >-
       A boot loader to protect the password boot must be to be privileged.
       This password must prevent any user from changing their configuration options.
-    automated: yes # without remediation
+    status: automated # without remediation
     rules:
     - grub2_password
     - grub2_uefi_password
@@ -377,7 +377,7 @@ controls:
       Users will first login, then escalate to privileged (root) access.
       Change of privilege operations must be based on executables to monitor the activities
       performed (for example sudo).
-    automated: yes
+    status: automated
     rules:
     - no_direct_root_logins
     - sshd_disable_root_login
@@ -424,7 +424,7 @@ controls:
     levels:
     - intermediary
     title: Setting up network sysctl
-    automated: yes
+    status: automated
     rules:
     # No routing between interfaces
     # net.ipv4.ip_forward = 0
@@ -540,7 +540,7 @@ controls:
     levels:
     - intermediary
     title: Setting up system sysctl
-    automated: yes
+    status: automated
     rules:
     # Disabling SysReq
     # kernel.sysrq = 0
@@ -593,7 +593,7 @@ controls:
       sysctl kernel.modules_disabledconf:
       Prohibition of loading modules (except those already loaded to this point)
       kernel.modules_disabled = 1
-    automated: yes # without remediation
+    status: automated # without remediation
     rules:
     - sysctl_kernel_modules_disabled
 
@@ -605,7 +605,7 @@ controls:
       It is recommended to load the Yama security module at startup (by example
       passing the security = yama argument to the kernel) and configure the
       sysctl kernel.yama.ptrace_scope to a value of at least 1.
-    automated: yes
+    status: automated
     rules:
     - sysctl_kernel_yama_ptrace_scope
 
@@ -661,7 +661,7 @@ controls:
       The semantics of "ClientAliveCountMax 0" has changed from "disconnect on first timeout" to
       "don't disconnect network inactive sessions". The server either probes for the client liveness
       or keeps inactive sessions connected.
-    automated: yes
+    status: automated
     rules:
     - accounts_tmout
     - var_accounts_tmout=10_min
@@ -691,7 +691,7 @@ controls:
     description: Any password must be protected by cryptographic mechanisms.
     notes: >-
       The selection of rules doesn't cover the use of hardware devices to protect the passwords.
-    automated: yes
+    status: automated
     rules:
     # ENCRYPT_METHOD, system default is SHA512
     - set_password_hashing_algorithm_systemauth
@@ -740,7 +740,7 @@ controls:
     title: Rights to access sensitive content files
     levels:
     - intermediary
-    automated: yes
+    status: automated
     rules:
     - file_owner_etc_shadow
     - file_permissions_etc_shadow
@@ -760,7 +760,7 @@ controls:
       recognized and authorized repositories (covered in R15).
       The remediation resets the sticky bit to intended value by vendor/developer, any finding after remediation
       should be reviewed.
-    automated: yes
+    status: automated
     rules:
     - file_permissions_unauthorized_suid
     - file_permissions_unauthorized_sgid
@@ -783,7 +783,7 @@ controls:
       Each user or service account must have its own temporary directory
       and dispose of it exclusively.
     notes: The approach of the selected rules is to use and configure pam_namespace module.
-    automated: yes
+    status: automated
     rules:
     - enable_pam_namespace
     - accounts_polyinstantiated_tmp
@@ -795,7 +795,7 @@ controls:
     levels:
     - intermediary
     title: Sticky bit and write access rights
-    automated: yes
+    status: automated
     rules:
     - dir_perms_world_writable_sticky_bits
     - dir_perms_world_writable_root_owned
@@ -883,7 +883,7 @@ controls:
     - intermediary
     title: Dedicated partition for logs
     notes: This assumes that syslog stores its logs locally in "/var/log/audit".
-    automated: yes
+    status: automated
     rules:
       - partition_for_var_log_audit
 
@@ -891,7 +891,7 @@ controls:
     levels:
     - intermediary
     title: Configuring the local messaging service
-    automated: yes
+    status: automated
     rules:
     - postfix_network_listening_disabled
 
@@ -923,7 +923,7 @@ controls:
       This includes: directories containing executables, libraries,
       configuration files, as well as any files that may contain sensitive
       elements (cryptographic keys, passwords, confidential data).
-    automated: yes
+    status: automated
     rules:
     - package_aide_installed
     - aide_build_database
@@ -997,7 +997,7 @@ controls:
     notes: >-
       The rules below create and configure a group named sudogrp, to change the group customize the
       value of var_sudo_dedicated_group.
-    automated: yes
+    status: automated
     rules:
     - sudo_dedicated_group
     - var_sudo_dedicated_group=sudogrp
@@ -1024,7 +1024,7 @@ controls:
     title: User authentication running sudo
     description: >-
       The calling user must be authenticated before running any command with sudo.
-    automated: yes
+    status: automated
     rules:
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
@@ -1034,7 +1034,7 @@ controls:
     - intermediary
     title: Privileges of target sudo users
     description: The targeted users of a rule should be, as much as possible, non privileged users.
-    automated: yes
+    status: automated
     rules:
     - sudoers_no_root_target
 
@@ -1055,7 +1055,7 @@ controls:
     - intermediary
     title: Good use of negation in a sudoers file
     description: The sudoers configuration rules should not involve negation.
-    automated: yes
+    status: automated
     rules:
     - sudoers_no_command_negation
 
@@ -1063,7 +1063,7 @@ controls:
     levels:
     - intermediary
     title: Explicit arguments in sudo specifications
-    automated: yes
+    status: automated
     rules:
     - sudoers_explicit_command_args
 
@@ -1094,7 +1094,7 @@ controls:
     description: >-
       It is recommended to enable the targeted policy when the distribution
       support it and that it does not operate another security module than SELinux.
-    automated: yes
+    status: automated
     rules:
     - selinux_policytype
     - var_selinux_policy_name=targeted
@@ -1114,7 +1114,7 @@ controls:
       In RHEL, the SELinux boolean allow_execheap is renamed to selinuxuser_execheap, and the
       boolean allow_execstack is renamed to selinuxuser_execstack. And allow_execmem is not
       available, deny_execmem provides the same functionality.
-    automated: yes
+    status: automated
     rules:
     - var_selinuxuser_execheap=off
     - sebool_selinuxuser_execheap
@@ -1133,7 +1133,7 @@ controls:
     description: >-
       SELinux policy manipulation and debugging tools should not be installed
       on a machine in production.
-    automated: yes
+    status: automated
     rules:
     - package_setroubleshoot_removed
     - package_setroubleshoot-server_removed
