@@ -73,7 +73,7 @@ class Control():
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
         control.status = Status.from_control_info(control.id, control_dict.get("status", None))
-        control.automated = control_dict.get("automated", "yes")
+        control.automated = control_dict.get("automated", "no")
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
