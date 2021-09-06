@@ -11,6 +11,49 @@ import ssg.utils
 from ssg.rules import get_rule_path_by_id
 
 
+class InvalidStatus(Exception):
+    pass
+
+class Status():
+    def __init__(self, status):
+        self.status = status
+
+    @classmethod
+    def from_control_info(cls, ctrl, status):
+        if status is None:
+            return "pending"
+
+        valid_statuses = [
+            "pending",
+            "not applicable",
+            "inherently met",
+            "documentation",
+            "planned",
+            "partial",
+            "supported",
+            "automated",
+        ]
+
+        if status not in valid_statuses:
+            raise InvalidStatus(
+                    "The given status '{given}' in the control '{control}' "
+                    "was invalid. Please use one of "
+                    "the following: {valid}".format(given=status,
+                                                    control=ctrl,
+                                                    valid=valid_statuses))
+        return status
+
+    def __str__(self):
+        return self.status
+
+    def __eq__(self, other):
+        if isinstance(other, Status):
+            return self.status == other.status
+        elif isinstance(other, str):
+            return self.status == other
+        return False
+
+
 class Control():
     def __init__(self):
         self.id = None
@@ -21,6 +64,7 @@ class Control():
         self.title = ""
         self.description = ""
         self.automated = ""
+        self.status = None
 
     @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
@@ -28,7 +72,10 @@ class Control():
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
-        control.automated = control_dict.get("automated", "yes")
+        control.status = Status.from_control_info(control.id, control_dict.get("status", None))
+        control.automated = control_dict.get("automated", "no")
+        if control.status == "automated":
+            control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
             msg = (
                 "Invalid value '%s' of automated key in control "
@@ -105,8 +152,14 @@ class Policy():
             default_level = [self.levels[0].id]
 
         for node in tree:
-            control = Control.from_control_dict(
-                node, self.env_yaml, default_level=default_level)
+            try:
+                control = Control.from_control_dict(
+                    node, self.env_yaml, default_level=default_level)
+            except Exception as exc:
+                msg = (
+                    "Unable to parse controls from {filename}: {error}"
+                    .format(filename=self.filepath, error=str(exc)))
+                raise RuntimeError(msg)
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc

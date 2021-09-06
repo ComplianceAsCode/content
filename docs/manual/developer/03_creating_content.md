@@ -434,10 +434,15 @@ related to this control.
 * R3 can be automatically scanned by SCAP but unfortunately we don’t have any
 rules implemented yet.
 
-For each control we will add the `automated` key, which describes whether the
-control requirement can be automated by SCAP and scanning. Possible values are:
-`yes`, `no`, `partially`. The `automated` key is just for informational purposes
-and does not have any impact on the processing.
+For each control we will add the `status` key, which describes the current
+implementation status of the control. For instance, if the control requirement
+can be automated by SCAP and scanning, the status will be `automated`.
+The `status` key is just for informational purposes and does not have any
+impact on the processing.
+
+The  `status` key deprecates the `automated` key -
+`automated: yes` translates to `status: automated`, and so on.
+The `status` key is preferred as it it is capable to reflect the control state more accurately.
 
 When XCCDF rules exist, we will assign them to the controls. We will distinguish
 between XCCDF rules which directly implement the given controls (represented by
@@ -466,7 +471,7 @@ controls:
     description: |-
       Remote user sessions must be closed after a certain
       period of inactivity.
-    automated: yes
+    status: automated
     rules:
     - sshd_set_idle_timeout
     - accounts_tmout
@@ -479,7 +484,7 @@ controls:
     description: |-
       The features configured at the level of launched services
       should be limited to the strict minimum.
-    automated: no
+    status: supported
     note: |-
       This is individual depending on the system workload
       therefore needs to be audited manually.
@@ -490,7 +495,7 @@ controls:
     description: |-
       It is recommended to enable SELinux in enforcing mode
       and to use the targeted policy.
-    automated: yes
+    status: automated
 ```
 
 Notice that each section identifier is a reference in the standard's benchmark.
@@ -585,6 +590,9 @@ The `status` key may hold the following values:
 * `automated`: The control is addressed by the product and can be automatically
                checked for.
 
+Note that if the `status` key is missing from a control definition, the default
+status will be `pending`.
+
 When there is work on-going to address a specific control, it may be portrayed
 via the `tickets` key. The aforementioned key shall contain a list of URLs that
 may help the reader track what work needs to be done to address a specific
@@ -663,7 +671,7 @@ controls:
     description: >-
       Remote user sessions must be closed after a certain
       period of inactivity.
-    automated: yes
+    status: automated
     rules:
     - sshd_set_idle_timeout
     - accounts_tmout
@@ -676,7 +684,7 @@ controls:
     description: >-
       The features configured at the level of launched services
       should be limited to the strict minimum.
-    automated: no
+    status: supported
     note: >-
       This is individual depending on the system workload
       therefore needs to be audited manually.
@@ -687,7 +695,7 @@ controls:
     description: >-
       It is recommended to enable SELinux in enforcing mode
       and to use the targeted policy.
-    automated: yes
+    status: automated
     rules:
       - selinux_state
   - id: R4
@@ -698,14 +706,14 @@ controls:
     controls:
       - id: R4.a
         title: Disable administrator accounts
-        automated: yes
+        status: automated
         levels:
         - low
         rules:
           -  accounts_passwords_pam_faillock_deny_root
       - id: R4.b
         title: Enforce password quality standards
-        automated: yes
+        status: automated
         levels:
         - high
         rules:
