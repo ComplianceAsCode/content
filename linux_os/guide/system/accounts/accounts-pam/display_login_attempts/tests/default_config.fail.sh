@@ -1,9 +1,15 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_ol
+# platform = multi_platform_rhel,multi_platform_ol,multi_platform_ubuntu
 
-rm -f /etc/pam.d/postlogin
+{{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
+{{% set pam_lastlog_path = "/etc/pam.d/login" %}}
+{{% else %}}
+{{% set pam_lastlog_path = "/etc/pam.d/postlogin" %}}
+{{% endif %}}
 
-cat <<EOF > /etc/pam.d/postlogin
+rm -f {{{ pam_lastlog_path }}}
+
+cat <<EOF > {{{ pam_lastlog_path }}}
 #%PAM-1.0
 # This file is auto-generated.
 # User changes will be destroyed the next time authconfig is run.
