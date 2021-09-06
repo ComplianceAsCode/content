@@ -3,27 +3,6 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-{{%- if product in ("fedora", "rhel9") %}}
-{{%- set prefix_regex = "^\s*" -%}}
-{{%- set separator_regex = "\s\+" -%}}
-{{%- set line_regex = prefix_regex ~ PARAMETER ~ separator_regex %}}
-mkdir -p /etc/ssh/sshd_config.d
-touch /etc/ssh/sshd_config.d/hardening
-{{{ lineinfile_absent("/etc/ssh/sshd_config", line_regex, insensitive=true) }}}
-{{{ lineinfile_absent_in_directory("/etc/ssh/sshd_config.d", line_regex, insensitive=true) }}}
-{{%- set hardening_config_basename = "00-complianceascode-hardening.conf" %}}
-{{{ set_config_file(
-        path="/etc/ssh/sshd_config.d/" ~ hardening_config_basename,
-        parameter=PARAMETER,
-        value=VALUE,
-        create=true,
-        insert_after="",
-        insert_before="^Match",
-        insensitive=true,
-        separator=" ",
-        separator_regex=separator_regex,
-        prefix_regex=prefix_regex)
-    }}}
-{{%- else %}}
-{{{ bash_sshd_config_set(parameter=PARAMETER, value=VALUE) }}}
-{{%- endif %}}
+
+{{%- set products_with_distributed_configuration=("fedora", "rhel9") %}}
+{{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=product in products_with_distributed_configuration) -}}}
