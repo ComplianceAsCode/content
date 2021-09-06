@@ -440,9 +440,9 @@ can be automated by SCAP and scanning, the status will be `automated`.
 The `status` key is just for informational purposes and does not have any
 impact on the processing.
 
-The `automated` key was avaliable, which defines whether a control can be
-checked for using SCAP atomation. However, the `status` key is preferred as
-it provides more information.
+The  `status` key deprecates the `automated` key -
+`automated: yes` translates to `status: automated`, and so on.
+The `status` key is preferred as it it is capable to reflect the control state more accurately.
 
 When XCCDF rules exist, we will assign them to the controls. We will distinguish
 between XCCDF rules which directly implement the given controls (represented by
