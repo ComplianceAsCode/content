@@ -152,8 +152,14 @@ class Policy():
             default_level = [self.levels[0].id]
 
         for node in tree:
-            control = Control.from_control_dict(
-                node, self.env_yaml, default_level=default_level)
+            try:
+                control = Control.from_control_dict(
+                    node, self.env_yaml, default_level=default_level)
+            except Exception as exc:
+                msg = (
+                    "Unable to parse controls from {filename}: {error}"
+                    .format(filename=self.filepath, error=str(exc)))
+                raise RuntimeError(msg)
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
