@@ -61,6 +61,8 @@ else
 fi
 {{%- endmacro -%}}
 
+{{%- set in_chrooted_environment = 'test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"' -%}}
+
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}
