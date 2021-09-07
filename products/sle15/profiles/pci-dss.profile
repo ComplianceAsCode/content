@@ -27,10 +27,7 @@ selections:
     - account_unique_name
     - accounts_maximum_age_login_defs
     - accounts_password_all_shadowed
-    - accounts_password_pam_dcredit
     - accounts_password_pam_lcredit
-    - accounts_password_pam_minlen
-    - accounts_password_pam_ucredit
     - accounts_password_pam_unix_remember
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
@@ -89,6 +86,9 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_mode_blank
     - display_login_attempts
+    - configure_libreswan_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_ssh_crypto_policy
     - ensure_logrotate_activated
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
