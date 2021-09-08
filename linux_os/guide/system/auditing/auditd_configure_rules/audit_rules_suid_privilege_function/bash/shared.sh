@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_sle
 
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
