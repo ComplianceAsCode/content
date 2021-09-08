@@ -283,7 +283,7 @@ def rewrite_keyless_section(file_contents, yaml_contents, section, content):
     if len(sec_ranges[0]) != 2:
         raise RuntimeError("Section has more than one line")
 
-    new_contents[sec_ranges[0][0]] = f"{section}: {content}"
+    new_contents[sec_ranges[0][0]] = "{section}: {content}".format(section=section, content=content)
 
     return new_contents
 
@@ -453,7 +453,7 @@ def add_product_cce(file_contents, yaml_contents, product, cce):
         return file_contents
 
     new_contents = add_to_the_section(
-        file_contents, yaml_contents, section, {f"cce@{product}": f"{cce}"})
+        file_contents, yaml_contents, section, {"cce@{product}".format(product=product): cce})
     new_contents = sort_section(new_contents, yaml_contents, section)
     return new_contents
 
@@ -560,7 +560,7 @@ def _add_cce(directory, cce_pool, rules, product_yaml, args):
     def is_relevant_rule(fname, _=None):
         for r in rules:
             if (
-                    fname.endswith(f"/{r}/rule.yml")
+                    fname.endswith("/{r}/rule.yml".format(r=r))
                     and has_no_cce(fname, product_yaml)):
                 return True
         return False
