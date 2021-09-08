@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'VPP - Protection Profile for Virtualization v. 1.0 for Red Hat Enterprise Linux Hypervisor (RHELH)'
+title: 'VPP - Protection Profile for Virtualization v. 1.0 for Red Hat Virtualization'
 
 description: |-
     This compliance profile reflects the core set of security
