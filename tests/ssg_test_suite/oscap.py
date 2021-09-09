@@ -266,6 +266,7 @@ class GenericRunner(object):
         self.stage = 'undefined'
 
         self.clean_files = False
+        self.create_reports = True
         self.manual_debug = False
         self._filenames_to_clean_afterwards = set()
 
@@ -392,7 +393,8 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def initial(self):
-        self.command_options += ['--results', self.results_path]
+        if self.create_reports:
+            self.command_options += ['--results', self.results_path]
         result = self.make_oscap_call()
         return result
 
@@ -400,7 +402,8 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def final(self):
-        self.command_options += ['--results', self.results_path]
+        if self.create_reports:
+            self.command_options += ['--results', self.results_path]
         result = self.make_oscap_call()
         return result
 
@@ -461,7 +464,7 @@ class ProfileRunner(GenericRunner):
 class RuleRunner(GenericRunner):
     def __init__(
             self, environment, profile, datastream, benchmark_id,
-            rule_id, script_name, dont_clean, manual_debug):
+            rule_id, script_name, dont_clean, no_reports, manual_debug):
         super(RuleRunner, self).__init__(
             environment, profile, datastream, benchmark_id,
         )
@@ -470,6 +473,7 @@ class RuleRunner(GenericRunner):
         self.context = None
         self.script_name = script_name
         self.clean_files = not dont_clean
+        self.create_reports = not no_reports
         self.manual_debug = manual_debug
 
         self._oscap_output = ''
@@ -489,7 +493,8 @@ class RuleRunner(GenericRunner):
 
     def make_oscap_call(self):
         self.prepare_online_scanning_arguments()
-        self._generate_report_file()
+        if self.create_reports:
+            self._generate_report_file()
         self.command_options.extend(
             ['--rule', self.rule_id])
         returncode, self._oscap_output = self.environment.scan(
