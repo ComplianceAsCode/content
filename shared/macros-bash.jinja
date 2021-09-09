@@ -251,6 +251,38 @@ done
     }}}
 {{%- endmacro -%}}
 
+
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed) -%}}
+{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+
+{{%- if config_is_distributed %}}
+{{%- set prefix_regex = "^\s*" -%}}
+{{%- set separator_regex = "\s\+" -%}}
+{{%- set hardening_config_basename = "00-complianceascode-hardening.conf" %}}
+{{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
+mkdir -p {{{ sshd_config_dir }}}
+touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
+{{{ lineinfile_absent(sshd_config_path, line_regex, insensitive=true) }}}
+{{{ lineinfile_absent_in_directory(sshd_config_dir, line_regex, insensitive=true, filename_glob="*.conf") }}}
+{{{ set_config_file(
+        path=sshd_config_dir ~ "/" ~ hardening_config_basename,
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="^Match",
+        insensitive=true,
+        separator=" ",
+        separator_regex=separator_regex,
+        prefix_regex=prefix_regex)
+    }}}
+{{%- else %}}
+{{{ bash_sshd_config_set(parameter=parameter, value=value) }}}
+{{%- endif %}}
+{{%- endmacro %}}
+
+
 {{#
     Macro that copies the audit rules into a file.
     The purpose is to create exactly the same content in the file specified by filename arg
@@ -832,13 +864,13 @@ fi
 LC_ALL=C sed -i "{{{ sed_path_separator }}}{{{ regex }}}{{{ sed_path_separator }}}{{{ modifier }}}" "{{{ path }}}"
 {{%- endmacro -%}}
 
-{{%- macro lineinfile_absent_in_directory(dirname, regex, insensitive=true) -%}}
+{{%- macro lineinfile_absent_in_directory(dirname, regex, insensitive=true, filename_glob="*") -%}}
     {{%- if insensitive -%}}
         {{%- set modifier="Id" -%}}
     {{%- else -%}}
         {{%- set modifier="d" -%}}
     {{%- endif -%}}
-LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ dirname }}}"/*
+LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ dirname }}}"/{{{ filename_glob }}}
 {{%- endmacro -%}}
 
 {{%- macro lineinfile_present(path, line, insert_after="", insert_before="", insensitive=true, sed_path_separator="/") -%}}
