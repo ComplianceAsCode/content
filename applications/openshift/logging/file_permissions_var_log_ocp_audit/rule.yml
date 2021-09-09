@@ -6,6 +6,7 @@ title: 'OpenShift Audit Logs Must Have Mode 0600'
 
 platforms:
   - ocp4-master-node
+  - ocp4-node
 
 description: |-
     {{{ describe_file_permissions(file="/var/log/openshift-apiserver/.*", perms="0600") }}}
