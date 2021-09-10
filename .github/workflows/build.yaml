@@ -12,7 +12,7 @@ jobs:
       - name: Install Deps
         uses: mstksg/get-package@master
         with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github bats
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github bats python3-pytest python3-pytest-cov
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -28,7 +28,7 @@ jobs:
       image: fedora:33
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
