@@ -135,6 +135,7 @@ selections:
     - smartcard_configure_cert_checking
 
     # UBTU-20-010066 The Ubuntu operating system for PKI-based authentication, must implement a local cache of revocation data in case of the inability to access revocation information via the network.
+    - smartcard_configure_crl
 
     # UBTU-20-010070 The Ubuntu operating system must prohibit password reuse for a minimum of five generations.
     - var_password_pam_unix_remember=5
