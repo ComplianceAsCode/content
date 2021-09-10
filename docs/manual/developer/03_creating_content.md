@@ -813,8 +813,10 @@ the resulting SCAP source data stream.
 
 ### Presentation of data
 
-Apart to the build system, the controls files can be also processed by the
-`render-policy.py` utility. It creates a HTML file where the controls are
+Apart to the build system, the controls files can be also processed by
+different utilities.
+
+The `render-policy.py` utility creates a HTML file where the controls are
 resolved in the context of a given product. The file contains links to rule
 definitions in the upstream repository. The generated file can be distributed to
 subject matter experts for a review.
@@ -824,3 +826,14 @@ $ utils/render-policy.py --output doc.html rhel8 controls/abcd.yml
 ```
 
 For more details about the `render_policy.py` tool, run `utils/render-policy.py --help`.
+
+The `controleval.py` utility creates statistics that show the current progress
+in implementing a certain level from the controls file. These are derived from
+the different status options that were documented earlier in this
+documentation.
+
+```
+$ utils/controleval.py stats -i cis_rhel7 -l l2_server
+```
+
+For more details about the `controleval.py` too, run `utils/controleval.py --help`.
