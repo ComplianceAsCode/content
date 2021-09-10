@@ -17,7 +17,6 @@ from .build_cpe import CPEDoesNotExist
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
-from .controls import Control
 
 from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
