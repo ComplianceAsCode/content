@@ -227,13 +227,15 @@ def run_with_stdout_logging(command, args, log_file):
     log_file.write("{0} {1}\n".format(command, " ".join(args)))
     result = subprocess.run(
             (command,) + args, encoding="utf-8", stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE, check=True)
+            stderr=subprocess.PIPE, check=False)
     if result.stdout:
         log_file.write("STDOUT: ")
         log_file.write(result.stdout)
     if result.stderr:
         log_file.write("STDERR: ")
         log_file.write(result.stderr)
+    if result.returncode:
+        raise RuntimeError("'%s' command returned non-zero." % command)
     return result.stdout
 
 
