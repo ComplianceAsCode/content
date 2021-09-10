@@ -30,6 +30,7 @@ class ProductCPEs(object):
         self.cpes_by_id = {}
         self.cpes_by_name = {}
         self.product_cpes = {}
+        self.cpe_al_ref_checks = {}
 
         self.load_product_cpes()
         self.load_content_cpes()
@@ -39,11 +40,17 @@ class ProductCPEs(object):
             for cpe_id in cpe.keys():
                 map_[cpe_id] = CPEItem(cpe[cpe_id])
 
+    def _load_cpes_al_ref_list(self, map_, cpes_list):
+        for cpe in cpes_list:
+            for cpe_id in cpe.keys():
+                map_[cpe_id] = CPEALFactCheck(cpe[cpe_id])
+
     def load_product_cpes(self):
 
         try:
             product_cpes_list = self.product_yaml["cpes"]
             self._load_cpes_list(self.product_cpes, product_cpes_list)
+            self._load_cpes_al_ref_list(self.cpe_al_ref_checks, product_cpes_list)
 
         except KeyError:
             print("Product %s does not define 'cpes'" % (self.product_yaml["product"]))
@@ -73,6 +80,7 @@ class ProductCPEs(object):
             # Get past "cpes" key, which was added for readability of the content
             cpes_list = open_raw(dir_item_path)["cpes"]
             self._load_cpes_list(self.cpes_by_id, cpes_list)
+            self._load_cpes_al_ref_list(self.cpe_al_ref_checks, cpes_list)
 
         # Add product_cpes to map of CPEs by ID
         self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes)
@@ -166,6 +174,46 @@ class CPEItem(object):
         cpe_item_check.text = self.check_id
 
         return cpe_item
+
+class CPEALPlatformSpecification(object):
+    def __init__(self):
+        self.platforms = []
+
+    def add_platform(self, platform):
+        self.platforms.append(platform)
+
+class CPEALPlatform(object):
+    def __init__():
+        self.id = ""
+        self.test = None
+
+    def add_test(self, test):
+        self.test = test
+
+class CPEALTest(object):
+    def __init__(self):
+        self.id = None
+        self.operator = None
+        self.negated = False
+        self.objects = []
+
+    def __eq__(self, other):
+        if self.operator == other.operator:
+            for object in self.objects:
+                if object not in other.objects:
+                    return False
+            return True
+        else:
+            return False
+
+class CPEALFactCheck(object):
+    def __init__(self, cpeitem_data):
+        self.name = cpeitem_data["name"]
+        self.title = cpeitem_data["title"]
+        self.check_id = cpeitem_data["check_id"]
+
+    def __eq__(self, other):
+        return self.refid == other.refid
 
 
 def extract_subelement(objects, sub_elem_type):
