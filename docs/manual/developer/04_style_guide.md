@@ -3,10 +3,10 @@
 ## Pull Requests
 * Should follow the template
 * Shall remove the sample text from the template
-* Shall not have merge commits
+* Shall not have merge commits, they should have to be taken out by rebasing.
 
 ### Before Merging 
-* Must have released associated
+* The milestone must be set correctly
 * Must have the correct labels
 * Should be assigned to the reviewers
 
@@ -30,6 +30,7 @@
 * The files in the build system shall be Python 2.7 and Python 3 compatible
 * Utilities may only be compatible Python 3
 * Shall use the `.py` for the file extension
+* Use 4-space indentation
 
 ## YAML
 * All YAML files shall use 4 spaces inplace of tabs.
@@ -129,7 +130,9 @@ All remediations should have the following header with the correct
 
 ### Bash
 * Should use marcos instead shared functions
-* 
+* Use 4-space indentation
+* Put `do` or `then` on the same line as `for` or `if` respectively, e.g. `for file in *; do`
+
 ### Ansible
 * Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
 * Should prefer using Ansible modules over just calling system commands
@@ -167,7 +170,7 @@ All remediations should have the following header with the correct
 * Should test one change
 
 ## Markdown
-* One sentence per line
+* [One sentence per line](https://asciidoctor.org/docs/asciidoc-recommended-practices/#one-sentence-per-line)
 
 ### Headings
 * Must have one blank file above headings
