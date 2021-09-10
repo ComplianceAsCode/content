@@ -179,6 +179,10 @@ def parse_args():
                              dest="dont_clean",
                              action="store_true",
                              help="Do not remove html reports of successful runs")
+    parser_rule.add_argument("--no-reports",
+                             dest="no_reports",
+                             action="store_true",
+                             help="Do not run oscap with --report and --results options")
     parser_rule.add_argument("--scenarios",
                              dest="scenarios_regex",
                              default=None,
@@ -199,6 +203,10 @@ def parse_args():
                                  dest="dont_clean",
                                  action="store_true",
                                  help="Do not remove html reports of successful runs")
+    parser_combined.add_argument("--no-reports",
+                                 dest="no_reports",
+                                 action="store_true",
+                                 help="Do not run oscap with --report and --results options")
     parser_combined.add_argument("--scenarios",
                                  dest="scenarios_regex",
                                  default=None,

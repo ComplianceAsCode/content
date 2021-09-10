@@ -107,6 +107,7 @@ def perform_combined_check(options):
     checker.benchmark_id = options.benchmark_id
     checker.remediate_using = options.remediate_using
     checker.dont_clean = options.dont_clean
+    checker.no_reports = options.no_reports
     # No debug option is provided for combined mode
     checker.manual_debug = False
     checker.benchmark_cpes = options.benchmark_cpes
