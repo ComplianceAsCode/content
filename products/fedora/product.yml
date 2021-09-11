@@ -17,11 +17,20 @@ grub2_uefi_boot_path: "/boot/grub2"
 dconf_gdm_dir: "distro.d"
 
 cpes_root: "../../shared/applicability"
-
 cpes:
-  - fedora:
-      name: "cpe:/o:fedoraproject:fedora:32"
-      title: "Fedora 32"
+  - fedora_35:
+      name: "cpe:/o:fedoraproject:fedora:35"
+      title: "Fedora 35"
+      check_id: installed_OS_is_fedora
+
+  - fedora_34:
+      name: "cpe:/o:fedoraproject:fedora:34"
+      title: "Fedora 34"
+      check_id: installed_OS_is_fedora
+
+  - fedora_33:
+      name: "cpe:/o:fedoraproject:fedora:33"
+      title: "Fedora 33"
       check_id: installed_OS_is_fedora
 
 # The fingerprint and pkg_version are retrieved from https://getfedora.org/keys/
