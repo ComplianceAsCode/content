@@ -31,7 +31,7 @@
 
 - name: get current kernel parameters
   ansible.builtin.shell:
-    cmd: '/usr/bin/grub2-editenv - list | echo "kernelopts="'
+    cmd: '/usr/bin/grub2-editenv - list | grep "kernelopts="'
   register: kernelopts
   changed_when: False
 
