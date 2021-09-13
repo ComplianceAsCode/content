@@ -97,7 +97,7 @@
 <xsl:template match="xccdf:Rule">
   <xsl:copy>
     <!-- deal with the fact that oscap demands fixes stand only before checks -->
-    <xsl:apply-templates select="@*|node()[not(self::xccdf:check)]"/>
+    <xsl:apply-templates select="@*|node()[not(self::xccdf:check|self::xccdf:complex-check)]"/>
 
     <xsl:variable name="rule" select="."/>
     <xsl:variable name="rule_id" select="$rule/@id"/>
@@ -129,7 +129,7 @@
       </xsl:element>
     </xsl:for-each>
 
-    <xsl:apply-templates select="node()[self::xccdf:check]"/>
+    <xsl:apply-templates select="node()[self::xccdf:check|self::xccdf:complex-check]"/>
   </xsl:copy>
 </xsl:template>
 

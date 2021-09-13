@@ -80,7 +80,8 @@
           <xsl:apply-templates select="ident[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
           <xsl:apply-templates select="oval[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval|self::prodtype)]"/>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::complex-check|self::oval|self::prodtype)]"/>
+          <xsl:apply-templates select="complex-check"/>
         </Rule>
       </xsl:when>
     </xsl:choose>
@@ -108,7 +109,8 @@
       <xsl:apply-templates select="ident"/>
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval)]"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::complex-check|self::oval)]"/>
+      <xsl:apply-templates select="complex-check"/>
     </Rule>
   </xsl:template>
 
@@ -393,6 +395,79 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- expand reference to OVAL ID inside single complex-check -->
+  <xsl:template match="Rule/complex-check/oval">
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
+        <check>
+          <xsl:attribute name="system">
+            <xsl:value-of select="$ovaluri" />
+          </xsl:attribute>
+
+          <xsl:for-each select="@*">
+          <xsl:choose>
+          <xsl:when test="contains(name(),'value')">
+            <check-export>
+              <xsl:attribute name="export-name">
+                <xsl:value-of select="." />
+              </xsl:attribute>
+              <xsl:attribute name="value-id">
+                <xsl:value-of select="." />
+              </xsl:attribute>
+            </check-export>
+          </xsl:when>
+          </xsl:choose>
+          </xsl:for-each>
+
+          <check-content-ref>
+            <xsl:attribute name="href">
+              <xsl:value-of select="'oval-unlinked.xml'" />
+            </xsl:attribute>
+            <xsl:attribute name="name">
+              <xsl:value-of select="@id" />
+            </xsl:attribute>
+          </check-content-ref>
+        </check>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- expand reference to OVAL ID inside double complex-check (e.g., OCIL + SCE + OVAL) -->
+  <xsl:template match="Rule/complex-check/complex-check/oval">
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
+        <check>
+          <xsl:attribute name="system">
+            <xsl:value-of select="$ovaluri" />
+          </xsl:attribute>
+
+          <xsl:for-each select="@*">
+          <xsl:choose>
+          <xsl:when test="contains(name(),'value')">
+            <check-export>
+              <xsl:attribute name="export-name">
+                <xsl:value-of select="." />
+              </xsl:attribute>
+              <xsl:attribute name="value-id">
+                <xsl:value-of select="." />
+              </xsl:attribute>
+            </check-export>
+          </xsl:when>
+          </xsl:choose>
+          </xsl:for-each>
+
+          <check-content-ref>
+            <xsl:attribute name="href">
+              <xsl:value-of select="'oval-unlinked.xml'" />
+            </xsl:attribute>
+            <xsl:attribute name="name">
+              <xsl:value-of select="@id" />
+            </xsl:attribute>
+          </check-content-ref>
+        </check>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- expand reference to would-be OCIL (inline) -->
   <xsl:template match="Rule/ocil">
@@ -412,6 +487,26 @@
       </xsl:when>
     </xsl:choose>
   </xsl:template>
+
+  <!-- expand reference to would-be OCIL inside complex-check (inline) -->
+  <xsl:template match="Rule/complex-check/ocil">
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
+        <check>
+          <xsl:attribute name="system">ocil-transitional</xsl:attribute>
+          <check-export>
+            <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
+            <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
+          </check-export>
+          <!-- add the actual manual checking text -->
+          <check-content>
+            <xsl:apply-templates select="node()"/>
+          </check-content>
+        </check>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
 
   <!-- The next set of templates places elements into the correct namespaces,
        so that content authors never have to bother with them.

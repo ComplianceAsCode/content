@@ -15,7 +15,8 @@ try:
 except ImportError:
     from urllib import quote
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes", "blueprint"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
+             "kubernetes", "blueprint", "sce-bash"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -25,7 +26,8 @@ lang_to_ext_map = {
     "puppet": ".pp",
     "ignition": ".yml",
     "kubernetes": ".yml",
-    "blueprint": ".toml"
+    "blueprint": ".toml",
+    "sce-bash": ".sh",
 }
 
 
@@ -108,10 +110,10 @@ class Builder(object):
         self.output_dirs = dict()
         for lang in languages:
             lang_dir = lang
-            if lang == "oval":
-                # OVAL checks need to be put to a different directory because
-                # they are processed differently than remediations later in
-                # the build process
+            if lang == "oval" or lang.startswith("sce-"):
+                # OVAL and SCE checks need to be put to a different directory
+                # because they are processed differently than remediations
+                # later in the build process
                 output_dir = self.checks_dir
                 if lang.startswith("sce-"):
                     lang_dir = "sce"
@@ -197,7 +199,7 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
-        if lang not in templates[template_name].langs:
+        if lang not in templates[template_name].langs or lang.startswith("sce-"):
             return
 
         filled_template = self.build_lang_file(rule_id, template_name,

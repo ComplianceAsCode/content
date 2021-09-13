@@ -1407,17 +1407,8 @@ class Rule(object):
         if main_ref.attrib:
             rule.append(main_ref)
 
-        if self.oval_external_content:
-            check = ET.SubElement(rule, 'check')
-            check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
-            external_content = ET.SubElement(check, "check-content-ref")
-            external_content.set("href", self.oval_external_content)
-        else:
-            # TODO: This is pretty much a hack, oval ID will be the same as rule ID
-            #       and we don't want the developers to have to keep them in sync.
-            #       Therefore let's just add an OVAL ref of that ID.
-            oval_ref = ET.SubElement(rule, "oval")
-            oval_ref.set("id", self.id_)
+        ocil_parent = rule
+        check_parent = rule
 
         if self.sce_metadata:
             # TODO: This is pretty much another hack, just like the previous OVAL
@@ -1426,7 +1417,31 @@ class Rule(object):
             #
             # Additionally, we build the content (check subelement) here rather
             # than in xslt due to the nature of our SCE metadata.
-            check = ET.SubElement(rule, "check")
+            #
+            # Finally, before we begin, we might have an element with both SCE
+            # and OVAL. We have no way of knowing (right here) whether that is
+            # the case (due to a variety of issues, most notably, that linking
+            # hasn't yet occurred). So we must rely on the content author's
+            # good will, by annotating SCE content with a complex-check tag
+            # if necessary.
+
+            if 'complex-check' in self.sce_metadata:
+                # Here we have an issue: XCCDF allows EITHER one or more check
+                # elements OR a single complex-check. While we have an explicit
+                # case handling the OVAL-and-SCE interaction, OCIL entries have
+                # (historically) been alongside OVAL content and been in an
+                # "OR" manner -- preferring OVAL to SCE. In order to accomplish
+                # this, we thus need to add _yet another parent_ when OCIL data
+                # is present, and add update ocil_parent accordingly.
+                if self.ocil or self.ocil_clause:
+                    ocil_parent = ET.SubElement(ocil_parent, "complex-check")
+                    ocil_parent.set('operator', 'OR')
+
+                check_parent = ET.SubElement(ocil_parent, "complex-check")
+                check_parent.set('operator', self.sce_metadata['complex-check'])
+
+            # Now, add the SCE check element to the tree.
+            check = ET.SubElement(check_parent, "check")
             check.set("system", SCE_SYSTEM)
 
             if 'check-import' in self.sce_metadata:
@@ -1451,8 +1466,20 @@ class Rule(object):
             href = self.current_product + "/checks/sce/" + self.sce_metadata['filename']
             check_ref.set("href", href)
 
+        if self.oval_external_content:
+            check = ET.SubElement(check_parent, 'check')
+            check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
+            external_content = ET.SubElement(check, "check-content-ref")
+            external_content.set("href", self.oval_external_content)
+        else:
+            # TODO: This is pretty much a hack, oval ID will be the same as rule ID
+            #       and we don't want the developers to have to keep them in sync.
+            #       Therefore let's just add an OVAL ref of that ID.
+            oval_ref = ET.SubElement(check_parent, "oval")
+            oval_ref.set("id", self.id_)
+
         if self.ocil or self.ocil_clause:
-            ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
+            ocil = add_sub_element(ocil_parent, 'ocil', self.ocil if self.ocil else "")
             if self.ocil_clause:
                 ocil.set("clause", self.ocil_clause)
 

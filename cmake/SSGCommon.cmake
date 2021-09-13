@@ -437,7 +437,7 @@ macro(ssg_build_sce PRODUCT)
         #    the Shorthand, so we'd have a dependency circle.
         add_custom_command(
             OUTPUT "${BUILD_CHECKS_DIR}/sce/metadata.json"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_sce.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --templates-dir "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/sce" ${SCE_COMBINE_PATHS}
             DEPENDS "${SSG_BUILD_SCRIPTS}/build_sce.py"
             COMMENT "[${PRODUCT}-content] generating sce/metadata.json"
         )
