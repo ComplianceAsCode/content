@@ -65,7 +65,7 @@ If possible, please create a set of small self-contained pull requests rather th
 massive pull request. If a pull request consists of a sequence of well-defined steps, the best
 approach is to keep the *one step = one commit* approach.
 
-Avoid merge commits in pull requests - use *git rebase* to get rid of them. This helps us keep git
+Avoid merge commits in pull requests - use `git rebase` to get rid of them. This helps us keep git
 tree clean and helps to make it easy to understand historical changes done in past commits.
 
 Contributing Content
@@ -81,9 +81,11 @@ There are some guidelines and rules to consider when you are contributing conten
 1. Products or content that have been previously retired should stay retired unless there is a heavy commitment to support that content.
 1. While this is an open source project, contributing content from projects (e.g. Webmin) that have been taken over by a hacker is a no-go. Not only can you or the project not guarantee that that project is truly cleaned up, but doing so diminishes the trust and provenance of this project.
 1. Both DISA and NSA have said CentOS does not meet the expectations of U.S. Government security requirements. Therefore, there are no government profiles for CentOS, and they are not supported by this project whether through developement or contributions. This clearly angers some, but good cyber practices and compliance are practiced and expected by this project.
-1. Changes related to one product or profile shouldn’t change behavior for other products or profiles unless the nature of the change affects multiple products or profiles.
+1. Changes related to one product or profile shouldn't change behavior for other products or profiles unless the nature of the change affects multiple products or profiles.
 1. If you are able and have time, prevent duplication of code. Use Jinja macros and [check (remediation) templates](/docs/manual/developer_guide.adoc#732-list-of-available-templates).
 1. When developing Python scripts, follow the indentation style. For Python code, follow [PEP8](https://www.python.org/dev/peps/pep-0008/).
+
+More details can be found in our [style guide](/docs/manual/developer/04_style_guide.md).
 
 And as always, you can view the docs at [https://complianceascode.readthedocs.io/](https://complianceascode.readthedocs.io/),
 or if you do not have internet access, the docs can be viewed at [Developer Guide](/docs/manual/developer_guide.adoc).
