@@ -13,7 +13,7 @@ bringing a sudden breaking change into the release.
 The stabilization phase is typically two weeks long. To start the stabilization:
 
 - Create a new branch called **stabilization**, if there is a leftover branch
-  from the previous release the new one shoule replace it, we do not version
+  from the previous release the new one should replace it, we do not version
   stabilization and stable branches
 
 - Create a new milestone for the next version
@@ -68,8 +68,8 @@ Everything necessary for the release is built by the release GitHub Action,
 which is triggered when a tag **v*.*.*** is pushed to the repository. This tag
 should point to the **stabilization** branch that is ready to be released.
 
-This action will also create a relase draft with release notes automatically
-generated. They way how action will categorize and break down changes is
+This action will also create a release draft with release notes automatically
+generated. The way in which the action will categorize and break down changes is
 controlled by the `.github/workflows/release-changelog.json` configuration file.
 
 General rule is that Title Case PR labels would form the base of the changelog.
@@ -79,7 +79,7 @@ Release
 -------
 
 Create and push **vX.X.XX** tag to the GitHub repo. Wait for the release action
-to finish. Check the release draft and update the release notes if nessesary.
+to finish. Check the release draft and update the release notes if necessary.
 Publish the release.
 
 In case there would be a need to start over don't forget to delete the release
@@ -89,15 +89,20 @@ draft before trying to push the tag again.
 Clean Up and Bump Version
 -------------------------
 
+-   Run `python3 release_content.py move_milestone`
+
+    It will create the next milestone (if it doesn’t exist yet), move
+    any open issues and PRs from current milestone to the next milestone,
+    and close current release’s milestone.
+
 -   Run `python3 release_content.py prep_next_release`
 
     It will cleanup the release process, meaning that local copy of the
     artifacts will be deleted, tracking of Jenkins builds are dropped.
     It will also create a `bump_version_{version}` branch and a "Bump
-    version" commit for your convenience.
-    **Make a PR out of the branch**.
+    version" commit for your convenience. **Make a PR out of the branch**.
 
-- delete the **stable* branch and rename the **stabilization** branch to **stable**
+- delete the **stable** branch and rename the **stabilization** branch to **stable**
 
 
 Announce It!
