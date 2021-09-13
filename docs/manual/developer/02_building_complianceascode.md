@@ -50,6 +50,19 @@ yum install ShellCheck
 # Ubuntu/Debian
 apt-get install shellcheck
 ```
+
+### Bats (Bash Unit Tests)
+
+Install the `bats` package to perform bash unit tests:
+
+```bash
+# Fedora/RHEL
+yum install bats
+
+# Ubuntu/Debian
+apt-get install bats
+```
+
 ### Ansible Static Analysis packages
 
 Install `yamllint` and `ansible-lint` packages to perform Ansible
