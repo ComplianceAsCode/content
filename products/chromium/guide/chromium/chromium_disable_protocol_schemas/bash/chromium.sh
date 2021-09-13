@@ -1,5 +1,6 @@
 # platform = Google Chromium Browser
-populate var_url_blacklist
+
+{{{ bash_instantiate_variables("var_url_blacklist") }}}
 
 CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"
