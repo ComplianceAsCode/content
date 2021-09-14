@@ -8,7 +8,7 @@ echo "Setting=$varname1" >> config_file
 #}}
 {{%- macro bash_instantiate_variables() -%}}
 {{%- for name in varargs -%}}
-bash-populate {{{ name }}}
+{{{ name }}}="(bash-populate {{{ name }}})"
 {{# this line is intentionally left blank #}}
 {{% endfor -%}}
 {{%- endmacro -%}}

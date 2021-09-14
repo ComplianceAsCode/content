@@ -109,24 +109,6 @@ def is_supported_filename(remediation_type, filename):
     sys.exit(1)
 
 
-def get_populate_replacement(remediation_type, text):
-    """
-    Return varname, fixtextcontribution
-    """
-
-    if remediation_type == 'bash':
-        # Extract variable name
-        varname = re.search(r'\nbash-populate (\S+)\n',
-                            text, re.DOTALL).group(1)
-        # Define fix text part to contribute to main fix text
-        fixtextcontribution = '\n%s="' % varname
-        return (varname, fixtextcontribution)
-
-    sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
-                     % (remediation_type))
-    sys.exit(1)
-
-
 def split_remediation_content_and_metadata(fix_file):
     remediation_contents = []
     config = defaultdict(lambda: None)
@@ -681,10 +663,10 @@ def expand_xccdf_subs(fix, remediation_type):
     Security Guide remediation functions expand the selected shell variables
     and remediation functions calls with <xccdf:sub> element
 
-    This routine translates any instance of the 'populate' function call in
+    This routine translates any instance of the 'bash-populate' function call in
     the form of:
 
-            populate variable_name
+            (bash-populate variable_name)
 
     into
 
@@ -707,7 +689,8 @@ def expand_xccdf_subs(fix, remediation_type):
             <sub idref="function_function_name"/>
             function_name "arg1" "arg2" ... "argN"
     """
-
+    if fix is not None:
+        fix_text = fix.text
     if remediation_type == "ignition":
         return
     elif remediation_type == "kubernetes":
@@ -715,7 +698,6 @@ def expand_xccdf_subs(fix, remediation_type):
     elif remediation_type == "blueprint":
         return
     elif remediation_type == "ansible":
-        fix_text = fix.text
 
         if "(ansible-populate " in fix_text:
             raise RuntimeError(
@@ -746,142 +728,30 @@ def expand_xccdf_subs(fix, remediation_type):
 
         pattern = r'\(ansible-populate\s*(\S+)\)'
 
-        # we will get list what looks like
-        # [text, varname, text, varname, ..., text]
-        parts = re.split(pattern, fix_text)
-
-        fix.text = parts[0]  # add first "text"
-        for index in range(1, len(parts), 2):
-            varname = parts[index]
-            text_between_vars = parts[index + 1]
-
-            # we cannot combine elements and text easily
-            # so text is in ".tail" of element
-            xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
-            xccdfvarsub.tail = text_between_vars
-        return
-
     elif remediation_type == "puppet":
         pattern = r'\(puppet-populate\s*(\S+)\)'
-
-        # we will get list what looks like
-        # [text, varname, text, varname, ..., text]
-        parts = re.split(pattern, fix.text)
-
-        fix.text = parts[0]  # add first "text"
-        for index in range(1, len(parts), 2):
-            varname = parts[index]
-            text_between_vars = parts[index + 1]
-
-            # we cannot combine elements and text easily
-            # so text is in ".tail" of element
-            xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
-            xccdfvarsub.tail = text_between_vars
-        return
 
     elif remediation_type == "anaconda":
         pattern = r'\(anaconda-populate\s*(\S+)\)'
 
-        # we will get list what looks like
-        # [text, varname, text, varname, ..., text]
-        parts = re.split(pattern, fix.text)
-
-        fix.text = parts[0]  # add first "text"
-        for index in range(1, len(parts), 2):
-            varname = parts[index]
-            text_between_vars = parts[index + 1]
-
-            # we cannot combine elements and text easily
-            # so text is in ".tail" of element
-            xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
-            xccdfvarsub.tail = text_between_vars
-        return
-
     elif remediation_type == "bash":
-        # This remediation script doesn't utilize bash-populate calls
-        # Skip it without any further processing
-        if 'bash-populate' not in fix.text:
-            return
+        pattern = r'\(bash-populate\s*(\S+)\)'
 
-        # This remediation script utilizes bash-populate calls
-        # Expand bash-populate calls with <xccdf:sub> elements
-
-        # Split the portion of fix.text at the bash-populate function call.
-        pattern = r'\n+(\s*(?:bash-populate)[^\n]*)\n'
-        patcomp = re.compile(pattern, re.DOTALL)
-        fixparts = re.split(patcomp, fix.text)
-        # 'fixparts' now looks like: [text, bash-populate <varname>, text, ...]
-        # 'fixparts' is either empty, or has an odd amount of elements
-        if fixparts[0] is not None:
-            # Remove the first text element, so that we can start substituting bash-populate
-            fix.text = fixparts[0]
-            fixparts.pop(0)
-            # Perform sanity check on new 'fixparts' list content (to continue
-            # successfully 'fixparts' has to contain even count of elements)
-            if len(fixparts) % 2 != 0:
-                sys.stderr.write("Error performing XCCDF expansion on "
-                                 "remediation script: %s\n"
-                                 % fix.get("rule"))
-                sys.stderr.write("Invalid count of elements. Exiting!\n")
-                sys.exit(1)
-            # Process remaining 'fixparts' elements in pairs
-            # First pair element is bash-populate call to be XCCDF expanded
-            # Second pair element (if not empty) is the portion of the original
-            # fix text to be used in newly added sublement's tail
-            for idx in range(0, len(fixparts), 2):
-                # We previously removed enclosing newlines when creating
-                # fixparts list. Add them back and reuse the above 'pattern'
-                fixparts[idx] = "\n%s\n" % fixparts[idx]
-                # Sanity check (verify the first field truly contains bash-populate call)
-                if re.match(pattern, fixparts[idx], re.DOTALL) is not None:
-                    varname, fixtextcontrib = get_populate_replacement(remediation_type,
-                                                                       fixparts[idx])
-                    # Define new XCCDF <sub> element for the variable
-                    xccdfvarsub = ElementTree.Element("sub", idref=varname)
-
-                    # If this is first sub element,
-                    # the textcontribution needs to go to fix text
-                    # otherwise, append to last subelement
-                    nfixchildren = len(list(fix))
-                    if nfixchildren == 0:
-                        fix.text += fixtextcontrib
-                    else:
-                        previouselem = fix[nfixchildren-1]
-                        previouselem.tail += fixtextcontrib
-
-                    # If second pair element is not empty, append it as
-                    # tail for the subelement (prefixed with closing '"')
-                    if fixparts[idx + 1] is not None:
-                        xccdfvarsub.tail = '"' + '\n' + fixparts[idx + 1]
-                    # Otherwise append just enclosing '"'
-                    else:
-                        xccdfvarsub.tail = '"' + '\n'
-                    # Append the new subelement to the fix element
-                    fix.append(xccdfvarsub)
-
-        # Perform a sanity check if all bash-populate calls have been
-        # properly XCCDF substituted. Exit with failure if some weren't
-
-        # First concat output form of modified fix text (including text appended
-        # to all children of the fix)
-        modfix = [fix.text]
-        for child in list(fix):
-            if child is not None and child.text is not None:
-                modfix.append(child.text)
-        modfixtext = "".join(modfix)
-        # Don't perform sanity check at bash comments because they are not substituted
-        modfixtext = re.sub(r'#.*', '', modfixtext)
-        # Then efine expected XCCDF sub element form for this function
-        funcxccdfsub = "<sub idref=\"function_%s\"" % "bash-populate"
-        # Finally perform the sanity check -- if bash-populate call was properly XCCDF
-        # substituted both the original bash-populate call and XCCDF <sub> element
-        # for that call need to be present in the modified text of the fix
-        # Otherwise something went wrong, thus exit with failure
-        if "bash-populate" in modfixtext and funcxccdfsub not in modfixtext:
-            sys.stderr.write("Error performing XCCDF <sub> substitution "
-                             "for function %s in %s fix. Exiting...\n"
-                             % ("bash-populate", fix.get("rule")))
-            sys.exit(1)
     else:
         sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
         sys.exit(1)
+
+    # we will get list what looks like
+    # [text, varname, text, varname, ..., text]
+    parts = re.split(pattern, fix_text)
+
+    fix.text = parts[0]  # add first "text"
+    for index in range(1, len(parts), 2):
+        varname = parts[index]
+        text_between_vars = parts[index + 1]
+
+        # we cannot combine elements and text easily
+        # so text is in ".tail" of element
+        xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
+        xccdfvarsub.tail = text_between_vars
+    return
