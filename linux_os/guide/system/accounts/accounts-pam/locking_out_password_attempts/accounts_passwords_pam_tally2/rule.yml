@@ -5,8 +5,8 @@ prodtype: sle12,sle15,ubuntu2004
 title: 'Set Deny For Failed Password Attempts'
 
 description: |-
-    The SUSE operating system must lock an account after three consecutive
-    invalid access attempts.
+    The {{{ full_name }}} operating system must lock an account after - at most - {{{ xccdf_value("var_password_pam_tally2") }}}
+    consecutive invalid access attempts.
 
 rationale: |-
     By limiting the number of failed logon attempts, the risk of unauthorized
@@ -47,16 +47,16 @@ references:
 ocil_clause: 'that is not the case'
 
 ocil: |-
-    Check that the systems locks a user account after three consecutive failed
-    login attempts with the following command:
+    Check that the systems locks a user account after - at most - <tt>{{{ xccdf_value("var_password_pam_tally2") }}}</tt>
+    consecutive failed login attempts with the following command:
 
     <pre># grep pam_tally2.so /etc/pam.d/common-auth
     auth required pam_tally2.so onerr=fail deny={{{ xccdf_value("var_password_pam_tally2") }}}</pre>
 
     If no line is returned, the line is commented out, or the line is missing
     "onerr=fail", this is a finding.
-    <pre>If the line has "deny" set to a value other than {{{ xccdf_value("var_password_pam_tally2") }}}, this is a
-    finding.</pre>
+    If the line has "deny" set to a value outside of the range <pre>1-{{{ xccdf_value("var_password_pam_tally2") }}}</pre>,
+    this is a finding.
 
     Check that the system resets the failed login attempts counter after a
     successful login using the following command:

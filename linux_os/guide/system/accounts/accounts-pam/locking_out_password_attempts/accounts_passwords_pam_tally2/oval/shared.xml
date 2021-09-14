@@ -12,13 +12,28 @@
   check="all" check_existence="all_exist"
   comment="Verify deny configuation of pam_tally2" version="1">
     <ind:object object_ref="object_accounts_passwords_pam_tally2_deny_auth" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_tally2_deny_value_upper_bound" />
+    <ind:state state_ref="state_var_accounts_passwords_pam_tally2_deny_value_lower_bound" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_tally2_deny_auth" comment="Check deny configuration of pam_tally2" version="1">
     <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(?:(?!\n)\s)+(((?:(?!\n)\s)?[^\n]+)?onerr=fail((?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+deny=[123]((\s+\S+)*\s*$))|(((?:(?!\n)\s)?[^\n]+)?deny=[123]((?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+onerr=fail((\s+\S+)*\s*$))</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_tally2.so(?:(?!\n)\s)+(?:(?:(?:(?!\n)\s)?[^\n]+)?onerr=fail(?:(?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+deny=(\d+)(?:(?:\s+\S+)*\s*$))|(?:(?:(?:(?!\n)\s)?[^\n]+)?deny=(\d+)(?:(?:(?!\n)\s)+[^\n]+)?(?:(?!\n)\s)+onerr=fail(?:(?:\s+\S+)*\s*$))</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  
+  <!-- Specify required external variable & create corresponding state from it -->
+  <external_variable id="var_password_pam_tally2" datatype="int"
+  comment="number of failed login attempts allowed" version="1" />
+
+  <!-- State checks the upper bound based on variable -->
+  <ind:textfilecontent54_state id="state_var_accounts_passwords_pam_tally2_deny_value_upper_bound" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal" var_ref="var_password_pam_tally2" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_var_accounts_passwords_pam_tally2_deny_value_lower_bound" version="1">
+    <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
+  </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test id="test_accounts_passwords_pam_tally2_deny_account"
   check="all" check_existence="all_exist"
