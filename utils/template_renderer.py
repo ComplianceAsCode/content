@@ -58,7 +58,7 @@ class Renderer(object):
         self.template_data = dict()
 
     def get_env_yaml(self, build_dir):
-        product_yaml = self.project_directory / self.product / "product.yml"
+        product_yaml = self.project_directory / "products" / self.product / "product.yml"
         build_config_yaml = pathlib.Path(build_dir) / "build_config.yml"
         if not (product_yaml.exists() and build_config_yaml.exists()):
             msg = (
