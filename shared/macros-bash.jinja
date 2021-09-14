@@ -423,7 +423,7 @@ files_to_inspect+=('/etc/audit/audit.rules')
 # If the audit is 'augenrules', then check if rule is already defined
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to list of files for inspection.
 # If rule isn't defined, add '/etc/audit/rules.d/{{{ key }}}.rules' to list of files for inspection.
-readarray -t matches < <(grep -P "[\s]*-w[\s]+{{{ path }}}" /etc/audit/rules.d/*.rules)
+readarray -t matches < <(grep -HP "[\s]*-w[\s]+{{{ path }}}" /etc/audit/rules.d/*.rules)
 
 # For each of the matched entries
 for match in "${matches[@]}"
@@ -460,12 +460,10 @@ do
         # Rule is found => verify yet if existing rule definition contains
         # all of the required access type bits
 
-        # Escape slashes in path for use in sed pattern below
-        esc_path=${path//$'/'/$'\/'}
         # Define BRE whitespace class shortcut
         sp="[[:space:]]"
         # Extract current permission access types (e.g. -p [r|w|x|a] values) from audit rule
-        current_access_bits=$(sed -ne "s/$sp*-w$sp\+$esc_path$sp\+-p$sp\+\([rxwa]\{1,4\}\).*/\1/p" "$audit_rules_file")
+        current_access_bits=$(sed -ne "s#$sp*-w$sp\+{{{ path }}} $sp\+-p$sp\+\([rxwa]\{1,4\}\).*#\1#p" "$audit_rules_file")
         # Split required access bits string into characters array
         # (to check bit's presence for one bit at a time)
         for access_bit in $(echo "{{{ required_access_bits }}}" | grep -o .)
@@ -481,7 +479,7 @@ do
         done
         # Propagate the updated rule's access bits (original + the required
         # ones) back into the /etc/audit/audit.rules file for that rule
-        sed -i "s/\($sp*-w$sp\+$esc_path$sp\+-p$sp\+\)\([rxwa]\{1,4\}\)\(.*\)/\1$current_access_bits\3/" "$audit_rules_file"
+        sed -i "s#\($sp*-w$sp\+{{{ path }}}$sp\+-p$sp\+\)\([rxwa]\{1,4\}\)\(.*\)#\1$current_access_bits\3#" "$audit_rules_file"
     else
         # Rule isn't present yet. Append it at the end of $audit_rules_file file
         # with proper key
