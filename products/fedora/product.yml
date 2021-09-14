@@ -18,6 +18,11 @@ dconf_gdm_dir: "distro.d"
 
 cpes_root: "../../shared/applicability"
 cpes:
+  - fedora_36:
+      name: "cpe:/o:fedoraproject:fedora:36"
+      title: "Fedora 36"
+      check_id: installed_OS_is_fedora
+
   - fedora_35:
       name: "cpe:/o:fedoraproject:fedora:35"
       title: "Fedora 35"
@@ -33,14 +38,27 @@ cpes:
       title: "Fedora 33"
       check_id: installed_OS_is_fedora
 
-# The fingerprint and pkg_version are retrieved from https://getfedora.org/keys/
+# Retrieve the fingerprint as follows:
+#   gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-primary" | grep '^fpr' | cut -d ":" -f 10
+# For current supported releases, this can be verified by comparing it to the keys published on:
+#   https://getfedora.org/keys/
+rawhide_version: 36
+rawhide_release_fingerprint: "53DED2CB922D8B8D9E63FD18999F7CBF38AB71F4"
+# The shortened version of the key, to be used for the pkg_version variable can be derived as follows:
+#   gpg --show-keys --keyid-format short "/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-primary" | grep 'rsa' | cut -d "/" -f 2 | awk '{print $1}'
+# Alternatively, you can simply take the last 8 digits of the fingerprint above.
+# For currently supported releases, this can also be verified by comparing it to the keyid values published on:
+#   https://getfedora.org/keys/
+rawhide_pkg_version: "38ab71f4"
+# The pkg_release can be derived as follows:
+#   rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-x86_64
+#   rpm -q gpg-pubkey --qf '%{VERSION}-%{RELEASE}\n' | grep -i <pkg_version> | cut -f 2 -d -
+rawhide_pkg_release: "60242b08"
+
 future_version: 35
 future_release_fingerprint: "787EA6AE1147EEE56C40B30CDB4639719867C58F"
 future_pkg_version: "9867c58f"
 future_pkg_release: "601c49ca"
-# Obtain the pkg_release like this:
-# sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-<version>-x86_64
-# rpm -q gpg-pubkey --qf '%{VERSION}-%{RELEASE}\n' | grep <pkg_version> | cut -f 2 -d -
 
 latest_version: 34
 latest_release_fingerprint: "8C5BA6990BDB26E19F2A1A801161AE6945719A39"
