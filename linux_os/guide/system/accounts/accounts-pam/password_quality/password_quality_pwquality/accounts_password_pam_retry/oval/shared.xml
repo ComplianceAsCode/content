@@ -2,7 +2,11 @@
   <definition class="compliance" id="accounts_password_pam_retry" version="1">
     {{{ oval_metadata("The password retry should meet minimum requirements") }}}
     <criteria operator="AND" comment="Conditions for retry are satisfied">
+      {{% if 'ubuntu' not in product %}}
       <criterion comment="pam_pwquality system-auth" test_ref="test_password_pam_pwquality_retry_system_auth" />
+      {{% else %}}
+      <criterion comment="pam_pwquality common-password" test_ref="test_password_pam_pwquality_retry_common_password" />
+      {{% endif %}}
       {{% if product == "rhel8" -%}}
       <criterion comment="pam_pwquality password-auth" test_ref="test_password_pam_pwquality_retry_password_auth" />
       {{%- endif %}}
@@ -17,7 +21,11 @@
   </ind:textfilecontent54_test>
   {{% endmacro %}}
 
+  {{% if 'ubuntu' not in product %}}
   {{{ test_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_system_auth") }}}
+  {{% else %}}
+  {{{ test_pwquality_retry( path="/etc/pam.d/common-password", test_ref="password_pam_pwquality_retry_common_password") }}}
+  {{% endif %}}
   {{% if product == "rhel8" -%}}
   {{{ test_pwquality_retry( path="/etc/pam.d/password-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
   {{%- endif %}}
@@ -30,7 +38,11 @@
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
+  {{% if 'ubuntu' not in product %}}
   {{{ object_pwquality_retry( path="/etc/pam.d/system-auth", test_ref="password_pam_pwquality_retry_system_auth") }}}
+  {{% else %}}
+  {{{ object_pwquality_retry( path="/etc/pam.d/common-password", test_ref="password_pam_pwquality_retry_common_password") }}}
+  {{% endif %}}
   {{% if product == "rhel8" -%}}
   {{{ object_pwquality_retry( path="/etc/pam.d/password-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
   {{%- endif %}}
