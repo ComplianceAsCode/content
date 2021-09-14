@@ -168,7 +168,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,{{{ url_encode(source) }}}
+          source: data:,{{ {{{ url_encode(source) }}} }}
         mode: {{{ file_permissions_mode }}}
         path: {{{ path }}}
         overwrite: true
@@ -195,7 +195,36 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,{{{ url_encode(source) }}}
+          source: data:,{{ {{{ url_encode(source) }}} }}
+        mode: {{{ file_permissions_mode }}}
+        path: {{{ path }}}
+        overwrite: true
+{{%- endmacro -%}}
+
+
+{{#
+  Macro which generates Kubernetes remediation in MachineConfig format with
+  required value
+    - path (String): Path to the configuration file.
+    - file_permissions_mode (String): File permissions to be applied to the file represented by path argument
+    - source_content (String): The source of the content to be applied.
+    - vals (list): The list of required values for this remediation to be applies for example: var_something
+#}}
+
+{{%- macro kubernetes_machine_config_file_with_required_value(path='', file_permissions_mode='', source='', vals=[]) -%}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  annotations:
+    complianceascode.io/value-input-required: {{{ vals | join(",") }}}
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,{{ {{{ url_encode(source) }}} }}
         mode: {{{ file_permissions_mode }}}
         path: {{{ path }}}
         overwrite: true
@@ -542,22 +571,22 @@ write_logs = yes
 log_file = /var/log/audit/audit.log
 log_group = root
 log_format = ENRICHED
-flush = incremental_async
+flush = {{.var_auditd_flush}}
 freq = 50
-max_log_file = 8
-num_logs = 5
+max_log_file = {{.var_auditd_max_log_file}}
+num_logs = {{.var_auditd_num_logs}}
 priority_boost = 4
 name_format = hostname
 ##name = mydomain
-max_log_file_action = rotate
-space_left = 100
-space_left_action = syslog
+max_log_file_action = {{.var_auditd_max_log_file_action}}
+space_left = {{.var_auditd_space_left}}
+space_left_action = {{.var_auditd_space_left_action}}
 verify_email = yes
-action_mail_acct = root
+action_mail_acct = {{.var_auditd_action_mail_acct}}
 admin_space_left = 50
 admin_space_left_action = syslog
-disk_full_action = syslog
-disk_error_action = syslog
+disk_full_action = {{.var_auditd_disk_full_action}}
+disk_error_action = {{.var_auditd_disk_error_action}}
 use_libwrap = yes
 ##tcp_listen_port = 60
 tcp_listen_queue = 5
@@ -581,6 +610,10 @@ plugin_dir = /etc/audit/plugins.d
 {{{ kubernetes_machine_config_file(path='/etc/audit/auditd.conf', file_permissions_mode='0640', source=rhcos_auditd_config()) }}}
 {{%- endmacro %}}
 
+{{% macro kubernetes_machineconfig_auditd_config_with_required_value(vals=[]) -%}}
+{{{ kubernetes_machine_config_file_with_required_value(path='/etc/audit/auditd.conf', file_permissions_mode='0640', source=rhcos_auditd_config(),vals=vals)}}}
+{{%- endmacro %}}
+
 {{#
   Macro to generate MachineConfig setting our recommended chrony.conf
 #}}
@@ -594,7 +627,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,%23%20Allow%20for%20extra%20configuration%20files.%20This%20is%20useful%0A%23%20for%20admins%20specifying%20their%20own%20NTP%20servers%0Ainclude%20/etc/chrony.d/%2A.conf%0A%0A%23%20Set%20chronyd%20as%20client-only.%0Aport%200%0A%0A%23%20Disable%20chronyc%20from%20the%20network%0Acmdport%200%0A%0A%23%20Record%20the%20rate%20at%20which%20the%20system%20clock%20gains/losses%20time.%0Adriftfile%20/var/lib/chrony/drift%0A%0A%23%20Allow%20the%20system%20clock%20to%20be%20stepped%20in%20the%20first%20three%20updates%0A%23%20if%20its%20offset%20is%20larger%20than%201%20second.%0Amakestep%201.0%203%0A%0A%23%20Enable%20kernel%20synchronization%20of%20the%20real-time%20clock%20%28RTC%29.%0Artcsync%0A%0A%23%20Enable%20hardware%20timestamping%20on%20all%20interfaces%20that%20support%20it.%0A%23hwtimestamp%20%2A%0A%0A%23%20Increase%20the%20minimum%20number%20of%20selectable%20sources%20required%20to%20adjust%0A%23%20the%20system%20clock.%0A%23minsources%202%0A%0A%23%20Allow%20NTP%20client%20access%20from%20local%20network.%0A%23allow%20192.168.0.0/16%0A%0A%23%20Serve%20time%20even%20if%20not%20synchronized%20to%20a%20time%20source.%0A%23local%20stratum%2010%0A%0A%23%20Require%20authentication%20%28nts%20or%20key%20option%29%20for%20all%20NTP%20sources.%0A%23authselectmode%20require%0A%0A%23%20Specify%20file%20containing%20keys%20for%20NTP%20authentication.%0Akeyfile%20/etc/chrony.keys%0A%0A%23%20Insert/delete%20leap%20seconds%20by%20slewing%20instead%20of%20stepping.%0A%23leapsecmode%20slew%0A%0A%23%20Get%20TAI-UTC%20offset%20and%20leap%20seconds%20from%20the%20system%20tz%20database.%0Aleapsectz%20right/UTC%0A%0A%23%20Specify%20directory%20for%20log%20files.%0Alogdir%20/var/log/chrony%0A%0A%23%20Select%20which%20information%20is%20logged.%0A%23log%20measurements%20statistics%20tracking
+          source: data:,{{ %23%20Allow%20for%20extra%20configuration%20files.%20This%20is%20useful%0A%23%20for%20admins%20specifying%20their%20own%20NTP%20servers%0Ainclude%20/etc/chrony.d/%2A.conf%0A%0A%23%20Set%20chronyd%20as%20client-only.%0Aport%200%0A%0A%23%20Disable%20chronyc%20from%20the%20network%0Acmdport%200%0A%0A%23%20Record%20the%20rate%20at%20which%20the%20system%20clock%20gains/losses%20time.%0Adriftfile%20/var/lib/chrony/drift%0A%0A%23%20Allow%20the%20system%20clock%20to%20be%20stepped%20in%20the%20first%20three%20updates%0A%23%20if%20its%20offset%20is%20larger%20than%201%20second.%0Amakestep%201.0%203%0A%0A%23%20Enable%20kernel%20synchronization%20of%20the%20real-time%20clock%20%28RTC%29.%0Artcsync%0A%0A%23%20Enable%20hardware%20timestamping%20on%20all%20interfaces%20that%20support%20it.%0A%23hwtimestamp%20%2A%0A%0A%23%20Increase%20the%20minimum%20number%20of%20selectable%20sources%20required%20to%20adjust%0A%23%20the%20system%20clock.%0A%23minsources%202%0A%0A%23%20Allow%20NTP%20client%20access%20from%20local%20network.%0A%23allow%20192.168.0.0/16%0A%0A%23%20Serve%20time%20even%20if%20not%20synchronized%20to%20a%20time%20source.%0A%23local%20stratum%2010%0A%0A%23%20Require%20authentication%20%28nts%20or%20key%20option%29%20for%20all%20NTP%20sources.%0A%23authselectmode%20require%0A%0A%23%20Specify%20file%20containing%20keys%20for%20NTP%20authentication.%0Akeyfile%20/etc/chrony.keys%0A%0A%23%20Insert/delete%20leap%20seconds%20by%20slewing%20instead%20of%20stepping.%0A%23leapsecmode%20slew%0A%0A%23%20Get%20TAI-UTC%20offset%20and%20leap%20seconds%20from%20the%20system%20tz%20database.%0Aleapsectz%20right/UTC%0A%0A%23%20Specify%20directory%20for%20log%20files.%0Alogdir%20/var/log/chrony%0A%0A%23%20Select%20which%20information%20is%20logged.%0A%23log%20measurements%20statistics%20tracking }}
         mode: 420
         overwrite: true
         path: /etc/chrony.conf
@@ -603,4 +636,18 @@ spec:
         mode: 420
         overwrite: true
         path: /etc/chrony.d/.mco-keep
+      - contents:
+          source: data:,{{ {{{ url_encode(ntp_server()) }}} }}
+        mode: 420
+        overwrite: true
+        path: /etc/chrony.d/ntp-server.conf
+{{%- endmacro %}}
+
+{{% macro ntp_server() -%}}
+#
+# This file controls the configuration of the ntp server
+# {{.var_multiple_time_servers}} we have to put variable array name here for mutilines remediation 
+{{$var_time_service_set_maxpoll:=.var_time_service_set_maxpoll}}
+{{range $element:=.var_multiple_time_servers|toArrayByComma}}server {{$element}} minpoll 4 maxpoll {{$var_time_service_set_maxpoll}}
+{{end}}
 {{%- endmacro %}}
