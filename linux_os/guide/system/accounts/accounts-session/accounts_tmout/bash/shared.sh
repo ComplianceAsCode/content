@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_accounts_tmout") }}}
 
 # if 0, no occurence of tmout found, if 1, occurence found

@@ -3,7 +3,7 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-. /usr/share/scap-security-guide/remediation_functions
+
 {{%- if SYSCTLVAL == "" %}}
 {{{ bash_instantiate_variables("sysctl_" + SYSCTLID + "_value") }}}
 

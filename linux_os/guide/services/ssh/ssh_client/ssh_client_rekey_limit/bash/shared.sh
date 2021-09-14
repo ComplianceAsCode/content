@@ -1,8 +1,5 @@
 # platform = multi_platform_all
 
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
-
 {{{ bash_instantiate_variables("var_ssh_client_rekey_limit_size", "var_ssh_client_rekey_limit_time") }}}
 
 main_config="/etc/ssh/ssh_config"

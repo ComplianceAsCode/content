@@ -4,7 +4,6 @@
 # complexity = low
 # disruption = low
 
-. /usr/share/scap-security-guide/remediation_functions
 {{{ bash_instantiate_variables("var_smartcard_drivers") }}}
 
 OPENSC_TOOL="/usr/bin/opensc-tool"

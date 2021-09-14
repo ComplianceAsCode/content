@@ -3,7 +3,6 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-. /usr/share/scap-security-guide/remediation_functions
 
 {{{ bash_package_install("aide") }}}
 

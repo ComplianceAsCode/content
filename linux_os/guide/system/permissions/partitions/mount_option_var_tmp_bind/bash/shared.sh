@@ -1,7 +1,5 @@
 # platform = multi_platform_rhel,multi_platform_fedora
 
-. /usr/share/scap-security-guide/remediation_functions
-
 # Delete particular /etc/fstab's row if /var/tmp is already configured to
 # represent a mount point (for some device or filesystem other than /tmp)
 if grep -q -P '.*\/var\/tmp.*' /etc/fstab
