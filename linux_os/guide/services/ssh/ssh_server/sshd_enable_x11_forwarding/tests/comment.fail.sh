@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SSHD_PARAM="IgnoreRhosts"
+SSHD_PARAM="X11Forwarding"
 SSHD_VAL="yes"
 
 mkdir -p /etc/ssh/sshd_config.d

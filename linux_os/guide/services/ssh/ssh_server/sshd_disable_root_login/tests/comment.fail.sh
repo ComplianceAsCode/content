@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SSHD_PARAM="IgnoreRhosts"
-SSHD_VAL="yes"
+SSHD_PARAM="PermitRootLogin"
+SSHD_VAL="no"
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
