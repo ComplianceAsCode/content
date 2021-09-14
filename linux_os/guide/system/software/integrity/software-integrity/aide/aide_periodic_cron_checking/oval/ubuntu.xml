@@ -1,0 +1,76 @@
+<def-group>
+  <definition class="compliance" id="aide_periodic_cron_checking" version="3">
+    {{{ oval_metadata("By default, AIDE does not install itself for periodic
+      execution. Periodically running AIDE is necessary to reveal
+      unexpected changes in installed files.
+      ") }}}
+    <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
+      <criteria operator="OR">
+        <criterion test_ref="tst_aide_check_in_crontab_root" comment="aide check scheduled in crontab for root" />
+        <criterion test_ref="tst_aide_check_in_etc_cron" comment="aide check scheduled in /etc/cron.*" />
+        <criterion test_ref="tst_aide_check_in_etc_crontab" comment="aide check scheduled in /etc/crontab" />
+        <criteria operator="AND">
+          <criterion test_ref="tst_aidecheck-service_enabled" comment="systemd aidecheck.service enabled" />
+          <criterion test_ref="tst_aidecheck-timer_enabled" comment="systemd aidecheck.timer enabled" />
+          <criterion test_ref="tst_aidecheck-timer_active" comment="systemd aidecheck.timer active" />
+        </criteria>
+      </criteria>
+    </criteria>
+ </definition>
+ <ind:textfilecontent54_object id="obj_root_crontab_aide" version="1">
+    <ind:filepath datatype="string">/var/spool/cron/crontabs/root</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">aide\.wrapper</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_etc_cron_aide" version="1">
+    <ind:path operation="pattern match">/etc/cron\.(daily|hourly|weekly)</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match" datatype="string">^[^#]*(?:/usr/bin/)?aide\.wrapper</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_object id="obj_etc_crontab_aide" version="1">
+    <ind:filepath datatype="string">/etc/crontab</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string">[^\s]+\s+[^\s]+\s+\*(?:\/[1-7])*\s+\*\s+[^\s]+\s+(?:/usr/bin/)?aide\.wrapper\s+[^\s]+\s+(?=-C|--check).*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <linux:systemdunitproperty_object id="obj_aidecheck-service_unitfilestate" version="1">
+    <linux:unit>aidecheck.service</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_object id="obj_aidecheck-timer_unitfilestate" version="1">
+    <linux:unit>aidecheck.timer</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_object id="obj_aidecheck-timer_activestate" version="1">
+    <linux:unit>aidecheck.timer</linux:unit>
+    <linux:property>ActiveState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="ste_aide_is_enabled" version="1">
+    <linux:value>enabled</linux:value>
+  </linux:systemdunitproperty_state>
+  <linux:systemdunitproperty_state id="ste_aide_is_active" version="1">
+    <linux:value>active</linux:value>
+  </linux:systemdunitproperty_state>
+  <ind:textfilecontent54_test check="all" id="tst_aide_check_in_crontab_root" version="1" comment="aide check scheduled in crontab for root">
+    <ind:object object_ref="obj_root_crontab_aide" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" id="tst_aide_check_in_etc_cron" version="1" comment="aide check scheduled in /etc/cron.*">
+    <ind:object object_ref="obj_etc_cron_aide" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_test check="all" id="tst_aide_check_in_etc_crontab" version="1" comment="aide check scheduled in /etc/crontab">
+    <ind:object object_ref="obj_etc_crontab_aide" />
+  </ind:textfilecontent54_test>
+  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-service_enabled" version="1" comment="systemd aidecheck.service enabled">
+    <linux:object object_ref="obj_aidecheck-service_unitfilestate" />
+    <linux:state state_ref="ste_aide_is_enabled" />
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-timer_enabled" version="1" comment="systemd aidecheck.timer enabled">
+    <linux:object object_ref="obj_aidecheck-timer_unitfilestate" />
+    <linux:state state_ref="ste_aide_is_enabled" />
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_test check="all" id="tst_aidecheck-timer_active" version="1" comment="systemd aidecheck.timer active">
+    <linux:object object_ref="obj_aidecheck-timer_activestate" />
+    <linux:state state_ref="ste_aide_is_active" />
+  </linux:systemdunitproperty_test>
+</def-group>
