@@ -15,23 +15,32 @@ class InvalidStatus(Exception):
     pass
 
 class Status():
+    PENDING = "pending"
+    PLANNED = "planned"
+    NOT_APPLICABLE = "not applicable"
+    INHERENTLY_MET = "inherently met"
+    DOCUMENTATION = "documentation"
+    PARTIAL = "partial"
+    SUPPORTED = "supported"
+    AUTOMATED = "automated"
+
     def __init__(self, status):
         self.status = status
 
     @classmethod
     def from_control_info(cls, ctrl, status):
         if status is None:
-            return "pending"
+            return cls.PENDING
 
         valid_statuses = [
-            "pending",
-            "not applicable",
-            "inherently met",
-            "documentation",
-            "planned",
-            "partial",
-            "supported",
-            "automated",
+            cls.PENDING,
+            cls.PLANNED,
+            cls.NOT_APPLICABLE,
+            cls.INHERENTLY_MET,
+            cls.DOCUMENTATION,
+            cls.PARTIAL,
+            cls.SUPPORTED,
+            cls.AUTOMATED,
         ]
 
         if status not in valid_statuses:
@@ -65,6 +74,11 @@ class Control():
         self.description = ""
         self.automated = ""
         self.status = None
+
+    def __hash__(self):
+        """ Controls are meant to be unique, so using the
+        ID should suffice"""
+        return hash(self.id)
 
     @classmethod
     def from_control_dict(cls, control_dict, env_yaml=None, default_level=["default"]):
