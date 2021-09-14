@@ -61,9 +61,13 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_immutable
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
+    - audit_rules_mac_modification
+    - audit_rules_media_export
+    - audit_rules_networkconfig_modification
     - audit_rules_unsuccessful_file_modification_creat
     - audit_rules_unsuccessful_file_modification_ftruncate
     - audit_rules_unsuccessful_file_modification_open
@@ -73,6 +77,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_rules_session_events
     - audit_rules_sysadmin_actions
     - audit_rules_time_adjtimex
     - audit_rules_time_clock_settime
@@ -107,10 +112,12 @@ selections:
     - file_permissions_var_log_audit
     - force_opensc_card_drivers
     - gid_passwd_group_same
+    - grub2_audit_argument
     - install_hids
     - install_smartcard_packages
     - no_empty_passwords
     - package_aide_installed
+    - package_audit-audispd-plugins_installed
     - package_strongswan_installed
     - rpm_verify_hashes
     - rpm_verify_permissions
