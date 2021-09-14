@@ -1,7 +1,7 @@
-name: Gating (AR / RHEL)
+name: Gate (AR / RHEL)
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ 'master' ]
 jobs:
   validate-fedora-ar:
     name: Build, Lint Ansible Roles on Fedora Latest (Container)
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        run: cmake -DSSG_PRODUCT_DEFAULT=OFF -DSSG_PRODUCT_RHEL7=ON -DSSG_PRODUCT_RHEL8=ON -G "Ninja" ..
+        run: cmake -DSSG_PRODUCT_DEFAULT=OFF -DSSG_PRODUCT_RHEL7=ON -DSSG_PRODUCT_RHEL8=ON -G Ninja ..
         working-directory: ./build
       - name: Build
         run: ninja -j2 rhel8-profile-playbooks rhel7-profile-playbooks

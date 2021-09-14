@@ -1,9 +1,9 @@
-name: Gating
+name: Gate
 on:
   push:
-    branches: [ master, stabilization* ]
+    branches: [ 'master', '*', '!stabilization*', '!stable*' ]
   pull_request:
-    branches: [ master ]
+    branches: [ 'master' ]
 jobs:
   validate-ubuntu:
     name: Build, Test on Ubuntu 20.04
