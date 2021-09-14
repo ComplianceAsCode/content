@@ -215,9 +215,10 @@ All remediations should have the following header with the appropriate values
 * `id` should start with `state_`
 
 ## Tests
-* Should always do something, even if testing default behavior
-* Should test one change
+* Shall always do something, even if testing default behavior
+* Shall test one change
 * Shall use the `.sh` for the file extension
+* Shall use the `#!/bin/bash` shebang at the first line
 
 ## Markdown
 * [One sentence per line](https://asciidoctor.org/docs/asciidoc-recommended-practices/#one-sentence-per-line)
