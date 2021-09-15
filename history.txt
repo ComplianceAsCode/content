@@ -1,0 +1,1000 @@
+ 1017  mc
+ 1018  cd ..
+ 1019  vagrant ssh sles-15-sp2
+ 1020  cd ~/open_scap
+ 1021  ls
+ 1022  nano report.sh
+ 1023  ls
+ 1024  chmod +x report.sh
+ 1025  nano report.sh
+ 1026  ./report.sh
+ 1027  ls
+ 1028  cd old_status
+ 1029  ls
+ 1030  nano report.sh
+ 1031  cd ..
+ 1032  nano report.sh 
+ 1033  ./report.sh
+ 1034  ls
+ 1035  cd old_status
+ 1036  ls
+ 1037  bash report.sh 
+ 1038  cd ..
+ 1039  bash report.sh
+ 1040  pwd
+ 1041  ls
+ 1042  cd old_status
+ 1043  ls
+ 1044  rm *.pdf
+ 1045  cd ..
+ 1046  ls
+ 1047  cd old_status
+ 1048  ls
+ 1049  cd ~
+ 1050  cd vagrant.ccode
+ 1051  ls
+ 1052  clear
+ 1053  sshfs -o nonempty -o idmap=user vagrant@192.168.121.223:/home/vagrant/ComplianceAsCodeContent src
+ 1054  cd src
+ 1055  cd content
+ 1056  git status
+ 1057  git remote update
+ 1058  git remote -v
+ 1059  git fetch -all
+ 1060  git fetch --all
+ 1061  git branch -av
+ 1062  git rebase -i upstream/master
+ 1063  git status
+ 1064  nano linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_rename/rule.yml
+ 1065  git add inux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_rename/rule.yml
+ 1066  git add linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_rename/rule.yml
+ 1067  git status
+ 1068  git commit -a
+ 1069  git push -f
+ 1070  git branch
+ 1071  git push origin HEAD:SLES-15-030710 
+ 1072  git push -f
+ 1073  git brach
+ 1074  git status
+ 1075  git rebase --continue
+ 1076  git push -f
+ 1077  git push --set-upstream origin SLES-15-030710
+ 1078  git pull
+ 1079  git branch
+ 1080  git status
+ 1081  git remote -v
+ 1082  git push origin SLES-15-030710
+ 1083  git push -f origin SLES-15-030710
+ 1084  git status
+ 1085  code
+ 1086  ls
+ 1087  pwd
+ 1088  grep -ri "SLES-15-030720" /home/u001/vagrant.ccode/src/content
+ 1089  grep -ri "SLES-15-030720" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1090  cd ..
+ 1091  git clone https://github.com/rumch-se/content
+ 1092  cd content
+ 1093  git remote update
+ 1094  git status 
+ 1095  git branch
+ 1096  code
+ 1097  exit
+ 1098  cd ~/STIGV
+ 1099  ./STIGV
+ 1100  exit
+ 1101  sudo systemctl status cron
+ 1102  ps aux | grep cron
+ 1103  /usr/sbin/cron -f
+ 1104  sudo /usr/sbin/cron -f
+ 1105  crontab -l
+ 1106  crontab -e
+ 1107  exit
+ 1108  git branch -b SLES-15-030720-upd
+ 1109  git checkout -b SLES-15-030720-upd
+ 1110  git add .
+ 1111  git commit -a
+ 1112  git push origin SLES-15-030720-upd
+ 1113  git status
+ 1114  git remote update
+ 1115  cd ..
+ 1116  vagrant ssh compliance-as-code 
+ 1117  cd ~/open_scap
+ 1118  ls
+ 1119  cd old_status
+ 1120  ls
+ 1121  ls -all
+ 1122  cd ..
+ 1123  ls *.pdf
+ 1124  ls -al *.pdf
+ 1125  crontab -e
+ 1126  cd ~/backups
+ 1127  ls
+ 1128  ls -v 
+ 1129  ls
+ 1130  mkdir 26-08-2021
+ 1131  mv *.gpg 26-08-2021
+ 1132  ls -v
+ 1133  exit
+ 1134  cd ~/vagrant.ccode
+ 1135  sshfs -o nonempty -o idmap=user vagrant@192.168.121.223:/home/vagrant/ComplianceAsCodeContent src
+ 1136  cd src
+ 1137  cd content
+ 1138  git remote update
+ 1139  code
+ 1140  exit
+ 1141  cd ~/backups
+ 1142  ls
+ 1143  ls -all
+ 1144  ls -a
+ 1145  ls -l
+ 1146  ls -al
+ 1147  df -h
+ 1148  clear
+ 1149  ls -l
+ 1150  ls --help
+ 1151  ls -A
+ 1152  ls --help
+ 1153  ls -m
+ 1154  ls -v
+ 1155  exit
+ 1156  pwd
+ 1157  grep -ri "CCE-85562-7" /home/u001/vagrant.ccode/src/content/linux_os/guides/.
+ 1158  grep -ri "CCE-85562-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1159  grep -ri "accounts_max_concurrent_login_sessions" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1160  grep -ri "accounts_maximum_age_login_defs" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1161  grep -ri "accounts_no_uid_except_zero" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1162  grep -ri "accounts_password_all_shadowed_sha512" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1163  clear
+ 1164  grep -ri "accounts_password_all_shadowed_sha512" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1165  grep -ri "accounts_password_set_max_life_existing" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1166  grep -ri "CCE-85571-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1167  grep -ri "CCE-85710-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1168  grep -ri "CCE-85619-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1169  grep -ri "CCE-85554-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1170  grep -ri "CCE-85678-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1171  grep -ri "CCE-83269-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1172  grep -ri "CCE-85659-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1173  grep -ri "CCE-85632-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1174  grep -ri "CCE-85631-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1175  grep -ri "CCE-85627-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1176  grep -ri "CCE-85628-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1177  grep -ri "CCE-85553-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1178  grep -ri "CCE-83277-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1179  grep -ri "CCE-85610-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1180  grep -ri "CCE-85623-7"/home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1181  grep -ri "CCE-85623-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1182  grep -ri "CCE-85624-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1183  grep -ri "CCE-85671-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1184  grep -ri "CCE-85752-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1185  grep -ri "CCE-85697-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1186  grep -ri "CCE-85617-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1187  grep -ri "CCE-85614-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1188  grep -ri  "CCE-85705-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1189  grep -ri  "SLES-15-010460" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1190  grep -ri  "CCE-85606-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1191  grep -ri  "CCE-85604-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1192  grep -ri  "CCE-85616-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1193  grep -ri  "CCE-85693-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1194  grep -ri  "CCE-85694-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1195  grep -ri  "CCE-85695-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1196  grep -ri  "CCE-85706-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1197  grep -ri  "CCE-85595-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1198  grep -ri  "CCE-85748-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1199  grep -ri  "CCE-85598-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1200  grep -ri  "CCE-85587-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1201  grep -ri  "CCE-85611-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1202  grep -ri  "CCE-80751-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1203  grep -ri  "CCE-85682-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1204  grep -ri  "CCE-85758-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1205  grep -ri  "CCE-85702-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1206  grep -ri  "CCE-85578-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1207  grep -ri  "CCE-83264-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1208  grep -ri  "CCE-83262-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1209  grep -ri  "CCE-83287-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1210  grep -ri  "CCE-85551-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1211  grep -ri  "CCE-85564-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1212  grep -ri  "CCE-83288-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1213  grep -ri  " CCE-83265-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1214  grep -ri  "CCE-85669-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1215  grep -ri  "CCE-85737-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1216  grep -ri  "CCE-85735-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1217  grep -ri  "CCE-85753-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1218  grep -ri  "CCE-85766-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1219  grep -ri  "CCE-83282-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1220  grep -ri  "CCE-85743-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1221  grep -ri  "CCE-85741-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1222  grep -ri  "CCE-85637-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1223  grep -ri  " CCE-85665-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1224  grep -ri  "CCE-85625-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1225  grep -ri  "CCE-85560-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1226  grep -ri  "CCE-83267-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1227  grep -ri  "CCE-85719-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1228  grep -ri  "CCE-83290-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1229  grep -ri  "CCE-85724-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1230  grep -ri  "CCE-85572-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1231  grep -ri  "CCE-85711-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1232  grep -ri  "CCE-85742-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1233  grep -ri  "CCE-85629-4" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1234  grep -ri  "CCE-85670-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1235  grep -ri  "CCE-85644-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1236  grep -ri  "CCE-85738-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1237  grep -ri  "CCE-85658-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1238  grep -ri  "CCE-83285-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1239  grep -ri  "CCE-85630-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1240  grep -ri  "CCE-85723-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1241  grep -ri  "CCE-83274-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1242  grep -ri  "CCE-83275-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1243  grep -ri  "CCE-85668-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1244  grep -ri  "CCE-83260-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1245  grep -ri  "CCE-83292-3" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1246  grep -ri  "CCE-85763-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1247  grep -ri  "CCE-83294-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1248  grep -ri  "CCE-85633-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1249  grep -ri  "CCE-85636-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1250  grep -ri  "CCE-85656-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1251  grep -ri  "CCE-85576-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1252  grep -ri  "CCE-85657-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1253  grep -ri  "CCE-85755-7" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1254  grep -ri  "CCE-85552-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1255  grep -ri  "CCE-83261-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1256  grep -ri  "CCE-83279-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1257  grep -ri  "CCE-83272-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1258  grep -ri  "CCE-83293-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1259  grep -ri  "CCE-85556-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1260  grep -ri  "CCE-85647-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1261  grep -ri  "CCE-83295-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1262  grep -ri  "CCE-83299-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1263  grep -ri  "CCE-85651-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1264  grep -ri  "CCE-85655-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1265  grep -ri  "CCE-85649-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1266  grep -ri  "CCE-85572-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1267  cd ~/STIGV
+ 1268  ./STIGV
+ 1269  exit
+ 1270  sudo apt install xrdp -y 
+ 1271  sudo usermod -a -G ssl-cert xrdp 
+ 1272  sudo nano /etc/xrdp/startwm.sh 
+ 1273  sudo systemctl restart xrdp 
+ 1274  sudo ufw allow from 192.168.1.0/24 to any port 3389
+ 1275  sudo ufw reload 
+ 1276  sudo apt update
+ 1277  sudo apt upgrade
+ 1278  sudo apt install ufw
+ 1279  sudo ufw enable
+ 1280  sudo ufw status
+ 1281  sudo ufw default allow outgoing
+ 1282  sudo ufw status
+ 1283  sudo ufw reload 
+ 1284  rdp 
+ 1285  sudo apt install -y remmina remmina-plugin-vnc
+ 1286  sudo apt install -y remmina remmina-plugin-rdp
+ 1287  sudo apt install -y vinagre
+ 1288  ping 192.168.1.111
+ 1289  history
+ 1290  sudo apt install krdc
+ 1291  exit
+ 1292  history
+ 1293  grep -ri  "CCE-85693-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1294  cd ~
+ 1295  cd Documents/
+ 1296  ls
+ 1297  cd __personal_docs/
+ 1298  ls
+ 1299  cd @French/
+ 1300  ls
+ 1301  cd ..
+ 1302  cd french\ words/
+ 1303  ls
+ 1304  ls *.pdf
+ 1305  cp 5000\ Most\ Common\ French\ Words.pdf ~/Documents/__personal_docs/@French/
+ 1306  cd ..
+ 1307  ls
+ 1308  cd @Marti/
+ 1309  ls
+ 1310  cd Inv-9-7-2021/
+ 1311  ls
+ 1312  pdftk inv-9-7-2021.pdf pay-9-7-2021.pdf cat output mch_ip-9-7-2021.pdf
+ 1313  exit
+ 1314  cd ~/vagrant.ccode
+ 1315  sshfs -o nonempty -o idmap=user vagrant@192.168.121.223:/home/vagrant/ComplianceAsCodeContent src
+ 1316  cd src
+ 1317  cd content
+ 1318  code
+ 1319  git status
+ 1320  git remote update
+ 1321  git remote -v
+ 1322  git branch 
+ 1323  git fetch --all
+ 1324  git rebase -i upstream/master
+ 1325  git status
+ 1326  nano linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1327  git add linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1328  git commit -m "Merge with head"
+ 1329  git rebase --continue
+ 1330  git push -f
+ 1331  git push --set-upstream origin SLES-15-030720-upd
+ 1332  git pull
+ 1333  git pull origin SLES-15-030720-upd
+ 1334  git status 
+ 1335  nano linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1336  git add linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1337  git commit -m "Merge with head"
+ 1338  git push -f
+ 1339  git brach
+ 1340  git branch
+ 1341  git push origin HEAD:SLES-15-030720-upd
+ 1342  mc
+ 1343  cd ..
+ 1344  mc 
+ 1345  git clone https://github.com/rumch-se/content
+ 1346  cd content
+ 1347  ls
+ 1348  git remote -v
+ 1349  git remote update
+ 1350  git branch
+ 1351  git checkout -b SLES-15-030720-2
+ 1352  git fetch -all
+ 1353  git fetch --all
+ 1354  code
+ 1355  git remote update
+ 1356  git branch
+ 1357  git add .
+ 1358  git commit -a
+ 1359  git push origin SLES-15-030720-2
+ 1360  git remote update
+ 1361  exit
+ 1362  cd ~/Downloads/vagrant/
+ 1363  ls
+ 1364  sha256sum SLES15-SP3-Vagrant.x86_64-15.3-libvirt-PublicRC.vagrant.libvirt.box 
+ 1365  sha256sum SLES15-SP3-Vagrant.x86_64-15.3-virtualbox-PublicRC.vagrant.virtualbox.box
+ 1366  exit
+ 1367  cd ..
+ 1368  cd ..
+ 1369  vagrant ssh compliance-as-code 
+ 1370  grep -ri "Get current hostname" ~/vagrant.code/ansible/.
+ 1371  ls
+ 1372  pwd
+ 1373  grep -ri "Get current hostname" /home/u001/vagrant.ccode
+ 1374  grep -ri "Get current hostname" /home/u001/vagrant.ccode/ansible/.
+ 1375  clear
+ 1376  vagrant destroy sles-15-sp3
+ 1377  vagrant up sles-15-sp3
+ 1378  vagrant destroy sles-15-sp3
+ 1379  vagrant up sles-15-sp3
+ 1380  vagrant destroy sles-15-sp3 | vagrant up sles-15-sp3
+ 1381  cd ..
+ 1382  vagrant status 
+ 1383  vagrant destroy sles-15-sp3 
+ 1384  vagrant up sles-15-sp3 
+ 1385  vagrant destroy sles-15-sp3 
+ 1386  vagrant up sles-15-sp3 
+ 1387  vagrant ssh sles-15-sp3
+ 1388  vagrant destroy sles-15-sp3 
+ 1389  vagrant up sles-15-sp3 
+ 1390  ls
+ 1391  cd ansible
+ 1392  zip 
+ 1393  zip -a -r ansible.zip *.*
+ 1394  zip -9 -r ansible.zip *.*
+ 1395  ls 
+ 1396  unzip -t ansible.zip 
+ 1397  pwd
+ 1398  zip -9 -r ansible.zip /home/u001/vagrant.ccode/ansible/*
+ 1399  ls
+ 1400  unzip -t ansible.zip 
+ 1401  zip -9 -r ansible1.zip *.*
+ 1402  rm ansible1.zip
+ 1403  exit
+ 1404  cd /home
+ 1405  cd ~
+ 1406  cd vagrant.ccode
+ 1407  cd ansible
+ 1408  code
+ 1409  exit
+ 1410  cd ..
+ 1411  ls
+ 1412  cat Vagrantfile 
+ 1413  ls /home/u001/boxes
+ 1414  ls
+ 1415  cat add-boxes.sh
+ 1416  nano add-boxes.sh
+ 1417  vagrant box add --name SLES15-SP3 /home/u001/Downloads/vagrant/SLES15-SP3-Vagrant.x86_64-15.3-libvirt-PublicRC.vagrant.libvirt.box
+ 1418  vagrant up sles-15-sp3
+ 1419  vagrant ssh-config sles-15-sp3
+ 1420  vagrant ssh sles-15-sp3
+ 1421  vagrant status 
+ 1422  vagrant destroy sles-15-sp3
+ 1423  vagrant up sles-15-sp3
+ 1424  vagrant destroy sles-15-sp3
+ 1425  vagrant up sles-15-sp3
+ 1426  vagrant ssh sles15-sp3
+ 1427  vagrant ssh sles-15-sp3
+ 1428  vagrant sles-15-sp2
+ 1429  vagrant ssh sles-15-sp2
+ 1430  vagrant ssh-config sles-15-sp2
+ 1431  vagrant ssh sles-15-sp2
+ 1432  ssh -p 22 vagrant@192.168.121.4 
+ 1433  vagrant ssh sles-15-sp2
+ 1434  exit
+ 1435  df *h
+ 1436  df -h
+ 1437  df *h
+ 1438  vargant ssh sles-15-sp3
+ 1439  vagrant ssh sles-15-sp3
+ 1440  vargant destroy sles-15-sp3
+ 1441  vagrant destroy sles-15-sp3
+ 1442  vagrant up sles-15-sp3
+ 1443  vagrant destroy sles-15-sp3
+ 1444  vagrant up sles-15-sp3
+ 1445  vagrant destroy sles-15-sp3
+ 1446  vagrant up sles-15-sp3
+ 1447  vagrant destroy sles-15-sp3
+ 1448  vagrant up sles-15-sp3
+ 1449  sshfs -o nonempty -o idmap=user vagrant@192.168.121.223:/home/vagrant/ComplianceAsCodeContent src
+ 1450  vagrant ssh-config compliance-as-code
+ 1451  sshfs -o nonempty -o idmap=user vagrant@192.168.121.223:/home/vagrant/ComplianceAsCodeContent src
+ 1452  exit
+ 1453  vagrant status
+ 1454  exit
+ 1455  df -h
+ 1456  mc
+ 1457  cd ~
+ 1458  ls
+ 1459  cd vm_excg/
+ 1460  ls
+ 1461  mc
+ 1462  sudo mc
+ 1463  sudo /opt/CrowdStrike/falconctl -s --cid=BE812A77976C4F3F8EA6E260CE0146E8-1C
+ 1464  sudo systemctl start falcon-sensor
+ 1465  pwd
+ 1466  history 
+ 1467  grep -ri  "CCE-83028-1" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1468  grep -ri  "CCE-83173-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1469  grep -ri  "CCE-83048-9" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1470  grep -ri  "CCE-83218-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1471  grep -ri  "CCE-83192-5" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1472  grep -ri  "CCE-83217-0" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1473  grep -ri  "CCE-83016-6" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1474  grep -ri  "CCE-83181-8" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1475  grep -ri  "CCE-83080-2" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1476  grep -ri  "banner_etc_gdm_banner" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1477  grep -ri  "login_banner_text" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1478  cd ~/vagrant.ccode
+ 1479  vagrant ssh sles-15-sp3
+ 1480  cd src
+ 1481  mc
+ 1482  pwd
+ 1483  git clone https://github.com/rumch-se/content
+ 1484  cd content
+ 1485  git branch
+ 1486  git fetch --all
+ 1487  git remote update
+ 1488  git checkout -b SLES-15-010060-1
+ 1489  code
+ 1490  git remote update
+ 1491  git fetch --all
+ 1492  git add .
+ 1493  git commit -a
+ 1494  git push origin SLES-15-010060-1
+ 1495  exit
+ 1496  cd ~/STIGV
+ 1497  ./STIGV
+ 1498  exit
+ 1499  cd ~/backups
+ 1500  ls -v
+ 1501  ls l
+ 1502  ls -l
+ 1503  ls -v
+ 1504  mkdir 02-09-2021
+ 1505  mv *.gpg 02-09-2021
+ 1506  ls
+ 1507  df -h
+ 1508  df *h
+ 1509  df -*h
+ 1510  df h*
+ 1511  df -h*
+ 1512  df -h
+ 1513  cd ~/vagrant.ccode
+ 1514  cd src
+ 1515  cd content
+ 1516  ls
+ 1517  git fetch --all
+ 1518  git branch
+ 1519  exit
+ 1520  cd ~
+ 1521  cd vagrant.ccode
+ 1522  ls
+ 1523  sshfs -o nonempty -o idmap=user vagrant@192.168.121.223:/home/vagrant/ComplianceAsCodeContent src
+ 1524  cd src
+ 1525  ls
+ 1526  cd content
+ 1527  git status
+ 1528  git remote -v
+ 1529  git fetch all
+ 1530  git fetch --all
+ 1531  git remote update
+ 1532  code
+ 1533  history
+ 1534  grep -ri  "banner_etc_gdm_banner" /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1535  exit
+ 1536  Kgpg -k
+ 1537  KPgp -k
+ 1538  Kpgp -k
+ 1539  KGpg --help
+ 1540  Kgpg --help
+ 1541  ls
+ 1542  sudo -s
+ 1543  cd ~/STIGV
+ 1544  ./STIGV
+ 1545  ls
+ 1546  cd ~/vagrant.ccode
+ 1547  ls
+ 1548  sshfs -o nonempty -o idmap=user vagrant@192.168.121.223:/home/vagrant/ComplianceAsCodeContent src
+ 1549  cd src
+ 1550  ls
+ 1551  cd content
+ 1552  git status
+ 1553  git branch
+ 1554  git checkout SLES-15-030720-2
+ 1555  git remote -v
+ 1556  git fetch all
+ 1557  git fetch --all
+ 1558  git checkout origin/SLES-15-030720-2
+ 1559  git status
+ 1560  git branch
+ 1561  git checkout origin/SLES-15-010060-1
+ 1562  git status
+ 1563  git checkout origin/SLES-15-030720-2
+ 1564  git branch
+ 1565  git remote -v
+ 1566  git fetch -all
+ 1567  git fetch --all
+ 1568  git rebase -i 
+ 1569  git rebase -i upstream/master
+ 1570  git status 
+ 1571  nano linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1572  git add linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1573  git rebase --continue
+ 1574  git log
+ 1575  git brach
+ 1576  git branch
+ 1577  git push -f
+ 1578  git remote -v
+ 1579  git push -f -u origin SLES-15-030720-2
+ 1580  git push 
+ 1581  git branch
+ 1582  git checkout SLES-15-030720-2
+ 1583  git status 
+ 1584  git branch -v
+ 1585  git rebase -i
+ 1586  git rebase -i upstream/master
+ 1587  git status
+ 1588  nano linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1589  git add linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_renameat/rule.yml
+ 1590  git rebase --continue
+ 1591  git push -f
+ 1592  code
+ 1593  history
+ 1594  grep -ri  "SLES-15-030360"  /home/u001/vagrant.ccode/src/content/linux_os/guide/.
+ 1595  ping 192.168.121.22
+ 1596  ssh -p 22 root@192.168.121.22
+ 1597  ping 192.168.121.22
+ 1598  ssh -p 22 root@192.168.121.22
+ 1599  cd /var
+ 1600  cd lib
+ 1601  ls
+ 1602  cd libvirt
+ 1603  cd images
+ 1604  ls
+ 1605  sudo -s
+ 1606  cd ~/vagrant.ccode
+ 1607  ls
+ 1608  cat add-boxes.sh
+ 1609  ls /home/u001/Downloads/vagrant/sles4sap.box
+ 1610  vagrant box add --name SLES4SAP /home/u001/Downloads/vagrant/sles4sap.box
+ 1611  vagrant up sles4sap
+ 1612  df -h
+ 1613  sudo mc
+ 1614  vagrant status
+ 1615  vagrant destroy sles4sap
+ 1616  vagrant status
+ 1617  df -h
+ 1618  vagrant status
+ 1619  hsitory
+ 1620  history
+ 1621  vagrant box remove --help
+ 1622  vagrant box remove -f --all SLES4SAP
+ 1623  df -h
+ 1624  vagrant status
+ 1625  vagrant box remove -f --all sles-15-sp2-chef
+ 1626  vagrant destroy sles4sap
+ 1627  vagrant status
+ 1628  vagrant status --help
+ 1629  vagrant status sles4sap 
+ 1630  vagrant status sles-15-sp2-chef
+ 1631  vagrant 
+ 1632  vagrant box --help
+ 1633  vagrant box list
+ 1634  vagrant global-status
+ 1635  vagrant global-status --prune
+ 1636  vagrant status
+ 1637  vagrant status sles-15-sp2-chef
+ 1638  vagrant 
+ 1639  vagrant destroy --help
+ 1640  vagrant destroy -f sles-15-sp2-chef
+ 1641  vagrant status
+ 1642  vagrant destroy -f sles4sap 
+ 1643  vagrant global-status --help 
+ 1644  vagrant global-status 
+ 1645  mc
+ 1646  vagrant status
+ 1647  cd ..
+ 1648  cd vagrant.ccode
+ 1649  vagrant status
+ 1650  mc
+ 1651  df -h
+ 1652  history
+ 1653  cd ~
+ 1654  ls
+ 1655  cd Downloads/
+ 1656  ls
+ 1657  cd vagrant/
+ 1658  ls
+ 1659  file SLES12-SP5-Vagrant.x86_64-12.5-libvirt-GM.vagrant.libvirt.box
+ 1660  gunzip 
+ 1661  gzip 
+ 1662  gzip -h
+ 1663  mkdir box
+ 1664  ls
+ 1665  cp SLES15-SP3-Vagrant.x86_64-15.3-libvirt-PublicRC.vagrant.libvirt.box box
+ 1666  cd box
+ 1667  ls
+ 1668  gzip -t SLES15-SP3-Vagrant.x86_64-15.3-libvirt-PublicRC.vagrant.libvirt.box
+ 1669  gzip -h
+ 1670  gzip -t -v SLES15-SP3-Vagrant.x86_64-15.3-libvirt-PublicRC.vagrant.libvirt.box
+ 1671  gzip -d SLES15-SP3-Vagrant.x86_64-15.3-libvirt-PublicRC.vagrant.libvirt.box
+ 1672  ls
+ 1673  mv SLES15-SP3-Vagrant.x86_64-15.3-libvirt-PublicRC.vagrant.libvirt.box sles15sp3.gz
+ 1674  ls
+ 1675  gzip -t sles15sp3.gz 
+ 1676  gzip -d sles15sp3.gz 
+ 1677  ls
+ 1678  ls -l
+ 1679  ls -all
+ 1680  file sles15sp3 
+ 1681  ls
+ 1682  tar -x sles15sp3
+ 1683  tar -xf sles15sp3
+ 1684  ls
+ 1685  cat metadata.json 
+ 1686  cat Vagrantfile 
+ 1687  nano Vagrantfile 
+ 1688  ls -all
+ 1689  df -h
+ 1690  ls
+ 1691  cat metadata.json 
+ 1692  nano metadata.json 
+ 1693  sudo mc
+ 1694  ls
+ 1695  sudo mc
+ 1696  ls -al
+ 1697  mv sle4sap.qcow2 box.img
+ 1698  ls
+ 1699  tar cvzf sles4sap.box ./metadata.json ./Vagrantfile ./box.img 
+ 1700  ls -all
+ 1701  file sles4sap.box 
+ 1702  history
+ 1703  ssh -p 22 root@192.168.121.22
+ 1704  sudo mc
+ 1705  history
+ 1706  mv sle4sap.qcow2 box.img
+ 1707  ls
+ 1708  rm sles4sap.box 
+ 1709  tar cvzf sles4sap.box ./metadata.json ./Vagrantfile ./box.img
+ 1710  sudo mc
+ 1711  ls -all
+ 1712  tar cvzf sles4sap.box ./metadata.json ./Vagrantfile ./box.img
+ 1713  ls
+ 1714  ls -all
+ 1715  mc
+ 1716  ls
+ 1717  cd ..
+ 1718  ls *.box
+ 1719  cd ~/vagrant.ccode
+ 1720  ls
+ 1721  vagrant status
+ 1722  vagrant destroy sles4sap
+ 1723  vagrant status
+ 1724  df -h
+ 1725  sudo mc
+ 1726  mc
+ 1727  df -h
+ 1728  df
+ 1729  ls
+ 1730  cd /var/lib
+ 1731  ls
+ 1732  cd livbirt
+ 1733  cd libvirt
+ 1734  ls
+ 1735  sudo -s
+ 1736  cd 
+ 1737  cd ~/vagrant.ccode
+ 1738  ls
+ 1739  vagrant ssh-config sle4sap
+ 1740  vagrant package --base sle4sap
+ 1741  ls
+ 1742  ls /var/lib/libvirt/images
+ 1743  ls /var/lib/
+ 1744  ls /var/lib
+ 1745  cd /var/lib/libvirt
+ 1746  ls
+ 1747  cd images
+ 1748  ls
+ 1749  sudo -
+ 1750  sudo s
+ 1751  sudo -s
+ 1752  ls
+ 1753  cd vbox-vms
+ 1754  ls
+ 1755  cdl sles4sap
+ 1756  cd sles4sap
+ 1757  ls
+ 1758  ls -all
+ 1759  ls -help
+ 1760  ls -h
+ 1761  ls -_h
+ 1762  ls --h
+ 1763  ls --help
+ 1764  ls -las
+ 1765  ls -lask
+ 1766  ls -lak
+ 1767  ls -k
+ 1768  ls -ak
+ 1769  ls -lk
+ 1770  ls -lh
+ 1771  ls
+ 1772  ls -lh
+ 1773  ls Logs
+ 1774  tar cvzf custom_box.box /.sles4sap.qcow
+ 1775  tar cvzf custom_box.box sles4sap.qcow
+ 1776  ls -lh
+ 1777  sudo -s
+ 1778  ls
+ 1779  cat add-boxes.sh 
+ 1780  vagrant global-status
+ 1781  vagrant destroy 21d5382
+ 1782  history
+ 1783  clear
+ 1784  pwd
+ 1785  ls boxes
+ 1786  ls
+ 1787  cat add-boxes.sh 
+ 1788  vagrant box add --name SLES4SAP /home/u001/vagrant.ccode/boxes/sles4sap.box
+ 1789  vagrant box add --name --force SLES4SAP /home/u001/vagrant.ccode/boxes/sles4sap.box
+ 1790  vagrant box remove --f  SLES4SAP 
+ 1791  vagrant box add --name --force SLES4SAP /home/u001/vagrant.ccode/boxes/sles4sap.box
+ 1792  vagrant status
+ 1793  vagrant up sles4sap
+ 1794  vagrant global-status
+ 1795  vagrant destroy 23dbaaf 
+ 1796  history
+ 1797  vagrant box remove --f  SLES4SAP
+ 1798  history
+ 1799  ls boxes
+ 1800  ls -al boxes
+ 1801  vagrant box add --name SLES4SAP /home/u001/vagrant.ccode/boxes/sles4sap.box
+ 1802  vagrant up sles4sap
+ 1803  sudo mc
+ 1804  sudo -s
+ 1805  ls
+ 1806  history
+ 1807  vargant status
+ 1808  vagrant status
+ 1809  vagrant up sles4sap
+ 1810  vagrant global-status
+ 1811  mc
+ 1812  vagrant status
+ 1813  vagrant destroy sles4sap 
+ 1814  vagrant status
+ 1815  vagrant status sles4sap
+ 1816  vagrant global-status
+ 1817  history
+ 1818  vagrant box remove --f  SLES4SAP
+ 1819  mc
+ 1820  vagrant status
+ 1821  mc
+ 1822  clear
+ 1823  vagrant
+ 1824  vagrant status
+ 1825  vagrant destroy --help
+ 1826  vagrant destroy -f sles-15-sp2-chef
+ 1827  vagrant status
+ 1828  vagrant destroy -f sles4sap
+ 1829  vagrant
+ 1830  vagrant status sles4sap
+ 1831  vagrant destroy --help
+ 1832  ls
+ 1833  cp Vagrantfile Vagrantfile.orig
+ 1834  vagrant init --help
+ 1835  vagrant status
+ 1836  vagrant box remove sles-15-sp2-chef --provider=libvirt --force
+ 1837  vagrant box remove sles4sap --provider=libvirt --force
+ 1838  vagrant box list
+ 1839  vagrant 
+ 1840  vagrant destroy sles4sap --provider=libvirt --force
+ 1841  vagrant destroy -f sles4sap 
+ 1842  vagrant status
+ 1843  sudo vagrant destroy -f sles4sap 
+ 1844  vagrant status
+ 1845  virt-install 
+ 1846  virt-install --help
+ 1847  cd ~
+ 1848  ls
+ 1849  cd vbox-vms/
+ 1850  ls
+ 1851  rmdir sles4sap
+ 1852  cd sles4sap
+ 1853  ls
+ 1854  rm custom_box.box 
+ 1855  cd ..
+ 1856  rmdir sles4sap
+ 1857  ls
+ 1858  cd sles4sap/
+ 1859  ls
+ 1860  ls -lh
+ 1861  ls
+ 1862  mkdir box
+ 1863  cp sles4sap.qcow box
+ 1864  cd box
+ 1865  ls
+ 1866  ls -qll
+ 1867  ls -all
+ 1868  mv sles4sap.qcow box.img
+ 1869  ls
+ 1870  tar cvzf sles4sap.box ./metadata.json ./Vagrantfile ./box.img 
+ 1871  ls
+ 1872  mc
+ 1873  cd ~/vagrant.ccode
+ 1874  ls
+ 1875  pwd
+ 1876  ls boxes
+ 1877  vagrant box add --name SLES4SAP /home/u001/vagrant.ccode/boxes/sles4sap.box
+ 1878  vagrant status
+ 1879  vagrant up sles4sap
+ 1880  cd ~/
+ 1881  ls
+ 1882  cd vbox-vms
+ 1883  ls
+ 1884  cd sles4sap
+ 1885  ls
+ 1886  file sles4sap.qcow
+ 1887  qemu-img --help
+ 1888  ls
+ 1889  cd box
+ 1890  ls
+ 1891  qemu-img convert -f qcow -O qcow2 box.img box.qcow2 
+ 1892  ls
+ 1893  ls -lh
+ 1894  mv box.img sles4sap.qcow
+ 1895  mv box.qcow2 box.img
+ 1896  mv sles4sap.box sle4sap.box.qcow
+ 1897  ls 
+ 1898  history
+ 1899  tar cvzf sles4sap.box ./metadata.json ./Vagrantfile ./box.img
+ 1900  ls 
+ 1901  mc
+ 1902  history
+ 1903  sudo -s
+ 1904  cd ~
+ 1905  ls
+ 1906  cd vbox-vms/
+ 1907  ls
+ 1908  cd sles4sap/
+ 1909  ls
+ 1910  ls -lh
+ 1911  cd box.qcow2/
+ 1912  ls
+ 1913  ls -lh
+ 1914  sudo mc
+ 1915  ls
+ 1916  ls -all
+ 1917  sudo cp sles4sap.qcow2 box.img
+ 1918  ls
+ 1919  sudo mc
+ 1920  ls -all
+ 1921  rm sles4sap.box
+ 1922  history 
+ 1923  tar cvzf sles4sap.box ./metadata.json ./Vagrantfile ./box.img
+ 1924  ls -all
+ 1925  mc
+ 1926  cd ~/vagrant.ccode
+ 1927  ls
+ 1928  vagrant status
+ 1929  history
+ 1930  vagrant box add --name SLES4SAP /home/u001/vagrant.ccode/boxes/sles4sap.box
+ 1931  vagrant status
+ 1932  vagrant up sles4sap
+ 1933  ls
+ 1934  history
+ 1935  vagrant destroy sles4sap
+ 1936  vagrant box remove -f SLES4SAP
+ 1937  df -h
+ 1938  sudo -s
+ 1939  logout
+ 1940  ssh -p 22 root@192.168.121.170
+ 1941  ping 192.168.121.170
+ 1942  ssh -p 22 vagrant@192.168.121.170
+ 1943  ssh -p 22 root@192.168.121.170
+ 1944  ssh -p 22 root@192.168.180.183
+ 1945  ping 192.168.121.170
+ 1946  ssh -p 22 root@192.168.121.170
+ 1947  sudo -s
+ 1948  mc
+ 1949  sudo mc
+ 1950  mc
+ 1951  cd ~
+ 1952  ls
+ 1953  cd vbox-vms/
+ 1954  ls
+ 1955  cd sles4sap/
+ 1956  ls
+ 1957  cd box.qcow2/
+ 1958  ls
+ 1959  history
+ 1960  tar cvzf sles4sap.box ./metadata.json ./Vagrantfile ./box.img
+ 1961  ls
+ 1962  ls -lh
+ 1963  mc
+ 1964  cd ~/vagrant.ccode
+ 1965  ls
+ 1966  history
+ 1967  vagrant box add --name SLES4SAP /home/u001/vagrant.ccode/boxes/sles4sap.box
+ 1968  vagrant status 
+ 1969  vagrant up sles4sap
+ 1970  vagrant status 
+ 1971  vagrant destroy -f sles4sap 
+ 1972  history 
+ 1973  vagrant box remove -f SLES4SAP
+ 1974  vagrant status 
+ 1975  cd ~/backup
+ 1976  cd ~/backups
+ 1977  ls -lv
+ 1978  ls -lvh
+ 1979  ls
+ 1980  ls -lvh
+ 1981  ls
+ 1982  mkdir 09-09-2021
+ 1983  mv *.gpg 09-09-2021
+ 1984  ls
+ 1985  cd 26-08-2021
+ 1986  rm *
+ 1987  cd ..
+ 1988  rmdir 26-08-2021
+ 1989  exit
+ 1990  ls -lh
+ 1991  cd ~
+ 1992  ls
+ 1993  cd vagrant.ccode
+ 1994  code
+ 1995  ls
+ 1996  ls -alh
+ 1997  exit
+ 1998  gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
+ 1999  gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 12.0
+ 2000  gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 11.9
+ 2001  git rebase -i upstream/master
+ 2002  git status
+ 2003  nano linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_unlink/rule.yml
+ 2004  nano linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_unlinkat/rule.yml
+ 2005  git add linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_unlink/rule.yml
+ 2006  git add linux_os/guide/system/auditing/auditd_configure_rules/audit_file_modification/audit_rules_unsuccessful_file_modification_unlinkat/rule.yml
+ 2007  git rebase -continue
+ 2008  git rebase --continue
+ 2009  git commit -a
+ 2010  git push -f
+ 2011  git fetch -all
+ 2012  git fetch --all
+ 2013  git commit -a
+ 2014  git push -f 
+ 2015  git push -f origin SLES-15-030730-40-50
+ 2016  history > history.txt
