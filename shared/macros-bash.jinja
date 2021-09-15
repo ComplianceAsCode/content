@@ -519,6 +519,7 @@ zypper install -y "{{{ package }}}"
     Remove a package
 
     Uses the right command based on pkg_manager property defined in product.yml.
+    When used in a test scenario, the macro will remove even protected packages.
 
     :param package: name of the package
     :type package: str
@@ -527,11 +528,11 @@ zypper install -y "{{{ package }}}"
 {{%- if pkg_manager is defined -%}}
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
-    if grep -q "{{{ package }}}" $(find /etc/dnf/protected.d /etc/yum/protected.d -type f); then
-        {{{ pkg_manager }}} remove -y --setopt protected_packages= "{{{ package }}}"
-    else
-        {{{ pkg_manager }}} remove -y "{{{ package }}}"
-    fi
+{{% if SSG_TEST_SUITE_ENV %}}
+    {{{ pkg_manager }}} remove -y --setopt protected_packages= "{{{ package }}}"
+{{% else %}}
+    {{{ pkg_manager }}} remove -y "{{{ package }}}"
+{{% endif %}}
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
 DEBIAN_FRONTEND=noninteractive apt-get remove -y "{{{ package }}}"
