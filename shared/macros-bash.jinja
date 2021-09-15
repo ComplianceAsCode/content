@@ -527,7 +527,11 @@ zypper install -y "{{{ package }}}"
 {{%- if pkg_manager is defined -%}}
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
-    {{{ pkg_manager }}} remove -y "{{{ package }}}"
+    if grep -q "{{{ package }}}" $(find /etc/dnf/protected.d /etc/yum/protected.d -type f); then
+        {{{ pkg_manager }}} remove -y --setopt protected_packages= "{{{ package }}}"
+    else
+        {{{ pkg_manager }}} remove -y "{{{ package }}}"
+    fi
 fi
 {{%- elif pkg_manager == "apt_get" -%}}
 DEBIAN_FRONTEND=noninteractive apt-get remove -y "{{{ package }}}"
