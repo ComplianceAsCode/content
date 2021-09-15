@@ -113,9 +113,9 @@ def get_controls(known_rules, ns, root):
             control['title'] = stig.find('checklist:title', ns).text
             if stig_id in known_rules.keys():
                 control['rules'] = known_rules.get(stig_id)
-                control['automated'] = 'yes'
+                control['status'] = 'automated'
             else:
-                control['automated'] = 'no'
+                control['status'] = 'pending'
             controls.append(control)
     return controls
 
