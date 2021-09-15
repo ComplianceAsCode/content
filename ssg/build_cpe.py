@@ -182,6 +182,13 @@ class CPEALPlatformSpecification(object):
     def add_platform(self, platform):
         self.platforms.append(platform)
 
+    def to_xml_element(self, cpe_oval_filename):
+        cpe_al_platform_spec = ET.Element("{%s}cpe-lang:platform-specification" % CPEItem.ns)
+        for platform in self.platforms:
+            cpe_al_platform_spec.append(platform.to_xml_element(cpe_oval_file))
+
+        return cpe_al_platform_spec
+
 class CPEALPlatform(object):
     def __init__():
         self.id = ""
@@ -190,11 +197,19 @@ class CPEALPlatform(object):
     def add_test(self, test):
         self.test = test
 
+    def to_xml_element(self, cpe_oval_filename):
+        cpe_al_platform = ET.Element("{%s}cpe-lang:platform" % CPEItem.ns)
+        cpe_al_platform.add('id', self.id)
+        cpe_al_platform.append(self.text.to_xml_element(cpe_oval_filename))
+
+        return cpe_al_platform
+
+
 class CPEALTest(object):
     def __init__(self):
         self.id = None
-        self.operator = None
-        self.negated = False
+        self.operator = ""
+        self.negate = ""
         self.objects = []
 
     def __eq__(self, other):
@@ -206,6 +221,16 @@ class CPEALTest(object):
         else:
             return False
 
+    def to_xml_element(self, cpe_oval_filename):
+        cpe_al_test = ET.Element("{%s}cpe-lang:logical-test" % CPEItem.ns)
+        cpe_al_test.set('operator', self.operator)
+        cpe_al_test.set('negate', self.negate)
+        for obj in self.objects:
+            cpe_al_test.append(obj.to_xml_element(cpe_oval_filename))
+
+        return cpe_al_test
+
+
 class CPEALFactCheck(object):
     def __init__(self, cpeitem_data):
         self.name = cpeitem_data["name"]
@@ -214,6 +239,15 @@ class CPEALFactCheck(object):
 
     def __eq__(self, other):
         return self.refid == other.refid
+
+    def to_xml_element(self, cpe_oval_filename):
+        cpe_al_refcheck = ET.Element("{%s}cpe-lang:check-fact-ref" % CPEItem.ns)
+        cpe_al_refcheck.set('description', self.title)
+        cpe_al_refcheck.set('system', oval_namespace)
+        cpe_al_refcheck.set('href', cpe_oval_filename)
+        cpe_al_refcheck.set('id-ref', self.check_id)
+
+        return cpe_al_refcheck
 
 
 def extract_subelement(objects, sub_elem_type):
