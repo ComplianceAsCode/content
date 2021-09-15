@@ -24,6 +24,7 @@
     <criteria comment="Fedora Vendor keys" operator="AND">
       <extend_definition comment="Fedora installed" definition_ref="installed_OS_is_fedora" />
       <criteria comment="Supported Fedora key is installed" operator="OR">
+          {{{ fedora_gpgkey_criterion(rawhide_version, rawhide_pkg_release, rawhide_pkg_version) }}}
           {{{ fedora_gpgkey_criterion(future_version, future_pkg_release, future_pkg_version) }}}
           {{{ fedora_gpgkey_criterion(latest_version, latest_pkg_release, latest_pkg_version) }}}
           {{{ fedora_gpgkey_criterion(previous_version, previous_pkg_release, previous_pkg_version) }}}
@@ -37,6 +38,7 @@
   </linux:rpminfo_object>
 
   <!-- Perform the particular tests themselves -->
+  {{{ fedora_gpgkey_check(rawhide_version, rawhide_pkg_release, rawhide_pkg_version) }}}
   {{{ fedora_gpgkey_check(future_version, future_pkg_release, future_pkg_version) }}}
   {{{ fedora_gpgkey_check(latest_version, latest_pkg_release, latest_pkg_version) }}}
   {{{ fedora_gpgkey_check(previous_version, previous_pkg_release, previous_pkg_version) }}}

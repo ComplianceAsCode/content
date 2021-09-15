@@ -5,7 +5,9 @@ dnf install -y gpg
 fedora_version=$(grep -oP '[[:digit:]]+' /etc/redhat-release)
 
 function get_release_fingerprint {
-    if [ "${fedora_version}" -eq "{{{ latest_version }}}" ]; then
+    if [ "${fedora_version}" -eq "{{{ rawhide_version }}}" ]; then
+        readonly FEDORA_RELEASE_FINGERPRINT="{{{ rawhide_release_fingerprint }}}"
+    elif [ "${fedora_version}" -eq "{{{ latest_version }}}" ]; then
         readonly FEDORA_RELEASE_FINGERPRINT="{{{ latest_release_fingerprint }}}"
     elif [ "${fedora_version}" -eq "{{{ previous_version }}}" ]; then
         readonly FEDORA_RELEASE_FINGERPRINT="{{{ previous_release_fingerprint }}}"
