@@ -1315,6 +1315,18 @@ fi
 #}}
 {{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
 
+
+unset syscall_a
+unset syscall_grouping
+unset syscall_string
+unset syscall
+unset file_to_edit
+unset rule_to_edit
+unset rule_syscalls_to_edit
+unset other_string
+unset auid_string
+unset full_rule
+
 # Load macro arguments into arrays
 read -a syscall_a <<< {{{ syscall }}}
 read -a syscall_grouping <<< {{{ syscall_groupings }}}
@@ -1332,6 +1344,7 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 # -----------------------------------------------------------------------------------------
 #
 files_to_inspect=()
+
 
 {{% if tool == "auditctl" %}}
 # If audit tool is 'auditctl', then add '/etc/audit/audit.rules'
