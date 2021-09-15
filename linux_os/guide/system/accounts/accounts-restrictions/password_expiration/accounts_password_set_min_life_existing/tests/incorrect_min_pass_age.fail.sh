@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# platform = multi_platform_sle
-# reboot = false
-# strategy = restrict
-# complexity = low
-# disruption = low
-
 BAD_PAS_AGE=-1
 
 # Configure the OS to enforce a password age < 1 of each accout  
