@@ -16,4 +16,4 @@ description: |-
     Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 
 selections:
-    - pcidss:all:base
+    - pcidss_ocp4:all:base
