@@ -659,38 +659,24 @@ def get_rule_dir_remediations(dir_path, remediation_type, product=None):
 
 
 def expand_xccdf_subs(fix, remediation_type):
-    """For those remediation scripts utilizing some of the internal SCAP
-    Security Guide remediation functions expand the selected shell variables
-    and remediation functions calls with <xccdf:sub> element
+    """Expand the respective populate keywords of each
+    remediation type with an <xccdf:sub> element
 
-    This routine translates any instance of the 'bash-populate' function call in
+    This routine translates any instance of the '`type`-populate' keyword in
     the form of:
 
-            (bash-populate variable_name)
+            (`type`-populate variable_name)
 
-    into
-
-            variable_name="<sub idref="variable_name"/>"
-
-    Also transforms any instance of the 'ansible-populate' function call in the
-    form of:
-            (ansible-populate variable_name)
-    into
+    where `type` can be either ansible, puppet, anaconda or bash, into
 
             <sub idref="variable_name"/>
 
-    Also transforms any instance of some other known remediation function (e.g.
-    'replace_or_append' etc.) from the form of:
-
-            function_name "arg1" "arg2" ... "argN"
-
-    into:
-
-            <sub idref="function_function_name"/>
-            function_name "arg1" "arg2" ... "argN"
     """
+
     if fix is not None:
         fix_text = fix.text
+    else:
+        return
     if remediation_type == "ignition":
         return
     elif remediation_type == "kubernetes":
@@ -754,4 +740,3 @@ def expand_xccdf_subs(fix, remediation_type):
         # so text is in ".tail" of element
         xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
         xccdfvarsub.tail = text_between_vars
-    return
