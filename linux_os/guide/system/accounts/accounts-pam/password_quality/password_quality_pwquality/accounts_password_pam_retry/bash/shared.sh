@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_password_pam_retry") }}}
 
 if grep -q "retry=" /etc/pam.d/system-auth ; then

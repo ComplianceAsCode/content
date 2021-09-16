@@ -1,8 +1,5 @@
 # platform = Oracle Linux 7,Red Hat Enterprise Linux 7,multi_platform_wrlinux
 
-# include remediation functions library
-. /usr/share/scap-security-guide/remediation_functions
-
 {{{ bash_disable_prelink() }}}
 
 if grep -q -m1 -o aes /proc/cpuinfo; then

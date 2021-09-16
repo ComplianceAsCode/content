@@ -1,5 +1,5 @@
 # platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_wrlinux
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_accounts_max_concurrent_login_sessions") }}}
 
 if grep -q '^[^#]*\<maxlogins\>' /etc/security/limits.d/*.conf; then

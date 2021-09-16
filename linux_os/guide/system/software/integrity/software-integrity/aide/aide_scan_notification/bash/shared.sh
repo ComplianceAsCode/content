@@ -1,7 +1,5 @@
 # platform = multi_platform_all
 
-. /usr/share/scap-security-guide/remediation_functions
-
 {{{ bash_package_install("aide") }}}
 {{{ bash_instantiate_variables("var_aide_scan_notification_email") }}}
 {{% if product in ["sle12", "sle15"] %}}

@@ -1,5 +1,6 @@
 # platform = Google Chromium Browser
-populate var_trusted_home_page
+
+{{{ bash_instantiate_variables("var_trusted_home_page") }}}
 
 CHROME_POL_FILE="chrome_stig_policy.json"
 CHROME_POL_DIR="/etc/chromium/policies/managed/"

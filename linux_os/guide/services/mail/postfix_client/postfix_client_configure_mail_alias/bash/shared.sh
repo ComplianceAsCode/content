@@ -1,6 +1,4 @@
 # platform = multi_platform_all
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
 
 {{{ bash_instantiate_variables("var_postfix_root_mail_alias") }}}
 

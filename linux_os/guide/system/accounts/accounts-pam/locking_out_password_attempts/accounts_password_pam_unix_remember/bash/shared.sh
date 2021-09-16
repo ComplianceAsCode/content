@@ -1,5 +1,5 @@
 # platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_password_pam_unix_remember") }}}
 
 AUTH_FILES[0]="/etc/pam.d/system-auth"

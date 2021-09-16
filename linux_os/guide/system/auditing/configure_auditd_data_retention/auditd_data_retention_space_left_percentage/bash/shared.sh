@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_auditd_space_left_percentage") }}}
 
 grep -q "^space_left[[:space:]]*=.*$" /etc/audit/auditd.conf && \
