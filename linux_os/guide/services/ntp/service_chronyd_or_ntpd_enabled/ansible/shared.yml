@@ -7,11 +7,6 @@
   ansible.builtin.package_facts:
     manager: auto
 
-- name: Print the package facts
-  ansible.builtin.debug:
-    var: ansible_facts.packages
-
-
 - name: Start ntpd service if ntp installed
   service:
     name: "ntpd"
