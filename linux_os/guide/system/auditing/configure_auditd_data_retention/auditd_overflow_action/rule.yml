@@ -4,7 +4,13 @@ title: Appropriate Action Must be Setup When the Internal Audit Event Queue is F
 
 description: |-
     The audit system should have an action setup in the event the internal event queue becomes full.
-    To setup an overflow action edit <tt>/etc/audit/auditd.conf</tt>. Set <tt>overflow_action</tt>
+    To setup an overflow action edit 
+    {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+        <tt>/etc/audit/auditd.conf</tt>.
+    {{% else %}}
+        <tt>/etc/audisp/audispd.conf</tt>.
+    {{% endif %}}
+    Set <tt>overflow_action</tt>
     to one of the following values: <tt>syslog</tt>, <tt>single</tt>, <tt>halt</tt>.
 
 

@@ -50,10 +50,9 @@ ocil_clause: 'it is not activated'
 
 ocil: |-
     To verify the audispd's syslog plugin is active, run the following command:
-{{% if product in ["rhel8", "fedora", "rhv4"] %}}
+{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
     <pre>$ sudo grep active /etc/audit/plugins.d/syslog.conf</pre>
 {{% else %}}
     <pre>$ sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>
 {{% endif %}}
     If the plugin is active, the output will show <tt>yes</tt>.
-

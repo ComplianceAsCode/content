@@ -4,7 +4,13 @@
 # complexity = low
 # disruption = low
 
-{{{set_config_file(path="/etc/audit/auditd.conf",
+{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
+{{% set audisp_conf_file = "/etc/audit/auditd.conf" %}}
+{{% else %}}
+{{% set audisp_conf_file = "/etc/audisp/audispd.conf" %}}
+{{% endif %}}
+
+{{{set_config_file(path=audisp_conf_file,
                   parameter="overflow_action",
                   value="syslog",
                   insensitive=true,
