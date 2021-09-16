@@ -322,8 +322,6 @@ if(PY_SPHINX AND PY_SPHINXCONTRIB.AUTOJINJA AND PY_SPHINX_RTD_THEME AND PY_RECOM
     add_subdirectory("docs")
 endif()
 
-ssg_build_bash_remediation_functions()
-
 ssg_build_man_page()
 
 if (SSG_PRODUCT_CHROMIUM)
