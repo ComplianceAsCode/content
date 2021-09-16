@@ -11,7 +11,6 @@
 * Must have the correct labels
 * Should be assigned to the reviewers
 
-
 ### Merging
 * Should use the [merge commit method](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
 * Should use the GitHub Web UI to document and ensure code reviews are done correctly
@@ -138,7 +137,7 @@ Benchmark sections must be in the following order, if they are present.
 These rules apply to the files in `*.yml`
 All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 
-### Control Sections
+#### Control Sections
 Control sections must be in the following order, if they are present.
 * `policy`
 * `title`
@@ -167,9 +166,29 @@ Control sections must be in the following order, if they are present.
     * `rules`
         * Must be a valid rule id
 
+### Profile
+
+#### Profile Sections
+Control sections must be in the following order, all sections are required unless otherwise noted.
+* `documentation_complete`
+* `id`
+* `metadata`
+  * `reference`
+  * `version`
+  * `SMEs`
+* `title`
+  * Shall be short and descriptive 
+* `description` (HTML-Like)
+* `extends` (Optional)
+  * Must be valid id of another profile id
+* `selections`
+  * Must be valid rule ids
+
 ## Remediation
+
+### Header
 All remediations should have the following header with the appropriate values.
-The header should start on the first line
+The header should start on the first line.
 ```bash
 # platform = multi_platform_all
 # reboot = false
@@ -178,15 +197,39 @@ The header should start on the first line
 # disruption = low
 ```
 
-### Bash
-* Should use Jinja macros instead of shared functions
-* Must use 4-space indentation
-* Shall put `do` or `then` on the same line as `for` or `if` respectively, e.g. `for file in *; do`
+#### `platform`
+Unless there is a good reason this should be `multi_platform_all`. 
+But if the rule only applies to a specific operating system or family of operating then should be used. 
+The values can be product names or values from `MULTI_PLATFORM_LIST` or `MULTI_PLATFORM_LIST` in [ssg/constants.py](https://github.com/ComplianceAsCode/content/blob/master/ssg/constants.py).
+
+#### `reboot`
+Must be true or false.
+Shall be true if the system needs to be rebooted in order for the changes to take effect.
+
+#### `strategy`
+Should be one of the following values:
+* configure
+* disable
+* enable
+* patch
+* restrict
+* unknown
+
+#### `complexity`
+Value must be low, medium, or high.
+
+#### `disruption`
+Value must be low, medium, or high.
 
 ### Ansible
 * Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
 * Should prefer using Ansible modules over just calling system commands
 * Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
+
+### Bash
+* Should use Jinja macros instead of shared functions
+* Must use 4-space indentation
+* Shall put `do` or `then` on the same line as `for` or `if` respectively, e.g. `for file in *; do`
 
 ### Kubernetes
 * Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
@@ -210,7 +253,6 @@ The header should start on the first line
             * `object`
             * `state`
 * If an element has an optional a `comment` it should be added
-
 
 #### Test Elements
 * `id` should start with `test_`
@@ -244,4 +286,4 @@ The header should start on the first line
 
 ### reStructuredText
 * Shall use the `.rst` for the file extension
-* Must only when necessary
+* Must only be used when necessary
