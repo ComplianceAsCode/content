@@ -277,6 +277,10 @@ def get_product_context(product=None):
     # property to bypass this error.
     product_yaml['cmake_build_type'] = 'Debug'
 
+    # Set the Jinja processing environment to Test Suite,
+    # this allows Jinja macros to behave differently in a content build time and in a test time.
+    product_yaml['SSG_TEST_SUITE_ENV'] = True
+
     return product_yaml
 
 

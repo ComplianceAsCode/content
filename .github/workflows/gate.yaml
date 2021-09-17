@@ -3,7 +3,7 @@ on:
   push:
     branches: [ 'master', '*', '!stabilization*', '!stable*' ]
   pull_request:
-    branches: [ 'master' ]
+    branches: [ 'master', 'stabilization*' ]
 jobs:
   validate-ubuntu:
     name: Build, Test on Ubuntu 20.04
