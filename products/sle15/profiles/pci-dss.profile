@@ -23,6 +23,7 @@ selections:
     - var_auditd_action_mail_acct=root
     - var_multiple_time_servers=suse
     - var_smartcard_drivers=cac
+    - var_password_pam_unix_remember=4
     ### Rules:
     - account_disable_post_pw_expiration
     - account_unique_name

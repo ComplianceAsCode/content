@@ -20,6 +20,8 @@ selections:
     - var_accounts_tmout=15_min
     - inactivity_timeout_value=15_minutes
     - var_sudo_timestamp_timeout=always_prompt
+    - var_password_pam_unix_remember=5
+    - var_accounts_maximum_age_login_defs=60
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
