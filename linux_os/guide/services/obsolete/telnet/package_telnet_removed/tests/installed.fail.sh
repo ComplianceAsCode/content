@@ -1,4 +1,4 @@
 #!/bin/bash
-# package = yum
+# packages = yum
 
 yum install -y telnet
