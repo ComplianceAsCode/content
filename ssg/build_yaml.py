@@ -648,7 +648,6 @@ class Benchmark(object):
         self.version = "0.1"
         self.profiles = []
         self.values = {}
-        self.bash_remediation_fns_group = None
         self.groups = {}
         self.rules = {}
         self.product_cpe_names = []
@@ -730,14 +729,6 @@ class Benchmark(object):
 
             self.profiles.append(new_profile)
 
-    def add_bash_remediation_fns_from_file(self, file_):
-        if not file_:
-            # bash-remediation-functions.xml doens't exist
-            return
-
-        tree = ET.parse(file_)
-        self.bash_remediation_fns_group = tree.getroot()
-
     def to_xml_element(self):
         root = ET.Element('Benchmark')
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
@@ -774,8 +765,6 @@ class Benchmark(object):
 
         for value in self.values.values():
             root.append(value.to_xml_element())
-        if self.bash_remediation_fns_group is not None:
-            root.append(self.bash_remediation_fns_group)
 
         groups_in_bench = list(self.groups.keys())
         priority_order = ["system", "services"]
@@ -1500,7 +1489,7 @@ class Rule(object):
 
 
 class DirectoryLoader(object):
-    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml):
+    def __init__(self, profiles_dir, env_yaml):
         self.benchmark_file = None
         self.group_file = None
         self.loaded_group = None
@@ -1513,7 +1502,6 @@ class DirectoryLoader(object):
         self.all_groups = set()
 
         self.profiles_dir = profiles_dir
-        self.bash_remediation_fns = bash_remediation_fns
         self.env_yaml = env_yaml
         self.product = env_yaml["product"]
 
@@ -1551,8 +1539,7 @@ class DirectoryLoader(object):
     def load_benchmark_or_group(self, guide_directory):
         """
         Loads a given benchmark or group from the specified benchmark_file or
-        group_file, in the context of guide_directory, profiles_dir,
-        env_yaml, and bash_remediation_fns.
+        group_file, in the context of guide_directory, profiles_dir and env_yaml.
 
         Returns the loaded group or benchmark.
         """
@@ -1568,7 +1555,6 @@ class DirectoryLoader(object):
             )
             if self.profiles_dir:
                 group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
-            group.add_bash_remediation_fns_from_file(self.bash_remediation_fns)
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml)
@@ -1613,9 +1599,9 @@ class DirectoryLoader(object):
 
 
 class BuildLoader(DirectoryLoader):
-    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml,
+    def __init__(self, profiles_dir, env_yaml,
                  resolved_rules_dir=None, sce_metadata_path=None):
-        super(BuildLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
+        super(BuildLoader, self).__init__(profiles_dir, env_yaml)
 
         self.resolved_rules_dir = resolved_rules_dir
         if resolved_rules_dir and not os.path.isdir(resolved_rules_dir):
@@ -1657,7 +1643,7 @@ class BuildLoader(DirectoryLoader):
 
     def _get_new_loader(self):
         loader = BuildLoader(
-            self.profiles_dir, self.bash_remediation_fns, self.env_yaml, self.resolved_rules_dir)
+            self.profiles_dir, self.env_yaml, self.resolved_rules_dir)
         # Do it this way so we only have to parse the SCE metadata once.
         loader.sce_metadata = self.sce_metadata
         return loader

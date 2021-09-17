@@ -114,9 +114,6 @@ refer to their help text for more information and usage:
    base product.
  - `expand_jinja.py` -- helper script used by the BATS (Bash unit test
    framework) to expand Jinja in test scripts.
- - `generate_bash_remediation_functions.py` -- combines shared Bash
-   remediation functions (under `shared/bash_remediation_functions`) into a
-   single XML document.
  - `generate_fixes_xml.py` -- combines the remediations (from the source
    directory) into a single XML document to be merged with the unlinked
    XCCDF.

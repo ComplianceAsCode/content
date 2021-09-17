@@ -1037,20 +1037,16 @@ we can edit in one place and reuse in many places.
 
 ### Bash
 
-Bash remediations are stored as shell script files in *bash* directory
-in rule directory. You can make use of any available command, but beware
+Bash remediations are stored as shell script files in the *bash* directory
+in a rule's directory. You can make use of any available command, but beware
 of too specific or complex solutions, as it may lead to a narrow range
-of supported platforms. There are a number of already written bash
-remediations functions available in
-*shared/bash_remediation_functions/* directory, it is possible one of
-them is exactly what you are looking for.
+of supported platforms.
 
 Following, you can see an example of a bash remediation that sets the
 maximum number of days a password may be used:
 
     # platform = Red Hat Enterprise Linux 7
-    . /usr/share/scap-security-guide/remediation_functions
-    populate var_accounts_maximum_age_login_defs
+    {{{ bash_instantiate_variables("var_accounts_maximum_age_login_defs) }}}
 
     grep -q ^PASS_MAX_DAYS /etc/login.defs && \
         sed -i "s/PASS_MAX_DAYS.*/PASS_MAX_DAYS     $var_accounts_maximum_age_login_defs/g" /etc/login.defs

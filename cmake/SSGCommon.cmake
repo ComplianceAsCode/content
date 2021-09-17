@@ -99,12 +99,6 @@ endmacro()
 # known. As part of this step, we also resolve/template the rules in the
 # content repository for each product.
 macro(ssg_build_shorthand_xml PRODUCT)
-    set(BASH_REMEDIATION_FNS "")
-    set(BASH_REMEDIATION_FNS_DEPENDS "")
-    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
-        list(APPEND BASH_REMEDIATION_FNS "--bash-remediation-fns" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
-        #list(APPEND BASH_REMEDIATION_FNS_DEPENDS "generate-internal-bash-remediation-functions.xml" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
-    endif()
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
@@ -120,7 +114,6 @@ macro(ssg_build_shorthand_xml PRODUCT)
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
         DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
