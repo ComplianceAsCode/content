@@ -41,6 +41,7 @@ product_directories = [
     'chromium',
     'debian9', 'debian10', 'debian11',
     'example',
+    'eks',
     'fedora',
     'firefox',
     'fuse6',
@@ -198,6 +199,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Debian 10": "debian10",
     "Debian 11": "debian11",
     "Example": "example",
+    "Amazon Elastic Kubernetes Service": "eks",
     "Fedora": "fedora",
     "Firefox": "firefox",
     "JBoss Fuse 6": "fuse6",
@@ -260,11 +262,13 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
+                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos",
+                       "example", "eks"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_debian": ["debian9", "debian10", "debian11"],
     "multi_platform_example": ["example"],
+    "multi_platform_eks": ["eks"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
     "multi_platform_ol": ["ol7", "ol8"],
@@ -442,6 +446,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
     'rhcos': 'Red Hat Enterprise Linux CoreOS',
+    'eks': 'Amazon Elastic Kubernetes Service',
 }
 
 

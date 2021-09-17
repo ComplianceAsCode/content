@@ -1,0 +1,75 @@
+<def-group>
+  <!-- General check for Amazon EKS -->
+  <definition class="inventory" id="installed_app_is_eks" version="1">
+    <metadata>
+      <title>Amazon Elastic Kubernetes Service</title>
+      <affected family="unix">
+        <platform>Amazon Elastic Kubernetes Service</platform>
+      </affected>
+      <reference ref_id="cpe:/a:amazon:elastic_kubernetes_service:1" source="CPE" />
+      <description>The application installed installed on the system is EKS.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="cluster is EKS" test_ref="test_eks" />
+      <criterion comment="Make sure kubernetes version is present" test_ref="test_file_for_eks"/>
+    </criteria>
+  </definition>
+
+  <ind:yamlfilecontent_test id="test_eks" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_eks"/>
+      <ind:state state_ref="state_eks"/>
+  </ind:yamlfilecontent_test>
+
+  <local_variable id="eks_dump_location" datatype="string" comment="The actual filepath of the file to scan." version="1">
+      <literal_component>/kubernetes-api-resources/version</literal_component>
+  </local_variable>
+
+  <unix:file_test id="test_file_for_eks" check="only one" comment="Find the actual file to be scanned." version="1">
+      <unix:object object_ref="object_file_for_eks"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_file_for_eks" version="1">
+      <unix:filepath var_ref="eks_dump_location"/>
+  </unix:file_object>
+
+  <ind:yamlfilecontent_object id="object_eks" version="1">
+      <ind:filepath var_ref="eks_dump_location"/>
+      <ind:yamlpath>.gitVersion</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
+  <ind:yamlfilecontent_state id="state_eks" version="1">
+      <ind:value datatype="record">
+          <field name="#" datatype="string" operation="pattern match">^.*-eks-.*$</field>
+      </ind:value>
+  </ind:yamlfilecontent_state>
+
+{{% for minorversion in range(21, 22) %}}
+  <!-- Check for EKS 1.{{{ minorversion }}} -->
+  <definition class="inventory" id="installed_app_is_eks_1_{{{ minorversion }}}" version="1">
+    <metadata>
+      <title>Amazon Elastic Kubernetes Service 1.{{{ minorversion }}}</title>
+      <affected family="unix">
+        <platform>Amazon Elastic Kubernetes Service 1.{{{ minorversion }}}</platform>
+      </affected>
+      <reference ref_id="cpe:/a:amazon:elastic_kubernetes_service:1.{{{ minorversion }}}" source="CPE" />
+      <description>The application installed installed on the system is Amazon Elastic Kubernetes Service 1.{{{ minorversion }}}.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="cluster is EKS 1.{{{ minorversion }}}" test_ref="test_eks_1_{{{ minorversion }}}" />
+      <criterion comment="Make sure kubernetes version is present" test_ref="test_file_for_eks"/>
+    </criteria>
+  </definition>
+
+  <ind:yamlfilecontent_test id="test_eks_1_{{{ minorversion }}}" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_eks"/>
+      <ind:state state_ref="state_eks_1_{{{ minorversion }}}"/>
+  </ind:yamlfilecontent_test>
+
+  <ind:yamlfilecontent_state id="state_eks_1_{{{ minorversion }}}" version="1">
+      <ind:value datatype="record">
+          <field name="#" datatype="string" operation="pattern match">^v1\.{{{ minorversion }}}\..*</field>
+      </ind:value>
+  </ind:yamlfilecontent_state>
+
+{{% endfor %}}
+</def-group>
