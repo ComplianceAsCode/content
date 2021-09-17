@@ -493,6 +493,7 @@ selections:
     - apt_conf_disallow_unauthenticated
 
     # UBTU-20-010439 The Ubuntu operating system must be configured to use AppArmor.
+    - package_apparmor_installed
     - apparmor_configured
 
     # UBTU-20-010440 The Ubuntu operating system must allow the use of a temporary password for system logons with an immediate change to a permanent password.
