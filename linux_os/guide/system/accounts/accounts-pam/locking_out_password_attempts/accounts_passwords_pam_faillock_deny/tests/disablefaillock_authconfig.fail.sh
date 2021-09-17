@@ -1,3 +1,8 @@
 #!/bin/bash
 
-authconfig --disablefaillock --updateall
+if [ -f /usr/sbin/authconfig ]
+then
+    authconfig --disablefaillock --updateall
+else
+    authselect select sssd --force
+fi
