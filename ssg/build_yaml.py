@@ -849,6 +849,7 @@ class Benchmark(XCCDFEntity):
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set('xmlns:xhtml', 'http://www.w3.org/1999/xhtml')
         root.set('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
+        root.set('xmlns:cpe-lang', 'http://cpe.mitre.org/language/2.0')
         root.set('id', 'product-name')
         root.set('xsi:schemaLocation',
                  'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
@@ -864,8 +865,7 @@ class Benchmark(XCCDFEntity):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
-        # tbd: oval file hardcoded here, must be fixed
-        root.append(self.cpe_al_platform_spec.to_xml_element("ssg-oval-cpe.xml"))
+        root.append(self.cpe_al_platform_spec.to_xml_element())
 
         # The Benchmark applicability is determined by the CPEs
         # defined in the product.yml
@@ -1246,6 +1246,13 @@ class Rule(XCCDFEntity):
                 except CPEDoesNotExist:
                     print("Unsupported platform '%s' in rule '%s'." % (platform, rule.id_))
                     raise
+            # parse platform definition and get CPEAL platform
+            if len(rule.platforms) > 0:
+                rule.cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(rule.platforms)
+                # add platform to platform specification
+                if rule.cpeal_platform not in env_yaml["product_cpes"].cpe_al_platform_specification.platforms:
+                    env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(rule.cpeal_platform)
+
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]

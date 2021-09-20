@@ -12,7 +12,6 @@ from .constants import PREFIX_TO_NS
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .yaml import open_raw
-from rdiff_backup.Hardlink import initialize_dictionaries
 
 
 class CPEDoesNotExist(Exception):
@@ -32,7 +31,6 @@ class ProductCPEs(object):
         self.cpes_by_name = {}
         self.product_cpes = {}
         self.cpe_al_ref_checks = {}
-        self.cpe_al_ref_checks_by_name = {}
         self.cpe_al_platforms = {}
         self.cpe_al_platform_specification = CPEALPlatformSpecification()
 
@@ -47,7 +45,7 @@ class ProductCPEs(object):
     def _load_cpes_al_ref_list(self, map_, cpes_list):
         for cpe in cpes_list:
             for cpe_id in cpe.keys():
-                map_[cpe_id] = CPEALFactCheck(cpe[cpe_id])
+                map_[cpe_id] = CPEALCheckFactRef(cpe[cpe_id])
 
     def load_product_cpes(self):
         try:
@@ -95,8 +93,6 @@ class ProductCPEs(object):
         for cpe_id, cpe in self.cpes_by_id.items():
             self.cpes_by_name[cpe.name] = cpe
 
-        for cpe_id, cpe in self.cpe_al_ref_checks.items():
-            self.cpe_al_ref_checks_by_name[cpe.name] = cpe
 
     def _is_name(self, ref):
         return ref.startswith("cpe:")
@@ -120,8 +116,11 @@ class ProductCPEs(object):
 
     def parse_platform_definition(self, platforms):
         # let's construct the platform id
+        #print ("parsing platforms")
+        #print (platforms)
         id_list = [self._convert_platform_to_id(platform) for platform in platforms ]
         id = "_or_".join(id_list)
+        #print (id)
         platform = CPEALPlatform(id)
         # add initial test
         initial_test = CPEALTest(operator = "OR", negate = "false")
@@ -147,11 +146,8 @@ class ProductCPEs(object):
             return negated_test
         else:
             # the line should contain a CPEAL ref name
-            try:
-                cperef = self.cpe_al_ref_checks_by_name[platform_line]
-            except KeyError:
-                raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, self.product_yaml["cpes_root"]))
-            return cperef
+            cpealfactref = CPEALFactRef(self.get_cpe_name(platform_line))
+            return cpealfactref
 
 
 
@@ -226,20 +222,24 @@ class CPEItem(object):
         return cpe_item
 
 class CPEALPlatformSpecification(object):
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
     def __init__(self):
         self.platforms = []
 
     def add_platform(self, platform):
         self.platforms.append(platform)
 
-    def to_xml_element(self, cpe_oval_filename):
-        cpe_al_platform_spec = ET.Element("{%s}cpe-lang:platform-specification" % CPEItem.ns)
+    def to_xml_element(self):
+        cpe_al_platform_spec = ET.Element("{%s}platform-specification" % CPEALPlatformSpecification.ns)
         for platform in self.platforms:
-            cpe_al_platform_spec.append(platform.to_xml_element(cpe_oval_file))
+            cpe_al_platform_spec.append(platform.to_xml_element())
 
         return cpe_al_platform_spec
 
 class CPEALPlatform(object):
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
     def __init__(self, id):
         self.id = id
         self.test = None
@@ -247,15 +247,20 @@ class CPEALPlatform(object):
     def add_test(self, test):
         self.test = test
 
-    def to_xml_element(self, cpe_oval_filename):
-        cpe_al_platform = ET.Element("{%s}cpe-lang:platform" % CPEItem.ns)
-        cpe_al_platform.add('id', self.id)
-        cpe_al_platform.append(self.text.to_xml_element(cpe_oval_filename))
+    def to_xml_element(self):
+        cpe_al_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
+        cpe_al_platform.set('id', self.id)
+        cpe_al_platform.append(self.test.to_xml_element())
 
         return cpe_al_platform
 
+    def __eq__(self, other):
+        return self.test == other.test
+
 
 class CPEALTest(object):
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
     def __init__(self, operator, negate):
         self.operator = operator
         self.negate = negate
@@ -270,12 +275,12 @@ class CPEALTest(object):
         else:
             return False
 
-    def to_xml_element(self, cpe_oval_filename):
-        cpe_al_test = ET.Element("{%s}cpe-lang:logical-test" % CPEItem.ns)
+    def to_xml_element(self):
+        cpe_al_test = ET.Element("{%s}logical-test" % CPEALTest.ns)
         cpe_al_test.set('operator', self.operator)
         cpe_al_test.set('negate', self.negate)
         for obj in self.objects:
-            cpe_al_test.append(obj.to_xml_element(cpe_oval_filename))
+            cpe_al_test.append(obj.to_xml_element())
 
         return cpe_al_test
 
@@ -286,7 +291,9 @@ class CPEALTest(object):
         return self.objects
 
 
-class CPEALFactCheck(object):
+class CPEALCheckFactRef(object):
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
     def __init__(self, cpeitem_data):
         self.name = cpeitem_data["name"]
         self.title = cpeitem_data["title"]
@@ -296,7 +303,7 @@ class CPEALFactCheck(object):
         return self.check_id == other.check_id
 
     def to_xml_element(self, cpe_oval_filename):
-        cpe_al_refcheck = ET.Element("{%s}cpe-lang:check-fact-ref" % CPEItem.ns)
+        cpe_al_refcheck = ET.Element("{%s}check-fact-ref" % CPEALCheckFactRef.ns)
         cpe_al_refcheck.set('description', self.title)
         cpe_al_refcheck.set('system', oval_namespace)
         cpe_al_refcheck.set('href', cpe_oval_filename)
@@ -304,6 +311,20 @@ class CPEALFactCheck(object):
 
         return cpe_al_refcheck
 
+class CPEALFactRef (object):
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def to_xml_element(self):
+        cpe_al_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
+        cpe_al_factref.set('name', self.name)
+
+        return cpe_al_factref
 
 def extract_subelement(objects, sub_elem_type):
     """
