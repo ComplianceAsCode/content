@@ -810,6 +810,7 @@ class Benchmark(XCCDFEntity):
         benchmark = super(Benchmark, cls).from_yaml(yaml_file, env_yaml)
         if env_yaml:
             benchmark.product_cpe_names = env_yaml["product_cpes"].get_product_cpe_names()
+            benchmark.cpe_al_platform_spec = env_yaml["product_cpes"].cpe_al_platform_specification
 
         benchmark.id_ = benchmark_id
 
@@ -863,6 +864,8 @@ class Benchmark(XCCDFEntity):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
+        # tbd: oval file hardcoded here, must be fixed
+        root.append(self.cpe_al_platform_spec.to_xml_element("ssg-oval-cpe.xml"))
 
         # The Benchmark applicability is determined by the CPEs
         # defined in the product.yml

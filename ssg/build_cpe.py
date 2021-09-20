@@ -12,6 +12,7 @@ from .constants import PREFIX_TO_NS
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .yaml import open_raw
+from rdiff_backup.Hardlink import initialize_dictionaries
 
 
 class CPEDoesNotExist(Exception):
@@ -31,6 +32,9 @@ class ProductCPEs(object):
         self.cpes_by_name = {}
         self.product_cpes = {}
         self.cpe_al_ref_checks = {}
+        self.cpe_al_ref_checks_by_name = {}
+        self.cpe_al_platforms = {}
+        self.cpe_al_platform_specification = CPEALPlatformSpecification()
 
         self.load_product_cpes()
         self.load_content_cpes()
@@ -46,7 +50,6 @@ class ProductCPEs(object):
                 map_[cpe_id] = CPEALFactCheck(cpe[cpe_id])
 
     def load_product_cpes(self):
-
         try:
             product_cpes_list = self.product_yaml["cpes"]
             self._load_cpes_list(self.product_cpes, product_cpes_list)
@@ -92,6 +95,9 @@ class ProductCPEs(object):
         for cpe_id, cpe in self.cpes_by_id.items():
             self.cpes_by_name[cpe.name] = cpe
 
+        for cpe_id, cpe in self.cpe_al_ref_checks.items():
+            self.cpe_al_ref_checks_by_name[cpe.name] = cpe
+
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
@@ -111,6 +117,50 @@ class ProductCPEs(object):
 
     def get_product_cpe_names(self):
         return [ cpe.name for cpe in self.product_cpes.values() ]
+
+    def parse_platform_definition(self, platforms):
+        # let's construct the platform id
+        id_list = [self._convert_platform_to_id(platform) for platform in platforms ]
+        id = "_or_".join(id_list)
+        platform = CPEALPlatform(id)
+        # add initial test
+        initial_test = CPEALTest(operator = "OR", negate = "false")
+        platform.add_test(initial_test)
+        for platform_line in platforms:
+            initial_test.add_object(self.parse_platform_line(platform_line))
+        return platform
+
+    def parse_platform_line(self, platform_line):
+        # remove spaces
+        platform_line = platform_line.replace(" ", "")
+        if "&" in platform_line:
+            and_test = CPEALTest(operator = "AND", negate = "false")
+            and_members = platform_line.split("&")
+            for member in and_members:
+                and_test.add_object(self.parse_platform_line(member))
+            return and_test
+        elif "!" in platform_line:
+            negated_test = CPEALTest(operator = "OR", negate = "true")
+            # remove ! from the element and process it further
+            platform_line.replace("!", "")
+            negated_test.add_object(self.parse_platform_line(platform_line))
+            return negated_test
+        else:
+            # the line should contain a CPEAL ref name
+            try:
+                cperef = self.cpe_al_ref_checks_by_name[platform_line]
+            except KeyError:
+                raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, self.product_yaml["cpes_root"]))
+            return cperef
+
+
+
+    def _convert_platform_to_id(self, platform):
+        id = platform
+        id.replace(" & ", "_and_")
+        id.replace("!", "not_")
+        return id
+
 
 
 class CPEList(object):
@@ -190,8 +240,8 @@ class CPEALPlatformSpecification(object):
         return cpe_al_platform_spec
 
 class CPEALPlatform(object):
-    def __init__():
-        self.id = ""
+    def __init__(self, id):
+        self.id = id
         self.test = None
 
     def add_test(self, test):
@@ -206,10 +256,9 @@ class CPEALPlatform(object):
 
 
 class CPEALTest(object):
-    def __init__(self):
-        self.id = None
-        self.operator = ""
-        self.negate = ""
+    def __init__(self, operator, negate):
+        self.operator = operator
+        self.negate = negate
         self.objects = []
 
     def __eq__(self, other):
@@ -230,6 +279,12 @@ class CPEALTest(object):
 
         return cpe_al_test
 
+    def add_object(self, object):
+        self.objects.append(object)
+
+    def get_objects(self):
+        return self.objects
+
 
 class CPEALFactCheck(object):
     def __init__(self, cpeitem_data):
@@ -238,7 +293,7 @@ class CPEALFactCheck(object):
         self.check_id = cpeitem_data["check_id"]
 
     def __eq__(self, other):
-        return self.refid == other.refid
+        return self.check_id == other.check_id
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_al_refcheck = ET.Element("{%s}cpe-lang:check-fact-ref" % CPEItem.ns)
