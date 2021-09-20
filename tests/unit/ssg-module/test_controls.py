@@ -13,7 +13,10 @@ profiles_dir = os.path.join(data_dir, "profiles_dir")
 
 
 def test_controls_load():
-    controls_manager = ssg.controls.ControlsManager(controls_dir)
+    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
+    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
+    env_yaml = open_environment(build_config_yaml, product_yaml)
+    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
 
     c_r1 = controls_manager.get_control("abcd", "R1")
@@ -50,7 +53,10 @@ def test_controls_load():
 
 
 def test_controls_levels():
-    controls_manager = ssg.controls.ControlsManager(controls_dir)
+    product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
+    build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
+    env_yaml = open_environment(build_config_yaml, product_yaml)
+    controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
 
     # Default level is the lowest level

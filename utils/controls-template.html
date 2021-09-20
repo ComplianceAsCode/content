@@ -22,7 +22,8 @@ based on <a href="{{{ policy.source }}}">{{{ policy.source }}}</a>
   {{% if control.rules -%}}
   Selections:
   <ul>
-    {{%- for rule_id in control.rules -%}}
+    {{%- for ruleobj in control.rules -%}}
+    {{%- set rule_id = ruleobj|string %}}
     {{%- if rule_id in rules %}}
     <li><a href="https://github.com/ComplianceAsCode/content/tree/master/{{{ rules[rule_id].relative_definition_location }}}">{{{ rule_id }}}</a>: {{{ rules[rule_id].title }}}</li>
     {{%- else %}}
