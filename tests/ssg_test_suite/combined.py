@@ -33,7 +33,6 @@ class CombinedChecker(rule.RuleChecker):
     """
     def __init__(self, test_env):
         super(CombinedChecker, self).__init__(test_env)
-        self._matching_rule_found = False
 
         self.rules_not_tested_yet = set()
         self.results = list()

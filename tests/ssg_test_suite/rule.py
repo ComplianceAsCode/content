@@ -118,7 +118,6 @@ class RuleChecker(oscap.Checker):
     """
     def __init__(self, test_env):
         super(RuleChecker, self).__init__(test_env)
-        self._matching_rule_found = False
 
         self.results = list()
         self._current_result = None
@@ -282,10 +281,8 @@ class RuleChecker(oscap.Checker):
     def _test_target(self, target):
         rules_to_test = self._get_rules_to_test(target)
         if not rules_to_test:
-            self._matching_rule_found = False
-            logging.error("No matching rule ID found for '{0}'".format(target))
+            logging.error("No tests found matching the rule ID(s) '{0}'".format(", ".join(target)))
             return
-        self._matching_rule_found = True
 
         scenarios_by_rule = dict()
         for rule in rules_to_test:
