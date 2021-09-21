@@ -30,6 +30,11 @@ controls:
     data requiring data-at-rest protections in accordance with applicable federal
     laws, Executive Orders, directives, policies, regulations, and standards.'
         rules:
+            - configure_bind_crypto_policy
+            - configure_crypto_policy
+            - configure_kerberos_crypto_policy
+            - configure_libreswan_crypto_policy
+            - enable_dracut_fips_module
             - enable_fips_mode
             - sysctl_crypto_fips_enabled
         status: automated
