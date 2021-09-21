@@ -353,6 +353,8 @@
 
     -   **mountpoint** - path to the mount point, eg. `/var/tmp`
 
+    -   **min_size** - the minimum recommended partition size, in bytes
+
 -   Languages: Anaconda, OVAL
 
 #### mount_option
