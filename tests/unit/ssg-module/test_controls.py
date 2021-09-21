@@ -7,6 +7,7 @@ import ssg.build_yaml
 from ssg.environment import open_environment
 from ssg.products import load_product_yaml
 
+ssg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 controls_dir = os.path.join(data_dir, "controls_dir")
 profiles_dir = os.path.join(data_dir, "profiles_dir")
@@ -24,9 +25,11 @@ def test_controls_load():
     assert c_r1.description == "Remote user sessions must be closed after " \
         "a certain period of inactivity."
     assert c_r1.automated == "yes"
-    assert "sshd_set_idle_timeout" in c_r1.rules
-    assert "accounts_tmout" in c_r1.rules
-    assert "var_accounts_tmout=10_min" not in c_r1.rules
+
+    c_r1_rules = (rule.id_ for rule in c_r1.rules)
+    assert "sshd_set_idle_timeout" in c_r1_rules
+    assert "accounts_tmout" in c_r1_rules
+    assert "var_accounts_tmout=10_min" not in c_r1_rules
     assert "var_accounts_tmout" in c_r1.variables
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
 
@@ -45,9 +48,11 @@ def test_controls_load():
 
     c_r4 = controls_manager.get_control("abcd", "R4")
     assert len(c_r4.rules) == 3
-    assert "accounts_passwords_pam_faillock_deny_root" in c_r4.rules
-    assert "accounts_password_pam_minlen" in c_r4.rules
-    assert "accounts_password_pam_ocredit" in c_r4.rules
+
+    c_r4_rules = (rule.id_ for rule in c_r4.rules)
+    assert "accounts_passwords_pam_faillock_deny_root" in c_r4_rules
+    assert "accounts_password_pam_minlen" in c_r4_rules
+    assert "accounts_password_pam_ocredit" in c_r4_rules
     assert "var_password_pam_ocredit" in c_r4.variables
     assert c_r4.variables["var_password_pam_ocredit"] == "1"
 
@@ -131,8 +136,6 @@ def test_controls_levels():
 
 
 def test_controls_load_product():
-    ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
@@ -145,9 +148,11 @@ def test_controls_load_product():
     assert c_r1.description == "Remote user sessions must be closed after " \
         "a certain period of inactivity."
     assert c_r1.automated == "yes"
-    assert "sshd_set_idle_timeout" in c_r1.rules
-    assert "accounts_tmout" in c_r1.rules
-    assert "var_accounts_tmout=10_min" not in c_r1.rules
+
+    c_r1_rules = (rule.id_ for rule in c_r1.rules)
+    assert "sshd_set_idle_timeout" in c_r1_rules
+    assert "accounts_tmout" in c_r1_rules
+    assert "var_accounts_tmout=10_min" not in c_r1_rules
     assert "var_accounts_tmout" in c_r1.variables
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
 
@@ -183,8 +188,6 @@ def test_profile_resolution_all_inline():
 
 
 def profile_resolution(cls, profile_low):
-    ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
@@ -210,8 +213,6 @@ def profile_resolution(cls, profile_low):
 
 
 def profile_resolution_extends(cls, profile_low, profile_high):
-    ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
@@ -247,8 +248,6 @@ def profile_resolution_extends(cls, profile_low, profile_high):
 
 
 def profile_resolution_all(cls, profile_all):
-    ssg_root = \
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
