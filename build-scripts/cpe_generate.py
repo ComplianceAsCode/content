@@ -132,10 +132,14 @@ def main():
     for platform in shorthandtree.findall(".//platform"):
         cpe_name = platform.get("idref")
         benchmark_cpe_names.add(cpe_name)
+        print (benchmark_cpe_names)
 
     product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
+        # skip CPE AL platforms
+        if cpe_name.startswith("cpe_platform_"):
+            break
         cpe_list.add(product_cpes.get_cpe(cpe_name))
 
     cpedict_filename = "ssg-" + product + "-cpe-dictionary.xml"
