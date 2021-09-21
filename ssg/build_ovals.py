@@ -254,6 +254,16 @@ def _check_oval_version_from_oval(oval_file_tree, oval_version):
         return True
 
 
+def _check_rule_id(oval_file_tree, rule_id, file_path):
+    for definition in oval_file_tree.findall(
+            "./{%s}def-group/{%s}definition" % (oval_ns, oval_ns)):
+        definition_id = definition.get("id")
+        if definition_id != rule_id:
+            msg = ("OVAL definition ID '%s' doesn't match "
+                "rule ID '%s' in '%s'\n" % (definition_id, rule_id, file_path))
+            sys.stderr.write(msg)
+
+
 def checks(env_yaml, yaml_path, oval_version, oval_dirs):
     """
     Concatenate all XML files in the oval directory, to create the document
@@ -307,6 +317,7 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
             if _check_is_loaded(already_loaded, filename, oval_version):
                 continue
             oval_file_tree = _create_oval_tree_from_string(xml_content)
+            _check_rule_id(oval_file_tree, rule_id, _path)
             if not _check_oval_version_from_oval(oval_file_tree, oval_version):
                 continue
 
