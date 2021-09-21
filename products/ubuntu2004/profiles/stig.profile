@@ -67,6 +67,8 @@ selections:
     - sshd_set_idle_timeout
 
     # UBTU-20-010038 The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting any local or remote connection to the system.
+    - banner_etc_issue_net
+    - sshd_enable_warning_banner_net
 
     # UBTU-20-010042 The Ubuntu operating system must use SSH to protect the confidentiality and integrity of transmitted information.
     - package_openssh-server_installed
