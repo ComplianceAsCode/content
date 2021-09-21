@@ -76,24 +76,6 @@ macro(define_validate_product PRODUCT)
     endif ()
 endmacro()
 
-# Combines multiple separate bash remediation files into a single large XML
-# tree for inclusion in the final XCCDFs.
-macro(ssg_build_bash_remediation_functions)
-    file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
-
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_bash_remediation_functions.py" --input "${SSG_SHARED}/bash_remediation_functions" --output "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
-        DEPENDS ${BASH_REMEDIATION_FUNCTIONS}
-        DEPENDS "${SSG_BUILD_SCRIPTS}/generate_bash_remediation_functions.py"
-        COMMENT "[bash-remediation-functions] generating bash-remediation-functions.xml"
-    )
-    add_custom_target(
-        generate-internal-bash-remediation-functions.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
-    )
-endmacro()
-
 macro(ssg_build_man_page)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/scap-security-guide.8"
@@ -117,12 +99,6 @@ endmacro()
 # known. As part of this step, we also resolve/template the rules in the
 # content repository for each product.
 macro(ssg_build_shorthand_xml PRODUCT)
-    set(BASH_REMEDIATION_FNS "")
-    set(BASH_REMEDIATION_FNS_DEPENDS "")
-    if ("${PRODUCT_BASH_REMEDIATION_ENABLED}")
-        list(APPEND BASH_REMEDIATION_FNS "--bash-remediation-fns" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
-        list(APPEND BASH_REMEDIATION_FNS_DEPENDS "generate-internal-bash-remediation-functions.xml" "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml")
-    endif()
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
@@ -136,9 +112,8 @@ macro(ssg_build_shorthand_xml PRODUCT)
         # The command also produces the directory with rules, but this is done before the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${BASH_REMEDIATION_FNS} --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
         DEPENDS generate-internal-${PRODUCT}-sce-metadata.json

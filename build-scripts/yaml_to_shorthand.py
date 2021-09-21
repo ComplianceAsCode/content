@@ -5,7 +5,6 @@ from __future__ import print_function
 import argparse
 import os
 import os.path
-import sys
 
 import ssg.build_yaml
 import ssg.utils
@@ -27,10 +26,6 @@ def parse_args():
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
-    parser.add_argument("--bash-remediation-fns",
-                        help="XML with the XCCDF Group containing all bash "
-                        "remediation functions stored as values."
-                        "e.g.: build/bash-remediation-functions.xml")
     parser.add_argument("--output", required=True,
                         help="Output XCCDF shorthand file. "
                         "e.g.: /tmp/shorthand.xml")
@@ -66,7 +61,7 @@ def main():
     add_content_dirs = [os.path.join(base_dir, er_root) for er_root in additional_content_directories if not os.path.isabs(er_root)]
 
     loader = ssg.build_yaml.BuildLoader(
-        profiles_root, args.bash_remediation_fns, env_yaml,
+        profiles_root, env_yaml,
         args.resolved_rules_dir, args.sce_metadata)
     loader.process_directory_tree(benchmark_root, add_content_dirs)
 
