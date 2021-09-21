@@ -259,8 +259,9 @@ def _check_rule_id(oval_file_tree, rule_id, file_path):
             "./{%s}def-group/{%s}definition" % (oval_ns, oval_ns)):
         definition_id = definition.get("id")
         if definition_id != rule_id:
-            msg = ("OVAL definition ID '%s' doesn't match "
-                "rule ID '%s' in '%s'\n" % (definition_id, rule_id, file_path))
+            msg = (
+                "OVAL definition ID '%s' doesn't match rule ID '%s' "
+                "in '%s'\n" % (definition_id, rule_id, file_path))
             sys.stderr.write(msg)
 
 
