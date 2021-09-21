@@ -1,6 +1,10 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 7,SUSE Linux Enterprise 15
-# packages = dhcp
+{{% if product in ['rhel7', 'sle15'] %}}
+    {{% set pkp_name="dhcp" %}}
+{{% else %}}
+    {{% set pkp_name="dhcp-server" %}}
+{{% endif %}}
+# packages = {{{ pkp_name }}}
 
 # Simple configuration for dhcp so we can start the service
 cat << EOF >> /etc/dhcp/dhcpd.conf
