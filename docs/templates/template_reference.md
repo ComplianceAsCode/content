@@ -315,7 +315,7 @@
 
     -   **arg_value** - argument value, eg. `'1'`
 
--   Languages: Ansible, Bash, OVAL
+-   Languages: Ansible, Bash, OVAL, Blueprint
 
 #### kernel_module_disabled
 -   Checks if the given Linux kernel module is disabled.
@@ -355,7 +355,7 @@
 
     -   **min_size** - the minimum recommended partition size, in bytes
 
--   Languages: Anaconda, OVAL
+-   Languages: Anaconda, OVAL, Blueprint
 
 #### mount_option
 -   Checks if a given partition is mounted with a specific option such
@@ -433,7 +433,7 @@
         state uses operation "greater than or equal" to compare the
         collected package version with the version in the OVAL state.
 
--   Languages: Anaconda, Ansible, Bash, OVAL, Puppet
+-   Languages: Anaconda, Ansible, Bash, OVAL, Puppet, Blueprint
 
 #### package_removed
 -   Checks if the given package is not installed.
@@ -541,7 +541,7 @@
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes
+-   Languages: Ansible, Bash, OVAL, Puppet, Ignition, Kubernetes, Blueprint
 
 #### service_enabled
 -   Checks if a system service is enabled. Uses either systemd or SysV
@@ -560,7 +560,7 @@
         If **daemonname** is not specified it means the name of the
         daemon is the same as the name of service.
 
--   Languages: Ansible, Bash, OVAL, Puppet
+-   Languages: Ansible, Bash, OVAL, Puppet, Blueprint
 
 #### shell_lineinfile
 -   Checks shell variable assignments in files. Remediations will paste
