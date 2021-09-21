@@ -120,6 +120,7 @@ class ProductCPEs(object):
         #print (platforms)
         id_list = [self._convert_platform_to_id(platform) for platform in platforms ]
         id = "_or_".join(id_list)
+        id = "cpe_platform_" + id
         #print (id)
         platform = CPEALPlatform(id)
         # add initial test

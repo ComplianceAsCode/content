@@ -1248,10 +1248,11 @@ class Rule(XCCDFEntity):
                     raise
             # parse platform definition and get CPEAL platform
             if len(rule.platforms) > 0:
-                rule.cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(rule.platforms)
+                cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(rule.platforms)
+                rule.cpe_al_platform_names.add(cpeal_platform.id)
                 # add platform to platform specification
-                if rule.cpeal_platform not in env_yaml["product_cpes"].cpe_al_platform_specification.platforms:
-                    env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(rule.cpeal_platform)
+                if cpeal_platform not in env_yaml["product_cpes"].cpe_al_platform_specification.platforms:
+                    env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(cpeal_platform)
 
 
         if sce_metadata and rule.id_ in sce_metadata:
@@ -1572,9 +1573,9 @@ class Rule(XCCDFEntity):
         add_nondata_subelements(rule, "requires", "id", self.requires)
         add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
 
-        for cpe_name in self.cpe_names:
+        for cpe_al_platform_name in self.cpe_al_platform_names:
             platform_el = ET.SubElement(rule, "platform")
-            platform_el.set("idref", cpe_name)
+            platform_el.set("idref", cpe_al_platform_name)
 
         return rule
 
