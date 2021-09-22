@@ -30,7 +30,6 @@ class ProductCPEs(object):
         self.cpes_by_id = {}
         self.cpes_by_name = {}
         self.product_cpes = {}
-        self.cpe_al_ref_checks = {}
         self.cpe_al_platforms = {}
         self.cpe_al_platform_specification = CPEALPlatformSpecification()
 
@@ -42,16 +41,10 @@ class ProductCPEs(object):
             for cpe_id in cpe.keys():
                 map_[cpe_id] = CPEItem(cpe[cpe_id])
 
-    def _load_cpes_al_ref_list(self, map_, cpes_list):
-        for cpe in cpes_list:
-            for cpe_id in cpe.keys():
-                map_[cpe_id] = CPEALCheckFactRef(cpe[cpe_id])
-
     def load_product_cpes(self):
         try:
             product_cpes_list = self.product_yaml["cpes"]
             self._load_cpes_list(self.product_cpes, product_cpes_list)
-            self._load_cpes_al_ref_list(self.cpe_al_ref_checks, product_cpes_list)
 
         except KeyError:
             print("Product %s does not define 'cpes'" % (self.product_yaml["product"]))
@@ -81,7 +74,6 @@ class ProductCPEs(object):
             # Get past "cpes" key, which was added for readability of the content
             cpes_list = open_raw(dir_item_path)["cpes"]
             self._load_cpes_list(self.cpes_by_id, cpes_list)
-            self._load_cpes_al_ref_list(self.cpe_al_ref_checks, cpes_list)
 
         # Add product_cpes to map of CPEs by ID
         self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes)
@@ -294,25 +286,6 @@ class CPEALTest(object):
         return self.objects
 
 
-class CPEALCheckFactRef(object):
-    prefix = "cpe-lang"
-    ns = PREFIX_TO_NS[prefix]
-    def __init__(self, cpeitem_data):
-        self.name = cpeitem_data["name"]
-        self.title = cpeitem_data["title"]
-        self.check_id = cpeitem_data["check_id"]
-
-    def __eq__(self, other):
-        return self.check_id == other.check_id
-
-    def to_xml_element(self, cpe_oval_filename):
-        cpe_al_refcheck = ET.Element("{%s}check-fact-ref" % CPEALCheckFactRef.ns)
-        cpe_al_refcheck.set('description', self.title)
-        cpe_al_refcheck.set('system', oval_namespace)
-        cpe_al_refcheck.set('href', cpe_oval_filename)
-        cpe_al_refcheck.set('id-ref', self.check_id)
-
-        return cpe_al_refcheck
 
 class CPEALFactRef (object):
     prefix = "cpe-lang"
