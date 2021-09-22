@@ -1259,11 +1259,14 @@ class Rule(XCCDFEntity):
                     raise
             # parse platform definition and get CPEAL platform
             if len(rule.platforms) > 0:
-                cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(rule.platforms)
+                cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(
+                    rule.platforms)
                 rule.cpe_al_platform_names.add(cpeal_platform.id)
                 # add platform to platform specification
-                if cpeal_platform not in env_yaml["product_cpes"].cpe_al_platform_specification.platforms:
-                    env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(cpeal_platform)
+                if cpeal_platform not in env_yaml[
+                        "product_cpes"].cpe_al_platform_specification.platforms:
+                    env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(
+                        cpeal_platform)
 
 
         if sce_metadata and rule.id_ in sce_metadata:

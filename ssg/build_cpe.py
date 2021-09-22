@@ -108,15 +108,12 @@ class ProductCPEs(object):
 
     def parse_platform_definition(self, platforms):
         # let's construct the platform id
-        #print ("parsing platforms")
-        #print (platforms)
-        id_list = [self._convert_platform_to_id(platform) for platform in platforms ]
+        id_list = [self._convert_platform_to_id(platform) for platform in platforms]
         id = "_or_".join(id_list)
         id = "cpe_platform_" + id
-        #print (id)
         platform = CPEALPlatform(id)
         # add initial test
-        initial_test = CPEALTest(operator = "OR", negate = "false")
+        initial_test = CPEALTest(operator="OR", negate="false")
         platform.add_test(initial_test)
         for platform_line in platforms:
             initial_test.add_object(self.parse_platform_line(platform_line))
@@ -126,13 +123,13 @@ class ProductCPEs(object):
         # remove spaces
         platform_line = platform_line.replace(" ", "")
         if "&" in platform_line:
-            and_test = CPEALTest(operator = "AND", negate = "false")
+            and_test = CPEALTest(operator="AND", negate="false")
             and_members = platform_line.split("&")
             for member in and_members:
                 and_test.add_object(self.parse_platform_line(member))
             return and_test
         elif "!" in platform_line:
-            negated_test = CPEALTest(operator = "OR", negate = "true")
+            negated_test = CPEALTest(operator="OR", negate="true")
             # remove ! from the element and process it further
             platform_line.replace("!", "")
             negated_test.add_object(self.parse_platform_line(platform_line))
@@ -141,8 +138,6 @@ class ProductCPEs(object):
             # the line should contain a CPEAL ref name
             cpealfactref = CPEALFactRef(self.get_cpe_name(platform_line))
             return cpealfactref
-
-
 
     def _convert_platform_to_id(self, platform):
         id = platform
@@ -211,12 +206,14 @@ class CPEItem(object):
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
         cpe_item_check.text = self.check_id
-
         return cpe_item
 
+
 class CPEALPlatformSpecification(object):
+
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
+
     def __init__(self):
         self.platforms = []
 
@@ -224,15 +221,18 @@ class CPEALPlatformSpecification(object):
         self.platforms.append(platform)
 
     def to_xml_element(self):
-        cpe_al_platform_spec = ET.Element("{%s}platform-specification" % CPEALPlatformSpecification.ns)
+        cpe_al_platform_spec = ET.Element(
+            "{%s}platform-specification" % CPEALPlatformSpecification.ns)
         for platform in self.platforms:
             cpe_al_platform_spec.append(platform.to_xml_element())
-
         return cpe_al_platform_spec
 
+
 class CPEALPlatform(object):
+
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
+
     def __init__(self, id):
         self.id = id
         self.test = None
@@ -244,7 +244,6 @@ class CPEALPlatform(object):
         cpe_al_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
         cpe_al_platform.set('id', self.id)
         cpe_al_platform.append(self.test.to_xml_element())
-
         return cpe_al_platform
 
     def __eq__(self, other):
@@ -252,8 +251,10 @@ class CPEALPlatform(object):
 
 
 class CPEALTest(object):
+
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
+
     def __init__(self, operator, negate):
         self.operator = operator
         self.negate = negate
@@ -261,7 +262,9 @@ class CPEALTest(object):
 
     def __eq__(self, other):
         if self.operator == other.operator and self.negate == other.negate:
-            diff = [i for i in self.objects + other.objects if i not in self.objects or i not in other.objects]
+            diff = [
+                i for i in self.objects + other.objects
+                if i not in self.objects or i not in other.objects]
             if not diff:
                 return True
                 return True
@@ -286,10 +289,11 @@ class CPEALTest(object):
         return self.objects
 
 
-
 class CPEALFactRef (object):
+
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
+
     def __init__(self, name):
         self.name = name
 
