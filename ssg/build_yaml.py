@@ -1049,7 +1049,7 @@ def rule_filter_from_def(filterdef):
     def filterfunc(rule):
         # Remove globals for security and only expose
         # variables relevant to the rule
-        return eval(filterdef, {}, rule.__dict__)
+        return eval(filterdef, {"__builtins__": None}, rule.__dict__)
     return filterfunc
 
 
