@@ -280,6 +280,7 @@ selections:
     - audit_rules_execution_chcon
 
     # UBTU-20-010166 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the apparmor_parser command.
+    - audit_rules_privileged_commands_apparmor_parser
 
     # UBTU-20-010167 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the setfacl command.
     - audit_rules_execution_setfacl
