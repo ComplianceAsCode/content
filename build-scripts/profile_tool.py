@@ -240,7 +240,11 @@ def main():
             'missing_puppet_fixes',
             'missing_anaconda_fixes',
             'missing_cces',
-            'ansible_parity'
+            'ansible_parity',
+            'implemented_checks',
+            'implemented_fixes',
+            'missing_checks',
+            'missing_fixes'
             ]
         link = """<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
 
