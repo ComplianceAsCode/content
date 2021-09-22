@@ -15,7 +15,7 @@ title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat OpenShift Container Platform
 description: |-
     Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 
-filter_rules: 'platform != "ocp4-node"'
+filter_rules: 'platform == "ocp4-node"'
 
 selections:
     - pcidss_ocp4:all:base

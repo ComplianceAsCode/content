@@ -114,18 +114,19 @@ class Control():
                 varname, value = item.split("=", 1)
                 control.variables[varname] = value
             else:
+                rule_yaml = get_rule_path_by_id(content_dir, item)
+                if rule_yaml is None:
+                    # item not found in benchmark_root
+                    continue
+                rule = ssg.build_yaml.Rule.from_yaml(rule_yaml, env_yaml)
+
                 # Check if rule is applicable to product, i.e.: prodtype has product id
                 if product is None:
                     # The product was not specified, simply add the rule
-                    control.rules.append(item)
+                    control.rules.append(rule)
                 else:
-                    rule_yaml = get_rule_path_by_id(content_dir, item)
-                    if rule_yaml is None:
-                        # item not found in benchmark_root
-                        continue
-                    rule = ssg.build_yaml.Rule.from_yaml(rule_yaml, env_yaml)
                     if rule.prodtype == "all" or product in rule.prodtype:
-                        control.rules.append(item)
+                        control.rules.append(rule)
                     else:
                         logging.info("Rule {item} doesn't apply to {product}".format(
                             item=item,
