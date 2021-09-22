@@ -61,6 +61,7 @@ selections:
     - smartcard_pam_enabled
 
     # UBTU-20-010035 The Ubuntu operating system must use strong authenticators in establishing nonlocal maintenance and diagnostic sessions.
+    - sshd_enable_pam
 
     # UBTU-20-010036 The Ubuntu operating system must immediately terminate all network connections associated with SSH traffic after a period of inactivity.
     - sshd_set_keepalive
