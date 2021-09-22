@@ -865,7 +865,9 @@ class Benchmark(XCCDFEntity):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
-        root.append(self.cpe_al_platform_spec.to_xml_element())
+        # if there are no platforms, do not output platform-specification at all
+        if len(self.cpe_al_platform_spec.platforms) > 0:
+            root.append(self.cpe_al_platform_spec.to_xml_element())
 
         # The Benchmark applicability is determined by the CPEs
         # defined in the product.yml
