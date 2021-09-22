@@ -38,6 +38,7 @@ class CombinedChecker(rule.RuleChecker):
         self.rules_not_tested_yet = set()
         self.results = list()
         self._current_result = None
+        self.run_aborted = False
 
     def _rule_should_be_tested(self, rule, rules_to_be_tested, tested_templates):
         if rule.short_id not in rules_to_be_tested:
