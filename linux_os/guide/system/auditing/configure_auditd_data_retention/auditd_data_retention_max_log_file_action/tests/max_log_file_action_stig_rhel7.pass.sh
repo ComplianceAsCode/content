@@ -1,6 +1,6 @@
 #!/bin/bash
-#
-# remediation = bash
+# profiles = xccdf_org.ssgproject.content_profile_stig
+# platform = Red Hat Enterprise Linux 7
 
 . $SHARED/auditd_utils.sh
 prepare_auditd_test_enviroment
