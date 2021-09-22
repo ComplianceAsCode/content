@@ -393,6 +393,7 @@ selections:
     - audit_rules_privileged_commands_kmod
 
     # UBTU-20-010298 The Ubuntu operating system must generate audit records when successful/unsuccessful attempts to use the fdisk command.
+    - audit_rules_privileged_commands_fdisk
 
     # UBTU-20-010300 The Ubuntu operating system must have a crontab script running weekly to offload audit events of standalone systems.
 
