@@ -953,6 +953,7 @@ class Group(XCCDFEntity):
         platform=lambda: "",
         platforms=lambda: set(),
         cpe_names=lambda: set(),
+        cpe_al_platform_names=lambda: set(),
         ** XCCDFEntity.KEYS
     )
 
@@ -982,6 +983,14 @@ class Group(XCCDFEntity):
 
         if data["platform"]:
             data["platforms"].add(data["platform"])
+
+        # parse platform definition and get CPEAL platform
+        if data["platforms"]:
+            cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(data["platforms"])
+            data["cpe_al_platform_names"].add(cpeal_platform.id)
+            # add platform to platform specification
+            if cpeal_platform not in env_yaml["product_cpes"].cpe_al_platform_specification.platforms:
+                env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(cpeal_platform)
         return data
 
     def load_entities(self, rules_by_id, values_by_id, groups_by_id):
@@ -1030,9 +1039,9 @@ class Group(XCCDFEntity):
         add_nondata_subelements(group, "requires", "id", self.requires)
         add_nondata_subelements(group, "conflicts", "id", self.conflicts)
 
-        for cpe_name in self.cpe_names:
+        for cpe_al_platform_name in self.cpe_al_platform_names:
             platform_el = ET.SubElement(group, "platform")
-            platform_el.set("idref", cpe_name)
+            platform_el.set("idref", cpe_al_platform_name)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
