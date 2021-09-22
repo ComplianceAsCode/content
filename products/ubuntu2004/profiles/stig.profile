@@ -55,6 +55,7 @@ selections:
     - accounts_umask_etc_login_defs
 
     # UBTU-20-010033 The Ubuntu operating system must implement smart card logins for multifactor authentication for local and network access to privileged and non-privileged accounts.
+    - sshd_enable_pubkey_auth
     - smartcard_pam_enabled
 
     # UBTU-20-010035 The Ubuntu operating system must use strong authenticators in establishing nonlocal maintenance and diagnostic sessions.
