@@ -362,6 +362,7 @@ selections:
     - ensure_rtc_utc_configuration
 
     # UBTU-20-010244 The Ubuntu operating system must generate audit records for privileged activities, nonlocal maintenance, diagnostic sessions and other system-level access.
+    - audit_sudo_log_events
 
     # UBTU-20-010267 The Ubuntu operating system must generate audit records for any successful/unsuccessful use of unlink system call.
     - audit_rules_file_deletion_events_unlink
