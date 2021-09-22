@@ -268,11 +268,13 @@ class CPEALTest(object):
         self.objects = []
 
     def __eq__(self, other):
-        if self.operator == other.operator:
-            for object in self.objects:
-                if object not in other.objects:
-                    return False
-            return True
+        if self.operator == other.operator and self.negate == other.negate:
+            diff = [i for i in self.objects + other.objects if i not in self.objects or i not in other.objects]
+            if not diff:
+                return True
+                return True
+            else:
+                return False
         else:
             return False
 
