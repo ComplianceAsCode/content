@@ -11,15 +11,19 @@ import ssg.utils
 import ssg.yaml
 import ssg.build_yaml
 import ssg.build_remediations
+import ssg.environment
 
 COMMENTS_TO_PARSE = ["strategy", "complexity", "disruption"]
 
 
 class PlaybookBuilder():
-    def __init__(self, product_yaml_path, input_dir, output_dir, rules_dir, profiles_dir):
+    def __init__(self, product_yaml_path, input_dir, output_dir, rules_dir, profiles_dir,
+                 build_config_yaml):
         self.input_dir = input_dir
         self.output_dir = output_dir
         self.rules_dir = rules_dir
+        self.build_config_yaml = build_config_yaml
+        self.product_yaml_path = product_yaml_path
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
         product_dir = os.path.dirname(product_yaml_path)
         relative_guide_dir = ssg.utils.required_key(product_yaml,
@@ -27,8 +31,10 @@ class PlaybookBuilder():
         self.guide_dir = os.path.abspath(os.path.join(product_dir,
                                                       relative_guide_dir))
         self.profiles_dir = profiles_dir
-        additional_content_directories = product_yaml.get("additional_content_directories", [])
-        self.add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+        additional_content_directories = product_yaml.get(
+            "additional_content_directories", [])
+        self.add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd))
+                                 for rd in additional_content_directories]
 
     def choose_variable_value(self, var_id, variables, refinements):
         """
@@ -175,7 +181,8 @@ class PlaybookBuilder():
                 % (profile_path, ext)
             )
 
-        profile = ssg.build_yaml.Profile.from_yaml(profile_path)
+        env_yaml = ssg.environment.open_environment(self.build_config_yaml, self.product_yaml_path)
+        profile = ssg.build_yaml.Profile.from_yaml(profile_path, env_yaml)
         if not profile:
             raise RuntimeError("Could not parse profile %s.\n" % profile_path)
         return profile
