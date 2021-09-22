@@ -26,6 +26,7 @@ selections:
     - vlock_installed
 
     # UBTU-20-010006 The Ubuntu operating system must map the authenticated identity to the user or group account for PKI-based authentication.
+    - verify_use_mappers
 
     # UBTU-20-010007 The Ubuntu operating system must enforce 24 hours/1 day as the minimum password lifetime. Passwords for new users must have a 24 hours/1 day minimum password lifetime restriction.
     - var_accounts_minimum_age_login_defs=1
