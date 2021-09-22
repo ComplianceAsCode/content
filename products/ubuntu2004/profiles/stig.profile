@@ -41,6 +41,7 @@ selections:
     - '!grub2_password'
 
     # UBTU-20-010010 The Ubuntu operating system must uniquely identify interactive users.
+    - no_duplicate_uids
 
     # UBTU-20-010012 The Ubuntu operating system must ensure only users who need access to security functions are part of sudo group.
 
