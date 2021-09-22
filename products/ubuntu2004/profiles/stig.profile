@@ -301,6 +301,7 @@ selections:
     - audit_rules_privileged_commands_passwd
 
     # UBTU-20-010173 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the unix_update command.
+    - audit_rules_privileged_commands_unix_update
 
     # UBTU-20-010174 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the gpasswd command.
     - audit_rules_privileged_commands_gpasswd
