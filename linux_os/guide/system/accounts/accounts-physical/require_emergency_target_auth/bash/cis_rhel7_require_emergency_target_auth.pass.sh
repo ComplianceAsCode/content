@@ -5,11 +5,7 @@
 
 service_file="/usr/lib/systemd/system/emergency.service"
 
-{{% if product in ["fedora", "rhel7", "ol7"] -%}}
-sulogin="/usr/lib/systemd/systemd-sulogin-shell emergency"
-{{%- else -%}}
 sulogin='/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
-{{%- endif %}}
 
 if grep "^ExecStart=.*" "$service_file" ; then
     sed -i "s%^ExecStart=.*%ExecStart=-$sulogin emergency%" "$service_file"
