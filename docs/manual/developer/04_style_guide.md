@@ -268,6 +268,20 @@ Value must be low, medium, or high.
 * Shall test one change
 * Shall use the `.sh` for the file extension
 * Shall use the `#!/bin/bash` shebang at the first line
+* Shall have a single empty line after the shebang line or after the last [header parameter](https://complianceascode.readthedocs.io/en/latest/tests/README.html#scenarios-format), like in the following valid examples:
+```bash
+#!/bin/bash
+
+<code here>
+```
+or
+```bash
+#!/bin/bash
+# packages = audit
+
+<code here>
+```
+
 * Must follow all the rules in the [Bash](manual/developer/04_style_guide:bash) section
 
 ## Markup Languages
