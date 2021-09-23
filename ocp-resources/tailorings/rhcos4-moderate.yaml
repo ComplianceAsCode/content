@@ -1,0 +1,15 @@
+---
+# This is a manifest that is meant to create a TailoredProfile
+# for the rhcos4-moderate profile. In our E2E tests we actually build
+# the content container itself and put it in a custom profilebundle.
+# So, we use the name we use in CI directly (e2e)
+apiVersion: compliance.openshift.io/v1alpha1
+kind: TailoredProfile
+metadata:
+  name: e2e-moderate
+spec:
+  extends: e2e-moderate
+  title: E2E rhcos4-moderate profile
+  description: |-
+    A tailoring in order to be able to set rules and values for the
+    rhcos4-moderate profile, for testing.
