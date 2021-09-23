@@ -437,6 +437,7 @@ selections:
     - package_rsh-server_removed
 
     # UBTU-20-010407 The Ubuntu operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.
+    - ufw_only_required_services
 
     # UBTU-20-010408 The Ubuntu operating system must prevent direct login into the root account.
     - prevent_direct_root_logins
