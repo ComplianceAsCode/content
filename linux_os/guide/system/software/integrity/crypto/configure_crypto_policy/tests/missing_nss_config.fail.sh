@@ -5,4 +5,5 @@
 
 update-crypto-policies --set "FIPS:OSPP"
 
+unlink "/etc/crypto-policies/back-ends/nss.config"
 rm -f "/etc/crypto-policies/back-ends/nss.config"
