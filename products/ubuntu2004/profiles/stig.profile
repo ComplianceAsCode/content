@@ -181,6 +181,7 @@ selections:
     - file_permissions_var_log_audit
 
     # UBTU-20-010123 The Ubuntu operating system must be configured to permit only authorized users ownership of the audit log files.
+    - file_ownership_var_log_audit_stig
 
     # UBTU-20-010124 The Ubuntu operating system must permit only authorized groups ownership of the audit log files.
 
