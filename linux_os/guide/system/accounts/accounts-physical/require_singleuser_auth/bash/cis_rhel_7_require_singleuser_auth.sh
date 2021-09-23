@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 # platform = Red Hat Enterprise Linux 7
-# profiles = xccdf_org.ssgproject.content_profile_cis
 
 {{% if init_system == "systemd" -%}}
 service_file="/usr/lib/systemd/system/rescue.service"
