@@ -307,7 +307,8 @@ class BashRemediation(Remediation):
             assert cpe.value
 
             if cpe.negated:
-                return '{{ [ -n "${0}" ] && [ "${0}" != "{1}" ] ; }}'.format(cpe.variable, cpe.value)
+                return '{{ [ -n "${0}" ] && [ "${0}" != "{1}" ] ; }}'.format(cpe.variable,
+                                                                             cpe.value)
             return '[ "${0}" == "{1}" ]'.format(cpe.variable, cpe.value)
         elif platform is not None:
             # Assume any other platform is a Package CPE
