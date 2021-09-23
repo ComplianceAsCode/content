@@ -376,13 +376,23 @@ class ResolvableProfile(Profile):
         super(ResolvableProfile, self).__init__(* args, ** kwargs)
         self.resolved = False
         self.resolved_selections = set()
+        self.rule_filter = None
+
+    def read_yaml_contents(self, yaml_contents):
+        super(ResolvableProfile, self).read_yaml_contents(yaml_contents)
+        self.rule_filter = rule_filter_from_def(
+            yaml_contents.pop("filter_rules", None))
 
     def _controls_ids_to_controls(self, controls_manager, policy_id, control_id_list):
         items = [controls_manager.get_control(policy_id, cid) for cid in control_id_list]
         return items
 
     def _merge_control(self, control):
-        self.selected.extend(control.rules)
+        if self.rule_filter is not None:
+            filteredrules = (str(rule) for rule in control.rules if self.rule_filter(rule))
+            self.selected.extend(filteredrules)
+        else:
+            self.selected.extend(str(rule) for rule in control.rules)
         for varname, value in control.variables.items():
             if varname not in self.variables:
                 self.variables[varname] = value
@@ -1021,6 +1031,17 @@ class Group(object):
         return self.id_
 
 
+def rule_filter_from_def(filterdef):
+    if filterdef is None or filterdef == "":
+        return None
+
+    def filterfunc(rule):
+        # Remove globals for security and only expose
+        # variables relevant to the rule
+        return eval(filterdef, {"__builtins__": None}, rule.__dict__)
+    return filterfunc
+
+
 class Rule(object):
     """Represents XCCDF Rule
     """
@@ -1075,6 +1096,18 @@ class Rule(object):
         self.template = None
         self.local_env_yaml = None
         self.current_product = None
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            # These are difficult to deep copy, so let's just re-use them.
+            if k != "template" and k != "local_env_yaml":
+                setattr(result, k, deepcopy(v, memo))
+            else:
+                setattr(result, k, v)
+        return result
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, sce_metadata=None):
@@ -1486,6 +1519,9 @@ class Rule(object):
         root = self.to_xml_element()
         tree = ET.ElementTree(root)
         tree.write(file_name)
+
+    def __str__(self):
+        return self.id_
 
 
 class DirectoryLoader(object):

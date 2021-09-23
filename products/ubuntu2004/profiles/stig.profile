@@ -26,6 +26,7 @@ selections:
     - vlock_installed
 
     # UBTU-20-010006 The Ubuntu operating system must map the authenticated identity to the user or group account for PKI-based authentication.
+    - verify_use_mappers
 
     # UBTU-20-010007 The Ubuntu operating system must enforce 24 hours/1 day as the minimum password lifetime. Passwords for new users must have a 24 hours/1 day minimum password lifetime restriction.
     - var_accounts_minimum_age_login_defs=1
@@ -40,6 +41,7 @@ selections:
     - '!grub2_password'
 
     # UBTU-20-010010 The Ubuntu operating system must uniquely identify interactive users.
+    - no_duplicate_uids
 
     # UBTU-20-010012 The Ubuntu operating system must ensure only users who need access to security functions are part of sudo group.
 
@@ -55,9 +57,11 @@ selections:
     - accounts_umask_etc_login_defs
 
     # UBTU-20-010033 The Ubuntu operating system must implement smart card logins for multifactor authentication for local and network access to privileged and non-privileged accounts.
+    - sshd_enable_pubkey_auth
     - smartcard_pam_enabled
 
     # UBTU-20-010035 The Ubuntu operating system must use strong authenticators in establishing nonlocal maintenance and diagnostic sessions.
+    - sshd_enable_pam
 
     # UBTU-20-010036 The Ubuntu operating system must immediately terminate all network connections associated with SSH traffic after a period of inactivity.
     - sshd_set_keepalive

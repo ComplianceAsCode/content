@@ -1,6 +1,6 @@
 #!/bin/bash
 
 export TESTFILE=/etc/audit/rules.d/test_rule.rules
-mkdir -p /etc/audit/rules.d/
+mkdir -p $(dirname $TESTFILE)
 touch $TESTFILE
 chmod 0640 $TESTFILE
