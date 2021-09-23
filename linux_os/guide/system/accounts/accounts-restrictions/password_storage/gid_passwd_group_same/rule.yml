@@ -6,7 +6,7 @@ description: 'Add a group to the system for each GID referenced without a corres
 
 rationale: |-
     If a user is assigned the Group Identifier (GID) of a group not existing on the system, and a group
-    with the Gruop Identifier (GID) is subsequently created, the user may have unintended rights to
+    with the Group Identifier (GID) is subsequently created, the user may have unintended rights to
     any files associated with the group.
 
 severity: low
@@ -36,7 +36,7 @@ references:
     stigid@ol7: OL07-00-020300
     stigid@rhel7: RHEL-07-020300
 
-ocil_clause: 'GIFs referenced in /etc/passwd are returned as not defined in /etc/group'
+ocil_clause: 'GIDs referenced in /etc/passwd are returned as not defined in /etc/group'
 
 ocil: |-
     To ensure all GIDs referenced in <tt>/etc/passwd</tt> are defined in <tt>/etc/group</tt>,
