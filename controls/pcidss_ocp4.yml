@@ -623,16 +623,30 @@ controls:
   status: pending
   controls:
   - id: Req-3.5.1
-    title: 3.5.1 Restrict access to cryptographic keys to the fewest number of custodians
-      necessary.
+    title: 'Additional requirement  for service  providers  only: Maintain a documented 
+      description of the cryptographic architecture that includes: '
+    description: |-
+       * Details of all algorithms, protocols, and keys used  for the protection of 
+         cardholder data, including key strength an d expiry date 
+       * Description of the key usage for each key 
+       * Inventory of any HSMs and other SCDs  used for key management
+    levels:
+    - base
+    notes: ''
+    status: pending
+    rules: []
+ 
+  - id: Req-3.5.2
+    title: '3.5.2 Restrict access to cryptographic keys to the fewest number of custodians
+      necessary.'
     levels:
     - base
     notes: ''
     status: pending
     rules: []
 
-  - id: Req-3.5.2
-    title: '3.5.2 Store secret and private keys used to encrypt/decrypt cardholder data
+  - id: Req-3.5.3
+    title: '3.5.3 Store secret and private keys used to encrypt/decrypt cardholder data
       in one (or more) of the following forms at all times:'
     description: |-
       * Encrypted with a key-encrypting key that is at least as strong
@@ -645,12 +659,12 @@ controls:
         in one of these forms.
     levels:
     - base
-    notes: ''
+    notes: 'It is not  required  that  public  keys be stored in  one  of  these forms. '
     status: pending
     rules: []
 
-  - id: Req-3.5.3
-    title: 3.5.3 Store cryptographic keys in the fewest possible locations.
+  - id: Req-3.5.4
+    title: 3.5.4 Store cryptographic keys in the fewest possible locations.
     levels:
     - base
     notes: ''
