@@ -518,6 +518,7 @@ selections:
     # UBTU-20-010446 The Ubuntu operating system must configure the uncomplicated firewall to rate-limit impacted network interfaces.
 
     # UBTU-20-010447 The Ubuntu operating system must implement non-executable data to protect its memory from unauthorized code execution.
+    - bios_enable_execution_restrictions
 
     # UBTU-20-010448 The Ubuntu operating system must implement address space layout randomization to protect its memory from unauthorized code execution.
     - sysctl_kernel_randomize_va_space
