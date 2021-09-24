@@ -1127,6 +1127,21 @@ rpm --quiet -q "{{{ pkgname }}}"
 {{%- endmacro -%}}
 
 {{#
+  # Set rule CCE value
+  #
+  # This macro gets the var cce_identifiers from the environment created by the build scripts.
+  # The cce_identifiers is a dictionary that contains either the 'cce':'CCENUM' record for the
+  # product this remediation is being built for, or it is empty, in which case the string 'CCE' is used.
+  #}}
+{{%- macro set_cce_value() -%}}
+{{% if 'cce' in cce_identifiers -%}}
+cce="{{{ cce_identifiers['cce'] }}}"
+{{%- else -%}}
+cce="CCE"
+{{%- endif %}}
+{{%- endmacro -%}}
+
+{{#
   Macro to replace configuration setting in config file or add the configuration setting if
   it does not exist.
  
@@ -1165,12 +1180,8 @@ if test -L "{{{ config_file }}}"; then
     sed_command+=('--follow-symlinks')
 fi
 
-# If the cce arg is empty, CCE is not assigned.
-if [ -z "{{{ cce }}}" ]; then
-    cce="CCE"
-else
-    cce="{{{ cce }}}"
-fi
+# Set the rule CCE value; if the rule has none, it is set to 'CCE'
+{{{ set_cce_value() }}}
 
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
