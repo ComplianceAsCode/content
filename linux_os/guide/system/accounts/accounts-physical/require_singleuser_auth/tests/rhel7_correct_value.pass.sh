@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# platform = Red Hat Enterprise Linux 7
+# platform = multi_platform_rhel, multi_platform_fedora
 
 service_file="/usr/lib/systemd/system/rescue.service"
 sulogin='/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
