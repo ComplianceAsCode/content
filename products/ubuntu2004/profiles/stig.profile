@@ -187,6 +187,7 @@ selections:
     - file_group_ownership_var_log_audit
 
     # UBTU-20-010128 The Ubuntu operating system must be configured so that the audit log directory is not write-accessible by unauthorized users.
+    - directory_permissions_var_log_audit
 
     # UBTU-20-010133 The Ubuntu operating system must be configured so that audit configuration files are not write-accessible by unauthorized users.
 
