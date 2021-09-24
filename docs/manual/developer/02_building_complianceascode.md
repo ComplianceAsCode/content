@@ -117,6 +117,14 @@ pip install json2html
 Install Sphinx packages if you want to generate HTML Documentation, from source directory run:
 
 ```bash
+# Fedora/RHEL
+yum install python3-sphinx
+
+# Ubuntu/Debian
+apt-get install python3-sphinx
+```
+
+```bash
 pip install -r docs/requirements.txt
 ```
 
