@@ -1150,7 +1150,6 @@ cce="CCE"
   config_file:		Configuration file that will be modified
   key:			Configuration option to change
   value:		Value of the configuration option to change
-  cce:			The CCE identifier or '@CCENUM@' if no CCE identifier exists
   format:		The printf-like format string that will be given stripped key and value as arguments,
              so e.g. '%s=%s' will result in key=value subsitution (i.e. without spaces around =)
  
@@ -1162,16 +1161,16 @@ cce="CCE"
   Example Call(s):
  
       With default format of 'key = value':
-      {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2', '@CCENUM@') }}}
+      {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
  
       With custom key/value format:
-      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '@CCENUM@', '%s=%s') }}}
+      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
  
       With a variable:
-      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '@CCENUM@', '%s=%s') }}}
+      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
  
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, cce, format='%s = %s') -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
 
 # Test if the config_file is a symbolic link. If so, use --follow-symlinks with sed.
 # Otherwise, regular sed command will do.
