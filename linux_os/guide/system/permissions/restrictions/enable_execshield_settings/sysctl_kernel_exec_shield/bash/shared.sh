@@ -10,7 +10,7 @@ if [ "$(getconf LONG_BIT)" = "32" ] ; then
   # If kernel.exec-shield present in /etc/sysctl.conf, change value to "1"
   #	else, add "kernel.exec-shield = 1" to /etc/sysctl.conf
   #
-  {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.exec-shield', '1', '@CCENUM@') }}}
+  {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.exec-shield', '1') }}}
 fi
 
 if [ "$(getconf LONG_BIT)" = "64" ] ; then
