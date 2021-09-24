@@ -8,6 +8,7 @@
 # ARG_OPTIONAL_SINGLE([logdir],[l],[Directory where logs will be stored])
 # ARG_OPTIONAL_BOOLEAN([dontclean],[],[Dont remove HTML reports from the log directory.])
 # ARG_OPTIONAL_BOOLEAN([dry-run],[],[Just print the test suite command-line.])
+# ARG_USE_ENV([ADDITIONAL_SSGTS_OPTIONS],[],[Whitespace-separated string of arguments to pass to SSGTS])
 # ARG_POSITIONAL_SINGLE([rule],[The short rule ID. Wildcards are supported.])
 # ARG_TYPE_GROUP_SET([remediations],[REMEDIATION],[remediate-using],[oscap,bash,ansible])
 # ARG_DEFAULTS_POS([])
@@ -74,6 +75,8 @@ print_help()
 	printf '\t%s\n' "--dontclean: Dont remove HTML reports from the log directory."
 	printf '\t%s\n' "--dry-run: Just print the test suite command-line."
 	printf '\t%s\n' "-h, --help: Prints help"
+	printf '\nEnvironment variables that are supported:\n'
+	printf '\t%s\n' "ADDITIONAL_SSGTS_OPTIONS: Whitespace-separated string of arguments to pass to SSGTS."
 }
 
 
@@ -214,7 +217,7 @@ test -n "$_arg_remediate_using" && additional_args+=(--remediate-using "$_arg_re
 
 test -n "$_arg_logdir" && additional_args+=(--logdir "$_arg_logdir")
 
-command=(python3 "${script_dir}/test_suite.py" rule --remove-machine-only "${additional_args[@]}" --add-platform "$test_image_cpe_product" --container "$_arg_name" -- "${_arg_rule}")
+command=(python3 "${script_dir}/test_suite.py" rule ${ADDITIONAL_SSGTS_OPTIONS} --remove-machine-only "${additional_args[@]}" --add-platform "$test_image_cpe_product" --container "$_arg_name" -- "${_arg_rule}")
 if test "$_arg_dry_run" = on; then
 	printf '%s\n' "${command[*]}"
 else
