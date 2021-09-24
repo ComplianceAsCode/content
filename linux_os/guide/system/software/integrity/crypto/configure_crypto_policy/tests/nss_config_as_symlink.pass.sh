@@ -1,6 +1,7 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 # profiles = xccdf_org.ssgproject.content_profile_ospp
+# packages = crypto-policies-scripts
 
 update-crypto-policies --set "FIPS:OSPP"
 
@@ -9,4 +10,4 @@ SYMLINK_TO_FOLDER="/usr/share/crypto-policies/FIPS/"
 SYMLINK_TO_FILE="nss.txt"
 rm -f $CRYPTO_POLICY_LIB_FILE
 mkdir -p $SYMLINK_TO_FOLDER
-ln -s $SYMLINK_TO_FOLDER$SYMLINK_TO_FILE $CRYPTO_POLICY_LIB_FILE
+ln -sf $SYMLINK_TO_FOLDER$SYMLINK_TO_FILE $CRYPTO_POLICY_LIB_FILE
