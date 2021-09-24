@@ -728,6 +728,8 @@ class XCCDFBenchmark(object):
             del profile_stats['assigned_cces_pct']
             del profile_stats['ssg_version']
             del profile_stats['ansible_parity_pct']
+            del profile_stats['implemented_checks_pct']
+            del profile_stats['implemented_fixes_pct']
 
             return profile_stats
         else:
