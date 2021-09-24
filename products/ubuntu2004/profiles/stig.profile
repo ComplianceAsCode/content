@@ -184,6 +184,7 @@ selections:
     - file_ownership_var_log_audit_stig
 
     # UBTU-20-010124 The Ubuntu operating system must permit only authorized groups ownership of the audit log files.
+    - file_group_ownership_var_log_audit
 
     # UBTU-20-010128 The Ubuntu operating system must be configured so that the audit log directory is not write-accessible by unauthorized users.
 
