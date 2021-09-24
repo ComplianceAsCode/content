@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7
 
 service_file="/usr/lib/systemd/system/emergency.service"
 
