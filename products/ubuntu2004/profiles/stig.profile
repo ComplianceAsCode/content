@@ -186,6 +186,8 @@ selections:
     # UBTU-20-010128 The Ubuntu operating system must be configured so that the audit log directory is not write-accessible by unauthorized users.
 
     # UBTU-20-010133 The Ubuntu operating system must be configured so that audit configuration files are not write-accessible by unauthorized users.
+    - file_permissions_etc_audit_rulesd
+    - file_permissions_etc_audit_auditd
 
     # UBTU-20-010134 The Ubuntu operating system must permit only authorized accounts to own the audit configuration files.
 
