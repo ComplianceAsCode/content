@@ -1,8 +1,4 @@
-# platform = multi_platform_all
-# reboot = false
-# strategy = configure
-# complexity = low
-# disruption = low
+# platform = Red Hat Enterprise Linux 7
 
 {{{ bash_instantiate_variables("var_sshd_max_sessions") }}}
 
