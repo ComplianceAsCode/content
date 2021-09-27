@@ -44,6 +44,7 @@ selections:
     - no_duplicate_uids
 
     # UBTU-20-010012 The Ubuntu operating system must ensure only users who need access to security functions are part of sudo group.
+    - ensure_sudo_group_restricted
 
     # UBTU-20-010013 The Ubuntu operating system must automatically terminate a user session after inactivity timeouts have expired.
     - var_accounts_tmout=10_min
