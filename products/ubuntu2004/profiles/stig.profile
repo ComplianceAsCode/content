@@ -286,6 +286,7 @@ selections:
     - audit_rules_execution_chcon
 
     # UBTU-20-010166 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the apparmor_parser command.
+    - audit_rules_privileged_commands_apparmor_parser
 
     # UBTU-20-010167 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the setfacl command.
     - audit_rules_execution_setfacl
@@ -306,6 +307,7 @@ selections:
     - audit_rules_privileged_commands_passwd
 
     # UBTU-20-010173 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the unix_update command.
+    - audit_rules_privileged_commands_unix_update
 
     # UBTU-20-010174 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the gpasswd command.
     - audit_rules_privileged_commands_gpasswd
@@ -398,6 +400,7 @@ selections:
     - audit_rules_privileged_commands_kmod
 
     # UBTU-20-010298 The Ubuntu operating system must generate audit records when successful/unsuccessful attempts to use the fdisk command.
+    - audit_rules_privileged_commands_fdisk
 
     # UBTU-20-010300 The Ubuntu operating system must have a crontab script running weekly to offload audit events of standalone systems.
 
