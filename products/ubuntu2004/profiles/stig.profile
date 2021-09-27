@@ -427,6 +427,7 @@ selections:
     # UBTU-20-010407 The Ubuntu operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.
 
     # UBTU-20-010408 The Ubuntu operating system must prevent direct login into the root account.
+    - prevent_direct_root_logins
 
     # UBTU-20-010409 The Ubuntu operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.
     - account_disable_post_pw_expiration
