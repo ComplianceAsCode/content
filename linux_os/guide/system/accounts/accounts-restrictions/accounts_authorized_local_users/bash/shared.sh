@@ -1,4 +1,4 @@
-# platform = multi_platform_ol
+# platform = multi_platform_ol,multi_platform_sle
 
 {{{ bash_instantiate_variables("var_accounts_authorized_local_users_regex") }}}
 
