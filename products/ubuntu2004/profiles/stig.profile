@@ -447,6 +447,7 @@ selections:
     - encrypt_partitions
 
     # UBTU-20-010415 The Ubuntu operating system must deploy Endpoint Security for Linux Threat Prevention (ENSLTP).
+    - package_mcafeetp_installed
 
     # UBTU-20-010416 The Ubuntu operating system must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
     - permissions_local_var_log
