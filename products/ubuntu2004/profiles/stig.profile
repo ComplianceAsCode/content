@@ -514,6 +514,7 @@ selections:
     - service_rsyslog_enabled
 
     # UBTU-20-010433 The Ubuntu operating system must have an application firewall installed in order to control remote access methods.
+    - var_firewall_package=ufw
     - package_ufw_installed
 
     # UBTU-20-010434 The Ubuntu operating system must enable and run the uncomplicated firewall(ufw).
