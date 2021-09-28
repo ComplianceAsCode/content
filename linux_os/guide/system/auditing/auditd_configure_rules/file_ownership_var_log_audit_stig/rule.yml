@@ -5,7 +5,9 @@ prodtype: rhel8,ubuntu2004
 title: 'System Audit Logs Must Be Owned By Root'
 
 description: |-
-    All audit logs must be owned by root user. By default, the path for audit log is <pre>/var/log/audit/</pre>.
+    All audit logs must be owned by root user. The path for audit log can be
+    configured via <tt>log_file</tt> parameter in <pre>/etc/audit/auditd.conf</pre>
+    or by default, the path for audit log is <pre>/var/log/audit/</pre>.
     {{{ describe_file_owner(file="/var/log/audit/*", owner="root") }}}
 
 rationale: |-
