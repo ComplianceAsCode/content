@@ -1,9 +1,10 @@
 #!/bin/bash
+
+# variables = var_accounts_minimum_age_login_defs=1
+
 # make existing entities pass
-# assumption: use a nominally large value for var_accounts_minimum_age_login_defs
-#             so as to not interfere.
 for acct in $(grep -ve ':\(!!\|\*\):' /etc/shadow | awk -F: '{print $1}'); do
-    chage -m 300 -d $(date +%Y-%m-%d) $acct
+    chage -m 1 -d $(date +%Y-%m-%d) $acct
 done
 # Add a failing item.
 echo 'max-test-user:$1$q.YkdxU1$ADmXcU4xwPrM.Pc.dclK81:18648::60::::' >> /etc/shadow
