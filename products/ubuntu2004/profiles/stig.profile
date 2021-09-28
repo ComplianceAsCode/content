@@ -521,6 +521,7 @@ selections:
     - is_fips_mode_enabled
 
     # UBTU-20-010443 The Ubuntu operating system must only allow the use of DoD PKI-established certificate authorities for verification of the establishment of protected sessions.
+    - only_allow_dod_certs
 
     # UBTU-20-010444 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest.
 
