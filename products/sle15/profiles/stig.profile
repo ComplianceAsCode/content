@@ -160,6 +160,7 @@ selections:
     - cracklib_accounts_password_pam_lcredit
     - cracklib_accounts_password_pam_minlen
     - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_retry
     - cracklib_accounts_password_pam_ucredit
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
