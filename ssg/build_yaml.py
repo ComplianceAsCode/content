@@ -1478,7 +1478,7 @@ class Rule(object):
                 if isinstance(self.sce_metadata['check-export'], str):
                     self.sce_metadata['check-export'] = [self.sce_metadata['check-export']]
                 for entry in self.sce_metadata['check-export']:
-                    value, export = entry.split('=')
+                    export, value = entry.split('=')
                     check_export = ET.SubElement(check, 'check-export')
                     check_export.set('value-id', value)
                     check_export.set('export-name', export)
