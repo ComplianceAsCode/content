@@ -5,6 +5,22 @@ on:
   pull_request:
     branches: [ 'master', 'stabilization*' ]
 jobs:
+  validate-suse:
+    name: Build, Test on OpenSUSE Leap 15 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: opensuse/leap:15
+    steps:
+      - name: Install Deps
+        run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 libxslt-tools libxml2-tools libexpat1 libexpat-devel libexpat1 expat
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
   validate-ubuntu:
     name: Build, Test on Ubuntu 20.04
     runs-on: ubuntu-20.04
