@@ -1,5 +1,5 @@
 # platform = multi_platform_ubuntu
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("login_banner_text") }}}
 
 # Multiple regexes transform the banner regex into a usable banner
