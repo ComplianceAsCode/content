@@ -113,7 +113,7 @@ class ProductCPEs(object):
         id = "cpe_platform_" + id
         platform = CPEALPlatform(id)
         # add initial test
-        initial_test = CPEALTest(operator="OR", negate="false")
+        initial_test = CPEALLogicalTest(operator="OR", negate="false")
         platform.add_test(initial_test)
         for platform_line in platforms:
             initial_test.add_object(self.parse_platform_line(platform_line))
@@ -123,13 +123,13 @@ class ProductCPEs(object):
         # remove spaces
         platform_line = platform_line.replace(" ", "")
         if "&" in platform_line:
-            and_test = CPEALTest(operator="AND", negate="false")
+            and_test = CPEALLogicalTest(operator="AND", negate="false")
             and_members = platform_line.split("&")
             for member in and_members:
                 and_test.add_object(self.parse_platform_line(member))
             return and_test
         elif "!" in platform_line:
-            negated_test = CPEALTest(operator="OR", negate="true")
+            negated_test = CPEALLogicalTest(operator="OR", negate="true")
             # remove ! from the element and process it further
             platform_line.replace("!", "")
             negated_test.add_object(self.parse_platform_line(platform_line))
@@ -250,7 +250,7 @@ class CPEALPlatform(object):
         return self.test == other.test
 
 
-class CPEALTest(object):
+class CPEALLogicalTest(object):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
@@ -270,7 +270,7 @@ class CPEALTest(object):
             return False
 
     def to_xml_element(self):
-        cpe_test = ET.Element("{%s}logical-test" % CPEALTest.ns)
+        cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
         cpe_test.set('operator', self.operator)
         cpe_test.set('negate', self.negate)
         for obj in self.objects:
