@@ -1043,7 +1043,7 @@ class Group(XCCDFEntity):
 
         for cpe_al_platform_name in self.cpe_al_platform_names:
             platform_el = ET.SubElement(group, "platform")
-            platform_el.set("idref", cpe_al_platform_name)
+            platform_el.set("idref", "#"+cpe_al_platform_name)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -1589,7 +1589,7 @@ class Rule(XCCDFEntity):
 
         for cpe_al_platform_name in self.cpe_al_platform_names:
             platform_el = ET.SubElement(rule, "platform")
-            platform_el.set("idref", cpe_al_platform_name)
+            platform_el.set("idref", "#"+cpe_al_platform_name)
 
         return rule
 

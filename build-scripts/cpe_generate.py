@@ -133,7 +133,7 @@ def main():
         cpe_name = platform.get("idref")
         # skip CPE AL platforms (they are handled later)
         # this is temporary solution until we get rid of old type of platforms in the benchmark
-        if cpe_name.startswith("cpe_platform_"):
+        if cpe_name.startswith("#"):
             continue
         benchmark_cpe_names.add(cpe_name)
     # add CPE names used by factref elements in CPEAL platforms
