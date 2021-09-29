@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9
+
+title: 'Uninstall Automatic Bug Reporting Tool (abrt)'
+
+description: |-
+    The Automatic Bug Reporting Tool (<tt>abrt</tt>) collects
+    and reports crash data when an application crash is detected. Using a variety
+    of plugins, abrt can email crash reports to system administrators, log crash
+    reports to files, or forward crash reports to a centralized issue tracking
+    system such as RHTSupport.
+    {{{ describe_package_remove(package="abrt") }}}
+
+rationale: |-
+    Mishandling crash data could expose sensitive information about
+    vulnerabilities in software executing on the system, as well as sensitive
+    information from within a process's address space or registers.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    srg: SRG-OS-000095-GPOS-00049
+    stigid@rhel8: RHEL-08-040001
+
+{{{ complete_ocil_entry_package(package="abrt") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: abrt
