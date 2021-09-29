@@ -138,7 +138,7 @@ def main():
         benchmark_cpe_names.add(cpe_name)
     # add CPE names used by factref elements in CPEAL platforms
     for factref in shorthandtree.findall(
-            ".//ns1:fact-ref", {"ns1": "http://cpe.mitre.org/language/2.0"}):
+            ".//ns1:fact-ref", {"ns1":ssg.constants.PREFIX_TO_NS["cpe-lang"]}):
         cpe_factref_name = factref.get("name")
         benchmark_cpe_names.add(cpe_factref_name)
 
