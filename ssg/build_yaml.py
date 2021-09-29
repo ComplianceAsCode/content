@@ -938,6 +938,7 @@ class Group(XCCDFEntity):
     """
     ATTRIBUTES_TO_PASS_ON = (
         "platforms",
+        "cpe_names",
     )
 
     GENERIC_FILENAME = "group.yml"
@@ -1133,6 +1134,9 @@ class Group(XCCDFEntity):
                 except CPEDoesNotExist:
                     print("Unsupported platform '%s' in group '%s'." % (platform, group.id_))
                     raise
+            cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
+                group.platforms)
+            group.cpe_platform_names.add(cpe_platform.id)
 
     def _pass_our_properties_on_to(self, obj):
         for attr in self.ATTRIBUTES_TO_PASS_ON:
