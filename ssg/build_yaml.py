@@ -810,7 +810,7 @@ class Benchmark(XCCDFEntity):
         benchmark = super(Benchmark, cls).from_yaml(yaml_file, env_yaml)
         if env_yaml:
             benchmark.product_cpe_names = env_yaml["product_cpes"].get_product_cpe_names()
-            benchmark.cpe_al_platform_spec = env_yaml["product_cpes"].cpe_al_platform_specification
+            benchmark.cpe_platform_spec = env_yaml["product_cpes"].cpe_platform_specification
 
         benchmark.id_ = benchmark_id
 
@@ -866,8 +866,8 @@ class Benchmark(XCCDFEntity):
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
         # if there are no platforms, do not output platform-specification at all
-        if len(self.cpe_al_platform_spec.platforms) > 0:
-            root.append(self.cpe_al_platform_spec.to_xml_element())
+        if len(self.cpe_platform_spec.platforms) > 0:
+            root.append(self.cpe_platform_spec.to_xml_element())
 
         # The Benchmark applicability is determined by the CPEs
         # defined in the product.yml
@@ -955,7 +955,7 @@ class Group(XCCDFEntity):
         platform=lambda: "",
         platforms=lambda: set(),
         cpe_names=lambda: set(),
-        cpe_al_platform_names=lambda: set(),
+        cpe_platform_names=lambda: set(),
         ** XCCDFEntity.KEYS
     )
 
@@ -988,11 +988,11 @@ class Group(XCCDFEntity):
 
         # parse platform definition and get CPEAL platform
         if data["platforms"]:
-            cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(data["platforms"])
-            data["cpe_al_platform_names"].add(cpeal_platform.id)
+            cpe_platform = env_yaml["product_cpes"].parse_platform_definition(data["platforms"])
+            data["cpe_platform_names"].add(cpe_platform.id)
             # add platform to platform specification
-            if cpeal_platform not in env_yaml["product_cpes"].cpe_al_platform_specification.platforms:
-                env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(cpeal_platform)
+            if cpe_platform not in env_yaml["product_cpes"].cpe_platform_specification.platforms:
+                env_yaml["product_cpes"].cpe_platform_specification.add_platform(cpe_platform)
         return data
 
     def load_entities(self, rules_by_id, values_by_id, groups_by_id):
@@ -1041,9 +1041,9 @@ class Group(XCCDFEntity):
         add_nondata_subelements(group, "requires", "id", self.requires)
         add_nondata_subelements(group, "conflicts", "id", self.conflicts)
 
-        for cpe_al_platform_name in self.cpe_al_platform_names:
+        for cpe_platform_name in self.cpe_platform_names:
             platform_el = ET.SubElement(group, "platform")
-            platform_el.set("idref", "#"+cpe_al_platform_name)
+            platform_el.set("idref", "#"+cpe_platform_name)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -1196,6 +1196,7 @@ class Rule(XCCDFEntity):
         inherited_platforms=lambda: list(),
         template=lambda: None,
         cpe_names=lambda: set(),
+        cpe_platform_names=lambda: set(),
         ** XCCDFEntity.KEYS
     )
 
@@ -1259,14 +1260,14 @@ class Rule(XCCDFEntity):
                     raise
             # parse platform definition and get CPEAL platform
             if len(rule.platforms) > 0:
-                cpeal_platform = env_yaml["product_cpes"].parse_platform_definition(
+                cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
                     rule.platforms)
-                rule.cpe_al_platform_names.add(cpeal_platform.id)
+                rule.cpe_platform_names.add(cpe_platform.id)
                 # add platform to platform specification
-                if cpeal_platform not in env_yaml[
-                        "product_cpes"].cpe_al_platform_specification.platforms:
-                    env_yaml["product_cpes"].cpe_al_platform_specification.add_platform(
-                        cpeal_platform)
+                if cpe_platform not in env_yaml[
+                        "product_cpes"].cpe_platform_specification.platforms:
+                    env_yaml["product_cpes"].cpe_platform_specification.add_platform(
+                        cpe_platform)
 
 
         if sce_metadata and rule.id_ in sce_metadata:
@@ -1587,9 +1588,9 @@ class Rule(XCCDFEntity):
         add_nondata_subelements(rule, "requires", "id", self.requires)
         add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
 
-        for cpe_al_platform_name in self.cpe_al_platform_names:
+        for cpe_platform_name in self.cpe_platform_names:
             platform_el = ET.SubElement(rule, "platform")
-            platform_el.set("idref", "#"+cpe_al_platform_name)
+            platform_el.set("idref", "#"+cpe_platform_name)
 
         return rule
 

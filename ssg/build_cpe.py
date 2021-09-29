@@ -30,8 +30,8 @@ class ProductCPEs(object):
         self.cpes_by_id = {}
         self.cpes_by_name = {}
         self.product_cpes = {}
-        self.cpe_al_platforms = {}
-        self.cpe_al_platform_specification = CPEALPlatformSpecification()
+        self.cpe_platforms = {}
+        self.cpe_platform_specification = CPEALPlatformSpecification()
 
         self.load_product_cpes()
         self.load_content_cpes()
@@ -221,11 +221,11 @@ class CPEALPlatformSpecification(object):
         self.platforms.append(platform)
 
     def to_xml_element(self):
-        cpe_al_platform_spec = ET.Element(
+        cpe_platform_spec = ET.Element(
             "{%s}platform-specification" % CPEALPlatformSpecification.ns)
         for platform in self.platforms:
-            cpe_al_platform_spec.append(platform.to_xml_element())
-        return cpe_al_platform_spec
+            cpe_platform_spec.append(platform.to_xml_element())
+        return cpe_platform_spec
 
 
 class CPEALPlatform(object):
@@ -241,10 +241,10 @@ class CPEALPlatform(object):
         self.test = test
 
     def to_xml_element(self):
-        cpe_al_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
-        cpe_al_platform.set('id', self.id)
-        cpe_al_platform.append(self.test.to_xml_element())
-        return cpe_al_platform
+        cpe_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
+        cpe_platform.set('id', self.id)
+        cpe_platform.append(self.test.to_xml_element())
+        return cpe_platform
 
     def __eq__(self, other):
         return self.test == other.test
@@ -270,13 +270,13 @@ class CPEALTest(object):
             return False
 
     def to_xml_element(self):
-        cpe_al_test = ET.Element("{%s}logical-test" % CPEALTest.ns)
-        cpe_al_test.set('operator', self.operator)
-        cpe_al_test.set('negate', self.negate)
+        cpe_test = ET.Element("{%s}logical-test" % CPEALTest.ns)
+        cpe_test.set('operator', self.operator)
+        cpe_test.set('negate', self.negate)
         for obj in self.objects:
-            cpe_al_test.append(obj.to_xml_element())
+            cpe_test.append(obj.to_xml_element())
 
-        return cpe_al_test
+        return cpe_test
 
     def add_object(self, object):
         self.objects.append(object)
@@ -297,10 +297,10 @@ class CPEALFactRef (object):
         return self.name == other.name
 
     def to_xml_element(self):
-        cpe_al_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
-        cpe_al_factref.set('name', self.name)
+        cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
+        cpe_factref.set('name', self.name)
 
-        return cpe_al_factref
+        return cpe_factref
 
 def extract_subelement(objects, sub_elem_type):
     """
