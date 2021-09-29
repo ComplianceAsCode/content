@@ -106,17 +106,18 @@ class ProductCPEs(object):
     def get_product_cpe_names(self):
         return [ cpe.name for cpe in self.product_cpes.values() ]
 
-    def parse_platform_definition(self, platforms):
+    def parse_platform_definition(self, platform_line):
         # let's construct the platform id
-        id_list = [self._convert_platform_to_id(platform) for platform in platforms]
-        id = "_or_".join(id_list)
-        id = "cpe_platform_" + id
+        id = "cpe_platform_" + self._convert_platform_to_id(platform_line)
         platform = CPEALPlatform(id)
-        # add initial test
-        initial_test = CPEALLogicalTest(operator="OR", negate="false")
-        platform.add_test(initial_test)
-        for platform_line in platforms:
+        # add initial test if the line does not contain AND or NEGATE operator
+        # othervise the presence of & or ! will create the test while parsing
+        if "&" not in platform_line and "!" not in platform_line:
+            initial_test = CPEALLogicalTest(operator="OR", negate="false")
+            platform.add_test(initial_test)
             initial_test.add_object(self.parse_platform_line(platform_line))
+        else:
+            platform.add_test(self.parse_platform_line(platform_line))
         return platform
 
     def parse_platform_line(self, platform_line):

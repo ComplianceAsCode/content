@@ -989,11 +989,12 @@ class Group(XCCDFEntity):
 
         # parse platform definition and get CPEAL platform
         if data["platforms"]:
-            cpe_platform = env_yaml["product_cpes"].parse_platform_definition(data["platforms"])
-            data["cpe_platform_names"].add(cpe_platform.id)
-            # add platform to platform specification
-            if cpe_platform not in env_yaml["product_cpes"].cpe_platform_specification.platforms:
-                env_yaml["product_cpes"].cpe_platform_specification.add_platform(cpe_platform)
+            for platform in data["platforms"]:
+                cpe_platform = env_yaml["product_cpes"].parse_platform_definition(platform)
+                data["cpe_platform_names"].add(cpe_platform.id)
+                # add platform to platform specification
+                if cpe_platform not in env_yaml["product_cpes"].cpe_platform_specification.platforms:
+                    env_yaml["product_cpes"].cpe_platform_specification.add_platform(cpe_platform)
         return data
 
     def load_entities(self, rules_by_id, values_by_id, groups_by_id):
@@ -1134,9 +1135,9 @@ class Group(XCCDFEntity):
                 except CPEDoesNotExist:
                     print("Unsupported platform '%s' in group '%s'." % (platform, group.id_))
                     raise
-            cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
-                group.platforms)
-            group.cpe_platform_names.add(cpe_platform.id)
+                cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
+                    platform)
+                group.cpe_platform_names.add(cpe_platform.id)
 
     def _pass_our_properties_on_to(self, obj):
         for attr in self.ATTRIBUTES_TO_PASS_ON:
@@ -1159,6 +1160,9 @@ class Group(XCCDFEntity):
                 except CPEDoesNotExist:
                     print("Unsupported platform '%s' in rule '%s'." % (platform, rule.id_))
                     raise
+                cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
+                    platform)
+                rule.cpe_platform_names.add(cpe_platform.id)
 
     def __str__(self):
         return self.id_
@@ -1263,9 +1267,9 @@ class Rule(XCCDFEntity):
                     print("Unsupported platform '%s' in rule '%s'." % (platform, rule.id_))
                     raise
             # parse platform definition and get CPEAL platform
-            if len(rule.platforms) > 0:
+            for platform in rule.platforms:
                 cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
-                    rule.platforms)
+                    platform)
                 rule.cpe_platform_names.add(cpe_platform.id)
                 # add platform to platform specification
                 if cpe_platform not in env_yaml[
