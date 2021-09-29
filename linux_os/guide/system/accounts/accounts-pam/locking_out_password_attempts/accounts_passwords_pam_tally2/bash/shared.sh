@@ -1,5 +1,4 @@
 # platform = multi_platform_sle,multi_platform_ubuntu
-. /usr/share/scap-security-guide/remediation_functions
 
 {{{ bash_instantiate_variables("var_password_pam_tally2") }}}
 # Use a non-number regexp to force update of the value of the deny option
