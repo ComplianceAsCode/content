@@ -181,12 +181,16 @@ selections:
     - auditd_data_disk_full_action
 
     # UBTU-20-010122 The Ubuntu operating system must be configured so that audit log files are not read or write-accessible by unauthorized users.
+    - file_permissions_var_log_audit
 
     # UBTU-20-010123 The Ubuntu operating system must be configured to permit only authorized users ownership of the audit log files.
+    - file_ownership_var_log_audit_stig
 
     # UBTU-20-010124 The Ubuntu operating system must permit only authorized groups ownership of the audit log files.
+    - file_group_ownership_var_log_audit
 
     # UBTU-20-010128 The Ubuntu operating system must be configured so that the audit log directory is not write-accessible by unauthorized users.
+    - directory_permissions_var_log_audit
 
     # UBTU-20-010133 The Ubuntu operating system must be configured so that audit configuration files are not write-accessible by unauthorized users.
     - file_permissions_etc_audit_rulesd
