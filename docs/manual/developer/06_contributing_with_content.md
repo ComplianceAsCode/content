@@ -764,8 +764,15 @@ are unique to SCE:
 
  - `check-import`: can be `stdout` or `stderr` and corresponds to the XCCDF's
    `<check-import />` element's `import-name` attribute.
- - `check-export`: a comma-separated list of `env_variable=xccdf_variable`
-   pairs to export via XCCDF `<check-export />` elements.
+ - `check-export`: a comma-separated list of `variable_name=xccdf_variable` 
+    pairs to export via XCCDF `<check-export />` elements. 
+    oscap will generate 3 env_variables before calling the SCE script: 
+    ```bash
+    XCCDF_VALUE_<variable_name>=<value>
+    XCCDF_TYPE_<variable_name>=<type> 
+    XCCDF_OPERATOR_<variable_name>=<operator>
+    ```
+    The `<value>`, `<type>` and `<operator>` come from the corresponding xccdf variable. 
  - `complex-check`: an XCCDF operator (`AND` or `OR`) to be passed as the
    `operator` attribute on the XCCDF element's `<complex-check />` element.
    Note that this gets provisioned into the `<Rule />` element to handle
