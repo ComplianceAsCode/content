@@ -265,11 +265,7 @@ class CPEALTest(object):
             diff = [
                 i for i in self.objects + other.objects
                 if i not in self.objects or i not in other.objects]
-            if not diff:
-                return True
-                return True
-            else:
-                return False
+            return (not diff)
         else:
             return False
 
