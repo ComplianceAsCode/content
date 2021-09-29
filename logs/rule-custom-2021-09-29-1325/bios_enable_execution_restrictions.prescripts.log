@@ -1,0 +1,13 @@
+##### bios_enable_execution_restrictions / wrong_value.fail.sh #####
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@192.168.122.37 cd /root/ssgts/bios_enable_execution_restrictions; SHARED=/root/ssgts/shared bash -x wrong_value.fail.sh
+STDERR: Warning: Permanently added '192.168.122.37' (ECDSA) to the list of known hosts.
++ cp /proc/cpuinfo /tmp/cpuinfo
++ cp /proc/cmdline /tmp/cmdline
++ grep -Fxq 's/^flags.*:.*/& nx/g' /tmp/cpuinfo
++ echo ''
++ grep -Fxq sed -r 's/\s+noexec[0-9]*=off[\s]*//g' /tmp/cmdline
+grep: s/\s+noexec[0-9]*=off[\s]*//g: No such file or directory
++ echo ''
++ mount --bind /etc/cpuinfo /proc/cpuinfo
++ mount --bind /etc/cmdline /proc/cmdline
+mount: special device /etc/cmdline does not exist
