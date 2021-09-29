@@ -522,6 +522,7 @@ selections:
     - chronyd_or_ntpd_set_maxpoll
 
     # UBTU-20-010436 The Ubuntu operating system must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second.
+    - chronyd_sync_clock
 
     # UBTU-20-010437 The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or anomalies in the oper
 
