@@ -59,3 +59,10 @@ selections:
     - directory_permissions_var_log_oauth_audit
     - file_ownership_var_log_oauth_audit
     - file_permissions_var_log_oauth_audit
+
+    # CM-5(3)
+    # CM-7(2)
+    # CM-7(5)
+    # CM-11
+    # SA-10(1)
+    - reject_unsigned_images_by_default
