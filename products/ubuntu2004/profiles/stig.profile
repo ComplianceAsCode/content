@@ -480,6 +480,7 @@ selections:
     - file_owner_var_log_syslog
 
     # UBTU-20-010422 The Ubuntu operating system must configure /var/log/syslog file with mode 0640 or less permissive.
+    - file_permissions_var_log_syslog
 
     # UBTU-20-010423 The Ubuntu operating system must have directories that contain system commands set to a mode of 0755 or less permissive.
     - dir_permissions_binary_dirs
