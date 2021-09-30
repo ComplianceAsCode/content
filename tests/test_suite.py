@@ -86,6 +86,12 @@ def parse_args():
             action="store_true",
             help="Removes machine-only platform constraint from rules "
             "to enable testing these rules on container backends.")
+    common_parser.add_argument(
+            "--remove-ocp4-only",
+            default=False,
+            action="store_true",
+            help="Removes ocp4-only platform constraint from rules "
+            "to enable testing these rules on ocp4 backends.")
     common_parser.add_argument("--loglevel",
                                dest="loglevel",
                                metavar="LOGLEVEL",
@@ -405,6 +411,8 @@ def main():
             if options.remove_machine_only:
                 xml_operations.remove_machine_platform(root)
                 xml_operations.remove_machine_remediation_condition(root)
+            if options.remove_ocp4_only:
+                xml_operations.remove_ocp4_platforms(root)
             if options.add_platform:
                 xml_operations.add_platform_to_benchmark(root, options.add_platform)
 

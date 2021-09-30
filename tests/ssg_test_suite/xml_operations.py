@@ -80,19 +80,37 @@ def datastream_root(ds_location, save_location=None):
             tree.write(save_location)
 
 
-def remove_machine_platform(root):
-    remove_machine_only_from_element(root, "xccdf-1.2:Rule")
-    remove_machine_only_from_element(root, "xccdf-1.2:Group")
-
-
-def remove_machine_only_from_element(root, element_spec):
+def remove_platforms_from_element(root, element_spec, platforms):
     query = BENCHMARK_QUERY + "//{0}".format(element_spec)
     elements = root.findall(query, PREFIX_TO_NS)
     for el in elements:
-        platforms = el.findall("./xccdf-1.2:platform", PREFIX_TO_NS)
-        for p in platforms:
-            if p.get("idref") == "cpe:/a:machine":
+        platforms_xml = el.findall("./xccdf-1.2:platform", PREFIX_TO_NS)
+        for p in platforms_xml:
+            if instance_in_platforms(p, platforms):
                 el.remove(p)
+
+
+def instance_in_platforms(inst, platforms):
+    return (isinstance(platforms, str) and inst.get("idref") == platforms) or \
+        (hasattr(platforms, "__iter__") and inst.get("idref") in platforms)
+
+
+def remove_machine_platform(root):
+    remove_platforms_from_element(root, "xccdf-1.2:Rule", "cpe:/a:machine")
+    remove_platforms_from_element(root, "xccdf-1.2:Group", "cpe:/a:machine")
+
+
+def remove_ocp4_platforms(root):
+    remove_platforms_from_element(
+        root, "xccdf-1.2:Rule",
+        ["cpe:/o:redhat:openshift_container_platform:4",
+         "cpe:/o:redhat:openshift_container_platform_node:4",
+         "cpe:/a:ocp4-master-node"])
+    remove_platforms_from_element(
+        root, "xccdf-1.2:Group",
+        ["cpe:/o:redhat:openshift_container_platform:4",
+         "cpe:/o:redhat:openshift_container_platform_node:4",
+         "cpe:/a:ocp4-master-node"])
 
 
 def remove_machine_remediation_condition(root):

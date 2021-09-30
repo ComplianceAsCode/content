@@ -217,7 +217,7 @@ test -n "$_arg_remediate_using" && additional_args+=(--remediate-using "$_arg_re
 
 test -n "$_arg_logdir" && additional_args+=(--logdir "$_arg_logdir")
 
-command=(python3 "${script_dir}/test_suite.py" rule ${ADDITIONAL_SSGTS_OPTIONS} --remove-machine-only "${additional_args[@]}" --add-platform "$test_image_cpe_product" --container "$_arg_name" -- "${_arg_rule}")
+command=(python3 "${script_dir}/test_suite.py" rule ${ADDITIONAL_SSGTS_OPTIONS} --remove-machine-only --remove-ocp4-only "${additional_args[@]}" --add-platform "$test_image_cpe_product" --container "$_arg_name" -- "${_arg_rule}")
 if test "$_arg_dry_run" = on; then
 	printf '%s\n' "${command[*]}"
 else
