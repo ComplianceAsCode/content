@@ -81,6 +81,11 @@ def parse_args():
             "as a literal CPE, and added as a platform. "
             "For example, use 'cpe:/o:fedoraproject:fedora:30' or 'enterprise_linux'.")
     common_parser.add_argument(
+            "--add-product-to-fips-certified",
+            default=None,
+            help="Add installed_OS_is_$product extend_definition to the "
+            "installed_OS_is_FIPS_certified OVAL criteria definition.")
+    common_parser.add_argument(
             "--remove-machine-only",
             default=False,
             action="store_true",
@@ -415,6 +420,9 @@ def main():
                 xml_operations.remove_ocp4_platforms(root)
             if options.add_platform:
                 xml_operations.add_platform_to_benchmark(root, options.add_platform)
+            if options.add_product_to_fips_certified:
+                xml_operations.add_product_to_fips_certified(
+                    root, options.add_product_to_fips_certified)
 
         options.func(options)
 

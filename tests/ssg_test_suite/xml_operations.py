@@ -24,6 +24,7 @@ SYSTEM_ATTRIBUTE = {
 
 
 BENCHMARK_QUERY = ".//ds:component/xccdf-1.2:Benchmark"
+OVAL_DEF_QUERY = ".//ds:component/oval-def:oval_definitions/oval-def:definitions"
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -200,6 +201,18 @@ def add_platform_to_benchmark(root, cpe_regex):
         for cpe_str in cpes_to_add:
             e = ET.Element("xccdf-1.2:platform", idref=cpe_str)
             benchmark.insert(platform_index, e)
+
+
+def add_product_to_fips_certified(root, product="fedora"):
+    query = OVAL_DEF_QUERY + "/{0}".format(
+        "oval-def:definition[@id='oval:ssg-installed_OS_is_FIPS_certified:def:1']/"
+        "oval-def:criteria")
+    criteria = root.find(query, PREFIX_TO_NS)
+    if criteria:
+        e = ET.Element("oval-def:extend_definition",
+                       comment="Installed OS is {0}".format(product),
+                       definition_ref="oval:ssg-installed_OS_is_{0}:def:1".format(product))
+        criteria.append(e)
 
 
 def _get_benchmark_node(datastream, benchmark_id, logging):
