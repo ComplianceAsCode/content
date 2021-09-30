@@ -349,6 +349,7 @@ selections:
     - grub2_audit_argument
 
     # UBTU-20-010199 The Ubuntu operating system must configure audit tools with a mode of 0755 or less permissive.
+    - file_permissions_audit_binaries
 
     # UBTU-20-010200 The Ubuntu operating system must configure audit tools to be owned by root.
     - file_ownership_audit_binaries
