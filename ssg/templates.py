@@ -282,7 +282,7 @@ class Builder(object):
 
         return processed
 
-    def build_rule(self, rule_id, rule_title, template, langs_to_generate, platforms=None):
+    def build_rule(self, rule_id, rule_title, template, langs_to_generate, rule, platforms=None):
         """
         Builds templated content for a given rule for selected languages,
         writing the output to the correct build directories.
@@ -303,6 +303,9 @@ class Builder(object):
         local_env_yaml["rule_id"] = rule_id
         local_env_yaml["rule_title"] = rule_title
         local_env_yaml["products"] = self.env_yaml["product"]
+        if rule is not None:
+            local_env_yaml["cce_identifiers"] = rule.identifiers
+
         for lang in langs_to_generate:
             try:
                 self.build_lang(
@@ -345,7 +348,7 @@ class Builder(object):
             # as rule ID, we can use it instead of the rule ID even if no rule
             # with that ID exists
             self.build_rule(
-                oval_def_id, oval_def_id, template, langs_to_generate)
+                oval_def_id, oval_def_id, template, langs_to_generate, None)
 
     def build_all_rules(self):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
@@ -360,7 +363,7 @@ class Builder(object):
                 continue
             langs_to_generate = self.get_langs_to_generate(rule)
             self.build_rule(
-                rule.id_, rule.title, rule.template, langs_to_generate, platforms=rule.platforms)
+                rule.id_, rule.title, rule.template, langs_to_generate, rule, platforms=rule.platforms)
 
     def build(self):
         """
