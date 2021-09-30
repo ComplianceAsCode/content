@@ -1751,14 +1751,14 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5526
   - id: 5.2.16
     title: Ensure SSH PAM is enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - sshd_enable_pam
 
   - id: 5.2.17
     title: Ensure SSH AllowTcpForwarding is disabled (Automated)
