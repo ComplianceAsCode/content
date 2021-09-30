@@ -363,7 +363,7 @@ class Builder(object):
                 continue
             langs_to_generate = self.get_langs_to_generate(rule)
             self.build_rule(
-                rule.id_, rule.title, rule.template, langs_to_generate, rule, platforms=rule.platforms)
+             rule.id_, rule.title, rule.template, langs_to_generate, rule, platforms=rule.platforms)
 
     def build(self):
         """
