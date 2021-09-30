@@ -2294,14 +2294,14 @@ controls:
     rules:
       - account_unique_name
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5500
   - id: 6.2.18
     title: Ensure no duplicate group names exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - group_unique_name
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5499

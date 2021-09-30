@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8
+
+title: 'Ensure All Groups on the System Have Unique Group Names'
+
+description: 'Change the group name or delete groups, so each has a unique name.'
+
+rationale: 'To assure accountability and prevent unauthenticated access, groups must be identified uniquely to prevent potential misuse and compromise of the system.'
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86327-4
+    cce@rhel8: CCE-86328-2
+
+
+references:
+    cis@rhel7: 6.2.6
+    cis@rhel8: 6.2.18
+
+
+ocil_clause: 'has duplicate group ids'
+
+ocil: |-
+    Run the following command to check for duplicate group names:
+    Check that the operating system contains no duplicate group names for interactive users by running the following command:
+    <pre>
+        cut -d : -f 1 /etc/group | uniq -d
+    </pre>
+    If output is produced, this is a finding.
+    Configure the operating system to contain no duplicate names for groups.
+    Edit the file "/etc/group" and provide each group that has a duplicate group name with a unique group name.
+
+warnings:
+    - general: |-
+          Automatic remediation of this control is not available. Due the unique requirements of each system.
