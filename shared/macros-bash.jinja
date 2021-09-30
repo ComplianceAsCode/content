@@ -1131,13 +1131,11 @@ rpm --quiet -q "{{{ pkgname }}}"
   #
   # This macro gets the var cce_identifiers from the environment created by the build scripts.
   # The cce_identifiers is a dictionary that contains either the 'cce':'CCENUM' record for the
-  # product this remediation is being built for, or it is empty, in which case the string 'CCE' is used.
+  # product this remediation is being built for, or it is empty.
   #}}
 {{%- macro set_cce_value() -%}}
 {{% if 'cce' in cce_identifiers -%}}
 cce="{{{ cce_identifiers['cce'] }}}"
-{{%- else -%}}
-cce="CCE"
 {{%- endif %}}
 {{%- endmacro -%}}
 
@@ -1179,9 +1177,6 @@ if test -L "{{{ config_file }}}"; then
     sed_command+=('--follow-symlinks')
 fi
 
-# Set the rule CCE value; if the rule has none, it is set to 'CCE'
-{{{ set_cce_value() }}}
-
 # Strip any search characters in the key arg so that the key can be replaced without
 # adding any search characters to the config file.
 stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "{{{ key }}}")
@@ -1196,7 +1191,10 @@ if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
     "${sed_command[@]}" "s/{{{ key }}}\\>.*/$formatted_output/gi" "{{{ config_file }}}"
 else
     # \n is precaution for case where file ends without trailing newline
+    {{% if 'cce' in cce_identifiers -%}}
+    {{{ set_cce_value() }}}
     printf '\n# Per %s: Set %s in %s\n' "$cce" "$formatted_output" "{{{ config_file }}}" >> "{{{ config_file }}}"
+    {{%- endif %}}
     printf '%s\n' "$formatted_output" >> "{{{ config_file }}}"
 fi
 {{%- endmacro -%}}
