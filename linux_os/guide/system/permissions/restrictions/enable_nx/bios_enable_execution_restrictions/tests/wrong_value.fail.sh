@@ -3,7 +3,7 @@
 # remediation = none
 
 cp /proc/cpuinfo /tmp/cpuinfo
-sed -ir 's/^flags.*:.*/& nx/g' /tmp/cpuinfo
+sed -ir 's/^flags.*:.*nx.*/flags : /g' /tmp/cpuinfo
 mount --bind /tmp/cpuinfo /proc/cpuinfo
 
 cp /proc/cmdline /tmp/cmdline
