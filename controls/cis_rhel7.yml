@@ -2212,7 +2212,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    automated: yes
+    rules:
+      - group_unique_name
 
   - id: 6.2.7
     title: Ensure no duplicate UIDs exist (Automated)
