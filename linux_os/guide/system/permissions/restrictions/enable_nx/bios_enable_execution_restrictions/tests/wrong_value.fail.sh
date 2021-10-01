@@ -3,9 +3,9 @@
 # remediation = none
 
 cp /proc/cpuinfo /tmp/cpuinfo
-sed -i 's/^flags.*:.*/& nx/g' /tmp/cpuinfo
+sed -ir 's/^flags.*:.*/& nx/g' /tmp/cpuinfo
 mount --bind /tmp/cpuinfo /proc/cpuinfo
 
 cp /proc/cmdline /tmp/cmdline
-sed -r 's/\s+noexec[0-9]*=off[\s]*//g' /tmp/cmdline
+sed -ir 's/\s+noexec[0-9]*=off[\s]*//g' /tmp/cmdline
 mount --bind /tmp/cmdline /proc/cmdline
