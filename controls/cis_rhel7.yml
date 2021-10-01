@@ -1526,7 +1526,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_compress
 
   - id: 4.2.2.3
     title: Ensure journald is configured to write logfiles to persistent disk (Automated)

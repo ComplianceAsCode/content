@@ -1482,14 +1482,14 @@ controls:
     rules:
       - journald_forward_to_syslog
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5521
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_compress
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5522
