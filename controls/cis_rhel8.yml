@@ -1731,14 +1731,15 @@ controls:
       - sshd_set_keepalive
       - var_sshd_set_keepalive=0
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5525
   - id: 5.2.14
     title: Ensure SSH LoginGraceTime is set to one minute or less (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
 
   # NEEDS RULE
   # The current sshd_enable_warning_banner rule uses /etc/issue instead
