@@ -2267,14 +2267,14 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5502
   - id: 6.2.15
     title: Ensure no duplicate UIDs exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - account_unique_id
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5501
