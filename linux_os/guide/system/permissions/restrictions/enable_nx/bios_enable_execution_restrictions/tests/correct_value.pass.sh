@@ -10,4 +10,7 @@ cp /proc/cmdline /tmp/cmdline
 sed -i 's/noexec[0-9]*=off//g' /tmp/cmdline
 mount --bind /tmp/cmdline /proc/cmdline
 
-sed -i 's/protection: disabled//g' /var/log/messages
+if [ -f "/var/log/messages" ]; then
+    sed -i 's/protection: disabled//g' /var/log/messages
+fi
+
