@@ -733,14 +733,14 @@ controls:
     rules:
       - service_cups_disabled
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5232
   - id: 2.2.17
     title: Ensure NIS Server is not enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - service_ypserv_disabled
 
   - id: 2.2.18
     title: Ensure mail transfer agent is configured for local-only mode (Automated)
