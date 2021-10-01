@@ -350,6 +350,7 @@ selections:
     # UBTU-20-010199 The Ubuntu operating system must configure audit tools with a mode of 0755 or less permissive.
 
     # UBTU-20-010200 The Ubuntu operating system must configure audit tools to be owned by root.
+    - file_ownership_audit_binaries
 
     # UBTU-20-010201 The Ubuntu operating system must configure the audit tools to be group-owned by root.
 
