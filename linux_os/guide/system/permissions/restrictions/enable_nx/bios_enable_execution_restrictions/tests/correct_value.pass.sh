@@ -3,14 +3,11 @@
 # remediation = none
 
 cp /proc/cpuinfo /tmp/cpuinfo
-if ! grep '^flags.*:.*nx.*' /tmp/cpuinfo ; then
-    echo 'flags : nx' >> /tmp/cpuinfo
-fi
+sed -i 's/^flags.*:.*/& nx/g' /tmp/cpuinfo
 mount --bind /tmp/cpuinfo /proc/cpuinfo
 
 cp /proc/cmdline /tmp/cmdline
-sed -i 's/^flags.*:.*nx.*/& flags : pass_flag_scenario/g' /tmp/cpuinfo
+sed -i 's/noexec[0-9]*=off//g' /tmp/cmdline
 mount --bind /tmp/cmdline /proc/cmdline
 
-
-
+sed -i 's/protection: disabled//g' /var/log/messages
