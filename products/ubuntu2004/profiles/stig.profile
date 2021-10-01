@@ -199,6 +199,7 @@ selections:
     - file_permissions_etc_audit_auditd
 
     # UBTU-20-010134 The Ubuntu operating system must permit only authorized accounts to own the audit configuration files.
+    - file_ownership_audit_configuration
 
     # UBTU-20-010135 The Ubuntu operating system must permit only authorized groups to own the audit configuration files.
 
