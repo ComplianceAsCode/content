@@ -476,6 +476,7 @@ selections:
     - file_groupowner_var_log_syslog
 
     # UBTU-20-010421 The Ubuntu operating system must configure /var/log/syslog file to be owned by syslog.
+    - file_owner_var_log_syslog
 
     # UBTU-20-010422 The Ubuntu operating system must configure /var/log/syslog file with mode 0640 or less permissive.
 
