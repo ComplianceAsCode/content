@@ -1517,7 +1517,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_forward_to_syslog
 
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
