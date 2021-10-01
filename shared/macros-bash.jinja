@@ -1127,6 +1127,19 @@ rpm --quiet -q "{{{ pkgname }}}"
 {{%- endmacro -%}}
 
 {{#
+  # Set rule CCE value
+  #
+  # This macro gets the var cce_identifiers from the environment created by the build scripts.
+  # The cce_identifiers is a dictionary that contains either the 'cce':'CCENUM' record for the
+  # product this remediation is being built for, or it is empty.
+  #}}
+{{%- macro set_cce_value() -%}}
+{{% if 'cce' in cce_identifiers -%}}
+cce="{{{ cce_identifiers['cce'] }}}"
+{{%- endif %}}
+{{%- endmacro -%}}
+
+{{#
   Macro to replace configuration setting in config file or add the configuration setting if
   it does not exist.
  
@@ -1135,7 +1148,6 @@ rpm --quiet -q "{{{ pkgname }}}"
   config_file:		Configuration file that will be modified
   key:			Configuration option to change
   value:		Value of the configuration option to change
-  cce:			The CCE identifier or '@CCENUM@' if no CCE identifier exists
   format:		The printf-like format string that will be given stripped key and value as arguments,
              so e.g. '%s=%s' will result in key=value subsitution (i.e. without spaces around =)
  
@@ -1147,29 +1159,22 @@ rpm --quiet -q "{{{ pkgname }}}"
   Example Call(s):
  
       With default format of 'key = value':
-      {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2', '@CCENUM@') }}}
+      {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
  
       With custom key/value format:
-      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '@CCENUM@', '%s=%s') }}}
+      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
  
       With a variable:
-      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '@CCENUM@', '%s=%s') }}}
+      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
  
 #}}
-{{%- macro bash_replace_or_append(config_file, key, value, cce, format='%s = %s') -%}}
+{{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
 
 # Test if the config_file is a symbolic link. If so, use --follow-symlinks with sed.
 # Otherwise, regular sed command will do.
 sed_command=('sed' '-i')
 if test -L "{{{ config_file }}}"; then
     sed_command+=('--follow-symlinks')
-fi
-
-# If the cce arg is empty, CCE is not assigned.
-if [ -z "{{{ cce }}}" ]; then
-    cce="CCE"
-else
-    cce="{{{ cce }}}"
 fi
 
 # Strip any search characters in the key arg so that the key can be replaced without
@@ -1186,7 +1191,10 @@ if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
     "${sed_command[@]}" "s/{{{ key }}}\\>.*/$formatted_output/gi" "{{{ config_file }}}"
 else
     # \n is precaution for case where file ends without trailing newline
+    {{% if 'cce' in cce_identifiers -%}}
+    {{{ set_cce_value() }}}
     printf '\n# Per %s: Set %s in %s\n' "$cce" "$formatted_output" "{{{ config_file }}}" >> "{{{ config_file }}}"
+    {{%- endif %}}
     printf '%s\n' "$formatted_output" >> "{{{ config_file }}}"
 fi
 {{%- endmacro -%}}

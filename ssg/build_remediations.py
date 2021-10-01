@@ -182,6 +182,7 @@ class Remediation(object):
 
         self.local_env_yaml["rule_title"] = self.associated_rule.title
         self.local_env_yaml["rule_id"] = self.associated_rule.id_
+        self.local_env_yaml["cce_identifiers"] = self.associated_rule.identifiers
 
     def parse_from_file_with_jinja(self, env_yaml):
         return parse_from_file_with_jinja(self.file_path, env_yaml)
