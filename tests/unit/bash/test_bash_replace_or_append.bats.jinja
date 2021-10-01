@@ -38,7 +38,7 @@ function call_bash_replace_or_append_w_format {
 @test "bash_replace_or_append - Append key to empty file" {
     tmp_file="$(mktemp)"
     printf "" > "$tmp_file"
-    expected_output="\n# Per CCE: Set kernel.randomize_va_space = 2 in $tmp_file\nkernel.randomize_va_space = 2\n"
+    expected_output="kernel.randomize_va_space = 2\n"
 
     call_bash_replace_or_append "$tmp_file" '^kernel.randomize_va_space' '2'
 
@@ -51,7 +51,7 @@ function call_bash_replace_or_append_w_format {
 @test "bash_replace_or_append - Append key to non-empty file" {
     tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_fake = 5" > "$tmp_file"
-    expected_output="kernel.randomize_va_fake = 5\n\n# Per CCE: Set kernel.randomize_va_space = 2 in $tmp_file\nkernel.randomize_va_space = 2\n"
+    expected_output="kernel.randomize_va_fake = 5\nkernel.randomize_va_space = 2\n"
 
     call_bash_replace_or_append "$tmp_file" '^kernel.randomize_va_space' '2'
 
@@ -90,7 +90,7 @@ function call_bash_replace_or_append_w_format {
 @test "bash_replace_or_append - Append key with format to empty file" {
     tmp_file="$(mktemp)"
     printf "" > "$tmp_file"
-    expected_output="\n# Per CCE: Set kernel.randomize_va_space=2 in $tmp_file\nkernel.randomize_va_space=2\n"
+    expected_output="kernel.randomize_va_space=2\n"
 
     call_bash_replace_or_append_w_format "$tmp_file" '^kernel.randomize_va_space' '2' '%s=%s'
 
@@ -103,7 +103,7 @@ function call_bash_replace_or_append_w_format {
 @test "bash_replace_or_append - Append key with format to non-empty file" {
     tmp_file="$(mktemp)"
     printf "%s\n" "kernel.randomize_va_fake=5" > "$tmp_file"
-    expected_output="kernel.randomize_va_fake=5\n\n# Per CCE: Set kernel.randomize_va_space=2 in $tmp_file\nkernel.randomize_va_space=2\n"
+    expected_output="kernel.randomize_va_fake=5\nkernel.randomize_va_space=2\n"
 
     call_bash_replace_or_append_w_format "$tmp_file" '^kernel.randomize_va_space' '2' '%s=%s'
 
