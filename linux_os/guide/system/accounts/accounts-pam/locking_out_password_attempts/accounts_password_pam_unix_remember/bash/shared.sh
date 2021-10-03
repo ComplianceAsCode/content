@@ -11,6 +11,6 @@ AUTH_FILES[1]="/etc/pam.d/password-auth"
 
 for pamFile in "${AUTH_FILES[@]}"
 do
-	{{{ bash_ensure_pam_module_options("$pamFile", 'password', 'sufficient', 'pam_unix.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
-	{{{ bash_ensure_pam_module_options("$pamFile", 'password', 'required', 'pam_pwhistory.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
+	{{{ bash_provide_pam_module_options("$pamFile", 'password', 'sufficient', 'pam_unix.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
+	{{{ bash_provide_pam_module_options("$pamFile", 'password', 'required', 'pam_pwhistory.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
 done
