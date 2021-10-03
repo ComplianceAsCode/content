@@ -60,6 +60,45 @@ else
 fi
 {{%- endmacro -%}}
 
+{{#
+    make sure that we have a line with given type, control and module has the given option in pamFile (additional options are left as-is):
+    type control module option=valueRegexArg
+
+    pamFile         PAM config file
+    type            PAM module interface
+    control         PAM control flags
+    module          PAM module name
+    option          PAM module option
+    valueRegexArg   PAM module option argument regex pattern
+    defaultValueArg PAM module option argument default value
+#}}
+{{%- macro bash_provide_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
+if [ -e "{{{ pamFile }}}" ] ; then
+    valueRegex="{{{ valueRegexArg }}}" defaultValue="{{{ defaultValueArg }}}"
+    # non-empty values need to be preceded by an equals sign
+    [ -n "${valueRegex}" ] && valueRegex="=${valueRegex}"
+    # add an equals sign to non-empty values
+    [ -n "${defaultValue}" ] && defaultValue="=${defaultValue}"
+
+    # fix the value for 'option' if one exists but does not match 'valueRegex'
+    if grep -q -P "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}(\\s.+)?\\s+{{{ option }}}(?"'!'"${valueRegex}(\\s|\$))" < "{{{ pamFile }}}" ; then
+        sed --follow-symlinks -i -E -e "s/^(\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}(\\s.+)?\\s){{{ option }}}=[^[:space:]]*/\\1{{{ option }}}${defaultValue}/" "{{{ pamFile }}}"
+
+    # add 'option=default' if option is not set
+    elif grep -q -E "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}" < "{{{ pamFile }}}" &&
+            grep    -E "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}" < "{{{ pamFile }}}" | grep -q -E -v "\\s{{{ option }}}(=|\\s|\$)" ; then
+
+        sed --follow-symlinks -i -E -e "s/^(\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}[^\\n]*)/\\1 {{{ option }}}${defaultValue}/" "{{{ pamFile }}}"
+    # add a new entry if none exists
+    elif ! grep -q -P "^\\s*{{{ type }}}\\s+{{{ control }}}\\s+{{{ module }}}(\\s.+)?\\s+{{{ option }}}${valueRegex}(\\s|\$)" < "{{{ pamFile }}}" ; then
+        echo "{{{ type }}} {{{ control }}} {{{ module }}} {{{ option }}}${defaultValue}" >> "{{{ pamFile }}}"
+    fi
+else
+    echo "{{{ pamFile }}} doesn't exist" >&2
+fi
+{{%- endmacro -%}}
+
+
 {{%- set in_chrooted_environment = 'test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"' -%}}
 
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
