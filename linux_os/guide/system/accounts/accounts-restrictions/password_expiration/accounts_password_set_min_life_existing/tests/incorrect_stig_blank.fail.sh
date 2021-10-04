@@ -3,7 +3,7 @@
 # variables = var_accounts_minimum_age_login_defs=1
 
 # make existing entities pass
-for acct in $(grep -ve ':\(!!\|\*\):' /etc/shadow | awk -F: '{print $1}'); do
+for acct in $(awk -F: '{print $1}' /etc/shadow ); do
     chage -m 1 -d $(date +%Y-%m-%d) $acct
 done
 # Add a failing item.

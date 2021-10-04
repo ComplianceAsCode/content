@@ -1,6 +1,6 @@
 #!/bin/bash
 # make existing entries pass
-for acct in $(grep -ve ':\(!!\|\*\):' /etc/shadow | awk -F: '{print $1}'); do
+for acct in $(awk -F: '{print $1}' /etc/shadow ); do
     chage -M 60 -d $(date +%Y-%m-%d) $acct
 done
 # Add a failing test.
