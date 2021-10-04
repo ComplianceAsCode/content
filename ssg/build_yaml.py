@@ -10,6 +10,7 @@ import os.path
 import re
 import sys
 from xml.sax.saxutils import escape
+import glob
 
 import yaml
 
@@ -1660,6 +1661,13 @@ class DirectoryLoader(object):
             self._recurse_into_subdirs()
             self._process_rules()
 
+            if self.resolved_rules_dir and not self.benchmark_file:
+                dir_for_groups = os.path.join(self.resolved_rules_dir, "..", "groups")
+                output_for_group = os.path.join(
+                    dir_for_groups, "{id_}.yml".format(id_=self.loaded_group.id_))
+                mkdir_p(dir_for_groups)
+                self.loaded_group.dump_yaml(output_for_group)
+
     def process_directory_tree(self, start_dir, extra_group_dirs=None):
         self._collect_items_to_load(start_dir)
         if extra_group_dirs is not None:
@@ -1699,10 +1707,19 @@ class BuildLoader(DirectoryLoader):
             self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
 
     def _process_values(self):
+        dir_for_values = os.path.join(self.resolved_rules_dir, "..", "values")
+        if self.value_files and self.resolved_rules_dir:
+            mkdir_p(dir_for_values)
+
         for value_yaml in self.value_files:
             value = Value.from_yaml(value_yaml, self.env_yaml)
             self.all_values.add(value)
             self.loaded_group.add_value(value)
+
+            output_for_value = os.path.join(
+                dir_for_values, "{id_}.yml".format(id_=value.id_))
+
+            value.dump_yaml(output_for_value)
 
     def _process_rules(self):
         if self.rule_files and self.resolved_rules_dir:
@@ -1737,3 +1754,62 @@ class BuildLoader(DirectoryLoader):
 
     def export_group_to_file(self, filename):
         return self.loaded_group.to_file(filename)
+
+
+class LinearLoader(object):
+    def __init__(self, env_yaml, resolved_path):
+        self.resolved_rules_dir = os.path.join(resolved_path, "rules")
+        self.rules = dict()
+
+        self.resolved_profiles_dir = os.path.join(resolved_path, "profiles")
+        self.profiles = dict()
+
+        self.resolved_groups_dir = os.path.join(resolved_path, "groups")
+        self.groups = dict()
+
+        self.resolved_values_dir = os.path.join(resolved_path, "values")
+        self.values = dict()
+
+        self.benchmark = None
+        self.env_yaml = env_yaml
+
+    def find_first_groups_ids(self, start_dir):
+        group_files = glob.glob(os.path.join(start_dir, "*", "group.yml"))
+        group_ids = [fname.split(os.path.sep)[-2] for fname in group_files]
+        return group_ids
+
+    def load_entities_by_id(self, filenames, destination, cls):
+        for fname in filenames:
+            entity = cls.from_yaml(fname, self.env_yaml)
+            destination[entity.id_] = entity
+
+    def load_all(self, start_dir):
+        self.benchmark = Benchmark.from_yaml(
+            os.path.join(start_dir, "benchmark.yml"), self.env_yaml, "product-name")
+        self.benchmark.add_value_needed_for_ocil_clauses()
+
+        self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
+
+        filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
+        self.load_entities_by_id(filenames, self.rules, Rule)
+
+        filenames = glob.glob(os.path.join(self.resolved_groups_dir, "*.yml"))
+        self.load_entities_by_id(filenames, self.groups, Group)
+
+        filenames = glob.glob(os.path.join(self.resolved_profiles_dir, "*.yml"))
+        self.load_entities_by_id(filenames, self.profiles, Profile)
+
+        filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
+        self.load_entities_by_id(filenames, self.values, Value)
+
+        for g in self.groups.values():
+            g.load_entities(self.rules, self.values, self.groups)
+
+    def process_directory_tree(self, start_dir):
+        self.load_all(start_dir)
+        benchmark_first_groups = self.find_first_groups_ids(start_dir)
+        for gid in benchmark_first_groups:
+            self.benchmark.add_group(self.groups[gid], self.env_yaml)
+
+    def export_group_to_file(self, filename):
+        return self.benchmark.to_file(filename)

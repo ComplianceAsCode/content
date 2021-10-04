@@ -111,19 +111,39 @@ macro(ssg_build_shorthand_xml PRODUCT)
     add_custom_command(
         # The command also produces the directory with rules, but this is done before the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+	BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/rules"
+	BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/groups"
+	BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/values"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/groups"
+        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/variables"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
         DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
-        COMMENT "[${PRODUCT}-content] generating shorthand.xml"
+        COMMENT "[${PRODUCT}-content] compiling rules, grups and values, generating shorthand.xml"
+    )
+
+    add_custom_command(
+        # The command also produces the directory with rules, but this is done before the shorthand XML.
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/new-shorthand.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/new-shorthand.xml"
+        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/new-shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/new-shorthand.xml"
+        DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
+        DEPENDS "${SSG_BUILD_SCRIPTS}/build_shorthand.py"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/rules"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/groups"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/values"
+        COMMENT "[${PRODUCT}-content] generating new-shorthand.xml"
     )
 
     add_custom_target(
         generate-internal-${PRODUCT}-shorthand.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/new-shorthand.xml"
     )
 endmacro()
 
