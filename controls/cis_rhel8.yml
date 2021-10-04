@@ -1491,14 +1491,14 @@ controls:
     rules:
       - journald_compress
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5522
   - id: 4.2.2.3
     title: Ensure journald is configured to write logfiles to persistent disk (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_storage
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5523
