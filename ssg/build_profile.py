@@ -19,6 +19,7 @@ from .constants import cce_uri
 from .constants import ssg_version_uri
 from .constants import stig_ns, cis_ns, generic_stig_ns, hipaa_ns, anssi_ns
 from .constants import ospp_ns, cui_ns, xslt_ns
+from .yaml import DocumentationNotComplete
 console_width = 80
 
 
@@ -29,10 +30,12 @@ def make_name_to_profile_mapping(profile_files, env_yaml):
             p = ProfileWithInlinePolicies.from_yaml(f, env_yaml)
             name_to_profile[p.id_] = p
         except Exception as exc:
-            # The profile is probably doc-incomplete
             msg = "Not building profile from {fname}: {err}".format(
                 fname=f, err=str(exc))
-            print(msg, file=sys.stderr)
+            if not isinstance(exc, DocumentationNotComplete):
+                raise
+            else:
+                print(msg, file=sys.stderr)
     return name_to_profile
 
 
