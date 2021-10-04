@@ -4,8 +4,8 @@
     <criteria operator="OR" comment="Interactive users must satisfy the requirement">
       <extend_definition definition_ref="accounts_passwd_has_interactive_users" negate="true"/>
       <criteria operator="AND">
-          <criterion comment="Passwords must be a restricted to the appropriate maximum age for existing accounts." test_ref="test_password_max_life_existing" />
-          <criterion comment="Passwords must have a maximum lifetime greater than or equal to one." test_ref="test_password_max_life_existing_minimum" />
+          <criterion comment="Passwords must be restricted to the appropriate maximum age for existing accounts." test_ref="test_password_max_life_existing" />
+          <criterion comment="Passwords must have a maximum lifetime greater than or equal minimum password age." test_ref="test_password_max_life_existing_minimum" />
         <criterion comment="Passwords must not not have a blank max life for existing accounts." test_ref="test_password_max_life_existing_blank" /> 
       </criteria>
     </criteria>
