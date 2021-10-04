@@ -1627,10 +1627,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    status: partial # rules for removing cron.deny and checking permissions of cron.allow are missing
+    status: automated
     rules:
     - file_groupowner_cron_allow
     - file_owner_cron_allow
+    - file_cron_deny_not_exist
+    - file_permissions_cron_allow
 
   - id: 5.1.9
     title: Ensure at is restricted to authorized users (Automated)
