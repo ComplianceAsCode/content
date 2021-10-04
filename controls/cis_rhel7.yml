@@ -1827,7 +1827,10 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - sshd_set_login_grace_time
+      - var_sshd_set_login_grace_time=60
 
   - id: 5.3.18
     title: Ensure SSH warning banner is configured (Automated)
