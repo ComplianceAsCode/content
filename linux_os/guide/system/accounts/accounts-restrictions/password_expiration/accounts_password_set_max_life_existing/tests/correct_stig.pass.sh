@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# variables = var_accounts_minimum_age_login_defs=1,var_accounts_maximum_age_login_defs=60
+
 # make existing entries pass
 for acct in $(grep -ve ':\(!!\|\*\):' /etc/shadow | awk -F: '{print $1}'); do
     chage -M 60 -d $(date +%Y-%m-%d) $acct
