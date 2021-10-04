@@ -1705,6 +1705,8 @@ class BuildLoader(DirectoryLoader):
             self.loaded_group.add_value(value)
 
     def _process_rules(self):
+        if self.rule_files and self.resolved_rules_dir:
+            mkdir_p(self.resolved_rules_dir)
         for rule_yaml in self.rule_files:
             try:
                 rule = Rule.from_yaml(rule_yaml, self.env_yaml, self.sce_metadata)
@@ -1723,10 +1725,8 @@ class BuildLoader(DirectoryLoader):
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
-                mkdir_p(self.resolved_rules_dir)
-                with open(output_for_rule, "w") as f:
-                    rule.normalize(self.env_yaml["product"])
-                    yaml.dump(rule.to_contents_dict(), f)
+                rule.normalize(self.env_yaml["product"])
+                rule.dump_yaml(output_for_rule)
 
     def _get_new_loader(self):
         loader = BuildLoader(
