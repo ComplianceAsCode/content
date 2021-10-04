@@ -1454,15 +1454,14 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE
-  # The rsyslog_remote_loghost rule is not sufficient
-  # https://github.com/ComplianceAsCode/content/issues/7333
   - id: 4.2.1.5
     title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - rsyslog_remote_loghost
 
   - id: 4.2.1.6
     title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)
