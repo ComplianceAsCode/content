@@ -336,6 +336,7 @@ selections:
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
     - banner_etc_issue
+    - login_banner_text=dod_banners
 
     ## Audit All Logons (Success/Failure) and Logoffs (Success)
     ##  CNSSI 1253 Value or DoD-Specific Values:
