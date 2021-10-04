@@ -201,6 +201,7 @@ selections:
     # UBTU-20-010134 The Ubuntu operating system must permit only authorized accounts to own the audit configuration files.
 
     # UBTU-20-010135 The Ubuntu operating system must permit only authorized groups to own the audit configuration files.
+    - file_groupownership_audit_configuration
 
     # UBTU-20-010136 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the su command.
     - audit_rules_privileged_commands_su
