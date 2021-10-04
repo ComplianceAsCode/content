@@ -32,7 +32,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004
+        run: |-
+          ./build_product \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              rhosp10 \
+              rhosp13 \
+              sle12 \
+              sle15 \
+              ubuntu2004
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -44,11 +58,30 @@ jobs:
       image: fedora:33
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip
+      - name: Install deps python
+        run: pip install ruamel.yaml yamlpath
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 rhosp10 rhosp13 sle12 sle15 ubuntu2004 ocp4
+        run: |-
+          ./build_product \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              rhosp10 \
+              rhosp13 \
+              sle12 \
+              sle15 \
+              ubuntu2004 \
+              ocp4
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
