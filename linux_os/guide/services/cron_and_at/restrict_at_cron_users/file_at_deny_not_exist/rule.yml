@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8,rhel9
+
+title: 'Ensure that /etc/at.deny does not exist'
+
+description: |-
+    The file <tt>/etc/at.deny</tt> should not exist.
+    Use <tt>/etc/at.allow</tt> instead.
+
+rationale: |-
+    Access to <tt>at</tt> should be restricted.
+    It is easier to manage an allow list than a deny list.
+
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86944-6
+    cce@rhel8: CCE-86945-3
+    cce@rhel9: CCE-86946-1
+
+references:
+    cis@rhel7: 5.1.8
+    cis@rhel8: 5.1.8
+
+ocil_clause: 'the file /etc/at.deny exists'
+
+ocil: |-
+    The file <tt>/etc/at.deny</tt> should not exist.
+    This can be checked by runnig the following
+    <pre>
+    stat /etc/at.deny
+    </pre>
+    and the output should be
+    <pre>
+    stat: cannot stat `/etc/at.deny': No such file or directory
+    </pre>

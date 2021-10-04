@@ -1,0 +1,10 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: Remove /etc/at.deny
+  file:
+      path: /etc/at.deny
+      state: absent
