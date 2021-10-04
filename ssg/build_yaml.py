@@ -590,67 +590,6 @@ class ResolvableProfile(Profile):
         return extended_refinements
 
 
-class ProfileWithSeparatePolicies(ResolvableProfile):
-    def __init__(self, * args, ** kwargs):
-        super(ProfileWithSeparatePolicies, self).__init__(* args, ** kwargs)
-        self.policies = {}
-
-    def read_yaml_contents(self, yaml_contents, env_yaml):
-        policies = yaml_contents.pop("policies", None)
-        if policies:
-            self._parse_policies(policies)
-        super(ProfileWithSeparatePolicies, self).read_yaml_contents(yaml_contents, env_yaml)
-
-    def _parse_policies(self, policies_yaml):
-        for item in policies_yaml:
-            id_ = required_key(item, "id")
-            controls_ids = required_key(item, "controls")
-            if not isinstance(controls_ids, list):
-                if controls_ids != "all":
-                    msg = (
-                        "Policy {id_} contains invalid controls list {controls}."
-                        .format(id_=id_, controls=str(controls_ids)))
-                    raise ValueError(msg)
-            self.policies[id_] = controls_ids
-
-    def _process_controls_ids_into_controls(self, controls_manager, policy_id, controls_ids):
-        controls = []
-        for cid in controls_ids:
-            if not cid.startswith("all"):
-                controls.extend(
-                    self._controls_ids_to_controls(controls_manager, policy_id, [cid]))
-            elif ":" in cid:
-                _, level_id = cid.split(":", 1)
-                controls.extend(
-                    controls_manager.get_all_controls_of_level(policy_id, level_id))
-            else:
-                controls.extend(controls_manager.get_all_controls(policy_id))
-        return controls
-
-    def resolve_controls(self, controls_manager):
-        for policy_id, controls_ids in self.policies.items():
-            controls = []
-
-            if isinstance(controls_ids, list):
-                controls = self._process_controls_ids_into_controls(
-                    controls_manager, policy_id, controls_ids)
-            elif controls_ids.startswith("all"):
-                controls = self._process_controls_ids_into_controls(
-                    controls_manager, policy_id, [controls_ids])
-            else:
-                msg = (
-                    "Unknown policy content {content} in profile {profile_id}"
-                    .format(content=controls_ids, profile_id=self.id_))
-                raise ValueError(msg)
-
-            for c in controls:
-                self._merge_control(c)
-
-    def extend_by(self, extended_profile):
-        self.policies.update(extended_profile.policies)
-        super(ProfileWithSeparatePolicies, self).extend_by(extended_profile)
-
-
 class ProfileWithInlinePolicies(ResolvableProfile):
     def __init__(self, * args, ** kwargs):
         super(ProfileWithInlinePolicies, self).__init__(* args, ** kwargs)

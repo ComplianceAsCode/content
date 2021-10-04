@@ -157,20 +157,6 @@ def test_controls_load_product():
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
 
 
-def test_profile_resolution_separate():
-    profile_resolution(ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-low")
-
-
-def test_profile_resolution_extends_separate():
-    profile_resolution_extends(
-        ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-low", "abcd-high")
-
-
-def test_profile_resolution_all_separate():
-    profile_resolution_all(
-        ssg.build_yaml.ProfileWithSeparatePolicies, "abcd-all")
-
-
 def test_profile_resolution_inline():
     profile_resolution(
         ssg.build_yaml.ProfileWithInlinePolicies, "abcd-low-inline")
