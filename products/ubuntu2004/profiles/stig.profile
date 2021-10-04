@@ -482,6 +482,7 @@ selections:
     # UBTU-20-010424 The Ubuntu operating system must have directories that contain system commands owned by root.
 
     # UBTU-20-010425 The Ubuntu operating system must have directories that contain system commands group-owned by root.
+    - dir_groupownership_binary_dirs
 
     # UBTU-20-010426 The Ubuntu operating system library files must have mode 0755 or less permissive.
     - file_permissions_library_dirs
