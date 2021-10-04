@@ -29,6 +29,7 @@ selections:
     - var_password_pam_retry=3
     - var_password_pam_ucredit=1
     - var_accounts_maximum_age_login_defs=60
+    - login_banner_text=dod_banners
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled

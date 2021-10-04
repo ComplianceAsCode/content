@@ -64,6 +64,7 @@ selections:
     - var_auditd_disk_error_action=halt
     - var_auditd_max_log_file_action=syslog
     - var_auditd_disk_full_action=halt
+    - login_banner_text=dod_banners
 
     ### Enable / Configure FIPS
     - enable_fips_mode
