@@ -1134,7 +1134,7 @@ rpm --quiet -q "{{{ pkgname }}}"
   # product this remediation is being built for, or it is empty.
   #}}
 {{%- macro set_cce_value() -%}}
-{{% if 'cce' in cce_identifiers -%}}
+{{% if cce_identifiers and 'cce' in cce_identifiers -%}}
 cce="{{{ cce_identifiers['cce'] }}}"
 {{%- endif %}}
 {{%- endmacro -%}}
@@ -1191,7 +1191,7 @@ if LC_ALL=C grep -q -m 1 -i -e "{{{ key }}}\\>" "{{{ config_file }}}"; then
     "${sed_command[@]}" "s/{{{ key }}}\\>.*/$formatted_output/gi" "{{{ config_file }}}"
 else
     # \n is precaution for case where file ends without trailing newline
-    {{% if 'cce' in cce_identifiers -%}}
+    {{% if cce_identifiers and 'cce' in cce_identifiers -%}}
     {{{ set_cce_value() }}}
     printf '\n# Per %s: Set %s in %s\n' "$cce" "$formatted_output" "{{{ config_file }}}" >> "{{{ config_file }}}"
     {{%- endif %}}
