@@ -82,11 +82,16 @@ def get_implemented_stigs(args):
             continue
 
         if args.reference in rule_obj['references'].keys():
-            ref = rule_obj['references'][args.reference]
-            if ref in known_rules:
-                known_rules[ref].append(rule['id'])
+            refs = rule_obj['references'][args.reference]
+            if ',' in refs:
+                refs = refs.split(',')
             else:
-                known_rules[ref] = [rule['id']]
+                refs = [refs]
+            for ref in refs:
+                if ref in known_rules:
+                    known_rules[ref].append(rule['id'])
+                else:
+                    known_rules[ref] = [rule['id']]
     return known_rules
 
 
