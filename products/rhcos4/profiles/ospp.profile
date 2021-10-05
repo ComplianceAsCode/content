@@ -195,7 +195,6 @@ selections:
     ## FMT_MOF_EXT.1
     - package_tmux_installed
     - configure_bashrc_exec_tmux
-    - no_tmux_in_shells
     - configure_tmux_lock_command
     - configure_tmux_lock_after_time
 

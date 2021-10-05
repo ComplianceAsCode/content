@@ -829,6 +829,8 @@ controls:
   rules:
   - selinux_confinement_of_daemons
   - no_shelllogin_for_systemaccounts
+  - sysctl_kernel_perf_event_paranoid
+  - sysctl_kernel_unprivileged_bpf_disabled
   description: |-
     The organization employs the principle of least privilege, allowing only authorized accesses for users (or processes acting on behalf of users) which are necessary to accomplish assigned tasks in accordance with organizational missions and business functions.
 
@@ -1758,6 +1760,9 @@ controls:
   - kernel_module_bluetooth_disabled
   - service_bluetooth_disabled
   - wireless_disable_interfaces
+  - kernel_module_atm_disabled
+  - kernel_module_can_disabled
+  - kernel_module_firewire-core_disabled
   description: |-
     The organization:
      a. Establishes usage restrictions, configuration/connection requirements, and implementation guidance for wireless access; and
@@ -2553,6 +2558,7 @@ controls:
   - audit_rules_etc_gshadow_openat
   - audit_rules_unsuccessful_file_modification_rename
   - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
+  - configure_usbguard_audit_backend
   description: |-
     The organization:
      a. Determines that the information system is capable of auditing the following events: [Assignment: organization-defined auditable events];
@@ -2618,6 +2624,8 @@ controls:
     for OpenShift 4.x.
   rules:
   - service_auditd_enabled
+  - auditd_log_format
+  - auditd_name_format
   - audit_rules_privileged_commands_unix_chkpwd
   description: |-
     The information system generates audit records containing information that establishes what type of event occurred, when the event occurred, where the event occurred, the source of the event, the outcome of the event, and the identity of any individuals or subjects associated with the event.
@@ -3174,6 +3182,7 @@ controls:
   rules:
   - chronyd_or_ntpd_specify_multiple_servers
   - service_chronyd_or_ntpd_enabled
+  - chronyd_client_only
   - chronyd_or_ntpd_set_maxpoll
   - chronyd_or_ntpd_specify_remote_server
   description: |-
@@ -4867,6 +4876,7 @@ controls:
     https://issues.redhat.com/browse/CMP-188
   rules:
   - kernel_module_udf_disabled
+  - auditd_freq
   - audit_rules_privileged_commands_postqueue
   - audit_rules_unsuccessful_file_modification_fsetxattr
   - service_chronyd_or_ntpd_enabled
@@ -4876,6 +4886,7 @@ controls:
   - audit_rules_immutable
   - file_groupowner_sshd_config
   - no_direct_root_logins
+  - no_tmux_in_shells
   - sysctl_net_ipv6_conf_default_accept_redirects
   - audit_rules_time_settimeofday
   - audit_rules_unsuccessful_file_modification_unlinkat
@@ -5070,6 +5081,17 @@ controls:
   - audit_rules_unsuccessful_file_modification_rename
   - sysctl_net_ipv6_conf_default_accept_source_route
   - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
+  - service_debug-shell_disabled
+  - auditd_freq
+  - auditd_local_events
+  - auditd_log_format
+  - auditd_name_format
+  - auditd_write_logs
+  - coredump_disable_backtraces
+  - coredump_disable_storage
+  - disable_users_coredumps
+  - sysctl_kernel_kexec_load_disabled
+  - sysctl_net_core_bpf_jit_harden
   description: |-
     The organization:
      a. Establishes and documents configuration settings for information technology products employed within the information system using [Assignment: organization-defined security configuration checklists] that reflect the most restrictive mode consistent with operational requirements;
@@ -5238,7 +5260,8 @@ controls:
     tracked via:
 
     https://issues.redhat.com/browse/CMP-274
-  rules: []
+  rules:
+  - chronyd_no_chronyc_network
   description: |-
     The organization:
      (a)   Reviews the information system [Assignment: organization-defined frequency] to identify unnecessary and/or nonsecure functions, ports, protocols, and services; and
@@ -5416,7 +5439,10 @@ controls:
 
     https://issues.redhat.com/browse/CMP-280
   rules:
+  - package_usbguard_installed
   - service_usbguard_enabled
+  - configure_usbguard_audit_backend
+  - usbguard_allow_hid_and_hub
   description: |-
     The organization:
      (a)   Employs automated mechanisms [Assignment: organization-defined frequency] to detect the presence of unauthorized hardware, software, and firmware components within the information system; and
@@ -6889,7 +6915,10 @@ controls:
   notes: |-
     A control response for IA-3 is planned.
   rules:
+  - package_usbguard_installed
   - service_usbguard_enabled
+  - configure_usbguard_audit_backend
+  - usbguard_allow_hid_and_hub
   description: |-
     The information system uniquely identifies and authenticates [Assignment: organization- defined specific and/or types of devices] before establishing a [Selection (one or more): local; remote; network] connection.
 
@@ -12856,13 +12885,18 @@ controls:
     https://issues.redhat.com/browse/CMP-478
   rules: []
 - id: SC-7(10)
-  status: pending
+  status: automated
   notes: |-
     Section a: A complete control response is planned. Engineering progress can be
     tracked via:
 
     https://issues.redhat.com/browse/CMP-482
-  rules: []
+  rules:
+  - disable_users_coredumps
+  - service_systemd-coredump_disabled
+  - sysctl_kernel_unprivileged_bpf_disabled
+  - sysctl_kernel_yama_ptrace_scope
+  - sysctl_net_core_bpf_jit_harden
   description: |-
     The organization prevents the unauthorized exfiltration of information across managed interfaces.
 
