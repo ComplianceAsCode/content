@@ -41,6 +41,10 @@ def parse_args():
         help="Do not perform detailed comparison of checks and "
         "remediations contents."
     )
+    parser.add_argument(
+        "--only-rules", action="store_true",
+        help="Print only removals from rule set."
+    )
     return parser.parse_args()
 
 
@@ -229,7 +233,7 @@ def compare_rules(
 
 def process_benchmarks(
         old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
-        rule_id, show_diffs):
+        rule_id, show_diffs, only_rules):
     missing_rules = []
     try:
         rules_in_old_benchmark = get_rules_to_compare(old_benchmark, rule_id)
@@ -243,6 +247,8 @@ def process_benchmarks(
         if new_rule is None:
             missing_rules.append(rule_id)
             print("%s is missing in new datastream." % (rule_id))
+            continue
+        if only_rules:
             continue
         compare_rules(
             old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs)
@@ -290,7 +296,7 @@ def main():
         new_benchmark = find_benchmark(new_root, old_benchmark.get("id"))
         process_benchmarks(
             old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
-            args.rule, not args.no_diffs)
+            args.rule, not args.no_diffs, args.only_rules)
     return 0
 
 
