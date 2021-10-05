@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Verify Root Has A Primary GID 0'
+
+description: |-
+    The <tt>root</tt> user should have a primary group of 0.
+
+rationale: |-
+    To help ensure that root-owned files are not inadvertently exposed to other users.
+
+severity: high
+
+identifiers:
+    cce@rhel7: CCE-86296-1
+    cce@rhel8: CCE-86297-9
+    cce@rhel9: CCE-86298-7
+
+references:
+    cis@rhel7: 5.5.3
+    cis@rhel8: 5.5.4
+
+ocil_clause: 'root has a primary gid not equal to zero'
+
+ocil: |-
+    To verify that root's primary group is zero run the following command:
+    <pre>
+        grep '^root:' /etc/passwd | cut -d : -f 4
+    </pre>
+    The command should return:
+    <pre>
+    0
+    </pre>
