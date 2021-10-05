@@ -37,84 +37,11 @@ description: |-
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
+filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platforms'
+
 # CM-6 CONFIGURATION SETTINGS
 # CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
 extends: cis
 
 selections:
-    # AC-2(5)
-    - var_oauth_inactivity_timeout=10m0s
-    - oauth_or_oauthclient_inactivity_timeout
-    # AC-2, AC-7
-    - ocp_idp_no_htpasswd
-    - kubeadmin_removed
-    # AC-12
-    - oauth_or_oauthclient_token_maxage
-
-    - ocp_allowed_registries_for_import
-    - ocp_allowed_registries
-
-    # AC-8: SYSTEM USE NOTIFICATION
-    - openshift_motd_exists
-    - banner_or_login_template_set
-
-    # AU
-    - var_openshift_audit_profile=WriteRequestBodies
-    - audit_profile_set
-
-    # AU-5 RESPONSE TO AUDIT PROCESSING FAILURES
-    - audit_error_alert_exists
-
-    # AU-9
-    - audit_log_forwarding_enabled
-    - audit_log_forwarding_uses_tls
-
-    # RA-5 VULNERABILITY SCANNING
-    - compliancesuite_exists
-
-    # SC-28 PROTECTION OF INFORMATION AT REST
-    # SC-28 (1) PROTECTION OF INFORMATION AT REST | CRYPTOGRAPHIC PROTECTION
-    - api_server_encryption_provider_config
-    - api_server_encryption_provider_cipher
-
-    # SC-7(8)
-    - cluster_wide_proxy_set
-
-    # SC-8: TRANSMISSION CONFIDENTIALITY AND INTEGRITY
-    - ocp_no_ldap_insecure
-    # SC-8(1): TRANSMISSION CONFIDENTIALITY AND INTEGRITY | CRYPTOGRAPHIC OR ALTERNATE PHYSICAL PROTECTION
-    - api_server_client_ca
-    - api_server_etcd_ca
-    - api_server_etcd_cert
-    - api_server_etcd_key
-    - api_server_https_for_kubelet_conn
-    - api_server_oauth_https_serving_cert
-    - api_server_openshift_https_serving_cert
-    - api_server_tls_cert
-    - api_server_tls_private_key
-    - controller_insecure_port_disabled
-    - controller_rotate_kubelet_server_certs
-    - controller_secure_port
-    - controller_service_account_ca
-    - controller_service_account_private_key
-    - etcd_auto_tls
-    - etcd_cert_file
-    - etcd_client_cert_auth
-    - etcd_key_file
-    - etcd_peer_auto_tls
-    - etcd_peer_cert_file
-    - etcd_peer_client_cert_auth
-    - etcd_peer_key_file
-    - kubelet_configure_tls_cert
-    - kubelet_configure_tls_key
-    - routes_protected_by_tls
-    - scheduler_no_bind_address
-
-    # SC-13: CRYPTOGRAPHIC PROTECTION
-    - fips_mode_enabled
-
-    # SI-7: SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY
-    - file_integrity_exists
-
-    # SC-17: PUBLIC KEY INFRASTRUCTURE CERTIFICATES
-    - default_ingress_ca_replaced
+    - nist_ocp4:all:moderate

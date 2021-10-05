@@ -39,30 +39,7 @@ description: |-
 # CM-6(1) CONFIGURATION SETTINGS | AUTOMATED CENTRAL MANAGEMENT / APPLICATION / VERIFICATION
 extends: cis-node
 
+filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms'
+
 selections:
-
-    # AU-4
-    - partition_for_var_log_kube_apiserver
-    - partition_for_var_log_openshift_apiserver
-    - partition_for_var_log_oauth_apiserver
-
-    # AU-9
-    - directory_access_var_log_kube_audit
-    - directory_permissions_var_log_kube_audit
-    - file_ownership_var_log_kube_audit
-    - file_permissions_var_log_kube_audit
-    - directory_access_var_log_ocp_audit
-    - directory_permissions_var_log_ocp_audit
-    - file_ownership_var_log_ocp_audit
-    - file_permissions_var_log_ocp_audit
-    - directory_access_var_log_oauth_audit
-    - directory_permissions_var_log_oauth_audit
-    - file_ownership_var_log_oauth_audit
-    - file_permissions_var_log_oauth_audit
-
-    # CM-5(3)
-    # CM-7(2)
-    # CM-7(5)
-    # CM-11
-    # SA-10(1)
-    - reject_unsigned_images_by_default
+    - nist_ocp4:all:moderate
