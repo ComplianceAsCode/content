@@ -44,7 +44,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_resource_path_xccdf("var_openshift_apiserver_config") | indent(4) }}}
+    {{{ openshift_resource_path_xccdf("var_openshift_kube_apiserver_config") | indent(4) }}}
 
 template:
   name: yamlfile_value
@@ -53,7 +53,6 @@ template:
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    filepath_xccdf_variable: var_openshift_apiserver_config
     yamlpath: '.data["config.yaml"]'
     xccdf_variable: var_api_min_request_timeout
     embedded_data: "true"

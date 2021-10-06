@@ -55,7 +55,7 @@ template:
     vars:
         ocp_data: "true"
         filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
-    filepath_xccdf_variable: var_openshift_kube_apiserver_config'/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        filepath_xccdf_variable: 'var_openshift_kube_apiserver_config'
         yamlpath: '.data["config.yaml"]'
         entity_check: "all"
         values:
