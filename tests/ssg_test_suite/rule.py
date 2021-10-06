@@ -11,6 +11,8 @@ import json
 import fnmatch
 import tempfile
 import contextlib
+import itertools
+import math
 
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
 from ssg_test_suite import oscap
@@ -270,6 +272,7 @@ class RuleChecker(oscap.Checker):
                     .format(rule.id, self.benchmark_id, self.datastream))
                 continue
             rules_to_test.append(rule)
+
         return rules_to_test
 
     def test_rule(self, state, rule, scenarios):
@@ -278,24 +281,51 @@ class RuleChecker(oscap.Checker):
             rule, scenarios,
             self.remote_dir, state, remediation_available)
 
+    def _slice_sbr(self, scenarios_by_rule_id, slice_current, slice_total):
+        """  Returns only a subset of test scenarios, representing slice_current-th
+        slice out of slice_total"""
+
+        tuple_repr = []
+        for rule_id in scenarios_by_rule_id:
+            tuple_repr += itertools.product([rule_id], scenarios_by_rule_id[rule_id])
+
+        total_scenarios = len(tuple_repr)
+        slice_low_bound = math.ceil(total_scenarios / slice_total * (slice_current - 1))
+        slice_high_bound = math.ceil(total_scenarios / slice_total * slice_current)
+
+        new_sbr = {}
+        for rule_id, scenario in tuple_repr[slice_low_bound:slice_high_bound]:
+            try:
+                new_sbr[rule_id].append(scenario)
+            except KeyError:
+                new_sbr[rule_id] = [scenario]
+        return new_sbr
+
     def _test_target(self, target):
         rules_to_test = self._get_rules_to_test(target)
         if not rules_to_test:
             logging.error("No tests found matching the rule ID(s) '{0}'".format(", ".join(target)))
             return
 
-        scenarios_by_rule = dict()
+        scenarios_by_rule_id = dict()
         for rule in rules_to_test:
             rule_scenarios = self._get_scenarios(
                 rule.directory, rule.files, self.scenarios_regex,
                 self.benchmark_cpes)
-            scenarios_by_rule[rule.id] = rule_scenarios
+            scenarios_by_rule_id[rule.id] = rule_scenarios
+        sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
+                                                      self.slice_current,
+                                                      self.slice_total)
 
-        self._prepare_environment(scenarios_by_rule)
+        self._prepare_environment(sliced_scenarios_by_rule_id)
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in rules_to_test:
-                self.test_rule(state, rule, scenarios_by_rule[rule.id])
+                try:
+                    self.test_rule(state, rule, sliced_scenarios_by_rule_id[rule.id])
+                except KeyError:
+                    # rule is not processed in given slice
+                    pass
 
     def _modify_parameters(self, script, params):
         if self.scenarios_profile:
@@ -453,6 +483,8 @@ def perform_rule_check(options):
     checker.manual_debug = options.manual_debug
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
+    checker.slice_current = options.slice_current
+    checker.slice_total = options.slice_total
 
     checker.scenarios_profile = options.scenarios_profile
     # check if target is a complete profile ID, if not prepend profile prefix
