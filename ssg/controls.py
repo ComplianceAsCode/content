@@ -66,7 +66,7 @@ class Status():
 class Control():
     def __init__(self):
         self.id = None
-        self.rules = []
+        self.rules = {}
         self.variables = {}
         self.levels = []
         self.notes = ""
@@ -98,7 +98,7 @@ class Control():
             raise ValueError(msg)
         control.levels = control_dict.get("levels", default_level)
         control.notes = control_dict.get("notes", "")
-        selections = control_dict.get("rules", [])
+        selections = control_dict.get("rules", {})
 
         product = None
         product_dir = None
@@ -114,27 +114,37 @@ class Control():
                 varname, value = item.split("=", 1)
                 control.variables[varname] = value
             else:
-                rule_yaml = get_rule_path_by_id(content_dir, item)
-                if rule_yaml is None:
-                    # item not found in benchmark_root
-                    continue
-                rule = ssg.build_yaml.Rule.from_yaml(rule_yaml, env_yaml)
-
-                # Check if rule is applicable to product, i.e.: prodtype has product id
-                if product is None:
-                    # The product was not specified, simply add the rule
-                    control.rules.append(rule)
-                else:
-                    if rule.prodtype == "all" or product in rule.prodtype:
-                        control.rules.append(rule)
-                    else:
-                        logging.info("Rule {item} doesn't apply to {product}".format(
-                            item=item,
-                            product=product))
+                control.rules[item] = None
 
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
         return control
+
+    def resolve_with_rules(self, rules_by_id, env_yaml=None):
+        product = None
+        if env_yaml:
+            product = env_yaml.get('product', None)
+
+        fitting_rules = {}
+
+        for rid in self.rules:
+            if rid not in rules_by_id:
+                continue
+            rule = rules_by_id[rid]
+
+            # Check if rule is applicable to product, i.e.: prodtype has product id
+            if product is None:
+                # The product was not specified, simply add the rule
+                fitting_rules[rid] = rule
+            else:
+                if rule.prodtype == "all" or product in rule.prodtype:
+                    fitting_rules[rid] = rule
+                else:
+                    logging.info(
+                        "Rule {item} doesn't apply to {product}"
+                        .format(item=rid, product=product))
+
+        self.rules = fitting_rules
 
 
 class Level():
@@ -178,7 +188,7 @@ class Policy():
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
-                    control.rules.extend(sc.rules)
+                    control.rules.update(sc.rules)
                     control.variables.update(sc.variables)
                     control.related_rules.extend(sc.related_rules)
             yield control

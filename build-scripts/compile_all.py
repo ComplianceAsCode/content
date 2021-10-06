@@ -32,6 +32,9 @@ def create_parser():
         help="The template for saving processed profile files."
     )
     parser.add_argument(
+        "--resolved-base",
+        help="To which directory to put processed rule/group/value YAMLs.")
+    parser.add_argument(
         "--controls-dir",
         help="Directory that contains control files with policy controls. "
         "e.g.: ~/scap-security-guide/controls",
@@ -65,10 +68,24 @@ def main():
 
     profile_files = ssg.products.get_profile_files_from_root(env_yaml, args.product_yaml)
     profile_files.extend(args.profile_file)
+
+    loader = ssg.build_yaml.BuildLoader(
+        None, env_yaml,
+        args.resolved_rules_dir, args.sce_metadata)
+    loader.profiles = profiles
+    loader.process_directory_tree(benchmark_root, add_content_dirs)
+
     profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml)
+
+    for p in profiles:
+        p.validate_variables(loader.all_values)
+        p.validate_rules(loader.all_rules, loader.all_groups)
+        p.validate_refine_rules(loader.all_rules)
+
     for pname in profiles:
         profiles[pname].resolve(profiles, controls_manager)
 
+    loader.save_all_entities(args.resolved_base)
     for name, p in profiles.items():
         p.dump_yaml(args.output.format(name=name))
 

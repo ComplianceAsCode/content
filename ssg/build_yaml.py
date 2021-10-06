@@ -531,7 +531,7 @@ class ResolvableProfile(Profile):
             if varname not in self.variables:
                 self.variables[varname] = value
 
-    def resolve_controls(self, controls_manager):
+    def resolve_controls(self, controls_manager, rules_by_id):
         pass
 
     def extend_by(self, extended_profile):
@@ -547,11 +547,11 @@ class ResolvableProfile(Profile):
         updated_refinements.update(self.refine_rules)
         self.refine_rules = updated_refinements
 
-    def resolve(self, all_profiles, controls_manager=None):
+    def resolve(self, all_profiles, rules_by_id, controls_manager=None):
         if self.resolved:
             return
 
-        self.resolve_controls(controls_manager)
+        self.resolve_controls(controls_manager, rules_by_id, env_yaml)
 
         self.resolved_selections = set(rule for rule in self.selected if self.rule_filter(rule))
 
@@ -564,7 +564,7 @@ class ResolvableProfile(Profile):
                             known_profiles=list(all_profiles.keys())))
                 raise RuntimeError(msg)
             extended_profile = all_profiles[self.extends]
-            extended_profile.resolve(all_profiles, controls_manager)
+            extended_profile.resolve(all_profiles, rules_by_id, controls_manager)
 
             self.extend_by(extended_profile)
 
@@ -575,6 +575,13 @@ class ResolvableProfile(Profile):
         self.extends = None
 
         self.selected = sorted(self.resolved_selections)
+
+        for rid in self.selected:
+            if rid not in rules_by_id:
+                msg = (
+                    "Rule {rid} is selected by {profile}, but the rule is not available. "
+                    "This may be caused by a discrepancy of prodtypes.")
+                raise ValueError(msg)
 
         self.resolved = True
 
@@ -619,12 +626,13 @@ class ProfileWithInlinePolicies(ResolvableProfile):
                     controls_manager.get_all_controls(policy_id))
         return controls
 
-    def resolve_controls(self, controls_manager):
+    def resolve_controls(self, controls_manager, rules_by_id):
         for policy_id, controls_ids in self.controls_by_policy.items():
             controls = self._process_controls_ids_into_controls(
                 controls_manager, policy_id, controls_ids)
 
             for c in controls:
+                c.resolve_with_rules(rules_by_id, env_yaml)
                 self._merge_control(c)
 
 
@@ -1654,19 +1662,14 @@ class DirectoryLoader(object):
         self.loaded_group = self.load_benchmark_or_group(guide_directory)
 
         if self.loaded_group:
+            mkdir_p(dir_for_groups)
+
             if self.parent_group:
                 self.parent_group.add_group(self.loaded_group, env_yaml=self.env_yaml)
 
             self._process_values()
             self._recurse_into_subdirs()
             self._process_rules()
-
-            if self.resolved_rules_dir and not self.benchmark_file:
-                dir_for_groups = os.path.join(self.resolved_rules_dir, "..", "groups")
-                output_for_group = os.path.join(
-                    dir_for_groups, "{id_}.yml".format(id_=self.loaded_group.id_))
-                mkdir_p(dir_for_groups)
-                self.loaded_group.dump_yaml(output_for_group)
 
     def process_directory_tree(self, start_dir, extra_group_dirs=None):
         self._collect_items_to_load(start_dir)
@@ -1692,6 +1695,27 @@ class DirectoryLoader(object):
     def _process_rules(self):
         raise NotImplementedError()
 
+    def save_all_entities(self, base_dir):
+        if self.all_rules:
+            destdir = os.path.join(base_dir, "rules")
+            self.save_entities(self.rules, destdir)
+
+        if self.all_rules:
+            destdir = os.path.join(base_dir, "groups")
+            self.save_entities(self.groups, destdir)
+
+        if self.all_values:
+            destdir = os.path.join(base_dir, "values")
+            self.save_entities(self.values, destdir)
+
+    def save_entities(self, entities, destdir):
+        if not entities:
+            return
+        for entity in entities:
+            basename = entity.id_ + ".yml"
+            dest_filename = os.path.join(destdir, basename)
+            entity.dump_yaml(dest_filename)
+
 
 class BuildLoader(DirectoryLoader):
     def __init__(self, profiles_dir, env_yaml,
@@ -1716,11 +1740,6 @@ class BuildLoader(DirectoryLoader):
             self.all_values.add(value)
             self.loaded_group.add_value(value)
 
-            output_for_value = os.path.join(
-                dir_for_values, "{id_}.yml".format(id_=value.id_))
-
-            value.dump_yaml(output_for_value)
-
     def _process_rules(self):
         if self.rule_files and self.resolved_rules_dir:
             mkdir_p(self.resolved_rules_dir)
@@ -1739,11 +1758,7 @@ class BuildLoader(DirectoryLoader):
             if self.loaded_group.platforms:
                 rule.inherited_platforms += self.loaded_group.platforms
 
-            if self.resolved_rules_dir:
-                output_for_rule = os.path.join(
-                    self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
-                rule.normalize(self.env_yaml["product"])
-                rule.dump_yaml(output_for_rule)
+            rule.normalize(self.env_yaml["product"])
 
     def _get_new_loader(self):
         loader = BuildLoader(
