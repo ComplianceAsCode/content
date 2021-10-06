@@ -178,6 +178,7 @@ selections:
     - auditd_data_retention_action_mail_acct
 
     # UBTU-20-010118 The Ubuntu operating system must shut down by default upon audit failure (unless availability is an overriding concern).
+    - var_auditd_disk_full_action=halt
     - auditd_data_disk_full_action
 
     # UBTU-20-010122 The Ubuntu operating system must be configured so that audit log files are not read or write-accessible by unauthorized users.
