@@ -1995,7 +1995,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - accounts_root_gid_zero
 
   - id: 5.5.4
     title: Ensure default user shell timeout is configured (Automated)

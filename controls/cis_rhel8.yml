@@ -1954,14 +1954,14 @@ controls:
       - accounts_tmout
       - var_accounts_tmout=15_min
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5539
   - id: 5.5.4
     title: Ensure default group for the root account is GID 0 (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - accounts_root_gid_zero
 
   - id: 5.5.5
     title: Ensure default user umask is 027 or more restrictive (Automated)
