@@ -12896,6 +12896,7 @@ controls:
   rules:
   - disable_users_coredumps
   - service_systemd-coredump_disabled
+  - sysctl_kernel_core_pattern
   - sysctl_kernel_unprivileged_bpf_disabled
   - sysctl_kernel_yama_ptrace_scope
   - sysctl_net_core_bpf_jit_harden
@@ -14029,6 +14030,7 @@ controls:
   - disable_users_coredumps
   - service_systemd-coredump_disabled
   - sysctl_kernel_yama_ptrace_scope
+  - sysctl_kernel_core_pattern
   description: |-
     The information system maintains a separate execution domain for each executing process.
 
