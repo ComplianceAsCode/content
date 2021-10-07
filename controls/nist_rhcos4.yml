@@ -14019,10 +14019,16 @@ controls:
     applicable to the configuration of CoreOS.
   rules: []
 - id: SC-39
-  status: supported
+  status: automated
   notes: |-
-    The control is met when SELinux and namespaces are enabled and used.
-  rules: []
+    The control is met when  by a combination of Linux capabilities. SELinux and namespaces are enabled and
+    used. And disabling the users from accessing core dump files prevents leakage of sensitive information
+    from within a program's memory.
+  rules:
+  - selinux_state
+  - disable_users_coredumps
+  - service_systemd-coredump_disabled
+  - sysctl_kernel_yama_ptrace_scope
   description: |-
     The information system maintains a separate execution domain for each executing process.
 
