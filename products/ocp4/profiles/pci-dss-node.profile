@@ -17,5 +17,8 @@ description: |-
 
 filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms'
 
+# Req-2.2
+extends: cis-node
+
 selections:
     - pcidss_ocp4:all:base
