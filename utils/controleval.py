@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 import collections
 import argparse
+import os
 
 from ssg import controls
+import ssg.products
+
+
+SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 def print_options(opts):
@@ -90,13 +95,18 @@ def create_parser():
                              required=True)
     statsparser.add_argument("-l", "--level", dest="level", help="level to display statistics of.",
                              required=True)
+    statsparser.add_argument("-p", "--product", type=str,
+                             help="Product to check has required references")
     return parser
 
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
-    controls_manager = controls.ControlsManager(args.controls_dir)
+    product_base = os.path.join(SSG_ROOT, "products", args.product)
+    product_yaml = os.path.join(product_base, "product.yml")
+    env_yaml = ssg.products.load_product_yaml(product_yaml)
+    controls_manager = controls.ControlsManager(args.controls_dir, env_yaml=env_yaml)
     controls_manager.load()
     subcmds[args.subcmd](controls_manager, args)
 
