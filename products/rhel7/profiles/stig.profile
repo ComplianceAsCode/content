@@ -316,7 +316,6 @@ selections:
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
     - audit_rules_privileged_commands_mount
-    - package_MFEhiplsm_installed
     - file_ownership_var_log_audit
     - file_permissions_var_log_audit
     - sysctl_net_ipv4_conf_all_rp_filter
