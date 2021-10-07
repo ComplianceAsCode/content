@@ -1,7 +1,5 @@
 # platform = multi_platform_ubuntu
 
-. /usr/share/scap-security-guide/remediation_functions
-
 flag1=1
 flag2=1
 
