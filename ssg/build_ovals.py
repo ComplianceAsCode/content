@@ -318,7 +318,7 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
             if not _check_rule_id(oval_file_tree, rule_id,):
                 msg = "OVAL definition in '%s' doesn't match rule ID '%s'." % (
                     _path, rule_id)
-                sys.stderr.write(msg)
+                print(msg, file=sys.stderr)
             if not _check_oval_version_from_oval(oval_file_tree, oval_version):
                 continue
 
