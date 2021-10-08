@@ -114,21 +114,6 @@ macro(ssg_build_shorthand_xml PRODUCT)
 
     add_custom_command(
         # The command also produces the directory with rules, but this is done before the shorthand XML.
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/legacy-shorthand.xml"
-        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/groups"
-        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/variables"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --profiles-root "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output "${CMAKE_CURRENT_BINARY_DIR}/legacy-shorthand.xml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
-        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/legacy-shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/legacy-shorthand.xml"
-        DEPENDS "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
-        COMMENT "[${PRODUCT}-content] generating legacy-shorthand.xml"
-    )
-
-    add_custom_command(
-        # The command also produces the directory with rules, but this is done before the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
