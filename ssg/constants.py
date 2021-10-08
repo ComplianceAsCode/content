@@ -7,7 +7,7 @@ import time
 
 product_directories = [
     'chromium',
-    'debian9', 'debian10',
+    'debian9', 'debian10', 'debian11',
     'example',
     'fedora',
     'firefox',
@@ -157,6 +157,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
     "Debian 9": "debian9",
     "Debian 10": "debian10",
+    "Debian 11": "debian11",
     "Example": "example",
     "Fedora": "fedora",
     "Firefox": "firefox",
@@ -199,7 +200,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian9", "debian10"],
+    "multi_platform_debian": ["debian9", "debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
