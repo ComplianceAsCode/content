@@ -551,7 +551,7 @@ class ResolvableProfile(Profile):
         if self.resolved:
             return
 
-        self.resolve_controls(controls_manager, rules_by_id, env_yaml)
+        self.resolve_controls(controls_manager, rules_by_id)
 
         self.resolved_selections = set(rule for rule in self.selected if self.rule_filter(rule))
 
@@ -580,7 +580,8 @@ class ResolvableProfile(Profile):
             if rid not in rules_by_id:
                 msg = (
                     "Rule {rid} is selected by {profile}, but the rule is not available. "
-                    "This may be caused by a discrepancy of prodtypes.")
+                    "This may be caused by a discrepancy of prodtypes."
+                    .format(rid=rid, profile=self.id_))
                 raise ValueError(msg)
 
         self.resolved = True
@@ -632,7 +633,7 @@ class ProfileWithInlinePolicies(ResolvableProfile):
                 controls_manager, policy_id, controls_ids)
 
             for c in controls:
-                c.resolve_with_rules(rules_by_id, env_yaml)
+                c.resolve_with_rules(rules_by_id)
                 self._merge_control(c)
 
 
@@ -1654,7 +1655,7 @@ class DirectoryLoader(object):
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml)
-            self.all_groups.add(group.id_)
+            self.all_groups.add(group)
 
         return group
 
@@ -1662,7 +1663,6 @@ class DirectoryLoader(object):
         self.loaded_group = self.load_benchmark_or_group(guide_directory)
 
         if self.loaded_group:
-            mkdir_p(dir_for_groups)
 
             if self.parent_group:
                 self.parent_group.add_group(self.loaded_group, env_yaml=self.env_yaml)
@@ -1698,15 +1698,18 @@ class DirectoryLoader(object):
     def save_all_entities(self, base_dir):
         if self.all_rules:
             destdir = os.path.join(base_dir, "rules")
-            self.save_entities(self.rules, destdir)
+            mkdir_p(destdir)
+            self.save_entities(self.all_rules, destdir)
 
-        if self.all_rules:
+        if self.all_groups:
             destdir = os.path.join(base_dir, "groups")
-            self.save_entities(self.groups, destdir)
+            mkdir_p(destdir)
+            self.save_entities(self.all_groups, destdir)
 
         if self.all_values:
             destdir = os.path.join(base_dir, "values")
-            self.save_entities(self.values, destdir)
+            mkdir_p(destdir)
+            self.save_entities(self.all_values, destdir)
 
     def save_entities(self, entities, destdir):
         if not entities:

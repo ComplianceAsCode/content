@@ -8,6 +8,7 @@ from glob import glob
 
 import ssg.build_profile
 import ssg.build_yaml
+import ssg.utils
 import ssg.controls
 import ssg.products
 import ssg.environment
@@ -39,6 +40,10 @@ def create_parser():
         help="Directory that contains control files with policy controls. "
         "e.g.: ~/scap-security-guide/controls",
     )
+    parser.add_argument(
+        "--sce-metadata",
+        help="Combined SCE metadata to read."
+    )
     return parser
 
 
@@ -69,24 +74,30 @@ def main():
     profile_files = ssg.products.get_profile_files_from_root(env_yaml, args.product_yaml)
     profile_files.extend(args.profile_file)
 
+    resolved_rules_dir = os.path.join(args.resolved_base, "rules")
     loader = ssg.build_yaml.BuildLoader(
         None, env_yaml,
-        args.resolved_rules_dir, args.sce_metadata)
-    loader.profiles = profiles
+        resolved_rules_dir, args.sce_metadata)
+
+    profiles_by_id = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml)
+
+    loader.profiles = profiles_by_id
+
+    benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
+    additional_content_directories = env_yaml.get("additional_content_directories", [])
+    add_content_dirs = [os.path.join(base_dir, er_root) for er_root in additional_content_directories if not os.path.isabs(er_root)]
     loader.process_directory_tree(benchmark_root, add_content_dirs)
 
-    profiles = ssg.build_profile.make_name_to_profile_mapping(profile_files, env_yaml)
+    all_rules_by_id = {r.id_: r for r in loader.all_rules}
+    for p in profiles_by_id.values():
+        p.resolve(profiles_by_id, all_rules_by_id, controls_manager)
 
-    for p in profiles:
         p.validate_variables(loader.all_values)
         p.validate_rules(loader.all_rules, loader.all_groups)
         p.validate_refine_rules(loader.all_rules)
 
-    for pname in profiles:
-        profiles[pname].resolve(profiles, controls_manager)
-
     loader.save_all_entities(args.resolved_base)
-    for name, p in profiles.items():
+    for name, p in profiles_by_id.items():
         p.dump_yaml(args.output.format(name=name))
 
 
