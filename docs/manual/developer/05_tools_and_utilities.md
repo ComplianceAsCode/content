@@ -297,3 +297,24 @@ To execute:
 
     $ ./utils/rule_dir_stats.py [...any options...]
     $ ./utils/rule_dir_diff.py [...any options...]
+
+### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
+The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.
+The script outputs to `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
+It supports the following arguments: 
+
+- `-r`, `--root` - Path to SSG root directory
+- `-p`, `--product` - What product to produce the tailoring file for (required)
+- `-m`, `--manual` - Path to the XCCDF XML file of the SCAP content (required)
+- `-j`, `--json` - Path to the `rules_dir.json ` file. 
+  - Defaults to `build/stig_control.json`
+- `-c`, `--build-config-yaml` - YAML file with information about the build configuration.
+  - Defaults to `build/build_config.yml`
+- `-b`, `--profile` - What profile to use. 
+  - Defaults to stig
+- `-ref`, `--reference` - What reference system to check for. 
+  - Defaults to `stigid`
+
+To execute:
+
+    $ ./utils/create_disa_tailoring.py -p rhel8 -b stig -m U_RHEL_8_V1R2_STIG_SCAP_1-2_Benchmark.xml
