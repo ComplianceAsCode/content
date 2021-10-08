@@ -15,7 +15,7 @@ import yaml
 
 from .build_cpe import CPEDoesNotExist
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM
-from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
+from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir, get_rule_path_by_id
 from .rule_yaml import parse_prodtype
 
 from .cce import is_cce_format_valid, is_cce_value_valid
@@ -120,9 +120,9 @@ class Profile(object):
         self.platforms = set()
         self.cpe_names = set()
         self.platform = None
+        self.rule_filter = noop_rule_filterfunc
 
-
-    def read_yaml_contents(self, yaml_contents):
+    def read_yaml_contents(self, yaml_contents, env_yaml):
         self.title = required_key(yaml_contents, "title")
         del yaml_contents["title"]
         self.description = required_key(yaml_contents, "description")
@@ -130,13 +130,15 @@ class Profile(object):
         self.extends = yaml_contents.pop("extends", None)
         selection_entries = required_key(yaml_contents, "selections")
         if selection_entries:
-            self._parse_selections(selection_entries)
+            self._parse_selections(selection_entries, env_yaml)
         del yaml_contents["selections"]
         self.platforms = yaml_contents.pop("platforms", set())
         self.platform = yaml_contents.pop("platform", None)
+        self.rule_filter = rule_filter_from_def(
+            yaml_contents.pop("filter_rules", None))
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None):
+    def from_yaml(cls, yaml_file, env_yaml):
         yaml_contents = open_and_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
@@ -144,7 +146,7 @@ class Profile(object):
         basename, _ = os.path.splitext(os.path.basename(yaml_file))
 
         profile = cls(basename)
-        profile.read_yaml_contents(yaml_contents)
+        profile.read_yaml_contents(yaml_contents, env_yaml)
 
         profile.reference = yaml_contents.pop("reference", None)
         # ensure that content of profile.platform is in profile.platforms as
@@ -187,9 +189,9 @@ class Profile(object):
 
         selections = []
         for item in self.selected:
-            selections.append(item)
+            selections.append(str(item))
         for item in self.unselected:
-            selections.append("!"+item)
+            selections.append("!"+str(item))
         for varname in self.variables.keys():
             selections.append(varname+"="+self.variables.get(varname))
         for rule, refinements in self.refine_rules.items():
@@ -200,11 +202,11 @@ class Profile(object):
         with open(file_name, "w+") as f:
             yaml.dump(to_dump, f, indent=4)
 
-    def _parse_selections(self, entries):
+    def _parse_selections(self, entries, env_yaml):
         for item in entries:
-            self.apply_selection(item)
+            self.apply_selection(item, env_yaml)
 
-    def apply_selection(self, item):
+    def apply_selection(self, item, env_yaml):
         if "." in item:
             rule, refinement = item.split(".", 1)
             property_, value = refinement.split("=", 1)
@@ -220,10 +222,22 @@ class Profile(object):
         elif "=" in item:
             varname, value = item.split("=", 1)
             self.variables[varname] = value
-        elif item.startswith("!"):
-            self.unselected.append(item[1:])
         else:
-            self.selected.append(item)
+            product_dir = env_yaml.get('product_dir', None)
+            benchmark_root = env_yaml.get('benchmark_root', None)
+            content_dir = os.path.join(product_dir, benchmark_root)
+            if item.startswith("!"):
+                rule_id = item[1:]
+            else:
+                rule_id = item
+            rule_yaml = get_rule_path_by_id(content_dir, rule_id)
+            if rule_yaml is None:
+                raise ValueError("Unable to find rule '{}'".format(rule_id))
+            rule = Rule.from_yaml(rule_yaml, env_yaml)
+            if item.startswith("!"):
+                self.unselected.append(rule)
+            else:
+                self.selected.append(rule)
 
     def to_xml_element(self):
         element = ET.Element('Profile')
@@ -244,13 +258,13 @@ class Profile(object):
 
         for selection in self.selected:
             select = ET.Element("select")
-            select.set("idref", selection)
+            select.set("idref", str(selection))
             select.set("selected", "true")
             element.append(select)
 
         for selection in self.unselected:
             unselect = ET.Element("select")
-            unselect.set("idref", selection)
+            unselect.set("idref", str(selection))
             unselect.set("selected", "false")
             element.append(unselect)
 
@@ -270,7 +284,7 @@ class Profile(object):
         return element
 
     def get_rule_selectors(self):
-        return list(self.selected + self.unselected)
+        return list(rule.id_ for rule in self.selected + self.unselected)
 
     def get_variable_selectors(self):
         return self.variables
@@ -376,23 +390,13 @@ class ResolvableProfile(Profile):
         super(ResolvableProfile, self).__init__(* args, ** kwargs)
         self.resolved = False
         self.resolved_selections = set()
-        self.rule_filter = None
-
-    def read_yaml_contents(self, yaml_contents):
-        super(ResolvableProfile, self).read_yaml_contents(yaml_contents)
-        self.rule_filter = rule_filter_from_def(
-            yaml_contents.pop("filter_rules", None))
 
     def _controls_ids_to_controls(self, controls_manager, policy_id, control_id_list):
         items = [controls_manager.get_control(policy_id, cid) for cid in control_id_list]
         return items
 
     def _merge_control(self, control):
-        if self.rule_filter is not None:
-            filteredrules = (str(rule) for rule in control.rules if self.rule_filter(rule))
-            self.selected.extend(filteredrules)
-        else:
-            self.selected.extend(str(rule) for rule in control.rules)
+        self.selected.extend(control.rules)
         for varname, value in control.variables.items():
             if varname not in self.variables:
                 self.variables[varname] = value
@@ -419,7 +423,7 @@ class ResolvableProfile(Profile):
 
         self.resolve_controls(controls_manager)
 
-        self.resolved_selections = set(self.selected)
+        self.resolved_selections = set(rule for rule in self.selected if self.rule_filter(rule))
 
         if self.extends:
             if self.extends not in all_profiles:
@@ -462,11 +466,11 @@ class ProfileWithSeparatePolicies(ResolvableProfile):
         super(ProfileWithSeparatePolicies, self).__init__(* args, ** kwargs)
         self.policies = {}
 
-    def read_yaml_contents(self, yaml_contents):
+    def read_yaml_contents(self, yaml_contents, env_yaml):
         policies = yaml_contents.pop("policies", None)
         if policies:
             self._parse_policies(policies)
-        super(ProfileWithSeparatePolicies, self).read_yaml_contents(yaml_contents)
+        super(ProfileWithSeparatePolicies, self).read_yaml_contents(yaml_contents, env_yaml)
 
     def _parse_policies(self, policies_yaml):
         for item in policies_yaml:
@@ -523,13 +527,13 @@ class ProfileWithInlinePolicies(ResolvableProfile):
         super(ProfileWithInlinePolicies, self).__init__(* args, ** kwargs)
         self.controls_by_policy = defaultdict(list)
 
-    def apply_selection(self, item):
+    def apply_selection(self, item, env_yaml):
         # ":" is the delimiter for controls but not when the item is a variable
         if ":" in item and "=" not in item:
             policy_id, control_id = item.split(":", 1)
             self.controls_by_policy[policy_id].append(control_id)
         else:
-            super(ProfileWithInlinePolicies, self).apply_selection(item)
+            super(ProfileWithInlinePolicies, self).apply_selection(item, env_yaml)
 
     def _process_controls_ids_into_controls(self, controls_manager, policy_id, controls_ids):
         controls = []
@@ -1031,9 +1035,12 @@ class Group(object):
         return self.id_
 
 
+def noop_rule_filterfunc(rule):
+    return True
+
 def rule_filter_from_def(filterdef):
     if filterdef is None or filterdef == "":
-        return None
+        return noop_rule_filterfunc
 
     def filterfunc(rule):
         # Remove globals for security and only expose
@@ -1519,6 +1526,20 @@ class Rule(object):
         root = self.to_xml_element()
         tree = ET.ElementTree(root)
         tree.write(file_name)
+
+    def __hash__(self):
+        """ Controls are meant to be unique, so using the
+        ID should suffice"""
+        return hash(self.id_)
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.id_ == other.id_
+
+    def __ne__(self, other):
+        return not self != other
+
+    def __lt__(self, other):
+        return self.id_ < other.id_
 
     def __str__(self):
         return self.id_

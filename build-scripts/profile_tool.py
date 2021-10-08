@@ -12,6 +12,7 @@ import sys
 try:
     import ssg.build_profile
     import ssg.constants
+    import ssg.environment
     import ssg.xml
     import ssg.build_yaml
 except ImportError:
@@ -120,6 +121,22 @@ def parse_args():
     parser_sub = subparsers.add_parser("sub", description=subtracted_profile_desc,
                                        help=("Subtract rules and variables from profile1 "
                                              "based on selections present in profile2."))
+    parser_sub.add_argument(
+        "--build-config-yaml", required=True,
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml "
+        "needed for autodetection of profile root"
+    )
+    parser_sub.add_argument(
+        "--ssg-root", required=True,
+        help="Directory containing the source tree. "
+        "e.g. ~/scap-security-guide/"
+    )
+    parser_sub.add_argument(
+        "--product", required=True,
+        help="ID of the product for which we are building Playbooks. "
+        "e.g.: 'fedora'"
+    )
     parser_sub.add_argument('--profile1', type=str, dest="profile1",
                         required=True, help='YAML profile')
     parser_sub.add_argument('--profile2', type=str, dest="profile2",
@@ -161,9 +178,11 @@ def main():
     args = parse_args()
 
     if args.subcommand == "sub":
+        product_yaml = os.path.join(args.ssg_root, "products", args.product, "product.yml")
+        env_yaml = ssg.environment.open_environment(args.build_config_yaml, product_yaml)
         try:
-            profile1 = ssg.build_yaml.Profile.from_yaml(args.profile1)
-            profile2 = ssg.build_yaml.Profile.from_yaml(args.profile2)
+            profile1 = ssg.build_yaml.Profile.from_yaml(args.profile1, env_yaml)
+            profile2 = ssg.build_yaml.Profile.from_yaml(args.profile2, env_yaml)
         except jinja2.exceptions.TemplateNotFound as e:
             print("Error: Profile {} could not be found.".format(str(e)))
             exit(1)

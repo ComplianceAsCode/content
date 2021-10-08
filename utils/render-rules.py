@@ -22,7 +22,7 @@ class HtmlOutput(template_renderer.Renderer):
         compiled_profiles = glob(str(self.built_content_path / "profiles" / "*.profile"))
         profiles = []
         for p in compiled_profiles:
-            profiles.append(ssg.build_yaml.Profile.from_yaml(p))
+            profiles.append(ssg.build_yaml.Profile.from_yaml(p, self.env_yaml))
         return profiles
 
     def _set_rule_profiles_membership(self, rule, profiles):
