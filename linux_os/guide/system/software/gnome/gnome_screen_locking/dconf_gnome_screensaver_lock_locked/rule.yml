@@ -7,7 +7,7 @@ title: 'Ensure Users Cannot Change GNOME3 Screensaver Lock After Idle Period'
 description: |-
     If not already configured, ensure that users cannot change GNOME3 screensaver lock settings
     by adding <pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
-    to <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    to <tt>/etc/dconf/db/local.d/locks/00-security-settings</tt>.
     For example:
     <pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
     After the settings have been set, run <tt>dconf update</tt>.
