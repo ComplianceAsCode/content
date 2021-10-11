@@ -300,7 +300,6 @@ To execute:
 
 ### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
 The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.
-The script outputs to `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
 It supports the following arguments: 
 
 - `-r`, `--root` - Path to SSG root directory
@@ -314,7 +313,8 @@ It supports the following arguments:
   - Defaults to stig
 - `-ref`, `--reference` - What reference system to check for. 
   - Defaults to `stigid`
+  - `-o`, `--output` - Defaults `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
 
 To execute:
 
-    $ ./utils/create_disa_tailoring.py -p rhel8 -b stig -m U_RHEL_8_V1R2_STIG_SCAP_1-2_Benchmark.xml
+    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m U_RHEL_8_V1R2_STIG_SCAP_1-2_Benchmark.xml

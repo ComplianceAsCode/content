@@ -23,22 +23,22 @@ PROFILE = 'stig'
 
 def get_profile(args) -> ET.Element:
     ds_root = ET.parse(os.path.join(SSG_ROOT, 'build', f'ssg-{args.product}-ds.xml')).getroot()
-    for kelem in ds_root:
-        if kelem.tag == f'{{{NS["scap"]}}}component':
-            for jelem in kelem:
-                if jelem.tag == f'{{{NS["xccdf-1.2"]}}}Benchmark':
-                    for ielem in jelem:
-                        if ielem.tag == f'{{{NS["xccdf-1.2"]}}}Profile':
-                            if ielem.attrib['id'].endswith(args.profile):
-                                version = ET.SubElement(ielem, 'xccdf-1.2:version',
-                                                        attrib={'time': datetime.datetime.utcnow().isoformat()})
-                                version.text = '1'
-                                return ielem
+    profiles = ds_root.findall(
+        f'.//{{{NS["scap"]}}}component/{{{NS["xccdf-1.2"]}}}Benchmark/{{{NS["xccdf-1.2"]}}}Profile'
+    )
+    for profile in profiles:
+        if profile.attrib['id'].endswith(args.profile):
+            version = ET.SubElement(profile, 'xccdf-1.2:version',
+                                    attrib={'time': datetime.datetime.utcnow().isoformat()})
+            version.text = '1'
+            profile.set('id', f'{profile.attrib["id"]}_customized')
+            return profile
 
 
-def get_needed_rules(known_rules, ns, root):
+def get_needed_rules(known_rules: dict, ns: dict, root: ET.Element) -> dict:
     needed_rules = known_rules.copy()
-    for group in root.findall('scap:component', ns)[1][0].findall('xccdf-1.2:Group', ns):
+    groups = root.findall('.//scap:component/xccdf-1.2:Benchmark/xccdf-1.2:Group', ns)
+    for group in groups:
         for stig in group.findall('xccdf-1.2:Rule', ns):
             stig_id = stig.find('xccdf-1.2:version', ns).text
             check = stig.find('xccdf-1.2:check', ns)
@@ -57,7 +57,7 @@ def handle_rule_yaml(args, rule_id, rule_dir, guide_dir, env_yaml):
     return rule_obj
 
 
-def get_platform_rules(args):
+def get_platform_rules(args) -> list:
     rules_json_file = open(args.json, 'r')
     rules_json = json.load(rules_json_file)
     platform_rules = list()
@@ -69,7 +69,7 @@ def get_platform_rules(args):
     return platform_rules
 
 
-def get_implemented_stigs(args):
+def get_implemented_stigs(args) -> dict:
     platform_rules = get_platform_rules(args)
 
     product_dir = os.path.join(args.root, "products", args.product)
@@ -102,11 +102,11 @@ def create_tailoring(args):
     profile_root = get_profile(args)
     selections = profile_root.findall('xccdf-1.2:select', NS)
     for selection in selections:
-        if selection.attrib['idref'].startswith('xccdf_org.ssgproject.content_group'):
+        if selection.attrib['idref'].startswith(ssg.constants.OSCAP_GROUP):
             selection.set('selected', 'true')
             continue
-        elif selection.attrib['idref'].startswith('xccdf_org.ssgproject.content_rule_'):
-            cac_rule_id = selection.attrib['idref'].replace('xccdf_org.ssgproject.content_rule_', '')
+        elif selection.attrib['idref'].startswith(ssg.constants.OSCAP_RULE):
+            cac_rule_id = selection.attrib['idref'].replace(ssg.constants.OSCAP_RULE, '')
             selection.set('selected',
                           str([cac_rule_id] in list(need_rules.values())).lower())
     tailoring_root = ET.Element('xccdf-1.2:Tailoring')
@@ -130,6 +130,8 @@ def parse_args():
                         help="What profile to use. Defaults to stig")
     parser.add_argument("-ref", "--reference", type=str, default="stigid",
                         help="Reference system to check for, defaults to stigid")
+    parser.add_argument("-o", "--output", type=str,
+                        help="Defaults build/PRODUCT_PROFILE_tailoring.xml")
 
     return parser.parse_args()
 
@@ -139,7 +141,10 @@ def main():
     ET.register_namespace('xccdf-1.2', ssg.constants.XCCDF12_NS)
     tailoring_root = create_tailoring(args)
     tree = ET.ElementTree(tailoring_root)
-    tree.write(os.path.join(SSG_ROOT, 'build', f'{args.product}_{args.profile}_tailoring.xml'))
+    if args.output:
+        tree.write(os.path.join(args.output))
+    else:
+        tree.write(os.path.join(SSG_ROOT, 'build', f'{args.product}_{args.profile}_tailoring.xml'))
 
 
 if __name__ == '__main__':
