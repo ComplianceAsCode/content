@@ -422,8 +422,11 @@ controls:
       TLS may continue using these as a security control after June 30, 2016.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      OpenShift does not require any insecure services, protocols or daemons for
+      proper functioning. The deployment comes with TLS enabled by default with
+      strong ciphers and an appropriate version enabled.
+    status: inherently met
     rules: []
 
   - id: Req-2.2.4
