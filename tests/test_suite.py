@@ -250,13 +250,15 @@ def parse_args():
                                        "scenarios."))
 
     options = parser.parse_args()
-    options.slice_current, options.slice_total = options._slices
-    if options.slice_current < 1:
-        raise argparse.ArgumentTypeError('Current slice needs to be positive integer')
-    if options.slice_total < 1:
-        raise argparse.ArgumentTypeError('Number of slices needs to be positive integer')
-    if options.slice_current > options.slice_total:
-        raise argparse.ArgumentTypeError('Current slice cannot be greater than number of slices')
+    if options.subparser_name in ["rule", "combined"]:
+        options.slice_current, options.slice_total = options._slices
+        if options.slice_current < 1:
+            raise argparse.ArgumentTypeError('Current slice needs to be positive integer')
+        if options.slice_total < 1:
+            raise argparse.ArgumentTypeError('Number of slices needs to be positive integer')
+        if options.slice_current > options.slice_total:
+            raise argparse.ArgumentTypeError(
+                'Current slice cannot be greater than number of slices')
     return options
 
 
