@@ -381,8 +381,14 @@ controls:
       one primary function per virtual system component.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      OpenShift nodes run RHEL CoreOS by default, which contains only the
+      necessary services, protocols and daemons needed to run OpenShift and
+      containers. OpenShift provides the means to separate application
+      workloads within the cluster onto separate hosts and containers. It
+      is the responsibility of the organization to appropriately separate
+      their applications into relevant containers to meet this control.
+    status: inherently met
     rules: []
 
   - id: Req-2.2.2
