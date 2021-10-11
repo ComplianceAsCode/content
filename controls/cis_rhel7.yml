@@ -1517,21 +1517,27 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_forward_to_syslog
 
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_compress
 
   - id: 4.2.2.3
     title: Ensure journald is configured to write logfiles to persistent disk (Automated)
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - journald_storage
 
   - id: 4.2.3
     title: Ensure permissions on all logfiles are configured (Manual)

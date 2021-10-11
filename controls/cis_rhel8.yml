@@ -1473,32 +1473,32 @@ controls:
     related_rules:
       - rsyslog_nolisten
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5520
   - id: 4.2.2.1
     title: Ensure journald is configured to send logs to rsyslog (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_forward_to_syslog
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5521
   - id: 4.2.2.2
     title: Ensure journald is configured to compress large log files (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_compress
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5522
   - id: 4.2.2.3
     title: Ensure journald is configured to write logfiles to persistent disk (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - journald_storage
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5523
