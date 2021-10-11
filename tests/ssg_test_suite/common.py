@@ -406,7 +406,9 @@ def template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath
     # test under shared/templates/<template_name>/tests/, the former
     # will preferred. This means we need to process templates first,
     # so they'll be overwritten later if necessary.
-    if rule.template and rule.template['vars']:
+    has_template = rule.template and rule.template['vars']
+    add_templated_tests = has_template and not rule.template['vars']['disable_templated_tests']
+    if add_templated_tests:
         templated_tests = template_builder.get_all_tests(rule.id_, rule.template,
                                                          local_env_yaml)
 
@@ -573,7 +575,10 @@ def iterate_over_rules(product=None):
 
             # Start by checking for templating tests and provision them if
             # present.
-            if rule.template and rule.template['vars']:
+            has_template = rule.template and rule.template['vars']
+            add_templated_tests = has_template and \
+                not rule.template['vars']['disable_templated_tests']
+            if add_templated_tests:
                 templated_tests = template_builder.get_all_tests(
                     rule.id_, rule.template, local_env_yaml)
                 all_tests.update(templated_tests)
