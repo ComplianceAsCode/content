@@ -1,3 +1,7 @@
 #!/bin/bash
 
-rm /etc/cron.deny
+FILE=/etc/cron.deny
+
+if [ -f $FILE ]; then
+	rm $FILE
+fi
