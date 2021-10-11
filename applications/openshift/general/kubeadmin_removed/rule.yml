@@ -23,8 +23,10 @@ identifiers:
 severity: medium
 
 references:
+  cis@ocp4: 3.1.1,5.1.1
   nerc-cip: CIP-004-3 R2.2.2,CIP-004-3 R2.2.3,CIP-007-3 R.1.3,CIP-007-3 R2,CIP-007-3 R5,CIP-007-3 R5.1.1,CIP-007-3 R5.1.3,CIP-007-3 R5.2.1,CIP-007-3 R5.2.3,CIP-007-3 R6.1,CIP-007-3 R6.2,CIP-007-3 R6.3,CIP-007-3 R6.4
   nist: AC-2(2),AC-2(7),AC-2(9),AC-2(10),IA-2(5),MA-4
+  pcidss: Req-2.1
 
 ocil_clause: 'the kubeadmin secret has not been deleted'
 
@@ -32,3 +34,13 @@ ocil: |-
   To verify that the kubeadmin secret has been deleted, make sure
   that <pre>oc get secrets kubeadmin -n kube-system</pre>
   returns a <pre>NotFound</pre> error.
+
+warnings:
+  - general: |-
+      {{{ openshift_cluster_setting("/api/v1/namespaces/kube-system/secrets/kubeadmin") | indent(6) }}}
+
+template:
+  name: compliance_operator_not_found
+  vars:
+    filepath: /api/v1/namespaces/kube-system/secrets/kubeadmin
+
