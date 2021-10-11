@@ -365,8 +365,9 @@ controls:
     * National Institute of Standards Technology (NIST)
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This control is addressed by applying the OpenShift CIS recommendations.
+  status: automated
   controls:
   - id: Req-2.2.1
     title: >-
@@ -2096,6 +2097,7 @@ controls:
     - base
     status: automated
     rules:
+      - audit_log_forwarding_enabled
       - partition_for_var_log_kube_apiserver
       - partition_for_var_log_oauth_apiserver
       - partition_for_var_log_openshift_apiserver
