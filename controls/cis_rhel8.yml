@@ -706,14 +706,14 @@ controls:
     rules:
       - service_rpcbind_disabled
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5231
   - id: 2.2.14
     title: Ensure LDAP server is not enabled (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - service_slapd_disabled
 
   - id: 2.2.15
     title: Ensure DHCP Server is not enabled (Automated)
