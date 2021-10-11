@@ -23,6 +23,7 @@ selections:
     - var_password_pam_unix_remember=5
     - var_accounts_maximum_age_login_defs=60
     - var_password_pam_delay=4000000
+    - login_banner_text=dod_banners
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled

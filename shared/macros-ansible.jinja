@@ -289,7 +289,7 @@ regex_replace("^\^(.*)\$$", "\1")
 
 {{# Strips multibanner regex and keeps only the first banner #}}
 {{% macro ansible_deregexify_multiple_banners() -%}}
-regex_replace("^\((.*)\|.*\)$", "\1")
+regex_replace("^\((.*\.)\|.*\)$", "\1")
 {{%- endmacro %}}
 
 {{# Strips whitespace or newline regex #}}

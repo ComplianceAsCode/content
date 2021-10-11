@@ -473,7 +473,7 @@ controls:
     status: automated
     rules:
       - banner_etc_motd
-      - login_banner_text=cis_default
+      - login_banner_text=cis_banners
 
   - id: 1.8.1.2
     title: Ensure local login warning banner is configured properly (Automated)
@@ -483,7 +483,7 @@ controls:
     status: automated
     rules:
       - banner_etc_issue
-      - login_banner_text=cis_default
+      - login_banner_text=cis_banners
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5225
@@ -534,7 +534,7 @@ controls:
     rules:
       - dconf_gnome_banner_enabled
       - dconf_gnome_login_banner_text
-      - login_banner_text=usgcb_default
+      - login_banner_text=cis_default
 
   - id: 1.9
     title: Ensure updates, patches, and additional security software are installed (Manual)
