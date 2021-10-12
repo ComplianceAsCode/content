@@ -83,7 +83,9 @@ def main():
 
     loader.profiles = profiles_by_id
 
-    benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
+    relative_benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
+    benchmark_root = os.path.join(os.path.dirname(args.product_yaml), relative_benchmark_root)
+
     additional_content_directories = env_yaml.get("additional_content_directories", [])
     add_content_dirs = [os.path.join(base_dir, er_root) for er_root in additional_content_directories if not os.path.isabs(er_root)]
     loader.process_directory_tree(benchmark_root, add_content_dirs)

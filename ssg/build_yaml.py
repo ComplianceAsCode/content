@@ -334,9 +334,9 @@ class Profile(XCCDFEntity):
     @selections.setter
     def selections(self, entries):
         for item in entries:
-            self.apply_selection(item, env_yaml)
+            self.apply_selection(item)
 
-    def apply_selection(self, item, env_yaml):
+    def apply_selection(self, item):
         if "." in item:
             rule, refinement = item.split(".", 1)
             property_, value = refinement.split("=", 1)
@@ -352,22 +352,10 @@ class Profile(XCCDFEntity):
         elif "=" in item:
             varname, value = item.split("=", 1)
             self.variables[varname] = value
+        elif item.startswith("!"):
+            self.unselected.append(item[1:])
         else:
-            product_dir = env_yaml.get('product_dir', None)
-            benchmark_root = env_yaml.get('benchmark_root', None)
-            content_dir = os.path.join(product_dir, benchmark_root)
-            if item.startswith("!"):
-                rule_id = item[1:]
-            else:
-                rule_id = item
-            rule_yaml = get_rule_path_by_id(content_dir, rule_id)
-            if rule_yaml is None:
-                raise ValueError("Unable to find rule '{}'".format(rule_id))
-            rule = Rule.from_yaml(rule_yaml, env_yaml)
-            if item.startswith("!"):
-                self.unselected.append(rule)
-            else:
-                self.selected.append(rule)
+            self.selected.append(item)
 
     def to_xml_element(self):
         element = ET.Element('Profile')
@@ -388,13 +376,13 @@ class Profile(XCCDFEntity):
 
         for selection in self.selected:
             select = ET.Element("select")
-            select.set("idref", str(selection))
+            select.set("idref", selection)
             select.set("selected", "true")
             element.append(select)
 
         for selection in self.unselected:
             unselect = ET.Element("select")
-            unselect.set("idref", str(selection))
+            unselect.set("idref", selection)
             unselect.set("selected", "false")
             element.append(unselect)
 
@@ -414,7 +402,7 @@ class Profile(XCCDFEntity):
         return element
 
     def get_rule_selectors(self):
-        return list(rule.id_ for rule in self.selected + self.unselected)
+        return self.selected + self.unselected
 
     def get_variable_selectors(self):
         return self.variables
@@ -525,12 +513,6 @@ class ResolvableProfile(Profile):
         items = [controls_manager.get_control(policy_id, cid) for cid in control_id_list]
         return items
 
-    def _merge_control(self, control):
-        self.selected.extend(control.rules)
-        for varname, value in control.variables.items():
-            if varname not in self.variables:
-                self.variables[varname] = value
-
     def resolve_controls(self, controls_manager, rules_by_id):
         pass
 
@@ -547,13 +529,24 @@ class ResolvableProfile(Profile):
         updated_refinements.update(self.refine_rules)
         self.refine_rules = updated_refinements
 
+    def resolve_selections_with_rules(self, rules_by_id):
+        selections = set()
+        for rid in self.selected:
+            if rid not in rules_by_id:
+                continue
+            rule = rules_by_id[rid]
+            if not self.rule_filter(rule):
+                continue
+            selections.add(rid)
+        self.resolved_selections = selections
+
     def resolve(self, all_profiles, rules_by_id, controls_manager=None):
         if self.resolved:
             return
 
         self.resolve_controls(controls_manager, rules_by_id)
 
-        self.resolved_selections = set(rule for rule in self.selected if self.rule_filter(rule))
+        self.resolve_selections_with_rules(rules_by_id)
 
         if self.extends:
             if self.extends not in all_profiles:
@@ -604,13 +597,13 @@ class ProfileWithInlinePolicies(ResolvableProfile):
         super(ProfileWithInlinePolicies, self).__init__(* args, ** kwargs)
         self.controls_by_policy = defaultdict(list)
 
-    def apply_selection(self, item, env_yaml):
+    def apply_selection(self, item):
         # ":" is the delimiter for controls but not when the item is a variable
         if ":" in item and "=" not in item:
             policy_id, control_id = item.split(":", 1)
             self.controls_by_policy[policy_id].append(control_id)
         else:
-            super(ProfileWithInlinePolicies, self).apply_selection(item, env_yaml)
+            super(ProfileWithInlinePolicies, self).apply_selection(item)
 
     def _process_controls_ids_into_controls(self, controls_manager, policy_id, controls_ids):
         controls = []
@@ -626,6 +619,12 @@ class ProfileWithInlinePolicies(ResolvableProfile):
                 controls.extend(
                     controls_manager.get_all_controls(policy_id))
         return controls
+
+    def _merge_control(self, control):
+        self.selected.extend(control.rules)
+        for varname, value in control.variables.items():
+            if varname not in self.variables:
+                self.variables[varname] = value
 
     def resolve_controls(self, controls_manager, rules_by_id):
         for policy_id, controls_ids in self.controls_by_policy.items():
@@ -1696,19 +1695,19 @@ class DirectoryLoader(object):
         raise NotImplementedError()
 
     def save_all_entities(self, base_dir):
+        destdir = os.path.join(base_dir, "rules")
+        mkdir_p(destdir)
         if self.all_rules:
-            destdir = os.path.join(base_dir, "rules")
-            mkdir_p(destdir)
             self.save_entities(self.all_rules, destdir)
 
+        destdir = os.path.join(base_dir, "groups")
+        mkdir_p(destdir)
         if self.all_groups:
-            destdir = os.path.join(base_dir, "groups")
-            mkdir_p(destdir)
             self.save_entities(self.all_groups, destdir)
 
+        destdir = os.path.join(base_dir, "values")
+        mkdir_p(destdir)
         if self.all_values:
-            destdir = os.path.join(base_dir, "values")
-            mkdir_p(destdir)
             self.save_entities(self.all_values, destdir)
 
     def save_entities(self, entities, destdir):
@@ -1735,7 +1734,7 @@ class BuildLoader(DirectoryLoader):
 
     def _process_values(self):
         dir_for_values = os.path.join(self.resolved_rules_dir, "..", "values")
-        if self.value_files and self.resolved_rules_dir:
+        if self.resolved_rules_dir:
             mkdir_p(dir_for_values)
 
         for value_yaml in self.value_files:
@@ -1744,8 +1743,6 @@ class BuildLoader(DirectoryLoader):
             self.loaded_group.add_value(value)
 
     def _process_rules(self):
-        if self.rule_files and self.resolved_rules_dir:
-            mkdir_p(self.resolved_rules_dir)
         for rule_yaml in self.rule_files:
             try:
                 rule = Rule.from_yaml(rule_yaml, self.env_yaml, self.sce_metadata)
