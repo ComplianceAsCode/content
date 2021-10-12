@@ -381,8 +381,14 @@ controls:
       one primary function per virtual system component.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      OpenShift nodes run RHEL CoreOS by default, which contains only the
+      necessary services, protocols and daemons needed to run OpenShift and
+      containers. OpenShift provides the means to separate application
+      workloads within the cluster onto separate hosts and containers. It
+      is the responsibility of the organization to appropriately separate
+      their applications into relevant containers to meet this control.
+    status: inherently met
     rules: []
 
   - id: Req-2.2.2
@@ -390,8 +396,10 @@ controls:
       for the function of the system.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      RHEL CoreOS runs only the necessary services, protocols and daemons required
+      for the functionality of OpenShift itself.
+    status: inherently met
     rules: []
 
   - id: Req-2.2.3
@@ -414,10 +422,33 @@ controls:
       TLS may continue using these as a security control after June 30, 2016.'
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
-
+    notes: |-
+      OpenShift does not require any insecure services, protocols or daemons for
+      proper functioning. The deployment comes with TLS enabled by default with
+      strong ciphers and an appropriate version enabled.
+    status: automated
+    rules:
+      - api_server_bind_address
+      - api_server_client_ca
+      - api_server_etcd_ca
+      - api_server_etcd_cert
+      - api_server_etcd_key
+      - api_server_kubelet_certificate_authority
+      - api_server_oauth_https_serving_cert
+      - api_server_openshift_https_serving_cert
+      - api_server_service_account_public_key
+      - api_server_tls_cert
+      - api_server_tls_cipher_suites
+      - api_server_tls_private_key
+      - controller_service_account_private_key
+      - etcd_cert_file
+      - etcd_client_cert_auth
+      - etcd_key_file
+      - etcd_peer_cert_file
+      - etcd_peer_client_cert_auth
+      - etcd_peer_key_file
+      - kubelet_configure_tls_cert
+      - kubelet_configure_tls_key
   - id: Req-2.2.4
     title: 2.2.4 Configure system security parameters to prevent misuse.
     levels:
