@@ -63,11 +63,10 @@ class Status():
         return False
 
 
-class Control():
+class Control(ssg.build_yaml.SelectionHandler):
     def __init__(self):
+        super(Control, self).__init__()
         self.id = None
-        self.rules = {}
-        self.variables = {}
         self.levels = []
         self.notes = ""
         self.title = ""
@@ -109,25 +108,21 @@ class Control():
             benchmark_root = env_yaml.get('benchmark_root', None)
             content_dir = os.path.join(product_dir, benchmark_root)
 
-        for item in selections:
-            if "=" in item:
-                varname, value = item.split("=", 1)
-                control.variables[varname] = value
-            else:
-                control.rules[item] = None
+        control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
         return control
 
     def resolve_with_rules(self, rules_by_id, env_yaml=None):
+        assert 0, "I am not supposed to be called"
         product = None
         if env_yaml:
             product = env_yaml.get('product', None)
 
         fitting_rules = {}
 
-        for rid in self.rules:
+        for rid in self.selected:
             if rid not in rules_by_id:
                 continue
             rule = rules_by_id[rid]
@@ -188,9 +183,7 @@ class Policy():
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
-                    control.rules.update(sc.rules)
-                    control.variables.update(sc.variables)
-                    control.related_rules.extend(sc.related_rules)
+                    control.update_with(sc)
             yield control
 
     def load(self):

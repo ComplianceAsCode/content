@@ -26,7 +26,7 @@ def test_controls_load():
         "a certain period of inactivity."
     assert c_r1.automated == "yes"
 
-    c_r1_rules = (rule.id_ for rule in c_r1.rules)
+    c_r1_rules = c_r1.selected
     assert "sshd_set_idle_timeout" in c_r1_rules
     assert "accounts_tmout" in c_r1_rules
     assert "var_accounts_tmout=10_min" not in c_r1_rules
@@ -42,14 +42,14 @@ def test_controls_load():
     assert c_r2.automated == "no"
     assert c_r2.note == "This is individual depending on the system " \
         "workload therefore needs to be audited manually."
-    assert len(c_r2.rules) == 0
+    assert len(c_r2.selected) == 0
 
     assert not c_r2.notes
 
     c_r4 = controls_manager.get_control("abcd", "R4")
-    assert len(c_r4.rules) == 3
+    assert len(c_r4.selected) == 3
 
-    c_r4_rules = (rule.id_ for rule in c_r4.rules)
+    c_r4_rules = c_r4.selected
     assert "accounts_passwords_pam_faillock_deny_root" in c_r4_rules
     assert "accounts_password_pam_minlen" in c_r4_rules
     assert "accounts_password_pam_ocredit" in c_r4_rules
@@ -149,7 +149,7 @@ def test_controls_load_product():
         "a certain period of inactivity."
     assert c_r1.automated == "yes"
 
-    c_r1_rules = (rule.id_ for rule in c_r1.rules)
+    c_r1_rules = c_r1.selected
     assert "sshd_set_idle_timeout" in c_r1_rules
     assert "accounts_tmout" in c_r1_rules
     assert "var_accounts_tmout=10_min" not in c_r1_rules
@@ -173,6 +173,16 @@ def test_profile_resolution_all_inline():
         ssg.build_yaml.ProfileWithInlinePolicies, "abcd-all-inline")
 
 
+class DictContainingAnyRule(dict):
+    def __getitem__(self, key):
+        rule = ssg.build_yaml.Rule(key)
+        rule.product = "all"
+        return rule
+
+    def __contains__(self, rid):
+        return True
+
+
 def profile_resolution(cls, profile_low):
     product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
@@ -183,7 +193,9 @@ def profile_resolution(cls, profile_low):
     low_profile_path = os.path.join(profiles_dir, profile_low + ".profile")
     profile = cls.from_yaml(low_profile_path, env_yaml)
     all_profiles = {"abcd-low": profile}
-    profile.resolve(all_profiles, controls_manager=controls_manager)
+    rules_by_id = DictContainingAnyRule()
+
+    profile.resolve(all_profiles, rules_by_id, controls_manager=controls_manager)
 
     # Profile 'abcd-low' selects controls R1, R2, R3 from 'abcd' policy,
     # which should add the following rules to the profile:
@@ -213,7 +225,9 @@ def profile_resolution_extends(cls, profile_low, profile_high):
     high_profile_path = os.path.join(profiles_dir, profile_high + ".profile")
     high_profile = cls.from_yaml(high_profile_path, env_yaml)
     all_profiles = {profile_low: low_profile, profile_high: high_profile}
-    high_profile.resolve(all_profiles, controls_manager=controls_manager)
+    rules_by_id = DictContainingAnyRule()
+
+    high_profile.resolve(all_profiles, rules_by_id, controls_manager=controls_manager)
 
     # Profile 'abcd-high' selects controls R1, R2, R3 from 'abcd' policy,
     # which should add the following rules to the profile:
@@ -245,7 +259,9 @@ def profile_resolution_all(cls, profile_all):
     profile_path = os.path.join(profiles_dir, profile_all + ".profile")
     profile = cls.from_yaml(profile_path, env_yaml)
     all_profiles = {profile_all: profile}
-    profile.resolve(all_profiles, controls_manager=controls_manager)
+    rules_by_id = DictContainingAnyRule()
+
+    profile.resolve(all_profiles, rules_by_id, controls_manager=controls_manager)
 
     # Profile 'abcd-all' selects all controls from 'abcd' policy,
     # which should add the following rules and variables to the profile:

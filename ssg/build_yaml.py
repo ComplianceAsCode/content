@@ -107,6 +107,81 @@ def check_warnings(xccdf_structure):
             raise ValueError(msg)
 
 
+class SelectionHandler(object):
+    def __init__(self):
+        self.refine_rules = defaultdict(list)
+        self.variables = dict()
+        self.unselected = []
+        self.selected = []
+
+    @property
+    def selections(self):
+        selections = []
+        for item in self.selected:
+            selections.append(str(item))
+        for item in self.unselected:
+            selections.append("!"+str(item))
+        for varname in self.variables.keys():
+            selections.append(varname+"="+self.variables.get(varname))
+        for rule, refinements in self.refine_rules.items():
+            for prop, val in refinements:
+                selections.append("{rule}.{property}={value}"
+                                  .format(rule=rule, property=prop, value=val))
+        return selections
+
+    @selections.setter
+    def selections(self, entries):
+        for item in entries:
+            self.apply_selection(item)
+
+    def apply_selection(self, item):
+        if "." in item:
+            rule, refinement = item.split(".", 1)
+            property_, value = refinement.split("=", 1)
+            if property_ not in XCCDF_REFINABLE_PROPERTIES:
+                msg = ("Property '{property_}' cannot be refined. "
+                       "Rule properties that can be refined are {refinables}. "
+                       "Fix refinement '{rule_id}.{property_}={value}' in profile '{profile}'."
+                       .format(property_=property_, refinables=XCCDF_REFINABLE_PROPERTIES,
+                               rule_id=rule, value=value, profile=self.id_)
+                       )
+                raise ValueError(msg)
+            self.refine_rules[rule].append((property_, value))
+        elif "=" in item:
+            varname, value = item.split("=", 1)
+            self.variables[varname] = value
+        elif item.startswith("!"):
+            self.unselected.append(item[1:])
+        else:
+            self.selected.append(item)
+
+    def _subtract_refinements(self, extended_refinements):
+        """
+        Given a dict of rule refinements from the extended profile,
+        "undo" every refinement prefixed with '!' in this profile.
+        """
+        for rule, refinements in list(self.refine_rules.items()):
+            if rule.startswith("!"):
+                for prop, val in refinements:
+                    extended_refinements[rule[1:]].remove((prop, val))
+                del self.refine_rules[rule]
+        return extended_refinements
+
+    def update_with(self, rhs):
+        extended_selects = set(rhs.selected)
+        extra_selections = extended_selects.difference(set(self.selected))
+        self.selected.extend(list(extra_selections))
+
+        updated_variables = dict(rhs.variables)
+        updated_variables.update(self.variables)
+        self.variables = updated_variables
+
+        extended_refinements = deepcopy(rhs.refine_rules)
+        updated_refinements = self._subtract_refinements(extended_refinements)
+        updated_refinements.update(self.refine_rules)
+        self.refine_rules = updated_refinements
+
+
 class XCCDFEntity(object):
     """
     This class can load itself from a YAML with Jinja macros,
@@ -127,6 +202,7 @@ class XCCDFEntity(object):
     ID_LABEL = "id"
 
     def __init__(self, id_):
+        super(XCCDFEntity, self).__init__()
         self._assign_defaults()
         self.id_ = id_
 
@@ -257,7 +333,7 @@ class XCCDFEntity(object):
         raise NotImplementedError()
 
 
-class Profile(XCCDFEntity):
+class Profile(XCCDFEntity, SelectionHandler):
     """Represents XCCDF profile
     """
     KEYS = {
@@ -279,14 +355,6 @@ class Profile(XCCDFEntity):
         "description",
         "selections",
     }
-
-    def __init__(self, id_):
-        super(Profile, self).__init__(id_)
-
-        self.selected = []
-        self.unselected = []
-        self.variables = dict()
-        self.refine_rules = defaultdict(list)
 
     @classmethod
     def process_input_dict(cls, input_contents, env_yaml):
@@ -315,47 +383,6 @@ class Profile(XCCDFEntity):
             return rule_filter_from_def(self.filter_rules)
         else:
             return noop_rule_filterfunc
-
-    @property
-    def selections(self):
-        selections = []
-        for item in self.selected:
-            selections.append(str(item))
-        for item in self.unselected:
-            selections.append("!"+str(item))
-        for varname in self.variables.keys():
-            selections.append(varname+"="+self.variables.get(varname))
-        for rule, refinements in self.refine_rules.items():
-            for prop, val in refinements:
-                selections.append("{rule}.{property}={value}"
-                                  .format(rule=rule, property=prop, value=val))
-        return selections
-
-    @selections.setter
-    def selections(self, entries):
-        for item in entries:
-            self.apply_selection(item)
-
-    def apply_selection(self, item):
-        if "." in item:
-            rule, refinement = item.split(".", 1)
-            property_, value = refinement.split("=", 1)
-            if property_ not in XCCDF_REFINABLE_PROPERTIES:
-                msg = ("Property '{property_}' cannot be refined. "
-                       "Rule properties that can be refined are {refinables}. "
-                       "Fix refinement '{rule_id}.{property_}={value}' in profile '{profile}'."
-                       .format(property_=property_, refinables=XCCDF_REFINABLE_PROPERTIES,
-                               rule_id=rule, value=value, profile=self.id_)
-                       )
-                raise ValueError(msg)
-            self.refine_rules[rule].append((property_, value))
-        elif "=" in item:
-            varname, value = item.split("=", 1)
-            self.variables[varname] = value
-        elif item.startswith("!"):
-            self.unselected.append(item[1:])
-        else:
-            self.selected.append(item)
 
     def to_xml_element(self):
         element = ET.Element('Profile')
@@ -507,27 +534,16 @@ class ResolvableProfile(Profile):
     def __init__(self, * args, ** kwargs):
         super(ResolvableProfile, self).__init__(* args, ** kwargs)
         self.resolved = False
-        self.resolved_selections = set()
 
     def _controls_ids_to_controls(self, controls_manager, policy_id, control_id_list):
         items = [controls_manager.get_control(policy_id, cid) for cid in control_id_list]
         return items
 
-    def resolve_controls(self, controls_manager, rules_by_id):
+    def resolve_controls(self, controls_manager):
         pass
 
     def extend_by(self, extended_profile):
-        extended_selects = set(extended_profile.selected)
-        self.resolved_selections.update(extended_selects)
-
-        updated_variables = dict(extended_profile.variables)
-        updated_variables.update(self.variables)
-        self.variables = updated_variables
-
-        extended_refinements = deepcopy(extended_profile.refine_rules)
-        updated_refinements = self._subtract_refinements(extended_refinements)
-        updated_refinements.update(self.refine_rules)
-        self.refine_rules = updated_refinements
+        self.update_with(extended_profile)
 
     def resolve_selections_with_rules(self, rules_by_id):
         selections = set()
@@ -538,13 +554,13 @@ class ResolvableProfile(Profile):
             if not self.rule_filter(rule):
                 continue
             selections.add(rid)
-        self.resolved_selections = selections
+        self.selected = list(selections)
 
     def resolve(self, all_profiles, rules_by_id, controls_manager=None):
         if self.resolved:
             return
 
-        self.resolve_controls(controls_manager, rules_by_id)
+        self.resolve_controls(controls_manager)
 
         self.resolve_selections_with_rules(rules_by_id)
 
@@ -561,13 +577,12 @@ class ResolvableProfile(Profile):
 
             self.extend_by(extended_profile)
 
-        for uns in self.unselected:
-            self.resolved_selections.discard(uns)
+        self.selected = [s for s in set(self.selected) if s not in self.unselected]
 
         self.unselected = []
         self.extends = None
 
-        self.selected = sorted(self.resolved_selections)
+        self.selected = sorted(self.selected)
 
         for rid in self.selected:
             if rid not in rules_by_id:
@@ -578,18 +593,6 @@ class ResolvableProfile(Profile):
                 raise ValueError(msg)
 
         self.resolved = True
-
-    def _subtract_refinements(self, extended_refinements):
-        """
-        Given a dict of rule refinements from the extended profile,
-        "undo" every refinement prefixed with '!' in this profile.
-        """
-        for rule, refinements in list(self.refine_rules.items()):
-            if rule.startswith("!"):
-                for prop, val in refinements:
-                    extended_refinements[rule[1:]].remove((prop, val))
-                del self.refine_rules[rule]
-        return extended_refinements
 
 
 class ProfileWithInlinePolicies(ResolvableProfile):
@@ -620,20 +623,13 @@ class ProfileWithInlinePolicies(ResolvableProfile):
                     controls_manager.get_all_controls(policy_id))
         return controls
 
-    def _merge_control(self, control):
-        self.selected.extend(control.rules)
-        for varname, value in control.variables.items():
-            if varname not in self.variables:
-                self.variables[varname] = value
-
-    def resolve_controls(self, controls_manager, rules_by_id):
+    def resolve_controls(self, controls_manager):
         for policy_id, controls_ids in self.controls_by_policy.items():
             controls = self._process_controls_ids_into_controls(
                 controls_manager, policy_id, controls_ids)
 
             for c in controls:
-                c.resolve_with_rules(rules_by_id)
-                self._merge_control(c)
+                self.update_with(c)
 
 
 class Value(XCCDFEntity):
