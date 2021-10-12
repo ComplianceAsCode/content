@@ -132,7 +132,7 @@ class ProductCPEs(object):
         elif "!" in platform_line:
             negated_test = CPEALLogicalTest(operator="OR", negate="true")
             # remove ! from the element and process it further
-            platform_line.replace("!", "")
+            platform_line = platform_line.replace("!", "")
             negated_test.add_object(self.parse_platform_line(platform_line))
             return negated_test
         else:
@@ -141,9 +141,9 @@ class ProductCPEs(object):
             return cpealfactref
 
     def _convert_platform_to_id(self, platform):
-        id = platform
-        id.replace(" & ", "_and_")
-        id.replace("!", "not_")
+        id = platform.replace(" ", "")
+        id = id.replace("&", "_and_")
+        id = id.replace("!", "not_")
         return id
 
 
