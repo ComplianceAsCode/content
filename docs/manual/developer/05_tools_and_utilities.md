@@ -314,6 +314,8 @@ It supports the following arguments:
 - `-ref`, `--reference` - What reference system to check for. 
   - Defaults to `stigid`
   - `-o`, `--output` - Defaults `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
+  - `--profile-id` - The id of the created profile. Defaults to PROFILE_delta
+  - `--tailoring-id` - The id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default
 
 To execute:
 
