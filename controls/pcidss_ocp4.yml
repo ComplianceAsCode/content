@@ -426,9 +426,29 @@ controls:
       OpenShift does not require any insecure services, protocols or daemons for
       proper functioning. The deployment comes with TLS enabled by default with
       strong ciphers and an appropriate version enabled.
-    status: inherently met
-    rules: []
-
+    status: automated
+    rules:
+      - api_server_bind_address
+      - api_server_client_ca
+      - api_server_etcd_ca
+      - api_server_etcd_cert
+      - api_server_etcd_key
+      - api_server_kubelet_certificate_authority
+      - api_server_oauth_https_serving_cert
+      - api_server_openshift_https_serving_cert
+      - api_server_service_account_public_key
+      - api_server_tls_cert
+      - api_server_tls_cipher_suites
+      - api_server_tls_private_key
+      - controller_service_account_private_key
+      - etcd_cert_file
+      - etcd_client_cert_auth
+      - etcd_key_file
+      - etcd_peer_cert_file
+      - etcd_peer_client_cert_auth
+      - etcd_peer_key_file
+      - kubelet_configure_tls_cert
+      - kubelet_configure_tls_key
   - id: Req-2.2.4
     title: 2.2.4 Configure system security parameters to prevent misuse.
     levels:
