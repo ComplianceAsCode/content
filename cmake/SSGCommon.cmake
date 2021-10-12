@@ -120,9 +120,9 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/build_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/groups"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/values"
+	# DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/rules"
+	# DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/groups"
+	# DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/values"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
 
