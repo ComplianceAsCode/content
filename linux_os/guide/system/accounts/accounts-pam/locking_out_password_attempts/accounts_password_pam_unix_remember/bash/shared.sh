@@ -15,6 +15,6 @@ do
         {{{ bash_provide_pam_module_options("$pamFile", 'password', 'sufficient', 'pam_unix.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
     fi
     if grep -q "pam_pwhistory.so.*" $pamFile; then
-	{{{ bash_provide_pam_module_options("$pamFile", 'password', 'required', 'pam_pwhistory.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
+        {{{ bash_provide_pam_module_options("$pamFile", 'password', 'required', 'pam_pwhistory.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
     fi
 done
