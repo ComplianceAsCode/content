@@ -2276,14 +2276,14 @@ controls:
       - l1_workstation
     automated: no
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5501
   - id: 6.2.16
     title: Ensure no duplicate GIDs exist (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: automated
+    rules:
+      - group_unique_id
 
   - id: 6.2.17
     title: Ensure no duplicate user names exist (Automated)

@@ -1,0 +1,50 @@
+<def-group>
+    <definition class="compliance" id="{{{rule_id}}}" version="1">
+        {{{ oval_metadata("All groups on the system should have unique names for proper accountability.") }}}
+        <criteria comment="There should not exist duplicate group ids entries in /etc/passwd">
+            <criterion test_ref="test_etc_group_no_duplicate_group_ids"/>
+        </criteria>
+    </definition>
+
+    <ind:textfilecontent54_object id="obj_all_group_ids" version="1" comment="Get all group ids">
+        <ind:filepath>/etc/group</ind:filepath>
+        <ind:pattern operation="pattern match">^.+:.+:(\d+):.*$</ind:pattern>
+        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <!-- variable storing count of all group ids - including duplicates -->
+    <local_variable id="variable_count_of_all_group_ids" datatype="int" version="1"
+                    comment="Count of all group ids (including duplicates if any)">
+        <count>
+            <object_component item_field="subexpression" object_ref="obj_all_group_ids"/>
+        </count>
+    </local_variable>
+
+    <!-- OVAL variable to hold the count of unique group ids defined in /etc/group -->
+    <local_variable id="variable_count_of_unique_group_ids" datatype="int" version="1"
+                    comment="Count of unique group ids">
+        <count>
+            <unique>
+                <object_component item_field="subexpression" object_ref="obj_all_group_ids"/>
+            </unique>
+        </count>
+    </local_variable>
+
+    <!-- Turn the OVAL variable representing count of user ids into OVAL object
+       (for use in <variable_test> below)-->
+    <ind:variable_object id="obj_count_of_all_group_ids" version="1">
+        <ind:var_ref>variable_count_of_all_group_ids</ind:var_ref>
+    </ind:variable_object>
+
+    <!-- this state checks that both counts (unique and non-unique) are the same -->
+    <ind:variable_state id="state_no_duplicate_group_ids" version="1">
+        <ind:value var_ref="variable_count_of_unique_group_ids" datatype="int"
+                   operation="equals" var_check="at least one"/>
+    </ind:variable_state>
+
+    <ind:variable_test id="test_etc_group_no_duplicate_group_ids" check="all" check_existence="all_exist"
+                       comment="There should not exist duplicate group ids in /etc/passwd" version="1">
+        <ind:object object_ref="obj_count_of_all_group_ids"/>
+        <ind:state state_ref="state_no_duplicate_group_ids"/>
+    </ind:variable_test>
+</def-group>
