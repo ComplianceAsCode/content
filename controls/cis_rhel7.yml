@@ -1501,9 +1501,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule does not cover /etc/rsyslog.d/*.conf
-#    rules:
-#    - rsyslog_remote_loghost
+    automated: yes
+    rules:
+    - rsyslog_remote_loghost
 
   - id: 4.2.1.6
     title: Ensure remote rsyslog messages are only accepted on designated log hosts. (Manual)
