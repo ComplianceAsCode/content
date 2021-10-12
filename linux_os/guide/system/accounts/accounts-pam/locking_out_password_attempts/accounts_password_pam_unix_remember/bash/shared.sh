@@ -11,7 +11,7 @@ AUTH_FILES[1]="/etc/pam.d/password-auth"
 
 for pamFile in "${AUTH_FILES[@]}"
 do
-    if grep -q "pam_unix.so.*remember=" $pamFile; then
+    if grep -q "pam_unix.so.*" $pamFile; then
         {{{ bash_provide_pam_module_options("$pamFile", 'password', 'sufficient', 'pam_unix.so', 'remember', "$var_password_pam_unix_remember", "$var_password_pam_unix_remember") }}}
     fi
     if grep -q "pam_pwhistory.so.*remember=" $pamFile; then
