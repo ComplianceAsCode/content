@@ -938,7 +938,7 @@ class Group(XCCDFEntity):
     """
     ATTRIBUTES_TO_PASS_ON = (
         "platforms",
-        "cpe_names",
+        "cpe_platform_names",
     )
 
     GENERIC_FILENAME = "group.yml"
@@ -955,7 +955,6 @@ class Group(XCCDFEntity):
         rules=lambda: dict(),
         platform=lambda: "",
         platforms=lambda: set(),
-        cpe_names=lambda: set(),
         cpe_platform_names=lambda: set(),
         ** XCCDFEntity.KEYS
     )
@@ -1130,11 +1129,6 @@ class Group(XCCDFEntity):
         # Once the group has inherited properties, update cpe_names
         if env_yaml:
             for platform in group.platforms:
-                try:
-                    group.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
-                except CPEDoesNotExist:
-                    print("Unsupported platform '%s' in group '%s'." % (platform, group.id_))
-                    raise
                 cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
                     platform)
                 group.cpe_platform_names.add(cpe_platform.id)
@@ -1152,14 +1146,9 @@ class Group(XCCDFEntity):
         self.rules[rule.id_] = rule
         self._pass_our_properties_on_to(rule)
 
-        # Once the rule has inherited properties, update cpe_names
+        # Once the rule has inherited properties, update cpe_platform_names
         if env_yaml:
             for platform in rule.platforms:
-                try:
-                    rule.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
-                except CPEDoesNotExist:
-                    print("Unsupported platform '%s' in rule '%s'." % (platform, rule.id_))
-                    raise
                 cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
                     platform)
                 rule.cpe_platform_names.add(cpe_platform.id)
@@ -1203,7 +1192,6 @@ class Rule(XCCDFEntity):
         platforms=lambda: set(),
         inherited_platforms=lambda: list(),
         template=lambda: None,
-        cpe_names=lambda: set(),
         cpe_platform_names=lambda: set(),
         ** XCCDFEntity.KEYS
     )
@@ -1260,12 +1248,6 @@ class Rule(XCCDFEntity):
         if (
                 env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype)
                 or env_yaml and rule.prodtype == "all"):
-            for platform in rule.platforms:
-                try:
-                    rule.cpe_names.add(env_yaml["product_cpes"].get_cpe_name(platform))
-                except CPEDoesNotExist:
-                    print("Unsupported platform '%s' in rule '%s'." % (platform, rule.id_))
-                    raise
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
                 cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
