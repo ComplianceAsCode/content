@@ -2243,7 +2243,9 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing
+    status: automated
+    rules:
+      - group_unique_id
 
   - id: 6.2.9
     title: Ensure root is the only UID 0 account (Automated)
