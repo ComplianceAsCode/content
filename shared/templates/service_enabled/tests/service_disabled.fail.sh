@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = {{{ PACKAGENAME }}}
 
-systemctl stop {{{ DAEMONNAME }}}
-systemctl disable {{{ DAEMONNAME }}}
+SYSTEMCTL_EXEC='/usr/bin/systemctl'
+"$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
+"$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.service'
