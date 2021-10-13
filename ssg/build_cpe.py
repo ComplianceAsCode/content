@@ -248,7 +248,10 @@ class CPEALPlatform(object):
         return cpe_platform
 
     def __eq__(self, other):
-        return self.test == other.test
+        if not isinstance(other, CPEALPlatform):
+            return False
+        else:
+            return self.test == other.test
 
 
 class CPEALLogicalTest(object):
@@ -262,19 +265,25 @@ class CPEALLogicalTest(object):
         self.objects = []
 
     def __eq__(self, other):
-        if self.operator == other.operator and self.negate == other.negate:
-            diff = [
-                i for i in self.objects + other.objects
-                if i not in self.objects or i not in other.objects]
-            return (not diff)
-        else:
+        if not isinstance(other, CPEALLogicalTest):
             return False
+        else:
+            if self.operator == other.operator and self.negate == other.negate:
+                diff = [
+                    i for i in self.objects + other.objects
+                    if i not in self.objects or i not in other.objects]
+                return (not diff)
+            else:
+                return False
 
     def to_xml_element(self):
         cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
         cpe_test.set('operator', self.operator)
         cpe_test.set('negate', self.negate)
-        for obj in self.objects:
+        # logical tests must go first, therefore we spearate tests and factrefs
+        tests = [t for t in self.objects if isinstance(t, CPEALLogicalTest)]
+        factrefs = [f for f in self.objects if isinstance(f, CPEALFactRef)]
+        for obj in tests + factrefs:
             cpe_test.append(obj.to_xml_element())
 
         return cpe_test
@@ -295,7 +304,10 @@ class CPEALFactRef (object):
         self.name = name
 
     def __eq__(self, other):
-        return self.name == other.name
+        if not isinstance(other, CPEALFactRef):
+            return False
+        else:
+            return self.name == other.name
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
