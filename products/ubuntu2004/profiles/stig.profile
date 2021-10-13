@@ -409,6 +409,7 @@ selections:
     - audit_rules_privileged_commands_fdisk
 
     # UBTU-20-010300 The Ubuntu operating system must have a crontab script running weekly to offload audit events of standalone systems.
+    - auditd_offload_logs
 
     # UBTU-20-010302 The Ubuntu operating system must generate records for successful/unsuccessful uses of delete_module syscall.
     - audit_rules_kernel_module_loading_delete
