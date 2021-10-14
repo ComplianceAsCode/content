@@ -3,11 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
 description: |-
-    {{% if product in ['ubuntu1804','opensuse', 'sle12', 'sle15'] %}}
     {{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0600") }}}
-    {{% else %}}
-    {{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0640") }}}
-    {{% endif %}}
 
 rationale: |-
     If an unauthorized user obtains the private SSH host key file, the host could be
@@ -45,10 +41,10 @@ references:
     stigid@sle12: SLES-12-030220
     stigid@sle15: SLES-15-040250
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms="-rw-------") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}
+    {{{ ocil_file_permissions(file="/etc/ssh/*_key", perms="-rw-------") }}}
 
 template:
     name: file_permissions
@@ -56,9 +52,4 @@ template:
         filepath: /etc/ssh/
         missing_file_pass: 'true'
         file_regex: ^.*_key$
-        filemode: '0640'
-        filemode@sle12: '0600'
-        filemode@sle15: '0600'
-        filemode@ubuntu1604: '0600'
-        filemode@ubuntu1804: '0600'
-        filemode@ubuntu2004: '0600'
+        filemode: '0600'
