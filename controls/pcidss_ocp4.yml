@@ -462,8 +462,12 @@ controls:
       subsystems, file systems, and unnecessary web servers.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform uses RHEL CoreOS by default. In itself, it's
+      a minimal operating system with the sole purpose of running OpenShift. Therefore
+      it doesn't contain extra packages or functionality; only the minimal that's meant
+      to run OpenShift. RHCOS is the recommended operating system for OpenShift.
+    status: inherently met
     rules: []
 
 - id: Req-2.3
