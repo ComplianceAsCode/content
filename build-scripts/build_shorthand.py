@@ -49,9 +49,10 @@ def main():
 
     loader = ssg.build_yaml.LinearLoader(
         env_yaml, args.resolved_base)
-    loader.process_directory_tree(benchmark_root)
+    loader.load_compiled_content()
+    loader.load_benchmark(benchmark_root)
 
-    loader.export_group_to_file(args.output)
+    loader.export_benchmark_to_file(args.output)
 
 
 if __name__ == "__main__":

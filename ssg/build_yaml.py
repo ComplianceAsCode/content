@@ -1792,13 +1792,18 @@ class LinearLoader(object):
             entity = cls.from_yaml(fname, self.env_yaml)
             destination[entity.id_] = entity
 
-    def load_all(self, start_dir):
+    def load_benchmark(self, directory):
         self.benchmark = Benchmark.from_yaml(
-            os.path.join(start_dir, "benchmark.yml"), self.env_yaml, "product-name")
+            os.path.join(directory, "benchmark.yml"), self.env_yaml, "product-name")
         self.benchmark.add_value_needed_for_ocil_clauses()
 
         self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
 
+        benchmark_first_groups = self.find_first_groups_ids(directory)
+        for gid in benchmark_first_groups:
+            self.benchmark.add_group(self.groups[gid], self.env_yaml)
+
+    def load_compiled_content(self):
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.rules, Rule)
 
@@ -1814,11 +1819,5 @@ class LinearLoader(object):
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
 
-    def process_directory_tree(self, start_dir):
-        self.load_all(start_dir)
-        benchmark_first_groups = self.find_first_groups_ids(start_dir)
-        for gid in benchmark_first_groups:
-            self.benchmark.add_group(self.groups[gid], self.env_yaml)
-
-    def export_group_to_file(self, filename):
+    def export_benchmark_to_file(self, filename):
         return self.benchmark.to_file(filename)
