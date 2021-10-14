@@ -30,12 +30,15 @@ references:
 
 ocil_clause: 'Namespaced Network Policies needs review'
 
+# same as above except filters the names only. Used in OCIL only, not in the 'warnings attribute'
+{{% set non_ctlplane_namespaces_filter_names = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.name ]' %}}
+
 ocil: |-
     Verify that the every non-control plane namespace has an appropriate
     NetworkPolicy.
 
     To get all the non-control plane namespaces, you can do the
-    following command <tt>{{{ ocil_oc_pipe_jq_filter('namespaces', non_ctlplane_namespaces_filter) }}}</tt>
+    following command <tt>{{{ ocil_oc_pipe_jq_filter('namespaces', non_ctlplane_namespaces_filter_names) }}}</tt>
 
     To get all the non-control plane namespaces with a NetworkPolicy, you can do the
     following command <tt>{{{ ocil_oc_pipe_jq_filter('networkpolicies', networkpolicies_for_non_ctlplane_namespaces_filter, all_namespaces=true) }}}</tt>
