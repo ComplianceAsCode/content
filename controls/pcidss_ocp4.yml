@@ -337,9 +337,16 @@ controls:
     Protocol (SNMP) community strings, etc.).
   levels:
   - base
-  notes: ''
-  status: pending
-  controls: []
+  notes: |-
+    The Openshift Platform doesn't come with any hardcoded credentials or passwords.
+    Authenticators are uniquely created at deployment-time, including credentials
+    for an admin user (called `kubeadmin`) which is meant for bootstrapping purposes.
+
+    It is recommended for deployers to delete this account in favor of using an IdP
+    and setting up appropriate permissions via RBAC roles.
+  status: automated
+  rules:
+  - kubeadmin_removed
 
 - id: Req-2.1.1
   title: 2.1.1 For wireless environments connected to the cardholder data environment
