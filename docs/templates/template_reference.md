@@ -229,6 +229,15 @@
                 parameter: user-administration-disabled
                 value: "true"
 
+#### file_existence
+- Check if a file exists or doesn't exist.
+
+- Parameters:
+    - **filepath** - File path to be checked.
+    - **exists** - If set to `true` the check will fail if the file doesn't exist and vice versa for `false`.
+
+- Languages: Ansible, Bash, OVAL
+
 #### file_groupowner
 -   Check group that owns the given file.
 

@@ -28,7 +28,7 @@ ocil_clause: 'the file /etc/at.deny exists'
 
 ocil: |-
     The file <tt>/etc/at.deny</tt> should not exist.
-    This can be checked by runnig the following
+    This can be checked by running the following
     <pre>
     stat /etc/at.deny
     </pre>
@@ -36,3 +36,9 @@ ocil: |-
     <pre>
     stat: cannot stat `/etc/at.deny': No such file or directory
     </pre>
+
+template:
+    name: file_existence
+    vars:
+        filepath: /etc/at.deny
+        exists: false

@@ -1,0 +1,25 @@
+<def-group>
+        {{%- if EXISTS -%}}
+        {{% set TENSE = "does" %}}
+        {{% set CHECK = "all_exist" %}}
+        {{%- else -%}}
+        {{% set TENSE = "does not" %}}
+        {{% set CHECK = "none_exist" %}}
+        {{%- endif -%}}
+    <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+
+        {{{ oval_metadata("This test makes sure that" + FILEPATH + " " + TENSE +  " exist.") }}}
+        <criteria>
+            <criterion comment="Ensure that {{{FILEPATH}}} {{{TENSE}}} exist." test_ref="test_{{{_RULE_ID}}}" />
+        </criteria>
+    </definition>
+
+    <unix:file_test id="test_{{{_RULE_ID}}}" check="all" check_existence="{{{CHECK}}}"
+                    version="1" comment="Test that that {{{FILEPATH}}} {{{TENSE}}} exist">
+        <unix:object object_ref="object_{{{_RULE_ID}}}" />
+    </unix:file_test>
+
+    <unix:file_object comment="{{{FILEPATH}}}" id="object_{{{_RULE_ID}}}" version="1">
+        <unix:filepath>{{{FILEPATH}}}</unix:filepath>
+    </unix:file_object>
+</def-group>

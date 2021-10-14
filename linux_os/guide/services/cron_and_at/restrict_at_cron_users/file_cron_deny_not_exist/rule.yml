@@ -36,3 +36,9 @@ ocil: |-
     <pre>
     stat: cannot stat `/etc/cron.deny': No such file or directory
     </pre>
+
+template:
+    name: file_existence
+    vars:
+        filepath: /etc/cron.deny
+        exists: false
