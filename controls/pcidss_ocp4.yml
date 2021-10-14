@@ -483,9 +483,32 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: automated
   rules:
-  - file_owner_worker_ca
+    - api_server_bind_address
+    - api_server_client_ca
+    - api_server_etcd_ca
+    - api_server_etcd_cert
+    - api_server_etcd_key
+    - api_server_https_for_kubelet_conn
+    - api_server_insecure_port
+    - api_server_kubelet_certificate_authority
+    - api_server_oauth_https_serving_cert
+    - api_server_openshift_https_serving_cert
+    - api_server_service_account_public_key
+    - api_server_tls_cert
+    - api_server_tls_cipher_suites
+    - api_server_tls_private_key
+    - controller_service_account_private_key
+    - etcd_cert_file
+    - etcd_client_cert_auth
+    - etcd_key_file
+    - etcd_peer_cert_file
+    - etcd_peer_client_cert_auth
+    - etcd_peer_key_file
+    - kubelet_configure_tls_cert
+    - kubelet_configure_tls_key
+    - ocp_no_ldap_insecure
 
 - id: Req-2.4
   title: 2.4 Maintain an inventory of system components that are in scope for PCI
