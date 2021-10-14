@@ -307,3 +307,5 @@ selections:
     - sudo_require_reauthentication
     - auditd_overflow_action
     - accounts_authorized_local_users
+    - grub2_password_legacy
+    - grub2_uefi_password_legacy
