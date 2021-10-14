@@ -33,7 +33,7 @@ declare -a NEW_ARS=()
 
 for idx in "${!VALUES[@]}"
 do
- {{{ bash_provide_pam_module_options(PATH, TYPE, CONTROL_FLAG, MODULE, "${VALUE_NAMES[$idx]}", "${VALUES[$idx]}", "${VALUES[$idx]}") }}}
+    {{{ bash_provide_pam_module_options(PATH, TYPE, CONTROL_FLAG, MODULE, "${VALUE_NAMES[$idx]}", "${VALUES[$idx]}", "${VALUES[$idx]}") | indent(4) }}}
 done
 
 
