@@ -1,0 +1,7 @@
+---
+# platform = multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+  kubeletConfig:
+    eventRecordQPS: {{.var_event_record_qps}}

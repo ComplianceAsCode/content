@@ -1,0 +1,8 @@
+---
+# platform = multi_platform_ocp
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+  kubeletConfig:
+    evictionHard:
+      imagefs.available: {{.var_kubelet_evictionhard_imagefs_available}}
