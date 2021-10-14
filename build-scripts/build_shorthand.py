@@ -5,7 +5,6 @@ from __future__ import print_function
 import argparse
 import os
 import os.path
-import sys
 
 import ssg.build_yaml
 import ssg.utils
@@ -43,14 +42,10 @@ def main():
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
 
-    profiles_root = os.path.join(args.resolved_base, "profiles")
-
     # we have to "absolutize" the paths the right way, relative to the
     # product_yaml path
     if not os.path.isabs(benchmark_root):
         benchmark_root = os.path.join(base_dir, benchmark_root)
-    if not os.path.isabs(profiles_root):
-        profiles_root = os.path.join(base_dir, profiles_root)
 
     loader = ssg.build_yaml.LinearLoader(
         env_yaml, args.resolved_base)

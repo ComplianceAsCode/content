@@ -16,7 +16,7 @@ import yaml
 
 from .build_cpe import CPEDoesNotExist
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM
-from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir, get_rule_path_by_id
+from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
 from .cce import is_cce_format_valid, is_cce_value_valid
@@ -1237,8 +1237,8 @@ class Rule(XCCDFEntity):
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
-            rule.sce_metadata["relative_path"] = (
-                env_yaml["product"] + "/checks/sce/" + rule.sce_metadata['filename'])
+            rule.sce_metadata["relative_path"] = os.path.join(
+                env_yaml["product"], "checks/sce", rule.sce_metadata['filename'])
 
         rule.validate_prodtype(yaml_file)
         rule.validate_identifiers(yaml_file)

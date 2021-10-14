@@ -8,8 +8,6 @@ import ssg.build_yaml
 import ssg.yaml
 import ssg.utils
 
-from ssg.rules import get_rule_path_by_id
-
 
 class InvalidStatus(Exception):
     pass
@@ -113,33 +111,6 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
         return control
-
-    def resolve_with_rules(self, rules_by_id, env_yaml=None):
-        assert 0, "I am not supposed to be called"
-        product = None
-        if env_yaml:
-            product = env_yaml.get('product', None)
-
-        fitting_rules = {}
-
-        for rid in self.selected:
-            if rid not in rules_by_id:
-                continue
-            rule = rules_by_id[rid]
-
-            # Check if rule is applicable to product, i.e.: prodtype has product id
-            if product is None:
-                # The product was not specified, simply add the rule
-                fitting_rules[rid] = rule
-            else:
-                if rule.prodtype == "all" or product in rule.prodtype:
-                    fitting_rules[rid] = rule
-                else:
-                    logging.info(
-                        "Rule {item} doesn't apply to {product}"
-                        .format(item=rid, product=product))
-
-        self.rules = fitting_rules
 
 
 class Level():

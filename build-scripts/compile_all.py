@@ -16,19 +16,19 @@ import ssg.environment
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--build-config-yaml",
+        "--build-config-yaml", required=True,
         help="YAML file with information about the build configuration. "
         "e.g.: ~/scap-security-guide/build/build_config.yml "
         "needed for autodetection of profile root"
     )
     parser.add_argument(
-        "--product-yaml",
+        "--product-yaml", required=True,
         help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/rhel7/product.yml "
+        "e.g.: ~/scap-security-guide/products/rhel7/product.yml "
         "needed for autodetection of profile root"
     )
     parser.add_argument(
-        "--resolved-base",
+        "--resolved-base", required=True,
         help="To which directory to put processed rule/group/value YAMLs.")
     parser.add_argument(
         "--controls-dir",
@@ -59,7 +59,7 @@ def get_all_content_directories(env_yaml, product_yaml):
 
 
 def get_additional_content_directories(env_yaml):
-    # we assube that the project root is one directory above build-scripts
+    # we assume that the project root is one directory above build-scripts
     project_root = os.path.dirname(os.path.dirname(__file__))
     additional_content_directories = env_yaml.get("additional_content_directories", [])
 
