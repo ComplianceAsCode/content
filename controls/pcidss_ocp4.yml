@@ -453,9 +453,16 @@ controls:
     title: 2.2.4 Configure system security parameters to prevent misuse.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      While it's possible to manually configure the security settings
+      in the Openshift Container Platform, the Compliance Operator provides
+      an automated way of checking for a secure configuration and automatically
+      remediating issues according to known security standards. It's usage
+      is recommended to ensure appropriate configuration is set and prevent
+      drift.
+    status: automated
+    rules:
+    - compliancesuite_exists
 
   - id: Req-2.2.5
     title: 2.2.5 Remove all unnecessary functionality, such as scripts, drivers, features,
