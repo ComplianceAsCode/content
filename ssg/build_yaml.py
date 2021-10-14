@@ -560,7 +560,8 @@ class ResolvableProfile(Profile):
         if self.resolved:
             return
 
-        self.resolve_controls(controls_manager)
+        if controls_manager:
+            self.resolve_controls(controls_manager)
 
         self.resolve_selections_with_rules(rules_by_id)
 
@@ -1588,9 +1589,9 @@ class DirectoryLoader(object):
         self.value_files = []
         self.subdirectories = []
 
-        self.all_values = set()
-        self.all_rules = set()
-        self.all_groups = set()
+        self.all_values = dict()
+        self.all_rules = dict()
+        self.all_groups = dict()
 
         self.profiles_dir = profiles_dir
         self.env_yaml = env_yaml
@@ -1650,7 +1651,7 @@ class DirectoryLoader(object):
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml)
-            self.all_groups.add(group)
+            self.all_groups[group.id_] = group
 
         return group
 
@@ -1668,9 +1669,14 @@ class DirectoryLoader(object):
 
     def process_directory_tree(self, start_dir, extra_group_dirs=None):
         self._collect_items_to_load(start_dir)
-        if extra_group_dirs is not None:
+        if extra_group_dirs:
             self.subdirectories += extra_group_dirs
         self._load_group_process_and_recurse(start_dir)
+
+    def process_directory_trees(self, directories):
+        start_dir = directories[0]
+        extra_group_dirs = directories[1:]
+        return self.process_directory_tree(start_dir, extra_group_dirs)
 
     def _recurse_into_subdirs(self):
         for subdir in self.subdirectories:
@@ -1694,17 +1700,17 @@ class DirectoryLoader(object):
         destdir = os.path.join(base_dir, "rules")
         mkdir_p(destdir)
         if self.all_rules:
-            self.save_entities(self.all_rules, destdir)
+            self.save_entities(self.all_rules.values(), destdir)
 
         destdir = os.path.join(base_dir, "groups")
         mkdir_p(destdir)
         if self.all_groups:
-            self.save_entities(self.all_groups, destdir)
+            self.save_entities(self.all_groups.values(), destdir)
 
         destdir = os.path.join(base_dir, "values")
         mkdir_p(destdir)
         if self.all_values:
-            self.save_entities(self.all_values, destdir)
+            self.save_entities(self.all_values.values(), destdir)
 
     def save_entities(self, entities, destdir):
         if not entities:
@@ -1717,25 +1723,17 @@ class DirectoryLoader(object):
 
 class BuildLoader(DirectoryLoader):
     def __init__(self, profiles_dir, env_yaml,
-                 resolved_rules_dir=None, sce_metadata_path=None):
+                 sce_metadata_path=None):
         super(BuildLoader, self).__init__(profiles_dir, env_yaml)
-
-        self.resolved_rules_dir = resolved_rules_dir
-        if resolved_rules_dir and not os.path.isdir(resolved_rules_dir):
-            os.mkdir(resolved_rules_dir)
 
         self.sce_metadata = None
         if sce_metadata_path and os.path.getsize(sce_metadata_path):
             self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
 
     def _process_values(self):
-        dir_for_values = os.path.join(self.resolved_rules_dir, "..", "values")
-        if self.resolved_rules_dir:
-            mkdir_p(dir_for_values)
-
         for value_yaml in self.value_files:
             value = Value.from_yaml(value_yaml, self.env_yaml)
-            self.all_values.add(value)
+            self.all_values[value.id_] = value
             self.loaded_group.add_value(value)
 
     def _process_rules(self):
@@ -1748,7 +1746,7 @@ class BuildLoader(DirectoryLoader):
             prodtypes = parse_prodtype(rule.prodtype)
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue
-            self.all_rules.add(rule)
+            self.all_rules[rule.id_] = rule
             self.loaded_group.add_rule(rule, env_yaml=self.env_yaml)
 
             if self.loaded_group.platforms:
@@ -1758,7 +1756,7 @@ class BuildLoader(DirectoryLoader):
 
     def _get_new_loader(self):
         loader = BuildLoader(
-            self.profiles_dir, self.env_yaml, self.resolved_rules_dir)
+            self.profiles_dir, self.env_yaml)
         # Do it this way so we only have to parse the SCE metadata once.
         loader.sce_metadata = self.sce_metadata
         return loader

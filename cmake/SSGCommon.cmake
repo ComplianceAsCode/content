@@ -102,11 +102,8 @@ macro(ssg_build_shorthand_xml PRODUCT)
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-	BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/rules"
-	BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/groups"
-	BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/values"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" -o "${CMAKE_CURRENT_BINARY_DIR}/profiles/{name}.profile" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/profiles/"
         DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
         COMMENT "[${PRODUCT}-content] compiling everything"
@@ -120,9 +117,6 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS ${BASH_REMEDIATION_FNS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/build_shorthand.py"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-	# DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/rules"
-	# DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/groups"
-	# DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/values"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
 
