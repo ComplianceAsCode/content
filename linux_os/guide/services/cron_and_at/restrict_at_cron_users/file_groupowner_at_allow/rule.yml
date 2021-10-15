@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,ubuntu2004
+prodtype: rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Verify Group Who Owns /etc/at.allow file'
 
@@ -14,7 +14,12 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-87102-0
+    cce@rhel9: CCE-87103-8
+
 references:
+    cis@rhel8: 5.1.8
     cis@sle12: 5.2.9
     cis@sle15: 5.1.9
     cis@ubuntu2004: 5.1.9
