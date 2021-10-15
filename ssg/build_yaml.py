@@ -1132,6 +1132,10 @@ class Group(XCCDFEntity):
                 cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
                     platform)
                 group.cpe_platform_names.add(cpe_platform.id)
+                if cpe_platform not in env_yaml[
+                        "product_cpes"].cpe_platform_specification.platforms:
+                    env_yaml["product_cpes"].cpe_platform_specification.add_platform(
+                        cpe_platform)
 
     def _pass_our_properties_on_to(self, obj):
         for attr in self.ATTRIBUTES_TO_PASS_ON:
@@ -1152,6 +1156,10 @@ class Group(XCCDFEntity):
                 cpe_platform = env_yaml["product_cpes"].parse_platform_definition(
                     platform)
                 rule.cpe_platform_names.add(cpe_platform.id)
+                if cpe_platform not in env_yaml[
+                        "product_cpes"].cpe_platform_specification.platforms:
+                    env_yaml["product_cpes"].cpe_platform_specification.add_platform(
+                        cpe_platform)
 
     def __str__(self):
         return self.id_
