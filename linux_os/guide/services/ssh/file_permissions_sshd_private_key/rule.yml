@@ -2,8 +2,16 @@ documentation_complete: true
 
 title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
+{{% if product == 'rhcos4' %}}
+{{% set perms = "-rw-r-----" %}}
+{{% set perms_num = "0640" %}}
+{{% else %}}
+{{% set perms = "-rw-------" %}}
+{{% set perms_num = "0600" %}}
+{{% endif %}}
+
 description: |-
-    {{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0600") }}}
+    {{{ describe_file_permissions(file="/etc/ssh/*_key", perms=perms_num) }}}
 
 rationale: |-
     If an unauthorized user obtains the private SSH host key file, the host could be
@@ -41,10 +49,10 @@ references:
     stigid@sle12: SLES-12-030220
     stigid@sle15: SLES-15-040250
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms="-rw-------") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms=perms) }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/ssh/*_key", perms="-rw-------") }}}
+    {{{ ocil_file_permissions(file="/etc/ssh/*_key", perms=perms) }}}
 
 template:
     name: file_permissions
@@ -53,3 +61,4 @@ template:
         missing_file_pass: 'true'
         file_regex: ^.*_key$
         filemode: '0600'
+        filemode@rhcos4: '0640'
