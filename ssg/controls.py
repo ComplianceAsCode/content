@@ -8,8 +8,6 @@ import ssg.build_yaml
 import ssg.yaml
 import ssg.utils
 
-from ssg.rules import get_rule_path_by_id
-
 
 class InvalidStatus(Exception):
     pass
@@ -63,11 +61,10 @@ class Status():
         return False
 
 
-class Control():
+class Control(ssg.build_yaml.SelectionHandler):
     def __init__(self):
+        super(Control, self).__init__()
         self.id = None
-        self.rules = []
-        self.variables = {}
         self.levels = []
         self.notes = ""
         self.title = ""
@@ -98,7 +95,7 @@ class Control():
             raise ValueError(msg)
         control.levels = control_dict.get("levels", default_level)
         control.notes = control_dict.get("notes", "")
-        selections = control_dict.get("rules", [])
+        selections = control_dict.get("rules", {})
 
         product = None
         product_dir = None
@@ -109,28 +106,7 @@ class Control():
             benchmark_root = env_yaml.get('benchmark_root', None)
             content_dir = os.path.join(product_dir, benchmark_root)
 
-        for item in selections:
-            if "=" in item:
-                varname, value = item.split("=", 1)
-                control.variables[varname] = value
-            else:
-                rule_yaml = get_rule_path_by_id(content_dir, item)
-                if rule_yaml is None:
-                    # item not found in benchmark_root
-                    continue
-                rule = ssg.build_yaml.Rule.from_yaml(rule_yaml, env_yaml)
-
-                # Check if rule is applicable to product, i.e.: prodtype has product id
-                if product is None:
-                    # The product was not specified, simply add the rule
-                    control.rules.append(rule)
-                else:
-                    if rule.prodtype == "all" or product in rule.prodtype:
-                        control.rules.append(rule)
-                    else:
-                        logging.info("Rule {item} doesn't apply to {product}".format(
-                            item=item,
-                            product=product))
+        control.selections = selections
 
         control.related_rules = control_dict.get("related_rules", [])
         control.note = control_dict.get("note")
@@ -178,9 +154,7 @@ class Policy():
             if "controls" in node:
                 for sc in self._parse_controls_tree(node["controls"]):
                     yield sc
-                    control.rules.extend(sc.rules)
-                    control.variables.update(sc.variables)
-                    control.related_rules.extend(sc.related_rules)
+                    control.update_with(sc)
             yield control
 
     def load(self):

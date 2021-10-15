@@ -121,11 +121,18 @@ def get_all(ssg_root):
     return products(linux_products, other_products)
 
 
+def get_profiles_directory(env_yaml):
+    profiles_root = None
+    if env_yaml:
+        profiles_root = required_key(env_yaml, "profiles_root")
+    return profiles_root
+
+
 def get_profile_files_from_root(env_yaml, product_yaml):
     profile_files = []
     if env_yaml:
+        profiles_root = get_profiles_directory(env_yaml)
         base_dir = os.path.dirname(product_yaml)
-        profiles_root = required_key(env_yaml, "profiles_root")
         profile_files = sorted(glob("{base_dir}/{profiles_root}/*.profile"
                                .format(profiles_root=profiles_root, base_dir=base_dir)))
     return profile_files

@@ -165,12 +165,3 @@ def find_rule_dirs_in_paths(base_dirs):
         for cur_dir in base_dirs:
             for d in find_rule_dirs(cur_dir):
                 yield d
-
-
-def get_rule_path_by_id(benchmark_dir, rule_id):
-    for root, _, files in os.walk(benchmark_dir):
-        if os.path.basename(root) == rule_id:
-            for f in files:
-                if f == "rule.yml":
-                    return os.path.join(root, f)
-    return None
