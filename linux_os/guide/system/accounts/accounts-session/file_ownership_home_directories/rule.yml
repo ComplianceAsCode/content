@@ -33,3 +33,11 @@ ocil_clause: 'the user ownership is incorrect'
 ocil: |-
     To verify the home directory ownership, run the following command:
     <pre># ls -ld $(awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+
+warnings:
+    - general: |-
+       This rule ensures every home directory related to an interactive user is owned by an
+       interactive user. It also ensures that interactive users are owners of one and only one home
+       directory. However, due OVAL limitation, this rule can evaluate a false positive in a
+       specific situation where two interactive users cross the ownership of their respective
+       home directories.

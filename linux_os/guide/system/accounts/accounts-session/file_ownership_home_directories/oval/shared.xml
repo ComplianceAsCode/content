@@ -1,0 +1,144 @@
+<def-group>
+  <!-- Updated references of the OVAL language used in this file can be found in this link: 
+       https://oval-community-guidelines.readthedocs.io/en/latest/oval-schema-documentation/oval-definitions-schema.html
+  -->
+
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("All interactive user's Home Directories must be owned by its user") }}}
+    <criteria operator="AND">
+      <criteria>
+        <criterion test_ref="test_file_ownership_home_directories"
+                   comment="All interactive user's Home Directories must be owned by its user"/>
+      </criteria>
+      <criteria>
+        <criterion test_ref="test_file_ownership_home_directories_duplicated" 
+                   comment="Interactive users should own only one Home Directory"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- 
+    Extract a list composed of password objects filtered by UIDs starting in 1000 and not equal
+    to "nobody". Most of (if not all) distros have the special user "nobody" with uid 65354.
+    Despite it be technically classified as an interactive user, it is a special case with very
+    limited access. So, we ignore it. The resulted password object will be further used to create
+    local variables composed by UIDs e Home Dirs.
+  -->
+  <unix:password_object id="object_file_ownership_home_directories_objects" version="1">
+    <unix:username datatype="string" operation="not equal">nobody</unix:username>
+    <filter action="include">state_file_ownership_home_directories_interactive_uids</filter>
+  </unix:password_object>
+
+  <!--
+    In distros which uses PAM (almost all), the uid of interactive users starts at 1000. This 
+    password_state object will make sure that only interactive users compose the password_object.
+  -->
+  <unix:password_state id="state_file_ownership_home_directories_interactive_uids" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+  </unix:password_state>
+
+  <!-- 
+    #### creation of object ####
+    From the list of interactive users objects we create a local variable composed of their home dirs.
+  -->
+  <local_variable id="var_file_ownership_home_directories_dirs" datatype="string" version="1"
+                  comment="Variable including all home dirs from interactive users">
+    <object_component item_field="home_dir" object_ref="object_file_ownership_home_directories_objects"/>
+  </local_variable>
+
+  <!-- 
+    Now we have the home dirs, but to test their ownership we need a "file_object" and not a
+    password object, as the initial source of this information is. So, we create this file_object
+    based on content from the previous local variable.
+  -->
+  <unix:file_object id="object_file_ownership_home_directories_dirs" version="1">
+    <unix:path var_ref="var_file_ownership_home_directories_dirs" var_check="at least one"/>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <!-- 
+    #### creation of state ####
+    From the list of interactive users objects we create a local variable composed of their uids.
+  -->
+  <local_variable id="var_file_ownership_home_directories_uids" datatype="int" version="1"
+                  comment="List of interactive users uids">
+    <object_component item_field="user_id" object_ref="object_file_ownership_home_directories_objects"/>
+  </local_variable>
+
+  <!--
+    Now we have the relevant uids, but we need a "file_state" object to use in our intendend test.
+    So, we create this file_state based on content from the previous local variable.
+  -->
+  <unix:file_state id="state_file_ownership_home_directories_uids" version="1">
+    <unix:user_id datatype="int" var_check="only one" var_ref="var_file_ownership_home_directories_uids"/>
+  </unix:file_state>
+
+  <!--
+    #### creation of test ####
+    Perform the test to ensure that all home dirs are owned by an interactive user. 
+    This test will make sure that no foreign or system user is owner of an existing home dir.
+    However, this can't ensure that one local interactive user is the owner of only one home dir.
+    Currently this is an OVAL limitation which we try to mitigate with a second test below.
+  -->
+  <unix:file_test id="test_file_ownership_home_directories" check="all" check_existence="all_exist"
+                  version="1" comment="All home directories are owned by a local interactive user">
+    <unix:object object_ref="object_file_ownership_home_directories_dirs"/>
+    <unix:state state_ref="state_file_ownership_home_directories_uids"/>
+  </unix:file_test>
+
+  <!--
+    We create an extra test to make sure that the number of home dirs and their respective owners
+    are the same. This is to catch situations where one local user owns more than one home dir.
+    However, we still can have a situation where two local users cross the ownership of their
+    respective home dirs. Although very atypical, we should be aware of this possible false
+    positive and that it is not possible to be solved with the current OVAL capabilities.
+  -->
+  <!--
+    This create an int variable composed by the count of file_object items.
+  -->
+  <local_variable id="var_file_ownership_home_directories_uids_count" datatype="int" version="1"
+                  comment="Count home dirs related to interactive users">
+    <count>
+      <object_component item_field="user_id" object_ref="object_file_ownership_home_directories_dirs"/>
+    </count>
+  </local_variable>
+
+  <!--
+    This create an int variable composed by the count of unique user_ids collected from
+    file_object items.
+  -->
+  <local_variable id="var_file_ownership_home_directories_uids_count_uniq" datatype="int" version="1"
+                  comment="Count current owners of relevant home dirs">
+    <count>
+      <unique>
+        <object_component item_field="user_id" object_ref="object_file_ownership_home_directories_dirs"/>
+      </unique>
+    </count>
+  </local_variable>
+
+  <!--
+    #### creation of object ####
+    Turn the OVAL variable representing count of home dirs into OVAL object.
+    This way we can test it further.
+  -->
+  <ind:variable_object id="object_file_ownership_home_directories_uids_count" version="1">
+    <ind:var_ref>var_file_ownership_home_directories_uids_count</ind:var_ref>
+  </ind:variable_object>
+
+  <!--
+    #### creation of state ####
+    this state checks that both counts (unique and non-unique) are the same
+  -->
+  <ind:variable_state id="state_file_ownership_home_directories_uids_count_uniq" version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+               var_ref="var_file_ownership_home_directories_uids_count_uniq"/>
+  </ind:variable_state>
+
+  <!-- #### creation of test #### -->
+  <ind:variable_test id="test_file_ownership_home_directories_duplicated" check="all" 
+                     check_existence="all_exist" version="1"
+                     comment="It should not exist duplicated owners of home dirs">
+    <ind:object object_ref="object_file_ownership_home_directories_uids_count"/>
+    <ind:state state_ref="state_file_ownership_home_directories_uids_count_uniq"/>
+  </ind:variable_test>
+</def-group>
