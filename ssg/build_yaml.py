@@ -313,7 +313,15 @@ class XCCDFEntity(object):
             local_env_yaml = dict()
             local_env_yaml.update(env_yaml)
 
-        data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml)
+        try:
+            data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml)
+        except DocumentationNotComplete as exc:
+            raise
+        except Exception as exc:
+            msg = (
+                "Error loading a {class_name} from {filename}: {error}"
+                .format(class_name=cls.__name__, filename=yaml_file, error=str(exc)))
+            raise RuntimeError(msg)
 
         result = cls.get_instance_from_full_dict(data_dict)
 
