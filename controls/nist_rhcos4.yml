@@ -15341,19 +15341,17 @@ controls:
     AC-3, AC-5 and AC-6.
   rules: []
 - id: SI-10
-  status: pending
+  status: inherently met
   notes: |-
-    The customer will be responsible for checking the validity of
-    information inputs to customer-controlled operating systems and
-    software. A successful control response will need to discuss the
-    specific inputs for which the validity is checked, the rationale
-    for selecting those inputs for validity checking, and the response
-    taken by the system to invalid inputs.
+    The vendor (Red Hat) conducts a series of tests during our product
+    development process, including static and dynamic code analysis. As issues
+    are found, they are reviewed and prioritized by Engineering to be
+    addressed, deferred, or as "not applicable". The vendor does not share the
+    results of the internal tests.
 
-    A control response for SI-10 is planned. Engineering progress can be
-    tracked via:
-
-    https://issues.redhat.com/browse/CMP-393
+    Static code analysis is built into every build that traverses the vendor's
+    build systems and is integrated into a Continuous Integration fashion,
+    with certain classes of defects becoming blockers on a release.
   rules: []
   description: |-
     The information system checks the validity of [Assignment: organization-defined information inputs].
