@@ -21,6 +21,29 @@ jobs:
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
 
+  validate-debian:
+    name: Build, Test on Debian 10 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: debian:buster
+    steps:
+      - name: Update the package repository
+        run: apt-get update
+      - name: Install Deps
+        run: apt-get install -y ansible-lint bats check cmake expat libopenscap8 libxml2-utils ninja-build python3-github python3-jinja2 python3-pip python3-pytest python3-pytest-cov python3-yaml xsltproc
+      - name: Install deps python
+        run: pip3 install ruamel.yaml yamlpath
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        env:
+          ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
+        run: |-
+          ./build_product debian9 debian10 debian11
+      - name: Test
+        working-directory: ./build
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        
   validate-ubuntu:
     name: Build, Test on Ubuntu 20.04
     runs-on: ubuntu-20.04
