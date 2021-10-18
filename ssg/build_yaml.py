@@ -346,19 +346,19 @@ class XCCDFEntity(object):
 class Profile(XCCDFEntity, SelectionHandler):
     """Represents XCCDF profile
     """
-    KEYS = {
-        "title": lambda: "",
-        "description": lambda: "",
-        "extends": lambda: "",
-        "metadata": lambda: None,
-        "reference": lambda: None,
-        "selections": lambda: list(),
-        "platforms": lambda: set(),
-        "cpe_names": lambda: set(),
-        "platform": lambda: None,
-        "filter_rules": lambda: "",
+    KEYS = dict(
+        title=lambda: "",
+        description=lambda: "",
+        extends=lambda: "",
+        metadata=lambda: None,
+        reference=lambda: None,
+        selections=lambda: list(),
+        platforms=lambda: set(),
+        cpe_names=lambda: set(),
+        platform=lambda: None,
+        filter_rules=lambda: "",
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -646,16 +646,16 @@ class ProfileWithInlinePolicies(ResolvableProfile):
 class Value(XCCDFEntity):
     """Represents XCCDF Value
     """
-    KEYS = {
-        "title": lambda: "",
-        "description": lambda: "",
-        "type": lambda: "",
-        "operator": lambda: "equals",
-        "interactive": lambda: False,
-        "options": lambda: dict(),
-        "warnings": lambda: list(),
+    KEYS = dict(
+        title=lambda: "",
+        description=lambda: "",
+        type=lambda: "",
+        operator=lambda: "equals",
+        interactive=lambda: False,
+        options=lambda: dict(),
+        warnings=lambda: list(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -724,23 +724,23 @@ class Value(XCCDFEntity):
 class Benchmark(XCCDFEntity):
     """Represents XCCDF Benchmark
     """
-    KEYS = {
-        "title": lambda: "",
-        "status": lambda: "",
-        "description": lambda: "",
-        "notice_id": lambda: "",
-        "notice_description": lambda: "",
-        "front_matter": lambda: "",
-        "rear_matter": lambda: "",
-        "cpes": lambda: list(),
-        "version": lambda: "0",
-        "profiles": lambda: list(),
-        "values": lambda: dict(),
-        "groups": lambda: dict(),
-        "rules": lambda: dict(),
-        "product_cpe_names": lambda: list(),
+    KEYS = dict(
+        title=lambda: "",
+        status=lambda: "",
+        description=lambda: "",
+        notice_id=lambda: "",
+        notice_description=lambda: "",
+        front_matter=lambda: "",
+        rear_matter=lambda: "",
+        cpes=lambda: list(),
+        version=lambda: "0",
+        profiles=lambda: list(),
+        values=lambda: dict(),
+        groups=lambda: dict(),
+        rules=lambda: dict(),
+        product_cpe_names=lambda: list(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -938,21 +938,21 @@ class Group(XCCDFEntity):
 
     GENERIC_FILENAME = "group.yml"
 
-    KEYS = {
-        "prodtype": lambda: "all",
-        "title": lambda: "",
-        "description": lambda: "",
-        "warnings": lambda: list(),
-        "requires": lambda: list(),
-        "conflicts": lambda: list(),
-        "values": lambda: dict(),
-        "groups": lambda: dict(),
-        "rules": lambda: dict(),
-        "platform": lambda: "",
-        "platforms": lambda: set(),
-        "cpe_names": lambda: set(),
+    KEYS = dict(
+        prodtype=lambda: "all",
+        title=lambda: "",
+        description=lambda: "",
+        warnings=lambda: list(),
+        requires=lambda: list(),
+        conflicts=lambda: list(),
+        values=lambda: dict(),
+        groups=lambda: dict(),
+        rules=lambda: dict(),
+        platform=lambda: "",
+        platforms=lambda: set(),
+        cpe_names=lambda: set(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -1164,27 +1164,27 @@ def rule_filter_from_def(filterdef):
 class Rule(XCCDFEntity):
     """Represents XCCDF Rule
     """
-    KEYS = {
-        "prodtype": lambda: "all",
-        "title": lambda: "",
-        "description": lambda: "",
-        "rationale": lambda: "",
-        "severity": lambda: "",
-        "references": lambda: dict(),
-        "identifiers": lambda: dict(),
-        "ocil_clause": lambda: None,
-        "ocil": lambda: None,
-        "oval_external_content": lambda: None,
-        "warnings": lambda: list(),
-        "conflicts": lambda: list(),
-        "requires": lambda: list(),
-        "platform": lambda: None,
-        "platforms": lambda: set(),
-        "inherited_platforms": lambda: list(),
-        "template": lambda: None,
-        "cpe_names": lambda: set(),
+    KEYS = dict(
+        prodtype=lambda: "all",
+        title=lambda: "",
+        description=lambda: "",
+        rationale=lambda: "",
+        severity=lambda: "",
+        references=lambda: dict(),
+        identifiers=lambda: dict(),
+        ocil_clause=lambda: None,
+        ocil=lambda: None,
+        oval_external_content=lambda: None,
+        warnings=lambda: list(),
+        conflicts=lambda: list(),
+        requires=lambda: list(),
+        platform=lambda: None,
+        platforms=lambda: set(),
+        inherited_platforms=lambda: list(),
+        template=lambda: None,
+        cpe_names=lambda: set(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
