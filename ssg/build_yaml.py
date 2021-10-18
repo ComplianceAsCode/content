@@ -27,6 +27,16 @@ from .xml import ElementTree as ET
 from .shims import unicode_func
 
 
+def dump_yaml_preferably_in_original_order(dictionary, file_object):
+    try:
+        return yaml.dump(dictionary, file_object, indent=4, sort_keys=False)
+    except TypeError as exc:
+        # Older versions of libyaml don't understand the sort_keys kwarg
+        if "sort_keys" not in str(exc):
+            raise exc
+        return yaml.dump(dictionary, file_object, indent=4)
+
+
 def add_sub_element(parent, tag, data):
     """
     Creates a new child element under parent with tag tag, and sets
@@ -327,7 +337,7 @@ class XCCDFEntity(object):
         to_dump = self.represent_as_dict()
         to_dump["documentation_complete"] = documentation_complete
         with open(file_name, "w+") as f:
-            yaml.dump(to_dump, f, indent=4, sort_keys=False)
+            dump_yaml_preferably_in_original_order(to_dump, f)
 
     def to_xml_element(self):
         raise NotImplementedError()
