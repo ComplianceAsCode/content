@@ -42,3 +42,11 @@ ocil: |-
     To verify the assigned home directory of all interactive users is group-
     owned by that users primary GID, run the following command:
     <pre># ls -ld $(awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
+
+warnings:
+    - general: |-
+       This rule ensures every home directory related to an interactive user is group-owned by an
+       interactive user. It also ensures that interactive users are group-owners of one and only
+       one home directory. However, due OVAL limitation, this rule can evaluate a false positive
+       in a specific situation where two interactive users cross the group-ownership of their
+       respective home directories.
