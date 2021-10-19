@@ -108,6 +108,10 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
         COMMENT "[${PRODUCT}-content] compiling everything"
     )
+    add_custom_target(
+        ${PRODUCT}-compile-all
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+    )
 
     add_custom_command(
         # The command also produces the directory with rules, but this is done before the shorthand XML.
@@ -115,7 +119,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/build_shorthand.py"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+        DEPENDS ${PRODUCT}-compile-all
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
 
