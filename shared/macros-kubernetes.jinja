@@ -651,3 +651,17 @@ spec:
 {{range $element:=.var_multiple_time_servers|toArrayByComma}}server {{$element}} minpoll 4 maxpoll {{$var_time_service_set_maxpoll}}
 {{end}}
 {{%- endmacro %}}
+
+{{#
+  Macro which generates Kubernetes remediation in APIServer format:
+    - path (String): path for the variable
+    - value (String): xccdf vairable name to that varaiable
+#}}
+{{%- macro api_server_config(path='', value='') -%}}
+apiVersion: config.openshift.io/v1
+kind: APIServer
+metadata:
+  name: cluster
+spec:
+{{{ expand_yaml_path(path) }}}: {{.{{{ value }}}}}
+{{%- endmacro -%}}
