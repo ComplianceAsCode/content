@@ -2,12 +2,16 @@
 {{% set audisp_config_file_path = "/etc/audit/audisp-remote.conf" %}}
 {{% else %}}
 {{% set audisp_config_file_path = "/etc/audisp/audisp-remote.conf" %}}
+{{% set auremoteconfig = "/etc/audisp/plugins.d/au-remote.conf" %}}
 {{% endif %}}
 <def-group>
   <definition class="compliance" id="auditd_audispd_configure_remote_server" version="1">
     {{{ oval_metadata("remote_server setting in " + audisp_config_file_path + " is set to a certain IP address or hostname") }}}
     <criteria>
         <criterion comment="remote_server setting in audisp-remote.conf" test_ref="test_auditd_audispd_configure_remote_server" />
+        {{% if 'ubuntu' in product %}}
+        <criterion comment="active setting in au-remote.conf" test_ref="test_auremote_config" />
+        {{% endif %}}
     </criteria>
   </definition>
 
@@ -29,5 +33,17 @@
   </ind:textfilecontent54_state>
 
   <external_variable comment="audispd remote_server setting" datatype="string" id="var_audispd_remote_server" version="1" />
+
+  {{% if 'ubuntu' in product %}}
+  <ind:textfilecontent54_test check="all" comment="Check that records are offloaded to a remote server" id="test_auremote_config" version="1">
+    <ind:object object_ref="object_au_remote_config" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_au_remote_config" version="1">
+    <ind:filepath>{{{ auremoteconfig }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[ ]*active[ ]+=[ ]+(yes)[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% endif %}}
 
 </def-group>
