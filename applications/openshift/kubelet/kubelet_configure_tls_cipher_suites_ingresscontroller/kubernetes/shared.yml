@@ -1,0 +1,16 @@
+---
+# platform = multi_platform_ocp
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: default
+  namespace: openshift-ingress-operator
+spec:
+  tlsSecurityProfile:
+    custom:
+      ciphers:
+      - ECDHE-ECDSA-AES128-GCM-SHA256
+      - ECDHE-RSA-AES128-GCM-SHA256
+      - ECDHE-RSA-AES256-GCM-SHA384
+      minTLSVersion: VersionTLS12
+    type: Custom
