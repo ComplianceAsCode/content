@@ -11,20 +11,6 @@ Reading the projects CONTRIBUTING policy (you are here), its
 [README](https://github.com/ComplianceAsCode/content/blob/master/README.md), will help you get
 calibrated.
 
-This project is a public-private partnership with the United States Government as part of its
-[open source initiatives](https://code.nsa.gov/). The project has welcomed contributions from
-across the United States Government, private industry, and countries worldwide. Currently, there
-are four project maintainers who are accountable to ensure a welcoming community and our code of
-conduct is followed. Should you ever need, please feel free to reach out directly!
-
-- @shawndwells (Shawn Wells // CrowdStrike // shawn.wells@crowdstrike.com)
-- @redhatrises  (Gabe Alford // CrowdStrike // gabriel.alford@crowdstrike.com)
-- @jeffblank (Jeff Blank // U.S. Department of Defense // jeffrey.d.blank@ugov.gov)
-- @carlosmmatos (Carlos Matos // Red Hat // cmatos@redhat.com)
-
-These maintainers are ultimately held responsible for ensuring that the commits and contributions
-meet the standards, expectations, and if applicable, laws of the public-private partnership.
-
 Issues
 ---
 When creating an issue, please be detailed as possible without writing an essay! This makes the
