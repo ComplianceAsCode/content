@@ -210,7 +210,7 @@ macro(ssg_build_templated_content PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_templated_content.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --templates-dir "${SSG_SHARED}/templates" --checks-dir "${BUILD_CHECKS_DIR}" --remediations-dir "${BUILD_REMEDIATIONS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml"
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/templated-content-${PRODUCT}"
         # Actually we mean that it depends on resolved rules.
-        DEPENDS generate-internal-${PRODUCT}-shorthand.xml
+        DEPENDS ${PRODUCT}-compile-all
         COMMENT "[${PRODUCT}-content] generating templated content"
     )
     add_custom_target(
@@ -229,7 +229,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
           OUTPUT "${ALL_FIXES_DIR}"
           COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation-type "${LANGUAGE}" --output-dir "${ALL_FIXES_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}"
           # Acutally we mean that it depends on resolved rules.
-          DEPENDS generate-internal-${PRODUCT}-shorthand.xml
+          DEPENDS ${PRODUCT}-compile-all
           COMMENT "[${PRODUCT}-content] collecting all ${LANGUAGE} fixes"
       )
       add_custom_target(
@@ -781,7 +781,7 @@ macro(ssg_make_all_tables PRODUCT)
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_tables.py" --build-dir "${CMAKE_BINARY_DIR}" --output-type html --output "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html" "${PRODUCT}"
         # Actually we mean that it depends on resolved rules - see also ssg_build_templated_content
-        DEPENDS generate-internal-${PRODUCT}-shorthand.xml
+        DEPENDS ${PRODUCT}-compile-all
     )
     add_custom_target(generate-ssg-tables-${PRODUCT}-all
         DEPENDS "${CMAKE_BINARY_DIR}/tables/tables-${PRODUCT}-all.html"
