@@ -61,7 +61,11 @@ references:
     vmmsrg: SRG-OS-000480-VMM-002000
 
 requires:
+  {{% if product == 'ubuntu2004' %}}
+    - sshd_set_keepalive
+  {{% else %}}
     - sshd_set_keepalive_0
+  {{% endif %}}
 
 ocil_clause: 'it is commented out or not configured properly'
 
