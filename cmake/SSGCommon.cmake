@@ -686,14 +686,22 @@ macro(ssg_build_sds PRODUCT)
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds-base.xml"
         )
     endif()
+    add_custom_target(
+        generate-ssg-${PRODUCT}-ds-base.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+    )
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_version.py" --version "1.3" --input "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+        DEPENDS generate-ssg-${PRODUCT}-ds-base.xml
         COMMENT "[${PRODUCT}-content] Updating data stream ssg-${PRODUCT}-ds.xml to 1.3"
+    )
+    add_custom_target(
+        generate-ssg-${PRODUCT}-ds.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
 
     if(SSG_BUILD_SCAP_12_DS)
@@ -702,18 +710,12 @@ macro(ssg_build_sds PRODUCT)
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_version.py" --version "1.2" --input "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
-            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/ssg-${PRODUCT}-ds-base.xml"
+            DEPENDS generate-ssg-${PRODUCT}-ds-base.xml
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds-1.2.xml"
         )
         add_custom_target(
-            generate-ssg-${PRODUCT}-ds.xml
-            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            generate-ssg-${PRODUCT}-ds-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
-        )
-    else()
-        add_custom_target(
-            generate-ssg-${PRODUCT}-ds.xml
-            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         )
     endif()
 
@@ -912,6 +914,9 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-ds.xml
         generate-ssg-tables-${PRODUCT}-all
     )
+    if (SSG_BUILD_SCAP_12_DS)
+        add_dependencies(${PRODUCT}-content generate-ssg-${PRODUCT}-ds-1.2.xml)
+    endif()
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
