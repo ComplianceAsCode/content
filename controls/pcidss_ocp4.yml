@@ -723,7 +723,6 @@ controls:
   - ebs_encrypted_or_fips_enabled
   - api_server_encryption_provider_cipher
   - api_server_encryption_provider_config
-
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
     cardholder data against disclosure and misuse:'
@@ -811,7 +810,8 @@ controls:
     - base
     notes: ''
     status: pending
-    rules: []
+    rules: 
+    - fips_mode_enabled
 
   - id: Req-3.6.2
     title: 3.6.2 Secure cryptographic key distribution
