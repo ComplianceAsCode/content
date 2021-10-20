@@ -29,6 +29,10 @@ def preprocess(data, lang):
 
     data["missing_file_pass"] = parse_template_boolean_value(data, parameter="missing_file_pass", default_value=False)
 
+    data["recursive"] = parse_template_boolean_value(data,
+                                                     parameter="recursive",
+                                                     default_value=False)
+
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_permissions", "")
         # build the state that describes our mode
