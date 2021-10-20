@@ -1,0 +1,11 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="ebs_encrypted_or_fips_enabled" version="1">
+    {{{ oval_metadata("Full disk encryption should be enabled, either through EBS (AWS case) or using FIPS") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="ebs encryption enabled" definition_ref="ebs_encryption_enabled" />
+      <extend_definition comment="fips mode enabled" definition_ref="fips_mode_enabled_on_workers" />
+    </criteria>
+
+  </definition>
+</def-group>
