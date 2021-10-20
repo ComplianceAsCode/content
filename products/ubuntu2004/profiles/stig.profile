@@ -65,6 +65,7 @@ selections:
     - sshd_enable_pam
 
     # UBTU-20-010036 The Ubuntu operating system must immediately terminate all network connections associated with SSH traffic after a period of inactivity.
+    - var_sshd_set_keepalive=1
     - sshd_set_keepalive
 
     # UBTU-20-010037 The Ubuntu operating system must immediately terminate all network connections associated with SSH traffic at the end of the session or after 10 minutes of inactivity.
