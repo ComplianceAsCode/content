@@ -35,6 +35,7 @@
 * Utilities may only support Python 3
 * Shall use the `.py` for the file extension
 * Shall use 4-space indentation
+* New Python 3 methods and scripts should have type hints
 
 ## YAML
 * All new YAML files shall use 4-space indentation
