@@ -586,7 +586,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-3.2
@@ -606,8 +606,11 @@ controls:
     following Requirements 3.2.1 through 3.2.3:
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: >-
+    Proper design of the application by the payment entity can accommodate this requirement as a processing
+    mandate, restricting in-memory process for this data and taking care not to write to file storage from within
+    the container or pod.
+  status: not applicable
   controls:
   - id: Req-3.2.1
     title: 3.2.1 Do not store the full contents of any track (from the magnetic stripe
@@ -627,7 +630,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.2.2
@@ -637,7 +640,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.2.3
@@ -646,7 +649,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
 - id: Req-3.3
@@ -660,7 +663,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-3.4
@@ -680,8 +683,10 @@ controls:
     correlated to reconstruct the original PAN.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: >-
+    This is the responsibility of the code developer and for bespoke applications using OCP this should become
+    a development standard. 
+  status: not applicable
   rules: []
 
 - id: Req-3.4.1
@@ -692,9 +697,32 @@ controls:
     Decryption keys must not be associated with user accounts.
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  notes: |-
+    In case where card holder data may be stored on worker nodes disks, OpenShift Container Platform can help to partially 
+    comply with this requirement by providing several means of fully encrypting disks.
+    * Using RHEL core crypto components which are FIPS certified
+    * Or using cloud provider techniques, such as EBS encryption for AWS case.
+    For this requirement, we also check etcd is encrypted, so that secrets, but also routes and oauth configurations are secured.
+    
+    Concerning Full Disk Encryption:
+    Full Disk Encryption can be enabled on OpenShift by installing the cluster with FIPS mode enabled. 
+    OpenShift Container Platform uses certain FIPS Validated / Modules in Process modules within RHEL and RHCOS
+    for the operating system components that it uses. 
+    See RHEL7 core crypto components and https://docs.openshift.com/container-platform/4.9/installing/installing-fips.html for further information.
+    When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config 
+    files and is used to authenticate SSH access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user 
+    on each node, which enables password-less authentication. 
+    The management of the private key is up to the customer.
+    LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills Req-3.4.1. 
+    Access to the stored data is only possible via a decryption password that must be entered when the disk is mounted (must be somehow
+    related to the ssh keypair?...). 
+    The decryption password is stored using TPM v2, in a secure cryptoprocessor contained within a server.
+    When enabling FIPS mode, machine configs state that encryption using TPM based pinning in clevis is requested for these nodes.
+  status: partial
+  rules: 
+  - ebs_encrypted_or_fips_enabled
+  - api_server_encryption_provider_cipher
+  - api_server_encryption_provider_config
 
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
@@ -722,6 +750,15 @@ controls:
     notes: ''
     status: pending
     rules: []
+    # - var_system_crypto_policy=fips
+    # - configure_crypto_policy
+    # we should put something in the notes explaining where are the encryption keys (KEK and DEK)stored/protected
+    # LUKS format uses a metadata header and 8 key-slot areas that are being
+    # placed at the beginning of the disk, see below under "What does the LUKS
+    # on-disk format looks like?".  The passphrases are used to decrypt a
+    # single master key that is stored in the anti-forensic stripes. 
+    # https://gitlab.com/cryptsetup/LUKS2-docs/blob/master/luks2_doc_wip.pdf
+    # https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQuestions #2.4
  
   - id: Req-3.5.2
     title: '3.5.2 Restrict access to cryptographic keys to the fewest number of custodians
