@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'DRAFT - ANSSI-BP-028 (high)'
+title: 'ANSSI-BP-028 (high)'
 
 description: |-
-    This profile contains configurations that align to ANSSI-BP-028 at the high hardening level.
+    This profile contains configurations that align to ANSSI-BP-028 v1.2 at the high hardening level.
 
     ANSSI is the French National Information Security Agency, and stands for Agence nationale de la sécurité des systèmes d'information.
     ANSSI-BP-028 is a configuration recommendation for GNU/Linux systems.
