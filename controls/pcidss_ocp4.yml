@@ -586,7 +586,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-3.2
@@ -606,8 +606,11 @@ controls:
     following Requirements 3.2.1 through 3.2.3:
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: >-
+    Proper design of the application by the payment entity can accommodate this requirement as a processing
+    mandate, restricting in-memory process for this data and taking care not to write to file storage from within
+    the container or pod.
+  status: not applicable
   controls:
   - id: Req-3.2.1
     title: 3.2.1 Do not store the full contents of any track (from the magnetic stripe
@@ -627,7 +630,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.2.2
@@ -637,7 +640,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
   - id: Req-3.2.3
@@ -646,7 +649,7 @@ controls:
     levels:
     - base
     notes: ''
-    status: pending
+    status: not applicable
     rules: []
 
 - id: Req-3.3
@@ -660,7 +663,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-3.4
@@ -680,8 +683,10 @@ controls:
     correlated to reconstruct the original PAN.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: >-
+    This is the responsibility of the code developer and for bespoke applications using OCP this should become
+    a development standard. 
+  status: not applicable
   rules: []
 
 - id: Req-3.4.1
@@ -693,9 +698,26 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
-  rules: []
-
+  status: partial
+  rules: 
+  # 1.AWS case
+  # .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted to "true". ==> applicable to aws case only!
+  
+  # 2.RHCOS / RHEL case
+  # TPMv2 or Tang is enabled ==> applicable to RHCOS case only
+  # (https://docs.openshift.com/container-platform/4.7/installing/install_config/installing-customizing.html#installation-special-config-encrypt-disk_installing-customizing)
+  # case of Tang, customers must provide their own Tang server
+  # 2.1
+  # Check that machineconfig's .spec.config.storage.luks.[0].clevis.tpm2 is true
+  # Check that machineconfig's .spec.config.storage.luks.[0].clevis.tang.url not null
+  # TPM & Tang use LUKS, which only protects the disk when offline (see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/system_design_guide/scanning_the_system_for_security_compliance_and_vulnerabilities#luks-disk-encryption_encrypting-block-devices-using-luks)
+  # => this is really very very partial
+  # 2.2
+  - api_server_encryption_provider_cipher
+  - api_server_encryption_provider_config
+  - fips_mode_enabled
+  - fips_mode_enabled_on_workers
+  # 3. we still arent answering how logical access is managed separately and independently of native operating system authentication and access control mechanisms
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
     cardholder data against disclosure and misuse:'
@@ -722,6 +744,15 @@ controls:
     notes: ''
     status: pending
     rules: []
+    # - var_system_crypto_policy=fips
+    # - configure_crypto_policy
+    # we should put something in the notes explaining where are the encryption keys (KEK and DEK)stored/protected
+    # LUKS format uses a metadata header and 8 key-slot areas that are being
+    # placed at the beginning of the disk, see below under "What does the LUKS
+    # on-disk format looks like?".  The passphrases are used to decrypt a
+    # single master key that is stored in the anti-forensic stripes. 
+    # https://gitlab.com/cryptsetup/LUKS2-docs/blob/master/luks2_doc_wip.pdf
+    # https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQuestions #2.4
  
   - id: Req-3.5.2
     title: '3.5.2 Restrict access to cryptographic keys to the fewest number of custodians
