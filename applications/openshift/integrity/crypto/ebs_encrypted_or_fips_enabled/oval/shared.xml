@@ -4,7 +4,10 @@
 
     <criteria operator="OR">
       <extend_definition comment="ebs encryption enabled" definition_ref="ebs_encryption_enabled" />
-      <extend_definition comment="fips mode enabled" definition_ref="fips_mode_enabled_on_workers" />
+      <criteria operator="AND">
+        <extend_definition comment="fips mode enabled" definition_ref="fips_mode_enabled_on_workers" />
+        <extend_definition comment="luks encryption enabled" definition_ref="luks_enabled_on_workers" />
+      </criteria>
     </criteria>
 
   </definition>
