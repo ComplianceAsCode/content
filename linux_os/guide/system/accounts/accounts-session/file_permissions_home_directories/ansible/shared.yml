@@ -11,7 +11,7 @@
 
 - name: Create local_users variable from the getent output
   ansible.builtin.set_fact:
-    local_users: '{{ ansible_facts.getent_passwd|dict2items}}'
+    local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
 
 - name: Test for existence home directories to avoid creating them, but only fixing group ownership
   ansible.builtin.stat:
