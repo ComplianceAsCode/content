@@ -365,10 +365,10 @@ selections:
     - auditd_audispd_configure_remote_server
 
     # UBTU-20-010217 The Ubuntu operating system must immediately notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity.
-    - var_auditd_space_left=250MB
+    - var_auditd_space_left_percentage=25pc
     - var_auditd_space_left_action=email
     - auditd_data_retention_space_left_action
-    - auditd_data_retention_space_left
+    - auditd_data_retention_space_left_percentage
 
     # UBTU-20-010230 The Ubuntu operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
     - ensure_rtc_utc_configuration
