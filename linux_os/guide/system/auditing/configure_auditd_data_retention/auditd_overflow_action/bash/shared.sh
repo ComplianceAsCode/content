@@ -4,9 +4,16 @@
 # complexity = low
 # disruption = low
 
-{{{set_config_file(path="/etc/audit/auditd.conf",
+{{%- if product in ["rhel7", "ol7"] %}}
+  {{%- set auditd_conf_path="/etc/audisp/audispd.conf" %}}
+{{%- else %}}
+  {{%- set auditd_conf_path="/etc/audit/auditd.conf" %}}
+{{%- endif %}}
+
+{{{set_config_file(path=auditd_conf_path,
                   parameter="overflow_action",
                   value="syslog",
+                  create=true,
                   insensitive=true,
                   separator=" = ",
                   separator_regex="\s*=\s*",
