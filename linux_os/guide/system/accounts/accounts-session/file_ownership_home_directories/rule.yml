@@ -10,6 +10,10 @@ description: |-
     the following command:
     <pre>$ sudo chown <i>USER</i> /home/<i>USER</i></pre>
 
+    This rule ensures every home directory related to an interactive user is
+    owned by an interactive user. It also ensures that interactive users are
+    owners of one and only one home directory.
+
 rationale: |-
     If a local interactive user does not own their home directory, unauthorized
     users could access or modify the user's files, and the users may not be able to
@@ -36,8 +40,6 @@ ocil: |-
 
 warnings:
     - general: |-
-       This rule ensures every home directory related to an interactive user is owned by an
-       interactive user. It also ensures that interactive users are owners of one and only one home
-       directory. However, due OVAL limitation, this rule can evaluate a false positive in a
-       specific situation where two interactive users cross the ownership of their respective
-       home directories.
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the ownership of
+       their respective home directories.

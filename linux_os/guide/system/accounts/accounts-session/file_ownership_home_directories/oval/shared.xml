@@ -6,23 +6,19 @@
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("All interactive user's Home Directories must be owned by its user") }}}
     <criteria operator="AND">
-      <criteria>
-        <criterion test_ref="test_file_ownership_home_directories"
-                   comment="All interactive user's Home Directories must be owned by its user"/>
-      </criteria>
-      <criteria>
-        <criterion test_ref="test_file_ownership_home_directories_duplicated" 
-                   comment="Interactive users should own only one Home Directory"/>
-      </criteria>
+      <criterion test_ref="test_file_ownership_home_directories"
+                 comment="All interactive user's Home Directories must be owned by its user"/>
+      <criterion test_ref="test_file_ownership_home_directories_duplicated"
+                 comment="Interactive users should own only one Home Directory"/>
     </criteria>
   </definition>
 
   <!-- 
-    Extract a list composed of password objects filtered by UIDs starting in 1000 and not equal
-    to "nobody". Most of (if not all) distros have the special user "nobody" with uid 65354.
-    Despite it be technically classified as an interactive user, it is a special case with very
-    limited access. So, we ignore it. The resulted password object will be further used to create
-    local variables composed by UIDs e Home Dirs.
+    Extract a list composed of password objects filtered by UIDs starting in {{{ uid_min }}} and
+    not equal to "nobody". Most of (if not all) distros have the special user "nobody" with uid
+    65354. Despite it be technically classified as an interactive user, it is a special case with
+    very limited access. So, we ignore it. The resulted password object will be further used to
+    create local variables composed by UIDs e Home Dirs.
   -->
   <unix:password_object id="object_file_ownership_home_directories_objects" version="1">
     <unix:username datatype="string" operation="not equal">nobody</unix:username>
@@ -35,7 +31,7 @@
     composed only with objects related to interactive users.
   -->
   <unix:password_state id="state_file_ownership_home_directories_interactive_uids" version="1">
-    <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
   </unix:password_state>
 
   <!-- 

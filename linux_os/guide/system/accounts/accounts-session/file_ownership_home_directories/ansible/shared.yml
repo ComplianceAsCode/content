@@ -19,7 +19,7 @@
   register: path_exists
   loop: '{{ local_users }}'
   when:
-    - item.value[1]|int >= 1000
+    - item.value[1]|int >= {{{ uid_min }}}
     - item.value[1]|int != 65534
 
 - name: Ensure interactive local users are the owners of their respective home directories

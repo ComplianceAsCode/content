@@ -7,6 +7,7 @@ from glob import glob
 
 from .build_cpe import ProductCPEs
 from .constants import (product_directories,
+                        DEFAULT_GID_MIN,
                         DEFAULT_UID_MIN,
                         DEFAULT_GRUB2_BOOT_PATH,
                         DEFAULT_GRUB2_UEFI_BOOT_PATH,
@@ -41,6 +42,9 @@ def _get_implied_properties(existing_properties):
         if "pkg_manager_config_file" not in existing_properties:
             if pkg_manager in PKG_MANAGER_TO_CONFIG_FILE:
                 result["pkg_manager_config_file"] = PKG_MANAGER_TO_CONFIG_FILE[pkg_manager]
+
+    if "gid_min" not in existing_properties:
+        result["gid_min"] = DEFAULT_GID_MIN
 
     if "uid_min" not in existing_properties:
         result["uid_min"] = DEFAULT_UID_MIN

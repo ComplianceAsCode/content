@@ -10,6 +10,10 @@ description: |-
     interactive users home directory, use the following command:
     <pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i></pre>
 
+    This rule ensures every home directory related to an interactive user is
+    group-owned by an interactive user. It also ensures that interactive users
+    are group-owners of one and only one home directory.
+
 rationale: |-
     If the Group Identifier (GID) of a local interactive users home directory is
     not the same as the primary GID of the user, this would allow unauthorized
@@ -45,8 +49,6 @@ ocil: |-
 
 warnings:
     - general: |-
-       This rule ensures every home directory related to an interactive user is group-owned by an
-       interactive user. It also ensures that interactive users are group-owners of one and only
-       one home directory. However, due OVAL limitation, this rule can evaluate a false positive
-       in a specific situation where two interactive users cross the group-ownership of their
-       respective home directories.
+       Due to OVAL limitation, this rule can report a false negative in a
+       specific situation where two interactive users swap the group-ownership
+       of their respective home directories.

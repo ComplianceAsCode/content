@@ -15,7 +15,7 @@
   </unix:password_object>
 
   <unix:password_state id="state_file_permissions_home_directories_interactive_uids" version="1">
-    <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
   </unix:password_state>
 
   <!-- #### prepare for test_file_permissions_home_directories #### -->

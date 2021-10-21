@@ -13,13 +13,13 @@
   ansible.builtin.set_fact:
     local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
 
-- name: Test for existence home directories to avoid creating them, but only fixing group ownership
+- name: Test for existence of home directories to avoid creating them, but only fixing group ownership
   ansible.builtin.stat:
     path: '{{ item.value[4] }}'
   register: path_exists
   loop: '{{ local_users }}'
   when:
-    - item.value[2]|int >= 1000
+    - item.value[2]|int >= {{{ gid_min }}}
     - item.value[2]|int != 65534
 
 - name: Ensure interactive local users are the group-owners of their respective home directories
