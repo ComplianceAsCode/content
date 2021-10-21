@@ -27,6 +27,16 @@ from .xml import ElementTree as ET
 from .shims import unicode_func
 
 
+def dump_yaml_preferably_in_original_order(dictionary, file_object):
+    try:
+        return yaml.dump(dictionary, file_object, indent=4, sort_keys=False)
+    except TypeError as exc:
+        # Older versions of libyaml don't understand the sort_keys kwarg
+        if "sort_keys" not in str(exc):
+            raise exc
+        return yaml.dump(dictionary, file_object, indent=4)
+
+
 def add_sub_element(parent, tag, data):
     """
     Creates a new child element under parent with tag tag, and sets
@@ -303,7 +313,15 @@ class XCCDFEntity(object):
             local_env_yaml = dict()
             local_env_yaml.update(env_yaml)
 
-        data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml)
+        try:
+            data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml)
+        except DocumentationNotComplete as exc:
+            raise
+        except Exception as exc:
+            msg = (
+                "Error loading a {class_name} from {filename}: {error}"
+                .format(class_name=cls.__name__, filename=yaml_file, error=str(exc)))
+            raise RuntimeError(msg)
 
         result = cls.get_instance_from_full_dict(data_dict)
 
@@ -327,7 +345,7 @@ class XCCDFEntity(object):
         to_dump = self.represent_as_dict()
         to_dump["documentation_complete"] = documentation_complete
         with open(file_name, "w+") as f:
-            yaml.dump(to_dump, f, indent=4, sort_keys=False)
+            dump_yaml_preferably_in_original_order(to_dump, f)
 
     def to_xml_element(self):
         raise NotImplementedError()
@@ -336,19 +354,19 @@ class XCCDFEntity(object):
 class Profile(XCCDFEntity, SelectionHandler):
     """Represents XCCDF profile
     """
-    KEYS = {
-        "title": lambda: "",
-        "description": lambda: "",
-        "extends": lambda: "",
-        "metadata": lambda: None,
-        "reference": lambda: None,
-        "selections": lambda: list(),
-        "platforms": lambda: set(),
-        "cpe_names": lambda: set(),
-        "platform": lambda: None,
-        "filter_rules": lambda: "",
+    KEYS = dict(
+        title=lambda: "",
+        description=lambda: "",
+        extends=lambda: "",
+        metadata=lambda: None,
+        reference=lambda: None,
+        selections=lambda: list(),
+        platforms=lambda: set(),
+        cpe_names=lambda: set(),
+        platform=lambda: None,
+        filter_rules=lambda: "",
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -636,16 +654,16 @@ class ProfileWithInlinePolicies(ResolvableProfile):
 class Value(XCCDFEntity):
     """Represents XCCDF Value
     """
-    KEYS = {
-        "title": lambda: "",
-        "description": lambda: "",
-        "type": lambda: "",
-        "operator": lambda: "equals",
-        "interactive": lambda: False,
-        "options": lambda: dict(),
-        "warnings": lambda: list(),
+    KEYS = dict(
+        title=lambda: "",
+        description=lambda: "",
+        type=lambda: "",
+        operator=lambda: "equals",
+        interactive=lambda: False,
+        options=lambda: dict(),
+        warnings=lambda: list(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -714,23 +732,23 @@ class Value(XCCDFEntity):
 class Benchmark(XCCDFEntity):
     """Represents XCCDF Benchmark
     """
-    KEYS = {
-        "title": lambda: "",
-        "status": lambda: "",
-        "description": lambda: "",
-        "notice_id": lambda: "",
-        "notice_description": lambda: "",
-        "front_matter": lambda: "",
-        "rear_matter": lambda: "",
-        "cpes": lambda: list(),
-        "version": lambda: "0",
-        "profiles": lambda: list(),
-        "values": lambda: dict(),
-        "groups": lambda: dict(),
-        "rules": lambda: dict(),
-        "product_cpe_names": lambda: list(),
+    KEYS = dict(
+        title=lambda: "",
+        status=lambda: "",
+        description=lambda: "",
+        notice_id=lambda: "",
+        notice_description=lambda: "",
+        front_matter=lambda: "",
+        rear_matter=lambda: "",
+        cpes=lambda: list(),
+        version=lambda: "0",
+        profiles=lambda: list(),
+        values=lambda: dict(),
+        groups=lambda: dict(),
+        rules=lambda: dict(),
+        product_cpe_names=lambda: list(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -928,21 +946,21 @@ class Group(XCCDFEntity):
 
     GENERIC_FILENAME = "group.yml"
 
-    KEYS = {
-        "prodtype": lambda: "all",
-        "title": lambda: "",
-        "description": lambda: "",
-        "warnings": lambda: list(),
-        "requires": lambda: list(),
-        "conflicts": lambda: list(),
-        "values": lambda: dict(),
-        "groups": lambda: dict(),
-        "rules": lambda: dict(),
-        "platform": lambda: "",
-        "platforms": lambda: set(),
-        "cpe_names": lambda: set(),
+    KEYS = dict(
+        prodtype=lambda: "all",
+        title=lambda: "",
+        description=lambda: "",
+        warnings=lambda: list(),
+        requires=lambda: list(),
+        conflicts=lambda: list(),
+        values=lambda: dict(),
+        groups=lambda: dict(),
+        rules=lambda: dict(),
+        platform=lambda: "",
+        platforms=lambda: set(),
+        cpe_names=lambda: set(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
@@ -1154,27 +1172,27 @@ def rule_filter_from_def(filterdef):
 class Rule(XCCDFEntity):
     """Represents XCCDF Rule
     """
-    KEYS = {
-        "prodtype": lambda: "all",
-        "title": lambda: "",
-        "description": lambda: "",
-        "rationale": lambda: "",
-        "severity": lambda: "",
-        "references": lambda: dict(),
-        "identifiers": lambda: dict(),
-        "ocil_clause": lambda: None,
-        "ocil": lambda: None,
-        "oval_external_content": lambda: None,
-        "warnings": lambda: list(),
-        "conflicts": lambda: list(),
-        "requires": lambda: list(),
-        "platform": lambda: None,
-        "platforms": lambda: set(),
-        "inherited_platforms": lambda: list(),
-        "template": lambda: None,
-        "cpe_names": lambda: set(),
+    KEYS = dict(
+        prodtype=lambda: "all",
+        title=lambda: "",
+        description=lambda: "",
+        rationale=lambda: "",
+        severity=lambda: "",
+        references=lambda: dict(),
+        identifiers=lambda: dict(),
+        ocil_clause=lambda: None,
+        ocil=lambda: None,
+        oval_external_content=lambda: None,
+        warnings=lambda: list(),
+        conflicts=lambda: list(),
+        requires=lambda: list(),
+        platform=lambda: None,
+        platforms=lambda: set(),
+        inherited_platforms=lambda: list(),
+        template=lambda: None,
+        cpe_names=lambda: set(),
         ** XCCDFEntity.KEYS
-    }
+    )
 
     MANDATORY_KEYS = {
         "title",
