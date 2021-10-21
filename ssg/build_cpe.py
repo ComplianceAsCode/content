@@ -219,7 +219,11 @@ class CPEALPlatformSpecification(object):
         self.platforms = []
 
     def add_platform(self, platform):
-        self.platforms.append(platform)
+        """
+        we check if semantically equal platform is not already in the list of platforms
+        """
+        if platform not in self.platforms:
+            self.platforms.append(platform)
 
     def to_xml_element(self):
         cpe_platform_spec = ET.Element(
