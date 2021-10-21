@@ -21,6 +21,15 @@
   with_items:
     - "{{ files_found.files }}"
 
+{{% elif IS_DIRECTORY and RECURSIVE %}}
+
+- name: Ensure group owner on {{{ path }}} recursively
+  file:
+    path: "{{{ path }}}"
+    state: directory
+    recurse: yes
+    group: "{{{ FILEGID }}}"
+
 {{% else %}}
 
 - name: Test for existence {{{ path }}}
