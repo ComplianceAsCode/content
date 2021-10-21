@@ -25,13 +25,16 @@ value: "Setting={{ varname1 }}"
 
   Note that all string-like parameters are single quoted in the YAML.
 #}}
-{{%- macro ansible_lineinfile(msg='', path='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False) -%}}
+{{%- macro ansible_lineinfile(msg='', path='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False, escape_regex=False) -%}}
 - name: "{{{ msg or rule_title }}}"
   lineinfile:
     path: '{{{ path }}}'
     create: {{{ create }}}
-    {{%- if regex %}}
+    {{%- if regex and not escape_regex %}}
     regexp: '{{{ regex }}}'
+    {{%- endif %}}
+    {{%- if regex and escape_regex %}}
+    regexp: '{{ {{{ regex }}} | regex_escape }}'
     {{%- endif %}}
     {{%- if state == 'present' %}}
     line: '{{{ new_line }}}'
@@ -121,7 +124,7 @@ value: "Setting={{ varname1 }}"
   ini configuration files are best served with the ini Ansible module
   instead of lineinfile-based solutions.
 #}}
-{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
+{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='', escape_regex=False) %}}
 {{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
 {{%- endmacro %}}
 
@@ -143,12 +146,12 @@ value: "Setting={{ varname1 }}"
 {{%- set new_line = parameter + separator + value -%}}
 - name: '{{{ msg or rule_title }}}'
   block:
-    {{{ ansible_lineinfile("Check for duplicate values", config_file, regex=line_regex, create='no', state='absent', register='dupes', check_mode=True)|indent }}}
-    {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, create='no', state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
+    {{{ ansible_lineinfile("Check for duplicate values", config_file, regex=line_regex, create='no', state='absent', register='dupes', check_mode=True, escape_regex=True)|indent }}}
+    {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, create='no', state='absent', when='dupes.found is defined and dupes.found > 1', escape_regex=True)|indent }}}
     {{{ ansible_stat("Check if " + config_dir + " exists", path=config_dir, register=dir_exists)|indent }}}
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
-    {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
-    {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+    {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, state="absent", with_items=lineinfile_items, when=lineinfile_when, escape_regex=True)|indent }}}
+    {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before, escape_regex=True)|indent }}}
 {{%- endmacro %}}
 
 {{#
