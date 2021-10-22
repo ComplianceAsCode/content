@@ -44,7 +44,7 @@ ocil_clause: '<tt>etcd-cafile</tt> is not set as appropriate for <tt>apiServerAr
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["etcd-cafile"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq '.apiServerArguments["etcd-cafile"]'</pre>
     The output should return a configured CA certificate for ETCD.
 
 warnings:
@@ -57,7 +57,7 @@ template:
         ocp_data: "true"
         filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
         filepath_xccdf_variable: 'var_openshift_kube_apiserver_config'
-        yamlpath: '.data["config.yaml"]'
+        yamlpath: '.data["config.json"]'
         entity_check: "all"
         values:
             - value: '.apiServerArguments.*"etcd-cafile":\["/etc/kubernetes/static-pod-resources/configmaps/etcd-serving-ca/ca-bundle.crt"\]'

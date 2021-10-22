@@ -44,7 +44,7 @@ ocil_clause: '<tt>client-ca-file</tt> is not set as appropriate for <tt>apiServe
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["client-ca-file"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq '.apiServerArguments["client-ca-file"]'</pre>
     The output should return a configured TLS CA certificate file.
 
 warnings:
@@ -57,7 +57,7 @@ template:
         ocp_data: "true"
         filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
         filepath_xccdf_variable: var_openshift_kube_apiserver_config
-        yamlpath: '.data["config.yaml"]'
+        yamlpath: '.data["config.json"]'
         entity_check: "all"
         values:
             - value: '.apiServerArguments.*"client-ca-file":\["/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt"\]'

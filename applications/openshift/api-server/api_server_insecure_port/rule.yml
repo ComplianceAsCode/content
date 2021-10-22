@@ -44,7 +44,7 @@ ocil_clause: '<tt>insecure-port</tt> setting exists'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["insecure-port"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq '.apiServerArguments["insecure-port"]'</pre>
     The output should return <pre>0</pre>.
 
 warnings:
@@ -58,7 +58,7 @@ template:
     entity_check: "all"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"insecure-port":\[["?]0["?]\]'
       operation: "pattern match"

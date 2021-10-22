@@ -28,7 +28,7 @@ ocil_clause: '<tt>kubelet-https</tt> is set to false'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-https"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq '.apiServerArguments["kubelet-https"]'</pre>
     The output should return <pre>true</pre>, or no output at all.
 
 warnings:
@@ -42,7 +42,7 @@ template:
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"apiServerArguments":{.*"kubelet-https":\["false"\]'
       operation: "pattern match"

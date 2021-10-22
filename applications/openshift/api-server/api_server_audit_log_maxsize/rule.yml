@@ -40,7 +40,7 @@ ocil_clause: '<tt>audit-log-maxsize</tt> is set to <tt>100</tt> or as appropriat
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["audit-log-maxsize"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq '.apiServerArguments["audit-log-maxsize"]'</pre>
     The output should return a value of <pre>["100"]</pre> or as appropriate.
 
 warnings:
@@ -54,7 +54,7 @@ template:
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"apiServerArguments":{.*"audit-log-maxsize":\["100"\]'
       operation: "pattern match"

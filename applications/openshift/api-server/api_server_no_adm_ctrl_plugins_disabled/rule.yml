@@ -8,8 +8,8 @@ title: 'Ensure all admission control plugins are enabled'
 {{% set jqfilter = '[.data."config.yaml" | fromjson | select(.apiServerArguments."disable-admission-plugins"!=["PodSecurity"] and .apiServerArguments."disable-admission-plugins"!=[]) | .apiServerArguments."disable-admission-plugins"]' %}}
 
 description: |-
-    To make sure none of them is explicitly disabled except PodSecurity, run the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '{{{ jqfilter }}}'</pre>
+    To make sure none of them is explicitly disabled, run the following command:
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.json"' | jq '.apiServerArguments."disable-admission-plugins"'</pre>
     and make sure the output is empty.
 
 rationale: |-

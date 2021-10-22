@@ -40,7 +40,7 @@ ocil_clause: '<tt>min-request-timeout</tt> is not set or is not set to an approp
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["min-request-timeout"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq '.apiServerArguments["min-request-timeout"]'</pre>
     The output should return <pre> {{{ xccdf_value("var_api_min_request_timeout") }}} </pre>.
 
 warnings:
@@ -54,7 +54,7 @@ template:
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     xccdf_variable: var_api_min_request_timeout
     embedded_data: "true"
     values:
