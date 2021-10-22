@@ -59,6 +59,6 @@ template:
         yamlpath: '.data["config.json"]'
         entity_check: "all"
         values:
-            - value: '.apiServerArguments.*"etcd-cafile":\["/etc/kubernetes/static-pod-resources/configmaps/etcd-serving-ca/ca-bundle.crt"\]'
+            - value: '.apiServerArguments.*"etcd-cafile":\[".+"\]'
               operation: "pattern match"
               type: "string"
