@@ -4,11 +4,11 @@ prodtype: ocp4
 
 title: Ensure that the bindAddress is set to a relevant secure port
 
-description: "The bindAddress is set by default to <tt>0.0.0.0:6443</tt>, and listening with TLS enabled."
+description: "The bindAddress is set by default to <tt>0.0.0.0:2040</tt>, and listening with TLS enabled."
 
 rationale: |-
   The OpenShift API server is served over HTTPS with authentication and authorization;
-  the secure API endpoint is bound to <tt>0.0.0.0:6443</tt> by default. In OpenShift, the only
+  the secure API endpoint is bound to <tt>0.0.0.0:2040</tt> by default. In OpenShift, the only
   supported way to access the API server pod is through the load balancer and then through
   the internal service.  The value is set by the bindAddress argument under the servingInfo
   parameter.
@@ -29,7 +29,7 @@ ocil_clause: '<tt>bindAddress</tt> allows unsecure connections'
 ocil: |-
     Run the following command:
     <pre>oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq -r '.servingInfo["bindAddress"]'</pre>
-    The output should return <pre>0.0.0.0:6443</pre>.
+    The output should return <pre>0.0.0.0:2040</pre>.
 
 warnings:
 - general: |-
@@ -44,6 +44,6 @@ template:
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
     yamlpath: '.data["config.json"]'
     values:
-    - value: '"servingInfo":{.*"bindAddress":"0.0.0.0:6443"'
+    - value: '"servingInfo":{.*"bindAddress":"0.0.0.0:2040"'
       operation: "pattern match"
       type: "string"
