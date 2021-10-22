@@ -58,6 +58,6 @@ template:
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
     yamlpath: '.data["config.json"]'
     values:
-     - value: '"tls-private-key-file":\["/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls\.key"\]'
+     - value: '"tls-private-key-file":\[".+"\]'
        operation: "pattern match"
        type: "string"

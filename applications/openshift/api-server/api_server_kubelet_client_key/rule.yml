@@ -57,6 +57,6 @@ template:
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
     yamlpath: '.data["config.json"]'
     values:
-    - value: '"kubelet-client-key":\["/etc/kubernetes/static-pod-(resources|certs)/secrets/kubelet-client/tls.key"\]'
+    - value: '"kubelet-client-key":\[".+"\]'
       type: "string"
       operation: "pattern match"

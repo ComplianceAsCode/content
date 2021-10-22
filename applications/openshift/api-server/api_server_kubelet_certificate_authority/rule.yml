@@ -59,6 +59,6 @@ template:
         yamlpath: '.data["config.json"]'
         check_existence: "at_least_one_exists"
         values:
-            - value: '\"kubelet-certificate-authority\"\s*:\s*\[\s*\"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt\"\s*\]'
+            - value: '\"kubelet-certificate-authority\"\s*:\s*\[\s*\".+"\s*\]'
               type: "string"
               operation: "pattern match"

@@ -58,6 +58,6 @@ template:
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
     yamlpath: '.data["config.json"]'
     values:
-     - value: '"serviceAccountPublicKeyFiles":\[.*sa-token-signing-certs",.*bound-sa-token-signing-certs"]'
+     - value: '"serviceAccountPublicKeyFiles":\[".+"\]'
        operation: "pattern match"
        type: "string"
