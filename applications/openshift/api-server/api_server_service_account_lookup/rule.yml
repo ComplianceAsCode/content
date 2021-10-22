@@ -31,7 +31,7 @@ ocil_clause: 'API server argument <tt>--service-account-lookup</tt> contains <tt
 ocil: |-
   Run the following command:
   <pre>$ oc get configmap config -n openshift-kube-apiserver -o json | \
-      jq -r '.data["config.yaml"]' | \
+      jq -r '.data["config.json"]' | \
       jq -r '.apiServerArguments["service-account-lookup"]'</pre>
   The output should return <pre>true</pre>.
 
@@ -46,7 +46,7 @@ template:
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: 'service-account-lookup.*\["true"\]'
       operation: "pattern match"

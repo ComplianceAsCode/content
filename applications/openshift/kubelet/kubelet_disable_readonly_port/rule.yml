@@ -29,7 +29,7 @@ ocil_clause: 'the read-only port is not disabled'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments["kubelet-read-only-port"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq -r '.apiServerArguments["kubelet-read-only-port"]'</pre>
     The output should be <tt>0</tt>.
 
 identifiers:
@@ -50,7 +50,7 @@ template:
     vars:
         ocp_data: "true"
         filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
-        yamlpath: ".data['config.yaml']"
+        yamlpath: ".data['config.json']"
         values:
           - value: '.*kubelet-read-only-port"\:\["0"\].*'
             type: "string"

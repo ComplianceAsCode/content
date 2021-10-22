@@ -41,7 +41,7 @@ ocil_clause: '<tt>tls-cert-file</tt> is not set as appropriate for <tt>apiServer
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq -r '.apiServerArguments."tls-cert-file"'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq -r '.apiServerArguments."tls-cert-file"'</pre>
     The output should return <tt>/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.crt</tt>
 
 warnings:
@@ -55,7 +55,7 @@ template:
     entity_check: "all"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
      - value: '"tls-cert-file":\["/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls\.crt"\]'
        operation: "pattern match"

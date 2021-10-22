@@ -7,7 +7,7 @@ title: 'Configure the kubelet Certificate Key for the API Server'
 description: |-
     To enable certificate based kubelet authentication,
     edit the <tt>config</tt> configmap in the <tt>openshift-kube-apiserver</tt>
-    namespace and set the below parameter in the <tt>config.yaml</tt> key if
+    namespace and set the below parameter in the <tt>config.json</tt> key if
     it is not already configured:
     <pre>
     "apiServerArguments":{
@@ -39,7 +39,7 @@ ocil_clause: '<tt>kubelet-client-key</tt> is not set as appropriate in <tt>apiSe
 
 ocil: |-
     Run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | jq '.apiServerArguments["kubelet-client-key"]'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | jq '.apiServerArguments["kubelet-client-key"]'</pre>
     The output should return <tt>/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.key</tt>
     or <tt>/etc/kubernetes/static-pod-certs/secrets/kubelet-client/tls.key</tt>
 
@@ -54,7 +54,7 @@ template:
     entity_check: "all"
     filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"kubelet-client-key":\["/etc/kubernetes/static-pod-(resources|certs)/secrets/kubelet-client/tls.key"\]'
       type: "string"

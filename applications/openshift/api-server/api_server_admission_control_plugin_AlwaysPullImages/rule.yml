@@ -45,7 +45,7 @@ ocil_clause: '<tt>AlwaysPullImages</tt> is included in <tt>admissionConfig</tt>'
 
 ocil: |-
     Run the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.json"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
     The output list should not contain <pre>"AlwaysPullImages"</pre>.
 
 warnings:
@@ -59,7 +59,7 @@ template:
     entity_check: "none satisfy"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"enable-admission-plugins":\[[^]]*"AlwaysPullImages"'
       operation: "pattern match"

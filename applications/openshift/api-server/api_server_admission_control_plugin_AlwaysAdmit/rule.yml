@@ -29,7 +29,7 @@ ocil_clause: '<tt>AlwaysAdmit</tt> admission control plugin is not set'
 
 ocil: |-
     To verify that the <tt>AlwaysAdmit</tt> admission control plugin is not set, run the following command:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.json"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
     The output should not contain <tt>AlwaysAdmit</tt>
 
 warnings:
@@ -43,7 +43,7 @@ template:
     entity_check: "none satisfy"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"enable-admission-plugins":\[[^]]*"AlwaysAdmit"'
       operation: "pattern match"

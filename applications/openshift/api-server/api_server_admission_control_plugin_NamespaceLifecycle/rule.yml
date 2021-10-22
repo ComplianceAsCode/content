@@ -31,7 +31,7 @@ ocil_clause: 'API server config contains <tt>NamespaceLifecycle</tt>'
 ocil: |-
     To verify that the <tt>NamespaceLifecycle</tt> plugin is enabled in
     the apiserver configuration, run:
-    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.yaml"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
+    <pre>$ oc -n openshift-kube-apiserver get configmap config -o json | jq -r '.data."config.json"' | jq '.apiServerArguments."enable-admission-plugins"'</pre>
 
 warnings:
 - general: |-
@@ -44,7 +44,7 @@ template:
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"enable-admission-plugins":\[[^]]*"NamespaceLifecycle"'
       operation: "pattern match"

@@ -30,7 +30,7 @@ ocil_clause: 'The RBAC authorization mode is enabled'
 
 ocil: |-
     To verify that RBAC authorization mode is enabled, run the following command:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"RBAC"'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | grep '"authorization-mode":\[[^]]*"RBAC"'</pre>
     The output should show that the "authorization-mode" list contains the "RBAC" authorizer.
 
 warnings:
@@ -44,7 +44,7 @@ template:
     entity_check: "at least one"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"authorization-mode":\[[^]]*"RBAC"'
       operation: "pattern match"

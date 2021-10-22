@@ -24,7 +24,7 @@ ocil_clause: 'The Node authorization-mode is configured and enabled'
 ocil: |-
     To verify that the <tt>Node</tt> authorization mode is be configured and enabled in
     the apiserver configuration, run:
-    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.yaml"]' | grep '"authorization-mode":\[[^]]*"AlwaysAllow"'</pre>
+    <pre>$ oc get configmap config -n openshift-kube-apiserver -ojson | jq -r '.data["config.json"]' | grep '"authorization-mode":\[[^]]*"AlwaysAllow"'</pre>
     The output should be empty - the "authorization-mode" list does NOT contain the "AlwaysAllow" authorizer.
 
 warnings:
@@ -38,7 +38,7 @@ template:
     entity_check: "none exist"
     filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_apiserver_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.data["config.json"]'
     values:
     - value: '"authorization-mode":\[[^]]*"AlwaysAllow"'
       operation: "pattern match"
