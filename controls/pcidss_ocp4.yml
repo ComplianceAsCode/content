@@ -697,7 +697,20 @@ controls:
     Decryption keys must not be associated with user accounts.
   levels:
   - base
-  notes: ''
+  notes: |-
+    Full Disk Encryption can be enabled on OpenShift by installing the cluster with FIPS mode enabled. 
+    OpenShift Container Platform uses certain FIPS Validated / Modules in Process modules within RHEL and RHCOS
+    for the operating system components that it uses. 
+    See RHEL7 core crypto components and https://docs.openshift.com/container-platform/4.9/installing/installing-fips.html for further information.
+    When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config 
+    files and is used to authenticate SSH access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user 
+    on each node, which enables password-less authentication. 
+    The management of the private key is up to the customer.
+    LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills Req-3.4.1. 
+    Access to the stored data is only possible via a decryption password that must be entered when the disk is mounted (must be somehow
+    related to the ssh keypair?...). 
+    The decryption password is stored using TPM v2, in a secure cryptoprocessor contained within a server.
+    When enabling FIPS mode, machine configs state that encryption using TPM based pinning in clevis is requested for these nodes.
   status: partial
   rules: 
   # 1.AWS case
@@ -717,7 +730,7 @@ controls:
   - api_server_encryption_provider_config
   - fips_mode_enabled
   - fips_mode_enabled_on_workers
-  # 3. we still arent answering how logical access is managed separately and independently of native operating system authentication and access control mechanisms
+  - ebs_encryption_enabled
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
     cardholder data against disclosure and misuse:'
