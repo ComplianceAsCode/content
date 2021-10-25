@@ -31,13 +31,13 @@ severity: high
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/apis/machineconfiguration.openshift.io/v1/machineconfigs': '[.items[] | select(.metadata.name | test("^[0-9]{2}-worker$|^[0-9]{2}-master$"))]|map(.spec.fips == false)'}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/apis/machine.openshift.io/v1beta1/machinesets?limit=500': '[.items[] | .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted] | map(. == true)'}) | indent(4) }}}
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: |-
-      {{{ openshift_filtered_path('/apis/machineconfiguration.openshift.io/v1/machineconfigs', '[.items[] | select(.metadata.name | test("^[0-9]{2}-worker$"))]|map(.spec.fips == false)') }}}
+      {{{ openshift_filtered_path('/apis/machine.openshift.io/v1beta1/machinesets?limit=500', '[.items[] | .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted] | map(. == true)') }}}
     yamlpath: "[:]"
     check_existence: "all_exist"
     entity_check: "all"
