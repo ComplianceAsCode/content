@@ -108,7 +108,7 @@ class ProductCPEs(object):
 
     def parse_platform_definition(self, platform_line):
         # let's construct the platform id
-        id = "cpe_platform_" + self._convert_platform_to_id(platform_line)
+        id = "cpe_platform_" + convert_platform_to_id(platform_line)
         platform = CPEALPlatform(id)
         # add initial test if the line does not contain AND or NEGATE operator
         # othervise the presence of & or ! will create the test while parsing
@@ -119,13 +119,6 @@ class ProductCPEs(object):
         else:
             platform.add_test(parse_platform_line(platform_line, self))
         return platform
-
-    def _convert_platform_to_id(self, platform):
-        id = platform.replace(" ", "")
-        id = id.replace("&", "_and_")
-        id = id.replace("!", "not_")
-        return id
-
 
 
 class CPEList(object):
@@ -397,3 +390,9 @@ def parse_platform_line(platform_line, product_cpe):
         # the line should contain a CPEAL ref name
         cpealfactref = CPEALFactRef(product_cpe.get_cpe_name(platform_line))
         return cpealfactref
+
+def convert_platform_to_id(platform):
+    id = platform.replace(" ", "")
+    id = id.replace("&", "_and_")
+    id = id.replace("!", "not_")
+    return id
