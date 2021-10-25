@@ -63,8 +63,9 @@ template:
     ocp_data: "true"
     filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
     filepath_xccdf_variable: var_openshift_kube_controller_manager_config
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: ".items[0].spec.containers[:].args[:]"
+    entity_check: "at least one"
     values:
-    - value: '\"RotateKubeletServerCertificate\=true\"'
+    - value: '^--feature-gates=RotateKubeletServerCertificate=true$'
+      entity_check: "at least one"
       operation: "pattern match"
-      type: "string"
