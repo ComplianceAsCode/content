@@ -26,6 +26,9 @@
 * Shall not use "smart quotes" or curved quotes
 * Maximum line length should be 99 characters
 
+## Jinja
+* Shall have a docstring comment descripbe 
+
 ## Python
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
     * We use [PEP 8 Speaks](https://pep8speaks.com/) and it leaves a comment on PR if you have PEP8 issues in the Python file(s) you touched

@@ -1,9 +1,11 @@
 {{#
-Pass strings that correspond to XCCDF value names as arguments to this macro:
-bash_instantiate_variables("varname1", "varname2")
+Pass strings that correspond to XCCDF value names as arguments to this macro::
 
-Then, assume that variables of that names are defined and contain the correct value, e.g.
-echo "Setting=$varname1" >> config_file
+    bash_instantiate_variables("varname1", "varname2")
+
+Then, assume that variables of that names are defined and contain the correct value, e.g.::
+
+        echo "Setting=$varname1" >> config_file
 
 #}}
 {{%- macro bash_instantiate_variables() -%}}
@@ -13,16 +15,16 @@ echo "Setting=$varname1" >> config_file
 {{%- endmacro -%}}
 
 {{#
-    make sure that we have a line like this in pamFile (additional options are left as-is):
+    Make sure that we have a line like this in pamFile (additional options are left as-is):
     type control module option=valueRegexArg
 
-    pamFile         PAM config file
-    type            PAM module interface
-    control         PAM control flags
-    module          PAM module name
-    option          PAM module option
-    valueRegexArg   PAM module option argument regex pattern
-    defaultValueArg PAM module option argument default value
+:param pamFile:         PAM config file
+:param type:            PAM module interface
+:param control:         PAM control flags
+:param module:          PAM module name
+:param option:          PAM module option
+:param valueRegexArg:   PAM module option argument regex pattern
+:param defaultValueArg: PAM module option argument default value
 #}}
 {{%- macro bash_ensure_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
 if [ -e "{{{ pamFile }}}" ] ; then
@@ -61,16 +63,16 @@ fi
 {{%- endmacro -%}}
 
 {{#
-    make sure that we have a line with given type, control and module has the given option in pamFile (additional options are left as-is):
-    type control module option=valueRegexArg
+    Make sure that we have a line with given type, control and module has the given option in pamFile (additional options are left as-is):
+    `type control module option=valueRegexArg`
 
-    pamFile         PAM config file
-    type            PAM module interface
-    control         PAM control flags
-    module          PAM module name
-    option          PAM module option
-    valueRegexArg   PAM module option argument regex pattern
-    defaultValueArg PAM module option argument default value
+:param pamFile:        PAM config file
+:param type:           PAM module interface
+:param control:        PAM control flags
+:param module:         PAM module name
+:param option:         PAM module option
+:param valueRegexArg:   PAM module option argument regex pattern
+:param defaultValueArg: PAM module option argument default value
 #}}
 {{%- macro bash_provide_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
 if [ -e "{{{ pamFile }}}" ] ; then
@@ -100,7 +102,12 @@ fi
 
 
 {{%- set in_chrooted_environment = 'test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"' -%}}
-
+{{#
+:param path:    Path to file
+:param parameter: Parameter to set
+:param value: Value to set
+:param no_quotes: Boolean, if true the value is not quoted. Default is false.
+#}}
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
 {{% if no_quotes -%}}
   {{% if "$" in value %}}
@@ -128,19 +135,17 @@ fi
 {{%- endmacro -%}}
 
 {{#
-# Macro to perform remediation for 'audit_rules_privileged_commands' rule
-#
-# Expects two arguments:
-#
-# tool		    tool used to load audit rules
-# 			    either 'auditctl' or 'augenrules'
-# min_auid		minimum original ID the user logged in with
-#
-# Example macro invocation(s):
-#
-#      perform_audit_rules_privileged_commands_remediation "auditctl" "500"
-#      perform_audit_rules_privileged_commands_remediation "augenrules"	"1000"
-#
+    Macro to perform remediation for 'audit_rules_privileged_commands' rule
+
+
+:param tool:		    tool used to load audit rules either 'auditctl' or 'augenrules'
+:param min_auid:		minimum original ID the user logged in with
+
+    Example macro invocation(s)::
+
+         perform_audit_rules_privileged_commands_remediation("auditctl", "500")
+         perform_audit_rules_privileged_commands_remediation("augenrules", "1000")
+
 #}}
 {{%- macro bash_perform_audit_rules_privileged_commands_remediation(tool, min_auid) -%}}
 files_to_inspect=()
@@ -323,12 +328,10 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 
 {{#
     Macro that copies the audit rules into a file.
-    The purpose is to create exactly the same content in the file specified by filename arg
+    The purpose is to create exactly the same content in the file specified by filename argument
     as in https://github.com/linux-audit/audit-userspace/blob/master/rules/30-ospp-v42.rules
 
-    Expects one argument:
-
-    filename    name of the file to print the information to; written do directory specified by the filename
+:param filename:    Name of the file to print the information to; written do directory specified by the filename
 #}}
 {{%- macro bash_create_audit_remediation_unsuccessful_file_modification_detailed(filename) -%}}
 mkdir -p "$(dirname '{{{ filename }}}')"
@@ -422,22 +425,22 @@ EOF
 {{%- endmacro -%}}
 
 {{#
-# Macro to fix audit file system object watch rule for given path:
-# * if rule exists, also verifies the -w bits match the requirements
-# * if rule doesn't exist yet, appends expected rule form to $files_to_inspect
-#   audit rules file, depending on the tool which was used to load audit rules
-#
-# Expects four arguments (each of them is required) in the form of:
-# * audit tool                      tool used to load audit rules,
-#                                   either 'auditctl', or 'augenrules'
-# * path                           	value of -w audit rule's argument
-# * required_access_bits        	value of -p audit rule's argument
-# * key                         	value of -k audit rule's argument
-#
-# Example macro invocation:
-#
-#       {{{ bash_fix_audit_watch_rule("auditctl", "/etc/localtime", "wa", "audit_time_rules") }}}
-#
+    Macro to fix audit file system object watch rule for given path:
+    * if rule exists, also verifies the -w bits match the requirements
+    * if rule doesn't exist yet, appends expected rule form to $files_to_inspect
+      audit rules file, depending on the tool which was used to load audit rules
+
+
+:param audit tool                      tool used to load audit rules, either 'auditctl', or 'augenrules'
+:param path:                          	value of -w audit rule's argument
+:param required_access_bits:       	    value of -p audit rule's argument
+:param key:                        	value of -k audit rule's argument
+
+    Example macro invocation::
+
+          {{{ bash_fix_audit_watch_rule("auditctl", "/etc/localtime", "wa", "audit_time_rules") }}}
+
+}}
 #}}
 {{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key) -%}}
 # Create a list of audit *.rules files that should be inspected for presence and correctness
@@ -532,8 +535,8 @@ done
 
     Uses the right command based on pkg_manager property defined in product.yml.
 
-    :param package: name of the package
-    :type package: str
+:param package: name of the package
+:type package: str
 #}}
 {{%- macro bash_package_install(package) -%}}
 {{%- if pkg_manager is defined -%}}
@@ -559,8 +562,8 @@ zypper install -y "{{{ package }}}"
     Uses the right command based on pkg_manager property defined in product.yml.
     When used in a test scenario, the macro will remove even protected packages.
 
-    :param package: name of the package
-    :type package: str
+:param package: name of the package
+:type package: str
 #}}
 {{%- macro bash_package_remove(package) -%}}
 {{%- if pkg_manager is defined -%}}
@@ -585,17 +588,17 @@ zypper remove -y "{{{ package }}}"
 {{%- endmacro -%}}
 
 {{#
-# Macro to perform remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
-# system calls on RHEL, Fedora or OL systems.
-# Remediation performed for both possible tools: 'auditctl' and 'augenrules'.
-#
-# Note: 'stime' system call isn't known at 64-bit arch (see "$ ausyscall x86_64 stime" 's output)
-# therefore excluded from the list of time group system calls to be audited on this arch
-#
-# Example macro invocation:
-#
-#      {{{ bash_perform_audit_adjtimex_settimeofday_stime_remediation() }}}
-#
+    Macro to perform remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
+    system calls on RHEL, Fedora or OL systems.
+    Remediation performed for both possible tools: 'auditctl' and 'augenrules'.
+
+     Note: 'stime' system call isn't known at 64-bit arch (see "$ ausyscall x86_64 stime" 's output)
+     therefore excluded from the list of time group system calls to be audited on this arch
+
+    Example macro invocation::
+
+      {{{ bash_perform_audit_adjtimex_settimeofday_stime_remediation() }}}
+
 #}}
 {{%- macro bash_perform_audit_adjtimex_settimeofday_stime_remediation() -%}}
 # Retrieve hardware architecture of the underlying system
@@ -647,7 +650,9 @@ fi
 {{%- endmacro -%}}
 
 {{#
-# Macro to configure DConf settings for RHEL and Fedora systems.
+    Macro to configure DConf settings for RHEL and Fedora systems.
+
+    If files contain ibus or distro, ignore them.
 #}}
 {{%- macro bash_dconf_settings(path, key, value, db, setting_file) -%}}
 # Check for setting in any of the DConf db directories
@@ -681,7 +686,8 @@ dconf update
 {{%- endmacro -%}}
 
 {{#
-# Macro to configure DConf locks for RHEL and Fedora systems.
+    Macro to configure DConf locks for RHEL and Fedora systems.
+
 #}}
 {{%- macro bash_dconf_lock(key, setting, db, lock_file) -%}}
 # Check for setting in any of the DConf db directories
@@ -699,13 +705,18 @@ dconf update
 {{%- endmacro -%}}
 
 {{#
-# Macro to enable or disable a particular service.
-#
-# Examples:
-#
-# bash_service_command("enable", "bluetooth")
-# bash_service_command("disable", "bluetooth.service")
-# bash_service_command("disable", "rsh.socket", xinetd="rsh")
+    Macro to enable or disable a particular service.
+
+    Examples::
+
+    bash_service_command("enable", "bluetooth")
+    bash_service_command("disable", "bluetooth.service")
+    bash_service_command("disable", "rsh.socket", xinetd="rsh")
+
+:param service_state: Desired state of the service
+:param service: The service to change
+:param xinetd: Set the xinetd for the service. Defaults to empty string.
+
 #}}
 {{%- macro bash_service_command(service_state, service, xinetd="") -%}}
 {{#
@@ -772,22 +783,25 @@ fi
 
 
 {{#
-# bash_firefox_js_setting expects three arguments:
-#
-# config_file:          Configuration file that will be modified
-# key:                  Configuration option to change
-# value:                Value of the configuration option to change
-#
-# Example Calls:
-#
-#     With a fixed integer value:
-#     bash_firefox_js_setting("local-settings.js", "general.config.obscure_value", "0")
-#
-#     With a fixed string value:
-#     bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="mozilla.cfg")
-#
-#     With a string variable:
-#     bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="$var_config_file_name")
+
+Example Calls:
+
+    With a fixed integer value::
+
+        bash_firefox_js_setting("local-settings.js", "general.config.obscure_value", "0")
+
+    With a fixed string value::
+
+        bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="mozilla.cfg")
+
+    With a string variable::
+
+        bash_firefox_js_setting("local-settings.js", "general.config.filename", quoted_value="$var_config_file_name")
+
+:param config_file:          Configuration file that will be modified
+:param key:                  Configuration option to change
+:param value:                Value of the configuration option to change
+
 #}}
 {{%- macro bash_firefox_js_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
 {{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
@@ -822,26 +836,28 @@ done
 {{%- endmacro -%}}
 
 {{#
-# Function to replace configuration setting(s) in the Firefox preferences configuration (.cfg) file or add the
-# preference if it does not exist.
-#
-# Expects three arguments:
-#
-# config_file:          Configuration file that will be modified
-# key:                  Configuration option to change
-# value:                Value of the configuration option to change
-#
-#
-# Example Call(s):
-#
-#     Without string or variable:
-#     bash_firefox_cfg_setting("mozilla.cfg" "extensions.update.enabled" value="false")
-#
-#     With string:
-#     bash_firefox_cfg_setting("mozilla.cfg" "security.default_personal_cert" quoted_value="Ask Every Time")
-#
-#     With a string variable:
-#     bash_firefox_cfg_setting("mozilla.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
+Function to replace configuration setting(s) in the Firefox preferences configuration (.cfg) file or add the
+preference if it does not exist.
+
+
+Example Call(s):
+
+    Without string or variable::
+
+        bash_firefox_cfg_setting("mozilla.cfg" "extensions.update.enabled" value="false")
+
+    With string::
+
+        bash_firefox_cfg_setting("mozilla.cfg" "security.default_personal_cert" quoted_value="Ask Every Time")
+
+    With a string variable::
+
+        bash_firefox_cfg_setting("mozilla.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
+
+:param config_file:           Configuration file that will be modified
+:param  key:                  Configuration option to change
+:param  value:                Value of the configuration option to change
+
 #}}
 {{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
 firefox_cfg="{{{ config_file }}}"
@@ -866,9 +882,10 @@ done
 {{%- endmacro -%}}
 
 {{#
-# Macro to ensure that the ntp/chrony config file contains valid server entries.
-# config_file: Path to the ntp/chrony config file
-# servers_list: Comma-separated list of servers
+    Macro to ensure that the ntp/chrony config file contains valid server entries.
+
+:param config_file: Path to the ntp/chrony config file
+:param servers_list: Comma-separated list of servers
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
 if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
@@ -881,10 +898,11 @@ fi
 {{%- endmacro -%}}
 
 {{#
-# Sets PAM faillock module options and values.
-# Also it adds pam_faillock.so as required module for account.
-# option: faillock option eg. deny, unlock_time
-# value: value of option
+    Sets PAM faillock module options and values.
+    Also it adds pam_faillock.so as required module for account.
+
+    :param option: faillock option eg. deny, unlock_time
+    :param value: value of option
 #}}
 {{%- macro bash_set_faillock_option(option, value) -%}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
@@ -898,10 +916,11 @@ done
 {{%- endmacro -%}}
 
 {{#
-# Print a message to stderr and exit the shell
-# message: The message to print.
-# rc: The error code (optional, default is 1)
-# action: What to do (optional, default is 'exit', can be also 'return' or anything else)
+    Print a message to stderr and exit the shell
+
+:param message: The message to print.
+:param rc: The error code (optional, default is 1)
+:param action: What to do (optional, default is 'exit', can be also 'return' or anything else)
 #}}
 {{% macro die(message, rc=1, action="exit") -%}}
 printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
@@ -909,17 +928,18 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 {{%- endmacro %}}
 
 {{#
-# Add an entry to a text configuration file
-# path: path of the configuration file
-# parameter: the paramenter to be set in the configuration file
-# value: the value of the parameter to be set in the configuration file
-# create: whether create the file specified by path if the file does not exits
-# insert_after: inserts the entry right after first line that matches regular expression specified by this argument, set to EOF to insert at the end of the file
-# insert_before: inserts the entry right before first line that matches regular expression specified by this argument, set to BOF to insert at the beginning of the file
-# insensitive: ignore case
-# separator: separates parameter from the value (literal)
-# separator_regex: regular expression that describes the separator and surrounding whitespace
-# prefix_regex: regular expression describing allowed leading characters at each line
+    Add an entry to a text configuration file
+
+:param path: path of the configuration file
+:param parameter: the parameter to be set in the configuration file
+:param value: the value of the parameter to be set in the configuration file
+:param create: whether create the file specified by path if the file does not exits
+:param insert_after: inserts the entry right after first line that matches regular expression specified by this argument, set to EOF to insert at the end of the file
+:param insert_before: inserts the entry right before first line that matches regular expression specified by this argument, set to BOF to insert at the beginning of the file
+:param insensitive: ignore case
+:param separator: separates parameter from the value (literal)
+:param separator_regex: regular expression that describes the separator and surrounding whitespace
+:param prefix_regex: regular expression describing allowed leading characters at each line
 #}}
 
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
@@ -1048,8 +1068,8 @@ fi
 {{#
   Generates bash script code that puts 'contents' into a file at 'filepath'
   Parameters:
-    - filepath - filepath of the file to check
-    - contents - contents that should be in the file
+   :param filepath: Filepath of the file to check
+   :param contents:  Contents that should be in the file
 #}}
 {{%- macro bash_file_contents(filepath='', contents='') %}}
 cat << 'EOF' > {{{ filepath }}}
@@ -1166,11 +1186,11 @@ rpm --quiet -q "{{{ pkgname }}}"
 {{%- endmacro -%}}
 
 {{#
-  # Set rule CCE value
-  #
-  # This macro gets the var cce_identifiers from the environment created by the build scripts.
-  # The cce_identifiers is a dictionary that contains either the 'cce':'CCENUM' record for the
-  # product this remediation is being built for, or it is empty.
+    Set rule CCE value
+
+    This macro gets the var cce_identifiers from the environment created by the build scripts.
+    The cce_identifiers is a dictionary that contains either the 'cce':'CCENUM' record for the
+    product this remediation is being built for, or it is empty.
   #}}
 {{%- macro set_cce_value() -%}}
 {{% if cce_identifiers and 'cce' in cce_identifiers -%}}
@@ -1179,33 +1199,28 @@ cce="{{{ cce_identifiers['cce'] }}}"
 {{%- endmacro -%}}
 
 {{#
-  Macro to replace configuration setting in config file or add the configuration setting if
-  it does not exist.
+    Macro to replace configuration setting in config file or add the configuration setting if
+    it does not exist.
+
+    Example Calls:
  
-  Expects arguments:
+      With default format of 'key = value'::
+
+        {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
  
-  config_file:		Configuration file that will be modified
-  key:			Configuration option to change
-  value:		Value of the configuration option to change
-  format:		The printf-like format string that will be given stripped key and value as arguments,
-             so e.g. '%s=%s' will result in key=value subsitution (i.e. without spaces around =)
+      With custom key/value format::
+
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
  
-  Optional arugments:
- 
-  format:		Optional argument to specify the format of how key/value should be
-              modified/appended in the configuration file. The default is key = value.
- 
-  Example Call(s):
- 
-      With default format of 'key = value':
-      {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
- 
-      With custom key/value format:
-      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
- 
-      With a variable:
-      {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
- 
+      With a variable::
+
+        {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
+
+
+    :param config_file: Configuration file that will be modified
+    :param key: Configuration option to change
+    :param value: Value of the configuration option to change
+    :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
 
@@ -1239,12 +1254,15 @@ fi
 {{%- endmacro -%}}
 
 {{#
-# vfstype:     type of filesystem
-# mount_opt:   mount point option which we are checking
-# fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
-# type:        mount type of new mount point (used when adding new entry in fstab)
-#
-# To see how args corresponds to an /etc/fstab entry, see bash_ensure_mount_option_in_fstab documentation
+    To see how args corresponds to an :code:`/etc/fstab` entry, see
+    `bash_ensure_mount_option_for_vfstype <#template-bash_ensure_mount_option_in_fstab>`_
+    documentation
+
+:param vfstype:     type of filesystem
+:param mount_opt:   mount point option which we are checking
+:param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+:param type:        mount type of new mount point (used when adding new entry in fstab)
+
 #}}
 {{% macro bash_ensure_mount_option_for_vfstype(vfstype, mount_opt, filesystem, type) -%}}
 vfstype_points=()
@@ -1257,17 +1275,20 @@ done
 {{%- endmacro %}}
 
 {{#
-# mount_point: mount point
-# mount_opt:   mount point option whose presence in /etc/fstab we are ensuring
-# fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
-# type:        mount type of mount point (used when adding new entry in fstab)
-#
-# If we look at an example invocation of this macro:
-#   {{{ bash_ensure_mount_option_in_fstab("/home", "auto_da_alloc", "LABEL=t-home2", "ext4") }}}}
-#
-# The resulting /etc/fstab entry could look like this:
-#   LABEL=t-home2   /home      ext4    defaults,auto_da_alloc      0  2
-#
+Ensures that given mount point is in :code:`/etc/fstab`.
+
+    If we look at an example invocation of this macro::
+
+        {{{ bash_ensure_mount_option_in_fstab("/home", "auto_da_alloc", "LABEL=t-home2", "ext4") }}}}
+
+    The resulting :code:`/etc/fstab` entry could look like this::
+
+        LABEL=t-home2   /home      ext4    defaults,auto_da_alloc      0  2
+
+    :param mount_point: mount point
+    :param mount_opt:   mount point option whose presence in /etc/fstab we are ensuring
+    :param fs_spec:     identification of the filesystem to be mounted (LABEL, UUID, device name etc.)
+    :param type:        mount type of mount point (used when adding new entry in fstab)
 #}}
 {{% macro bash_ensure_mount_option_in_fstab(mount_point, mount_opt, fs_spec, type) -%}}
 mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" {{{ mount_point }}})"
@@ -1315,42 +1336,33 @@ fi
 {{%- endmacro %}}
 
 {{#
-# based on example audit syscall rule definitions as outlined in
-# /usr/share/doc/audit-2.3.7/stig.rules file provided with the audit
-# package. It will combine multiple system calls belonging to the same
-# syscall group into one audit rule (rather than to create audit rule per
-# different system call) to avoid audit infrastructure performance penalty
-# in the case of 'one-audit-rule-definition-per-one-system-call'. See:
-#
-#   https://www.redhat.com/archives/linux-audit/2014-November/msg00009.html
-#
-# for further details.
-#
-# Expects seven arguments (each of them is required) in the form of:
-# * audit tool				tool used to load audit rules,
-# 					either 'auditctl', or 'augenrules
-# * action_arch_filters		The action and arch filters of the rule
-#					For example, "-a always,exit -F arch=b64"
-# * other_filters			Other filters that may characterize the rule:
-#					For example, "-F a2&03 -F path=/etc/passwd"
-# * auid_filters			The auid filters of the rule
-#					For example, "-F auid>=1000 -F auid!=unset"
-# * syscall					The syscall to ensure presense among audit rules
-#					For example, "chown"
-# * syscall_groupings		Other syscalls that can be grouped with 'syscall'
-#					as a space separated list.
-#					For example, "fchown lchown fchownat"
-# * key						The key to use when appending a new rule
-#
-# Notes:
-# - The 2-nd up to 4-th arguments are used to determine how many existing
-# audit rules will be inspected for resemblance with the new audit rule
-# the macro is going to add.
-# - The macro's similarity check uses the 5-th argument to optimize audit
-# rules definitions (merge syscalls of the same group into one rule) to avoid
-# the "single-syscall-per-audit-rule" performance penalty.
-# - The key argument (7-th argument) is not used when the syscall is grouped to an
-# existing audit rule. The audit rule will retain the key it already had.
+Based on example audit syscall rule definitions as outlined in
+:code:`/usr/share/doc/audit-2.3.7/stig.rules` file provided with the audit
+package. It will combine multiple system calls belonging to the same
+syscall group into one audit rule (rather than to create audit rule per
+different system call) to avoid audit infrastructure performance penalty
+in the case of 'one-audit-rule-definition-per-one-system-call'. See:
+
+  https://www.redhat.com/archives/linux-audit/2014-November/msg00009.html
+
+for further details.
+
+Notes:
+
+* The 2-nd up to 4-th arguments are used to determine how many existing audit rules will be inspected for resemblance with the new audit rule the macro is going to add.
+* The macro's similarity check uses the 5-th argument to optimize audit rules definitions (merge syscalls of the same group into one rule) to avoid the "single-syscall-per-audit-rule" performance penalty.
+* The key argument (7-th argument) is not used when the syscall is grouped to an
+existing audit rule. The audit rule will retain the key it already had.
+
+:param audit_tool:  tool used to load audit rules, either 'auditctl', or 'augenrules
+:param action_arch_filters: The action and arch filters of the rule. For example, "-a always,exit -F arch=b64"
+:param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
+:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:param syscall: The syscall to ensure presense among audit rules. For example, "chown"
+:param syscall_groupings: Other syscalls that can be grouped with 'syscall' as a space separated list. For example, "fchown lchown fchownat"
+:param  key: The key to use when appending a new rule
+
+
 #}}
 {{% macro bash_fix_audit_syscall_rule(tool, action_arch_filters, other_filters, auid_filters, syscall, syscall_groupings, key) -%}}
 
