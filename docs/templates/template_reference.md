@@ -259,6 +259,10 @@
         processed, only `file.txt` is tested against **file_regex**. Can
         be a list of regexes.
 
+    -   **recursive** - If set to `"true"` the OVAL will consider the
+        subdirectories under the directory specified by **filepath**. Default
+        value is `"false"`.
+
     -   **filegid** - group ID (GID)
 
 -   Languages: Ansible, Bash, OVAL
@@ -290,6 +294,10 @@ they must be of the same length.
         processed, only `file.txt` is tested against **file_regex**. Can
         be a list of regexes.
 
+    -   **recursive** - If set to `"true"` the OVAL will consider the
+        subdirectories under the directory specified by **filepath**. Default
+        value is `"false"`.
+
     -   **fileuid** - user ID (UID)
 
 -   Languages: Ansible, Bash, OVAL
@@ -320,6 +328,10 @@ they must be of the same length.
         base name of files, so if a file `/foo/bar/file.txt` is
         processed, only `file.txt` is tested against **file_regex**. Can
         be a list of regexes.
+
+    -   **recursive** - If set to `"true"` the OVAL will consider the
+        subdirectories under the directory specified by **filepath**. Default
+        value is `"false"`.
 
     -   **filemode** - File permissions in a hexadecimal format, eg.
         `'0640'`.
