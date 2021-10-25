@@ -47,9 +47,9 @@ template:
     ocp_data: "true"
     filepath: /api/v1/namespaces/openshift-kube-scheduler/configmaps/kube-scheduler-pod
     filepath_xccdf_variable: var_openshift_kube_scheduler_pod
-    yamlpath: '.data["pod.yaml"]'
+    yamlpath: ".items[0].spec.containers[:].args[:]"
+    entity_check: "none satisfy"
     values:
-      - value: "bind-address"
+      - value: "^--bind-address.*$"
+        entity_check: "at least one"
         operation: "pattern match"
-        type: "string"
-        entity_check: "none satisfy"
