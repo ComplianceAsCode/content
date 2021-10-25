@@ -18,7 +18,7 @@
 ## All files
 * Shall use UNIX style line endings
 * Shall have one newline at the end of the file
-* Shall not be trailing whitespace, unless syntactically necessary
+* Shall not have trailing whitespace, unless syntactically necessary
 * File names must:
     * Be in lower case
     * Have words separated by an underscore
@@ -49,7 +49,7 @@
 
 ### HTML Like Fields
 The sections below marked with an `(HTML Like)` means that a limited number of HTML elements are supported in these sections.
-The lists of elements below are _not_ fully inclusive.
+The lists of elements below are **not** fully inclusive.
 Any elements that are not strictly for formatting shall not be used.
 
 We support the following elements:
@@ -138,7 +138,7 @@ Benchmark sections must be in the following order, if they are present.
 * `version`
 
 ### Controls
-These rules apply to the files in `*.yml`
+These rules apply to the files in `controls/`
 All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 
 #### Control Sections
@@ -168,7 +168,7 @@ Control sections must be in the following order, if they are present.
     * `notes`
         * Must be a block
     * `rules`
-        * Must be a valid rule id
+        * Must be a list of valid rule id
 
 ### Profile
 
