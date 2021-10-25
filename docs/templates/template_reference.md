@@ -244,7 +244,7 @@
 -   Parameters:
 
     -   **filepath** - File path to be checked. If the file path ends
-        with `/` it describes a directory.
+        with `/` it describes a directory. Can also be a list of paths.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -256,11 +256,22 @@
         a directory specified by **filepath**. Can be set only if
         **filepath** parameter specifies a directory. Note: Applies to
         base name of files, so if a file `/foo/bar/file.txt` is
-        processed, only `file.txt` is tested against **file_regex**.
+        processed, only `file.txt` is tested against **file_regex**. Can
+        be a list of regexes.
+
+    -   **recursive** - If set to `"true"` the OVAL will consider the
+        subdirectories under the directory specified by **filepath**. Default
+        value is `"false"`.
 
     -   **filegid** - group ID (GID)
 
 -   Languages: Ansible, Bash, OVAL
+
+Note that the interaction between **filepath** and **file_regex** is as such:
+if **filepath** is a string, **file_regex** must also be a string; if **filepath**
+is a **list** and **file_regex** is a string, it gets extended to be the same regex
+for each path; if **filepath** and **file_regex** are both present and are lists,
+they must be of the same length.
 
 #### file_owner
 -   Check user that owns the given file.
@@ -268,7 +279,7 @@
 -   Parameters:
 
     -   **filepath** - File path to be checked. If the file path ends
-        with `/` it describes a directory.
+        with `/` it describes a directory. Can also be a list of paths.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -280,11 +291,22 @@
         a directory specified by **filepath**. Can be set only if
         **filepath** parameter specifies a directory. Note: Applies to
         base name of files, so if a file `/foo/bar/file.txt` is
-        processed, only `file.txt` is tested against **file_regex**.
+        processed, only `file.txt` is tested against **file_regex**. Can
+        be a list of regexes.
+
+    -   **recursive** - If set to `"true"` the OVAL will consider the
+        subdirectories under the directory specified by **filepath**. Default
+        value is `"false"`.
 
     -   **fileuid** - user ID (UID)
 
 -   Languages: Ansible, Bash, OVAL
+
+Note that the interaction between **filepath** and **file_regex** is as such:
+if **filepath** is a string, **file_regex** must also be a string; if **filepath**
+is a **list** and **file_regex** is a string, it gets extended to be the same regex
+for each path; if **filepath** and **file_regex** are both present and are lists,
+they must be of the same length.
 
 #### file_permissions
 -   Checks permissions (mode) on a given file.
@@ -292,7 +314,7 @@
 -   Parameters:
 
     -   **filepath** - File path to be checked. If the file path ends
-        with `/` it describes a directory.
+        with `/` it describes a directory. Can also be a list of paths.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -304,7 +326,12 @@
         a directory specified by **filepath**. Can be set only if
         **filepath** parameter specifies a directory. Note: Applies to
         base name of files, so if a file `/foo/bar/file.txt` is
-        processed, only `file.txt` is tested against **file_regex**.
+        processed, only `file.txt` is tested against **file_regex**. Can
+        be a list of regexes.
+
+    -   **recursive** - If set to `"true"` the OVAL will consider the
+        subdirectories under the directory specified by **filepath**. Default
+        value is `"false"`.
 
     -   **filemode** - File permissions in a hexadecimal format, eg.
         `'0640'`.
@@ -314,6 +341,12 @@
         Default value is `"true"`.
 
 -   Languages: Ansible, Bash, OVAL
+
+Note that the interaction between **filepath** and **file_regex** is as such:
+if **filepath** is a string, **file_regex** must also be a string; if **filepath**
+is a **list** and **file_regex** is a string, it gets extended to be the same regex
+for each path; if **filepath** and **file_regex** are both present and are lists,
+they must be of the same length.
 
 #### grub2_bootloader_argument
 -   Checks kernel command line arguments in GRUB 2 configuration.
