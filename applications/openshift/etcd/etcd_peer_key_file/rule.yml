@@ -46,7 +46,9 @@ template:
         ocp_data: "true"
         filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
         filepath_xccdf_variable: var_openshift_etcd_pod
-        yamlpath: ".data['pod.yaml']"
+        yamlpath: ".items[0].spec.containers[:].command[:]"
+        entity_check: "at least one"
         values:
-          - value: ".*--peer-key-file=/etc/kubernetes/static-pod-certs/secrets/etcd-all-[a-z]+/etcd-peer-NODE_NAME.key \\.*"
+          - value: ".*--peer-key-file=.*"
+            entity_check: "at least one"
             operation: "pattern match"
