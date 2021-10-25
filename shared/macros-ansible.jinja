@@ -3,7 +3,7 @@ Pass strings that correspond to XCCDF value names as arguments to this macro:
 ansible_instantiate_variables("varname1", "varname2")
 
 Then, assume that the task that follows can work with the variable by referencing it, e.g.
-value: "Setting={{ varname1 }}"
+value: :code:`Setting={{ varname1 }}``
 
 #}}
 {{%- macro ansible_instantiate_variables() -%}}
@@ -165,13 +165,21 @@ value: "Setting={{ varname1 }}"
 {{%- endmacro %}}
 
 {{#
-  High level macro to set a value in a shell-related file that contains var assignments. This
-  takes these values:
-  - msg (the name for the Ansible task),
-  - path to the file,
-  - parameter to set in the configuration file, and
-  - value to set it to.
-  We also specify the validation program here; see 'bash -c "help set" | grep -e -n'
+  High level macro to set a value in a shell-related file that contains var assignments.
+
+  We also specify the validation program here; see
+
+    bash -c "help set" | grep -e -n
+
+:param msg: The name for the Ansible task
+:type str:
+:param path: to the file
+:type str:
+:param parameter:Parameter to be set in the configuration file
+:type str:
+:param value: value of the parameter
+:type str:
+
 #}}
 {{%- macro ansible_shell_set(msg, path, parameter, value='', no_quotes=false) %}}
 {{% if no_quotes -%}}
@@ -184,11 +192,14 @@ value: "Setting={{ varname1 }}"
 
 {{#
   High level macro to set a command in tmux configuration file /etc/tmux.conf.
-  Parameters:
-  - msg: the name for the Ansible task
-  - parameter: parameter to be set in the configuration file
-  - value: value of the parameter
   Automatically adds "set -g " before the parameter.
+:param msg: The name for the Ansible task
+:type str:
+:param parameter: Parameter to be set in the configuration file
+:type str:
+:param value: Value of the parameter
+:type str:
+
 #}}
 {{%- macro ansible_tmux_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/tmux.conf", "set -g " + parameter, value=value, create="yes") }}}
@@ -206,10 +217,14 @@ value: "Setting={{ varname1 }}"
 
 {{#
   High level macro to set a command in auditd configuration file /etc/audit/auditd.conf.
-  Parameters:
-  - msg: the name for the Ansible task
-  - parameter: parameter to be set in the configuration file
-  - value: value of the parameter
+
+:param msg: The name for the Ansible task
+:type str:
+:param parameter: Parameter to be set in the configuration file
+:type str:
+:param value: Value of the parameter
+:type str:
+
 #}}
 {{%- macro ansible_auditd_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*") }}}
@@ -217,10 +232,14 @@ value: "Setting={{ varname1 }}"
 
 {{#
   High level macro to set a parameter in /etc/systemd/coredump.conf.
-  Parameters:
-  - msg: the name for the Ansible task
-  - parameter: parameter to be set in the configuration file
-  - value: value of the parameter
+
+:param msg: The name for the Ansible task
+:type str:
+:param parameter: Parameter to be set in the configuration file
+:type str:
+:param value: Value of the parameter
+:type str:
+
 #}}
 {{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="no", separator="=", separator_regex="\s*=\s*") }}}
@@ -228,10 +247,14 @@ value: "Setting={{ varname1 }}"
 
 {{#
   High level macro to set a parameter in /etc/selinux/config.
-  Parameters:
-  - msg: the name for the Ansible task
-  - parameter: parameter to be set in the configuration file
-  - value: value of the parameter
+
+:param msg: The name for the Ansible task
+:type str:
+:param parameter: Parameter to be set in the configuration file
+:type str:
+:param value: Value of the parameter
+:type str:
+
 #}}
 {{%- macro ansible_selinux_config_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/selinux/config", parameter=parameter, value=value, create="yes", separator="=", separator_regex="=", prefix_regex='^') }}}
@@ -239,9 +262,11 @@ value: "Setting={{ varname1 }}"
 
 {{#
   Generates an Ansible task that puts 'contents' into a file at 'filepath'
-  Parameters:
-    - filepath - filepath of the file to check
-    - contents - contents that should be in the file
+
+:param filepath: filepath of the file to check
+:type str:
+:param contents: contents that should be in the file
+:type str:
 #}}
 {{%- macro ansible_file_contents(filepath='', contents='') %}}
 - name: "Put contents into {{{ filepath }}} according to policy"
@@ -253,9 +278,10 @@ value: "Setting={{ varname1 }}"
 {{%- endmacro %}}
 
 {{#
-  Formats a banner regex for use in /etc/issue
-  Parameters:
-    - banner_var_name - name of ansible variable with the banner regex
+  Formats a banner regex for use in :code:`/etc/issue`
+
+:param banner_var_name: name of ansible variable with the banner regex
+:type str:
 #}}
 {{% macro ansible_deregexify_banner_etc_issue(banner_var_name) -%}}
 {{ {{{ banner_var_name }}} |
@@ -269,8 +295,9 @@ wordwrap() }}
 
 {{#
   Formats a banner regex for use in dconf
-  Parameters:
-    - banner_var_name - name of ansible variable with the banner regex
+
+:param banner_var_name: name of ansible variable with the banner regex
+:type str:
 #}}
 {{% macro ansible_deregexify_banner_dconf_gnome(banner_var_name) -%}}
 ''{{ {{{ banner_var_name }}} |
@@ -313,12 +340,15 @@ regex_replace("\\", "")
 {{%- endmacro %}}
 
 {{#
-The following macro remediates one audit watch rule in /etc/audit/rules.d directory.
-The macro requires following parameters:
-- path: path to watch
-- permissions: permissions changes to watch for
-- key: key to use as identifier. Note that if there exists any other rule with the same find_mac_key
-in some file within /etc/audit/rules.d/, the new rule will be appended to this file.
+The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d` directory.
+
+:param path: path to watch
+:type str:
+:param permissions: permissions changes to watch for
+:type str:
+:param key: key to use as identifier. Note that if there exists any other rule with the same find_mac_key in some file within :code`/etc/audit/rules.d/`, the new rule will be appended to this file.
+:type str:
+
 #}}
 {{% macro ansible_audit_augenrules_add_watch_rule(path='', permissions='', key='') -%}}
 - name: Check if watch rule for {{{ path }}} already exists in /etc/audit/rules.d/
@@ -358,11 +388,14 @@ in some file within /etc/audit/rules.d/, the new rule will be appended to this f
 {{%- endmacro %}}
 
 {{#
-The following macro remediates one audit watch rule in /etc/audit/audit.rules.
-The macro requires following parameters:
-- path: path to watch
-- permissions: permissions changes to watch for
-- key: key to use as identifier
+The following macro remediates one audit watch rule in :code:`/etc/audit/audit.rules`.
+
+:param path: Path to watch
+:type str:
+:param permissions: Permissions changes to watch for
+:type str:
+:param key: Key to use as identifier
+:type str:
 #}}
 {{% macro ansible_audit_auditctl_add_watch_rule(path='', permissions='', key='') -%}}
 - name: Check if watch rule for {{{ path }}} already exists in /etc/audit/audit.rules
@@ -383,19 +416,15 @@ The macro requires following parameters:
 {{%- endmacro %}}
 
 {{#
-The following macro remediates Audit syscall rule in /etc/audit/rules.d directory.
+The following macro remediates Audit syscall rule in :code:`/etc/audit/rules.d` directory.
 The macro requires following parameters:
-- action_arch_filters:  The action and arch filters of the rule
-                        For example, "-a always,exit -F arch=b64"
-- other_filters:        Other filters that may characterize the rule:
-                        For example, "-F a2&03 -F path=/etc/passwd"
-- auid_filters:         The auid filters of the rule
-                        For example, "-F auid>=1000 -F auid!=unset"
-- syscalls:             List of syscalls to ensure presense among audit rules
-                        For example, "['fchown', 'lchown', 'fchownat']"
-- syscall_groupings:    List of other syscalls that can be grouped with 'syscalls'
-                        For example, "['fchown', 'lchown', 'fchownat']"
-- key:                  The key to use when appending a new rule
+
+:param action_arch_filters: The action and arch filters of the rule. For example, "-a always,exit -F arch=b64"
+:param other_filters: Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
+:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:param syscalls: List of syscalls to ensure presense among audit rules. For example, "['fchown', 'lchown', 'fchownat']"
+:param syscall_groupings: List of other syscalls that can be grouped with 'syscalls'. For example, "['fchown', 'lchown', 'fchownat']"
+:param key: The key to use when appending a new rule
 #}}
 {{% macro ansible_audit_augenrules_add_syscall_rule(action_arch_filters="", other_filters="", auid_filters="", syscalls=[], key="", syscall_grouping=[]) -%}}
 {{% if other_filters != "" %}}
@@ -473,19 +502,15 @@ The macro requires following parameters:
 {{%- endmacro %}}
 
 {{#
-The following macro remediates Audit syscall rule in /etc/audit/audit.rules file.
-The macro requires following parameters:
-- action_arch_filters:  The action and arch filters of the rule
-                        For example, "-a always,exit -F arch=b64"
-- other_filters:        Other filters that may characterize the rule:
-                        For example, "-F a2&03 -F path=/etc/passwd"
-- auid_filters:         The auid filters of the rule
-                        For example, "-F auid>=1000 -F auid!=unset"
-- syscalls:             List of syscalls to ensure presense among audit rules
+The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rules` file.
+
+:param action_arch_filters:  The action and arch filters of the rule. For example, "-a always,exit -F arch=b64"
+:param other_filters:        Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
+:param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
+:param syscalls: List of syscalls to ensure presense among audit rules. For example, "['fchown', 'lchown', 'fchownat']"
+:param syscall_groupings: List of other syscalls that can be grouped with 'syscalls'
                         For example, "['fchown', 'lchown', 'fchownat']"
-- syscall_groupings:    List of other syscalls that can be grouped with 'syscalls'
-                        For example, "['fchown', 'lchown', 'fchownat']"
-- key:                  The key to use when appending a new rule
+key: he key to use when appending a new rule
 #}}
 {{% macro ansible_audit_auditctl_add_syscall_rule(action_arch_filters="", other_filters="", auid_filters="", syscalls=[], key="", syscall_grouping=[]) -%}}
 {{% if other_filters!= "" %}}
