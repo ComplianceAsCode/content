@@ -46,6 +46,7 @@ xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
 datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
 ocil_namespace = "http://scap.nist.gov/schema/ocil/2.0"
+cpe_language_namespace = "http://cpe.mitre.org/language/2.0"
 oval_footer = "</oval_definitions>"
 oval_namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 xlink_namespace = "http://www.w3.org/1999/xlink"

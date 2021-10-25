@@ -13,7 +13,8 @@ ns = {
     "oval": ssg.constants.oval_namespace,
     "catalog": ssg.constants.cat_namespace,
     "xlink": ssg.constants.xlink_namespace,
-    "ocil": ssg.constants.ocil_namespace
+    "ocil": ssg.constants.ocil_namespace,
+    "cpe-lang": ssg.constants.cpe_language_namespace,
 }
 remediation_type_to_uri = {
     "bash": ssg.constants.bash_system,
@@ -98,6 +99,45 @@ def definition_to_elements(definition):
 def print_offending_elements(elements, sign):
     for thing, atrribute in elements:
         print("%s %s %s" % (sign, thing, atrribute))
+
+
+def compare_platforms(old_rule, new_rule, old_benchmark, new_benchmark):
+    entries = [{
+            "benchmark": old_benchmark,
+            "rule": old_rule,
+            "cpe": []
+        }, {
+            "benchmark": new_benchmark,
+            "rule": new_rule,
+            "cpe": []
+        }]
+
+    for entry in entries:
+        for platform in entry["rule"].findall(".//xccdf:platform", ns):
+            idref = platform.get("idref")
+            if idref.startswith("#"):
+                cpe_platforms = entry["benchmark"].findall(
+                    ".//cpe-lang:platform[@id='{0}']".format(idref.replace("#", "")), ns)
+                if len(cpe_platforms) > 1:
+                    print("Platform {0} defined more than once".format(idref))
+                    for cpe_p in cpe_platforms:
+                        ET.dump(cpe_p)
+                if len(cpe_platforms) == 0:
+                    print("Platform {0} not defined in platform specification".format(idref))
+                    break
+                for cpe_platform in cpe_platforms:
+                    fact_refs = cpe_platform.findall(".//cpe-lang:fact-ref", ns)
+                    for fact_ref in fact_refs:
+                        entry["cpe"].append(fact_ref.get("name"))
+            else:
+                entry["cpe"].append(idref)
+
+    if entries[0]["cpe"] != entries[1]["cpe"]:
+        print("Platform has been changed for rule '{0}'".format(entries[0]["rule"].get("id")))
+        print("--- old datastream")
+        print("+++ new datastream")
+        print("-{}".format(repr(entries[0]["cpe"])))
+        print("+{}".format(repr(entries[1]["cpe"])))
 
 
 def compare_oval_definitions(
@@ -307,9 +347,11 @@ def process_benchmarks(
             continue
         if only_rules:
             continue
-        compare_rules(
-            old_rule, new_rule, old_oval_defs, new_oval_defs,
-            old_ocils, new_ocils, show_diffs)
+        compare_rules(old_rule, new_rule,
+                      old_oval_defs, new_oval_defs,
+                      old_ocils, new_ocils, show_diffs)
+        compare_platforms(old_rule, new_rule,
+                          old_benchmark, new_benchmark)
 
 
 def get_component_refs(root):
