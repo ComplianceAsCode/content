@@ -115,30 +115,10 @@ class ProductCPEs(object):
         if "&" not in platform_line and "!" not in platform_line:
             initial_test = CPEALLogicalTest(operator="OR", negate="false")
             platform.add_test(initial_test)
-            initial_test.add_object(self.parse_platform_line(platform_line))
+            initial_test.add_object(parse_platform_line(platform_line, self))
         else:
-            platform.add_test(self.parse_platform_line(platform_line))
+            platform.add_test(parse_platform_line(platform_line, self))
         return platform
-
-    def parse_platform_line(self, platform_line):
-        # remove spaces
-        platform_line = platform_line.replace(" ", "")
-        if "&" in platform_line:
-            and_test = CPEALLogicalTest(operator="AND", negate="false")
-            and_members = platform_line.split("&")
-            for member in and_members:
-                and_test.add_object(self.parse_platform_line(member))
-            return and_test
-        elif "!" in platform_line:
-            negated_test = CPEALLogicalTest(operator="OR", negate="true")
-            # remove ! from the element and process it further
-            platform_line = platform_line.replace("!", "")
-            negated_test.add_object(self.parse_platform_line(platform_line))
-            return negated_test
-        else:
-            # the line should contain a CPEAL ref name
-            cpealfactref = CPEALFactRef(self.get_cpe_name(platform_line))
-            return cpealfactref
 
     def _convert_platform_to_id(self, platform):
         id = platform.replace(" ", "")
@@ -250,6 +230,7 @@ class CPEALPlatform(object):
         cpe_platform.set('id', self.id)
         cpe_platform.append(self.test.to_xml_element())
         return cpe_platform
+
 
     def __eq__(self, other):
         if not isinstance(other, CPEALPlatform):
@@ -396,3 +377,23 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
+def parse_platform_line(platform_line, product_cpe):
+    # remove spaces
+    platform_line = platform_line.replace(" ", "")
+    if "&" in platform_line:
+        and_test = CPEALLogicalTest(operator="AND", negate="false")
+        and_members = platform_line.split("&")
+        for member in and_members:
+            and_test.add_object(parse_platform_line(member))
+        return and_test
+    elif "!" in platform_line:
+        negated_test = CPEALLogicalTest(operator="OR", negate="true")
+        # remove ! from the element and process it further
+        platform_line = platform_line.replace("!", "")
+        negated_test.add_object(parse_platform_line(platform_line))
+        return negated_test
+    else:
+        # the line should contain a CPEAL ref name
+        cpealfactref = CPEALFactRef(product_cpe.get_cpe_name(platform_line))
+        return cpealfactref
