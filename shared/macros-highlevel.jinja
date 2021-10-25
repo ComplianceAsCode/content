@@ -1,6 +1,10 @@
 {{#
 Insert general ocil clause to check if a package is installed, substituting the
 correct package management software.
+
+:param package: Name of package
+:type package: str
+
 #}}
 {{% macro ocil_package(package) -%}}
   {{% if pkg_system is defined %}}
@@ -17,6 +21,10 @@ JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
 {{#
 Insert a complete OCIL block for a case when a package should be removed,
 substituting the correct package management software.
+
+:param package: Name of package
+:type package: str
+
 #}}
 {{% macro complete_ocil_entry_package(package) -%}}
   {{% if pkg_system is defined %}}
@@ -34,6 +42,10 @@ ocil: |-
 {{#
 Inserts a rule description for a case when a package should be installed,
 substituting the correct package management software.
+
+:param package: Name of package
+:type package: str
+
 #}}
 {{%- macro describe_package_install(package) -%}}
     The <code>{{{ package }}}</code> package can be installed with the following command:
@@ -43,6 +55,10 @@ substituting the correct package management software.
 {{#
 Outputs a command for installing a package, substituting the correct package
 management software.
+
+:param package: Name of package
+:type package: str
+
 #}}
 {{%- macro package_install(package) -%}}
   {{% if pkg_manager is defined %}}
@@ -63,6 +79,10 @@ JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
 {{#
 Inserts a rule description for a case when a package should be removed,
 substituting the correct package management software.
+
+:param package: Name of package
+:type package: str
+
 #}}
 {{%- macro describe_package_remove(package) -%}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
@@ -92,6 +112,10 @@ JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
 {{#
 Inserts a rule description for a case when a service should be enabled,
 substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
 #}}
 {{% macro describe_service_enable(service) -%}}
   {{% if init_system is defined %}}
@@ -105,9 +129,13 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
   {{%- endif -%}}
 {{%- endmacro %}}
 
-{{#}}
+{{#
 Inserts a rule description for a case when a service should be disabled,
 substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
 #}}
 {{% macro describe_service_disable(service) -%}}
   {{% if init_system is defined %}}
@@ -124,6 +152,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{#
 Inserts an OCIL for a case when a service should be enabled,
 substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
 #}}
 {{% macro ocil_service_enabled(service) -%}}
   {{% if init_system is defined %}}
@@ -140,6 +172,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{#
 Inserts an OCIL for a case when a service should be disabled,
 substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
 #}}
 {{% macro ocil_service_disabled(service) -%}}
   {{% if init_system is defined %}}
@@ -156,6 +192,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{#
 Inserts a rule description for a case when a socket should be enabled,
 substituting the correct init system.
+
+:param socket: Name of socket
+:type socket: str
+
 #}}
 {{% macro describe_socket_enable(socket) -%}}
   {{% if init_system is defined %}}
@@ -172,6 +212,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{#
 Inserts a rule description for a case when a socket should be disabled,
 substituting the correct init system.
+
+:param socket: Name of socket
+:type socket: str
+
 #}}
 {{% macro describe_socket_disable(socket) -%}}
   {{% if init_system is defined %}}
@@ -188,6 +232,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{#
 Inserts an OCIL for a case when a service and a corresponding socket should be
 disabled, substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
 #}}
 {{% macro complete_ocil_entry_socket_and_service_disabled(service) -%}}
   {{% if init_system is defined %}}
@@ -205,6 +253,10 @@ ocil: |-
 {{#
 Inserts a rule description for a case when a timer should be enabled,
 substituting the correct init system.
+
+:param timer: Name of timer
+:type timer: str
+
 #}}
 {{% macro describe_timer_enable(timer) -%}}
   {{% if init_system is defined %}}
@@ -219,6 +271,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{#
 Inserts an OCIL for a case when a timer should be enabled,
 substituting the correct init system.
+
+:param timer: Name of timer
+:type timer: str
+
 #}}
 {{% macro ocil_timer_enabled(timer) -%}}
   {{% if init_system is defined %}}
@@ -231,7 +287,10 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{%- endmacro %}}
 
 {{#
-Generates the <affected> tag for OVAL check using correct product platforms.
+Generates the :code`<affected>` tag for OVAL check using correct product platforms.
+
+:param products: Name of products
+:type products: str
 #}}
 {{%- macro oval_affected(products) %}}
 <affected family="unix">
