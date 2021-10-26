@@ -14,6 +14,7 @@ Then, assume that variables of that names are defined and contain the correct va
 {{% endfor -%}}
 {{%- endmacro -%}}
 
+
 {{#
     Make sure that we have a line like this in pamFile (additional options are left as-is):
     type control module option=valueRegexArg
@@ -61,6 +62,7 @@ else
     echo "{{{ pamFile }}} doesn't exist" >&2
 fi
 {{%- endmacro -%}}
+
 
 {{#
     Make sure that we have a line with given type, control and module has the given option in pamFile (additional options are left as-is):
@@ -133,6 +135,7 @@ fi
         prefix_regex="^\s*")
     }}}
 {{%- endmacro -%}}
+
 
 {{#
     Macro to perform remediation for 'audit_rules_privileged_commands' rule
@@ -424,6 +427,7 @@ EOF
     }}}
 {{%- endmacro -%}}
 
+
 {{#
     Macro to fix audit file system object watch rule for given path:
     * if rule exists, also verifies the -w bits match the requirements
@@ -530,6 +534,7 @@ do
 done
 {{%- endmacro -%}}
 
+
 {{#
     Install a package
 
@@ -555,6 +560,7 @@ zypper install -y "{{{ package }}}"
 {{{ die("Can't generate a remediation for product " + product + ", because there is no pkg_manager set in product.yml") }}}
 {{%- endif -%}}
 {{%- endmacro -%}}
+
 
 {{#
     Remove a package
@@ -586,6 +592,7 @@ zypper remove -y "{{{ package }}}"
 {{{ die("Can't generate a remediation for product " + product + ", because there is no pkg_manager set in product.yml") }}}
 {{%- endif -%}}
 {{%- endmacro -%}}
+
 
 {{#
     Macro to perform remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
@@ -649,6 +656,7 @@ if test -e /etc/sysconfig/prelink -o -e /usr/sbin/prelink; then
 fi
 {{%- endmacro -%}}
 
+
 {{#
     Macro to configure DConf settings for RHEL and Fedora systems.
 
@@ -685,6 +693,7 @@ fi
 dconf update
 {{%- endmacro -%}}
 
+
 {{#
     Macro to configure DConf locks for RHEL and Fedora systems.
 
@@ -703,6 +712,7 @@ fi
 
 dconf update
 {{%- endmacro -%}}
+
 
 {{#
     Macro to enable or disable a particular service.
@@ -835,6 +845,7 @@ for firefox_dir in ${firefox_dirs}; do
 done
 {{%- endmacro -%}}
 
+
 {{#
 Function to replace configuration setting(s) in the Firefox preferences configuration (.cfg) file or add the
 preference if it does not exist.
@@ -881,6 +892,7 @@ for firefox_dir in ${firefox_dirs}; do
 done
 {{%- endmacro -%}}
 
+
 {{#
     Macro to ensure that the ntp/chrony config file contains valid server entries.
 
@@ -896,6 +908,7 @@ else
   sed -i 's/#[ \t]*server/server/g' "{{{ config_file }}}"
 fi
 {{%- endmacro -%}}
+
 
 {{#
     Sets PAM faillock module options and values.
@@ -914,6 +927,7 @@ do
     {{{ bash_set_faillock_option_account("$pam_file") | indent(4) }}}
 done
 {{%- endmacro -%}}
+
 
 {{#
     Print a message to stderr and exit the shell
@@ -1065,6 +1079,7 @@ if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "{{{ pam_file }}}" 
 fi
 {{%- endmacro -%}}
 
+
 {{#
   Generates bash script code that puts 'contents' into a file at 'filepath'
   Parameters:
@@ -1185,6 +1200,7 @@ rpm --quiet -q "{{{ pkgname }}}"
 {{%- endif -%}}
 {{%- endmacro -%}}
 
+
 {{#
     Set rule CCE value
 
@@ -1197,6 +1213,7 @@ rpm --quiet -q "{{{ pkgname }}}"
 cce="{{{ cce_identifiers['cce'] }}}"
 {{%- endif %}}
 {{%- endmacro -%}}
+
 
 {{#
     Macro to replace configuration setting in config file or add the configuration setting if
@@ -1252,6 +1269,7 @@ else
     printf '%s\n' "$formatted_output" >> "{{{ config_file }}}"
 fi
 {{%- endmacro -%}}
+
 
 {{#
     To see how args corresponds to an :code:`/etc/fstab` entry, see

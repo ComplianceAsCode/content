@@ -12,6 +12,7 @@ value: :code:`Setting={{ varname1 }}``
 {{% endfor -%}}
 {{%- endmacro -%}}
 
+
 {{#
   A wrapper over the Ansible lineinfile module. This handles the most common
   options for us. regex is optional and when blank, it won't be included in
@@ -62,6 +63,7 @@ value: :code:`Setting={{ varname1 }}``
   {{%- endif %}}
 {{%- endmacro %}}
 
+
 {{#
   Check the file system status of an object. Not a full implementation.
 #}}
@@ -73,6 +75,7 @@ value: :code:`Setting={{ varname1 }}``
   register: '{{{ register }}}'
   {{%- endif %}}
 {{%- endmacro %}}
+
 
 {{#
   Find files matching a particular value. Not a full implementation.
@@ -93,6 +96,7 @@ value: :code:`Setting={{ varname1 }}``
   when: '{{{ when }}}'
   {{%- endif %}}
 {{%- endmacro %}}
+
 
 {{#
   A wrapper for adding one, unique line to a file. A regex must be specified
@@ -115,6 +119,7 @@ value: :code:`Setting={{ varname1 }}``
 {{%- endif %}}
 {{%- endmacro %}}
 
+
 {{#
   Ensure the configuration is set in a file. Note this handles generic
   key-seperator-value files with no sense of structure. In particular,
@@ -124,6 +129,7 @@ value: :code:`Setting={{ varname1 }}``
 {{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
 {{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
 {{%- endmacro %}}
+
 
 {{#
   Ensure the configuration is set in a file and not conflicted by a
@@ -151,6 +157,7 @@ value: :code:`Setting={{ varname1 }}``
     {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, regex=line_regex, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
 {{%- endmacro %}}
 
+
 {{#
   High level macro to set a value in the ssh daemon configuration file. This
   takes three values: msg (the name for the Ansible task), a parameter to set
@@ -163,6 +170,7 @@ value: :code:`Setting={{ varname1 }}``
 {{%- macro ansible_sshd_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^[#\s]*Match") }}}
 {{%- endmacro %}}
+
 
 {{#
   High level macro to set a value in a shell-related file that contains var assignments.
@@ -190,6 +198,7 @@ value: :code:`Setting={{ varname1 }}``
 {{{ ansible_set_config_file(msg, path, parameter, separator="=", separator_regex="=", value=value, create="yes", prefix_regex='^\s*', validate="/usr/bin/bash -n %s", insert_before="^# " ~ parameter) }}}
 {{%- endmacro %}}
 
+
 {{#
   High level macro to set a command in tmux configuration file /etc/tmux.conf.
   Automatically adds "set -g " before the parameter.
@@ -205,6 +214,7 @@ value: :code:`Setting={{ varname1 }}``
 {{{ ansible_set_config_file(msg, "/etc/tmux.conf", "set -g " + parameter, value=value, create="yes") }}}
 {{%- endmacro %}}
 
+
 {{#
   High level macro to set a value in /etc/profile (and /etc/profile.d) bash
   files. Note this is only suitable for calling a single command once with the
@@ -214,6 +224,7 @@ value: :code:`Setting={{ varname1 }}``
 {{%- macro ansible_etc_profile_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file_dir(msg, "/etc/profile", "/etc/profile.d", "/etc/profile", parameter, separator='=', separator_regex='=', value=value, create='yes', validate="bash -n %s") }}}
 {{%- endmacro %}}
+
 
 {{#
   High level macro to set a command in auditd configuration file /etc/audit/auditd.conf.
@@ -230,6 +241,7 @@ value: :code:`Setting={{ varname1 }}``
 {{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*") }}}
 {{%- endmacro %}}
 
+
 {{#
   High level macro to set a parameter in /etc/systemd/coredump.conf.
 
@@ -245,6 +257,7 @@ value: :code:`Setting={{ varname1 }}``
 {{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="no", separator="=", separator_regex="\s*=\s*") }}}
 {{%- endmacro %}}
 
+
 {{#
   High level macro to set a parameter in /etc/selinux/config.
 
@@ -259,6 +272,7 @@ value: :code:`Setting={{ varname1 }}``
 {{%- macro ansible_selinux_config_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/selinux/config", parameter=parameter, value=value, create="yes", separator="=", separator_regex="=", prefix_regex='^') }}}
 {{%- endmacro %}}
+
 
 {{#
   Generates an Ansible task that puts 'contents' into a file at 'filepath'
@@ -277,6 +291,7 @@ value: :code:`Setting={{ varname1 }}``
     force: yes
 {{%- endmacro %}}
 
+
 {{#
   Formats a banner regex for use in :code:`/etc/issue`
 
@@ -292,6 +307,7 @@ value: :code:`Setting={{ varname1 }}``
 {{{ ansible_deregexify_banner_backslash() }}} |
 wordwrap() }}
 {{%- endmacro %}}
+
 
 {{#
   Formats a banner regex for use in dconf
@@ -309,35 +325,42 @@ wordwrap() }}
 {{{ ansible_deregexify_banner_newline_token()}}} }}''
 {{%- endmacro %}}
 
+
 {{# Strips anchors around the banner #}}
 {{% macro ansible_deregexify_banner_anchors() -%}}
 regex_replace("^\^(.*)\$$", "\1")
 {{%- endmacro %}}
+
 
 {{# Strips multibanner regex and keeps only the first banner #}}
 {{% macro ansible_deregexify_multiple_banners() -%}}
 regex_replace("^\((.*\.)\|.*\)$", "\1")
 {{%- endmacro %}}
 
+
 {{# Strips whitespace or newline regex #}}
 {{% macro ansible_deregexify_banner_space() -%}}
 regex_replace("\[\\s\\n\]\+"," ")
 {{%- endmacro %}}
+
 
 {{# Strips newline or newline escape sequence regex #}}
 {{% macro ansible_deregexify_banner_newline(newline) -%}}
 regex_replace("\(\?:\[\\n\]\+\|\(\?:\\\\n\)\+\)", "{{{ newline }}}")
 {{%- endmacro %}}
 
+
 {{# Strips newline token for a newline escape sequence regex #}}
 {{% macro ansible_deregexify_banner_newline_token() -%}}
 regex_replace("\(n\)\*", "\\n")
 {{%- endmacro %}}
 
+
 {{# Strips backslash regex #}}
 {{% macro ansible_deregexify_banner_backslash() -%}}
 regex_replace("\\", "")
 {{%- endmacro %}}
+
 
 {{#
 The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d` directory.
@@ -387,6 +410,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/rules.d
   when: find_existing_watch_rules_d.matched is defined and find_existing_watch_rules_d.matched == 0
 {{%- endmacro %}}
 
+
 {{#
 The following macro remediates one audit watch rule in :code:`/etc/audit/audit.rules`.
 
@@ -414,6 +438,7 @@ The following macro remediates one audit watch rule in :code:`/etc/audit/audit.r
     mode: '0640'
   when: find_existing_watch_audit_rules.matched is defined and find_existing_watch_audit_rules.matched == 0
 {{%- endmacro %}}
+
 
 {{#
 The following macro remediates Audit syscall rule in :code:`/etc/audit/rules.d` directory.
@@ -501,6 +526,7 @@ The macro requires following parameters:
   when: syscalls_found | length == 0
 {{%- endmacro %}}
 
+
 {{#
 The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rules` file.
 
@@ -508,9 +534,10 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 :param other_filters:        Other filters that may characterize the rule. For example, "-F a2&03 -F path=/etc/passwd"
 :param auid_filters: The auid filters of the rule. For example, "-F auid>=1000 -F auid!=unset"
 :param syscalls: List of syscalls to ensure presense among audit rules. For example, "['fchown', 'lchown', 'fchownat']"
+:param key: The key to use when appending a new rule
 :param syscall_groupings: List of other syscalls that can be grouped with 'syscalls'
                         For example, "['fchown', 'lchown', 'fchownat']"
-key: he key to use when appending a new rule
+
 #}}
 {{% macro ansible_audit_auditctl_add_syscall_rule(action_arch_filters="", other_filters="", auid_filters="", syscalls=[], key="", syscall_grouping=[]) -%}}
 {{% if other_filters!= "" %}}
