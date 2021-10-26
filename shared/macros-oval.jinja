@@ -470,7 +470,7 @@
 {{%- endif -%}}
 {{{ oval_check_config_file(path, prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, quotes=quotes) }}}
 {{%- endmacro %}}
-/ok-to-test
+
 {{#
   High level macro to check if a particular combination of parameter and value in the Audit daemon configuration file is set.
 
@@ -630,7 +630,7 @@
 :type test_id: str
 
 #}}
-{{%- macro oval_test_package_installed(package='', :param='', test_id='') -%}}
+{{%- macro oval_test_package_installed(package='', evr='', test_id='') -%}}
 {{% if pkg_system == "rpm" %}}
   <linux:rpminfo_test check="all" check_existence="all_exist"
   id="{{{ test_id }}}" version="1"
@@ -771,9 +771,9 @@
 
 :param path: Path to the file
 :type path: str
-:param prefix_regex: Defaults to ^\s*. What can prefix the the parameter
+:param prefix_regex: Defaults to ^\s*. What can prefix the parameter.
 :type prefix_regex: str
-:param parameter: What is parameter to be set.
+:param parameter: What parameter to be set.
 :type parameter: str
 :param separator_regex: Defaults to [ \\t]*=[ \\t]*. What is the separator between the parameter and value.
 :type separator_regex: str
@@ -827,9 +827,9 @@
 :type parameter: str
 :param value: Value to check
 :type value: str
-:param missing_parameter_pass: If its missing should the check pass
+:param missing_parameter_pass: If true, the check will pass if the parameter missing.
 :type missing_parameter_pass: bool
-:param config_is_distributed: Is the param in sshd_config.d
+:param config_is_distributed: Is the param in /etc/sshd_config.d vs just /etc/ssh/sshd_config
 :type config_is_distributed: bool
 #}}
 {{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed) -%}}
