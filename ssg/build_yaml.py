@@ -15,7 +15,7 @@ import glob
 import yaml
 
 from .build_cpe import CPEDoesNotExist
-from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM
+from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -1839,3 +1839,77 @@ class LinearLoader(object):
 
     def export_benchmark_to_file(self, filename):
         return self.benchmark.to_file(filename)
+
+    def export_ocil_to_file(self, filename):
+        root = ET.Element('ocil')
+        root.set('xmlns:xsi', xsi_namespace)
+        root.set("xmlns", ocil_namespace)
+        root.set("xmlns:xhtml", xhtml_namespace)
+        tree = ET.ElementTree(root)
+        generator = ET.SubElement(root, "generator")
+        product_name = ET.SubElement(generator, "product_name")
+        product_name.text = "build_shorthand.py from SCAP Security Guide"
+        product_version = ET.SubElement(generator, "product_version")
+        product_version.text = "ssg: " + self.env_yaml["ssg_version_str"]
+        schema_version = ET.SubElement(generator, "schema_version")
+        schema_version.text = "2.0"
+        timestamp_el = ET.SubElement(generator, "timestamp")
+        timestamp_el.text = timestamp
+        questionnaires = ET.SubElement(root, "questionnaires")
+        test_actions = ET.SubElement(root, "test_actions")
+        questions = ET.SubElement(root, "questions")
+        for rule in self.rules.values():
+            if not rule.ocil and not rule.ocil_clause:
+                continue
+            # Add <questionnaire>
+            questionnaire = ET.SubElement(
+                questionnaires, "questionnaire", id=rule.id_ + "_ocil")
+            title = ET.SubElement(questionnaire, "title")
+            title.text = rule.title
+            actions = ET.SubElement(questionnaire, "actions")
+            test_action_ref = ET.SubElement(actions, "test_action_ref")
+            test_action_ref.text = rule.id_ + "_action"
+            # Add <boolean_question_test_action>
+            action = ET.SubElement(
+                test_actions, "boolean_question_test_action",
+                id=rule.id_ + "_action",
+                question_ref=rule.id_ + "_question")
+            when_true = ET.SubElement(action, "when_true")
+            result = ET.SubElement(when_true, "result")
+            result.text = "PASS"
+            when_true = ET.SubElement(action, "when_false")
+            result = ET.SubElement(when_true, "result")
+            result.text = "FAIL"
+            # Add <boolean_question>
+            boolean_question = ET.SubElement(
+                questions, "boolean_question", id=rule.id_ + "_question")
+            # TODO: The contents of <question_text> element used to be broken in
+            # the legacy XSLT implementation. The following code contains hacks
+            # to get the same results as in the legacy XSLT implementation.
+            # This enabled us a smooth transition to new OCIL generator
+            # without a need to mass-edit rule YAML files.
+            # We need to solve:
+            # TODO: using variables (aka XCCDF Values) in OCIL content
+            # TODO: using HTML formating tags eg. <pre> in OCIL content
+            #
+            # The "ocil" key in compiled rules contains HTML and XML elements
+            # but OCIL question texts shouldn't contain HTML or XML elements,
+            # therefore removing them.
+            if rule.ocil:
+                ocil_without_tags = re.sub(r"</?[^>]+>", "", rule.ocil)
+            else:
+                ocil_without_tags = ""
+            # The "ocil" key in compiled rules contains XML entities which would
+            # be escaped by ET.Subelement() so we need to use add_sub_element()
+            # instead because we don't want to escape them.
+            question_text = add_sub_element(
+                boolean_question, "question_text", ocil_without_tags)
+            # The "ocil_clause" key in compiled rules also contains HTML and XML
+            # elements but unlike the "ocil" we want to escape the '<' and '>'
+            # characters.
+            # The empty ocil_clause causing broken question is in line with the
+            # legacy XSLT implementation.
+            ocil_clause = rule.ocil_clause if rule.ocil_clause else ""
+            question_text.text = "{0}\n      Is it the case that {1}?\n".format(
+                question_text.text, ocil_clause)
+        tree.write(filename)
