@@ -181,13 +181,21 @@ spec:
     - file_permissions_mode (String): File permissions to be applied to the file represented by path argument
     - source_content (String): The source of the content to be applied.
     - deps (list): The list of dependencies for this remediation to be applies (they're XCCDF IDs)
+    - ocp_version_deps (String): States that the remediation needs a certain OpenShift version range to work
+    - k8s_version_deps (String): States that the remediation needs a certain Kubernetes version range to work
 #}}
-{{%- macro kubernetes_machine_config_file_with_dependencies(path='', file_permissions_mode='', source='', deps=[]) -%}}
+{{%- macro kubernetes_machine_config_file_with_dependencies(path='', file_permissions_mode='', source='', deps=[], ocp_version_range='', k8s_version_range='') -%}}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
   annotations:
     complianceascode.io/depends-on: {{{ deps | join(",") }}}
+{{%- if ocp_version_range|length > 0 %}}
+    complianceascode.io/ocp-version: '{{{ ocp_version_range }}}'
+{{%- endif %}}
+{{%- if k8s_version_range|length > 0 %}}
+    complianceascode.io/k8s-version: '{{{ k8s_version_range }}}'
+{{%- endif %}}
 spec:
   config:
     ignition:
@@ -458,7 +466,7 @@ AuditBackend=LinuxAudit
   High level macro to generate Kubernetes remediation to set the usbguard daemon configuration file.
 #}}
 {{%- macro kubernetes_usbguard_set(deps=[]) -%}}
-{{{ kubernetes_machine_config_file_with_dependencies(path='/etc/usbguard/usbguard-daemon.conf', file_permissions_mode='0600', source=usbguard_config_source(), deps=deps) }}}
+{{{ kubernetes_machine_config_file_with_dependencies(path='/etc/usbguard/usbguard-daemon.conf', file_permissions_mode='0600', source=usbguard_config_source(), deps=deps, ocp_version_range='>=4.7.0') }}}
 {{%- endmacro -%}}
 
 {{% macro kubernetes_machineconfig_audit_add_watch_rule(path='', permissions='', key='') -%}}
@@ -691,4 +699,5 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 spec:
 {{{ expand_yaml_path(path, parameter) }}}: {{{ value }}}
-{{%- endmacro -%}} 
+{{%- endmacro -%}}
+
