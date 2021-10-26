@@ -715,7 +715,9 @@ controls:
   rules: 
   # 1.AWS case
   # .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted to "true". ==> applicable to aws case only!
-  
+  - ebs_encryption_enabled
+  - ebs_encrypted_or_fips_enabled
+
   # 2.RHCOS / RHEL case
   # TPMv2 or Tang is enabled ==> applicable to RHCOS case only
   # (https://docs.openshift.com/container-platform/4.7/installing/install_config/installing-customizing.html#installation-special-config-encrypt-disk_installing-customizing)
@@ -725,12 +727,13 @@ controls:
   # Check that machineconfig's .spec.config.storage.luks.[0].clevis.tang.url not null
   # TPM & Tang use LUKS, which only protects the disk when offline (see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/system_design_guide/scanning_the_system_for_security_compliance_and_vulnerabilities#luks-disk-encryption_encrypting-block-devices-using-luks)
   # => this is really very very partial
-  # 2.2
-  - api_server_encryption_provider_cipher
-  - api_server_encryption_provider_config
   - fips_mode_enabled
   - fips_mode_enabled_on_workers
-  - ebs_encryption_enabled
+
+  # 3. etcd encryption
+  - api_server_encryption_provider_cipher
+  - api_server_encryption_provider_config
+
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
     cardholder data against disclosure and misuse:'
