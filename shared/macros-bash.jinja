@@ -964,6 +964,9 @@ LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ dirname }}}"/{{{ filename
     {{%- else -%}}
         {{%- set grep_args="-q -m 1" -%}}
     {{%- endif -%}}
+# make sure file has newline at the end
+sed -i -e '$a\' "{{{ path }}}"
+
 cp "{{{ path }}}" "{{{ path }}}.bak"
     {{%- if not (insert_after or insert_before)  or insert_after == "EOF" %}}
 # Insert at the end of the file
