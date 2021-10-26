@@ -32,8 +32,7 @@ value: "Setting={{ varname1 }}"
     create: {{{ create }}}
     {{%- if regex and not escape_regex %}}
     regexp: '{{{ regex }}}'
-    {{%- endif %}}
-    {{%- if regex and escape_regex %}}
+    {{%- elif regex and escape_regex %}}
     regexp: '{{ {{{ regex }}} | regex_escape }}'
     {{%- endif %}}
     {{%- if state == 'present' %}}
