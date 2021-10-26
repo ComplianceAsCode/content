@@ -1573,6 +1573,61 @@ class Rule(XCCDFEntity):
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
+    def to_ocil(self):
+        if not self.ocil and not self.ocil_clause:
+            raise ValueError("Rule {0} doesn't have OCIL".format(self.id_))
+        # Create <questionnaire> for the rule
+        questionnaire = ET.Element("questionnaire", id=self.id_ + "_ocil")
+        title = ET.SubElement(questionnaire, "title")
+        title.text = self.title
+        actions = ET.SubElement(questionnaire, "actions")
+        test_action_ref = ET.SubElement(actions, "test_action_ref")
+        test_action_ref.text = self.id_ + "_action"
+        # Create <boolean_question_test_action> for the rule
+        action = ET.Element(
+            "boolean_question_test_action",
+            id=self.id_ + "_action",
+            question_ref=self.id_ + "_question")
+        when_true = ET.SubElement(action, "when_true")
+        result = ET.SubElement(when_true, "result")
+        result.text = "PASS"
+        when_true = ET.SubElement(action, "when_false")
+        result = ET.SubElement(when_true, "result")
+        result.text = "FAIL"
+        # Create <boolean_question>
+        boolean_question = ET.Element(
+            "boolean_question", id=self.id_ + "_question")
+        # TODO: The contents of <question_text> element used to be broken in
+        # the legacy XSLT implementation. The following code contains hacks
+        # to get the same results as in the legacy XSLT implementation.
+        # This enabled us a smooth transition to new OCIL generator
+        # without a need to mass-edit rule YAML files.
+        # We need to solve:
+        # TODO: using variables (aka XCCDF Values) in OCIL content
+        # TODO: using HTML formating tags eg. <pre> in OCIL content
+        #
+        # The "ocil" key in compiled rules contains HTML and XML elements
+        # but OCIL question texts shouldn't contain HTML or XML elements,
+        # therefore removing them.
+        if self.ocil:
+            ocil_without_tags = re.sub(r"</?[^>]+>", "", self.ocil)
+        else:
+            ocil_without_tags = ""
+        # The "ocil" key in compiled rules contains XML entities which would
+        # be escaped by ET.Subelement() so we need to use add_sub_element()
+        # instead because we don't want to escape them.
+        question_text = add_sub_element(
+            boolean_question, "question_text", ocil_without_tags)
+        # The "ocil_clause" key in compiled rules also contains HTML and XML
+        # elements but unlike the "ocil" we want to escape the '<' and '>'
+        # characters.
+        # The empty ocil_clause causing broken question is in line with the
+        # legacy XSLT implementation.
+        ocil_clause = self.ocil_clause if self.ocil_clause else ""
+        question_text.text = "{0}\n      Is it the case that {1}?\n".format(
+            question_text.text, ocil_clause)
+        return (questionnaire, action, boolean_question)
+
     def __hash__(self):
         """ Controls are meant to be unique, so using the
         ID should suffice"""
@@ -1852,55 +1907,8 @@ class LinearLoader(object):
         for rule in self.rules.values():
             if not rule.ocil and not rule.ocil_clause:
                 continue
-            # Add <questionnaire>
-            questionnaire = ET.SubElement(
-                questionnaires, "questionnaire", id=rule.id_ + "_ocil")
-            title = ET.SubElement(questionnaire, "title")
-            title.text = rule.title
-            actions = ET.SubElement(questionnaire, "actions")
-            test_action_ref = ET.SubElement(actions, "test_action_ref")
-            test_action_ref.text = rule.id_ + "_action"
-            # Add <boolean_question_test_action>
-            action = ET.SubElement(
-                test_actions, "boolean_question_test_action",
-                id=rule.id_ + "_action",
-                question_ref=rule.id_ + "_question")
-            when_true = ET.SubElement(action, "when_true")
-            result = ET.SubElement(when_true, "result")
-            result.text = "PASS"
-            when_true = ET.SubElement(action, "when_false")
-            result = ET.SubElement(when_true, "result")
-            result.text = "FAIL"
-            # Add <boolean_question>
-            boolean_question = ET.SubElement(
-                questions, "boolean_question", id=rule.id_ + "_question")
-            # TODO: The contents of <question_text> element used to be broken in
-            # the legacy XSLT implementation. The following code contains hacks
-            # to get the same results as in the legacy XSLT implementation.
-            # This enabled us a smooth transition to new OCIL generator
-            # without a need to mass-edit rule YAML files.
-            # We need to solve:
-            # TODO: using variables (aka XCCDF Values) in OCIL content
-            # TODO: using HTML formating tags eg. <pre> in OCIL content
-            #
-            # The "ocil" key in compiled rules contains HTML and XML elements
-            # but OCIL question texts shouldn't contain HTML or XML elements,
-            # therefore removing them.
-            if rule.ocil:
-                ocil_without_tags = re.sub(r"</?[^>]+>", "", rule.ocil)
-            else:
-                ocil_without_tags = ""
-            # The "ocil" key in compiled rules contains XML entities which would
-            # be escaped by ET.Subelement() so we need to use add_sub_element()
-            # instead because we don't want to escape them.
-            question_text = add_sub_element(
-                boolean_question, "question_text", ocil_without_tags)
-            # The "ocil_clause" key in compiled rules also contains HTML and XML
-            # elements but unlike the "ocil" we want to escape the '<' and '>'
-            # characters.
-            # The empty ocil_clause causing broken question is in line with the
-            # legacy XSLT implementation.
-            ocil_clause = rule.ocil_clause if rule.ocil_clause else ""
-            question_text.text = "{0}\n      Is it the case that {1}?\n".format(
-                question_text.text, ocil_clause)
+            questionnaire, action, boolean_question = rule.to_ocil()
+            questionnaires.append(questionnaire)
+            test_actions.append(action)
+            questions.append(boolean_question)
         tree.write(filename)
