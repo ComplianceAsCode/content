@@ -27,7 +27,13 @@
 * Maximum line length should be 99 characters
 
 ## Jinja
-* Shall have a docstring comment descripbe 
+* Shall use 4-space indentation
+* Shall have a docstring comment describe what the macro does
+* Shall have a docstring comment describing all parameters and their types
+  * Types shall be Python class names. (E.g. `str`, `bool`, `dict`, etc)
+  * Shall be last section of the docstring
+  * Shall have one blank after list before the close of the docstring block
+* Shall have two blank lines between macros
 
 ## Python
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
