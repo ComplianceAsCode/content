@@ -761,15 +761,6 @@ class Benchmark(XCCDFEntity):
 
     GENERIC_FILENAME = "benchmark.yml"
 
-    def add_value_needed_for_ocil_clauses(self):
-        conditional_clause = Value("conditional_clause")
-        conditional_clause.title = "A conditional clause for check statements."
-        conditional_clause.description = conditional_clause.title
-        conditional_clause.type = "string"
-        conditional_clause.options = {"": "This is a placeholder"}
-
-        self.add_value(conditional_clause)
-
     def load_entities(self, rules_by_id, values_by_id, groups_by_id):
         for rid, val in self.rules.items():
             if not val:
@@ -1561,9 +1552,11 @@ class Rule(XCCDFEntity):
             oval_ref.set("id", self.id_)
 
         if self.ocil or self.ocil_clause:
-            ocil = add_sub_element(ocil_parent, 'ocil', self.ocil if self.ocil else "")
-            if self.ocil_clause:
-                ocil.set("clause", self.ocil_clause)
+            ocil_check = ET.SubElement(check_parent, "check")
+            ocil_check.set("system", ocil_cs)
+            ocil_check_ref = ET.SubElement(ocil_check, "check-content-ref")
+            ocil_check_ref.set("href", "ocil-unlinked.xml")
+            ocil_check_ref.set("name", self.id_ + "_ocil")
 
         add_warning_elements(rule, self.warnings)
         add_nondata_subelements(rule, "requires", "id", self.requires)
@@ -1663,7 +1656,6 @@ class DirectoryLoader(object):
             group = Benchmark.from_yaml(
                 self.benchmark_file, self.env_yaml, 'product-name'
             )
-            group.add_value_needed_for_ocil_clauses()
             if self.profiles_dir:
                 group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
 
@@ -1813,7 +1805,6 @@ class LinearLoader(object):
     def load_benchmark(self, directory):
         self.benchmark = Benchmark.from_yaml(
             os.path.join(directory, "benchmark.yml"), self.env_yaml, "product-name")
-        self.benchmark.add_value_needed_for_ocil_clauses()
 
         self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
 

@@ -113,9 +113,9 @@ macro(ssg_build_shorthand_xml PRODUCT)
     )
 
     add_custom_command(
-        # The command also produces the directory with rules, but this is done before the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --ocil "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${PRODUCT}-compile-all
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
@@ -124,6 +124,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
     add_custom_target(
         generate-internal-${PRODUCT}-shorthand.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
     )
 endmacro()
 
@@ -172,32 +173,6 @@ macro(ssg_build_xccdf_unlinked PRODUCT)
     else()
         ssg_build_xccdf_unlinked_stig(${PRODUCT} ${STIG_REFERENCE_FILE})
     endif()
-endmacro()
-
-macro(ssg_build_ocil_unlinked PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam ssg_version "${SSG_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
-        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
-        COMMENT "[${PRODUCT}-content] generating ocil-unlinked.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-ocil-unlinked.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
-    )
-
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam product ${PRODUCT} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
-        DEPENDS generate-internal-${PRODUCT}-ocil-unlinked.xml
-        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked-ocilrefs.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
-    )
 endmacro()
 
 # Build all templated content using the YAML "template" key in this product's
@@ -339,9 +314,9 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     endforeach()
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
+        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
         DEPENDS ${PRODUCT_LANGUAGE_DEPENDS}
         COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )
@@ -457,7 +432,7 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" ssg
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked.xml
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
-        DEPENDS generate-internal-${PRODUCT}-ocil-unlinked.xml
+        DEPENDS generate-internal-${PRODUCT}-shorthand.xml
         COMMENT "[${PRODUCT}-content] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
     )
     add_custom_target(
@@ -819,7 +794,6 @@ macro(ssg_build_product PRODUCT)
     ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
-    ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
