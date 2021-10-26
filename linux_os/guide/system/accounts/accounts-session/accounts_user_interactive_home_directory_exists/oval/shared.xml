@@ -1,0 +1,91 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("All Interactive Users Home Directories Must Exist") }}}
+    <criteria operator="OR">
+      <criterion test_ref="test_accounts_user_interactive_home_directory_exists"
+                 comment="All Interactive Users Home Directories Must Exist"/>
+      <criterion test_ref="test_accounts_user_interactive_home_directory_exists_users"
+                 comment="Interactive users don't exist on the system"/>
+    </criteria>
+  </definition>
+
+  <!-- #### prepare a password object for the two tests in this rule #### -->
+  <unix:password_object id="object_accounts_user_interactive_home_directory_exists_objects"
+                        version="1">
+    <unix:username datatype="string" operation="not equal">nobody</unix:username>
+    <filter action="include">state_accounts_user_interactive_home_directory_exists_uids</filter>
+  </unix:password_object>
+
+  <unix:password_state id="state_accounts_user_interactive_home_directory_exists_uids" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
+  </unix:password_state>
+
+  <!-- #### create a local variable composed by the list of home dirs from /etc/passwd #### -->
+  <local_variable id="var_accounts_user_interactive_home_directory_exists_dirs_list"
+                  datatype="string" version="1"
+                  comment="Variable including all home dirs from interactive users">
+    <object_component item_field="home_dir"
+                      object_ref="object_accounts_user_interactive_home_directory_exists_objects"/>
+  </local_variable>
+
+  <!-- #### create a local variable composed by the number of home dirs from /etc/passwd #### -->
+  <local_variable id="var_accounts_user_interactive_home_directory_exists_dirs_count"
+                  datatype="int" version="1"
+                  comment="Variable including expected count of home dirs present on the system">
+    <count>
+      <variable_component var_ref="var_accounts_user_interactive_home_directory_exists_dirs_list"/>
+    </count>
+  </local_variable>
+
+  <!-- #### create a file_object to check existence of home dirs on file system #### -->
+  <unix:file_object id="object_accounts_user_interactive_home_directory_exists_dirs_fs"
+                    version="1">
+    <unix:path var_ref="var_accounts_user_interactive_home_directory_exists_dirs_list"
+               var_check="at least one"/>
+    <unix:filename xsi:nil="true"/>
+  </unix:file_object>
+
+  <!-- #### create a local variable with the number of home dirs present on file system #### -->
+  <local_variable id="var_accounts_user_interactive_home_directory_exists_dirs_count_fs"
+                  datatype="int" version="1"
+                  comment="Variable including number of home dirs present on file system">
+    <count>
+      <object_component item_field="path"
+                  object_ref="object_accounts_user_interactive_home_directory_exists_dirs_fs"/>
+    </count>
+  </local_variable>
+
+  <!-- #### create a variable object with count of home dirs from file system #### -->
+  <ind:variable_object id="object_accounts_user_interactive_home_directory_exists_dirs_count_fs"
+                       version="1">
+    <ind:var_ref>var_accounts_user_interactive_home_directory_exists_dirs_count_fs</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- #### create a variable state with count of home dirs from /etc/passwd #### -->
+  <ind:variable_state id="state_accounts_user_interactive_home_directory_exists_dirs_count_pw"
+                      version="1">
+    <ind:value datatype="int" operation="equals" var_check="at least one"
+               var_ref="var_accounts_user_interactive_home_directory_exists_dirs_count"/>
+  </ind:variable_state>
+
+  <!-- #### test_accounts_user_interactive_home_directory_exists #### -->
+  <ind:variable_test id="test_accounts_user_interactive_home_directory_exists" check="all"
+                     check_existence="at_least_one_exists" version="1"
+                     comment="Check the existence of interactive users.">
+    <ind:object object_ref="object_accounts_user_interactive_home_directory_exists_dirs_count_fs"/>
+    <ind:state state_ref="state_accounts_user_interactive_home_directory_exists_dirs_count_pw"/>
+  </ind:variable_test>
+
+  <!-- #### create of variable object with count of home dirs from /etc/passwd #### -->
+  <ind:variable_object id="object_accounts_user_interactive_home_directory_exists_dirs_count_pw"
+                       version="1">
+    <ind:var_ref>var_accounts_user_interactive_home_directory_exists_dirs_count</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- #### test_accounts_user_interactive_home_directory_exists_users #### -->
+  <ind:variable_test id="test_accounts_user_interactive_home_directory_exists_users" check="all"
+                     check_existence="none_exist" version="1"
+                     comment="Check the existence of interactive users.">
+    <ind:object object_ref="object_accounts_user_interactive_home_directory_exists_dirs_count_pw"/>
+  </ind:variable_test>
+</def-group>
