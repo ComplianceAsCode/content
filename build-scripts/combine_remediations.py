@@ -39,9 +39,10 @@ def parse_args():
         "--output-dir", required=True,
         help="output directory where all remediations will be saved"
     )
-    p.add_argument("fix_dirs", metavar="FIX_DIR", nargs="+",
-                   help="directory(ies) from which we will collect "
-                   "remediations to combine.")
+    p.add_argument(
+        "--fixes-from-templates-dir", required=True,
+        help="directory from which we will collect fixes generated from "
+        "templates")
 
     return p.parse_args()
 
@@ -65,7 +66,8 @@ def main():
     remediation_cls = remediation.REMEDIATION_TO_CLASS[args.remediation_type]
 
     rule_id_to_remediation_map = collect_fixes(
-        product, [guide_dir] + add_content_dirs, args.fix_dirs, args.remediation_type)
+        product, [guide_dir] + add_content_dirs,
+        args.fixes_from_templates_dir, args.remediation_type)
 
     fixes = dict()
     for rule_id, fix_path in rule_id_to_remediation_map.items():
@@ -83,16 +85,15 @@ def main():
     sys.exit(0)
 
 
-def collect_fixes(product, rules_dirs, fix_dirs, remediation_type):
+def collect_fixes(product, rules_dirs, fixdir, remediation_type):
     # path -> remediation
     # rule ID -> assoc rule
     rule_id_to_remediation_map = dict()
-    for fixdir in fix_dirs:
-        if os.path.isdir(fixdir):
-            for filename in sorted(os.listdir(fixdir)):
-                file_path = os.path.join(fixdir, filename)
-                rule_id, _ = os.path.splitext(filename)
-                rule_id_to_remediation_map[rule_id] = file_path
+    if os.path.isdir(fixdir):
+        for filename in sorted(os.listdir(fixdir)):
+            file_path = os.path.join(fixdir, filename)
+            rule_id, _ = os.path.splitext(filename)
+            rule_id_to_remediation_map[rule_id] = file_path
 
     # Walk the guide last, looking for rule folders as they have the highest priority
     for _dir_path in ssg.rules.find_rule_dirs_in_paths(rules_dirs):
