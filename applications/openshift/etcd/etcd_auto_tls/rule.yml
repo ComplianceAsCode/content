@@ -48,7 +48,7 @@ template:
         filepath: /api/v1/namespaces/openshift-etcd/configmaps/etcd-pod
         filepath_xccdf_variable: var_openshift_etcd_pod
         entity_check: "none satisfy"
-        yamlpath: '.data["pod.yaml"]'
+        yamlpath: ".items[0].spec.containers[:].command[:]"
         values:
           - value: '.*auto-tls[= ]true.*'
             operation: "pattern match"
