@@ -1,0 +1,21 @@
+---
+name: Gate YAML Lint
+on:  # yamllint disable-line rule:truthy
+    pull_request:
+        branches: ['master']
+jobs:
+    validate-yaml:
+        name: YAML Lint
+        runs-on: ubuntu-latest
+        container:
+            image: fedora:latest
+        steps:
+            - name: Install Dependancies
+              run: dnf install -y yamllint findutils git
+            - name: Checkout
+              with:
+                  fetch-depth: '0'
+              uses: actions/checkout@v2
+            - name: Run YAML Lint
+              # yamllint disable-line rule:line-length
+              run: git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | egrep '\.(yml|yaml)$' | xargs yamllint -c .yamllint.yml
