@@ -13,12 +13,17 @@ ns = {
     "oval": ssg.constants.oval_namespace,
     "catalog": ssg.constants.cat_namespace,
     "xlink": ssg.constants.xlink_namespace,
+    "ocil": ssg.constants.ocil_namespace
 }
 remediation_type_to_uri = {
     "bash": ssg.constants.bash_system,
     "ansible": ssg.constants.ansible_system,
     "puppet": ssg.constants.puppet_system,
     "anaconda": ssg.constants.anaconda_system,
+}
+check_system_to_uri = {
+    "OVAL": ssg.constants.oval_namespace,
+    "OCIL": ssg.constants.ocil_cs
 }
 
 
@@ -115,55 +120,104 @@ def compare_oval_definitions(
         print_offending_elements(new_els, "+")
 
 
-def compare_ovals(
-        old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs):
-    old_oval_ref = old_rule.find(
-        "xccdf:check[@system='%s']" % (ssg.constants.oval_namespace), ns)
-    new_oval_ref = new_rule.find(
-        "xccdf:check[@system='%s']" % (ssg.constants.oval_namespace), ns)
+def find_boolean_question(doc, ocil_id):
+    questionnaires = doc.find("ocil:questionnaires", ns)
+    questionnaire = questionnaires.find(
+        "ocil:questionnaire[@id='%s']" % ocil_id, ns)
+    if questionnaire is None:
+        raise ValueError("OCIL questionnaire %s doesn't exist" % ocil_id)
+    test_action_ref = questionnaire.find(
+        "ocil:actions/ocil:test_action_ref", ns).text
+    test_actions = doc.find("ocil:test_actions", ns)
+    test_action = test_actions.find(
+        "ocil:boolean_question_test_action[@id='%s']" % test_action_ref, ns)
+    if test_action is None:
+        raise ValueError(
+            "OCIL boolean_question_test_action %s doesn't exist" % (
+                test_action_ref))
+    question_id = test_action.get("question_ref")
+    questions = doc.find("ocil:questions", ns)
+    question = questions.find(
+        "ocil:boolean_question[@id='%s']" % question_id, ns)
+    if question is None:
+        raise ValueError(
+            "OCIL boolean_question %s doesn't exist" % question_id)
+    question_text = question.find("ocil:question_text", ns)
+    return question_text.text
+
+
+def compare_ocils(
+        old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id, rule_id):
+    try:
+        old_question = find_boolean_question(old_ocil_doc, old_ocil_id)
+        new_question = find_boolean_question(new_ocil_doc, new_ocil_id)
+    except ValueError as e:
+        print("Rule '%s' OCIL can't be found: %s" % (rule_id, str(e)))
+        return
+    diff = compare_fix_texts(old_question, new_question)
+    if diff:
+        print("OCIL for rule '%s' differs:\n%s" % (rule_id, diff))
+
+
+def compare_checks(
+        old_rule, new_rule, old_checks, new_checks, show_diffs, system):
+    check_system_uri = check_system_to_uri[system]
+    old_check = old_rule.find(
+        "xccdf:check[@system='%s']" % check_system_uri, ns)
+    new_check = new_rule.find(
+        "xccdf:check[@system='%s']" % check_system_uri, ns)
     rule_id = old_rule.get("id")
-    if (old_oval_ref is None and new_oval_ref is not None):
-        print("New datastream adds OVAL for rule '%s'." % (rule_id))
-    elif (old_oval_ref is not None and new_oval_ref is None):
-        print("New datastream is missing OVAL for rule '%s'." % (rule_id))
-    elif (old_oval_ref is not None and new_oval_ref is not None):
-        old_check_content_ref = old_oval_ref.find(
+    if (old_check is None and new_check is not None):
+        print("New datastream adds %s for rule '%s'." % (system, rule_id))
+    elif (old_check is not None and new_check is None):
+        print(
+            "New datastream is missing %s for rule '%s'." % (system, rule_id))
+    elif (old_check is not None and new_check is not None):
+        old_check_content_ref = old_check.find(
             "xccdf:check-content-ref", ns)
-        new_check_content_ref = new_oval_ref.find(
+        new_check_content_ref = new_check.find(
             "xccdf:check-content-ref", ns)
-        old_oval_def_id = old_check_content_ref.get("name")
-        new_oval_def_id = new_check_content_ref.get("name")
-        old_oval_file_name = old_check_content_ref.get("href")
-        new_oval_file_name = new_check_content_ref.get("href")
-        if old_oval_file_name != new_oval_file_name:
+        old_check_id = old_check_content_ref.get("name")
+        new_check_id = new_check_content_ref.get("name")
+        old_check_file_name = old_check_content_ref.get("href")
+        new_check_file_name = new_check_content_ref.get("href")
+        if old_check_file_name != new_check_file_name:
             print(
-                "OVAL definition file for rule '%s' has changed from "
+                "%s definition file for rule '%s' has changed from "
                 "'%s' to '%s'." % (
-                    rule_id, old_oval_file_name, new_oval_file_name)
+                    system, rule_id, old_check_file_name, new_check_file_name)
             )
-        if old_oval_def_id != new_oval_def_id:
+        if old_check_id != new_check_id:
             print(
-                "OVAL definition ID for rule '%s' has changed from "
-                "'%s' to '%s'." % (rule_id, old_oval_def_id, new_oval_def_id)
+                "%s definition ID for rule '%s' has changed from "
+                "'%s' to '%s'." % (
+                    system, rule_id, old_check_id, new_check_id)
             )
         if show_diffs:
             try:
-                old_oval_def_doc = old_oval_defs[old_oval_file_name]
+                old_check_doc = old_checks[old_check_file_name]
             except KeyError:
                 print(
                     "Rule '%s' points to '%s' which isn't a part of the "
-                    "old datastream" % (rule_id, old_oval_file_name))
+                    "old datastream" % (rule_id, old_check_file_name))
                 return
             try:
-                new_oval_def_doc = new_oval_defs[new_oval_file_name]
+                new_check_doc = new_checks[new_check_file_name]
             except KeyError:
                 print(
                     "Rule '%s' points to '%s' which isn't a part of the "
-                    "new datastream" % (rule_id, new_oval_file_name))
+                    "new datastream" % (rule_id, new_check_file_name))
                 return
-            compare_oval_definitions(
-                old_oval_def_doc, old_oval_def_id, new_oval_def_doc,
-                new_oval_def_id)
+            if system == "OVAL":
+                compare_oval_definitions(
+                    old_check_doc, old_check_id, new_check_doc,
+                    new_check_id)
+            elif system == "OCIL":
+                compare_ocils(
+                    old_check_doc, old_check_id, new_check_doc,
+                    new_check_id, rule_id)
+            else:
+                raise RuntimeError("Unknown check system '%s'" % system)
 
 
 def compare_fix_texts(old_r, new_r):
@@ -224,16 +278,19 @@ def get_rules_to_compare(benchmark, rule_id):
 
 
 def compare_rules(
-        old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs):
-    compare_ovals(
-        old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs)
+        old_rule, new_rule, old_oval_defs, new_oval_defs, old_ocils, new_ocils,
+        show_diffs):
+    compare_checks(
+        old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs, "OVAL")
+    compare_checks(
+        old_rule, new_rule, old_ocils, new_ocils, show_diffs, "OCIL")
     for remediation_type in remediation_type_to_uri.keys():
         compare_remediations(old_rule, new_rule, remediation_type, show_diffs)
 
 
 def process_benchmarks(
         old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
-        rule_id, show_diffs, only_rules):
+        old_ocils, new_ocils, rule_id, show_diffs, only_rules):
     missing_rules = []
     try:
         rules_in_old_benchmark = get_rules_to_compare(old_benchmark, rule_id)
@@ -251,10 +308,11 @@ def process_benchmarks(
         if only_rules:
             continue
         compare_rules(
-            old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs)
+            old_rule, new_rule, old_oval_defs, new_oval_defs,
+            old_ocils, new_ocils, show_diffs)
 
 
-def find_all_oval_defs(root):
+def get_component_refs(root):
     component_refs = dict()
     for ds in root.findall("ds:data-stream", ns):
         checks = ds.find("ds:checks", ns)
@@ -262,6 +320,10 @@ def find_all_oval_defs(root):
             component_ref_href = component_ref.get("{%s}href" % (ns["xlink"]))
             component_ref_id = component_ref.get("id")
             component_refs[component_ref_href] = component_ref_id
+    return component_refs
+
+
+def get_uris(root):
     uris = dict()
     for ds in root.findall("ds:data-stream", ns):
         checklists = ds.find("ds:checklists", ns)
@@ -270,9 +332,13 @@ def find_all_oval_defs(root):
             uri_uri = uri.get("uri")
             uri_name = uri.get("name")
             uris[uri_uri] = uri_name
+    return uris
+
+
+def find_all(root, component_refs, uris, component_root_element_tag):
     def_doc_dict = dict()
     for component in root.findall("ds:component", ns):
-        oval_def_doc = component.find("oval:oval_definitions", ns)
+        oval_def_doc = component.find(component_root_element_tag, ns)
         if oval_def_doc is not None:
             comp_id = component.get("id")
             comp_href = "#" + comp_id
@@ -284,18 +350,33 @@ def find_all_oval_defs(root):
     return def_doc_dict
 
 
+def find_all_oval_defs(root, component_refs, uris):
+    return find_all(root, component_refs, uris, "oval:oval_definitions")
+
+
+def find_all_ocils(root, component_refs, uris):
+    return find_all(root, component_refs, uris, "ocil:ocil")
+
+
 def main():
     args = parse_args()
     old_tree = ET.parse(args.old)
     old_root = old_tree.getroot()
     new_tree = ET.parse(args.new)
     new_root = new_tree.getroot()
-    old_oval_defs = find_all_oval_defs(old_root)
-    new_oval_defs = find_all_oval_defs(new_root)
+    old_component_refs = get_component_refs(old_root)
+    old_uris = get_uris(old_root)
+    old_oval_defs = find_all_oval_defs(old_root, old_component_refs, old_uris)
+    old_ocils = find_all_ocils(old_root, old_component_refs, old_uris)
+    new_component_refs = get_component_refs(new_root)
+    new_uris = get_uris(new_root)
+    new_oval_defs = find_all_oval_defs(new_root, new_component_refs, new_uris)
+    new_ocils = find_all_ocils(new_root, new_component_refs, new_uris)
     for old_benchmark in get_benchmarks(old_root):
         new_benchmark = find_benchmark(new_root, old_benchmark.get("id"))
         process_benchmarks(
             old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
+            old_ocils, new_ocils,
             args.rule, not args.no_diffs, args.only_rules)
     return 0
 
