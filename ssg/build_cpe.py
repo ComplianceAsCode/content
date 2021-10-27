@@ -106,19 +106,6 @@ class ProductCPEs(object):
     def get_product_cpe_names(self):
         return [ cpe.name for cpe in self.product_cpes.values() ]
 
-    def parse_platform_definition(self, platform_line):
-        # let's construct the platform id
-        id = "cpe_platform_" + convert_platform_to_id(platform_line)
-        platform = CPEALPlatform(id)
-        # add initial test if the line does not contain AND or NEGATE operator
-        # othervise the presence of & or ! will create the test while parsing
-        if "&" not in platform_line and "!" not in platform_line:
-            initial_test = CPEALLogicalTest(operator="OR", negate="false")
-            platform.add_test(initial_test)
-            initial_test.add_object(parse_platform_line(platform_line, self))
-        else:
-            platform.add_test(parse_platform_line(platform_line, self))
-        return platform
 
 
 class CPEList(object):
@@ -396,3 +383,21 @@ def convert_platform_to_id(platform):
     id = id.replace("&", "_and_")
     id = id.replace("!", "not_")
     return id
+
+def parse_platform_definition(platform_line, product_cpes):
+    """
+    This function takes one line of platform definition from yaml file and returns a
+    CPE platform with appropriate tests and factrefs.
+    """
+    # let's construct the platform id
+    id = "cpe_platform_" + convert_platform_to_id(platform_line)
+    platform = CPEALPlatform(id)
+    # add initial test if the line does not contain AND or NEGATE operator
+    # othervise the presence of & or ! will create the test while parsing
+    if "&" not in platform_line and "!" not in platform_line:
+        initial_test = CPEALLogicalTest(operator="OR", negate="false")
+        platform.add_test(initial_test)
+        initial_test.add_object(parse_platform_line(platform_line, product_cpes))
+    else:
+        platform.add_test(parse_platform_line(platform_line, product_cpes))
+    return platform
