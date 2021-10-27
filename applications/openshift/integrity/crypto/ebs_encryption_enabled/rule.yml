@@ -24,7 +24,7 @@ ocil_clause: 'FIPS mode is not enabled on worker nodes'
 
 ocil: |-
     Run the following command to retrieve if the FIPS flag is enabled:
-    <pre>$ oc get machineconfig -o json | jq '. | [select(.items[].metadata.name | test("^[0-9]{2}-worker$|^[0-9]{2}-master$"))]|[.[].items[].spec.fips]'</pre>
+    <pre>$ oc get machineconfig -o json | jq '[.items[] | .spec.template.spec.providerSpec.value.blockDevices[0].ebs.encrypted] | map(. == true)'</pre>
     Make sure that the result is an array of 'true' values.
 
 severity: high
