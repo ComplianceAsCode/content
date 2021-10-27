@@ -362,17 +362,9 @@ def parse_platform_line(platform_line, product_cpe):
     # remove spaces
     platform_line = platform_line.replace(" ", "")
     if "&" in platform_line:
-        and_test = CPEALLogicalTest(operator="AND", negate="false")
-        and_members = platform_line.split("&")
-        for member in and_members:
-            and_test.add_object(parse_platform_line(member))
-        return and_test
+        raise (NotImplementedError("not implemented yet"))
     elif "!" in platform_line:
-        negated_test = CPEALLogicalTest(operator="OR", negate="true")
-        # remove ! from the element and process it further
-        platform_line = platform_line.replace("!", "")
-        negated_test.add_object(parse_platform_line(platform_line))
-        return negated_test
+        raise (NotImplementedError("not implemented yet"))
     else:
         # the line should contain a CPEAL ref name
         cpealfactref = CPEALFactRef(product_cpe.get_cpe_name(platform_line))
