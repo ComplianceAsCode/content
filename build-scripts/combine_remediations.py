@@ -65,9 +65,11 @@ def main():
     # given fix_name is chosen to replace newer fix_names
     remediation_cls = remediation.REMEDIATION_TO_CLASS[args.remediation_type]
 
+    language_fixes_from_templates_dir = os.path.join(
+        args.fixes_from_templates_dir, args.remediation_type)
     rule_id_to_remediation_map = collect_fixes(
         product, [guide_dir] + add_content_dirs,
-        args.fixes_from_templates_dir, args.remediation_type)
+        language_fixes_from_templates_dir, args.remediation_type)
 
     fixes = dict()
     for rule_id, fix_path in rule_id_to_remediation_map.items():
@@ -79,8 +81,9 @@ def main():
             # if it is applicable
             remediation.process(remediation_obj, env_yaml, fixes, rule_id)
 
+    language_output_dir = os.path.join(args.output_dir, args.remediation_type)
     remediation.write_fixes_to_dir(fixes, args.remediation_type,
-                                   args.output_dir)
+                                   language_output_dir)
 
     sys.exit(0)
 
