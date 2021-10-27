@@ -1609,7 +1609,7 @@ class Rule(XCCDFEntity):
         # The "ocil" key in compiled rules contains HTML and XML elements
         # but OCIL question texts shouldn't contain HTML or XML elements,
         # therefore removing them.
-        if self.ocil:
+        if self.ocil is not None:
             ocil_without_tags = re.sub(r"</?[^>]+>", "", self.ocil)
         else:
             ocil_without_tags = ""
@@ -1624,8 +1624,10 @@ class Rule(XCCDFEntity):
         # The empty ocil_clause causing broken question is in line with the
         # legacy XSLT implementation.
         ocil_clause = self.ocil_clause if self.ocil_clause else ""
-        question_text.text = "{0}\n      Is it the case that {1}?\n".format(
-            question_text.text, ocil_clause)
+        question_text.text = (
+            "{0}\n      Is it the case that {1}?\n      ".format(
+                question_text.text if question_text.text is not None else "",
+                ocil_clause))
         return (questionnaire, action, boolean_question)
 
     def __hash__(self):
