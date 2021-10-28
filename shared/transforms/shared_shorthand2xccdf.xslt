@@ -469,45 +469,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- expand reference to would-be OCIL (inline) -->
-  <xsl:template match="Rule/ocil">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
-        <check>
-          <xsl:attribute name="system">ocil-transitional</xsl:attribute>
-          <check-export>
-            <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
-            <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
-          </check-export>
-          <!-- add the actual manual checking text -->
-          <check-content>
-            <xsl:apply-templates select="node()"/>
-          </check-content>
-        </check>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
-  <!-- expand reference to would-be OCIL inside complex-check (inline) -->
-  <xsl:template match="Rule/complex-check/ocil">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
-        <check>
-          <xsl:attribute name="system">ocil-transitional</xsl:attribute>
-          <check-export>
-            <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
-            <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
-          </check-export>
-          <!-- add the actual manual checking text -->
-          <check-content>
-            <xsl:apply-templates select="node()"/>
-          </check-content>
-        </check>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
-
   <!-- The next set of templates places elements into the correct namespaces,
        so that content authors never have to bother with them.
        XHTML elements are explicitly identified and the xhtml

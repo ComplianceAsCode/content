@@ -29,6 +29,11 @@ def parse_args():
     parser.add_argument("--output", required=True,
                         help="Output XCCDF shorthand file. "
                         "e.g.: /tmp/shorthand.xml")
+    parser.add_argument(
+        "--ocil",
+        help="Output unlinked OCIL file. "
+        "e.g.:  ~/scap-security-guide/build/rhel7/ocil-unlinked.xml"
+    )
     parser.add_argument("--resolved-base",
                         help="To which directory to put processed rule/group/value YAMLs.")
     return parser.parse_args()
@@ -53,6 +58,7 @@ def main():
     loader.load_benchmark(benchmark_root)
 
     loader.export_benchmark_to_file(args.output)
+    loader.export_ocil_to_file(args.ocil)
 
 
 if __name__ == "__main__":

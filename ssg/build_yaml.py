@@ -15,7 +15,7 @@ import glob
 import yaml
 
 from .build_cpe import CPEDoesNotExist
-from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM
+from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -760,15 +760,6 @@ class Benchmark(XCCDFEntity):
     }
 
     GENERIC_FILENAME = "benchmark.yml"
-
-    def add_value_needed_for_ocil_clauses(self):
-        conditional_clause = Value("conditional_clause")
-        conditional_clause.title = "A conditional clause for check statements."
-        conditional_clause.description = conditional_clause.title
-        conditional_clause.type = "string"
-        conditional_clause.options = {"": "This is a placeholder"}
-
-        self.add_value(conditional_clause)
 
     def load_entities(self, rules_by_id, values_by_id, groups_by_id):
         for rid, val in self.rules.items():
@@ -1561,9 +1552,11 @@ class Rule(XCCDFEntity):
             oval_ref.set("id", self.id_)
 
         if self.ocil or self.ocil_clause:
-            ocil = add_sub_element(ocil_parent, 'ocil', self.ocil if self.ocil else "")
-            if self.ocil_clause:
-                ocil.set("clause", self.ocil_clause)
+            ocil_check = ET.SubElement(check_parent, "check")
+            ocil_check.set("system", ocil_cs)
+            ocil_check_ref = ET.SubElement(ocil_check, "check-content-ref")
+            ocil_check_ref.set("href", "ocil-unlinked.xml")
+            ocil_check_ref.set("name", self.id_ + "_ocil")
 
         add_warning_elements(rule, self.warnings)
         add_nondata_subelements(rule, "requires", "id", self.requires)
@@ -1579,6 +1572,63 @@ class Rule(XCCDFEntity):
         root = self.to_xml_element()
         tree = ET.ElementTree(root)
         tree.write(file_name)
+
+    def to_ocil(self):
+        if not self.ocil and not self.ocil_clause:
+            raise ValueError("Rule {0} doesn't have OCIL".format(self.id_))
+        # Create <questionnaire> for the rule
+        questionnaire = ET.Element("questionnaire", id=self.id_ + "_ocil")
+        title = ET.SubElement(questionnaire, "title")
+        title.text = self.title
+        actions = ET.SubElement(questionnaire, "actions")
+        test_action_ref = ET.SubElement(actions, "test_action_ref")
+        test_action_ref.text = self.id_ + "_action"
+        # Create <boolean_question_test_action> for the rule
+        action = ET.Element(
+            "boolean_question_test_action",
+            id=self.id_ + "_action",
+            question_ref=self.id_ + "_question")
+        when_true = ET.SubElement(action, "when_true")
+        result = ET.SubElement(when_true, "result")
+        result.text = "PASS"
+        when_true = ET.SubElement(action, "when_false")
+        result = ET.SubElement(when_true, "result")
+        result.text = "FAIL"
+        # Create <boolean_question>
+        boolean_question = ET.Element(
+            "boolean_question", id=self.id_ + "_question")
+        # TODO: The contents of <question_text> element used to be broken in
+        # the legacy XSLT implementation. The following code contains hacks
+        # to get the same results as in the legacy XSLT implementation.
+        # This enabled us a smooth transition to new OCIL generator
+        # without a need to mass-edit rule YAML files.
+        # We need to solve:
+        # TODO: using variables (aka XCCDF Values) in OCIL content
+        # TODO: using HTML formating tags eg. <pre> in OCIL content
+        #
+        # The "ocil" key in compiled rules contains HTML and XML elements
+        # but OCIL question texts shouldn't contain HTML or XML elements,
+        # therefore removing them.
+        if self.ocil is not None:
+            ocil_without_tags = re.sub(r"</?[^>]+>", "", self.ocil)
+        else:
+            ocil_without_tags = ""
+        # The "ocil" key in compiled rules contains XML entities which would
+        # be escaped by ET.Subelement() so we need to use add_sub_element()
+        # instead because we don't want to escape them.
+        question_text = add_sub_element(
+            boolean_question, "question_text", ocil_without_tags)
+        # The "ocil_clause" key in compiled rules also contains HTML and XML
+        # elements but unlike the "ocil" we want to escape the '<' and '>'
+        # characters.
+        # The empty ocil_clause causing broken question is in line with the
+        # legacy XSLT implementation.
+        ocil_clause = self.ocil_clause if self.ocil_clause else ""
+        question_text.text = (
+            "{0}\n      Is it the case that {1}?\n      ".format(
+                question_text.text if question_text.text is not None else "",
+                ocil_clause))
+        return (questionnaire, action, boolean_question)
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -1663,7 +1713,6 @@ class DirectoryLoader(object):
             group = Benchmark.from_yaml(
                 self.benchmark_file, self.env_yaml, 'product-name'
             )
-            group.add_value_needed_for_ocil_clauses()
             if self.profiles_dir:
                 group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
 
@@ -1813,7 +1862,6 @@ class LinearLoader(object):
     def load_benchmark(self, directory):
         self.benchmark = Benchmark.from_yaml(
             os.path.join(directory, "benchmark.yml"), self.env_yaml, "product-name")
-        self.benchmark.add_value_needed_for_ocil_clauses()
 
         self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
 
@@ -1839,3 +1887,30 @@ class LinearLoader(object):
 
     def export_benchmark_to_file(self, filename):
         return self.benchmark.to_file(filename)
+
+    def export_ocil_to_file(self, filename):
+        root = ET.Element('ocil')
+        root.set('xmlns:xsi', xsi_namespace)
+        root.set("xmlns", ocil_namespace)
+        root.set("xmlns:xhtml", xhtml_namespace)
+        tree = ET.ElementTree(root)
+        generator = ET.SubElement(root, "generator")
+        product_name = ET.SubElement(generator, "product_name")
+        product_name.text = "build_shorthand.py from SCAP Security Guide"
+        product_version = ET.SubElement(generator, "product_version")
+        product_version.text = "ssg: " + self.env_yaml["ssg_version_str"]
+        schema_version = ET.SubElement(generator, "schema_version")
+        schema_version.text = "2.0"
+        timestamp_el = ET.SubElement(generator, "timestamp")
+        timestamp_el.text = timestamp
+        questionnaires = ET.SubElement(root, "questionnaires")
+        test_actions = ET.SubElement(root, "test_actions")
+        questions = ET.SubElement(root, "questions")
+        for rule in self.rules.values():
+            if not rule.ocil and not rule.ocil_clause:
+                continue
+            questionnaire, action, boolean_question = rule.to_ocil()
+            questionnaires.append(questionnaire)
+            test_actions.append(action)
+            questions.append(boolean_question)
+        tree.write(filename)
