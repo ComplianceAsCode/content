@@ -655,13 +655,40 @@ spec:
 {{#
   Macro which generates Kubernetes remediation in APIServer format:
     - path (String): path for the variable
+    - parameter (String): name of the variable to be set
     - value (String): xccdf vairable name to that varaiable
 #}}
-{{%- macro api_server_config(path='', value='') -%}}
+{{%- macro api_server_config(path='',parameter='', value='') -%}}
 apiVersion: config.openshift.io/v1
 kind: APIServer
 metadata:
   name: cluster
 spec:
-{{{ expand_yaml_path(path) }}}: {{.{{{ value }}}}}
+{{{ expand_yaml_path(path, parameter) }}}: {{.{{{ value }}}}}
 {{%- endmacro -%}}
+
+{{#
+   Macro which generates Kubernetes remediation in kubelet config format:
+     - path (String): path for the variable
+     - parameter (String): name of the variable to be set
+     - value (String): xccdf vairable name to that varaiable
+#}}
+{{%- macro kubelet_config(path='', parameter='', value='') -%}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+{{{ expand_yaml_path(path, parameter) }}}: {{.{{{ value }}}}}
+{{%- endmacro -%}} 
+
+{{#
+   Macro which generates Kubernetes remediation in kubelet config format:
+     - path (String): path for the variable
+     - parameter (String): name of the variable to be set
+     - value (String): the fixed value to that varaiable
+#}}
+{{%- macro kubelet_config_fixed(path='', parameter='', value='') -%}}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+spec:
+{{{ expand_yaml_path(path, parameter) }}}: {{{ value }}}
+{{%- endmacro -%}} 

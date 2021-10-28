@@ -189,13 +189,17 @@ def url_encode(source):
     return quote(source)
 
 
-def expand_yaml_path(path):
+def expand_yaml_path(path, parameter):
     out = ""
     i = 0
     for x in path.split("."):
         i += 1
         if i != len(path.split(".")):
             out += i * "  " + x + ":\n"
+        elif parameter != "":
+            out += i * "  " + x + ":\n"
+            i += 1
+            out += i * "  " + parameter
         else:
             out += i * "  " + x
     return out
