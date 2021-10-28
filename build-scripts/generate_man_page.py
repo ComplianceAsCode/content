@@ -10,6 +10,7 @@ import ssg.constants
 import ssg.xml
 import ssg.jinja
 import os
+import re
 import io
 
 
@@ -31,7 +32,7 @@ def main():
 def get_all_products(input_dir):
     all_products = []
     for item in sorted(os.listdir(input_dir)):
-        if item.endswith("-ds.xml"):
+        if re.match(r"ssg-\w+-ds.xml", item):
             ds_filepath = os.path.join(input_dir, item)
             all_products.append(get_product_info(ds_filepath))
     return all_products
