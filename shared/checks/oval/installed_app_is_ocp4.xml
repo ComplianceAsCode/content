@@ -72,4 +72,53 @@
   </ind:yamlfilecontent_state>
 
 {{% endfor %}}
+
+  <!-- helpers for platform/cloud checks -->
+  <local_variable id="ocp4_infra_dump_location" datatype="string" comment="The actual filepath of the infra file to scan." version="1">
+      <literal_component>/kubernetes-api-resources/apis/config.openshift.io/v1/infrastructures/cluster</literal_component>
+  </local_variable>
+
+  <unix:file_test id="test_file_for_ocp4_infra" check="only one" comment="Find the actual file for the infra to be scanned." version="1">
+      <unix:object object_ref="object_file_for_ocp4_infra"/>
+  </unix:file_test>
+
+  <unix:file_object id="object_file_for_ocp4_infra" version="1">
+      <unix:filepath var_ref="ocp4_infra_dump_location"/>
+  </unix:file_object>
+
+  <ind:yamlfilecontent_object id="object_ocp4_infra_platform" version="1">
+      <ind:filepath var_ref="ocp4_infra_dump_location"/>
+      <ind:yamlpath>.status.platform</ind:yamlpath>
+  </ind:yamlfilecontent_object>
+
+  <!-- Check for OpenShift Container Platform 4 in specific platforms or clouds -->
+{{% for platform in ["AWS"] %}}
+  <!-- Check for OpenShift Container Platform 4.{{{ minorversion }}} -->
+  <definition class="inventory" id="installed_app_is_ocp4_on_{{{ platform|lower }}}" version="1">
+    <metadata>
+      <title>Red Hat OpenShift Container Platform 4 on {{{ platform }}}</title>
+      <affected family="unix">
+        <platform>Red Hat OpenShift Container Platform 4 on {{{ platform }}}</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:openshift_container_platform_on_{{{ platform|lower }}}:4" source="CPE" />
+      <description>The application installed installed on the system is OpenShift version 4 on {{{ platform }}}.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="cluster is OpenShift 4 on {{{ platform }}}" test_ref="test_ocp4_on_{{{ platform|lower }}}" />
+      <criterion comment="Make sure OCP4 infrastructure/cluster file is present" test_ref="test_file_for_ocp4_infra"/>
+    </criteria>
+  </definition>
+
+  <ind:yamlfilecontent_test id="test_ocp4_on_{{{ platform|lower }}}" check="at least one" comment="Find one match" version="1">
+      <ind:object object_ref="object_ocp4_infra_platform"/>
+      <ind:state state_ref="state_ocp4_on_{{{ platform|lower }}}"/>
+  </ind:yamlfilecontent_test>
+
+  <ind:yamlfilecontent_state id="state_ocp4_on_{{{ platform|lower }}}" version="1">
+      <ind:value datatype="record">
+          <field name="#" datatype="string" operation="pattern match">^{{{ platform }}}$</field>
+      </ind:value>
+  </ind:yamlfilecontent_state>
+
+{{% endfor %}}
 </def-group>
