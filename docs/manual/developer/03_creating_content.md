@@ -264,7 +264,7 @@ For example:
     ├── profiles
     └── transforms
 
-    7 directories
+    4 directories
 
 #### Product Level Directory Descriptions
 
