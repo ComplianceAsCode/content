@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R4
+    version: V3R5
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R4.
+    DISA STIG for Red Hat Enterprise Linux V3R5.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -325,3 +325,4 @@ selections:
     - accounts_authorized_local_users
     - auditd_overflow_action
     - auditd_name_format
+    - sebool_ssh_sysadm_login
