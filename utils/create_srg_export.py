@@ -27,6 +27,23 @@ NS = {'scap': ssg.constants.datastream_namespace,
 SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 
 
+class DisaStatus:
+    PENDING = "pending"
+    PLANNED = "planned"
+    NOT_APPLICABLE = "Not Applicable"
+    INHERENTLY_MET = "Applicable - Inherently Met"
+    DOCUMENTATION = "documentation"
+    PARTIAL = "Applicable - Configurable"
+    SUPPORTED = "supported"
+    AUTOMATED = "Applicable - Configurable"
+
+    @staticmethod
+    def from_string(source: str) -> str:
+        if source == ssg.controls.Status.INHERENTLY_MET:
+            return DisaStatus.INHERENTLY_MET
+        return source
+
+
 def get_description_root(srg: ET.Element) -> ET.Element:
     description_xml = "<root>"
     description_xml += srg.find('xccdf-1.1:description', NS).text.replace('&lt;', '<') \
@@ -53,7 +70,7 @@ def get_srg_dict(xml_path: str) -> dict:
             srgs[srg_id]['cci'] = \
                 srg.find("xccdf-1.1:ident[@system='http://cyber.mil/cci']", NS).text
             srgs[srg_id]['fix'] = srg.find('xccdf-1.1:fix', NS).text
-            srgs[srg_id]['check'] = srg.find('xccdf-1.1:description', NS).text
+            srgs[srg_id]['check'] = srg.find('xccdf-1.1:check/xccdf-1.1:check-content', NS).text
             srgs[srg_id]['ia_controls'] = description_root.find('IAControls').text
     return srgs
 
@@ -90,8 +107,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    control_full_path = pathlib.Path.joinpath(pathlib.Path('..'),
-                                              pathlib.Path(args.control)).absolute()
+    control_full_path = pathlib.Path(args.control).absolute()
     if not pathlib.Path.exists(control_full_path):
         sys.stderr.write(f"Unable to find control file {control_full_path}\n")
         exit(1)
@@ -110,28 +126,45 @@ def main() -> None:
 
         for item in control_yaml['controls']:
             control = ssg.controls.Control.from_control_dict(item)
-            for rule in control.selections:
-                row = dict()
-                srg_id = item['id']
-                srg = srgs[srg_id]
-                row['SRGID'] = srg_id
-                row['CCI'] = srg['cci']
-                row['SRG Requirement'] = srg['title']
-                row['SRG VulDiscussion'] = srg['vuln_discussion']
-                row['SRG Check'] = srg['check']
-                row['SRG Fix'] = srg['fix']
-                row['Severity'] = srg['severity']
-                row['IA Control'] = srg['ia_controls']
-                rule_object = handle_rule_yaml(args.product, rule_json[rule]['dir'], env_yaml)
-                row['Fix'] = rule_object.ocil
+            if control.selections:
+                for rule in control.selections:
+                    row = create_base_row(item, srgs)
+                    rule_object = handle_rule_yaml(args.product, rule_json[rule]['dir'], env_yaml)
+                    row['Requirement'] = rule_object.description
+                    row['Vul Discussion'] = rule_object.rationale
+                    row['Check'] = rule_object.ocil
+                    row['Fix'] = rule_object.fix
+                    row['Status'] = DisaStatus.AUTOMATED
+                    csv_writer.writerow(row)
+            else:
+                row = create_base_row(item, srgs)
+                row['Mitigation'] = control.mitigation
+                row['Artifact Description'] = control.artifact_description
+                row['Status Justification'] = control.status_justification
+                row['Status'] = DisaStatus.from_string(control.status)
                 csv_writer.writerow(row)
         print(f"File written to {full_output}")
 
 
+def create_base_row(item, srgs):
+    row = dict()
+    srg_id = item['id']
+    srg = srgs[srg_id]
+    row['SRGID'] = srg_id
+    row['CCI'] = srg['cci']
+    row['SRG Requirement'] = srg['title']
+    row['SRG VulDiscussion'] = srg['vuln_discussion']
+    row['SRG Check'] = srg['check']
+    row['SRG Fix'] = srg['fix']
+    row['Severity'] = srg['severity']
+    row['IA Control'] = srg['ia_controls']
+    return row
+
+
 def setup_csv_writer(csv_file: _io.TextIOWrapper) -> csv.DictWriter:
-    headers = ['IA Control', 'CCI', 'SRGID', 'SRG Requirement', 'SRG VulDiscussion',
-               'VulDiscussion', 'Status', 'SRG Check', 'Check', 'SRG Fix', 'Fix',
-               'Severity', 'Mitigation', 'Artifact Description', 'Status Justification']
+    headers = ['IA Control', 'CCI', 'SRGID', 'SRG Requirement', 'Requirement',
+               'SRG VulDiscussion', 'Vul Discussion', 'Status', 'SRG Check', 'Check', 'SRG Fix',
+               'Fix', 'Severity', 'Mitigation', 'Artifact Description', 'Status Justification']
     csv_writer = csv.DictWriter(csv_file, headers)
     csv_writer.writeheader()
     return csv_writer
