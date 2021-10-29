@@ -28,11 +28,11 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 <ul>
 {{% for path, filter in path_filter_pairs.items() %}}
   <li>
-    <code class="ocp-api-endpoint" id="{{{ (rule_id+path+filter)|sha256 }}}">{{{ path }}}</code>
+    <code class="ocp-api-endpoint" id="{{{ (path+filter)|sha256 }}}">{{{ path }}}</code>
     API endpoint, filter with with the <code>jq</code> utility using the following filter
-    <code class="ocp-api-filter" id="filter-{{{ (rule_id+path+filter)|sha256 }}}">{{{ filter }}}</code>
+    <code class="ocp-api-filter" id="filter-{{{ (path+filter)|sha256 }}}">{{{ filter }}}</code>
     and persist it to the local
-    <code class="ocp-dump-location" id="dump-{{{ (rule_id+path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (rule_id+path+filter)|sha256 }}}</code>
+    <code class="ocp-dump-location" id="dump-{{{ (path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (path+filter)|sha256 }}}</code>
     file.
   </li>
 {{% endfor %}}
@@ -48,7 +48,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
     - filter (String): A filtering directive
 #}}
 {{% macro openshift_filtered_path(path, filter) -%}}
-{{{ path }}}#{{{ (rule_id+path+filter)|sha256 }}}
+{{{ path }}}#{{{ (path+filter)|sha256 }}}
 {{%- endmacro %}}
 
 {{#
