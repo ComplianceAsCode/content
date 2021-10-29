@@ -71,6 +71,9 @@ class Control(ssg.build_yaml.SelectionHandler):
         self.description = ""
         self.automated = ""
         self.status = None
+        self.mitigation = ""
+        self.artifact_description = ""
+        self.status_justification = ""
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -85,6 +88,9 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.description = control_dict.get("description")
         control.status = Status.from_control_info(control.id, control_dict.get("status", None))
         control.automated = control_dict.get("automated", "no")
+        control.status_justification = control_dict.get('status_justification')
+        control.artifact_description = control_dict.get('artifact_description')
+        control.mitigation = control_dict.get('mitigation')
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
