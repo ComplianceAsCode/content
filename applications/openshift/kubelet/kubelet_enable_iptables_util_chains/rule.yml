@@ -43,8 +43,6 @@ template:
     vars:
         filepath: /etc/kubernetes/kubelet.conf
         yamlpath: ".makeIPTablesUtilChains"
-        check_existence: "any_exist"
         values:
-         - value: "false"
-           operation: "not equal"
-
+         - value: "true"
+           operation: "equals"
