@@ -45,6 +45,7 @@ JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
 datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
+dc_namespace = "http://purl.org/dc/elements/1.1/"
 ocil_namespace = "http://scap.nist.gov/schema/ocil/2.0"
 oval_footer = "</oval_definitions>"
 oval_namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
@@ -105,10 +106,12 @@ OVAL_SUB_NS = dict(
 PREFIX_TO_NS = {
     "oval-def": oval_namespace,
     "oval": "http://oval.mitre.org/XMLSchema/oval-common-5",
+    "dc": dc_namespace,
     "ds": datastream_namespace,
     "ocil": ocil_namespace,
     "xccdf-1.1": XCCDF11_NS,
     "xccdf-1.2": XCCDF12_NS,
+    "xhtml": xhtml_namespace,
     "xlink": xlink_namespace,
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
     "cat": cat_namespace,

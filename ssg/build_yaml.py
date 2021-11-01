@@ -23,7 +23,7 @@ from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
-from .xml import ElementTree as ET
+from .xml import ElementTree as ET, register_namespaces
 from .shims import unicode_func
 
 
@@ -847,10 +847,8 @@ class Benchmark(XCCDFEntity):
     def to_xml_element(self):
         root = ET.Element('Benchmark')
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-        root.set('xmlns:xhtml', 'http://www.w3.org/1999/xhtml')
-        root.set('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
-        root.set('xmlns:cpe-lang', 'http://cpe.mitre.org/language/2.0')
         root.set('id', 'product-name')
+        root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set('xsi:schemaLocation',
                  'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
         root.set('style', 'SCAP_1.1')
@@ -1899,6 +1897,7 @@ class LinearLoader(object):
             g.load_entities(self.rules, self.values, self.groups)
 
     def export_benchmark_to_file(self, filename):
+        register_namespaces()
         return self.benchmark.to_file(filename)
 
     def export_ocil_to_file(self, filename):
