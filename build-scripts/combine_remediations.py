@@ -9,6 +9,7 @@ import argparse
 import codecs
 
 import ssg.build_remediations as remediation
+import ssg.build_yaml
 import ssg.rules
 import ssg.jinja
 import ssg.environment
@@ -78,7 +79,8 @@ def main():
             remediation_obj = remediation_cls(fix_path)
             rule_path = os.path.join(args.resolved_rules_dir, rule_id + ".yml")
             if os.path.isfile(rule_path):
-                remediation_obj.load_rule_from(rule_path)
+                rule_obj = ssg.build_yaml.Rule.from_yaml(rule_path)
+                remediation_obj.associate_rule(rule_obj)
                 # Fixes gets updated with the contents of the fix
                 # if it is applicable
                 remediation.process(remediation_obj, env_yaml, fixes, rule_id)

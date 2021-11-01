@@ -172,8 +172,8 @@ class Remediation(object):
         self.remediation_type = remediation_type
         self.associated_rule = None
 
-    def load_rule_from(self, rule_path):
-        self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
+    def associate_rule(self, rule_obj):
+        self.associated_rule = rule_obj
         self.expand_env_yaml_from_rule()
 
     def expand_env_yaml_from_rule(self):
@@ -481,7 +481,8 @@ class AnsibleRemediation(Remediation):
         if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
             result = cls(snippet_fname)
             try:
-                result.load_rule_from(rule_fname)
+                rule_obj = build_yaml.Rule.from_yaml(rule_fname)
+                result.associate_rule(rule_obj)
             except ssg.yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 return None
