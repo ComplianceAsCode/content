@@ -24,6 +24,7 @@ def oval_generated_header(product_name, schema_version, ssg_version):
     </generator>""" % (product_name, ssg_version, platform.python_version(),
                        schema_version, timestamp)
 
+
 def register_namespaces():
     """
     Register all possible namespaces
@@ -35,6 +36,7 @@ def register_namespaces():
         # Probably an old version of Python
         # Doesn't matter, as this is non-essential.
         pass
+
 
 def open_xml(filename):
     """
@@ -69,10 +71,12 @@ def map_elements_to_their_ids(tree, xpath_expr):
         aggregated[element_id] = element
     return aggregated
 
+
 SSG_XHTML_TAGS = [
     'table', 'tr', 'th', 'td', 'ul', 'li', 'ol',
     'p', 'code', 'strong', 'b', 'em', 'i', 'pre', 'br', 'hr', 'small',
 ]
+
 
 def add_xhtml_namespace(data):
     """

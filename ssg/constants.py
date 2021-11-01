@@ -30,10 +30,10 @@ SSG_REF_URIS = {
     'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
     'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
     'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
-    # The following reference URIs were not defined in the XSLT
+    # The following reference URIs were not defined in the XSLT constants
     'ism': '',
     'vmmsrg': '',
-    'vsrg': '', # I guess vsrg and vmmsrg should be the same?
+    'vsrg': '',  # From the references, it looks like vsrg and vmmsrg are meant to be the same
 }
 
 product_directories = [

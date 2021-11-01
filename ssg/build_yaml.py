@@ -15,8 +15,20 @@ import glob
 import yaml
 
 from .build_cpe import CPEDoesNotExist, parse_platform_definition
-from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
-from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace, cce_uri, oval_namespace, SSG_REF_URIS
+from .constants import (XCCDF_REFINABLE_PROPERTIES,
+                        SCE_SYSTEM,
+                        cce_uri,
+                        dc_namespace,
+                        ocil_cs,
+                        ocil_namespace,
+                        oval_namespace,
+                        xhtml_namespace,
+                        xsi_namespace,
+                        timestamp,
+                        SSG_BENCHMARK_LATEST_URI,
+                        SSG_PROJECT_NAME,
+                        SSG_REF_URIS
+                        )
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -50,13 +62,13 @@ def add_sub_element(parent, tag, data):
 
     Returns the newly created subelement of type tag.
     """
-    namespaced_data =  add_xhtml_namespace(data)
+    namespaced_data = add_xhtml_namespace(data)
     # This is used because our YAML data contain XML and XHTML elements
     # ET.SubElement() escapes the < > characters by &lt; and &gt;
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func('<{0} xmlns:xhtml="http://www.w3.org/1999/xhtml">{1}</{0}>').format(tag, namespaced_data)
+    ustr = unicode_func('<{0} xmlns:xhtml="{2}">{1}</{0}>').format(tag, namespaced_data, xhtml_namespace)
 
     try:
         element = ET.fromstring(ustr.encode("utf-8"))
