@@ -26,13 +26,6 @@
   </xsl:template>
 
 
-  <!-- insert current date -->
-  <xsl:template match="Benchmark/status/@date">
-    <xsl:attribute name="date">
-       <xsl:value-of select="date:date()"/>
-    </xsl:attribute>
-  </xsl:template>
-
   <!-- Expand <metadata> element with required information about benchmark's
               publisher, creator, contributor(s), and source -->
   <xsl:template match="Benchmark/metadata">
