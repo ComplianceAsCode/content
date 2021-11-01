@@ -9,6 +9,33 @@ import time
 SSG_PROJECT_NAME = "SCAP Security Guide Project"
 SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases/latest"
 
+SSG_REF_URIS = {
+    'anssi': 'http://www.ssi.gouv.fr/administration/bonnes-pratiques/',
+    'nist': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf',
+    'nist-csf': 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf',
+    'isa-62443-2013': 'https://www.isa.org/templates/one-column.aspx?pageid=111294&productId=116785',
+    'isa-62443-2009': 'https://www.isa.org/templates/one-column.aspx?pageid=111294&productId=116731',
+    'cobit5': 'https://www.isaca.org/resources/cobit',
+    'cis-csc': 'https://www.cisecurity.org/controls/',
+    'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
+    'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
+    'cnss': 'http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf',
+    'dcid': 'not_officially_available',
+    'disa': 'https://public.cyber.mil/stigs/cci/',
+    'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
+    'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
+    'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
+    'iso27001-2013': 'https://www.iso.org/standard/54534.html',
+    'nerc-cip': 'https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx',
+    'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
+    'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
+    'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    # The following reference URIs were not defined in the XSLT
+    'ism': '',
+    'vmmsrg': '',
+    'vsrg': '', # I guess vsrg and vmmsrg should be the same?
+}
+
 product_directories = [
     'chromium',
     'debian9', 'debian10', 'debian11',

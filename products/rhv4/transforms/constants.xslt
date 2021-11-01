@@ -10,9 +10,5 @@
 
 <!-- Define URI of official CIS Kubernetes Benchmark -->
 <xsl:variable name="cisuri"></xsl:variable>
-<xsl:variable name="disa-stigs-uri" select="$disa-stigs-virutalization-uri"/>
-
-<!-- Define URI for custom policy reference which can be used for linking to corporate policy -->
-<!--xsl:variable name="custom-ref-uri">https://www.example.org</xsl:variable-->
 
 </xsl:stylesheet>

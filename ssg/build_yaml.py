@@ -16,7 +16,7 @@ import yaml
 
 from .build_cpe import CPEDoesNotExist, parse_platform_definition
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
-from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace, cce_uri, oval_namespace
+from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace, cce_uri, oval_namespace, SSG_REF_URIS
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -846,7 +846,7 @@ class Benchmark(XCCDFEntity):
 
             self.profiles.append(new_profile)
 
-    def to_xml_element(self):
+    def to_xml_element(self, env_yaml=None):
         root = ET.Element('Benchmark')
         root.set('id', self.id_)
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
@@ -904,15 +904,15 @@ class Benchmark(XCCDFEntity):
             group = self.groups.get(group_id)
             # Products using application benchmark don't have system or services group
             if group is not None:
-                root.append(group.to_xml_element())
+                root.append(group.to_xml_element(env_yaml))
 
         for rule in self.rules.values():
-            root.append(rule.to_xml_element())
+            root.append(rule.to_xml_element(env_yaml))
 
         return root
 
-    def to_file(self, file_name, ):
-        root = self.to_xml_element()
+    def to_file(self, file_name, env_yaml=None):
+        root = self.to_xml_element(env_yaml)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -1038,7 +1038,7 @@ class Group(XCCDFEntity):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, env_yaml=None):
         group = ET.Element('Group')
         group.set('id', self.id_)
         title = ET.SubElement(group, 'title')
@@ -1075,7 +1075,7 @@ class Group(XCCDFEntity):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
-            group.append(self.rules.get(rule_id).to_xml_element())
+            group.append(self.rules.get(rule_id).to_xml_element(env_yaml))
 
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
@@ -1114,7 +1114,7 @@ class Group(XCCDFEntity):
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
-            group.append(_group.to_xml_element())
+            group.append(_group.to_xml_element(env_yaml))
 
         return group
 
@@ -1464,7 +1464,7 @@ class Rule(XCCDFEntity):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, env_yaml=None):
         rule = ET.Element('Rule')
         rule.set('selected', 'false')
         rule.set('id', self.id_)
@@ -1472,22 +1472,31 @@ class Rule(XCCDFEntity):
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)
         add_warning_elements(rule, self.warnings)
-        main_ref = ET.Element('ref')
-        for ref_type, ref_val in self.references.items():
-            # This is not true if items were normalized
-            if '@' in ref_type:
-                # the reference is applicable only on some product
-                # format : 'policy@product', eg. 'stigid@product'
-                # for them, we create a separate <ref> element
-                policy, product = ref_type.split('@')
-                ref = ET.SubElement(rule, 'ref')
-                ref.set(policy, ref_val)
-                ref.set('prodtype', product)
-            else:
-                main_ref.set(ref_type, ref_val)
+        if env_yaml:
+            ref_dict = env_yaml['reference_uris']
+        else:
+            ref_dict = SSG_REF_URIS
+        for ref_type, ref_vals in self.references.items():
+            for ref_val in ref_vals.split(","):
+                if ref_type == 'srg':
+                    if ref_val.startswith('SRG-OS-'):
+                        ref_href = ref_dict['os-srg']
+                    elif ref_val.startswith('SRG-APP-'):
+                        ref_href = ref_dict['app-srg']
+                    else:
+                        raise ValueError("SRG {0} doesn't have a URI defined.".format(ref_val))
+                else:
+                    try:
+                        ref_href = ref_dict[ref_type]
+                    except KeyError as exc:
+                        msg = (
+                            "Error processing reference {0}: {1} in Rule {2}."
+                            .format(ref_type, ref_vals, self.id_))
+                        raise ValueError(msg)
 
-        if main_ref.attrib:
-            rule.append(main_ref)
+                ref = ET.SubElement(rule, 'reference')
+                ref.set("href", ref_href)
+                ref.text = ref_val
 
         add_sub_element(rule, 'rationale', self.rationale)
 
@@ -1906,7 +1915,7 @@ class LinearLoader(object):
 
     def export_benchmark_to_file(self, filename):
         register_namespaces()
-        return self.benchmark.to_file(filename)
+        return self.benchmark.to_file(filename, self.env_yaml)
 
     def export_ocil_to_file(self, filename):
         root = ET.Element('ocil')

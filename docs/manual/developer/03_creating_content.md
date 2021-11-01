@@ -449,6 +449,9 @@ cpes:
     name: "cpe:/o:$NAME:$VERSION"
     title: "$FULL_NAME"
     check_id: installed_OS_is_$NEW_PRODUCT
+
+reference_uris:
+  cis: 'https://benchmarks.cisecurity.org/tools2/linux/CIS_${CAMEL_CASE_NAME}_Benchmark_v1.0.pdf'
 EOF
 ```
 
@@ -483,7 +486,6 @@ cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
 
 <!-- Define URI of official Center for Internet Security Benchmark for $FULL_NAME -->
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_${CAMEL_CASE_NAME}_Benchmark_v1.0.pdf</xsl:variable>
-<xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 
 <!-- Define URI for custom policy reference which can be used for linking to corporate policy -->
 <!--xsl:variable name="custom-ref-uri">https://www.example.org</xsl:variable-->

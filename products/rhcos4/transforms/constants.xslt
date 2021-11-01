@@ -8,10 +8,6 @@
 <xsl:variable name="prod_type">rhcos4</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
-<xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="disa-srguri" select="$disa-ossrguri"/>
-
-<!-- Define URI for custom policy reference which can be used for linking to corporate policy -->
-<!--xsl:variable name="custom-ref-uri">https://www.example.org</xsl:variable-->
 
 </xsl:stylesheet>
