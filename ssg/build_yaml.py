@@ -16,6 +16,7 @@ import yaml
 
 from .build_cpe import CPEDoesNotExist, parse_platform_definition
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
+from .constants import SSG_BENCHMARK_LATEST_URI
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -742,7 +743,7 @@ class Benchmark(XCCDFEntity):
         front_matter=lambda: "",
         rear_matter=lambda: "",
         cpes=lambda: list(),
-        version=lambda: "0",
+        version=lambda: "",
         profiles=lambda: list(),
         values=lambda: dict(),
         groups=lambda: dict(),
@@ -757,7 +758,6 @@ class Benchmark(XCCDFEntity):
         "description",
         "front_matter",
         "rear_matter",
-        "version",
     }
 
     GENERIC_FILENAME = "benchmark.yml"
@@ -793,8 +793,6 @@ class Benchmark(XCCDFEntity):
         data["notice_description"] = required_key(notice_contents, "description")
         del notice_contents["description"]
 
-        data["version"] = str(data["version"])
-
         return data
 
     def represent_as_dict(self):
@@ -812,6 +810,9 @@ class Benchmark(XCCDFEntity):
         if env_yaml:
             benchmark.product_cpe_names = env_yaml["product_cpes"].get_product_cpe_names()
             benchmark.cpe_platform_spec = env_yaml["product_cpes"].cpe_platform_specification
+            benchmark.version = env_yaml["ssg_version_str"]
+        else:
+            benchmark.version = "0.0"
 
         benchmark.id_ = benchmark_id
 
@@ -876,6 +877,7 @@ class Benchmark(XCCDFEntity):
 
         version = ET.SubElement(root, 'version')
         version.text = self.version
+        version.set('update', SSG_BENCHMARK_LATEST_URI)
         ET.SubElement(root, "metadata")
 
         for profile in self.profiles:
@@ -964,7 +966,6 @@ class Group(XCCDFEntity):
         "description",
         "front_matter",
         "rear_matter",
-        "version",
     }
 
     @classmethod

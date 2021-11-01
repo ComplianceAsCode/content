@@ -33,11 +33,6 @@
     </xsl:attribute>
   </xsl:template>
 
-  <!-- insert SSG version -->
-  <xsl:template match="Benchmark/version">
-    <xccdf:version update="{$ssg-benchmark-latest-uri}"><xsl:value-of select="$ssg_version"/></xccdf:version>
-  </xsl:template>
-
   <!-- Expand <metadata> element with required information about benchmark's
               publisher, creator, contributor(s), and source -->
   <xsl:template match="Benchmark/metadata">
@@ -97,11 +92,6 @@
       <xsl:apply-templates select="conflicts"/>
       <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform)]"/>
     </Group>
-  </xsl:template>
-
-  <!-- XHTML, such as tt, is not allowed in titles -->
-  <xsl:template match="title/tt">
-        <xsl:apply-templates select="@*|node()" />
   </xsl:template>
 
   <!-- expand reference to ident types -->

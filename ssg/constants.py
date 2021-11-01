@@ -5,6 +5,9 @@ import os.path
 import os
 import time
 
+
+SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases/latest"
+
 product_directories = [
     'chromium',
     'debian9', 'debian10', 'debian11',
