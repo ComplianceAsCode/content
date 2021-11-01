@@ -25,23 +25,6 @@
     </xsl:element>
   </xsl:template>
 
-
-  <!-- Remove this template when prodtype is implemented in all Group elements -->
-  <xsl:template match="Group[not(@prodtype)]">
-    <Group>
-      <xsl:apply-templates select="@*" />
-      <xsl:apply-templates select="title"/>
-      <xsl:apply-templates select="description"/>
-      <xsl:apply-templates select="warning"/>
-      <xsl:apply-templates select="ref"/>
-      <xsl:apply-templates select="rationale"/>
-      <xsl:apply-templates select="platform"/>
-      <xsl:apply-templates select="requires"/>
-      <xsl:apply-templates select="conflicts"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform)]"/>
-    </Group>
-  </xsl:template>
-
   <!-- expand reference to ident types -->
   <xsl:template match="Rule/ident">
     <xsl:choose>

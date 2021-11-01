@@ -1045,12 +1045,16 @@ class Group(XCCDFEntity):
         title.text = self.title
         add_sub_element(group, 'description', self.description)
         add_warning_elements(group, self.warnings)
-        add_nondata_subelements(group, "requires", "id", self.requires)
-        add_nondata_subelements(group, "conflicts", "id", self.conflicts)
+
+        # This is where references should be put if there are any
+        # This is where rationale should be put if there are any
 
         for cpe_platform_name in self.cpe_platform_names:
             platform_el = ET.SubElement(group, "platform")
             platform_el.set("idref", "#"+cpe_platform_name)
+
+        add_nondata_subelements(group, "requires", "id", self.requires)
+        add_nondata_subelements(group, "conflicts", "id", self.conflicts)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
