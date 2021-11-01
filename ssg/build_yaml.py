@@ -16,7 +16,7 @@ import yaml
 
 from .build_cpe import CPEDoesNotExist, parse_platform_definition
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
-from .constants import SSG_BENCHMARK_LATEST_URI
+from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -24,7 +24,7 @@ from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
-from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces
+from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
 from .shims import unicode_func
 
 
@@ -877,7 +877,17 @@ class Benchmark(XCCDFEntity):
         version = ET.SubElement(root, 'version')
         version.text = self.version
         version.set('update', SSG_BENCHMARK_LATEST_URI)
-        ET.SubElement(root, "metadata")
+        metadata = ET.SubElement(root, "metadata")
+        publisher = ET.SubElement(metadata, "{%s}publisher" % dc_namespace)
+        publisher.text = SSG_PROJECT_NAME
+        creator = ET.SubElement(metadata, "{%s}creator" % dc_namespace)
+        creator.text = SSG_PROJECT_NAME
+        contrib_tree = parse_file("../../Contributors.xml")
+        for c in contrib_tree.iter('contributor'):
+            contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
+            contributor.text = c.text
+        source = ET.SubElement(metadata, "{%s}source" % dc_namespace)
+        source.text = SSG_BENCHMARK_LATEST_URI
 
         for profile in self.profiles:
             root.append(profile.to_xml_element())

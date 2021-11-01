@@ -6,6 +6,7 @@ import os
 import time
 
 
+SSG_PROJECT_NAME = "SCAP Security Guide Project"
 SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases/latest"
 
 product_directories = [

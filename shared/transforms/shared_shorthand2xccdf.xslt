@@ -26,23 +26,6 @@
   </xsl:template>
 
 
-  <!-- Expand <metadata> element with required information about benchmark's
-              publisher, creator, contributor(s), and source -->
-  <xsl:template match="Benchmark/metadata">
-    <xccdf:metadata>
-      <!-- Insert benchmark publisher -->
-      <dc:publisher><xsl:value-of select="$ssg-project-name"/></dc:publisher>
-      <!-- Insert benchmark creator -->
-      <dc:creator><xsl:value-of select="$ssg-project-name"/></dc:creator>
-      <!-- Insert list of individual contributors for benchmark -->
-      <xsl:for-each select="document('../../Contributors.xml')/text/contributor">
-        <dc:contributor><xsl:value-of select="current()" /></dc:contributor>
-      </xsl:for-each>
-      <!-- Insert benchmark source -->
-      <dc:source><xsl:value-of select="$ssg-benchmark-latest-uri"/></dc:source>
-    </xccdf:metadata>
-  </xsl:template>
-
   <!-- Remove this template when prodtype is implemented in all Rule elements -->
   <xsl:template match="Rule[not(@prodtype)]">
     <Rule selected="false">
