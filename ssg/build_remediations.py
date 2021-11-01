@@ -582,6 +582,17 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
     tree.write(output_path)
 
 
+def write_fix_to_file(fix, file_path):
+    """
+    Writes a single fix to the given file path.
+    """
+    fix_contents, config = fix
+    with open(file_path, "w") as f:
+        for k, v in config.items():
+            f.write("# %s = %s\n" % (k, v))
+        f.write(fix_contents)
+
+
 def write_fixes_to_dir(fixes, remediation_type, output_dir):
     """
     Writes fixes as files to output_dir, each fix as a separate file
@@ -594,12 +605,8 @@ def write_fixes_to_dir(fixes, remediation_type, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     for fix_name, fix in fixes.items():
-        fix_contents, config = fix
         fix_path = os.path.join(output_dir, fix_name + extension)
-        with open(fix_path, "w") as f:
-            for k, v in config.items():
-                f.write("# %s = %s\n" % (k, v))
-            f.write(fix_contents)
+        write_fix_to_file(fix, fix_path)
 
 
 def get_rule_dir_remediations(dir_path, remediation_type, product=None):
