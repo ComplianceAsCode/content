@@ -16,7 +16,7 @@ import yaml
 
 from .build_cpe import CPEDoesNotExist, parse_platform_definition
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
-from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace, cce_uri
+from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace, cce_uri, oval_namespace
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -1563,17 +1563,20 @@ class Rule(XCCDFEntity):
             href = self.sce_metadata['relative_path']
             check_ref.set("href", href)
 
+        check = ET.SubElement(check_parent, 'check')
+        check.set("system", oval_namespace)
+        check_content_ref = ET.SubElement(check, "check-content-ref")
         if self.oval_external_content:
-            check = ET.SubElement(check_parent, 'check')
-            check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
-            external_content = ET.SubElement(check, "check-content-ref")
-            external_content.set("href", self.oval_external_content)
+            check_content_ref.set("href", self.oval_external_content)
         else:
             # TODO: This is pretty much a hack, oval ID will be the same as rule ID
             #       and we don't want the developers to have to keep them in sync.
             #       Therefore let's just add an OVAL ref of that ID.
-            oval_ref = ET.SubElement(check_parent, "oval")
-            oval_ref.set("id", self.id_)
+            # TODO  Can we not add the check element if the rule doesn't have an OVAL check?
+            #       At the moment, the check elements of rules without OVAL are removed by
+            #       relabel_ids.py
+            check_content_ref.set("href", "oval-unlinked.xml")
+            check_content_ref.set("name", self.id_)
 
         if self.ocil or self.ocil_clause:
             ocil_check = ET.SubElement(check_parent, "check")

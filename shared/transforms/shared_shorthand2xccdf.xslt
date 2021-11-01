@@ -162,43 +162,6 @@
     </xsl:if>
   </xsl:template>
 
-  <!-- expand reference to OVAL ID -->
-  <xsl:template match="Rule/oval">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)">
-        <check>
-          <xsl:attribute name="system">
-            <xsl:value-of select="$ovaluri" />
-          </xsl:attribute>
-
-          <xsl:for-each select="@*">
-          <xsl:choose>
-          <xsl:when test="contains(name(),'value')">
-            <check-export>
-              <xsl:attribute name="export-name">
-                <xsl:value-of select="." />
-              </xsl:attribute>
-              <xsl:attribute name="value-id">
-                <xsl:value-of select="." />
-              </xsl:attribute>
-            </check-export>
-          </xsl:when>
-          </xsl:choose>
-          </xsl:for-each>
-
-          <check-content-ref>
-            <xsl:attribute name="href">
-              <xsl:value-of select="'oval-unlinked.xml'" />
-            </xsl:attribute>
-            <xsl:attribute name="name">
-              <xsl:value-of select="@id" />
-            </xsl:attribute>
-          </check-content-ref>
-        </check>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- expand reference to OVAL ID inside single complex-check -->
   <xsl:template match="Rule/complex-check/oval">
     <xsl:choose>
