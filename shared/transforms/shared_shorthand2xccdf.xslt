@@ -418,33 +418,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- The next set of templates places elements into the correct namespaces,
-       so that content authors never have to bother with them.
-       XHTML elements are explicitly identified and the xhtml
-       namespace is added.  Any element with an empty namespace
-       is assigned to the xccdf namespace. -->
-
-  <!-- put table and list-related xhtml tags into xhtml namespace -->
-  <xsl:template match="table | tr | th | td | ul | li | ol" >
-    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:element>
-  </xsl:template>
-
-  <!-- put general formatting xhtml into xhtml namespace -->
-  <xsl:template match="p | code | strong | b | em | i | pre | br | hr | small" >
-    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:element>
-  </xsl:template>
-
-  <!-- convert tt to code, which seems better-supported -->
-  <xsl:template match="tt">
-    <xhtml:code>
-      <xsl:apply-templates select="@*|node()"/>
-    </xhtml:code>
-  </xsl:template>
-
   <!-- if no namespace is indicated, put into xccdf namespace-->
   <xsl:template match="*[namespace-uri()='']" priority="-1">
     <xsl:element name="{local-name()}" namespace="http://checklists.nist.gov/xccdf/1.1">

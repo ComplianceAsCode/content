@@ -23,7 +23,7 @@ from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
-from .xml import ElementTree as ET, register_namespaces
+from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces
 from .shims import unicode_func
 
 
@@ -49,12 +49,13 @@ def add_sub_element(parent, tag, data):
 
     Returns the newly created subelement of type tag.
     """
+    namespaced_data =  add_xhtml_namespace(data)
     # This is used because our YAML data contain XML and XHTML elements
     # ET.SubElement() escapes the < > characters by &lt; and &gt;
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func("<{0}>{1}</{0}>").format(tag, data)
+    ustr = unicode_func('<{0} xmlns:xhtml="http://www.w3.org/1999/xhtml">{1}</{0}>').format(tag, namespaced_data)
 
     try:
         element = ET.fromstring(ustr.encode("utf-8"))

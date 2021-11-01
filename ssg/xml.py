@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import platform
+import re
 
 from .constants import xml_version, oval_header, timestamp, PREFIX_TO_NS
 
@@ -67,3 +68,17 @@ def map_elements_to_their_ids(tree, xpath_expr):
         assert element_id is not None
         aggregated[element_id] = element
     return aggregated
+
+SSG_XHTML_TAGS = [
+    'table', 'tr', 'th', 'td', 'ul', 'li', 'ol',
+    'p', 'code', 'strong', 'b', 'em', 'i', 'pre', 'br', 'hr', 'small',
+]
+
+def add_xhtml_namespace(data):
+    """
+    Given a xml blob, adds the xhtml namespace to all relevant tags.
+    """
+    # Transform <tt> in <code>
+    data = re.sub(r'<(\/)?tt(\/)?>', r'<\1code\2>', data)
+    # Adds xhtml prefix to elements: <tag>, </tag>, <tag/>
+    return re.sub(r'<(\/)?((?:%s).*?)(\/)?>' % "|".join(SSG_XHTML_TAGS), r'<\1xhtml:\2\3>', data)
