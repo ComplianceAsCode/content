@@ -192,29 +192,35 @@ macro(ssg_build_templated_content PRODUCT)
     )
 endmacro()
 
+macro(_ssg_combine_remediations PRODUCT LANGUAGES)
+    set(REMEDIATION_TYPE_OPTIONS "")
+    foreach(LANGUAGE ${LANGUAGES})
+        list(APPEND REMEDIATION_TYPE_OPTIONS "--remediation-type" "${LANGUAGE}")
+    endforeach(LANGUAGE ${LANGUAGES})
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/combined-remediations-${PRODUCT}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${REMEDIATION_TYPE_OPTIONS} --output-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes" --fixes-from-templates-dir "${BUILD_REMEDIATIONS_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/combined-remediations-${PRODUCT}"
+        # Acutally we mean that it depends on resolved rules.
+        DEPENDS ${PRODUCT}-compile-all
+        DEPENDS generate-internal-templated-content-${PRODUCT}
+        COMMENT "[${PRODUCT}-content] collecting all fixes"
+    )
+    add_custom_target(
+        generate-internal-${PRODUCT}-all-fixes
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/combined-remediations-${PRODUCT}"
+    )
+endmacro()
+
 # Builds the XML document containing all remediations of the given language.
 # This is later combined with the unlinked XCCDF document.
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
     foreach(LANGUAGE ${LANGUAGES})
       set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/${LANGUAGE}")
-
-      add_custom_command(
-          OUTPUT "${ALL_FIXES_DIR}"
-          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation-type "${LANGUAGE}" --output-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes" --fixes-from-templates-dir "${BUILD_REMEDIATIONS_DIR}"
-          # Acutally we mean that it depends on resolved rules.
-          DEPENDS ${PRODUCT}-compile-all
-          COMMENT "[${PRODUCT}-content] collecting all ${LANGUAGE} fixes"
-      )
-      add_custom_target(
-          generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
-          DEPENDS "${ALL_FIXES_DIR}"
-      )
-      add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-templated-content-${PRODUCT})
-
       add_custom_command(
           OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
           COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${ALL_FIXES_DIR}"
-          DEPENDS generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
+          DEPENDS generate-internal-${PRODUCT}-all-fixes
           COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-fixes.xml"
       )
       add_custom_target(
@@ -232,7 +238,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     add_custom_command(
         OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}"
 	COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes/ansible" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --resolved-profiles-dir "${CMAKE_CURRENT_BINARY_DIR}/profiles" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml"
-        DEPENDS generate-internal-${PRODUCT}-ansible-all-fixes
+        DEPENDS generate-internal-${PRODUCT}-all-fixes
         COMMENT "[${PRODUCT}-content] Generating Ansible Playbooks"
     )
     add_custom_target(
@@ -255,6 +261,7 @@ endmacro()
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition, kubernetes and blueprint)...")
 
+    _ssg_combine_remediations(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
     _ssg_build_remediations_for_language(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
