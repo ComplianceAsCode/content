@@ -1759,7 +1759,9 @@ class DirectoryLoader(object):
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml)
-            self.all_groups[group.id_] = group
+            prodtypes = parse_prodtype(group.prodtype)
+            if "all" in prodtypes or self.product in prodtypes:
+                self.all_groups[group.id_] = group
 
         return group
 
