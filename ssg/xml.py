@@ -23,10 +23,9 @@ def oval_generated_header(product_name, schema_version, ssg_version):
     </generator>""" % (product_name, ssg_version, platform.python_version(),
                        schema_version, timestamp)
 
-
-def open_xml(filename):
+def register_namespaces():
     """
-    Given a filename, register all possible namespaces, and return the XML tree.
+    Register all possible namespaces
     """
     try:
         for prefix, uri in PREFIX_TO_NS.items():
@@ -35,6 +34,12 @@ def open_xml(filename):
         # Probably an old version of Python
         # Doesn't matter, as this is non-essential.
         pass
+
+def open_xml(filename):
+    """
+    Given a filename, register all possible namespaces, and return the XML tree.
+    """
+    register_namespaces()
     return ElementTree.parse(filename)
 
 
