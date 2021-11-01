@@ -3,10 +3,7 @@
 import sys
 import os
 import os.path
-import re
-import errno
 import argparse
-import codecs
 
 import ssg.build_remediations as remediation
 import ssg.build_yaml
@@ -49,6 +46,50 @@ def parse_args():
     return p.parse_args()
 
 
+def prepare_output_dirs(output_dir, remediation_types):
+    output_dirs = dict()
+    for lang in remediation_types:
+        language_output_dir = os.path.join(output_dir, lang)
+        if not os.path.exists(language_output_dir):
+            os.makedirs(language_output_dir)
+        output_dirs[lang] = language_output_dir
+    return output_dirs
+
+
+def combine_remediations(
+        rule, langs, fixes_from_templates_dirs, product, output_dirs,
+        env_yaml):
+    for lang in langs:
+        rule_dir = os.path.dirname(rule.definition_location)
+        ext = remediation.REMEDIATION_TO_EXT_MAP[lang]
+        remediation_cls = remediation.REMEDIATION_TO_CLASS[lang]
+        language_fixes_from_templates_dir = os.path.join(
+            fixes_from_templates_dirs, lang)
+        fix_path = None
+        # first look for a static remediation
+        rule_dir_remediations = remediation.get_rule_dir_remediations(
+            rule_dir, lang, product)
+        if len(rule_dir_remediations) > 0:
+            # first item in the list has the highest priority
+            fix_path = rule_dir_remediations[0]
+        if fix_path is None:
+            # check if we have a templated remediation instead
+            if os.path.isdir(language_fixes_from_templates_dir):
+                templated_fix_path = os.path.join(
+                    language_fixes_from_templates_dir, rule.id_ + ext)
+                if os.path.exists(templated_fix_path):
+                    fix_path = templated_fix_path
+        if fix_path is None:
+            # neither static nor templated remediation found
+            continue
+        remediation_obj = remediation_cls(fix_path)
+        remediation_obj.associate_rule(rule)
+        fix = remediation.process(remediation_obj, env_yaml)
+        if fix:
+            output_file_path = os.path.join(output_dirs[lang], rule.id_ + ext)
+            remediation.write_fix_to_file(fix, output_file_path)
+
+
 def main():
     args = parse_args()
 
@@ -56,65 +97,20 @@ def main():
         args.build_config_yaml, args.product_yaml)
 
     product = ssg.utils.required_key(env_yaml, "product")
+    output_dirs = prepare_output_dirs(args.output_dir, args.remediation_type)
 
-    product_dir = os.path.dirname(args.product_yaml)
-    relative_guide_dir = ssg.utils.required_key(env_yaml, "benchmark_root")
-    guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
-    additional_content_directories = env_yaml.get("additional_content_directories", [])
-    add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
-
-    for remediation_type in args.remediation_type:
-        # As fixes is continually updated, the last seen fix that is applicable
-        # for a given fix_name is chosen to replace newer fix_names
-        remediation_cls = remediation.REMEDIATION_TO_CLASS[remediation_type]
-
-        language_fixes_from_templates_dir = os.path.join(
-            args.fixes_from_templates_dir, remediation_type)
-        rule_id_to_remediation_map = collect_fixes(
-            product, [guide_dir] + add_content_dirs,
-            language_fixes_from_templates_dir, remediation_type)
-
-        fixes = dict()
-        for rule_id, fix_path in rule_id_to_remediation_map.items():
-            remediation_obj = remediation_cls(fix_path)
-            rule_path = os.path.join(args.resolved_rules_dir, rule_id + ".yml")
-            if os.path.isfile(rule_path):
-                rule_obj = ssg.build_yaml.Rule.from_yaml(rule_path)
-                remediation_obj.associate_rule(rule_obj)
-                processed_remediation = remediation.process(
-                    remediation_obj, env_yaml)
-                # Fixes gets updated with the contents of the fix
-                # if it is applicable
-                if processed_remediation is not None:
-                    fixes[rule_id] = processed_remediation
-
-        language_output_dir = os.path.join(args.output_dir, remediation_type)
-        remediation.write_fixes_to_dir(
-            fixes, remediation_type, language_output_dir)
-
+    for rule_file in os.listdir(args.resolved_rules_dir):
+        rule_path = os.path.join(args.resolved_rules_dir, rule_file)
+        try:
+            rule = ssg.build_yaml.Rule.from_yaml(rule_path)
+        except ssg.build_yaml.DocumentationNotComplete:
+            # Happens on non-debug build when a rule is
+            # "documentation-incomplete"
+            continue
+        combine_remediations(
+            rule, args.remediation_type, args.fixes_from_templates_dir,
+            product, output_dirs, env_yaml)
     sys.exit(0)
-
-
-def collect_fixes(product, rules_dirs, fixdir, remediation_type):
-    # path -> remediation
-    # rule ID -> assoc rule
-    rule_id_to_remediation_map = dict()
-    if os.path.isdir(fixdir):
-        for filename in sorted(os.listdir(fixdir)):
-            file_path = os.path.join(fixdir, filename)
-            rule_id, _ = os.path.splitext(filename)
-            rule_id_to_remediation_map[rule_id] = file_path
-
-    # Walk the guide last, looking for rule folders as they have the highest priority
-    for _dir_path in ssg.rules.find_rule_dirs_in_paths(rules_dirs):
-        rule_id = ssg.rules.get_rule_dir_id(_dir_path)
-
-        contents = remediation.get_rule_dir_remediations(_dir_path, remediation_type, product)
-        for _path in reversed(contents):
-            # To be compatible with the later checks, use the rule_id
-            # (i.e., the value of _dir) to create the fix_name
-            rule_id_to_remediation_map[rule_id] = _path
-    return rule_id_to_remediation_map
 
 
 if __name__ == "__main__":
