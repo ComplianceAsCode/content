@@ -112,6 +112,7 @@ PREFIX_TO_NS = {
     "xlink": xlink_namespace,
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
     "cat": cat_namespace,
+    "cpe-lang": "http://cpe.mitre.org/language/2.0",
 }
 
 
