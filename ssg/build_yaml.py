@@ -1032,8 +1032,6 @@ class Group(XCCDFEntity):
     def to_xml_element(self):
         group = ET.Element('Group')
         group.set('id', self.id_)
-        if self.prodtype != "all":
-            group.set("prodtype", self.prodtype)
         title = ET.SubElement(group, 'title')
         title.text = self.title
         add_sub_element(group, 'description', self.description)
@@ -1456,8 +1454,6 @@ class Rule(XCCDFEntity):
     def to_xml_element(self):
         rule = ET.Element('Rule')
         rule.set('id', self.id_)
-        if self.prodtype != "all":
-            rule.set("prodtype", self.prodtype)
         rule.set('severity', self.severity)
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)

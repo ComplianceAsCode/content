@@ -55,38 +55,6 @@
     </xccdf:metadata>
   </xsl:template>
 
-  <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
-  <!-- Another hack for OpenSCAP validation quirk: must place platform after reference/rationale, but prior to others -->
-  <xsl:template match="Rule">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all'">
-        <Rule selected="false">
-          <!-- set selected attribute to false, to enable profile-driven evaluation -->
-          <xsl:apply-templates select="@*" />
-          <!-- also: add severity of "low" to each Rule if otherwise unspecified -->
-          <xsl:if test="not(@severity)">
-            <xsl:attribute name="severity">
-              <xsl:value-of select="$defaultseverity" />
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:apply-templates select="title[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="description[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="warning[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="ref[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="requires[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="ident[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
-          <xsl:apply-templates select="oval[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::complex-check|self::oval|self::prodtype)]"/>
-          <xsl:apply-templates select="complex-check"/>
-        </Rule>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- Remove this template when prodtype is implemented in all Rule elements -->
   <xsl:template match="Rule[not(@prodtype)]">
     <Rule selected="false">
@@ -114,25 +82,6 @@
     </Rule>
   </xsl:template>
 
-
-  <xsl:template match="Group">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all'">
-        <Group>
-          <xsl:apply-templates select="@*" />
-          <xsl:apply-templates select="title[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="description[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="warning[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="ref[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="requires[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::prodtype)]"/>
-        </Group>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
 
   <!-- Remove this template when prodtype is implemented in all Group elements -->
   <xsl:template match="Group[not(@prodtype)]">
@@ -515,8 +464,5 @@
       <xsl:value-of select="$product_guide_id_name"/>
     </xsl:attribute>
   </xsl:template>
-
-  <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
-  <xsl:template match="@prodtype"/>
 
 </xsl:stylesheet>
