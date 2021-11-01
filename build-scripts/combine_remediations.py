@@ -32,9 +32,10 @@ def parse_args():
         "--resolved-rules-dir", required=True,
         help="Directory with <rule-id>.yml resolved rule YAMLs"
     )
-    p.add_argument("--remediation-type", required=True,
-                   help="language or type of the remediations we are combining."
-                   "example: ansible")
+    p.add_argument(
+        "--remediation-type", required=True, action="append",
+        help="language or type of the remediations we are combining."
+        "example: ansible")
     p.add_argument(
         "--output-dir", required=True,
         help="output directory where all remediations will be saved"
@@ -61,29 +62,30 @@ def main():
     additional_content_directories = env_yaml.get("additional_content_directories", [])
     add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
 
-    # As fixes is continually updated, the last seen fix that is applicable for a
-    # given fix_name is chosen to replace newer fix_names
-    remediation_cls = remediation.REMEDIATION_TO_CLASS[args.remediation_type]
+    for remediation_type in args.remediation_type:
+        # As fixes is continually updated, the last seen fix that is applicable
+        # for a given fix_name is chosen to replace newer fix_names
+        remediation_cls = remediation.REMEDIATION_TO_CLASS[remediation_type]
 
-    language_fixes_from_templates_dir = os.path.join(
-        args.fixes_from_templates_dir, args.remediation_type)
-    rule_id_to_remediation_map = collect_fixes(
-        product, [guide_dir] + add_content_dirs,
-        language_fixes_from_templates_dir, args.remediation_type)
+        language_fixes_from_templates_dir = os.path.join(
+            args.fixes_from_templates_dir, remediation_type)
+        rule_id_to_remediation_map = collect_fixes(
+            product, [guide_dir] + add_content_dirs,
+            language_fixes_from_templates_dir, remediation_type)
 
-    fixes = dict()
-    for rule_id, fix_path in rule_id_to_remediation_map.items():
-        remediation_obj = remediation_cls(fix_path)
-        rule_path = os.path.join(args.resolved_rules_dir, rule_id + ".yml")
-        if os.path.isfile(rule_path):
-            remediation_obj.load_rule_from(rule_path)
-            # Fixes gets updated with the contents of the fix
-            # if it is applicable
-            remediation.process(remediation_obj, env_yaml, fixes, rule_id)
+        fixes = dict()
+        for rule_id, fix_path in rule_id_to_remediation_map.items():
+            remediation_obj = remediation_cls(fix_path)
+            rule_path = os.path.join(args.resolved_rules_dir, rule_id + ".yml")
+            if os.path.isfile(rule_path):
+                remediation_obj.load_rule_from(rule_path)
+                # Fixes gets updated with the contents of the fix
+                # if it is applicable
+                remediation.process(remediation_obj, env_yaml, fixes, rule_id)
 
-    language_output_dir = os.path.join(args.output_dir, args.remediation_type)
-    remediation.write_fixes_to_dir(fixes, args.remediation_type,
-                                   language_output_dir)
+        language_output_dir = os.path.join(args.output_dir, remediation_type)
+        remediation.write_fixes_to_dir(
+            fixes, remediation_type, language_output_dir)
 
     sys.exit(0)
 
