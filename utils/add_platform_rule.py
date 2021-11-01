@@ -134,7 +134,7 @@ kind: ComplianceScan
 metadata:
   name: test
 spec:
-  scanType: Platform
+  scanType: {TYPE}
   profile: {PROFILE}
   content: ssg-ocp4-ds.xml
   contentImage: image-registry.openshift-image-registry.svc:5000/openshift-compliance/openscap-ocp4-ds:latest
@@ -286,7 +286,7 @@ def clusterTestFunc(args):
     apply_cmd = ['oc', 'apply', '-f', '-']
     with subprocess.Popen(apply_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as proc:
         _, err = proc.communicate(
-            input=TEST_SCAN_TEMPLATE.format(PROFILE=profile).encode())
+            input=TEST_SCAN_TEMPLATE.format(PROFILE=profile, TYPE=args.scantype).encode())
         if proc.returncode != 0:
             print('Error applying scan object: %s' % err)
             try:
@@ -396,6 +396,10 @@ def main():
         '--skip-deploy', default=False, action="store_true", help='Skip deploying the compliance-operator. Default is to deploy.')
     cluster_test_parser.add_argument(
         '--skip-build', default=False, action="store_true", help='Skip building and pushing the datastream. Default is true.')
+    cluster_test_parser.add_argument(
+        '--scan-type', help='Type of scan to execute.', dest="scantype",
+        default="Platform",
+        choices=["Node", "Platform"])
     cluster_test_parser.set_defaults(func=clusterTestFunc)
 
     test_parser = subparser.add_parser(
