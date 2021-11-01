@@ -1026,9 +1026,15 @@ class Group(XCCDFEntity):
             if not val:
                 self.values[vid] = values_by_id[vid]
 
-        for gid, val in self.groups.items():
+        for gid in list(self.groups):
+            val = self.groups.get(gid, None)
             if not val:
-                self.groups[gid] = groups_by_id[gid]
+                try:
+                    self.groups[gid] = groups_by_id[gid]
+                except KeyError:
+                    # Add only the groups we have compiled and loaded
+                    del self.groups[gid]
+                    pass
 
     def represent_as_dict(self):
         yaml_contents = super(Group, self).represent_as_dict()
@@ -1910,7 +1916,11 @@ class LinearLoader(object):
 
         benchmark_first_groups = self.find_first_groups_ids(directory)
         for gid in benchmark_first_groups:
-            self.benchmark.add_group(self.groups[gid], self.env_yaml)
+            try:
+                self.benchmark.add_group(self.groups[gid], self.env_yaml)
+            except KeyError as exc:
+                # Add only the groups we have compiled and loaded
+                pass
 
     def load_compiled_content(self):
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
