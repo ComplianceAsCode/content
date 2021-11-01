@@ -188,10 +188,11 @@ class Remediation(object):
         return parse_from_file_with_jinja(self.file_path, env_yaml)
 
 
-def process(remediation, env_yaml, fixes, rule_id):
+def process(remediation, env_yaml):
     """
-    Process a fix, adding it to fixes iff the file is of a valid extension
-    for the remediation type and the fix is valid for the current product.
+    Process a fix, and return the processed fix iff the file is of a valid
+    extension for the remediation type and the fix is valid for the current
+    product.
 
     Note that platform is a required field in the contents of the fix.
     """
@@ -216,9 +217,9 @@ def process(remediation, env_yaml, fixes, rule_id):
 
     product = env_yaml["product"]
     if utils.is_applicable_for_product(platforms, product):
-        fixes[rule_id] = result
+        return result
 
-    return result
+    return None
 
 
 class BashRemediation(Remediation):

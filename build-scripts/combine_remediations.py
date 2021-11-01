@@ -81,9 +81,12 @@ def main():
             if os.path.isfile(rule_path):
                 rule_obj = ssg.build_yaml.Rule.from_yaml(rule_path)
                 remediation_obj.associate_rule(rule_obj)
+                processed_remediation = remediation.process(
+                    remediation_obj, env_yaml)
                 # Fixes gets updated with the contents of the fix
                 # if it is applicable
-                remediation.process(remediation_obj, env_yaml, fixes, rule_id)
+                if processed_remediation is not None:
+                    fixes[rule_id] = processed_remediation
 
         language_output_dir = os.path.join(args.output_dir, remediation_type)
         remediation.write_fixes_to_dir(
