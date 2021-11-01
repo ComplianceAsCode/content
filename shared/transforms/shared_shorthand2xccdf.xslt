@@ -25,48 +25,6 @@
     </xsl:element>
   </xsl:template>
 
-  <!-- expand reference to ident types -->
-  <xsl:template match="Rule/ident">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or not(@prodtype)">
-        <xsl:for-each select="@*[name()!='prodtype']">
-          <ident>
-            <xsl:choose>
-              <xsl:when test="name() = 'cce'">
-                <xsl:attribute name="system">
-                  <xsl:value-of select="$cceuri" />
-                </xsl:attribute>
-                <xsl:choose>
-                  <xsl:when test="starts-with(translate(., 'ce', 'CE'), 'CCE')">
-                    <xsl:value-of select="." />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="." />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
-              <xsl:when test="name() = 'stig'">
-                <xsl:attribute name="system">
-                  <xsl:value-of select="$disa-stigs-uri" />
-                </xsl:attribute>
-                <xsl:value-of select="." />
-              </xsl:when>
-              <xsl:when test="name() = 'custom-cce'">
-                <xsl:attribute name="system">
-                  <xsl:value-of select="$custom-cce-uri" />
-                </xsl:attribute>
-                <xsl:value-of select="." />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="." />
-              </xsl:otherwise>
-            </xsl:choose>
-          </ident>
-        </xsl:for-each>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- expand ref attributes to reference tags, one item per reference -->
   <xsl:template match="ref">
     <xsl:choose>

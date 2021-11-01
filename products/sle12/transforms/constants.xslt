@@ -10,9 +10,6 @@
 <xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/suse_linux/</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 
-<!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
-<!--xsl:variable name="custom-cce-uri">https://www.example.org</xsl:variable-->
-
 <!-- Define URI for custom policy reference which can be used for linking to corporate policy -->
 <!--xsl:variable name="custom-ref-uri">https://www.example.org</xsl:variable-->
 

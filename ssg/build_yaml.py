@@ -16,7 +16,7 @@ import yaml
 
 from .build_cpe import CPEDoesNotExist, parse_platform_definition
 from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
-from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace
+from .constants import SSG_BENCHMARK_LATEST_URI, SSG_PROJECT_NAME, dc_namespace, cce_uri
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -1498,22 +1498,11 @@ class Rule(XCCDFEntity):
         add_nondata_subelements(rule, "requires", "idref", self.requires)
         add_nondata_subelements(rule, "conflicts", "idref", self.conflicts)
 
-        main_ident = ET.Element('ident')
         for ident_type, ident_val in self.identifiers.items():
-            # This is not true if items were normalized
-            if '@' in ident_type:
-                # the ident is applicable only on some product
-                # format : 'policy@product', eg. 'stigid@product'
-                # for them, we create a separate <ref> element
-                policy, product = ident_type.split('@')
-                ident = ET.SubElement(rule, 'ident')
-                ident.set(policy, ident_val)
-                ident.set('prodtype', product)
-            else:
-                main_ident.set(ident_type, ident_val)
-
-        if main_ident.attrib:
-            rule.append(main_ident)
+            ident = ET.SubElement(rule, 'ident')
+            if ident_type == 'cce':
+                ident.set('system', cce_uri)
+                ident.text = ident_val
 
         ocil_parent = rule
         check_parent = rule
