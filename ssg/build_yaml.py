@@ -1053,8 +1053,8 @@ class Group(XCCDFEntity):
             platform_el = ET.SubElement(group, "platform")
             platform_el.set("idref", "#"+cpe_platform_name)
 
-        add_nondata_subelements(group, "requires", "id", self.requires)
-        add_nondata_subelements(group, "conflicts", "id", self.conflicts)
+        add_nondata_subelements(group, "requires", "idref", self.requires)
+        add_nondata_subelements(group, "conflicts", "idref", self.conflicts)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -1495,8 +1495,8 @@ class Rule(XCCDFEntity):
             platform_el = ET.SubElement(rule, "platform")
             platform_el.set("idref", "#"+cpe_platform_name)
 
-        add_nondata_subelements(rule, "requires", "id", self.requires)
-        add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
+        add_nondata_subelements(rule, "requires", "idref", self.requires)
+        add_nondata_subelements(rule, "conflicts", "idref", self.conflicts)
 
         main_ident = ET.Element('ident')
         for ident_type, ident_val in self.identifiers.items():

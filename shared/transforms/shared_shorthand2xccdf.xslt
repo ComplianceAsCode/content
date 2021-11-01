@@ -67,30 +67,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="requires">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or not(@prodtype)"> 
-        <requires>
-          <xsl:attribute name="idref">
-            <xsl:value-of select="@id" />
-          </xsl:attribute>
-        </requires>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="conflicts">
-    <xsl:choose>
-      <xsl:when test="contains(@prodtype, $prod_type) or not(@prodtype)">
-        <conflicts>
-          <xsl:attribute name="idref">
-            <xsl:value-of select="@id" />
-          </xsl:attribute>
-        </conflicts>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- expand ref attributes to reference tags, one item per reference -->
   <xsl:template match="ref">
     <xsl:choose>
