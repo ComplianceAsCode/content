@@ -5,7 +5,6 @@
 <xsl:variable name="product_long_name">Red Hat Enterprise Linux 7</xsl:variable>
 <xsl:variable name="product_short_name">RHEL 7</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHEL_7_STIG</xsl:variable>
-<xsl:variable name="product_guide_id_name">RHEL-7</xsl:variable>
 <xsl:variable name="prod_type">rhel7</xsl:variable>
 
 

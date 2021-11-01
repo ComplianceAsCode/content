@@ -8,7 +8,6 @@
 <xsl:variable name="prod_type">rhel8</xsl:variable>
 
 <xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/red_hat_linux/</xsl:variable>
-<xsl:variable name="product_guide_id_name">RHEL-8</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="disa-srguri" select="$disa-ossrguri"/>
 

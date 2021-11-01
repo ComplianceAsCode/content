@@ -8,7 +8,6 @@
 <xsl:variable name="prod_type">macos1015</xsl:variable>
 
 <xsl:variable name="cisuri"></xsl:variable>
-<xsl:variable name="product_guide_id_name">macOS-1015</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="disa-srguri" select="$disa-ossrguri"/>
 

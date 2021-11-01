@@ -8,7 +8,6 @@
 <xsl:variable name="prod_type">example</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
-<xsl:variable name="product_guide_id_name">EXAMPLE</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->

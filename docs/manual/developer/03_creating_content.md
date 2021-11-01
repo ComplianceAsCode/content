@@ -479,7 +479,6 @@ cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
 <xsl:variable name="product_long_name">$FULL_NAME</xsl:variable>
 <xsl:variable name="product_short_name">$FULL_SHORT_NAME</xsl:variable>
 <xsl:variable name="product_stig_id_name">${CAPITAL_NAME}_STIG</xsl:variable>
-<xsl:variable name="product_guide_id_name">${CAPITAL_NAME}-$VERSION</xsl:variable>
 <xsl:variable name="prod_type">$NEW_PRODUCT</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for $FULL_NAME -->

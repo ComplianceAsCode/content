@@ -5,7 +5,6 @@
 <xsl:variable name="product_long_name">SUSE Linux Enterprise 12</xsl:variable>
 <xsl:variable name="product_short_name">SLE 12</xsl:variable>
 <xsl:variable name="product_stig_id_name">SUSE_Linux_Enterprise_12_STIG</xsl:variable>
-<xsl:variable name="product_guide_id_name">SLE-12</xsl:variable>
 <xsl:variable name="prod_type">sle12</xsl:variable>
 
 <xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/suse_linux/</xsl:variable>

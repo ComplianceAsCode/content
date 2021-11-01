@@ -5,7 +5,6 @@
 <xsl:variable name="product_long_name">SUSE Linux Enterprise 15</xsl:variable>
 <xsl:variable name="product_short_name">SLE 15</xsl:variable>
 <xsl:variable name="product_stig_id_name">SUSE_Linux_Enterprise_15_STIG</xsl:variable>
-<xsl:variable name="product_guide_id_name">SLE-15</xsl:variable>
 <xsl:variable name="prod_type">sle15</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for SUSE Linux Enterprise 15 -->

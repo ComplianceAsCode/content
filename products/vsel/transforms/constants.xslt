@@ -8,7 +8,6 @@
 <xsl:variable name="prod_type">vsel</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
-<xsl:variable name="product_guide_id_name">VSEL</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-appsecurity-dev-uri"/>
 <xsl:variable name="os-stigid-concat" />
 

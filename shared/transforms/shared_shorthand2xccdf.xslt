@@ -422,10 +422,4 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="Benchmark/@id">
-    <xsl:attribute name="id">
-      <xsl:value-of select="$product_guide_id_name"/>
-    </xsl:attribute>
-  </xsl:template>
-
 </xsl:stylesheet>

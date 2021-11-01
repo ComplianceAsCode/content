@@ -5,7 +5,6 @@
 <xsl:variable name="product_long_name">Red Hat OpenShift Container Platform 4</xsl:variable>
 <xsl:variable name="product_short_name">OCP 4</xsl:variable>
 <xsl:variable name="product_stig_id_name">OCP_4_STIG</xsl:variable>
-<xsl:variable name="product_guide_id_name">OCP-4</xsl:variable>
 <xsl:variable name="prod_type">ocp4</xsl:variable>
 
 <xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/kubernetes/</xsl:variable>

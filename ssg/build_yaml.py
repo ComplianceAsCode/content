@@ -805,16 +805,16 @@ class Benchmark(XCCDFEntity):
         return data
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None, benchmark_id="product-name"):
+    def from_yaml(cls, yaml_file, env_yaml=None):
         benchmark = super(Benchmark, cls).from_yaml(yaml_file, env_yaml)
         if env_yaml:
             benchmark.product_cpe_names = env_yaml["product_cpes"].get_product_cpe_names()
             benchmark.cpe_platform_spec = env_yaml["product_cpes"].cpe_platform_specification
+            benchmark.id_ = env_yaml["benchmark_id"]
             benchmark.version = env_yaml["ssg_version_str"]
         else:
+            benchmark.id_ = "product-name"
             benchmark.version = "0.0"
-
-        benchmark.id_ = benchmark_id
 
         return benchmark
 
@@ -848,8 +848,7 @@ class Benchmark(XCCDFEntity):
 
     def to_xml_element(self):
         root = ET.Element('Benchmark')
-        root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-        root.set('id', 'product-name')
+        root.set('id', self.id_)
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
         root.set('xsi:schemaLocation',
                  'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
@@ -1724,7 +1723,7 @@ class DirectoryLoader(object):
         # we treat benchmark as a special form of group in the following code
         if self.benchmark_file:
             group = Benchmark.from_yaml(
-                self.benchmark_file, self.env_yaml, 'product-name'
+                self.benchmark_file, self.env_yaml
             )
             if self.profiles_dir:
                 group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
@@ -1874,7 +1873,7 @@ class LinearLoader(object):
 
     def load_benchmark(self, directory):
         self.benchmark = Benchmark.from_yaml(
-            os.path.join(directory, "benchmark.yml"), self.env_yaml, "product-name")
+            os.path.join(directory, "benchmark.yml"), self.env_yaml)
 
         self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
 

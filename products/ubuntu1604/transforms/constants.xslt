@@ -5,7 +5,6 @@
 <xsl:variable name="product_long_name">Ubuntu 1604</xsl:variable>
 <xsl:variable name="product_short_name">Ubuntu 1604</xsl:variable>
 <xsl:variable name="product_stig_id_name">UBUNTU_XENIAL_STIG</xsl:variable>
-<xsl:variable name="product_guide_id_name">UBUNTU-XENIAL</xsl:variable>
 <xsl:variable name="prod_type">ubuntu1604</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for Ubuntu Linux v1.0 -->
