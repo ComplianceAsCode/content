@@ -1462,11 +1462,37 @@ class Rule(XCCDFEntity):
 
     def to_xml_element(self):
         rule = ET.Element('Rule')
+        rule.set('selected', 'false')
         rule.set('id', self.id_)
         rule.set('severity', self.severity)
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)
+        add_warning_elements(rule, self.warnings)
+        main_ref = ET.Element('ref')
+        for ref_type, ref_val in self.references.items():
+            # This is not true if items were normalized
+            if '@' in ref_type:
+                # the reference is applicable only on some product
+                # format : 'policy@product', eg. 'stigid@product'
+                # for them, we create a separate <ref> element
+                policy, product = ref_type.split('@')
+                ref = ET.SubElement(rule, 'ref')
+                ref.set(policy, ref_val)
+                ref.set('prodtype', product)
+            else:
+                main_ref.set(ref_type, ref_val)
+
+        if main_ref.attrib:
+            rule.append(main_ref)
+
         add_sub_element(rule, 'rationale', self.rationale)
+
+        for cpe_platform_name in self.cpe_platform_names:
+            platform_el = ET.SubElement(rule, "platform")
+            platform_el.set("idref", "#"+cpe_platform_name)
+
+        add_nondata_subelements(rule, "requires", "id", self.requires)
+        add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
 
         main_ident = ET.Element('ident')
         for ident_type, ident_val in self.identifiers.items():
@@ -1484,23 +1510,6 @@ class Rule(XCCDFEntity):
 
         if main_ident.attrib:
             rule.append(main_ident)
-
-        main_ref = ET.Element('ref')
-        for ref_type, ref_val in self.references.items():
-            # This is not true if items were normalized
-            if '@' in ref_type:
-                # the reference is applicable only on some product
-                # format : 'policy@product', eg. 'stigid@product'
-                # for them, we create a separate <ref> element
-                policy, product = ref_type.split('@')
-                ref = ET.SubElement(rule, 'ref')
-                ref.set(policy, ref_val)
-                ref.set('prodtype', product)
-            else:
-                main_ref.set(ref_type, ref_val)
-
-        if main_ref.attrib:
-            rule.append(main_ref)
 
         ocil_parent = rule
         check_parent = rule
@@ -1579,14 +1588,6 @@ class Rule(XCCDFEntity):
             ocil_check_ref = ET.SubElement(ocil_check, "check-content-ref")
             ocil_check_ref.set("href", "ocil-unlinked.xml")
             ocil_check_ref.set("name", self.id_ + "_ocil")
-
-        add_warning_elements(rule, self.warnings)
-        add_nondata_subelements(rule, "requires", "id", self.requires)
-        add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
-
-        for cpe_platform_name in self.cpe_platform_names:
-            platform_el = ET.SubElement(rule, "platform")
-            platform_el.set("idref", "#"+cpe_platform_name)
 
         return rule
 
