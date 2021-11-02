@@ -1,17 +1,16 @@
 prodtype: ocp4
 
-title: Ensure that FIPS mode is enabled on worker nodes
+title: Ensure that EBS volumes use by cluster nodes are encrypted
 
 description: |-
-  OpenShift has an installation-time flag that can enable FIPS mode
-  for the cluster. The flag <pre>fips: true</pre> must be enabled
-  at install time in the <pre>install-config.yaml</pre> file.
+  OpenShift MachineSets can be configured to enable EBS encryption on 
+  EBS storage used by cluster nodes. By using EBS encryption, disk contents are 
+  encrypted using a AWS KMS key.
   
 rationale: |-
-  Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
-  protect data. The system must implement cryptographic modules adhering to the higher
-  standards approved by the federal government since this provides assurance they have been tested
-  and validated.
+  Enabling encryption on EBS storage used by the cluster nodes, more specifically worker nodes,
+  help protect any card holder data that might be persisted on those EBS volumes. Only authorized
+  AWS resources will be able, through IAM policies, to use the KMS key to eventually read or alter data on those volumes.
 
 
 identifiers:
@@ -20,7 +19,7 @@ identifiers:
 references:
   pcidss: Req-3.4.1
 
-ocil_clause: 'FIPS mode is not enabled on worker nodes'
+ocil_clause: 'EBS encryption is not enabled on cluster nodes'
 
 ocil: |-
     Run the following command to retrieve if the EBS encryption is enabled:
