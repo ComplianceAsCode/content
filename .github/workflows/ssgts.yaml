@@ -25,6 +25,11 @@ jobs:
       - name: Test if there are no content changes
         run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
         id: ctf
+      - uses: actions/upload-artifact@v2
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        with:
+          name: output.json
+          path: output.json
       - name: Print changes to content detected if any
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: cat output.json
@@ -51,17 +56,19 @@ jobs:
       - name: Install Deps
         uses: mstksg/get-package@master
         with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint python3-github podman git python3-deepdiff python3-git python3-requests xmldiff jq
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml ansible-lint podman
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Checkout (CTF)
-        uses: actions/checkout@v2
+      - name: Get cached CTF output
+        uses: actions/download-artifact@v2
+        id: get_ctf_output
         with:
-          repository: mildas/content-test-filtering
-          path: ctf
-      - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --rule --output json ${{ github.event.pull_request.number }} > output.json
+          name: output.json
+        # continue even if the file is unavailable that
+        # means there are no changes detected by CTF in the previous job
+        continue-on-error: true
       - name: Test if there are no content changes
+        if: ${{ steps.get_ctf_output.outcome == 'success' }}
         run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
         id: ctf
       - name: Print changes to content detected if any
