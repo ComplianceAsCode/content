@@ -1202,6 +1202,57 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
+
+macro(ssg_build_html_ref_table BASENAME PRODUCT REFERENCE REF_FORMAT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_reference_table.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html" --ref-format "${REF_FORMAT}" "${PRODUCT}" "${REFERENCE}"
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+	COMMENT "[${PRODUCT}-tables] generating HTML refs table for ${REFERENCE} reference"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-table-${REFERENCE}
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
+    )
+    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-${REFERENCE})
+
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    # also needs to set the variable in local scope for next macro tables
+    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/${BASENAME}.html")
+    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
+
+    install(FILES "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
+    DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+endmacro()
+
+
+macro(ssg_build_html_profile_table BASENAME PRODUCT PROFILE REFERENCE REF_FORMAT)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_profile_table.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html" --ref-format "${REF_FORMAT}" "${PRODUCT}" "${REFERENCE}" "${PROFILE}"
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMENT "[${PRODUCT}-tables] generating HTML refs table for ${PROFILE} profile"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-table-${PROFILE}
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
+    )
+    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-${PROFILE})
+
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    # also needs to set the variable in local scope for next macro tables
+    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/${BASENAME}.html")
+    set(SSG_HTML_TABLE_FILE_LIST "${SSG_HTML_TABLE_FILE_LIST}" PARENT_SCOPE)
+
+    install(FILES "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
+    DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+endmacro()
+
+
 macro(ssg_build_html_anssirefs_table PRODUCT PROFILE)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html"
