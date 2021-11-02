@@ -13842,10 +13842,35 @@ controls:
 - id: SC-12
   status: pending
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    While OpenShift allows to provide a custom PKI for external-facing TLS
+    endpoints such as routes, there are far more internal-only trust stores
+    within OCP that contain self-signed CAs that cannot be replaced by an
+    outside CA. One example is the service-serving-ca, which creates
+    certificates only valid for the internal service network. [1] Other
+    examples include the node certificates [2], bootstrap certificates [3]
+    or the etcd certificates [4].
 
-    https://issues.redhat.com/browse/CMP-421
+    While the API Server certificates can't be replaced, it's possible to
+    add extra certificates that it will serve in case there's the need
+    for clients to have explicit trust for them. [5]
+
+    Even though it is not possible to replace the internal CAs such as
+    service-serving-ca with organizational CAs, all the issued certificates
+    are used for in-cluster communication only and not exposed outside
+    the cluster. In addition, the internal CAs create an implicit trust
+    boundary, because no outside certificates are valid for the internal
+    services.  Moreover, OpenShift is responsible for automatically rotating
+    both the certificates and the service CA.
+
+    [1] https://docs.openshift.com/container-platform/4.9/security/certificates/service-serving-certificate.html
+    [2] https://docs.openshift.com/container-platform/4.9/security/certificate_types_descriptions/node-certificates.html
+    [3] https://docs.openshift.com/container-platform/4.9/security/certificate_types_descriptions/bootstrap-certificates.html
+    [4] https://docs.openshift.com/container-platform/4.9/security/certificate_types_descriptions/etcd-certificates.html
+    [4] https://docs.openshift.com/container-platform/4.9/security/certificate_types_descriptions/user-provided-certificates-for-api-server.html
+
+    Note that a full respose to externally-facing certificates will be provided
+    separately and is being tracked with:
+    https://issues.redhat.com/browse/CMP-1042
   rules: []
   description: |-
     The organization establishes and manages cryptographic keys for required cryptography employed within the information system in accordance with [Assignment: organization-defined requirements for key generation, distribution, storage, access, and destruction].
@@ -13880,13 +13905,28 @@ controls:
   levels:
   - high
 - id: SC-12(2)
-  status: pending
+  status: automated
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    FIPS mode can be enabled in OpenShift through a flag that
+    can be set at installation time [1]. Follow the relevant
+    documentation for the applicable cloud provider [2][3][4][5]
+    for more information. But, note that this is also applicable
+    in on-prem deployments.
 
-    https://issues.redhat.com/browse/CMP-498
-  rules: []
+    Managing keys for external components is an organizational
+    procedure outside the scope of OpenShift configuration.
+
+    For more details about requesting and managing the certificates
+    served by the service-ca controller, refer to [5].
+
+    [1] https://docs.openshift.com/container-platform/latest/installing/installing-fips.html
+    [2] https://docs.openshift.com/container-platform/latest/installing/installing_aws/installing-aws-government-region.html#installation-configuration-parameters_installing-aws-government-region
+    [3] https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-customizations.html
+    [4] https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-customizations.html
+    [5] https://docs.openshift.com/container-platform/latest/security/certificates/service-serving-certificate.html
+
+  rules:
+  - fips_mode_enabled
   description: |-
     The organization produces, controls, and distributes symmetric cryptographic keys using [Selection: NIST FIPS-compliant; NSA-approved] key management technology and processes.
 
@@ -13899,13 +13939,28 @@ controls:
   - high
   - moderate
 - id: SC-12(3)
-  status: pending
+  status: automated
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    FIPS mode can be enabled in OpenShift through a flag that
+    can be set at installation time [1]. Follow the relevant
+    documentation for the applicable cloud provider [2][3][4][5]
+    for more information. But, note that this is also applicable
+    in on-prem deployments.
 
-    https://issues.redhat.com/browse/CMP-499
-  rules: []
+    Managing keys for external components is an organizational
+    procedure outside the scope of OpenShift configuration.
+
+    For more details about requesting and managing the certificates
+    served by the service-ca controller, refer to [5].
+
+    [1] https://docs.openshift.com/container-platform/latest/installing/installing-fips.html
+    [2] https://docs.openshift.com/container-platform/latest/installing/installing_aws/installing-aws-government-region.html#installation-configuration-parameters_installing-aws-government-region
+    [3] https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-customizations.html
+    [4] https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-customizations.html
+    [5] https://docs.openshift.com/container-platform/latest/security/certificates/service-serving-certificate.html
+
+  rules:
+  - fips_mode_enabled
   description: "The organization produces, controls, and distributes asymmetric cryptographic\
     \ keys using [Selection: NSA-approved key management technology and processes;\
     \ approved PKI Class 3 certificates or prepositioned keying material; approved\
