@@ -92,7 +92,7 @@
   </ind:yamlfilecontent_object>
 
   <!-- Check for OpenShift Container Platform 4 in specific platforms or clouds -->
-{{% for platform in ["AWS"] %}}
+{{% for platform in ["AWS", "Azure", "GCP"] %}}
   <!-- Check for OpenShift Container Platform 4.{{{ minorversion }}} -->
   <definition class="inventory" id="installed_app_is_ocp4_on_{{{ platform|lower }}}" version="1">
     <metadata>
