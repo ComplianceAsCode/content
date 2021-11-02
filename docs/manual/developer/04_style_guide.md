@@ -18,13 +18,22 @@
 ## All files
 * Shall use UNIX style line endings
 * Shall have one newline at the end of the file
-* Shall not be trailing whitespace, unless syntactically necessary
+* Shall not have trailing whitespace, unless syntactically necessary
 * File names must:
     * Be in lower case
     * Have words separated by an underscore
     * Have a total path length less than 250 characters
 * Shall not use "smart quotes" or curved quotes
 * Maximum line length should be 99 characters
+
+## Jinja
+* Shall use 4-space indentation
+* Shall have a docstring comment describe what the macro does
+* Shall have a docstring comment describing all parameters and their types
+  * Types shall be Python class names. (E.g. `str`, `bool`, `dict`, etc)
+  * Shall be last section of the docstring
+  * Shall have one blank after list before the close of the docstring block
+* Shall have two blank lines between macros
 
 ## Python
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
@@ -46,7 +55,7 @@
 
 ### HTML Like Fields
 The sections below marked with an `(HTML Like)` means that a limited number of HTML elements are supported in these sections.
-The lists of elements below are _not_ fully inclusive.
+The lists of elements below are **not** fully inclusive.
 Any elements that are not strictly for formatting shall not be used.
 
 We support the following elements:
@@ -135,7 +144,7 @@ Benchmark sections must be in the following order, if they are present.
 * `version`
 
 ### Controls
-These rules apply to the files in `*.yml`
+These rules apply to the files in `controls/`
 All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 
 #### Control Sections
@@ -165,7 +174,7 @@ Control sections must be in the following order, if they are present.
     * `notes`
         * Must be a block
     * `rules`
-        * Must be a valid rule id
+        * Must be a list of valid rule id
 
 ### Profile
 

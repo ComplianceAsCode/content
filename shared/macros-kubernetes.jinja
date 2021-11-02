@@ -482,6 +482,7 @@ AuditBackend=LinuxAudit
 {{% endfor %}}
 {{%- endmacro %}}
 
+
 {{#
   Macro to generate MachineConfig adding an auditd rule for syscall watching
 #}}
@@ -532,6 +533,7 @@ AuditBackend=LinuxAudit
 -a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro %}}
 
+
 {{#
   Macro to generate MachineConfig setting OSPP audit rules
 #}}
@@ -561,6 +563,7 @@ include /etc/logrotate.d
 
 # system-specific logs may be also be configured here.
 {{%- endmacro %}}
+
 
 {{#
   Macro to generate MachineConfig setting our recommended logrotate.conf
@@ -611,6 +614,7 @@ max_restarts = 10
 plugin_dir = /etc/audit/plugins.d
 {{%- endmacro %}}
 
+
 {{#
   Macro to generate MachineConfig setting our recommended auditd.conf
 #}}
@@ -621,6 +625,7 @@ plugin_dir = /etc/audit/plugins.d
 {{% macro kubernetes_machineconfig_auditd_config_with_required_value(vals=[]) -%}}
 {{{ kubernetes_machine_config_file_with_required_value(path='/etc/audit/auditd.conf', file_permissions_mode='0640', source=rhcos_auditd_config(),vals=vals)}}}
 {{%- endmacro %}}
+
 
 {{#
   Macro to generate MachineConfig setting our recommended chrony.conf
@@ -659,6 +664,7 @@ spec:
 {{range $element:=.var_multiple_time_servers|toArrayByComma}}server {{$element}} minpoll 4 maxpoll {{$var_time_service_set_maxpoll}}
 {{end}}
 {{%- endmacro %}}
+
 
 {{#
   Macro which generates Kubernetes remediation in APIServer format:
