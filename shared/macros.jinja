@@ -1,3 +1,6 @@
+{{#
+    An OCIL clause for an sshd option
+#}}
 {{% macro ocil_clause_entry_sshd_option() -%}}
 ocil_clause: "the required value is not set"
 {{%- endmacro %}}
@@ -7,8 +10,9 @@ ocil_clause: "the required value is not set"
   Macro which generates a warning indicating how to make use of a
   Kubernetes/OpenShift-related rule. This is used by the Compliance
   Operator to automatically figure out what resources to fetch.
+
 :param endpoint: The Kubernetes object path(s) to fetch
-:type endpoint: str/array
+:type endpoint: str/list
 
 #}}
 {{% macro openshift_cluster_setting(endpoint) -%}}
@@ -23,6 +27,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the {{% i
   is used by the Compliance Operator to automatically figure
   out what resources to fetch. The filtering directive can be used
   by the jq command ( https://stedolan.github.io/jq/manual/ ).
+
 :param path_filter_pairs: Kubernetes object path/filter directive pairs
 :type path_filter_pairs: dict
 
@@ -71,6 +76,7 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 
 
 {{#
+    OCIL for an sshd option.
 
     Example usage::
 
@@ -96,6 +102,7 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 
 
 {{#
+OCIL and OCIL clause for and sshd option.
 
     Example usage::
 
@@ -105,8 +112,8 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 :type default: str
 :param option: The sshd option to configure
 :type option: str
-:param option: The value for the given option
-:type option: str
+:param value: The value for the given option
+:type value: str
 
 #}}
 {{% macro complete_ocil_entry_sshd_option(default, option, value) -%}}
@@ -154,7 +161,7 @@ ocil_clause: "the {{{ option }}} is not present in the output line, or there is 
 
 
 {{#
-    Calls :code:`xccdf_value` under the hood
+    Calls :code:`xccdf_value` macro under the hood
 
 :param varname: The name of the variable to reference
 :type varname: str
@@ -358,8 +365,8 @@ ocil: |
 
 
 {{#
-    OCIL for allowing a port or service in firewalld. If service parameter is defined is
-    assumed be service.
+    OCIL for allowing a port or service in firewalld. If the :code`service` parameter is defined
+    it is assumed to be a service and the :code`port` and :code`proto` parameters will have no effect.
 
 :param port: The port to allow
 :type port: int
@@ -384,8 +391,8 @@ ocil: |
 
 
 {{#
-    OCIL for preventing access a port or service in firewalld. If service parameter is defined
-    is assumed be service.
+    OCIL for preventing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
 
 :param port: The port to allow
 :type port: int
@@ -402,8 +409,8 @@ ocil: |
 
 
 {{#
-    Describe preventing access a port or service in firewalld. If service parameter is defined
-    is assumed be service.
+    Describe preventing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
 
 :param port: The port to allow
 :type port: int
@@ -425,8 +432,8 @@ ocil: |
 
 
 {{#
-    Describe allowing access a port or service in firewalld. If service parameter is defined
-    is assumed be service.
+    Describe allowing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
 
 :param port: The port to allow
 :type port: int
@@ -448,7 +455,7 @@ ocil: |
 
 
 {{#
-    OCIL to see if teh system is configured to audit calls to given syscall.
+    OCIL to see if the system is configured to audit calls to given syscall.
 
 :param syscall: The syscall to audit
 :type syscall: str
@@ -509,7 +516,7 @@ ocil_clause: "no line is returned"
 {{#
     Describe how to check if service is disabled in system boot configuration with xinetd.
 
-:param service:
+:param service: service to disable
 :type service: str
 
 #}}
@@ -593,7 +600,7 @@ ocil_clause: "service and/or socket are running"
 
 
 {{#
-    Describe how check if a package is installed with rpm.
+    Describe how to check if a package is installed with rpm.
 
 :param package: The package to check
 :type package: str
@@ -606,7 +613,7 @@ ocil_clause: "service and/or socket are running"
 
 
 {{#
-    Describe how check if a package is installed with dpkg.
+    Describe how to check if a package is installed with dpkg.
 
 :param package: The package to check
 :type package: str
@@ -619,7 +626,7 @@ ocil_clause: "service and/or socket are running"
 
 
 {{#
-    OCIL and OCIL clause how check if a package is installed with rpm.
+    OCIL and OCIL clause how to check if a package is installed with rpm.
 
 :param package: The package to check
 :type package: str
@@ -634,7 +641,7 @@ ocil_clause: "the package is installed"
 
 
 {{#
-    OCIL and OCIL clause how check if a package is installed with dpkg.
+    OCIL and OCIL clause how to check if a package is installed with dpkg.
 
 :param package: The package to check
 :type package: str
@@ -1002,7 +1009,7 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 
 
 {{#
-Show how to install a package with apt-get.
+    Show how to install a package with apt-get.
 
     Example output::
 
@@ -1019,7 +1026,6 @@ Show how to install a package with apt-get.
 
 {{#
     Show how to remove a package with apt-get.
-
 
     Example output::
 
@@ -1087,7 +1093,7 @@ Show how to install a package with apt-get.
 
     Example output::
 
-        $ sudo yum erase remove package
+        $ sudo yum erase package
 
 :param package: Package to remove
 :type package: str
@@ -1103,7 +1109,7 @@ Show how to install a package with apt-get.
 
     Example output::
 
-        $ sudo zypper install
+        $ sudo zypper install package
 
 :param package: Package to install
 :type package: str
@@ -1119,7 +1125,7 @@ Show how to install a package with apt-get.
 
     Example output::
 
-        $ sudo remove install
+        $ sudo zypper remove package
 
 :param package: Package to remove
 :type package: str
@@ -1302,7 +1308,7 @@ Show how to install a package with apt-get.
 
 
 {{#
-    How add mount options te :code:`/etc/fstab`
+    How add mount options to :code:`/etc/fstab`
 
 :param option: The option to add to the partition
 :type option: str
@@ -1375,7 +1381,7 @@ Show how to install a package with apt-get.
 
 :param sysctl: The kernel parameter to change
 :type sysctl: str
-:param value: The value to set set
+:param value: The value to be set
 :type value: str
 
 #}}
@@ -1394,20 +1400,20 @@ Show how to install a package with apt-get.
     If any assignments other than
     <pre>{{{ sysctl }}} = {{{ value }}}</pre>
     are found, or the correct assignment is duplicated, remove those offending lines from respective files,
-    and make sure that exactly one file in 
+    and make sure that exactly one file in
     <code>/etc/sysctl.d</code> contains <code>{{{ sysctl }}} = {{{ value }}}</code>, and that one assignment
-    is returned when 
+    is returned when
     <pre>$ grep -r {{{ sysctl }}} /etc/sysctl.conf /etc/sysctl.d</pre>
     is executed.
 {{%- endmacro %}}
 
 
 {{#
-    OCIL and OCIL clause  for a sysctl option
+    OCIL and OCIL clause for a sysctl option
 
 :param sysctl: The kernel parameter to change
 :type sysctl: str
-:param value: The value to set set
+:param value: The value to be set
 :type value: str
 
 #}}
@@ -1424,7 +1430,7 @@ ocil_clause: "the correct value is not returned"
 
 :param sysctl: The kernel parameter to change
 :type sysctl: str
-:param value: The value to set set
+:param value: The value to be set
 :type value: str
 
 #}}
@@ -1463,7 +1469,7 @@ ocil_clause: "the correct value is not returned"
 
 :param rule_id: Rule id of the rule that must be selected.
 :type rule_id: str
-:param why: The reasoning for the dependentency. Should fit into this part of the sentence "make sure that rule with ID is selected as well:"
+:param why: The reasoning for the dependency. Should fit into this part of the sentence "make sure that rule with ID is selected as well:".
 :type why: str
 
 #}}

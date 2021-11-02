@@ -1,4 +1,3 @@
-
 {{#
   Constants.
 #}}
@@ -29,6 +28,7 @@
 :type section: str
 :param quotes: If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
 :type quotes: str
+
 #}}
 {{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='') -%}}
 {{%- if application == '' -%}}
@@ -94,7 +94,8 @@
 :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 :type missing_parameter_pass: bool
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
-:type id_stem: boolean
+:type id_stem: str
+
 #}}
 {{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false, comment='', id_stem='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
@@ -122,6 +123,7 @@
 :type missing_parameter_pass: bool
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 :type id_stem: str
+
 #}}
 {{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false, id_stem='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
@@ -165,6 +167,7 @@
 :type filename_regex: str
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 :type id_stem: str
+
 #}}
 {{%- macro oval_line_in_file_object(path_or_filepath='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false, filename_regex='', id_stem='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
@@ -222,6 +225,7 @@
 :type quotes: str
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 :type id_stem: str
+
 #}}
 {{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
@@ -262,7 +266,7 @@
   Macro to define the OVAL criterion to check if the configuration file exists (Criterion definition).
 
 :param path: Path to the configuration file to be checked.
-:type path: Path to the configuration file to be checked.
+:type path: str
 
 #}}
 {{%- macro oval_config_file_exists_criterion(path='') -%}}
@@ -297,7 +301,7 @@
 {{#
   Macro to define the OVAL test to check if the configuration file exists (Test definition).
 
-:param filepath_regex: Regex to the filepath to be checked, will be perfixed by ^.
+:param filepath_regex: Regex to the filepath to be checked, will be prefixed by ^.
 :type filepath_regex: str
 
 #}}
@@ -314,8 +318,9 @@
 {{#
   Macro to define the OVAL object to check if the configuration file exists (Object definition).
 
-:param filepath_regex: Regex to the filepath to be checked, will be perfixed by ^.
+:param filepath_regex: Regex to the filepath to be checked, will be prefixed by ^.
 :type filepath_regex: str
+
 #}}
 {{%- macro oval_config_file_exists_object(filepath_regex='') -%}}
   <unix:file_object id="obj_{{{ rule_id }}}_config_file" comment="The configuration file {{{ filepath_regex }}} for {{{ rule_id }}}" version="1">
@@ -405,8 +410,6 @@
 :type line_prefix: str
 :param line_suffix: The ending part of the line with the list of arguments, default is empty
 :type line_suffix: str
-:param  application: The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
-:type application: str
 
 #}}
 {{%- macro oval_argument_value_in_line(filepath, name, value, line_prefix='', line_suffix='') -%}}
@@ -515,7 +518,7 @@
 :param parameter: The parameter to be checked in the configuration file.
 :type parameter: str
 :param value: The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
-:type parameter: value
+:type parameter: str
 :param missing_parameter_pass: If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 :type missing_parameter_pass: bool
 :param multi_value: If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
@@ -678,9 +681,9 @@
 :type option: str
 :param value: value of the option
 :type value: str
-:param option_id: used to build the OVAL test ID
+:param option_id: used to build the OVAL test ID. The OVAL test ID is test_ocp_runtime_<option_id>.
 :type option_id: str
-  The OVAL test ID is test_ocp_runtime_<option_id>.
+
 #}}
 {{%- macro oval_ocp_service_runtime_config(command='', option='', value='', option_id='') -%}}
   <unix:process58_test check="all" comment="ocp process runtime parameter {{{ option }}} set to {{{ value }}}" id="test_ocp_runtime_{{{ option_id }}}" version="1">
@@ -702,8 +705,10 @@
 
 :param filepath: filepath of the file to check
 :type filepath: str
+:param filepath_id: Used like test_whole_file_contents_$filepath_id
 :param contents: contents that should be in the file
 :type contents: str
+
 #}}
 {{%- macro oval_file_contents(filepath='', filepath_id='', contents='') -%}}
   <def-group>
@@ -745,6 +750,7 @@
 :type title: str
 :param affected_platforms: Optional, list of unix platform strings (e.g. "Fedora") to put under the affected element. Uses the oval_affected macro by default under the hood.
 :type affected_platforms: str
+
 #}}
 {{%- macro oval_metadata(description, title="", affected_platforms=None) -%}}
     <metadata>
@@ -779,12 +785,13 @@
 :type separator_regex: str
 :param value: What value to be set
 :type value: str
-:param value: What application this applies to
-:type value: str
+:param application: What application this applies to
+:type application: str
 :param quotes:  If non-empty, one level of matching quotes is considered when checking the value. Specify one or more quote types as a string.  For example, for shell quoting, specify quotes="'\""), which will make sure that value, 'value' and "value" are matched, but 'value" or '"value"' won't be.
 :type value: str
 :param lock_path: Path to lock file
 :type lock_path: str
+
 #}}
 {{%- macro oval_check_dconf_ini_file(path='', prefix_regex='^\s*', parameter='', separator_regex='[ \\t]*=[ \\t]*', value='', application='', section='', quotes='', lock_path='') -%}}
 {{%- if application == '' -%}}
@@ -831,6 +838,7 @@
 :type missing_parameter_pass: bool
 :param config_is_distributed: Is the param in /etc/sshd_config.d vs just /etc/ssh/sshd_config
 :type config_is_distributed: bool
+
 #}}
 {{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}

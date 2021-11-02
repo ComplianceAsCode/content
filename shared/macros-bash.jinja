@@ -26,6 +26,7 @@ Then, assume that variables of that names are defined and contain the correct va
 :param option:          PAM module option
 :param valueRegexArg:   PAM module option argument regex pattern
 :param defaultValueArg: PAM module option argument default value
+
 #}}
 {{%- macro bash_ensure_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
 if [ -e "{{{ pamFile }}}" ] ; then
@@ -75,6 +76,7 @@ fi
 :param option:         PAM module option
 :param valueRegexArg:   PAM module option argument regex pattern
 :param defaultValueArg: PAM module option argument default value
+
 #}}
 {{%- macro bash_provide_pam_module_options(pamFile, type, control, module, option, valueRegexArg, defaultValueArg) -%}}
 if [ -e "{{{ pamFile }}}" ] ; then
@@ -105,10 +107,17 @@ fi
 
 {{%- set in_chrooted_environment = 'test "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)"' -%}}
 {{#
-:param path:    Path to file
+    Set a parameter
+
+:param path: Path to file
+:type path: str
 :param parameter: Parameter to set
+:type parameter: str
 :param value: Value to set
+:type value: str
 :param no_quotes: Boolean, if true the value is not quoted. Default is false.
+:type no_quotes: str
+
 #}}
 {{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
 {{% if no_quotes -%}}
@@ -245,7 +254,7 @@ do
 
                 # Separate concrete_rule into three sections using hash '#'
                 # sign as a delimiter around rule's permission section borders
-                # note that the trailing space after perm flag is captured because there would be 
+                # note that the trailing space after perm flag is captured because there would be
                 # two consecutive spaces after joining remaining parts of the rule together
                 concrete_rule="$(echo "$concrete_rule" | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\ \?\)\+/\1#\2#/p")"
 
@@ -282,6 +291,16 @@ do
 done
 {{%- endmacro -%}}
 
+
+{{#
+    Set set a parameter in /etc/sshd_config
+
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+
+#}}
 {{%- macro bash_sshd_config_set(parameter, value) -%}}
 {{{ set_config_file(
         path="/etc/ssh/sshd_config",
@@ -298,6 +317,17 @@ done
 {{%- endmacro -%}}
 
 
+{{#
+        Set set a parameter in /etc/sshd_config or /etc/ssh/sshd_config.d/
+
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+:parameter config_is_distributed: If true, will ok look in /etc/ssh/sshd_config.d
+:type config_is_distributed: str
+
+#}}
 {{% macro bash_sshd_remediation(parameter, value, config_is_distributed) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
@@ -335,6 +365,8 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
     as in https://github.com/linux-audit/audit-userspace/blob/master/rules/30-ospp-v42.rules
 
 :param filename:    Name of the file to print the information to; written do directory specified by the filename
+:type filename: str
+
 #}}
 {{%- macro bash_create_audit_remediation_unsuccessful_file_modification_detailed(filename) -%}}
 mkdir -p "$(dirname '{{{ filename }}}')"
@@ -382,6 +414,15 @@ cat <<EOF > "{{{ filename }}}"
 EOF
 {{%- endmacro -%}}
 
+{{#
+   Set parameter in /etc/audit/auditd.conf
+
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+
+#}}
 {{%- macro bash_auditd_config_set(parameter, value) -%}}
 {{{ set_config_file(
         path="/etc/audit/auditd.conf",
@@ -397,6 +438,16 @@ EOF
     }}}
 {{%- endmacro -%}}
 
+
+{{#
+   Set parameter in /etc/systemd/coredump.conf
+
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+
+#}}
 {{%- macro bash_coredump_config_set(parameter, value) -%}}
 {{{ set_config_file(
         path="/etc/systemd/coredump.conf",
@@ -412,6 +463,16 @@ EOF
     }}}
 {{%- endmacro -%}}
 
+
+{{#
+   Set parameter in /etc/selinux/config
+
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+
+#}}
 {{%- macro bash_selinux_config_set(parameter, value) -%}}
 {{{ set_config_file(
         path="/etc/selinux/config",
@@ -444,7 +505,6 @@ EOF
 
           {{{ bash_fix_audit_watch_rule("auditctl", "/etc/localtime", "wa", "audit_time_rules") }}}
 
-}}
 #}}
 {{%- macro bash_fix_audit_watch_rule(tool, path, required_access_bits, key) -%}}
 # Create a list of audit *.rules files that should be inspected for presence and correctness
@@ -542,6 +602,7 @@ done
 
 :param package: name of the package
 :type package: str
+
 #}}
 {{%- macro bash_package_install(package) -%}}
 {{%- if pkg_manager is defined -%}}
@@ -570,6 +631,7 @@ zypper install -y "{{{ package }}}"
 
 :param package: name of the package
 :type package: str
+
 #}}
 {{%- macro bash_package_remove(package) -%}}
 {{%- if pkg_manager is defined -%}}
@@ -638,6 +700,9 @@ do
 done
 {{%- endmacro -%}}
 
+{{#
+    Disable prelinking in sysconfig
+#}}
 {{%- macro bash_disable_prelink() -%}}
 # prelink not installed
 if test -e /etc/sysconfig/prelink -o -e /usr/sbin/prelink; then
@@ -898,6 +963,7 @@ done
 
 :param config_file: Path to the ntp/chrony config file
 :param servers_list: Comma-separated list of servers
+
 #}}
 {{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
 if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
@@ -914,8 +980,9 @@ fi
     Sets PAM faillock module options and values.
     Also it adds pam_faillock.so as required module for account.
 
-    :param option: faillock option eg. deny, unlock_time
-    :param value: value of option
+:param option: faillock option eg. deny, unlock_time
+:param value: value of option
+
 #}}
 {{%- macro bash_set_faillock_option(option, value) -%}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
@@ -954,6 +1021,7 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 :param separator: separates parameter from the value (literal)
 :param separator_regex: regular expression that describes the separator and surrounding whitespace
 :param prefix_regex: regular expression describing allowed leading characters at each line
+
 #}}
 
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
@@ -1082,9 +1150,10 @@ fi
 
 {{#
   Generates bash script code that puts 'contents' into a file at 'filepath'
-  Parameters:
-   :param filepath: Filepath of the file to check
-   :param contents:  Contents that should be in the file
+
+:param filepath: Filepath of the file to check
+:param contents:  Contents that should be in the file
+
 #}}
 {{%- macro bash_file_contents(filepath='', contents='') %}}
 cat << 'EOF' > {{{ filepath }}}
@@ -1207,7 +1276,7 @@ rpm --quiet -q "{{{ pkgname }}}"
     This macro gets the var cce_identifiers from the environment created by the build scripts.
     The cce_identifiers is a dictionary that contains either the 'cce':'CCENUM' record for the
     product this remediation is being built for, or it is empty.
-  #}}
+#}}
 {{%- macro set_cce_value() -%}}
 {{% if cce_identifiers and 'cce' in cce_identifiers -%}}
 cce="{{{ cce_identifiers['cce'] }}}"
@@ -1234,10 +1303,11 @@ cce="{{{ cce_identifiers['cce'] }}}"
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
 
 
-    :param config_file: Configuration file that will be modified
-    :param key: Configuration option to change
-    :param value: Value of the configuration option to change
-    :param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
+:param config_file: Configuration file that will be modified
+:param key: Configuration option to change
+:param value: Value of the configuration option to change
+:param format: Optional argument, The printf-like format string that will be given stripped key and value as arguments, so e.g. ``%s=%s` will result in key=value substitution (i.e. without spaces around =)
+
 #}}
 {{%- macro bash_replace_or_append(config_file, key, value, format='%s = %s') -%}}
 
