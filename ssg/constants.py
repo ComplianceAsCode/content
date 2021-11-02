@@ -223,7 +223,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 }
 
 
-# see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
+# see xccdf-addremediations.xslt <- shared_constants.xslt
 # if you want to know how the map was constructed
 REF_PREFIX_MAP = {
     "nist": "NIST-800-53",

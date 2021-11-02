@@ -494,20 +494,6 @@ cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
 EOF
 ```
 
-10. Create a new file under `transforms` directory called `shorthand2xccdf.xslt`:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/shorthand2xccdf.xslt
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:import href="../../shared/transforms/shared_shorthand2xccdf.xslt"/>
-
-<xsl:include href="constants.xslt"/>
-<xsl:param name="ssg_version">unknown</xsl:param>
-
-</xsl:stylesheet>
-EOF
-```
-
 11. Create a new file under `transforms` directory called `table-style.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt 
