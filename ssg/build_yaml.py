@@ -131,6 +131,31 @@ def check_warnings(xccdf_structure):
             raise ValueError(msg)
 
 
+def add_reference_elements(element, references, ref_uri_dict):
+    for ref_type, ref_vals in references.items():
+        for ref_val in ref_vals.split(","):
+            # This assumes that a single srg key may have items from multiple SRG types
+            if ref_type == 'srg':
+                if ref_val.startswith('SRG-OS-'):
+                    ref_href = ref_uri_dict['os-srg']
+                elif ref_val.startswith('SRG-APP-'):
+                    ref_href = ref_uri_dict['app-srg']
+                else:
+                    raise ValueError("SRG {0} doesn't have a URI defined.".format(ref_val))
+            else:
+                try:
+                    ref_href = ref_uri_dict[ref_type]
+                except KeyError as exc:
+                    msg = (
+                        "Error processing reference {0}: {1} in Rule {2}."
+                        .format(ref_type, ref_vals, self.id_))
+                    raise ValueError(msg)
+
+            ref = ET.SubElement(element, 'reference')
+            ref.set("href", ref_href)
+            ref.text = ref_val
+
+
 class SelectionHandler(object):
     def __init__(self):
         self.refine_rules = defaultdict(list)
@@ -1491,31 +1516,12 @@ class Rule(XCCDFEntity):
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)
         add_warning_elements(rule, self.warnings)
-        if env_yaml:
-            ref_dict = env_yaml['reference_uris']
-        else:
-            ref_dict = SSG_REF_URIS
-        for ref_type, ref_vals in self.references.items():
-            for ref_val in ref_vals.split(","):
-                if ref_type == 'srg':
-                    if ref_val.startswith('SRG-OS-'):
-                        ref_href = ref_dict['os-srg']
-                    elif ref_val.startswith('SRG-APP-'):
-                        ref_href = ref_dict['app-srg']
-                    else:
-                        raise ValueError("SRG {0} doesn't have a URI defined.".format(ref_val))
-                else:
-                    try:
-                        ref_href = ref_dict[ref_type]
-                    except KeyError as exc:
-                        msg = (
-                            "Error processing reference {0}: {1} in Rule {2}."
-                            .format(ref_type, ref_vals, self.id_))
-                        raise ValueError(msg)
 
-                ref = ET.SubElement(rule, 'reference')
-                ref.set("href", ref_href)
-                ref.text = ref_val
+        if env_yaml:
+            ref_uri_dict = env_yaml['reference_uris']
+        else:
+            ref_uri_dict = SSG_REF_URIS
+        add_reference_elements(rule, self.references, ref_uri_dict)
 
         add_sub_element(rule, 'rationale', self.rationale)
 
