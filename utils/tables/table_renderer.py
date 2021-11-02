@@ -66,7 +66,7 @@ class TableHtmlOutput(template_renderer.Renderer):
 
     def _fix_var_sub_in_text(self, text, varname, value):
         return re.sub(
-            r'<sub\s+idref="{var}"\s*/>'.format(var=varname), 
+            r'<sub\s+idref="{var}"\s*/>'.format(var=varname),
             r"<tt>{val}</tt>".format(val=value), text)
 
     def _resolve_var_substitutions(self, rule):
@@ -121,4 +121,5 @@ def update_parser(parser):
     parser.add_argument(
         "refcategory", metavar="REFERENCE_ID", help="Category of the rule reference")
     parser.add_argument(
-        "--ref-format", metavar="REGEX_WITH_GROUPS", default="(.*)", help="Captured groups will serve as input for sorting")
+        "--ref-format", metavar="REGEX_WITH_GROUPS", default="(.*)",
+        help="Captured groups will serve as input for sorting")
