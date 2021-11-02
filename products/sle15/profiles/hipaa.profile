@@ -88,6 +88,9 @@ selections:
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
     - audit_rules_execution_chcon
+    - audit_rules_execution_restorecon
+    - audit_rules_execution_setsebool
+    - audit_rules_execution_semanage
     - audit_rules_file_deletion_events_renameat
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_rmdir
@@ -108,6 +111,8 @@ selections:
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_pam_timestamp_check
     - audit_rules_privileged_commands_passwd
+    - audit_rules_privileged_commands_postdrop
+    - audit_rules_privileged_commands_postqueue
     - audit_rules_privileged_commands_ssh_keysign
     - audit_rules_privileged_commands_sudoedit
     - audit_rules_privileged_commands_umount
