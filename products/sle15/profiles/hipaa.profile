@@ -112,8 +112,10 @@ selections:
     - audit_rules_privileged_commands_sudoedit
     - audit_rules_privileged_commands_umount
     - audit_rules_privileged_commands_unix_chkpwd
+    - audit_rules_privileged_commands_userhelper
     - audit_rules_session_events
     - audit_rules_sysadmin_actions
+    - audit_rules_system_shutdown
     - audit_rules_time_adjtimex
     - audit_rules_time_clock_settime
     - audit_rules_time_settimeofday
@@ -130,3 +132,11 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - auditd_data_retention_flush
+    - configure_crypto_policy
+    - dconf_gnome_remote_access_credential_prompt
+    - dconf_gnome_remote_access_encryption
+    - ensure_gpgcheck_local_packages
+    - ensure_redhat_gpgkey_installed
+    - grub2_disable_interactive_boot
+    - libreswan_approved_tunnels
