@@ -33,7 +33,7 @@ value: "Setting={{ varname1 }}"
     {{%- if regex and not escape_regex %}}
     regexp: '{{{ regex }}}'
     {{%- elif regex and escape_regex %}}
-    regexp: '{{ {{{ regex }}} | regex_escape }}'
+    regexp: {{{ regex }}} | regex_escape
     {{%- endif %}}
     {{%- if state == 'present' %}}
     line: '{{{ new_line }}}'
