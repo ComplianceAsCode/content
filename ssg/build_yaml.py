@@ -156,6 +156,24 @@ def add_reference_elements(element, references, ref_uri_dict):
             ref.text = ref_val
 
 
+def add_benchmark_metadata(element, contributors_file):
+    metadata = ET.SubElement(element, "metadata")
+
+    publisher = ET.SubElement(metadata, "{%s}publisher" % dc_namespace)
+    publisher.text = SSG_PROJECT_NAME
+
+    creator = ET.SubElement(metadata, "{%s}creator" % dc_namespace)
+    creator.text = SSG_PROJECT_NAME
+
+    contrib_tree = parse_file(contributors_file)
+    for c in contrib_tree.iter('contributor'):
+        contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
+        contributor.text = c.text
+
+    source = ET.SubElement(metadata, "{%s}source" % dc_namespace)
+    source.text = SSG_BENCHMARK_LATEST_URI
+
+
 class SelectionHandler(object):
     def __init__(self):
         self.refine_rules = defaultdict(list)
@@ -915,17 +933,9 @@ class Benchmark(XCCDFEntity):
         version = ET.SubElement(root, 'version')
         version.text = self.version
         version.set('update', SSG_BENCHMARK_LATEST_URI)
-        metadata = ET.SubElement(root, "metadata")
-        publisher = ET.SubElement(metadata, "{%s}publisher" % dc_namespace)
-        publisher.text = SSG_PROJECT_NAME
-        creator = ET.SubElement(metadata, "{%s}creator" % dc_namespace)
-        creator.text = SSG_PROJECT_NAME
-        contrib_tree = parse_file("../../Contributors.xml")
-        for c in contrib_tree.iter('contributor'):
-            contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
-            contributor.text = c.text
-        source = ET.SubElement(metadata, "{%s}source" % dc_namespace)
-        source.text = SSG_BENCHMARK_LATEST_URI
+
+        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
+        add_benchmark_metadata(root, contributors_file)
 
         for profile in self.profiles:
             root.append(profile.to_xml_element())
