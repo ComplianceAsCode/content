@@ -1,11 +1,12 @@
 prodtype: ocp4
 
-title: Ensure that FIPS mode is enabled on worker nodes
+title: Ensure that full disk encryption is configured on cluster nodes
 
 description: |-
-  OpenShift has an installation-time flag that can enable FIPS mode
-  for the cluster. The flag <pre>fips: true</pre> must be enabled
-  at install time in the <pre>install-config.yaml</pre> file.
+  When full disk encryption is chosen as a way to protect card data at rest, OpenShift can provide
+  several solutions depending on the hosting environment. 
+  While LUKS (with TPM2 or Tang) can be used for bare metal use cases, EBS encryption can be used 
+  when the cluster is hosted on AWS.
   
 rationale: |-
   Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to

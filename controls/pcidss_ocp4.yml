@@ -721,8 +721,10 @@ controls:
   status: partial
   rules: 
   - machine_volume_encrypted
+  - storageclass_encryption_enabled
   - api_server_encryption_provider_cipher
   - api_server_encryption_provider_config
+
 - id: Req-3.5
   title: '3.5 Document and implement procedures to protect keys used to secure stored
     cardholder data against disclosure and misuse:'
@@ -733,8 +735,8 @@ controls:
     key.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: 'See sub requirements for details'
+  status: inherently met
   controls:
   - id: Req-3.5.1
     title: 'Additional requirement  for service  providers  only: Maintain a documented 
@@ -746,8 +748,15 @@ controls:
        * Inventory of any HSMs and other SCDs  used for key management
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This requirement largely depends on the solution chosen by the customer to protect card holder data at rest. 
+      * When Full Disk Encryption is done using AWS EBS encryption, the algorithm used is AES-256.
+        Your data key is stored on disk with your encrypted data, but not before EBS encrypts it with your KMS key. 
+        Your data key never appears on disk in plaintext.
+        The same data key is shared by snapshots of the volume and any subsequent volumes created from those snapshots.
+        See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
+      * When Full Disk Encryption is done using TPM2, 
+    status: inherently met
     rules: []
     # - var_system_crypto_policy=fips
     # - configure_crypto_policy

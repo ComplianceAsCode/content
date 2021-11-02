@@ -1,0 +1,45 @@
+prodtype: ocp4
+
+title: Ensure that EBS volumes declared in storageclasses are encrypted
+
+description: |-
+  OpenShift StorageClasses can be configured to enable EBS encryption on 
+  EBS volumes that are used later as persistent volumes. By using EBS encryption, disk contents are 
+  encrypted using an AWS KMS key.
+  
+rationale: |-
+  Enabling encryption on EBS storage used as PersitentVolumes help protect any card holder data that might be persisted
+  on those EBS volumes. Only authorized AWS resources will be able, through IAM policies, to use the KMS key to eventually 
+  read or alter data on those volumes.
+
+
+identifiers:
+  cce@ocp4: CCE-85861-3
+
+references:
+  pcidss: Req-3.4.1
+
+ocil_clause: 'EBS encryption is not enabled on storage classes'
+
+ocil: |-
+    Run the following command to retrieve if the EBS encryption is enabled:
+    <pre>$ oc get storageclass -o json| jq '[.items[] | select (.provisioner == "kubernetes.io/aws-ebs")] | map(.parameters.encrypted)'</pre>
+    Make sure that the result is an array of 'true' values.
+
+severity: high
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/storage.k8s.io/v1/storageclasses': '[.items[] | select (.provisioner == "kubernetes.io/aws-ebs")] | map(.parameters.encrypted)'}) | indent(4) }}}
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/storage.k8s.io/v1/storageclasses', '[.items[] | select (.provisioner == "kubernetes.io/aws-ebs")] | map(.parameters.encrypted)') }}}
+    yamlpath: "[:]"
+    check_existence: "all_exist"
+    entity_check: "all"
+    values:
+      - value: "true"
+        operation: "equals"
