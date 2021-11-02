@@ -86,8 +86,8 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 :type default: str
 :param option: The sshd option to configure
 :type option: str
-:param option: The value for the given option
-:type option: str
+:param value: The value for the given option
+:type value: str
 
 #}}
 {{% macro ocil_sshd_option(default, option, value) -%}}
