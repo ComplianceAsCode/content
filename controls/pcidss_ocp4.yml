@@ -720,7 +720,7 @@ controls:
     When enabling FIPS mode, machine configs state that encryption using TPM based pinning in clevis is requested for these nodes.
   status: partial
   rules: 
-  - ebs_encrypted_or_fips_enabled
+  - machine_volume_encrypted
   - api_server_encryption_provider_cipher
   - api_server_encryption_provider_config
 - id: Req-3.5
