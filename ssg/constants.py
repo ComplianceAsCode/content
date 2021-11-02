@@ -142,7 +142,7 @@ PREFIX_TO_NS = {
     "ocil": ocil_namespace,
     "xccdf-1.1": XCCDF11_NS,
     "xccdf-1.2": XCCDF12_NS,
-    "xhtml": xhtml_namespace,
+    "html": xhtml_namespace,
     "xlink": xlink_namespace,
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
     "cat": cat_namespace,
