@@ -9,27 +9,6 @@ this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the current
 shell, simply call `source .pyenv.sh`. For more information on how to
 use this script, please see the comments at the top of the file.
 
-## Testing OVAL Content
-
-Located in `utils` directory, the `testoval.py` script allows easy
-testing of oval definitions. It wraps the definition and makes up an
-oval file ready for scanning, very useful for testing new OVAL content
-or modifying existing ones.
-
-Example usage:
-
-    $ PYTHONPATH=`./.pyenv.sh` ./utils/testoval.py install_hid.xml
-
-Create or add an alias to the script so that you don’t have to type out
-the full path everytime that you would like to use the `testoval.py`
-script.
-
-    $ alias testoval='/home/_username_/scap-security-guide/utils/testoval.py'
-
-An alternative is adding the directory where `testoval.py` resides to
-your PATH.
-
-    $ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
 
 ## Profile Statistics and Utilities
 
