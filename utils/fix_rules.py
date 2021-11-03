@@ -596,7 +596,7 @@ def has_unsorted_prodtype(yaml_file, product_yaml=None):
 
 
 @command("empty_identifiers", "check and fix rules with empty identifiers")
-def fix_empty_identifiers(args, product_yaml):
+def fix_empty_identifiers(args, product_yaml) -> int:
     results = find_rules(args, has_empty_identifier)
     print("Number of rules with empty identifiers: %d" % len(results))
 
@@ -614,7 +614,7 @@ def fix_empty_identifiers(args, product_yaml):
 
         fix_file_prompt(rule_path, product_yaml, fix_empty_identifier, args)
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("empty_references", "check and fix rules with empty references")
@@ -632,7 +632,7 @@ def fix_empty_references(args, product_yaml):
 
         fix_file_prompt(rule_path, product_yaml, fix_empty_reference)
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("prefixed_identifiers", "check and fix rules with prefixed (CCE-) identifiers")
@@ -650,7 +650,7 @@ def find_prefix_cce(args):
 
         fix_file_prompt(rule_path, product_yaml, fix_prefix_cce)
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("invalid_identifiers", "check and fix rules with invalid identifiers")
@@ -667,7 +667,7 @@ def find_invalid_cce(args, product_yamls):
             continue
 
         fix_file_prompt(rule_path, product_yaml, fix_invalid_cce)
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("int_identifiers", "check and fix rules with pseudo-integer identifiers")
@@ -685,7 +685,7 @@ def find_int_identifiers(args, product_yaml):
 
         fix_file_prompt(rule_path, product_yaml, fix_int_identifier)
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("int_references", "check and fix rules with pseudo-integer references")
@@ -703,7 +703,7 @@ def find_int_references(args, product_yaml):
 
         fix_file_prompt(rule_path, product_yaml, fix_int_reference)
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("duplicate_subkeys", "check for duplicated references and identifiers")
@@ -714,7 +714,7 @@ def duplicate_subkeys(args, product_yaml):
     for result in results:
         print(result[0] + " has one or more duplicated subkeys")
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("sort_subkeys", "sort references and identifiers")
@@ -732,7 +732,7 @@ def sort_subkeys(args, product_yaml):
 
         fix_file_prompt(rule_path, product_yaml, sort_rule_subkeys, args)
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 @command("sort_prodtypes", "sorts the products in the prodtype")
@@ -748,7 +748,7 @@ def sort_prodtypes(args, product_yaml):
 
         fix_file(rule_path, product_yaml, fix_prodtypes)
 
-    return int(len(results) > 0)
+    exit(int(len(results) > 0))
 
 
 def create_parser_from_functions(subparsers):

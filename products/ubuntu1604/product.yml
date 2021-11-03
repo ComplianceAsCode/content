@@ -2,6 +2,7 @@ product: ubuntu1604
 full_name: "Ubuntu 16.04"
 type: platform
 
+benchmark_id: UBUNTU-XENIAL
 benchmark_root: "../../linux_os/guide"
 
 profiles_root: "./profiles"
@@ -29,3 +30,6 @@ platform_package_overrides:
   pam: libpam-runtime
   shadow: login
   sssd: sssd-common
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/ubuntu_linux/'

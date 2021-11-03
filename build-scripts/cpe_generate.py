@@ -129,9 +129,18 @@ def main():
     # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = set()
     shorthandtree = ssg.xml.parse_file(args.shorthandfile)
-    for platform in shorthandtree.findall(".//platform"):
+    for platform in shorthandtree.findall(".//{%s}platform" % xccdf_ns):
         cpe_name = platform.get("idref")
+        # skip CPE AL platforms (they are handled later)
+        # this is temporary solution until we get rid of old type of platforms in the benchmark
+        if cpe_name.startswith("#"):
+            continue
         benchmark_cpe_names.add(cpe_name)
+    # add CPE names used by factref elements in CPEAL platforms
+    for factref in shorthandtree.findall(
+            ".//ns1:fact-ref", {"ns1":ssg.constants.PREFIX_TO_NS["cpe-lang"]}):
+        cpe_factref_name = factref.get("name")
+        benchmark_cpe_names.add(cpe_factref_name)
 
     product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
