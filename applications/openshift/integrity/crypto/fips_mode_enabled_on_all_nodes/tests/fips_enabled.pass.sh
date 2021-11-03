@@ -4,7 +4,7 @@
 
 yum install -y jq
 
-kube_apipath="/tmp/kubernetes-api-resources"
+kube_apipath="/kubernetes-api-resources"
 
 # Create infra file for CPE to pass
 mkdir -p "$kube_apipath/apis/config.openshift.io/v1/infrastructures/"
@@ -47,7 +47,7 @@ cat <<EOF > "$kube_apipath/apis/config.openshift.io/v1/infrastructures/cluster"
 EOF
 
 
-machineconfigv1="/machineconfiguration.openshift.io/v1"
+machineconfigv1="/apis/machineconfiguration.openshift.io/v1"
 machineconfig_apipath="$machineconfigv1/machineconfigs"
 # Create base file (not really needed for scanning but good for
 # documentation and readability)

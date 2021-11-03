@@ -4,7 +4,7 @@
 
 yum install -y jq
 
-kube_apipath="/tmp/kubernetes-api-resources"
+kube_apipath="/kubernetes-api-resources"
 
 # Create infra file for CPE to pass
 mkdir -p "$kube_apipath/apis/config.openshift.io/v1/infrastructures/"
