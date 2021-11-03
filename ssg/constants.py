@@ -5,6 +5,37 @@ import os.path
 import os
 import time
 
+
+SSG_PROJECT_NAME = "SCAP Security Guide Project"
+SSG_BENCHMARK_LATEST_URI = "https://github.com/ComplianceAsCode/content/releases/latest"
+
+SSG_REF_URIS = {
+    'anssi': 'http://www.ssi.gouv.fr/administration/bonnes-pratiques/',
+    'nist': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf',
+    'nist-csf': 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf',
+    'isa-62443-2013': 'https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu',
+    'isa-62443-2009': 'https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat',
+    'cobit5': 'https://www.isaca.org/resources/cobit',
+    'cis-csc': 'https://www.cisecurity.org/controls/',
+    'cjis': 'https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf',
+    'cui': 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf',
+    'cnss': 'http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf',
+    'dcid': 'not_officially_available',
+    'disa': 'https://public.cyber.mil/stigs/cci/',
+    'pcidss': 'https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf',
+    'ospp': 'https://www.niap-ccevs.org/Profile/PP.cfm',
+    'hipaa': 'https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf',
+    'iso27001-2013': 'https://www.iso.org/standard/54534.html',
+    'nerc-cip': 'https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx',
+    'stigid': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux',
+    'os-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os',
+    'app-srg': 'https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers',
+    # The following reference URIs were not defined in the XSLT constants
+    'ism': '',
+    'vmmsrg': '',
+    'vsrg': '',  # From the references, it looks like vsrg and vmmsrg are meant to be the same
+}
+
 product_directories = [
     'chromium',
     'debian9', 'debian10', 'debian11',
@@ -45,6 +76,7 @@ JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
 datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
+dc_namespace = "http://purl.org/dc/elements/1.1/"
 ocil_namespace = "http://scap.nist.gov/schema/ocil/2.0"
 oval_footer = "</oval_definitions>"
 oval_namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
@@ -105,10 +137,12 @@ OVAL_SUB_NS = dict(
 PREFIX_TO_NS = {
     "oval-def": oval_namespace,
     "oval": "http://oval.mitre.org/XMLSchema/oval-common-5",
+    "dc": dc_namespace,
     "ds": datastream_namespace,
     "ocil": ocil_namespace,
     "xccdf-1.1": XCCDF11_NS,
     "xccdf-1.2": XCCDF12_NS,
+    "html": xhtml_namespace,
     "xlink": xlink_namespace,
     "cpe-dict": "http://cpe.mitre.org/dictionary/2.0",
     "cat": cat_namespace,
@@ -189,7 +223,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 }
 
 
-# see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
+# see xccdf-addremediations.xslt <- shared_constants.xslt
 # if you want to know how the map was constructed
 REF_PREFIX_MAP = {
     "nist": "NIST-800-53",

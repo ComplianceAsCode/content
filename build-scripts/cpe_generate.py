@@ -129,7 +129,7 @@ def main():
     # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = set()
     shorthandtree = ssg.xml.parse_file(args.shorthandfile)
-    for platform in shorthandtree.findall(".//platform"):
+    for platform in shorthandtree.findall(".//{%s}platform" % xccdf_ns):
         cpe_name = platform.get("idref")
         # skip CPE AL platforms (they are handled later)
         # this is temporary solution until we get rid of old type of platforms in the benchmark

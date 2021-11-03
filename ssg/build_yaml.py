@@ -15,7 +15,20 @@ import glob
 import yaml
 
 from .build_cpe import CPEDoesNotExist, parse_platform_definition
-from .constants import XCCDF_REFINABLE_PROPERTIES, SCE_SYSTEM, ocil_cs, ocil_namespace, xhtml_namespace, xsi_namespace, timestamp
+from .constants import (XCCDF_REFINABLE_PROPERTIES,
+                        SCE_SYSTEM,
+                        cce_uri,
+                        dc_namespace,
+                        ocil_cs,
+                        ocil_namespace,
+                        oval_namespace,
+                        xhtml_namespace,
+                        xsi_namespace,
+                        timestamp,
+                        SSG_BENCHMARK_LATEST_URI,
+                        SSG_PROJECT_NAME,
+                        SSG_REF_URIS
+                        )
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -23,7 +36,7 @@ from .cce import is_cce_format_valid, is_cce_value_valid
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
-from .xml import ElementTree as ET
+from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
 from .shims import unicode_func
 
 
@@ -49,12 +62,13 @@ def add_sub_element(parent, tag, data):
 
     Returns the newly created subelement of type tag.
     """
+    namespaced_data = add_xhtml_namespace(data)
     # This is used because our YAML data contain XML and XHTML elements
     # ET.SubElement() escapes the < > characters by &lt; and &gt;
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func("<{0}>{1}</{0}>").format(tag, data)
+    ustr = unicode_func('<{0} xmlns:xhtml="{2}">{1}</{0}>').format(tag, namespaced_data, xhtml_namespace)
 
     try:
         element = ET.fromstring(ustr.encode("utf-8"))
@@ -115,6 +129,49 @@ def check_warnings(xccdf_structure):
         if len(warning_list) != 1:
             msg = "Only one key/value pair should exist for each warnings dictionary"
             raise ValueError(msg)
+
+
+def add_reference_elements(element, references, ref_uri_dict):
+    for ref_type, ref_vals in references.items():
+        for ref_val in ref_vals.split(","):
+            # This assumes that a single srg key may have items from multiple SRG types
+            if ref_type == 'srg':
+                if ref_val.startswith('SRG-OS-'):
+                    ref_href = ref_uri_dict['os-srg']
+                elif ref_val.startswith('SRG-APP-'):
+                    ref_href = ref_uri_dict['app-srg']
+                else:
+                    raise ValueError("SRG {0} doesn't have a URI defined.".format(ref_val))
+            else:
+                try:
+                    ref_href = ref_uri_dict[ref_type]
+                except KeyError as exc:
+                    msg = (
+                        "Error processing reference {0}: {1} in Rule {2}."
+                        .format(ref_type, ref_vals, self.id_))
+                    raise ValueError(msg)
+
+            ref = ET.SubElement(element, 'reference')
+            ref.set("href", ref_href)
+            ref.text = ref_val
+
+
+def add_benchmark_metadata(element, contributors_file):
+    metadata = ET.SubElement(element, "metadata")
+
+    publisher = ET.SubElement(metadata, "{%s}publisher" % dc_namespace)
+    publisher.text = SSG_PROJECT_NAME
+
+    creator = ET.SubElement(metadata, "{%s}creator" % dc_namespace)
+    creator.text = SSG_PROJECT_NAME
+
+    contrib_tree = parse_file(contributors_file)
+    for c in contrib_tree.iter('contributor'):
+        contributor = ET.SubElement(metadata, "{%s}contributor" % dc_namespace)
+        contributor.text = c.text
+
+    source = ET.SubElement(metadata, "{%s}source" % dc_namespace)
+    source.text = SSG_BENCHMARK_LATEST_URI
 
 
 class SelectionHandler(object):
@@ -741,7 +798,7 @@ class Benchmark(XCCDFEntity):
         front_matter=lambda: "",
         rear_matter=lambda: "",
         cpes=lambda: list(),
-        version=lambda: "0",
+        version=lambda: "",
         profiles=lambda: list(),
         values=lambda: dict(),
         groups=lambda: dict(),
@@ -756,7 +813,6 @@ class Benchmark(XCCDFEntity):
         "description",
         "front_matter",
         "rear_matter",
-        "version",
     }
 
     GENERIC_FILENAME = "benchmark.yml"
@@ -792,8 +848,6 @@ class Benchmark(XCCDFEntity):
         data["notice_description"] = required_key(notice_contents, "description")
         del notice_contents["description"]
 
-        data["version"] = str(data["version"])
-
         return data
 
     def represent_as_dict(self):
@@ -806,13 +860,16 @@ class Benchmark(XCCDFEntity):
         return data
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None, benchmark_id="product-name"):
+    def from_yaml(cls, yaml_file, env_yaml=None):
         benchmark = super(Benchmark, cls).from_yaml(yaml_file, env_yaml)
         if env_yaml:
             benchmark.product_cpe_names = env_yaml["product_cpes"].get_product_cpe_names()
             benchmark.cpe_platform_spec = env_yaml["product_cpes"].cpe_platform_specification
-
-        benchmark.id_ = benchmark_id
+            benchmark.id_ = env_yaml["benchmark_id"]
+            benchmark.version = env_yaml["ssg_version_str"]
+        else:
+            benchmark.id_ = "product-name"
+            benchmark.version = "0.0"
 
         return benchmark
 
@@ -844,13 +901,11 @@ class Benchmark(XCCDFEntity):
 
             self.profiles.append(new_profile)
 
-    def to_xml_element(self):
+    def to_xml_element(self, env_yaml=None):
         root = ET.Element('Benchmark')
+        root.set('id', self.id_)
+        root.set('xmlns', "http://checklists.nist.gov/xccdf/1.1")
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-        root.set('xmlns:xhtml', 'http://www.w3.org/1999/xhtml')
-        root.set('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
-        root.set('xmlns:cpe-lang', 'http://cpe.mitre.org/language/2.0')
-        root.set('id', 'product-name')
         root.set('xsi:schemaLocation',
                  'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
         root.set('style', 'SCAP_1.1')
@@ -877,7 +932,10 @@ class Benchmark(XCCDFEntity):
 
         version = ET.SubElement(root, 'version')
         version.text = self.version
-        ET.SubElement(root, "metadata")
+        version.set('update', SSG_BENCHMARK_LATEST_URI)
+
+        contributors_file = os.path.join(os.path.dirname(__file__), "../Contributors.xml")
+        add_benchmark_metadata(root, contributors_file)
 
         for profile in self.profiles:
             root.append(profile.to_xml_element())
@@ -894,15 +952,15 @@ class Benchmark(XCCDFEntity):
             group = self.groups.get(group_id)
             # Products using application benchmark don't have system or services group
             if group is not None:
-                root.append(group.to_xml_element())
+                root.append(group.to_xml_element(env_yaml))
 
         for rule in self.rules.values():
-            root.append(rule.to_xml_element())
+            root.append(rule.to_xml_element(env_yaml))
 
         return root
 
-    def to_file(self, file_name, ):
-        root = self.to_xml_element()
+    def to_file(self, file_name, env_yaml=None):
+        root = self.to_xml_element(env_yaml)
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
@@ -965,7 +1023,6 @@ class Group(XCCDFEntity):
         "description",
         "front_matter",
         "rear_matter",
-        "version",
     }
 
     @classmethod
@@ -1004,9 +1061,15 @@ class Group(XCCDFEntity):
             if not val:
                 self.values[vid] = values_by_id[vid]
 
-        for gid, val in self.groups.items():
+        for gid in list(self.groups):
+            val = self.groups.get(gid, None)
             if not val:
-                self.groups[gid] = groups_by_id[gid]
+                try:
+                    self.groups[gid] = groups_by_id[gid]
+                except KeyError:
+                    # Add only the groups we have compiled and loaded
+                    del self.groups[gid]
+                    pass
 
     def represent_as_dict(self):
         yaml_contents = super(Group, self).represent_as_dict()
@@ -1029,21 +1092,23 @@ class Group(XCCDFEntity):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, env_yaml=None):
         group = ET.Element('Group')
         group.set('id', self.id_)
-        if self.prodtype != "all":
-            group.set("prodtype", self.prodtype)
         title = ET.SubElement(group, 'title')
         title.text = self.title
         add_sub_element(group, 'description', self.description)
         add_warning_elements(group, self.warnings)
-        add_nondata_subelements(group, "requires", "id", self.requires)
-        add_nondata_subelements(group, "conflicts", "id", self.conflicts)
+
+        # This is where references should be put if there are any
+        # This is where rationale should be put if there are any
 
         for cpe_platform_name in self.cpe_platform_names:
             platform_el = ET.SubElement(group, "platform")
             platform_el.set("idref", "#"+cpe_platform_name)
+
+        add_nondata_subelements(group, "requires", "idref", self.requires)
+        add_nondata_subelements(group, "conflicts", "idref", self.conflicts)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -1064,7 +1129,7 @@ class Group(XCCDFEntity):
         # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
         for rule_id in rules_in_group:
-            group.append(self.rules.get(rule_id).to_xml_element())
+            group.append(self.rules.get(rule_id).to_xml_element(env_yaml))
 
         # Add the sub groups after any current level group rules.
         # As package installed/removed and service enabled/disabled rules are usuallly in
@@ -1103,7 +1168,7 @@ class Group(XCCDFEntity):
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
-            group.append(_group.to_xml_element())
+            group.append(_group.to_xml_element(env_yaml))
 
         return group
 
@@ -1453,49 +1518,35 @@ class Rule(XCCDFEntity):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
-    def to_xml_element(self):
+    def to_xml_element(self, env_yaml=None):
         rule = ET.Element('Rule')
+        rule.set('selected', 'false')
         rule.set('id', self.id_)
-        if self.prodtype != "all":
-            rule.set("prodtype", self.prodtype)
         rule.set('severity', self.severity)
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)
+        add_warning_elements(rule, self.warnings)
+
+        if env_yaml:
+            ref_uri_dict = env_yaml['reference_uris']
+        else:
+            ref_uri_dict = SSG_REF_URIS
+        add_reference_elements(rule, self.references, ref_uri_dict)
+
         add_sub_element(rule, 'rationale', self.rationale)
 
-        main_ident = ET.Element('ident')
+        for cpe_platform_name in self.cpe_platform_names:
+            platform_el = ET.SubElement(rule, "platform")
+            platform_el.set("idref", "#"+cpe_platform_name)
+
+        add_nondata_subelements(rule, "requires", "idref", self.requires)
+        add_nondata_subelements(rule, "conflicts", "idref", self.conflicts)
+
         for ident_type, ident_val in self.identifiers.items():
-            # This is not true if items were normalized
-            if '@' in ident_type:
-                # the ident is applicable only on some product
-                # format : 'policy@product', eg. 'stigid@product'
-                # for them, we create a separate <ref> element
-                policy, product = ident_type.split('@')
-                ident = ET.SubElement(rule, 'ident')
-                ident.set(policy, ident_val)
-                ident.set('prodtype', product)
-            else:
-                main_ident.set(ident_type, ident_val)
-
-        if main_ident.attrib:
-            rule.append(main_ident)
-
-        main_ref = ET.Element('ref')
-        for ref_type, ref_val in self.references.items():
-            # This is not true if items were normalized
-            if '@' in ref_type:
-                # the reference is applicable only on some product
-                # format : 'policy@product', eg. 'stigid@product'
-                # for them, we create a separate <ref> element
-                policy, product = ref_type.split('@')
-                ref = ET.SubElement(rule, 'ref')
-                ref.set(policy, ref_val)
-                ref.set('prodtype', product)
-            else:
-                main_ref.set(ref_type, ref_val)
-
-        if main_ref.attrib:
-            rule.append(main_ref)
+            ident = ET.SubElement(rule, 'ident')
+            if ident_type == 'cce':
+                ident.set('system', cce_uri)
+                ident.text = ident_val
 
         ocil_parent = rule
         check_parent = rule
@@ -1556,17 +1607,20 @@ class Rule(XCCDFEntity):
             href = self.sce_metadata['relative_path']
             check_ref.set("href", href)
 
+        check = ET.SubElement(check_parent, 'check')
+        check.set("system", oval_namespace)
+        check_content_ref = ET.SubElement(check, "check-content-ref")
         if self.oval_external_content:
-            check = ET.SubElement(check_parent, 'check')
-            check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
-            external_content = ET.SubElement(check, "check-content-ref")
-            external_content.set("href", self.oval_external_content)
+            check_content_ref.set("href", self.oval_external_content)
         else:
             # TODO: This is pretty much a hack, oval ID will be the same as rule ID
             #       and we don't want the developers to have to keep them in sync.
             #       Therefore let's just add an OVAL ref of that ID.
-            oval_ref = ET.SubElement(check_parent, "oval")
-            oval_ref.set("id", self.id_)
+            # TODO  Can we not add the check element if the rule doesn't have an OVAL check?
+            #       At the moment, the check elements of rules without OVAL are removed by
+            #       relabel_ids.py
+            check_content_ref.set("href", "oval-unlinked.xml")
+            check_content_ref.set("name", self.id_)
 
         if self.ocil or self.ocil_clause:
             ocil_check = ET.SubElement(check_parent, "check")
@@ -1574,14 +1628,6 @@ class Rule(XCCDFEntity):
             ocil_check_ref = ET.SubElement(ocil_check, "check-content-ref")
             ocil_check_ref.set("href", "ocil-unlinked.xml")
             ocil_check_ref.set("name", self.id_ + "_ocil")
-
-        add_warning_elements(rule, self.warnings)
-        add_nondata_subelements(rule, "requires", "id", self.requires)
-        add_nondata_subelements(rule, "conflicts", "id", self.conflicts)
-
-        for cpe_platform_name in self.cpe_platform_names:
-            platform_el = ET.SubElement(rule, "platform")
-            platform_el.set("idref", "#"+cpe_platform_name)
 
         return rule
 
@@ -1728,14 +1774,16 @@ class DirectoryLoader(object):
         # we treat benchmark as a special form of group in the following code
         if self.benchmark_file:
             group = Benchmark.from_yaml(
-                self.benchmark_file, self.env_yaml, 'product-name'
+                self.benchmark_file, self.env_yaml
             )
             if self.profiles_dir:
                 group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml)
-            self.all_groups[group.id_] = group
+            prodtypes = parse_prodtype(group.prodtype)
+            if "all" in prodtypes or self.product in prodtypes:
+                self.all_groups[group.id_] = group
 
         return group
 
@@ -1878,13 +1926,17 @@ class LinearLoader(object):
 
     def load_benchmark(self, directory):
         self.benchmark = Benchmark.from_yaml(
-            os.path.join(directory, "benchmark.yml"), self.env_yaml, "product-name")
+            os.path.join(directory, "benchmark.yml"), self.env_yaml)
 
         self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
 
         benchmark_first_groups = self.find_first_groups_ids(directory)
         for gid in benchmark_first_groups:
-            self.benchmark.add_group(self.groups[gid], self.env_yaml)
+            try:
+                self.benchmark.add_group(self.groups[gid], self.env_yaml)
+            except KeyError as exc:
+                # Add only the groups we have compiled and loaded
+                pass
 
     def load_compiled_content(self):
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
@@ -1903,7 +1955,8 @@ class LinearLoader(object):
             g.load_entities(self.rules, self.values, self.groups)
 
     def export_benchmark_to_file(self, filename):
-        return self.benchmark.to_file(filename)
+        register_namespaces()
+        return self.benchmark.to_file(filename, self.env_yaml)
 
     def export_ocil_to_file(self, filename):
         root = ET.Element('ocil')

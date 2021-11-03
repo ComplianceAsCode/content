@@ -16,7 +16,8 @@ from .constants import (product_directories,
                         DEFAULT_AIDE_BIN_PATH,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
-                        XCCDF_PLATFORM_TO_PACKAGE)
+                        XCCDF_PLATFORM_TO_PACKAGE,
+                        SSG_REF_URIS)
 from .utils import merge_dicts, required_key
 from .yaml import open_raw
 
@@ -95,6 +96,10 @@ def load_product_yaml(product_yaml_path):
 
     # The product_yaml should be aware of the ProductCPEs
     product_yaml["product_cpes"] = ProductCPEs(product_yaml)
+
+    reference_uris = product_yaml.get("reference_uris", {})
+    product_yaml["reference_uris"] = merge_dicts(SSG_REF_URIS,
+                                                 reference_uris)
 
     return product_yaml
 
