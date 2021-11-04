@@ -165,4 +165,7 @@ jobs:
           name: ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
         if: ${{ (steps.check_results_bash.outcome == 'success' || steps.check_results_ansible.outcome == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: exit 1
+        run: |
+          [[ -f logs_bash/test_suite.log ]] && echo "---------Bash Remediation Logs---------" && cat logs_bash/test_suite.log | grep -v "DEBUG - "
+          [[ -f logs_ansible/test_suite.log ]] && echo "---------Ansible Remediation Logs---------" && cat logs_ansible/test_suite.log | grep -v "DEBUG - "
+          exit 1
