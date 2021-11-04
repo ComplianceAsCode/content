@@ -19,6 +19,14 @@ ComplianceAsCode/content
 .. toctree::
     :maxdepth: 1
     :glob:
+    :caption: Graphs
+
+    flowcharts/introduction
+    flowcharts/*
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
     :caption: Jinja Macros Reference
 
     jinja_macros/*
