@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,rhel9
+prodtype: ol8,rhel8,rhel9
 
 title: 'Ensure auditd Collects System Administrator Actions - /etc/sudoers.d/'
 
@@ -37,4 +37,3 @@ ocil_clause: 'there is not output'
 ocil: |-
     To verify that auditing is configured for system administrator actions, run the following command:
     <pre>$ sudo auditctl -l | grep "watch=/etc/sudoers.d\|-w /etc/sudoers.d"</pre>
-
