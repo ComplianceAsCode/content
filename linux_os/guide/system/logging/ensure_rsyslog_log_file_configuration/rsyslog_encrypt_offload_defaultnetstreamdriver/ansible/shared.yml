@@ -4,6 +4,7 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_set_config_file(file="/etc/rsyslog.d/encrypt.conf",
-                    parameter="$DefaultNetstreamDriver", value="gtls", create=true, separator=" ", separator_regex=" ")
+{{{ ansible_set_config_file_dir(msg, "/etc/rsyslog.conf", "/etc/rsyslog.d", "/etc/rsyslog.conf",
+                                parameter="$DefaultNetstreamDriver", value="gtls", create=true,
+                                separator=" ", separator_regex=" ")
 }}}
