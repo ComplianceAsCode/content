@@ -1097,8 +1097,11 @@ controls:
     that store, process, or transmit cardholder data.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    Establishing a process to identify security vulnerabilities is outside of
+    OpenShift Container Platform's scope. That's up to the payment entity to
+    do and enforce.
+  status: not applicable
   rules: []
 
 - id: Req-6.2
@@ -1109,8 +1112,21 @@ controls:
     the risk ranking process defined in Requirement 6.1.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The OpenShift Container Platform provides the capability of updating
+    both the Kubernetes/OCP layer, as well as the Operating System (Red Hat
+    CoreOS) layer in an ubiquitous manner with over-the-air updates using
+    the OpenShift Update Service (OSUS) [1]. This service can also be installed
+    in clusters without internet connectivity [2].
+
+    [1] https://docs.openshift.com/container-platform/latest/updating/understanding-the-update-service.html
+    [2] https://docs.openshift.com/container-platform/latest/updating/installing-update-service.html
+  status: inherently met
+  # TODO(jaosorior): While this is inherently met for internet-connected
+  #                  clusters, we could still do a check for disconnected ones.
+  #                  The idea would be to check if we're on a disconnected cluster,
+  #                  and, if we are, check that an `upstream` is set on the
+  #                  ClusterVersion object.
   rules: []
 
 - id: Req-6.3
