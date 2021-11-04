@@ -3,7 +3,8 @@ documentation_complete: true
 metadata:
     version: NA
     SMEs:
-        - carlosmmatos
+        - mab879
+        - ggbecker
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -205,7 +206,7 @@ selections:
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
 
     # RHEL-08-010292
-    - sshd_use_strong_rng
+# - sshd_use_strong_rng # not needed in RHEL9
 
     # RHEL-08-010293
     - configure_openssl_crypto_policy
@@ -307,10 +308,10 @@ selections:
     - selinux_policytype
 
     # RHEL-08-010460
-    - no_host_based_files
+# - no_host_based_files # not supported in RHEL9 ATM
 
     # RHEL-08-010470
-    - no_user_host_based_files
+# - no_user_host_based_files # not supported in RHEL9 ATM
 
     # RHEL-08-010471
     - service_rngd_enabled
@@ -1181,7 +1182,7 @@ selections:
     - sshd_x11_use_localhost
 
     # RHEL-08-040350
-    - tftpd_uses_secure_mode
+#   - tftpd_uses_secure_mode # not supported in RHEL9, no tftp or tftpd package
 
     # RHEL-08-040360
     - package_vsftpd_removed
