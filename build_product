@@ -76,6 +76,7 @@ _arg_derivatives="off"
 _arg_ansible_playbooks="on"
 _arg_bash_scripts="on"
 _arg_datastream_only="off"
+_arg_profiling="off"
 
 
 print_help()
@@ -92,6 +93,7 @@ print_help()
 	printf '\t%s\n' "--bash-scripts, --no-bash-scripts: Build Bash remediation scripts for every profile (on by default)"
 	printf '\t%s\n' "--datastream-only, --no-datastream-only: Build the datastream only. Do not build any of the guides, tables, etc (off by default)"
 	printf '\t%s\n' "-h, --help: Prints help"
+	printf '\t%s\n' "-p, --profiling: Use ninja and call the build_profiler.sh util"
 	printf '\nEnvironment variables that are supported:\n'
 	printf '\t%s\n' "ADDITIONAL_CMAKE_OPTIONS: Whitespace-separated string of arguments to pass to CMake."
 
@@ -165,6 +167,9 @@ parse_commandline()
 			-h*)
 				print_help
 				exit 0
+				;;
+			-p|--profiling)
+				_arg_profiling="on"
 				;;
 			*)
 				_last_positional="$1"
@@ -336,10 +341,13 @@ test "$_arg_debug" = on && build_type_option="-DCMAKE_BUILD_TYPE=Debug"
 jobs="$_arg_jobs"
 test "$jobs" = auto && jobs=$cores
 
-if test "$_arg_builder" = make; then
-	build_with_make
+if test "$_arg_profiling" = on; then
+	build_with_ninja
+	jobs=1
 elif test "$_arg_builder" = ninja; then
 	build_with_ninja
+elif test "$_arg_builder" = make; then
+	build_with_make
 else
 	autodetect_builder
 fi
@@ -372,4 +380,11 @@ cd build
 cmake .. "${CMAKE_OPTIONS[@]}"
 $build_command "-j${jobs}" "${EXPLICIT_BUILD_TARGETS[@]}"
 
+if test "$_arg_profiling" = on; then
+	# remove cycles in ninja logs
+	ninja -t recompact
+	# go back to content dir
+	cd ..
+	utils/build_profiler.sh `echo "${_arg_product[@]}" | sed 's/ /_/g'`
+fi
 # ] <-- needed because of Argbash
