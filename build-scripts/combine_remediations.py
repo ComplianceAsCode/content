@@ -102,7 +102,7 @@ def main():
     for rule_file in os.listdir(args.resolved_rules_dir):
         rule_path = os.path.join(args.resolved_rules_dir, rule_file)
         try:
-            rule = ssg.build_yaml.Rule.from_yaml(rule_path)
+            rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
         except ssg.build_yaml.DocumentationNotComplete:
             # Happens on non-debug build when a rule is
             # "documentation-incomplete"
