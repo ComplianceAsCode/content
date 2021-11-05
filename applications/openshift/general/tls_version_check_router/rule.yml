@@ -1,0 +1,41 @@
+prodtype: ocp4
+
+title: Ensure TLS v1.2 is minimum for Openshift Router
+
+description: |-
+  Verify tls version for the Openshift Router.
+
+rationale: |-
+  Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+  protect data. The system must implement cryptographic modules adhering to the higher
+  standards approved by the federal government since this provides assurance they have been tested
+  and validated.
+
+
+identifiers:
+  cce@ocp4: CCE-85865-4
+
+references:
+  pcidss: Req-4.1
+
+ocil_clause: 'TLS version is not configured or contains insecure version'
+
+ocil: |-
+    Run the following command to check the TLS version for the openshift router:
+    <pre>$  oc get deployment.apps/router-default -n openshift-ingress -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="SSL_MIN_VERSION")].value}'</pre>
+    Make sure that the result has a one of TLSvX.X where X.X is 1.2 or greater.
+
+severity: medium
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({'/apis/apps/v1/namespaces/openshift-ingress/deployments/router-default': '.spec.template.spec.containers[0].env[] | select(.name == "SSL_MIN_VERSION")' }) | indent(4) }}}
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: |-
+      {{{ openshift_filtered_path('/apis/apps/v1/namespaces/openshift-ingress/deployments/router-default','.spec.template.spec.containers[0].env[] | select(.name == "SSL_MIN_VERSION")') }}}
+    yamlpath: ".value"
+    values:
+      - value: "TLSv1.[2-9]{1}"
+        operation: "pattern match"
