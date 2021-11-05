@@ -75,10 +75,10 @@ jobs:
         working-directory: ./build
 
   validate-fedora:
-    name: Build, Test on Fedora 33 (Container)
+    name: Build, Test on Fedora 34 (Container)
     runs-on: ubuntu-latest
     container:
-      image: fedora:33
+      image: fedora:34
     steps:
       - name: Install Deps
         run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip
