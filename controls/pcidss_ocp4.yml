@@ -1194,16 +1194,23 @@ controls:
     bespoke or custom software developed by a third party.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This control is applicable to the payment entity running OpenShift
+    and not to the platform itself. However, as part of the development
+    of the OpenShift Container Platform, Red Hat does perform extensive
+    security reviews on the platform itself by the Product Security organization.
+  status: not applicable
   controls:
   - id: Req-6.3.1
     title: 6.3.1 Remove development, test and/or custom application accounts, user IDs,
       and passwords before applications become active or are released to customers.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This control is applicable to the payment entity running OpenShift
+      and not to the platform itself. However, the OpenShift Container Platform
+      does not ship with development or testing accounts.
+    status: not applicable
     rules: []
 
   - id: Req-6.3.2
@@ -1229,8 +1236,11 @@ controls:
       as defined at PCI DSS Requirement 6.6.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This controls is applicable to the payment entity running OpenShift
+      and not to the platform itself. However, code reviews are enforced 
+      as part of the development of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
 - id: Req-6.4
@@ -1239,31 +1249,37 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   controls:
   - id: Req-6.4.1
     title: 6.4.1 Separate development/test environments from production environments,
       and enforce the separation with access controls.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to separate development and test environments.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.2
     title: 6.4.2 Separation of duties between development/test and production environments
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to separate development and test environments.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.3
     title: 6.4.3 Production data (live PANs) are not used for testing or development
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to not use live PANs for testing and development.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.4
@@ -1271,8 +1287,11 @@ controls:
       active
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment entity's
+      responsibility to remove test data and accounts, or ensure they're not present
+      in production environments.
+    status: not applicable
     rules: []
 
   - id: Req-6.4.5
@@ -1280,23 +1299,34 @@ controls:
       and software modifications must include the following:'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow appropriate and documented procedures
+      when applying updates and software modifications.
+    status: not applicable
     controls:
     - id: Req-6.4.5.1
       title: 6.4.5.1 Documentation of impact.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate procedures
+        when applying updates and software modifications, and that these
+        procedures are thoroughly documented.
+      status: not applicable
       rules: []
 
     - id: Req-6.4.5.2
       title: 6.4.5.2 Documented change approval by authorized parties.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, and that these
+        procedures are approved by an authorized party.
+      status: not applicable
       rules: []
 
     - id: Req-6.4.5.3
@@ -1304,17 +1334,41 @@ controls:
         impact the security of the system.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, as well
+        as testing them appropriately before applying them.
+      status: not applicable
       rules: []
 
     - id: Req-6.4.5.4
       title: 6.4.5.4 Back-out procedures.
       levels:
       - base
-      notes: ''
-      status: pending
+      notes: |-
+        This is an organizational control, and thus it's in the payment
+        entity's responsibility to follow appropriate and documented procedures
+        when applying updates and software modifications, as well
+        having back-out procedures in-place and working.
+
+        However, OpenShift operators and most building blocks of the platform
+        able to downgrade automatically if an update doesn't go as expected or
+        if API requirements are not satisfied.
+      status: not applicable
       rules: []
+
+  - id: Req-6.4.6
+    title: '6.4.6- Upon completion of a significant change, all relevant PCI DSS requirements must be implemented on all
+      new or changed systems and networks, and documentation updated as applicable.'
+    levels:
+    - base
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow implement and document all relevant requirements
+      to new or changed software
+    status: not applicable
+    rules: []
 
 - id: Req-6.5
   title: '6.5 Address common coding vulnerabilities in software-development processes
@@ -1332,65 +1386,103 @@ controls:
     practices must be used for these requirements.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to follow best secure development practices
+    when developing applications on top of the OpenShift Container Platform.
+  status: not applicable
   controls:
   - id: Req-6.5.1
     title: 6.5.1 Injection flaws, particularly SQL injection. Also consider OS Command
       Injection, LDAP and XPath injection flaws as well as other injection flaws.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.2
     title: 6.5.2 Buffer overflows
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.3
     title: 6.5.3 Insecure cryptographic storage
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+
+      However, the OpenShift Container Platform does have the ability to
+      enforce strong cryptographic algorithms if customers are enabling
+      FIPS[1] on their clusters and they used supported container images
+      such as UBI. This will ensure that their applications use approved
+      and string cryptographic algorithms.
+
+      [1] https://docs.openshift.com/container-platform/4.9/installing/installing-fips.html
+    status: not applicable
     rules: []
 
   - id: Req-6.5.4
     title: 6.5.4 Insecure communications
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+
+      However, OpenShift does provide tools that can help ensure that
+      secure communications are in place. e.g. OpenShift Routes
+      can easily enforce TLS is enabled for that specific endpoint.
+    status: partial
+    rules:
+    - routes_protected_by_tls
 
   - id: Req-6.5.5
     title: 6.5.5 Improper error handling
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.6
-    title: "6.5.6 All \u201Chigh risk\u201D vulnerabilities identified in the vulnerability\
-      \ identification process (as defined in PCI DSS Requirement 6.1)."
+    title: >-
+      6.5.6 All "high risk" vulnerabilities identified in the vulnerability
+      identification process (as defined in PCI DSS Requirement 6.1).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Red Hat Product Security publishes a list of known vulnerabilities that
+      allow organizations to measure their security posture and evaluate if
+      their platform and base images are appropriately patched.
+    status: inherently met
     rules: []
 
   - id: Req-6.5.7
     title: 6.5.7   Cross-site scripting (XSS)
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.8
@@ -1399,16 +1491,25 @@ controls:
       access to functions).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+
+      It is the responsibility of the payment entity to review RBAC permissions
+      in the platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.9
     title: 6.5.9 Cross-site request forgery (CSRF)
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
   - id: Req-6.5.10
@@ -1417,8 +1518,11 @@ controls:
       which it becomes a requirement.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is an organizational control, and thus it's in the payment
+      entity's responsibility to follow best secure development practices
+      when developing applications on top of the OpenShift Container Platform.
+    status: not applicable
     rules: []
 
 - id: Req-6.6
@@ -1438,8 +1542,11 @@ controls:
       front of public- facing web applications, to continually check all traffic.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to identify public-facing web applications
+    and ensure threat detection is in place.
+  status: not applicable
   rules: []
 
 - id: Req-6.7
@@ -1448,8 +1555,12 @@ controls:
     to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is an organizational control, and thus it's in the payment
+    entity's responsibility to follow best secure development practices
+    when developing applications on top of the OpenShift Container Platform,
+    and that they're appropriately documented.
+  status: not applicable
   rules: []
 
 - id: Req-7.1
