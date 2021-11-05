@@ -2,6 +2,9 @@ prodtype: ocp4
 
 title: Ensure that EBS volumes use by cluster nodes are encrypted
 
+platforms:
+  - ocp4-on-aws
+
 description: |-
   OpenShift MachineSets can be configured to enable EBS encryption on 
   EBS storage used by cluster nodes. By using EBS encryption, disk contents are 
