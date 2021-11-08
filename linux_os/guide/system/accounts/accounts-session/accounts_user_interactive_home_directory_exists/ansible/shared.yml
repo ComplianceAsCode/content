@@ -13,10 +13,9 @@
   ansible.builtin.set_fact:
     local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
 
-- name: Ensure interactive users have a home directory defined
+- name: Ensure interactive users have a home directory exists
   ansible.builtin.user:
     name: '{{ item.key }}'
-    home: '/home/{{ item.key }}'
     create_home: yes
   loop: '{{ local_users }}'
   when:

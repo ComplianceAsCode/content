@@ -13,7 +13,7 @@
   ansible.builtin.set_fact:
     local_users: '{{ ansible_facts.getent_passwd|dict2items }}'
 
-- name: Ensure interactive users have a home directory defined
+- name: Ensure interactive users have an exclusive home directory defined
   ansible.builtin.user:
     name: '{{ item.key }}'
     home: '/home/{{ item.key }}'
@@ -22,3 +22,4 @@
   when:
     - item.value[2]|int >= {{{ uid_min }}}
     - item.value[2]|int != 65534
+    - not item.value[4] | regex_search('^\/\w*\/\w{1,}')
