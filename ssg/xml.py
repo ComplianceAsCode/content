@@ -82,7 +82,14 @@ def add_xhtml_namespace(data):
     """
     Given a xml blob, adds the xhtml namespace to all relevant tags.
     """
+    # The use of lambda in the lines below is a workaround for https://bugs.python.org/issue1519638
+    # I decided for this approach to avoid adding workarounds in the matching regex, this way only
+    # the substituted part contains the workaround.
     # Transform <tt> in <code>
-    data = re.sub(r'<(\/)?tt(\/)?>', r'<\1code\2>', data)
+    data = re.sub(r'<(\/)?tt(\/)?>',
+                  lambda m: r'<' + (m.group(1) or '') + 'code' + (m.group(2) or '') + '>', data)
     # Adds xhtml prefix to elements: <tag>, </tag>, <tag/>
-    return re.sub(r'<(\/)?((?:%s).*?)(\/)?>' % "|".join(SSG_XHTML_TAGS), r'<\1xhtml:\2\3>', data)
+    return re.sub(r'<(\/)?((?:%s).*?)(\/)?>' % "|".join(SSG_XHTML_TAGS),
+                  lambda m: r'<' + (m.group(1) or '') + 'xhtml:' +
+                  (m.group(2) or '') + (m.group(3) or '') + '>',
+                  data)
