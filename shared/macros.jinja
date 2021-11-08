@@ -30,6 +30,8 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the {{% i
 
 :param path_filter_pairs: Kubernetes object path/filter directive pairs
 :type path_filter_pairs: dict
+:param varargs: A list of path_filter_pairs (in case repeated paths need to be used)
+:type path_filter_pairs: list
 
 #}}
 {{% macro openshift_filtered_cluster_setting(path_filter_pairs) -%}}
@@ -45,6 +47,18 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
     <code class="ocp-dump-location" id="dump-{{{ (path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (path+filter)|sha256 }}}</code>
     file.
   </li>
+{{% endfor %}}
+{{% for arg in varargs %}}
+{{% for path, filter in arg.items() %}}
+  <li>
+    <code class="ocp-api-endpoint" id="{{{ (path+filter)|sha256 }}}">{{{ path }}}</code>
+    API endpoint, filter with with the <code>jq</code> utility using the following filter
+    <code class="ocp-api-filter" id="filter-{{{ (path+filter)|sha256 }}}">{{{ filter }}}</code>
+    and persist it to the local
+    <code class="ocp-dump-location" id="dump-{{{ (path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (path+filter)|sha256 }}}</code>
+    file.
+  </li>
+{{% endfor %}}
 {{% endfor %}}
 </ul>
 {{%- endmacro %}}
