@@ -284,7 +284,7 @@ def banner_regexify(banner_text):
     return escape_regex(banner_text) \
         .replace("\n", "BFLMPSVZ") \
         .replace(" ", "[\\s\\n]+") \
-        .replace("BFLMPSVZ", "(?:[\\n]+|(?:\\\\n)+)")
+        .replace("BFLMPSVZ", "(?:[\\n]+|(?:\\n)+)")
 
 
 def banner_anchor_wrap(banner_text):
