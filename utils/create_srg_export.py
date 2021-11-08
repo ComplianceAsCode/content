@@ -6,6 +6,7 @@ import datetime
 import json
 import pathlib
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -44,6 +45,14 @@ class DisaStatus:
         return source
 
 
+def html_plain_text(source: str) -> str:
+    # Add line breaks
+    result = source.replace("<br />", "\n")
+    # Remove all other tags
+    result = re.sub(r"(?s)<.*?>", " ", result)
+    return result
+
+
 def get_description_root(srg: ET.Element) -> ET.Element:
     description_xml = "<root>"
     description_xml += srg.find('xccdf-1.1:description', NS).text.replace('&lt;', '<') \
@@ -66,11 +75,13 @@ def get_srg_dict(xml_path: str) -> dict:
             srgs[srg_id]['severity'] = SEVERITY[srg.get('severity')]
             srgs[srg_id]['title'] = srg.find('xccdf-1.1:title', NS).text
             description_root = get_description_root(srg)
-            srgs[srg_id]['vuln_discussion'] = description_root.find('VulnDiscussion').text
+            srgs[srg_id]['vuln_discussion'] = \
+                html_plain_text(description_root.find('VulnDiscussion').text)
             srgs[srg_id]['cci'] = \
                 srg.find("xccdf-1.1:ident[@system='http://cyber.mil/cci']", NS).text
             srgs[srg_id]['fix'] = srg.find('xccdf-1.1:fix', NS).text
-            srgs[srg_id]['check'] = srg.find('xccdf-1.1:check/xccdf-1.1:check-content', NS).text
+            srgs[srg_id]['check'] = \
+                html_plain_text(srg.find('xccdf-1.1:check/xccdf-1.1:check-content', NS).text)
             srgs[srg_id]['ia_controls'] = description_root.find('IAControls').text
     return srgs
 
