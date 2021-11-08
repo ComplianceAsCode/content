@@ -2,14 +2,17 @@ prodtype: ocp4
 
 title: Ensure that EBS volumes declared in storageclasses are encrypted
 
+platforms:
+- ocp4-on-aws
+
 description: |-
-  OpenShift StorageClasses can be configured to enable EBS encryption on 
-  EBS volumes that are used later as persistent volumes. By using EBS encryption, disk contents are 
+  OpenShift StorageClasses can be configured to enable EBS encryption on
+  EBS volumes that are used later as persistent volumes. By using EBS encryption, disk contents are
   encrypted using an AWS KMS key.
-  
+
 rationale: |-
   Enabling encryption on EBS storage used as PersitentVolumes help protect any card holder data that might be persisted
-  on those EBS volumes. Only authorized AWS resources will be able, through IAM policies, to use the KMS key to eventually 
+  on those EBS volumes. Only authorized AWS resources will be able, through IAM policies, to use the KMS key to eventually
   read or alter data on those volumes.
 
 
