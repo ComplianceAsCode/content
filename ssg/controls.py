@@ -12,7 +12,8 @@ import ssg.utils
 class InvalidStatus(Exception):
     pass
 
-class Status():
+
+class Status:
     PENDING = "pending"
     PLANNED = "planned"
     NOT_APPLICABLE = "not applicable"
@@ -21,6 +22,7 @@ class Status():
     PARTIAL = "partial"
     SUPPORTED = "supported"
     AUTOMATED = "automated"
+    DOES_NOT_MEET = "does not meet"
 
     def __init__(self, status):
         self.status = status
@@ -39,6 +41,7 @@ class Status():
             cls.PARTIAL,
             cls.SUPPORTED,
             cls.AUTOMATED,
+            cls.DOES_NOT_MEET
         ]
 
         if status not in valid_statuses:
