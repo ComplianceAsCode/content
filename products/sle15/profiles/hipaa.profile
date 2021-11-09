@@ -147,4 +147,7 @@ selections:
     - libreswan_approved_tunnels
     - package_rsh-server_removed
     - package_talk-server_removed
+    - sebool_selinuxuser_execheap
+    - sebool_selinuxuser_execmod
+    - sebool_selinuxuser_execstack
 
