@@ -25,7 +25,8 @@
 - name: Ensure interactive local users are the group-owners of their respective home directories
   ansible.builtin.file:
     path: '{{ item.0.value[4] }}'
-    mode: '0700'
+    mode: 'g-w,o=-'
+    follow: no
     recurse: yes
   loop: '{{ local_users|zip(path_exists.results)|list }}'
   when:
