@@ -52,6 +52,7 @@ option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for
 option(SSG_BASH_SCRIPTS_ENABLED "If enabled, Bash remediation scripts for each profile will be built and installed." TRUE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
+option(SSG_BUILD_DISA_DELTA_FILES "If enabled, If the product has automated content from DISA for its STIG a tailoring file will be created with rules not covered by DISA's content enabled." TRUE)
 option(SSG_SCE_ENABLED "If enabled, additional SCE audit content will be enabled alongside OVAL-based auditing." FALSE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 
@@ -258,6 +259,7 @@ if (SSG_JINJA2_CACHE_ENABLED)
 else()
     message(STATUS "jinja2 cache: disabled")
 endif()
+message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
 message(STATUS " ")
 
 message(STATUS "Products:")
@@ -425,6 +427,7 @@ else()
 endif()
 
 ssg_define_guide_and_table_tests()
+ssg_build_rule_dir_json()
 
 install(FILES "${CMAKE_SOURCE_DIR}/LICENSE"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
