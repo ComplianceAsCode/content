@@ -155,9 +155,7 @@ def append(element, newchild):
                 # If OVAL entity is identical to some already included
                 # in the benchmark and represents an OVAL <external_variable>
                 # it's safe to ignore this ID (since external variables are
-                # in multiple checks just to notify 'testoval.py' helper to
-                # substitute the ID with <local_variable> entity when testing
-                # the OVAL for the rule)
+                # in multiple checks for clarity reasons)
                 pass
             # Some other OVAL entity
             else:

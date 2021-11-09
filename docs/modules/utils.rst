@@ -177,14 +177,6 @@ utils.rule\_dir\_stats module
    :undoc-members:
    :show-inheritance:
 
-utils.testoval module
----------------------
-
-.. automodule:: utils.testoval
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.xccdf2csv\-stig module
 ----------------------------
 
