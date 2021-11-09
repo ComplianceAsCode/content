@@ -145,3 +145,6 @@ selections:
     - ensure_redhat_gpgkey_installed
     - grub2_disable_interactive_boot
     - libreswan_approved_tunnels
+    - package_rsh-server_removed
+    - package_talk-server_removed
+
