@@ -156,8 +156,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tailoring-id", type=str,
                         default='xccdf_content-disa-delta_tailoring_default',
                         help="Id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default")
-    parser.add_argument("-q", "--quiet", type=bool, default=False,
-                        action=argparse.BooleanOptionalAction,
+    parser.add_argument("-q", "--quiet", action='store_true',
                         help="The script will not produce any output.")
     return parser.parse_args()
 
