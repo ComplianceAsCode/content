@@ -989,8 +989,13 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
-  rules: []
+  status: automated
+  rules:
+  - files_permissions_openshift_pki_cert_files
+  - tls_version_check_apiserver
+  - tls version_check_masters_nodes
+  - tls version_check_router
+  - etcd_check_cipher_suite
 
 - id: Req-4.1.1
   title: 4.1.1 Ensure wireless networks transmitting cardholder data or connected
@@ -1000,16 +1005,16 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-4.2
-  title: 4.2 Never send unprotected PANs by end- user messaging technologies (for
-    example, e- mail, instant messaging, SMS, chat, etc.).
+  title: 4.2 Never send unprotected PANs by end-user messaging technologies (for
+    example, e-mail, instant messaging, SMS, chat, etc.).
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-4.3
@@ -1019,7 +1024,7 @@ controls:
   levels:
   - base
   notes: ''
-  status: pending
+  status: not applicable
   rules: []
 
 - id: Req-5.1
