@@ -118,8 +118,9 @@ def create_tailoring(args):
             desired_value = str([cac_rule_id] in list(needed_rules.values())).lower()
             if not selection.get('selected') == desired_value:
                 selection.set('selected',  desired_value)
-                print(f'Set rule "{cac_rule_id}" selection state to {desired_value}')
                 tailoring_profile.append(selection)
+                if not args.quiet:
+                    print(f'Set rule "{cac_rule_id}" selection state to {desired_value}')
 
     tailoring_root = ET.Element('xccdf-1.2:Tailoring')
     version = ET.SubElement(tailoring_root, 'xccdf-1.2:version',
@@ -153,6 +154,8 @@ def parse_args():
     parser.add_argument("--tailoring-id", type=str,
                         default='xccdf_content-disa-delta_tailoring_default',
                         help="Id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default")
+    parser.add_argument("-q", "--quiet", type=bool, default=False, action=argparse.BooleanOptionalAction,
+                        help="The script will not produce any output.")
     return parser.parse_args()
 
 
@@ -166,7 +169,8 @@ def main():
     else:
         out = os.path.join(SSG_ROOT, 'build', f'{args.product}_{args.profile}_delta_tailoring.xml')
     tree.write(out)
-    print(f"Wrote tailoring file to {out}.")
+    if not args.quiet:
+        print(f"Wrote tailoring file to {out}.")
 
 
 if __name__ == '__main__':
