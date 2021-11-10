@@ -1,0 +1,43 @@
+prodtype: ocp4
+
+title: Ensure cluster roles are defined in the cluster
+
+description: |-
+  <p>
+  RBAC is a critical feature in terms of security for Kubernetes and
+  OpenShift. It enables administrators to segment the privileges
+  granted to a service account, and thus allows us to limit the
+  access to resources that they get. By defining cluster roles appropriately
+  one is able to codify organizational policy. [1]
+  </p>
+  <p>
+  [1] {{{ weblink(link="https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html") }}}
+  </p>
+
+rationale: |-
+  By defining RBAC cluster roles, one is able to limit the permissions
+  given to a Service Account, and thus limit the blast radius
+  that an account compromise would have.
+
+identifiers:
+  cce@ocp4: CCE-86595-6
+
+references:
+  pcidss: Req-7.1.1
+
+severity: medium
+
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/rbac.authorization.k8s.io/v1/clusterroles?limit=1000") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/rbac.authorization.k8s.io/v1/clusterroles?limit=1000
+    yamlpath: ".items[:].metadata.name"
+    values:
+    - value: ".+"
+      operation: "pattern match"
+      type: "string"

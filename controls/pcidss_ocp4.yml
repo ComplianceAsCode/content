@@ -1572,8 +1572,12 @@ controls:
     whose job requires such access.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The OpenShift Container Platform comes with the Kubernetes RBAC
+    feature enabled by default. This feature ensures that only if a
+    user or a system account has the appropriate permission, it's able
+    to operate on specific system objects.
+  status: automated
   controls:
   - id: Req-7.1.1
     title: '7.1.1 Define access needs for each role, including:'
@@ -1584,9 +1588,18 @@ controls:
         etc.) for accessing resources.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      The OpenShift Container Platform comes with the Kubernetes RBAC
+      feature enabled by default. This feature ensures that only if a
+      user or a system account has the appropriate permission, it's able
+      to operate on specific system objects. By reviewing the existing
+      Role and ClusterRole objects, one is able to see the resources
+      that are accessible for a certain role, as well as the "verbs" or
+      operations that the role can execute on that resource.
+    status: automated
+    rules:
+    - rbac_roles_defined
+    - rbac_cluster_roles_defined
 
   - id: Req-7.1.2
     title: 7.1.2 Restrict access to privileged user IDs to least privileges necessary
