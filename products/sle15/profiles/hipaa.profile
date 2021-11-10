@@ -150,4 +150,12 @@ selections:
     - sebool_selinuxuser_execheap
     - sebool_selinuxuser_execmod
     - sebool_selinuxuser_execstack
+    - service_cron_enabled
+    - service_debug-shell_disabled
+    - service_rexec_disabled
+    - service_rlogin_disabled
+    - service_telnet_disabled
+    - service_xinetd_disabled
+    - service_zebra_disabled
+
 
