@@ -185,6 +185,8 @@ def createFunc(args):
     namespace_flag = ''
     if args.namespace is not None:
         namespace_flag = '-n ' + args.namespace
+    elif args.all_namespaces:
+        namespace_flag = '-A'
 
     group_path = os.path.join(PLATFORM_RULE_DIR, args.group)
     if args.group:
@@ -196,8 +198,16 @@ def createFunc(args):
     rule_path = os.path.join(group_path, args.rule)
     while url is None and retries < 5:
         retries += 1
-        ret_code, output = subprocess.getstatusoutput(
-            'oc get %s/%s %s --loglevel=6' % (args.type, args.name, namespace_flag))
+        cmdstr = 'oc get %s' % (args.type)
+
+        if args.name:
+            cmdstr += ' ' + args.name
+
+        cmdstr += ' %s --loglevel=6' % (namespace_flag)
+
+        print("Running: " + cmdstr)
+        ret_code, output = subprocess.getstatusoutput(cmdstr)
+
         if ret_code != 0:
             print('error running oc, check connection to the cluster: %d\n %s' % (
                 ret_code, output))
@@ -213,7 +223,7 @@ def createFunc(args):
 
         if len(fetch_line) > 0:
             # extract the object url from the debug line
-            full_url = fetch_line.split(" ")[5]
+            full_url = fetch_line[fetch_line.index("GET"):].split(" ")[1]
             url_part = full_url[full_url.rfind("/api"):]
 
         if len(url_part) > 0 and '/api' in url_part:
@@ -359,7 +369,7 @@ def main():
     create_parser.add_argument(
         '--group', default="", help='The group directory of the rule to create.')
     create_parser.add_argument(
-        '--name', required=True, help='The name of the Kubernetes object to check. Required.')
+        '--name', help='The name of the Kubernetes object to check.')
     create_parser.add_argument(
         '--type', required=True, help='The type of Kubernetes object, e.g., configmap. Required.')
     create_parser.add_argument('--yamlpath', required=True,
@@ -368,6 +378,9 @@ def main():
         '--match', required=True, help='A string value or regex providing the matching criteria. Required')
     create_parser.add_argument(
         '--namespace', help='The namespace of the Kubernetes object (optional for cluster-scoped objects)', default=None)
+    create_parser.add_argument(
+        '--all-namespaces', action="store_true", help='The namespace of the Kubernetes object (optional for cluster-scoped objects)',
+        default=False)
     create_parser.add_argument(
         '--title', help='A short description of the check.')
     create_parser.add_argument(
