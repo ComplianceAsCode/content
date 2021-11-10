@@ -1647,15 +1647,23 @@ controls:
   description: 'This access control system must include the following:'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+  status: inherently met
   controls:
   - id: Req-7.2.1
     title: 7.2.1 Coverage of all system components
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+
+      All objects in Kubernetes/OpenShift are bound to RBAC permissions.
+    status: inherently met
     rules: []
 
   - id: Req-7.2.2
@@ -1663,16 +1671,22 @@ controls:
       and function.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The application of this control is the responsibility of the
+      payment entity, and is not something the OpenShift Container Platform
+      can enforce.
+    status: not applicable
     rules: []
 
   - id: Req-7.2.3
     title: "7.2.3 Default 'deny-all' setting."
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+    status: inherently met
     rules: []
 
 - id: Req-7.3
