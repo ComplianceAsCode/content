@@ -26,13 +26,11 @@ description: |-
     NOTE: the bootloader superuser account and password MUST differ from the
     root account and password.
     {{% endif %}}
+    {{% if "ubuntu" in product %}}
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    {{% if "ubuntu" in product %}}
     <pre>update-grub</pre>
-    {{% else %}}
-    <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
     {{% endif %}}
 
 rationale: |-
