@@ -773,17 +773,18 @@ macro(ssg_build_rule_dir_json)
 endmacro()
 
 macro(ssg_build_disa_delta PRODUCT PROFILE)
-    file(GLOB DISA_SCAP_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-scap.xml")
+        file(GLOB DISA_SCAP_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-scap.xml")
         add_custom_command(
-            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
-            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet
             DEPENDS "${CMAKE_BINARY_DIR}/rule_dirs.json"
-            COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailering file"
+            DEPENDS "${PRODUCT}-content"
+            COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailoring file"
          )
 
         add_custom_target(generate-ssg-delta-${PRODUCT}-${PROFILE}
-            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
+            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
         )
 
         install(FILES "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
