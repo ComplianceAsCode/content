@@ -1,19 +1,12 @@
 #!/usr/bin/python3
 
-import collections
 import os
 import sys
-import re
-import pathlib
 
 import argparse
 
 import ssg.build_yaml
-import ssg.controls
-import ssg.yaml
-import ssg.jinja
 
-import template_renderer
 import tables.table_renderer
 
 
@@ -47,8 +40,8 @@ class HtmlOutput(tables.table_renderer.TableHtmlOutput):
                   .format(rid=rule.id_, profile_id=self.profile.id_), file=sys.stderr)
         return shortened_ref
 
-    def process_rules(self, ref_format, reference_category=""):
-        super(HtmlOutput, self).process_rules(ref_format, reference_category)
+    def process_rules(self, ref_format, reference_id, reference_title):
+        super(HtmlOutput, self).process_rules(ref_format, reference_id, reference_title)
 
         self.template_data["profile"] = self.profile
 
@@ -69,5 +62,6 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     renderer = HtmlOutput(args.product, args.build_dir, profile_id=args.profile)
-    renderer.process_rules(args.ref_format, args.refcategory)
+    reference = ssg.constants.REFERENCES[args.refcategory]
+    renderer.process_rules(reference.regex_with_groups, reference.id, reference.title)
     renderer.output_results(args)

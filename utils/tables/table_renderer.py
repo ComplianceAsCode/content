@@ -2,14 +2,10 @@ import collections
 import os
 import sys
 import re
-import pathlib
 
 import argparse
 
 import ssg.build_yaml
-import ssg.controls
-import ssg.yaml
-import ssg.jinja
 import ssg.constants
 
 import template_renderer
@@ -91,15 +87,15 @@ class TableHtmlOutput(template_renderer.Renderer):
             shortened_ref = self.DEFAULT_SHORTENED_REF
         return shortened_ref
 
-    def process_rules(self, ref_format, reference_category=""):
-        eligible_rules = self._get_eligible_rules(reference_category)
+    def process_rules(self, ref_format, reference_id, reference_title=""):
+        eligible_rules = self._get_eligible_rules(reference_id)
 
         output_rules = collections.defaultdict(list)
         for rule in eligible_rules:
             rid = rule.id_
             self._resolve_var_substitutions(rule)
 
-            relevant_refs = rule.references.get(reference_category, "")
+            relevant_refs = rule.references.get(reference_id, "")
             relevant_refs = relevant_refs.split(",")
 
             rule.relevant_refs = process_refs(ref_format, relevant_refs)
@@ -108,7 +104,7 @@ class TableHtmlOutput(template_renderer.Renderer):
 
         self.template_data["rules_by_shortref"] = output_rules
         self.template_data["sorted_refs"] = sorted(list(output_rules.keys()))
-        self.template_data["reference_category"] = reference_category
+        self.template_data["reference_title"] = reference_title
         self.template_data["product"] = self.product
         self.template_data["product_full_name"] = self.product
         for full, short in ssg.constants.FULL_NAME_TO_PRODUCT_MAPPING.items():
@@ -120,6 +116,3 @@ class TableHtmlOutput(template_renderer.Renderer):
 def update_parser(parser):
     parser.add_argument(
         "refcategory", metavar="REFERENCE_ID", help="Category of the rule reference")
-    parser.add_argument(
-        "--ref-format", metavar="REGEX_WITH_GROUPS", default="(.*)",
-        help="Captured groups will serve as input for sorting")

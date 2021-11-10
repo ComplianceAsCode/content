@@ -4,6 +4,7 @@ from __future__ import print_function
 import os.path
 import os
 import time
+import collections
 
 
 SSG_PROJECT_NAME = "SCAP Security Guide Project"
@@ -233,6 +234,27 @@ REF_PREFIX_MAP = {
     "cjis": "CJIS",
     "stigid": "DISA-STIG",
 }
+
+Reference = collections.namedtuple("Reference", ("id", "title", "url", "regex_with_groups"))
+
+REFERENCES = dict(
+    anssi=Reference(
+        id="anssi", title="ANSSI", url=anssi_ns,
+        regex_with_groups=r"BP28\(R(\d+)\)"),
+    cis=Reference(
+        id="cis", title="CIS", url=cis_ns,
+        regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    cui=Reference(
+        id="cui", title=REF_PREFIX_MAP["cui"], url=cui_ns,
+        regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    nist=Reference(
+        id="nist", title=REF_PREFIX_MAP["nist"], url="",
+        regex_with_groups=r".*-(\d+)(?:\((\d+)\))?"),
+    pcidss=Reference(
+        id="pcidss", title=REF_PREFIX_MAP["pcidss"], url="",
+        regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+)
+
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
