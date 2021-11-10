@@ -233,7 +233,7 @@ def compare_checks(
                 "'%s' to '%s'." % (
                     system, rule_id, old_check_id, new_check_id)
             )
-        if show_diffs:
+        if show_diffs and rule_id != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date":
             try:
                 old_check_doc = old_checks[old_check_file_name]
             except KeyError:
