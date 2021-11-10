@@ -7,6 +7,7 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
+import ssg.build_yaml
 import ssg.constants
 import ssg.rules
 import ssg.yaml
@@ -43,7 +44,8 @@ def filter_out_implemented_rules(known_rules: dict, ns: dict, root: ET.Element) 
     return needed_rules
 
 
-def handle_rule_yaml(product: str, rule_id: str, rule_dir: str, guide_dir: str, env_yaml: dict):
+def handle_rule_yaml(product: str, rule_id: str, rule_dir: str, guide_dir: str, env_yaml: dict) \
+        -> dict:
     rule_obj = {'id': rule_id, 'dir': rule_dir, 'guide': guide_dir}
     rule_file = ssg.rules.get_rule_dir_yaml(rule_dir)
 
@@ -92,7 +94,7 @@ def get_implemented_stigs(product: str, root_path: str, build_config_yaml_path: 
     return known_rules
 
 
-def setup_tailoring_profile(profile_id: str, profile_root: ET.Element):
+def setup_tailoring_profile(profile_id: str, profile_root: ET.Element) -> ET.Element:
     tailoring_profile = ET.Element('xccdf-1.2:Profile')
     if profile_id:
         tailoring_profile.set('id', f'{ssg.constants.OSCAP_PROFILE}{profile_id}')
@@ -104,7 +106,7 @@ def setup_tailoring_profile(profile_id: str, profile_root: ET.Element):
     return tailoring_profile
 
 
-def create_tailoring(args):
+def create_tailoring(args) -> ET.Element:
     benchmark_root = ET.parse(args.manual).getroot()
     known_rules = get_implemented_stigs(args.product, args.root, args.build_config_yaml,
                                         args.reference, args.json)
@@ -131,7 +133,7 @@ def create_tailoring(args):
     return tailoring_root
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
@@ -154,7 +156,8 @@ def parse_args():
     parser.add_argument("--tailoring-id", type=str,
                         default='xccdf_content-disa-delta_tailoring_default',
                         help="Id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default")
-    parser.add_argument("-q", "--quiet", type=bool, default=False, action=argparse.BooleanOptionalAction,
+    parser.add_argument("-q", "--quiet", type=bool, default=False,
+                        action=argparse.BooleanOptionalAction,
                         help="The script will not produce any output.")
     return parser.parse_args()
 
