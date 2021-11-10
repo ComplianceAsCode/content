@@ -785,6 +785,9 @@ macro(ssg_build_disa_delta PRODUCT PROFILE)
         add_custom_target(generate-ssg-delta-${PRODUCT}-${PROFILE}
             DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
         )
+
+        install(FILES "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
+                DESTINATION SSG_TAILORING_INSTALL_DIR)
 endmacro()
 
 # Top-level macro to build all output artifacts for the specified product.
