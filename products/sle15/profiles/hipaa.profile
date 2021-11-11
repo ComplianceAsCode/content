@@ -40,8 +40,6 @@ selections:
     - package_telnet_removed
     - package_telnet-server_removed
     - package_xinetd_removed
-    - service_crond_enabled
-    - service_xinetd_disabled
     - disable_host_auth
     - sshd_allow_only_protocol2
     - sshd_disable_compression
