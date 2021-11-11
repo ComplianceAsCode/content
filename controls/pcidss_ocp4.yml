@@ -2588,16 +2588,24 @@ controls:
     authorized and unauthorized devices.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    wireless access points are not within the realm of the OpenShift Platform and the
+    deployment expectations of it. Normally it will be deployed within cloud
+    infrastructure where the cloud provider is responsible for keeping network
+    devices monitored. However, when deployed on Bare-metal, it is the responsibility
+    of the deployer or the payment entity (if they are the ones deploying) to
+    effectuate this monitoring.
+  status: not applicable
   controls:
   - id: Req-11.1.1
     title: 11.1.1 Maintain an inventory of authorized wireless access points including
       a documented business justification.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.1.2
@@ -2605,8 +2613,10 @@ controls:
       access points are detected.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
 - id: Req-11.2
@@ -2627,8 +2637,13 @@ controls:
     DSS review, four quarters of passing scans must have occurred.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself. However, there are products such as Red Hat Advanced
+    Cluster Security [1] which may help in such network scanning.
+
+    [1] https://docs.openshift.com/acs/3.66/welcome/index.html
+  status: not applicable
   controls:
   - id: Req-11.2.1
     title: >-
@@ -2637,8 +2652,10 @@ controls:
       6.1) are resolved. Scans must be performed by qualified personnel.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.2.2
@@ -2653,8 +2670,10 @@ controls:
       responsibilities, scan preparation, etc.'
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.2.3
@@ -2662,8 +2681,10 @@ controls:
       any significant change. Scans must be performed by qualified personnel.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
 - id: Req-11.3
@@ -2682,8 +2703,10 @@ controls:
     * Specifies retention of penetration testing results and remediation activities results.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself.
+  status: not applicable
   controls:
   - id: Req-11.3.1
     title: 11.3.1 Perform external penetration testing at least annually and after any
@@ -2692,8 +2715,10 @@ controls:
       added to the environment).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.3.2
@@ -2703,8 +2728,10 @@ controls:
       added to the environment).
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.3.3
@@ -2712,8 +2739,10 @@ controls:
       and testing is repeated to verify the corrections.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
   - id: Req-11.3.4
@@ -2723,8 +2752,10 @@ controls:
       all out-of-scope systems from systems in the CDE.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      This is the responsibility of the payment entity and not of the Openshift
+      Platform itself.
+    status: not applicable
     rules: []
 
 - id: Req-11.4
@@ -2736,8 +2767,15 @@ controls:
     signatures up to date.
   levels:
   - base
-  notes: ''
-  status: pending
+  # TODO(jaosorior): Maybe we could automate this check by
+  #                  checking if ACS is available in the cluster
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself. However, there are products such as Red Hat Advanced
+    Cluster Security [1] which may help in such network scanning.
+
+    [1] https://docs.openshift.com/acs/3.66/welcome/index.html
+  status: not applicable
   rules: []
 
 - id: Req-11.5
@@ -2754,26 +2792,40 @@ controls:
     provider).'
   levels:
   - base
-  notes: ''
-  status: pending
-  rules: []
+  notes: |-
+    The OpenShift Container Platform controls the whole stack (from the Kubernetes layer to
+    the Operating System layer). It is possible to Install the File Integrity Operator
+    which does file-integrity monitoring and is able to alert administrators if
+    an unexpected change happened [1].
 
-- id: Req-11.5.1
-  title: 11.5.1 Implement a process to respond to any alerts generated by the change-
-    detection solution.
-  levels:
-  - base
-  notes: ''
-  status: pending
-  rules: []
+    [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-understanding.html
+  status: automated
+  rules:
+  - file_integrity_exists
+  controls:
+  - id: Req-11.5.1
+    title: 11.5.1 Implement a process to respond to any alerts generated by the change-
+      detection solution.
+    levels:
+    - base
+    notes: |-
+      While this is a control that's meant for the payment entity to set up a process
+      to respond to alerts, OpenShift Container Platform's File Integrity Operator
+      supports alerts via that can be ingested by AlertManager.
+    # TODO: * Add link to documentation
+    #       * Add OpenSCAP rule that verifies that the PrometheusRule exists
+    status: supported
+    rules: []
 
 - id: Req-11.6
   title: 11.6 Ensure that security policies and operational procedures for security
     monitoring and testing are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This is the responsibility of the payment entity and not of the Openshift
+    Platform itself.
+  status: not applicable
   rules: []
 
 - id: Req-12.1
