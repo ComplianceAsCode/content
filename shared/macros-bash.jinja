@@ -1181,7 +1181,7 @@ EOF
 
 {{# Strips newline or newline escape sequence regex #}}
 {{% macro bash_deregexify_banner_newline(banner_var_name, newline) -%}}
-{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(?:\[\\n\]+|(?:\\n)+)/{{{ newline }}}/g')
+{{{ banner_var_name }}}=$(echo "${{{ banner_var_name }}}" | sed 's/(?:\[\\n\]+|(?:\\\\n)+)/{{{ newline }}}/g')
 {{%- endmacro %}}
 
 {{# Strips newline token for a newline escape sequence regex #}}
