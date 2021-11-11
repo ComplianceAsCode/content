@@ -1577,8 +1577,12 @@ controls:
     whose job requires such access.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The OpenShift Container Platform comes with the Kubernetes RBAC
+    feature enabled by default. This feature ensures that only if a
+    user or a system account has the appropriate permission, it's able
+    to operate on specific system objects.
+  status: automated
   controls:
   - id: Req-7.1.1
     title: '7.1.1 Define access needs for each role, including:'
@@ -1589,18 +1593,31 @@ controls:
         etc.) for accessing resources.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      The OpenShift Container Platform comes with the Kubernetes RBAC
+      feature enabled by default. This feature ensures that only if a
+      user or a system account has the appropriate permission, it's able
+      to operate on specific system objects. By reviewing the existing
+      Role and ClusterRole objects, one is able to see the resources
+      that are accessible for a certain role, as well as the "verbs" or
+      operations that the role can execute on that resource.
+    status: automated
+    rules:
+    - rbac_roles_defined
+    - rbac_cluster_roles_defined
 
   - id: Req-7.1.2
     title: 7.1.2 Restrict access to privileged user IDs to least privileges necessary
       to perform job responsibilities.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      The OpenShift Container Platform contains a ClusterRole called `cluster-admin`
+      this role is allowed to do anything in the system. It is recommended to monitor
+      the usage of this ClusterRole to prevent misuse.
+    status: partial
+    rules:
+    - rbac_limit_cluster_admin
 
   - id: Req-7.1.3
     title: >-
@@ -1608,8 +1625,11 @@ controls:
       and function."
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The application of this control is the responsibility of the
+      payment entity, and is not something the OpenShift Container Platform
+      can enforce.
+    status: not applicable
     rules: []
 
   - id: Req-7.1.4
@@ -1617,8 +1637,11 @@ controls:
       privileges.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The application of this control is the responsibility of the
+      payment entity, and is not something the OpenShift Container Platform
+      can enforce.
+    status: not applicable
     rules: []
 
 - id: Req-7.2
@@ -1629,15 +1652,23 @@ controls:
   description: 'This access control system must include the following:'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+  status: inherently met
   controls:
   - id: Req-7.2.1
     title: 7.2.1 Coverage of all system components
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+
+      All objects in Kubernetes/OpenShift are bound to RBAC permissions.
+    status: inherently met
     rules: []
 
   - id: Req-7.2.2
@@ -1645,16 +1676,22 @@ controls:
       and function.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The application of this control is the responsibility of the
+      payment entity, and is not something the OpenShift Container Platform
+      can enforce.
+    status: not applicable
     rules: []
 
   - id: Req-7.2.3
     title: "7.2.3 Default 'deny-all' setting."
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The OpenShift Container Platform has RBAC enabled by default. With this
+      feature, any requests to the API is denied unless an explicit
+      Role or ClusterRule is bound to the entity making the request.
+    status: inherently met
     rules: []
 
 - id: Req-7.3
@@ -1662,8 +1699,11 @@ controls:
     access to cardholder data are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The application of this control is the responsibility of the
+    payment entity, and is not something the OpenShift Container Platform
+    can enforce.
+  status: not applicable
   rules: []
 
 - id: Req-8.1
