@@ -13186,7 +13186,7 @@ controls:
   - moderate
   - low
 - id: SC-5(1)
-  status: supported
+  status: automated
   notes: |-
     It is recommended that all workloads in the system establish appropriate
     resource requests and limits to avoid resource starvation of critical
@@ -13204,7 +13204,8 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-configuring.html#nodes-pods-configuring-bandwidth_nodes-pods-configuring
-  rules: []
+  rules: 
+  - routes_rate_limit
 - id: SC-5(2)
   status: supported
   notes: |-
