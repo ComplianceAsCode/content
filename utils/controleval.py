@@ -40,9 +40,11 @@ def validate_args(ctrlmgr, args):
 def calculate_stats(ctrls):
     total = len(ctrls)
     ctrlstats = collections.defaultdict(int)
+    ctrllist = collections.defaultdict(set)
 
     for ctrl in ctrls:
         ctrlstats[str(ctrl.status)] += 1
+        ctrllist[str(ctrl.status)].add(ctrl)
 
     applicable = total - ctrlstats[controls.Status.NOT_APPLICABLE]
     assessed = ctrlstats[controls.Status.AUTOMATED] + ctrlstats[controls.Status.SUPPORTED] + \
@@ -58,6 +60,12 @@ def calculate_stats(ctrls):
     print_specific_stat("Documentation", ctrlstats[controls.Status.DOCUMENTATION], applicable)
     print_specific_stat("Inherently Met", ctrlstats[controls.Status.INHERENTLY_MET], applicable)
     print_specific_stat("Partial", ctrlstats[controls.Status.PARTIAL], applicable)
+
+    applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
+    assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
+        .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
+        .union(ctrllist[controls.Status.PARTIAL])
+    print("Missing:", ", ".join(sorted(c.id for c in applicablelist - assessedlist)))
 
 
 def print_specific_stat(stat, current, total):
