@@ -1535,7 +1535,7 @@ class Rule(XCCDFEntity):
 
         add_sub_element(rule, 'rationale', self.rationale)
 
-        for cpe_platform_name in self.cpe_platform_names:
+        for cpe_platform_name in sorted(self.cpe_platform_names):
             platform_el = ET.SubElement(rule, "platform")
             platform_el.set("idref", "#"+cpe_platform_name)
 
