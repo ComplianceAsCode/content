@@ -1,0 +1,78 @@
+{
+  "$id": "http://complianceascode.io/schemas/1.0/rule.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "documentation_complete": {
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string"
+    },
+    "prodtype": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "identifiers": {
+      "type": "object",
+      "uniqueItems": true
+    },
+    "references": {
+      "type": "object",
+      "uniqueItems": true
+    },
+    "ocil_clause": {
+      "type": "string"
+    },
+    "ocil": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "conflicts": {
+      "type": "array"
+    },
+    "requires": {
+      "type": "array"
+    },
+    "template": {
+      "type": "object",
+      "additionalProperties": false,
+      "uniqueItems": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "vars": {
+          "type": "object",
+          "uniqueItems": true
+        }
+      }
+    }
+  },
+  "required": [
+    "documentation_complete",
+    "title",
+    "description",
+    "rationale"
+  ],
+  "uniqueItems": true
+}
