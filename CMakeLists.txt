@@ -428,7 +428,6 @@ else()
 endif()
 
 ssg_define_guide_and_table_tests()
-ssg_build_rule_dir_json()
 
 install(FILES "${CMAKE_SOURCE_DIR}/LICENSE"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})

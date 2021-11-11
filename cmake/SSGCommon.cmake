@@ -761,24 +761,12 @@ macro(ssg_make_all_tables PRODUCT)
     )
 endmacro()
 
-macro(ssg_build_rule_dir_json)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/rule_dirs.json"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/rule_dir_json.py" --output "${CMAKE_BINARY_DIR}/rule_dirs.json" --root "${CMAKE_SOURCE_DIR}"
-        COMMENT "[rule_dir_json] generating rule_dirs.json"
-    )
-    add_custom_target("generate-ssg-rule_dir_json"
-        DEPENDS "${CMAKE_BINARY_DIR}/rule_dirs.json"
-    )
-endmacro()
-
 macro(ssg_build_disa_delta PRODUCT PROFILE)
         file(GLOB DISA_SCAP_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-scap.xml")
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --json "${CMAKE_BINARY_DIR}/rule_dirs.json" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet
-            DEPENDS "${CMAKE_BINARY_DIR}/rule_dirs.json"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet --build-root ${CMAKE_BINARY_DIR} --resolved-rules-dir
             DEPENDS "${PRODUCT}-content"
             COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailoring file"
          )
@@ -787,8 +775,8 @@ macro(ssg_build_disa_delta PRODUCT PROFILE)
             DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
         )
 
-        install(FILES "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_{$PROFILE}_delta_tailoring.xml"
-                DESTINATION SSG_TAILORING_INSTALL_DIR)
+        install(FILES "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
+                DESTINATION ${SSG_TAILORING_INSTALL_DIR})
 endmacro()
 
 # Top-level macro to build all output artifacts for the specified product.

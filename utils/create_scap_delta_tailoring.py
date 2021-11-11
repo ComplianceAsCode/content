@@ -15,8 +15,9 @@ import ssg.build_yaml
 import ssg.environment
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
-BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
+SSG_BUILD_ROOT = os.path.join(SSG_ROOT, "build")
+RULES_JSON = os.path.join(SSG_BUILD_ROOT, "rule_dirs.json")
+BUILD_CONFIG = os.path.join(SSG_BUILD_ROOT, "build_config.yml")
 NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.2': ssg.constants.XCCDF12_NS}
 PROFILE = 'stig'
@@ -55,22 +56,42 @@ def handle_rule_yaml(product: str, rule_id: str, rule_dir: str, guide_dir: str, 
     return rule_obj
 
 
-def get_platform_rules(product: str, json_path: str) -> list:
-    rules_json_file = open(json_path, 'r')
-    rules_json = json.load(rules_json_file)
+def get_platform_rules(product: str, json_path: str, resolved_rules_dir: bool, build_root: str) \
+        -> list:
     platform_rules = list()
-    for rule in rules_json.values():
-        if product in rule['products']:
+    if resolved_rules_dir:
+        rules_path = os.path.join(build_root, product, 'rules')
+        for file in os.listdir(rules_path):
+            if not file.endswith('.yml'):
+                continue
+            rule_id = file.replace('.yml', '')
+            rule = dict()
+            rule_yaml = ssg.yaml.open_raw(os.path.join(rules_path, file))
+            rule['id'] = rule_id
+            rule['references'] = dict()
+            rule['references'] = rule_yaml['references']
             platform_rules.append(rule)
-    if not rules_json_file.closed:
-        rules_json_file.close()
+    else:
+        rules_json_file = open(json_path, 'r')
+        rules_json = json.load(rules_json_file)
+        for rule in rules_json.values():
+            if product in rule['products']:
+                platform_rules.append(rule)
+        if not rules_json_file.closed:
+            rules_json_file.close()
     return platform_rules
 
 
 def get_implemented_stigs(product: str, root_path: str, build_config_yaml_path: str,
-                          reference_str: str, json_path: str) -> dict:
-    platform_rules = get_platform_rules(product, json_path)
+                          reference_str: str, json_path: str, resolved_rules_dir: bool,
+                          build_root: str) -> dict:
+    platform_rules = get_platform_rules(product, json_path, resolved_rules_dir, build_root)
 
+    if resolved_rules_dir:
+        platform_rules_dict = dict()
+        for rule in platform_rules:
+            platform_rules_dict[rule['id']] = rule
+        return platform_rules_dict
     product_dir = os.path.join(root_path, "products", product)
     product_yaml_path = os.path.join(product_dir, "product.yml")
     env_yaml = ssg.environment.open_environment(build_config_yaml_path, str(product_yaml_path))
@@ -109,7 +130,8 @@ def setup_tailoring_profile(profile_id: str, profile_root: ET.Element) -> ET.Ele
 def create_tailoring(args) -> ET.Element:
     benchmark_root = ET.parse(args.manual).getroot()
     known_rules = get_implemented_stigs(args.product, args.root, args.build_config_yaml,
-                                        args.reference, args.json)
+                                        args.reference, args.json, args.resolved_rules_dir,
+                                        args.build_root)
     needed_rules = filter_out_implemented_rules(known_rules, NS, benchmark_root)
     profile_root = get_profile(args.product, args.profile)
     selections = profile_root.findall('xccdf-1.2:select', NS)
@@ -158,6 +180,10 @@ def parse_args() -> argparse.Namespace:
                         help="Id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default")
     parser.add_argument("-q", "--quiet", action='store_true',
                         help="The script will not produce any output.")
+    parser.add_argument("--resolved-rules-dir", action='store_true',
+                        help="The script will not use rules_dir.json, but instead uses the data from the build.")
+    parser.add_argument('-B', '--build-root', type=str, default=SSG_BUILD_ROOT,
+                        help=f"The root of the CMake working directory, defaults to {SSG_BUILD_ROOT}")
     return parser.parse_args()
 
 
