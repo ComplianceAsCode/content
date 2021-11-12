@@ -172,8 +172,8 @@ class Remediation(object):
         self.remediation_type = remediation_type
         self.associated_rule = None
 
-    def load_rule_from(self, rule_path):
-        self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
+    def associate_rule(self, rule_obj):
+        self.associated_rule = rule_obj
         self.expand_env_yaml_from_rule()
 
     def expand_env_yaml_from_rule(self):
@@ -188,10 +188,11 @@ class Remediation(object):
         return parse_from_file_with_jinja(self.file_path, env_yaml)
 
 
-def process(remediation, env_yaml, fixes, rule_id):
+def process(remediation, env_yaml):
     """
-    Process a fix, adding it to fixes iff the file is of a valid extension
-    for the remediation type and the fix is valid for the current product.
+    Process a fix, and return the processed fix iff the file is of a valid
+    extension for the remediation type and the fix is valid for the current
+    product.
 
     Note that platform is a required field in the contents of the fix.
     """
@@ -216,9 +217,9 @@ def process(remediation, env_yaml, fixes, rule_id):
 
     product = env_yaml["product"]
     if utils.is_applicable_for_product(platforms, product):
-        fixes[rule_id] = result
+        return result
 
-    return result
+    return None
 
 
 class BashRemediation(Remediation):
@@ -481,7 +482,8 @@ class AnsibleRemediation(Remediation):
         if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
             result = cls(snippet_fname)
             try:
-                result.load_rule_from(rule_fname)
+                rule_obj = build_yaml.Rule.from_yaml(rule_fname)
+                result.associate_rule(rule_obj)
             except ssg.yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 return None
@@ -580,6 +582,17 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
     tree.write(output_path)
 
 
+def write_fix_to_file(fix, file_path):
+    """
+    Writes a single fix to the given file path.
+    """
+    fix_contents, config = fix
+    with open(file_path, "w") as f:
+        for k, v in config.items():
+            f.write("# %s = %s\n" % (k, v))
+        f.write(fix_contents)
+
+
 def write_fixes_to_dir(fixes, remediation_type, output_dir):
     """
     Writes fixes as files to output_dir, each fix as a separate file
@@ -592,12 +605,8 @@ def write_fixes_to_dir(fixes, remediation_type, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     for fix_name, fix in fixes.items():
-        fix_contents, config = fix
         fix_path = os.path.join(output_dir, fix_name + extension)
-        with open(fix_path, "w") as f:
-            for k, v in config.items():
-                f.write("# %s = %s\n" % (k, v))
-            f.write(fix_contents)
+        write_fix_to_file(fix, fix_path)
 
 
 def get_rule_dir_remediations(dir_path, remediation_type, product=None):

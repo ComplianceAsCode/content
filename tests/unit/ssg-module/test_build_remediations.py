@@ -47,11 +47,11 @@ def test_process_fix():
 
     env_yaml = dict(product="rhel7")
     remediation_obj = remediation_cls(rhel_bash)
-    sbr.process(remediation_obj, env_yaml, fixes, "rule_dir")
+    result = sbr.process(remediation_obj, env_yaml)
 
-    assert 'rule_dir' in fixes
-    assert len(fixes['rule_dir']) == 2
-    do_test_contents(fixes['rule_dir'].contents, fixes['rule_dir'].config)
+    assert result is not None
+    assert len(result) == 2
+    do_test_contents(result.contents, result.config)
 
 
 def test_ansible_class():

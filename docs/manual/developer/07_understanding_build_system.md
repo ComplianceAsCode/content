@@ -104,7 +104,7 @@ refer to their help text for more information and usage:
    content.
  - `combine_ovals.py` -- combines separate (per-rule, shared, and templated)
    OVAL XML trees into a single larger OVAL XML document.
- - `combine_remediations.py` -- finds the separate (per-rule and templated)
+ - `collect_remediations.py` -- finds the separate (per-rule and templated)
    remediations and places them into a single directory.
  - `compile_profiles.py` -- pre-processes profiles to handle inheritance and
    the product-independent controls format.
