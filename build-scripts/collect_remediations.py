@@ -15,7 +15,10 @@ import ssg.xml
 
 
 def parse_args():
-    p = argparse.ArgumentParser()
+    p = argparse.ArgumentParser(
+        description="This script collects all remediation scripts, both "
+        "static and templated, processes them with Jinja and puts them to "
+        "the given output directory.")
     p.add_argument(
         "--build-config-yaml", required=True,
         help="YAML file with information about the build configuration. "
