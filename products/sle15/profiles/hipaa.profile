@@ -40,8 +40,6 @@ selections:
     - package_telnet_removed
     - package_telnet-server_removed
     - package_xinetd_removed
-    - service_crond_enabled
-    - service_xinetd_disabled
     - disable_host_auth
     - sshd_allow_only_protocol2
     - sshd_disable_compression
@@ -150,4 +148,12 @@ selections:
     - sebool_selinuxuser_execheap
     - sebool_selinuxuser_execmod
     - sebool_selinuxuser_execstack
+    - service_cron_enabled
+    - service_debug-shell_disabled
+    - service_rexec_disabled
+    - service_rlogin_disabled
+    - service_telnet_disabled
+    - service_xinetd_disabled
+    - service_zebra_disabled
+
 
