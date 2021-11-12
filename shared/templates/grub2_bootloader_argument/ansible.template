@@ -33,6 +33,7 @@
   ansible.builtin.shell:
     cmd: '/usr/bin/grub2-editenv - list | grep "kernelopts="'
   register: kernelopts
+  ignore_errors: yes
   changed_when: False
 
 - name: Update the bootloader menu
