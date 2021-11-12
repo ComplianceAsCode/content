@@ -13,7 +13,7 @@
 
 - name: Read signatures in GPG key
   # According to /usr/share/doc/gnupg2/DETAILS fingerprints are in "fpr" record in field 10
-  {{% if product == "rhel8" -%}}
+  {{% if product in ['rhel8', 'rhel9'] -%}}
   command: gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
   {{%- else -%}}
   command: gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"

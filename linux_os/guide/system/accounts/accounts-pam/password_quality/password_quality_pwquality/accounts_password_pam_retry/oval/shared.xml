@@ -7,7 +7,7 @@
       {{% else %}}
       <criterion comment="pam_pwquality common-password" test_ref="test_password_pam_pwquality_retry_common_password" />
       {{% endif %}}
-      {{% if product == "rhel8" -%}}
+      {{% if product in ['rhel8', 'rhel9'] -%}}
       <criterion comment="pam_pwquality password-auth" test_ref="test_password_pam_pwquality_retry_password_auth" />
       {{%- endif %}}
     </criteria>
@@ -26,7 +26,7 @@
   {{% else %}}
   {{{ test_pwquality_retry( path="/etc/pam.d/common-password", test_ref="password_pam_pwquality_retry_common_password") }}}
   {{% endif %}}
-  {{% if product == "rhel8" -%}}
+  {{% if product in ['rhel8', 'rhel9'] -%}}
   {{{ test_pwquality_retry( path="/etc/pam.d/password-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
   {{%- endif %}}
 
@@ -43,7 +43,7 @@
   {{% else %}}
   {{{ object_pwquality_retry( path="/etc/pam.d/common-password", test_ref="password_pam_pwquality_retry_common_password") }}}
   {{% endif %}}
-  {{% if product == "rhel8" -%}}
+  {{% if product in ['rhel8', 'rhel9'] -%}}
   {{{ object_pwquality_retry( path="/etc/pam.d/password-auth", test_ref="password_pam_pwquality_retry_password_auth") }}}
   {{%- endif %}}
 
