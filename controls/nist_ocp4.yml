@@ -13172,7 +13172,8 @@ controls:
     [6] https://kubernetes.io/docs/concepts/cluster-administration/flow-control/
 
     https://issues.redhat.com/browse/CMP-427
-  rules: []
+  rules: 
+  - routes_rate_limit
   description: |-
     The information system protects against or limits the effects of the following types of denial of service attacks: [Assignment: organization-defined types of denial of service attacks or reference to source for such information] by employing [Assignment: organization-defined security safeguards].
 
@@ -13221,7 +13222,8 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-priority.html
-  rules: []
+  rules: 
+  - routes_rate_limit
 - id: SC-5(3)
   status: not applicable
   notes: |-
