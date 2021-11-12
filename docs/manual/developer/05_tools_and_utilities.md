@@ -298,4 +298,4 @@ It supports the following arguments:
 
 To execute:
 
-    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m U_RHEL_8_V1R2_STIG_SCAP_1-2_Benchmark.xml
+    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r3-xccdf-scap.xml

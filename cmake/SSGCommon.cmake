@@ -761,6 +761,24 @@ macro(ssg_make_all_tables PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_disa_delta PRODUCT PROFILE)
+        file(GLOB DISA_SCAP_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-scap.xml")
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/create_scap_delta_tailoring.py" --root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}" --manual "${DISA_SCAP_REF}" --profile "${PROFILE}" --reference "stigid" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml" --quiet --build-root ${CMAKE_BINARY_DIR} --resolved-rules-dir
+            DEPENDS "${PRODUCT}-content"
+            COMMENT "[${PRODUCT}-generate-ssg-delta] generating disa tailoring file"
+         )
+
+        add_custom_target(generate-ssg-delta-${PRODUCT}-${PROFILE}
+            DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
+        )
+
+        install(FILES "${CMAKE_BINARY_DIR}/${PRODUCT}/tailoring/${PRODUCT}_${PROFILE}_delta_tailoring.xml"
+                DESTINATION ${SSG_TAILORING_INSTALL_DIR})
+endmacro()
+
 # Top-level macro to build all output artifacts for the specified product.
 # Ensures the various targets we create in the above macros are linked to
 # the default build target when applicable and handles installation steps.
@@ -874,6 +892,11 @@ macro(ssg_build_product PRODUCT)
     ssg_make_html_stats_for_product(${PRODUCT})
     add_dependencies(html-stats ${PRODUCT}-html-stats)
     add_dependencies(html-profile-stats ${PRODUCT}-html-profile-stats)
+
+    if (SSG_BUILD_DISA_DELTA_FILES AND "${PRODUCT}" MATCHES "rhel(7|8)")
+        ssg_build_disa_delta(${PRODUCT} "stig")
+        add_dependencies(${PRODUCT} generate-ssg-delta-${PRODUCT}-stig)
+    endif()
 
     add_dependencies(man_page ${PRODUCT})
 
