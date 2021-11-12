@@ -198,9 +198,9 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         list(APPEND REMEDIATION_TYPE_OPTIONS "--remediation-type" "${LANGUAGE}")
     endforeach(LANGUAGE ${LANGUAGES})
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/combined-remediations-${PRODUCT}"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/collect_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${REMEDIATION_TYPE_OPTIONS} --output-dir "${CMAKE_CURRENT_BINARY_DIR}/fixes" --fixes-from-templates-dir "${BUILD_REMEDIATIONS_DIR}"
-        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/combined-remediations-${PRODUCT}"
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
         # Acutally we mean that it depends on resolved rules.
         DEPENDS ${PRODUCT}-compile-all
         DEPENDS generate-internal-templated-content-${PRODUCT}
@@ -208,7 +208,7 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
     )
     add_custom_target(
         generate-internal-${PRODUCT}-all-fixes
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/combined-remediations-${PRODUCT}"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
     )
 endmacro()
 

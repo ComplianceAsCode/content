@@ -56,7 +56,7 @@ def prepare_output_dirs(output_dir, remediation_types):
     return output_dirs
 
 
-def combine_remediations(
+def collect_remediations(
         rule, langs, fixes_from_templates_dirs, product, output_dirs,
         env_yaml):
     for lang in langs:
@@ -107,7 +107,7 @@ def main():
             # Happens on non-debug build when a rule is
             # "documentation-incomplete"
             continue
-        combine_remediations(
+        collect_remediations(
             rule, args.remediation_type, args.fixes_from_templates_dir,
             product, output_dirs, env_yaml)
     sys.exit(0)
