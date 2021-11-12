@@ -59,38 +59,53 @@ def prepare_output_dirs(output_dir, remediation_types):
     return output_dirs
 
 
+def find_remediation(
+        fixes_from_templates_dir, rule_dir, lang, product, expected_file_name):
+    language_fixes_from_templates_dir = os.path.join(
+        fixes_from_templates_dir, lang)
+    fix_path = None
+    # first look for a static remediation
+    rule_dir_remediations = remediation.get_rule_dir_remediations(
+        rule_dir, lang, product)
+    if len(rule_dir_remediations) > 0:
+        # first item in the list has the highest priority
+        fix_path = rule_dir_remediations[0]
+    if fix_path is None:
+        # check if we have a templated remediation instead
+        if os.path.isdir(language_fixes_from_templates_dir):
+            templated_fix_path = os.path.join(
+                language_fixes_from_templates_dir, expected_file_name)
+            if os.path.exists(templated_fix_path):
+                fix_path = templated_fix_path
+    return fix_path
+
+
+def process_remediation(
+        rule, fix_path, lang, output_dirs, expected_file_name, env_yaml):
+    remediation_cls = remediation.REMEDIATION_TO_CLASS[lang]
+    remediation_obj = remediation_cls(fix_path)
+    remediation_obj.associate_rule(rule)
+    fix = remediation.process(remediation_obj, env_yaml)
+    if fix:
+        output_file_path = os.path.join(output_dirs[lang], expected_file_name)
+        remediation.write_fix_to_file(fix, output_file_path)
+
+
 def collect_remediations(
-        rule, langs, fixes_from_templates_dirs, product, output_dirs,
+        rule, langs, fixes_from_templates_dir, product, output_dirs,
         env_yaml):
+    rule_dir = os.path.dirname(rule.definition_location)
     for lang in langs:
-        rule_dir = os.path.dirname(rule.definition_location)
         ext = remediation.REMEDIATION_TO_EXT_MAP[lang]
-        remediation_cls = remediation.REMEDIATION_TO_CLASS[lang]
-        language_fixes_from_templates_dir = os.path.join(
-            fixes_from_templates_dirs, lang)
-        fix_path = None
-        # first look for a static remediation
-        rule_dir_remediations = remediation.get_rule_dir_remediations(
-            rule_dir, lang, product)
-        if len(rule_dir_remediations) > 0:
-            # first item in the list has the highest priority
-            fix_path = rule_dir_remediations[0]
-        if fix_path is None:
-            # check if we have a templated remediation instead
-            if os.path.isdir(language_fixes_from_templates_dir):
-                templated_fix_path = os.path.join(
-                    language_fixes_from_templates_dir, rule.id_ + ext)
-                if os.path.exists(templated_fix_path):
-                    fix_path = templated_fix_path
+        expected_file_name = rule.id_ + ext
+        fix_path = find_remediation(
+            fixes_from_templates_dir, rule_dir, lang, product,
+            expected_file_name)
         if fix_path is None:
             # neither static nor templated remediation found
             continue
-        remediation_obj = remediation_cls(fix_path)
-        remediation_obj.associate_rule(rule)
-        fix = remediation.process(remediation_obj, env_yaml)
-        if fix:
-            output_file_path = os.path.join(output_dirs[lang], rule.id_ + ext)
-            remediation.write_fix_to_file(fix, output_file_path)
+        process_remediation(
+            rule, fix_path, lang, output_dirs, expected_file_name, env_yaml)
 
 
 def main():
