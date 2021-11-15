@@ -16,7 +16,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product rhel7 --derivatives
+        run: |-
+          ./build_product \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              rhosp10 \
+              rhosp13 \
+              sle12 \
+              sle15 \
+              ubuntu2004
+              --derivatives
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
