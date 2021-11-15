@@ -28,9 +28,6 @@ jobs:
               rhel9 \
               rhosp10 \
               rhosp13 \
-              sle12 \
-              sle15 \
-              ubuntu2004
               --derivatives
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
