@@ -97,7 +97,8 @@ def main():
         raise RuntimeError("No Benchmark found!")
 
     for namespace, benchmark in benchmarks:
-        ssg.build_derivatives.profile_handling(benchmark, namespace)
+        if args[1] != "cs9":
+            ssg.build_derivatives.profile_handling(benchmark, namespace)
         if not ssg.build_derivatives.add_cpes(benchmark, namespace, mapping):
             raise RuntimeError(
                 "Could not add derivative OS CPEs to Benchmark '%s'."

@@ -282,6 +282,7 @@ RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
     "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
+    "cpe:/o:redhat:enterprise_linux:9": "cpe:/o:centos:centos:9",
 }
 
 RHEL_SL_CPE_MAPPING = {
