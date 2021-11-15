@@ -177,7 +177,10 @@ class Policy():
                 if file.endswith('.yml'):
                     full_path = os.path.join(self.controls_dir, file)
                     yaml_contents = ssg.yaml.open_and_expand(full_path, self.env_yaml)
-                    controls_tree.append(yaml_contents)
+                    for control in yaml_contents['controls']:
+                        controls_tree.append(control)
+                elif file.startswith('.'):
+                    continue
                 else:
                     raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
         for c in self._parse_controls_tree(controls_tree):

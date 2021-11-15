@@ -13,48 +13,44 @@ controls_dir = os.path.join(data_dir, "controls_dir")
 profiles_dir = os.path.join(data_dir, "profiles_dir")
 
 
-def test_controls_load():
+def _load_test(profile):
     product_yaml = os.path.join(ssg_root, "products", "rhel8", "product.yml")
     build_config_yaml = os.path.join(ssg_root, "build", "build_config.yml")
     env_yaml = open_environment(build_config_yaml, product_yaml)
     controls_manager = ssg.controls.ControlsManager(controls_dir, env_yaml)
     controls_manager.load()
-
-    c_r1 = controls_manager.get_control("abcd", "R1")
+    c_r1 = controls_manager.get_control(profile, "R1")
     assert c_r1.title == "User session timeout"
     assert c_r1.description == "Remote user sessions must be closed after " \
-        "a certain period of inactivity."
+                               "a certain period of inactivity."
     assert c_r1.automated == "yes"
-
     c_r1_rules = c_r1.selected
     assert "sshd_set_idle_timeout" in c_r1_rules
     assert "accounts_tmout" in c_r1_rules
     assert "var_accounts_tmout=10_min" not in c_r1_rules
     assert "var_accounts_tmout" in c_r1.variables
     assert c_r1.variables["var_accounts_tmout"] == "10_min"
-
     # abcd is a level-less policy
     assert c_r1.levels == ["default"]
-
     assert "vague" in c_r1.notes
-
-    c_r2 = controls_manager.get_control("abcd", "R2")
+    c_r2 = controls_manager.get_control(profile, "R2")
     assert c_r2.automated == "no"
     assert c_r2.note == "This is individual depending on the system " \
-        "workload therefore needs to be audited manually."
+                        "workload therefore needs to be audited manually."
     assert len(c_r2.selected) == 0
-
     assert not c_r2.notes
-
-    c_r4 = controls_manager.get_control("abcd", "R4")
+    c_r4 = controls_manager.get_control(profile, "R4")
     assert len(c_r4.selected) == 3
-
     c_r4_rules = c_r4.selected
     assert "accounts_passwords_pam_faillock_deny_root" in c_r4_rules
     assert "accounts_password_pam_minlen" in c_r4_rules
     assert "accounts_password_pam_ocredit" in c_r4_rules
     assert "var_password_pam_ocredit" in c_r4.variables
     assert c_r4.variables["var_password_pam_ocredit"] == "1"
+
+
+def test_controls_load():
+    _load_test("abcd")
 
 
 def test_controls_levels():
@@ -131,8 +127,6 @@ def test_controls_levels():
     assert len(s2_low) == 1
     assert s2_low[0].variables["var_some_variable"] == "1"
     assert s2_low[0].variables["var_password_pam_minlen"] == "1"
-
-
 
 
 def test_controls_load_product():
@@ -284,3 +278,7 @@ def profile_resolution_all(cls, profile_all):
     # by profile selections, not by using controls, so it should be in
     # the resolved profile as well.
     assert "security_patches_up_to_date" in selected
+
+
+def test_load_control_from_folder():
+    _load_test("jklm")
