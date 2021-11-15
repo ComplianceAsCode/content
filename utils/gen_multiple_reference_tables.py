@@ -38,7 +38,7 @@ if __name__ == "__main__":
     for reference in args.refcategory:
         reference = ssg.constants.REFERENCES[reference]
 
-        renderer.process_rules(reference.regex_with_groups, reference.id, reference.title)
+        renderer.process_rules(reference)
         result = renderer.get_result()
         output = args.output_template.format(ref_id=reference.id)
         with open(output, "w") as outfile:

@@ -32,16 +32,17 @@ class HtmlOutput(tables.table_renderer.TableHtmlOutput):
         filenames = [os.path.join(self.rules_root, rid + ".yml") for rid in eligible_rule_ids]
         return [ssg.build_yaml.Rule.from_yaml(f, self.env_yaml) for f in filenames]
 
-    def _generate_shortened_ref(self, ref_format, rule):
-        shortened_ref = super(HtmlOutput, self)._generate_shortened_ref(ref_format, rule)
-        if shortened_ref == self.DEFAULT_SHORTENED_REF:
+    def _generate_shortened_ref(self, reference, rule):
+        shortened_ref = super(HtmlOutput, self)._generate_shortened_ref(reference, rule)
+        if shortened_ref == self.DEFAULT_SHORTENED_REF and self.verbose:
             print("Rule '{rid}' is included in the profile {profile_id}, "
-                  "but doesn't contain the corresponding reference"
-                  .format(rid=rule.id_, profile_id=self.profile.id_), file=sys.stderr)
+                  "but doesn't contain the {ref_id} reference"
+                  .format(rid=rule.id_, profile_id=self.profile.id_, ref_id=reference.id),
+                  file=sys.stderr)
         return shortened_ref
 
-    def process_rules(self, ref_format, reference_id, reference_title):
-        super(HtmlOutput, self).process_rules(ref_format, reference_id, reference_title)
+    def process_rules(self, reference):
+        super(HtmlOutput, self).process_rules(reference)
 
         self.template_data["profile"] = self.profile
 
@@ -53,7 +54,8 @@ def update_parser(parser):
 
 def parse_args():
     parser = HtmlOutput.create_parser(
-        "and with links to the upstream rule source.")
+        "Generate HTML table that maps references to rules in context of a profile "
+        "using compiled rules and compiled profiles as source of data.")
     tables.table_renderer.update_parser(parser)
     update_parser(parser)
     return parser.parse_args()
@@ -61,7 +63,8 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    renderer = HtmlOutput(args.product, args.build_dir, profile_id=args.profile)
+    renderer = HtmlOutput(
+        args.product, args.build_dir, profile_id=args.profile, verbose=args.verbose)
     reference = ssg.constants.REFERENCES[args.refcategory]
-    renderer.process_rules(reference.regex_with_groups, reference.id, reference.title)
+    renderer.process_rules(reference)
     renderer.output_results(args)

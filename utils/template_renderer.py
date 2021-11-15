@@ -46,7 +46,7 @@ class FlexibleLoader(ssg.jinja.AbsolutePathFileSystemLoader):
 class Renderer(object):
     TEMPLATE_NAME = ""
 
-    def __init__(self, product, build_dir):
+    def __init__(self, product, build_dir, verbose=False):
         self.project_directory = pathlib.Path(os.path.dirname(__file__)).parent.resolve()
 
         self.product = product
@@ -56,6 +56,7 @@ class Renderer(object):
             "{build_dir}/{product}".format(build_dir=build_dir, product=product))
 
         self.template_data = dict()
+        self.verbose = verbose
 
     def get_env_yaml(self, build_dir):
         product_yaml = self.project_directory / "products" / self.product / "product.yml"
@@ -116,4 +117,5 @@ class Renderer(object):
         parser.add_argument("--build-dir", default="build", help="Path to the build directory")
         parser.add_argument("--title", "-t", default="", help="Title of the document")
         parser.add_argument("--output", help="The filename to generate")
+        parser.add_argument("--verbose", action="store_true", default=False)
         return parser

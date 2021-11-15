@@ -81,30 +81,30 @@ class TableHtmlOutput(template_renderer.Renderer):
     def _get_eligible_rules(self, refcat):
         raise NotImplementedError
 
-    def _generate_shortened_ref(self, ref_format, rule):
-        shortened_ref = shorten_relevant_ref(ref_format, rule.relevant_refs[0])
+    def _generate_shortened_ref(self, reference, rule):
+        shortened_ref = shorten_relevant_ref(reference.regex_with_groups, rule.relevant_refs[0])
         if not shortened_ref:
             shortened_ref = self.DEFAULT_SHORTENED_REF
         return shortened_ref
 
-    def process_rules(self, ref_format, reference_id, reference_title=""):
-        eligible_rules = self._get_eligible_rules(reference_id)
+    def process_rules(self, reference):
+        eligible_rules = self._get_eligible_rules(reference.id)
 
         output_rules = collections.defaultdict(list)
         for rule in eligible_rules:
             rid = rule.id_
             self._resolve_var_substitutions(rule)
 
-            relevant_refs = rule.references.get(reference_id, "")
+            relevant_refs = rule.references.get(reference.id, "")
             relevant_refs = relevant_refs.split(",")
 
-            rule.relevant_refs = process_refs(ref_format, relevant_refs)
-            shortened_ref = self._generate_shortened_ref(ref_format, rule)
+            rule.relevant_refs = process_refs(reference.regex_with_groups, relevant_refs)
+            shortened_ref = self._generate_shortened_ref(reference, rule)
             output_rules[shortened_ref].append(rule)
 
         self.template_data["rules_by_shortref"] = output_rules
         self.template_data["sorted_refs"] = sorted(list(output_rules.keys()))
-        self.template_data["reference_title"] = reference_title
+        self.template_data["reference_title"] = reference.name
         self.template_data["product"] = self.product
         self.template_data["product_full_name"] = self.product
         for full, short in ssg.constants.FULL_NAME_TO_PRODUCT_MAPPING.items():
@@ -115,4 +115,5 @@ class TableHtmlOutput(template_renderer.Renderer):
 
 def update_parser(parser):
     parser.add_argument(
-        "refcategory", metavar="REFERENCE_ID", help="Category of the rule reference")
+        "refcategory", metavar="REFERENCE_ID",
+        choices=ssg.constants.REFERENCES.keys(), help="Category of the rule reference")

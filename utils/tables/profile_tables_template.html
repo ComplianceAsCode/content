@@ -14,6 +14,7 @@
 <table>
 <thead>
   <td>Mapping</td>
+  <td>CCE</td>
   <td>Rule Title</td>
   <td>Description</td>
   <td>Rationale</td>
@@ -24,6 +25,7 @@
 {{% for rule in rules -%}}
 <tr>
   <td>{{{ "<br/>".join(rule.relevant_refs) }}}</td>
+  <td>{{{ rule.identifiers.get("cce", "N/A") }}}</td>
   <td>{{{ rule.title }}}</td>
   <td xml:lang="en-US">
 {{{ rule.description }}}

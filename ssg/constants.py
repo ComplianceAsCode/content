@@ -235,23 +235,26 @@ REF_PREFIX_MAP = {
     "stigid": "DISA-STIG",
 }
 
-Reference = collections.namedtuple("Reference", ("id", "title", "url", "regex_with_groups"))
+Reference = collections.namedtuple("Reference", ("id", "name", "url", "regex_with_groups"))
 
 REFERENCES = dict(
     anssi=Reference(
-        id="anssi", title="ANSSI", url=anssi_ns,
+        id="anssi", name="ANSSI", url=anssi_ns,
         regex_with_groups=r"BP28\(R(\d+)\)"),
     cis=Reference(
-        id="cis", title="CIS", url=cis_ns,
+        id="cis", name="CIS", url=cis_ns,
         regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     cui=Reference(
-        id="cui", title=REF_PREFIX_MAP["cui"], url=cui_ns,
+        id="cui", name=REF_PREFIX_MAP["cui"], url=cui_ns,
         regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
     nist=Reference(
-        id="nist", title=REF_PREFIX_MAP["nist"], url="",
+        id="nist", name=REF_PREFIX_MAP["nist"], url="",
         regex_with_groups=r".*-(\d+)(?:\((\d+)\))?"),
+    ospp=Reference(
+        id="ospp", name="OSPP", url=SSG_REF_URIS["ospp"],
+        regex_with_groups=r"(\w+)(?:\.(\d+)(?:\.([^\.]+)(?:\.([^\.]+))?)?)?"),
     pcidss=Reference(
-        id="pcidss", title=REF_PREFIX_MAP["pcidss"], url="",
+        id="pcidss", name=REF_PREFIX_MAP["pcidss"], url="",
         regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
 )
 

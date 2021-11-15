@@ -36,12 +36,12 @@ class HtmlOutput(tables.table_renderer.TableHtmlOutput):
                 rules.append(rule)
         return rules
 
-    def process_rules(self, ref_format, reference_id, reference_title):
-        super(HtmlOutput, self).process_rules(ref_format, reference_id, reference_title)
+    def process_rules(self, reference):
+        super(HtmlOutput, self).process_rules(reference)
 
         self.template_data["title"] = (
             "{product} rules by {refcat} references"
-            .format(product=self.product, refcat=reference_title)
+            .format(product=self.product, refcat=reference.name)
         )
 
 
@@ -51,7 +51,8 @@ def update_parser(parser):
 
 def parse_args():
     parser = HtmlOutput.create_parser(
-        "and with links to the upstream rule source.")
+        "Generate HTML table that maps references to rules "
+        "using compiled rules as source of data.")
     tables.table_renderer.update_parser(parser)
     update_parser(parser)
     return parser.parse_args()
@@ -59,7 +60,7 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    renderer = HtmlOutput(args.product, args.build_dir)
+    renderer = HtmlOutput(args.product, args.build_dir, args.verbose)
     reference = ssg.constants.REFERENCES[args.refcategory]
-    renderer.process_rules(reference.regex_with_groups, reference.id, reference.title)
+    renderer.process_rules(reference)
     renderer.output_results(args)
