@@ -1688,7 +1688,7 @@ class Rule(XCCDFEntity):
         # legacy XSLT implementation.
         ocil_clause = self.ocil_clause if self.ocil_clause else ""
         question_text.text = (
-            "{0}\n      Is it the case that {1}?\n      ".format(
+            u"{0}\n      Is it the case that {1}?\n      ".format(
                 question_text.text if question_text.text is not None else "",
                 ocil_clause))
         return (questionnaire, action, boolean_question)

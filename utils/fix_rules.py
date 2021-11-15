@@ -596,7 +596,7 @@ def has_unsorted_prodtype(yaml_file, product_yaml=None):
 
 
 @command("empty_identifiers", "check and fix rules with empty identifiers")
-def fix_empty_identifiers(args, product_yaml) -> int:
+def fix_empty_identifiers(args, product_yaml):
     results = find_rules(args, has_empty_identifier)
     print("Number of rules with empty identifiers: %d" % len(results))
 

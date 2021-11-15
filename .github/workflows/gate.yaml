@@ -5,6 +5,34 @@ on:
   pull_request:
     branches: [ 'master', 'stabilization*' ]
 jobs:
+  validate-centos7:
+    name: Build, Test on CentOS 7 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: centos:7
+    steps:
+      - name: Install Deps
+        run: yum install -y cmake make openscap-utils PyYAML libxslt expat xml-common python-jinja2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |-
+          ./build_product \
+              chromium \
+              fedora \
+              firefox \
+              fuse6 \
+              rhcos4 \
+              rhel7 \
+              rhel8 \
+              rhel9 \
+              rhosp10 \
+              rhosp13 \
+              --derivatives
+      - name: Test
+        run: ctest -j2 --output-on-failure -E unique-stigids
+        working-directory: ./build
+
   validate-suse:
     name: Build, Test on OpenSUSE Leap 15 (Container)
     runs-on: ubuntu-latest
