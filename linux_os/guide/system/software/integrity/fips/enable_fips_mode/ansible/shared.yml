@@ -4,5 +4,12 @@
 # complexity = medium
 # disruption = medium
 
-- name: enable fips mode
+- name: Check to see the current status of FIPS mode
+  command: /usr/bin/fips-mode-setup --check
+  register: is_fips_enabled
+  changed_when: false
+
+- name: Enable FIPS mode
   command: /usr/bin/fips-mode-setup --enable
+  when:
+    - is_fips_enabled.stdout.find('FIPS mode is enabled.') == -1
