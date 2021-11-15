@@ -8,22 +8,18 @@ set(DISA_SRG_TYPE "os")
 
 ssg_build_product(${PRODUCT})
 
-ssg_build_html_table_by_ref(${PRODUCT} "nist")
-#ssg_build_html_table_by_ref(${PRODUCT} "cui")
-#ssg_build_html_table_by_ref(${PRODUCT} "cis")
-#ssg_build_html_table_by_ref(${PRODUCT} "pcidss")
-#ssg_build_html_table_by_ref(${PRODUCT} "anssi")
+ssg_build_html_ref_tables("${PRODUCT}" "table-${PRODUCT}-{ref_id}refs" "nist")
 
-#ssg_build_html_nistrefs_table(${PRODUCT} "standard")
-#ssg_build_html_nistrefs_table(${PRODUCT} "ospp")
-#ssg_build_html_nistrefs_table(${PRODUCT} "stig")
-ssg_build_html_nistrefs_table(${PRODUCT} "moderate")
+#ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-ospp" "${PRODUCT}" "ospp" "nist")
+#ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-standard" "${PRODUCT}" "standard" "nist")
+#ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-stig" "${PRODUCT}" "stig" "nist")
+ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-moderate" "${PRODUCT}" "moderate" "nist")
 
 # Uncomment when anssi profiles are marked documentation_complete: true
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_minimal")
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_intermediary")
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_enhanced")
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_high")
+#ssg_build_html_profile_table("table-${PRODUCT}-anssirefs-bp28_minimal" "${PRODUCT}" "anssi_bp28_minimal" "anssi")
+#ssg_build_html_profile_table("table-${PRODUCT}-anssirefs-bp28_enhanced" "${PRODUCT}" "anssi_bp28_enhanced" "anssi")
+#ssg_build_html_profile_table("table-${PRODUCT}-anssirefs-bp28_intermediary" "${PRODUCT}" "anssi_bp28_intermediary" "anssi")
+#ssg_build_html_profile_table("table-${PRODUCT}-anssirefs-bp28_high" "${PRODUCT}" "anssi_bp28_high" "anssi")
 
 ssg_build_html_cce_table(${PRODUCT})
 

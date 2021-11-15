@@ -1203,7 +1203,7 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
 endmacro()
 
 
-macro(ssg_build_html_ref_tables PRODUCT OUTPUT_TEMPLATE REPRESENTATIVE_BASENAME REFERENCES)
+macro(ssg_build_html_ref_tables PRODUCT OUTPUT_TEMPLATE REFERENCES)
     set(OUTPUTS_LIST "")
     set(REFS_STR "")
     foreach(ref ${REFERENCES})
@@ -1245,10 +1245,10 @@ macro(ssg_build_html_profile_table BASENAME PRODUCT PROFILE REFERENCE)
         COMMENT "[${PRODUCT}-tables] generating HTML refs table for ${PROFILE} profile"
     )
     add_custom_target(
-        generate-${PRODUCT}-table-${PROFILE}
+        generate-${PRODUCT}-profile-table-${PROFILE}
         DEPENDS "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
     )
-    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-${PROFILE})
+    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-profile-table-${PROFILE})
 
     # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
     # also needs to set the variable in local scope for next macro tables
