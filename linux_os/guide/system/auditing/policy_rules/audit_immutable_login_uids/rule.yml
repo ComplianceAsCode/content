@@ -11,7 +11,8 @@ title: 'Configure immutable Audit login UIDs'
 " %}}
 
 description: |-
-    Configure kernel to prevent modification of login UIDs once they are set. Changing login UUIDs while this configuration is enforced requires special capabilities which are not available to unprivileged users.   
+    Configure kernel to prevent modification of login UIDs once they are set.
+    Changing login UIDs while this configuration is enforced requires special capabilities which are not available to unprivileged users.
 
     The following rules configure audit as described above:
     <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
