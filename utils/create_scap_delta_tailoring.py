@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import argparse
 import datetime
@@ -23,17 +23,22 @@ NS = {'scap': ssg.constants.datastream_namespace,
 PROFILE = 'stig'
 
 
-def get_profile(product: str, profile_name: str) -> ET.Element:
-    ds_root = ET.parse(os.path.join(SSG_ROOT, 'build', f'ssg-{product}-ds.xml')).getroot()
+def get_profile(product, profile_name):
+    ds_root = ET.parse(os.path.join(SSG_ROOT, 'build', 'ssg-{product}-ds.xml'
+                                    .format(product=product))).getroot()
     profiles = ds_root.findall(
-        f'.//{{{NS["scap"]}}}component/{{{NS["xccdf-1.2"]}}}Benchmark/{{{NS["xccdf-1.2"]}}}Profile'
+        './/{{{scap}}}component/{{{xccdf}}}Benchmark/{{{xccdf}}}Profile'.format(
+            scap=NS["scap"], xccdf=NS["xccdf-1.2"])
     )
     for profile in profiles:
         if profile.attrib['id'].endswith(profile_name):
             return profile
 
 
-def filter_out_implemented_rules(known_rules: dict, ns: dict, root: ET.Element) -> dict:
+get_profile.__annotations__ = {'product': str, 'profile_name': str, 'return': ET.Element}
+
+
+def filter_out_implemented_rules(known_rules, ns, root):
     needed_rules = known_rules.copy()
     groups = root.findall('.//scap:component/xccdf-1.2:Benchmark/xccdf-1.2:Group', ns)
     for group in groups:
@@ -45,8 +50,11 @@ def filter_out_implemented_rules(known_rules: dict, ns: dict, root: ET.Element) 
     return needed_rules
 
 
-def handle_rule_yaml(product: str, rule_id: str, rule_dir: str, guide_dir: str, env_yaml: dict) \
-        -> dict:
+filter_out_implemented_rules.__annotations__ = {'known_rules': dict, 'ns': dict,
+                                                'root': ET.Element, 'return': dict}
+
+
+def handle_rule_yaml(product, rule_id, rule_dir, guide_dir, env_yaml):
     rule_obj = {'id': rule_id, 'dir': rule_dir, 'guide': guide_dir}
     rule_file = ssg.rules.get_rule_dir_yaml(rule_dir)
 
@@ -56,8 +64,11 @@ def handle_rule_yaml(product: str, rule_id: str, rule_dir: str, guide_dir: str, 
     return rule_obj
 
 
-def get_platform_rules(product: str, json_path: str, resolved_rules_dir: bool, build_root: str) \
-        -> list:
+handle_rule_yaml.__annotations__ = {'product': str, 'rule_id': str, 'rule_dir': str,
+                                    'guide_dir': str, 'env_yaml': dict, 'return': dict}
+
+
+def get_platform_rules(product, json_path, resolved_rules_dir, build_root):
     platform_rules = list()
     if resolved_rules_dir:
         rules_path = os.path.join(build_root, product, 'rules')
@@ -82,9 +93,13 @@ def get_platform_rules(product: str, json_path: str, resolved_rules_dir: bool, b
     return platform_rules
 
 
-def get_implemented_stigs(product: str, root_path: str, build_config_yaml_path: str,
-                          reference_str: str, json_path: str, resolved_rules_dir: bool,
-                          build_root: str) -> dict:
+get_platform_rules.__annotations__ = {'product': str, 'json_path': str, 'resolved_rules_dir': bool,
+                                      'build_root': str, 'return': list}
+
+
+def get_implemented_stigs(product, root_path, build_config_yaml_path,
+                          reference_str, json_path, resolved_rules_dir,
+                          build_root):
     platform_rules = get_platform_rules(product, json_path, resolved_rules_dir, build_root)
 
     if resolved_rules_dir:
@@ -112,22 +127,31 @@ def get_implemented_stigs(product: str, root_path: str, build_config_yaml_path: 
                 known_rules[ref].append(rule['id'])
             else:
                 known_rules[ref] = [rule['id']]
-    return known_rules
 
 
-def setup_tailoring_profile(profile_id: str, profile_root: ET.Element) -> ET.Element:
+get_implemented_stigs.__annotations__ = {'product': str, 'root_path': str,
+                                         'build_config_yaml_path': str, 'reference_str': str,
+                                         'json_path': str, 'resolved_rules_dir': bool,
+                                         'build_root': str, 'return': dict}
+
+
+def setup_tailoring_profile(profile_id, profile_root):
     tailoring_profile = ET.Element('xccdf-1.2:Profile')
     if profile_id:
-        tailoring_profile.set('id', f'{ssg.constants.OSCAP_PROFILE}{profile_id}')
+        tailoring_profile.set('id', '{oscap}{profile_id}'
+                              .format(oscap=ssg.constants.OSCAP_PROFILE, profile_id=profile_id))
     else:
-        tailoring_profile.set('id', f'{profile_root.attrib["id"]}_delta_tailoring')
+        tailoring_profile.set('id', '{id}_delta_tailoring'.format(id=profile_root.attrib["id"]))
     tailoring_profile.append(profile_root.find('xccdf-1.2:title', NS))
     tailoring_profile.append(profile_root.find('xccdf-1.2:description', NS))
     tailoring_profile.set('extends', profile_root.get('id'))
     return tailoring_profile
 
 
-def create_tailoring(args) -> ET.Element:
+setup_tailoring_profile.__annotations__ = {'profile_id': str, 'profile_root': ET.Element}
+
+
+def create_tailoring(args):
     benchmark_root = ET.parse(args.manual).getroot()
     known_rules = get_implemented_stigs(args.product, args.root, args.build_config_yaml,
                                         args.reference, args.json, args.resolved_rules_dir,
@@ -141,10 +165,11 @@ def create_tailoring(args) -> ET.Element:
             cac_rule_id = selection.attrib['idref'].replace(ssg.constants.OSCAP_RULE, '')
             desired_value = str([cac_rule_id] in list(needed_rules.values())).lower()
             if not selection.get('selected') == desired_value:
-                selection.set('selected',  desired_value)
+                selection.set('selected', desired_value)
                 tailoring_profile.append(selection)
                 if not args.quiet:
-                    print(f'Set rule "{cac_rule_id}" selection state to {desired_value}')
+                    print('Set rule "{cac_rule_id}" selection state to {desired_value}'
+                          .format(cac_rule_id=cac_rule_id, desired_value=desired_value))
 
     tailoring_root = ET.Element('xccdf-1.2:Tailoring')
     version = ET.SubElement(tailoring_root, 'xccdf-1.2:version',
@@ -155,10 +180,14 @@ def create_tailoring(args) -> ET.Element:
     return tailoring_root
 
 
-def parse_args() -> argparse.Namespace:
+create_tailoring.__annotations__ = {'args': argparse.Namespace, 'return': ET.Element}
+
+
+def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
-                        help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
+                        help="Path to SSG root directory (defaults to {ssg_root})"
+                        .format(ssg_root=SSG_ROOT))
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
                         help="What product to produce the tailoring file for")
     parser.add_argument("-m", "--manual", type=str, action="store", required=True,
@@ -177,14 +206,20 @@ def parse_args() -> argparse.Namespace:
                         help="Id of the created profile. Defaults to PROFILE_delta")
     parser.add_argument("--tailoring-id", type=str,
                         default='xccdf_content-disa-delta_tailoring_default',
-                        help="Id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default")
+                        help="Id of the created tailoring file. "
+                             "Defaults to xccdf_content-disa-delta_tailoring_default")
     parser.add_argument("-q", "--quiet", action='store_true',
                         help="The script will not produce any output.")
     parser.add_argument("--resolved-rules-dir", action='store_true',
-                        help="The script will not use rules_dir.json, but instead uses the data from the build.")
+                        help="The script will not use rules_dir.json, "
+                             "but instead uses the data from the build.")
     parser.add_argument('-B', '--build-root', type=str, default=SSG_BUILD_ROOT,
-                        help=f"The root of the CMake working directory, defaults to {SSG_BUILD_ROOT}")
+                        help="The root of the CMake working directory, "
+                             "defaults to {ssg_build_root}".format(ssg_build_root=SSG_BUILD_ROOT))
     return parser.parse_args()
+
+
+parse_args.__annotations__ = {'return': argparse.Namespace}
 
 
 def main():
@@ -195,10 +230,11 @@ def main():
     if args.output:
         out = os.path.join(args.output)
     else:
-        out = os.path.join(SSG_ROOT, 'build', f'{args.product}_{args.profile}_delta_tailoring.xml')
+        out = os.path.join(SSG_ROOT, 'build', '{product}_{profile}_delta_tailoring.xml'
+                           .format(product=args.product, profile=args.profile))
     tree.write(out)
     if not args.quiet:
-        print(f"Wrote tailoring file to {out}.")
+        print("Wrote tailoring file to {out}.".format(out=out))
 
 
 if __name__ == '__main__':
