@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-import _io
+
 import argparse
 import csv
 import datetime
@@ -8,6 +8,7 @@ import pathlib
 import os
 import re
 import sys
+from typing.io import TextIO
 import xml.etree.ElementTree as ET
 
 import ssg.build_yaml
@@ -29,6 +30,9 @@ SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 
 
 class DisaStatus:
+    """
+    Convert control status to a string for the spreadsheet
+    """
     PENDING = "pending"
     PLANNED = "planned"
     NOT_APPLICABLE = "Not Applicable"
@@ -46,6 +50,7 @@ class DisaStatus:
 
 
 def html_plain_text(source: str) -> str:
+    # Quick and dirty way to clean up HTML fields.
     # Add line breaks
     result = source.replace("<br />", "\n")
     # Remove all other tags
@@ -54,6 +59,8 @@ def html_plain_text(source: str) -> str:
 
 
 def get_description_root(srg: ET.Element) -> ET.Element:
+    # DISA adds escaped XML to the description field
+    # This method unescapes that XML and parses it
     description_xml = "<root>"
     description_xml += srg.find('xccdf-1.1:description', NS).text.replace('&lt;', '<') \
         .replace('&gt;', '>').replace(' & ', '')
@@ -115,46 +122,26 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> None:
-    args = parse_args()
-
-    control_full_path = pathlib.Path(args.control).absolute()
-    if not pathlib.Path.exists(control_full_path):
-        sys.stderr.write(f"Unable to find control file {control_full_path}\n")
-        exit(1)
-    srgs = get_srg_dict(args.manual)
-    control_yaml = ssg.yaml.open_raw(control_full_path)
-    with open(args.json, 'r') as json_file:
-        rule_json = json.load(json_file)
-
-    full_output = pathlib.Path(args.output)
-    with open(full_output, 'w') as csv_file:
-        csv_writer = setup_csv_writer(csv_file)
-
-        product_dir = os.path.join(args.root, "products", args.product)
-        product_yaml_path = os.path.join(product_dir, "product.yml")
-        env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
-
-        for item in control_yaml['controls']:
-            control = ssg.controls.Control.from_control_dict(item)
-            if control.selections:
-                for rule in control.selections:
-                    row = create_base_row(item, srgs)
-                    rule_object = handle_rule_yaml(args.product, rule_json[rule]['dir'], env_yaml)
-                    row['Requirement'] = rule_object.description
-                    row['Vul Discussion'] = rule_object.rationale
-                    row['Check'] = rule_object.ocil
-                    row['Fix'] = rule_object.fix
-                    row['Status'] = DisaStatus.AUTOMATED
-                    csv_writer.writerow(row)
-            else:
-                row = create_base_row(item, srgs)
-                row['Mitigation'] = control.mitigation
-                row['Artifact Description'] = control.artifact_description
-                row['Status Justification'] = control.status_justification
-                row['Status'] = DisaStatus.from_string(control.status)
-                csv_writer.writerow(row)
-        print(f"File written to {full_output}")
+def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.DictWriter,
+                   env_yaml: ssg.environment, item: dict, rule_json: dict, srgs: dict) -> None:
+    if control.selections:
+        for rule in control.selections:
+            row = create_base_row(item, srgs)
+            rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
+            row['Requirement'] = rule_object.description
+            row['Vul Discussion'] = rule_object.rationale
+            row['Check'] = rule_object.ocil
+            row['Fix'] = rule_object.fix
+            # If then control has rule by definition the status is "Applicable - Configurable"
+            row['Status'] = DisaStatus.AUTOMATED
+            csv_writer.writerow(row)
+    else:
+        row = create_base_row(item, srgs)
+        row['Mitigation'] = control.mitigation
+        row['Artifact Description'] = control.artifact_description
+        row['Status Justification'] = control.status_justification
+        row['Status'] = DisaStatus.from_string(control.status)
+        csv_writer.writerow(row)
 
 
 def create_base_row(item, srgs):
@@ -172,13 +159,44 @@ def create_base_row(item, srgs):
     return row
 
 
-def setup_csv_writer(csv_file: _io.TextIOWrapper) -> csv.DictWriter:
+def setup_csv_writer(csv_file: TextIO) -> csv.DictWriter:
     headers = ['IA Control', 'CCI', 'SRGID', 'SRG Requirement', 'Requirement',
                'SRG VulDiscussion', 'Vul Discussion', 'Status', 'SRG Check', 'Check', 'SRG Fix',
                'Fix', 'Severity', 'Mitigation', 'Artifact Description', 'Status Justification']
     csv_writer = csv.DictWriter(csv_file, headers)
     csv_writer.writeheader()
     return csv_writer
+
+
+def get_rule_json(json_path: str) -> dict:
+    with open(json_path, 'r') as json_file:
+        rule_json = json.load(json_file)
+    return rule_json
+
+
+def main() -> None:
+    args = parse_args()
+
+    control_full_path = pathlib.Path(args.control).absolute()
+    if not pathlib.Path.exists(control_full_path):
+        sys.stderr.write(f"Unable to find control file {control_full_path}\n")
+        exit(1)
+    srgs = get_srg_dict(args.manual)
+    control_yaml = ssg.yaml.open_raw(control_full_path)
+    rule_json = get_rule_json(args.json)
+
+    full_output = pathlib.Path(args.output)
+    with open(full_output, 'w') as csv_file:
+        csv_writer = setup_csv_writer(csv_file)
+
+        product_dir = os.path.join(args.root, "products", args.product)
+        product_yaml_path = os.path.join(product_dir, "product.yml")
+        env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
+
+        for item in control_yaml['controls']:
+            control = ssg.controls.Control.from_control_dict(item)
+            handle_control(args.product, control, csv_writer, env_yaml, item, rule_json, srgs)
+        print(f"File written to {full_output}")
 
 
 if __name__ == '__main__':
