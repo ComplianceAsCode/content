@@ -982,6 +982,56 @@ Each of the values under the `rules` key maps onto a rule identifier in the
 project. In the future, we could automatically assign references to rules via
 this control file.
 
+To help control length of control files content authors can create a directory with same name as the control file (without `.yml`) and add YAML files to that folder.
+Then in the folder the author can crate `.yml` files for the controls.
+See the example below.
+
+```
+$ cat controls/abcd.yml
+ 
+id: abcd
+title: ABCD Benchmark for securing Linux systems
+version: 1.2.3
+source: https://www.abcd.com/linux.pdf
+```
+
+```
+$ cat controls/abcd/R1.yml
+ 
+controls:
+  - id: R1
+    title: User session timeout
+    description: |-
+      Remote user sessions must be closed after a certain
+      period of inactivity.
+    status: automated
+    rules:
+    - sshd_set_idle_timeout
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+{{% if product == "rhel9" %}}
+    - cockpit_session_timeout
+{{% endif %}}
+```
+
+```
+$ cat controls/abcd/R2.yml
+ 
+controls:
+  - id: R2
+    title: Minimization of configuration
+    description: |-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+    status: supported
+    note: |-
+      This is individual depending on the system workload
+      therefore needs to be audited manually.
+    related_rules:
+       - systemd_target_multi_user
+```
+
+
 ### Defining levels
 
 Some real world policies, e.g.,  ANSSI, have a concept of levels.
