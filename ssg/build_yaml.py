@@ -1687,10 +1687,8 @@ class Rule(XCCDFEntity):
         # The empty ocil_clause causing broken question is in line with the
         # legacy XSLT implementation.
         ocil_clause = self.ocil_clause if self.ocil_clause else ""
-        question_text.text = (
-            "{0}\n      Is it the case that {1}?\n      ".format(
-                question_text.text if question_text.text is not None else "",
-                ocil_clause))
+        x = question_text.text if question_text.text is not None else ""
+        question_text.text = x + "\n      Is it the case that " + ocil_clause + "?\n      "
         return (questionnaire, action, boolean_question)
 
     def __hash__(self):
@@ -1983,4 +1981,4 @@ class LinearLoader(object):
             questionnaires.append(questionnaire)
             test_actions.append(action)
             questions.append(boolean_question)
-        tree.write(filename)
+        tree.write(filename, encoding="UTF-8")
