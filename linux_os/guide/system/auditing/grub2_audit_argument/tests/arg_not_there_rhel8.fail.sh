@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = Red Hat Enterprise Linux 8
+# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 
 # Removes audit argument from kernel command line in /boot/grub2/grubenv
 file="/boot/grub2/grubenv"
