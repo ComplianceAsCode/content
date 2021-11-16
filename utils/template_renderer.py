@@ -33,9 +33,9 @@ class FlexibleLoader(ssg.jinja.AbsolutePathFileSystemLoader):
         if os.path.isabs(path):
             return path
         for directory in self.lookup_dirs:
-            potential_location = pathlib.Path(directory / path)
-            if potential_location.exists():
-                return str(potential_location.absolute())
+            potential_location = os.path.join(directory, path)
+            if os.path.exists(potential_location):
+                return str(os.path.abspath(potential_location))
         return path
 
     def get_source(self, environment, template):
@@ -46,7 +46,7 @@ class FlexibleLoader(ssg.jinja.AbsolutePathFileSystemLoader):
 class Renderer(object):
     TEMPLATE_NAME = ""
 
-    def __init__(self, product, build_dir):
+    def __init__(self, product, build_dir, verbose=False):
         self.project_directory = pathlib.Path(os.path.dirname(__file__)).parent.resolve()
 
         self.product = product
@@ -56,6 +56,7 @@ class Renderer(object):
             "{build_dir}/{product}".format(build_dir=build_dir, product=product))
 
         self.template_data = dict()
+        self.verbose = verbose
 
     def get_env_yaml(self, build_dir):
         product_yaml = self.project_directory / "products" / self.product / "product.yml"
@@ -76,11 +77,26 @@ class Renderer(object):
             pathlib.PurePath(rule.definition_location)
             .relative_to(self.project_directory))
 
+    def _get_template_basedir(self):
+        if not self.TEMPLATE_NAME:
+            return None
+        path_components = os.path.split(self.TEMPLATE_NAME)
+        if len(path_components) == 1:
+            return None
+        return os.path.join(* path_components[:-1])
+
     def get_result(self):
         subst_dict = self.template_data.copy()
         subst_dict.update(self.env_yaml)
         html_jinja_template = os.path.join(os.path.dirname(__file__), self.TEMPLATE_NAME)
-        ssg.jinja._get_jinja_environment.env.loader = FlexibleLoader([self.project_directory / "utils"])
+        lookup_dirs = [self.project_directory / "utils"]
+
+        template_basedir = self._get_template_basedir()
+        if template_basedir:
+            abs_basedir = os.path.join(lookup_dirs[0], template_basedir)
+            lookup_dirs.append(abs_basedir)
+
+        ssg.jinja._get_jinja_environment.env.loader = FlexibleLoader(lookup_dirs)
         return ssg.jinja.process_file(html_jinja_template, subst_dict)
 
     def output_results(self, args):
@@ -101,4 +117,5 @@ class Renderer(object):
         parser.add_argument("--build-dir", default="build", help="Path to the build directory")
         parser.add_argument("--title", "-t", default="", help="Title of the document")
         parser.add_argument("--output", help="The filename to generate")
+        parser.add_argument("--verbose", action="store_true", default=False)
         return parser

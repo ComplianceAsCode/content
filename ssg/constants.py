@@ -4,6 +4,7 @@ from __future__ import print_function
 import os.path
 import os
 import time
+import collections
 
 
 SSG_PROJECT_NAME = "SCAP Security Guide Project"
@@ -233,6 +234,30 @@ REF_PREFIX_MAP = {
     "cjis": "CJIS",
     "stigid": "DISA-STIG",
 }
+
+Reference = collections.namedtuple("Reference", ("id", "name", "url", "regex_with_groups"))
+
+REFERENCES = dict(
+    anssi=Reference(
+        id="anssi", name="ANSSI", url=anssi_ns,
+        regex_with_groups=r"BP28\(R(\d+)\)"),
+    cis=Reference(
+        id="cis", name="CIS", url=cis_ns,
+        regex_with_groups=r"(\d+)\.(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    cui=Reference(
+        id="cui", name=REF_PREFIX_MAP["cui"], url=cui_ns,
+        regex_with_groups=r"(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    nist=Reference(
+        id="nist", name=REF_PREFIX_MAP["nist"], url="",
+        regex_with_groups=r".*-(\d+)(?:\((\d+)\))?"),
+    ospp=Reference(
+        id="ospp", name="OSPP", url=SSG_REF_URIS["ospp"],
+        regex_with_groups=r"(\w+)(?:\.(\d+)(?:\.([^\.]+)(?:\.([^\.]+))?)?)?"),
+    pcidss=Reference(
+        id="pcidss", name=REF_PREFIX_MAP["pcidss"], url="",
+        regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+)
+
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos", "example"]
