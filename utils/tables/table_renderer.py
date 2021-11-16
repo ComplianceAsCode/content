@@ -49,8 +49,8 @@ class TableHtmlOutput(template_renderer.Renderer):
     def __init__(self, * args, ** kwargs):
         super(TableHtmlOutput, self).__init__(* args, ** kwargs)
 
-        self.rules_root = str(self.built_content_path / "rules")
-        self.var_root = str(self.built_content_path / "values")
+        self.rules_root = os.path.join(self.built_content_path, "rules")
+        self.var_root = os.path.join(self.built_content_path, "values")
 
     def _get_var_value(self, varname):
         return self._get_var_value_from_default(varname)

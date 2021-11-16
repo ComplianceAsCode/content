@@ -3,7 +3,6 @@
 from glob import glob
 import collections
 import os
-import pathlib
 
 import argparse
 
@@ -47,21 +46,21 @@ class Renderer(object):
     TEMPLATE_NAME = ""
 
     def __init__(self, product, build_dir, verbose=False):
-        self.project_directory = pathlib.Path(os.path.dirname(__file__)).parent.resolve()
+        self.project_directory = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
         self.product = product
         self.env_yaml = self.get_env_yaml(build_dir)
 
-        self.built_content_path = pathlib.Path(
+        self.built_content_path = (
             "{build_dir}/{product}".format(build_dir=build_dir, product=product))
 
         self.template_data = dict()
         self.verbose = verbose
 
     def get_env_yaml(self, build_dir):
-        product_yaml = self.project_directory / "products" / self.product / "product.yml"
-        build_config_yaml = pathlib.Path(build_dir) / "build_config.yml"
-        if not (product_yaml.exists() and build_config_yaml.exists()):
+        product_yaml = os.path.join(self.project_directory, "products", self.product, "product.yml")
+        build_config_yaml = os.path.join(build_dir, "build_config.yml")
+        if not (os.path.exists(product_yaml) and os.path.exists(build_config_yaml)):
             msg = (
                 "No product yaml and/or build config found in "
                 "'{product_yaml}' and/or '{build_config_yaml}', respectively, please make sure "
@@ -73,9 +72,8 @@ class Renderer(object):
         return env_yaml
 
     def _set_rule_relative_definition_location(self, rule):
-        rule.relative_definition_location = (
-            pathlib.PurePath(rule.definition_location)
-            .relative_to(self.project_directory))
+        rule.relative_definition_location = rule.definition_location.replace(
+            self.project_directory, "")
 
     def _get_template_basedir(self):
         if not self.TEMPLATE_NAME:
@@ -89,7 +87,7 @@ class Renderer(object):
         subst_dict = self.template_data.copy()
         subst_dict.update(self.env_yaml)
         html_jinja_template = os.path.join(os.path.dirname(__file__), self.TEMPLATE_NAME)
-        lookup_dirs = [self.project_directory / "utils"]
+        lookup_dirs = [os.path.join(self.project_directory, "utils")]
 
         template_basedir = self._get_template_basedir()
         if template_basedir:
