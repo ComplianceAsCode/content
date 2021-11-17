@@ -1,21 +1,45 @@
 <def-group>
   <definition class="compliance" id="grub2_uefi_admin_username" version="1">
-    {{{ oval_metadata("The grub2 boot loader superuser should have a username that is hard to guess.") }}}
+    {{{ oval_metadata(
+              "The grub2 boot loader superuser should have a username that is hard to guess.") }}}
 
     <criteria operator="OR">
       {{{ oval_file_absent_criterion(grub2_uefi_boot_path + "/grub.cfg") }}}
-      <criterion comment="make sure a superuser is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg" test_ref="test_bootloader_uefi_unique_superuser"/>
+      <criterion comment="Superuser is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg and it
+            isn't root, admin, asministrator nor equal to any system username"
+            test_ref="test_bootloader_uefi_superuser_differ_from_other_users"/>
     </criteria>
   </definition>
 
+  <unix:password_object id="object_uefi_user_accounts" version="1">
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
+  </unix:password_object>
+
+  <local_variable id="var_uefi_user_accounts" datatype="string" version="1" comment="Variable
+          including all system usernames">
+    <object_component item_field="username" object_ref="object_uefi_user_accounts"/>
+  </local_variable>
+
   {{{ oval_file_absent(grub2_uefi_boot_path + "/grub.cfg") }}}
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg. Superuser is not root, admin, or administrator" id="test_bootloader_uefi_unique_superuser" version="1">
+  <ind:textfilecontent54_state id="state_bootloader_uefi_superuser_differ_from_other_users"
+          version="1">
+    <ind:subexpression datatype="int" operation="not equal" var_check="all"
+          var_ref="var_uefi_user_accounts" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser
+          is defined in {{{ grub2_uefi_boot_path + "/grub.cfg" }}}. Superuser is not
+          equal to other system account nor root, admin, administrator"
+          id="test_bootloader_uefi_superuser_differ_from_other_users" version="1">
     <ind:object object_ref="object_bootloader_uefi_unique_superuser" />
+    <ind:state state_ref="state_bootloader_uefi_superuser_differ_from_other_users" />
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="object_bootloader_uefi_unique_superuser" version="1">
     <ind:filepath>{{{ grub2_uefi_boot_path + "/grub.cfg" }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers="(?i)(?!root|admin|administrator)(?-i).*"$</ind:pattern>
+    <ind:pattern operation="pattern match"
+          >^[\s]*set[\s]+superusers="(?i)\b(?!(?:root|admin|administrator)\b)(\w+)"$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
