@@ -312,3 +312,4 @@ selections:
     - accounts_password_pam_pwhistory_remember_system_auth
     - sebool_ssh_sysadm_login
     - selinux_confine_to_least_privilege
+    - selinux_context_elevation_for_sudo
