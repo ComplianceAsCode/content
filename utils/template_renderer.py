@@ -20,7 +20,7 @@ This is intended to be used when templates reference other templates.
 """
 class FlexibleLoader(ssg.jinja.AbsolutePathFileSystemLoader):
     def __init__(self, lookup_dirs=None, ** kwargs):
-        super().__init__(** kwargs)
+        super(FlexibleLoader, self).__init__(** kwargs)
         self.lookup_dirs = []
         if lookup_dirs:
             if isinstance(lookup_dirs, str):
@@ -39,7 +39,7 @@ class FlexibleLoader(ssg.jinja.AbsolutePathFileSystemLoader):
 
     def get_source(self, environment, template):
         template = self._find_absolute_path(template)
-        return super().get_source(environment, template)
+        return super(FlexibleLoader, self).get_source(environment, template)
 
 
 class Renderer(object):
@@ -104,8 +104,9 @@ class Renderer(object):
         if not args.output:
             print(result)
         else:
-            with open(args.output, "w") as outfile:
-                outfile.write(result)
+            with open(args.output, "wb") as outfile:
+                result_for_output = result.encode('utf8', 'replace')
+                outfile.write(result_for_output)
 
     @staticmethod
     def create_parser(description):
