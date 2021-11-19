@@ -27,13 +27,13 @@ def parse_args():
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help="Path to SSG root directory (defaults to %s)" % SSG_ROOT)
     parser.add_argument("-o", "--output", type=str, action="store", default=BUILD_OUTPUT,
-                        help="File to write yaml output to (defaults to build/stig_control.yml)")
+                        help=f"File to write yaml output to (defaults to {BUILD_OUTPUT})")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
                         help="What product to get STIGs for")
     parser.add_argument("-m", "--manual", type=str, action="store", required=True,
                         help="Path to XML XCCDF manual file to use as the source of the STIGs")
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
-                        help="Path to the rules_dir.json (defaults to build/stig_control.json)")
+                        help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-c", "--build-config-yaml", default=BUILD_CONFIG,
                         help="YAML file with information about the build configuration. ")
     parser.add_argument("-ref", "--reference", type=str, default="stigid",
