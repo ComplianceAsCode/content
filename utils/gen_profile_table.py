@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -17,7 +19,7 @@ class HtmlOutput(tables.table_renderer.TableHtmlOutput):
         profile_id = kwargs.pop("profile_id")
         super(HtmlOutput, self).__init__(* args, ** kwargs)
 
-        profile_path = str(self.built_content_path / "profiles" / (profile_id + ".profile"))
+        profile_path = os.path.join(self.built_content_path, "profiles", (profile_id + ".profile"))
         self.profile = ssg.build_yaml.Profile.from_yaml(profile_path, self.env_yaml)
         self.profile_variables = self.profile.variables
 

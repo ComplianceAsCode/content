@@ -41,5 +41,6 @@ if __name__ == "__main__":
         renderer.process_rules(reference)
         result = renderer.get_result()
         output = args.output_template.format(ref_id=reference.id)
-        with open(output, "w") as outfile:
-            outfile.write(result)
+        with open(output, "wb") as outfile:
+            result_for_output = result.encode('utf8', 'replace')
+            outfile.write(result_for_output)
