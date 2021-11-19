@@ -41,7 +41,7 @@ ocil_clause: '<tt>aescbc</tt> is not set as the encryption type for etcd.'
 ocil: |-
     Run the following command:
     <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
-    The output should return <tt>aescdc</tt> as the encryption type.
+    The output should return <tt>aescbc</tt> as the encryption type.
 
 warnings:
 - general: |-
