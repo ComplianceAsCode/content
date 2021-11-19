@@ -1,3 +1,4 @@
+title: DISA STIG with GUI for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
     DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R3.
@@ -31,7 +32,11 @@ description: 'This profile contains configuration checks that align to the
     requirement for a graphical user interface, please consider using the
 
     standard DISA STIG for Red Hat Enterprise Linux 8 profile.'
-documentation_complete: true
+extends: null
+metadata:
+    version: V1R3
+    SMEs:
+    - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
 - account_disable_post_pw_expiration
@@ -280,7 +285,6 @@ selections:
 - no_user_host_based_files
 - package_abrt-addon-ccpp_removed
 - package_abrt-addon-kerneloops_removed
-- package_abrt-addon-python_removed
 - package_abrt-cli_removed
 - package_abrt-plugin-logger_removed
 - package_abrt-plugin-rhtsupport_removed
@@ -297,6 +301,7 @@ selections:
 - package_opensc_installed
 - package_openssh-server_installed
 - package_policycoreutils_installed
+- package_python3-abrt-addon_removed
 - package_rng-tools_installed
 - package_rsh-server_removed
 - package_rsyslog-gnutls_installed
@@ -442,7 +447,12 @@ selections:
 - var_auditd_max_log_file_action=syslog
 - var_auditd_disk_full_action=halt
 - var_sssd_certificate_verification_digest_function=sha1
+- login_banner_text=dod_banners
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
-- login_banner_text=dod_banners
-title: DISA STIG with GUI for Red Hat Enterprise Linux 8
+platforms: !!set {}
+cpe_names: !!set {}
+platform: null
+filter_rules: ''
+definition_location: /home/wsato/git/content/products/rhel8/profiles/stig_gui.profile
+documentation_complete: true
