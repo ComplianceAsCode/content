@@ -42,11 +42,24 @@ profile pointed by the `--profile1` option.
 
 ## Generating Controls from DISA's XCCDF Files
 If you want a control file for product from DISA's XCCDF files you can run the following command:
+It supports the following arguments:
+
+- `-r`, `--root` - Path to SSG root directory
+- `-o`, `--output` - File to write yaml output to. The name of this file will the name of the directory the files are placed in with `--split`. Must only contain lowercase letters, underscores, and numbers.
+  - Defaults to `build/stig_control.yml`
+- `-p`, `--product` - What product to produce the tailoring file for (required)
+- `-m`, `--manual` - Path to the XCCDF XML file of the SCAP content (required)
+- `-j`, `--json` - Path to the `rules_dir.json ` file.
+  - Defaults to `build/stig_control.json`
+- `-c`, `--build-config-yaml` - YAML file with information about the build configuration.
+  - Defaults to `build/build_config.yml`
+- `-ref`, `--reference` - Reference system to check for
+  - Defaults to `stigid`
+
+Example
 
     $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r3-xccdf-manual.xml
 
-Where `-p` is the id the comes after `stigid@` in the `references` section of a rule and `-m` is the path to the
-XCCDF Manual file from DISA.
 
 ## Generating login banner regular expressions
 
