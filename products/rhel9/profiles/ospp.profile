@@ -199,13 +199,6 @@ selections:
     - package_gssproxy_removed
     - package_nfs-utils_removed
     - package_krb5-workstation_removed
-    - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-ccpp_removed
-    - package_abrt-plugin-rhtsupport_removed
-    - package_abrt-plugin-logger_removed
-    - package_abrt-plugin-sosreport_removed
-    - package_abrt-cli_removed
-    - package_abrt_removed
 
     ### Login
     - disable_users_coredumps

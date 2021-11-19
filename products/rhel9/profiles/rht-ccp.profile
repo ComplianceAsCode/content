@@ -82,7 +82,6 @@ selections:
     - service_firewalld_enabled
     - set_firewalld_default_zone
     - firewalld_sshd_port_enabled
-    - service_abrtd_disabled
     - service_telnet_disabled
     - package_telnet-server_removed
     - package_telnet_removed
