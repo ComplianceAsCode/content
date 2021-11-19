@@ -55,6 +55,8 @@ It supports the following arguments:
   - Defaults to `build/build_config.yml`
 - `-ref`, `--reference` - Reference system to check for
   - Defaults to `stigid`
+- `-s`, `--spilt` - Splits the each ID into its own file. Files are output in directory with the same name as the YAML file.
+  - Default path for files `build/stig_control`
 
 Example
 
