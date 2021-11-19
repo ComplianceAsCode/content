@@ -111,7 +111,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
-                        help="Path to the rules_dir.json (defaults to build/stig_control.json)")
+                        help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
                         help="What product to get STIGs for")
     parser.add_argument("-b", "--build-config-yaml", default=BUILD_CONFIG,
@@ -144,9 +144,12 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
         csv_writer.writerow(row)
 
 
-def create_base_row(item, srgs):
+def create_base_row(item: dict, srgs: dict) -> dict:
     row = dict()
     srg_id = item['id']
+    if srg_id not in srgs:
+        print(f"Unable to find SRG {srg_id}")
+        exit(1)
     srg = srgs[srg_id]
     row['SRGID'] = srg_id
     row['CCI'] = srg['cci']
