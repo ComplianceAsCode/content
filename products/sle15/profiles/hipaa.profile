@@ -155,5 +155,5 @@ selections:
     - service_telnet_disabled
     - service_xinetd_disabled
     - service_zebra_disabled
-
+    - use_kerberos_security_all_exports
 
