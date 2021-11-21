@@ -13,7 +13,7 @@
     reload: yes
   when: kexec_arch == "b32"
 
-- name: Ensure existing of grub config
+- name: Ensure existence of grub config
   stat:
     path: "{{ item.path }}"
   register: stat_results
