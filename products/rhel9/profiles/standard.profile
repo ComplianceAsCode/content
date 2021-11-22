@@ -52,7 +52,6 @@ selections:
     - audit_rules_file_deletion_events
     - audit_rules_sysadmin_actions
     - audit_rules_kernel_module_loading
-    - service_abrtd_disabled
     - service_atd_disabled
     - service_autofs_disabled
     - service_ntpdate_disabled
