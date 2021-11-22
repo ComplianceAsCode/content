@@ -1,0 +1,85 @@
+prodtype: ocp4
+
+title: 'Ensure workloads use resource requests and limits'
+
+description: |-
+  
+  There are two ways to enable resource requests and limits. To create either:
+
+  A multi-project quota, defined by a ClusterResourceQuota object, allows quotas
+  to be shared across multiple projects. Resources used in each selected project
+  are aggregated and that aggregate is used to limit resources across all the 
+  selected projects.
+
+  A resource quota, defined by a ResourceQuota object, provides constraints that
+  limit aggregate resource consumption per project. It can limit the quantity of
+  objects that can be created in a project by type, as well as the total amount
+  of compute resources and storage that might be consumed by resources in that project.
+
+  We want to make sure either a ClusterResourceQuota is used in a cluster or a ResourceQuota
+  is used per namespaces.
+
+  <p>
+  To configure ClusterResourceQuota, follow the directions in
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.9/applications/quotas/quotas-setting-across-multiple-projects.html",
+              text="the documentation") }}}
+  </p>
+
+  <p>
+  To configure ResourceQuota Per Project, follow the directions in
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.9/applications/quotas/quotas-setting-per-project.html",
+              text="the documentation") }}}
+  </p>
+
+
+rationale: |-
+  Resource quotas provide constraints that limit aggregate resource consumption 
+  per project. This helps prevent resource starvation. When deploying your 
+  application, it is important to tune based on memory and CPU consumption, 
+  allocating enough resources for the application to function properly.
+
+severity: medium
+
+identifiers:
+  cce@ocp4: CCE-90588-5
+
+references:
+  nist: SC-5,SC-5(1),SC-5(2)
+
+{{% set resourcequotas_api_path = '/api/v1/resourcequotas?limit=500' %}}
+{{% set namespaces_api_path = '/api/v1/namespaces?limit=499' %}}
+{{% set clusterquotas_api_path = '/apis/quota.openshift.io/v1/clusterresourcequotas?limit=500' %}}
+{{% set clusterquotas_filter = '[.items[] | .metadata.name]' %}}
+{{% set resourcequotas_for_non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.namespace | startswith("openshift") | not) and (.metadata.namespace | startswith("kube-") | not) and .metadata.namespace != "default") | .metadata.namespace] | unique' %}}
+{{% set non_ctlplane_namespaces_filter = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default")]' %}}
+
+
+ocil_clause: 'Resource requests and limits is not set'
+
+# same as above except filters the names only. Used in OCIL only, not in the 'warnings attribute'
+{{% set non_ctlplane_namespaces_filter_names = '[.items[] | select((.metadata.name | startswith("openshift") | not) and (.metadata.name | startswith("kube-") | not) and .metadata.name != "default") | .metadata.name ]' %}}
+
+ocil: |-
+    Run the following command to retrieve the ClusterResourceQuota objects in the system:
+    <pre>$ oc get clusterquota --all-namespaces </pre>
+    Make sure there exists at least one ClusterResourceQuota object in the cluster.
+    
+    Or
+
+    Verify that the every non-control plane namespace has an appropriate ResourceQuota.
+
+    To get all the non-control plane namespaces, you can do the
+    following command <tt>{{{ ocil_oc_pipe_jq_filter('namespaces', non_ctlplane_namespaces_filter_names) }}}</tt>
+
+    To get all the non-control plane namespaces with a ResourceQuota, you can do the
+    following command <tt>{{{ ocil_oc_pipe_jq_filter('resourcequota', resourcequotas_for_non_ctlplane_namespaces_filter, all_namespaces=true) }}}</tt>
+
+    Make sure that the namespaces displayed in the commands of the commands match.
+
+warnings:
+- general: |-
+    {{{ openshift_filtered_cluster_setting({
+            resourcequotas_api_path: resourcequotas_for_non_ctlplane_namespaces_filter,
+            namespaces_api_path: non_ctlplane_namespaces_filter,
+            clusterquotas_api_path: clusterquotas_filter,
+        }) | indent(4) }}}
