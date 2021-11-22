@@ -299,3 +299,33 @@ It supports the following arguments:
 To execute:
 
     $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r3-xccdf-scap.xml
+
+### `utils/compare_results.py` - Compare to two ARF result files
+The goal of this script is to compare to two result ARF files. 
+It will show what rules are missing, different, and the same between the two files.
+The script can take results from content crated by this repo and by [DISA](https://public.cyber.mil/stigs/scap/).
+If the result files come from the same source the script will use XCCDF ids as basis for the comparison.
+Otherwise, the script will use STIG ids to compare.
+
+
+If one STIG ID has more than one result (this is the case for a few STIG IDs in this repo) the results will be merged.
+Given a set of status the script will select the status from the group that is the highest value on the list below.
+
+1. Error
+2. Fail
+3. Not applicable
+4. Not selected
+5. Not checked
+6. Informational
+7. Pass
+
+Examples:
+- `[pass, pass]` will result in `pass`
+- `[pass, fail]` will result in `fail`
+- `[pass, error, fail]` will result in `error`
+
+
+
+To execute:
+
+    $ ./utils/compare_results.py ssg_results.xml disa_results.xml
