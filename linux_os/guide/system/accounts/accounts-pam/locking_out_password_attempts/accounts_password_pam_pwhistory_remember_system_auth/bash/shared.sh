@@ -16,7 +16,7 @@ if grep -q "^password.*pam_pwhistory.so.*" $pamFile; then
 	option=$(sed -rn 's/^(.*pam_pwhistory\.so.*)(remember=[0-9]+)(.*)$/\2/p' $pamFile)
 	if [[ -z $option ]]; then
 		# option is not set, append to module
-		sed -i --follow-symlinks "/pam_pwhistory.so/ s/$/ remember=$var_password_pam_remember/"
+		sed -i --follow-symlinks "/pam_pwhistory.so/ s/$/ remember=$var_password_pam_remember/" $pamFile
 	else
 		# option is set, replace value
 		sed -r -i --follow-symlinks "s/^(.*pam_pwhistory\.so.*)(remember=[0-9]+)(.*)$/\1remember=$var_password_pam_remember\3/" $pamFile
@@ -30,4 +30,3 @@ else
 	# no 'password required|requisite pam_pwhistory.so', add it
 	sed -i --follow-symlinks "/^password.*pam_unix.so.*/i password $CONTROL pam_pwhistory.so use_authtok remember=$var_password_pam_remember" $pamFile
 fi
-
