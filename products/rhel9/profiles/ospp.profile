@@ -72,7 +72,6 @@ selections:
 
     # Time Server
     - chronyd_client_only
-    - chronyd_no_chronyc_network
 
     ### Network Settings
     - sysctl_net_ipv6_conf_all_accept_ra
