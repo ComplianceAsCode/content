@@ -13174,6 +13174,7 @@ controls:
     https://issues.redhat.com/browse/CMP-427
   rules: 
   - routes_rate_limit
+  - resource_requests_quota
   description: |-
     The information system protects against or limits the effects of the following types of denial of service attacks: [Assignment: organization-defined types of denial of service attacks or reference to source for such information] by employing [Assignment: organization-defined security safeguards].
 
@@ -13207,6 +13208,7 @@ controls:
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-configuring.html#nodes-pods-configuring-bandwidth_nodes-pods-configuring
   rules: 
   - routes_rate_limit
+  - resource_requests_quota
 - id: SC-5(2)
   status: supported
   notes: |-
@@ -13224,6 +13226,7 @@ controls:
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-priority.html
   rules: 
   - routes_rate_limit
+  - resource_requests_quota
 - id: SC-5(3)
   status: not applicable
   notes: |-

@@ -1,0 +1,11 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="resource_requests_quota" version="1">
+    {{{ oval_metadata("The sysctl parameter needs to be set before enabling kernel protection") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="cluster quotas enabled" definition_ref="resource_requests_quota_cluster" />
+      <extend_definition comment="resource quota per project" definition_ref="resource_requests_quota_per_project" />
+    </criteria>
+
+  </definition>
+</def-group>
