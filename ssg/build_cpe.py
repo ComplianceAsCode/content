@@ -12,11 +12,10 @@ from .constants import PREFIX_TO_NS
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .yaml import open_raw
-
+from .boolean_expression import Algebra, Symbol, Function
 
 class CPEDoesNotExist(Exception):
     pass
-
 
 class ProductCPEs(object):
     """
@@ -31,10 +30,10 @@ class ProductCPEs(object):
         self.cpes_by_name = {}
         self.product_cpes = {}
         self.cpe_platforms = {}
-        self.cpe_platform_specification = CPEALPlatformSpecification()
 
         self.load_product_cpes()
         self.load_content_cpes()
+        self.cpe_platform_specification = CPEALPlatformSpecification(self)
 
     def _load_cpes_list(self, map_, cpes_list):
         for cpe in cpes_list:
@@ -175,15 +174,25 @@ class CPEALPlatformSpecification(object):
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
 
-    def __init__(self):
+    def __init__(self, cpe_products):
+        self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
         self.platforms = []
+        self.cpe_products = cpe_products
 
-    def add_platform(self, platform):
+
+    def parse_platform(self, expression):
         """
-        we check if semantically equal platform is not already in the list of platforms
+        parses the expression and returns a CPEALPlatform instance
+        It either creates a new one or if equal instance already exists, it returns the existing one.
         """
+        platform = CPEALPlatform(expression, self.algebra, self.cpe_products)
         if platform not in self.platforms:
             self.platforms.append(platform)
+            return platform
+        else:
+            platform_idx = self.platforms.index(platform)
+            return self.platforms[platform_idx]
+
 
     def to_xml_element(self):
         cpe_platform_spec = ET.Element(
@@ -198,9 +207,18 @@ class CPEALPlatform(object):
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
 
-    def __init__(self, id):
-        self.id = id
-        self.test = None
+    def __init__(self, expression, algebra, cpe_products):
+        self.test = algebra.parse(expression, simplify=True)
+        self.id = "cpe_platform_" + self.test.as_id()
+        self.cpe_products = cpe_products
+        self._replace_cpe_names(self.test)
+
+    def _replace_cpe_names(self, exp):
+        if isinstance(exp, CPEALFactRef):
+            exp.cpe_name = self.cpe_products.get_cpe_name(str(exp.obj))
+        else:
+            for arg in exp.args:
+                self._replace_cpe_names(arg)
 
     def add_test(self, test):
         self.test = test
@@ -208,7 +226,16 @@ class CPEALPlatform(object):
     def to_xml_element(self):
         cpe_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
         cpe_platform.set('id', self.id)
-        cpe_platform.append(self.test.to_xml_element())
+        # in case the platform contains only single CPE name, fake the logical test
+        # we have to athere to CPE specification
+        if isinstance(self.test, CPEALFactRef):
+            cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
+            cpe_test.set('operator', 'AND')
+            cpe_test.set('negate', 'false')
+            cpe_test.append(self.test.to_xml_element())
+            cpe_platform.append(cpe_test)
+        else:
+            cpe_platform.append(self.test.to_xml_element())
         return cpe_platform
 
 
@@ -218,36 +245,19 @@ class CPEALPlatform(object):
         else:
             return self.test == other.test
 
-
-class CPEALLogicalTest(object):
+class CPEALLogicalTest(Function):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
 
-    def __init__(self, operator, negate):
-        self.operator = operator
-        self.negate = negate
-        self.objects = []
-
-    def __eq__(self, other):
-        if not isinstance(other, CPEALLogicalTest):
-            return False
-        else:
-            if self.operator == other.operator and self.negate == other.negate:
-                diff = [
-                    i for i in self.objects + other.objects
-                    if i not in self.objects or i not in other.objects]
-                return (not diff)
-            else:
-                return False
 
     def to_xml_element(self):
         cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
-        cpe_test.set('operator', self.operator)
-        cpe_test.set('negate', self.negate)
-        # logical tests must go first, therefore we spearate tests and factrefs
-        tests = [t for t in self.objects if isinstance(t, CPEALLogicalTest)]
-        factrefs = [f for f in self.objects if isinstance(f, CPEALFactRef)]
+        cpe_test.set('operator', ('OR' if self.is_or() else 'AND'))
+        cpe_test.set('negate', ('true' if self.is_not() else 'false'))
+        # logical tests must go first, therefore we separate tests and factrefs
+        tests = [t for t in self.args if isinstance(t, CPEALLogicalTest)]
+        factrefs = [f for f in self.args if isinstance(f, CPEALFactRef)]
         for obj in tests + factrefs:
             cpe_test.append(obj.to_xml_element())
 
@@ -260,23 +270,18 @@ class CPEALLogicalTest(object):
         return self.objects
 
 
-class CPEALFactRef (object):
+class CPEALFactRef (Symbol):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
 
-    def __init__(self, name):
-        self.name = name
-
-    def __eq__(self, other):
-        if not isinstance(other, CPEALFactRef):
-            return False
-        else:
-            return self.name == other.name
+    def __init__(self, obj):
+        super(CPEALFactRef, self).__init__(obj)
+        self.cpe_name = "" # we do not want to modify original name used for platforms
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
-        cpe_factref.set('name', self.name)
+        cpe_factref.set('name', self.cpe_name)
 
         return cpe_factref
 
@@ -357,32 +362,3 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
-
-def parse_platform_line(platform_line, product_cpe):
-    # remove spaces
-    platform_line = platform_line.replace(" ", "")
-    if "&" in platform_line:
-        raise (NotImplementedError("not implemented yet"))
-    elif "!" in platform_line:
-        raise (NotImplementedError("not implemented yet"))
-    else:
-        # the line should contain a CPEAL ref name
-        cpealfactref = CPEALFactRef(product_cpe.get_cpe_name(platform_line))
-        return cpealfactref
-
-def convert_platform_to_id(platform):
-    id = platform.replace(" ", "")
-    return id
-
-def parse_platform_definition(platform_line, product_cpes):
-    """
-    This function takes one line of platform definition from yaml file and returns a
-    CPE platform with appropriate tests and factrefs.
-    """
-    # let's construct the platform id
-    id = "cpe_platform_" + convert_platform_to_id(platform_line)
-    platform = CPEALPlatform(id)
-    initial_test = CPEALLogicalTest(operator="OR", negate="false")
-    platform.add_test(initial_test)
-    initial_test.add_object(parse_platform_line(platform_line, product_cpes))
-    return platform
