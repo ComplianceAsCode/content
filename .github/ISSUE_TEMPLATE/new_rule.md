@@ -44,7 +44,7 @@ sudo grep 'kernelopts.*audit=1.*' /boot/grub2/grubenv
 <!---
 example: The audit=1 argument can be at any place within the list of arguments
 for the Linux kernel. There should be only one line starting with kernelopts=.
-Only one occurence of audit=1 should occur. There should not be any audit=0 in
+Only one occurrence of audit=1 should occur. There should not be any audit=0 in
 the list of arguments.
 -->
 
