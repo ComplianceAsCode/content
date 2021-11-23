@@ -179,11 +179,10 @@ class CPEALPlatformSpecification(object):
         self.platforms = []
         self.cpe_products = cpe_products
 
-
     def parse_platform(self, expression):
         """
-        parses the expression and returns a CPEALPlatform instance
-        It either creates a new one or if equal instance already exists, it returns the existing one.
+        parses the expression and returns a CPEALPlatform instance It either creates a
+        new one or if equal instance already exists, it returns the existing one.
         """
         platform = CPEALPlatform(expression, self.algebra, self.cpe_products)
         if platform not in self.platforms:
@@ -245,6 +244,7 @@ class CPEALPlatform(object):
         else:
             return self.test == other.test
 
+
 class CPEALLogicalTest(Function):
 
     prefix = "cpe-lang"
@@ -277,7 +277,7 @@ class CPEALFactRef (Symbol):
 
     def __init__(self, obj):
         super(CPEALFactRef, self).__init__(obj)
-        self.cpe_name = "" # we do not want to modify original name used for platforms
+        self.cpe_name = ""  # we do not want to modify original name used for platforms
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
