@@ -14,7 +14,7 @@ import glob
 
 import yaml
 
-from .build_cpe import CPEDoesNotExist, parse_platform_definition
+from .build_cpe import CPEDoesNotExist, CPEALPlatform
 from .constants import (XCCDF_REFINABLE_PROPERTIES,
                         SCE_SYSTEM,
                         cce_uri,
@@ -1047,10 +1047,8 @@ class Group(XCCDFEntity):
         # parse platform definition and get CPEAL platform
         if data["platforms"]:
             for platform in data["platforms"]:
-                cpe_platform = parse_platform_definition(platform, env_yaml["product_cpes"])
+                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
                 data["cpe_platform_names"].add(cpe_platform.id)
-                # add platform to platform specification
-                env_yaml["product_cpes"].cpe_platform_specification.add_platform(cpe_platform)
         return data
 
     def load_entities(self, rules_by_id, values_by_id, groups_by_id):
@@ -1194,11 +1192,8 @@ class Group(XCCDFEntity):
         # Once the group has inherited properties, update cpe_names
         if env_yaml:
             for platform in group.platforms:
-                cpe_platform = parse_platform_definition(
-                    platform, env_yaml["product_cpes"])
+                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
                 group.cpe_platform_names.add(cpe_platform.id)
-                env_yaml["product_cpes"].cpe_platform_specification.add_platform(
-                    cpe_platform)
 
     def _pass_our_properties_on_to(self, obj):
         for attr in self.ATTRIBUTES_TO_PASS_ON:
@@ -1216,11 +1211,8 @@ class Group(XCCDFEntity):
         # Once the rule has inherited properties, update cpe_platform_names
         if env_yaml:
             for platform in rule.platforms:
-                cpe_platform = parse_platform_definition(
-                    platform, env_yaml["product_cpes"])
+                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
                 rule.cpe_platform_names.add(cpe_platform.id)
-                env_yaml["product_cpes"].cpe_platform_specification.add_platform(
-                    cpe_platform)
 
     def __str__(self):
         return self.id_
@@ -1321,12 +1313,8 @@ class Rule(XCCDFEntity):
                 or env_yaml and rule.prodtype == "all"):
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
-                cpe_platform = parse_platform_definition(
-                    platform, env_yaml["product_cpes"])
+                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
                 rule.cpe_platform_names.add(cpe_platform.id)
-                # add platform to platform specification
-                env_yaml["product_cpes"].cpe_platform_specification.add_platform(
-                    cpe_platform)
 
 
         if sce_metadata and rule.id_ in sce_metadata:
