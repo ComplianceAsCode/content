@@ -11,9 +11,9 @@ for nfs_export in "${nfs_exports[@]}"
 do
     correct_export=""
     if [ "$(grep -c "sec=" <<<"$nfs_export")" -eq 0 ]; then
-        correct_export="$(echo $nfs_export|sed  -e 's/sec=[^\,\)]*/sec=krb5\:krb5i\:krbp5/')"
+        correct_export="$(echo $nfs_export|sed  -e 's/).*$/,sec=krb5\:krb5i\:krb5p)/')"
     else
-        correct_export="$(echo $nfs_export|sed  -e 's/).*$/,sec=krb5\:krb5i\:krbp5)/')"
+        correct_export="$(echo $nfs_export|sed  -e 's/sec=[^\,\)]*/sec=krb5\:krb5i\:krb5p/')"
     fi
     sed -i "s|$nfs_export|$correct_export|g" /etc/exports
 done
