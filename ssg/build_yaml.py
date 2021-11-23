@@ -1047,7 +1047,8 @@ class Group(XCCDFEntity):
         # parse platform definition and get CPEAL platform
         if data["platforms"]:
             for platform in data["platforms"]:
-                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
+                cpe_platform = env_yaml[
+                    "product_cpes"].cpe_platform_specification.parse_platform(platform)
                 data["cpe_platform_names"].add(cpe_platform.id)
         return data
 
@@ -1192,7 +1193,8 @@ class Group(XCCDFEntity):
         # Once the group has inherited properties, update cpe_names
         if env_yaml:
             for platform in group.platforms:
-                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
+                cpe_platform = env_yaml[
+                    "product_cpes"].cpe_platform_specification.parse_platform(platform)
                 group.cpe_platform_names.add(cpe_platform.id)
 
     def _pass_our_properties_on_to(self, obj):
@@ -1211,7 +1213,8 @@ class Group(XCCDFEntity):
         # Once the rule has inherited properties, update cpe_platform_names
         if env_yaml:
             for platform in rule.platforms:
-                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
+                cpe_platform = env_yaml[
+                    "product_cpes"].cpe_platform_specification.parse_platform(platform)
                 rule.cpe_platform_names.add(cpe_platform.id)
 
     def __str__(self):
@@ -1313,7 +1316,8 @@ class Rule(XCCDFEntity):
                 or env_yaml and rule.prodtype == "all"):
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
-                cpe_platform = env_yaml["product_cpes"].cpe_platform_specification.parse_platform(platform)
+                cpe_platform = env_yaml[
+                    "product_cpes"].cpe_platform_specification.parse_platform(platform)
                 rule.cpe_platform_names.add(cpe_platform.id)
 
 
