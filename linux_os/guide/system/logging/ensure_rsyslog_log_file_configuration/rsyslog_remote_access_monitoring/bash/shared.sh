@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ubuntu
+# platform = multi_platform_all
 
 declare -A REMOTE_METHODS=( ['auth.*']='^.*auth\.\*.*$' ['authpriv.*']='^.*authpriv\.\*.*$' ['daemon.*']='^.*daemon\.\*.*$' )
 
