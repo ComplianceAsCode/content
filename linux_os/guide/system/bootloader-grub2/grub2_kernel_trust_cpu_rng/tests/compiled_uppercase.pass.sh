@@ -7,7 +7,7 @@ if grep -q '^.*random.trust_cpu=.*'  "$file" ; then
 fi
 
 if grep -q CONFIG_RANDOM_TRUST_CPU /boot/config-`uname -r`; then
-    sed -Ei 's/(.*)CONFIG_RANDOM_TRUST_CPU=.(.*)/\1CONFIG_RANDOM_TRUST_CPU=y\2/' /boot/config-`uname -r`
+    sed -Ei 's/(.*)CONFIG_RANDOM_TRUST_CPU=.(.*)/\1CONFIG_RANDOM_TRUST_CPU=Y\2/' /boot/config-`uname -r`
 else
-    echo "CONFIG_RANDOM_TRUST_CPU=y" >> /boot/config-`uname -r`
+    echo "CONFIG_RANDOM_TRUST_CPU=Y" >> /boot/config-`uname -r`
 fi
