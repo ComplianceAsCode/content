@@ -356,7 +356,7 @@ controls:
   levels:
   - base
   notes: |-
-    The OpenShift Container Platform isn't used in a wireless environment and 
+    The OpenShift Container Platform isn't used in a wireless environment and
     doesn't come with any hardcoded credentials or passwords.
   status: not applicable
   rules: []
@@ -553,7 +553,7 @@ controls:
   notes: |-
     This control is not applicable to the OpenShift platform and is instead a
     responsibility of the deployer. The payment entity will be responsible for
-    the documentation and dissemination of the security policies and 
+    the documentation and dissemination of the security policies and
     operational procedures pertaining to their OpenShift deployment and
     verifying that the policies and procedure are in use and being followed.
   status: not applicable
@@ -603,7 +603,7 @@ controls:
     to store sensitive authentication data if:
     * There is a business justification and
     * The data is stored securely.
-    
+
     Sensitive authentication data includes the data as cited in the
     following Requirements 3.2.1 through 3.2.3:
   levels:
@@ -627,7 +627,7 @@ controls:
       * Primary account number (PAN)
       * Expiration date
       * Service code
-      
+
       To minimize risk, store only these data elements as needed for business.
     levels:
     - base
@@ -676,7 +676,7 @@ controls:
     * Truncation (hashing cannot be used to replace the truncated segment of PAN)
     * Index tokens and pads (pads must be securely stored)
     * Strong cryptography with associated key-management processes and procedures.
-    
+
     Note: It is a relatively trivial effort for a malicious individual to
     reconstruct original PAN data if they have access to both the
     truncated and hashed version of a PAN. Where hashed and truncated versions of
@@ -687,7 +687,7 @@ controls:
   - base
   notes: >-
     This is the responsibility of the code developer and for bespoke applications using OCP this should become
-    a development standard. 
+    a development standard.
   status: not applicable
   rules: []
 
@@ -700,28 +700,28 @@ controls:
   levels:
   - base
   notes: |-
-    In case where card holder data may be stored on worker nodes disks, OpenShift Container Platform can help to partially 
+    In case where card holder data may be stored on worker nodes disks, OpenShift Container Platform can help to partially
     comply with this requirement by providing several means of fully encrypting disks.
     * Using RHEL core crypto components which are FIPS certified
     * Or using cloud provider techniques, such as EBS encryption for AWS case.
     For this requirement, we also check etcd is encrypted, so that secrets, but also routes and oauth configurations are secured.
-    
+
     Concerning Full Disk Encryption:
-    Full Disk Encryption can be enabled on OpenShift by installing the cluster with FIPS mode enabled. 
+    Full Disk Encryption can be enabled on OpenShift by installing the cluster with FIPS mode enabled.
     OpenShift Container Platform uses certain FIPS Validated / Modules in Process modules within RHEL and RHCOS
-    for the operating system components that it uses. 
+    for the operating system components that it uses.
     See RHEL7 core crypto components and https://docs.openshift.com/container-platform/4.9/installing/installing-fips.html for further information.
-    When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config 
-    files and is used to authenticate SSH access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user 
-    on each node, which enables password-less authentication. 
+    When installing the cluster, The public ssh key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config
+    files and is used to authenticate SSH access to the nodes. The key is added to the ~/.ssh/authorized_keys list for the core user
+    on each node, which enables password-less authentication.
     The management of the private key is up to the customer.
-    LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills Req-3.4.1. 
+    LUKS/dm-crypt (used by the FIPS mode) provides full-disk encryption that fulfills Req-3.4.1.
     Access to the stored data is only possible via a decryption password that must be entered when the disk is mounted (must be somehow
-    related to the ssh keypair?...). 
+    related to the ssh keypair?...).
     The decryption password is stored using TPM v2, in a secure cryptoprocessor contained within a server.
     When enabling FIPS mode, machine configs state that encryption using TPM based pinning in clevis is requested for these nodes.
   status: partial
-  rules: 
+  rules:
   - machine_volume_encrypted
   - storageclass_encryption_enabled
   - api_server_encryption_provider_cipher
@@ -741,51 +741,51 @@ controls:
   status: inherently met
   controls:
   - id: Req-3.5.1
-    title: 'Additional requirement  for service  providers  only: Maintain a documented 
+    title: 'Additional requirement  for service  providers  only: Maintain a documented
       description of the cryptographic architecture that includes: '
     description: |-
-       * Details of all algorithms, protocols, and keys used  for the protection of 
-         cardholder data, including key strength an d expiry date 
-       * Description of the key usage for each key 
+       * Details of all algorithms, protocols, and keys used  for the protection of
+         cardholder data, including key strength an d expiry date
+       * Description of the key usage for each key
        * Inventory of any HSMs and other SCDs  used for key management
     levels:
     - base
     notes: |-
-      This requirement largely depends on the solution chosen by the customer to protect card holder data at rest. 
+      This requirement largely depends on the solution chosen by the customer to protect card holder data at rest.
       * When Full Disk Encryption is done using AWS EBS encryption, the algorithm used is AES-256.
-        Your data key is stored on disk with your encrypted data, but not before EBS encrypts it with your KMS key. 
+        Your data key is stored on disk with your encrypted data, but not before EBS encrypts it with your KMS key.
         Your data key never appears on disk in plaintext.
         The same data key is shared by snapshots of the volume and any subsequent volumes created from those snapshots.
         See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
       * When Full Disk Encryption is done using LUKS with TPM2,full disk encryption utilities such as dm-crypt and
         BitLocker encrypt disks with a TPM bind key, and then store the TPM bind key in the TPM (Trusted Platform Module),
-        which is a secure element attached to the motherboard of the node. 
-        The main benefit of this method is that there is no external dependency, and the node is able to decrypt its own 
+        which is a secure element attached to the motherboard of the node.
+        The main benefit of this method is that there is no external dependency, and the node is able to decrypt its own
         disks at boot time without any external interaction.
       * When Full Disk Encryption is done using LUKS with Tang, the booting node attempts to contact a predefined set
-        of Tang servers by performing a cryptographic handshake. If it can reach the required number of Tang servers, 
-        the node can construct its disk decryption key and unlock the disks to continue booting. 
+        of Tang servers by performing a cryptographic handshake. If it can reach the required number of Tang servers,
+        the node can construct its disk decryption key and unlock the disks to continue booting.
       See https://docs.openshift.com/container-platform/4.9/security/network_bound_disk_encryption/nbde-about-disk-encryption-technology.html
     status: inherently met
     rules: []
- 
+
   - id: Req-3.5.2
     title: '3.5.2 Restrict access to cryptographic keys to the fewest number of custodians
       necessary.'
     levels:
     - base
     notes: |-
-      This requirement largely depends on the solution chosen by the customer to protect card holder data at rest. 
+      This requirement largely depends on the solution chosen by the customer to protect card holder data at rest.
       * When Full Disk Encryption is done using AWS EBS encryption, the data key, used for volume encryption, is generated
-        by AWS KMS, encrypted with the Key Encryption Key that lies in the KMS and stored with the volume metadata, by EBS. 
+        by AWS KMS, encrypted with the Key Encryption Key that lies in the KMS and stored with the volume metadata, by EBS.
         It is the payment entity's responsibility to limit the access to this key by ensuring that Grant requests to decrypt
         the data key using the KEK (Key Encryption Key) is given only to the need to know users or AWS resources.
         See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html
       * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used to decrypt the data key is
-        stored in the TPM (Trusted Platform Module), on the motherboard of the node. 
+        stored in the TPM (Trusted Platform Module), on the motherboard of the node.
         It is therefore not shared with anyone.
-      * When Full Disk Encryption is done using LUKS with Tang, Tang server does not store the encryption key directly, 
-        and never interacts with it. The metadata needed to decrypt the volume is stored on the disk but can only be 
+      * When Full Disk Encryption is done using LUKS with Tang, Tang server does not store the encryption key directly,
+        and never interacts with it. The metadata needed to decrypt the volume is stored on the disk but can only be
         unlocked and used when the node can correctly establish the handshake with the Tang server.
         The data key is therefore not shared with anyone.
     status: inherently met
@@ -806,11 +806,11 @@ controls:
     levels:
     - base
     notes: |-
-      This requirement depends on the solution chosen by the customer to protect card holder data at rest: 
-      * When Full Disk Encryption is done using AWS EBS encryption, the data key is encrypted with a  Key Encryption Key 
+      This requirement depends on the solution chosen by the customer to protect card holder data at rest:
+      * When Full Disk Encryption is done using AWS EBS encryption, the data key is encrypted with a  Key Encryption Key
         that is stored in the AWS KMS, separately from the data key.
       * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key, which is used to decrypt the data key is
-        stored in the TPM (Trusted Platform Module), on the motherboard of the node. 
+        stored in the TPM (Trusted Platform Module), on the motherboard of the node.
       * When Full Disk Encryption is done using LUKS with Tang, the encryption key is not stored to disk. Only the provisionning
         metadata is. A POST to the Tang server would allow the node to recompute the encryption key from this metadata.
         See https://github.com/latchset/tang
@@ -822,7 +822,7 @@ controls:
     levels:
     - base
     notes: |-
-      This requirement depends on the solution chosen by the customer to protect card holder data at rest: 
+      This requirement depends on the solution chosen by the customer to protect card holder data at rest:
       * When Full Disk Encryption is done using AWS EBS encryption, the data key is stored in the volume's metadata only.
         The KEK is stored in the AWS KMS only.
       * When Full Disk Encryption is done using LUKS with TPM2, the TPM bind key is stored in the TPM (Trusted Platform Module) only.
@@ -843,7 +843,7 @@ controls:
   notes: |-
     Although some key management processes rely on OpenShift Container Platform and its underlying components
     for Full Disk Encryption, the responsibility for documentation and implementation of key-management processes
-    and procedures for cryptographic keys used for encryption of cardholder data is still on the payment service and its 
+    and procedures for cryptographic keys used for encryption of cardholder data is still on the payment service and its
     operations team in order to cover all aspects of cardholder data protection.
   status: not applicable
   controls:
@@ -880,15 +880,15 @@ controls:
     levels:
     - base
     notes: |-
-      It is the responsibility of the payment entity's operations team to rotate the 
+      It is the responsibility of the payment entity's operations team to rotate the
       encryption keys when they expire, according to the solution chosen for full disk
       encryption:
       * AWS EBS Encryption: Operations team creates a snapshot of the volume and then uses
-        the snapshot to create a new, encrypted copy of the volume. While creating the new volume, 
+        the snapshot to create a new, encrypted copy of the volume. While creating the new volume,
         a new encryption key is specified.
       * LUKS encryption with TPM2: The TPM secret cannot be modified after disk creation.
-      * LUKS encryption with Tang: The operations performs the Tang Keys rotation as described in 
-        https://access.redhat.com/solutions/4074891  
+      * LUKS encryption with Tang: The operations performs the Tang Keys rotation as described in
+        https://access.redhat.com/solutions/4074891
     status: not applicable
     rules: []
 
@@ -903,7 +903,7 @@ controls:
     levels:
     - base
     notes: |-
-      It is the responsibility of the payment entity's operations team to retire or 
+      It is the responsibility of the payment entity's operations team to retire or
       replace weakened keys
     status: not applicable
     rules: []
@@ -924,11 +924,11 @@ controls:
     levels:
     - base
     notes: |-
-      This requirement depends on the solution chosen by the payment entity to protect card holder data at rest: 
+      This requirement depends on the solution chosen by the payment entity to protect card holder data at rest:
       * When Full Disk Encryption is done using AWS EBS encryption, the authorizations on the cryptographic keys are managed
         in AWS IAM by the payment entity operating the service.
       * When Full Disk Encryption is done using LUKS with TPM2, no substitution of cryptographic keys is possible after disk creation.
-      * When Full Disk Encryption is done using LUKS with Tang, the access to the Tang server, where the Tang Keys Rotation process 
+      * When Full Disk Encryption is done using LUKS with Tang, the access to the Tang server, where the Tang Keys Rotation process
         can be handled, are the responsibility of the payment entity operating the service.
     status: not applicable
     rules: []
@@ -968,19 +968,19 @@ controls:
     * The protocol in use only supports secure versions or configurations.
     * The encryption strength is appropriate for the encryption methodology in
       use.
-    
+
     Note: SSL and early TLS are not considered strong cryptography and cannot
     be used as a security control after June 30, 2016. Prior to this date, existing
     implementations that use SSL and/or early TLS must have a formal Risk Mitigation
     and Migration Plan in place.
 
     Effective immediately, new implementations must not use SSL or early TLS.
-    
+
     POS POI terminals (and the SSL/TLS termination points to which they connect)
     that can be verified as not being susceptible to any known exploits for SSL
     and early TLS may continue using these as a security control after
     June 30, 2016.
-    
+
     Examples of open, public networks include but are not limited to:
     * The Internet
     * Wireless technologies, including 802.11 and Bluetooth
@@ -1037,7 +1037,7 @@ controls:
   notes: |-
     Security techniques that are commonly used by traditional IT infrastructures
     have limited functionality in containerized  infrastructures. A key aspect to
-    successful security of container environments is identifying and 
+    successful security of container environments is identifying and
     understanding the opportunities or gateways for detection. While this may
     encompass several attack vectors, there are integrations and mechanisms in
     OpenShift that allow for this.
@@ -1049,7 +1049,7 @@ controls:
       levels:
       - base
       notes: |-
-        OpenShift container platforms may install the OpenShift File 
+        OpenShift container platforms may install the OpenShift File
         Integrity Operator [1] which monitors file system integrity on the host.
         This may allow for the detection of threats on the hosts which attempt
         to modify the file system in malicious ways. Additionally, there exist
@@ -1086,7 +1086,7 @@ controls:
   levels:
   - base
   notes: |-
-    OpenShift container platforms may install the OpenShift File 
+    OpenShift container platforms may install the OpenShift File
     Integrity Operator [1] which monitors file system integrity on the host.
     This may allow for the detection of threats on the hosts which attempt
     to modify the file system in malicious ways. Additionally, there exist
@@ -1237,10 +1237,10 @@ controls:
       * Appropriate corrections are implemented
         prior to release.
       * Code-review results are reviewed and approved by management prior to release.
-      
+
       Note: This requirement for code reviews applies to all custom code
       (both internal and public-facing), as part of the system development life cycle.
-      
+
       Code reviews can be conducted by knowledgeable internal personnel or third parties.
       Public-facing web applications are also subject to additional controls,
       to address ongoing threats and vulnerabilities after implementation,
@@ -1249,7 +1249,7 @@ controls:
     - base
     notes: |-
       This controls is applicable to the payment entity running OpenShift
-      and not to the platform itself. However, code reviews are enforced 
+      and not to the platform itself. However, code reviews are enforced
       as part of the development of the OpenShift Container Platform.
     status: not applicable
     rules: []
@@ -1389,7 +1389,7 @@ controls:
       how to avoid common coding vulnerabilities, and understanding how sensitive
       data is handled in memory.
     * Develop applications based on secure coding guidelines.
-      
+
     Note: The vulnerabilities listed at 6.5.1 through 6.5.10 were current
     with industry best practices when this version of PCI DSS was published. However,
     as industry best practices for vulnerability management are updated (for example,
@@ -1544,7 +1544,7 @@ controls:
     * Reviewing public-facing web applications via manual or automated
       application vulnerability security assessment tools or methods, at least annually
       and after any changes
-    
+
       Note: This assessment is not the same as the vulnerability
       scans performed for Requirement 11.2.
 
@@ -1710,45 +1710,74 @@ controls:
 
 - id: Req-8.1
   title: '8.1 Define and implement policies and procedures to ensure proper user identification
-    management for non- consumer users and administrators on all system components
+    management for non-consumer users and administrators on all system components
     as follows:'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    For section 8 OpenShift should be configured to work with an external third-party
+    identity provider. The only check would be to verify that the identity provider
+    is configured and which is checked in sub-section 8.1.1
+
+  status: not applicable
   controls:
   - id: Req-8.1.1
     title: 8.1.1 Assign all users a unique ID before allowing them to access system
       components or cardholder data.
     levels:
     - base
-    notes: ''
-    status: pending
-    rules: []
+    notes: |-
+      Openshift should be configured to work with an external third-party
+      identity provider, through the payment entity’s chosen identity
+      and authentication provider, unique identifiers can be setup
+      for each user prior to allowing the user to  access components
+      of the OpenShift environment. The third party identity provider
+      check applies to all sub section within 8.1
+    status: automated
+    rules:
+      idp_is_configured
 
   - id: Req-8.1.2
     title: 8.1.2 Control addition, deletion, and modification of user IDs, credentials,
       and other identifier objects.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      OpenShift can integrate with third-party identity providers through
+      several mechanisms including LDAP. Control of identifier objects
+      should be performed with the chosen identity provider. Once the identity
+      and authenticator(s) have been verified, the OAuth server built into
+      the OpenShift Control Plane issues an OAuth access token to the user to
+      allow for authentication to the API.  When a person requests a new OAuth
+      token, the OAuth server uses the configured identity provider to
+      determine the identity of the person making the request. The OAuth
+      server determines what user that the identity maps to, creates an
+      access token for that user, and returns the token for use.
+    status: not applicable
     rules: []
 
   - id: Req-8.1.3
     title: 8.1.3 Immediately revoke access for any terminated users.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+     Revocation of access for terminated users would be performed with the
+     identity provider. Users with revoked access would not be able
+     to access OpenShift
+    status: not applicable
     rules: []
 
   - id: Req-8.1.4
     title: 8.1.4 Remove/disable inactive user accounts within 90 days.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Likewise, removal or disabling of inactive user accounts within 90
+      days would be  handled with the identity provider. All user IDs,
+      including those handled by third parties to access, support, or
+      maintain system components via remote access, would be handled
+      externally to OpenShift.
+    status: not applicable
     rules: []
 
   - id: Req-8.1.5
@@ -1758,8 +1787,10 @@ controls:
       \ not in use.\n\uF0B7  Monitored when in use."
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The options for controlling remote access for third parties is the
+      responsibility of the payment entity
+    status: not applicable
     rules: []
 
   - id: Req-8.1.6
@@ -1767,8 +1798,12 @@ controls:
       more than six attempts.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Account lockout for failed attempts would be managed by the identity
+      provider as all authentication attempts that occur prior to granting
+      access from OpenShift. Establishing a threshold for limiting repeated
+      failed attempts would be configured with the chosen identity provider.
+    status: not applicable
     rules: []
 
   - id: Req-8.1.7
@@ -1776,8 +1811,10 @@ controls:
       enables the user ID.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Likewise, the lockout duration for the account and mechanisms to unlock
+      the account for use would be established with the identity provider.
+    status:  not applicable
     rules: []
 
   - id: Req-8.1.8
@@ -1785,8 +1822,12 @@ controls:
       to re-authenticate to re-activate the terminal or session.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Session timeouts can be enabled with OpenShift to limit the amount of
+      time that a session can be active. It is, however, recommended that
+      the payment entity control idle session timeouts at the user or
+      administrator endpoint, rather than at the OpenShift console.
+    status: not applicable
     rules: []
 
 - id: Req-8.2
@@ -1799,8 +1840,11 @@ controls:
     * Something you are, such as a biometric.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The type of authenticators to be used (for example, password or passphrase,
+    token device or smart card, or biometrics) are also managed externally
+    to OpenShift by the identity provider
+  status: not applicable
   controls:
   - id: Req-8.2.1
     title: 8.2.1 Using strong cryptography, render all authentication credentials (such
@@ -1808,8 +1852,12 @@ controls:
       components.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      The protection of the authentication credentials such as rendering the
+      passwords and passphrases unreadable during transmission and the storage
+      of credentials on system components is the responsibility of the
+      third-party identity provider.
+    status: not applicable
     rules: []
 
   - id: Req-8.2.2
@@ -1819,8 +1867,13 @@ controls:
       new keys."
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Likewise, modification of authentication credentials is handled by the
+      third-party identity provider. All access to modify parameters for
+      authentication tokens or for generating keys  within OpenShift is
+      managed with RBAC and requires prior authentication before the
+      user is authorized to act.
+    status: not applicable
     rules: []
 
   - id: Req-8.2.3
@@ -1828,22 +1881,30 @@ controls:
     description: |-
       * Require a minimum length of at least seven characters.
       * Contain both numeric and alphabetic characters.
-      
+
       Alternatively, the passwords/phrases must have complexity
       and strength at least equivalent to the parameters specified
       above.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Parameters for authenticators such as password length, maximum password
+      age, minimum password age, password history, and requirements to change
+      the password on first use are also handled by the third-party.
+      identity provider
+    status: not applicable
     rules: []
 
   - id: Req-8.2.4
     title: 8.2.4 Change user passwords/passphrases at least once every 90 days.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Parameters for authenticators such as password length, maximum password
+      age, minimum password age, password history, and requirements to change
+      the password on first use are also handled by the third-party.
+      identity provider
+    status: not applicable
     rules: []
 
   - id: Req-8.2.5
@@ -1851,8 +1912,12 @@ controls:
       the same as any of the last four passwords/phrases he or she has used.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Parameters for authenticators such as password length, maximum password
+      age, minimum password age, password history, and requirements to change
+      the password on first use are also handled by the third-party.
+      identity provider
+    status: not applicable
     rules: []
 
   - id: Req-8.2.6
@@ -1860,8 +1925,12 @@ controls:
       value for each user, and change immediately after the first use.
     levels:
     - base
-    notes: ''
-    status: pending
+    notes: |-
+      Parameters for authenticators such as password length, maximum password
+      age, minimum password age, password history, and requirements to change
+      the password on first use are also handled by the third-party.
+      identity provider
+    status: not applicable
     rules: []
 
 - id: Req-8.3
@@ -1878,8 +1947,9 @@ controls:
     authentication.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    Where multi-factor authentication is required, this also occurs outside of OpenShift
+  status: not applicable
   rules: []
 
 - id: Req-8.4
@@ -1893,8 +1963,9 @@ controls:
       could be compromised.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    Payment entities are required to communicate policies and procedures pertaining to identity and authentication
+  status: not applicable
   rules: []
 
 - id: Req-8.5
@@ -1906,8 +1977,12 @@ controls:
     * Shared and generic user IDs are not used to administer any system components.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The payment entity is also required to not use group, shared, or generic
+    IDs, passwords, or other authentication methods (8.5). Access tokens that
+    are issued by OpenShift upon authentication should only be used by the
+    person for whom it was issued.
+  status: not applicable
   rules: []
 
 - id: Req-8.5.1
@@ -1923,8 +1998,12 @@ controls:
     becomes a requirement.'
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The payment entity is also required to not use group, shared, or generic IDs,
+    passwords, or other authentication methods. Access tokens that are issued by
+    OpenShift upon authentication should only be used by the person
+    for whom it was issued.
+  status: not applicable
   rules: []
 
 - id: Req-8.6
@@ -1937,8 +2016,11 @@ controls:
     \ to gain access."
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    As the authentication mechanism used is external to OpenShift via a third-party
+    identity provider this section falls outside the scope of OpenShift.
+
+  status: not applicable
   rules: []
 
 - id: Req-8.7
@@ -1951,8 +2033,10 @@ controls:
     \ users or other non-application processes)."
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    The implementation of a database is application specific and falls outside the
+    scope of OpenShift
+  status: not applicable
   rules: []
 
 - id: Req-8.8
@@ -1960,8 +2044,10 @@ controls:
     and authentication are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
-  status: pending
+  notes: |-
+    This section is the responsibility of the application implementation team and falls outside
+    the scope of OpenShift.
+  status: not applicable
   rules: []
 
 - id: Req-9.1
@@ -2857,7 +2943,7 @@ controls:
       to the environment (for example, acquisition, merger, relocation, etc.),
     * Identifies critical assets, threats, and vulnerabilities, and
     * Results in a formal, documented analysis of risk.
-    
+
     Examples of risk-assessment methodologies include but are not limited
     to OCTAVE, ISO 27005 and NIST SP 800-30.
   levels:
@@ -3386,7 +3472,7 @@ controls:
       (for example: daily, weekly, quarterly, etc. as applicable per requirement)
     * A process for performing business- impact analysis to determine potential
       PCI DSS impacts for strategic business decisions
-    
+
     PCI DSS Reference: Requirements 1-12
   levels:
   - desv
@@ -3406,7 +3492,7 @@ controls:
       requirement)
     * Managing business-impact analysis to determine potential
       PCI DSS impacts for strategic business decisions
-    
+
     PCI DSS Reference: Requirement 12
   levels:
   - desv
@@ -3435,7 +3521,7 @@ controls:
       being out of scope, including descriptions of all segmentation controls implemented
     * Identifying all connected entities. e.g., third-party entities with
       access to the cardholder data environment (CDE)
-    
+
     PCI DSS Reference: Scope of PCI DSS Requirements"
   levels:
   - desv
@@ -3453,7 +3539,7 @@ controls:
     * Updating PCI DSS scope as appropriate
     * Documented sign-off of the results of the impact assessment by
       responsible personnel (as defined in A3.1.3)
-      
+
     PCI DSS Reference: Scope of PCI DSS Requirements; Requirements 1-12
   levels:
   - desv
@@ -3476,7 +3562,7 @@ controls:
       and that all cardholder data (CHD) storage is documented and incorporated into
       data-retention policy and procedures
     * New systems are included in the quarterly vulnerability scanning process.
-    
+
     PCI DSS Reference: Scope of PCI DSS Requirements; Requirement 1-12
   levels:
   - desv
@@ -3596,7 +3682,7 @@ controls:
     * Logical access controls
     * Audit logging mechanisms
     * Segmentation controls (if used)
-    
+
     PCI DSS Reference: Requirements 1-12
   levels:
   - desv
@@ -3620,7 +3706,7 @@ controls:
       required as a result of the security failure\n\
     * Implementing controls to prevent cause of failure from reoccurring
     * Resuming monitoring of security controls
-    
+
     PCI DSS Reference: Requirements 1-12
   levels:
   - desv
@@ -3637,7 +3723,7 @@ controls:
     The process includes a plan for remediating technologies that no longer
     meet the organization\u2019s PCI DSS requirements, up to and including replacement
     of the technology, as appropriate.
-    
+
     PCI DSS Reference: Requirement 2, 6"
   levels:
   - desv
@@ -3665,7 +3751,7 @@ controls:
       the PCI DSS compliance program (as identified in A3.1.3)
     * Retention of records and documentation for at least 12 months,
       covering all BAU activities
-    
+
     PCI DSS Reference: Requirements 1-12
   levels:
   - desv
@@ -3696,7 +3782,7 @@ controls:
     * Issuance of timely alerts upon detection of suspicious activity
       or anomaly to responsible personnel
     * Response to alerts in accordance with documented response procedures
-    
+
     PCI DSS Reference: Requirements 10, 12
   levels:
   - desv
