@@ -6,9 +6,14 @@ title: 'Prevent remote hosts from connecting to the proxy display'
 
 description: |-
     The SSH daemon should prevent remote hosts from connecting to the proxy
-    display. Make sure that the option <tt>X11UseLocalhost</tt> is set to
-    <tt>yes</tt> within the SSH server configuration file.
-
+    display.
+    <br />
+    The default SSH configuration for <tt>X11UseLocalhost</tt> is <tt>yes</tt>,
+    which prevents remote hosts from connecting to the proxy display.
+    <br />
+    To explicitly prevent remote connections to the proxy display, add or correct
+    the following line in <tt>/etc/ssh/sshd_config</tt>:
+    <tt>X11UseLocalhost yes</tt>
 
 rationale: |-
     When X11 forwarding is enabled, there may be additional exposure to the

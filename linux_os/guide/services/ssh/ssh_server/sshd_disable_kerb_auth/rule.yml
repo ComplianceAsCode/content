@@ -4,7 +4,11 @@ title: 'Disable Kerberos Authentication'
 
 description: |-
     Unless needed, SSH should not permit extraneous or unnecessary
-    authentication mechanisms like Kerberos. To disable Kerberos authentication, add
+    authentication mechanisms like Kerberos.
+    <br/>
+    The default SSH configuration disallows authentication validation through Kerberos.
+    <br/>
+    To explicitly disable Kerberos authentication, add
     or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
     <pre>KerberosAuthentication no</pre>
 

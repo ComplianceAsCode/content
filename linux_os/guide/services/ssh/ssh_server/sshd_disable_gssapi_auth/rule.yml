@@ -4,7 +4,11 @@ title: 'Disable GSSAPI Authentication'
 
 description: |-
     Unless needed, SSH should not permit extraneous or unnecessary
-    authentication mechanisms like GSSAPI. To disable GSSAPI authentication, add or
+    authentication mechanisms like GSSAPI.
+    <br/>
+    The default SSH configuration disallows authentications based on GSSAPI.
+    <br/>
+    To explicitly disable GSSAPI authentication, add or
     correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
     <pre>GSSAPIAuthentication no</pre>
 
