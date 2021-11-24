@@ -7,8 +7,10 @@ description: |-
     more secure than <tt>.rhosts</tt> authentication. However, it is
     not recommended that hosts unilaterally trust one another, even
     within an organization.
-    <br /><br />
-    To disable host-based authentication, add or correct the
+    <br />
+    The default SSH configuration disables host-based authentication.
+    <br />
+    To explicitly disable host-based authentication, add or correct the
     following line in <tt>/etc/ssh/sshd_config</tt>:
     <pre>HostbasedAuthentication no</pre>
 

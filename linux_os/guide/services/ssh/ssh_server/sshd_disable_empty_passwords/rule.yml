@@ -3,11 +3,13 @@ documentation_complete: true
 title: 'Disable SSH Access via Empty Passwords'
 
 description: |-
+    Disallow SSH login with empty passwords.
+    The default SSH configuration disables logins with empty passwords.
+    <br />
     To explicitly disallow SSH login from accounts with
     empty passwords, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
     <br />
     <pre>PermitEmptyPasswords no</pre>
-    <br />
     Any accounts with empty passwords should be disabled immediately, and PAM configuration
     should prevent users from being able to assign themselves empty passwords.
 

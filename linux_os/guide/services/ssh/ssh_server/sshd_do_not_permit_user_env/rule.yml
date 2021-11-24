@@ -3,9 +3,12 @@ documentation_complete: true
 title: 'Do Not Allow SSH Environment Options'
 
 description: |-
-    To ensure users are not able to override environment
-    variables of the SSH daemon, add or correct the following line
-    in <tt>/etc/ssh/sshd_config</tt>:
+    Ensure that users are not able to override environment variables of the SSH daemon.
+    <br/>
+    The default SSH configuration disables environment processing.
+    <br/>
+    To explicitly disable Environment options, add or correct the following
+    line in <tt>/etc/ssh/sshd_config</tt>:
     <pre>PermitUserEnvironment no</pre>
 
 rationale: |-

@@ -3,10 +3,13 @@ documentation_complete: true
 title: 'Enable Public Key Authentication'
 
 description: |-
-    Verify the sshd daemon allows public key authentication with the
-    following:
-    <pre>$ grep ^PubkeyAuthentication /etc/ssh/sshd_config
-    PubkeyAuthentication yes</pre>
+    Enable SSH login with public keys.
+    <br/>
+    The default SSH configuration enables authentication based on public keys.
+    <br/>
+    To explicitly enable Public Key Authentication, add or correct the following
+    line in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>PubkeyAuthentication yes</pre>
 
 rationale: |-
     Without the use of multifactor authentication, the ease of access to
