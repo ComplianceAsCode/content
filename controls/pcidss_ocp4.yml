@@ -1714,7 +1714,11 @@ controls:
     as follows:'
   levels:
   - base
-  notes: ''
+  notes: |-
+    For section 8 OpenShift should be configured to work with an external third-party
+    identity provider. The only check would be to verify that the identity provider
+    is configured and which is checked in sub-section 8.1.1
+
   status: not applicable
   controls:
   - id: Req-8.1.1
@@ -1840,7 +1844,7 @@ controls:
     The type of authenticators to be used (for example, password or passphrase,
     token device or smart card, or biometrics) are also managed externally
     to OpenShift by the identity provider
-  status: not appplicable
+  status: not applicable
   controls:
   - id: Req-8.2.1
     title: 8.2.1 Using strong cryptography, render all authentication credentials (such
@@ -2012,7 +2016,9 @@ controls:
     \ to gain access."
   levels:
   - base
-  notes: ''
+  notes: |-
+    As the authentication mechanism used is external to OpenShift via a third-party
+    identity provider this section falls outside the scope of OpenShift.
 
   status: not applicable
   rules: []
@@ -2027,7 +2033,9 @@ controls:
     \ users or other non-application processes)."
   levels:
   - base
-  notes: ''
+  notes: |-
+    The implementation of a database is application specific and falls outside the
+    scope of OpenShift
   status: not applicable
   rules: []
 
@@ -2036,7 +2044,9 @@ controls:
     and authentication are documented, in use, and known to all affected parties.
   levels:
   - base
-  notes: ''
+  notes: |-
+    This section is the responsibility of the application implementation team and falls outside
+    the scope of OpenShift.
   status: not applicable
   rules: []
 
