@@ -214,7 +214,7 @@ class CPEALPlatform(object):
 
     def _replace_cpe_names(self, exp):
         if isinstance(exp, CPEALFactRef):
-            exp.cpe_name = self.cpe_products.get_cpe_name(str(exp.obj))
+            exp.cpe_name = self.cpe_products.get_cpe_name(exp.name)
         else:
             for arg in exp.args:
                 self._replace_cpe_names(arg)
