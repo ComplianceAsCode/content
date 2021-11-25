@@ -50,13 +50,7 @@ references:
     stigid@sle15: SLES-15-040260
     vmmsrg: SRG-OS-000480-VMM-002000
 
-ocil_clause: 'it is commented out or is not enabled'
-
-ocil: |-
-    To check if StrictModes is enabled or set correctly, run the
-    following command:
-    <pre>$ sudo grep StrictModes /etc/ssh/sshd_config</pre>
-    If configured properly, output should be <pre>yes</pre>
+{{{ complete_ocil_entry_sshd_option(default="yes", option="StricModes", value="yes") }}}
 
 template:
     name: sshd_lineinfile

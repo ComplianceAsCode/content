@@ -68,7 +68,11 @@ ocil_clause: 'it is commented out or not configured properly'
 
 ocil: |-
     To ensure <tt>ClientAliveInterval</tt> is set correctly, run the following command:
+    {{% if sshd_distributed_config == "true" %}}
+    <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf</pre>
+    {{% else %}}
     <pre>$ sudo grep ClientAliveCountMax /etc/ssh/sshd_config</pre>
+    {{% endif %}}
     If properly configured, the output should be:
     <pre>ClientAliveCountMax 0</pre>
 
