@@ -40,13 +40,8 @@ references:
     cis@ubuntu2004: 5.2.4
     nist: AC-17(a),CM-6(a)
 
-ocil_clause: 'it is commented out or is not enabled'
+{{{ complete_ocil_entry_sshd_option(default="yes", option="LogLevel", value="INFO") }}}
 
-ocil: |-
-    To check if LogLevel is enabled or set correctly, run the
-    following command:
-    <pre>$ sudo grep "^LogLevel" /etc/ssh/sshd_config</pre>
-    If configured properly, output should be <pre>LogLevel INFO</pre>
 
 template:
     name: sshd_lineinfile

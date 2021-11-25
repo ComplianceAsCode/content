@@ -25,13 +25,7 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: 'it is commented out or is not enabled'
-
-ocil: |-
-    To check if GSSAPIAuthentication is enabled or set correctly, run the following
-    command:
-    <pre>$ sudo grep GSSAPIAuthentication /etc/ssh/sshd_config</pre>
-    If configured properly, output should be <pre>yes</pre>
+{{{ complete_ocil_entry_sshd_option(default="no", option="GSSAPIAuthentication", value="yes") }}}
 
 template:
     name: sshd_lineinfile
