@@ -8,7 +8,7 @@ description: |-
     <tt>X11Forwarding</tt> option is enabled.
     <br /><br />
     To enable X11 Forwarding, add or correct the following line in
-    {{% if product in ['fedora', 'rhel9'] %}}
+    {{% if sshd_distributed_config == "true" %}}
     <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
     {{% else %}}
     <tt>/etc/ssh/sshd_config</tt>:

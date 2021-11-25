@@ -332,7 +332,7 @@ done
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
-{{%- if config_is_distributed %}}
+{{%- if config_is_distributed == "true" %}}
 {{%- set prefix_regex = "^\s*" -%}}
 {{%- set separator_regex = "\s\+" -%}}
 {{%- set hardening_config_basename = "00-complianceascode-hardening.conf" %}}
