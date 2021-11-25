@@ -844,8 +844,8 @@
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 {{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path %}}
-{{%- if config_is_distributed %}}
-{{%- set description = description  ~ " and in " ~ sshd_config_dir -%}}
+{{%- if config_is_distributed == "true" %}}
+{{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
 {{%- endif %}}
 {{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
 

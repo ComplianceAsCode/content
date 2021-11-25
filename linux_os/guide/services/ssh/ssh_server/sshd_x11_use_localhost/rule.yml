@@ -13,7 +13,7 @@ description: |-
     <br />
     To explicitly prevent remote connections to the proxy display, add or correct
     the following line in
-    {{% if product in ['fedora', 'rhel9'] %}}
+    {{% if sshd_distributed_config == "true" %}}
     <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
     {{% else %}}
     <tt>/etc/ssh/sshd_config</tt>:

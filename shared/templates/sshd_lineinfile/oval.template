@@ -1,4 +1,1 @@
-{{%- set products_with_distributed_configuration = ("rhel9", "fedora") -%}}
-{{%- set config_is_distributed = (product in products_with_distributed_configuration) -%}}
-
-{{{ sshd_oval_check(parameter=PARAMETER, value=VALUE, missing_parameter_pass=MISSING_PARAMETER_PASS, config_is_distributed=config_is_distributed) }}}
+{{{ sshd_oval_check(parameter=PARAMETER, value=VALUE, missing_parameter_pass=MISSING_PARAMETER_PASS, config_is_distributed=sshd_distributed_config) }}}
