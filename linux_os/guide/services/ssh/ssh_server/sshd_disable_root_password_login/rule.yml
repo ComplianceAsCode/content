@@ -3,8 +3,12 @@ documentation_complete: true
 title: 'Disable SSH root Login with a Password (Insecure)'
 
 description: |-
-    To disable password-based root logins over SSH, add or correct the following
-    line in <tt>/etc/ssh/sshd_config</tt>:
+    To disable password-based root logins over SSH, add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>PermitRootLogin prohibit-password</pre>
 
 warnings:

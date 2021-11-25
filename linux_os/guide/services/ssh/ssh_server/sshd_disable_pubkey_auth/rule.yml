@@ -5,7 +5,12 @@ title: 'Disable PubkeyAuthentication Authentication'
 description: |-
     Unless needed, SSH should not permit extraneous or unnecessary
     authentication mechanisms. To disable PubkeyAuthentication authentication, add or
-    correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>PubkeyAuthentication no</pre>
 
 rationale: |-

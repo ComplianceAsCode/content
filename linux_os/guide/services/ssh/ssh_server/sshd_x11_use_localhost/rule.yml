@@ -12,7 +12,12 @@ description: |-
     which prevents remote hosts from connecting to the proxy display.
     <br />
     To explicitly prevent remote connections to the proxy display, add or correct
-    the following line in <tt>/etc/ssh/sshd_config</tt>:
+    the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <tt>X11UseLocalhost yes</tt>
 
 rationale: |-

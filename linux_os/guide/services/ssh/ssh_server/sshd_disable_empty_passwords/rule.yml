@@ -6,8 +6,13 @@ description: |-
     Disallow SSH login with empty passwords.
     The default SSH configuration disables logins with empty passwords.
     <br />
-    To explicitly disallow SSH login from accounts with
-    empty passwords, add or correct the following line in <tt>/etc/ssh/sshd_config</tt>:
+    To explicitly disallow SSH login from accounts with empty passwords,
+    add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <br />
     <pre>PermitEmptyPasswords no</pre>
     Any accounts with empty passwords should be disabled immediately, and PAM configuration

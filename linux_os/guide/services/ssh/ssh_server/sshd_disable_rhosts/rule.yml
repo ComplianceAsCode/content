@@ -9,8 +9,12 @@ description: |-
     <br />
     The default SSH configuration disables support for <tt>.rhosts</tt>.
     <br/>
-    To explicitly disable support for .rhosts files, add or correct the
-    following line in <tt>/etc/ssh/sshd_config</tt>:
+    To explicitly disable support for .rhosts files, add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>IgnoreRhosts yes</pre>
 
 rationale: |-

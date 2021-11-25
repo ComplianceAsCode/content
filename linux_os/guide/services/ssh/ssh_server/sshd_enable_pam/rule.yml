@@ -8,8 +8,12 @@ description: |-
     PasswordAuthentication in addition to PAM account and session module processing for all
     authentication types.
 
-    To enable PAM authentication, add or correct the following line in the
-    <tt>/etc/ssh/sshd_config</tt> file:
+    To enable PAM authentication, add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>UsePAM yes</pre>
 
 rationale: |-

@@ -8,8 +8,12 @@ description: |-
     <br/>
     The default SSH configuration disallows authentications based on GSSAPI.
     <br/>
-    To explicitly disable GSSAPI authentication, add or
-    correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    To explicitly disable GSSAPI authentication, add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>GSSAPIAuthentication no</pre>
 
 rationale: |-

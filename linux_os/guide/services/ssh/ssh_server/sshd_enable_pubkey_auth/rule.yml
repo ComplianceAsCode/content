@@ -8,7 +8,11 @@ description: |-
     The default SSH configuration enables authentication based on public keys.
     <br/>
     To explicitly enable Public Key Authentication, add or correct the following
+    {{% if product in ['fedora', 'rhel9'] %}}
+    line in <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
     line in <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>PubkeyAuthentication yes</pre>
 
 rationale: |-
