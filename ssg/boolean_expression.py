@@ -1,5 +1,6 @@
 from .ext.boolean import boolean
-from pkg_resources import Requirement
+import pkg_resources
+import re
 
 
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
@@ -16,6 +17,12 @@ SPECIFIER_OP_ID_TRANSLATION = {
     '<=': 'le_or_eq',
 }
 
+# monkeypatch pkg_resources.safe_name function to keep underscores in tact
+# it is overcoming this issue: https://github.com/pypa/setuptools/issues/2522
+def safe_name(name):
+    return re.sub('[^A-Za-z0-9_.]+', '-', name)
+
+pkg_resources.safe_name = safe_name
 
 class Function(boolean.Function):
     """
@@ -64,7 +71,7 @@ class Symbol(boolean.Symbol):
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.spec = Requirement.parse(obj)
+        self.spec = pkg_resources.Requirement.parse(obj)
         self.obj = self.spec
 
     def __call__(self, **kwargs):
