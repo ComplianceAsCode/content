@@ -11,7 +11,12 @@ description: |-
     The default SSH configuration disables host-based authentication.
     <br />
     To explicitly disable host-based authentication, add or correct the
-    following line in <tt>/etc/ssh/sshd_config</tt>:
+    following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>HostbasedAuthentication no</pre>
 
 rationale: |-

@@ -10,8 +10,12 @@ description: |-
     <br />
     The default SSH configuration disables X11Forwarding.
     <br />
-    To explicitly disable X11 Forwarding, add or correct the
-    following line in <tt>/etc/ssh/sshd_config</tt>:
+    To explicitly disable X11 Forwarding, add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>X11Forwarding no</pre>
 
 rationale: |-

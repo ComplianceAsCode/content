@@ -8,7 +8,11 @@ description: |-
     The default SSH configuration disables environment processing.
     <br/>
     To explicitly disable Environment options, add or correct the following
+    {{% if product in ['fedora', 'rhel9'] %}}
+    line in <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
     line in <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>PermitUserEnvironment no</pre>
 
 rationale: |-

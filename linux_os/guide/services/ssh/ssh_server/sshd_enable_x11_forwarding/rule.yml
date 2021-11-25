@@ -7,8 +7,12 @@ description: |-
     by users. SSH has the capability to encrypt remote X11 connections when SSH's
     <tt>X11Forwarding</tt> option is enabled.
     <br /><br />
-    To enable X11 Forwarding, add or correct the
-    following line in <tt>/etc/ssh/sshd_config</tt>:
+    To enable X11 Forwarding, add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>X11Forwarding yes</pre>
 
 rationale: |-

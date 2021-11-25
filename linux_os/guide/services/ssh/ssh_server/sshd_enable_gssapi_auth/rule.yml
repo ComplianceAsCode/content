@@ -5,8 +5,12 @@ title: 'Enable GSSAPI Authentication'
 description: |-
     Sites setup to use Kerberos or other GSSAPI Authenticaion require setting
     sshd to accept this authentication.
-    To enable GSSAPI authentication, add or correct the following line in the
-    <tt>/etc/ssh/sshd_config</tt> file:
+    To enable GSSAPI authentication, add or correct the following line in
+    {{% if product in ['fedora', 'rhel9'] %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
     <pre>GSSAPIAuthentication yes</pre>
 
 rationale: |-
