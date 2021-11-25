@@ -219,9 +219,6 @@ class CPEALPlatform(object):
             for arg in exp.args:
                 self._replace_cpe_names(arg)
 
-    def add_test(self, test):
-        self.test = test
-
     def to_xml_element(self):
         cpe_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
         cpe_platform.set('id', self.id)
@@ -262,9 +259,6 @@ class CPEALLogicalTest(Function):
             cpe_test.append(obj.to_xml_element())
 
         return cpe_test
-
-    def add_object(self, object):
-        self.objects.append(object)
 
     def get_objects(self):
         return self.objects
