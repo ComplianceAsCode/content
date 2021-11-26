@@ -5,7 +5,8 @@ title: 'Enable Public Key Authentication'
 description: |-
     Enable SSH login with public keys.
     <br/>
-    The default SSH configuration enables authentication based on public keys.
+    The default SSH configuration enables authentication based on public keys. The appropriate
+    configuration is used if no value is set for <tt>PubkeyAuthentication</tt>.
     <br/>
     To explicitly enable Public Key Authentication, add or correct the following
     {{% if sshd_distributed_config == "true" %}}

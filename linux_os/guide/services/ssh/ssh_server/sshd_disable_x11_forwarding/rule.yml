@@ -8,7 +8,8 @@ description: |-
     SSH has the capability to encrypt remote X11 connections when SSH's
     <tt>X11Forwarding</tt> option is enabled.
     <br />
-    The default SSH configuration disables X11Forwarding.
+    The default SSH configuration disables X11Forwarding. The appropriate
+    configuration is used if no value is set for <tt>X11Forwarding</tt>.
     <br />
     To explicitly disable X11 Forwarding, add or correct the following line in
     {{% if sshd_distributed_config == "true" %}}

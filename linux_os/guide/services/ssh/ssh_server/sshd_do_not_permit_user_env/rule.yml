@@ -5,7 +5,8 @@ title: 'Do Not Allow SSH Environment Options'
 description: |-
     Ensure that users are not able to override environment variables of the SSH daemon.
     <br/>
-    The default SSH configuration disables environment processing.
+    The default SSH configuration disables environment processing. The appropriate
+    configuration is used if no value is set for <tt>PermitUserEnvironment</tt>.
     <br/>
     To explicitly disable Environment options, add or correct the following
     {{% if sshd_distributed_config == "true" %}}

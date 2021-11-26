@@ -6,7 +6,8 @@ description: |-
     Unless needed, SSH should not permit extraneous or unnecessary
     authentication mechanisms like GSSAPI.
     <br/>
-    The default SSH configuration disallows authentications based on GSSAPI.
+    The default SSH configuration disallows authentications based on GSSAPI. The appropriate
+    configuration is used if no value is set for <tt>GSSAPIAuthentication</tt>.
     <br/>
     To explicitly disable GSSAPI authentication, add or correct the following line in
     {{% if sshd_distributed_config == "true" %}}
