@@ -1,29 +1,22 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4
 
 title: 'Set Lockout Time for Failed Password Attempts'
 
 description: |-
-    To configure the system to lock out accounts after a number of incorrect login
-    attempts and require an administrator to unlock the account using <tt>pam_faillock.so</tt>,
-    modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
-    <br /><br />
-    <ul>
-    <li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
-    <li> add the following line immediately <tt>after</tt> the <tt>pam_unix.so</tt> statement in the <tt>AUTH</tt> section:
-    <pre>auth [default=die] pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
-    <li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
-    <pre>account required pam_faillock.so</pre></li>
-    </ul>
-    If <tt>unlock_time</tt> is set to <tt>0</tt>, manual intervention by an administrator is required to unlock a user.
+    This rule configures the system to lock out accounts during a specified time period after a
+    number of incorrect login attempts using <tt>pam_faillock.so</tt>.
+
+    pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
+    defined to work as expected. In order to avoid any errors when manually editing these files,
+    it is recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    depending on the OS version.
 
 rationale: |-
-    Locking out user accounts after a number of incorrect attempts
-    prevents direct password guessing attacks. Ensuring that an administrator is
-    involved in unlocking locked accounts draws appropriate attention to such
-    situations.
+    Locking out user accounts after a number of incorrect attempts prevents direct password
+    guessing attacks. Ensuring that an administrator is involved in unlocking locked accounts
+    draws appropriate attention to such situations.
 
 severity: medium
 
@@ -61,24 +54,60 @@ ocil_clause: 'unlock_time is less than the expected value'
 
 ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
-    <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-    The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt> or <tt>0</tt> for <tt>never</tt>.
+    {{% if product in ["rhel7"] %}}
+    <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+    For each file, the output should show <tt>unlock_time=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+    {{% else %}}
+    <pre>$ grep fail_interval /etc/security/faillock.conf</pre>
+    The output should show <tt>unlock_time = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
+    {{% endif %}}
+    It can also be <tt>0</tt> for <tt>never</tt>.
 
 fix: |-
-    Configure the operating system to lock an account until released by an administrator when three unsuccessful logon attempts occur in 15 minutes.
-
-    Add/Modify the appropriate sections of the <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> files to match the following lines:
-
-    <pre>
-    auth required pam_faillock.so preauth dir=/var/log/faillock silent audit deny=3 even_deny_root fail_interval=900 unlock_time=0
-    auth required pam_faillock.so authfail dir=/var/log/faillock unlock_time=0
-    account required pam_faillock.so
-    </pre>
-
-    The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
-
-    <pre>
-    $ sudo systemctl restart sssd.service
-    </pre>
+    To configure the system to lock out accounts during a specified time period after a number of
+    incorrect login attempts using <tt>pam_faillock.so</tt>, first make sure the feature is enabled
+    using the following command:
+    <br /><br />
+    {{% if product in ["rhel7"] %}}
+    <ul>
+    <li><pre>authconfig --enablefaillock --update</pre></li>
+    </ul>
+    <br />
+    Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
+    <tt>/etc/pam.d/password-auth</tt> as follows:
+    <br /><br />
+    <ul>
+    <li> edit the unlock_time parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
+    statement in the <tt>auth</tt> section, like this:
+    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
+    <li> edit the deny parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
+    statement in the <tt>auth</tt> section, like this:
+    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} <tt>unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
+    </ul>
+    {{% else %}}
+    <ul>
+    <li><pre>authselect enable-feature with-faillock</pre></li>
+    </ul>
+    <br />
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    <br /><br />
+    <ul>
+    <li> add, uncomment or edit the following line:
+    <pre>unlock_time = {{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</pre></li>
+    <li> add or uncomment the following line:
+    <pre>silent</pre></li>
+    </ul>
+    {{% endif %}}
+    If <tt>unlock_time</tt> is set to <tt>0</tt>, manual intervention by an administrator is required
+    to unlock a user. This should be done using the <tt>faillock</tt> tool.
 
 platform: pam
+
+warnings:
+    - general: |-
+       If the system supports the new <tt>/etc/security/faillock.conf</tt> file but the
+       pam_faillock.so parameters are defined directly in <tt>/etc/pam.d/system-auth</tt> and
+       <tt>/etc/pam.d/password-auth</tt>, the remediation will migrate the <tt>unlock_time</tt> parameter
+       to <tt>/etc/security/faillock.conf</tt> to ensure compatibility with <tt>authselect</tt> tool.
+       The parameters <tt>deny</tt> and <tt>fail_interval</tt>, if used, also have to be migrated
+       by their respective remediation.
