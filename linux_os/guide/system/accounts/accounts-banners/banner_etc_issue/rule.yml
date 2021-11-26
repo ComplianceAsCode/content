@@ -5,9 +5,14 @@ prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
 title: 'Modify the System Login Banner'
 
 description: |-
+    {{% if product == "rhcos4" %}}
+    To configure the system login banner create a file under
+    <tt>/etc/issue.d</tt>
+    {{% else %}}
     To configure the system login banner edit <tt>/etc/issue</tt>. Replace the
     default text with a message compliant with the local site policy or a legal
     disclaimer.
+    {{% endif %}}
 
     The DoD required text is either:
     <br /><br />
