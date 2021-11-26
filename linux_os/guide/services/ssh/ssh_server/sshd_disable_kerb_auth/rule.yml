@@ -7,6 +7,7 @@ description: |-
     authentication mechanisms like Kerberos.
     <br/>
     The default SSH configuration disallows authentication validation through Kerberos.
+    The appropriate configuration is used if no value is set for <tt>KerberosAuthentication</tt>.
     <br/>
     To explicitly disable Kerberos authentication, add or correct the following line in
     {{% if sshd_distributed_config == "true" %}}

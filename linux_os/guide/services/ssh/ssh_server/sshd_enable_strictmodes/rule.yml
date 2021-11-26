@@ -7,7 +7,8 @@ description: |-
     the user's home directory <tt>.ssh</tt> folder before accepting login. If world-
     writable permissions are found, logon is rejected.
     <br/>
-    The default SSH configuration has <tt>StrictModes</tt> enabled.
+    The default SSH configuration has <tt>StrictModes</tt> enabled. The appropriate
+    configuration is used if no value is set for <tt>StrictModes</tt>.
     <br/>
     To explicitly enable <tt>StrictModes</tt> in SSH, add or correct the following line in
     {{% if sshd_distributed_config == "true" %}}
