@@ -351,7 +351,6 @@ selections:
     - partition_for_tmp
 
     # RHEL-08-010544
-    ### NOTE: Will probably show up in V1R3 - Q3 of 21'
     - partition_for_var_tmp
 
     # RHEL-08-010550

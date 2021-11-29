@@ -1,7 +1,7 @@
 title: DISA STIG for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R3.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R4.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R3
+    version: V1R4
     SMEs:
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R3
+    version: V1R4
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux 8 V1R3.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R4.
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -351,7 +351,6 @@ selections:
     - partition_for_tmp
 
     # RHEL-08-010544
-    ### NOTE: Will probably show up in V1R3 - Q3 of 21'
     - partition_for_var_tmp
 
     # RHEL-08-010550

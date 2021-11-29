@@ -43,7 +43,7 @@ profile pointed by the `--profile1` option.
 ## Generating Controls from DISA's XCCDF Files
 If you want a control file for product from DISA's XCCDF files you can run the following command:
 
-    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r3-xccdf-manual.xml
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r4-xccdf-manual.xml
 
 Where `-p` is the id the comes after `stigid@` in the `references` section of a rule and `-m` is the path to the
 XCCDF Manual file from DISA.
@@ -298,7 +298,7 @@ It supports the following arguments:
 
 To execute:
 
-    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r3-xccdf-scap.xml
+    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r4-xccdf-scap.xml
 
 ### `utils/compare_results.py` - Compare to two ARF result files
 The goal of this script is to compare to two result ARF files. 
