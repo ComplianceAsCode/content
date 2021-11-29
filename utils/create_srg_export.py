@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
 import argparse
 import csv
@@ -148,7 +148,7 @@ def create_base_row(item: dict, srgs: dict) -> dict:
     row = dict()
     srg_id = item['id']
     if srg_id not in srgs:
-        print(f"Unable to find SRG {srg_id}")
+        print(f"Unable to find SRG {srg_id}. Id in the control must be an srg.")
         exit(1)
     srg = srgs[srg_id]
     row['SRGID'] = srg_id
