@@ -5,8 +5,9 @@ from __future__ import print_function
 import argparse
 import json
 import os
+import re
+from pathlib import Path
 import sys
-
 import xml.etree.ElementTree as ET
 import yaml
 
@@ -22,24 +23,38 @@ RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
 
 
-def parse_args():
+def check_output(output: str) -> None:
+    pat = re.compile(r'.*\/?[a-z_0-9]+\.yml')
+    if not pat.match(output):
+        sys.stderr.write('Output must only contain lowercase letters, underscores, and numbers.'
+                         ' The file must also end with .yml\n')
+        exit(1)
+
+
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help="Path to SSG root directory (defaults to %s)" % SSG_ROOT)
     parser.add_argument("-o", "--output", type=str, action="store", default=BUILD_OUTPUT,
-                        help="File to write yaml output to (defaults to build/stig_control.yml)")
+                        help=f"File to write yaml output to (defaults to {BUILD_OUTPUT}). "
+                             f"Must end in '.yml' and only contain "
+                             f"lowercase letters, underscores, and numbers.")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
                         help="What product to get STIGs for")
     parser.add_argument("-m", "--manual", type=str, action="store", required=True,
                         help="Path to XML XCCDF manual file to use as the source of the STIGs")
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
-                        help="Path to the rules_dir.json (defaults to build/stig_control.json)")
+                        help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-c", "--build-config-yaml", default=BUILD_CONFIG,
-                        help="YAML file with information about the build configuration. ")
+                        help="YAML file with information about the build configuration")
     parser.add_argument("-ref", "--reference", type=str, default="stigid",
                         help="Reference system to check for, defaults to stigid")
+    parser.add_argument('-s', '--split', action='store_true',
+                        help='Splits the each ID into its own file.')
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    check_output(args.output)
+    return args
 
 
 def handle_rule_yaml(args, rule_id, rule_dir, guide_dir, env_yaml):
@@ -141,9 +156,32 @@ def main():
     output['levels'] = list()
     for level in ['high', 'medium', 'low']:
         output['levels'].append({'id': level})
-    output['controls'] = get_controls(known_rules, ns, root)
-    with open(args.output, 'w') as f:
-        f.write(yaml.dump(output, sort_keys=False))
+    controls = get_controls(known_rules, ns, root)
+
+    if args.split:
+        with open(args.output, 'w') as f:
+            f.write(yaml.dump(output, sort_keys=False))
+        print(f'Wrote main control file to {args.output}')
+        output_path = Path(args.output)
+        output_dir_name = output_path.stem
+        output_root = output_path.parent
+        output_dir = os.path.join(output_root, output_dir_name)
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
+        for control in controls:
+            out = dict()
+            out['controls'] = control
+            filename = f"{control['id']}.yml"
+            output_filename = os.path.join(output_dir, filename)
+            with open(output_filename, 'w') as f:
+                f.write(yaml.dump(out, sort_keys=False))
+        print(f'Wrote SRG files to {output_dir}')
+        exit(0)
+    else:
+        output['controls'] = controls
+        with open(args.output, 'w') as f:
+            f.write(yaml.dump(output, sort_keys=False))
+        print(f'Wrote all SRGs out to {args.output}')
 
 
 if __name__ == "__main__":
