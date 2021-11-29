@@ -44,19 +44,23 @@ profile pointed by the `--profile1` option.
 If you want a control file for product from DISA's XCCDF files you can run the following command:
 It supports the following arguments:
 
-- `-r`, `--root` - Path to SSG root directory
-- `-o`, `--output` - File to write yaml output to. The name of this file will the name of the directory the files are placed in with `--split`. Must only contain lowercase letters, underscores, and numbers.
-  - Defaults to `build/stig_control.yml`
-- `-p`, `--product` - What product to produce the tailoring file for (required)
-- `-m`, `--manual` - Path to the XCCDF XML file of the SCAP content (required)
-- `-j`, `--json` - Path to the `rules_dir.json ` file.
-  - Defaults to `build/stig_control.json`
-- `-c`, `--build-config-yaml` - YAML file with information about the build configuration.
-  - Defaults to `build/build_config.yml`
-- `-ref`, `--reference` - Reference system to check for
-  - Defaults to `stigid`
-- `-s`, `--spilt` - Splits the each ID into its own file. Files are output in directory with the same name as the YAML file.
-  - Default path for files `build/stig_control`
+```
+options:
+  -h, --help            show this help message and exit
+  -r ROOT, --root ROOT  Path to SSG root directory (defaults to the root of the repository)
+  -o OUTPUT, --output OUTPUT
+                        File to write yaml output to (defaults to build/stig_control.yml)
+  -p PRODUCT, --product PRODUCT
+                        What product to get STIGs for
+  -m MANUAL, --manual MANUAL
+                        Path to XML XCCDF manual file to use as the source of the STIGs
+  -j JSON, --json JSON  Path to the rules_dir.json (defaults to build/rule_dirs.json)
+  -c BUILD_CONFIG_YAML, --build-config-yaml BUILD_CONFIG_YAML
+                        YAML file with information about the build configuration.
+  -ref REFERENCE, --reference REFERENCE
+                        Reference system to check for, defaults to stigid
+  -s, --split           Splits the each ID into its own file.
+```
 
 Example
 
