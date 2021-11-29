@@ -163,8 +163,6 @@ selections:
     # RHEL-08-010171
     - package_policycoreutils_installed
 
-    # RHEL-08-010180
-
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
 
