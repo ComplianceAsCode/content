@@ -50,6 +50,8 @@ class DisaStatus:
 
 
 def html_plain_text(source: str) -> str:
+    if source is None:
+        return ""
     # Quick and dirty way to clean up HTML fields.
     # Add line breaks
     result = source.replace("<br />", "\n")
@@ -123,20 +125,20 @@ def parse_args() -> argparse.Namespace:
 
 
 def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.DictWriter,
-                   env_yaml: ssg.environment, item: dict, rule_json: dict, srgs: dict) -> None:
+                   env_yaml: ssg.environment, rule_json: dict, srgs: dict) -> None:
     if control.selections:
         for rule in control.selections:
-            row = create_base_row(item, srgs)
+            row = create_base_row(control, srgs)
             rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
-            row['Requirement'] = rule_object.description
-            row['Vul Discussion'] = rule_object.rationale
-            row['Check'] = rule_object.ocil
-            row['Fix'] = rule_object.fix
+            row['Requirement'] = html_plain_text(rule_object.description)
+            row['Vul Discussion'] = html_plain_text(rule_object.rationale)
+            row['Check'] = html_plain_text(rule_object.ocil)
+            row['Fix'] = html_plain_text(rule_object.fix)
             # If then control has rule by definition the status is "Applicable - Configurable"
             row['Status'] = DisaStatus.AUTOMATED
             csv_writer.writerow(row)
     else:
-        row = create_base_row(item, srgs)
+        row = create_base_row(control, srgs)
         row['Mitigation'] = control.mitigation
         row['Artifact Description'] = control.artifact_description
         row['Status Justification'] = control.status_justification
@@ -144,9 +146,9 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
         csv_writer.writerow(row)
 
 
-def create_base_row(item: dict, srgs: dict) -> dict:
+def create_base_row(item: ssg.controls.Control, srgs: dict) -> dict:
     row = dict()
-    srg_id = item['id']
+    srg_id = item.id
     if srg_id not in srgs:
         print(f"Unable to find SRG {srg_id}. Id in the control must be an srg.")
         exit(1)
@@ -185,7 +187,8 @@ def main() -> None:
         sys.stderr.write(f"Unable to find control file {control_full_path}\n")
         exit(1)
     srgs = get_srg_dict(args.manual)
-    control_yaml = ssg.yaml.open_raw(control_full_path)
+    control = ssg.controls.Policy(args.control)
+    control.load()
     rule_json = get_rule_json(args.json)
 
     full_output = pathlib.Path(args.output)
@@ -196,9 +199,8 @@ def main() -> None:
         product_yaml_path = os.path.join(product_dir, "product.yml")
         env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
 
-        for item in control_yaml['controls']:
-            control = ssg.controls.Control.from_control_dict(item)
-            handle_control(args.product, control, csv_writer, env_yaml, item, rule_json, srgs)
+        for control in control.controls:
+            handle_control(args.product, control, csv_writer, env_yaml, rule_json, srgs)
         print(f"File written to {full_output}")
 
 
