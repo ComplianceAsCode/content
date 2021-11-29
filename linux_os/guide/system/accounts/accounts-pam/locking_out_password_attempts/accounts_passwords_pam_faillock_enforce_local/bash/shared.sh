@@ -2,6 +2,7 @@
 
 SYSTEM_AUTH="/etc/pam.d/system-auth"
 PASSWORD_AUTH="/etc/pam.d/password-auth"
+FAILLOCK_CONF="/etc/security/faillock.conf"
 
 if [ $(grep -c "^\s*auth.*pam_unix.so" $SYSTEM_AUTH) > 1 ] || \
    [ $(grep -c "^\s*auth.*pam_unix.so" $PASSWORD_AUTH) > 1 ]; then
@@ -9,7 +10,7 @@ if [ $(grep -c "^\s*auth.*pam_unix.so" $SYSTEM_AUTH) > 1 ] || \
    false
 fi
 
-if [ ! $(grep -q '^\s*local_users_only' /etc/security/faillock.conf) ]; then
-    echo "local_users_only" >> /etc/security/faillock.conf
+if [ ! $(grep -q '^\s*local_users_only' $FAILLOCK_CONF) ]; then
+    echo "local_users_only" >> $FAILLOCK_CONF
 fi
 authselect enable-feature with-faillock

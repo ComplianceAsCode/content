@@ -2,6 +2,7 @@
 
 SYSTEM_AUTH="/etc/pam.d/system-auth"
 PASSWORD_AUTH="/etc/pam.d/password-auth"
+FAILLOCK_CONF="/etc/security/faillock.conf"
 
 if [ $(grep -c "^\s*auth.*pam_unix.so" $SYSTEM_AUTH) > 1 ] || \
    [ $(grep -c "^\s*auth.*pam_unix.so" $PASSWORD_AUTH) > 1 ]; then
@@ -9,12 +10,12 @@ if [ $(grep -c "^\s*auth.*pam_unix.so" $SYSTEM_AUTH) > 1 ] || \
    false
 fi
 
-if [ -f /etc/security/faillock.conf ]; then
-    if [ ! $(grep -q '^\s*even_deny_root' /etc/security/faillock.conf) ]; then
-        echo "even_deny_root" >> /etc/security/faillock.conf
+if [ -f $FAILLOCK_CONF ]; then
+    if [ ! $(grep -q '^\s*even_deny_root' $FAILLOCK_CONF) ]; then
+        echo "even_deny_root" >> $FAILLOCK_CONF
     fi
     # If the faillock.conf file is present, but for any reason, like an OS upgrade, the
-    # pam_faillock.so parameters are still defined in pam files, this make them compatible with
+    # pam_faillock.so parameters are still defined in pam files, this makes them compatible with
     # the newer versions of authselect tool and ensure the parameters are only in faillock.conf.
     sed -i --follow-symlinks 's/\(pam_faillock.so preauth\).*$/\1 silent/g' $SYSTEM_AUTH $PASSWORD_AUTH
     sed -i --follow-symlinks 's/\(pam_faillock.so authfail\).*$/\1/g' $SYSTEM_AUTH $PASSWORD_AUTH
