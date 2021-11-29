@@ -620,6 +620,8 @@ selections:
 
     # RHEL-08-020353
     - accounts_umask_etc_bashrc
+    - accounts_umask_etc_csh_cshrc
+    - accounts_umask_etc_profile
 
     # RHEL-08-030000
     - audit_rules_suid_privilege_function

@@ -63,7 +63,9 @@ selections:
 - accounts_passwords_pam_faillock_interval
 - accounts_passwords_pam_faillock_unlock_time
 - accounts_umask_etc_bashrc
+- accounts_umask_etc_csh_cshrc
 - accounts_umask_etc_login_defs
+- accounts_umask_etc_profile
 - accounts_umask_interactive_users
 - accounts_user_dot_no_world_writable_programs
 - accounts_user_home_paths_only
@@ -444,5 +446,4 @@ platforms: !!set {}
 cpe_names: !!set {}
 platform: null
 filter_rules: ''
-definition_location: /home/wsato/git/content/products/rhel8/profiles/stig.profile
 documentation_complete: true
