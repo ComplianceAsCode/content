@@ -179,8 +179,8 @@ class Policy():
             self.levels.append(level)
             self.levels_by_id[level.id] = level
 
-        controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         if os.path.exists(self.controls_dir) and os.path.isdir(self.controls_dir):
+            controls_tree = yaml_contents.get("controls", list())
             files = os.listdir(self.controls_dir)
             for file in files:
                 if file.endswith('.yml'):
@@ -192,6 +192,8 @@ class Policy():
                     continue
                 else:
                     raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
+        else:
+            controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         for c in self._parse_controls_tree(controls_tree):
             self.controls.append(c)
             self.controls_by_id[c.id] = c
