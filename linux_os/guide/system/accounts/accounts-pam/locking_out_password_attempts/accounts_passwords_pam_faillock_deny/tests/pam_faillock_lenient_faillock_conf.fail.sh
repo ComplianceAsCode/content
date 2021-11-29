@@ -7,9 +7,9 @@ else
     authselect enable-feature with-faillock
 fi
 # Ensure the parameters only in /etc/security/faillock.conf if the file is present.
-# NOTE: 
+# NOTE:
 # Older versions of authselect, which don't support faillock.conf will complain if any change
-# is made in pam files, even for different but valid arguments. In practical, if any change in
+# are made in pam files, even for different but valid arguments. In practical, if any change in
 # default pam_faillock.so parameters is necessary for hardening, old versions of authselect no
 # longer can be used to manage pam. This will impact the ansible remediation for older versions
 # of authselect in the specific context of this test scenario, for example, in a RHEL 8.0 and 8.1.

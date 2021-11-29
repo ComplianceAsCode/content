@@ -23,24 +23,6 @@
   when:
     - result_faillock_conf_check.stat.exists
 
-- name: Ensure the pam_faillock.so preauth parameters are not present in the pam files
-  ansible.builtin.command:
-    cmd: sed -i --follow-symlinks 's/\(pam_faillock.so preauth\).*$/\1 silent/g' {{ item }}
-  loop:
-    - /etc/pam.d/system-auth
-    - /etc/pam.d/password-auth
-  when:
-    - result_faillock_conf_check.stat.exists
-
-- name: Ensure the pam_faillock.so authfail parameters are not present in the pam files
-  ansible.builtin.command:
-    cmd: sed -i --follow-symlinks 's/\(pam_faillock.so authfail\).*$/\1/g' {{ item }}
-  loop:
-    - /etc/pam.d/system-auth
-    - /etc/pam.d/password-auth
-  when:
-    - result_faillock_conf_check.stat.exists
-
 - name: Check if pam_faillock.so is already enabled
   ansible.builtin.lineinfile:
     path: /etc/pam.d/system-auth
@@ -50,8 +32,36 @@
   check_mode: yes
   changed_when: false
   register: result_pam_faillock_enabled
+
+- name: Ensure the pam_faillock.so preauth parameters are not present in the pam files
+  ansible.builtin.lineinfile:
+    path: '{{ item }}'
+    backrefs: true
+    regexp: (.*pam_faillock.so preauth).*$
+    line: \1 silent
+    state: present
+    follow: yes
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
   when:
-    - not result_faillock_conf_check.stat.exists
+    - result_faillock_conf_check.stat.exists
+    - result_pam_faillock_enabled.found
+
+- name: Ensure the pam_faillock.so authfail parameters are not present in the pam files
+  ansible.builtin.lineinfile:
+    path: '{{ item }}'
+    backrefs: true
+    regexp: (.*pam_faillock.so authfail).*$
+    line: \1
+    state: present
+    follow: yes
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - result_faillock_conf_check.stat.exists
+    - result_pam_faillock_enabled.found
 
 - name: Ensure pam_faillock.so is properly enabled using authconfig tool
   ansible.builtin.command:
@@ -63,7 +73,9 @@
   ansible.builtin.command:
     cmd: authselect enable-feature with-faillock
   register: result_pam_authselect_cmd
-  when: result_faillock_conf_check.stat.exists or not result_pam_faillock_enabled.found
+  when:
+    - result_faillock_conf_check.stat.exists
+    - not result_pam_faillock_enabled.found
 
 - name: Check if pam_faillock.so even_deny_root parameter is already enabled in pam files
   ansible.builtin.lineinfile:

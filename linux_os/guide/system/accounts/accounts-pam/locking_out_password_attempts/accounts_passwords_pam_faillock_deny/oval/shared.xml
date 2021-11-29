@@ -36,7 +36,7 @@
       <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf always
            when possible. But due to backwards compatibility, they are also allowed in pam files
            directly. In case they are defined in both places, pam files have precedence and this
-           may confuse the assessment. The following tests ensure only one option is used. Note 
+           may confuse the assessment. The following tests ensure only one option is used. Note
            that if faillock.conf is available, authselect tool only manage parameters on it -->
       <criteria operator="OR" comment="Check expected value for pam_faillock.so deny parameter">
         <criteria operator="AND"
@@ -63,7 +63,7 @@
                 test_ref="test_accounts_passwords_pam_faillock_deny_parameter_faillock_conf"
                 comment="Ensure the deny parameter is present in /etc/security/faillock.conf"/>
         </criteria>
-      </criteria> 
+      </criteria>
     </criteria>
   </definition>
 
@@ -207,7 +207,7 @@
 
   <ind:textfilecontent54_state version="1"
         id="state_accounts_passwords_pam_faillock_deny_parameter_upper_bound">
-    <ind:subexpression datatype="string" operation="less than or equal"
+    <ind:subexpression datatype="int" operation="less than or equal"
                        var_ref="var_accounts_passwords_pam_faillock_deny"/>
   </ind:textfilecontent54_state>
 
