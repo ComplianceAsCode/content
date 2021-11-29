@@ -6,9 +6,9 @@ controls:
       period of inactivity.
     automated: yes
     rules:
-      - sshd_set_idle_timeout
-      - accounts_tmout
-      - var_accounts_tmout=10_min
-      - configure_crypto_policy
+    - sshd_set_idle_timeout
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+    - configure_crypto_policy
     notes: >-
       Certain period of inactivity is vague.

@@ -282,3 +282,7 @@ def profile_resolution_all(cls, profile_all):
 
 def test_load_control_from_folder():
     _load_test("jklm")
+
+
+def test_load_control_from_folder():
+    _load_test("qrst")
