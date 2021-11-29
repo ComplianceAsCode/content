@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000377-GPOS-00162
+        levels:
+            - medium
+        title: The operating system must electronically verify Personal Identity Verification
+            (PIV) credentials.
+        rules:
+            - sssd_certificate_verification
+            - install_smartcard_packages
+            - dconf_gnome_enable_smartcard_auth
+        status: automated

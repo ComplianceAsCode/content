@@ -1,0 +1,16 @@
+controls:
+    -   id: SRG-OS-000120-GPOS-00061
+        levels:
+            - medium
+        title: The operating system must use mechanisms meeting the requirements of applicable
+            federal laws, Executive orders, directives, policies, regulations, standards,
+            and guidance for authentication to a cryptographic module.
+        rules:
+            - kerberos_disable_no_keytab
+            - accounts_password_all_shadowed_sha512
+            - package_rsyslog-gnutls_installed
+            - rsyslog_remote_tls
+            - package_libreswan_installed
+            - configure_kerberos_crypto_policy
+            - package_krb5-workstation_removed
+        status: automated

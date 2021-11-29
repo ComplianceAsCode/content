@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000046-GPOS-00022
+        levels:
+            - medium
+        title: The operating system must alert the ISSO and SA (at a minimum) in the event
+            of an audit processing failure.
+        rules:
+            - postfix_client_configure_mail_alias
+            - audit_rules_system_shutdown
+            - auditd_data_retention_action_mail_acct
+        status: automated
