@@ -9,7 +9,7 @@ description: |-
     the dhcp package can be uninstalled.
     {{% if 'ubuntu' in product %}}
     {{{ describe_package_remove(package="isc-dhcp-server") }}}
-    {{% elif product == 'rhel8' %}}
+    {{% elif product in ['rhel8', 'rhel9'] %}}
     {{{ describe_package_remove(package="dhcp-server") }}}
     {{% else %}}
     {{{ describe_package_remove(package="dhcp") }}}
@@ -43,7 +43,7 @@ references:
 
 {{% if 'ubuntu' in product %}}
 {{{ complete_ocil_entry_package(package="isc-dhcp-server") }}}
-{{% elif product == 'rhel8' %}}
+{{% elif product in ['rhel8', 'rhel9'] %}}
 {{{ complete_ocil_entry_package(package="dhcp-server") }}}
 {{% else %}}
 {{{ complete_ocil_entry_package(package="dhcp") }}}
@@ -54,6 +54,7 @@ template:
     vars:
         pkgname: dhcp
         pkgname@rhel8: dhcp-server
+        pkgname@rhel9: dhcp-server
         pkgname@ubuntu1604: isc-dhcp-server
         pkgname@ubuntu1804: isc-dhcp-server
         pkgname@ubuntu2004: isc-dhcp-server

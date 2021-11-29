@@ -22,7 +22,7 @@ description: |-
     supplement the basic security requirements, are taken from the security controls
     in NIST Special Publication 800-53.
 
-    This profile configures Red Hat Enterprise Linux 8 to the NIST Special
+    This profile configures Red Hat Enterprise Linux 9 to the NIST Special
     Publication 800-53 controls identified for securing Controlled Unclassified
     Information (CUI)."
 

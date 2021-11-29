@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# platform = multi_platform_fedora
 
 KEYS=$(rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\n')
 

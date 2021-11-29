@@ -13,15 +13,15 @@ title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 9'
 description: |-
     This profile contains configuration checks that are based on the RHEL8 STIG.
 
-    In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes this
+    In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
-    Red Hat technologies that are based on Red Hat Enterprise Linux 8, such as:
+    Red Hat technologies that are based on Red Hat Enterprise Linux 9, such as:
 
     - Red Hat Enterprise Linux Server
     - Red Hat Enterprise Linux Workstation and Desktop
     - Red Hat Enterprise Linux for HPC
     - Red Hat Storage
-    - Red Hat Containers with a Red Hat Enterprise Linux 8 image
+    - Red Hat Containers with a Red Hat Enterprise Linux 9 image
 
 selections:
     ### Variables
