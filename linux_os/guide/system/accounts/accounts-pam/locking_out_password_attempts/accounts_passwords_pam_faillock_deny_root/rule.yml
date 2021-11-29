@@ -5,24 +5,18 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,wrlinux1019
 title: 'Configure the root Account for Failed Password Attempts'
 
 description: |-
-    To configure the system to lock out the <tt>root</tt> account after a
-    number of incorrect login attempts using <tt>pam_faillock.so</tt>, modify
-    the content of both <tt>/etc/pam.d/system-auth</tt> and
-    <tt>/etc/pam.d/password-auth</tt> as follows:
-    <br /><br />
-    <ul>
-    <li>Modify the following line in the <tt>AUTH</tt> section to add
-    <tt>even_deny_root</tt>:
-    <pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
-    <li>Modify the following line in the <tt>AUTH</tt> section to add
-    <tt>even_deny_root</tt>:
-    <pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
-    </li>
-    </ul>
+    This rule configures the system to lock out the <tt>root</tt> account after a number of
+    incorrect login attempts using <tt>pam_faillock.so</tt>.
+
+    pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
+    defined to work as expected. In order to avoid any errors when manually editing these files,
+    it is recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    depending on the OS version.
 
 rationale: |-
-    By limiting the number of failed logon attempts, the risk of unauthorized system access via user password
-    guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
+    By limiting the number of failed logon attempts, the risk of unauthorized system access via
+    user password guessing, also known as brute-forcing, is reduced. Limits are imposed by locking
+    the account.
 
 severity: medium
 
@@ -54,24 +48,56 @@ ocil_clause: 'limiting the number of failed logon attempts for the root user is 
 ocil: |-
     To ensure that even the <tt>root</tt> account is locked after a defined number of failed password
     attempts, run the following command:
-    <pre>$ grep even_deny_root /etc/pam.d/system-auth</pre>
+    {{% if product in ["rhel7"] %}}
+    <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
+    For each file, the output should contain <tt>even_deny_root</tt>.
+    {{% else %}}
+    <pre>$ grep even_deny_root /etc/security/faillock.conf</pre>
     The output should show <tt>even_deny_root</tt>.
+    {{% endif %}}
 
 fix: |-
-    Configure the operating system to include root when locking an account after three unsuccessful logon attempts occur in 15 minutes.
-
-    Add/Modify the appropriate sections of the <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> files to match the following lines:
-
-    <pre>
-    auth required pam_faillock.so preauth dir=/var/log/faillock silent audit deny=3 even_deny_root fail_interval=900 unlock_time=0
-    auth required pam_faillock.so authfail dir=/var/log/faillock unlock_time=0
-    account required pam_faillock.so
-    </pre>
-
-    The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
-
-    <pre>
-    $ sudo systemctl restart sssd.service
-    </pre>
+    To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
+    attempts using <tt>pam_faillock.so</tt>, first enable the feature using the following command:
+    <br /><br />
+    {{% if product in ["rhel7"] %}}
+    <ul>
+    <li><pre>authconfig --enablefaillock --update</pre></li>
+    </ul>
+    <br />
+    Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
+    <tt>/etc/pam.d/password-auth</tt> as follows:
+    <br /><br />
+    <ul>
+    <li> include the even_deny_root parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
+    statement in the <tt>auth</tt> section, like this:
+    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre></li>
+    <li> include the even_deny_root parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
+    statement in the <tt>auth</tt> section, like this:
+    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} <tt>even_deny_root</tt></pre></li>
+    </ul>
+    {{% else %}}
+    <ul>
+    <li><pre>authselect enable-feature with-faillock</pre></li>
+    </ul>
+    <br />
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    <br /><br />
+    <ul>
+    <li> add or uncomment the following line:
+    <pre>even_deny_root</pre></li>
+    <li> add or uncomment the following line:
+    <pre>silent</pre></li>
+    </ul>
+    {{% endif %}}
 
 platform: pam
+
+warnings:
+    - general: |-
+       If the system supports the new <tt>/etc/security/faillock.conf</tt> file but the
+       pam_faillock.so parameters are defined directly in <tt>/etc/pam.d/system-auth</tt> and
+       <tt>/etc/pam.d/password-auth</tt>, the remediation will migrate the <tt>even_deny_root</tt>
+       parameter to <tt>/etc/security/faillock.conf</tt> to ensure compatibility with <tt>authselect</tt>
+       tool. Other parameters, like <tt>fail_interval</tt> and <tt>unlock_time</tt>, if used, also have
+       to be migrated by their respective remediation.
