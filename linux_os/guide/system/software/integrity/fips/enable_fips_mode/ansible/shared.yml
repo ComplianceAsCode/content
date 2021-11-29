@@ -13,3 +13,13 @@
   command: /usr/bin/fips-mode-setup --enable
   when:
     - is_fips_enabled.stdout.find('FIPS mode is enabled.') == -1
+
+- name: "{{{ rule_title }}}"
+  lineinfile:
+    path: /etc/crypto-policies/config
+    regexp: '^(?!#)(\S+)$'
+    line: "{{ var_system_crypto_policy }}"
+    create: yes
+
+- name: Verify that Crypto Policy is Set (runtime)
+  command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
