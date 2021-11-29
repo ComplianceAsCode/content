@@ -460,37 +460,26 @@ selections:
     # RHEL-08-020000
     - account_temp_expire_date
 
-    # RHEL-08-020010
+    # RHEL-08-020010, RHEL-08-020011, RHEL-08-020025, RHEL-08-020026
     - accounts_passwords_pam_faillock_deny
 
-    # RHEL-08-020011
-
-    # RHEL-08-020012
+    # RHEL-08-020012, RHEL-08-020013
     - accounts_passwords_pam_faillock_interval
 
-    # RHEL-08-020013
-
-    # RHEL-08-020014
+    # RHEL-08-020014, RHEL-08-020016, RHEL-08-020017
     - accounts_passwords_pam_faillock_unlock_time
 
     # RHEL-08-020015
 
-    # RHEL-08-020016
-
-    # RHEL-08-020017
-
-    # RHEL-08-020018
-
-    # RHEL-08-020019
+    # RHEL-08-020018, RHEL-08-020019
+    - accounts_passwords_pam_faillock_deny
 
     # RHEL-08-020020
 
     # RHEL-08-020021
 
-    # RHEL-08-020022
+    # RHEL-08-020022, RHEL-08-020023
     - accounts_passwords_pam_faillock_deny_root
-
-    # RHEL-08-020023
 
     # RHEL-08-020024
     - accounts_max_concurrent_login_sessions
