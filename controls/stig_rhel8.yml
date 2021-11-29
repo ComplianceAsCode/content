@@ -860,7 +860,9 @@ controls:
             - medium
         title: RHEL 8 must automatically lock an account when three unsuccessful logon attempts
             occur.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_deny
+        status: automated
     -   id: RHEL-08-020012
         levels:
             - medium
@@ -874,7 +876,9 @@ controls:
             - medium
         title: RHEL 8 must automatically lock an account when three unsuccessful logon attempts
             occur during a 15-minute time period.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_interval
+        status: automated
     -   id: RHEL-08-020014
         levels:
             - medium
@@ -895,24 +899,32 @@ controls:
         levels:
             - medium
         title: RHEL 8 must ensure account lockouts persist.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_unlock_time
+        status: automated
     -   id: RHEL-08-020017
         levels:
             - medium
         title: RHEL 8 must ensure account lockouts persist.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_unlock_time
+        status: automated
     -   id: RHEL-08-020018
         levels:
             - medium
         title: RHEL 8 must prevent system messages from being presented when three unsuccessful
             logon attempts occur.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_deny
+        status: automated
     -   id: RHEL-08-020019
         levels:
             - medium
         title: RHEL 8 must prevent system messages from being presented when three unsuccessful
             logon attempts occur.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_deny
+        status: automated
     -   id: RHEL-08-020020
         levels:
             - medium
@@ -938,7 +950,9 @@ controls:
         title: RHEL 8 must include root when automatically locking an account until the
             locked account is released by an administrator when three unsuccessful logon attempts
             occur during a 15-minute time period.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_deny_root
+        status: automated
     -   id: RHEL-08-020024
         levels:
             - low
@@ -2701,13 +2715,17 @@ controls:
             - medium
         title: RHEL 8 must configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth
             file.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_deny
+        status: automated
     -   id: RHEL-08-020026
         levels:
             - medium
         title: RHEL 8 must configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth
             file.
-        status: pending
+        rules:
+            - accounts_passwords_pam_faillock_deny
+        status: automated
     -   id: RHEL-08-020031
         levels:
             - medium
