@@ -1,87 +1,278 @@
 <def-group>
-  <definition class="compliance" id="accounts_passwords_pam_faillock_deny_root" version="4">
-    {{{ oval_metadata("The root account should be configured to deny access after the number of defined
-      failed attempts has been reached.") }}}
-    <criteria>
-      <criterion test_ref="test_pam_faillock_preauth_silent_system-auth"
-      comment="pam_faillock.so preauth silent set in system-auth" />
-      <criterion test_ref="test_pam_faillock_authfail_deny_root_system-auth"
-      comment="pam_faillock.so authfail deny_root value set in system-auth" />
-      <criterion test_ref="test_pam_faillock_preauth_silent_password-auth"
-      comment="pam_faillock.so preauth silent set in password-auth" />
-      <criterion test_ref="test_pam_faillock_authfail_deny_root_password-auth"
-      comment="pam_faillock.so authfail deny_root value set in password-auth" />
+  <definition class="compliance" id="{{{ rule_id }}}" version="5">
+    {{{ oval_metadata("The root account should be configured to deny access after the number of
+      defined failed attempts has been reached.") }}}
+    <criteria operator="AND" comment="Check the proper configuration of pam_faillock.so">
+      <criteria operator="AND" comment="Check if pam_faillock.so is properly enabled">
+        <!-- pam_unix.so is a control module present in all realistic scenarios and also used
+             as reference for the correct position of pam_faillock.so in auth section. If the
+             system is properly configured, it must appear only once in auth section. -->
+        <criteria operator="AND" comment="Count occurrencies of pam_unix.so in system-auth">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_system_pam_unix_auth"
+              comment="pam_unix.so appears only once in auth section of system-auth"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_password_pam_unix_auth"
+              comment="pam_unix.so appears only once in auth section of password-auth"/>
+        </criteria>
+
+        <!-- pam_faillock.so parameters can be defined directly in pam files or, in earlier
+             versions, in /etc/security/faillock.conf. The last is the recommended option when
+             available. Also, is the option used by auselect tool. However, regardless the
+             approach, a minimal declaration is common in pam files. -->
+        <criteria operator="AND" comment="Check common definition of pam_faillock.so">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_auth"
+              comment="pam_faillock.so is properly defined in auth section of system-auth"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_account"
+              comment="pam_faillock.so is properly defined in account section of system-auth"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_auth"
+              comment="pam_faillock.so is properly defined in auth section of password-auth"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_account"
+              comment="pam_faillock.so is properly defined in account section of password-auth"/>
+        </criteria>
+      </criteria>
+
+      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf always
+           when possible. But due to backwards compatibility, they are also allowed in pam files
+           directly. In case they are defined in both places, pam files have precedence and this
+           may confuse the assessment. The following tests ensure only one option is used. Note
+           that if faillock.conf is available, authselect tool only manage parameters on it -->
+      <criteria operator="OR"
+                comment="Check expected value for pam_faillock.so even_deny_root parameter">
+        <criteria operator="AND"
+                  comment="Check expected pam_faillock.so even_deny_root parameter in pam files">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_pamd_system"
+              comment="Check the even_deny_root parameter in auth section of system-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_pamd_password"
+              comment="Check the even_deny_root parameter in auth section of password-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_no_faillock_conf"
+              comment="Ensure /etc/security/faillock.conf is not used together with pam files"/>
+        </criteria>
+        <criteria operator="AND"
+              comment="Check expected pam_faillock.so even_deny_root parameter in faillock.conf">
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_no_pamd_system"
+              comment="Check the even_deny_root parameter is not present system-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_no_pamd_password"
+              comment="Check the even_deny_root parameter is not present password-auth file"/>
+          <criterion
+              test_ref="test_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"
+              comment="Ensure the even_deny_root parameter is present in /etc/security/faillock.conf"/>
+        </criteria>
+      </criteria>
     </criteria>
   </definition>
 
-  <!-- Check for preauth silent even_deny_root in /etc/pam.d/system-auth -->
-  <ind:textfilecontent54_test id="test_pam_faillock_preauth_silent_system-auth"
-  check="all" check_existence="all_exist"
-  comment="Check pam_faillock.so preauth silent present in /etc/pam.d/system-auth" version="1">
-    <ind:object object_ref="object_pam_faillock_preauth_silent_system-auth" />
+  <!-- The following tests demand complex regex which are necessary more than once.
+       These variables make simpler the usage of regex patterns. -->
+  <constant_variable id="var_accounts_passwords_pam_faillock_deny_root_pam_unix_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_unix.so in auth section of pam files">
+    <value>^[\s]*auth\N+pam_unix\.so</value>
+  </constant_variable>
+
+  <constant_variable id="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_auth_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entries in auth section of pam files">
+    <value>^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+preauth[\s\S]*^[\s]*auth[\s]+(sufficient|\[(?=.*\bsuccess=done\b)(?=.*?\bnew_authtok_reqd=done\b)(?=.*?\bdefault=ignore\b).*\])[\s]+pam_unix\.so[\s\S]*^[\s]*auth[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\w\d=]+authfail</value>
+  </constant_variable>
+
+  <constant_variable id="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_account_regex"
+                datatype="string" version="1"
+                comment="regex to identify pam_faillock.so entry in account section of pam files">
+    <value>^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_faillock\.so[\s\S]*^[\s]*account[\s]+(required|\[(?=.*?\bsuccess=ok\b)(?=.*?\bnew_authtok_reqd=ok\b)(?=.*?\bignore=ignore\b)(?=.*?\bdefault=bad\b).*\])[\s]+pam_unix\.so</value>
+  </constant_variable>
+
+  <constant_variable
+              id="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_parameter_regex"
+              datatype="string" version="1"
+              comment="regex to identify pam_faillock.so deny entry in auth section of pam files">
+    <value>^[\s]*auth[\s]+.+[\s]+pam_faillock.so[\s]+[^\n]*even_deny_root</value>
+  </constant_variable>
+
+  <constant_variable
+              id="var_accounts_passwords_pam_faillock_deny_root_faillock_conf_parameter_regex"
+              datatype="string" version="1"
+              comment="regex to identify deny entry in /etc/security/faillock.conf">
+    <value>^[\s]*even_deny_root</value>
+  </constant_variable>
+
+  <!-- Check occurrencies of pam_unix.so in auth section of system-auth file -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_system_pam_unix_auth"
+        comment="Get all occcurencies of pam_unix.so in auth section of system-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_unix_regex"/>
+    <!-- It is not expected to find a second instance of this pattern -->
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_system_pam_unix_auth"
+        comment="Only one occurrence of pam_unix.so is expected in auth section of system-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_deny_root_system_pam_unix_auth"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_pam_faillock_preauth_silent_system-auth" version="1">
-    <!-- Read whole /etc/pam.d/system-auth content as single line so we can verify existing order of PAM modules -->
-    <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <!-- Since order of PAM modules matters ensure pam_faillock.so preauth silent in auth section is listed before
-         pam_unix.so module in auth section -->
-    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+required[\s]+pam_faillock\.so[\s]+preauth[\s]+silent[\s]+[^\n]*even_deny_root[\s]*(?s).*[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]*[\n]</ind:pattern>
-    <!-- Check only the first instance -->
+  <!-- Check occurrencies of pam_unix.so in auth section in password-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_password_pam_unix_auth"
+        comment="Get all occcurencies of pam_unix.so in auth section of password-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_unix_regex"/>
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_password_pam_unix_auth"
+        comment="Only one occurrence of pam_unix.so is expected in auth section of password-auth">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_deny_root_password_pam_unix_auth"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check common definition of pam_faillock.so in system-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_auth"
+        comment="Check common definition of pam_faillock.so in auth section of system-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_auth_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Check for authfail even_deny_root in /etc/pam.d/system-auth -->
-  <ind:textfilecontent54_test id="test_pam_faillock_authfail_deny_root_system-auth"
-  check="all" check_existence="all_exist"
-  comment="Check maximum failed login attempts allowed in /etc/pam.d/system-auth (authfail)" version="1">
-    <ind:object object_ref="object_pam_faillock_authfail_deny_root_system-auth" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_auth"
+        comment="One and only one pattern occurrence is expected in auth section of system-auth">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_auth"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_pam_faillock_authfail_deny_root_system-auth" version="1">
-    <!-- Read whole /etc/pam.d/system-auth content as single line so we can verify existing order of PAM modules -->
-    <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
-    <!-- Since order of PAM modules matters ensure pam_faillock.so in auth section is listed right after pam_unix.so auth row -->
-    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]*(?s).*[\n][\s]*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[\s]+[^\n]*even_deny_root[^\n]*[\n]</ind:pattern>
-    <!-- Check only the first instance -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_account"
+        comment="Check common definition of pam_faillock.so in account section of system-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+              var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_account_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Check for preauth silent even_deny_root in /etc/pam.d/password-auth -->
-  <ind:textfilecontent54_test id="test_pam_faillock_preauth_silent_password-auth"
-  check="all" check_existence="all_exist"
-  comment="Check pam_faillock.so preauth silent present in /etc/pam.d/password-auth" version="1">
-    <ind:object object_ref="object_pam_faillock_preauth_silent_password-auth" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+      id="test_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_account"
+      comment="One and only one pattern occurrence is expected in account section of system-auth">
+    <ind:object
+      object_ref="object_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_account"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_pam_faillock_preauth_silent_password-auth" version="1">
-    <!-- Read whole /etc/pam.d/password-auth content as single line so we can verify existing order of PAM modules -->
-    <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
-    <!-- Since order of PAM modules matters ensure pam_faillock.so preauth silent in auth section is listed before
-         pam_unix.so module in auth section -->
-    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+required[\s]+pam_faillock\.so[\s]+preauth[\s]+silent[\s]+[^\n]*even_deny_root[\s]*(?s).*[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]*[\n]</ind:pattern>
-    <!-- Check only the first instance -->
+  <!-- Check common definition of pam_faillock.so in password-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_auth"
+        comment="Check common definition of pam_faillock.so in auth section of password-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+                 var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_auth_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Check for authfail even_deny_root in /etc/pam.d/password-auth -->
-  <ind:textfilecontent54_test id="test_pam_faillock_authfail_deny_root_password-auth"
-  check="all" check_existence="all_exist"
-  comment="Check maximum failed login attempts allowed in /etc/pam.d/password-auth (authfail)" version="1">
-    <ind:object object_ref="object_pam_faillock_authfail_deny_root_password-auth" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_auth"
+        comment="One and only one pattern occurrence is expected in auth section of system-auth">
+    <ind:object
+        object_ref="object_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_auth"/>
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_pam_faillock_authfail_deny_root_password-auth" version="1">
-    <!-- Read whole /etc/pam.d/system-auth content as single line so we can verify existing order of PAM modules -->
-    <ind:behaviors singleline="true" />
-    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
-    <!-- Since order of PAM modules matters ensure pam_faillock.so in auth section is listed right after pam_unix.so auth row -->
-    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]*(?s).*[\n][\s]*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[\s]+[^\n]*even_deny_root[^\n]*[\n]</ind:pattern>
-    <!-- Check only the first instance -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_account"
+        comment="Check common definition of pam_faillock.so in account section of password-auth">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+              var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_account_regex"/>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_account"
+    comment="One and only one pattern occurrence is expected in account section of password-auth">
+    <ind:object
+    object_ref="object_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_account"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check the pam_faillock.so even_deny_root parameter in system-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_parameter_pamd_system"
+        comment="Get the pam_faillock.so even_deny_root parameter from system-auth file">
+    <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+            var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_parameter_pamd_system"
+        comment="Check the expected even_deny_root parameter in system-auth">
+    <ind:object
+         object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_pamd_system"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_parameter_no_pamd_system"
+        comment="Check the absence of even_deny_root parameter in system-auth">
+    <ind:object
+         object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_pamd_system"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check the pam_faillock.so even_deny_root parameter in password-auth -->
+  <ind:textfilecontent54_object version="1"
+        id="object_accounts_passwords_pam_faillock_deny_root_parameter_pamd_password"
+        comment="Get the pam_faillock.so even_deny_root parameter from password-auth file">
+    <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
+    <ind:pattern operation="pattern match"
+            var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_faillock_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_parameter_pamd_password"
+        comment="Check the expected even_deny_root parameter in password-auth">
+    <ind:object
+         object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_pamd_password"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_parameter_no_pamd_password"
+        comment="Check the absence of even_deny_root parameter in password-auth">
+    <ind:object
+         object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_pamd_password"/>
+  </ind:textfilecontent54_test>
+
+  <!-- Check pam_faillock.so even_deny_root parameter in /etc/security/faillock.conf -->
+  <ind:textfilecontent54_object version="1"
+      id="object_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"
+      comment="Try to get the even_deny_root parameter from /etc/security/faillock.conf">
+    <ind:filepath operation="pattern match">^/etc/security/faillock.conf$</ind:filepath>
+    <ind:pattern operation="pattern match"
+          var_ref="var_accounts_passwords_pam_faillock_deny_root_faillock_conf_parameter_regex"/>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"
+        comment="Check the expected even_deny_root parameter in /etc/security/faillock.conf">
+    <ind:object
+         object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+        id="test_accounts_passwords_pam_faillock_deny_root_parameter_no_faillock_conf"
+        comment="Check the absence of even_deny_root parameter in /etc/security/faillock.conf">
+    <ind:object
+         object_ref="object_accounts_passwords_pam_faillock_deny_root_parameter_faillock_conf"/>
+  </ind:textfilecontent54_test>
 </def-group>
