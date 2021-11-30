@@ -11,6 +11,8 @@ ssg_build_html_ref_tables("${PRODUCT}" "table-${PRODUCT}-{ref_id}refs" "anssi;cu
 
 ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-standard" "${PRODUCT}" "standard" "nist")
 ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-stig" "${PRODUCT}" "stig" "nist")
+ssg_build_html_profile_table("table-${PRODUCT}-nistrefs-stig_gui" "${PRODUCT}" "stig_gui" "nist")
 
 ssg_build_html_stig_tables(${PRODUCT})
 ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig")
+ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig_gui")
