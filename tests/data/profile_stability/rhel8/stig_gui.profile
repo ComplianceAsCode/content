@@ -1,7 +1,7 @@
 title: DISA STIG with GUI for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R3.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R4.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -34,7 +34,7 @@ description: 'This profile contains configuration checks that align to the
     standard DISA STIG for Red Hat Enterprise Linux 8 profile.'
 extends: null
 metadata:
-    version: V1R3
+    version: V1R4
     SMEs:
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
@@ -74,7 +74,9 @@ selections:
 - accounts_passwords_pam_faillock_interval
 - accounts_passwords_pam_faillock_unlock_time
 - accounts_umask_etc_bashrc
+- accounts_umask_etc_csh_cshrc
 - accounts_umask_etc_login_defs
+- accounts_umask_etc_profile
 - accounts_umask_interactive_users
 - accounts_user_dot_no_world_writable_programs
 - accounts_user_home_paths_only
@@ -454,5 +456,4 @@ platforms: !!set {}
 cpe_names: !!set {}
 platform: null
 filter_rules: ''
-definition_location: /home/wsato/git/content/products/rhel8/profiles/stig_gui.profile
 documentation_complete: true

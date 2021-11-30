@@ -64,7 +64,7 @@ options:
 
 Example
 
-    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r3-xccdf-manual.xml
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r4-xccdf-manual.xml
 
 
 ## Generating login banner regular expressions
@@ -317,7 +317,7 @@ It supports the following arguments:
 
 To execute:
 
-    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r3-xccdf-scap.xml
+    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r4-xccdf-scap.xml
 
 ### `utils/compare_results.py` - Compare to two ARF result files
 The goal of this script is to compare to two result ARF files. 

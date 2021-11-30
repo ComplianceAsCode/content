@@ -163,8 +163,6 @@ selections:
     # RHEL-08-010171
     - package_policycoreutils_installed
 
-    # RHEL-08-010180
-
     # RHEL-08-010190
     - dir_perms_world_writable_sticky_bits
 
@@ -353,7 +351,6 @@ selections:
     - partition_for_tmp
 
     # RHEL-08-010544
-    ### NOTE: Will probably show up in V1R3 - Q3 of 21'
     - partition_for_var_tmp
 
     # RHEL-08-010550
@@ -622,6 +619,8 @@ selections:
 
     # RHEL-08-020353
     - accounts_umask_etc_bashrc
+    - accounts_umask_etc_csh_cshrc
+    - accounts_umask_etc_profile
 
     # RHEL-08-030000
     - audit_rules_suid_privilege_function
