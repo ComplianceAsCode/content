@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Enable Public Key Authentication'
+
+description: |-
+    Verify the sshd daemon allows public key authentication with the
+    following:
+    <pre>$ grep ^PubkeyAuthentication /etc/ssh/sshd_config
+    PubkeyAuthentication yes</pre>
+
+rationale: |-
+    Without the use of multifactor authentication, the ease of access to
+    privileged functions is greatly increased. Multifactor authentication
+    requires using two or more factors to achieve authentication.
+    A privileged account is defined as an information system account with
+    authorizations of a privileged user. 
+    The DoD CAC with DoD-approved PKI is an example of multifactor
+    authentication.
+
+severity: medium
+
+references:
+    disa: CCI-000765,CCI-000766,CCI-000767,CCI-000768
+    srg: SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055
+    stigid@ubuntu2004: UBTU-20-010033
+
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To check if PubkeyAuthentication is enabled or set correctly, run the
+    following command:
+    <pre>$ sudo grep ^PubkeyAuthentication /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>yes</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: PubkeyAuthentication
+        rule_id: sshd_enable_pubkey_auth
+        value: 'yes'

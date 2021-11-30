@@ -17,6 +17,32 @@ description: |-
     <li><tt>apiserver_audit_error_total</tt></li>
   </ul>
 
+  Such an example is shipped in OCP 4.9+
+
+  <pre>
+  apiVersion: monitoring.coreos.com/v1
+  kind: PrometheusRule
+  metadata:
+    name: audit-errors
+    namespace: openshift-kube-apiserver
+  spec:
+    groups:
+    - name: apiserver-audit
+      rules:
+      - alert: AuditLogError
+        annotations:
+          summary: |-
+            An API Server instance was unable to write audit logs. This could be
+            triggered by the node running out of space, or a malicious actor
+            tampering with the audit logs.
+          description: An API Server had an error writing to an audit log.
+        expr: |
+          sum by (apiserver,instance)(rate(apiserver_audit_error_total{apiserver=~".+-apiserver"}[5m])) / sum by (apiserver,instance) (rate(apiserver_audit_event_total{apiserver=~".+-apiserver"}[5m])) > 0
+        for: 1m
+        labels:
+          severity: warning
+  </pre>
+
   <p>
   For more information, consult the
   {{{ weblink(link="https://docs.openshift.com/container-platform/latest/logging/cluster-logging-external.html",
@@ -31,7 +57,7 @@ rationale: |-
   to assess a situation and do appropriate root cause analysis in such incidents.
 
 references:
-  nerc-cip: CIP-003-3 R5.1.1,CIP-003-3 R5.3,CIP-004-3 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
+  nerc-cip: CIP-003-8 R5.1.1,CIP-003-8 R5.3,CIP-004-6 R2.3,CIP-007-3 R5.1,CIP-007-3 R5.1.1,CIP-007-3 R5.1.2
   nist: AU-5
 
 identifiers:
@@ -43,8 +69,9 @@ ocil_clause: 'Audit log errors do not generate an alert'
 
 ocil: |-
     Run the following command:
-    <pre>{{{ ocil_oc_pipe_jq_filter('prometheusrules instances', '[.items[].spec.groups[].rules[].expr]') }}}</pre>
-    The output should return a list of URL entries with <pre>https://</pre> or <pre>tls://</pre> transport.
+    <pre>{{{ ocil_oc_pipe_jq_filter('prometheusrules', '[.items[].spec.groups[].rules[].expr]', all_namespaces=True) }}} | grep apiserver_audit</pre>
+    Make sure that there's a prometheus rule that verifies the <pre>apiserver_audit_error_total</pre> and 
+    <pre>apiserver_audit_event_total</pre> metrics and will alert based on an error threshold.
 
 warnings:
 - general: |-

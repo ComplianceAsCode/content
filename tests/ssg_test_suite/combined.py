@@ -33,11 +33,11 @@ class CombinedChecker(rule.RuleChecker):
     """
     def __init__(self, test_env):
         super(CombinedChecker, self).__init__(test_env)
-        self._matching_rule_found = False
 
         self.rules_not_tested_yet = set()
         self.results = list()
         self._current_result = None
+        self.run_aborted = False
 
     def _rule_should_be_tested(self, rule, rules_to_be_tested, tested_templates):
         if rule.short_id not in rules_to_be_tested:
@@ -107,10 +107,13 @@ def perform_combined_check(options):
     checker.benchmark_id = options.benchmark_id
     checker.remediate_using = options.remediate_using
     checker.dont_clean = options.dont_clean
+    checker.no_reports = options.no_reports
     # No debug option is provided for combined mode
     checker.manual_debug = False
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
+    checker.slice_current = options.slice_current
+    checker.slice_total = options.slice_total
     for profile in options.target:
         # Let's keep track of originally targeted profile
         checker.profile = profile

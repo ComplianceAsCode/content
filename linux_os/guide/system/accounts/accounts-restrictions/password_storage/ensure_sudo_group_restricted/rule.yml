@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Ensure sudo group has only necessary members'
+
+description: |-
+    Developers and implementers can increase the assurance in security
+    functions by employing well-defined security policy models; structured,
+    disciplined, and rigorous hardware and software development techniques;
+    and sound system/security engineering principles. Implementation may
+    include isolation of memory space and libraries.
+
+    The Ubuntu operating system restricts access to security functions
+    through the use of access control mechanisms and by implementing least
+    privilege capabilities.
+
+rationale: |-
+    Any users assigned to the sudo group would be granted administrator
+    access to the system.
+
+severity: medium
+
+references:
+    disa: CCI-001084
+    srg: SRG-OS-000134-GPOS-00068
+    stigid@ubuntu2004: UBTU-20-010012
+
+warnings:
+    - general: |-
+        Due to the risk of removing user rights, automated remediation is
+        not available for this configuration check.
+
+ocil_clause: 'sudo group contains users not needing access to security functions'
+
+ocil: |-
+    Configure the sudo group with only members requiring access to security
+    functions.
+    To remove a user from the sudo group, run:
+    <pre>$ sudo gpasswd -d <i>username</i> sudo</pre>

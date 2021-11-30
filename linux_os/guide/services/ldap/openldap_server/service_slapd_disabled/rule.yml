@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel8,rhel9
+
+title: 'Disable LDAP Server (slapd)'
+
+description: |-
+    The Lightweight Directory Access Protocol (LDAP) is a service that provides a method for looking up information from a central database.
+
+rationale: |-
+    If the system will not need to act as an LDAP server, it is recommended that the software be
+    disabled to reduce the potential attack surface.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87262-2
+    cce@rhel9: CCE-87263-0
+
+references:
+    cis@rhel8: 2.2.14
+
+ocil: |-
+    {{{ ocil_service_disabled(service="slapd") }}}
+
+platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: slapd
+        packagename: openldap-servers

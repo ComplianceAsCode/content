@@ -227,13 +227,15 @@ def run_with_stdout_logging(command, args, log_file):
     log_file.write("{0} {1}\n".format(command, " ".join(args)))
     result = subprocess.run(
             (command,) + args, encoding="utf-8", stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE, check=True)
+            stderr=subprocess.PIPE, check=False)
     if result.stdout:
         log_file.write("STDOUT: ")
         log_file.write(result.stdout)
     if result.stderr:
         log_file.write("STDERR: ")
         log_file.write(result.stderr)
+    if result.returncode:
+        raise RuntimeError("'%s' command returned non-zero." % command)
     return result.stdout
 
 
@@ -274,6 +276,10 @@ def get_product_context(product=None):
     # we're testing is actually completed. Thus, forcibly set the required
     # property to bypass this error.
     product_yaml['cmake_build_type'] = 'Debug'
+
+    # Set the Jinja processing environment to Test Suite,
+    # this allows Jinja macros to behave differently in a content build time and in a test time.
+    product_yaml['SSG_TEST_SUITE_ENV'] = True
 
     return product_yaml
 

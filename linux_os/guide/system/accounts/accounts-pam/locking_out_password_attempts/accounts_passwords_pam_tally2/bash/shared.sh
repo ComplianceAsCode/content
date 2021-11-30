@@ -1,6 +1,7 @@
-# platform = multi_platform_sle
-. /usr/share/scap-security-guide/remediation_functions
+# platform = multi_platform_sle,multi_platform_ubuntu
 
-ensure_pam_module_options '/etc/pam.d/common-auth' 'auth' 'required' 'pam_tally2.so' 'deny' '[123]' '3'
-ensure_pam_module_options '/etc/pam.d/common-auth' 'auth' 'required' 'pam_tally2.so' 'onerr' '(fail)' 'fail'
-ensure_pam_module_options '/etc/pam.d/common-account' 'account' 'required' 'pam_tally2.so' '' '' ''
+{{{ bash_instantiate_variables("var_password_pam_tally2") }}}
+# Use a non-number regexp to force update of the value of the deny option
+{{{ bash_ensure_pam_module_options('/etc/pam.d/common-auth', 'auth', 'required', 'pam_tally2.so', 'deny', '°', "${var_password_pam_tally2}") }}}
+{{{ bash_ensure_pam_module_options('/etc/pam.d/common-auth', 'auth', 'required', 'pam_tally2.so', 'onerr', '(fail)', 'fail') }}}
+{{{ bash_ensure_pam_module_options('/etc/pam.d/common-account', 'account', 'required', 'pam_tally2.so', '', '', '') }}}

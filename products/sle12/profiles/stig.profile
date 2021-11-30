@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V2R3
+    version: V2R5
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 12'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 12 V2R3.
+    DISA STIG for SUSE Linux Enterprise 12 V2R5.
 
 selections:
     - sshd_approved_macs=stig
@@ -28,6 +28,8 @@ selections:
     - var_password_pam_remember=5
     - var_password_pam_retry=3
     - var_password_pam_ucredit=1
+    - var_accounts_maximum_age_login_defs=60
+    - login_banner_text=dod_banners
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled

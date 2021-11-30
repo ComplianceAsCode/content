@@ -1,0 +1,35 @@
+policy: JKLM Benchmark for securing Linux systems
+title: JKLM Benchmark for securing Linux systems
+id: jklm
+version: 1.2.3
+source: https://www.example.com/jklm/linux.pdf
+controls:
+  - id: R2
+    title: Minimization of configuration
+    description: >-
+      The features configured at the level of launched services
+      should be limited to the strict minimum.
+    automated: no
+    note: >-
+      This is individual depending on the system workload
+      therefore needs to be audited manually.
+    related_rules:
+       - systemd_target_multi_use
+  - id: R4
+    title: Configure authentication
+    description: >-
+      Ensure authentication methods are functional to prevent
+      unauthorized access to the system.
+    controls:
+      - id: R4.a
+        title: Disable administrator accounts
+        automated: yes
+        rules:
+          -  accounts_passwords_pam_faillock_deny_root
+      - id: R4.b
+        title: Enforce password quality standards
+        automated: yes
+        rules:
+          - accounts_password_pam_minlen
+          - accounts_password_pam_ocredit
+          - var_password_pam_ocredit=1

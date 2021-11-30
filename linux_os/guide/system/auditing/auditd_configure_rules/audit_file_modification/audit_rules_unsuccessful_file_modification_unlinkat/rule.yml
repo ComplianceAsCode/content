@@ -5,6 +5,7 @@ prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle15
 title: 'Record Unsuccessul Delete Attempts to Files - unlinkat'
 
 description: |-
+    {{% if product not in ["sle15"] %}}
     The audit system should collect unsuccessful file deletion
     attempts for all users and root. If the <tt>auditd</tt> daemon is configured
     to use the <tt>augenrules</tt> program to read audit rules during daemon
@@ -21,6 +22,17 @@ description: |-
     <pre>
     -a always,exit -F arch=b64 -S unlinkat -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-delete
     -a always,exit -F arch=b64 -S unlinkat -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-delete</pre>
+    {{% else %}}
+    The operating system must generate audit records for all uses of the <tt>unlinkat</tt> system call.
+    Without generating audit records specific to the security and mission needs of the organization, it would be 
+    difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+    Audit records can be generated from various components within the information system (e.g., module or policy filter).
+    Add or update the following lines to <tt>/etc/audit/rules.d/audit.rules</tt> to configure the the operating system to generate 
+    an audit record for all uses of the <tt>unlinkat</tt> system call:  
+    <pre>
+    -a always,exit -F arch=b32 -S unlinkat -F auid>=1000 -F auid!=-1 -k perm_mod
+    -a always,exit -F arch=b64 -S unlinkat -F auid>=1000 -F auid!=-1 -k perm_mod</pre>
+    {{% endif %}}
 
 rationale: |-
     Unsuccessful attempts to delete files could be an indicator of malicious activity on a system. Auditing
@@ -60,9 +72,16 @@ warnings:
         number of ways while still achieving the desired effect. Here the system calls
         have been placed independent of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
+        {{% if product not in ["sle15"] %}}
         <pre>-a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-delete</pre>
+        {{% else %}}
+        <pre>
+        -a always,exit -F arch=b32 -S unlinkat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+        -a always,exit -F arch=b64 -S unlinkat -F auid>=1000 -F auid!=4294967295 -k perm_mod</pre>
+        {{% endif %}} 
 
 template:
+    {{% if product not in ["sle15"] %}}
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: unlinkat
@@ -71,3 +90,9 @@ template:
           - renameat
           - unlink
           - unlinkat
+    {{% else %}}
+    name: audit_rules_syscall_events
+    vars:
+        attr: unlinkat
+    {{% endif %}}
+

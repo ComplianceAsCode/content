@@ -22,7 +22,7 @@
   </definition>
 
   {{{ oval_line_in_file_test(path='/etc/ssh/sshd_config', parameter='Compression') }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/sshd_config', prefix_regex="^[ \\t]*(?i)", parameter='Compression', separator_regex='(?-i)[ \\t]+') }}}
+  {{{ oval_line_in_file_object(path_or_filepath='/etc/ssh/sshd_config', prefix_regex="^[ \\t]*(?i)", parameter='Compression', separator_regex='(?-i)[ \\t]+') }}}
 
   <ind:textfilecontent54_state id="state_sshd_disable_compression" version="1">
   <ind:subexpression operation="equals" var_ref="var_sshd_disable_compression" />

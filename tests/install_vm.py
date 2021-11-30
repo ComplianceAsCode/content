@@ -4,6 +4,7 @@ import argparse
 import os
 import sys
 import subprocess
+import time
 
 
 def parse_args():
@@ -110,6 +111,25 @@ def parse_args():
     return parser.parse_args()
 
 
+def wait_vm_not_running(domain):
+    timeout = 300
+
+    print("Waiting for {0} VM to shutdown (max. {1}s)".format(domain, timeout))
+    end_time = time.time() + timeout
+    try:
+        while True:
+            time.sleep(5)
+            if subprocess.getoutput("virsh domstate {0}".format(domain)).rstrip() != "running":
+                return
+            if time.time() >= end_time:
+                print("Timeout reached: {0} VM failed to shutdown, cancelling wait."
+                      .format(domain))
+                return
+    except KeyboardInterrupt:
+        print("Interrupted, cancelling wait.")
+        return
+
+
 def main():
     data = parse_args()
     username = ""
@@ -210,6 +230,7 @@ nvram_template=/usr/share/edk2/ovmf/OVMF_VARS.secboot.fd --features smm=on"
         os.system(command)
         if data.console:
             os.system("unbuffer virsh console {0}".format(data.domain))
+            wait_vm_not_running(data.domain)
             os.system("virsh start {0}".format(data.domain))
 
     print("\nTo determine the IP address of the {0} VM use:".format(data.domain))

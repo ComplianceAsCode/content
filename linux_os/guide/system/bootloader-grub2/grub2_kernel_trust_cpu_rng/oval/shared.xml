@@ -25,7 +25,7 @@
 
   <ind:textfilecontent54_object id="object_trust_cpu_rng_compiled_in" version="1">
     <ind:filepath operation="equals" var_ref="var_kernel_config_file" />
-    <ind:pattern operation="pattern match">^CONFIG_RANDOM_TRUST_CPU=Y$</ind:pattern>
+    <ind:pattern operation="pattern match">^CONFIG_RANDOM_TRUST_CPU=(y|Y)$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

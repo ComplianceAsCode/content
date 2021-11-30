@@ -25,15 +25,16 @@ severity: medium
 
 references:
     cis@ocp4: 1.2.34
-    nerc-cip: CIP-003-3 R4.2
+    nerc-cip: CIP-003-8 R4.2
     nist: SC-28,SC-28(1)
+    pcidss: Req-2.2
 
 ocil_clause: '<tt>aescbc</tt> is not configured as the encryption provider'
 
 ocil: |-
     Run the following command:
     <pre>$ oc get apiserver cluster -ojson | jq -r '.spec.encryption.type'</pre>
-    The output should return <tt>aescdc</tt> as the encryption type.
+    The output should return <tt>aescbc</tt> as the encryption type.
 
 warnings:
 - general: |-

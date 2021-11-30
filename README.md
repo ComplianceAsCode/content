@@ -127,14 +127,6 @@ Download pre-built SSG zip archive from
 [the release page](https://github.com/ComplianceAsCode/content/releases/latest).
 Each zip file is an archive with ready-made SCAP source datastreams.
 
-### From COPR
-
-We maintain a COPR repository that provides unofficial builds of latest versions
-of openscap, scap-security-guide, scap-workbench, and openscap-daemon.
-The packages are suitable for use on Red Hat Enterprise Linux and CentOS.
-
-See https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/ for
-detailed instructions.
 
 ### From source
 
@@ -254,7 +246,7 @@ The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/lis
 
 If you encounter issues with OpenSCAP or SCAP Workbench, use [https://www.redhat.com/mailman/listinfo/open-scap-list](https://www.redhat.com/mailman/listinfo/open-scap-list)
 
-You can also join the `#openscap` IRC channel on `chat.freenode.net`.
+You can also join the `#openscap` IRC channel on `libera.chat`.
 
 ## A little bit of history
 

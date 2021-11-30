@@ -4,3 +4,7 @@ if ! grep -s "^\s*cron\.\*\s*/var/log/cron$" /etc/rsyslog.conf /etc/rsyslog.d/*.
 	mkdir -p /etc/rsyslog.d
 	echo "cron.*	/var/log/cron" >> /etc/rsyslog.d/cron.conf
 fi
+
+{{% if init_system == "systemd" %}}
+systemctl restart rsyslog.service
+{{% endif %}}

@@ -4,12 +4,18 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,wrlinux1019
 
 title: 'Limit Password Reuse'
 
+{{% if 'ubuntu' not in product %}}
+{{% set configFile = "/etc/pam.d/system-auth" %}}
+{{% else %}}
+{{% set configFile = "/etc/pam.d/common-password" %}}
+{{% endif %}}
+
 description: |-
     Do not allow users to reuse recent passwords. This can be
     accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt>
     or <tt>pam_pwhistory</tt> PAM modules.
     <br /><br />
-    In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</tt>
+    In the file <tt>{{{ configFile }}}</tt>, append <tt>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</tt>
     to the line which refers to the <tt>pam_unix.so</tt> or <tt>pam_pwhistory.so</tt>module, as shown below:
     <ul>
     <li>for the <tt>pam_unix.so</tt> case:
@@ -58,7 +64,7 @@ ocil_clause: 'the value of remember is not set equal to or greater than the expe
 
 ocil: |-
     To verify the password reuse setting is compliant, run the following command:
-    <pre>$ grep remember /etc/pam.d/system-auth</pre>
+    <pre>$ grep remember {{{ configFile }}}</pre>
     The output should show the following at the end of the line:
     <pre>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
 

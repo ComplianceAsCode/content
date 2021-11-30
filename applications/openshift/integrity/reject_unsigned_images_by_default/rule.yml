@@ -1,0 +1,74 @@
+prodtype: ocp4
+
+title: Ensure the Container Runtime rejects unsigned images by default
+
+platforms:
+  - ocp4-node
+
+description: |-
+  <p>
+  The OpenShift Platform allows for verifying the signature of a container
+  image before pulling it. this is done via the policy.json file [1]
+  which needs to be configured via the Machine Config Operator [2].
+  </p>
+  <p>
+  Ensure that the default policy is "reject" in <tt>/etc/containers/policy.json</tt>,
+  which should look as follows:
+
+  <pre>
+    {
+      "default": [{"type": "reject"}],
+      "transports":
+      ...
+    }
+  </pre>
+
+  Addition of allowed registries must be an explicit action to ensure that only
+  containers from allowed registries are used.
+  </p>
+  <p>
+  [1] {{{ weblink(link="https://github.com/containers/image/blob/main/docs/containers-policy.json.5.md") }}}
+  </p>
+  <p>
+  [2] {{{ weblink(link="https://docs.openshift.com/container-platform/latest/security/container_security/security-container-signature.html") }}}
+  </p>
+
+rationale: |-
+  By ensuring that the container runtime verifies the integrity of container images
+  before pulling them one is able to prevent a malicious actor from introducing
+  unauthorized images into the deployment.
+
+identifiers:
+  cce@ocp4: CCE-90254-4
+
+references:
+  nist: CM-5(3),CM-7(2),CM-7(5),CM-11,SA-10(1)
+
+ocil_clause: "The default policy of image verification is not 'reject'"
+
+ocil: |-
+  {{{ rhcos_node_login_instructions() }}}
+  Subsequently, run the following command:
+
+  <pre>cat /etc/containers/policy.json</pre>
+
+  Make sure that the default policy to verify container images is set to reject.
+  This should look as follows:
+
+  <pre>
+    {
+      "default": [{"type": "reject"}],
+      "transports":
+      ...
+    }
+  </pre>
+
+severity: medium
+
+template:
+  name: yamlfile_value
+  vars:
+    filepath: /etc/containers/policy.json
+    yamlpath: ".default[0].type"
+    values:
+      - value: "reject"

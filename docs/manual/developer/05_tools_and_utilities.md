@@ -9,27 +9,6 @@ this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the current
 shell, simply call `source .pyenv.sh`. For more information on how to
 use this script, please see the comments at the top of the file.
 
-## Testing OVAL Content
-
-Located in `utils` directory, the `testoval.py` script allows easy
-testing of oval definitions. It wraps the definition and makes up an
-oval file ready for scanning, very useful for testing new OVAL content
-or modifying existing ones.
-
-Example usage:
-
-    $ PYTHONPATH=`./.pyenv.sh` ./utils/testoval.py install_hid.xml
-
-Create or add an alias to the script so that you don’t have to type out
-the full path everytime that you would like to use the `testoval.py`
-script.
-
-    $ alias testoval='/home/_username_/scap-security-guide/utils/testoval.py'
-
-An alternative is adding the directory where `testoval.py` resides to
-your PATH.
-
-    $ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
 
 ## Profile Statistics and Utilities
 
@@ -60,6 +39,33 @@ rules selected by another profile, run this command:
 
 This will result in a new YAML profile containing exclusive rules to the
 profile pointed by the `--profile1` option.
+
+## Generating Controls from DISA's XCCDF Files
+If you want a control file for product from DISA's XCCDF files you can run the following command:
+It supports the following arguments:
+
+```
+options:
+  -h, --help            show this help message and exit
+  -r ROOT, --root ROOT  Path to SSG root directory (defaults to the root of the repository)
+  -o OUTPUT, --output OUTPUT
+                        File to write yaml output to (defaults to build/stig_control.yml)
+  -p PRODUCT, --product PRODUCT
+                        What product to get STIGs for
+  -m MANUAL, --manual MANUAL
+                        Path to XML XCCDF manual file to use as the source of the STIGs
+  -j JSON, --json JSON  Path to the rules_dir.json (defaults to build/rule_dirs.json)
+  -c BUILD_CONFIG_YAML, --build-config-yaml BUILD_CONFIG_YAML
+                        YAML file with information about the build configuration.
+  -ref REFERENCE, --reference REFERENCE
+                        Reference system to check for, defaults to stigid
+  -s, --split           Splits the each ID into its own file.
+```
+
+Example
+
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r3-xccdf-manual.xml
+
 
 ## Generating login banner regular expressions
 
@@ -108,6 +114,7 @@ These sub-commands are:
  - `duplicate_subkeys`: finds (but doesn't fix!) any rules with duplicated
    `identifiers` or `references`.
  - `sort_subkeys`: sorts all subkeys under `identifiers` and `references`.
+ - `sort_prodtypes`: "sorts the products in prodtype"
 
 To execute:
 
@@ -288,3 +295,56 @@ To execute:
 
     $ ./utils/rule_dir_stats.py [...any options...]
     $ ./utils/rule_dir_diff.py [...any options...]
+
+### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
+The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.
+It supports the following arguments: 
+
+- `-r`, `--root` - Path to SSG root directory
+- `-p`, `--product` - What product to produce the tailoring file for (required)
+- `-m`, `--manual` - Path to the XCCDF XML file of the SCAP content (required)
+- `-j`, `--json` - Path to the `rules_dir.json ` file. 
+  - Defaults to `build/stig_control.json`
+- `-c`, `--build-config-yaml` - YAML file with information about the build configuration.
+  - Defaults to `build/build_config.yml`
+- `-b`, `--profile` - What profile to use. 
+  - Defaults to stig
+- `-ref`, `--reference` - What reference system to check for. 
+  - Defaults to `stigid`
+  - `-o`, `--output` - Defaults `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
+  - `--profile-id` - The id of the created profile. Defaults to PROFILE_delta
+  - `--tailoring-id` - The id of the created tailoring file. Defaults to xccdf_content-disa-delta_tailoring_default
+
+To execute:
+
+    $ ./utils/create_scap_delta_tailoring.py -p rhel8 -b stig -m shared/references/disa-stig-rhel8-v1r3-xccdf-scap.xml
+
+### `utils/compare_results.py` - Compare to two ARF result files
+The goal of this script is to compare to two result ARF files. 
+It will show what rules are missing, different, and the same between the two files.
+The script can take results from content crated by this repo and by [DISA](https://public.cyber.mil/stigs/scap/).
+If the result files come from the same source the script will use XCCDF ids as basis for the comparison.
+Otherwise, the script will use STIG ids to compare.
+
+
+If one STIG ID has more than one result (this is the case for a few STIG IDs in this repo) the results will be merged.
+Given a set of status the script will select the status from the group that is the highest value on the list below.
+
+1. Error
+2. Fail
+3. Not applicable
+4. Not selected
+5. Not checked
+6. Informational
+7. Pass
+
+Examples:
+- `[pass, pass]` will result in `pass`
+- `[pass, fail]` will result in `fail`
+- `[pass, error, fail]` will result in `error`
+
+
+
+To execute:
+
+    $ ./utils/compare_results.py ssg_results.xml disa_results.xml

@@ -27,7 +27,11 @@
     </ind:textfilecontent54_object>
 
     <ind:textfilecontent54_object id="obj_messages_nx_active" version="1">
+        {{% if 'ubuntu' not in product %}}
         <ind:filepath>/var/log/messages</ind:filepath>
+        {{% else %}}
+        <ind:filepath>/var/log/dmesg</ind:filepath>
+        {{% endif %}}
         <ind:pattern operation="pattern match">^.+protection: disabled.+</ind:pattern>
         <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>

@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R2
+    version: V1R4
     SMEs:
         - abergmann
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for SUSE Linux Enterprise 15'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for SUSE Linux Enterprise 15 V1R2.
+    DISA STIG for SUSE Linux Enterprise 15 V1R4.
 
 
 selections:
@@ -20,6 +20,10 @@ selections:
     - var_accounts_tmout=15_min
     - inactivity_timeout_value=15_minutes
     - var_sudo_timestamp_timeout=always_prompt
+    - var_password_pam_unix_remember=5
+    - var_accounts_maximum_age_login_defs=60
+    - var_password_pam_delay=4000000
+    - login_banner_text=dod_banners
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
@@ -76,6 +80,7 @@ selections:
     - auditd_audispd_disk_full_action
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_network_failure_action
+    - var_auditd_disk_full_action=syslog
     - auditd_data_disk_full_action
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_space_left
@@ -93,6 +98,7 @@ selections:
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
     - audit_rules_dac_modification_umount
+    - audit_rules_dac_modification_umount2
     - audit_rules_enable_syscall_auditing
     - audit_rules_execution_chacl
     - audit_rules_execution_chmod
@@ -156,6 +162,7 @@ selections:
     - cracklib_accounts_password_pam_lcredit
     - cracklib_accounts_password_pam_minlen
     - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_retry
     - cracklib_accounts_password_pam_ucredit
     - dconf_db_up_to_date
     - dconf_gnome_banner_enabled

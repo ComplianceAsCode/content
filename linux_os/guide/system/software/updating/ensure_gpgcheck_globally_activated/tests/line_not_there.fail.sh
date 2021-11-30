@@ -1,4 +1,8 @@
 #!/bin/bash
 #
 
-sed -i "/^gpgcheck.*/d" /etc/yum.conf
+. $SHARED/group_updating_utils.sh
+
+config_file="$(find_config_file)"
+
+sed -i "/^gpgcheck.*/d" "$config_file"

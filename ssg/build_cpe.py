@@ -30,6 +30,8 @@ class ProductCPEs(object):
         self.cpes_by_id = {}
         self.cpes_by_name = {}
         self.product_cpes = {}
+        self.cpe_platforms = {}
+        self.cpe_platform_specification = CPEALPlatformSpecification()
 
         self.load_product_cpes()
         self.load_content_cpes()
@@ -40,7 +42,6 @@ class ProductCPEs(object):
                 map_[cpe_id] = CPEItem(cpe[cpe_id])
 
     def load_product_cpes(self):
-
         try:
             product_cpes_list = self.product_yaml["cpes"]
             self._load_cpes_list(self.product_cpes, product_cpes_list)
@@ -84,6 +85,7 @@ class ProductCPEs(object):
         for cpe_id, cpe in self.cpes_by_id.items():
             self.cpes_by_name[cpe.name] = cpe
 
+
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
@@ -103,6 +105,7 @@ class ProductCPEs(object):
 
     def get_product_cpe_names(self):
         return [ cpe.name for cpe in self.product_cpes.values() ]
+
 
 
 class CPEList(object):
@@ -164,9 +167,118 @@ class CPEItem(object):
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
         cpe_item_check.text = self.check_id
-
         return cpe_item
 
+
+class CPEALPlatformSpecification(object):
+
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
+
+    def __init__(self):
+        self.platforms = []
+
+    def add_platform(self, platform):
+        """
+        we check if semantically equal platform is not already in the list of platforms
+        """
+        if platform not in self.platforms:
+            self.platforms.append(platform)
+
+    def to_xml_element(self):
+        cpe_platform_spec = ET.Element(
+            "{%s}platform-specification" % CPEALPlatformSpecification.ns)
+        for platform in self.platforms:
+            cpe_platform_spec.append(platform.to_xml_element())
+        return cpe_platform_spec
+
+
+class CPEALPlatform(object):
+
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
+
+    def __init__(self, id):
+        self.id = id
+        self.test = None
+
+    def add_test(self, test):
+        self.test = test
+
+    def to_xml_element(self):
+        cpe_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
+        cpe_platform.set('id', self.id)
+        cpe_platform.append(self.test.to_xml_element())
+        return cpe_platform
+
+
+    def __eq__(self, other):
+        if not isinstance(other, CPEALPlatform):
+            return False
+        else:
+            return self.test == other.test
+
+
+class CPEALLogicalTest(object):
+
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
+
+    def __init__(self, operator, negate):
+        self.operator = operator
+        self.negate = negate
+        self.objects = []
+
+    def __eq__(self, other):
+        if not isinstance(other, CPEALLogicalTest):
+            return False
+        else:
+            if self.operator == other.operator and self.negate == other.negate:
+                diff = [
+                    i for i in self.objects + other.objects
+                    if i not in self.objects or i not in other.objects]
+                return (not diff)
+            else:
+                return False
+
+    def to_xml_element(self):
+        cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
+        cpe_test.set('operator', self.operator)
+        cpe_test.set('negate', self.negate)
+        # logical tests must go first, therefore we spearate tests and factrefs
+        tests = [t for t in self.objects if isinstance(t, CPEALLogicalTest)]
+        factrefs = [f for f in self.objects if isinstance(f, CPEALFactRef)]
+        for obj in tests + factrefs:
+            cpe_test.append(obj.to_xml_element())
+
+        return cpe_test
+
+    def add_object(self, object):
+        self.objects.append(object)
+
+    def get_objects(self):
+        return self.objects
+
+
+class CPEALFactRef (object):
+
+    prefix = "cpe-lang"
+    ns = PREFIX_TO_NS[prefix]
+
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        if not isinstance(other, CPEALFactRef):
+            return False
+        else:
+            return self.name == other.name
+
+    def to_xml_element(self):
+        cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
+        cpe_factref.set('name', self.name)
+
+        return cpe_factref
 
 def extract_subelement(objects, sub_elem_type):
     """
@@ -245,3 +357,32 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
+def parse_platform_line(platform_line, product_cpe):
+    # remove spaces
+    platform_line = platform_line.replace(" ", "")
+    if "&" in platform_line:
+        raise (NotImplementedError("not implemented yet"))
+    elif "!" in platform_line:
+        raise (NotImplementedError("not implemented yet"))
+    else:
+        # the line should contain a CPEAL ref name
+        cpealfactref = CPEALFactRef(product_cpe.get_cpe_name(platform_line))
+        return cpealfactref
+
+def convert_platform_to_id(platform):
+    id = platform.replace(" ", "")
+    return id
+
+def parse_platform_definition(platform_line, product_cpes):
+    """
+    This function takes one line of platform definition from yaml file and returns a
+    CPE platform with appropriate tests and factrefs.
+    """
+    # let's construct the platform id
+    id = "cpe_platform_" + convert_platform_to_id(platform_line)
+    platform = CPEALPlatform(id)
+    initial_test = CPEALLogicalTest(operator="OR", negate="false")
+    platform.add_test(initial_test)
+    initial_test.add_object(parse_platform_line(platform_line, product_cpes))
+    return platform

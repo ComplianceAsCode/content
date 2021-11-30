@@ -4,7 +4,7 @@ title: 'Standard System Security Profile for Red Hat Enterprise Linux 9'
 
 description: |-
     This profile contains rules to ensure standard security baseline
-    of a Red Hat Enterprise Linux 8 system. Regardless of your system's workload
+    of a Red Hat Enterprise Linux 9 system. Regardless of your system's workload
     all of these checks should pass.
 
 selections:
@@ -52,7 +52,6 @@ selections:
     - audit_rules_file_deletion_events
     - audit_rules_sysadmin_actions
     - audit_rules_kernel_module_loading
-    - service_abrtd_disabled
     - service_atd_disabled
     - service_autofs_disabled
     - service_ntpdate_disabled

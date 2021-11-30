@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,SUSE Linux Enterprise 15
 # reboot = false
 # strategy = enable
 # complexity = low
@@ -13,10 +13,15 @@
 {{% else %}}
 - (xccdf-var var_{{{ SEBOOLID }}})
 
-{{% if product == "rhel8" %}}
+{{% if product in ['rhel8', 'rhel9'] %}}
 - name: Ensure python3-libsemanage installed
   package:
     name: python3-libsemanage
+    state: present
+{{% elif product == "sle15" %}}
+- name: Ensure policycoreutils installed
+  package:
+    name: policycoreutils
     state: present
 {{% else %}}
 - name: Ensure libsemanage-python installed

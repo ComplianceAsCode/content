@@ -1,5 +1,5 @@
-# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_wrlinux,multi_platform_ol,multi_platform_sle
-. /usr/share/scap-security-guide/remediation_functions
+# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_wrlinux,multi_platform_ol,multi_platform_sle,multi_platform_ubuntu
+
 {{{ bash_instantiate_variables("var_auditd_space_left") }}}
 
 grep -q "^space_left[[:space:]]*=.*$" /etc/audit/auditd.conf && \

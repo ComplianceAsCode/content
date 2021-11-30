@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,rhel9
+
+title: Ensure journald is configured to write log files to persistent disk
+
+description: |-
+    The journald system may store log files in volatile memory or locally on disk.
+    If the logs are only stored in volatile memory they will we lost upon reboot.
+
+rationale:
+    Log files contain valuable data and need to be persistent to aid in possible investigations.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86044-5
+    cce@rhel8: CCE-86045-2
+    cce@rhel9: CCE-86046-0
+
+references:
+    cis@rhel7: 4.2.2.3
+    cis@rhel8: 4.2.2.3
+
+ocil_clause: 'is commented out or not configured correctly'
+
+ocil: |-
+    Storing logs with persistent storage ensures they are available after a reboot or system crash.
+    Run the command below to verify that logs are being persistently stored to disk.
+    <pre>
+    grep "^\sStorage" /etc/systemd/journald.conf
+    </pre>
+    and it should return
+    <pre>
+    Storage=persistent
+    </pre>
+
+template:
+    name: shell_lineinfile
+    vars:
+        path: /etc/systemd/journald.conf
+        parameter: Storage
+        value: persistent

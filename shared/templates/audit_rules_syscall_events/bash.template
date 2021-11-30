@@ -12,7 +12,8 @@ SYSCALL_GROUPING=""
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
-	ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
+
+  ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
 
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	{{{ bash_fix_audit_syscall_rule("augenrules", "$ACTION_ARCH_FILTERS", "$OTHER_FILTERS", "$AUID_FILTERS", "$SYSCALL", "$SYSCALL_GROUPING", "$KEY") }}}

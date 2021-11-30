@@ -1,11 +1,10 @@
-# profiles = xccdf_org.ssgproject.content_profile_cis
-# platform = Red Hat Enterprise Linux 8
+# platform = multi_platform_rhel, multi_platform_fedora
 
 #!/bin/bash
 SSHD_CONFIG="/etc/ssh/sshd_config"
 
 if grep -q "^MaxSessions" $SSHD_CONFIG; then
-        sed -i "s/^MaxSessions.*/MaxSessions 10/" $SSHD_CONFIG
+        sed -i "s/^MaxSessions.*/MaxSessions 100/" $SSHD_CONFIG
     else
-        echo "MaxSessions 10" >> $SSHD_CONFIG
+        echo "MaxSessions 100" >> $SSHD_CONFIG
 fi

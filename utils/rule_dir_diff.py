@@ -10,7 +10,6 @@ import json
 import pprint
 
 import ssg.build_yaml
-import ssg.oval
 import ssg.build_remediations
 import ssg.rule_dir_stats as rds
 import ssg.rules

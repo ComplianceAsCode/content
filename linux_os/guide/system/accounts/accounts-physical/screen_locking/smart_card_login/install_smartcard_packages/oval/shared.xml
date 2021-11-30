@@ -1,4 +1,12 @@
+{{% if product in ["sle12"] %}}
 {{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc', 'coolkey'] %}}
+{{% elif product in ["sle15"] %}}
+{{% set smartcard_packages = ['pam_pkcs11', 'mozilla-nss', 'mozilla-nss-tools', 'pcsc-ccid', 'pcsc-lite', 'pcsc-tools', 'opensc'] %}}
+{{% elif product in ["rhel7", "ol7"] %}}
+{{% set smartcard_packages = ['pam_pkcs11'] %}}
+{{% else %}}
+{{% set smartcard_packages = ['openssl-pkcs11'] %}}
+{{% endif %}}
 
 <def-group>
   <definition class="compliance" id="install_smartcard_packages"

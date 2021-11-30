@@ -85,26 +85,34 @@ def main():
     objects.clear()
     [objects.append(cpe_object) for cpe_object in cpe_objects]
 
-    # if any subelements in an object contain var_ref, return it here
-    local_var_ref = ssg.build_cpe.extract_subelement(objects, 'var_ref')
-
     variables = ovaltree.find("./{%s}variables" % oval_ns)
     if variables is not None:
-        cpe_variables = ssg.build_cpe.extract_referred_nodes(tests, variables, "var_ref")
-        local_variables = ssg.build_cpe.extract_referred_nodes(variables, variables, "id")
-        if cpe_variables:
+        ref_var_elems = set(ssg.build_cpe.extract_referred_nodes(objects, variables, "var_ref"))
+        ref_var_elems.update(ssg.build_cpe.extract_referred_nodes(states, variables, "var_ref"))
+
+        if ref_var_elems:
             variables.clear()
-            [variables.append(cpe_variable) for cpe_variable in cpe_variables]
-        elif local_var_ref:
-            for local_var in local_variables:
-                if local_var.get('id') == local_var_ref:
-                    variables.clear()
-                    variables.append(local_var)
-                    env_obj = ssg.build_cpe.extract_env_obj(env_objects, local_var)
-                    # env_obj will return no objects if the local variable doesn't
-                    # reference any object via object_ref
-                    if env_obj:
-                        objects.append(env_obj)
+            has_external_vars = False
+            for var in ref_var_elems:
+                if (var.tag == "{%s}external_variable" % oval_ns):
+                    error_msg = "Error: External variable (%s) is referenced in a"
+                    "CPE OVAL check\n" % var.get('id')
+                    sys.stderr.write(error_msg)
+                    has_external_vars = True
+
+                variables.append(var)
+
+                # Make sure to inlude objects referenced by a local variable
+                # But env_obj will return no objects if the local variable doesn't
+                # reference any object via object_ref
+                env_obj = ssg.build_cpe.extract_env_obj(env_objects, var)
+                if env_obj:
+                    objects.append(env_obj)
+
+            if has_external_vars:
+                error_msg = "Error: External variables cannot be used by CPE OVAL checks.\n"
+                sys.stderr.write(error_msg)
+                sys.exit(1)
         else:
             ovaltree.remove(variables)
 
@@ -121,9 +129,18 @@ def main():
     # Lets scrape the shorthand for the list of platforms referenced
     benchmark_cpe_names = set()
     shorthandtree = ssg.xml.parse_file(args.shorthandfile)
-    for platform in shorthandtree.findall(".//platform"):
+    for platform in shorthandtree.findall(".//{%s}platform" % xccdf_ns):
         cpe_name = platform.get("idref")
+        # skip CPE AL platforms (they are handled later)
+        # this is temporary solution until we get rid of old type of platforms in the benchmark
+        if cpe_name.startswith("#"):
+            continue
         benchmark_cpe_names.add(cpe_name)
+    # add CPE names used by factref elements in CPEAL platforms
+    for factref in shorthandtree.findall(
+            ".//ns1:fact-ref", {"ns1":ssg.constants.PREFIX_TO_NS["cpe-lang"]}):
+        cpe_factref_name = factref.get("name")
+        benchmark_cpe_names.add(cpe_factref_name)
 
     product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
     cpe_list = ssg.build_cpe.CPEList()

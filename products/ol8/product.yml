@@ -2,6 +2,7 @@ product: ol8
 full_name: Oracle Linux 8
 type: platform
 
+benchmark_id: OL-8
 benchmark_root: "../../linux_os/guide"
 
 profiles_root: "./profiles"
@@ -21,3 +22,13 @@ cpes:
 # Mapping of CPE platform to package
 platform_package_overrides:
   login_defs: "shadow-utils"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - ol8:
+      name: "cpe:/o:oracle:linux:8"
+      title: "Oracle Linux 8"
+      check_id: installed_OS_is_ol8_family
+
+reference_uris:
+  cis: ''

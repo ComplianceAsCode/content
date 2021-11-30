@@ -46,6 +46,12 @@ def parse_args():
         "e.g.: 'fedora'"
     )
     p.add_argument(
+        "--build-config-yaml", required=True,
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml "
+        "needed for autodetection of profile root"
+    )
+    p.add_argument(
         "--profile",
         help="Generate Playbooks only for given Profile ID. Accepts profile "
         "ID in the short form, eg. 'ospp'. If not specified, Playbooks are "
@@ -88,7 +94,8 @@ def main():
             args.ssg_root, "build", args.product, "profiles"
         )
     playbook_builder = ssg.playbook_builder.PlaybookBuilder(
-        product_yaml, input_dir, output_dir, resolved_rules_dir, resolved_profiles_dir
+        product_yaml, input_dir, output_dir, resolved_rules_dir, resolved_profiles_dir,
+        args.build_config_yaml
     )
     playbook_builder.build(args.profile, args.rule)
 

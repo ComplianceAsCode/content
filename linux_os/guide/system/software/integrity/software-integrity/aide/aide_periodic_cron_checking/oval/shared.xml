@@ -20,7 +20,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="run aide with cron" id="object_test_aide_periodic_cron_checking" version="1">
     <ind:filepath>/etc/crontab</ind:filepath>
-    <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*root[\s]*/usr/sbin/aide[\s]*\-\-check.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*root[\s]*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -30,7 +30,7 @@
   <ind:textfilecontent54_object comment="run aide with cron" id="object_test_aide_crond_checking" version="1">
     <ind:path>/etc/cron.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*root[\s]*/usr/sbin/aide[\s]*\-\-check.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*root[\s]*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -39,7 +39,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="run aide with cron" id="object_aide_var_cron_checking" version="1">
     <ind:filepath>/var/spool/cron/root</ind:filepath>
-    <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*(root)?[\s]*/usr/sbin/aide[\s]*\-\-check.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(([0-9]*[\s]*[0-9]*[\s]*\*[\s]*\*[\s]*(\*|([0-7]|mon|tue|wed|thu|fri|sat|sun)|[0-7]-[0-7]))|@(hourly|daily|weekly))[\s]*(root)?[\s]*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -49,7 +49,7 @@
   <ind:textfilecontent54_object comment="run aide with cron.(daily|weekly)" id="object_aide_crontabs_checking" version="1">
     <ind:path operation="pattern match">^/etc/cron.(daily|weekly)$</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*/usr/sbin/aide[\s]*\-\-check.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*{{{ aide_bin_path | replace("/", "\/") }}}[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 

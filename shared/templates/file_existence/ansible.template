@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+
+{{% if not EXISTS %}}
+- name: Remove {{{ FILEPATH }}}
+  file:
+      path: {{{ FILEPATH }}}
+      state: absent
+{{% else %}}
+- name: Add empty {{{ FILEPATH }}}
+  file:
+      path: {{{ FILEPATH }}}
+      state: touch
+{{% endif %}}

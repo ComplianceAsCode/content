@@ -12,7 +12,7 @@ metadata:
 
 description: |-
     This profile defines a baseline that aligns to the Center for Internet Security®
-    Red Hat OpenShift Container Platform 4 Benchmark™, V0.3, currently unreleased.
+    Red Hat OpenShift Container Platform 4 Benchmark™, V1.1.
 
     This profile includes Center for Internet Security®
     Red Hat OpenShift Container Platform 4 CIS Benchmarks™ content.
@@ -152,6 +152,7 @@ selections:
   #### 3.1 Authentication and Authorization
   # 3.1.1 Client certificate authentication should not be used for users
     - idp_is_configured
+    - kubeadmin_removed
   #### 3.2 Logging
   # 3.2.1 Ensure that a minimal audit policy is created
   # 3.2.2 Ensure that the audit policy covers key security concerns

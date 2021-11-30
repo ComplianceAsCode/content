@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-. /usr/share/scap-security-guide/remediation_functions
+
 {{{ bash_instantiate_variables("var_multiple_time_servers") }}}
 
 config_file="/etc/chrony.conf"

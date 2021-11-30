@@ -2,4 +2,4 @@
 
 
 NAILS_CONFIG_FILE="/var/opt/NAI/LinuxShield/etc/ods.cfg"
-{{{ bash_replace_or_append("$NAILS_CONFIG_FILE", '^nailsd.profile.ODS.scanNWFiles', 'true', '@CCENUM@', '%s: %s') }}}
+{{{ bash_replace_or_append("$NAILS_CONFIG_FILE", '^nailsd.profile.ODS.scanNWFiles', 'true', '%s: %s') }}}

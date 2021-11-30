@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: sle12,sle15,rhel8,fedora
+prodtype: fedora,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Verify that Shared Library Directories Have Root Group Ownership'
 
@@ -30,6 +30,7 @@ severity: medium
 
 identifiers:
     cce@rhel8: CCE-85894-4
+    cce@rhel9: CCE-89858-5
     cce@sle12: CCE-83238-6
     cce@sle15: CCE-85737-5
 
@@ -37,9 +38,11 @@ references:
     disa: CCI-001499
     nist: CM-5(6),CM-5(6).1
     srg: SRG-OS-000259-GPOS-00100
+    stigid@ol8: OL08-00-010350
     stigid@rhel8: RHEL-08-010350
     stigid@sle12: SLES-12-010876
     stigid@sle15: SLES-15-010356
+    stigid@ubuntu2004: UBTU-20-010431
 
 ocil_clause: 'any of these directories are not group-owned by root'
 
@@ -52,3 +55,14 @@ ocil: |-
     For each of these directories, run the following command to find files not
     owned by root:
     <pre>$ sudo find -L <i>$DIR</i> ! -user root -type d -exec chgrp root {} \;</pre>
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        recursive: 'true'
+        filegid: '0'

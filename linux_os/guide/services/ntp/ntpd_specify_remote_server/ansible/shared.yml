@@ -1,0 +1,22 @@
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 7
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+{{{ ansible_instantiate_variables("var_multiple_time_servers") }}}
+
+- name: "Detect if ntp is already configured with pools or servers"
+  find:
+    path: /etc
+    patterns: ntp.conf
+    contains: '^[\s]*(?:server|pool)[\s]+[\w]+'
+  register: ntp_servers
+
+- name: "Configure remote time servers"
+  lineinfile:
+    path: /etc/ntp.conf
+    line: 'server {{ item }}'
+    state: present
+    create: True
+  loop: '{{ var_multiple_time_servers.split(",") }}'
+  when: ntp_servers.matched == 0

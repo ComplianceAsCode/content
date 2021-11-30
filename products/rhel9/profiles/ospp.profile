@@ -65,7 +65,6 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - var_sshd_set_keepalive=0
     - sshd_enable_warning_banner
     - sshd_rekey_limit
     - var_rekey_limit_size=1G
@@ -73,7 +72,6 @@ selections:
 
     # Time Server
     - chronyd_client_only
-    - chronyd_no_chronyc_network
 
     ### Network Settings
     - sysctl_net_ipv6_conf_all_accept_ra
@@ -201,14 +199,6 @@ selections:
     - package_gssproxy_removed
     - package_nfs-utils_removed
     - package_krb5-workstation_removed
-    - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
-    - package_abrt-addon-ccpp_removed
-    - package_abrt-plugin-rhtsupport_removed
-    - package_abrt-plugin-logger_removed
-    - package_abrt-plugin-sosreport_removed
-    - package_abrt-cli_removed
-    - package_abrt_removed
 
     ### Login
     - disable_users_coredumps
@@ -297,8 +287,6 @@ selections:
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
     ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
-    - sshd_idle_timeout_value=14_minutes
-    - sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Ensure no duplicate UIDs exist'
+
+description: |-
+    Although the useradd program will not let you create a duplicate User ID (UID),
+    it is possible for an administrator to manually edit the /etc/passwd file
+    and change the UID field. Users must be assigned unique UIDs for
+    accountability and to ensure appropriate access protections.
+
+rationale: |-
+    Users must be assigned unique UIDs for accountability and to ensure
+    appropriate access protections.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 6.2.13
+    disa: CCI-000764,CCI-000804
+    srg: SRG-OS-000104-GPOS-00051,SRG-OS-000121-GPOS-00062
+    stigid@ubuntu2004: UBTU-20-010010
+
+warnings:
+    - general: |-
+        Due to the risk of removing user accounts or changing user's UIDS,
+        automated remediation is not available for this configuration check.

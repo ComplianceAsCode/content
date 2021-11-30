@@ -155,9 +155,7 @@ def append(element, newchild):
                 # If OVAL entity is identical to some already included
                 # in the benchmark and represents an OVAL <external_variable>
                 # it's safe to ignore this ID (since external variables are
-                # in multiple checks just to notify 'testoval.py' helper to
-                # substitute the ID with <local_variable> entity when testing
-                # the OVAL for the rule)
+                # in multiple checks for clarity reasons)
                 pass
             # Some other OVAL entity
             else:
@@ -224,7 +222,7 @@ def _check_is_loaded(loaded_dict, filename, version):
     return False
 
 
-def _check_oval_version_from_oval(xml_content, oval_version):
+def _create_oval_tree_from_string(xml_content):
     try:
         argument = oval_header + xml_content + oval_footer
         oval_file_tree = ElementTree.fromstring(argument)
@@ -237,6 +235,10 @@ def _check_oval_version_from_oval(xml_content, oval_version):
             "%s\n%s\nError when parsing OVAL file.\n" %
             (before, column_pointer))
         sys.exit(1)
+    return oval_file_tree
+
+
+def _check_oval_version_from_oval(oval_file_tree, oval_version):
     for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
         file_oval_version = defgroup.get("oval_version")
 
@@ -248,6 +250,14 @@ def _check_oval_version_from_oval(xml_content, oval_version):
 
     if tuple(oval_version.split(".")) >= tuple(file_oval_version.split(".")):
         return True
+
+
+def _check_rule_id(oval_file_tree, rule_id):
+    for definition in oval_file_tree.findall(
+            "./{%s}def-group/{%s}definition" % (oval_ns, oval_ns)):
+        definition_id = definition.get("id")
+        return definition_id == rule_id
+    return False
 
 
 def checks(env_yaml, yaml_path, oval_version, oval_dirs):
@@ -302,7 +312,12 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
                 continue
             if _check_is_loaded(already_loaded, filename, oval_version):
                 continue
-            if not _check_oval_version_from_oval(xml_content, oval_version):
+            oval_file_tree = _create_oval_tree_from_string(xml_content)
+            if not _check_rule_id(oval_file_tree, rule_id,):
+                msg = "OVAL definition in '%s' doesn't match rule ID '%s'." % (
+                    _path, rule_id)
+                print(msg, file=sys.stderr)
+            if not _check_oval_version_from_oval(oval_file_tree, oval_version):
                 continue
 
             body.append(xml_content)
@@ -322,7 +337,8 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
                         continue
                     if _check_is_loaded(already_loaded, filename, oval_version):
                         continue
-                    if not _check_oval_version_from_oval(xml_content, oval_version):
+                    oval_file_tree = _create_oval_tree_from_string(xml_content)
+                    if not _check_oval_version_from_oval(oval_file_tree, oval_version):
                         continue
                     body.append(xml_content)
                     included_checks_count += 1

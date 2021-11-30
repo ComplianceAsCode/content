@@ -1,9 +1,8 @@
-# platform = multi_platform_rhel,multi_platform_ubuntu
+# platform = multi_platform_rhel,multi_platform_ubuntu,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
-. /usr/share/scap-security-guide/remediation_functions
 
 {{{ bash_package_install("aide") }}}
 

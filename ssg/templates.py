@@ -15,7 +15,8 @@ try:
 except ImportError:
     from urllib import quote
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition", "kubernetes", "blueprint"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
+             "kubernetes", "blueprint", "sce-bash"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -25,7 +26,8 @@ lang_to_ext_map = {
     "puppet": ".pp",
     "ignition": ".yml",
     "kubernetes": ".yml",
-    "blueprint": ".toml"
+    "blueprint": ".toml",
+    "sce-bash": ".sh",
 }
 
 
@@ -108,10 +110,10 @@ class Builder(object):
         self.output_dirs = dict()
         for lang in languages:
             lang_dir = lang
-            if lang == "oval":
-                # OVAL checks need to be put to a different directory because
-                # they are processed differently than remediations later in
-                # the build process
+            if lang == "oval" or lang.startswith("sce-"):
+                # OVAL and SCE checks need to be put to a different directory
+                # because they are processed differently than remediations
+                # later in the build process
                 output_dir = self.checks_dir
                 if lang.startswith("sce-"):
                     lang_dir = "sce"
@@ -197,7 +199,7 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
-        if lang not in templates[template_name].langs:
+        if lang not in templates[template_name].langs or lang.startswith("sce-"):
             return
 
         filled_template = self.build_lang_file(rule_id, template_name,
@@ -280,7 +282,8 @@ class Builder(object):
 
         return processed
 
-    def build_rule(self, rule_id, rule_title, template, langs_to_generate, platforms=None):
+    def build_rule(self, rule_id, rule_title, template, langs_to_generate, identifiers,
+                   platforms=None):
         """
         Builds templated content for a given rule for selected languages,
         writing the output to the correct build directories.
@@ -301,6 +304,9 @@ class Builder(object):
         local_env_yaml["rule_id"] = rule_id
         local_env_yaml["rule_title"] = rule_title
         local_env_yaml["products"] = self.env_yaml["product"]
+        if identifiers is not None:
+            local_env_yaml["cce_identifiers"] = identifiers
+
         for lang in langs_to_generate:
             try:
                 self.build_lang(
@@ -343,7 +349,7 @@ class Builder(object):
             # as rule ID, we can use it instead of the rule ID even if no rule
             # with that ID exists
             self.build_rule(
-                oval_def_id, oval_def_id, template, langs_to_generate)
+                oval_def_id, oval_def_id, template, langs_to_generate, None)
 
     def build_all_rules(self):
         for rule_file in sorted(os.listdir(self.resolved_rules_dir)):
@@ -357,8 +363,8 @@ class Builder(object):
                 # rule is not templated, skipping
                 continue
             langs_to_generate = self.get_langs_to_generate(rule)
-            self.build_rule(
-                rule.id_, rule.title, rule.template, langs_to_generate, platforms=rule.platforms)
+            self.build_rule(rule.id_, rule.title, rule.template, langs_to_generate,
+                            rule.identifiers, platforms=rule.platforms)
 
     def build(self):
         """

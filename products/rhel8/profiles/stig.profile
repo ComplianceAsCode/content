@@ -71,6 +71,7 @@ selections:
     - var_auditd_max_log_file_action=syslog
     - var_auditd_disk_full_action=halt
     - var_sssd_certificate_verification_digest_function=sha1
+    - login_banner_text=dod_banners
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -946,7 +947,7 @@ selections:
     - package_abrt_removed
     - package_abrt-addon-ccpp_removed
     - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
+    - package_python3-abrt-addon_removed
     - package_abrt-cli_removed
     - package_abrt-plugin-logger_removed
     - package_abrt-plugin-rhtsupport_removed
@@ -1160,9 +1161,7 @@ selections:
     - sysctl_net_core_bpf_jit_harden
 
     # RHEL-08-040290
-    # /etc/postfix/main.cf does not exist on default installation resulting in error during remediation
-    # there needs to be a new platform check to identify when postfix is installed or not
-    # - postfix_prevent_unrestricted_relay
+    - postfix_prevent_unrestricted_relay
 
     # RHEL-08-040300
     - aide_verify_ext_attributes

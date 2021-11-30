@@ -1,0 +1,34 @@
+product: debian11
+full_name: Debian 11
+type: platform
+
+benchmark_id: DEBIAN-11
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "apt_get"
+
+init_system: "systemd"
+
+grub2_boot_path: "/boot/grub"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - debian11:
+      name: "cpe:/o:debian:debian_linux:11"
+      title: "Debian Linux 11"
+      check_id: installed_OS_is_debian11
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  gdm: gdm3
+  grub2: grub2-common
+  net-snmp: snmp
+  nss-pam-ldapd: libpam-ldap
+  pam: libpam-runtime
+  shadow: login
+  sssd: sssd-common
+
+reference_uris:
+  cis: 'https://benchmarks.cisecurity.org/tools2/linux/CIS_Debian_Benchmark_v1.0.pdf'

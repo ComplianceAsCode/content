@@ -1,0 +1,16 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="machine_volume_encrypted" version="1">
+    {{{ oval_metadata("Full disk encryption should be enabled, either through the cloud provider or using FIPS") }}}
+
+    <criteria operator="OR">
+      <extend_definition comment="Azure disk encryption enabled" definition_ref="azure_disk_encryption_enabled" />
+      <extend_definition comment="GCP disk encryption enabled" definition_ref="gcp_disk_encryption_enabled" />
+      <extend_definition comment="ebs encryption enabled" definition_ref="ebs_encryption_enabled_on_machinesets" />
+      <criteria operator="AND">
+        <extend_definition comment="fips mode enabled" definition_ref="fips_mode_enabled_on_all_nodes" />
+        <extend_definition comment="luks encryption enabled" definition_ref="luks_enabled_on_all_nodes" />
+      </criteria>
+    </criteria>
+
+  </definition>
+</def-group>

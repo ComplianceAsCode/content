@@ -1,10 +1,37 @@
 # Building ComplianceAsCode
 
+## Fast Track
+Ok, if you are eager to start contributing, seeing the things happening faster and are passionate about automation, this is what you need for now. Every technical procedure described in the next sessions of this guide is covered by the [ansible-role-openscap](https://galaxy.ansible.com/marcusburghardt/ansible_role_openscap) role.
+
+Do you prefer to see it working before starting to use it? Please, take a look in this demo:
+[![ansible-role-openscap demo](https://img.youtube.com/vi/YI5lo1P0gw0/3.jpg)](http://www.youtube.com/watch?v=YI5lo1P0gw0 "watch an ansible-role-openscap demo")
+
+### ansible-role-openscap
+Everything you need as requirement is a *Fedora* system with the `ansible` and `python3` packages installed:
+```bash
+dnf install -y ansible python3
+```
+Than you can download the ansible role:
+```bash
+ansible-galaxy install marcusburghardt.ansible_role_openscap
+```
+Now it is time to run it. To help with this, the function also comes with a pre-configured Ansible environment for this. It is recommended to use this environment in order to ensure that it is only applicable to this context, not impacting any other possible Ansible settings you may have on your computer:
+```bash
+cp -r ~/.ansible/roles/marcusburghardt.ansible_role_openscap/files/Ansible_Samples/ ~/Ansible
+cd ~/Ansible/
+ansible-playbook -K ansible_openscap.yml
+```
+Just watch the ansible do the hard work. In the end, you will have a "ready to go" development environment to start [contributing](https://github.com/ComplianceAsCode/content/blob/master/CONTRIBUTING.md). If this is your first contact with the project, there is also a "STARTGUIDE" to guide you through the newly prepared development environment:
+```bash
+less ~/OpenSCAP/STARTGUIDE.md
+```
+
+
 ## Installing build dependencies
 
 ### Required Dependencies
 On *Red Hat Enterprise Linux 7* make sure the packages `cmake`, `openscap-utils`,
-`PyYAML`, `python-jinja2` and their dependencies are installed:
+`PyYAML`, `python-jinja2`, `python-setuptools` and their dependencies are installed:
 
 ```bash
 yum install cmake make openscap-utils openscap-scanner PyYAML python-jinja2
@@ -13,15 +40,15 @@ yum install cmake make openscap-utils openscap-scanner PyYAML python-jinja2
 On *Red Hat Enterprise Linux 8* and *Fedora* the package list is the same but python2 packages need to be replaced with python3 ones:
 
 ```bash
-yum install cmake make openscap-utils openscap-scanner python3-pyyaml python3-jinja2
+yum install cmake make openscap-utils openscap-scanner python3-pyyaml python3-jinja2 python3-setuptools
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
-`libxml2-utils`, `python3-jinja2`, `python3-yaml`, `xsltproc` and their dependencies are
+`libxml2-utils`, `python3-jinja2`, `python3-yaml`, `python3-setuptools`, `xsltproc` and their dependencies are
 installed:
 
 ```bash
-apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml xsltproc
+apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml python3-setuptools xsltproc
 ```
 
 IMPORTANT: Version `1.0.8` or later of `openscap-utils` is required to build the content.
@@ -50,6 +77,19 @@ yum install ShellCheck
 # Ubuntu/Debian
 apt-get install shellcheck
 ```
+
+### Bats (Bash Unit Tests)
+
+Install the `bats` package to perform bash unit tests:
+
+```bash
+# Fedora/RHEL
+yum install bats
+
+# Ubuntu/Debian
+apt-get install bats
+```
+
 ### Ansible Static Analysis packages
 
 Install `yamllint` and `ansible-lint` packages to perform Ansible
@@ -102,6 +142,14 @@ pip install json2html
 ### Sphinx packages (Developer Documentation)
 
 Install Sphinx packages if you want to generate HTML Documentation, from source directory run:
+
+```bash
+# Fedora/RHEL
+yum install python3-sphinx
+
+# Ubuntu/Debian
+apt-get install python3-sphinx
+```
 
 ```bash
 pip install -r docs/requirements.txt

@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import platform
+import re
 
 from .constants import xml_version, oval_header, timestamp, PREFIX_TO_NS
 
@@ -24,9 +25,9 @@ def oval_generated_header(product_name, schema_version, ssg_version):
                        schema_version, timestamp)
 
 
-def open_xml(filename):
+def register_namespaces():
     """
-    Given a filename, register all possible namespaces, and return the XML tree.
+    Register all possible namespaces
     """
     try:
         for prefix, uri in PREFIX_TO_NS.items():
@@ -35,6 +36,13 @@ def open_xml(filename):
         # Probably an old version of Python
         # Doesn't matter, as this is non-essential.
         pass
+
+
+def open_xml(filename):
+    """
+    Given a filename, register all possible namespaces, and return the XML tree.
+    """
+    register_namespaces()
     return ElementTree.parse(filename)
 
 
@@ -62,3 +70,26 @@ def map_elements_to_their_ids(tree, xpath_expr):
         assert element_id is not None
         aggregated[element_id] = element
     return aggregated
+
+
+SSG_XHTML_TAGS = [
+    'table', 'tr', 'th', 'td', 'ul', 'li', 'ol',
+    'p', 'code', 'strong', 'b', 'em', 'i', 'pre', 'br', 'hr', 'small',
+]
+
+
+def add_xhtml_namespace(data):
+    """
+    Given a xml blob, adds the xhtml namespace to all relevant tags.
+    """
+    # The use of lambda in the lines below is a workaround for https://bugs.python.org/issue1519638
+    # I decided for this approach to avoid adding workarounds in the matching regex, this way only
+    # the substituted part contains the workaround.
+    # Transform <tt> in <code>
+    data = re.sub(r'<(\/)?tt(\/)?>',
+                  lambda m: r'<' + (m.group(1) or '') + 'code' + (m.group(2) or '') + '>', data)
+    # Adds xhtml prefix to elements: <tag>, </tag>, <tag/>
+    return re.sub(r'<(\/)?((?:%s).*?)(\/)?>' % "|".join(SSG_XHTML_TAGS),
+                  lambda m: r'<' + (m.group(1) or '') + 'xhtml:' +
+                  (m.group(2) or '') + (m.group(3) or '') + '>',
+                  data)

@@ -1,0 +1,19 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+
+- name: Drop any security clause for every export
+  replace:
+    path: "/etc/exports"
+    regexp: '^(/.*\w+.*\(.*),sec=[^,]*(.*\)\w*$)'
+    replace: '\1\2'
+  ignore_errors: yes
+
+- name: Add kerberos security when no security is defined for an export
+  replace:
+    path: "/etc/exports"
+    regexp: '^(/.*\w+.*\(.*)(\)\w*$)'
+    replace: '\1,sec=krb5:krb5i:krb5p\2'

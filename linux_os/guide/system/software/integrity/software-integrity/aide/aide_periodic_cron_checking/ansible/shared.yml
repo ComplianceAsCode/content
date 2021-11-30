@@ -10,6 +10,21 @@
   with_items:
     - aide
 
+- name: Set cron package name - RedHat
+  set_fact:
+    cron_pkg_name: cronie
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
+
+- name: Set cron package name - Debian
+  set_fact:
+    cron_pkg_name: cron
+  when: ansible_os_family == "Debian"
+
+- name: Install cron
+  package:
+    name: "{{ cron_pkg_name }}"
+    state: present
+
 - name: "{{{ rule_title }}}"
   cron:
     name: "run AIDE check"
@@ -17,4 +32,4 @@
     hour: 04
     weekday: 0
     user: root
-    job: "/usr/sbin/aide --check"
+    job: "{{{ aide_bin_path }}} --check"

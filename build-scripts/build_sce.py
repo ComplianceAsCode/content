@@ -33,6 +33,7 @@ import argparse
 
 import ssg.build_sce
 import ssg.environment
+import ssg.templates
 
 
 def parse_args():
@@ -46,6 +47,11 @@ def parse_args():
         "--product-yaml", required=True,
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
+    )
+    p.add_argument(
+        "--templates-dir", required=True,
+        help="Path to directory which contains content templates. "
+        "e.g.: ~/scap-security-guide/shared/templates"
     )
     p.add_argument(
         "--output", required=True)
@@ -65,4 +71,8 @@ if __name__ == "__main__":
 
     env_yaml = ssg.environment.open_environment(
         args.build_config_yaml, args.product_yaml)
-    ssg.build_sce.checks(env_yaml, args.product_yaml, args.scedirs, args.output)
+    empty = "/sce/empty/placeholder"
+    template_builder = ssg.templates.Builder(
+        env_yaml, empty, args.templates_dir, empty, empty)
+    ssg.build_sce.checks(env_yaml, args.product_yaml, args.scedirs,
+                         template_builder, args.output)

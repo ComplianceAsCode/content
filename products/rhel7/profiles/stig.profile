@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V3R4
+    version: V3R5
     SMEs:
         - ggbecker
 
@@ -11,7 +11,7 @@ title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Red Hat Enterprise Linux V3R4.
+    DISA STIG for Red Hat Enterprise Linux V3R5.
 
     In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -55,6 +55,7 @@ selections:
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_tmout=15_min
+    - var_accounts_authorized_local_users_regex=rhel7
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
@@ -107,6 +108,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_restrict_privilege_elevation_to_authorized
     - sudo_remove_no_authenticate
+    - sudo_require_reauthentication
     - sudoers_validate_passwd
     - accounts_logon_fail_delay
     - gnome_gdm_disable_automatic_login
@@ -314,10 +316,13 @@ selections:
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
     - audit_rules_privileged_commands_mount
-    - package_MFEhiplsm_installed
     - file_ownership_var_log_audit
     - file_permissions_var_log_audit
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_conf_default_rp_filter
     - package_mcafeetp_installed
     - agent_mfetpd_running
+    - accounts_authorized_local_users
+    - auditd_overflow_action
+    - auditd_name_format
+    - sebool_ssh_sysadm_login

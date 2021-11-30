@@ -7,14 +7,17 @@ from glob import glob
 
 from .build_cpe import ProductCPEs
 from .constants import (product_directories,
+                        DEFAULT_GID_MIN,
                         DEFAULT_UID_MIN,
                         DEFAULT_GRUB2_BOOT_PATH,
                         DEFAULT_GRUB2_UEFI_BOOT_PATH,
                         DEFAULT_DCONF_GDM_DIR,
                         DEFAULT_AIDE_CONF_PATH,
+                        DEFAULT_AIDE_BIN_PATH,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
-                        XCCDF_PLATFORM_TO_PACKAGE)
+                        XCCDF_PLATFORM_TO_PACKAGE,
+                        SSG_REF_URIS)
 from .utils import merge_dicts, required_key
 from .yaml import open_raw
 
@@ -41,6 +44,9 @@ def _get_implied_properties(existing_properties):
             if pkg_manager in PKG_MANAGER_TO_CONFIG_FILE:
                 result["pkg_manager_config_file"] = PKG_MANAGER_TO_CONFIG_FILE[pkg_manager]
 
+    if "gid_min" not in existing_properties:
+        result["gid_min"] = DEFAULT_GID_MIN
+
     if "uid_min" not in existing_properties:
         result["uid_min"] = DEFAULT_UID_MIN
 
@@ -58,6 +64,9 @@ def _get_implied_properties(existing_properties):
 
     if "aide_conf_path" not in existing_properties:
         result["aide_conf_path"] = DEFAULT_AIDE_CONF_PATH
+
+    if "aide_bin_path" not in existing_properties:
+        result["aide_bin_path"] = DEFAULT_AIDE_BIN_PATH
 
     return result
 
@@ -88,6 +97,10 @@ def load_product_yaml(product_yaml_path):
     # The product_yaml should be aware of the ProductCPEs
     product_yaml["product_cpes"] = ProductCPEs(product_yaml)
 
+    reference_uris = product_yaml.get("reference_uris", {})
+    product_yaml["reference_uris"] = merge_dicts(SSG_REF_URIS,
+                                                 reference_uris)
+
     return product_yaml
 
 
@@ -117,11 +130,18 @@ def get_all(ssg_root):
     return products(linux_products, other_products)
 
 
+def get_profiles_directory(env_yaml):
+    profiles_root = None
+    if env_yaml:
+        profiles_root = required_key(env_yaml, "profiles_root")
+    return profiles_root
+
+
 def get_profile_files_from_root(env_yaml, product_yaml):
     profile_files = []
     if env_yaml:
+        profiles_root = get_profiles_directory(env_yaml)
         base_dir = os.path.dirname(product_yaml)
-        profiles_root = required_key(env_yaml, "profiles_root")
         profile_files = sorted(glob("{base_dir}/{profiles_root}/*.profile"
                                .format(profiles_root=profiles_root, base_dir=base_dir)))
     return profile_files

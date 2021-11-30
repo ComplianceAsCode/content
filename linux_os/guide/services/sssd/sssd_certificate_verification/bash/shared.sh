@@ -4,9 +4,6 @@
 # complexity = low
 # disruption = medium
 
-# include our remediation functions library
-. /usr/share/scap-security-guide/remediation_functions
-
 {{{ bash_instantiate_variables("var_sssd_certificate_verification_digest_function") }}}
 
 found=false
