@@ -6,11 +6,7 @@ description: |-
     The <tt>VERBOSE</tt> parameter configures the SSH daemon to record login and logout activity.
     To specify the log level in
     SSH, add or correct the following line in
-    {{% if sshd_distributed_config == "true" %}}
-    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
+    {{{ sshd_config_file() }}}
     <pre>LogLevel VERBOSE</pre>
 
 rationale: |-

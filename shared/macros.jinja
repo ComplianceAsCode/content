@@ -141,6 +141,14 @@ ocil: |
 {{{ ocil_clause_entry_sshd_option() }}}
 {{%- endmacro %}}
 
+{{% macro sshd_config_file() %}}
+    {{% if sshd_distributed_config == "true" %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
+{{%- endmacro %}}
+
 
 {{#
     The OCIL text for mount options.

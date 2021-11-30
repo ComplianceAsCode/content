@@ -9,11 +9,7 @@ description: |-
     <br />
     To explicitly disallow SSH login from accounts with empty passwords,
     add or correct the following line in
-    {{% if sshd_distributed_config == "true" %}}
-    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
+    {{{ sshd_config_file() }}}
     <br />
     <pre>PermitEmptyPasswords no</pre>
     Any accounts with empty passwords should be disabled immediately, and PAM configuration

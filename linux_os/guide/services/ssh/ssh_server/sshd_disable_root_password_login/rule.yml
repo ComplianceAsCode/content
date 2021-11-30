@@ -4,11 +4,7 @@ title: 'Disable SSH root Login with a Password (Insecure)'
 
 description: |-
     To disable password-based root logins over SSH, add or correct the following line in
-    {{% if sshd_distributed_config == "true" %}}
-    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
+    {{{ sshd_config_file() }}}
     <pre>PermitRootLogin prohibit-password</pre>
 
 warnings:
