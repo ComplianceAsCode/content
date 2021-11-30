@@ -2898,11 +2898,12 @@ controls:
     notes: |-
       While this is a control that's meant for the payment entity to set up a process
       to respond to alerts, OpenShift Container Platform's File Integrity Operator
-      supports alerts via that can be ingested by AlertManager.
-    # TODO: * Add link to documentation
-    #       * Add OpenSCAP rule that verifies that the PrometheusRule exists
-    status: supported
-    rules: []
+      supports alerts via that can be ingested by AlertManager.[1]
+
+      [1] https://docs.openshift.com/container-platform/latest/monitoring/managing-alerts.html
+    status: automated
+    rules:
+    - file_integrity_notification_enabled
 
 - id: Req-11.6
   title: 11.6 Ensure that security policies and operational procedures for security
@@ -3374,12 +3375,13 @@ controls:
       payment entity to include such information. However, the OpenShift Container Platform
       does come with a monitoring stack that allows for transforming metrics into relevant
       alerts [1]
-
+      OpenShift Container Platform's File Integrity Operator supports alerts via AlertManager
       [1] https://docs.openshift.com/container-platform/4.9/monitoring/managing-alerts.html
     # TODO(jaosorior): is there a relevant rule we could write for this? It's enabled
     #                  by default and it cannot be turned off.
-    status: supported
-    rules: []
+    status: automated
+    rules:
+    - file_integrity_notification_enabled
 
   - id: Req-12.10.6
     title: 12.10.6 Develop a process to modify and evolve the incident response plan
