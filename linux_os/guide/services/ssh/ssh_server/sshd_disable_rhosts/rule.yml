@@ -6,9 +6,12 @@ description: |-
     SSH can emulate the behavior of the obsolete rsh
     command in allowing users to enable insecure access to their
     accounts via <tt>.rhosts</tt> files.
-    <br /><br />
-    To ensure this behavior is disabled, add or correct the
-    following line in <tt>/etc/ssh/sshd_config</tt>:
+    <br />
+    The default SSH configuration disables support for <tt>.rhosts</tt>. The appropriate
+    configuration is used if no value is set for <tt>IgnoreRhosts</tt>.
+    <br/>
+    To explicitly disable support for .rhosts files, add or correct the following line in
+    {{{ sshd_config_file() }}}
     <pre>IgnoreRhosts yes</pre>
 
 rationale: |-

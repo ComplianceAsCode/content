@@ -7,9 +7,12 @@ description: |-
     through the connection to enable remote graphic connections.
     SSH has the capability to encrypt remote X11 connections when SSH's
     <tt>X11Forwarding</tt> option is enabled.
-    <br /><br />
-    To disable X11 Forwarding, add or correct the
-    following line in <tt>/etc/ssh/sshd_config</tt>:
+    <br />
+    The default SSH configuration disables X11Forwarding. The appropriate
+    configuration is used if no value is set for <tt>X11Forwarding</tt>.
+    <br />
+    To explicitly disable X11 Forwarding, add or correct the following line in
+    {{{ sshd_config_file() }}}
     <pre>X11Forwarding no</pre>
 
 rationale: |-

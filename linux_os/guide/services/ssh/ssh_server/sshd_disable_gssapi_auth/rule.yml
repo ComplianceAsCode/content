@@ -4,8 +4,13 @@ title: 'Disable GSSAPI Authentication'
 
 description: |-
     Unless needed, SSH should not permit extraneous or unnecessary
-    authentication mechanisms like GSSAPI. To disable GSSAPI authentication, add or
-    correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    authentication mechanisms like GSSAPI.
+    <br/>
+    The default SSH configuration disallows authentications based on GSSAPI. The appropriate
+    configuration is used if no value is set for <tt>GSSAPIAuthentication</tt>.
+    <br/>
+    To explicitly disable GSSAPI authentication, add or correct the following line in
+    {{{ sshd_config_file() }}}
     <pre>GSSAPIAuthentication no</pre>
 
 rationale: |-
@@ -41,13 +46,7 @@ references:
     stigid@rhel8: RHEL-08-010522
     vmmsrg: SRG-OS-000480-VMM-002000
 
-ocil_clause: 'it is commented out or is not disabled'
-
-ocil: |-
-    To check if GSSAPIAuthentication is disabled or set correctly, run the following
-    command:
-    <pre>$ sudo grep GSSAPIAuthentication /etc/ssh/sshd_config</pre>
-    If configured properly, output should be <pre>no</pre>
+{{{ complete_ocil_entry_sshd_option(default="yes", option="GSSAPIAuthentication", value="no") }}}
 
 template:
     name: sshd_lineinfile

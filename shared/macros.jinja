@@ -106,7 +106,11 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 #}}
 {{% macro ocil_sshd_option(default, option, value) -%}}
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
+    {{% if sshd_distributed_config == "true" %}}
+    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</pre>
+    {{% else %}}
     <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
+    {{% endif %}}
     {{% if default == "yes" -%}}
     If no line, a commented line, or a line indicating the value <tt>{{{ value }}}</tt> is returned, then the required value is set.
     {{%- else %}}
@@ -135,6 +139,14 @@ ocil: |
     {{{ ocil_sshd_option(default, option, value) }}}
 
 {{{ ocil_clause_entry_sshd_option() }}}
+{{%- endmacro %}}
+
+{{% macro sshd_config_file() %}}
+    {{% if sshd_distributed_config == "true" %}}
+    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
+    {{% else %}}
+    <tt>/etc/ssh/sshd_config</tt>:
+    {{% endif %}}
 {{%- endmacro %}}
 
 

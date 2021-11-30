@@ -3,10 +3,14 @@ documentation_complete: true
 title: 'Enable Public Key Authentication'
 
 description: |-
-    Verify the sshd daemon allows public key authentication with the
-    following:
-    <pre>$ grep ^PubkeyAuthentication /etc/ssh/sshd_config
-    PubkeyAuthentication yes</pre>
+    Enable SSH login with public keys.
+    <br/>
+    The default SSH configuration enables authentication based on public keys. The appropriate
+    configuration is used if no value is set for <tt>PubkeyAuthentication</tt>.
+    <br/>
+    To explicitly enable Public Key Authentication, add or correct the following
+    {{{ sshd_config_file() }}}
+    <pre>PubkeyAuthentication yes</pre>
 
 rationale: |-
     Without the use of multifactor authentication, the ease of access to
@@ -24,13 +28,7 @@ references:
     srg: SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055
     stigid@ubuntu2004: UBTU-20-010033
 
-ocil_clause: 'it is not enabled'
-
-ocil: |-
-    To check if PubkeyAuthentication is enabled or set correctly, run the
-    following command:
-    <pre>$ sudo grep ^PubkeyAuthentication /etc/ssh/sshd_config</pre>
-    If configured properly, output should be <pre>yes</pre>
+{{{ complete_ocil_entry_sshd_option(default="no", option="PubkeyAuthentication", value="yes") }}}
 
 template:
     name: sshd_lineinfile
