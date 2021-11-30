@@ -7,11 +7,7 @@ description: |-
     systems public keys is available.  This should be disabled.
     <br /><br />
     To ensure this behavior is disabled, add or correct the following line in
-    {{% if sshd_distributed_config == "true" %}}
-    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
+    {{{ sshd_config_file() }}}
     <pre>IgnoreUserKnownHosts yes</pre>
 
 rationale: |-

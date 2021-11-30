@@ -16,11 +16,7 @@ description: |-
     To ensure the SSH idle timeout occurs precisely when the
     <tt>ClientAliveInterval</tt> is set, set the <tt>ClientAliveCountMax</tt> to
     value of <tt>0</tt> in
-    {{% if sshd_distributed_config == "true" %}}
-    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
+    {{{ sshd_config_file() }}}
 
 rationale: |-
     This ensures a user login will be terminated as soon as the <tt>ClientAliveInterval</tt>

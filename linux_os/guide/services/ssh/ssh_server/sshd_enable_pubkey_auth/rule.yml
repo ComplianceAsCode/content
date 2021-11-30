@@ -9,11 +9,7 @@ description: |-
     configuration is used if no value is set for <tt>PubkeyAuthentication</tt>.
     <br/>
     To explicitly enable Public Key Authentication, add or correct the following
-    {{% if sshd_distributed_config == "true" %}}
-    line in <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    line in <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
+    {{{ sshd_config_file() }}}
     <pre>PubkeyAuthentication yes</pre>
 
 rationale: |-

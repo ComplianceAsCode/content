@@ -5,11 +5,7 @@ title: 'Enable SSH Warning Banner'
 description: |-
     To enable the warning banner and ensure it is consistent
     across the system, add or correct the following line in
-    {{% if sshd_distributed_config == "true" %}}
-    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
+    {{{ sshd_config_file() }}}
     <pre>Banner /etc/issue</pre>
     Another section contains information on how to create an
     appropriate system-wide warning banner.
