@@ -29,11 +29,11 @@ class ProductCPEs(object):
         self.cpes_by_id = {}
         self.cpes_by_name = {}
         self.product_cpes = {}
-        self.cpe_platforms = {}
+        self.platforms = {}
+        self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
 
         self.load_product_cpes()
         self.load_content_cpes()
-        self.cpe_platform_specification = CPEALPlatformSpecification(self)
 
     def _load_cpes_list(self, map_, cpes_list):
         for cpe in cpes_list:
@@ -169,79 +169,6 @@ class CPEItem(object):
         return cpe_item
 
 
-class CPEALPlatformSpecification(object):
-
-    prefix = "cpe-lang"
-    ns = PREFIX_TO_NS[prefix]
-
-    def __init__(self, cpe_products):
-        self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
-        self.platforms = []
-        self.cpe_products = cpe_products
-
-    def parse_platform(self, expression):
-        """
-        parses the expression and returns a CPEALPlatform instance It either creates a
-        new one or if equal instance already exists, it returns the existing one.
-        """
-        platform = CPEALPlatform(expression, self.algebra, self.cpe_products)
-        if platform not in self.platforms:
-            self.platforms.append(platform)
-            return platform
-        else:
-            platform_idx = self.platforms.index(platform)
-            return self.platforms[platform_idx]
-
-
-    def to_xml_element(self):
-        cpe_platform_spec = ET.Element(
-            "{%s}platform-specification" % CPEALPlatformSpecification.ns)
-        for platform in self.platforms:
-            cpe_platform_spec.append(platform.to_xml_element())
-        return cpe_platform_spec
-
-
-class CPEALPlatform(object):
-
-    prefix = "cpe-lang"
-    ns = PREFIX_TO_NS[prefix]
-
-    def __init__(self, expression, algebra, cpe_products):
-        self.test = algebra.parse(expression, simplify=True)
-        self.id = "cpe_platform_" + self.test.as_id()
-        self.cpe_products = cpe_products
-        self._replace_cpe_names(self.test)
-
-    def _replace_cpe_names(self, exp):
-        if isinstance(exp, CPEALFactRef):
-            exp.cpe_name = self.cpe_products.get_cpe_name(exp.name)
-        else:
-            for arg in exp.args:
-                self._replace_cpe_names(arg)
-
-    def to_xml_element(self):
-        cpe_platform = ET.Element("{%s}platform" % CPEALPlatform.ns)
-        cpe_platform.set('id', self.id)
-        # in case the platform contains only single CPE name, fake the logical test
-        # we have to athere to CPE specification
-        if isinstance(self.test, CPEALFactRef):
-            cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
-            cpe_test.set('operator', 'AND')
-            cpe_test.set('negate', 'false')
-            cpe_test.append(self.test.to_xml_element())
-            cpe_platform.append(cpe_test)
-        else:
-            cpe_platform.append(self.test.to_xml_element())
-        return cpe_platform
-
-
-    def __eq__(self, other):
-        if not isinstance(other, CPEALPlatform):
-            return False
-        else:
-            return self.test == other.test
-
-
 class CPEALLogicalTest(Function):
 
     prefix = "cpe-lang"
@@ -260,6 +187,10 @@ class CPEALLogicalTest(Function):
 
         return cpe_test
 
+    def replace_cpe_names(self, cpe_products):
+        for arg in self.args:
+            arg.replace_cpe_names(cpe_products)
+
     def get_objects(self):
         return self.objects
 
@@ -271,7 +202,10 @@ class CPEALFactRef (Symbol):
 
     def __init__(self, obj):
         super(CPEALFactRef, self).__init__(obj)
-        self.cpe_name = ""  # we do not want to modify original name used for platforms
+        self.cpe_name = obj  # we do not want to modify original name used for platforms
+
+    def replace_cpe_names(self, cpe_products):
+        self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
