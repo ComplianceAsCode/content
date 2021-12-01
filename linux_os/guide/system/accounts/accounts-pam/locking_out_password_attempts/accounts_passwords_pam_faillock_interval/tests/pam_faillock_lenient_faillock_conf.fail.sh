@@ -1,11 +1,10 @@
 #!/bin/bash
+# packages = authselect
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,Oracle Linux 8
 # variables = var_accounts_passwords_pam_faillock_fail_interval=900
 
-if [ -f /usr/sbin/authconfig ]; then
-    authconfig --enablefaillock --update
-else
-    authselect enable-feature with-faillock
-fi
+authselect select sssd --force
+authselect enable-feature with-faillock
 # Ensure the parameters only in /etc/security/faillock.conf if the file is present.
 # NOTE:
 # Older versions of authselect, which don't support faillock.conf will complain if any change
@@ -17,5 +16,5 @@ if [ -f /etc/security/faillock.conf ]; then
     sed -i --follow-symlinks 's/\(pam_faillock.so \(preauth silent\|authfail\)\).*$/\1/g' /etc/pam.d/system-auth /etc/pam.d/password-auth
 fi
 > /etc/security/faillock.conf
-echo "fail_interval=300" >> /etc/security/faillock.conf
+echo "fail_interval = 300" >> /etc/security/faillock.conf
 echo "silent" >> /etc/security/faillock.conf

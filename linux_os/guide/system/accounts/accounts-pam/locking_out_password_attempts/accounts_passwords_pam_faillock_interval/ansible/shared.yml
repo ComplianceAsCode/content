@@ -29,7 +29,6 @@
     path: /etc/pam.d/system-auth
     regexp: .*auth.*pam_faillock.so.*
     state: absent
-    follow: yes
   check_mode: yes
   changed_when: false
   register: result_pam_faillock_enabled
@@ -41,7 +40,6 @@
     regexp: (.*pam_faillock.so preauth).*$
     line: \1 silent
     state: present
-    follow: yes
   loop:
     - /etc/pam.d/system-auth
     - /etc/pam.d/password-auth
@@ -56,7 +54,6 @@
     regexp: (.*pam_faillock.so authfail).*$
     line: \1
     state: present
-    follow: yes
   loop:
     - /etc/pam.d/system-auth
     - /etc/pam.d/password-auth
@@ -83,7 +80,6 @@
     path: /etc/pam.d/system-auth
     regexp: .*auth.*pam_faillock.so (preauth|authfail).*fail_interval
     state: absent
-    follow: yes
   check_mode: yes
   changed_when: false
   register: result_pam_faillock_fail_interval
@@ -97,7 +93,6 @@
     regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)(fail_interval)=[0-5]+(.*)
     line: \1required\3\4={{ var_accounts_passwords_pam_faillock_fail_interval }}\5
     state: present
-    follow: yes
   loop:
     - /etc/pam.d/system-auth
     - /etc/pam.d/password-auth
@@ -112,7 +107,6 @@
     regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so authfail.*)(fail_interval)=[0-5]+(.*)
     line: \1required\3\4={{ var_accounts_passwords_pam_faillock_fail_interval }}\5
     state: present
-    follow: yes
   loop:
     - /etc/pam.d/system-auth
     - /etc/pam.d/password-auth

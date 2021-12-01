@@ -1,11 +1,10 @@
 #!/bin/bash
+# packages = authselect
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,Oracle Linux 8
 # variables = var_accounts_passwords_pam_faillock_deny=3
 
-if [ -f /usr/sbin/authconfig ]; then
-    authconfig --enablefaillock --update
-else
-    authselect enable-feature with-faillock
-fi
+authselect select sssd --force
+authselect enable-feature with-faillock
 # Older versions of authselect, which don't support faillock.conf will complain if any change
 # are made in pam files, even for different but valid arguments. In practical, if any change in
 # default pam_faillock.so parameters is necessary for hardening, old versions of authselect no
@@ -14,5 +13,5 @@ fi
 # However, the remediation should work properly in a realistic scenario.
 sed -i --follow-symlinks 's/\(pam_faillock.so \(preauth silent\|authfail\)\).*$/\1 deny=3/g' /etc/pam.d/system-auth /etc/pam.d/password-auth
 > /etc/security/faillock.conf
-echo "deny=3" >> /etc/security/faillock.conf
+echo "deny = 3" >> /etc/security/faillock.conf
 echo "silent" >> /etc/security/faillock.conf

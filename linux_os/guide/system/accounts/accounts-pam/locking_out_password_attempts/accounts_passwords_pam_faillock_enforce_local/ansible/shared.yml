@@ -16,7 +16,6 @@
     path: /etc/pam.d/system-auth
     regexp: .*auth.*pam_faillock.so.*
     state: absent
-    follow: yes
   check_mode: yes
   changed_when: false
   register: result_pam_faillock_enabled
