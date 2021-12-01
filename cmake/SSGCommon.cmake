@@ -1506,7 +1506,6 @@ macro(ssg_build_vendor_zipfile ZIPNAME)
         COMMENT "Building Red Hat zipfile at ${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
         DEPENDS products/rhel7
         DEPENDS products/rhel8
-        DEPENDS products/rhosp13
         DEPENDS products/rhv4
         )
     add_custom_target(
