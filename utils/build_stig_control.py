@@ -122,7 +122,7 @@ def check_files(args):
         exit(-1)
 
 
-def get_controls(known_rules, ns, root):
+def get_controls(known_rules, ns, root) -> list:
     controls = list()
     for group in root.findall('checklist:Group', ns):
         for stig in group.findall('checklist:Rule', ns):
@@ -170,7 +170,7 @@ def main():
             os.mkdir(output_dir)
         for control in controls:
             out = dict()
-            out['controls'] = control
+            out['controls'] = [control, ]
             filename = f"{control['id']}.yml"
             output_filename = os.path.join(output_dir, filename)
             with open(output_filename, 'w') as f:

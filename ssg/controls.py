@@ -12,7 +12,8 @@ import ssg.utils
 class InvalidStatus(Exception):
     pass
 
-class Status():
+
+class Status:
     PENDING = "pending"
     PLANNED = "planned"
     NOT_APPLICABLE = "not applicable"
@@ -21,6 +22,7 @@ class Status():
     PARTIAL = "partial"
     SUPPORTED = "supported"
     AUTOMATED = "automated"
+    DOES_NOT_MEET = "does not meet"
 
     def __init__(self, status):
         self.status = status
@@ -39,6 +41,7 @@ class Status():
             cls.PARTIAL,
             cls.SUPPORTED,
             cls.AUTOMATED,
+            cls.DOES_NOT_MEET
         ]
 
         if status not in valid_statuses:
@@ -71,6 +74,9 @@ class Control(ssg.build_yaml.SelectionHandler):
         self.description = ""
         self.automated = ""
         self.status = None
+        self.mitigation = ""
+        self.artifact_description = ""
+        self.status_justification = ""
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -85,6 +91,9 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.description = control_dict.get("description")
         control.status = Status.from_control_info(control.id, control_dict.get("status", None))
         control.automated = control_dict.get("automated", "no")
+        control.status_justification = control_dict.get('status_justification')
+        control.artifact_description = control_dict.get('artifact_description')
+        control.mitigation = control_dict.get('mitigation')
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:
@@ -170,8 +179,8 @@ class Policy():
             self.levels.append(level)
             self.levels_by_id[level.id] = level
 
-        controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         if os.path.exists(self.controls_dir) and os.path.isdir(self.controls_dir):
+            controls_tree = yaml_contents.get("controls", list())
             files = os.listdir(self.controls_dir)
             for file in files:
                 if file.endswith('.yml'):
@@ -183,6 +192,8 @@ class Policy():
                     continue
                 else:
                     raise RuntimeError("Found non yaml file in %s" % self.controls_dir)
+        else:
+            controls_tree = ssg.utils.required_key(yaml_contents, "controls")
         for c in self._parse_controls_tree(controls_tree):
             self.controls.append(c)
             self.controls_by_id[c.id] = c

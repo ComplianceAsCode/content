@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000047-GPOS-00023
+        levels:
+            - medium
+        title: The operating system must shut down by default upon audit failure (unless
+            availability is an overriding concern).
+        rules:
+            - audit_rules_system_shutdown
+            - auditd_data_disk_error_action
+            - auditd_data_disk_full_action
+            - auditd_data_retention_max_log_file_action
+        status: automated

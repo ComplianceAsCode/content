@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000077-GPOS-00045
+        levels:
+            - medium
+        title: The operating system must prohibit password reuse for a minimum of five generations.
+        rules:
+            - accounts_password_pam_pwhistory_remember_password_auth
+            - accounts_password_pam_pwhistory_remember_system_auth
+            - accounts_password_pam_unix_remember
+        status: automated

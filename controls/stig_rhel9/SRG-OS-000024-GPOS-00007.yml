@@ -1,0 +1,14 @@
+controls:
+    -   id: SRG-OS-000024-GPOS-00007
+        levels:
+            - medium
+        title: The operating system must display the Standard Mandatory DoD Notice and Consent
+            Banner until users acknowledge the usage conditions and take explicit actions
+            to log on for further access.
+        rules:
+            - sshd_enable_warning_banner
+            - sshd_enable_warning_banner_net
+            - banner_etc_issue
+            - dconf_gnome_banner_enabled
+            - dconf_gnome_login_banner_text
+        status: automated

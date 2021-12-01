@@ -1,0 +1,11 @@
+controls:
+    -   id: SRG-OS-000337-GPOS-00129
+        levels:
+            - medium
+        title: The operating system must provide the capability for assigned IMOs/ISSOs
+            or designated SAs to change the auditing to be performed on all operating system
+            components, based on all selectable event criteria in near real time.
+        rules:
+            - audit_rules_suid_privilege_function
+            - package_audit_installed
+        status: automated
