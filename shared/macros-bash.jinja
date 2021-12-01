@@ -1676,5 +1676,5 @@ fi
 {{% endmacro %}}
 
 {{%- macro pkg_bash_conditional(pkg_name) -%}}
-rpm -qa {pkg_name}
+rpm -qa {{{ pkg_name }}}
 {{%- endmacro %}}
