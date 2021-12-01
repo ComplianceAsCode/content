@@ -8,6 +8,7 @@ echo "Create specific tests for this rule because of regex"
 find -L {{{ path }}} -type d -exec chown {{{ FILEUID }}} {} \;
 {{% else %}}
 if [ ! -f {{{ path }}} ]; then
+    mkdir -p "$(dirname '{{{ path }}}')"
     touch {{{ path }}}
 fi
 chown {{{ FILEUID }}} {{{ path }}}
