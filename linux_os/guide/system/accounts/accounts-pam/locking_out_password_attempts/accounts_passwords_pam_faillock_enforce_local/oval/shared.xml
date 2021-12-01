@@ -6,7 +6,8 @@
         <!-- pam_unix.so is a control module present in all realistic scenarios and also used
              as reference for the correct position of pam_faillock.so in auth section. If the
              system is properly configured, it must appear only once in auth section. -->
-        <criteria operator="AND" comment="Count occurrencies of pam_unix.so in system-auth">
+        <criteria operator="AND"
+                  comment="Count occurrences of pam_unix.so in system-auth and password-auth">
           <criterion
               test_ref="test_accounts_passwords_pam_faillock_enforce_local_system_pam_unix_auth"
               comment="pam_unix.so appears only once in auth section of system-auth"/>
@@ -15,7 +16,7 @@
               comment="pam_unix.so appears only once in auth section of password-auth"/>
         </criteria>
 
-        <!-- pam_faillock.so parameters can be defined directly in pam files or, in earlier
+        <!-- pam_faillock.so parameters can be defined directly in pam files or, in newer
              versions, in /etc/security/faillock.conf. The last is the recommended option when
              available. Also, is the option used by auselect tool. However, regardless the
              approach, a minimal declaration is common in pam files. -->
@@ -68,7 +69,7 @@
     <value>^[\s]*local_users_only</value>
   </constant_variable>
 
-  <!-- Check occurrencies of pam_unix.so in auth section of system-auth file -->
+  <!-- Check occurrences of pam_unix.so in auth section of system-auth file -->
   <ind:textfilecontent54_object version="1"
         id="object_accounts_passwords_pam_faillock_enforce_local_system_pam_unix_auth"
         comment="Get all occcurencies of pam_unix.so in auth section of system-auth">
@@ -85,7 +86,7 @@
     <ind:object object_ref="object_accounts_passwords_pam_faillock_enforce_local_system_pam_unix_auth"/>
   </ind:textfilecontent54_test>
 
-  <!-- Check occurrencies of pam_unix.so in auth section in password-auth -->
+  <!-- Check occurrences of pam_unix.so in auth section in password-auth -->
   <ind:textfilecontent54_object version="1"
         id="object_accounts_passwords_pam_faillock_enforce_local_password_pam_unix_auth"
         comment="Get all occcurencies of pam_unix.so in auth section of password-auth">

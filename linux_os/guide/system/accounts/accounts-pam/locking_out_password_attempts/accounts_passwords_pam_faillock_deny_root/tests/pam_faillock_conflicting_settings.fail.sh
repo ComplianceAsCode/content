@@ -1,10 +1,9 @@
 #!/bin/bash
+# packages = authselect
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,Oracle Linux 8
 
-if [ -f /usr/sbin/authconfig ]; then
-    authconfig --enablefaillock --update
-else
-    authselect enable-feature with-faillock
-fi
+authselect select sssd --force
+authselect enable-feature with-faillock
 # NOTE:
 # Older versions of authselect, which don't support faillock.conf will complain if any change
 # are made in pam files, even for different but valid arguments. In practical, if any change in
