@@ -5,7 +5,7 @@
 SELINUX_FILE='/etc/selinux/config'
 
 if grep -s '^[[:space:]]*SELINUX' $SELINUX_FILE; then
-	sed -i 's/^\([[:space:]]*SELINUX[[:space:]]*=[[:space:]]*\).*/\permissive/' $SELINUX_FILE
+	sed -i 's/^\([[:space:]]*SELINUX[[:space:]]*=[[:space:]]*\).*/\1permissive/' $SELINUX_FILE
 else
 	echo 'SELINUX=permissive' >> $SELINUX_FILE
 fi
