@@ -3,12 +3,13 @@ cpes:
       name: "cpe:/a:audit"
       title: "Package audit is installed"
       check_id: installed_env_has_audit_package
-#      bash_conditional: {{ pkg_bash_conditional(audit) }}
+      bash_conditional: {{{ pkg_bash_conditional("audit") }}}
 
   - chrony:
       name: "cpe:/a:chrony"
       title: "Package chrony is installed"
       check_id: installed_env_has_chrony_package
+      bash_conditional: {{{ pkg_bash_conditional("chrony") }}}
 
   - gdm:
       name: "cpe:/a:gdm"
