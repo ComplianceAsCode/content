@@ -34,9 +34,9 @@ def test_build_rule_playbook():
     assert os.path.exists(real_output_filepath)
 
     with open(real_output_filepath, "r") as real_output:
-        real_output_yaml = yaml.load(real_output)
+        real_output_yaml = yaml.load(real_output, Loader=yaml.Loader)
     with open(expected_output_filepath, "r") as expected_output:
-        expected_output_yaml = yaml.load(expected_output)
+        expected_output_yaml = yaml.load(expected_output, Loader=yaml.Loader)
 
     real_play = real_output_yaml.pop()
     expected_play = expected_output_yaml.pop()
