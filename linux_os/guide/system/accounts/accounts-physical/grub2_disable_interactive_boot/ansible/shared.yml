@@ -4,6 +4,18 @@
 # complexity = low
 # disruption = low
 
+{{%if 'sle' in product %}}
+- name: Verify that Interactive Boot is Disabled in /usr/bin/grub2-editenv
+  replace:
+    dest: /etc/default/grub
+    regexp: systemd.confirm_spawn=(1|yes|true|on) 
+    replace: systemd.confirm_spawn=no
+
+- name: Verify that Interactive Boot is Disabled (runtime)
+  command: /usr/bin/grub2-editenv - unset systemd.confirm_spawn
+
+{{% else %}}
+
 - name: Verify that Interactive Boot is Disabled in /etc/default/grub
   replace:
     dest: /etc/default/grub
@@ -12,3 +24,5 @@
 
 - name: Verify that Interactive Boot is Disabled (runtime)
   command: /sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
+
+{{% endif %}}
