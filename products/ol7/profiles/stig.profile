@@ -21,7 +21,6 @@ selections:
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_deny=3
-    - var_password_pam_unix_remember=5
     - var_password_pam_maxclassrepeat=4
     - var_password_pam_difok=8
     - var_password_pam_dcredit=1
@@ -37,6 +36,8 @@ selections:
     - var_password_pam_retry=3
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_tmout=15_min
+    - var_password_pam_remember=5
+    - var_password_pam_remember_control_flag=required
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
@@ -73,7 +74,6 @@ selections:
     - accounts_password_set_min_life_existing
     - accounts_maximum_age_login_defs
     - accounts_password_set_max_life_existing
-    - accounts_password_pam_unix_remember
     - accounts_password_pam_minlen
     - no_empty_passwords
     - sshd_disable_empty_passwords
@@ -310,3 +310,5 @@ selections:
     - accounts_authorized_local_users
     - grub2_password_legacy
     - grub2_uefi_password_legacy
+    - accounts_password_pam_pwhistory_remember_password_auth
+    - accounts_password_pam_pwhistory_remember_system_auth
