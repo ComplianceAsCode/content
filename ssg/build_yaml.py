@@ -923,10 +923,10 @@ class Benchmark(XCCDFEntity):
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
         # if there are no platforms, do not output platform-specification at all
-        if len(self.platforms) > 0:
+        if len(env_yaml["product_cpes"].platforms) > 0:
             cpe_platform_spec = ET.Element(
                 "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
-            for platform in self.platforms.values():
+            for platform in env_yaml["product_cpes"].platforms.values():
                 cpe_platform_spec.append(platform.to_xml_element())
             root.append(cpe_platform_spec)
 
@@ -1950,7 +1950,6 @@ class LinearLoader(object):
             except KeyError as exc:
                 # Add only the groups we have compiled and loaded
                 pass
-        self.benchmark.platforms = self.platforms
 
     def load_compiled_content(self):
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
@@ -1967,6 +1966,7 @@ class LinearLoader(object):
 
         filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
+        self.env_yaml["product_cpes"].platforms = self.platforms
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
