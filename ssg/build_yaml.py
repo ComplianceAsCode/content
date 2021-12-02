@@ -805,7 +805,7 @@ class Benchmark(XCCDFEntity):
         values=lambda: dict(),
         groups=lambda: dict(),
         rules=lambda: dict(),
-        platforms = lambda: dict(),
+        platforms=lambda: dict(),
         product_cpe_names=lambda: list(),
         ** XCCDFEntity.KEYS
     )
@@ -1892,7 +1892,8 @@ class BuildLoader(DirectoryLoader):
 
             if rule.cpe_platform_names:
                 for platform in rule.cpe_platform_names:
-                    self.all_platforms[platform] = self.env_yaml["product_cpes"].platforms[platform]
+                    self.all_platforms[platform] = self.env_yaml[
+                        "product_cpes"].platforms[platform]
 
             rule.normalize(self.env_yaml["product"])
 
@@ -2002,14 +2003,15 @@ class LinearLoader(object):
             questions.append(boolean_question)
         tree.write(filename)
 
+
 class Platform(XCCDFEntity):
-    
+
     KEYS = dict(
-        name = lambda: "",
-        original_expression = lambda: "",
-        xml_content = lambda: "",
-        bash_conditional = lambda: "",
-        ansible_conditional = lambda: "",
+        name=lambda: "",
+        original_expression=lambda: "",
+        xml_content=lambda: "",
+        bash_conditional=lambda: "",
+        ansible_conditional=lambda: "",
         ** XCCDFEntity.KEYS
     )
 
@@ -2072,11 +2074,10 @@ def parse_platform(expression, env_yaml):
     parses the expression and returns a CPEALPlatform instance It either creates a
     new one or if equal instance already exists, it returns the existing one.
     """
-    platform = Platform.from_text(expression, env_yaml)\
+    platform = Platform.from_text(expression, env_yaml)
     # check if the platform is already in the dictionary. If yes, return the existing one
-    for k,v in env_yaml["product_cpes"].platforms.items():
+    for k,v  in env_yaml["product_cpes"].platforms.items():
         if platform == v:
             return v
     env_yaml["product_cpes"].platforms[platform.id_] = platform
     return platform
-
