@@ -13,10 +13,20 @@ jobs:
         run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 git python3-deepdiff python3-requests jq python3-pip
       - name: Install deps python
         run: pip install gitpython xmldiff
-      - name: Checkout master
+      - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: master
+          fetch-depth: 0
+      - name: Find forking point
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: echo "::set-output name=FORK_POINT::$(git merge-base --fork-point origin/$BASE_BRANCH)"
+        id: fork_point
+      - name: Checkout fork point
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.fork_point.outputs.FORK_POINT }}
+          fetch-depth: 0
       - name: Checkout (CTF)
         uses: actions/checkout@v2
         with:
