@@ -7,10 +7,10 @@ RUN microdnf -y install cmake make git /usr/bin/python3 python3-pyyaml python3-j
 
 COPY . .
 
-RUN ./build_product --datastream-only --debug ocp4 rhel7 rhcos4
+RUN ./build_product --datastream-only --debug ocp4 rhcos4 eks
 
 FROM registry.access.redhat.com/ubi8/ubi-micro:latest
 WORKDIR /
 COPY --from=builder /content/build/ssg-ocp4-ds.xml .
-COPY --from=builder /content/build/ssg-rhel7-ds.xml .
 COPY --from=builder /content/build/ssg-rhcos4-ds.xml .
+COPY --from=builder /content/build/ssg-eks-ds.xml .
