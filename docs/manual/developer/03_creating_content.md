@@ -1366,3 +1366,54 @@ $ utils/controleval.py stats -i cis_rhel7 -l l2_server
 ```
 
 For more details about the `controleval.py` too, run `utils/controleval.py --help`.
+
+### Creating spreadsheets for submission to governing bodies
+Sometimes a control file needs to be exported to format specific for review to a governing body.
+
+#### DISA STIGs
+##### Getting Started
+In order for export for DISA the IDs of your control must be SRG ID form the General Purpose Operating System SRG.
+
+If you have an existing product that you want to base your new STIG you can create the skeleton with the following command:
+
+    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r1.xml -o controls/stig_rhel9.yml
+
+##### Filling out content
+Every control in the policy file will create at least one row in the export.
+For every rule on the control there will be row in the exported SRG.
+
+Below is the mapping from fields in the Compliance as Code to field in the spreadsheet.
+The **bolded** items are under direct control of the authors.
+
+* IA Control -> DISA OS SRG XML
+  * As of v2r1 that field is blank
+* CCI -> DISA OS SRG XML
+* SRGID -> The control id
+* SRG Requirement ->  DISA OS SRG XML
+* **Requirement** -> The rule's description
+* SRG VulDiscussion -> DISA OS SRG XML
+* **Vul Discussion** -> Rule's rationale
+* **Status** -> Control
+  * If there are rules the status will be `Applicable - Configurable`
+  * The status can be set on the control as well
+* SRG Check -> DISA OS SRG XML
+* **Check** -> OCIL and OCIL clause from the rule
+  * The first part of the check comes from OCIL of the rule
+  * The last part is "If {OCIL clause}, then it is a finding"
+* SRG Fix -> DISA OS SRG XML
+  * As of v2r1 that field is blank
+* **Fix** -> Rule's fix
+* **Severity** -> DISA OS SRG XML or Control
+  * By default, it comes from the DISA OS SRG
+  * Can be overridden by the control
+* **Mitigation** -> Control
+* **Artifact Description** -> Control
+* **Status Justification** -> Control
+* **Status** -> Control
+
+#### Exporting
+To export the spreadsheet use the following command:
+
+    $ ./utils/create_srg_export.py -c controls/stig_rhel9.yml -p rhel9
+
+The output will be out in CSV file in build.
