@@ -54,11 +54,24 @@ references:
     stigid@rhel8: RHEL-08-020010
     vmmsrg: SRG-OS-000021-VMM-000050
 
-ocil_clause: 'that is not the case'
+ocil_clause: 'limiting the number of failed logon attempts for users is not configured'
 
 ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
     <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
     The output should show <tt>deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}}</tt>.
+
+fix: |-
+    Configure the operating system to lock an account when three unsuccessful logon attempts occur.
+
+    Add/Modify the appropriate sections of the "/etc/pam.d/system-auth" and "/etc/pam.d/password-auth" files to match the following lines:
+
+    auth required pam_faillock.so preauth dir=/var/log/faillock silent audit deny=3 even_deny_root fail_interval=900 unlock_time=0
+    auth required pam_faillock.so authfail dir=/var/log/faillock unlock_time=0
+    account required pam_faillock.so
+
+    The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
+
+    $ sudo systemctl restart sssd.service
 
 platform: pam
