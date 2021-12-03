@@ -1574,3 +1574,23 @@ Operator see
     # chroot /host
     </pre>
 {{% endmacro %}}
+
+{{#
+    How to fix an audit rule that watches a file.
+
+:param path: Full path of file to watch
+:type path: str
+:param key: Auditd key for the system
+:type key: str
+:param rule_path: Full path to where the rule wil
+:type rule_path: str
+#}}
+{{% macro fix_audit_file_watch_rule(path, key, rule_path) -%}}
+Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect <tt>{{{ path }}}</tt>.
+
+Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
+
+-w {{{ path }}} -p wa -k {{{ key }}}
+
+The audit daemon must be restarted for the changes to take effect.
+{{% endmacro %}}
