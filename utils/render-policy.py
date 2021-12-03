@@ -18,7 +18,7 @@ class HtmlOutput(template_renderer.Renderer):
     TEMPLATE_NAME = "controls-template.html"
 
     def set_all_rules_with_metadata(self):
-        compiled_rules = self.built_content_path / "rules"
+        compiled_rules = os.path.join(self.built_content_path, 'rules')
         rule_files = glob("{compiled_rules}/*".format(compiled_rules=compiled_rules))
         if not rule_files:
             msg = (
