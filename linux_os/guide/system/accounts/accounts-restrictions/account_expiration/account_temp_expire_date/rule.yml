@@ -58,3 +58,10 @@ ocil: |-
     to obtain its account aging and expiration information:
     <pre>$ sudo chage -l <i>USER</i></pre>
     Verify each of these accounts has an expiration date set as documented.
+
+fix: |-
+    If a temporary account must be created configure the system to terminate the account after a 72
+    hour time period with the following command to set an expiration date on it. Substitute
+    "system_account_name" with the account to be created.
+
+    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` system_account_name

@@ -64,4 +64,21 @@ ocil: |-
     <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
     The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt> or <tt>0</tt> for <tt>never</tt>.
 
+fix: |-
+    Configure the operating system to lock an account until released by an administrator when three unsuccessful logon attempts occur in 15 minutes.
+
+    Add/Modify the appropriate sections of the <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> files to match the following lines:
+
+    <pre>
+    auth required pam_faillock.so preauth dir=/var/log/faillock silent audit deny=3 even_deny_root fail_interval=900 unlock_time=0
+    auth required pam_faillock.so authfail dir=/var/log/faillock unlock_time=0
+    account required pam_faillock.so
+    </pre>
+
+    The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
+
+    <pre>
+    $ sudo systemctl restart sssd.service
+    </pre>
+
 platform: pam
