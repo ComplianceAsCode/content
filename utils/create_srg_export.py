@@ -130,6 +130,8 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
         for rule in control.selections:
             row = create_base_row(control, srgs)
             rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
+            if control.levels is not None:
+                row['Severity'] = control.levels[0]
             row['Requirement'] = html_plain_text(rule_object.description)
             row['Vul Discussion'] = html_plain_text(rule_object.rationale)
             row['Check'] = html_plain_text(rule_object.ocil)
