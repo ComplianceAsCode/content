@@ -141,7 +141,8 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                 row['Severity'] = control.levels[0]
             row['Requirement'] = html_plain_text(rule_object.description)
             row['Vul Discussion'] = html_plain_text(rule_object.rationale)
-            row['Check'] = html_plain_text(rule_object.ocil)
+            row['Check'] = f'{html_plain_text(rule_object.ocil)}\n\n' \
+                           f'If {rule_object.ocil_clause}, then this is a finding.'
             row['Fix'] = html_plain_text(rule_object.fix)
             # If then control has rule by definition the status is "Applicable - Configurable"
             row['Status'] = DisaStatus.AUTOMATED
