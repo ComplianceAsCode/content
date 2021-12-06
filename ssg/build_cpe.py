@@ -190,9 +190,9 @@ class CPEALLogicalTest(Function):
 
         return cpe_test
 
-    def replace_cpe_names(self, cpe_products):
+    def enrich_with_cpe_info(self, cpe_products):
         for arg in self.args:
-            arg.replace_cpe_names(cpe_products)
+            arg.enrich_with_cpe_info(cpe_products)
 
     def to_bash_conditional(self):
         cond = ""
@@ -223,7 +223,8 @@ class CPEALFactRef (Symbol):
         self.cpe_name = obj  # we do not want to modify original name used for platforms
         self.bash_conditional = ""
 
-    def replace_cpe_names(self, cpe_products):
+    def enrich_with_cpe_info(self, cpe_products):
+        self.bash_conditional = cpe_products.get_cpe(self.cpe_name).bash_conditional
         self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)
 
     def to_xml_element(self):
