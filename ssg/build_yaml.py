@@ -1261,6 +1261,7 @@ class Rule(XCCDFEntity):
         inherited_platforms=lambda: list(),
         template=lambda: None,
         cpe_platform_names=lambda: set(),
+        inherited_cpe_platform_names=lambda: list(),
         bash_conditional = lambda: None,
         ** XCCDFEntity.KEYS
     )
@@ -1883,8 +1884,8 @@ class BuildLoader(DirectoryLoader):
             self.all_rules[rule.id_] = rule
             self.loaded_group.add_rule(rule, env_yaml=self.env_yaml)
 
-            if self.loaded_group.platforms:
-                rule.inherited_platforms += self.loaded_group.platforms
+            if self.loaded_group.cpe_platform_names:
+                rule.inherited_cpe_platform_names += self.loaded_group.cpe_platform_names
 
             rule.normalize(self.env_yaml["product"])
 
