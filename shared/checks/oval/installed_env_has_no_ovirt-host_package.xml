@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="inventory" id="installed_env_has_no_ovirt-host_package"
+  version="1">
+    <metadata>
+      <title>Package ovirt-host is not installed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if package ovirt-host is not installed.</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="Package ovirt-host is not installed"
+      definition_ref="installed_env_has_ovirt-host_package" negate="true"/>
+    </criteria>
+  </definition>
+</def-group>
