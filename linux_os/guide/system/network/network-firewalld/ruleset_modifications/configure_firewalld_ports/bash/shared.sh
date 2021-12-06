@@ -13,7 +13,7 @@
 {{% if product in ['rhel9'] %}}
   {{% set network_config_path = "/etc/NetworkManager/system-connections/${eth_interface_list[0]}.nmconnection" %}}
 {{% else %}}
-  {% set network_config_path = "/etc/sysconfig/network-scripts/ifcfg-${eth_interface_list[0]}" %}
+  {{% set network_config_path = "/etc/sysconfig/network-scripts/ifcfg-${eth_interface_list[0]}" %}}
 {{% endif %}}
 
 # This assumes that firewalld_sshd_zone is one of the pre-defined zones
