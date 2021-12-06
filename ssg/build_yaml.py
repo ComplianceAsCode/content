@@ -1719,7 +1719,6 @@ class DirectoryLoader(object):
         self.all_values = dict()
         self.all_rules = dict()
         self.all_groups = dict()
-        self.all_platforms = dict()
 
         self.profiles_dir = profiles_dir
         self.env_yaml = env_yaml
@@ -1775,9 +1774,6 @@ class DirectoryLoader(object):
             )
             if self.profiles_dir:
                 group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
-            for platform in self.env_yaml["product_cpes"].platforms:
-                self.all_platforms[platform.id_] = platform
-
 
         if self.group_file:
             group = Group.from_yaml(self.group_file, self.env_yaml)
@@ -1818,7 +1814,6 @@ class DirectoryLoader(object):
             self.all_values.update(loader.all_values)
             self.all_rules.update(loader.all_rules)
             self.all_groups.update(loader.all_groups)
-            self.all_platforms.update(loader.all_platforms)
 
     def _get_new_loader(self):
         raise NotImplementedError()
@@ -1847,8 +1842,8 @@ class DirectoryLoader(object):
 
         destdir = os.path.join(base_dir, "platforms")
         mkdir_p(destdir)
-        if self.all_platforms:
-            self.save_entities(self.all_platforms.values(), destdir)
+        if self.env_yaml["product_cpes"].platforms:
+            self.save_entities(self.env_yaml["product_cpes"].platforms.values(), destdir)
 
     def save_entities(self, entities, destdir):
         if not entities:
@@ -1889,11 +1884,6 @@ class BuildLoader(DirectoryLoader):
 
             if self.loaded_group.platforms:
                 rule.inherited_platforms += self.loaded_group.platforms
-
-            if rule.cpe_platform_names:
-                for platform in rule.cpe_platform_names:
-                    self.all_platforms[platform] = self.env_yaml[
-                        "product_cpes"].platforms[platform]
 
             rule.normalize(self.env_yaml["product"])
 
