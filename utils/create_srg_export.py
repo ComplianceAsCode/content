@@ -120,7 +120,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('-c', '--control', type=str, action="store", required=True,
                         help="The control file to parse")
     parser.add_argument('-o', '--output', type=str,
-                        help="The path to the output. Defaults to {OUTPUT}",
+                        help=f"The path to the output. Defaults to {OUTPUT}",
                         default=OUTPUT)
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
