@@ -50,3 +50,8 @@ ocil: |-
     To determine if <tt>NOPASSWD</tt> has been configured for sudo, run the following command:
     <pre>$ sudo grep -ri nopasswd /etc/sudoers /etc/sudoers.d/</pre>
     The command should return no output.
+
+{{% if product == "rhel8" %}}
+platforms:
+    - not_ovirt-host
+{{% endif %}}

@@ -28,6 +28,11 @@ references:
 
 {{{ complete_ocil_entry_package(package="tuned") }}}
 
+{{% if product == "rhel8" %}}
+platforms:
+    - not_ovirt-host
+{{% endif %}}
+
 template:
     name: package_removed
     vars:

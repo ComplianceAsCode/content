@@ -56,6 +56,11 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="PermitRootLogin", value="no") }}}
 
+{{% if product == "rhel8" %}}
+platforms:
+    - not_ovirt-host
+{{% endif %}}
+
 template:
     name: sshd_lineinfile
     vars:
