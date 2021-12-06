@@ -2027,7 +2027,7 @@ class Platform(XCCDFEntity):
         id = test.as_id()
         platform = cls(id)
         platform.test = test
-        platform.test.replace_cpe_names(env_yaml["product_cpes"])
+        platform.test.enrich_with_cpe_info(env_yaml["product_cpes"])
         platform.name = id
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
