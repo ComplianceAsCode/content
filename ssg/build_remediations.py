@@ -228,6 +228,8 @@ class BashRemediation(Remediation):
 
     def parse_from_file_with_jinja(self, env_yaml):
         self.local_env_yaml.update(env_yaml)
+        print (env_yaml["product_cpes"].platforms.keys())
+        print (self.local_env_yaml["product_cpes"].platforms.keys())
         result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
 
         # Avoid platform wrapping empty fix text
@@ -237,19 +239,19 @@ class BashRemediation(Remediation):
         if stripped_fix_text == "":
             return result
 
-        rule_specific_platforms = set()
-        inherited_platforms = set()
+        rule_specific_cpe_platform_names = set()
+        inherited_cpe_platform_names = set()
         if self.associated_rule:
             # There can be repeated inherited platforms and rule platforms
-            inherited_platforms.update(self.associated_rule.inherited_platforms)
-            if self.associated_rule.platforms is not None:
-                rule_specific_platforms = {
-                    p for p in self.associated_rule.platforms if p not in inherited_platforms}
+            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
+            if self.associated_rule.cpe_platform_names is not None:
+                rule_specific_cpe_platform_names = {
+                    p for p in self.associated_rule.cpe_platform_names if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            self.generate_platform_conditional(p) for p in inherited_platforms]
+            env_yaml["product_cpes"].platforms[p].to_bash_conditional() for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            self.generate_platform_conditional(p) for p in rule_specific_platforms]
+            env_yaml["product_cpes"].platforms[p].to_bash_conditional() for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
             p for p in inherited_conditionals if p is not None])
