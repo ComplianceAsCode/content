@@ -1,0 +1,650 @@
+policy: CIS
+title: Configuration Recommendations of an EKS System
+id: cis_eks
+version: '1.0.1'
+source: https://www.cisecurity.org/cis-benchmarks/
+levels:
+- id: level_1
+- id: level_2
+  inherits_from:
+  - level_1
+
+controls:
+- id: '1'
+  title: '1 Control Plane Components'
+  description: |-
+    Security is a shared responsibility between AWS and the Amazon EKS customer. The shared responsibility model describes this as security of the cloud and security in the cloud:
+
+    Security of the cloud – AWS is responsible for protecting the infrastructure that runs AWS services in the AWS Cloud. For Amazon EKS, AWS is responsible for the Kubernetes control plane, which includes the control plane nodes and etcd database. Third-party auditors regularly test and verify the effectiveness of our security as part of the AWS compliance programs. To learn about the compliance programs that apply to Amazon EKS, see AWS Services in Scope by Compliance Program.
+
+    Security in the cloud – Your responsibility includes the following areas.
+
+        - The security configuration of the data plane, including the configuration of the security groups that allow traffic to pass from the Amazon EKS control plane into the customer VPC
+
+        - The configuration of the worker nodes and the containers themselves
+
+        - The worker node guest operating system (including updates and security patches)
+            - Amazon EKS follows the shared responsibility model for CVEs and security patches on managed node groups. Because managed nodes run the Amazon
+              EKS-optimized AMIs, Amazon EKS is responsible for building patched versions of these AMIs when bugs or issues are reported and we are able to publish a fix. However, customers are responsible for deploying these patched AMI versions to your managed node groups.
+
+        - Other associated application software:
+
+          - Setting up and managing network controls, such as firewall rules
+
+          - Managing platform-level identity and access management, either with or in addition to IAM
+
+        - The sensitivity of your data, your company’s requirements, and applicable laws and regulations
+
+    AWS is responsible for securing the control plane, though you might be able to configure certain options based on your requirements.
+  notes: |-
+    As noted, evaluating the security of the control plane is not the
+    responsibility of customers or deployers, but of Amazon instead. Thus, this
+    profile will not implement controls from Section 1.
+  status: not applicable
+  rules: []
+
+- id: '2'
+  title: '2 Control Plane Configuration'
+  description: |-
+    This section contains recommendations for Amazon EKS control plane logging
+    configuration. Customers are able to configure logging for control plane in
+    Amazon EKS.
+  levels:
+  - level_1
+  status: pending
+  controls:
+  - id: '2.1'
+    title: '2.1 Logging'
+    status: pending
+    levels:
+    - level_1
+    controls:
+    - id: 2.1.1
+      title: '2.1.1 Enable audit Logs'
+      description: |-
+        Description:
+
+        The audit logs are part of the EKS managed Kubernetes control plane logs that are managed
+        by Amazon EKS. Amazon EKS is integrated with AWS CloudTrail, a service that provides a
+        record of actions taken by a user, role, or an AWS service in Amazon EKS. CloudTrail
+        captures all API calls for Amazon EKS as events. The calls captured include calls from the
+        Amazon EKS console and code calls to the Amazon EKS API operations.
+
+        Rationale:
+
+        Exporting logs and metrics to a dedicated, persistent datastore such as CloudTrail ensures
+        availability of audit data following a cluster security event, and provides a central location
+        for analysis of log and metric data collated from multiple sources.
+      # TODO: Evaluate if it's feasible to do an automated check for this
+      # control. This might require that the Compliance Operator acquire the
+      # ability to probe AWS endpoints (like the EKS one) to be able to do such
+      # checks.
+      notes: |-
+        It's not feasible to do such a check via automated means. e.g. via the
+        Compliance Operator using OpenSCAP. This has to be checked manually.
+      status: pending
+      levels:
+      - level_1
+      rules: []
+- id: '3'
+  title: '3 Worker Nodes'
+  description: |-
+    This section consists of security recommendations for the components that run on Amazon
+    EKS worker nodes.
+  levels:
+  - level_2
+  status: automated
+  controls:
+  - id: '3.1'
+    title: '3.1 Worker Node Configuration Files'
+    description: |-
+      This section covers recommendations for configuration files on Amazon EKS worker nodes.
+    status: automated
+    levels:
+    - level_2
+    controls:
+    - id: 3.1.1
+      title: >-
+        3.1.1 Ensure that the kubeconfig file permissions are set to 644 or
+        more restrictive
+      description: |-
+        Description:
+
+        If kubelet is running, and if it is using a file-based kubeconfig file, ensure that the proxy
+        kubeconfig file has permissions of 644 or more restrictive.
+
+        Rationale:
+
+        The kubelet kubeconfig file controls various parameters of the kubelet service in the
+        worker node. You should restrict its file permissions to maintain the integrity of the file.
+        The file should be writable by only the administrators on the system.
+        It is possible to run kubelet with the kubeconfig parameters configured as a Kubernetes
+        ConfigMap instead of a file. In this case, there is no proxy kubeconfig file.
+      status: automated
+      notes: |-
+        The default permissions are acceptable based on the control's description
+        and rationale.
+      rules:
+      - file_permissions_worker_kubeconfig
+    - id: 3.1.2
+      title: >-
+        3.1.2 Ensure that the kubelet kubeconfig file ownership is set to
+        root:root
+      description: |-
+        Description:
+
+        If kubelet is running, ensure that the file ownership of its kubeconfig file is set to
+        root:root.
+
+        Rationale:
+
+        The kubeconfig file for kubelet controls various parameters for the kubelet service in the
+        worker node. You should set its file ownership to maintain the integrity of the file. The file
+        should be owned by root:root.
+      status: pending
+      rules: []
+    - id: 3.1.3
+      title: >-
+        3.1.3 Ensure that the kubelet configuration file has permissions set to 644 or more restrictive
+      description: |-
+        Description:
+
+        Ensure that if the kubelet refers to a configuration file with the --config argument, that file
+        has permissions of 644 or more restrictive.
+
+        Rationale:
+
+        The kubelet reads various parameters, including security settings, from a config file
+        specified by the --config argument. If this file is specified you should restrict its file
+        permissions to maintain the integrity of the file. The file should be writable by only the
+        administrators on the system.
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.1.4
+      title: >-
+        3.1.4 Ensure that the kubelet configuration file ownership is set to root:root
+      description: |-
+        Description:
+        Ensure that if the kubelet refers to a configuration file with the --config argument, that file
+        is owned by root:root.
+
+        Rationale:
+
+        The kubelet reads various parameters, including security settings, from a config file
+        specified by the --config argument. If this file is specified you should restrict its file
+        permissions to maintain the integrity of the file. The file should be writable by only the
+        administrators on the system.
+      status: pending
+      levels:
+      - level_1
+      rules: []
+  - id: '3.2'
+    title: >-
+      3.2 Kubelet
+    description: |-
+      This section contains recommendations for kubelet configuration.
+
+      Kubelet settings may be configured using arguments on the running kubelet executable, or
+      they may be taken from a Kubelet config file. If both are specified, the executable argument
+      takes precedence.
+
+      To find the Kubelet config file, run the following command:
+
+          ps -ef | grep kubelet | grep config
+
+      If the --config argument is present, this gives the location of the Kubelet config file. This
+      config file could be in JSON or YAML format depending on your distribution.
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 3.2.1
+      title: >-
+        3.2.1 Ensure that the --anonymous-auth argument is set to false
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.2
+      title: >-
+        3.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.3
+      title: >-
+        3.2.3 Ensure that the --client-ca-file argument is set as appropriate
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.4
+      title: >-
+        3.2.4 Ensure that the --read-only-port is secured
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.5
+      title: >-
+        3.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.6
+      title: >-
+        3.2.6 Ensure that the --protect-kernel-defaults argument is set to true
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.7
+      title: >-
+        3.2.7 Ensure that the --make-iptables-util-chains argument is set to true
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.8
+      title: >-
+        3.2.8 Ensure that the --hostname-override argument is not set
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 3.2.9
+      title: >-
+        3.2.9 Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture
+      status: pending
+      levels:
+      - level_2
+      rules: []
+    - id: 3.2.10
+      title: >-
+        3.2.10 Ensure that the --rotate-certificates argument is not set to false
+      status: pending
+      levels:
+      - level_2
+      rules: []
+    - id: 3.2.11
+      title: >-
+        3.2.11 Ensure that the RotateKubeletServerCertificate argument is set to true
+      status: pending
+      levels:
+      - level_1
+      rules: []
+- id: '4'
+  title: >-
+    4 Policies
+  status: pending
+  levels:
+  - level_2
+  controls:
+  - id: '4.1'
+    title: >-
+      4.1 RBAC and Service Accounts
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 4.1.1
+      title: >-
+        4.1.1 Ensure that the cluster-admin role is only used where required
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.1.2
+      title: >-
+        4.1.2 Minimize access to secrets
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.1.3
+      title: >-
+        4.1.3 Minimize wildcard use in Roles and ClusterRoles
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.1.4
+      title: >-
+        4.1.4 Minimize access to create pods
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.1.5
+      title: >-
+        4.1.5 Ensure that default service accounts are not actively used.
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.1.6
+      title: >-
+        4.1.6 Ensure that Service Account Tokens are only mounted where necessary
+      status: pending
+      levels:
+      - level_1
+      rules: []
+  - id: '4.2'
+    title: >-
+      4.2 Pod Security Policies
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 4.2.1
+      title: >-
+        4.2.1 Minimize the admission of privileged containers
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.2.2
+      title: >-
+        4.2.2 Minimize the admission of containers wishing to share the host process ID namespace
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.2.3
+      title: >-
+        4.2.3 Minimize the admission of containers wishing to share the host IPC namespace
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.2.4
+      title: >-
+        4.2.4 Minimize the admission of containers wishing to share the host network namespace
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.2.5
+      title: >-
+        4.2.5 Minimize the admission of containers with allowPrivilegeEscalation
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.2.6
+      title: >-
+        4.2.6 Minimize the admission of root containers
+      status: pending
+      levels:
+      - level_2
+      rules: []
+    - id: 4.2.7
+      title: >-
+        4.2.7 Minimize the admission of containers with the NET_RAW capability
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.2.8
+      title: >-
+        4.2.8 Minimize the admission of containers with added capabilities
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.2.9
+      title: >-
+        4.2.9 Minimize the admission of containers with capabilities assigned
+      status: pending
+      levels:
+      - level_2
+      rules: []
+  - id: '4.3'
+    title: >-
+      4.3 CNI Plugin
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 4.3.1
+      title: >-
+        4.3.1 Ensure latest CNI version is used
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.3.2
+      title: >-
+        4.3.2 Ensure that all Namespaces have Network Policies defined
+      description: |-
+        Description:
+
+        Use network policies to isolate traffic in your cluster network.
+
+        Rationale:
+
+        Running different applications on the same Kubernetes cluster creates a risk of one
+        compromised application attacking a neighboring application. Network segmentation is
+        important to ensure that containers can communicate only with those they are supposed
+        to. A network policy is a specification of how selections of pods are allowed to
+        communicate with each other and other network endpoints.
+
+        Network Policies are namespace scoped. When a network policy is introduced to a given
+        namespace, all traffic not allowed by the policy is denied. However, if there are no network
+        policies in a namespace all traffic will be allowed into and out of the pods in that
+        namespace.
+      notes: |-
+        We can verify this with the Compliance Operator and check that all
+        namespaces have at least a NetworkPolicy defined.
+      status: automated
+      levels:
+      - level_2
+      rules:
+      - configure_network_policies_namespaces
+  - id: '4.4'
+    title: >-
+      4.4 Secrets Management
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 4.4.1
+      title: >-
+        4.4.1 Prefer using secrets as files over secrets as environment variables
+      status: pending
+      levels:
+      - level_2
+      rules: []
+    - id: 4.4.2
+      title: >-
+        4.4.2 Consider external secret storage
+      status: pending
+      levels:
+      - level_2
+      rules: []
+  - id: '4.5'
+    title: >-
+      4.5 Extensible Admission Control
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 4.5.1
+      title: >-
+        4.5.1 Configure Image Provenance using ImagePolicyWebhook admission controller
+      status: pending
+      levels:
+      - level_2
+      rules: []
+  - id: '4.6'
+    title: >-
+      4.6 General Policies
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 4.6.1
+      title: >-
+        4.6.1 Create administrative boundaries between resources using namespaces
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 4.6.2
+      title: >-
+        4.6.2 Apply Security Context to Your Pods and Containers
+      status: pending
+      levels:
+      - level_2
+      rules: []
+    - id: 4.6.3
+      title: >-
+        4.6.3 The default namespace should not be used
+      status: pending
+      levels:
+      - level_2
+      rules: []
+- id: '5'
+  title: >-
+    5 Managed services
+  status: pending
+  levels:
+  - level_2
+  controls:
+  - id: '5.1'
+    title: >-
+      5.1 Image Registry and Image Scanning
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 5.1.1
+      title: >-
+        5.1.1 Ensure Image Vulnerability Scanning using Amazon ECR image scanning or a third party provider
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 5.1.2
+      title: >-
+        5.1.2 Minimize user access to Amazon ECR
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 5.1.3
+      title: >-
+        5.1.3 Minimize cluster access to read-only for Amazon ECR
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 5.1.4
+      title: >-
+        5.1.4 Minimize Container Registries to only those approved
+      status: pending
+      levels:
+      - level_2
+      rules: []
+  - id: '5.2'
+    title: >-
+      5.2 Identity and Access Management (IAM)
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 5.2.1
+      title: >-
+        5.2.1 Prefer using dedicated EKS Service Accounts
+      status: pending
+      levels:
+      - level_1
+      rules: []
+  - id: '5.3'
+    title: >-
+      5.3 AWS Key Management Service (KMS)
+    status: pending
+    levels:
+    - level_1
+    controls:
+    - id: 5.3.1
+      title: >-
+        5.3.1 Ensure Kubernetes Secrets are encrypted using Customer Master Keys (CMKs) managed in AWS KMS
+      status: pending
+      levels:
+      - level_2
+      rules: []
+  - id: '5.4'
+    title: >-
+      5.4 Cluster Networking
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 5.4.1
+      title: >-
+        5.4.1 Restrict Access to the Control Plane Endpoint
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 5.4.2
+      title: >-
+        5.4.2 Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled
+      status: pending
+      levels:
+      - level_2
+      rules: []
+    - id: 5.4.3
+      title: >-
+        5.4.3 Ensure clusters are created with Private Nodes
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 5.4.4
+      title: >-
+        5.4.4 Ensure Network Policy is Enabled and set as appropriate
+      status: pending
+      levels:
+      - level_1
+      rules: []
+    - id: 5.4.5
+      title: >-
+        5.4.5 Encrypt traffic to HTTPS load balancers with TLS certificates
+      status: pending
+      levels:
+      - level_2
+      rules: []
+  - id: '5.5'
+    title: >-
+      5.5 Authentication and Authorization
+    status: pending
+    levels:
+    - level_2
+    controls:
+    - id: 5.5.1
+      title: >-
+        5.5.1 Manage Kubernetes RBAC users with AWS IAM Authenticator for Kubernetes
+      status: pending
+      levels:
+      - level_2
+      rules: []
+  - id: '5.6'
+    title: >-
+      5.6 Other Cluster Configurations
+    status: pending
+    levels:
+    - level_1
+    controls:
+    - id: 5.6.1
+      title: >-
+        5.6.1 Consider Fargate for running untrusted workloads
+      status: pending
+      levels:
+      - level_2
+      rules: []

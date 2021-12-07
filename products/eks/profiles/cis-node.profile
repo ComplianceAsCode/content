@@ -18,6 +18,8 @@ description: |-
     Amazon Elastic Kubernetes Service (EKS)™ content.
 
     This profile is applicable to EKS 1.21 and greater.
+
+filter_rules: '"eks-node" in platforms'
+
 selections:
-  # 3.1.1 Ensure that the API server pod specification file permissions are set to 644 or more restrictive
-    - file_permissions_worker_kubeconfig
+    - cis_eks:all:level_2
