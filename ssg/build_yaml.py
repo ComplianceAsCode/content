@@ -2053,10 +2053,15 @@ class Platform(XCCDFEntity):
     def to_xml_element(self):
         return self.xml_content
 
+    def to_bash_conditional(self):
+        return self.bash_conditional
+
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
         platform.xml_content = ET.fromstring(platform.xml_content)
+        platform.test = env_yaml["product_cpes"].algebra.parse(
+            platform.original_expression, simplify=True)
         return platform
 
     def __eq__(self, other):
