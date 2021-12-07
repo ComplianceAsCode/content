@@ -13398,8 +13398,16 @@ controls:
     planned. Progress can be tracked via:
 
     https://issues.redhat.com/browse/CMP-424
+
+    OpenShift Routes provide IP whitelist support, so that only authorized
+    access to a route is allowed. If a workload is to be exposed externally, 
+    it is recommended that it's behind an OpenShift Route. Routes allow for 
+    the configuration of several security attributes, but most relevant to 
+    this control is the IP whitelist settings that it allows to configure 
+    in the form of annotations. 
   rules:
   - configure_network_policies_namespaces
+  - route_ip_whitelist
   description: |-
     The information system at managed interfaces denies network communications traffic by default and allows network communications traffic by exception (i.e., deny all, permit by exception).
 
