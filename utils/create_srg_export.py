@@ -11,17 +11,23 @@ import sys
 from typing.io import TextIO
 import xml.etree.ElementTree as ET
 
-import ssg.build_yaml
-import ssg.constants
-import ssg.controls
-import ssg.environment
-import ssg.rules
-import ssg.yaml
+try:
+    import ssg.build_yaml
+    import ssg.constants
+    import ssg.controls
+    import ssg.environment
+    import ssg.rules
+    import ssg.yaml
+except (ModuleNotFoundError, ImportError):
+    sys.stderr.write("Unable to load ssg python modules.\n")
+    sys.stderr.write("Hint: run source ./.pyenv.sh\n")
+    exit(3)
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
-OUTPUT = os.path.join(SSG_ROOT, 'build', f'{datetime.datetime.now().strftime("%s")}.csv')
+OUTPUT = os.path.join(SSG_ROOT, 'build',
+                      f'{datetime.datetime.now().strftime("%s")}_stig_export.csv')
 SRG_PATH = os.path.join(SSG_ROOT, 'shared', 'references', 'disa-os-srg-v2r1.xml')
 NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.2': ssg.constants.XCCDF12_NS,
@@ -41,11 +47,14 @@ class DisaStatus:
     PARTIAL = "Applicable - Configurable"
     SUPPORTED = "supported"
     AUTOMATED = "Applicable - Configurable"
+    DOES_NOT_MEET = "Applicable – Does Not Meet"
 
     @staticmethod
     def from_string(source: str) -> str:
         if source == ssg.controls.Status.INHERENTLY_MET:
             return DisaStatus.INHERENTLY_MET
+        elif source == ssg.controls.Status.DOES_NOT_MEET:
+            return DisaStatus.DOES_NOT_MEET
         return source
 
 
@@ -55,6 +64,8 @@ def html_plain_text(source: str) -> str:
     # Quick and dirty way to clean up HTML fields.
     # Add line breaks
     result = source.replace("<br />", "\n")
+    result = result.replace("<tt>", '"')
+    result = result.replace("</tt>", '"')
     # Remove all other tags
     result = re.sub(r"(?s)<.*?>", " ", result)
     return result
@@ -108,7 +119,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--control', type=str, action="store", required=True,
                         help="The control file to parse")
-    parser.add_argument('-o', '--output', type=str, help="The path to the output",
+    parser.add_argument('-o', '--output', type=str,
+                        help=f"The path to the output. Defaults to {OUTPUT}",
                         default=OUTPUT)
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
@@ -117,7 +129,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
                         help="What product to get STIGs for")
     parser.add_argument("-b", "--build-config-yaml", default=BUILD_CONFIG,
-                        help="YAML file with information about the build configuration. ")
+                        help="YAML file with information about the build configuration.")
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
@@ -130,9 +142,12 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
         for rule in control.selections:
             row = create_base_row(control, srgs)
             rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
+            if control.levels is not None:
+                row['Severity'] = control.levels[0]
             row['Requirement'] = html_plain_text(rule_object.description)
             row['Vul Discussion'] = html_plain_text(rule_object.rationale)
-            row['Check'] = html_plain_text(rule_object.ocil)
+            row['Check'] = f'{html_plain_text(rule_object.ocil)}\n\n' \
+                           f'If {rule_object.ocil_clause}, then this is a finding.'
             row['Fix'] = html_plain_text(rule_object.fix)
             # If then control has rule by definition the status is "Applicable - Configurable"
             row['Status'] = DisaStatus.AUTOMATED
@@ -186,11 +201,14 @@ def main() -> None:
     if not pathlib.Path.exists(control_full_path):
         sys.stderr.write(f"Unable to find control file {control_full_path}\n")
         exit(1)
+    if not os.path.exists(args.json):
+        sys.stderr.write(f"Unable to find rule_dirs.json file {args.json}\n")
+        sys.stderr.write("Hint: run ./utils/rule_dir_json.py\n")
+        exit(2)
     srgs = get_srg_dict(args.manual)
     control = ssg.controls.Policy(args.control)
     control.load()
     rule_json = get_rule_json(args.json)
-
     full_output = pathlib.Path(args.output)
     with open(full_output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
