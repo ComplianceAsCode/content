@@ -3,13 +3,13 @@ cpes:
       name: "cpe:/a:audit"
       title: "Package audit is installed"
       check_id: installed_env_has_audit_package
-      bash_conditional: {{{ pkg_bash_conditional("audit") }}}
+      bash_conditional: {{{ bash_pkg_conditional("audit") }}}
 
   - chrony:
       name: "cpe:/a:chrony"
       title: "Package chrony is installed"
       check_id: installed_env_has_chrony_package
-      bash_conditional: {{{ pkg_bash_conditional("chrony") }}}
+      bash_conditional: {{{ bash_pkg_conditional("chrony") }}}
 
   - gdm:
       name: "cpe:/a:gdm"
@@ -25,6 +25,7 @@ cpes:
       name: "cpe:/a:login_defs"
       title: "Package providing /etc/login.defs is installed"
       check_id: installed_env_has_login_defs
+      bash_conditional: {{{ bash_pkg_conditional("login_defs") }}}
 
   - net-snmp:
       name: "cpe:/a:net-snmp"
