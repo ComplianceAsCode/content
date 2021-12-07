@@ -1,5 +1,11 @@
 documentation_complete: true
 
+metadata:
+    version: 3.2.1
+    SMEs:
+        - mab879
+        - ggbecker
+
 title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Virtualization Host (RHVH)'
 
 description: |-

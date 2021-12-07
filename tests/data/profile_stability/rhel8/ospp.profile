@@ -19,7 +19,6 @@ metadata:
     version: 4.2.1
     SMEs:
     - comps
-    - carlosmmatos
     - stevegrubb
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 selections:
@@ -273,5 +272,4 @@ platforms: !!set {}
 cpe_names: !!set {}
 platform: null
 filter_rules: ''
-definition_location: /home/wsato/git/content/products/rhel8/profiles/ospp.profile
 documentation_complete: true
