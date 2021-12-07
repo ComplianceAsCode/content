@@ -18,6 +18,8 @@ description: |-
     Amazon Elastic Kubernetes Service (EKS)™ content.
 
     This profile is applicable to EKS 1.21 and greater.
+
+filter_rules: '"eks-node" not in platforms'
+
 selections:
-  # 4.3.2 Ensure that all Namespaces have Network Policies defined
-    - configure_network_policies_namespaces
+    - cis_eks:all:level_2
