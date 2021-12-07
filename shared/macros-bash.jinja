@@ -1675,6 +1675,25 @@ fi
 
 {{% endmacro %}}
 
-{{%- macro pkg_bash_conditional(pkg_name) -%}}
-rpm -qa {{{ pkg_name }}}
+{{%- macro bash_pkg_conditional(package) -%}}
+{{%- if package in platform_package_overrides -%}}
+  {{%- set package = platform_package_overrides[package] -%}}
+{{%- endif -%}}
+  {{% if pkg_system is defined %}}
+    {{%- if pkg_system == "rpm" -%}}
+        {{{ bash_pkg_conditional_rpm(package) }}}
+    {{%- elif pkg_system == "dpkg" -%}}
+        {{{ bash_pkg_conditional_dpkg(package) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
+    {{%- endif -%}}
+{{% endif %}}
+{{%- endmacro -%}}
+
+{{%- macro bash_pkg_conditional_rpm(package) -%}}
+rpm -q {{{ package }}}
 {{%- endmacro %}}
+
+{{%- macro bash_pkg_conditional_dpkg (package) -%}}
+dpkg -l {{{ package }}}
+{{%- endmacro -%}}
