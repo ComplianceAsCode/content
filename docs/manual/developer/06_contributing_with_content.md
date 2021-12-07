@@ -1197,7 +1197,142 @@ See some of the existing testing code in `cmake/SSGCommon.cmake`.
 
 ### Unit tests
 
-TBD
+Running unit tests is very useful way to verify the content being
+written without requiring a full-blown OpenShift cluster.
+
+The unit testing approach for content requires a container
+where the scanning will be executed. This container will
+be a small replication of the environment where the content
+is intended to run.
+
+To build the container, from the project's root
+directory, execute the following command:
+
+    podman build --build-arg CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub) -t ssg_test_suite -f Dockerfiles/test_suite-fedora
+
+Unit tests reside en each rule's `tests/` directory. Tests are
+simply bash scripts that set up the required environment
+and set expectations on what the scan is suposed to output.
+
+The naming convention is as follows:
+
+    <test name>.<expected result>.sh
+
+e.g. when testing if encryption is disabled in a specific cloud
+provider, and that this should fail a compliance scan, you'd have
+a file named as follows:
+
+    encryption_disabled.fail.sh
+
+Note that this file has to be executable. So don't forget to
+change the mode appropriately.
+
+Test files shall always begin with the following lines:
+
+    #!/bin/bash
+    # remediation = none
+
+Bash is used to evaluate the scripts. And we don't expect remediations
+executed by OpenSCAP itself (this is done elsewhere), so we set
+`remediation = none`.
+
+OpenShift content (as well as other Kubernetes content) is usually meant
+to run through the Compliance Operator. The aforementioned component will
+read the API paths specified as `warnings` and persist them on a temporary
+volume. The Compliance Operator is also the one that handles remediating
+rules, this is why we turned remediations off in our scripts as mentioned
+earlier.
+
+For unit tests, we'll do something similar when setting up the
+testing container in our test scripts: We'll create a directory for
+the API resource object and persist it there.
+
+Note that the content uses the path `/kubernetes-api-resources` by
+default as a base for any API path for Kubernetes. So, be mindful of
+always using that.
+
+An example looks as follows:
+
+    kube_apipath="/kubernetes-api-resources"
+    machinev1beta1="/apis/machine.openshift.io/v1beta1"
+    machineset_apipath="$machinev1beta1/machinesets?limit=500"
+
+    # Create kubernetes resource directory path
+    mkdir -p "$kube_apipath/$machinev1beta1"
+
+    # Persist kubernetes resource
+    cat <<EOF > "$kube_apipath/$machineset_apipath"
+    {
+        "apiVersion": "v1",
+        ...
+    EOF
+
+When the scanner tests the content for this rule, it'll read the Kubernetes
+resource (both YAML or JSON are fine for this) and evaluate it accordingly.
+
+Note that some rules require a specific CPE to be set. e.g. there
+are some rules that are meant to run on a specific cloud platform.
+
+You'll see them from the `platforms` key of the rule:
+
+    platforms:
+    - ocp4-on-azure
+
+For rules like these, you'll also need to persist the appropriate CPE information (normally another Kubernetes object).
+
+The information needed varies on each CPE. These are defined
+in [`/shared/checks/oval`](https://github.com/ComplianceAsCode/content/tree/master/shared/checks/oval).
+
+For the `ocp4-on-azure` example, the CPE requires that the
+`infrastructures/cluster` resource specifies the platform
+as `Azure`. That would look as follows:
+
+    kube_apipath="/kubernetes-api-resources"
+
+    # Create infra file for CPE to pass
+    mkdir -p "$kube_apipath/apis/config.openshift.io/v1/infrastructures/"
+    cat <<EOF > "$kube_apipath/apis/config.openshift.io/v1/infrastructures/cluster"
+    {
+        "apiVersion": "config.openshift.io/v1",
+        "kind": "Infrastructure",
+        "metadata": {
+            "name": "cluster"
+        },
+        "spec": {
+            "platformSpec": {
+                "type": "Azure"
+            }
+        },
+        "status": {
+            "platform": "Azure",
+            "platformStatus": {
+                "azure": {
+                    "cloudName": "AzurePublicCloud"
+                },
+                "type": "Azure"
+            }
+        }
+    }
+    EOF
+
+Before running the unit tests, the content needs to be built to
+ensure that the latest changes are taken into account:
+
+    ./build_product ocp4
+
+Remember this needs to be done every time before running the unit tests.
+
+Now, with all of this set, we'll run the unit test!
+
+    tests/test_rule_in_container.sh \
+        --dontclean --logdir logs_bash \
+        --remediate-using bash \
+        --name ssg_test_suite \
+        --datastream build/ssg-ocp4-ds.xml \
+        <rule name>
+
+This command will run the unit tests on dedicated containers.
+The logs will be located in the `logs_bash` directory.
 
 ### End-to-end tests
 
