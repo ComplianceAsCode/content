@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: NA
+    version: TBD
     SMEs:
         - mab879
         - ggbecker
@@ -11,7 +11,9 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 9'
 
 description: |-
-    This profile contains configuration checks that are based on the RHEL8 STIG.
+    This is a draft profile based on its RHEL8 version for experimental purposes.
+    It is not based on the DISA STIG for RHEL9, because this one was not available at time of
+    the release.
 
     In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes this
     configuration baseline as applicable to the operating system tier of

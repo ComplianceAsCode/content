@@ -2,7 +2,7 @@ documentation_complete: true
 
 metadata:
     SMEs:
-        - carlosmmatos
+        - yuumasato
 
 title: 'NIST National Checklist Program Security Guide'
 
