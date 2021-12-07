@@ -1315,6 +1315,47 @@ as `Azure`. That would look as follows:
     }
     EOF
 
+For rules that use jq filters, they are using a unique file path 
+instead of the one you see above, therefore we also need to install
+the jq package, run the jq test, and save the filtered jq result 
+into that unique file path.
+
+The format for the file path for a jq filter rule is: 
+
+`"$kube_apipath$rule_apipath#$(echo -n "$rule_apipath$jq_filter" | sha256sum | awk '{print $1}')"`
+
+Noted it is important to know that the `$rule_apipath` does not 
+have `/` at the end, or it will cause a different hash with `/` 
+at the end, and jq result will be saved into a location that is 
+different from where the rule is checking, hence will fail the test.
+
+
+We have a test file for rule 'routes_rate_limit' as an example that uses jq filter:
+
+
+    #!/bin/bash
+    # remediation = none
+
+    yum install -y jq
+
+    kube_apipath="/kubernetes-api-resources"
+    mkdir -p "$kube_apipath/apis/route.openshift.io/v1"
+    routes_apipath="/apis/route.openshift.io/v1/routes?limit=500"
+
+    cat <<EOF > "$kube_apipath$routes_apipath"
+    {
+      ...
+    }
+    EOF
+
+    jq_filter='[.items[] | select(.metadata.namespace | startswith("kube-") or startswith("openshift-") | not) | select(.metadata.annotations["haproxy.router.openshift.io/rate-limit-connections"] == "true" | not) | .metadata.name]'
+
+    filteredpath="$kube_apipath$routes_apipath#$(echo -n "$routes_apipath$jq_filter" | sha256sum | awk '{print $1}')"
+
+    jq "$jq_filter" "$kube_apipath$routes_apipath" > "$filteredpath"
+
+
+
 Before running the unit tests, the content needs to be built to
 ensure that the latest changes are taken into account:
 
