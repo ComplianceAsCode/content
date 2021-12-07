@@ -45,6 +45,9 @@ def parse_args():
         "--fixes-from-templates-dir", required=True,
         help="directory from which we will collect fixes generated from "
         "templates")
+    p.add_argument(
+        "--platforms-dir", required=True,
+        help="directory from which we collect compiled platforms")
 
     return p.parse_args()
 
@@ -116,6 +119,16 @@ def main():
 
     product = ssg.utils.required_key(env_yaml, "product")
     output_dirs = prepare_output_dirs(args.output_dir, args.remediation_type)
+
+    for platform_file in os.listdir(args.platforms_dir):
+        platform_path = os.path.join(args.platforms_dir, platform_file)
+        try:
+            platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
+        except ssg.build_yaml.DocumentationNotComplete:
+            # Happens on non-debug build when a platform is
+            # "documentation-incomplete"
+            continue
+        env_yaml["product_cpes"].platforms[platform.name] = platform
 
     for rule_file in os.listdir(args.resolved_rules_dir):
         rule_path = os.path.join(args.resolved_rules_dir, rule_file)
