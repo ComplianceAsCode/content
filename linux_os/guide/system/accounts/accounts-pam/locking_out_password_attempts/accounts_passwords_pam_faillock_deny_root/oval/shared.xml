@@ -37,8 +37,8 @@
         </criteria>
       </criteria>
 
-      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf always
-           when possible. But due to backwards compatibility, they are also allowed in pam files
+      <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+           possible. But due to backwards compatibility, they are also allowed in pam files
            directly. In case they are defined in both places, pam files have precedence and this
            may confuse the assessment. The following tests ensure only one option is used. Note
            that if faillock.conf is available, authselect tool only manage parameters on it -->
@@ -109,7 +109,7 @@
   <!-- Check occurrences of pam_unix.so in auth section of system-auth file -->
   <ind:textfilecontent54_object version="1"
         id="object_accounts_passwords_pam_faillock_deny_root_system_pam_unix_auth"
-        comment="Get all occcurencies of pam_unix.so in auth section of system-auth">
+        comment="Get the second and subsequent occurrences of pam_unix.so in auth section of system-auth">
     <ind:filepath operation="pattern match">^/etc/pam.d/system-auth$</ind:filepath>
     <ind:pattern operation="pattern match"
                  var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_unix_regex"/>
@@ -119,14 +119,14 @@
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
         id="test_accounts_passwords_pam_faillock_deny_root_system_pam_unix_auth"
-        comment="Only one occurrence of pam_unix.so is expected in auth section of system-auth">
+        comment="No more than one pam_unix.so is expected in auth section of system-auth">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_deny_root_system_pam_unix_auth"/>
   </ind:textfilecontent54_test>
 
   <!-- Check occurrences of pam_unix.so in auth section in password-auth -->
   <ind:textfilecontent54_object version="1"
         id="object_accounts_passwords_pam_faillock_deny_root_password_pam_unix_auth"
-        comment="Get all occcurencies of pam_unix.so in auth section of password-auth">
+        comment="Get the second and subsequent occurrences of pam_unix.so in auth section of password-auth">
     <ind:filepath operation="pattern match">^/etc/pam.d/password-auth$</ind:filepath>
     <ind:pattern operation="pattern match"
                  var_ref="var_accounts_passwords_pam_faillock_deny_root_pam_unix_regex"/>
@@ -135,7 +135,7 @@
 
   <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
         id="test_accounts_passwords_pam_faillock_deny_root_password_pam_unix_auth"
-        comment="Only one occurrence of pam_unix.so is expected in auth section of password-auth">
+        comment="No more than one pam_unix.so is expected in auth section of password-auth">
     <ind:object object_ref="object_accounts_passwords_pam_faillock_deny_root_password_pam_unix_auth"/>
   </ind:textfilecontent54_test>
 
@@ -149,7 +149,7 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
         id="test_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_auth"
         comment="One and only one pattern occurrence is expected in auth section of system-auth">
     <ind:object
@@ -165,7 +165,7 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
       id="test_accounts_passwords_pam_faillock_deny_root_system_pam_faillock_account"
       comment="One and only one pattern occurrence is expected in account section of system-auth">
     <ind:object
@@ -182,7 +182,7 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
         id="test_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_auth"
         comment="One and only one pattern occurrence is expected in auth section of system-auth">
     <ind:object
@@ -198,7 +198,7 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" version="1"
         id="test_accounts_passwords_pam_faillock_deny_root_password_pam_faillock_account"
     comment="One and only one pattern occurrence is expected in account section of password-auth">
     <ind:object
