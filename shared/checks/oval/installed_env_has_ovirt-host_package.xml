@@ -1,21 +1,21 @@
 <def-group>
 
   <definition class="inventory"
-  id="installed_env_has_ovirt-host_package" version="1">
+  id="installed_env_has_ovirt" version="1">
     <metadata>
-      <title>Package ovirt-host is installed</title>
+      <title>Check if the system acts as an oVirt host or manager</title>
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <description>Checks if package ovirt-host is installed.</description>
+      <description>Check if the system has ovirt-host or ovirt-engine installed</description>
       <reference ref_id="cpe:/a:ovirt-host" source="CPE" />
     </metadata>
-    <criteria>
+    <criteria operator="OR">
       <criterion comment="Package ovirt-host is installed" test_ref="test_env_has_ovirt-host_installed" />
+      <criterion comment="Package ovirt-engine is installed" test_ref="test_env_has_ovirt-engine_installed" />
     </criteria>
   </definition>
 
-{{% if pkg_system == "rpm" %}}
   <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
   id="test_env_has_ovirt-host_installed" version="1"
   comment="system has package ovirt-host installed">
@@ -24,15 +24,14 @@
   <linux:rpminfo_object id="obj_env_has_ovirt-host_installed" version="1">
     <linux:name>ovirt-host</linux:name>
   </linux:rpminfo_object>
-{{% elif pkg_system == "dpkg" %}}
-  <linux:dpkginfo_test check="all" check_existence="all_exist"
-  id="test_env_has_ovirt-host_installed" version="1"
-  comment="system has package ovirt-host installed">
-    <linux:object object_ref="obj_env_has_ovirt-host_installed" />
-  </linux:dpkginfo_test>
-  <linux:dpkginfo_object id="obj_env_has_ovirt-host_installed" version="1">
-    <linux:name>ovirt-host</linux:name>
-  </linux:dpkginfo_object>
-{{% endif %}}
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
+  id="test_env_has_ovirt-engine_installed" version="1"
+  comment="system has package ovirt-engine installed">
+    <linux:object object_ref="obj_env_has_ovirt-engine_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_env_has_ovirt-engine_installed" version="1">
+    <linux:name>ovirt-engine</linux:name>
+  </linux:rpminfo_object>
 
 </def-group>

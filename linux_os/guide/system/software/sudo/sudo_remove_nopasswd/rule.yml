@@ -53,10 +53,10 @@ ocil: |-
 
 {{% if product == "rhel8" %}}
 platforms:
-    - not_ovirt-host
+    - no_ovirt
 
 warnings:
     - general: |-
-        This rule is disabled on Red Hat Virtualization Hosts, it will report not applicable.
+        This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
         RHV requires to perform operations as root without being asked for password.
 {{% endif %}}
