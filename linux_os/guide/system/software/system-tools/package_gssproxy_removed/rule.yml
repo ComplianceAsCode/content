@@ -28,6 +28,11 @@ references:
 {{% if product == "rhel8" %}}
 platforms:
     - not_ovirt-host
+
+warnings:
+    - general: |-
+        This rule is disabled on Red Hat Virtualization Hosts, it will report not applicable.
+        RHV uses NFS storage, which has dependency on gssproxy.
 {{% endif %}}
 
 template:
