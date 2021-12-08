@@ -9,3 +9,4 @@ cpes:
       name: "cpe:/a:machine"
       title: "Bare-metal or Virtual Machine"
       check_id: installed_env_is_a_machine
+      bash_conditional: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'

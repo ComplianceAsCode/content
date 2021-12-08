@@ -15,11 +15,13 @@ cpes:
       name: "cpe:/a:gdm"
       title: "Package gdm is installed"
       check_id: installed_env_has_gdm_package
+      bash_conditional: {{{ bash_pkg_conditional("gdm") }}}
 
   - libuser:
       name: "cpe:/a:libuser"
       title: "Package libuser is installed"
       check_id: installed_env_has_libuser_package
+      bash_conditional: {{{ bash_pkg_conditional("libuser") }}}
 
   - login_defs:
       name: "cpe:/a:login_defs"
@@ -31,16 +33,19 @@ cpes:
       name: "cpe:/a:net-snmp"
       title: "Package net-snmp is installed"
       check_id: installed_env_has_net-snmp_package
+      bash_conditional: {{{ bash_pkg_conditional("net-snmp") }}}
 
   - nss-pam-ldapd:
       name: "cpe:/a:nss-pam-ldapd"
       title: "Package nss-pam-ldapd is installed"
       check_id: installed_env_has_nss-pam-ldapd_package
+      bash_conditional: {{{ bash_pkg_conditional("nss-pam-ldapd") }}}
 
   - ntp:
       name: "cpe:/a:ntp"
       title: "Package ntp is installed"
       check_id: installed_env_has_ntp_package
+      bash_conditional: {{{ bash_pkg_conditional("ntp") }}}
 
   - ocp4-master-node:
       name: "cpe:/a:ocp4-master-node"
@@ -51,16 +56,19 @@ cpes:
       name: "cpe:/a:pam"
       title: "Package pam is installed"
       check_id: installed_env_has_pam_package
+      bash_conditional: {{{ bash_pkg_conditional("pam") }}}
 
   - postfix:
       name: "cpe:/a:postfix"
       title: "Package postfix is installed"
       check_id: installed_env_has_postfix_package
+      bash_conditional: {{{ bash_pkg_conditional("postfix") }}}
 
   - sssd:
       name: "cpe:/a:sssd"
       title: "Package sssd-common is installed"
       check_id: installed_env_has_sssd-common_package
+      bash_conditional: {{{ bash_pkg_conditional("sssd") }}}
 
   - sssd-ldap:
       name: "cpe:/a:sssd-ldap"
@@ -71,18 +79,22 @@ cpes:
       name: "cpe:/a:sudo"
       title: "Package sudo is installed"
       check_id: installed_env_has_sudo_package
+      bash_conditional: {{{ bash_pkg_conditional("sudo") }}}
 
   - systemd:
       name: "cpe:/a:systemd"
       title: "Package systemd is installed"
       check_id: installed_env_has_systemd_package
+      bash_conditional: {{{ bash_pkg_conditional("systemd") }}}
 
   - yum:
       name: "cpe:/a:yum"
       title: "Package yum is installed"
       check_id: installed_env_has_yum_package
+      bash_conditional: {{{ bash_pkg_conditional("yum") }}}
 
   - zypper:
       name: "cpe:/a:zypper"
       title: "Package zypper is installed"
       check_id: installed_env_has_zypper_package
+      bash_conditional: {{{ bash_pkg_conditional("zypper") }}}
