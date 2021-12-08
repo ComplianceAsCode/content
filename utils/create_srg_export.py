@@ -154,10 +154,12 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
             csv_writer.writerow(row)
     else:
         row = create_base_row(control, srgs)
+        row['Requirement'] = control.description
         row['Mitigation'] = control.mitigation
         row['Artifact Description'] = control.artifact_description
         row['Status Justification'] = control.status_justification
         row['Status'] = DisaStatus.from_string(control.status)
+        row['Vul Discussion'] = control.rationale
         csv_writer.writerow(row)
 
 
