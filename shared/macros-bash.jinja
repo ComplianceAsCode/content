@@ -1691,9 +1691,9 @@ JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
 {{%- endmacro -%}}
 
 {{%- macro bash_pkg_conditional_rpm(package) -%}}
-rpm -q {{{ package }}}
+rpm --quiet -q {{{ package }}}
 {{%- endmacro %}}
 
 {{%- macro bash_pkg_conditional_dpkg (package) -%}}
-dpkg -l {{{ package }}}
+dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
 {{%- endmacro -%}}
