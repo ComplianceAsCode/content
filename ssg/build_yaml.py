@@ -2014,7 +2014,9 @@ class Platform(XCCDFEntity):
     MANDATORY_KEYS = [
         "name",
         "xml_content",
-        "original_expression"
+        "original_expression",
+        "bash_conditional",
+        "ansible_conditional"
     ]
 
     prefix = "cpe-lang"
@@ -2032,6 +2034,7 @@ class Platform(XCCDFEntity):
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
         platform.bash_conditional = platform.test.to_bash_conditional()
+        platform.ansible_conditional = platform.test.to_ansible_conditional()
         return platform
 
     def get_xml(self):
@@ -2055,6 +2058,9 @@ class Platform(XCCDFEntity):
 
     def to_bash_conditional(self):
         return self.bash_conditional
+
+    def to_ansible_conditional(self):
+        return self.ansible_conditional
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None):

@@ -388,24 +388,24 @@ class AnsibleRemediation(Remediation):
 
     def update_when_from_rule(self, to_update):
         additional_when = []
-
-        # There can be repeated inherited platforms and rule platforms
-        inherited_platforms = set()
-        rule_specific_platforms = set()
-        inherited_platforms.update(self.associated_rule.inherited_platforms)
-        if self.associated_rule.platforms is not None:
-            rule_specific_platforms = {
-                p for p in self.associated_rule.platforms if p not in inherited_platforms}
+        rule_specific_cpe_platform_names = set()
+        inherited_cpe_platform_names = set()
+        if self.associated_rule:
+            # There can be repeated inherited platforms and rule platforms
+            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
+            if self.associated_rule.cpe_platform_names is not None:
+                rule_specific_cpe_platform_names = {
+                    p for p in self.associated_rule.cpe_platform_names if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            self.generate_platform_conditional(p) for p in inherited_platforms]
+            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional() for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            self.generate_platform_conditional(p) for p in rule_specific_platforms]
+            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional() for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
             p for p in inherited_conditionals if p is not None])
         rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p is not None])
+            p for p in rule_specific_conditionals if p != ''])
 
         # remove conditionals related to package CPEs if the updated task
         # collects package facts
