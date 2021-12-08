@@ -1258,6 +1258,7 @@ class Rule(XCCDFEntity):
         inherited_platforms=lambda: list(),
         template=lambda: None,
         cpe_platform_names=lambda: set(),
+        bash_conditional = lambda: None,
         ** XCCDFEntity.KEYS
     )
 
