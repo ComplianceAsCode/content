@@ -72,6 +72,7 @@ class Control(ssg.build_yaml.SelectionHandler):
         self.notes = ""
         self.title = ""
         self.description = ""
+        self.rationale = ""
         self.automated = ""
         self.status = None
         self.mitigation = ""
@@ -89,6 +90,7 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.id = ssg.utils.required_key(control_dict, "id")
         control.title = control_dict.get("title")
         control.description = control_dict.get("description")
+        control.rationale = control_dict.get("rationale")
         control.status = Status.from_control_info(control.id, control_dict.get("status", None))
         control.automated = control_dict.get("automated", "no")
         control.status_justification = control_dict.get('status_justification')
