@@ -247,7 +247,7 @@ class BashRemediation(Remediation):
         inherited_conditionals = sorted([
             p for p in inherited_conditionals if p is not None])
         rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p is not None])
+            p for p in rule_specific_conditionals if p != ''])
 
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
