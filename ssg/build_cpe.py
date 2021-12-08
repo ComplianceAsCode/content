@@ -209,8 +209,6 @@ class CPEALLogicalTest(Function):
         cond += " )"
         return cond
 
-    def get_objects(self):
-        return self.objects
 
 
 class CPEALFactRef (Symbol):
