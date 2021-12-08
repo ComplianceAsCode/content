@@ -156,6 +156,9 @@ class CPEItem(object):
         self.bash_conditional = ""
         if "bash_conditional" in cpeitem_data.keys():
             self.bash_conditional = cpeitem_data["bash_conditional"]
+        self.ansible_conditional = ""
+        if "ansible_conditional" in cpeitem_data.keys():
+            self.ansible_conditional = cpeitem_data["ansible_conditional"]
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
@@ -209,6 +212,20 @@ class CPEALLogicalTest(Function):
         cond += " )"
         return cond
 
+    def to_ansible_conditional(self):
+        cond = ""
+        if self.is_not():
+            cond += "not "
+            op = " "
+        cond += "( "
+        child_ansible_conds = [a.to_ansible_conditional() for a in self.args]
+        if self.is_or():
+            op = "or"
+        elif self.is_and():
+            op = "and"
+        cond += op.join(child_ansible_conds)
+        cond += " )"
+        return cond
 
 
 class CPEALFactRef (Symbol):
@@ -220,9 +237,11 @@ class CPEALFactRef (Symbol):
         super(CPEALFactRef, self).__init__(obj)
         self.cpe_name = obj  # we do not want to modify original name used for platforms
         self.bash_conditional = ""
+        self.ansible_conditional = ""
 
     def enrich_with_cpe_info(self, cpe_products):
         self.bash_conditional = cpe_products.get_cpe(self.cpe_name).bash_conditional
+        self.ansible_conditional = cpe_products.get_cpe(self.cpe_name).ansible_conditional
         self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)
 
     def to_xml_element(self):
@@ -234,6 +253,8 @@ class CPEALFactRef (Symbol):
     def to_bash_conditional(self):
         return self.bash_conditional
 
+    def to_ansible_conditional(self):
+        return self.ansible_conditional
 
 def extract_subelement(objects, sub_elem_type):
     """
