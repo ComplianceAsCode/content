@@ -2025,6 +2025,7 @@ class Platform(XCCDFEntity):
         platform.name = id
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
+        platform.bash_conditional = platform.test.to_bash_conditional()
         return platform
 
     def get_xml(self):
