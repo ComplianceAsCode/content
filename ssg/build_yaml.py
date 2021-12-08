@@ -1259,6 +1259,7 @@ class Rule(XCCDFEntity):
         requires=lambda: list(),
         platform=lambda: None,
         platforms=lambda: set(),
+        sce_metadata=lambda: dict(),
         inherited_platforms=lambda: list(),
         template=lambda: None,
         cpe_platform_names=lambda: set(),
