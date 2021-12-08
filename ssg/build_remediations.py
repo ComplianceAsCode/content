@@ -27,13 +27,6 @@ REMEDIATION_TO_EXT_MAP = {
     'blueprint': '.toml'
 }
 
-PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
-    'apt_get': "dpkg-query --show --showformat='${{db:Status-Status}}\\n' '{0}' 2>/dev/null " +
-               "| grep -q installed",
-    'dnf': 'rpm --quiet -q {0}',
-    'yum': 'rpm --quiet -q {0}',
-    'zypper': 'rpm --quiet -q {0}',
-}
 
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
 
@@ -228,8 +221,6 @@ class BashRemediation(Remediation):
 
     def parse_from_file_with_jinja(self, env_yaml):
         self.local_env_yaml.update(env_yaml)
-        print (env_yaml["product_cpes"].platforms.keys())
-        print (self.local_env_yaml["product_cpes"].platforms.keys())
         result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
 
         # Avoid platform wrapping empty fix text
@@ -285,28 +276,6 @@ class BashRemediation(Remediation):
             result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
 
         return result
-
-    def generate_platform_conditional(self, platform):
-        if platform == "machine":
-            # Based on check installed_env_is_a_container
-            return '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
-        elif platform is not None:
-            # Assume any other platform is a Package CPE
-
-            # Some package names are different from the platform names
-            if platform in self.local_env_yaml["platform_package_overrides"]:
-                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
-
-                # Workaround for platforms that are not Package CPEs
-                # Skip platforms that are not about packages installed
-                # These should be handled in the remediation itself
-                if not platform:
-                    return
-
-            # Adjust package check command according to the pkg_manager
-            pkg_manager = self.local_env_yaml["pkg_manager"]
-            pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
-            return pkg_check_command.format(platform)
 
 
 class AnsibleRemediation(Remediation):
