@@ -9,14 +9,18 @@ platforms:
 - ocp4-node
 {{%- endif %}}
 
+{{%- if product == "eks" %}}
+{{%- set octal_perms = "0644" %}}
+{{%- set text_perms = "-rw-r--r--" %}}
+{{%- else %}}
+{{%- set octal_perms = "0600" %}}
+{{%- set text_perms = "-rw-------" %}}
+{{%- endif %}}
+
 title: 'Verify Permissions on the Worker Kubeconfig File'
 
 description: |-
-{{%- if product == "eks" %}}
-    {{{ describe_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="0644") }}}
-{{%- else %}}
-    {{{ describe_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="0600") }}}
-{{%- endif %}}
+    {{{ describe_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=octal_perms) }}}
 
 rationale: |-
     If the worker kubeconfig file is writable by a group-owner or the
@@ -35,18 +39,10 @@ references:
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
 ocil_clause: |-
-{{% if product == "eks" %}}
-    {{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="-rw-r--r--") }}}
-{{% else %}}
-    {{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="-rw-------") }}}
-{{% endif %}}
+    {{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=text_perms) }}}
 
 ocil: |-
-{{% if product == "eks" %}}
-    {{{ ocil_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="-rw-r--r--") }}}
-{{% else %}}
-    {{{ ocil_file_permissions(file="/var/lib/kubelet/kubeconfig", perms="-rw-------") }}}
-{{% endif %}}
+    {{{ ocil_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=text_perms) }}}
 
 template:
     name: file_permissions
