@@ -3,11 +3,7 @@ documentation_complete: true
 prodtype: eks,ocp4
 
 platforms:
-{{%- if product == "eks" %}}
-- eks-node
-{{%- else %}}
-- ocp4-node
-{{%- endif %}}
+- {{{ product }}}-node
 
 {{%- if product == "eks" %}}
 {{%- set octal_perms = "0644" %}}

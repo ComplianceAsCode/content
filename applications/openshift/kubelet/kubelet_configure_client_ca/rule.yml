@@ -1,8 +1,16 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
+
+{{%- if product == "eks" %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- set ca_path = "/etc/kubernetes/pki/ca.crt" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- set ca_path = "/etc/kubernetes/kubelet-ca.crt" %}}
+{{%- endif %}}
 
 title: 'kubelet - Configure the Client CA Certificate'
 
@@ -11,13 +19,13 @@ description: |-
     can subject the kubelet to man-in-the-middle attacks.
 
     To configure a client CA certificate, edit the kubelet configuration
-    file <tt>/etc/kubernetes/kubelet.conf</tt>
+    file <tt>{{{ kubeletconf_path }}}</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>
     authentication:
     ...
       x509:
-        clientCAFile: /etc/kubernetes/kubelet-ca.crt
+        clientCAFile: {{{ ca_path}}}
     ...
     </pre>
 
@@ -33,13 +41,14 @@ ocil_clause: 'no client CA certificate has been configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 x509 /etc/kubernetes/kubelet.conf</pre>
-    The output should contain a configured certificate like <tt>/etc/kubernetes/kubelet-ca.crt</tt>.
+    <pre>$ sudo grep -A1 x509 {{{ kubeletconf_path }}}</pre>
+    The output should contain a configured certificate like <tt>{{{ ca_path}}}</tt>.
 
 identifiers:
     cce@ocp4: CCE-83724-5
 
 references:
+    cis@eks: 3.2.3
     cis@ocp4: 4.2.3
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
@@ -47,8 +56,8 @@ references:
 template:
   name: yamlfile_value
   vars:
-    filepath: /etc/kubernetes/kubelet.conf
+    filepath: {{{ kubeletconf_path }}}
     yamlpath: ".authentication.x509.clientCAFile"
     values:
-      - value: "/etc/kubernetes/kubelet-ca.crt"
+      - value: "{{{ ca_path}}}"
         operation: "equals"

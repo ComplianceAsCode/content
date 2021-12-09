@@ -1,8 +1,14 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
+
+{{%- if product == "eks" %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
 
 title: 'Ensure authorization is set to Webhook'
 
@@ -11,7 +17,7 @@ description: |-
     The Kubelet should be set to only allow Webhook authorization.
     To ensure that the Kubelet requires authorization,
     validate that <tt>authorization</tt> is configured to <tt>Webhook</tt>
-    in <tt>/etc/kubernetes/kubelet.conf</tt>:
+    in <tt>{{{ kubeletconf_path }}}</tt>:
     <pre>
     authorization:
       mode: Webhook
@@ -29,6 +35,7 @@ identifiers:
 severity: medium
 
 references:
+    cis@eks: 3.2.2
     cis@ocp4: 4.2.2
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
@@ -37,14 +44,14 @@ ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 authorization /etc/kubernetes/kubelet.conf</pre>
+    <pre>$ sudo grep -A1 authorization {{{ kubeletconf_path }}}</pre>
     Verify that the output is not set to <tt>mode: AlwaysAllow</tt>, or missing
     (defaults to <tt>mode: Webhook</tt>).
 
 template:
     name: yamlfile_value
     vars:
-        filepath: /etc/kubernetes/kubelet.conf
+        filepath: {{{ kubeletconf_path }}}
         yamlpath: ".authorization.mode"
         check_existence: "any_exist"
         values:

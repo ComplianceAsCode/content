@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
 
 title: 'Verify User Who Owns The Worker Kubeconfig File'
 
@@ -19,6 +19,7 @@ identifiers:
     cce@ocp4: CCE-83408-5
 
 references:
+    cis@eks: 3.1.2
     cis@ocp4: 4.1.10
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
