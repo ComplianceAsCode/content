@@ -24,7 +24,7 @@ except AttributeError:
     ET._namespace_map[ovalns] = "oval"
 
 
-def applicable_platforms(oval_file, oval_version_string=None):
+def applicable_platforms(oval_file, oval_version_string=None, product=None):
     """
     Returns the applicable platforms for a given oval file
     """
@@ -37,6 +37,9 @@ def applicable_platforms(oval_file, oval_version_string=None):
 
     oval_version_list = [int(num) for num in oval_version_string.split(".")]
     subst_dict = dict(target_oval_version=oval_version_list)
+
+    if product is not None:
+        subst_dict["product"] = product
 
     oval_filename_components = oval_file.split(os.path.sep)
     if len(oval_filename_components) > 3:

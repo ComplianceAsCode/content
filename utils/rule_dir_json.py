@@ -117,7 +117,7 @@ def handle_ovals(product_list, product_yamls, rule_obj):
         oval_product, _ = os.path.splitext(oval_name)
         oval_obj = {'name': oval_name, 'product': oval_product}
 
-        platforms = ssg.oval.applicable_platforms(oval_path)
+        platforms = ssg.oval.applicable_platforms(oval_path, product=oval_product)
         cs_platforms = ','.join(platforms)
 
         oval_obj['platforms'] = platforms
