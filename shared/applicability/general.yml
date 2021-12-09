@@ -10,6 +10,7 @@ cpes:
       title: "Package chrony is installed"
       check_id: installed_env_has_chrony_package
       bash_conditional: {{{ bash_pkg_conditional("chrony") }}}
+      ansible_conditional: {{{ ansible_pkg_conditional("chrony") }}}
 
   - gdm:
       name: "cpe:/a:gdm"
@@ -46,6 +47,7 @@ cpes:
       title: "Package ntp is installed"
       check_id: installed_env_has_ntp_package
       bash_conditional: {{{ bash_pkg_conditional("ntp") }}}
+      ansible_conditional: {{{ ansible_pkg_conditional("ntp") }}}
 
   - ocp4-master-node:
       name: "cpe:/a:ocp4-master-node"
