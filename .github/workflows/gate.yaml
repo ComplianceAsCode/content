@@ -130,7 +130,8 @@ jobs:
               sle12 \
               sle15 \
               ubuntu2004 \
-              ocp4
+              ocp4 \
+              eks
         env:
           ADDITIONAL_CMAKE_OPTIONS: "-DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED=ON"
       - name: Test
