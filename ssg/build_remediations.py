@@ -245,7 +245,7 @@ class BashRemediation(Remediation):
             env_yaml["product_cpes"].platforms[p].to_bash_conditional() for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p is not None])
+            p for p in inherited_conditionals if p != ''])
         rule_specific_conditionals = sorted([
             p for p in rule_specific_conditionals if p != ''])
 
@@ -403,7 +403,7 @@ class AnsibleRemediation(Remediation):
             self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional() for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p is not None])
+            p for p in inherited_conditionals if p != ''])
         rule_specific_conditionals = sorted([
             p for p in rule_specific_conditionals if p != ''])
 
