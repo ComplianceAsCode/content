@@ -12133,8 +12133,16 @@ controls:
     signed and from an authorized registry. Signature verification is
     done in the Container Runtime level before running the containers.
     Therefore, the OpenShift Platform inherently meets this control.
+
+    Integrity of the OpenShift platform is handled to start by the cluster
+    version operator. Today the CVO will by default GPG verify the integrity
+    of the release image before applying it. [1]
+
+    [1] https://github.com/openshift/machine-config-operator/blob/master/docs/OSUpgrades.md#questions-and-answers
   rules:
   - reject_unsigned_images_by_default
+  - cluster_version_operator_exists
+  - cluster_version_operator_verify_integrity
   description: |-
     The organization requires the developer of the information system, system component, or information system service to enable integrity verification of software and firmware components.
 
