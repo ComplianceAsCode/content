@@ -237,12 +237,15 @@ class BashRemediation(Remediation):
             inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
             if self.associated_rule.cpe_platform_names is not None:
                 rule_specific_cpe_platform_names = {
-                    p for p in self.associated_rule.cpe_platform_names if p not in inherited_cpe_platform_names}
+                    p for p in self.associated_rule.cpe_platform_names
+                    if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            env_yaml["product_cpes"].platforms[p].to_bash_conditional() for p in inherited_cpe_platform_names]
+            env_yaml["product_cpes"].platforms[p].to_bash_conditional()
+            for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            env_yaml["product_cpes"].platforms[p].to_bash_conditional() for p in rule_specific_cpe_platform_names]
+            env_yaml["product_cpes"].platforms[p].to_bash_conditional()
+            for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
             p for p in inherited_conditionals if p != ''])
@@ -395,12 +398,15 @@ class AnsibleRemediation(Remediation):
             inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
             if self.associated_rule.cpe_platform_names is not None:
                 rule_specific_cpe_platform_names = {
-                    p for p in self.associated_rule.cpe_platform_names if p not in inherited_cpe_platform_names}
+                    p for p in self.associated_rule.cpe_platform_names
+                    if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional() for p in inherited_cpe_platform_names]
+            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional()
+            for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional() for p in rule_specific_cpe_platform_names]
+            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional()
+            for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
             p for p in inherited_conditionals if p != ''])

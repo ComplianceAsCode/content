@@ -1265,7 +1265,7 @@ class Rule(XCCDFEntity):
         template=lambda: None,
         cpe_platform_names=lambda: set(),
         inherited_cpe_platform_names=lambda: list(),
-        bash_conditional = lambda: None,
+        bash_conditional=lambda: None,
         ** XCCDFEntity.KEYS
     )
 
@@ -2079,7 +2079,7 @@ class Platform(XCCDFEntity):
 
 def add_platform_if_not_defined(platform, env_yaml):
     # check if the platform is already in the dictionary. If yes, return the existing one
-    for p  in env_yaml["product_cpes"].platforms.values():
+    for p in env_yaml["product_cpes"].platforms.values():
         if platform == p:
             return p
     env_yaml["product_cpes"].platforms[platform.id_] = platform
