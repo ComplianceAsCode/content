@@ -1,8 +1,14 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
+
+{{%- if product == "eks"  %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
 
 title: 'kubelet - Do Not Disable Streaming Timeouts'
 
@@ -10,7 +16,7 @@ description: |-
     Timouts for streaming connections should not be disabled as they help to prevent
     denial-of-service attacks.
     To configure streaming connection timeouts, edit the kubelet configuration
-    file <tt>/etc/kubernetes/kubelet.conf</tt>
+    file <tt>{{{ kubeletconf_path }}}</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>streamingConnectionIdleTimeout: {{{ xccdf_value("var_streaming_connection_timeouts") }}}</pre>
 
@@ -25,13 +31,14 @@ ocil_clause: 'the streaming connection timeouts are not disabled'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep streamingConnectionIdleTimeout /etc/kubernetes/kubelet.conf</pre>
+    <pre>$ sudo grep streamingConnectionIdleTimeout {{{ kubeletconf_path }}}</pre>
     The output should return <tt>{{{ xccdf_value("var_streaming_connection_timeouts") }}}</tt>.
 
 identifiers:
     cce@ocp4: CCE-84097-5
 
 references:
+    cis@eks: 3.2.5
     cis@ocp4: 4.2.5
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
@@ -40,7 +47,7 @@ references:
 template:
     name: yamlfile_value
     vars:
-        filepath: /etc/kubernetes/kubelet.conf
+        filepath: {{{ kubeletconf_path }}}
         yamlpath: ".streamingConnectionIdleTimeout"
         check_existence: "any_exist"
         values:
