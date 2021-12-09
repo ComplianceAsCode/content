@@ -203,7 +203,9 @@ class CPEALLogicalTest(Function):
             cond += "! "
             op = " "
         cond += "( "
-        child_bash_conds = [a.to_bash_conditional() for a in self.args if a.to_bash_conditional() != '']
+        child_bash_conds = [
+            a.to_bash_conditional() for a in self.args
+            if a.to_bash_conditional() != '']
         if self.is_or():
             op = "||"
         elif self.is_and():
@@ -218,7 +220,9 @@ class CPEALLogicalTest(Function):
             cond += "not "
             op = " "
         cond += "( "
-        child_ansible_conds = [a.to_ansible_conditional() for a in self.args if a.to_ansible_conditional() != '']
+        child_ansible_conds = [
+            a.to_ansible_conditional() for a in self.args
+            if a.to_ansible_conditional() != '']
         if self.is_or():
             op = " or "
         elif self.is_and():
