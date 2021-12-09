@@ -6,7 +6,7 @@ from collections import namedtuple
 from glob import glob
 
 from .build_cpe import ProductCPEs
-from .constants import (product_directories,
+from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_GID_MIN,
                         DEFAULT_UID_MIN,
                         DEFAULT_GRUB2_BOOT_PATH,
@@ -71,6 +71,9 @@ def _get_implied_properties(existing_properties):
 
     if "sshd_distributed_config" not in existing_properties:
         result["sshd_distributed_config"] = DEFAULT_SSH_DISTRIBUTED_CONFIG
+
+    if "product" not in existing_properties:
+        result["product"] = DEFAULT_PRODUCT
 
     return result
 
