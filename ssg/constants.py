@@ -460,3 +460,5 @@ DEFAULT_DCONF_GDM_DIR = 'gdm.d'
 DEFAULT_AIDE_CONF_PATH = '/etc/aide.conf'
 DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
+DEFAULT_PRODUCT = 'example'
+
