@@ -220,9 +220,9 @@ class CPEALLogicalTest(Function):
         cond += "( "
         child_ansible_conds = [a.to_ansible_conditional() for a in self.args]
         if self.is_or():
-            op = "or"
+            op = " or "
         elif self.is_and():
-            op = "and"
+            op = " and "
         cond += op.join(child_ansible_conds)
         cond += " )"
         return cond
