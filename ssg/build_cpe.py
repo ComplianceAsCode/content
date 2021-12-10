@@ -153,12 +153,8 @@ class CPEItem(object):
         self.name = cpeitem_data["name"]
         self.title = cpeitem_data["title"]
         self.check_id = cpeitem_data["check_id"]
-        self.bash_conditional = ""
-        if "bash_conditional" in cpeitem_data.keys():
-            self.bash_conditional = cpeitem_data["bash_conditional"]
-        self.ansible_conditional = ""
-        if "ansible_conditional" in cpeitem_data.keys():
-            self.ansible_conditional = cpeitem_data["ansible_conditional"]
+        self.bash_conditional = cpeitem_data.get("bash_conditional", "")
+        self.ansible_conditional = cpeitem_data.get("ansible_conditional", "")
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
