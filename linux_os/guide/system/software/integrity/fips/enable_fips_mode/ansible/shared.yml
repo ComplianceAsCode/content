@@ -3,6 +3,7 @@
 # strategy = restrict
 # complexity = medium
 # disruption = medium
+{{{ ansible_instantiate_variables("var_system_crypto_policy") }}}
 
 - name: Check to see the current status of FIPS mode
   command: /usr/bin/fips-mode-setup --check
