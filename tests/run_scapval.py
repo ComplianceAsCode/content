@@ -54,6 +54,7 @@ def test_datastream(datastream_path,  scapval_path, scap_version):
     scapval_command = [
             "java",
             "-Xmx1024m",
+            "-Djava.protocol.handler.pkgs=sun.net.www.protocol",
             "-jar", scapval_path,
             "-scapversion", scap_version,
             "-file", datastream_path,
