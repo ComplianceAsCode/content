@@ -52,3 +52,19 @@ ocil: |-
     to obtain its account aging and expiration information:
     <pre>$ sudo chage -l <i>ACCOUNT_NAME</i></pre>
     Verify each of these accounts has an expiration date set as documented.
+
+warnings:
+    - general: |-
+        Due to the unique requirements of each sysetem, automated
+        remediation is not available for this configuration check.
+
+
+fix: |-
+    If an emergency account must be created, configure the system to terminate the account after
+    72 hours with the following command to set an expiration date for the account.
+    Substitute "system_account_name" with the account to be created.
+
+    $ sudo chage -E `date -d "+3 days" +%Y-%m-%d` system_account_name
+
+    The automatic expiration or disabling time period may be extended as needed until the crisis
+    is resolved.

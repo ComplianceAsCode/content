@@ -37,3 +37,5 @@ ocil_clause: 'there is not output'
 ocil: |-
     To verify that auditing is configured for system administrator actions, run the following command:
     <pre>$ sudo auditctl -l | grep "watch=/etc/sudoers.d\|-w /etc/sudoers.d"</pre>
+
+fix: '{{{ fix_audit_file_watch_rule("/etc/sudoers.d/", "identity", "/etc/audit/rules.d/audit.rules") }}}'
