@@ -16,11 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - name: Find forking point
         env:
           BASE_BRANCH: ${{ github.base_ref }}
-        run: echo "::set-output name=FORK_POINT::$(git merge-base --fork-point origin/$BASE_BRANCH)"
+        run: echo "::set-output name=FORK_POINT::$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})"
         id: fork_point
       - name: Checkout fork point
         uses: actions/checkout@v2
