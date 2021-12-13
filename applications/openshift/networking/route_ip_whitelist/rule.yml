@@ -25,7 +25,7 @@ ocil_clause: 'IP whitelist is not enabled for all routes outside the openshift n
 
 ocil: |-
     Run the following command to retrieve a list routes that does not have IP whitelist set::
-    <pre>$  oc get routes --all-namespaces -o json | jq {{{ jqfilter }}}</pre>
+    <pre>$  oc get routes --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
     Make sure that there is output nothing in the result.
 
 severity: medium
