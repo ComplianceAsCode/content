@@ -1,79 +1,114 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
 
-- name: Add auth pam_faillock preauth even_deny_root before pam_unix.so
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: sufficient
-    module_path: pam_unix.so
-    new_type: auth
-    new_control: required
-    new_module_path: pam_faillock.so
-    module_arguments: 'preauth
-        silent
-        even_deny_root'
-    state: before
-  loop:
-    - system-auth
-    - password-auth
+- name: Check if system relies on authconfig
+  ansible.builtin.stat:
+    path: /usr/sbin/authconfig
+  register: result_authconfig_check
 
-- name: Add even_deny_root argument to auth pam_faillock preauth
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: required
-    module_path: pam_faillock.so
-    module_arguments: 'preauth
-        silent
-        even_deny_root'
-    state: args_present
-  loop:
-    - system-auth
-    - password-auth
+- name: Check the presence of /etc/security/faillock.conf file
+  ansible.builtin.stat:
+    path: /etc/security/faillock.conf
+  register: result_faillock_conf_check
 
-- name: Add auth pam_faillock authfail even_deny_root after pam_unix.so
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: sufficient
-    module_path: pam_unix.so
-    new_type: auth
-    new_control: '[default=die]'
-    new_module_path: pam_faillock.so
-    module_arguments: 'authfail
-        even_deny_root'
-    state: after
-  loop:
-    - system-auth
-    - password-auth
+- name: Ensure the pam_faillock.so even_deny_root parameter in /etc/security/faillock.conf
+  ansible.builtin.lineinfile:
+    path: /etc/security/faillock.conf
+    regexp: ^\s*even_deny_root
+    line: even_deny_root
+    state: present
+  when:
+    - result_faillock_conf_check.stat.exists
 
-- name: Add even_deny_root argument to auth pam_faillock authfail
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: '[default=die]'
-    module_path: pam_faillock.so
-    module_arguments: 'authfail
-        even_deny_root'
-    state: args_present
-  loop:
-    - system-auth
-    - password-auth
+- name: Check if pam_faillock.so is already enabled
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    regexp: .*auth.*pam_faillock.so.*
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: result_pam_faillock_enabled
 
-- name: Add account pam_faillock before pam_unix.so
-  pamd:
-    name: "{{ item }}"
-    type: account
-    control: required
-    module_path: pam_unix.so
-    new_type: account
-    new_control: required
-    new_module_path: pam_faillock.so
-    state: before
+- name: Ensure the pam_faillock.so preauth parameters are not present in the pam files
+  ansible.builtin.lineinfile:
+    path: '{{ item }}'
+    backrefs: true
+    regexp: (.*pam_faillock.so preauth).*$
+    line: \1 silent
+    state: present
   loop:
-    - system-auth
-    - password-auth
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - result_faillock_conf_check.stat.exists
+    - result_pam_faillock_enabled.found
+
+- name: Ensure the pam_faillock.so authfail parameters are not present in the pam files
+  ansible.builtin.lineinfile:
+    path: '{{ item }}'
+    backrefs: true
+    regexp: (.*pam_faillock.so authfail).*$
+    line: \1
+    state: present
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - result_faillock_conf_check.stat.exists
+    - result_pam_faillock_enabled.found
+
+- name: Ensure pam_faillock.so is properly enabled using authconfig tool
+  ansible.builtin.command:
+    cmd: authconfig --enablefaillock --update
+  when:
+    - result_authconfig_check.stat.exists
+
+- name: Ensure pam_faillock.so is properly enabled using authselect tool
+  ansible.builtin.command:
+    cmd: authselect enable-feature with-faillock
+  register: result_pam_authselect_cmd
+  when:
+    - result_faillock_conf_check.stat.exists
+    - not result_pam_faillock_enabled.found
+
+- name: Check if pam_faillock.so even_deny_root parameter is already enabled in pam files
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    regexp: .*auth.*pam_faillock.so (preauth|authfail).*even_deny_root
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: result_pam_faillock_even_deny_root
+  when:
+    - not result_faillock_conf_check.stat.exists
+
+- name: Ensure the pam_faillock.so preauth even_deny_root parameter in auth section
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    backrefs: true
+    regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)
+    line: \1required\3 even_deny_root
+    state: present
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - not result_faillock_conf_check.stat.exists
+    - result_pam_faillock_even_deny_root.found == 0
+
+- name: Ensure the pam_faillock.so authfail even_deny_root parameter in auth section
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    backrefs: true
+    regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so authfail.*)
+    line: \1required\3 even_deny_root
+    state: present
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - not result_faillock_conf_check.stat.exists
+    - result_pam_faillock_even_deny_root.found == 0

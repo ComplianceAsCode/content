@@ -5,76 +5,98 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_passwords_pam_faillock_unlock_time") }}}
 
-- name: Add auth pam_faillock preauth unlock_time before pam_unix.so
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: sufficient
-    module_path: pam_unix.so
-    new_type: auth
-    new_control: required
-    new_module_path: pam_faillock.so
-    module_arguments: 'preauth
-        silent
-        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
-    state: before
-  loop:
-    - system-auth
-    - password-auth
+- name: Check if system relies on authconfig
+  ansible.builtin.stat:
+    path: /usr/sbin/authconfig
+  register: result_authconfig_check
 
-- name: Add unlock_time argument to pam_faillock preauth
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: required
-    module_path: pam_faillock.so
-    module_arguments: 'preauth
-        silent
-        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
-    state: args_present
-  loop:
-    - system-auth
-    - password-auth
+- name: Check the presence of /etc/security/faillock.conf file
+  ansible.builtin.stat:
+    path: /etc/security/faillock.conf
+  register: result_faillock_conf_check
 
-- name: Add auth pam_faillock authfail unlock_interval after pam_unix.so
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: sufficient
-    module_path: pam_unix.so
-    new_type: auth
-    new_control: '[default=die]'
-    new_module_path: pam_faillock.so
-    module_arguments: 'authfail
-        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
-    state: after
-  loop:
-    - system-auth
-    - password-auth
+- name: Ensure the pam_faillock.so unlock_time parameter in /etc/security/faillock.conf
+  ansible.builtin.lineinfile:
+    path: /etc/security/faillock.conf
+    regexp: ^\s*unlock_time\s*=
+    line: unlock_time = {{ var_accounts_passwords_pam_faillock_unlock_time }}
+    state: present
+  when:
+    - result_faillock_conf_check.stat.exists
 
-- name: Add unlock_time argument to auth pam_faillock authfail
-  pamd:
-    name: "{{ item }}"
-    type: auth
-    control: '[default=die]'
-    module_path: pam_faillock.so
-    module_arguments: 'authfail
-        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
-    state: args_present
-  loop:
-    - system-auth
-    - password-auth
+- name: Check if pam_faillock.so is already enabled
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    regexp: .*auth.*pam_faillock.so.*
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: result_pam_faillock_enabled
 
-- name: Add account pam_faillock before pam_unix.so
-  pamd:
-    name: "{{ item }}"
-    type: account
-    control: required
-    module_path: pam_unix.so
-    new_type: account
-    new_control: required
-    new_module_path: pam_faillock.so
-    state: before
+- name: Ensure the pam_faillock.so preauth parameters are not present in the pam files
+  ansible.builtin.lineinfile:
+    path: '{{ item }}'
+    backrefs: true
+    regexp: (.*pam_faillock.so preauth).*$
+    line: \1 silent
+    state: present
   loop:
-    - system-auth
-    - password-auth
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - result_faillock_conf_check.stat.exists
+    - result_pam_faillock_enabled.found
+
+- name: Ensure the pam_faillock.so authfail parameters are not present in the pam files
+  ansible.builtin.lineinfile:
+    path: '{{ item }}'
+    backrefs: true
+    regexp: (.*pam_faillock.so authfail).*$
+    line: \1
+    state: present
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - result_faillock_conf_check.stat.exists
+    - result_pam_faillock_enabled.found
+
+- name: Ensure pam_faillock.so is properly enabled using authconfig tool
+  ansible.builtin.command:
+    cmd: authconfig --enablefaillock --update
+  when:
+    - result_authconfig_check.stat.exists
+
+- name: Ensure pam_faillock.so is properly enabled using authselect
+  ansible.builtin.command:
+    cmd: authselect enable-feature with-faillock
+  register: result_pam_authselect_cmd
+  when:
+    - result_faillock_conf_check.stat.exists
+    - not result_pam_faillock_enabled.found
+
+- name: Ensure the pam_faillock.so preauth unlock_time parameter in auth section
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    backrefs: true
+    regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)(unlock_time)=[0-5]+(.*)
+    line: \1required\3\4={{ var_accounts_passwords_pam_faillock_unlock_time }}\5
+    state: present
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - not result_faillock_conf_check.stat.exists
+
+- name: Ensure the pam_faillock.so authfail unlock_time parameter in auth section
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    backrefs: true
+    regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so authfail.*)(unlock_time)=[0-5]+(.*)
+    line: \1required\3\4={{ var_accounts_passwords_pam_faillock_unlock_time }}\5
+    state: present
+  loop:
+    - /etc/pam.d/system-auth
+    - /etc/pam.d/password-auth
+  when:
+    - not result_faillock_conf_check.stat.exists

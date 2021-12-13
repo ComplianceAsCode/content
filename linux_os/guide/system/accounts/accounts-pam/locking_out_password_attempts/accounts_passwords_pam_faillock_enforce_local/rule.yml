@@ -6,16 +6,29 @@ title: 'Enforce pam_faillock for Local Accounts Only'
 
 description: |-
     The pam_faillock module's <tt>local_users_only</tt> parameter controls requirements for
-    enforcing failed lockout attempts only for local user accounts and ignoring
-    centralized user account management failed attempt configurations. Enable the <tt>local_users_only</tt>
-    setting in <tt>/etc/security/faillock.conf</tt> to require failed password attempts
-    for only local user accounts.
+    enforcing failed lockout attempts only for local user accounts and ignoring centralized user
+    account management failed attempt configurations. To enable the <tt>local_users_only</tt>
+    setting in <tt>/etc/security/faillock.conf</tt>, first enable pam_faillock.so using the
+    following command:
+    <br /><br />
+    <ul>
+    <li><pre>authselect enable-feature with-faillock</pre></li>
+    </ul>
+    <br />
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    <br /><br />
+    <ul>
+    <li> add or uncomment the following line:
+    <pre>local_users_only</pre></li>
+    <li> add or uncomment the following line:
+    <pre>silent</pre></li>
+    </ul>
 
 rationale: |-
     The operating system must provide automated mechanisms for supporting account management
     functions. Enterprise environments make application account management challenging and
     complex. A manual process for account management functions adds the risk of a potential
-    oversight or other error.
+    oversight or other error. Locking out remote accounts may cause unintentional DoS.
 
 severity: medium
 
@@ -30,9 +43,9 @@ references:
 ocil_clause: 'local_users_only is not uncommented or configured correctly'
 
 ocil: |-
-    To check if root user is required to use complex passwords, run the following command:
+    To check if only local user are impacted by pam_faillock, run the following command:
     <pre>$ grep local_users_only /etc/security/faillock.conf</pre>
-    The output should return <tt>local_users_only</tt> uncommented.
+    The output should return <tt>local_users_only</tt> not commented.
 
 platform: pam
 
@@ -40,11 +53,3 @@ warnings:
     - management: |-
         Using this rule bypasses pam_faillock's functionality and should be used in cases
         where centralized management such as LDAP or Active Directory is in use.
-
-template:
-    name: "lineinfile"
-    vars:
-        text: "local_users_only"
-        path: "/etc/security/faillock.conf"
-        oval_extend_definitions:
-            - accounts_password_pam_faillock
