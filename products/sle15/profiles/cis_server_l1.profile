@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: 2.0.0
+    version: 1.1.0
     SMEs:
         - truzzon
 
@@ -13,7 +13,7 @@ title: 'CIS SUSE Linux Enterprise 15 Benchmark for Level 1 - Server'
 description: |-
     This profile defines a baseline that aligns to the "Level 1 - Server"
     configuration from the Center for Internet Security®
-    SUSE Linux Enterprise 15 Benchmark™, v1.0.1, released 09-17-2021.
+    SUSE Linux Enterprise 15 Benchmark™, v1.1.0, released 09-17-2021.
 
     This profile includes Center for Internet Security®
     SUSE Linux Enterprise 15 CIS Benchmarks™ content.
