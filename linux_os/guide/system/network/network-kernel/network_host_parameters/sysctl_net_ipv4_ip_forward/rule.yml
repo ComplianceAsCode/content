@@ -56,8 +56,16 @@ warnings:
         Certain technologies such as virtual machines, containers, etc. rely on IPv4 forwarding to enable and use networking.
         Disabling IPv4 forwarding would cause those technologies to stop working. Therefore, this rule should not be used in
         profiles or benchmarks that target usage of IPv4 forwarding.
+{{% if product == "rhel8" %}}
+    - general: |-
+        This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
+        RHV host requires IPv4 forwarding for the Hosted Engine bootstrap VM to reach network outside of the initial host.
+{{% endif %}}
 
-platform: machine
+{{% if product == "rhel8" %}}
+platforms:
+    - no_ovirt
+{{% endif %}}
 
 template:
     name: sysctl
