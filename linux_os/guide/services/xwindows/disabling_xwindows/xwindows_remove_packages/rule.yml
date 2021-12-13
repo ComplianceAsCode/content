@@ -64,6 +64,11 @@ ocil: |-
     For each <tt>package</tt> mentioned above you should receive following line:
     <pre>package &lt;package&gt; is not installed</pre>
 
+{{% if product == "rhel8" %}}
+platforms:
+    - no_ovirt
+{{% endif %}}
+
 warnings:
     - functionality: |-
         The installation and use of a Graphical User Interface (GUI) increases your attack vector and decreases your
@@ -71,3 +76,8 @@ warnings:
         which might bring your system to an inconsistent state requiring additional configuration to access the system
         again. If a GUI is an operational requirement, a tailored profile that removes this rule should used before
         continuing installation.
+{{% if product == "rhel8" %}}
+    - general: |-
+        This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
+        X11 graphic libraries are dependency of OpenStack Cinderlib storage provider.
+{{% endif %}}
