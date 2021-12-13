@@ -52,17 +52,13 @@
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="check that all DBs in question are up-to-date" operator="AND">
-        {{% if product in ['ol7', 'ol8', 'rhel7', 'rhel8'] %}}
-          {{{ check_db_criterion("gdm") }}}
-        {{% endif %}}
+        {{{ check_db_criterion(dconf_gdm_dir.split(".")[0]) }}}
         {{{ check_db_criterion("local") }}}
       </criteria>
     </criteria>
   </definition>
 
-  {{% if product in ['ol7', 'ol8', 'rhel7', 'rhel8'] %}}
-    {{{ check_db_is_up_to_date("gdm") }}}
-  {{% endif %}}
+  {{{ check_db_is_up_to_date(dconf_gdm_dir.split(".")[0]) }}}
   {{{ check_db_is_up_to_date("local") }}}
 
 </def-group>
