@@ -2,11 +2,23 @@ import os
 
 import ssg.build_remediations as sbr
 import ssg.utils
+import ssg.products
 from ssg.yaml import ordered_load
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 rule_dir = os.path.join(DATADIR, "group_dir", "rule_dir")
 rhel_bash = os.path.join(rule_dir, "bash", "rhel.sh")
+
+
+def create_env_yaml():
+    env_yaml = dict(product="rhel7")
+    product_yaml_path = os.path.join(DATADIR, "product.yml")
+    # it will add "product_cpes" key to env_yaml
+    env_yaml.update(ssg.products.load_product_yaml(product_yaml_path))
+    platform_path = os.path.join(DATADIR, "machine.yml")
+    platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
+    env_yaml["product_cpes"].platforms[platform.name] = platform
+    return env_yaml
 
 
 def test_is_supported_file_name():
@@ -59,7 +71,9 @@ def test_ansible_class():
         os.path.join(DATADIR, "ansible.yml"), os.path.join(DATADIR, "file_owner_grub2_cfg.yml")
     )
 
-    remediation.parse_from_file_with_jinja(dict())
+    env_yaml = create_env_yaml()
+
+    remediation.parse_from_file_with_jinja(env_yaml)
 
     assert remediation.metadata["reboot"] == 'false'
     assert remediation.metadata["strategy"] == 'configure'
@@ -73,7 +87,7 @@ def test_ansible_conformance():
     )
     ref_remediation_dict = ordered_load(open(os.path.join(DATADIR, "ansible-resolved.yml")))
 
-    env_yaml = dict(product="rhel7")
+    env_yaml = create_env_yaml()
 
     remediation.parse_from_file_with_jinja(env_yaml)
     # The comparison has to be done this way due to possible order variations,
