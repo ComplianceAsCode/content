@@ -40,7 +40,7 @@ controls:
     levels:
       - l2_workstation
       - l2_server
-    automated: no
+    status: manual
     related_rules:
       - kernel_module_vfat_disabled
 
@@ -211,7 +211,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - mount_option_nodev_removable_partitions
 
@@ -220,7 +220,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - mount_option_nosuid_removable_partitions
 
@@ -229,7 +229,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - mount_option_noexec_removable_partitions
 
@@ -265,14 +265,14 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   - id: 1.2.2
     title: Disable the rhnsd Daemon (Manual)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - service_rhnsd_disabled
 
@@ -281,7 +281,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - ensure_redhat_gpgkey_installed
 
@@ -299,7 +299,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   - id: 1.3.1
     title: Ensure sudo is installed (Automated)
@@ -541,7 +541,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - security_patches_up_to_date
 
@@ -586,7 +586,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - package_chrony_installed
 
@@ -1002,21 +1002,21 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   - id: 3.4.2.6
     title: Ensure firewalld drops unnecessary services and ports (Manual)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   - id: 3.4.3.1
     title: Ensure iptables are flushed with nftables (Manual)
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5244
@@ -1050,7 +1050,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5248
@@ -1102,7 +1102,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5255
@@ -1145,7 +1145,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/7191
@@ -1179,7 +1179,7 @@ controls:
     levels:
       - l2_server
       - l2_workstation
-    automated: no
+    status: manual
 
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
@@ -1454,7 +1454,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   - id: 4.2.1.5
     title: Ensure rsyslog is configured to send logs to a remote log host (Automated)
@@ -1470,7 +1470,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - rsyslog_nolisten
 
@@ -1515,7 +1515,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
 
   - id: 5.1.1
     title: Ensure cron daemon is enabled (Automated)
@@ -1990,7 +1990,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - no_direct_root_logins
       - securetty_root_login_console_only
@@ -2013,7 +2013,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - rpm_verify_permissions
       - rpm_verify_ownership
@@ -2138,7 +2138,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - file_permissions_unauthorized_suid
 
@@ -2147,7 +2147,7 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no
+    status: manual
     related_rules:
       - file_permissions_unauthorized_sgid
 
