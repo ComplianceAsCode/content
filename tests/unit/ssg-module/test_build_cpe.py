@@ -4,8 +4,10 @@ import os
 import re
 import ssg.build_cpe
 import ssg.xml
+from ssg.yaml import open_raw
 
 ET = ssg.xml.ElementTree
+DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 
 
 def test_extract_element():
@@ -90,3 +92,49 @@ def test_extract_referred_nodes():
 
     assert len(results) == 1
     assert results[0].text == 'Source Code'
+
+
+def test_product_cpes():
+    product_yaml_path = os.path.join(DATADIR, "product.yml")
+    product_yaml = open_raw(product_yaml_path)
+    product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
+    product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
+
+    # get CPE by name and verify it's loaded
+    rhel7_cpe = product_cpes.get_cpe("rhel7")
+    assert(rhel7_cpe.name == "cpe:/o:redhat:enterprise_linux:7")
+    assert(rhel7_cpe.title == "Red Hat Enterprise Linux 7")
+    assert(rhel7_cpe.check_id == "installed_OS_is_rhel7")
+    assert(rhel7_cpe.bash_conditional == "")
+    assert(rhel7_cpe.ansible_conditional == "")
+
+    # get CPE by ID and verify it's loaded
+    rhel7_cpe_2 = product_cpes.get_cpe("cpe:/o:redhat:enterprise_linux:7")
+    assert(rhel7_cpe_2.name == "cpe:/o:redhat:enterprise_linux:7")
+    assert(rhel7_cpe_2.title == "Red Hat Enterprise Linux 7")
+    assert(rhel7_cpe_2.check_id == "installed_OS_is_rhel7")
+    assert(rhel7_cpe.bash_conditional == "")
+    assert(rhel7_cpe.ansible_conditional == "")
+
+
+def test_content_cpes():
+    product_yaml_path = os.path.join(DATADIR, "product.yml")
+    product_yaml = open_raw(product_yaml_path)
+    product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
+    product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
+
+    # get CPE by name and verify it's loaded
+    cpe1 = product_cpes.get_cpe("machine")
+    assert(cpe1.name == "cpe:/a:machine")
+    assert(cpe1.title == "Bare-metal or Virtual Machine")
+    assert(cpe1.check_id == "installed_env_is_a_machine")
+    assert(cpe1.ansible_conditional == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]")
+    assert(cpe1.bash_conditional == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
+
+    # get CPE by ID and verify it's loaded
+    cpe2 = product_cpes.get_cpe("cpe:/a:machine")
+    assert(cpe2.name == "cpe:/a:machine")
+    assert(cpe2.title == "Bare-metal or Virtual Machine")
+    assert(cpe2.check_id == "installed_env_is_a_machine")
+    assert(cpe2.ansible_conditional == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]")
+    assert(cpe2.bash_conditional == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
