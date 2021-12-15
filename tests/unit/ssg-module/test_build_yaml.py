@@ -3,11 +3,14 @@ import tempfile
 
 import yaml
 import pytest
+from ssg.build_cpe import ProductCPEs
 
 import ssg.build_yaml
+from ssg.yaml import open_raw
 
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..", )
+DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 
 
 def test_serialize_rule():
@@ -127,3 +130,48 @@ def test_priority_ordering():
     ordered = ssg.build_yaml.reorder_according_to_ordering(
         to_order, ORDER + ["gaha"], regex=".*ha")
     assert ordered[:2] == ["gaha", "alpha"]
+
+
+@pytest.fixture
+def env_yaml():
+    env_yaml = dict()
+    product_yaml_path = os.path.join(DATADIR, "product.yml")
+    product_yaml = open_raw(product_yaml_path)
+    product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
+    env_yaml["product_cpes"] = ProductCPEs(product_yaml)
+    return env_yaml
+
+
+def test_platform_from_text_unknown_platform(env_yaml):
+    with pytest.raises(ssg.build_cpe.CPEDoesNotExist):
+        ssg.build_yaml.Platform.from_text("something_bogus", env_yaml)
+
+
+def test_platform_from_text_simple(env_yaml):
+    platform = ssg.build_yaml.Platform.from_text("machine", env_yaml)
+    assert platform.to_ansible_conditional() == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
+    assert(platform.to_bash_conditional() == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
+    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="machine"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:machine" /></ns0:logical-test></ns0:platform>'
+
+
+def test_platform_from_text_or(env_yaml):
+    platform = ssg.build_yaml.Platform.from_text("ntp or chrony", env_yaml)
+    assert platform.to_bash_conditional() == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
+    assert platform.to_ansible_conditional() == "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
+    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="chrony_or_ntp"><ns0:logical-test operator="OR" negate="false"><ns0:fact-ref name="cpe:/a:chrony" /><ns0:fact-ref name="cpe:/a:ntp" /></ns0:logical-test></ns0:platform>'
+
+
+def test_platform_from_text_complex_expression(env_yaml):
+    platform = ssg.build_yaml.Platform.from_text("systemd and !yum and (ntp or chrony)", env_yaml)
+    assert platform.to_bash_conditional() == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
+    assert platform.to_ansible_conditional() == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
+    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="systemd_and_chrony_or_ntp_and_not_yum"><ns0:logical-test operator="AND" negate="false"><ns0:logical-test operator="OR" negate="false"><ns0:fact-ref name="cpe:/a:chrony" /><ns0:fact-ref name="cpe:/a:ntp" /></ns0:logical-test><ns0:logical-test operator="AND" negate="true"><ns0:fact-ref name="cpe:/a:yum" /></ns0:logical-test><ns0:fact-ref name="cpe:/a:systemd" /></ns0:logical-test></ns0:platform>'
+
+
+def test_platform_equality(env_yaml):
+    platform1 = ssg.build_yaml.Platform.from_text("ntp or chrony", env_yaml)
+    platform2 = ssg.build_yaml.Platform.from_text("chrony or ntp", env_yaml)
+    assert platform1 == platform2
+    platform3 = ssg.build_yaml.Platform.from_text("(chrony and ntp)", env_yaml)
+    platform4 = ssg.build_yaml.Platform.from_text("chrony and ntp", env_yaml)
+    assert platform3 == platform4
