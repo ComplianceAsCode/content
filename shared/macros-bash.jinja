@@ -1637,3 +1637,26 @@ if [ "$skip" -ne 0 ]; then
     fi
 fi
 {{%- endmacro %}}
+
+{{%- macro bash_pkg_conditional(package) -%}}
+{{%- if package in platform_package_overrides -%}}
+  {{%- set package = platform_package_overrides[package] -%}}
+{{%- endif -%}}
+  {{% if pkg_system is defined %}}
+    {{%- if pkg_system == "rpm" -%}}
+        {{{ bash_pkg_conditional_rpm(package) }}}
+    {{%- elif pkg_system == "dpkg" -%}}
+        {{{ bash_pkg_conditional_dpkg(package) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
+    {{%- endif -%}}
+{{% endif %}}
+{{%- endmacro -%}}
+
+{{%- macro bash_pkg_conditional_rpm(package) -%}}
+rpm --quiet -q {{{ package }}}
+{{%- endmacro %}}
+
+{{%- macro bash_pkg_conditional_dpkg (package) -%}}
+dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
+{{%- endmacro -%}}

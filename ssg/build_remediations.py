@@ -27,13 +27,6 @@ REMEDIATION_TO_EXT_MAP = {
     'blueprint': '.toml'
 }
 
-PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND = {
-    'apt_get': "dpkg-query --show --showformat='${{db:Status-Status}}\\n' '{0}' 2>/dev/null " +
-               "| grep -q installed",
-    'dnf': 'rpm --quiet -q {0}',
-    'yum': 'rpm --quiet -q {0}',
-    'zypper': 'rpm --quiet -q {0}',
-}
 
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
 
@@ -237,24 +230,27 @@ class BashRemediation(Remediation):
         if stripped_fix_text == "":
             return result
 
-        rule_specific_platforms = set()
-        inherited_platforms = set()
+        rule_specific_cpe_platform_names = set()
+        inherited_cpe_platform_names = set()
         if self.associated_rule:
             # There can be repeated inherited platforms and rule platforms
-            inherited_platforms.update(self.associated_rule.inherited_platforms)
-            if self.associated_rule.platforms is not None:
-                rule_specific_platforms = {
-                    p for p in self.associated_rule.platforms if p not in inherited_platforms}
+            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
+            if self.associated_rule.cpe_platform_names is not None:
+                rule_specific_cpe_platform_names = {
+                    p for p in self.associated_rule.cpe_platform_names
+                    if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            self.generate_platform_conditional(p) for p in inherited_platforms]
+            env_yaml["product_cpes"].platforms[p].to_bash_conditional()
+            for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            self.generate_platform_conditional(p) for p in rule_specific_platforms]
+            env_yaml["product_cpes"].platforms[p].to_bash_conditional()
+            for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p is not None])
+            p for p in inherited_conditionals if p != ''])
         rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p is not None])
+            p for p in rule_specific_conditionals if p != ''])
 
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
@@ -283,28 +279,6 @@ class BashRemediation(Remediation):
             result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
 
         return result
-
-    def generate_platform_conditional(self, platform):
-        if platform == "machine":
-            # Based on check installed_env_is_a_container
-            return '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
-        elif platform is not None:
-            # Assume any other platform is a Package CPE
-
-            # Some package names are different from the platform names
-            if platform in self.local_env_yaml["platform_package_overrides"]:
-                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
-
-                # Workaround for platforms that are not Package CPEs
-                # Skip platforms that are not about packages installed
-                # These should be handled in the remediation itself
-                if not platform:
-                    return
-
-            # Adjust package check command according to the pkg_manager
-            pkg_manager = self.local_env_yaml["pkg_manager"]
-            pkg_check_command = PKG_MANAGER_TO_PACKAGE_CHECK_COMMAND[pkg_manager]
-            return pkg_check_command.format(platform)
 
 
 class AnsibleRemediation(Remediation):
@@ -417,24 +391,27 @@ class AnsibleRemediation(Remediation):
 
     def update_when_from_rule(self, to_update):
         additional_when = []
-
-        # There can be repeated inherited platforms and rule platforms
-        inherited_platforms = set()
-        rule_specific_platforms = set()
-        inherited_platforms.update(self.associated_rule.inherited_platforms)
-        if self.associated_rule.platforms is not None:
-            rule_specific_platforms = {
-                p for p in self.associated_rule.platforms if p not in inherited_platforms}
+        rule_specific_cpe_platform_names = set()
+        inherited_cpe_platform_names = set()
+        if self.associated_rule:
+            # There can be repeated inherited platforms and rule platforms
+            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
+            if self.associated_rule.cpe_platform_names is not None:
+                rule_specific_cpe_platform_names = {
+                    p for p in self.associated_rule.cpe_platform_names
+                    if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            self.generate_platform_conditional(p) for p in inherited_platforms]
+            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional()
+            for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            self.generate_platform_conditional(p) for p in rule_specific_platforms]
+            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional()
+            for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p is not None])
+            p for p in inherited_conditionals if p != ''])
         rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p is not None])
+            p for p in rule_specific_conditionals if p != ''])
 
         # remove conditionals related to package CPEs if the updated task
         # collects package facts
@@ -488,24 +465,6 @@ class AnsibleRemediation(Remediation):
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 return None
             return result
-
-    def generate_platform_conditional(self, platform):
-        if platform == "machine":
-            return 'ansible_virtualization_type not in '\
-                '["docker", "lxc", "openvz", "podman", "container"]'
-        elif platform is not None:
-            # Assume any other platform is a Package CPE
-
-            if platform in self.local_env_yaml["platform_package_overrides"]:
-                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
-
-                # Workaround for platforms that are not Package CPEs
-                # Skip platforms that are not about packages installed
-                # These should be handled in the remediation itself
-                if not platform:
-                    return
-
-            return '"' + platform + '" in ansible_facts.packages'
 
 
 class AnacondaRemediation(Remediation):

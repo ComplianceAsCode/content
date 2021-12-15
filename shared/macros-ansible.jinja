@@ -676,3 +676,10 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - { path: /etc/sudoers }
     - "{{ sudoers.files }}"
 {{%- endmacro -%}}
+
+{{%- macro ansible_pkg_conditional(package) -%}}
+{{%- if package in platform_package_overrides -%}}
+  {{%- set package = platform_package_overrides[package] -%}}
+{{%- endif -%}}
+'"{{{ package }}}" in ansible_facts.packages'
+{{%- endmacro -%}}
