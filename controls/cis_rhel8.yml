@@ -1896,20 +1896,22 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The rule below does not validate whether all current users' PASS_MAX_DAYS setting conforms to the control.
+    status: automated
     rules:
       - accounts_maximum_age_login_defs
       - var_accounts_maximum_age_login_defs=365
+      - accounts_password_set_max_life_existing
 
   - id: 5.5.1.2
     title: Ensure minimum days between password changes is 7 or more (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial  # The rule below does not validate whether all current users' PASS_MIN_DAYS setting conforms to the control.
+    status: automated
     rules:
       - accounts_minimum_age_login_defs
       - var_accounts_minimum_age_login_defs=7
+      - accounts_password_set_min_life_existing
 
   - id: 5.5.1.3
     title: Ensure password expiration warning days is 7 or more (Automated)
