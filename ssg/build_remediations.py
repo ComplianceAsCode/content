@@ -466,24 +466,6 @@ class AnsibleRemediation(Remediation):
                 return None
             return result
 
-    def generate_platform_conditional(self, platform):
-        if platform == "machine":
-            return 'ansible_virtualization_type not in '\
-                '["docker", "lxc", "openvz", "podman", "container"]'
-        elif platform is not None:
-            # Assume any other platform is a Package CPE
-
-            if platform in self.local_env_yaml["platform_package_overrides"]:
-                platform = self.local_env_yaml["platform_package_overrides"].get(platform)
-
-                # Workaround for platforms that are not Package CPEs
-                # Skip platforms that are not about packages installed
-                # These should be handled in the remediation itself
-                if not platform:
-                    return
-
-            return '"' + platform + '" in ansible_facts.packages'
-
 
 class AnacondaRemediation(Remediation):
     def __init__(self, file_path):
