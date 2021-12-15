@@ -182,3 +182,15 @@ def test_platform_equality(env_yaml):
     platform3 = ssg.build_yaml.Platform.from_text("(chrony and ntp)", env_yaml)
     platform4 = ssg.build_yaml.Platform.from_text("chrony and ntp", env_yaml)
     assert platform3 == platform4
+
+
+def test_platform_as_dict(env_yaml):
+    pl = ssg.build_yaml.Platform.from_text("chrony and rhel7", env_yaml)
+    # represent_as_dict is used during dump_yaml
+    d = pl.represent_as_dict()
+    assert d["name"] == "chrony_and_rhel7"
+    # the "rhel7" platform doesn't have any conditionals
+    # therefore the final conditional doesn't use it
+    assert d["ansible_conditional"] == "( \"chrony\" in ansible_facts.packages )"
+    assert d["bash_conditional"] == "( rpm --quiet -q chrony )"
+    assert "xml_content" in d
