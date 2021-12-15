@@ -1923,6 +1923,8 @@ controls:
       - accounts_password_warn_age_login_defs
       - var_accounts_password_warn_age_login_defs=7
 
+  # NEEDS RULE
+  # https://github.com/ComplianceAsCode/content/issues/5536
   - id: 5.5.1.4
     title: Ensure inactive password lock is 30 days or less (Automated)
     levels:
@@ -1973,6 +1975,7 @@ controls:
     rules:
       - accounts_root_gid_zero
 
+  # https://github.com/ComplianceAsCode/content/issues/5540
   - id: 5.5.5
     title: Ensure default user umask is 027 or more restrictive (Automated)
     levels:
