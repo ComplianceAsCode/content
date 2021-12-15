@@ -154,6 +154,13 @@ def test_platform_from_text_simple(env_yaml):
     assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="machine"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:machine" /></ns0:logical-test></ns0:platform>'
 
 
+def test_platform_from_text_simple_product_cpe(env_yaml):
+    platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", env_yaml)
+    assert platform.to_bash_conditional() == ""
+    assert platform.to_ansible_conditional() == ""
+    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="rhel7-workstation"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/o:redhat:enterprise_linux:7::workstation" /></ns0:logical-test></ns0:platform>'
+
+
 def test_platform_from_text_or(env_yaml):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", env_yaml)
     assert platform.to_bash_conditional() == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
