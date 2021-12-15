@@ -141,8 +141,10 @@ controls:
         The kubeconfig file for kubelet controls various parameters for the kubelet service in the
         worker node. You should set its file ownership to maintain the integrity of the file. The file
         should be owned by root:root.
-      status: pending
-      rules: []
+      status: automated
+      rules:
+      - file_owner_worker_kubeconfig
+      - file_groupowner_worker_kubeconfig
     - id: 3.1.3
       title: >-
         3.1.3 Ensure that the kubelet configuration file has permissions set to 644 or more restrictive
@@ -158,10 +160,11 @@ controls:
         specified by the --config argument. If this file is specified you should restrict its file
         permissions to maintain the integrity of the file. The file should be writable by only the
         administrators on the system.
-      status: pending
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - file_permissions_kubelet_conf
     - id: 3.1.4
       title: >-
         3.1.4 Ensure that the kubelet configuration file ownership is set to root:root
@@ -176,10 +179,12 @@ controls:
         specified by the --config argument. If this file is specified you should restrict its file
         permissions to maintain the integrity of the file. The file should be writable by only the
         administrators on the system.
-      status: pending
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - file_groupowner_kubelet_conf
+      - file_owner_kubelet_conf
   - id: '3.2'
     title: >-
       3.2 Kubelet
@@ -196,69 +201,186 @@ controls:
 
       If the --config argument is present, this gives the location of the Kubelet config file. This
       config file could be in JSON or YAML format depending on your distribution.
-    status: pending
+    status: automated
     levels:
     - level_2
     controls:
     - id: 3.2.1
       title: >-
         3.2.1 Ensure that the --anonymous-auth argument is set to false
-      status: pending
+      description: |-
+        Description:
+
+        Disable anonymous requests to the Kubelet server.
+
+        Rationale:
+
+        When enabled, requests that are not rejected by other configured authentication methods
+        are treated as anonymous requests. These requests are then served by the Kubelet server.
+        You should rely on authentication to authorize access and disallow anonymous requests.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_anonymous_auth
     - id: 3.2.2
       title: >-
         3.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow
-      status: pending
+      description: |-
+        Description:
+
+        Do not allow all requests. Enable explicit authorization.
+
+        Rationale:
+
+        Kubelets, by default, allow all authenticated requests (even anonymous ones) without
+        needing explicit authorization checks from the apiserver. You should restrict this behavior
+        and only allow explicitly authorized requests.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_authorization_mode
     - id: 3.2.3
       title: >-
         3.2.3 Ensure that the --client-ca-file argument is set as appropriate
-      status: pending
+      description: |-
+        Description:
+
+        Enable Kubelet authentication using certificates.
+
+        Rationale:
+
+        The connections from the apiserver to the kubelet are used for fetching logs for pods,
+        attaching (through kubectl) to running pods, and using the kubelet’s port-forwarding
+        functionality. These connections terminate at the kubelet’s HTTPS endpoint. By default, the
+        apiserver does not verify the kubelet’s serving certificate, which makes the connection
+        subject to man-in-the-middle attacks, and unsafe to run over untrusted and/or public
+        networks. Enabling Kubelet certificate authentication ensu
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_configure_client_ca
     - id: 3.2.4
       title: >-
         3.2.4 Ensure that the --read-only-port is secured
-      status: pending
+      description: |-
+        Description:
+
+        Disable the read-only port.
+
+        Rationale:
+
+        The Kubelet process provides a read-only API in addition to the main Kubelet API.
+        Unauthenticated access is provided to this read-only API which could possibly retrieve
+        potentially sensitive information about the cluster.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_read_only_port_secured
     - id: 3.2.5
       title: >-
         3.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0
-      status: pending
+      description: |-
+        Description:
+
+        Do not disable timeouts on streaming connections.
+
+        Rationale:
+
+        Setting idle timeouts ensures that you are protected against Denial-of-Service attacks,
+        inactive connections and running out of ephemeral ports.
+        Note: By default, --streaming-connection-idle-timeout is set to 4 hours which might be
+        too high for your environment. Setting this as appropriate would additionally ensure that
+        such streaming connections are timed out after serving legitimate use cases.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_enable_streaming_connections
     - id: 3.2.6
       title: >-
         3.2.6 Ensure that the --protect-kernel-defaults argument is set to true
-      status: pending
+      description: |-
+        Description:
+
+        Protect tuned kernel parameters from overriding kubelet default kernel parameter values.
+
+        Rationale:
+
+        Kernel parameters are usually tuned and hardened by the system administrators before
+        putting the systems into production. These parameters protect the kernel and the system.
+        Your kubelet kernel defaults that rely on such parameters should be appropriately set to
+        match the desired secured system state. Ignoring this could potentially lead to running
+        pods with undesired kernel behavior.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_enable_protect_kernel_defaults
     - id: 3.2.7
       title: >-
         3.2.7 Ensure that the --make-iptables-util-chains argument is set to true
-      status: pending
+      description: |-
+        Description:
+
+        Allow Kubelet to manage iptables.
+
+        Rationale:
+
+        Kubelets can automatically manage the required changes to iptables based on how you
+        choose your networking options for the pods. It is recommended to let kubelets manage
+        the changes to iptables. This ensures that the iptables configuration remains in sync with
+        pods networking configuration. Manually configuring iptables with dynamic pod network
+        configuration changes might hamper the communication between pods/containers and to
+        the outside world. You might have iptables rules too restrictive or too open.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_enable_iptables_util_chains
     - id: 3.2.8
       title: >-
         3.2.8 Ensure that the --hostname-override argument is not set
-      status: pending
+      description: |-
+        Description:
+
+        Do not override node hostnames.
+
+        Rationale:
+
+        Overriding hostnames could potentially break TLS setup between the kubelet and the
+        apiserver. Additionally, with overridden hostnames, it becomes increasingly difficult to
+        associate logs with a particular node and process them for security analytics. Hence, you
+        should setup your kubelet nodes with resolvable FQDNs and avoid overriding the
+        hostnames with IPs.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_disable_hostname_override
     - id: 3.2.9
       title: >-
         3.2.9 Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture
+      # TODO(jaosorior): I'm unsure how to check this as the value is not
+      # set in EKS, but the result of evaluating the dynamic config
+      # endpoint gives out a correct value... so it seems that it
+      # just passes by default.
+      description: |-
+        Description:
+
+        Security relevant information should be captured. The --eventRecordQPS flag on the
+        Kubelet can be used to limit the rate at which events are gathered. Setting this too low
+        could result in relevant events not being logged, however the unlimited setting of 0 could
+        result in a denial of service on the kubelet.
+
+        Rationale:
+
+        It is important to capture all events and not restrict event creation. Events are an important
+        source of security information and analytics that ensure that your environment is
+        consistently monitored using the event data.
       status: pending
       levels:
       - level_2
@@ -266,17 +388,46 @@ controls:
     - id: 3.2.10
       title: >-
         3.2.10 Ensure that the --rotate-certificates argument is not set to false
-      status: pending
+      description: |-
+        Description:
+
+        Enable kubelet client certificate rotation.
+
+        Rationale:
+
+        The --rotate-certificates setting causes the kubelet to rotate its client certificates by
+        creating new CSRs as its existing credentials expire. This automated periodic rotation
+        ensures that the there is no downtime due to expired certificates and thus addressing
+        availability in the CIA security triad.
+      status: automated
       levels:
       - level_2
-      rules: []
+      rules:
+      - kubelet_enable_client_cert_rotation
+      - kubelet_enable_cert_rotation
     - id: 3.2.11
       title: >-
         3.2.11 Ensure that the RotateKubeletServerCertificate argument is set to true
-      status: pending
+      description: |-
+        Description:
+
+        Enable kubelet server certificate rotation.
+
+        Rationale:
+
+        RotateKubeletServerCertificate causes the kubelet to both request a serving certificate
+        after bootstrapping its client credentials and rotate the certificate as its existing credentials
+        expire. This automated periodic rotation ensures that the there are no downtimes due to
+        expired certificates and thus addressing availability in the CIA security triad.
+
+        Note: This recommendation only applies if you let kubelets get their certificates from the
+        API server. In case your kubelet certificates come from an outside authority/tool (e.g.
+        Vault) then you need to take care of rotation yourself.
+      status: automated
       levels:
       - level_1
-      rules: []
+      rules:
+      - kubelet_enable_server_cert_rotation
 - id: '4'
   title: >-
     4 Policies

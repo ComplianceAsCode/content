@@ -1,8 +1,14 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
+
+{{%- if product == "eks"  %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
 
 title: 'kubelet - Allow Automatic Firewall Configuration'
 
@@ -11,7 +17,7 @@ description: |-
     the containers required ports and connections to networking resources and destinations
     parameters potentially creating a security incident.
     To allow the kubelet to modify the firewall, edit the kubelet configuration
-    file <tt>/etc/kubernetes/kubelet.conf</tt>
+    file <tt>{{{ kubeletconf_path }}}</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>makeIPTablesUtilChains: true</pre>
 
@@ -27,13 +33,14 @@ ocil_clause: 'the kubelet cannot modify the firewall settings'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep makeIPTablesUtilChains /etc/kubernetes/kubelet.conf</pre>
+    <pre>$ sudo grep makeIPTablesUtilChains {{{ kubeletconf_path }}}</pre>
     The output should return <tt>true</tt>.
 
 identifiers:
     cce@ocp4: CCE-83775-7
 
 references:
+    cis@eks: 3.2.7
     cis@ocp4: 4.2.7
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
@@ -42,7 +49,7 @@ references:
 template:
     name: yamlfile_value
     vars:
-        filepath: /etc/kubernetes/kubelet.conf
+        filepath: {{{ kubeletconf_path }}}
         yamlpath: ".makeIPTablesUtilChains"
         values:
          - value: "true"

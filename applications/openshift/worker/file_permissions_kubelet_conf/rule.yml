@@ -1,13 +1,19 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
+
+{{%- if product == "eks" %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
 
 title: 'Verify Permissions on The Kubelet Configuration File'
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="0644") }}}
+    {{{ describe_file_permissions(file=kubeletconf_path, perms="0644") }}}
 
 rationale: |-
     If the kubelet configuration file is writable by a group-owner or the
@@ -21,18 +27,19 @@ identifiers:
     cce@ocp4: CCE-83470-5
 
 references:
+    cis@eks: 3.1.3
     cis@ocp4: 4.1.5
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file=kubeletconf_path, perms="-rw-r--r--") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/kubernetes/kubelet.conf", perms="-rw-r--r--") }}}
+    {{{ ocil_file_permissions(file=kubeletconf_path, perms="-rw-r--r--") }}}
 
 template:
     name: file_permissions
     vars:
-        filepath: /etc/kubernetes/kubelet.conf
+        filepath: {{{ kubeletconf_path }}}
         filemode: '0644'

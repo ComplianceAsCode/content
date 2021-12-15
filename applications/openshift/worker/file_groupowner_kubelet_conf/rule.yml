@@ -1,12 +1,18 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
+
+{{%- if product == "eks" %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
 
 title: 'Verify Group Who Owns The Kubelet Configuration File'
 
-description: '{{{ describe_file_group_owner(file="/etc/kubernetes/kubelet.conf", group="root") }}}'
+description: '{{{ describe_file_group_owner(file=kubeletconf_path, group="root") }}}'
 rationale: |-
     The kubelet configuration file contains information about the configuration of the
     OpenShift node that is configured on the system. Protection of this file is
@@ -18,18 +24,19 @@ identifiers:
     cce@ocp4: CCE-84233-6
 
 references:
+    cis@eks: 3.1.4
     cis@ocp4: 4.1.6
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/kubernetes/kubelet.conf", group="root") }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file=kubeletconf_path, group="root") }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/etc/kubernetes/kubelet.conf", group="root") }}}
+    {{{ ocil_file_group_owner(file=kubeletconf_path, group="root") }}}
 
 template:
     name: file_groupowner
     vars:
-        filepath: /etc/kubernetes/kubelet.conf
+        filepath: {{{ kubeletconf_path }}}
         filegid: '0'

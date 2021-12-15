@@ -1,8 +1,14 @@
 documentation_complete: true
 
-prodtype: ocp4
+prodtype: eks,ocp4
 
-platform: ocp4-node
+platform: {{{ product }}}-node
+
+{{%- if product == "eks"  %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- else %}}
+{{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- endif %}}
 
 title: 'kubelet - Enable Protect Kernel Defaults'
 
@@ -11,6 +17,7 @@ description: |-
   Protect tuned kernel parameters from being overwritten by the kubelet.
   </p>
 
+{{%- if product == "ocp4"  %}}
   <p>
   Before enabling this kernel parameter, it's important and
   necessary to first create a <tt>MachineConfig</tt> object that persist
@@ -69,6 +76,7 @@ description: |-
   {{{ weblink(link="https://docs.openshift.com/container-platform/4.6/nodes/nodes/nodes-nodes-managing.html",
               text="the documentation") }}}
   </p>
+{{%- endif %}}
 
 rationale: |-
   Kernel parameters are usually tuned and hardened by the system administrators
@@ -85,13 +93,14 @@ ocil_clause: 'the kubelet can modify kernel parameters'
 
 ocil: |-
   Run the following command on the kubelet node(s):
-  <pre>$ sudo grep protectKernelDefaults /etc/kubernetes/kubelet.conf</pre>
+  <pre>$ sudo grep protectKernelDefaults {{{ kubeletconf_path }}}</pre>
   The output should return <tt>true</tt>.
 
 #identifiers:
 #   cce@ocp4: 
 
 references:
+  cis@eks: 3.2.6
   cis@ocp4: 4.2.6
   nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
   nist: CM-6,CM-6(1)
@@ -100,7 +109,7 @@ references:
 template:
   name: yamlfile_value
   vars:
-    filepath: /etc/kubernetes/kubelet.conf
+    filepath: {{{ kubeletconf_path }}}
     yamlpath: ".protectKernelDefaults"
     values:
      - value: "true"
