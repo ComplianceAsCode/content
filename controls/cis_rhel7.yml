@@ -2273,8 +2273,8 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # we have rule, but no check or remediations
-    related_rules:
+    status: automated
+    rules:
     - accounts_user_interactive_home_directory_exists
 
   - id: 6.2.12
@@ -2282,8 +2282,8 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing checks and remediations
-    related_rules:
+    status: automated
+    rules:
     - file_ownership_home_directories
 
   - id: 6.2.13
@@ -2291,8 +2291,8 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rule missing checks and remediations
-    related_rules:
+    status: automated
+    rules:
     - file_permissions_home_directories
 
   - id: 6.2.14
