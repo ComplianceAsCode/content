@@ -2211,19 +2211,18 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no  # The rule below exists, but does not have any OVAL checks or remediations.
-    related_rules:
+    status: automated
+    rules:
       - file_permissions_home_directories
 
-  # NEEDS RULE (for user ownership)
-  # https://github.com/ComplianceAsCode/content/issues/5507
   - id: 6.2.8
     title: Ensure users own their home directories (Automated)
     levels:
       - l1_server
       - l1_workstation
-    automated: no  # The rule below exists, but does not have any OVAL checks or remediations.
-    related_rules:
+    status: automated
+    rules:
+      - file_ownership_home_directories
       - file_groupownership_home_directories
 
   # NEEDS RULE
@@ -2330,6 +2329,6 @@ controls:
     levels:
       - l1_server
       - l1_workstation
-    automated: no  # The rule below exists, but does not have any OVAL checks or remediations.
-    related_rules:
+    status: automated
+    rules:
       - accounts_user_interactive_home_directory_exists
