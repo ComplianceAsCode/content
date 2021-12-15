@@ -1995,14 +1995,16 @@ controls:
       - no_direct_root_logins
       - securetty_root_login_console_only
 
-  # NEEDS RULE
-  # https://github.com/ComplianceAsCode/content/issues/5541
   - id: 5.7
     title: Ensure access to the su command is restricted (Automated)
     levels:
       - l1_server
       - l1_workstation
     status: partial
+    notes: |-
+      The recommendation states the the members of the "wheel" group should be checked and match the
+      site policy. But the site policy may allow or require different users for the group, so the
+      members of the "wheel" group need to be checked manually.
     rules:
       - use_pam_wheel_for_su
 
