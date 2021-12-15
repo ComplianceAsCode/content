@@ -51,7 +51,7 @@ ocil: |-
     <pre>fips-mode-setup --check</pre>
     The output should contain the following:
     <pre>FIPS mode is enabled.</pre>
-    To verify that cryptography policy has been configured correctly, run the
+    To verify that the cryptographic policy has been configured correctly, run the
     following command:
     <pre>$ update-crypto-policies --show</pre>
     The output should return <pre>{{{ xccdf_value("var_system_crypto_policy") }}}</pre>.
