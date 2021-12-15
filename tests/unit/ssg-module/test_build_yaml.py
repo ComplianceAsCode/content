@@ -150,7 +150,7 @@ def test_platform_from_text_unknown_platform(env_yaml):
 def test_platform_from_text_simple(env_yaml):
     platform = ssg.build_yaml.Platform.from_text("machine", env_yaml)
     assert platform.to_ansible_conditional() == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
-    assert(platform.to_bash_conditional() == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
+    assert platform.to_bash_conditional() == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]"
     assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="machine"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:machine" /></ns0:logical-test></ns0:platform>'
 
 
