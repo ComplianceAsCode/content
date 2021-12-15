@@ -1645,7 +1645,12 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # rules missing
+    status: automated
+    rules:
+    - file_groupowner_at_allow
+    - file_owner_at_allow
+    - file_at_deny_not_exist
+    - file_permissions_at_allow
 
   - id: 5.2.1
     title: Ensure sudo is installed (Automated)
