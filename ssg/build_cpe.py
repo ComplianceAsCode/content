@@ -203,9 +203,9 @@ class CPEALLogicalTest(Function):
             a.to_bash_conditional() for a in self.args
             if a.to_bash_conditional() != '']
         if self.is_or():
-            op = "||"
+            op = " || "
         elif self.is_and():
-            op = "&&"
+            op = " && "
         cond += op.join(child_bash_conds)
         cond += " )"
         return cond
