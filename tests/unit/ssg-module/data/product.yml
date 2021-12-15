@@ -8,6 +8,11 @@ benchmark_root: "../../linux_os/guide"
 profiles_root: "./profiles"
 
 pkg_manager: "yum"
+# in some product.ymls pkg_system is inferred from pkg_manager by
+# get_implied_properties, but it would be better to set it explicitly here,
+# because we will not need to involve get_implied_properties
+# in every test
+pkg_system: "rpm"
 
 init_system: "systemd"
 
