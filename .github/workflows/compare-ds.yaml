@@ -16,11 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - name: Find forking point
         env:
           BASE_BRANCH: ${{ github.base_ref }}
-        run: echo "::set-output name=FORK_POINT::$(git merge-base --fork-point origin/$BASE_BRANCH)"
+        run: echo "::set-output name=FORK_POINT::$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})"
         id: fork_point
       - name: Checkout fork point
         uses: actions/checkout@v2
@@ -84,7 +85,6 @@ jobs:
           body="${body//$'\r'/'%0D'}"
           echo ::set-output name=log::$body
       - name: Find Comment
-        if: ${{ steps.compare_ds.outputs.COMPARE_DS_OUTPUT_SIZE != '0'}}
         uses: peter-evans/find-comment@v1
         id: fc
         with:
@@ -108,3 +108,10 @@ jobs:
 
             </details>
           edit-mode: replace
+      - name: Delete existing comment in case new commits trigger no changes in Compare DS tool
+        if: ${{ (steps.compare_ds.outputs.COMPARE_DS_OUTPUT_SIZE == '0' || steps.ctf.outputs.CTF_OUTPUT_SIZE == '0') && steps.fc.outputs.comment-id != 0 }}
+        uses: jungwinter/comment@v1
+        with:
+          type: delete
+          comment_id: ${{ steps.fc.outputs.comment-id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
