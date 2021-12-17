@@ -2330,6 +2330,7 @@ controls:
     levels:
     - l1_server
     - l1_workstation
-    automated: no # we have a rule but it removes additionally /etc/hosts.equiv
-    related_rules:
+    status: automated
+    notes: The rule also removes /etc/hosts.equiv
+    rules:
     - no_rsh_trust_files
