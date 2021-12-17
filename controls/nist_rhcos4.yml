@@ -11675,12 +11675,13 @@ controls:
   - high
   - moderate
 - id: SA-10(1)
-  status: pending
+  status: inherently met
   notes: |-
-    A control response to SA-10(1) is planned. Progress
-    can be tracked at:
+    CoreOS updates are distributed as signed container images and verified as such, the cluster version operator from OpenShift
+    will by default GPG verify the integrity of the release image before applying it. The release image contains a sha256 digest
+    of machine-os-content which is used by the Machine Config Operator for updates. [1]
 
-    https://issues.redhat.com/browse/CMP-373
+    [1] https://github.com/openshift/machine-config-operator/blob/master/docs/OSUpgrades.md#questions-and-answers
   rules: []
   description: |-
     The organization requires the developer of the information system, system component, or information system service to enable integrity verification of software and firmware components.
