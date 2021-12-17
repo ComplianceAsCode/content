@@ -56,6 +56,7 @@ def calculate_stats(ctrls):
     print_specific_stat("Assessed", assessed, applicable)
     print()
     print_specific_stat("Automated", ctrlstats[controls.Status.AUTOMATED], applicable)
+    print_specific_stat("Manual", ctrlstats[controls.Status.MANUAL], applicable)
     print_specific_stat("Supported", ctrlstats[controls.Status.SUPPORTED], applicable)
     print_specific_stat("Documentation", ctrlstats[controls.Status.DOCUMENTATION], applicable)
     print_specific_stat("Inherently Met", ctrlstats[controls.Status.INHERENTLY_MET], applicable)
@@ -64,8 +65,8 @@ def calculate_stats(ctrls):
     applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
     assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
         .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
-        .union(ctrllist[controls.Status.PARTIAL])
-    print("Missing:", ", ".join(sorted(c.id for c in applicablelist - assessedlist)))
+        .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.MANUAL])
+    print("Missing:", ", ".join(sorted(str(c.id) for c in applicablelist - assessedlist)))
 
 
 def print_specific_stat(stat, current, total):

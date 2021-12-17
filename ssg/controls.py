@@ -22,6 +22,7 @@ class Status:
     PARTIAL = "partial"
     SUPPORTED = "supported"
     AUTOMATED = "automated"
+    MANUAL = "manual"
     DOES_NOT_MEET = "does not meet"
 
     def __init__(self, status):
@@ -41,6 +42,7 @@ class Status:
             cls.PARTIAL,
             cls.SUPPORTED,
             cls.AUTOMATED,
+            cls.MANUAL,
             cls.DOES_NOT_MEET
         ]
 
