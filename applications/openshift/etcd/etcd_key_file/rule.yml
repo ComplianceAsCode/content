@@ -38,7 +38,7 @@ ocil: |-
 
 warnings:
     - general: |-
-        {{{ openshift_resource_path_xccdf("var_openshift_etcd_pod") | indent(8) }}}
+        {{{ openshift_cluster_setting("{{.var_openshift_etcd_pod}}") | indent(8) }}}
 
 template:
     name: yamlfile_value
