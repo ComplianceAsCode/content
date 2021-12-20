@@ -43,7 +43,7 @@ identifiers:
 
 warnings:
 - general: |-
-    {{{ openshift_resource_path_xccdf("var_openshift_kube_controller_manager_config") | indent(4) }}}
+    {{{ openshift_cluster_setting("{{.var_openshift_kube_controller_manager_config}}") | indent(4) }}}
 - functionality: |-
     This recommendation only applies if you let kubelets get their
     certificates from the API Server. In case your certificates come from an

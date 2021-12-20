@@ -53,7 +53,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_resource_path_xccdf("var_openshift_kube_apiserver_config") | indent(4) }}}
+    {{{ openshift_cluster_setting("{{.var_openshift_kube_apiserver_config}}") | indent(4) }}}
 - management: |-
     Once configured, API Server clients that cannot support modern
     cryptographic ciphers will not be able to make connections to the API
