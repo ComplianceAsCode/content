@@ -35,7 +35,7 @@
     - { path: /etc/grub2.cfg }
     - { path: /etc/default/grub }
   with_items: "{{ stat_results.results }}"
-  when: ( kexec_arch == "b64" ) and ( item.stat.exists == False )
+  when: ( kexec_arch == "b64" ) and ( not item.stat.exists )
   register: dropped_noexec_cfg
 
 - name: make grub config
