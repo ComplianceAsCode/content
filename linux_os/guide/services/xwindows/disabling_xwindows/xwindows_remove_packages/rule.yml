@@ -64,10 +64,8 @@ ocil: |-
     For each <tt>package</tt> mentioned above you should receive following line:
     <pre>package &lt;package&gt; is not installed</pre>
 
-{{% if product == "rhel8" %}}
 platforms:
 {{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
-{{% endif %}}
 
 warnings:
     - functionality: |-

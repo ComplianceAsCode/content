@@ -56,13 +56,11 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="PermitRootLogin", value="no") }}}
 
-{{% if product == "rhel8" %}}
 platforms:
 {{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
 
 warnings:
 {{{ ovirt_rule_notapplicable_warning("RHV hosts require root access to be managed by RHV Manager") | indent(4) }}}
-{{% endif %}}
 
 template:
     name: sshd_lineinfile
