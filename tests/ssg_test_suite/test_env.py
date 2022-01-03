@@ -71,9 +71,14 @@ class TestEnv(object):
         self.product = None
 
         self.have_local_oval_graph = False
-        p = subprocess.run(['arf-to-graph', '--version'], capture_output=True)
-        if p.returncode == 0:
-            self.have_local_oval_graph = True
+        try:
+            p = subprocess.run(['arf-to-graph', '--version'], capture_output=True)
+            if p.returncode == 0:
+                self.have_local_oval_graph = True
+        except FileNotFoundError:
+            # There is no arf-to-graph - in that case the proces can't be even started,
+            # not to mention return codes.
+            pass
 
     def arf_to_html(self, arf_filename):
         if not self.have_local_oval_graph:
