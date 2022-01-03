@@ -56,7 +56,5 @@ platforms:
     - no_ovirt
 
 warnings:
-    - general: |-
-        This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
-        RHV requires to perform operations as root without being asked for password.
+{{{ ovirt_rule_notapplicable_warning("RHV requires to perform operations as root without being asked for password") | indent(4) }}}
 {{% endif %}}

@@ -33,9 +33,7 @@ platforms:
     - no_ovirt
 
 warnings:
-    - general: |-
-        This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
-        RHV requires tuned package for tuning profiles that can enhance virtualization performance.
+{{{ ovirt_rule_notapplicable_warning("RHV requires tuned package for tuning profiles that can enhance virtualization performance") | indent(4) }}}
 {{% endif %}}
 
 template:

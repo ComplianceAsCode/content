@@ -30,9 +30,7 @@ platforms:
     - no_ovirt
 
 warnings:
-    - general: |-
-        This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
-        RHV uses NFS storage, which has dependency on gssproxy.
+{{{ ovirt_rule_notapplicable_warning("RHV uses NFS storage, which has dependency on gssproxy") | indent(4) }}}
 {{% endif %}}
 
 template:
