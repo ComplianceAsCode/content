@@ -27,7 +27,7 @@ references:
 
 {{% if product == "rhel8" %}}
 platforms:
-    - no_ovirt
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
 
 warnings:
 {{{ ovirt_rule_notapplicable_warning("RHV uses NFS storage, which has dependency on gssproxy") | indent(4) }}}

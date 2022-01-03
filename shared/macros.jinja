@@ -1608,3 +1608,15 @@ The audit daemon must be restarted for the changes to take effect.
     {{{ rationale }}}.
 {{%- endif %}}
 {{% endmacro %}}
+
+{{#
+
+    Makes a rule not applicable on systems where oVirt is installed.
+    Note: This is only applied on RHEL8 content.
+
+#}}
+{{% macro rule_notapplicable_when_ovirt_installed() %}}
+{{%- if product == "rhel8" %}}
+- no_ovirt
+{{%- endif %}}
+{{% endmacro %}}

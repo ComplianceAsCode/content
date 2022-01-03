@@ -53,7 +53,7 @@ ocil: |-
 
 {{% if product == "rhel8" %}}
 platforms:
-    - no_ovirt
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
 
 warnings:
 {{{ ovirt_rule_notapplicable_warning("RHV requires to perform operations as root without being asked for password") | indent(4) }}}
