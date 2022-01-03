@@ -3,9 +3,11 @@ import tempfile
 
 import yaml
 import pytest
+import xml.etree.ElementTree as ET
 from ssg.build_cpe import ProductCPEs
 
 import ssg.build_yaml
+from ssg.constants import cpe_language_namespace
 from ssg.yaml import open_raw
 
 
@@ -149,30 +151,94 @@ def test_platform_from_text_unknown_platform(env_yaml):
 
 def test_platform_from_text_simple(env_yaml):
     platform = ssg.build_yaml.Platform.from_text("machine", env_yaml)
-    assert platform.to_ansible_conditional() == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
-    assert platform.to_bash_conditional() == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]"
-    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="machine"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/a:machine" /></ns0:logical-test></ns0:platform>'
+    assert platform.to_ansible_conditional() == \
+        "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
+    assert platform.to_bash_conditional() == \
+        "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]"
+    platform_el = ET.fromstring(platform.to_xml_element())
+    assert platform_el.tag == "{%s}platform" % cpe_language_namespace
+    assert platform_el.get("id") == "machine"
+    logical_tests = platform_el.findall(
+        "{%s}logical-test" % cpe_language_namespace)
+    assert len(logical_tests) == 1
+    assert logical_tests[0].get("operator") == "AND"
+    assert logical_tests[0].get("negate") == "false"
+    fact_refs = logical_tests[0].findall(
+        "{%s}fact-ref" % cpe_language_namespace)
+    assert len(fact_refs) == 1
+    assert fact_refs[0].get("name") == "cpe:/a:machine"
 
 
 def test_platform_from_text_simple_product_cpe(env_yaml):
     platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", env_yaml)
     assert platform.to_bash_conditional() == ""
     assert platform.to_ansible_conditional() == ""
-    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="rhel7-workstation"><ns0:logical-test operator="AND" negate="false"><ns0:fact-ref name="cpe:/o:redhat:enterprise_linux:7::workstation" /></ns0:logical-test></ns0:platform>'
+    platform_el = ET.fromstring(platform.to_xml_element())
+    assert platform_el.tag == "{%s}platform" % cpe_language_namespace
+    assert platform_el.get("id") == "rhel7-workstation"
+    logical_tests = platform_el.findall(
+        "{%s}logical-test" % cpe_language_namespace)
+    assert len(logical_tests) == 1
+    assert logical_tests[0].get("operator") == "AND"
+    assert logical_tests[0].get("negate") == "false"
+    fact_refs = logical_tests[0].findall(
+        "{%s}fact-ref" % cpe_language_namespace)
+    assert len(fact_refs) == 1
+    assert fact_refs[0].get("name") == \
+        "cpe:/o:redhat:enterprise_linux:7::workstation"
 
 
 def test_platform_from_text_or(env_yaml):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", env_yaml)
     assert platform.to_bash_conditional() == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
     assert platform.to_ansible_conditional() == "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
-    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="chrony_or_ntp"><ns0:logical-test operator="OR" negate="false"><ns0:fact-ref name="cpe:/a:chrony" /><ns0:fact-ref name="cpe:/a:ntp" /></ns0:logical-test></ns0:platform>'
+    platform_el = ET.fromstring(platform.to_xml_element())
+    assert platform_el.tag == "{%s}platform" % cpe_language_namespace
+    assert platform_el.get("id") == "chrony_or_ntp"
+    logical_tests = platform_el.findall(
+        "{%s}logical-test" % cpe_language_namespace)
+    assert len(logical_tests) == 1
+    assert logical_tests[0].get("operator") == "OR"
+    assert logical_tests[0].get("negate") == "false"
+    fact_refs = logical_tests[0].findall(
+        "{%s}fact-ref" % cpe_language_namespace)
+    assert len(fact_refs) == 2
+    assert fact_refs[0].get("name") == "cpe:/a:chrony"
+    assert fact_refs[1].get("name") == "cpe:/a:ntp"
 
 
 def test_platform_from_text_complex_expression(env_yaml):
     platform = ssg.build_yaml.Platform.from_text("systemd and !yum and (ntp or chrony)", env_yaml)
     assert platform.to_bash_conditional() == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
     assert platform.to_ansible_conditional() == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
-    assert platform.to_xml_element() == b'<?xml version=\'1.0\' encoding=\'utf8\'?>\n<ns0:platform xmlns:ns0="http://cpe.mitre.org/language/2.0" id="systemd_and_chrony_or_ntp_and_not_yum"><ns0:logical-test operator="AND" negate="false"><ns0:logical-test operator="OR" negate="false"><ns0:fact-ref name="cpe:/a:chrony" /><ns0:fact-ref name="cpe:/a:ntp" /></ns0:logical-test><ns0:logical-test operator="AND" negate="true"><ns0:fact-ref name="cpe:/a:yum" /></ns0:logical-test><ns0:fact-ref name="cpe:/a:systemd" /></ns0:logical-test></ns0:platform>'
+    platform_el = ET.fromstring(platform.to_xml_element())
+    assert platform_el.tag == "{%s}platform" % cpe_language_namespace
+    assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
+    logical_tests = platform_el.findall(
+        "{%s}logical-test" % cpe_language_namespace)
+    assert len(logical_tests) == 1
+    assert logical_tests[0].get("operator") == "AND"
+    assert logical_tests[0].get("negate") == "false"
+    logical_tests_2 = logical_tests[0].findall(
+        "{%s}logical-test" % cpe_language_namespace)
+    assert len(logical_tests_2) == 2
+    assert logical_tests_2[0].get("operator") == "OR"
+    assert logical_tests_2[0].get("negate") == "false"
+    fact_refs = logical_tests_2[0].findall(
+        "{%s}fact-ref" % cpe_language_namespace)
+    assert len(fact_refs) == 2
+    assert fact_refs[0].get("name") == "cpe:/a:chrony"
+    assert fact_refs[1].get("name") == "cpe:/a:ntp"
+    assert logical_tests_2[1].get("operator") == "AND"
+    assert logical_tests_2[1].get("negate") == "true"
+    fact_refs_2 = logical_tests_2[1].findall(
+        "{%s}fact-ref" % cpe_language_namespace)
+    assert len(fact_refs_2) == 1
+    assert fact_refs_2[0].get("name") == "cpe:/a:yum"
+    fact_refs_3 = logical_tests[0].findall(
+        "{%s}fact-ref" % cpe_language_namespace)
+    assert len(fact_refs_3) == 1
+    assert fact_refs_3[0].get("name") == "cpe:/a:systemd"
 
 
 def test_platform_equality(env_yaml):
