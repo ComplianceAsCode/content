@@ -61,9 +61,7 @@ platforms:
     - no_ovirt
 
 warnings:
-    - general: |-
-        This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
-        RHV hosts require root access to be managed by RHV Manager.
+{{{ ovirt_rule_notapplicable_warning("RHV hosts require root access to be managed by RHV Manager") | indent(4) }}}
 {{% endif %}}
 
 template:
