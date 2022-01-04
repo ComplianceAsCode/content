@@ -258,9 +258,9 @@ do
                 # two consecutive spaces after joining remaining parts of the rule together
                 concrete_rule="$(echo "$concrete_rule" | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\ \?\)\+/\1#\2#/p")"
 
-                # Split concrete_rule into head, perm, and tail sections using hash '#' delimiter
+                # Split concrete_rule into head and tail sections using hash '#' delimiter
+                # The second column contains the permission section, which we don't need to extract
                 rule_head=$(cut -d '#' -f 1 <<< "$concrete_rule")
-                rule_perm=$(cut -d '#' -f 2 <<< "$concrete_rule")
                 rule_tail=$(cut -d '#' -f 3 <<< "$concrete_rule")
 
                 # Remove permissions section from existing rule in the file
@@ -1514,9 +1514,6 @@ then
 fi
 {{%- endif %}}
 
-# Indicator that we want to append $full_rule into $audit_file or edit a rule in it
-append_expected_rule=0
-
 # After converting to jinja, we cannot return; therefore we skip the rest of the macro if needed instead
 skip=1
 
@@ -1579,7 +1576,7 @@ do
         done
     else
         # If there is any candidate rule, it is compliant; skip rest of macro
-        if [[ $candidate_rules ]]
+        if [ "${#candidate_rules[@]}" -gt 0 ]
         then
             skip=0
         fi
@@ -1599,7 +1596,7 @@ if [ "$skip" -ne 0 ]; then
     if [ -z ${rule_to_edit+x} ]
     then
         # Build full_rule while avoid adding double spaces when other_filters is empty
-        if [[ ${syscall_a} ]]
+        if [ "${#syscall_a[@]}" -gt 0 ]
         then
             syscall_string=""
             for syscall in "${syscall_a[@]}"
