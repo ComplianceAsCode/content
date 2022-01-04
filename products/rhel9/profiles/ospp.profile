@@ -4,12 +4,11 @@ metadata:
     version: 4.2.1
     SMEs:
         - comps
-        - carlosmmatos
         - stevegrubb
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 
-title: '[RHEL9 DRAFT] Protection Profile for General Purpose Operating Systems'
+title: 'Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile reflects mandatory configuration controls identified in the

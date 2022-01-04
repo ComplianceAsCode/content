@@ -3,7 +3,7 @@ documentation_complete: true
 metadata:
     version: TBD
     SMEs:
-        - carlosmmatos
+        - ggbecker
 
 title: 'Unclassified Information in Non-federal Information Systems and Organizations (NIST 800-171)'
 

@@ -3,11 +3,10 @@ documentation_complete: True
 metadata:
     SMEs:
         - jjaswanson4
-        - carlosmmatos
 
 reference: https://www.hhs.gov/hipaa/for-professionals/index.html
 
-title: '[RHEL9 DRAFT] Health Insurance Portability and Accountability Act (HIPAA)'
+title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
 description: |-
     The HIPAA Security Rule establishes U.S. national standards to protect individuals’
