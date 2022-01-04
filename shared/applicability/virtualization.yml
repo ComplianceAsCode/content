@@ -9,3 +9,13 @@ cpes:
       name: "cpe:/a:machine"
       title: "Bare-metal or Virtual Machine"
       check_id: installed_env_is_a_machine
+
+  - no_ovirt:
+      name: "cpe:/a:no_ovirt"
+      title: "oVirt is not installed (no Host nor Manager)"
+      check_id: installed_env_has_no_ovirt
+
+  - ovirt:
+      name: "cpe:/a:ovirt"
+      title: "oVirt is installed (Host or Manager)"
+      check_id: installed_env_has_ovirt

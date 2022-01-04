@@ -306,7 +306,8 @@ class XCCDFEntity(object):
 
         for key, default in cls.KEYS.items():
             if key in input_contents:
-                data[key] = input_contents[key]
+                if input_contents[key] is not None:
+                    data[key] = input_contents[key]
                 del input_contents[key]
                 continue
 
