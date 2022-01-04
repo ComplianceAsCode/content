@@ -10,6 +10,10 @@ function call_set_config_file {
     {{{ set_config_file("$1", "Compression", "no", True) | indent(4) }}}
 }
 
+function call_set_config_file_rsyslog {
+	{{{ set_config_file(path="$1",
+                    parameter="\$DefaultNetstreamDriver", value="gtls", create=true, separator=" ", separator_regex=" ") }}}
+}
 
 @test "Basic value remediation" {
     tmp_file="$(mktemp)"
@@ -175,6 +179,20 @@ function call_set_config_file {
     expected_output='something=$value'"\n"
 
     {{{ bash_shell_file_set("$tmp_file", "something", '$value', no_quotes=true) | indent(4) }}}
+
+    run diff -U2 "$tmp_file" <(printf "$expected_output")
+    echo "$output"
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "set_config_file - handle escaped dollar" {
+    tmp_file="$(mktemp)"
+    printf "%s\n" '$DefaultNetstreamDriver bad' > "$tmp_file"
+    expected_output='$DefaultNetstreamDriver gtls'"\n"
+
+    call_set_config_file_rsyslog "$tmp_file"
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
     echo "$output"
