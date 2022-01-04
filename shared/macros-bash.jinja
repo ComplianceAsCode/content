@@ -1026,7 +1026,8 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*", sed_path_separator="/") -%}}
     {{%- set new_line = parameter+separator+value -%}}
-    {{%- set line_regex = prefix_regex + ((parameter | escape_regex) | replace("/", "\/")) + separator_regex -%}}
+    {{#- An escaped dollar in the parameter is escaped because of its significance for the shell, so when making a regex out of the parameter, we remove the shell escape, as the regex escape will do its thing. -#}}
+    {{%- set line_regex = prefix_regex + ((parameter | replace("\\$", "$") | escape_regex) | replace("/", "\/")) + separator_regex -%}}
 if [ -e "{{{ path }}}" ] ; then
     {{{ lineinfile_absent(path, line_regex, insensitive, sed_path_separator=sed_path_separator) | indent(4) }}}
 else
