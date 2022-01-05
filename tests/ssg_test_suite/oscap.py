@@ -636,7 +636,7 @@ class OscapRuleRunner(RuleRunner):
 class BashRuleRunner(RuleRunner):
     def initial(self):
         self.command_options += ['--results-arf', self.arf_path]
-        return super(RuleRunner, self).initial()
+        return super(BashRuleRunner, self).initial()
 
     def remediation(self):
 
