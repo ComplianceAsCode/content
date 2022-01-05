@@ -138,7 +138,7 @@ def generate_fixes_remotely(test_env, formatting, verbose_path):
         '--template', formatting['output_template'],
         '--output', '/{output_file}'.format(** formatting),
     ]
-    command_operands = ['/{arf_file}'.format(** formatting)]
+    command_operands = ['/{source_arf_basename}'.format(** formatting)]
     if 'result_id' in formatting:
         command_options.extend(['--result-id', formatting['result_id']])
 
@@ -207,7 +207,7 @@ def send_arf_to_remote_machine_and_generate_remediations_there(
         run_type, test_env, formatting, verbose_path):
     if run_type == 'rule':
         try:
-            res_id = get_result_id_from_arf(formatting['arf'], verbose_path)
+            res_id = get_result_id_from_arf(formatting['source_arf'], verbose_path)
         except Exception as exc:
             logging.error(str(exc))
             return False
@@ -215,7 +215,7 @@ def send_arf_to_remote_machine_and_generate_remediations_there(
 
     with open(verbose_path, "a") as log_file:
         try:
-            test_env.scp_upload_file(formatting["arf"], "/", log_file)
+            test_env.scp_upload_file(formatting["source_arf"], "/", log_file)
         except Exception:
             return False
 
@@ -259,7 +259,7 @@ class GenericRunner(object):
         self.datastream = datastream
         self.benchmark_id = benchmark_id
 
-        self.arf_file = ''
+        self.arf_basename = ''
         self.arf_path = ''
         self.verbose_path = ''
         self.report_path = ''
@@ -280,35 +280,41 @@ class GenericRunner(object):
         # with the scan
         self.time_to_finish_startup = 30
 
-    def _make_arf_path(self):
-        self.arf_file = self._get_arf_file()
-        self.arf_path = os.path.join(LogHelper.LOG_DIR, self.arf_file)
+    def __enter__(self):
+        return self
 
-    def _get_arf_file(self):
+    def __exit__(self, type, value, traceback):
+        self._remove_files_to_clean()
+
+    def _make_arf_path(self):
+        self.arf_basename = self._get_arf_basename()
+        self.arf_path = os.path.join(LogHelper.LOG_DIR, self.arf_basename)
+
+    def _get_arf_basename(self):
         raise NotImplementedError()
 
     def _make_verbose_path(self):
-        verbose_file = self._get_verbose_file()
-        verbose_path = os.path.join(LogHelper.LOG_DIR, verbose_file)
+        verbose_basename = self._get_verbose_basename()
+        verbose_path = os.path.join(LogHelper.LOG_DIR, verbose_basename)
         self.verbose_path = LogHelper.find_name(verbose_path, '.verbose.log')
 
-    def _get_verbose_file(self):
+    def _get_verbose_basename(self):
         raise NotImplementedError()
 
     def _make_report_path(self):
-        report_file = self._get_report_file()
-        report_path = os.path.join(LogHelper.LOG_DIR, report_file)
+        report_basename = self._get_report_basename()
+        report_path = os.path.join(LogHelper.LOG_DIR, report_basename)
         self.report_path = LogHelper.find_name(report_path, '.html')
 
-    def _get_report_file(self):
+    def _get_report_basename(self):
         raise NotImplementedError()
 
     def _make_results_path(self):
-        results_file = self._get_results_file()
-        results_path = os.path.join(LogHelper.LOG_DIR, results_file)
+        results_basename = self._get_results_basename()
+        results_path = os.path.join(LogHelper.LOG_DIR, results_basename)
         self.results_path = LogHelper.find_name(results_path, '.xml')
 
-    def _get_results_file(self):
+    def _get_results_basename(self):
         raise NotImplementedError()
 
     def _generate_report_file(self):
@@ -329,6 +335,19 @@ class GenericRunner(object):
             '--progress', '--oval-results',
         ])
         self.command_operands.append(self.datastream)
+
+    def _remove_files_to_clean(self):
+        if self.clean_files:
+            for fname in tuple(self._filenames_to_clean_afterwards):
+                try:
+                    if os.path.exists(fname):
+                        os.remove(fname)
+                except OSError:
+                    logging.error(
+                        "Failed to cleanup file '{0}'"
+                        .format(fname))
+                finally:
+                    self._filenames_to_clean_afterwards.remove(fname)
 
     def run_stage(self, stage):
         self.stage = stage
@@ -352,32 +371,16 @@ class GenericRunner(object):
         else:
             raise RuntimeError('Unknown stage: {}.'.format(stage))
 
-        if self.clean_files:
-            for fname in tuple(self._filenames_to_clean_afterwards):
-                try:
-                    os.remove(fname)
-                except OSError:
-                    logging.error(
-                        "Failed to cleanup file '{0}'"
-                        .format(fname))
-                finally:
-                    self._filenames_to_clean_afterwards.remove(fname)
+        self._remove_files_to_clean()
 
         if result == 1:
             LogHelper.log_preloaded('pass')
             if self.clean_files:
-                files_to_remove = [self.verbose_path]
+                self._filenames_to_clean_afterwards.add(self.verbose_path)
                 if stage in ['initial', 'remediation', 'final']:
-                    files_to_remove.append(self.arf_path)
+                    # We need the initial ARF so we can generate the remediation out of it later
+                    self._filenames_to_clean_afterwards.add(self.arf_path)
 
-                for fname in tuple(files_to_remove):
-                    try:
-                        if os.path.exists(fname):
-                            os.remove(fname)
-                    except OSError:
-                        logging.error(
-                            "Failed to cleanup file '{0}'"
-                            .format(fname))
         elif result == 2:
             LogHelper.log_preloaded('notapplicable')
         else:
@@ -394,7 +397,7 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def initial(self):
-        if self.create_reports:
+        if self.create_reports and "--results-arf" not in self.command_options:
             self.command_options += ['--results-arf', self.arf_path]
         result = self.make_oscap_call()
         return result
@@ -403,7 +406,7 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def final(self):
-        if self.create_reports:
+        if self.create_reports and "--results-arf" not in self.command_options:
             self.command_options += ['--results-arf', self.arf_path]
         result = self.make_oscap_call()
         return result
@@ -421,22 +424,27 @@ class GenericRunner(object):
             'datastream': self.datastream,
             'benchmark_id': self.benchmark_id
         }
-        formatting['arf'] = self.arf_path
-        formatting['arf_file'] = self.arf_file
+        formatting['source_arf'] = self._get_initial_arf_path()
+        formatting['source_arf_basename'] = os.path.basename(formatting['source_arf'])
         return formatting
 
 
 class ProfileRunner(GenericRunner):
-    def _get_arf_file(self):
-        return '{0}-{self.stage}-arf.xml'.format(self.profile, self.stage)
+    def _get_arf_basename(self, stage=None):
+        if stage is None:
+            stage = self.stage
+        return '{0}-{1}-arf.xml'.format(self.profile, stage)
 
-    def _get_verbose_file(self):
+    def _get_initial_arf_path(self):
+        return os.path.join(LogHelper.LOG_DIR, self._get_arf_basename("initial"))
+
+    def _get_verbose_basename(self):
         return '{0}-{1}'.format(self.profile, self.stage)
 
-    def _get_report_file(self):
+    def _get_report_basename(self):
         return '{0}-{1}'.format(self.profile, self.stage)
 
-    def _get_results_file(self):
+    def _get_results_basename(self):
         return '{0}-{1}-results'.format(self.profile, self.stage)
 
     def final(self):
@@ -483,16 +491,21 @@ class RuleRunner(GenericRunner):
 
         self._oscap_output = ''
 
-    def _get_arf_file(self):
-        return '{0}-{1}-{2}-arf.xml'.format(self.short_rule_id, self.script_name, self.stage)
+    def _get_arf_basename(self, stage=None):
+        if stage is None:
+            stage = self.stage
+        return '{0}-{1}-{2}-arf.xml'.format(self.short_rule_id, self.script_name, stage)
 
-    def _get_verbose_file(self):
+    def _get_initial_arf_path(self):
+        return os.path.join(LogHelper.LOG_DIR, self._get_arf_basename("initial"))
+
+    def _get_verbose_basename(self):
         return '{0}-{1}-{2}'.format(self.short_rule_id, self.script_name, self.stage)
 
-    def _get_report_file(self):
+    def _get_report_basename(self):
         return '{0}-{1}-{2}'.format(self.short_rule_id, self.script_name, self.stage)
 
-    def _get_results_file(self):
+    def _get_results_basename(self):
         return '{0}-{1}-{2}-results-{3}'.format(
             self.short_rule_id, self.script_name, self.profile, self.stage)
 
@@ -597,6 +610,10 @@ class AnsibleProfileRunner(ProfileRunner):
 
 
 class BashProfileRunner(ProfileRunner):
+    def initial(self):
+        self.command_options += ['--results-arf', self.arf_path]
+        return super(BashProfileRunner, self).initial()
+
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.profile)
@@ -617,6 +634,10 @@ class OscapRuleRunner(RuleRunner):
 
 
 class BashRuleRunner(RuleRunner):
+    def initial(self):
+        self.command_options += ['--results-arf', self.arf_path]
+        return super(BashRuleRunner, self).initial()
+
     def remediation(self):
 
         formatting = self._get_formatting_dict_for_remediation()
@@ -627,6 +648,10 @@ class BashRuleRunner(RuleRunner):
 
 
 class AnsibleRuleRunner(RuleRunner):
+    def initial(self):
+        self.command_options += ['--results-arf', self.arf_path]
+        return super(AnsibleRuleRunner, self).initial()
+
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.rule_id)
