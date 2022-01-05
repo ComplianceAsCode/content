@@ -896,8 +896,8 @@
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
 
   {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_directory_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
-  {{{ oval_line_in_directory_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, missing_parameter_pass) | indent(2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
   {{%- endif %}}
   {{%- endif %}}
 </def-group>
