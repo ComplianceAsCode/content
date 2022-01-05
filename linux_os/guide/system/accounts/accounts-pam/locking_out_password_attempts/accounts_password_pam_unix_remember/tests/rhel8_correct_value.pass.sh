@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Red Hat Enterprise Linux 8
+# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
 
 remember_cnt=5
 for auth_file in system-auth password-auth
