@@ -25,8 +25,14 @@
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
         {{% endif %}}
-        <criterion comment="Check ClientAliveCountMax in /etc/ssh/sshd_config"
-        test_ref="test_sshd_clientalivecountmax" />
+        <criteria comment="sshd is configured" operator="OR">
+          <criterion comment="Check ClientAliveCountMax in /etc/ssh/sshd_config"
+          test_ref="test_sshd_clientalivecountmax" />
+          {{%- if sshd_distributed_config == "true" %}}
+          <criterion comment="Check ClientAliveCountMax in /etc/ssh/sshd_config.d/ files"
+          test_ref="test_sshd_clientalivecountmax_dir" />
+          {{%- endif %}}
+        </criteria>
       </criteria>
     </criteria>
   </definition>
@@ -45,6 +51,21 @@
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{%- if sshd_distributed_config == "true" %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests the value of the ClientAliveCountMax setting in the /etc/ssh/sshd_config.d/ files"
+  id="test_sshd_clientalivecountmax_dir" version="1">
+    <ind:object object_ref="obj_sshd_clientalivecountmax_dir" />
+    <ind:state state_ref="state_sshd_clientalivecountmax" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sshd_clientalivecountmax_dir" version="1">
+    <ind:path>/etc/ssh/sshd_config.d</ind:path>
+    <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:#.*)?$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
 
   <external_variable comment="ClientAliveCountMax value" datatype="int"
   id="var_sshd_set_keepalive" version="1" />
