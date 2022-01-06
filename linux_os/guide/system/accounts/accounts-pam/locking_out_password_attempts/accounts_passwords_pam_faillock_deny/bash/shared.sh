@@ -2,15 +2,29 @@
 
 {{{ bash_instantiate_variables("var_accounts_passwords_pam_faillock_deny") }}}
 
-SYSTEM_AUTH="/etc/pam.d/system-auth"
-PASSWORD_AUTH="/etc/pam.d/password-auth"
-FAILLOCK_CONF="/etc/security/faillock.conf"
-
-if [ $(grep -c "^\s*auth.*pam_unix.so" $SYSTEM_AUTH) > 1 ] || \
-   [ $(grep -c "^\s*auth.*pam_unix.so" $PASSWORD_AUTH) > 1 ]; then
-   echo "Skipping remediation because there are more pam_unix.so entries than expected."
-   false
+if [ -f /usr/sbin/authconfig ]; then
+    authconfig --enablefaillock --update
+elif [ -f /usr/bin/authselect ]; then
+    if [ $(authselect enable-feature with-faillock) ]; then
+        authselect apply-changes
+    else
+        # If authselect can't manage the pam files, mainly due to manual modifications, the current
+        # profile will be turned back to a inter state, preserving previously enabled features.
+        ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')
+        CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
+        authselect select $CURRENT_PROFILE --force
+        for feature in $ENABLED_FEATURES with-faillock; do
+            authselect enable-feature $feature;
+        done
+        authselect apply-changes
+    fi
+else
+    {{{ bash_set_faillock_option("deny", "$var_accounts_passwords_pam_faillock_deny") }}}
 fi
+
+# If the faillock.conf file is present, but for any reason, like an OS upgrade, the pam_faillock.so
+# parameters were not previously defined in faillock.conf, they are ensured now.
+FAILLOCK_CONF="/etc/security/faillock.conf"
 
 if [ -f $FAILLOCK_CONF ]; then
     if $(grep -q '^\s*deny\s*=' $FAILLOCK_CONF); then
@@ -18,17 +32,4 @@ if [ -f $FAILLOCK_CONF ]; then
     else
         echo "deny = $var_accounts_passwords_pam_faillock_deny" >> $FAILLOCK_CONF
     fi
-    # If the faillock.conf file is present, but for any reason, like an OS upgrade, the
-    # pam_faillock.so parameters are still defined in pam files, this makes them compatible with
-    # the newer versions of authselect tool and ensure the parameters are only in faillock.conf.
-    sed -i --follow-symlinks 's/\(pam_faillock.so preauth\).*$/\1 silent/g' $SYSTEM_AUTH $PASSWORD_AUTH
-    sed -i --follow-symlinks 's/\(pam_faillock.so authfail\).*$/\1/g' $SYSTEM_AUTH $PASSWORD_AUTH
-    authselect enable-feature with-faillock
-else
-    if [ -f /usr/sbin/authconfig ]; then
-        authconfig --enablefaillock --update
-    else
-        authselect enable-feature with-faillock
-    fi
-    {{{ bash_set_faillock_option("deny", "$var_accounts_passwords_pam_faillock_deny") }}}
 fi
