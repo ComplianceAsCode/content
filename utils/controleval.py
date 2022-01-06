@@ -3,8 +3,31 @@ import collections
 import argparse
 import os
 
-from ssg import controls
-import ssg.products
+# NOTE: This is not to be confused with the https://pypi.org/project/ssg/
+# package. The ssg package we're referencing here is actually a relative import
+# within this repository. Because of this, you need to ensure
+# ComplianceAsCode/content/ssg is discoverable from PYTHONPATH before you
+# invoke this script.
+try:
+    from ssg import controls
+    import ssg.products
+except ModuleNotFoundError as e:
+    # NOTE: Only emit this message if we're dealing with an import error for
+    # ssg. Since the local ssg module imports other things, like PyYAML, we
+    # don't want to emit misleading errors for legit dependencies issues if the
+    # user hasn't installed PyYAML or other transitive dependencies from ssg.
+    # We should revisit this if or when we decide to implement a python package
+    # management strategy for the python scripts provided in this repository.
+    if e.name == 'ssg':
+        msg = """Unable to import local 'ssg' module.
+
+The 'ssg' package from within this repository must be discoverable before
+invoking this script. Make sure the top-level directory of the
+ComplianceAsCode/content repository is available in the PYTHONPATH environment
+variable (example: $ export PYTHONPATH=($pwd)).
+"""
+        raise RuntimeError(msg) from e
+    raise
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
