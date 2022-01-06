@@ -17,14 +17,6 @@
   when:
     - result_authselect_present.stat.exists
 
-- name: Get authselect current profile
-  ansible.builtin.shell:
-    cmd: authselect current -r | awk '{ print $1 }'
-  register: result_authselect_profile
-  changed_when: false
-  when:
-    - result_authselect_check_cmd is failed
-
 - name: Get authselect current features
   ansible.builtin.shell:
     cmd: authselect current | tail -n+3 | awk '{ print $2 }'
@@ -32,40 +24,27 @@
   changed_when: false
   when:
     - result_authselect_present.stat.exists
+    - result_authselect_check_cmd is success
 
-- name: Define the current authselect profile as a local fact
-  ansible.builtin.set_fact:
-    authselect_profile: "{{ result_authselect_profile.stdout }}"
-  when:
-    - result_authselect_check_cmd is failed
-    - result_authselect_profile is not skipped
-
-- name: Restore the authselect profile if manually modified
-  ansible.builtin.command:
-    cmd: authselect select {{ authselect_profile }} --force
-  register: result_pam_authselect_restore_profile
-  when:
-    - result_authselect_check_cmd is failed
-    - result_authselect_profile is not skipped
-
-- name: Restore the authselect features if manually modified
-  ansible.builtin.command:
-    cmd: authselect enable-feature {{ item }}
-  register: result_pam_authselect_restore_features
-  loop: "{{ result_authselect_features.stdout_lines }}"
-  when:
-    - result_authselect_check_cmd is failed
-    - result_authselect_features is not skipped
-
-- name: "Ensure nullok property is absent via authselect tool"
+- name: Ensure nullok property is absent via authselect tool
   ansible.builtin.command:
     cmd: authselect enable-feature without-nullok
   register: result_authselect_cmd
   when:
     - result_authselect_present.stat.exists
+    - result_authselect_check_cmd is success
     - result_authselect_features.stdout is not search("without-nullok")
 
-- name: "Ensure nullok property is absent by directly editing pam files"
+- name: Informative message if the authselect integrity check fails
+  debug:
+    msg:
+    - This remediation could not be applied because the authselect profile was manually modified.
+    - In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
+    - Where authselect is in place, it is not recommended to manually edit pam files.
+  when:
+    - result_authselect_check_cmd is failed
+
+- name: Ensure nullok property is absent by directly editing pam files
   replace:
     dest: "{{ item }}"
     regexp: 'nullok'

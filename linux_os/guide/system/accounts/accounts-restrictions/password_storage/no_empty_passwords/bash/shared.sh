@@ -1,18 +1,21 @@
 # platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
 SYSTEM_AUTH="/etc/pam.d/system-auth"
 PASSWORD_AUTH="/etc/pam.d/password-auth"
 
 if [ -f /usr/bin/authselect ]; then
-    if [ $(authselect enable-feature without-nullok) ]; then
+    if authselect check; then
+        authselect enable-feature without-nullok
         authselect apply-changes
     else
-        ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')
-        CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
-        authselect select $CURRENT_PROFILE --force
-        for feature in $ENABLED_FEATURES without-nullok; do
-            authselect enable-feature $feature;
-        done
-        authselect apply-changes
+        echo "
+This remediation could not be applied because the authselect profile was manually modified.
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
+Where authselect is in place, it is not recommended to manually edit pam files."
+    false
     fi
 else
     sed --follow-symlinks -i 's/\<nullok\>//g' $SYSTEM_AUTH

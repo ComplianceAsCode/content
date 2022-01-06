@@ -1,12 +1,12 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# remediation = none
 
 SYSTEM_AUTH_FILE="/etc/pam.d/system-auth"
 
-# This modification will break the integrity checks done by authselect. The remediation
-# should be robust enough to deal with possible manual and unvalidated modification.
-if ! $(grep -q "^[^#].*pam_pwhistory.so.*remember=" $SYSTEM_AUTH_FILE); then
-	sed -i "/^password.*requisite.*pam_pwquality.so/a password    requisite     pam_pwhistory.so" $SYSTEM_AUTH_FILE
-else
-   sed -i "s/\(.*pam_pwhistory.so.*remember=\)[[:digit:]]\+\s\(.*\)/\1/g" $SYSTEM_AUTH_FILE
+# This modification will break the current authselect profile and will be detected by the
+# authselect integrity check, aborting the remediation and showing an informative message
+# in the remediation report.
+if ! $(grep -q "^[^#].*pam_unix.so.*nullok" $SYSTEM_AUTH_FILE); then
+   sed -i 's/\([\s].*pam_unix.so.*\)\s\(try_first_pass.*\)/\1nullok \2/' $SYSTEM_AUTH_FILE
 fi
