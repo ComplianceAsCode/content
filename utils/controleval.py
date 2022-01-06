@@ -99,13 +99,17 @@ def create_parser():
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
     statsparser = subparsers.add_parser(
         'stats',
-        help="outputs statistics for the given benchmark and level.")
-    statsparser.add_argument("-i", "--id", dest="id", help="id of the controls file.",
-                             required=True)
-    statsparser.add_argument("-l", "--level", dest="level", help="level to display statistics of.",
-                             required=True)
-    statsparser.add_argument("-p", "--product", type=str,
-                             help="Product to check has required references")
+        help="calculate and return the statistics for the given benchmark")
+    statsparser.add_argument(
+        "-i", "--id",
+        help="the ID or name of the controls file in the controls/ directory",
+        required=True)
+    statsparser.add_argument(
+        "-l", "--level",
+        help="the compliance target level to analyze",
+        required=True)
+    statsparser.add_argument(
+        "-p", "--product", help="product to check has required references")
     return parser
 
 
