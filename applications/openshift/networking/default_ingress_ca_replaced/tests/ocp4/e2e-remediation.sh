@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# You can safely patch this to a non-existent secret name, it's a no-op, but OK for testing.
-oc patch proxies.config cluster --type merge -p '{"spec":{"trustedCA":{"name":"testing"}}}'
+# we are using an existing default secret name for testing, so it won't cause any subsequent failures on testing routes. 
+oc patch proxies.config cluster --type merge -p '{"spec":{"trustedCA":{"name":"trusted-ca-bundle"}}}'
