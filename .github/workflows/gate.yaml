@@ -38,7 +38,7 @@ jobs:
       image: opensuse/leap:15
     steps:
       - name: Install Deps
-        run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools libexpat1 libexpat-devel libexpat1 expat
+        run: zypper install -y git cmake make openscap-utils python3-PyYAML bats python3-pytest python3-pytest-cov python3-Jinja2 python3-setuptools libxslt-tools libxml2-tools libexpat1 libexpat-devel libexpat1 expat ShellCheck
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -77,7 +77,7 @@ jobs:
       - name: Install Deps
         uses: mstksg/get-package@master
         with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov
+          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov shellcheck
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
@@ -105,7 +105,7 @@ jobs:
       image: fedora:34
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck
       - name: Install deps python
         run: pip install ruamel.yaml yamlpath
       - name: Checkout
@@ -139,7 +139,7 @@ jobs:
       image: fedora:rawhide
     steps:
       -   name: Install Deps
-          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip
+          run: dnf install -y cmake make openscap-utils python3-pyyaml python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck
       -   name: Install deps python
           run: pip install ruamel.yaml yamlpath
       -   name: Checkout
