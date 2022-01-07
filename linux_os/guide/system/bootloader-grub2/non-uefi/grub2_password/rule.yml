@@ -11,9 +11,9 @@ description: |-
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
     {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
-    <pre>$ grub2-mkpasswd-pbkdf2</pre>
+    <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
-    <pre>$ grub2-setpassword</pre>
+    <pre># grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
