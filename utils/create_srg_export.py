@@ -55,6 +55,8 @@ class DisaStatus:
             return DisaStatus.INHERENTLY_MET
         elif source == ssg.controls.Status.DOES_NOT_MEET:
             return DisaStatus.DOES_NOT_MEET
+        elif source == ssg.controls.Status.AUTOMATED:
+            return DisaStatus.AUTOMATED
         return source
 
 
@@ -149,8 +151,10 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
             row['Check'] = f'{html_plain_text(rule_object.ocil)}\n\n' \
                            f'If {rule_object.ocil_clause}, then this is a finding.'
             row['Fix'] = html_plain_text(rule_object.fix)
-            # If then control has rule by definition the status is "Applicable - Configurable"
-            row['Status'] = DisaStatus.AUTOMATED
+            if control.status is not None:
+                row['Status'] = DisaStatus.from_string(control.status)
+            else:
+                row['Status'] = DisaStatus.AUTOMATED
             csv_writer.writerow(row)
     else:
         row = create_base_row(control, srgs)
