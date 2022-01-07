@@ -138,7 +138,7 @@ def parse_args() -> argparse.Namespace:
 
 def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.DictWriter,
                    env_yaml: ssg.environment, rule_json: dict, srgs: dict) -> None:
-    if control.selections:
+    if len(control.selections) > 0:
         for rule in control.selections:
             row = create_base_row(control, srgs)
             rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
@@ -160,6 +160,9 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
         row['Status Justification'] = control.status_justification
         row['Status'] = DisaStatus.from_string(control.status)
         row['Vul Discussion'] = control.rationale
+        row['Fix'] = control.fix
+        row['Check'] = control.check
+        row['Vul Discussion'] = html_plain_text(control.rationale)
         csv_writer.writerow(row)
 
 
