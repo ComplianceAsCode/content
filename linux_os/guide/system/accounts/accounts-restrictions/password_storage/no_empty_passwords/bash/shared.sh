@@ -12,10 +12,11 @@ if [ -f /usr/bin/authselect ]; then
         authselect apply-changes
     else
         echo "
-This remediation could not be applied because the authselect profile was manually modified.
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because the authselect profile is not integer, probably due to manual edition.
 In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
 Where authselect is in place, it is not recommended to manually edit pam files."
-    false
+        false
     fi
 else
     sed --follow-symlinks -i 's/\<nullok\>//g' $SYSTEM_AUTH

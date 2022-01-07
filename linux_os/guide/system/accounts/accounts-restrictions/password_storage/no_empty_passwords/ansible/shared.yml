@@ -35,14 +35,17 @@
     - result_authselect_check_cmd is success
     - result_authselect_features.stdout is not search("without-nullok")
 
-- name: Informative message if the authselect integrity check fails
-  debug:
-    msg:
-    - This remediation could not be applied because the authselect profile was manually modified.
+- name: Informative message based on the authselect integrity check result
+  ansible.builtin.assert:
+    that:
+      - result_authselect_check_cmd is success
+    fail_msg:
+    - authselect integrity check failed. Remediation aborted!
+    - This remediation could not be applied because the authselect profile is not integer, probably due to manual edition.
     - In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
     - Where authselect is in place, it is not recommended to manually edit pam files.
-  when:
-    - result_authselect_check_cmd is failed
+    success_msg:
+    - authselect integrity check passed
 
 - name: Ensure nullok property is absent by directly editing pam files
   replace:

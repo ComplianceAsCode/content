@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sed -i '/nullok/d' /etc/pam.d/system-auth
+sed -i --follow-symlinks '/nullok/d' /etc/pam.d/system-auth
