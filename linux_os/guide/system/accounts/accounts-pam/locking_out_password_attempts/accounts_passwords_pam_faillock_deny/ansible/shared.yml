@@ -10,6 +10,63 @@
     path: /usr/sbin/authconfig
   register: result_authconfig_check
 
+- name: Ensure pam_faillock.so is properly enabled using authconfig tool
+  ansible.builtin.command:
+    cmd: authconfig --enablefaillock --update
+  when:
+    - result_authconfig_check.stat.exists
+
+- name: Check if system relies on authselect
+  ansible.builtin.stat:
+    path: /usr/bin/authselect
+  register: result_authselect_present
+  when:
+    - not result_authconfig_check.stat.exists
+
+- name: Check integrity of authselect current profile
+  ansible.builtin.command:
+    cmd: authselect check
+  register: result_authselect_check_cmd
+  changed_when: false
+  ignore_errors: yes
+  when:
+    - result_authselect_present is not skipped
+    - result_authselect_present.stat.exists
+
+- name: Informative message based on the authselect integrity check result
+  ansible.builtin.assert:
+    that:
+      - result_authselect_check_cmd is success
+    fail_msg:
+    - authselect integrity check failed. Remediation aborted!
+    - This remediation could not be applied because the authselect profile is not integer, probably due to manual edition.
+    - In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
+    - Where authselect is in place, it is not recommended to manually edit pam files.
+    success_msg:
+    - authselect integrity check passed
+  when:
+    - result_authselect_present is not skipped
+
+- name: Get authselect current features
+  ansible.builtin.shell:
+    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+  register: result_authselect_features
+  changed_when: false
+  when:
+    - result_authselect_present is not skipped
+    - result_authselect_present.stat.exists
+    - result_authselect_check_cmd is success
+
+- name: Ensure with-faillock feature is enabled via authselect tool
+  ansible.builtin.command:
+    cmd: authselect enable-feature with-faillock
+  register: result_authselect_cmd
+  when:
+    - result_authselect_present is not skipped
+    - result_authselect_present.stat.exists
+    - result_authselect_check_cmd is success
+    - result_authselect_features.stdout is not search("with-faillock")
+
 - name: Check the presence of /etc/security/faillock.conf file
   ansible.builtin.stat:
     path: /etc/security/faillock.conf
@@ -23,57 +80,6 @@
     state: present
   when:
     - result_faillock_conf_check.stat.exists
-
-- name: Check if pam_faillock.so is already enabled
-  ansible.builtin.lineinfile:
-    path: /etc/pam.d/system-auth
-    regexp: .*auth.*pam_faillock.so.*
-    state: absent
-  check_mode: yes
-  changed_when: false
-  register: result_pam_faillock_enabled
-
-- name: Ensure the pam_faillock.so preauth parameters are not present in the pam files
-  ansible.builtin.lineinfile:
-    path: '{{ item }}'
-    backrefs: true
-    regexp: (.*pam_faillock.so preauth).*$
-    line: \1 silent
-    state: present
-  loop:
-    - /etc/pam.d/system-auth
-    - /etc/pam.d/password-auth
-  when:
-    - result_faillock_conf_check.stat.exists
-    - result_pam_faillock_enabled.found
-
-- name: Ensure the pam_faillock.so authfail parameters are not present in the pam files
-  ansible.builtin.lineinfile:
-    path: '{{ item }}'
-    backrefs: true
-    regexp: (.*pam_faillock.so authfail).*$
-    line: \1
-    state: present
-  loop:
-    - /etc/pam.d/system-auth
-    - /etc/pam.d/password-auth
-  when:
-    - result_faillock_conf_check.stat.exists
-    - result_pam_faillock_enabled.found
-
-- name: Ensure pam_faillock.so is properly enabled using authconfig tool
-  ansible.builtin.command:
-    cmd: authconfig --enablefaillock --update
-  when:
-    - result_authconfig_check.stat.exists
-
-- name: Ensure pam_faillock.so is properly enabled using authselect
-  ansible.builtin.command:
-    cmd: authselect enable-feature with-faillock
-  register: result_pam_authselect_cmd
-  when:
-    - result_faillock_conf_check.stat.exists
-    - not result_pam_faillock_enabled.found
 
 - name: Ensure the pam_faillock.so preauth deny parameter in auth section
   ansible.builtin.lineinfile:
