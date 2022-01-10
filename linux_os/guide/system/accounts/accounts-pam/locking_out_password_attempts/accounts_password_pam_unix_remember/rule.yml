@@ -68,3 +68,11 @@ ocil: |-
     <pre>remember={{{ xccdf_value("var_password_pam_unix_remember") }}}</pre>
 
 platform: pam
+
+warnings:
+    - general: |-
+       If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+       will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+       PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+       aborted in order to preserve intentional changes. In this case, an informative message will
+       be shown in the remediation report.
