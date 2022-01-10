@@ -42,6 +42,10 @@ def calculate_stats(ctrls):
     ctrlstats = collections.defaultdict(int)
     ctrllist = collections.defaultdict(set)
 
+    if total == 0:
+        print("No controls founds with the given inputs. Maybe try another level.")
+        exit(1)
+
     for ctrl in ctrls:
         ctrlstats[str(ctrl.status)] += 1
         ctrllist[str(ctrl.status)].add(ctrl)
@@ -60,6 +64,7 @@ def calculate_stats(ctrls):
     print_specific_stat("Supported", ctrlstats[controls.Status.SUPPORTED], applicable)
     print_specific_stat("Documentation", ctrlstats[controls.Status.DOCUMENTATION], applicable)
     print_specific_stat("Inherently Met", ctrlstats[controls.Status.INHERENTLY_MET], applicable)
+    print_specific_stat("Does Not Meet", ctrlstats[controls.Status.DOES_NOT_MEET], applicable)
     print_specific_stat("Partial", ctrlstats[controls.Status.PARTIAL], applicable)
 
     applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
