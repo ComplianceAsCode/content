@@ -2,33 +2,29 @@
 
 {{{ bash_instantiate_variables("var_accounts_passwords_pam_faillock_unlock_time") }}}
 
-SYSTEM_AUTH="/etc/pam.d/system-auth"
-PASSWORD_AUTH="/etc/pam.d/password-auth"
-FAILLOCK_CONF="/etc/security/faillock.conf"
-
-if [ $(grep -c "^\s*auth.*pam_unix.so" $SYSTEM_AUTH) > 1 ] || \
-   [ $(grep -c "^\s*auth.*pam_unix.so" $PASSWORD_AUTH) > 1 ]; then
-   echo "Skipping remediation because there are more pam_unix.so entries than expected."
-   false
+if [ -f /usr/sbin/authconfig ]; then
+    authconfig --enablefaillock --update
+elif [ -f /usr/bin/authselect ]; then
+    if authselect check; then
+        authselect enable-feature with-faillock
+        authselect apply-changes
+    else
+        echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because the authselect profile is not integer, probably due to manual edition.
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
+Where authselect is in place, it is not recommended to manually edit pam files."
+        false
+    fi
 fi
 
+FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
     if $(grep -q '^\s*unlock_time\s*=' $FAILLOCK_CONF); then
         sed -i --follow-symlinks "s/^\s*\(unlock_time\s*\)=.*$/\1 = $var_accounts_passwords_pam_faillock_unlock_time/g" $FAILLOCK_CONF
     else
         echo "unlock_time = $var_accounts_passwords_pam_faillock_unlock_time" >> $FAILLOCK_CONF
     fi
-    # If the faillock.conf file is present, but for any reason, like an OS upgrade, the
-    # pam_faillock.so parameters are still defined in pam files, this makes them compatible with
-    # the newer versions of authselect tool and ensure the parameters are only in faillock.conf.
-    sed -i --follow-symlinks 's/\(pam_faillock.so preauth\).*$/\1 silent/g' $SYSTEM_AUTH $PASSWORD_AUTH
-    sed -i --follow-symlinks 's/\(pam_faillock.so authfail\).*$/\1/g' $SYSTEM_AUTH $PASSWORD_AUTH
-    authselect enable-feature with-faillock
 else
-    if [ -f /usr/sbin/authconfig ]; then
-        authconfig --enablefaillock --update
-    else
-        authselect enable-feature with-faillock
-    fi
     {{{ bash_set_faillock_option("unlock_time", "$var_accounts_passwords_pam_faillock_unlock_time") }}}
 fi
