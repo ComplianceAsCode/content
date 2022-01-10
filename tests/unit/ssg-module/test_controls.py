@@ -48,6 +48,18 @@ def _load_test(profile):
     assert "accounts_password_pam_ocredit" in c_r4_rules
     assert "var_password_pam_ocredit" in c_r4.variables
     assert c_r4.variables["var_password_pam_ocredit"] == "1"
+    c_r5 = controls_manager.get_control(profile, "R5")
+    assert c_r5.id == "R5"
+    assert c_r5.status == "does not meet"
+    assert c_r5.fix == "There is no fix."
+    assert c_r5.check == "There is no check."
+    assert "Although the listed mitigation is supporting the security function" in c_r5.mitigation
+    assert c_r5.description == \
+           "The operating system must provide automated mechanisms for supporting account " \
+           "management functions."
+    assert "Enterprise environments make account management challenging and complex." in \
+           c_r5.rationale
+    assert c_r5.status_justification == "Mitigate with third-party software."
 
 
 def test_controls_load():
