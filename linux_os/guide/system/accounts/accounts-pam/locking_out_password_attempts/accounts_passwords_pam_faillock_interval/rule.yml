@@ -87,9 +87,10 @@ platform: pam
 
 warnings:
     - general: |-
-       If the system supports the new <tt>/etc/security/faillock.conf</tt> file but the
-       pam_faillock.so parameters are defined directly in <tt>/etc/pam.d/system-auth</tt> and
-       <tt>/etc/pam.d/password-auth</tt>, the remediation will migrate the <tt>fail_interval</tt> parameter
-       to <tt>/etc/security/faillock.conf</tt> to ensure compatibility with <tt>authselect</tt> tool.
-       The parameters <tt>deny</tt> and <tt>unlock_time</tt>, if used, also have to be migrated
-       by their respective remediation.
+        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.

@@ -13,5 +13,6 @@ echo "deny = 3" >> /etc/security/faillock.conf
 echo "silent" >> /etc/security/faillock.conf
 
 # Multiple instances of pam_unix.so in auth section may, intentionally or not, interfere
-# in the expected behaviour of pam_faillock.so.
+# in the expected behaviour of pam_faillock.so. Remediation does not solve this automatically
+# in order to preserve intentional changes.
 echo "auth        sufficient       pam_unix.so" >> /etc/pam.d/password-auth
