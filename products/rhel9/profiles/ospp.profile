@@ -8,7 +8,7 @@ metadata:
 
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 
-title: 'Protection Profile for General Purpose Operating Systems'
+title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile reflects mandatory configuration controls identified in the
