@@ -50,6 +50,15 @@ ocil: |-
 platform: pam
 
 warnings:
+    - general: |-
+        If the system relies on <tt>authselect</tt> tool to manage pam settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        pam files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.
+
     - management: |-
         Using this rule bypasses pam_faillock's functionality and should be used in cases
         where centralized management such as LDAP or Active Directory is in use.
