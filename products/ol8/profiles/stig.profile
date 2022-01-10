@@ -1101,6 +1101,7 @@ selections:
 
     # OL08-00-040260
     - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv6_conf_all_forwarding
 
     # OL08-00-040261
     - sysctl_net_ipv6_conf_all_accept_ra
