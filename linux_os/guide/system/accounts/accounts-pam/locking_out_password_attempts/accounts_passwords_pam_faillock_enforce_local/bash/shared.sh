@@ -6,9 +6,9 @@ if authselect check; then
 else
     echo "
 authselect integrity check failed. Remediation aborted!
-This remediation could not be applied because the authselect profile is not integer, probably due to manual edition.
-In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
-Where authselect is in place, it is not recommended to manually edit pam files."
+This remediation could not be applied because the authselect profile is not intact.
+It is not recommended to manually edit the PAM files when authselect is available
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
     false
 fi
 
