@@ -63,6 +63,7 @@ selections:
     - rpm_verify_permissions
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
+    - ensure_suse_gpgkey_installed
     - grub2_audit_argument
     - service_auditd_enabled
     - audit_rules_privileged_commands_sudo
