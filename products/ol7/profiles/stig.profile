@@ -4,7 +4,7 @@ title: 'DISA STIG for Oracle Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux V2R4.
+    DISA STIG for Oracle Linux V2R5.
 
 selections:
     - login_banner_text=dod_banners
@@ -308,7 +308,8 @@ selections:
     - sudo_require_reauthentication
     - auditd_overflow_action
     - accounts_authorized_local_users
-    - grub2_password_legacy
-    - grub2_uefi_password_legacy
     - accounts_password_pam_pwhistory_remember_password_auth
     - accounts_password_pam_pwhistory_remember_system_auth
+    - sebool_ssh_sysadm_login
+    - selinux_confine_to_least_privilege
+    - selinux_context_elevation_for_sudo
