@@ -1160,7 +1160,7 @@ fi
 #}}
 {{%- macro bash_file_contents(filepath='', contents='') %}}
 cat << 'EOF' > {{{ filepath }}}
-{{{ contents|trim() }}}
+{{{ contents }}}
 EOF
 {{%- endmacro %}}
 
