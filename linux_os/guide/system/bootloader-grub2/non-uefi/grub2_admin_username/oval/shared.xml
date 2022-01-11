@@ -6,7 +6,7 @@
     <criteria operator="OR">
       {{{ oval_file_absent_criterion(grub2_boot_path + "/grub.cfg") }}}
       <criterion comment="Superuser is defined in {{{ grub2_boot_path }}}/grub.cfg and it isn't
-            root, admin, asministrator nor equal to any system username"
+            root, admin, administrator nor equal to any system username"
             test_ref="test_bootloader_superuser_differ_from_other_users"/>
     </criteria>
   </definition>
