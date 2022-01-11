@@ -199,6 +199,7 @@ selections:
     - file_permissions_etc_audit_auditd
 
     # UBTU-20-010134 The Ubuntu operating system must permit only authorized accounts to own the audit configuration files.
+    - file_ownership_audit_configuration
 
     # UBTU-20-010135 The Ubuntu operating system must permit only authorized groups to own the audit configuration files.
     - file_groupownership_audit_configuration
@@ -350,6 +351,7 @@ selections:
     # UBTU-20-010199 The Ubuntu operating system must configure audit tools with a mode of 0755 or less permissive.
 
     # UBTU-20-010200 The Ubuntu operating system must configure audit tools to be owned by root.
+    - file_ownership_audit_binaries
 
     # UBTU-20-010201 The Ubuntu operating system must configure the audit tools to be group-owned by root.
     - file_groupownership_audit_binaries
@@ -474,12 +476,14 @@ selections:
     - file_groupowner_var_log_syslog
 
     # UBTU-20-010421 The Ubuntu operating system must configure /var/log/syslog file to be owned by syslog.
+    - file_owner_var_log_syslog
 
     # UBTU-20-010422 The Ubuntu operating system must configure /var/log/syslog file with mode 0640 or less permissive.
 
     # UBTU-20-010423 The Ubuntu operating system must have directories that contain system commands set to a mode of 0755 or less permissive.
 
     # UBTU-20-010424 The Ubuntu operating system must have directories that contain system commands owned by root.
+    - dir_ownership_binary_dirs
 
     # UBTU-20-010425 The Ubuntu operating system must have directories that contain system commands group-owned by root.
     - dir_groupownership_binary_dirs
