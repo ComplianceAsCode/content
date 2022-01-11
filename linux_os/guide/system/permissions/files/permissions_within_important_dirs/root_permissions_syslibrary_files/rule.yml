@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhel8,rhel9,sle12,sle15
+prodtype: fedora,ol8,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: |-
     Verify the system-wide library files in directories
@@ -46,6 +46,7 @@ references:
     stigid@rhel8: RHEL-08-010350
     stigid@sle12: SLES-12-010875
     stigid@sle15: SLES-15-010355
+    stigid@ubuntu2004: UBTU-20-01430
 
 ocil_clause: 'system wide library files are not group owned by root'
 
@@ -59,3 +60,14 @@ ocil: |-
     To find if system-wide library files stored in these directories are not group-owned by
     root run the following command for each directory <i>DIR</i>:
     <pre>$ sudo find -L <i>DIR</i> ! -group root -type f </pre>
+
+template:
+    name: file_groupowner
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        file_regex: ^.*$
+        filegid: '0'
