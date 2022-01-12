@@ -216,6 +216,7 @@ variables it has and the values they take) is still not provided to the test
 scenario. The above `# profiles` or `# variables` directives will still have
 to be used to add any profile-specific information.
 
+
 ### Augmenting using `shared/templates`
 
 Additionally, we have enabled test scenarios located under the templated
@@ -230,6 +231,13 @@ directory, the latter takes precedence over the former).
 In addition to the Jinja context described above, the contents of the template
 variables (after processing in `template.py`) are also available to the
 test scenario. This enables template-specific checking.
+
+You can place a `test_config.yml` file in rule's `tests` folder to control usage of templated scenarios
+if they don't fit for that particular rule for some reason.
+The file is jinja2-capable and product-aware, and you can use keys `allow_templated_scenarios` or `deny_templated_scenarios`
+that expect to contain a list of scenario basenames (including e.g. `pass.sh` suffix) to either test or to block.
+If you want to disable templated scenarios for a rule completely, allow only a scenario that doesn't exist, s.a. `none`.
+
 
 ## Example of adding new test scenarios
 
