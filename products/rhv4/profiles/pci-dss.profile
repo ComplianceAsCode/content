@@ -121,6 +121,7 @@ selections:
     - service_pcscd_enabled
     - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - file_owner_etc_shadow
