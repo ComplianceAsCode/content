@@ -25,6 +25,7 @@ extends: null
 metadata:
     version: V1R4
     SMEs:
+    - mab879
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
@@ -180,6 +181,7 @@ selections:
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
 - dir_group_ownership_library_dirs
+- dir_permissions_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
 - directory_group_ownership_var_log_audit
