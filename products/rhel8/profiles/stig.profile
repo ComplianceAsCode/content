@@ -191,9 +191,7 @@ selections:
     # RHEL-08-010260
     - file_groupowner_var_log
 
-    # *** SHARED *** #
-    # RHEL-08-010290 && RHEL-08-010291
-    # *** SHARED *** #
+    # RHEL-08-010287
     - configure_ssh_crypto_policy
 
     # RHEL-08-010290
