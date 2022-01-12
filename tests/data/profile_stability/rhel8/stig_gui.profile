@@ -36,6 +36,7 @@ extends: null
 metadata:
     version: V1R4
     SMEs:
+    - mab879
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
@@ -347,6 +348,7 @@ selections:
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - set_password_hashing_algorithm_logindefs
+- set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - sshd_disable_compression
 - sshd_disable_empty_passwords
