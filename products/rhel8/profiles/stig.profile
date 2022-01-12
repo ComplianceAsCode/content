@@ -226,6 +226,9 @@ selections:
     # RHEL-08-010330
     - file_permissions_library_dirs
 
+    # RHEL-08-010331
+    - dir_permissions_library_dirs
+
     # RHEL-08-010340
     - file_ownership_library_dirs
 
