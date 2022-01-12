@@ -10,7 +10,7 @@ fi
 APPEND_LINE=$(sed -rn '/^\S+\s+\/var\/log\/secure$/p' /etc/rsyslog.conf)
 
 # Loop through the remote methods associative array
-for K in ${!REMOTE_METHODS[@]}
+for K in "${!REMOTE_METHODS[@]}"
 do
 	# Check to see if selector/value exists
 	if ! grep -rq "${REMOTE_METHODS[$K]}" /etc/rsyslog.*; then
