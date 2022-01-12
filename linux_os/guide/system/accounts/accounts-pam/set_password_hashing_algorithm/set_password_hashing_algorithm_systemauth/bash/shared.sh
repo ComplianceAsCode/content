@@ -1,7 +1,9 @@
-# platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
 
 AUTH_FILES[0]="/etc/pam.d/system-auth"
+{{%- if product == "rhel7" %}}
 AUTH_FILES[1]="/etc/pam.d/password-auth"
+{{%- endif %}}
 
 for pamFile in "${AUTH_FILES[@]}"
 do

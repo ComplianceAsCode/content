@@ -338,6 +338,7 @@ selections:
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - set_password_hashing_algorithm_logindefs
+- set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - sshd_disable_compression
 - sshd_disable_empty_passwords
