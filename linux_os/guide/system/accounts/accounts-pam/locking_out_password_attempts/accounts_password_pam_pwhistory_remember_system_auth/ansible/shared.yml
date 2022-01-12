@@ -5,55 +5,219 @@
 # disruption = medium
 {{{ ansible_instantiate_variables("var_password_pam_remember", "var_password_pam_remember_control_flag") }}}
 
-- name: "{{{ rule_title }}}: Check for existing entry"
-  lineinfile:
+- name: Check for existing pam_pwhistory.so entry
+  ansible.builtin.lineinfile:
     path: "/etc/pam.d/system-auth"
     create: no
     regexp: '^password.*pam_pwhistory.so.*'
     state: absent
   check_mode: true
   changed_when: false
-  register: pam_pwhistory
+  register: result_pam_pwhistory_present
 
-# if entry exists:
-- name: "{{{ rule_title }}}"
+- name: Check for existing remember parameter entry
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    create: no
+    regexp: '^password.*pam_pwhistory.so.*remember='
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_pwhistory_remember_present
+  when:
+    - result_pam_pwhistory_present.found == 1
+
+- name: Check if system relies on authselect
+  ansible.builtin.stat:
+    path: /usr/bin/authselect
+  register: result_authselect_present
+
+- name: "Remediation where authselect tool is present"
   block:
-    - name: "{{{ rule_title }}} - Ensure correct control value"
-      pamd:
-        name: system-auth
-        type: password
-        control: "{{ item }}"
-        module_path: pam_pwhistory.so
-        new_control: "{{ var_password_pam_remember_control_flag }}"
-      loop:
-        - required
-        - optional
-        - requisite
-        - sufficient
-        - binding
+    - name: Check the integrity of the current authselect profile
+      ansible.builtin.command:
+        cmd: authselect check
+      register: result_authselect_check_cmd
+      changed_when: false
+      ignore_errors: true
 
-    - name: "{{{ rule_title }}} - Ensure remember argument in pam_pwhistory"
-      pamd:
-        name: system-auth
-        type: password
-        control: "{{ var_password_pam_remember_control_flag }}"
-        module_path: pam_pwhistory.so
-        module_arguments: 'use_authtok
-            remember={{ var_password_pam_remember }}'
-        state: args_present
-  when: pam_pwhistory.found == 1
+    - name: Informative message based on the authselect integrity check result
+      ansible.builtin.assert:
+        that:
+          - result_authselect_check_cmd is success
+        fail_msg:
+        - authselect integrity check failed. Remediation aborted!
+        - This remediation could not be applied because the authselect profile is not intact.
+        - It is not recommended to manually edit the PAM files when authselect is available.
+        - In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
+        success_msg:
+        - authselect integrity check passed
 
-# if entry does not exist - also to prevent duplicating
-- name: "{{{ rule_title }}} - Add pam_pwhistory"
-  pamd:
-    name: system-auth
-    type: password
-    control: sufficient
-    module_path: pam_unix.so
-    new_type: password
-    new_control: "{{ var_password_pam_remember_control_flag }}"
-    new_module_path: pam_pwhistory.so
-    module_arguments: 'use_authtok
-        remember={{ var_password_pam_remember }}'
-    state: before
-  when: pam_pwhistory.found == 0
+    - name: Get authselect current profile
+      ansible.builtin.shell:
+        cmd: authselect current -r | awk '{ print $1 }'
+      register: result_authselect_profile
+      changed_when: false
+      when:
+        - result_authselect_check_cmd is success
+
+    - name: Define the current authselect profile as a local fact
+      ansible.builtin.set_fact:
+        authselect_current_profile: "{{ result_authselect_profile.stdout }}"
+        authselect_custom_profile: "{{ result_authselect_profile.stdout }}"
+      when:
+        - result_authselect_profile is not skipped
+        - result_authselect_profile.stdout is match("custom/")
+
+    - name: Define the new authselect custom profile as a local fact
+      ansible.builtin.set_fact:
+        authselect_current_profile: "{{ result_authselect_profile.stdout }}"
+        authselect_custom_profile: "custom/hardening"
+      when:
+        - result_authselect_profile is not skipped
+        - result_authselect_profile.stdout is not match("custom/")
+
+    - name: Get authselect current features to also enable them in the custom profile
+      ansible.builtin.shell:
+        cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+      register: result_authselect_features
+      changed_when: false
+      when:
+        - result_authselect_profile is not skipped
+        - authselect_current_profile is not match("custom/")
+
+    - name: Check if any custom profile with the same name was already created in the past
+      ansible.builtin.stat:
+        path: /etc/authselect/{{ authselect_custom_profile }}
+      register: result_authselect_custom_profile_present
+      changed_when: false
+      when:
+        - authselect_current_profile is not match("custom/")
+
+    - name: Create a custom profile based on the current profile
+      ansible.builtin.command:
+        cmd: authselect create-profile hardening -b sssd
+      register: result_authselect_create_profile
+      when:
+        - result_authselect_check_cmd is success
+        - authselect_current_profile is not match("custom/")
+        - not result_authselect_custom_profile_present.stat.exists
+
+    - name: Ensure the desired remember value is updated in the custom profile
+      ansible.builtin.replace:
+        dest: "/etc/authselect/{{ authselect_custom_profile }}/system-auth"
+        regexp: '(.*pam_pwhistory.so.*remember=)(\S+)(.*)$'
+        replace: '\g<1>{{ var_password_pam_remember }}\g<3>'
+      when:
+        - result_authselect_profile is not skipped
+        - authselect_custom_profile is match("custom/")
+        - result_pam_pwhistory_present.found == 1
+        - result_pam_pwhistory_remember_present.found == 1
+
+    - name: Ensure the remember parameter is included in the custom profile
+      ansible.builtin.replace:
+        dest: "/etc/authselect/{{ authselect_custom_profile }}/system-auth"
+        regexp: '(.*pam_pwhistory.so.*)(?! remember=\S+)(.*)$'
+        replace: '\g<1> \g<2> remember={{ var_password_pam_remember }}'
+      when:
+        - result_authselect_profile is not skipped
+        - authselect_custom_profile is match("custom/")
+        - result_pam_pwhistory_present.found == 1
+        - result_pam_pwhistory_remember_present.found == 0
+
+    - name: Ensure the desired control value is updated in the custom profile
+      ansible.builtin.replace:
+        dest: "/etc/authselect/{{ authselect_custom_profile }}/system-auth"
+        regexp: '^(password\s+)((?:(?:requisite)|(?:required)))(\s+pam_pwhistory\.so\s.*)$'
+        replace: '\g<1>{{ var_password_pam_remember_control_flag }}\g<3>'
+      when:
+        - result_authselect_profile is not skipped
+        - authselect_custom_profile is match("custom/")
+        - result_pam_pwhistory_present.found == 1
+
+    - name: Ensure the desired configuration in present in the custom profile
+      ansible.builtin.lineinfile:
+        dest: "/etc/authselect/{{ authselect_custom_profile }}/system-auth"
+        insertafter: ^password.*requisite.*pam_pwquality.so.*
+        line: "password    {{ var_password_pam_remember_control_flag }}     pam_pwhistory.so remember={{ var_password_pam_remember }} use_authtok"
+      when:
+        - result_authselect_profile is not skipped
+        - authselect_custom_profile is match("custom/")
+        - result_pam_pwhistory_present.found == 0
+
+    - name: Ensure a backup of current authselect profile before select the custom profile
+      ansible.builtin.command:
+        cmd: authselect apply-changes -b --backup=before-pwhistory-hardening.backup
+      register: result_authselect_backup
+      when:
+        - result_authselect_check_cmd is success
+        - result_authselect_profile is not skipped
+        - authselect_current_profile is not match("custom/")
+        - authselect_custom_profile is not match(authselect_current_profile)
+
+    - name: Ensure the custom profile is selected
+      ansible.builtin.command:
+        cmd: authselect select {{ authselect_custom_profile }} --force
+      register: result_pam_authselect_select_profile
+      when:
+        - result_authselect_check_cmd is success
+        - result_authselect_profile is not skipped
+        - authselect_current_profile is not match("custom/")
+        - authselect_custom_profile is not match(authselect_current_profile)
+
+    - name: Restore the authselect features in the custom profile
+      ansible.builtin.command:
+        cmd: authselect enable-feature {{ item }}
+      register: result_pam_authselect_select_features
+      loop: "{{ result_authselect_features.stdout_lines }}"
+      when:
+        - result_authselect_profile is not skipped
+        - result_authselect_features is not skipped
+        - result_pam_authselect_select_profile is not skipped
+
+    - name: Ensure the custom profile changes are applied
+      ansible.builtin.command:
+        cmd: authselect apply-changes -b --backup=after-pwhistory-hardening.backup
+      when:
+        - result_authselect_check_cmd is success
+        - result_authselect_profile is not skipped
+  when:
+  - result_authselect_present.stat.exists
+
+# For systems without authselect
+- name: "Remediation where authselect tool is not present and PAM files are directly edited"
+  block:
+    - name: Ensure the desired remember value is updated in the custom profile
+      ansible.builtin.replace:
+        dest: "/etc/pam.d/system-auth"
+        regexp: '(.*pam_pwhistory.so.*remember=)(\S+)(.*)$'
+        replace: '\g<1>{{ var_password_pam_remember }}\g<3>'
+      when:
+        - result_pam_pwhistory_present.found == 1
+
+    - name: Ensure the remember parameter is included in the custom profile
+      ansible.builtin.replace:
+        dest: "/etc/pam.d/system-auth"
+        regexp: '(.*pam_pwhistory.so.*)(?! remember=\S+)(.*)$'
+        replace: '\g<1> \g<2> remember={{ var_password_pam_remember }}'
+      when:
+        - result_pam_pwhistory_present.found == 1
+        - result_pam_pwhistory_remember_present.found == 0
+
+    - name: Ensure the desired control value is updated in the custom profile
+      ansible.builtin.replace:
+        dest: "/etc/pam.d/system-auth"
+        regexp: '^(password\s+)((?:(?:requisite)|(?:required)))(\s+pam_pwhistory\.so\s.*)$'
+        replace: '\g<1>{{ var_password_pam_remember_control_flag }}\g<3>'
+      when:
+        - result_pam_pwhistory_present.found == 1
+
+    - name: Ensure the desired configuration is present in the custom profile
+      ansible.builtin.lineinfile:
+        dest: "/etc/pam.d/system-auth"
+        insertafter: ^password.*requisite.*pam_pwquality.so.*
+        line: "password    {{ var_password_pam_remember_control_flag }}     pam_pwhistory.so remember={{ var_password_pam_remember }} use_authtok"
+      when:
+        - result_pam_pwhistory_present.found == 0
+  when:
+    - not result_authselect_present.stat.exists
