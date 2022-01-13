@@ -1,7 +1,7 @@
 name: Gating
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'stabilization*' ]
 jobs:
   content-test-filtering:
     name: Content Test Filtering on Ubuntu Latest
@@ -13,15 +13,22 @@ jobs:
           apt-get: git python3-jinja2 python3-yaml python3-setuptools python3-deepdiff python3-git python3-github python3-requests xmldiff
       # TODO: Use action's checkout along with --local and --repository options of ctf
       # See: https://github.community/t/how-to-commit-to-two-branches-from-an-action/17713/4
-      #- name: Checkout
-      #  uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Find forking point
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: echo "::set-output name=FORK_POINT::$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})"
+        id: fork_point
       - name: Checkout (CTF)
         uses: actions/checkout@v2
         with:
           repository: mildas/content-test-filtering
           path: ctf
       - name: Process (see the output for recommended tests)
-        run: python3 ./ctf/content_test_filtering.py pr --output-format markdown ${{ github.event.pull_request.number }} # > ctf.md
+        run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --verbose --output-format markdown ${{ github.event.pull_request.number }} # > ctf.md
       # TODO: We can't do this for now: github.token is incapable of writing to the PR, and we can't provide our own
       # for PRs coming from forked repos
       # TODO: mshick/add-pr-comment@v1 and alike won't work as well
