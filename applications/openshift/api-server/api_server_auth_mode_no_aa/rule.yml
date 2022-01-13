@@ -30,15 +30,14 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("{{.var_openshift_kube_apiserver_config}}") | indent(4) }}}
+    {{{ openshift_cluster_setting("/api/v1/namespaces/{{.openshift_kube_apiserver_namespace}}/configmaps/{{.openshift_kube_apiserver_config_name}}") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     entity_check: "none exist"
-    filepath: /api/v1/namespaces/openshift-kube-apiserver/configmaps/config
-    filepath_xccdf_variable: var_openshift_kube_apiserver_config
+    filepath: /api/v1/namespaces/{{.openshift_kube_apiserver_namespace}}/configmaps/{{.openshift_kube_apiserver_config_name}}
     yamlpath: '.data["config.json"]'
     values:
     - value: '"authorization-mode":\[[^]]*"AlwaysAllow"'
