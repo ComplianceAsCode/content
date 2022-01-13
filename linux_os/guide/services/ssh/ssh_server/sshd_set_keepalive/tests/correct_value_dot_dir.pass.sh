@@ -1,6 +1,6 @@
 #!/bin/bash
 # variables = var_sshd_set_keepalive=0
-# plaftorm = Red Hat Enterprise Linux 9
+# platform = Red Hat Enterprise Linux 9
 
 SSHD_CONFIG="/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf"
 
