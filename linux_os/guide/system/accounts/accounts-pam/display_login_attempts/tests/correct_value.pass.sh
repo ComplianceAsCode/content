@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_ol,multi_platform_ubuntu
+# platform = Red Hat Enterprise Linux 7,multi_platform_ol,multi_platform_ubuntu
 
 {{% if product in ["sle12", "sle15"] or 'ubuntu' in product %}}
 rm -f /etc/pam.d/login
