@@ -1,7 +1,7 @@
 name: Gating
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'stabilization*' ]
 jobs:
   content-test-filtering:
     name: Content Test Filtering on Ubuntu Latest
