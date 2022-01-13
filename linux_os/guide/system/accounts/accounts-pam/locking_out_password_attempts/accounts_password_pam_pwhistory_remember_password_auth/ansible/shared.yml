@@ -97,7 +97,6 @@
     - name: Create a custom profile based on the current profile
       ansible.builtin.command:
         cmd: authselect create-profile hardening -b sssd
-      register: result_authselect_create_profile
       when:
         - result_authselect_check_cmd is success
         - authselect_current_profile is not match("custom/")
@@ -110,7 +109,6 @@
         replace: '\g<1>{{ var_password_pam_remember }}\g<3>'
       when:
         - result_authselect_profile is not skipped
-        - authselect_custom_profile is match("custom/")
         - result_pam_pwhistory_present.found == 1
         - result_pam_pwhistory_remember_present.found == 1
 
@@ -121,7 +119,6 @@
         replace: '\g<1> \g<2> remember={{ var_password_pam_remember }}'
       when:
         - result_authselect_profile is not skipped
-        - authselect_custom_profile is match("custom/")
         - result_pam_pwhistory_present.found == 1
         - result_pam_pwhistory_remember_present.found == 0
 
@@ -132,20 +129,18 @@
         replace: '\g<1>{{ var_password_pam_remember_control_flag }}\g<3>'
       when:
         - result_authselect_profile is not skipped
-        - authselect_custom_profile is match("custom/")
         - result_pam_pwhistory_present.found == 1
 
-    - name: Ensure the desired configuration in present in the custom profile
+    - name: Ensure the desired configuration is present in the custom profile
       ansible.builtin.lineinfile:
         dest: "/etc/authselect/{{ authselect_custom_profile }}/password-auth"
         insertafter: ^password.*requisite.*pam_pwquality.so.*
         line: "password    {{ var_password_pam_remember_control_flag }}     pam_pwhistory.so remember={{ var_password_pam_remember }} use_authtok"
       when:
         - result_authselect_profile is not skipped
-        - authselect_custom_profile is match("custom/")
         - result_pam_pwhistory_present.found == 0
 
-    - name: Ensure a backup of current authselect profile before select the custom profile
+    - name: Ensure a backup of current authselect profile before selecting the custom profile
       ansible.builtin.command:
         cmd: authselect apply-changes -b --backup=before-pwhistory-hardening.backup
       register: result_authselect_backup
@@ -168,7 +163,6 @@
     - name: Restore the authselect features in the custom profile
       ansible.builtin.command:
         cmd: authselect enable-feature {{ item }}
-      register: result_pam_authselect_select_features
       loop: "{{ result_authselect_features.stdout_lines }}"
       when:
         - result_authselect_profile is not skipped
