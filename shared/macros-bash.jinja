@@ -567,7 +567,7 @@ fi
 for audit_rules_file in "${files_to_inspect[@]}"
 do
     # Check if audit watch file system object rule for given path already present
-    if grep -q -P -- "[\s]*-w[\s]+{{{ path }}}" "$audit_rules_file"
+    if grep -q -P -- "^[\s]*-w[\s]+{{{ path }}}" "$audit_rules_file"
     then
         # Rule is found => verify yet if existing rule definition contains
         # all of the required access type bits
