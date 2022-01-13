@@ -1,28 +1,20 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
+prodtype: fedora,rhel7,rhel8,rhel9,rhv4
 
-title: "Set PAM's Password Hashing Algorithm"
+title: "Set PAM's Password Hashing Algorithm - password-auth"
 
 description: |-
     The PAM system service can be configured to only store encrypted
     representations of passwords. In
-    {{% if product in ["sle12", "sle15"] %}}
-    <tt>/etc/pam.d/common-password</tt>,
-    {{% else %}}
-    <tt>/etc/pam.d/system-auth</tt>,
-    {{% endif %}}
+    <tt>/etc/pam.d/password-auth</tt>,
     the
     <tt>password</tt> section of the file controls which PAM modules execute
     during a password change. Set the <tt>pam_unix.so</tt> module in the
     <tt>password</tt> section to include the argument <tt>sha512</tt>, as shown
     below:
     <br />
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>password    required    pam_unix.so sha512 <i>other arguments...</i></pre>
-    {{% else %}}
     <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
-    {{% endif %}}
     <br />
     This will help ensure when local users change their passwords, hashes for
     the new passwords will be generated using the SHA-512 algorithm. This is
@@ -44,11 +36,9 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: CCE-82043-1
-    cce@rhel8: CCE-80893-1
-    cce@rhel9: CCE-83581-9
-    cce@sle12: CCE-83184-2
-    cce@sle15: CCE-85565-0
+    cce@rhel7: CCE-85943-9
+    cce@rhel8: CCE-85945-4
+    cce@rhel9: CCE-85946-2
 
 references:
     anssi: BP28(R32)
@@ -67,41 +57,16 @@ references:
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
     pcidss: Req-8.2.1
     srg: SRG-OS-000073-GPOS-00041
-    stigid@ol7: OL07-00-010200
-    stigid@ol8: OL08-00-010160
     stigid@rhel7: RHEL-07-010200
-    stigid@rhel8: RHEL-08-010159
-    stigid@sle12: SLES-12-010230
-    stigid@sle15: SLES-15-020170
+    stigid@rhel8: RHEL-08-010160
     vmmsrg: SRG-OS-000480-VMM-002000
 
 ocil_clause: 'it does not'
 
 ocil: |-
-    {{% if product in ["sle12", "sle15"] %}}
-    Inspect the contents of <tt>/etc/pam.d/common-password</tt>
-    {{% else %}}
-    Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>
-    {{% endif %}}
+    Inspect the <tt>password</tt> section of <tt>/etc/pam.d/password-auth</tt>
     and ensure that the <tt>pam_unix.so</tt> module includes the argument
     <tt>sha512</tt>:
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>$ grep sha512 /etc/pam.d/common-password</pre>
-    {{% else %}}
-    <pre>$ grep sha512 /etc/pam.d/system-auth</pre>
-    {{% endif %}}
+    <pre>$ grep sha512 /etc/pam.d/password-auth</pre>
 
 platform: pam
-
-{{% if product in ["sle12", "sle15"] %}}
-template:
-    name: pam_options
-    vars:
-      path: /etc/pam.d/common-password
-      type: password
-      control_flag: required
-      module: pam_unix.so
-      arguments:
-        - argument: sha512
-          new_argument: sha512
-{{% endif %}}
