@@ -29,7 +29,7 @@ if [ -f /usr/bin/authselect ]; then
 			else
 				sed -r -i --follow-symlinks "s/(.*pam_pwhistory.so.*)(remember=[[:digit:]]+)\s(.*)/\1remember=$var_password_pam_remember \3/g" $CUSTOM_SYSTEM_AUTH
 			fi
-			# Ensure corect control is being used per os requirement
+			# Ensure correct control is being used per os requirement
 			if ! grep -q "^password.*$CONTROL.*pam_pwhistory.so.*" $CUSTOM_SYSTEM_AUTH; then
 				# Replace incorrect value
 				sed -r -i --follow-symlinks "s/(^password.*)(required|requisite)(.*pam_pwhistory\.so.*)$/\1$CONTROL\3/" $CUSTOM_SYSTEM_AUTH
@@ -59,7 +59,7 @@ else
 			# option is set, replace value
 			sed -r -i --follow-symlinks "s/^(.*pam_pwhistory\.so.*)(remember=[0-9]+)(.*)$/\1remember=$var_password_pam_remember\3/" $pamFile
 		fi
-		# ensure corect control is being used per os requirement
+		# ensure correct control is being used per os requirement
 		if ! grep -q "^password.*$CONTROL.*pam_pwhistory.so.*" $pamFile; then
 			#replace incorrect value
 			sed -r -i --follow-symlinks "s/(^password.*)(required|requisite)(.*pam_pwhistory\.so.*)$/\1$CONTROL\3/" $pamFile
