@@ -295,7 +295,7 @@ value: :code:`Setting={{ varname1 }}`
   copy:
     dest: "{{{ filepath }}}"
     content: |+
-        {{{ contents|trim()|indent(8) }}}
+        {{{ contents|indent(8) }}}
     force: yes
 {{%- endmacro %}}
 

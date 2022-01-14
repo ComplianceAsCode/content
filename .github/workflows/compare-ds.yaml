@@ -1,7 +1,7 @@
 name: Compare DS
 on:
   pull_request_target:
-    branches: [ master ]
+    branches: [ master, 'stabilization*' ]
 jobs:
   build-content:
     name: Generate Diff
@@ -34,7 +34,7 @@ jobs:
           repository: mildas/content-test-filtering
           path: ctf
       - name: Detect content changes in the PR
-        run: python3 ./ctf/content_test_filtering.py pr --rule --output json ${{ github.event.pull_request.number }} > output.json
+        run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --verbose --rule --output json ${{ github.event.pull_request.number }} > output.json
       - name: Test if there are no content changes
         run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
         id: ctf
@@ -48,7 +48,7 @@ jobs:
         with:
           path: 'output.json'
           prop_path: 'product'
-      - name: Build product (master)
+      - name: Build product ${{ github.base_ref }} (${{ steps.fork_point.outputs.FORK_POINT }})
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
       - name: Copy built datastream stream to be compared

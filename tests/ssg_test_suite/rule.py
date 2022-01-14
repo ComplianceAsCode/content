@@ -415,7 +415,8 @@ class RuleChecker(oscap.Checker):
     def copy_of_datastream(self, new_filename=None):
         old_filename = self.datastream
         if not new_filename:
-            _, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+            descriptor, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+        os.close(descriptor)
         shutil.copy(old_filename, new_filename)
         self.datastream = new_filename
         yield new_filename
@@ -427,7 +428,8 @@ class RuleChecker(oscap.Checker):
         template = generate_xslt_change_value_template(varname, value)
         with open(xslt_filename, "w") as fp:
             fp.write(template)
-        _, temp_datastream = tempfile.mkstemp(prefix="ds-temp", dir="/tmp")
+        descriptor, temp_datastream = tempfile.mkstemp(prefix="ds-temp", dir="/tmp")
+        os.close(descriptor)
         log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
         with open(log_file_name, "a") as log_file:
             common.run_with_stdout_logging(

@@ -1,4 +1,3 @@
-#!/bin/bash
 # platform = multi_platform_all
 
 {{{ set_config_file(path="/etc/rsyslog.d/encrypt.conf",
