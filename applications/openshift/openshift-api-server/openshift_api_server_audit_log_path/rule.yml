@@ -44,14 +44,13 @@ ocil: |-
 
 warnings:
     - general: |-
-        {{{ openshift_cluster_setting("{{.var_openshift_apiserver_config_openshift_apiserver}}") | indent(8) }}}
+        {{{ openshift_cluster_setting("/api/v1/namespaces/{{.openshift_apiserver_namespace}}/configmaps/{{.openshift_apiserver_config_name}}") | indent(8) }}}
 
 template:
     name: yamlfile_value
     vars:
         ocp_data: "true"
-        filepath: '/api/v1/namespaces/openshift-apiserver/configmaps/config'
-        filepath_xccdf_variable: var_openshift_apiserver_config_openshift_apiserver
+        filepath: /api/v1/namespaces/{{.openshift_apiserver_namespace}}/configmaps/{{.openshift_apiserver_config_name}}
         yamlpath: '.data["config.yaml"]'
         check_existence: "at_least_one_exists"
         values:
