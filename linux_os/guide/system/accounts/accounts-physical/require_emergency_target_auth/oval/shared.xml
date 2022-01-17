@@ -5,9 +5,11 @@
     <criteria operator="AND">
       <criterion comment="Conditions are satisfied"
       test_ref="test_require_emergency_service" />
+      {{%- if product != "ol8" -%}}
       <criterion test_ref="test_require_emergency_service_emergency_target" />
       <criterion test_ref="test_no_custom_emergency_target" negate="true"/>
       <criterion test_ref="test_no_custom_emergency_service" negate="true"/>
+      {{%- endif -%}}
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -32,6 +34,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{%- if product != "ol8" -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that the systemd emergency.service is in the emergency.target"
     id="test_require_emergency_service_emergency_target" version="1">
@@ -66,4 +69,5 @@
     <unix:path operation="equals">/etc/systemd/system</unix:path>
     <unix:filename operation="pattern match">^emergency.target$</unix:filename>
   </unix:file_object>
+  {{%- endif -%}}
 </def-group>
