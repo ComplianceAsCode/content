@@ -59,6 +59,8 @@ class DisaStatus:
             return DisaStatus.AUTOMATED
         return source
 
+    STATUSES = {AUTOMATED, INHERENTLY_MET, DOES_NOT_MEET, NOT_APPLICABLE}
+
 
 def html_plain_text(source: str) -> str:
     if source is None:
