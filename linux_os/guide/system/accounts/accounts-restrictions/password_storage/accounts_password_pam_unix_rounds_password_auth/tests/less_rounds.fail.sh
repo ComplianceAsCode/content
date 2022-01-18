@@ -3,7 +3,7 @@
 # packages = pam
 # variables = var_password_pam_unix_rounds=5000
 
-pamFile="/etc/pam.d/system-auth"
+pamFile="/etc/pam.d/password-auth"
 
 # Make sure rounds is set to value less than default value
 if grep -q "rounds=" $pamFile; then
