@@ -18,7 +18,7 @@ fi
 
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
-    if [ ! $(grep -q '^\s*even_deny_root' $FAILLOCK_CONF) ]; then
+    if ! grep -q '^\s*even_deny_root' $FAILLOCK_CONF; then
         echo "even_deny_root" >> $FAILLOCK_CONF
     fi
 else

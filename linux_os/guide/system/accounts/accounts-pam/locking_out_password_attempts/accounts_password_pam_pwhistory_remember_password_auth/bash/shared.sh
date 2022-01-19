@@ -24,7 +24,7 @@ if [ -f /usr/bin/authselect ]; then
         # Include the desired configuration in the custom profile
         CUSTOM_PASSWORD_AUTH="/etc/authselect/$CURRENT_PROFILE/password-auth"
 		if grep -q "^password.*pam_pwhistory.so.*" $CUSTOM_PASSWORD_AUTH; then
-			if ! $(grep -q "^[^#].*pam_pwhistory.so.*remember=" $CUSTOM_PASSWORD_AUTH); then
+			if ! grep -q "^[^#].*pam_pwhistory.so.*remember=" $CUSTOM_PASSWORD_AUTH; then
 				sed -i --follow-symlinks "/pam_pwhistory.so/ s/$/ remember=$var_password_pam_remember/" $CUSTOM_PASSWORD_AUTH
 			else
 				sed -r -i --follow-symlinks "s/(.*pam_pwhistory.so.*)(remember=[[:digit:]]+)\s(.*)/\1remember=$var_password_pam_remember \3/g" $CUSTOM_PASSWORD_AUTH
