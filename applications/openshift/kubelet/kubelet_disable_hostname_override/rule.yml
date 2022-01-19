@@ -6,14 +6,16 @@ platform: {{{ product }}}-node
 
 {{%- if product == "eks"  %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- set platform_noun = "EKS" %}}
 {{%- else %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- set platform_noun = "OpenShift" %}}
 {{%- endif %}}
 
 title: 'kubelet - Hostname Override handling'
 
 description: |-
-    Normally, OpenShift lets the kubelet get the hostname from either the
+    Normally, {{{ platform_noun }}} lets the kubelet get the hostname from either the
     cloud provider itself, or from the node's hostname. This ensures that
     the PKI allocated by the deployment uses the appropriate values, is valid
     and keeps working throughout the lifecycle of the cluster. IP addresses

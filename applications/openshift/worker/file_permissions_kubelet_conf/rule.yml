@@ -6,8 +6,10 @@ platform: {{{ product }}}-node
 
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- set platform_noun = "EKS" %}}
 {{%- else %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- set platform_noun = "OpenShift" %}}
 {{%- endif %}}
 
 title: 'Verify Permissions on The Kubelet Configuration File'
@@ -18,8 +20,8 @@ description: |-
 rationale: |-
     If the kubelet configuration file is writable by a group-owner or the
     world the risk of its compromise is increased. The file contains the configuration of
-    an OpenShift node that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+    an {{{ platform_noun }}} node that is configured on the system. Protection of this file is
+    critical for {{{ platform_noun }}} security.
 
 severity: medium
 

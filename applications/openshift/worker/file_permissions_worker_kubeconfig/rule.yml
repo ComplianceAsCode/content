@@ -8,9 +8,11 @@ platforms:
 {{%- if product == "eks" %}}
 {{%- set octal_perms = "0644" %}}
 {{%- set text_perms = "-rw-r--r--" %}}
+{{%- set platform_noun = "EKS" %}}
 {{%- else %}}
 {{%- set octal_perms = "0600" %}}
 {{%- set text_perms = "-rw-------" %}}
+{{%- set platform_noun = "OpenShift" %}}
 {{%- endif %}}
 
 title: 'Verify Permissions on the Worker Kubeconfig File'
@@ -21,8 +23,8 @@ description: |-
 rationale: |-
     If the worker kubeconfig file is writable by a group-owner or the
     world the risk of its compromise is increased. The file contains the administration configuration of the
-    OpenShift cluster that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+    {{{ platform_noun }}} cluster that is configured on the system. Protection of this file is
+    critical for {{{ platform_noun }}} security.
 
 severity: medium
 

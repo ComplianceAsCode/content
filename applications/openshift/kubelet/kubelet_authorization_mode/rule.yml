@@ -6,14 +6,16 @@ platform: {{{ product }}}-node
 
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- set platform_noun = "EKS" %}}
 {{%- else %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- set platform_noun = "OpenShift" %}}
 {{%- endif %}}
 
 title: 'Ensure authorization is set to Webhook'
 
 description: |-
-    Unauthenticated/unauthorized users should have no access to OpenShift nodes.
+    Unauthenticated/unauthorized users should have no access to {{{ platform_noun }}} nodes.
     The Kubelet should be set to only allow Webhook authorization.
     To ensure that the Kubelet requires authorization,
     validate that <tt>authorization</tt> is configured to <tt>Webhook</tt>
@@ -26,7 +28,7 @@ description: |-
 
 rationale: |-
     Ensuring that the authorization is configured correctly helps enforce that
-    unauthenticated/unauthorized users have no access to OpenShift nodes.
+    unauthenticated/unauthorized users have no access to {{{ platform_noun }}} nodes.
 
 identifiers:
   cce@ocp4: CCE-83593-4

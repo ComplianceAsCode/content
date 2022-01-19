@@ -6,17 +6,19 @@ platform: {{{ product }}}-node
 
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{%- set platform_noun = "EKS" %}}
 {{%- else %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{%- set platform_noun = "OpenShift" %}}
 {{%- endif %}}
 
 title: 'Verify Group Who Owns The Kubelet Configuration File'
 
 description: '{{{ describe_file_group_owner(file=kubeletconf_path, group="root") }}}'
 rationale: |-
-    The kubelet configuration file contains information about the configuration of the
-    OpenShift node that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+    The kubelet configuration file contains information about the configuration
+    of the {{{ platform_noun }}} node that is configured on the system.
+    Protection of this file is critical for {{{ platform_noun }}} security.
 
 severity: medium
 

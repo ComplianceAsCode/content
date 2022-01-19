@@ -3,6 +3,12 @@ documentation_complete: true
 prodtype: eks,ocp4
 
 platform: {{{ product }}}-node
+{{%- if product == "eks" %}}
+{{%- set platform_noun = "EKS" }}}
+{{%- else %}}
+{{%- set platform_noun = "OpenShift" }}}
+{{%- endif %}}
+
 
 title: 'Verify Group Who Owns The Worker Kubeconfig File'
 
@@ -10,8 +16,8 @@ description: '{{{ describe_file_group_owner(file="/var/lib/kubelet/kubeconfig", 
 
 rationale: |-
     The worker kubeconfig file contains information about the administrative configuration of the
-    OpenShift cluster that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+    {{{ platform_noun }}} cluster that is configured on the system. Protection of this file is
+    critical for {{{ platform_noun}}} security.
 
 severity: medium
 
