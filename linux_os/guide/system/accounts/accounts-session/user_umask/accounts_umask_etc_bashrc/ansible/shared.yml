@@ -5,8 +5,16 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_accounts_user_umask") }}}
 
-- name: Set user umask in /etc/bashrc
+- name: Replace user umask in /etc/bashrc
   replace:
-      path: /etc/bashrc
-      regexp: "umask.*"
-      replace: "umask {{ var_accounts_user_umask }}"
+    path: /etc/bashrc
+    regexp: "umask.*"
+    replace: "umask {{ var_accounts_user_umask }}"
+  register: umask_replace
+
+- name: Append user umask in /etc/bashrc
+  lineinfile:
+    create: yes
+    path: /etc/bashrc
+    line: "umask {{ var_accounts_user_umask }}"
+  when: umask_replace is not changed
