@@ -211,14 +211,6 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
     )
     if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
-        # Doesn't work, as the glob is evaluated at cmake-time instead of test exec time
-        file(GLOB BASH_SNIPPETS "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash/*.sh")
-        add_test(
-            NAME "${PRODUCT}-bash-shellcheck2"
-	    COMMAND "${SHELLCHECK_EXECUTABLE}" -s bash -S warning ${BASH_SNIPPETS}
-        )
-        set_tests_properties("${PRODUCT}-bash-shellcheck2" PROPERTIES LABELS quick)
-
         add_test(
             NAME "${PRODUCT}-bash-shellcheck"
 	    COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
