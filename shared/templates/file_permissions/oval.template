@@ -67,6 +67,11 @@
       #}}
       <filter action="include">state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_not_{{{ FILEMODE }}}</filter>
     {{%- endif %}}
+      <filter action="exclude">exclude_symlinks_{{{ FILEID }}}</filter>
   </unix:file_object>
   {{% endfor %}}
+
+  <unix:file_state id="exclude_symlinks_{{{ FILEID }}}" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
 </def-group>

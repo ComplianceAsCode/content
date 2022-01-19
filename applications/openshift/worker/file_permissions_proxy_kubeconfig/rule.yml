@@ -41,6 +41,7 @@ references:
   nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
   nist: CM-6,CM-6(1)
   pcidss: Req-2.2
+  srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
 ocil_clause: 'The kube-proxy configuration ConfigMap mount is mounted using wrong permissions'
 
@@ -51,14 +52,13 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("{{.var_openshift_sdn_daemonsets_sdn}}") | indent(4) }}}
+    {{{ openshift_cluster_setting("{{.openshift_sdn_daemonsets_sdn}}") | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: /apis/apps/v1/namespaces/openshift-sdn/daemonsets/sdn
-    filepath_xccdf_variable: var_openshift_sdn_daemonsets_sdn
+    filepath: {{.openshift_sdn_daemonsets_sdn}}
     yamlpath: spec.template.spec.volumes[:].configMap['defaultMode','name']
     entity_check: "at least one"
     values:

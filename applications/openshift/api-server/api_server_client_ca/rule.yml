@@ -35,6 +35,7 @@ references:
     nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1
     nist: SC-8,SC-8(1),SC-8(2)
     pcidss: Req-2.2,Req-2.2.3,Req-2.3
+    srg: SRG-APP-000441-CTR-001090,SRG-APP-000442-CTR-001095
 
 identifiers:
     cce@ocp4: CCE-84284-9
@@ -48,14 +49,13 @@ ocil: |-
 
 warnings:
     - general: |-
-        {{{ openshift_cluster_setting("{{.var_openshift_kube_apiserver_config}}") | indent(8) }}}
+        {{{ openshift_cluster_setting("/api/v1/namespaces/{{.openshift_kube_apiserver_namespace}}/configmaps/{{.openshift_kube_apiserver_config_name}}") | indent(8) }}}
 
 template:
     name: yamlfile_value
     vars:
         ocp_data: "true"
-        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
-        filepath_xccdf_variable: var_openshift_kube_apiserver_config
+        filepath: /api/v1/namespaces/{{.openshift_kube_apiserver_namespace}}/configmaps/{{.openshift_kube_apiserver_config_name}}
         yamlpath: '.data["config.json"]'
         entity_check: "all"
         values:

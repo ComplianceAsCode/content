@@ -1594,3 +1594,29 @@ Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
 
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
+
+{{#
+    Adds a boiler plate warning with a justification why a rule is disabled on RHV.
+    Note: This is only applied on RHEL8 content.
+
+    :param rationale: Explanation why RHV needs the rule disabled.
+#}}
+{{% macro ovirt_rule_notapplicable_warning(rationale) %}}
+{{%- if product == "rhel8" %}}
+- general: |-
+    This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
+    {{{ rationale }}}.
+{{%- endif %}}
+{{% endmacro %}}
+
+{{#
+
+    Makes a rule not applicable on systems where oVirt is installed.
+    Note: This is only applied on RHEL8 content.
+
+#}}
+{{% macro rule_notapplicable_when_ovirt_installed() %}}
+{{%- if product == "rhel8" %}}
+- no_ovirt
+{{%- endif %}}
+{{% endmacro %}}

@@ -25,6 +25,7 @@ extends: null
 metadata:
     version: V1R4
     SMEs:
+    - mab879
     - ggbecker
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 selections:
@@ -180,6 +181,7 @@ selections:
 - dconf_gnome_screensaver_idle_delay
 - dconf_gnome_screensaver_lock_enabled
 - dir_group_ownership_library_dirs
+- dir_permissions_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
 - directory_group_ownership_var_log_audit
@@ -336,6 +338,7 @@ selections:
 - service_systemd-coredump_disabled
 - service_usbguard_enabled
 - set_password_hashing_algorithm_logindefs
+- set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
 - sshd_disable_compression
 - sshd_disable_empty_passwords

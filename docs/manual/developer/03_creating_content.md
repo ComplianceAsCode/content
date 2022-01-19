@@ -1118,6 +1118,9 @@ The `status` key may hold the following values:
 
 * `automated`: The control is addressed by the product and can be automatically
                checked for.
+
+* `manual`: The control cannot or should not be automated, and should be addressed manually.
+
 * `does not meet`: The control is not met by the product
 
 Note that if the `status` key is missing from a control definition, the default

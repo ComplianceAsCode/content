@@ -22,6 +22,7 @@ class Status:
     PARTIAL = "partial"
     SUPPORTED = "supported"
     AUTOMATED = "automated"
+    MANUAL = "manual"
     DOES_NOT_MEET = "does not meet"
 
     def __init__(self, status):
@@ -41,6 +42,7 @@ class Status:
             cls.PARTIAL,
             cls.SUPPORTED,
             cls.AUTOMATED,
+            cls.MANUAL,
             cls.DOES_NOT_MEET
         ]
 
@@ -78,6 +80,8 @@ class Control(ssg.build_yaml.SelectionHandler):
         self.mitigation = ""
         self.artifact_description = ""
         self.status_justification = ""
+        self.fix = ""
+        self.check = ""
 
     def __hash__(self):
         """ Controls are meant to be unique, so using the
@@ -96,6 +100,8 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.status_justification = control_dict.get('status_justification')
         control.artifact_description = control_dict.get('artifact_description')
         control.mitigation = control_dict.get('mitigation')
+        control.fix = control_dict.get('fix')
+        control.check = control_dict.get('check')
         if control.status == "automated":
             control.automated = "yes"
         if control.automated not in ["yes", "no", "partially"]:

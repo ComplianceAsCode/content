@@ -3,7 +3,8 @@ documentation_complete: true
 metadata:
     version: 1.0
     SMEs:
-        - carlosmmatos
+        - mab879
+        - ggbecker
 
 reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=408&id=408
 
@@ -200,6 +201,7 @@ selections:
     - accounts_password_pam_unix_remember
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_libuserconf
     - no_empty_passwords
 

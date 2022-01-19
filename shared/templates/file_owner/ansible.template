@@ -25,7 +25,7 @@
 
 - name: Ensure owner on {{{ path }}} recursively
   file:
-    paths "{{{ path }}}"
+    path: "{{{ path }}}"
     state: directory
     recurse: yes
     owner: "{{{ FILEUID }}}"

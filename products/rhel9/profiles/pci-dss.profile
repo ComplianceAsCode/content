@@ -2,11 +2,11 @@ documentation_complete: true
 
 metadata:
     SMEs:
-        - carlosmmatos
+        - yuumasato
 
 reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 
-title: '[RHEL9 DRAFT] PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 9'
+title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 9'
 
 description: |-
     Ensures PCI-DSS v3.2.1 security configuration settings are applied.
@@ -123,6 +123,7 @@ selections:
     - service_pcscd_enabled
     - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - file_owner_etc_shadow

@@ -29,7 +29,7 @@ ocil_clause: 'Disk encryption is not enabled on the GCP MachineSets'
 
 ocil: |-
     Run the following command to retrieve if the GCP disk encryption is enabled:
-    <pre>$ oc get machineset --all-namespaces -o json | jq {{{ jqfilter }}}</pre>
+    <pre>$ oc get machineset --all-namespaces -o json | jq '{{{ jqfilter }}}'</pre>
     Make sure that the result is an array MachineSet names. These MachineSets 
     have references to the GCP's KMS key names, which can be inspected by going through them
     with <pre>$ oc get machineset --all-namespaces -o yaml</pre>

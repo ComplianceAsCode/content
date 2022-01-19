@@ -30,6 +30,7 @@ identifiers:
     cce@sle15: CCE-85755-7
 
 references:
+    cis@sle15: 4.2.3
     disa: CCI-001312
     nist: SI-11(a),SI-11(b),SI-11.1(iii)
     nist-csf: PR.AC-4,PR.DS-5
@@ -46,3 +47,10 @@ ocil: |-
     <pre>
     sudo find /var/log -perm /137 -type f -exec stat -c "%n %a" {} \;
     </pre>
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /var/log/
+        file_regex: '.*'
+        filemode: '0640'

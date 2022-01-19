@@ -1,8 +1,20 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_all
 # reboot = true
 # strategy = restrict
 # complexity = low
 # disruption = low
+
+{{% if 'sle' in product %}}
+- name: Verify that Interactive Boot is Disabled in /usr/bin/grub2-editenv
+  replace:
+    dest: /etc/default/grub
+    regexp: systemd.confirm_spawn=(1|yes|true|on) 
+    replace: systemd.confirm_spawn=no
+
+- name: Verify that Interactive Boot is Disabled (runtime)
+  command: /usr/bin/grub2-editenv - unset systemd.confirm_spawn
+
+{{% else %}}
 
 - name: Verify that Interactive Boot is Disabled in /etc/default/grub
   replace:
@@ -12,3 +24,5 @@
 
 - name: Verify that Interactive Boot is Disabled (runtime)
   command: /sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
+
+{{% endif %}}

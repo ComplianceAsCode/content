@@ -142,31 +142,33 @@ class RuleChecker(oscap.Checker):
             log_target='fail')
 
         runner_cls = oscap.REMEDIATION_RULE_RUNNERS[self.remediate_using]
-        runner = runner_cls(
+        runner_instance = runner_cls(
             self.test_env, oscap.process_profile_id(profile), self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean, self.no_reports, self.manual_debug)
-        initial_scan_res = self._initial_scan_went_ok(runner, rule_id, scenario.context)
-        if not initial_scan_res:
-            return False
-        if initial_scan_res == 2:
-            # notapplicable
-            return True
 
-        supported_and_available_remediations = self._get_available_remediations(scenario)
-        if (scenario.context not in ['fail', 'error']
-                or not supported_and_available_remediations):
-            return True
-
-        if remediation_available:
-            if not self._remediation_went_ok(runner, rule_id):
+        with runner_instance as runner:
+            initial_scan_res = self._initial_scan_went_ok(runner, rule_id, scenario.context)
+            if not initial_scan_res:
                 return False
+            if initial_scan_res == 2:
+                # notapplicable
+                return True
 
-            return self._final_scan_went_ok(runner, rule_id)
-        else:
-            msg = ("No remediation is available for rule '{}'."
-                   .format(rule_id))
-            logging.warning(msg)
-            return False
+            supported_and_available_remediations = self._get_available_remediations(scenario)
+            if (scenario.context not in ['fail', 'error']
+                    or not supported_and_available_remediations):
+                return True
+
+            if remediation_available:
+                if not self._remediation_went_ok(runner, rule_id):
+                    return False
+
+                return self._final_scan_went_ok(runner, rule_id)
+            else:
+                msg = ("No remediation is available for rule '{}'."
+                       .format(rule_id))
+                logging.warning(msg)
+                return False
 
     def _initial_scan_went_ok(self, runner, rule_id, context):
         success = runner.run_stage_with_context("initial", context)
@@ -413,7 +415,8 @@ class RuleChecker(oscap.Checker):
     def copy_of_datastream(self, new_filename=None):
         old_filename = self.datastream
         if not new_filename:
-            _, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+            descriptor, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+        os.close(descriptor)
         shutil.copy(old_filename, new_filename)
         self.datastream = new_filename
         yield new_filename
@@ -425,7 +428,8 @@ class RuleChecker(oscap.Checker):
         template = generate_xslt_change_value_template(varname, value)
         with open(xslt_filename, "w") as fp:
             fp.write(template)
-        _, temp_datastream = tempfile.mkstemp(prefix="ds-temp", dir="/tmp")
+        descriptor, temp_datastream = tempfile.mkstemp(prefix="ds-temp", dir="/tmp")
+        os.close(descriptor)
         log_file_name = os.path.join(LogHelper.LOG_DIR, "env-preparation.log")
         with open(log_file_name, "a") as log_file:
             common.run_with_stdout_logging(

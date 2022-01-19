@@ -2,7 +2,7 @@ documentation_complete: true
 
 metadata:
     SMEs:
-        - carlosmmatos
+        - yuumasato
 
 reference: https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf
 
@@ -126,6 +126,7 @@ selections:
     - service_pcscd_enabled
     - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - file_owner_etc_shadow

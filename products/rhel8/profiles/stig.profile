@@ -3,6 +3,7 @@ documentation_complete: true
 metadata:
     version: V1R4
     SMEs:
+        - mab879
         - ggbecker
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
@@ -148,6 +149,9 @@ selections:
     # RHEL-08-010152
     - require_emergency_target_auth
 
+    # RHEL-08-010159
+    - set_password_hashing_algorithm_passwordauth
+
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
 
@@ -190,9 +194,7 @@ selections:
     # RHEL-08-010260
     - file_groupowner_var_log
 
-    # *** SHARED *** #
-    # RHEL-08-010290 && RHEL-08-010291
-    # *** SHARED *** #
+    # RHEL-08-010287
     - configure_ssh_crypto_policy
 
     # RHEL-08-010290
@@ -226,6 +228,9 @@ selections:
 
     # RHEL-08-010330
     - file_permissions_library_dirs
+
+    # RHEL-08-010331
+    - dir_permissions_library_dirs
 
     # RHEL-08-010340
     - file_ownership_library_dirs

@@ -16,6 +16,7 @@ description: |-
     <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>FIPS</tt></li>
     <li>Loading the Dracut <tt>fips</tt> module</li>
     </ul>
+    This rule also ensures that the system policy is set to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>.
     Furthermore, the system running in FIPS mode should be FIPS certified by NIST.
 
 rationale: |-
@@ -51,6 +52,10 @@ ocil: |-
     <pre>fips-mode-setup --check</pre>
     The output should contain the following:
     <pre>FIPS mode is enabled.</pre>
+    To verify that the cryptographic policy has been configured correctly, run the
+    following command:
+    <pre>$ update-crypto-policies --show</pre>
+    The output should return <pre>{{{ xccdf_value("var_system_crypto_policy") }}}</pre>.
 
 warnings:
     - general: |-

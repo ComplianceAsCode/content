@@ -1,0 +1,72 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8,rhel9,rhv4
+
+title: "Set PAM's Password Hashing Algorithm - password-auth"
+
+description: |-
+    The PAM system service can be configured to only store encrypted
+    representations of passwords. In
+    <tt>/etc/pam.d/password-auth</tt>,
+    the
+    <tt>password</tt> section of the file controls which PAM modules execute
+    during a password change. Set the <tt>pam_unix.so</tt> module in the
+    <tt>password</tt> section to include the argument <tt>sha512</tt>, as shown
+    below:
+    <br />
+    <pre>password    sufficient    pam_unix.so sha512 <i>other arguments...</i></pre>
+    <br />
+    This will help ensure when local users change their passwords, hashes for
+    the new passwords will be generated using the SHA-512 algorithm. This is
+    the default.
+
+rationale: |-
+    Passwords need to be protected at all times, and encryption is the standard
+    method for protecting passwords. If passwords are not encrypted, they can
+    be plainly read (i.e., clear text) and easily compromised. Passwords that
+    are encrypted with a weak algorithm are no more protected than if they are
+    kepy in plain text.
+    <br /><br />
+    This setting ensures user and group account administration utilities are
+    configured to store only encrypted representations of passwords.
+    Additionally, the <tt>crypt_style</tt> configuration option ensures the use
+    of a strong hashing algorithm that makes password cracking attacks more
+    difficult.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-85943-9
+    cce@rhel8: CCE-85945-4
+    cce@rhel9: CCE-85946-2
+
+references:
+    anssi: BP28(R32)
+    cis-csc: 1,12,15,16,5
+    cis@rhel7: 5.4.3
+    cis@rhel8: 5.4.4
+    cjis: 5.6.2.2
+    cobit5: DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.10
+    cui: 3.13.11
+    disa: CCI-000196
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.2,4.3.3.7.4
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.7,SR 1.8,SR 1.9,SR 2.1'
+    ism: 0418,1055,1402
+    iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
+    nist: IA-5(c),IA-5(1)(c),CM-6(a)
+    nist-csf: PR.AC-1,PR.AC-6,PR.AC-7
+    pcidss: Req-8.2.1
+    srg: SRG-OS-000073-GPOS-00041
+    stigid@rhel7: RHEL-07-010200
+    stigid@rhel8: RHEL-08-010160
+    vmmsrg: SRG-OS-000480-VMM-002000
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    Inspect the <tt>password</tt> section of <tt>/etc/pam.d/password-auth</tt>
+    and ensure that the <tt>pam_unix.so</tt> module includes the argument
+    <tt>sha512</tt>:
+    <pre>$ grep sha512 /etc/pam.d/password-auth</pre>
+
+platform: pam

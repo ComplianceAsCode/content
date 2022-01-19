@@ -50,3 +50,9 @@ ocil: |-
     To determine if <tt>NOPASSWD</tt> has been configured for sudo, run the following command:
     <pre>$ sudo grep -ri nopasswd /etc/sudoers /etc/sudoers.d/</pre>
     The command should return no output.
+
+platforms:
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
+
+warnings:
+{{{ ovirt_rule_notapplicable_warning("RHV requires to perform operations as root without being asked for password") | indent(4) }}}

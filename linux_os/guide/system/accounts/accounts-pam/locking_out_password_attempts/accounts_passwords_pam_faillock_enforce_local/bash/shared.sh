@@ -1,16 +1,20 @@
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 
-SYSTEM_AUTH="/etc/pam.d/system-auth"
-PASSWORD_AUTH="/etc/pam.d/password-auth"
+if authselect check; then
+    authselect enable-feature with-faillock
+    authselect apply-changes
+else
+    echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because the authselect profile is not intact.
+It is not recommended to manually edit the PAM files when authselect is available
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+    false
+fi
+
 FAILLOCK_CONF="/etc/security/faillock.conf"
-
-if [ $(grep -c "^\s*auth.*pam_unix.so" $SYSTEM_AUTH) > 1 ] || \
-   [ $(grep -c "^\s*auth.*pam_unix.so" $PASSWORD_AUTH) > 1 ]; then
-   echo "Skipping remediation because there are more pam_unix.so entries than expected."
-   false
+if [ -f $FAILLOCK_CONF ]; then
+    if [ ! $(grep -q '^\s*local_users_only' $FAILLOCK_CONF) ]; then
+        echo "local_users_only" >> $FAILLOCK_CONF
+    fi
 fi
-
-if [ ! $(grep -q '^\s*local_users_only' $FAILLOCK_CONF) ]; then
-    echo "local_users_only" >> $FAILLOCK_CONF
-fi
-authselect enable-feature with-faillock

@@ -734,7 +734,7 @@
     </ind:textfilecontent54_object>
 
     <ind:textfilecontent54_state id="state_whole_file_contents_{{{ filepath_id }}}" version="1">
-      <ind:text operation="equals">{{{ contents|trim() }}}
+      <ind:text operation="equals">{{{ contents }}}
 </ind:text>
     </ind:textfilecontent54_state>
 
@@ -896,8 +896,8 @@
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
 
   {{%- if missing_parameter_pass %}}
-  {{{ oval_line_in_directory_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
-  {{{ oval_line_in_directory_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter, missing_parameter_pass) | indent(2) }}}
+  {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
   {{%- endif %}}
   {{%- endif %}}
 </def-group>

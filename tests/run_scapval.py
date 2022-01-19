@@ -45,6 +45,11 @@ def process_results(result_path):
             else:
                 print("    %s: %s" % (id_, status))
                 ret_val = False
+        if status == "PASS":
+            if ('ssg-ocp4-ds' in result_path or 'ssg-eks-ds' in result_path) and id_ == "SRC-329":
+                print("    %s: %s" % (
+                    id_, "FAIL (yamlfilecontent_test is probably standardized by now."
+                    "You should update the waiver.)"))
     return ret_val
 
 

@@ -3,11 +3,7 @@ documentation_complete: true
 prodtype: eks,ocp4
 
 platforms:
-{{%- if product == "eks" %}}
-- eks-node
-{{%- else %}}
-- ocp4-node
-{{%- endif %}}
+- {{{ product }}}-node
 
 {{%- if product == "eks" %}}
 {{%- set octal_perms = "0644" %}}
@@ -38,6 +34,7 @@ references:
     cis@ocp4: 4.1.9
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
+    srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 ocil_clause: |-
     {{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=text_perms) }}}
 

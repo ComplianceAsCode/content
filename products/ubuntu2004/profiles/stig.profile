@@ -199,8 +199,10 @@ selections:
     - file_permissions_etc_audit_auditd
 
     # UBTU-20-010134 The Ubuntu operating system must permit only authorized accounts to own the audit configuration files.
+    - file_ownership_audit_configuration
 
     # UBTU-20-010135 The Ubuntu operating system must permit only authorized groups to own the audit configuration files.
+    - file_groupownership_audit_configuration
 
     # UBTU-20-010136 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the su command.
     - audit_rules_privileged_commands_su
@@ -347,10 +349,13 @@ selections:
     - grub2_audit_argument
 
     # UBTU-20-010199 The Ubuntu operating system must configure audit tools with a mode of 0755 or less permissive.
+    - file_permissions_audit_binaries
 
     # UBTU-20-010200 The Ubuntu operating system must configure audit tools to be owned by root.
+    - file_ownership_audit_binaries
 
     # UBTU-20-010201 The Ubuntu operating system must configure the audit tools to be group-owned by root.
+    - file_groupownership_audit_binaries
 
     # UBTU-20-010205 The Ubuntu operating system must use cryptographic mechanisms to protect the integrity of audit tools.
     - aide_check_audit_tools
@@ -469,16 +474,22 @@ selections:
     - file_permissions_var_log
 
     # UBTU-20-010420 The Ubuntu operating system must configure the /var/log/syslog file to be group-owned by adm.
+    - file_groupowner_var_log_syslog
 
     # UBTU-20-010421 The Ubuntu operating system must configure /var/log/syslog file to be owned by syslog.
+    - file_owner_var_log_syslog
 
     # UBTU-20-010422 The Ubuntu operating system must configure /var/log/syslog file with mode 0640 or less permissive.
+    - file_permissions_var_log_syslog
 
     # UBTU-20-010423 The Ubuntu operating system must have directories that contain system commands set to a mode of 0755 or less permissive.
+    - dir_permissions_binary_dirs
 
     # UBTU-20-010424 The Ubuntu operating system must have directories that contain system commands owned by root.
+    - dir_ownership_binary_dirs
 
     # UBTU-20-010425 The Ubuntu operating system must have directories that contain system commands group-owned by root.
+    - dir_groupownership_binary_dirs
 
     # UBTU-20-010426 The Ubuntu operating system library files must have mode 0755 or less permissive.
     - file_permissions_library_dirs
@@ -493,6 +504,7 @@ selections:
     - dir_ownership_library_dirs
 
     # UBTU-20-010430 The Ubuntu operating system library files must be group-owned by root.
+    - root_permissions_syslibrary_files
 
     # UBTU-20-010431 The Ubuntu operating system library directories must be group-owned by root.
     - dir_group_ownership_library_dirs

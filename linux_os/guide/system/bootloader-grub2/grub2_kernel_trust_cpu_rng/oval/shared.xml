@@ -29,11 +29,34 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-<ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_off"
-  comment="check forkernel command line parameters random.trust_cpu=off in {{{ grub2_boot_path }}}/grubenv for all kernels"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_trust_cpu_rng_boot_param" />
-    <ind:state state_ref="state_trust_cpu_rng_boot_param_off" />
+  {{% if product in ['rhel9'] %}}
+  <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_off"
+                              comment="check kernel command line parameters for the argument for all boot entries."
+                              check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_grub2_kernel_trust_cpu_rng_entries"/>
+    <ind:state state_ref="state_trust_cpu_rng_boot_param_off"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_on"
+                              comment="check kernel command line parameters for the argument for all boot entries."
+                              check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="obj_grub2_kernel_trust_cpu_rng_entries"/>
+    <ind:state state_ref="state_trust_cpu_rng_boot_param_on"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_grub2_kernel_trust_cpu_rng_entries" version="1">
+    <ind:path>/boot/loader/entries/</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{% else %}}
+
+  <ind:textfilecontent54_test id="test_trust_cpu_rng_boot_param_off"
+                              comment="check for kernel command line parameters random.trust_cpu=off in {{{ grub2_boot_path }}}/grubenv for all kernels"
+                              check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_trust_cpu_rng_boot_param"/>
+    <ind:state state_ref="state_trust_cpu_rng_boot_param_off"/>
   </ind:textfilecontent54_test>
 
 
@@ -50,6 +73,7 @@
     <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{% endif %}}
 
   <ind:textfilecontent54_state id="state_trust_cpu_rng_boot_param_on"
   version="1">
@@ -60,6 +84,5 @@
   version="1">
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?random\.trust_cpu=off(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
-
 
 </def-group>

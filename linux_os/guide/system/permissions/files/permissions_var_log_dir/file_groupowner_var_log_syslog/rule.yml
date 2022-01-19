@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns /var/log/syslog File'
+
+description: '{{{ describe_file_group_owner(file="/var/log/syslog", group="adm") }}}'
+
+rationale: |-
+    The <tt>/var/log/syslog</tt> file contains logs of error messages in
+    the system and should only be accessed by authorized personnel.
+
+severity: medium
+
+references:
+    disa: CCI-001314
+    srg: SRG-OS-000206-GPOS-00084
+    stigid@ubuntu2004: UBTU-20-010420
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/log/syslog", group="adm") }}}'
+
+ocil: |-
+    {{{ ocil_file_group_owner(file="/var/log/syslog", group="adm") }}}
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /var/log/syslog
+        filegid: '4'

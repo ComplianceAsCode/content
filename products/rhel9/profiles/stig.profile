@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: NA
+    version: TBD
     SMEs:
         - mab879
         - ggbecker
@@ -11,7 +11,9 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 9'
 
 description: |-
-    This profile contains configuration checks that are based on the RHEL8 STIG.
+    This is a draft profile based on its RHEL8 version for experimental purposes.
+    It is not based on the DISA STIG for RHEL9, because this one was not available at time of
+    the release.
 
     In addition to being applicable to Red Hat Enterprise Linux 9, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
@@ -148,6 +150,9 @@ selections:
     # RHEL-08-010152
     - require_emergency_target_auth
 
+    # RHEL-08-010159
+    - set_password_hashing_algorithm_passwordauth
+
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
 
@@ -190,9 +195,7 @@ selections:
     # RHEL-08-010260
     - file_groupowner_var_log
 
-    # *** SHARED *** #
-    # RHEL-08-010290 && RHEL-08-010291
-    # *** SHARED *** #
+    # RHEL-08-010287
     - configure_ssh_crypto_policy
 
     # RHEL-08-010290
@@ -226,6 +229,9 @@ selections:
 
     # RHEL-08-010330
     - file_permissions_library_dirs
+
+    # RHEL-08-010331
+    - dir_permissions_library_dirs
 
     # RHEL-08-010340
     - file_ownership_library_dirs

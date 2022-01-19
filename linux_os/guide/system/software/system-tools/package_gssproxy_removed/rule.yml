@@ -25,6 +25,12 @@ references:
 
 {{{ complete_ocil_entry_package(package="gssproxy") }}}
 
+platforms:
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
+
+warnings:
+{{{ ovirt_rule_notapplicable_warning("RHV uses NFS storage, which has dependency on gssproxy") | indent(4) }}}
+
 template:
     name: package_removed
     vars:
