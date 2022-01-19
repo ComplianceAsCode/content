@@ -7,26 +7,26 @@
 declare -a VALUES=()
 declare -a VALUE_NAMES=()
 declare -a ARGS=()
-declare -a NEW_ARS=()
+declare -a NEW_ARGS=()
 
 {{% for arg in ARGUMENTS -%}}
-{{% if arg['variable']|length -%}}
-    {{{ bash_instantiate_variables("var_password_pam_" + arg['variable']) -}}}
-VALUES+=${{{ "var_password_pam_" + arg['variable'] }}}
-VALUE_NAMES+={{{ arg['variable'] }}}
-{{%- else -%}}
-VALUES+=""
-VALUE_NAMES+=""
+{{% if arg['variable'] | length -%}}
+{{{ bash_instantiate_variables("var_password_pam_" + arg['variable']) }}}
+VALUES+=("${{{ "var_password_pam_" + arg['variable'] }}}")
+VALUE_NAMES+=("{{{ arg['variable'] }}}")
+{{%- else %}}
+VALUES+=("")
+VALUE_NAMES+=("")
 {{%- endif %}}
-{{% if arg['argument']|length -%}}
-ARGS+="{{{ arg['argument'] }}}"
+{{% if arg['argument'] | length -%}}
+ARGS+=("{{{ arg['argument'] }}}")
 {{%- else -%}}
-ARGS+=""
+ARGS+=("")
 {{%- endif %}}
-{{% if arg['new_argument']|length -%}}
-NEW_ARGS+="{{{ arg['new_argument'] }}}"
+{{% if arg['new_argument'] | length -%}}
+NEW_ARGS+=("{{{ arg['new_argument'] }}}")
 {{%- else -%}}
-NEW_ARGS+=""
+NEW_ARGS+=("")
 {{%- endif %}}
 {{%- endfor %}}
 
