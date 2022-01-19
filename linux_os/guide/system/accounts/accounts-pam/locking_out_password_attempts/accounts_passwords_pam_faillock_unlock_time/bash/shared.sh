@@ -20,7 +20,7 @@ fi
 
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
-    if $(grep -q '^\s*unlock_time\s*=' $FAILLOCK_CONF); then
+    if grep -q '^\s*unlock_time\s*=' $FAILLOCK_CONF; then
         sed -i --follow-symlinks "s/^\s*\(unlock_time\s*\)=.*$/\1 = $var_accounts_passwords_pam_faillock_unlock_time/g" $FAILLOCK_CONF
     else
         echo "unlock_time = $var_accounts_passwords_pam_faillock_unlock_time" >> $FAILLOCK_CONF
