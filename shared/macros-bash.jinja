@@ -1321,15 +1321,15 @@ cce="{{{ cce_identifiers['cce'] }}}"
     it does not exist.
 
     Example Calls:
- 
+
       With default format of 'key = value'::
 
         {{{ bash_replace_or_append('/etc/sysctl.conf', '^kernel.randomize_va_space', '2') }}}
- 
+
       With custom key/value format::
 
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', 'disabled', '%s=%s') }}}
- 
+
       With a variable::
 
         {{{ bash_replace_or_append('/etc/sysconfig/selinux', '^SELINUX=', "$var_selinux_state", '%s=%s') }}}
@@ -1437,7 +1437,7 @@ mount_point_match_regexp="$(printf "[[:space:]]%s[[:space:]]" "{{{ mount_point }
 # This is consistent with the behavior prior to converting this function to a jinja macro
 #}}
 grep "$mount_point_match_regexp" -q /etc/fstab \
-    || { echo "The mount point '{{{ mount_point }}}' is not even in /etc/fstab, so we can't set up mount options" >&2; 
+    || { echo "The mount point '{{{ mount_point }}}' is not even in /etc/fstab, so we can't set up mount options" >&2;
             echo "Not remediating, because there is no record of {{{ mount_point }}} in /etc/fstab" >&2; return 1; }
 {{%- endmacro %}}
 
@@ -1504,7 +1504,7 @@ read -a syscall_grouping <<< {{{ syscall_groupings }}}
 
 # Create a list of audit *.rules files that should be inspected for presence and correctness
 # of a particular audit rule. The scheme is as follows:
-# 
+#
 # -----------------------------------------------------------------------------------------
 #  Tool used to load audit rules | Rule already defined  |  Audit rules file to inspect    |
 # -----------------------------------------------------------------------------------------
@@ -1529,7 +1529,7 @@ files_to_inspect+=('/etc/audit/audit.rules' )
 default_file="/etc/audit/rules.d/{{{ key }}}.rules"
 # As other_filters may include paths, lets use a different delimiter for it
 # The "F" script expression tells sed to print the filenames where the expressions matched
-readarray -t files_to_inspect < <(sed -s -n -e "/{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" -e "F" /etc/audit/rules.d/*.rules)
+readarray -t files_to_inspect < <(sed -s -n -e "/^{{{ action_arch_filters }}}/!d" -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" -e "F" /etc/audit/rules.d/*.rules)
 # Case when particular rule isn't defined in /etc/audit/rules.d/*.rules yet
 if [ ${#files_to_inspect[@]} -eq "0" ]
 then
@@ -1553,7 +1553,7 @@ do
     # * the action, list and arch, (2-nd argument)
     # * the other filters, (3-rd argument)
     # * the auid filters, (4-rd argument)
-    readarray -t similar_rules < <(sed -e "/{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" "$audit_file")
+    readarray -t similar_rules < <(sed -e "/^{{{ action_arch_filters }}}/!d"  -e "\#{{{ other_filters }}}#!d" -e "/{{{ auid_filters }}}/!d" "$audit_file")
 
     candidate_rules=()
     # Filter out rules that have more fields then required. This will remove rules more specific than the required scope
@@ -1561,7 +1561,7 @@ do
     do
         # Strip all the options and fields we know of,
         # than check if there was any field left over
-        extra_fields=$(sed -E -e "s/{{{ action_arch_filters }}}//"  -e "s#{{{ other_filters }}}##" -e "s/{{{ auid_filters }}}//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/-F key=\w+|-k \w+//"<<< "$s_rule")
+        extra_fields=$(sed -E -e "s/^{{{ action_arch_filters }}}//"  -e "s#{{{ other_filters }}}##" -e "s/{{{ auid_filters }}}//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/-F key=\w+|-k \w+//"<<< "$s_rule")
         grep -q -- "-F" <<< "$extra_fields" || candidate_rules+=("$s_rule")
     done
 
@@ -1825,4 +1825,3 @@ if ! $found ; then
     echo -e "[{{{ section }}}]\n{{{ key }}} = {{{ value }}}" >> "$file"
 fi
 {{%- endmacro %}}
-
