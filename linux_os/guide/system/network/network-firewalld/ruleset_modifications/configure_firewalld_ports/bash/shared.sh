@@ -11,9 +11,9 @@
 {{{ bash_instantiate_variables("firewalld_sshd_zone") }}}
 
 {{% if product in ['rhel9'] %}}
-  {{% set network_config_path = "/etc/NetworkManager/system-connections/${eth_interface_list[0]}.nmconnection" %}}
+  {{% set network_config_path = "/etc/NetworkManager/system-connections/${interface}.nmconnection" %}}
 {{% else %}}
-  {{% set network_config_path = "/etc/sysconfig/network-scripts/ifcfg-${eth_interface_list[0]}" %}}
+  {{% set network_config_path = "/etc/sysconfig/network-scripts/ifcfg-${interface}" %}}
 {{% endif %}}
 
 # This assumes that firewalld_sshd_zone is one of the pre-defined zones
@@ -27,8 +27,8 @@ fi
 
 # Check if any eth interface is bounded to the zone with SSH service enabled
 nic_bound=false
-eth_interface_list=$(ip link show up | cut -d ' ' -f2 | cut -d ':' -s -f1 | grep -E '^(en|eth)')
-for interface in $eth_interface_list; do
+readarray -t eth_interface_list < <(ip link show up | cut -d ' ' -f2 | cut -d ':' -s -f1 | grep -E '^(en|eth)')
+for interface in "${eth_interface_list[@]}"; do
     if grep -qi "ZONE=$firewalld_sshd_zone" {{{ network_config_path }}}; then
         nic_bound=true
         break;
@@ -37,6 +37,7 @@ done
 
 if [ $nic_bound = false ];then
     # Add first NIC to SSH enabled zone
+    interface="${eth_interface_list[0]}"
 
     if ! firewall-cmd --state -q; then
         {{% if product in ['rhel9'] %}}
