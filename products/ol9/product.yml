@@ -1,0 +1,27 @@
+product: ol9
+full_name: Oracle Linux 9
+type: platform
+
+benchmark_id: OL-9
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+oval_feed_url: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - ol9:
+      name: "cpe:/o:oracle:linux:9"
+      title: "Oracle Linux 9"
+      check_id: installed_OS_is_ol9_family
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: ''
