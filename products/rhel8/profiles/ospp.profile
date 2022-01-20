@@ -163,6 +163,7 @@ selections:
     - auditd_log_format
     - auditd_freq
     - auditd_name_format
+    - auditd_audispd_syslog_plugin_activated
 
     ### Module Blacklist
     - kernel_module_cramfs_disabled
