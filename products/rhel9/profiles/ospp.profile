@@ -128,8 +128,6 @@ selections:
     - grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
-    - grub2_vsyscall_argument.role=unscored
-    - grub2_vsyscall_argument.severity=info
     - grub2_pti_argument
     - grub2_kernel_trust_cpu_rng
 
@@ -421,5 +419,3 @@ selections:
     - zipl_slub_debug_argument
     - zipl_page_poison_argument
     - zipl_vsyscall_argument
-    - zipl_vsyscall_argument.role=unscored
-    - zipl_vsyscall_argument.severity=info
