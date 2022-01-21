@@ -192,13 +192,15 @@ def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
     command_string = '/bin/bash -x /{output_file}'.format(** formatting)
 
     with open(verbose_path, "a") as log_file:
+        error_msg_template = (
+            'Bash remediation for {rule_id} '.format(** formatting) +
+            'has exited with these errors: {stderr}'
+        )
         try:
-            test_env.execute_ssh_command(command_string, log_file)
+            test_env.execute_ssh_command(
+                command_string, log_file, error_msg_template=error_msg_template)
         except Exception as exc:
-            msg = (
-                'Bash script remediation run has exited with return code {} '
-                'instead of expected 0'.format(exc.returncode))
-            LogHelper.preload_log(logging.ERROR, msg, 'fail')
+            LogHelper.preload_log(logging.ERROR, str(exc), 'fail')
             return False
     return True
 
