@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Configure kernel to zero out memory before allocation (through Grub2)'
+
+description: |-
+    To configure the kernel to zero out memory before allocating it, add the
+    <tt>init_on_alloc=1</tt> argument to the default GRUB 2 command line for
+    the Linux operating system in <tt>/etc/default/grub</tt>, in the manner
+    below:
+    <pre>GRUB_CMDLINE_LINUX="crashkernel=auto quiet rd.shell=0 audit=1 audit_backlog_limit=8192 init_on_alloc=1"</pre>
+    Update the boot parameter for existing kernels by running the following command:
+    <pre># grubby --update-kernel=ALL --args="init_on_alloc=1"</pre>
+
+rationale: |-
+    When the kernel configuration option <tt>init_on_alloc</tt> is enabled,
+    all page allocator and slab allocator memory will be zeroed when allocated,
+    eliminating many kinds of "uninitialized heap memory" flaws, effectively
+    preventing data leaks.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85867-0
+
+ocil_clause: 'the kernel is not configured to zero out memory before allocation'
+
+ocil: |-
+    Make sure that the kernel is configured to zero out memory before
+    allocation. Ensure that the parameter is configured in
+    <tt>/etc/default/grub</tt>:
+    <pre>grep GRUB_CMDLINE_LINUX /etc/default/grub</pre>
+    The output should contain <tt>init_on_alloc=1</tt>.
+    Run the following command to display command line parameters of all
+    installed kernels:
+    <pre># grubby --info=ALL | grep args</pre>
+    Ensure that each line contains the <tt>init_on_alloc=1</tt> parameter.
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: init_on_alloc
+        arg_value: '1'
