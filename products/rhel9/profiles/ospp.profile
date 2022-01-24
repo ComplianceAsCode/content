@@ -126,6 +126,7 @@ selections:
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - grub2_vsyscall_argument
+    - grub2_init_on_alloc_argument
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
@@ -413,3 +414,4 @@ selections:
     - zipl_audit_argument
     - zipl_audit_backlog_limit_argument
     - zipl_vsyscall_argument
+    - zipl_init_on_alloc_argument
