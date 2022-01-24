@@ -50,7 +50,7 @@ ComplianceAsCode/content
     :glob:
     :caption: Release Tools Documentation
 
-    release_tools/README
+    docs/release_process
 
 Indices and tables
 ==================

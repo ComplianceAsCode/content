@@ -4,106 +4,93 @@ How to Perform An Upstream Release (GitHub)
 Stabilization Phase
 -------------------
 
-It is a good practice to have a stabilization phase before the upstream release
-is performed. During this period, the new stabilization branch is created. Only
-bugfixes which are discovered during this stabilization period are cherry-picked
-from the master branch into the stabilization branch. This reduces the risk of
-bringing a sudden breaking change into the release.
+Before each release we iniate a stabilization period which is typically two weeks long.
+A stabilizaiton branch is branched from master and more extensive testing is done on the content.
+The goal is to have space and time to find and fix issues before the release.
+Everybody is welcome to test the stabilization branch and propose fixes.
 
-The stabilization phase is typically two weeks long. To start the stabilization:
+This process reduces the risk of bringing a sudden breaking change into the release,
+and ultimately allows the release process to happen while development continues on master branch.
 
-- Create a new branch called **stabilization**, if there is a leftover branch
-  from the previous release the new one should replace it, we do not version
-  stabilization and stable branches
+To start the stabilization:
+
+- Create a new branch called **stabilization-vX.Y.Z**, e.g.: stabilization-v0.1.61
 
 - Create a new milestone for the next version
 
-- Set milestone of opened pull requests to the new milestone
+- Update the milestone of open pull requests to the new one, if they have any
 
-- Announce start of stabilization period through mailing list
+- Update the milestone of open issues to the new one, if they have any
+
+- Close the milestone for the current release.
+  This makes the milestone less visible and reduces chance of PRs and Issues being added to it
+  accidentally.
+  It is still possible to add itens to the closed Milestone, just select it in the `closed` tab.
+
+- Bump the version of `CMakeLists.txt` on the **master** branch.
+
+- Announce start of stabilization period on the mailing list
 
 During the stabilization:
 
-- PRs containing bug fixes should be labeled with the **bugfix-stabilization** label
-  so that they can be easily identified
+- Run whatever extra tests you have and propose bug fixes to the stabilization branch
 
-- If a bug is fixed, cherry-pick the PR from the master branch into the
-  stabilization branch
+- On Fridays, bring the fixes merged on **stabilization** branch to master.\
+  Propose a PR from **stabilization** branch to master.
 
-- Change the milestone for the cherry-picked PR to the milestone of upcoming
-  release
+Tests during Stabilization Phase
+-----------
 
-- Label the PR with **backported-into-stabilization**
-
+There is a GitHub Action hooked up with **stabilization** branch that will run a set of tests on every push.\
+Make sure that all these tests are passing before moving on with the release process.
 
 Before the Release
 ------------------
-
--   Make sure that the `build` directory is empty
 
 -   Make sure the version in `CMakeLists.txt` is correct, i.e.: the
     version corresponds to an unreleased version number.
 
 -   Run `PYTHONPATH=. utils/generate_contributors.py` to update the
-    contributors list.
+    contributors list. De-duplicate names if necessary.\
+    Make a commit and PR it.
+    * Make sure you don’t have any uncommited changes, otherwise they may be lost during the release.
+    * Make sure you have the `master` and `stabilization` branch checked out and up to date.
 
-    Make a commit and PR it. \* Make sure you don’t have any uncommited
-    changes, otherwise they may be lost during the release. \* Make sure
-    you have the `master` and `stabilization` branch checked
-    out and up to date.
-
-
-Check Phase
------------
-
-There is a GitHub Action hooked up with **stabilization** branch which
-would run a set of extensive tests on every push. Make sure that all these tests
-are passing before moving on to the release process.
-
-
-Build and Release Phase
------------------------
+Release
+-------
 
 Everything necessary for the release is built by the release GitHub Action,
-which is triggered when a tag **v*.*.*** is pushed to the repository. This tag
+which is triggered when a tag **v\*.\*.\*** is pushed to the repository. This tag
 should point to the **stabilization** branch that is ready to be released.
 
 This action will also create a release draft with release notes automatically
 generated. The way in which the action will categorize and break down changes is
 controlled by the `.github/workflows/release-changelog.json` configuration file.
 
-General rule is that Title Case PR labels would form the base of the changelog.
+General rule is that the PR Titles will compose the body of the changelog.
 
 
-Release
--------
+- Create and push **vX.Y.Z** tag to the GitHub repo. Wait for the release action
+to finish.\
+  `git tag vX.Y.Z stabilization-vX.Y.Z`\
+  `git push --tags`
 
-Create and push **vX.X.XX** tag to the GitHub repo. Wait for the release action
-to finish. Check the release draft and update the release notes if necessary.
-Publish the release.
+- Check the release draft and update the release notes if necessary.
 
-In case there would be a need to start over don't forget to delete the release
-draft before trying to push the tag again.
+- Publish the release.
+
+In case there is a need to run the job again, delete the release
+draft and run the GitHb Action again.
 
 
-Clean Up and Bump Version
+Clean Up
 -------------------------
 
--   Run `python3 release_content.py move_milestone`
+- Update the **stable** branch to point to the new release:\
+ `git checkout stable`\
+ `git merge stabilization-vX.Y.Z`
 
-    It will create the next milestone (if it doesn’t exist yet), move
-    any open issues and PRs from current milestone to the next milestone,
-    and close current release’s milestone.
-
--   Run `python3 release_content.py prep_next_release`
-
-    It will cleanup the release process, meaning that local copy of the
-    artifacts will be deleted, tracking of Jenkins builds are dropped.
-    It will also create a `bump_version_{version}` branch and a "Bump
-    version" commit for your convenience. **Make a PR out of the branch**.
-
-- delete the **stable** branch and rename the **stabilization** branch to **stable**
-
+- Delete the **stabilization** branch.
 
 Announce It!
 ------------
@@ -117,7 +104,7 @@ Announce It!
 -   Announce on twitter via [@OpenSCAP](https://twitter.com/openscap)
 
 
-How to Perform A Downstream Build (Fedora, COPR)
+How to Perform A Downstream Build (Fedora)
 ================================================
 
 Fedora Builds
