@@ -161,11 +161,8 @@ selections:
     - auditd_name_format
 
     ### Module Blacklist
-    - kernel_module_cramfs_disabled
     - kernel_module_bluetooth_disabled
     - kernel_module_sctp_disabled
-    - kernel_module_firewire-core_disabled
-    - kernel_module_atm_disabled
     - kernel_module_can_disabled
     - kernel_module_tipc_disabled
 
