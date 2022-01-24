@@ -171,8 +171,17 @@ A rule itself contains these attributes:
     new value, an OVAL check (of `inventory` class) must be created
     under `shared/checks/oval/` and referenced in the dictionary file. It is
     possible to specify multiple platforms in the list. In that case, they are
-    implicitly connected with "OR" operand. 
+    implicitly connected with "OR" operator.
     
+    The `platform` can also be a [Boolean algebra expression](https://booleanpy.readthedocs.io/en/latest/concepts.html),
+    describing applicability of the rule as a combination of multiple platforms.
+    
+    The build system recognizes `!` or `not` as "NOT" operator, `&` or `and` as "AND" operator, and `|` or `or` as "OR" operator.
+    And it also allows to group and alter operator precedence with brackets: `(` and `)`.
+    
+    For example, the expression `grub2 & !(shadow-utils | ssh)` will denote that rule is applicable for systems with *GRUB2 bootloader*,
+    but only if there is no *shadow-utils* or *ssh* package installed.
+
 -   `ocil`: Defines asserting
     statements to check whether or not the rule is valid.
 
