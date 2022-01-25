@@ -12,6 +12,9 @@ statefulset_apipath="/apis/apps/v1/statefulsets?limit=500"
 # This file assumes that we have 1 statefulsets & dont have the resource requests and limits
 cat <<EOF > "$kube_apipath$statefulset_apipath"
 {
+    "apiVersion": "v1",
+    "items": [
+{
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
     "metadata": {
@@ -113,6 +116,13 @@ cat <<EOF > "$kube_apipath$statefulset_apipath"
         "replicas": 1,
         "updateRevision": "statefulset-without-resource-b46f789c4",
         "updatedReplicas": 1
+    }
+}
+],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": "",
+        "selfLink": ""
     }
 }
 EOF
