@@ -135,26 +135,20 @@ def test_priority_ordering():
 
 
 @pytest.fixture
-def env_yaml():
-    env_yaml = dict()
+def product_cpes():
     product_yaml_path = os.path.join(DATADIR, "product.yml")
     product_yaml = open_raw(product_yaml_path)
     product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
-    env_yaml.update(product_yaml)
-    return env_yaml
-
-@pytest.fixture
-def product_cpes(env_yaml):
-    return ProductCPEs(env_yaml)
+    return ProductCPEs(product_yaml)
 
 
-def test_platform_from_text_unknown_platform(env_yaml, product_cpes):
+def test_platform_from_text_unknown_platform(product_cpes):
     with pytest.raises(ssg.build_cpe.CPEDoesNotExist):
-        ssg.build_yaml.Platform.from_text("something_bogus", env_yaml, product_cpes)
+        ssg.build_yaml.Platform.from_text("something_bogus", product_cpes)
 
 
-def test_platform_from_text_simple(env_yaml, product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("machine", env_yaml, product_cpes)
+def test_platform_from_text_simple(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text("machine", product_cpes)
     assert platform.to_ansible_conditional() == \
         "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
     assert platform.to_bash_conditional() == \
@@ -173,8 +167,8 @@ def test_platform_from_text_simple(env_yaml, product_cpes):
     assert fact_refs[0].get("name") == "cpe:/a:machine"
 
 
-def test_platform_from_text_simple_product_cpe(env_yaml, product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", env_yaml, product_cpes)
+def test_platform_from_text_simple_product_cpe(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", product_cpes)
     assert platform.to_bash_conditional() == ""
     assert platform.to_ansible_conditional() == ""
     platform_el = ET.fromstring(platform.to_xml_element())
@@ -192,8 +186,8 @@ def test_platform_from_text_simple_product_cpe(env_yaml, product_cpes):
         "cpe:/o:redhat:enterprise_linux:7::workstation"
 
 
-def test_platform_from_text_or(env_yaml, product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("ntp or chrony", env_yaml, product_cpes)
+def test_platform_from_text_or(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
     assert platform.to_bash_conditional() == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
     assert platform.to_ansible_conditional() == "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
     platform_el = ET.fromstring(platform.to_xml_element())
@@ -211,8 +205,8 @@ def test_platform_from_text_or(env_yaml, product_cpes):
     assert fact_refs[1].get("name") == "cpe:/a:ntp"
 
 
-def test_platform_from_text_complex_expression(env_yaml, product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("systemd and !yum and (ntp or chrony)", env_yaml, product_cpes)
+def test_platform_from_text_complex_expression(product_cpes):
+    platform = ssg.build_yaml.Platform.from_text("systemd and !yum and (ntp or chrony)", product_cpes)
     assert platform.to_bash_conditional() == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
     assert platform.to_ansible_conditional() == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
     platform_el = ET.fromstring(platform.to_xml_element())
@@ -245,17 +239,17 @@ def test_platform_from_text_complex_expression(env_yaml, product_cpes):
     assert fact_refs_3[0].get("name") == "cpe:/a:systemd"
 
 
-def test_platform_equality(env_yaml, product_cpes):
-    platform1 = ssg.build_yaml.Platform.from_text("ntp or chrony", env_yaml, product_cpes)
-    platform2 = ssg.build_yaml.Platform.from_text("chrony or ntp", env_yaml, product_cpes)
+def test_platform_equality(product_cpes):
+    platform1 = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
+    platform2 = ssg.build_yaml.Platform.from_text("chrony or ntp", product_cpes)
     assert platform1 == platform2
-    platform3 = ssg.build_yaml.Platform.from_text("(chrony and ntp)", env_yaml, product_cpes)
-    platform4 = ssg.build_yaml.Platform.from_text("chrony and ntp", env_yaml, product_cpes)
+    platform3 = ssg.build_yaml.Platform.from_text("(chrony and ntp)", product_cpes)
+    platform4 = ssg.build_yaml.Platform.from_text("chrony and ntp", product_cpes)
     assert platform3 == platform4
 
 
-def test_platform_as_dict(env_yaml, product_cpes):
-    pl = ssg.build_yaml.Platform.from_text("chrony and rhel7", env_yaml, product_cpes)
+def test_platform_as_dict(product_cpes):
+    pl = ssg.build_yaml.Platform.from_text("chrony and rhel7", product_cpes)
     # represent_as_dict is used during dump_yaml
     d = pl.represent_as_dict()
     assert d["name"] == "chrony_and_rhel7"
