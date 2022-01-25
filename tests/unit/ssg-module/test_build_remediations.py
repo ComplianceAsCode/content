@@ -1,4 +1,5 @@
 import os
+import pytest
 
 import ssg.build_remediations as sbr
 import ssg.utils
@@ -9,15 +10,13 @@ DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 rule_dir = os.path.join(DATADIR, "group_dir", "rule_dir")
 rhel_bash = os.path.join(rule_dir, "bash", "rhel.sh")
 
-
-def create_env_yaml():
+@pytest.fixture
+def env_yaml():
     env_yaml = dict(product="rhel7")
-    product_yaml_path = os.path.join(DATADIR, "product.yml")
-    # it will add "product_cpes" key to env_yaml
-    env_yaml.update(ssg.products.load_product_yaml(product_yaml_path))
     return env_yaml
 
-def create_platforms(env_yaml):
+@pytest.fixture
+def cpe_platforms(env_yaml):
     platforms = dict()
     platform_path = os.path.join(DATADIR, "machine.yml")
     platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
@@ -56,13 +55,11 @@ def test_parse_from_file_with_jinja():
     do_test_contents(remediation, config)
 
 
-def test_process_fix():
+def test_process_fix(env_yaml, cpe_platforms):
     remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
 
     fixes = {}
 
-    env_yaml = dict(product="rhel7")
-    cpe_platforms = create_platforms(env_yaml)
     remediation_obj = remediation_cls(rhel_bash)
     result = sbr.process(remediation_obj, env_yaml, cpe_platforms)
 
@@ -71,13 +68,10 @@ def test_process_fix():
     do_test_contents(result.contents, result.config)
 
 
-def test_ansible_class():
+def test_ansible_class(env_yaml, cpe_platforms):
     remediation = sbr.AnsibleRemediation.from_snippet_and_rule(
         os.path.join(DATADIR, "ansible.yml"), os.path.join(DATADIR, "file_owner_grub2_cfg.yml")
     )
-
-    env_yaml = create_env_yaml()
-    cpe_platforms = create_platforms(env_yaml)
 
     remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
 
@@ -87,14 +81,11 @@ def test_ansible_class():
     assert remediation.metadata["disruption"] == 'low'
 
 
-def test_ansible_conformance():
+def test_ansible_conformance(env_yaml, cpe_platforms):
     remediation = sbr.AnsibleRemediation.from_snippet_and_rule(
         os.path.join(DATADIR, "ansible.yml"), os.path.join(DATADIR, "file_owner_grub2_cfg.yml")
     )
     ref_remediation_dict = ordered_load(open(os.path.join(DATADIR, "ansible-resolved.yml")))
-
-    env_yaml = create_env_yaml()
-    cpe_platforms = create_platforms(env_yaml)
 
     remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
     # The comparison has to be done this way due to possible order variations,
