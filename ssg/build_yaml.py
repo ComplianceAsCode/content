@@ -1053,8 +1053,8 @@ class Group(XCCDFEntity):
         # parse platform definition and get CPEAL platform
         if data["platforms"]:
             for platform in data["platforms"]:
-                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
+                cpe_platform = Platform.from_text(platform, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 data["cpe_platform_names"].add(cpe_platform.id_)
         return data
 
@@ -1199,8 +1199,8 @@ class Group(XCCDFEntity):
         # Once the group has inherited properties, update cpe_names
         if env_yaml:
             for platform in group.platforms:
-                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
+                cpe_platform = Platform.from_text(platform, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 group.cpe_platform_names.add(cpe_platform.id_)
 
     def _pass_our_properties_on_to(self, obj):
@@ -1219,8 +1219,8 @@ class Group(XCCDFEntity):
         # Once the rule has inherited properties, update cpe_platform_names
         if env_yaml:
             for platform in rule.platforms:
-                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
+                cpe_platform = Platform.from_text(platform, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
 
     def __str__(self):
@@ -1324,8 +1324,8 @@ class Rule(XCCDFEntity):
                 or env_yaml and rule.prodtype == "all") and product_cpes:
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
-                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
+                cpe_platform = Platform.from_text(platform, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
 
 
@@ -2027,7 +2027,7 @@ class Platform(XCCDFEntity):
     ns = PREFIX_TO_NS[prefix]
 
     @classmethod
-    def from_text(cls, expression, env_yaml, product_cpes):
+    def from_text(cls, expression, product_cpes):
         if not product_cpes:
             return None
         test = product_cpes.algebra.parse(
@@ -2086,7 +2086,7 @@ class Platform(XCCDFEntity):
             return self.test == other.test
 
 
-def add_platform_if_not_defined(platform, env_yaml, product_cpes):
+def add_platform_if_not_defined(platform, product_cpes):
     # check if the platform is already in the dictionary. If yes, return the existing one
     for p in product_cpes.platforms.values():
         if platform == p:
