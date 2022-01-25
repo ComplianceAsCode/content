@@ -189,7 +189,8 @@ def test_platform_from_text_simple_product_cpe(product_cpes):
 def test_platform_from_text_or(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
     assert platform.to_bash_conditional() == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
-    assert platform.to_ansible_conditional() == "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
+    assert platform.to_ansible_conditional() == \
+        "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
     platform_el = ET.fromstring(platform.to_xml_element())
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "chrony_or_ntp"
@@ -206,7 +207,8 @@ def test_platform_from_text_or(product_cpes):
 
 
 def test_platform_from_text_complex_expression(product_cpes):
-    platform = ssg.build_yaml.Platform.from_text("systemd and !yum and (ntp or chrony)", product_cpes)
+    platform = ssg.build_yaml.Platform.from_text(
+        "systemd and !yum and (ntp or chrony)", product_cpes)
     assert platform.to_bash_conditional() == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
     assert platform.to_ansible_conditional() == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
     platform_el = ET.fromstring(platform.to_xml_element())

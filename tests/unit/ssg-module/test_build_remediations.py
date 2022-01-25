@@ -10,10 +10,12 @@ DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 rule_dir = os.path.join(DATADIR, "group_dir", "rule_dir")
 rhel_bash = os.path.join(rule_dir, "bash", "rhel.sh")
 
+
 @pytest.fixture
 def env_yaml():
     env_yaml = dict(product="rhel7")
     return env_yaml
+
 
 @pytest.fixture
 def cpe_platforms(env_yaml):
