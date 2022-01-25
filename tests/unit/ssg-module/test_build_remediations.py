@@ -15,10 +15,14 @@ def create_env_yaml():
     product_yaml_path = os.path.join(DATADIR, "product.yml")
     # it will add "product_cpes" key to env_yaml
     env_yaml.update(ssg.products.load_product_yaml(product_yaml_path))
+    return env_yaml
+
+def create_platforms(env_yaml):
+    platforms = dict()
     platform_path = os.path.join(DATADIR, "machine.yml")
     platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
-    env_yaml["product_cpes"].platforms[platform.name] = platform
-    return env_yaml
+    platforms[platform.name] = platform
+    return platforms
 
 
 def test_is_supported_file_name():
@@ -58,8 +62,9 @@ def test_process_fix():
     fixes = {}
 
     env_yaml = dict(product="rhel7")
+    cpe_platforms = create_platforms(env_yaml)
     remediation_obj = remediation_cls(rhel_bash)
-    result = sbr.process(remediation_obj, env_yaml)
+    result = sbr.process(remediation_obj, env_yaml, cpe_platforms)
 
     assert result is not None
     assert len(result) == 2
@@ -72,8 +77,9 @@ def test_ansible_class():
     )
 
     env_yaml = create_env_yaml()
+    cpe_platforms = create_platforms(env_yaml)
 
-    remediation.parse_from_file_with_jinja(env_yaml)
+    remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
 
     assert remediation.metadata["reboot"] == 'false'
     assert remediation.metadata["strategy"] == 'configure'
@@ -88,8 +94,9 @@ def test_ansible_conformance():
     ref_remediation_dict = ordered_load(open(os.path.join(DATADIR, "ansible-resolved.yml")))
 
     env_yaml = create_env_yaml()
+    cpe_platforms = create_platforms(env_yaml)
 
-    remediation.parse_from_file_with_jinja(env_yaml)
+    remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
     # The comparison has to be done this way due to possible order variations,
     # which don't matter, but they make tests to fail.
     assert set(remediation.body[0]["tags"]) == set(ref_remediation_dict[0]["tags"])
