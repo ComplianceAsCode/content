@@ -88,7 +88,7 @@
     <ind:path>/etc/NetworkManager/system-connections</ind:path>
     <ind:filename operation="pattern match">.*\.nmconnection</ind:filename>
     <ind:pattern operation="pattern match">^zone=(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% else %}}
   <ind:textfilecontent54_object comment="Check config of all NIC"
@@ -96,7 +96,7 @@
     <ind:path>/etc/sysconfig/network-scripts</ind:path>
     <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
     <ind:pattern operation="pattern match">^ZONE=(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="equals">1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 {{% endif %}}
 
