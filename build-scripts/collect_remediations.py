@@ -12,6 +12,7 @@ import ssg.jinja
 import ssg.environment
 import ssg.utils
 import ssg.xml
+from ssg.build_cpe import ProductCPEs
 
 
 def parse_args():
@@ -84,11 +85,11 @@ def find_remediation(
 
 
 def process_remediation(
-        rule, fix_path, lang, output_dirs, expected_file_name, env_yaml):
+        rule, fix_path, lang, output_dirs, expected_file_name, env_yaml, cpe_platforms):
     remediation_cls = remediation.REMEDIATION_TO_CLASS[lang]
     remediation_obj = remediation_cls(fix_path)
     remediation_obj.associate_rule(rule)
-    fix = remediation.process(remediation_obj, env_yaml)
+    fix = remediation.process(remediation_obj, env_yaml, cpe_platforms)
     if fix:
         output_file_path = os.path.join(output_dirs[lang], expected_file_name)
         remediation.write_fix_to_file(fix, output_file_path)
@@ -96,7 +97,7 @@ def process_remediation(
 
 def collect_remediations(
         rule, langs, fixes_from_templates_dir, product, output_dirs,
-        env_yaml):
+        env_yaml, cpe_platforms):
     rule_dir = os.path.dirname(rule.definition_location)
     for lang in langs:
         ext = remediation.REMEDIATION_TO_EXT_MAP[lang]
@@ -108,7 +109,7 @@ def collect_remediations(
             # neither static nor templated remediation found
             continue
         process_remediation(
-            rule, fix_path, lang, output_dirs, expected_file_name, env_yaml)
+            rule, fix_path, lang, output_dirs, expected_file_name, env_yaml, cpe_platforms)
 
 
 def main():
@@ -119,16 +120,18 @@ def main():
 
     product = ssg.utils.required_key(env_yaml, "product")
     output_dirs = prepare_output_dirs(args.output_dir, args.remediation_type)
-
+    product_cpes = ProductCPEs(env_yaml)
+    cpe_platforms = dict()
     for platform_file in os.listdir(args.platforms_dir):
         platform_path = os.path.join(args.platforms_dir, platform_file)
         try:
-            platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
+            platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml, product_cpes)
         except ssg.build_yaml.DocumentationNotComplete:
             # Happens on non-debug build when a platform is
             # "documentation-incomplete"
             continue
-        env_yaml["product_cpes"].platforms[platform.name] = platform
+        print (platform)
+        cpe_platforms[platform.name] = platform
 
     for rule_file in os.listdir(args.resolved_rules_dir):
         rule_path = os.path.join(args.resolved_rules_dir, rule_file)
@@ -140,7 +143,7 @@ def main():
             continue
         collect_remediations(
             rule, args.remediation_type, args.fixes_from_templates_dir,
-            product, output_dirs, env_yaml)
+            product, output_dirs, env_yaml, cpe_platforms)
     sys.exit(0)
 
 

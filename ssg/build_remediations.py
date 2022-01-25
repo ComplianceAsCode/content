@@ -177,11 +177,11 @@ class Remediation(object):
         self.local_env_yaml["rule_id"] = self.associated_rule.id_
         self.local_env_yaml["cce_identifiers"] = self.associated_rule.identifiers
 
-    def parse_from_file_with_jinja(self, env_yaml):
+    def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
         return parse_from_file_with_jinja(self.file_path, env_yaml)
 
 
-def process(remediation, env_yaml):
+def process(remediation, env_yaml, cpe_platforms):
     """
     Process a fix, and return the processed fix iff the file is of a valid
     extension for the remediation type and the fix is valid for the current
@@ -192,7 +192,7 @@ def process(remediation, env_yaml):
     if not is_supported_filename(remediation.remediation_type, remediation.file_path):
         return
 
-    result = remediation.parse_from_file_with_jinja(env_yaml)
+    result = remediation.parse_from_file_with_jinja(env_yaml, cpe_platforms)
     platforms = result.config['platform']
 
     if not platforms:
@@ -219,9 +219,9 @@ class BashRemediation(Remediation):
     def __init__(self, file_path):
         super(BashRemediation, self).__init__(file_path, "bash")
 
-    def parse_from_file_with_jinja(self, env_yaml):
+    def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
         self.local_env_yaml.update(env_yaml)
-        result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
+        result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml, cpe_platforms)
 
         # Avoid platform wrapping empty fix text
         # Remediations can be empty when a Jinja macro or conditional
@@ -241,10 +241,10 @@ class BashRemediation(Remediation):
                     if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            env_yaml["product_cpes"].platforms[p].to_bash_conditional()
+            cpe_platforms[p].to_bash_conditional()
             for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            env_yaml["product_cpes"].platforms[p].to_bash_conditional()
+            cpe_platforms[p].to_bash_conditional()
             for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
@@ -288,16 +288,16 @@ class AnsibleRemediation(Remediation):
 
         self.body = None
 
-    def parse_from_file_with_jinja(self, env_yaml):
+    def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
         self.local_env_yaml.update(env_yaml)
-        result = super(AnsibleRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
+        result = super(AnsibleRemediation, self).parse_from_file_with_jinja(self.local_env_yaml, cpe_platforms)
 
         if not self.associated_rule:
             return result
 
         parsed = ssg.yaml.ordered_load(result.contents)
 
-        self.update(parsed, result.config)
+        self.update(parsed, result.config, cpe_platforms)
 
         updated_yaml_text = ssg.yaml.ordered_dump(
             parsed, None, default_flow_style=False)
@@ -389,7 +389,7 @@ class AnsibleRemediation(Remediation):
                                       'package_facts': {'manager': 'auto'}})
             parsed_snippet.insert(0, facts_task)
 
-    def update_when_from_rule(self, to_update):
+    def update_when_from_rule(self, to_update, cpe_platforms):
         additional_when = []
         rule_specific_cpe_platform_names = set()
         inherited_cpe_platform_names = set()
@@ -402,10 +402,10 @@ class AnsibleRemediation(Remediation):
                     if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional()
+            cpe_platforms[p].to_ansible_conditional()
             for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            self.local_env_yaml["product_cpes"].platforms[p].to_ansible_conditional()
+            cpe_platforms[p].to_ansible_conditional()
             for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
@@ -435,14 +435,14 @@ class AnsibleRemediation(Remediation):
         else:
             to_update["when"] = new_when
 
-    def update(self, parsed, config):
+    def update(self, parsed, config, cpe_platforms):
         # We split the remediation update in three steps
 
         # 1. Update the when clause
         for p in parsed:
             if not isinstance(p, dict):
                 continue
-            self.update_when_from_rule(p)
+            self.update_when_from_rule(p, cpe_platforms)
 
         # 2. Inject any extra task necessary
         self.inject_package_facts_task(parsed)

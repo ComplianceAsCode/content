@@ -39,7 +39,7 @@ from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
 from .shims import unicode_func
-
+from .build_cpe import ProductCPEs
 
 def dump_yaml_preferably_in_original_order(dictionary, file_object):
     try:
@@ -295,7 +295,7 @@ class XCCDFEntity(object):
         return entity
 
     @classmethod
-    def process_input_dict(cls, input_contents, env_yaml):
+    def process_input_dict(cls, input_contents, env_yaml, product_cpes=None):
         """
         Take the contents of the definition as a dictionary, and
         add defaults or raise errors if a required member is not present.
@@ -323,7 +323,7 @@ class XCCDFEntity(object):
         return data
 
     @classmethod
-    def parse_yaml_into_processed_dict(cls, yaml_file, env_yaml=None):
+    def parse_yaml_into_processed_dict(cls, yaml_file, env_yaml=None, product_cpes = None):
         """
         Given yaml filename and environment info, produce a dictionary
         that defines the instance to be created.
@@ -343,7 +343,7 @@ class XCCDFEntity(object):
         yaml_data = open_and_macro_expand(yaml_file, env_yaml)
 
         try:
-            processed_data = cls.process_input_dict(yaml_data, env_yaml)
+            processed_data = cls.process_input_dict(yaml_data, env_yaml, product_cpes)
         except ValueError as exc:
             msg = (
                 "Error processing {yaml_file}: {exc}"
@@ -364,7 +364,7 @@ class XCCDFEntity(object):
         return processed_data
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         yaml_file = os.path.normpath(yaml_file)
 
         local_env_yaml = None
@@ -373,7 +373,7 @@ class XCCDFEntity(object):
             local_env_yaml.update(env_yaml)
 
         try:
-            data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml)
+            data_dict = cls.parse_yaml_into_processed_dict(yaml_file, local_env_yaml, product_cpes)
         except DocumentationNotComplete as exc:
             raise
         except Exception as exc:
@@ -434,7 +434,7 @@ class Profile(XCCDFEntity, SelectionHandler):
     }
 
     @classmethod
-    def process_input_dict(cls, input_contents, env_yaml):
+    def process_input_dict(cls, input_contents, env_yaml, product_cpes):
         input_contents = super(Profile, cls).process_input_dict(input_contents, env_yaml)
 
         platform = input_contents.get("platform")
@@ -444,7 +444,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         if env_yaml:
             for platform in input_contents["platforms"]:
                 try:
-                    new_cpe_name = env_yaml["product_cpes"].get_cpe_name(platform)
+                    new_cpe_name = product_cpes.get_cpe_name(platform)
                     input_contents["cpe_names"].add(new_cpe_name)
                 except CPEDoesNotExist:
                     msg = (
@@ -731,7 +731,7 @@ class Value(XCCDFEntity):
     }
 
     @classmethod
-    def process_input_dict(cls, input_contents, env_yaml):
+    def process_input_dict(cls, input_contents, env_yaml, product_cpes=None):
         input_contents["interactive"] = (
             input_contents.get("interactive", "false").lower() == "true")
 
@@ -751,7 +751,7 @@ class Value(XCCDFEntity):
         return data
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         value = super(Value, cls).from_yaml(yaml_file, env_yaml)
 
         check_warnings(value)
@@ -834,13 +834,13 @@ class Benchmark(XCCDFEntity):
                 self.groups[gid] = groups_by_id[gid]
 
     @classmethod
-    def process_input_dict(cls, input_contents, env_yaml):
+    def process_input_dict(cls, input_contents, env_yaml, product_cpes):
         input_contents["front_matter"] = input_contents["front-matter"]
         del input_contents["front-matter"]
         input_contents["rear_matter"] = input_contents["rear-matter"]
         del input_contents["rear-matter"]
 
-        data = super(Benchmark, cls).process_input_dict(input_contents, env_yaml)
+        data = super(Benchmark, cls).process_input_dict(input_contents, env_yaml, product_cpes)
 
         notice_contents = required_key(input_contents, "notice")
         del input_contents["notice"]
@@ -863,10 +863,11 @@ class Benchmark(XCCDFEntity):
         return data
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         benchmark = super(Benchmark, cls).from_yaml(yaml_file, env_yaml)
         if env_yaml:
-            benchmark.product_cpe_names = env_yaml["product_cpes"].get_product_cpe_names()
+            benchmark.product_cpe_names = product_cpes.get_product_cpe_names()
+            benchmark.product_cpes = product_cpes
             benchmark.id_ = env_yaml["benchmark_id"]
             benchmark.version = env_yaml["ssg_version_str"]
         else:
@@ -903,7 +904,7 @@ class Benchmark(XCCDFEntity):
 
             self.profiles.append(new_profile)
 
-    def to_xml_element(self, env_yaml=None):
+    def to_xml_element(self, env_yaml=None, product_cpes=None):
         root = ET.Element('Benchmark')
         root.set('id', self.id_)
         root.set('xmlns', "http://checklists.nist.gov/xccdf/1.1")
@@ -923,10 +924,10 @@ class Benchmark(XCCDFEntity):
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
         # if there are no platforms, do not output platform-specification at all
-        if len(env_yaml["product_cpes"].platforms) > 0:
+        if len(self.product_cpes.platforms) > 0:
             cpe_platform_spec = ET.Element(
                 "{%s}platform-specification" % PREFIX_TO_NS["cpe-lang"])
-            for platform in env_yaml["product_cpes"].platforms.values():
+            for platform in self.product_cpes.platforms.values():
                 cpe_platform_spec.append(platform.to_xml_element())
             root.append(cpe_platform_spec)
 
@@ -977,7 +978,7 @@ class Benchmark(XCCDFEntity):
 
     # The benchmark is also considered a group, so this function signature needs to match
     # Group()'s add_group()
-    def add_group(self, group, env_yaml=None):
+    def add_group(self, group, env_yaml=None, product_cpes=None):
         if group is None:
             return
         self.groups[group.id_] = group
@@ -1032,8 +1033,8 @@ class Group(XCCDFEntity):
     }
 
     @classmethod
-    def process_input_dict(cls, input_contents, env_yaml):
-        data = super(Group, cls).process_input_dict(input_contents, env_yaml)
+    def process_input_dict(cls, input_contents, env_yaml, product_cpes=None):
+        data = super(Group, cls).process_input_dict(input_contents, env_yaml, product_cpes)
         if data["rules"]:
             rule_ids = data["rules"]
             data["rules"] = {rid: None for rid in rule_ids}
@@ -1052,8 +1053,8 @@ class Group(XCCDFEntity):
         # parse platform definition and get CPEAL platform
         if data["platforms"]:
             for platform in data["platforms"]:
-                cpe_platform = Platform.from_text(platform, env_yaml)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml)
+                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
                 data["cpe_platform_names"].add(cpe_platform.id_)
         return data
 
@@ -1187,7 +1188,7 @@ class Group(XCCDFEntity):
             return
         self.values[value.id_] = value
 
-    def add_group(self, group, env_yaml=None):
+    def add_group(self, group, env_yaml=None, product_cpes=None):
         if group is None:
             return
         if self.platforms and not group.platforms:
@@ -1198,8 +1199,8 @@ class Group(XCCDFEntity):
         # Once the group has inherited properties, update cpe_names
         if env_yaml:
             for platform in group.platforms:
-                cpe_platform = Platform.from_text(platform, env_yaml)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml)
+                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
                 group.cpe_platform_names.add(cpe_platform.id_)
 
     def _pass_our_properties_on_to(self, obj):
@@ -1207,7 +1208,7 @@ class Group(XCCDFEntity):
             if hasattr(obj, attr) and getattr(obj, attr) is None:
                 setattr(obj, attr, getattr(self, attr))
 
-    def add_rule(self, rule, env_yaml=None):
+    def add_rule(self, rule, env_yaml=None, product_cpes=None):
         if rule is None:
             return
         if self.platforms and not rule.platforms:
@@ -1218,8 +1219,8 @@ class Group(XCCDFEntity):
         # Once the rule has inherited properties, update cpe_platform_names
         if env_yaml:
             for platform in rule.platforms:
-                cpe_platform = Platform.from_text(platform, env_yaml)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml)
+                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
 
     def __str__(self):
@@ -1299,8 +1300,8 @@ class Rule(XCCDFEntity):
         return result
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None, sce_metadata=None):
-        rule = super(Rule, cls).from_yaml(yaml_file, env_yaml)
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, sce_metadata=None):
+        rule = super(Rule, cls).from_yaml(yaml_file, env_yaml, product_cpes)
 
         # platforms are read as list from the yaml file
         # we need them to convert to set again
@@ -1320,11 +1321,11 @@ class Rule(XCCDFEntity):
         # to lookup), and the rule's prodtype matches the product being built
         if (
                 env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype)
-                or env_yaml and rule.prodtype == "all"):
+                or env_yaml and rule.prodtype == "all") and product_cpes:
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
-                cpe_platform = Platform.from_text(platform, env_yaml)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml)
+                cpe_platform = Platform.from_text(platform, env_yaml, product_cpes)
+                cpe_platform = add_platform_if_not_defined(cpe_platform, env_yaml, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
 
 
@@ -1714,7 +1715,7 @@ class Rule(XCCDFEntity):
 
 
 class DirectoryLoader(object):
-    def __init__(self, profiles_dir, env_yaml):
+    def __init__(self, profiles_dir, env_yaml, product_cpes):
         self.benchmark_file = None
         self.group_file = None
         self.loaded_group = None
@@ -1731,6 +1732,7 @@ class DirectoryLoader(object):
         self.product = env_yaml["product"]
 
         self.parent_group = None
+        self.product_cpes = product_cpes
 
     def _collect_items_to_load(self, guide_directory):
         for dir_item in sorted(os.listdir(guide_directory)):
@@ -1776,13 +1778,13 @@ class DirectoryLoader(object):
         # we treat benchmark as a special form of group in the following code
         if self.benchmark_file:
             group = Benchmark.from_yaml(
-                self.benchmark_file, self.env_yaml
+                self.benchmark_file, self.env_yaml, self.product_cpes
             )
             if self.profiles_dir:
                 group.add_profiles_from_dir(self.profiles_dir, self.env_yaml)
 
         if self.group_file:
-            group = Group.from_yaml(self.group_file, self.env_yaml)
+            group = Group.from_yaml(self.group_file, self.env_yaml, self.product_cpes)
             prodtypes = parse_prodtype(group.prodtype)
             if "all" in prodtypes or self.product in prodtypes:
                 self.all_groups[group.id_] = group
@@ -1795,7 +1797,7 @@ class DirectoryLoader(object):
         if self.loaded_group:
 
             if self.parent_group:
-                self.parent_group.add_group(self.loaded_group, env_yaml=self.env_yaml)
+                self.parent_group.add_group(self.loaded_group, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
 
             self._process_values()
             self._recurse_into_subdirs()
@@ -1848,8 +1850,8 @@ class DirectoryLoader(object):
 
         destdir = os.path.join(base_dir, "platforms")
         mkdir_p(destdir)
-        if self.env_yaml["product_cpes"].platforms:
-            self.save_entities(self.env_yaml["product_cpes"].platforms.values(), destdir)
+        if self.product_cpes.platforms:
+            self.save_entities(self.product_cpes.platforms.values(), destdir)
 
     def save_entities(self, entities, destdir):
         if not entities:
@@ -1862,8 +1864,8 @@ class DirectoryLoader(object):
 
 class BuildLoader(DirectoryLoader):
     def __init__(self, profiles_dir, env_yaml,
-                 sce_metadata_path=None):
-        super(BuildLoader, self).__init__(profiles_dir, env_yaml)
+                 product_cpes, sce_metadata_path=None):
+        super(BuildLoader, self).__init__(profiles_dir, env_yaml, product_cpes)
 
         self.sce_metadata = None
         if sce_metadata_path and os.path.getsize(sce_metadata_path):
@@ -1878,7 +1880,7 @@ class BuildLoader(DirectoryLoader):
     def _process_rules(self):
         for rule_yaml in self.rule_files:
             try:
-                rule = Rule.from_yaml(rule_yaml, self.env_yaml, self.sce_metadata)
+                rule = Rule.from_yaml(rule_yaml, self.env_yaml, self.product_cpes, self.sce_metadata)
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
@@ -1886,16 +1888,17 @@ class BuildLoader(DirectoryLoader):
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue
             self.all_rules[rule.id_] = rule
-            self.loaded_group.add_rule(rule, env_yaml=self.env_yaml)
+            self.loaded_group.add_rule(rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
 
             if self.loaded_group.cpe_platform_names:
                 rule.inherited_cpe_platform_names += self.loaded_group.cpe_platform_names
 
             rule.normalize(self.env_yaml["product"])
+        print (self.product_cpes.platforms)
 
     def _get_new_loader(self):
         loader = BuildLoader(
-            self.profiles_dir, self.env_yaml)
+            self.profiles_dir, self.env_yaml, self.product_cpes)
         # Do it this way so we only have to parse the SCE metadata once.
         loader.sce_metadata = self.sce_metadata
         return loader
@@ -1923,6 +1926,7 @@ class LinearLoader(object):
 
         self.benchmark = None
         self.env_yaml = env_yaml
+        self.product_cpes = ProductCPEs(env_yaml)
 
     def find_first_groups_ids(self, start_dir):
         group_files = glob.glob(os.path.join(start_dir, "*", "group.yml"))
@@ -1931,24 +1935,27 @@ class LinearLoader(object):
 
     def load_entities_by_id(self, filenames, destination, cls):
         for fname in filenames:
-            entity = cls.from_yaml(fname, self.env_yaml)
+            entity = cls.from_yaml(fname, self.env_yaml, self.product_cpes)
             destination[entity.id_] = entity
 
     def load_benchmark(self, directory):
         self.benchmark = Benchmark.from_yaml(
-            os.path.join(directory, "benchmark.yml"), self.env_yaml)
+            os.path.join(directory, "benchmark.yml"), self.env_yaml, self.product_cpes)
 
         self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
 
         benchmark_first_groups = self.find_first_groups_ids(directory)
         for gid in benchmark_first_groups:
             try:
-                self.benchmark.add_group(self.groups[gid], self.env_yaml)
+                self.benchmark.add_group(self.groups[gid], self.env_yaml, self.product_cpes)
             except KeyError as exc:
                 # Add only the groups we have compiled and loaded
                 pass
 
     def load_compiled_content(self):
+        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
+        self.load_entities_by_id(filenames, self.platforms, Platform)
+        self.product_cpes.platforms = self.platforms
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.rules, Rule)
 
@@ -1961,9 +1968,6 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.values, Value)
 
-        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
-        self.load_entities_by_id(filenames, self.platforms, Platform)
-        self.env_yaml["product_cpes"].platforms = self.platforms
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
@@ -2023,13 +2027,15 @@ class Platform(XCCDFEntity):
     ns = PREFIX_TO_NS[prefix]
 
     @classmethod
-    def from_text(cls, expression, env_yaml):
-        test = env_yaml["product_cpes"].algebra.parse(
+    def from_text(cls, expression, env_yaml, product_cpes):
+        if not product_cpes:
+            return None
+        test = product_cpes.algebra.parse(
             expression, simplify=True)
         id = test.as_id()
         platform = cls(id)
         platform.test = test
-        platform.test.enrich_with_cpe_info(env_yaml["product_cpes"])
+        platform.test.enrich_with_cpe_info(product_cpes)
         platform.name = id
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
@@ -2063,10 +2069,13 @@ class Platform(XCCDFEntity):
         return self.ansible_conditional
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
         platform.xml_content = ET.fromstring(platform.xml_content)
-        platform.test = env_yaml["product_cpes"].algebra.parse(
+        # if we did receive a product_cpes, we can restore also the original test object
+        # it can be later used e.g. for comparison
+        if product_cpes:
+            platform.test = product_cpes.algebra.parse(
             platform.original_expression, simplify=True)
         return platform
 
@@ -2077,10 +2086,10 @@ class Platform(XCCDFEntity):
             return self.test == other.test
 
 
-def add_platform_if_not_defined(platform, env_yaml):
+def add_platform_if_not_defined(platform, env_yaml, product_cpes):
     # check if the platform is already in the dictionary. If yes, return the existing one
-    for p in env_yaml["product_cpes"].platforms.values():
+    for p in product_cpes.platforms.values():
         if platform == p:
             return p
-    env_yaml["product_cpes"].platforms[platform.id_] = platform
+    product_cpes.platforms[platform.id_] = platform
     return platform
