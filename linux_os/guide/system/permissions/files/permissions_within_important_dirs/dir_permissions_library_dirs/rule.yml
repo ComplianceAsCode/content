@@ -60,3 +60,14 @@ ocil: |-
     To find shared libraries that are group-writable or world-writable,
     run the following command for each directory <i>DIR</i> which contains shared libraries:
     <pre>$ sudo find -L <i>DIR</i> -perm /022 -type d</pre>
+
+template:
+    name: file_permissions
+    vars:
+        filepath:
+            - /lib/
+            - /lib64/
+            - /usr/lib/
+            - /usr/lib64/
+        recursive: 'true'
+        filemode: '0755'

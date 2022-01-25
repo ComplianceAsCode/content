@@ -45,6 +45,10 @@
     {{%- else %}}
       <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
     {{%- endif %}}
+    <filter action="exclude">symlink_file_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}</filter>
   </unix:file_object>
   {{% endfor %}}
+  <unix:file_state id="symlink_file_groupowner{{{ FILEID }}}_uid_{{{ FILEGID }}}" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
 </def-group>
