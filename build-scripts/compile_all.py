@@ -12,6 +12,7 @@ import ssg.utils
 import ssg.controls
 import ssg.products
 import ssg.environment
+from ssg.build_cpe import ProductCPEs
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -115,6 +116,7 @@ def main():
     args = parser.parse_args()
 
     env_yaml = get_env_yaml(args.build_config_yaml, args.product_yaml)
+    product_cpes = ProductCPEs(env_yaml)
 
     build_root = os.path.dirname(args.build_config_yaml)
 
@@ -124,7 +126,7 @@ def main():
     logging.basicConfig(filename=logfile, level=logging.INFO)
 
     loader = ssg.build_yaml.BuildLoader(
-        None, env_yaml, args.sce_metadata)
+        None, env_yaml, product_cpes, args.sce_metadata)
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, args.product_yaml)
 
     profiles_by_id = get_all_resolved_profiles_by_id(env_yaml, args.product_yaml, loader, args.controls_dir)
