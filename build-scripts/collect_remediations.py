@@ -130,7 +130,6 @@ def main():
             # Happens on non-debug build when a platform is
             # "documentation-incomplete"
             continue
-        print (platform)
         cpe_platforms[platform.name] = platform
 
     for rule_file in os.listdir(args.resolved_rules_dir):
