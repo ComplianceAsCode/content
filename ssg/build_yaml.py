@@ -1894,7 +1894,6 @@ class BuildLoader(DirectoryLoader):
                 rule.inherited_cpe_platform_names += self.loaded_group.cpe_platform_names
 
             rule.normalize(self.env_yaml["product"])
-        print (self.product_cpes.platforms)
 
     def _get_new_loader(self):
         loader = BuildLoader(
