@@ -221,7 +221,8 @@ class BashRemediation(Remediation):
 
     def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
         self.local_env_yaml.update(env_yaml)
-        result = super(BashRemediation, self).parse_from_file_with_jinja(self.local_env_yaml, cpe_platforms)
+        result = super(BashRemediation, self).parse_from_file_with_jinja(
+            self.local_env_yaml, cpe_platforms)
 
         # Avoid platform wrapping empty fix text
         # Remediations can be empty when a Jinja macro or conditional
@@ -290,7 +291,8 @@ class AnsibleRemediation(Remediation):
 
     def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
         self.local_env_yaml.update(env_yaml)
-        result = super(AnsibleRemediation, self).parse_from_file_with_jinja(self.local_env_yaml, cpe_platforms)
+        result = super(AnsibleRemediation, self).parse_from_file_with_jinja(
+            self.local_env_yaml, cpe_platforms)
 
         if not self.associated_rule:
             return result

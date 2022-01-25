@@ -323,7 +323,7 @@ class XCCDFEntity(object):
         return data
 
     @classmethod
-    def parse_yaml_into_processed_dict(cls, yaml_file, env_yaml=None, product_cpes = None):
+    def parse_yaml_into_processed_dict(cls, yaml_file, env_yaml=None, product_cpes=None):
         """
         Given yaml filename and environment info, produce a dictionary
         that defines the instance to be created.
@@ -1797,7 +1797,8 @@ class DirectoryLoader(object):
         if self.loaded_group:
 
             if self.parent_group:
-                self.parent_group.add_group(self.loaded_group, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
+                self.parent_group.add_group(
+                    self.loaded_group, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
 
             self._process_values()
             self._recurse_into_subdirs()
@@ -1880,7 +1881,8 @@ class BuildLoader(DirectoryLoader):
     def _process_rules(self):
         for rule_yaml in self.rule_files:
             try:
-                rule = Rule.from_yaml(rule_yaml, self.env_yaml, self.product_cpes, self.sce_metadata)
+                rule = Rule.from_yaml(
+                    rule_yaml, self.env_yaml, self.product_cpes, self.sce_metadata)
             except DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
                 continue
@@ -1888,7 +1890,8 @@ class BuildLoader(DirectoryLoader):
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue
             self.all_rules[rule.id_] = rule
-            self.loaded_group.add_rule(rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
+            self.loaded_group.add_rule(
+                rule, env_yaml=self.env_yaml, product_cpes=self.product_cpes)
 
             if self.loaded_group.cpe_platform_names:
                 rule.inherited_cpe_platform_names += self.loaded_group.cpe_platform_names
@@ -2075,7 +2078,7 @@ class Platform(XCCDFEntity):
         # it can be later used e.g. for comparison
         if product_cpes:
             platform.test = product_cpes.algebra.parse(
-            platform.original_expression, simplify=True)
+                platform.original_expression, simplify=True)
         return platform
 
     def __eq__(self, other):
