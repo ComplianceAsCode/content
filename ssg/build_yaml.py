@@ -1146,6 +1146,11 @@ class Group(XCCDFEntity):
             # any deviations or stricter settings are applied by the rules in the profile.
             "software", "integrity", "integrity-software", "rpm_verification",
 
+            # Installing fapolicyd package creates a new user called fapolicyd
+            # and password_expiration (subgroup of accounts) rules configure parameters for
+            # all users in the system. So it should come first then accounts group.
+            "fapolicyd",
+
             # The account group has to precede audit group because
             # the rule package_screen_installed is desired to be executed before the rule
             # audit_rules_privileged_commands, othervise the rule
