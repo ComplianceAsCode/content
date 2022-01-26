@@ -15,7 +15,7 @@
     follow: yes
   register: gnutls_file
 
-- name: "{{{ rule_title }}}: Add"
+- name: "{{{ rule_title }}}: Create file and add line"
   lineinfile:
     path: "{{ path }}"
     regexp: "{{ lineinfile_reg }}"
