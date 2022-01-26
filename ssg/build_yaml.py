@@ -876,7 +876,7 @@ class Benchmark(XCCDFEntity):
 
         return benchmark
 
-    def add_profiles_from_dir(self, dir_, env_yaml):
+    def add_profiles_from_dir(self, dir_, env_yaml, product_cpes):
         for dir_item in sorted(os.listdir(dir_)):
             dir_item_path = os.path.join(dir_, dir_item)
             if not os.path.isfile(dir_item_path):
@@ -892,7 +892,7 @@ class Benchmark(XCCDFEntity):
                 continue
 
             try:
-                new_profile = ProfileWithInlinePolicies.from_yaml(dir_item_path, env_yaml)
+                new_profile = ProfileWithInlinePolicies.from_yaml(dir_item_path, env_yaml, product_cpes)
             except DocumentationNotComplete:
                 continue
             except Exception as exc:
@@ -1944,7 +1944,7 @@ class LinearLoader(object):
         self.benchmark = Benchmark.from_yaml(
             os.path.join(directory, "benchmark.yml"), self.env_yaml, self.product_cpes)
 
-        self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml)
+        self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml, self.product_cpes)
 
         benchmark_first_groups = self.find_first_groups_ids(directory)
         for gid in benchmark_first_groups:
@@ -1955,9 +1955,6 @@ class LinearLoader(object):
                 pass
 
     def load_compiled_content(self):
-        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
-        self.load_entities_by_id(filenames, self.platforms, Platform)
-        self.product_cpes.platforms = self.platforms
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.rules, Rule)
 
@@ -1970,6 +1967,9 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_values_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.values, Value)
 
+        filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
+        self.load_entities_by_id(filenames, self.platforms, Platform)
+        self.product_cpes.platforms = self.platforms
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
