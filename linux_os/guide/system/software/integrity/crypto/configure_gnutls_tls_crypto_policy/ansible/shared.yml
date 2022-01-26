@@ -21,25 +21,25 @@
     regexp: "{{ lineinfile_reg }}"
     line: "{{ correct_value }}"
     create: yes
-  when: not gnutls_file.stat.exists or gnutls_file.stat.size <= correct_value|length
+  when: not gnutls_file.stat.exists
 
 - name: "{{{ rule_title }}}"
   block:
-    - name: "{{{ rule_title }}}: Existing value check"
-      lineinfile:
-        path: "{{ path }}"
-        create: false
-        regexp: "{{ lineinfile_reg }}"
-        state: absent
-      check_mode: true
-      changed_when: false
-      register: gnutls
-
     - name: "{{{ rule_title }}}: Update"
       replace:
         path: "{{ path }}"
         regexp: (\+VERS-ALL(?::-VERS-[A-Z]+\d\.\d)+)
         replace: "{{ correct_value }}"
-      when: gnutls.found is defined and gnutls.found != 1
+      register: gnutls_crypto_replaced
 
-  when: gnutls_file.stat.exists and gnutls_file.stat.size > correct_value|length
+    - name: "{{{ rule_title }}}: Existing value check"
+      lineinfile:
+        path: "{{ path }}"
+        line: "{{ correct_value }}"
+        create: false
+        regexp: "{{ lineinfile_reg }}"
+        state: present
+      when: gnutls_crypto_replaced is not changed
+
+  when: gnutls_file.stat.exists
+
