@@ -157,8 +157,7 @@ value: :code:`Setting={{ varname1 }}`
 {{%- set new_line = parameter + separator + value -%}}
 - name: '{{{ msg or rule_title }}}'
   block:
-    {{{ ansible_lineinfile("Check for duplicate values", config_file, regex=line_regex, create='no', state='absent', register='dupes', check_mode=True)|indent }}}
-    {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, create='no', state='absent', when='dupes.found is defined and dupes.found > 1')|indent }}}
+    {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, create='no', state='absent')|indent }}}
     {{{ ansible_stat("Check if " + config_dir + " exists", path=config_dir, register=dir_exists)|indent }}}
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
     {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
