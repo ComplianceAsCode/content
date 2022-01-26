@@ -174,8 +174,12 @@ value: :code:`Setting={{ varname1 }}`
   We also specify the validation program here; -t specifies test and -f allows
   Ansible to pass a file at a different path.
 #}}
-{{%- macro ansible_sshd_set(msg='', parameter='', value='') %}}
+{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false") %}}
+{{%- if config_is_distributed == "true" %}}
+{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir="/etc/ssh/sshd_config.d", set_file="/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf", parameter=parameter, separator_regex="\s+", value=value, prefix_regex="^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="^[#\s]*Match") }}}
+{{%- else %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^[#\s]*Match") }}}
+{{%- endif %}}
 {{%- endmacro %}}
 
 
