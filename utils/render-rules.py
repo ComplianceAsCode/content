@@ -21,7 +21,7 @@ class HtmlOutput(template_renderer.Renderer):
     TEMPLATE_NAME = "rules-template.html"
 
     def _get_all_compiled_profiles(self):
-        compiled_profiles = glob(str(self.built_content_path / "profiles" / "*.profile"))
+        compiled_profiles = glob(os.path.join(self.built_content_path, "profiles", "*.profile"))
         profiles = []
         for p in compiled_profiles:
             profiles.append(ssg.build_yaml.Profile.from_yaml(p, self.env_yaml))
