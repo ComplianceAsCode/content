@@ -10,7 +10,8 @@ mkdir -p "$kube_apipath/apis/apps/v1/deployments"
 deployment_apipath="/apis/apps/v1/deployments?limit=500"
 
 # This file assumes that we have 1 deployments & dont have the resource requests and limits
-cat <<EOF > "$kube_apipath$deployment_apipath"{
+cat <<EOF > "$kube_apipath$deployment_apipath"
+{
     "apiVersion": "v1",
     "items": [
         {
@@ -107,7 +108,6 @@ cat <<EOF > "$kube_apipath$deployment_apipath"{
         "selfLink": ""
     }
 }
-
 EOF
 
 
