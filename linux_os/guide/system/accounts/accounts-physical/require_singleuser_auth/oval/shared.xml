@@ -6,7 +6,7 @@
     <criteria operator="AND">
       <criterion comment="Conditions are satisfied"
       test_ref="test_require_rescue_service" />
-      {{%- if product != "ol8" -%}}
+      {{%- if product not in ["ol8", "rhel8"] -%}}
       <criterion test_ref="test_require_rescue_service_runlevel1" />
       <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
       <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
@@ -42,7 +42,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{%- if product != "ol8" -%}}
+  {{%- if product not in ["ol8", "rhel8"] -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that the systemd rescue.service is in the runlevel1.target"
     id="test_require_rescue_service_runlevel1" version="1">
