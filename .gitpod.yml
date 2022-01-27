@@ -1,0 +1,15 @@
+# Commands to start on workspace startup
+image:
+  file: .gitpod.Dockerfile
+
+vscode:
+  extensions:
+    - ggbecker.content-navigator
+
+tasks:
+  - name: Prepare Env
+    init: |
+      mkdir -p .vscode && cp .gitpod.launch.json .vscode/launch.json
+      ssh-keygen -N '' -f ~/.ssh/id_rsa
+      docker build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f Dockerfiles/test_suite-fedora .
+      ./build_product fedora --datastream-only
