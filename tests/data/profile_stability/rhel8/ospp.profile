@@ -55,6 +55,7 @@ selections:
 - audit_owner_change_success
 - audit_perm_change_failed
 - audit_perm_change_success
+- auditd_audispd_syslog_plugin_activated
 - auditd_data_retention_flush
 - auditd_freq
 - auditd_local_events

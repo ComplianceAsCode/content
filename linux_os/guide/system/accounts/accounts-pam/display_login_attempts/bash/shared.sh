@@ -22,7 +22,7 @@ if [ -f /usr/bin/authselect ]; then
         if [ $(grep -c "^\s*session.*required.*pam_lastlog.so\s\+showfailed\s*$" $CUSTOM_POSTLOGIN) -eq 0 ]; then
             sed -i --follow-symlinks '0,/^session.*/s/^session.*/session     required                   pam_lastlog.so showfailed\n&/' $CUSTOM_POSTLOGIN
         fi
-        if grep -q "^\s*session.*required.*pam_lastlog.so.*silent.*"; then
+        if grep -q "^\s*session.*required.*pam_lastlog.so.*silent.*" $CUSTOM_POSTLOGIN; then
             # remove 'silent' option
             sed -i --follow-symlinks 's/^\(session.*required.*pam_lastlog.so\).*/\1 showfailed/g' $CUSTOM_POSTLOGIN
         fi

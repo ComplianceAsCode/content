@@ -503,6 +503,7 @@ hardening guidances that have been generated from XCCDF benchmarks.
 set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
 # For older versions of cmake (e.g. v2.8) file name is defined like below
 set(CPACK_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}")
+set(CPACK_PACKAGE_CHECKSUM SHA512)
 
 set(CPACK_GENERATOR "RPM;DEB")
 include(CPack)
