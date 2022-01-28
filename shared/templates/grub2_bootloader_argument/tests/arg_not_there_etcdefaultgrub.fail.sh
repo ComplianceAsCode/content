@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 9
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
 
 # Removes argument from kernel command line in /etc/default/grub
 if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ARG_NAME}}}=.*"'  '/etc/default/grub' ; then
