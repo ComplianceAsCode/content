@@ -45,25 +45,49 @@
   ],
   "configurations": [
     {
-        "name": "ComplianceAsCode/content Test Suite using ssg_test_suite container",
-        "type": "python",
-        "request": "launch",
-        "console": "integratedTerminal",
-        "program": "${workspaceFolder}/tests/test_suite.py",
-        "args": [
-            "rule",
-            "--dontclean",
-            "--debug",
-            "--docker",
-            "${input:pickContainerName}",
-            "--datastream",
-            "${workspaceFolder}/build/ssg-${input:pickProductName}-ds.xml",
-            "--remediate-using",
-            "${input:pickRemediationType}",
-            "--remove-machine-only",
-            "--remove-ocp4-only",
-            "${command:content-navigator.getRuleId}"
-        ]
+      "name": "Run SSGTS using Docker backend",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "program": "${workspaceFolder}/tests/test_suite.py",
+      "args": [
+          "rule",
+          "--dontclean",
+          "--debug",
+          "--docker",
+          "${input:pickContainerName}",
+          "--datastream",
+          "${workspaceFolder}/build/ssg-${input:pickProductName}-ds.xml",
+          "--remediate-using",
+          "${input:pickRemediationType}",
+          "--remove-machine-only",
+          "--remove-ocp4-only",
+          "--add-product-to-fips-certified",
+          "fedora",
+          "--add-platform",
+          "cpe:/o:fedoraproject:fedora:35",
+          "${command:content-navigator.getRuleId}"
+      ]
+    },
+    {
+      "name": "Run SSGTS using Docker backend (test_rule_in_container.sh)",
+      "type": "bashdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/tests/test_rule_in_container.sh",
+      "args": [
+          "--dontclean",
+          "--docker",
+          "--name",
+          "${input:pickContainerName}",
+          "--datastream",
+          "${workspaceFolder}/build/ssg-${input:pickProductName}-ds.xml",
+          "--remediate-using",
+          "${input:pickRemediationType}",
+          "${command:content-navigator.getRuleId}"
+      ],
+      "env": {
+        "ADDITIONAL_SSGTS_OPTIONS": "--debug --duplicate-templates --add-product-to-fips-certified fedora"
+      }
     }
   ]
 }
