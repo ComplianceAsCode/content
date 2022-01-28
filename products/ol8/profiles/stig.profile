@@ -411,7 +411,7 @@ selections:
     - accounts_user_home_paths_only
 
     # OL08-00-010700
-    - dir_perms_world_writable_root_owned
+    - dir_perms_world_writable_system_owned
 
     # OL08-00-010710
 
