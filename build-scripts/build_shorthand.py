@@ -57,7 +57,6 @@ def main():
     loader.load_compiled_content()
     loader.load_benchmark(benchmark_root)
 
-    print ("exporting benchmark")
     loader.export_benchmark_to_file(args.output)
     loader.export_ocil_to_file(args.ocil)
 
