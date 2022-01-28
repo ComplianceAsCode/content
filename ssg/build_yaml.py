@@ -1050,8 +1050,8 @@ class Group(XCCDFEntity):
         if data["platform"]:
             data["platforms"].add(data["platform"])
 
-        # parse platform definition and get CPEAL platform
-        if data["platforms"]:
+        # parse platform definition and get CPEAL platform if cpe_platform_names not already defined
+        if data["platforms"] and not data["cpe_platform_names"]:
             for platform in data["platforms"]:
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
@@ -1319,9 +1319,11 @@ class Rule(XCCDFEntity):
         # Convert the platform names to CPE names
         # But only do it if an env_yaml was specified (otherwise there would be no product CPEs
         # to lookup), and the rule's prodtype matches the product being built
+        # also if the rule already has cpe_platform_names specified (compiled rule)
+        # do not evaluate platforms again
         if (
                 env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype)
-                or env_yaml and rule.prodtype == "all") and product_cpes:
+                or env_yaml and rule.prodtype == "all") and product_cpes and not rule.cpe_platform_names:
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
                 cpe_platform = Platform.from_text(platform, product_cpes)
