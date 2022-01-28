@@ -610,6 +610,7 @@ selections:
 
     # OL08-00-020353
     - accounts_umask_etc_bashrc
+    - accounts_umask_etc_csh_cshrc
 
     # OL08-00-030000
     - audit_rules_suid_privilege_function
