@@ -10,7 +10,9 @@ vscode:
 tasks:
   - name: Prepare Env
     init: |
+      [ -z "$PRODUCT" ] && PRODUCT="fedora"
       mkdir -p .vscode && cp .gitpod.launch.json .vscode/launch.json
+      sed -i "s/&&DEFAULT_PRODUCT&&/$PRODUCT/g" .vscode/launch.json
       ssh-keygen -N '' -f ~/.ssh/id_rsa
       docker build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f Dockerfiles/test_suite-fedora .
-      ./build_product fedora --datastream-only
+      ./build_product $PRODUCT --datastream-only
