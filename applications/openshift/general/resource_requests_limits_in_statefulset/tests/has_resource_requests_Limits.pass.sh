@@ -143,3 +143,4 @@ jq_filter='[ .items[] | select(.metadata.namespace | startswith("kube-") or star
 filteredpath="$kube_apipath$statefulset_apipath#$(echo -n "$statefulset_apipath$jq_filter" | sha256sum | awk '{print $1}')"
 
 # populate filtered path with jq-filtered result
+jq "$jq_filter" "$kube_apipath$statefulset_apipath" > "$filteredpath"

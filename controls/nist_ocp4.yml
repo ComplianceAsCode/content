@@ -12133,16 +12133,8 @@ controls:
     signed and from an authorized registry. Signature verification is
     done in the Container Runtime level before running the containers.
     Therefore, the OpenShift Platform inherently meets this control.
-
-    Integrity of the OpenShift platform is handled to start by the cluster
-    version operator. Today the CVO will by default GPG verify the integrity
-    of the release image before applying it. [1]
-
-    [1] https://github.com/openshift/machine-config-operator/blob/master/docs/OSUpgrades.md#questions-and-answers
   rules:
   - reject_unsigned_images_by_default
-  - cluster_version_operator_exists
-  - cluster_version_operator_verify_integrity
   description: |-
     The organization requires the developer of the information system, system component, or information system service to enable integrity verification of software and firmware components.
 
@@ -13263,10 +13255,7 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-priority.html
-  rules:
-  - resource_requests_limits_in_deployment
-  - resource_requests_limits_in_daemonset
-  - resource_requests_limits_in_statefulset
+  rules: []
   description: |-
     The information system protects the availability of resources by allocating [Assignment: organization-defined resources] by [Selection (one or more); priority; quota; [Assignment: organization-defined security safeguards]].
 
@@ -15786,7 +15775,6 @@ controls:
   rules:
   - file_integrity_exists
   - file_integrity_notification_enabled
-  - compliance_notification_enabled
   description: |-
     The information system:
      a. Verifies the correct operation of [Assignment: organization-defined security functions];
