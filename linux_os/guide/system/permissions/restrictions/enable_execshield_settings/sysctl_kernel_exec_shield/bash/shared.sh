@@ -1,5 +1,5 @@
 # platform = multi_platform_all
-# reboot = false
+# reboot = true 
 # strategy = restrict
 # complexity = low
 # disruption = low
