@@ -12,6 +12,7 @@
     paths: "{{{ path }}}"
     patterns: {{{ FILE_REGEX[loop.index0] }}}
     use_regex: yes
+    hidden: yes
   register: files_found
 
 - name: Set permissions for {{{ path }}} file(s)
