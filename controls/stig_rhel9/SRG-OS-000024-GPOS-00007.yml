@@ -11,4 +11,11 @@ controls:
             - banner_etc_issue
             - dconf_gnome_banner_enabled
             - dconf_gnome_login_banner_text
-        status: automated
+        status: does not meet
+        mitigation: |-
+            Use the /etc/issue file to ensure that the banner is prior to entering the user password to act as the "OK".
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+
+        status_justification: |-
+          {{{ full_name }}} does not have configuration options to meet this requirement.
