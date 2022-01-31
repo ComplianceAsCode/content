@@ -411,7 +411,7 @@ selections:
     - accounts_user_home_paths_only
 
     # OL08-00-010700
-    - dir_perms_world_writable_root_owned
+    - dir_perms_world_writable_system_owned
 
     # OL08-00-010710
 
@@ -610,6 +610,7 @@ selections:
 
     # OL08-00-020353
     - accounts_umask_etc_bashrc
+    - accounts_umask_etc_csh_cshrc
 
     # OL08-00-030000
     - audit_rules_suid_privilege_function
@@ -1101,6 +1102,7 @@ selections:
 
     # OL08-00-040260
     - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv6_conf_all_forwarding
 
     # OL08-00-040261
     - sysctl_net_ipv6_conf_all_accept_ra
