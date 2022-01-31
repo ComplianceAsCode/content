@@ -4,4 +4,17 @@ controls:
             - medium
         title: The operating system must fail to a secure state if system initialization
             fails, shutdown fails, or aborts fail.
-        status: pending
+        status: inherently met
+        rationale: |-
+            Failure to a known safe state helps prevent systems from failing to a state that may cause loss of data or unauthorized access to system resources.
+            Operating systems that fail suddenly and with no incorporated failure state planning may leave the system available but with a reduced security protection capability.
+            Preserving operating system state information also facilitates system restart and return to the operational mode of the organization with less disruption to mission-essential processes.
+
+            Abort refers to stopping a program or function before it has finished naturally. The term abort refers to both requested and unexpected terminations.
+        check: |-
+            The technology supports this requirement and cannot be configured to be out of compliance. The technology inherently meets this requirement.
+        fix:
+            The technology inherently meets this requirement. No fix is required.
+        status_justification:
+            RHEL 9 is secure in the event of a failure.
+            Authentication and authorizations are still necessary to access the system.
