@@ -240,8 +240,10 @@ selections:
     - root_permissions_syslibrary_files
     - dir_group_ownership_library_dirs
 
-    # RHEL-08-010360
+    # RHEL-08-010359
     - package_aide_installed
+
+    # RHEL-08-010360
     - aide_scan_notification
 
     # RHEL-08-010370
