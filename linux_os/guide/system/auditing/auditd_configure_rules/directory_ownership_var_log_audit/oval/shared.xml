@@ -2,7 +2,6 @@
   <definition class="compliance" id="directory_ownership_var_log_audit" version="1">
     {{{ oval_metadata("Checks that all /var/log/audit directories are owned by the root user.") }}}
     <criteria comment="directories are root owned" operator="OR">
-      {{% if product == "ol8" %}}
       <criteria operator="AND" comment="log_file set">
         <extend_definition comment="log_file set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" negate="true" />
         <criterion test_ref="test_user_ownership_var_log_audit_path" />
@@ -11,13 +10,9 @@
         <extend_definition comment="log_file not set in auditd.conf" definition_ref="auditd_conf_log_file_not_set" />
         <criterion test_ref="test_user_ownership_var_log_audit_directories" />
       </criteria>
-      {{% else %}}
-      <criterion test_ref="test_user_ownership_var_log_audit_directories" />
-      {{% endif %}}
     </criteria>
   </definition>
 
-  {{% if product == "ol8" %}}
   <unix:file_object comment="audit log files" id="object_directory_ownership_var_log_audit_file" version="1">
     <unix:filepath operation="pattern match" var_ref="audit_log_file_path" />
   </unix:file_object>
@@ -39,15 +34,12 @@
     <unix:filename xsi:nil="true" />
     <filter action="include">state_owner_not_root_var_log_audit_directories</filter>
   </unix:file_object>
-  {{% endif %}}
+
   <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit directories uid root gid root" id="test_user_ownership_var_log_audit_directories" version="1">
     <unix:object object_ref="object_user_ownership_var_log_audit_directories" />
   </unix:file_test>
 
   <unix:file_object comment="/var/log/audit directories" id="object_user_ownership_var_log_audit_directories" version="1">
-    {{% if product != "ol8" %}}
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
-    {{% endif %}}
     <unix:path operation="equals">/var/log/audit</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_owner_not_root_var_log_audit_directories</filter>
