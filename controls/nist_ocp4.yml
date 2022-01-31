@@ -5467,18 +5467,24 @@ controls:
   levels:
   - high
 - id: CM-8(3)
-  status: pending
+  status: partial
   notes: |-
-    Section a: A complete control response is planned. Engineering progress can be
-    tracked via:
+    Section a: Red Hat OpenShift allows for configuring the platform in such a way that only signed containers will be accepted for scheduling. [1] [2]
+    Red Hat signs the images provided for running the platform, as well as the base images that are usable for building other workloads.
 
-    https://issues.redhat.com/browse/CMP-280
+    Customers should be careful to enforce image signing on their own images.
 
-    Section b: A complete control response is planned. Engineering progress can be
-    tracked via:
+    In addition, Red Hat OpenShift allows limiting he container image registries from which normal users can import images by setting allowedRegistriesForImport [3].
 
-    https://issues.redhat.com/browse/CMP-280
-  rules: []
+    [1] https://docs.openshift.com/container-platform/4.7/security/container_security/security-container-signature.html
+    [2] https://docs.openshift.com/container-platform/4.7/security/container_security/security-deploy.html#security-deploy-image-sources_security-deploy
+    [3] https://docs.openshift.com/container-platform/4.7/openshift_images/image-configuration.html
+
+    Section b: Red Hat OpenShift doesn't provide an integrated solution out-of-the-box.
+    However, the customer can deploy Red Hat Advanced Cluster Security, or a third party product which offer such functionality.
+  rules:
+  - reject_unsigned_images_by_default
+  - rbac_limit_cluster_admin
   description: |-
     The organization:
      (a)   Employs automated mechanisms [Assignment: organization-defined frequency] to detect the presence of unauthorized hardware, software, and firmware components within the information system; and
