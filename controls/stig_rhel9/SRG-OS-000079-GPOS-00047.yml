@@ -17,10 +17,10 @@ controls:
         mitigation: |-
             The "passwd", "login", and "sudo" do not display the passwords being typed.
 
-            The "passwd.c" from the "passwd" source code uses the getpass function, which is specific for retrieving passwords, thus does not provide a feedback to the terminal.
+            The "passwd.c" from the "passwd" source code uses the "getpass" function, which is specific for retrieving passwords, thus does not provide a feedback to the terminal.
 
             The "tgetpass.c" from the sudo source code uses "tgetpass" function, which has a similar behavior to "getpass", including not providing a terminal feedback for passwords.
 
             The login uses pam_authenticate, which similarly does not provide a terminal feedback during password authentication.
-        status_justification: The "passwd" command on the system does not print any characters that are entered as a password.
+        status_justification: The "passwd", "login", and "sudo" commands on the system does not print any characters that are entered as a password.
         status: inherently met
