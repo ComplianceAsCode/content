@@ -4,6 +4,6 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', path='/etc/sudoers', new_line='Defaults !targetpw', create='yes', state='present') }}}
-{{{ ansible_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', path='/etc/sudoers', new_line='Defaults !rootpw', create='yes', state='present') }}}
-{{{ ansible_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', path='/etc/sudoers', new_line='Defaults !runaspw', create='yes', state='present') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !targetpw is defined in sudoers', line_regex='^Defaults !targetpw$', path='/etc/sudoers', new_line='Defaults !targetpw') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !rootpw is defined in sudoers', line_regex='^Defaults !rootpw$', path='/etc/sudoers', new_line='Defaults !rootpw') }}}
+{{{ ansible_only_lineinfile(msg='Ensure that Defaults !runaspw is defined in sudoers', line_regex='^Defaults !runaspw$', path='/etc/sudoers', new_line='Defaults !runaspw') }}}
