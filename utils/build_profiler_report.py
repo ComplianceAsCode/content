@@ -2,6 +2,7 @@
 """Compare and present build times to user and generate an HTML interactive graph"""
 import sys
 import argparse
+import re
 
 
 def load_log_file(file) -> dict:
@@ -14,7 +15,12 @@ def load_log_file(file) -> dict:
     target_duration_dict = {}
     for line in lines:
         line = line.strip()
-        if not line.startswith('#'):
+
+        # pattern to match target names that are an absolute path - these should be skipped
+        # --> an issue appeared with new versions of cmake where the targets are duplicated for some
+        # reason and therefore they must be filtered here
+        duplicate_pattern = re.compile("[0-9]+\s+[0-9]+\s+[0-9]+\s+/.*")
+        if not line.startswith('#') and not duplicate_pattern.match(line):
             # calculate target compilation duration and add it to dict
             line = line.split()
             duration = int(line[1]) - int(line[0])
