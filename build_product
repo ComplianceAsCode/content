@@ -10,6 +10,7 @@
 # ARG_OPTIONAL_BOOLEAN([ansible-playbooks],[],[Build Ansible Playbooks for every profile],[on])
 # ARG_OPTIONAL_BOOLEAN([bash-scripts],[],[Build Bash remediation scripts for every profile],[on])
 # ARG_OPTIONAL_BOOLEAN([datastream-only],[],[Build the datastream only. Do not build any of the guides, tables, etc],[off])
+# ARG_OPTIONAL_BOOLEAN([profiling],[p],[Use ninja and call the build_profiler.sh util],[off])
 # ARG_USE_ENV([ADDITIONAL_CMAKE_OPTIONS],[],[Whitespace-separated string of arguments to pass to CMake])
 # ARG_POSITIONAL_INF([product],[Products to build, ALL means all products],[0],[ALL])
 # ARG_DEFAULTS_POS([])
@@ -59,7 +60,7 @@ builder_type()
 
 begins_with_short_option()
 {
-	local first_option all_short_options='objh'
+	local first_option all_short_options='objph'
 	first_option="${1:0:1}"
 	test "$all_short_options" = "${all_short_options/$first_option/}" && return 1 || return 0
 }
@@ -76,12 +77,13 @@ _arg_derivatives="off"
 _arg_ansible_playbooks="on"
 _arg_bash_scripts="on"
 _arg_datastream_only="off"
+_arg_profiling="off"
 
 
 print_help()
 {
 	printf '%s\n' "Wipes out contents of the 'build' directory and builds only and only the given products."
-	printf 'Usage: %s [-o|--oval <VERSION>] [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [--(no-)ansible-playbooks] [--(no-)bash-scripts] [--(no-)datastream-only] [-h|--help] [<product-1>] ... [<product-n>] ...\n' "$0"
+	printf 'Usage: %s [-o|--oval <VERSION>] [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [--(no-)ansible-playbooks] [--(no-)bash-scripts] [--(no-)datastream-only] [-p|--(no-)profiling] [-h|--help] [<product-1>] ... [<product-n>] ...\n' "$0"
 	printf '\t%s\n' "<product>: Products to build, ALL means all products (defaults for <product>: 'ALL')"
 	printf '\t%s\n' "-o, --oval: OVAL version. Can be one of: '5.10', '5.11' and 'auto' (default: 'auto')"
 	printf '\t%s\n' "-b, --builder: Builder engine. Can be one of: 'make', 'ninja' and 'auto' (default: 'auto')"
@@ -91,6 +93,7 @@ print_help()
 	printf '\t%s\n' "--ansible-playbooks, --no-ansible-playbooks: Build Ansible Playbooks for every profile (on by default)"
 	printf '\t%s\n' "--bash-scripts, --no-bash-scripts: Build Bash remediation scripts for every profile (on by default)"
 	printf '\t%s\n' "--datastream-only, --no-datastream-only: Build the datastream only. Do not build any of the guides, tables, etc (off by default)"
+	printf '\t%s\n' "-p, --profiling, --no-profiling: Use ninja and call the build_profiler.sh util (off by default)"
 	printf '\t%s\n' "-h, --help: Prints help"
 	printf '\nEnvironment variables that are supported:\n'
 	printf '\t%s\n' "ADDITIONAL_CMAKE_OPTIONS: Whitespace-separated string of arguments to pass to CMake."
@@ -157,6 +160,18 @@ parse_commandline()
 			--no-datastream-only|--datastream-only)
 				_arg_datastream_only="on"
 				test "${1:0:5}" = "--no-" && _arg_datastream_only="off"
+				;;
+			-p|--no-profiling|--profiling)
+				_arg_profiling="on"
+				test "${1:0:5}" = "--no-" && _arg_profiling="off"
+				;;
+			-p*)
+				_arg_profiling="on"
+				_next="${_key##-p}"
+				if test -n "$_next" -a "$_next" != "$_key"
+				then
+					{ begins_with_short_option "$_next" && shift && set -- "-p" "-${_next}" "$@"; } || die "The short option '$_key' can't be decomposed to ${_key:0:2} and -${_key:2}, because ${_key:0:2} doesn't accept value and '-${_key:2:1}' doesn't correspond to a short option."
+				fi
 				;;
 			-h|--help)
 				print_help
@@ -336,10 +351,13 @@ test "$_arg_debug" = on && build_type_option="-DCMAKE_BUILD_TYPE=Debug"
 jobs="$_arg_jobs"
 test "$jobs" = auto && jobs=$cores
 
-if test "$_arg_builder" = make; then
-	build_with_make
+if test "$_arg_profiling" = on; then
+	build_with_ninja
+	jobs=1
 elif test "$_arg_builder" = ninja; then
 	build_with_ninja
+elif test "$_arg_builder" = make; then
+	build_with_make
 else
 	autodetect_builder
 fi
@@ -372,4 +390,11 @@ cd build
 cmake .. "${CMAKE_OPTIONS[@]}"
 $build_command "-j${jobs}" "${EXPLICIT_BUILD_TARGETS[@]}"
 
+if test "$_arg_profiling" = on; then
+	# remove cycles in ninja logs
+	ninja -t recompact
+	# go back to content dir
+	cd ..
+	utils/build_profiler.sh `echo "${_arg_product[@]}" | sed 's/ /_/g'`
+fi
 # ] <-- needed because of Argbash

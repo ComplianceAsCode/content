@@ -446,6 +446,14 @@ ctest -LE quick -j4
 
 Note: CTest does not run [SSG Test Suite](https://github.com/ComplianceAsCode/content/tree/master/tests) which provides simple system of test scenarios for testing profiles and rule remediations.
 
+## Profiling the buildsystem
+
+To make sure your changes don't prolong the time that it takes to build products by using the `build_product` script too much, you can use the `-p|--profiling` switch to get a report containing build times of all build targets/files.
+You can compare build times between a baseline profiling log and your current log to see exactly which targets/files are taking longer to build, what percentage of the total build time they take up, and even see what targets you have added/removed and how did that affect the build time.
+You also get an interactive HTML report that visualises how much time each target/file takes up.
+
+For details about how this works, see `section 5 - tools and utilities - Profiling the buildsystem`.
+
 ## Installation
 
 System-wide installation:
