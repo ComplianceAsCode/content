@@ -125,13 +125,8 @@ selections:
     ## Boot prompt
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
-    - grub2_slub_debug_argument
-    - grub2_page_poison_argument
     - grub2_vsyscall_argument
-    - grub2_vsyscall_argument.role=unscored
-    - grub2_vsyscall_argument.severity=info
-    - grub2_pti_argument
-    - grub2_kernel_trust_cpu_rng
+    - grub2_init_on_alloc_argument
 
     ## Security Settings
     - sysctl_kernel_kptr_restrict
@@ -415,8 +410,5 @@ selections:
     - zipl_bootmap_is_up_to_date
     - zipl_audit_argument
     - zipl_audit_backlog_limit_argument
-    - zipl_slub_debug_argument
-    - zipl_page_poison_argument
     - zipl_vsyscall_argument
-    - zipl_vsyscall_argument.role=unscored
-    - zipl_vsyscall_argument.severity=info
+    - zipl_init_on_alloc_argument
