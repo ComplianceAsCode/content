@@ -1,0 +1,56 @@
+name: Nightly builds
+on:
+    schedule:
+        # Run daily at 03:00
+        -   cron: "0 3 * * *"
+jobs:
+    nightly-fedora:
+        name: Nightly build on Fedora 34 (Container)
+        runs-on: ubuntu-latest
+        container:
+            image: fedora:34
+        steps:
+            -   name: Install Deps
+                run: dnf install -y cmake ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Configure
+                run: cmake ..
+                working-directory: ./build
+            -   name: Build All
+                run: make -j2 all
+                working-directory: ./build
+            -   name: Build ZIP
+                run: make -j2 zipfile
+                working-directory: ./build
+            -   name: Test
+                run: ctest -j2 --output-on-failure -E linkchecker
+                working-directory: ./build
+            -   name: Build Package Source
+                run: make -j2 package_source
+                working-directory: ./build
+            -   name: Create Build Dir (OVAL 5.10)
+                run: mkdir -p build-oval510
+            -   name: Configure (OVAL 5.10)
+                run: cmake -DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10 ..
+                working-directory: ./build-oval510
+            -   name: Build All (OVAL 5.10)
+                run: make -j2 all
+                working-directory: ./build-oval510
+            -   name: Build ZIP (OVAL 5.10)
+                run: make -j2 zipfile
+                working-directory: ./build-oval510
+            -   name: 'Upload Artifact'
+                uses: actions/upload-artifact@v2
+                with:
+                  name: Nightly Build
+                  path: |
+                        build/zipfile/scap-security-guide-*.zip
+                        build/zipfile/scap-security-guide-*.zip.sha512
+            -   name: Upload Artifact OVAL 5.10
+                uses: actions/upload-artifact@v2
+                with:
+                  name: Nightly Build OVAL 5.10
+                  path: |
+                    build-oval510/zipfile/scap-security-guide-*.zip
+                    build-oval510/zipfile/scap-security-guide-*.zip.sha512
