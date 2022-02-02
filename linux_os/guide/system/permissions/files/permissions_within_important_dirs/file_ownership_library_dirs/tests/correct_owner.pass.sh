@@ -4,6 +4,6 @@ for SYSLIBDIRS in /lib /lib64 /usr/lib /usr/lib64
 do
     if [[ -d $SYSLIBDIRS  ]]
     then
-        find $SYSLIBDIRS ! -group root -type f -exec chgrp root '{}' \;
+        find $SYSLIBDIRS ! -user root -type f -exec chown root '{}' \;
     fi
 done

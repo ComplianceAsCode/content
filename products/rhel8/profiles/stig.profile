@@ -235,8 +235,13 @@ selections:
     # RHEL-08-010340
     - file_ownership_library_dirs
 
+    # RHEL-08-010341
+    - dir_ownership_library_dirs
+
     # RHEL-08-010350
     - root_permissions_syslibrary_files
+
+    # RHEL-08-010351
     - dir_group_ownership_library_dirs
 
     # RHEL-08-010359
