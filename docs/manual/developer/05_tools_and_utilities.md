@@ -64,7 +64,7 @@ options:
 
 Example
 
-    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r4-xccdf-manual.xml
+    $ ./utils/build_stig_control.py -p rhel8 -m shared/references/disa-stig-rhel8-v1r5-xccdf-manual.xml
 
 
 ## Generating login banner regular expressions
