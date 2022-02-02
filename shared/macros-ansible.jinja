@@ -679,3 +679,15 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - { path: /etc/sudoers }
     - "{{ sudoers.files }}"
 {{%- endmacro -%}}
+
+{{#
+  This macro creates an Ansible snipped which is used in `when` clause to determine applicability of a task.
+  If the package passed as a parameter is installed, the task is applicable.
+  The macro respects `platform_package_overrides` variable.
+#}}
+{{%- macro ansible_pkg_conditional(package) -%}}
+{{%- if package in platform_package_overrides -%}}
+  {{%- set package = platform_package_overrides[package] -%}}
+{{%- endif -%}}
+'"{{{ package }}}" in ansible_facts.packages'
+{{%- endmacro -%}}

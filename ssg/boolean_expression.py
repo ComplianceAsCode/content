@@ -1,13 +1,18 @@
 from .ext.boolean import boolean
-from pkg_resources import Requirement
+
+# Monkey-patch pkg_resources.safe_name function to keep underscores intact
+# Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
+import pkg_resources
+import re
+pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
 
 
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
-SPECIFIER_SYMBOLS = ['<', '>', '=', '!', ',']
+SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
 
 VERSION_SYMBOLS = ['.', '-', '_', '*']
 
-SPECIFIER_OP_ID_TRANSLATION = {
+SPEC_OP_ID_TRANSLATION = {
     '==': 'eq',
     '!=': 'ne',
     '>': 'gt',
@@ -64,11 +69,11 @@ class Symbol(boolean.Symbol):
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.spec = Requirement.parse(obj)
+        self.spec = pkg_resources.Requirement.parse(obj)
         self.obj = self.spec
 
     def __call__(self, **kwargs):
-        val = kwargs.get(self.spec.key, False)
+        val = kwargs.get(self.name, False)
         if len(self.spec.specs):
             if type(val) is str:
                 return val in self.spec
@@ -79,14 +84,14 @@ class Symbol(boolean.Symbol):
         return self.as_id() < other.as_id()
 
     def as_id(self):
-        name = self.spec.key
+        id_str = self.name
         for (op, ver) in self.spec.specs:
-            name += '_{0}_{1}'.format(SPECIFIER_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
-        return name
+            id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
+        return id_str
 
     @property
     def name(self):
-        return self.spec.key
+        return self.spec.project_name
 
     @property
     def specs(self):
@@ -113,6 +118,6 @@ class Algebra(boolean.BooleanAlgebra):
         not_cls = type('FunctionNOT', (function_cls, boolean.NOT), {})
         and_cls = type('FunctionAND', (function_cls, boolean.AND), {})
         or_cls = type('FunctionOR', (function_cls, boolean.OR), {})
-        super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS+SPECIFIER_SYMBOLS,
+        super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS+SPEC_SYMBOLS,
                                       Symbol_class=symbol_cls,
                                       NOT_class=not_cls, AND_class=and_cls, OR_class=or_cls)

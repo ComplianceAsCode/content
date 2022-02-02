@@ -23,11 +23,11 @@ from .yaml import DocumentationNotComplete
 console_width = 80
 
 
-def make_name_to_profile_mapping(profile_files, env_yaml):
+def make_name_to_profile_mapping(profile_files, env_yaml, product_cpes):
     name_to_profile = {}
     for f in profile_files:
         try:
-            p = ProfileWithInlinePolicies.from_yaml(f, env_yaml)
+            p = ProfileWithInlinePolicies.from_yaml(f, env_yaml, product_cpes)
             name_to_profile[p.id_] = p
         except Exception as exc:
             msg = "Not building profile from {fname}: {err}".format(
