@@ -51,11 +51,11 @@ controls:
     Amazon EKS.
   levels:
   - level_1
-  status: pending
+  status: manual
   controls:
   - id: '2.1'
     title: '2.1 Logging'
-    status: pending
+    status: manual
     levels:
     - level_1
     controls:
@@ -80,9 +80,12 @@ controls:
       # ability to probe AWS endpoints (like the EKS one) to be able to do such
       # checks.
       notes: |-
-        It's not feasible to do such a check via automated means. e.g. via the
-        Compliance Operator using OpenSCAP. This has to be checked manually.
-      status: pending
+        Automating this check requires access to AWS endpoints, the aws or
+        eksctl client, the EKS cluster name, and the cluster region. It's not
+        feasible to automate this check until we find a way to incorporate the
+        information we need and use it to check AWS using the API. For now,
+        this must be checked manually.
+      status: manual
       levels:
       - level_1
       rules: []
