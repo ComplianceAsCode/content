@@ -1,6 +1,6 @@
 name: Gating
 on:
-  pull_request:
+  pull_request_target:
     branches: [ master, 'stabilization*' ]
 jobs:
   content-test-filtering:
@@ -11,26 +11,69 @@ jobs:
         uses: mstksg/get-package@master
         with:
           apt-get: git python3-jinja2 python3-yaml python3-setuptools python3-deepdiff python3-git python3-github python3-requests xmldiff
-      # TODO: Use action's checkout along with --local and --repository options of ctf
-      # See: https://github.community/t/how-to-commit-to-two-branches-from-an-action/17713/4
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - name: Find forking point
         env:
           BASE_BRANCH: ${{ github.base_ref }}
         run: echo "::set-output name=FORK_POINT::$(git merge-base origin/$BASE_BRANCH ${{ github.event.pull_request.head.sha }})"
         id: fork_point
+      - name: Checkout fork point
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.fork_point.outputs.FORK_POINT }}
+          fetch-depth: 0
       - name: Checkout (CTF)
         uses: actions/checkout@v2
         with:
           repository: mildas/content-test-filtering
           path: ctf
-      - name: Process (see the output for recommended tests)
-        run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --verbose --output-format markdown ${{ github.event.pull_request.number }} # > ctf.md
-      # TODO: We can't do this for now: github.token is incapable of writing to the PR, and we can't provide our own
-      # for PRs coming from forked repos
-      # TODO: mshick/add-pr-comment@v1 and alike won't work as well
-      #- name: Update the PR
-      #  run: python3 ./ctf/utility_scripts/comment_pr.py --token ${{ github.token }} --pr ${{ github.event.pull_request.number }} --comment ctf.md
+      - name: Detect content changes in the PR
+        run: python3 ./ctf/content_test_filtering.py pr --base ${{ steps.fork_point.outputs.FORK_POINT }} --remote_repo ${{ github.server_url }}/${{ github.repository }} --verbose --rule --output json ${{ github.event.pull_request.number }} > output.json
+      - name: Test if there are no content changes
+        run: echo "::set-output name=CTF_OUTPUT_SIZE::$(stat --printf="%s" output.json)"
+        id: ctf
+      - name: Print changes to content detected if any
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        run: cat output.json
+      - name: Get product attribute
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        id: product
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'output.json'
+          prop_path: 'product'
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Start a new ephemeral environment with changes proposed in this pull request
+      - name: Create or update comment
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Start a new ephemeral environment with changes proposed in this pull request:
+
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#PRODUCT=${{steps.product.outputs.prop}}/${{ github.server_url }}/${{ github.repository }}/pulls/${{ github.event.pull_request.number }})
+
+          edit-mode: replace
+      - name: Create or update a trimmed comment
+        if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE == '0' }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Start a new ephemeral environment with changes proposed in this pull request:
+
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#${{ github.server_url }}/${{ github.repository }}/pulls/${{ github.event.pull_request.number }})
+
+          edit-mode: replace

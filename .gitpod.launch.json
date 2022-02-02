@@ -1,0 +1,93 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "inputs": [
+      {
+      "id": "pickContainerName",
+      "description": "Select Container Name",
+      "type": "pickString",
+      "options": ["ssg_test_suite"],
+      "default": "ssg_test_suite"
+      },
+      {
+      "id": "pickProductName",
+      "description": "Select Product Name",
+      "type": "pickString",
+      "options": [
+          "chromium",
+          "debian8", "debian9", "debian10",
+          "eap6",
+          "fedora",
+          "firefox",
+          "fuse6",
+          "jre",
+          "macos1015",
+          "ocp4",
+          "ol7", "ol8",
+          "opensuse","rhel7", "rhel8", "rhel9",
+          "rhosp10", "rhosp13",
+          "rhv4",
+          "sle12", "sle15",
+          "ubuntu1604", "ubuntu1804", "ubuntu2004",
+          "wrlinux8", "wrlinux1019"
+      ],
+      "default": "&&DEFAULT_PRODUCT&&"
+      },
+      {
+      "id": "pickRemediationType",
+      "description": "Select Remediation Type",
+      "type": "pickString",
+      "options": ["oscap", "bash", "ansible"],
+      "default": "bash"
+      }
+  ],
+  "configurations": [
+    {
+      "name": "Run SSGTS using Docker backend",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "program": "${workspaceFolder}/tests/test_suite.py",
+      "args": [
+          "rule",
+          "--dontclean",
+          "--debug",
+          "--docker",
+          "${input:pickContainerName}",
+          "--datastream",
+          "${workspaceFolder}/build/ssg-${input:pickProductName}-ds.xml",
+          "--remediate-using",
+          "${input:pickRemediationType}",
+          "--remove-machine-only",
+          "--remove-ocp4-only",
+          "--add-product-to-fips-certified",
+          "fedora",
+          "--add-platform",
+          "cpe:/o:fedoraproject:fedora:35",
+          "${command:content-navigator.getRuleId}"
+      ]
+    },
+    {
+      "name": "Run SSGTS using Docker backend (test_rule_in_container.sh)",
+      "type": "bashdb",
+      "request": "launch",
+      "program": "${workspaceFolder}/tests/test_rule_in_container.sh",
+      "args": [
+          "--dontclean",
+          "--docker",
+          "--name",
+          "${input:pickContainerName}",
+          "--datastream",
+          "${workspaceFolder}/build/ssg-${input:pickProductName}-ds.xml",
+          "--remediate-using",
+          "${input:pickRemediationType}",
+          "${command:content-navigator.getRuleId}"
+      ],
+      "env": {
+        "ADDITIONAL_SSGTS_OPTIONS": "--debug --duplicate-templates --add-product-to-fips-certified fedora"
+      }
+    }
+  ]
+}
