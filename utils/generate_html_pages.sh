@@ -1,4 +1,13 @@
 #!/bin/bash
+# suppress stdout from pushd and popd commands
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
 
 if [ -z "$1" ]; then
     echo "You must inform a directory to store built files."
@@ -19,7 +28,6 @@ echo "<body>" >> $STATS_DIR/index.html
 echo "<ul>" >> $STATS_DIR/index.html
 # get supported products
 products=$(echo -e "import ssg.constants\nprint(ssg.constants.product_directories)" | python | sed -s "s/'//g; s/,//g; s/\[//g; s/\]//g")
-echo "Supported products: $products"
 for product in $products
 do
     if [ -d build/$product ]; then
@@ -38,27 +46,13 @@ echo "</ul>" >> $STATS_DIR/index.html
 echo "</body>" >> $STATS_DIR/index.html
 echo "</html>" >> $STATS_DIR/index.html
 
-
-pushd build/guides
-touch index.html
-echo "<html>" > index.html
-echo "<header>" >> index.html
-echo "<h1>Guides</h1>" >> index.html
-echo "</header>" >> index.html
-echo "<body>" >> index.html
-echo "<ul>" >> index.html
-for guide in ssg-*.html
-do
-    echo "<li><a href=\"${guide}\">${guide}</a></li>" >> index.html
-done
-echo "</ul>" >> index.html
-echo "</body>" >> index.html
-echo "</html>" >> index.html
-popd
-
+# Generate Guides page
+mkdir -p $PAGES_DIR/guides
 cp -rf build/guides $PAGES_DIR
+utils/choosing_policy_page.py . > $PAGES_DIR/guides/index.html
 
 
+# Generate Mapping Tables page
 pushd build/tables
 touch index.html
 echo "<html>" > index.html
@@ -93,3 +87,5 @@ echo "</html>" >> index.html
 popd
 
 cp -rf build/tables $PAGES_DIR
+
+exit 0
