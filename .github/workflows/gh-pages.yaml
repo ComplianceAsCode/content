@@ -5,14 +5,14 @@ on:
 jobs:
   publish:
     name: Publish stats, tables and guides
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
     env:
       PAGES_DIR: __pages
     steps:
       - name: Install Deps
-        uses: mstksg/get-package@master
-        with:
-          apt-get: cmake ninja-build libopenscap8 libxml2-utils expat xsltproc python3-jinja2 python3-yaml python3-setuptools ansible-lint python3-github bats python3-pytest python3-pytest-cov python3-pip
+        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt python3-pip
       - name: Install deps python
         run: pip3 install json2html
       - name: Checkout
