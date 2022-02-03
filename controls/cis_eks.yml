@@ -666,41 +666,105 @@ controls:
   title: >-
     5 Managed services
   status: pending
+  description: |-
+    This section consists of security recommendations for the Amazon EKS. These
+    recommendations are applicable for configurations that Amazon EKS customers
+    own and manage.
   levels:
   - level_2
   controls:
   - id: '5.1'
     title: >-
       5.1 Image Registry and Image Scanning
-    status: pending
+    status: manual
+    description: |-
+      This section contains recommendations relating to container image
+      registries and securing images in those registries, such as Amazon
+      Elastic Container Registry (ECR).
     levels:
     - level_2
     controls:
     - id: 5.1.1
       title: >-
         5.1.1 Ensure Image Vulnerability Scanning using Amazon ECR image scanning or a third party provider
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+
+        Scan images being deployed to Amazon EKS for vulnerabilities.
+
+        Rationale:
+
+        Vulnerabilities in software packages can be exploited by hackers or
+        malicious users to obtain unauthorized access to local cloud resources.
+        Amazon ECR and other third party products allow images to be scanned
+        for known vulnerabilities.
       levels:
       - level_1
       rules: []
     - id: 5.1.2
       title: >-
         5.1.2 Minimize user access to Amazon ECR
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+
+        Restrict user access to Amazon ECR, limiting interaction with build
+        images to only authorized personnel and service accounts.
+
+        Rationale:
+
+        Weak access control to Amazon ECR may allow malicious users to replace
+        built images with vulnerable containers.
       levels:
       - level_1
       rules: []
     - id: 5.1.3
       title: >-
         5.1.3 Minimize cluster access to read-only for Amazon ECR
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+
+          Configure the Cluster Service Account with Storage Object Viewer Role
+          to only allow read- only access to Amazon ECR.
+
+        Rationale:
+
+          The Cluster Service Account does not require administrative access to
+          Amazon ECR, only requiring pull access to containers to deploy onto
+          Amazon EKS. Restricting permissions follows the principles of least
+          privilege and prevents credentials from being abused beyond the
+          required role.
       levels:
       - level_1
       rules: []
     - id: 5.1.4
       title: >-
         5.1.4 Minimize Container Registries to only those approved
-      status: pending
+      # NOTE(lbragstad): We're unable to automate this check because it
+      # requires access to an AWS endpoint. We should re-evaluate this if it
+      # becomes possible to write rules that use network connections.
+      status: manual
+      description: |-
+        Description:
+          Use approved container registries.
+
+        Rationale:
+
+          Allowing unrestricted access to external container registries
+          provides the opportunity for malicious or unapproved containers to be
+          deployed into the cluster. Allowlisting only approved container
+          registries reduces this risk.
       levels:
       - level_2
       rules: []
