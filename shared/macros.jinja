@@ -1652,7 +1652,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 {{%- if product in ["rhel7", "ol7", "rhel9"] or 'ubuntu' in product -%}}
 Inspect the form of default GRUB 2 command line for the Linux operating system
 in <tt>/etc/default/grub</tt>. If it includes <tt>{{{ arg_name_value }}}</tt>,
-then auditinng will be enabled for newly installed kernels.
+then the parameter will be configured for newly installed kernels.
 First check if the GRUB recovery is enabled:
 <pre>$ grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
 If this option is set to true, then check that a line is output by the following command:
@@ -1671,8 +1671,8 @@ The command should not return any output.
 {{%- endif -%}}
 {{%- else -%}}
 Inspect the form of default GRUB 2 command line for the Linux operating system
-in <tt>{{{ grub2_boot_path }}}/grubenv</tt>. If they include <tt>{{{ arg_name_value }}}</tt>, then auditing
-is enabled at boot time.
+in <tt>{{{ grub2_boot_path }}}/grubenv</tt>. If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
+is configured at boot time.
 <pre># grep 'kernelopts.*{{{ arg_name_value }}}.*' {{{ grub2_boot_path }}}/grubenv</pre>
 {{%- endif -%}}
 {{%- endmacro -%}}
