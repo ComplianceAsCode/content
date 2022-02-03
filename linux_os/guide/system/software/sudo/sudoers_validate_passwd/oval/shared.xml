@@ -5,6 +5,9 @@
       <criterion comment="Check Defaults !targetpw exists in /etc/sudoers file" test_ref="test_sudoers_targetpw_config" />
       <criterion comment="Check Defaults !rootpw exists in /etc/sudoers file" test_ref="test_sudoers_rootpw_config" />
       <criterion comment="Check Defaults !runaspw exists in /etc/sudoers file" test_ref="test_sudoers_runaspw_config" />
+      {{% if product == "ol7" %}}
+      <criterion comment="Verify that results come from only one file" test_ref="test_sudoers_passwd_n_files" />
+      {{% endif %}}
       </criteria>
   </definition>
 
@@ -40,5 +43,36 @@
     <ind:pattern operation="pattern match">^Defaults !runaspw$\r?\n</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product == "ol7" %}}
+  <ind:variable_test check="all" check_existence="all_exist"
+  comment="Verify that results come from only one file"
+  id="test_sudoers_passwd_n_files" version="1">
+    <ind:object object_ref="obj_sudoers_passwd_n_files" />
+    <ind:state state_ref="state_sudoers_passwd_n_files" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_sudoers_passwd_n_files" version="1">
+    <ind:var_ref>local_variable_counter_sudoers_passwd_n_files</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_sudoers_passwd_n_files" version="1">
+    <ind:value operation="equals" datatype="int">1</ind:value>
+  </ind:variable_state>
+
+  <local_variable comment="Items counter" datatype="int" 
+  id="local_variable_counter_sudoers_passwd_n_files" version="1">
+    <count>
+      <unique> 
+        <object_component object_ref="object_test_sudoers_targetpw_config"
+        item_field="filepath" />
+        <object_component object_ref="object_test_sudoers_rootpw_config"
+        item_field="filepath" />
+        <object_component object_ref="object_test_sudoers_runaspw_config"
+        item_field="filepath" />
+      </unique>
+    </count>
+  </local_variable>
+  {{% endif %}}
 
 </def-group>
