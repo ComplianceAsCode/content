@@ -368,9 +368,6 @@ selections:
     # RHEL-08-010550
     - sshd_disable_root_login
 
-    # RHEL-08-010560
-    - service_auditd_enabled
-
     # RHEL-08-010561
     - service_rsyslog_enabled
 
