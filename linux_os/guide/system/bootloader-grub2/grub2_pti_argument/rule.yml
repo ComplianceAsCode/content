@@ -7,9 +7,8 @@ title: 'Enable Kernel Page-Table Isolation (KPTI)'
 description: |-
     To enable Kernel page-table isolation,
     add the argument <tt>pti=on</tt> to the default
-    GRUB 2 command line for the Linux operating system in
-    <tt>/etc/default/grub</tt>, in the manner below:
-    <pre>GRUB_CMDLINE_LINUX="pti=on"</pre>
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("pti=on") | indent(4) }}}
 
 rationale: |-
     Kernel page-table isolation is a kernel feature that mitigates
@@ -33,15 +32,7 @@ references:
 ocil_clause: 'Kernel page-table isolation is not enabled'
 
 ocil: |-
-    Inspect the form of default GRUB 2 command line for the Linux operating system
-    in <tt>/etc/default/grub</tt>. If they include <tt>pti=on</tt>,
-    then Kernel page-table isolation is enabled at boot time.
-    <br /><br />
-    To ensure <tt>pti=on</tt> is configured on all installed kernels, the
-    following command may be used:
-    <br />
-    <pre>$ sudo /sbin/grubby --update-kernel=ALL --args="pti=on</pre>
-    <br />
+    {{{ ocil_grub2_argument("pti=on") | indent(4) }}}
 
 warnings:
     - management: |-
