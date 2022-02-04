@@ -42,7 +42,7 @@ selections:
     - sshd_approved_macs=stig
     - sshd_approved_ciphers=stig
     - sshd_idle_timeout_value=10_minutes
-    - var_accounts_authorized_local_users_regex=rhel8
+    - var_accounts_authorized_local_users_regex=ol8
     - var_accounts_passwords_pam_faillock_deny=3
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_unlock_time=never
