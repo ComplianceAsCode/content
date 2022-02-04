@@ -435,7 +435,7 @@ class DockerTestEnv(ContainerTestEnv):
             img, "/usr/sbin/sshd -p {} -D".format(self.internal_ssh_port),
             name="{0}_{1}".format(self._name_stem, container_name),
             ports={"{}".format(self.internal_ssh_port): None},
-            detach=True)
+            detach=True, security_opt=["seccomp=unconfined"])
         return result
 
     def get_ip_address(self):
