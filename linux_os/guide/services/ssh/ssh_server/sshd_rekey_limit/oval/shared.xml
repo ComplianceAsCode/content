@@ -1,26 +1,49 @@
-{{% set filepath = "/etc/ssh/sshd_config" -%}}
-
+{{%- set parameter = "RekeyLimit" %}}
+{{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
+{{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
+{{%- set description = "Ensure RekeyLimit is configured with the appropriate value in " ~ sshd_config_path %}}
+{{%- if sshd_distributed_config == "true" %}}
+{{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
+{{%- endif %}}
 
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Ensure 'RekeyLimit' is configured with the correct value in '" + filepath + "'") }}}
-    <criteria comment="sshd is configured correctly or is not installed" operator="OR">
-        {{{- application_not_required_or_requirement_unset() }}}
-        {{{- application_required_or_requirement_unset() }}}
-        {{{- oval_line_in_file_criterion(filepath, "RekeyLimit") }}}
-    </criteria>
-    </criteria>
+  {{{ oval_metadata(description) }}}
+  <criteria comment="sshd is configured correctly or is not installed" operator="OR">
+    {{{- application_not_required_or_requirement_unset() }}}
+    {{{- application_required_or_requirement_unset() }}}
+      <criteria comment="sshd is configured corectly" operator="OR">
+        {{{- oval_line_in_file_criterion(sshd_config_path, parameter) }}}
+        {{%- if sshd_distributed_config %}}
+        {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
+        {{%- endif %}}
+      </criteria>
+    </criteria><!-- macro application_required_or_requirement_unset() leaves an open criteria element-->
+  </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in the  file" id="test_sshd_rekey_limit" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in the file" id="test_sshd_rekey_limit" version="1">
      <ind:object object_ref="obj_sshd_rekey_limit"/>
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_sshd_rekey_limit" version="1">
-     <ind:filepath>{{{ filepath }}}</ind:filepath>
+     <ind:filepath>{{{ sshd_config_path }}}</ind:filepath>
      <ind:pattern var_ref="sshd_line_regex" operation="pattern match"></ind:pattern>
      <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{%- if sshd_distributed_config %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in SSHD config directory" id="test_sshd_rekey_limit_config_dir" version="1">
+     <ind:object object_ref="obj_sshd_rekey_limit_config_dir"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sshd_rekey_limit_config_dir" version="1">
+     <ind:path>{{{ sshd_config_dir}}}</ind:path>
+     <ind:filename operation="pattern match">.*\.conf$</ind:filename>
+     <ind:pattern var_ref="sshd_line_regex" operation="pattern match"></ind:pattern>
+     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- endif %}}
 
   <local_variable id="sshd_line_regex" datatype="string" comment="The regex of the directive" version="1">
     <concat>
@@ -35,4 +58,3 @@
   <external_variable comment="Size component of the rekey limit" datatype="string" id="var_rekey_limit_size" version="1" />
   <external_variable comment="Time component of the rekey limit" datatype="string" id="var_rekey_limit_time" version="1" />
 </def-group>
-
