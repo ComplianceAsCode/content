@@ -57,6 +57,10 @@
 
 ## Privilege escalation via su or sudo. This is entirely handled by pam.
 
+## Watch for configuration changes to privilege escalation.
+-a always,exit -F path=/etc/sudoers -F perm=wa -F key=special-config-changes
+-a always,exit -F dir=/etc/sudoers.d/ -F perm=wa -F key=special-config-changes
+
 ## Audit log access
 -a always,exit -F dir=/var/log/audit/ -F perm=r -F auid>=1000 -F auid!=unset -F key=access-audit-trail
 ## Attempts to Alter Process and Session Initiation Information
