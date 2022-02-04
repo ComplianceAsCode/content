@@ -791,14 +791,45 @@ controls:
   - id: '5.6'
     title: >-
       5.6 Other Cluster Configurations
-    status: pending
+    status: manual
     levels:
     - level_1
     controls:
     - id: 5.6.1
       title: >-
         5.6.1 Consider Fargate for running untrusted workloads
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          It is Best Practice to restrict or fence untrusted workloads when
+          running in a multi-tenant environment.
+
+        Rationale:
+
+          AWS Fargate is a technology that provides on-demand, right-sized
+          compute capacity for containers. With AWS Fargate, you no longer have
+          to provision, configure, or scale groups of virtual machines to run
+          containers. This removes the need to choose server types, decide when
+          to scale your node groups, or optimize cluster packing. You can
+          control which pods start on Fargate and how they run with Fargate
+          profiles, which are defined as part of your Amazon EKS cluster.
+          Amazon EKS integrates Kubernetes with AWS Fargate by using
+          controllers that are built by AWS using the upstream, extensible
+          model provided by Kubernetes. These controllers run as part of the
+          Amazon EKS managed Kubernetes control plane and are responsible for
+          scheduling native Kubernetes pods onto Fargate. The Fargate
+          controllers include a new scheduler that runs alongside the default
+          Kubernetes scheduler in addition to several mutating and validating
+          admission controllers. When you start a pod that meets the criteria
+          for running on Fargate, the Fargate controllers running in the
+          cluster recognize, update, and schedule the pod onto Fargate. Each
+          pod running on Fargate has its own isolation boundary and does not
+          share the underlying kernel, CPU resources, memory resources, or
+          elastic network interface with another pod.
+      notes: |-
+        This check is manual because it requires access to the AWS Fargate
+        endpoint to audit and remediate.
       levels:
       - level_2
       rules: []
