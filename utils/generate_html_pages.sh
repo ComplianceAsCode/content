@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # suppress stdout from pushd and popd commands
 pushd () {
     command pushd "$@" > /dev/null
@@ -27,11 +27,11 @@ echo "</header>" >> index.html
 echo "<body>" >> $STATS_DIR/index.html
 echo "<ul>" >> $STATS_DIR/index.html
 # get supported products
-products=$(echo -e "import ssg.constants\nprint(ssg.constants.product_directories)" | python | sed -s "s/'//g; s/,//g; s/\[//g; s/\]//g")
+products=$(echo -e "import ssg.constants\nprint(ssg.constants.product_directories)" | python3 | sed -s "s/'//g; s/,//g; s/\[//g; s/\]//g")
 for product in $products
 do
     if [ -d build/$product ]; then
-        mkdir -p $STATS_DIR/$product
+    mkdir -p $STATS_DIR/$product/product-statistics
     if [ -f build/$product/product-statistics/statistics.html ]; then
         cp -rf build/$product/product-statistics $STATS_DIR/$product/product-statistics
         echo "<li><a href=\"$product/product-statistics/statistics.html\">Statistics for product: ${product}</a></li>" >> $STATS_DIR/index.html
