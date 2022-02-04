@@ -62,7 +62,7 @@ jobs:
           body: |
             Start a new ephemeral environment with changes proposed in this pull request:
 
-            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#PRODUCT=${{steps.product.outputs.prop}}/${{ github.server_url }}/${{ github.repository }}/pulls/${{ github.event.pull_request.number }})
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#PRODUCT=${{steps.product.outputs.prop}}/${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
 
           edit-mode: replace
       - name: Create or update a trimmed comment
@@ -74,6 +74,6 @@ jobs:
           body: |
             Start a new ephemeral environment with changes proposed in this pull request:
 
-            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#${{ github.server_url }}/${{ github.repository }}/pulls/${{ github.event.pull_request.number }})
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
 
           edit-mode: replace
