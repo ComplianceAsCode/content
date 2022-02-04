@@ -1,0 +1,36 @@
+name: Github Pages
+on:
+  push:
+    branches: [ 'master' ]
+jobs:
+  publish:
+    name: Publish stats, tables and guides
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    env:
+      PAGES_DIR: __pages
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt python3-pip
+      - name: Install deps python
+        run: pip3 install json2html
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: cmake .. -G Ninja
+        working-directory: ./build
+      - name: Build Guides and Mapping Tables
+        run: ninja -j2
+        working-directory: ./build
+      - name: Build Statistics
+        run: ninja html-stats html-profile-stats -j2
+        working-directory: ./build
+      - name: Generate HTML pages
+        run: utils/generate_html_pages.sh $PAGES_DIR
+        shell: bash
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
