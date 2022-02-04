@@ -5,4 +5,10 @@
 # disruption = low
 {{{ ansible_instantiate_variables("var_rekey_limit_size", "var_rekey_limit_time") }}}
 
-{{{ ansible_sshd_set(parameter="RekeyLimit", value="{{ var_rekey_limit_size }} {{ var_rekey_limit_time }}") }}}
+{{{
+    ansible_sshd_set(
+        parameter="RekeyLimit",
+        value="{{ var_rekey_limit_size }} {{ var_rekey_limit_time }}",
+        config_is_distributed=sshd_distributed_config
+    )
+}}}
