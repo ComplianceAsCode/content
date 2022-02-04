@@ -742,35 +742,148 @@ controls:
     - id: 5.4.1
       title: >-
         5.4.1 Restrict Access to the Control Plane Endpoint
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Enable Endpoint Private Access to restrict access to the cluster's
+          control plane to only an allowlist of authorized IPs.
+
+        Rationale:
+
+          Authorized networks are a way of specifying a restricted range of IP
+          addresses that are permitted to access your cluster's control plane.
+          Kubernetes Engine uses both Transport Layer Security (TLS) and
+          authentication to provide secure access to your cluster's control
+          plane from the public internet. This provides you the flexibility to
+          administer your cluster from anywhere; however, you might want to
+          further restrict access to a set of IP addresses that you control.
+          You can set this restriction by specifying an authorized network.
+          Restricting access to an authorized network can provide additional
+          security benefits for
+          your container cluster, including:
+            * Better protection from outsider attacks: Authorized networks
+              provide an additional layer of security by limiting external
+              access to a specific set of addresses you designate, such as
+              those that originate from your premises. This helps protect
+              access to your cluster in the case of a vulnerability in the
+              cluster's authentication or authorization mechanism.
+            * Better protection from insider attacks: Authorized networks help
+              protect your cluster from accidental leaks of master certificates
+              from your company's premises. Leaked certificates used from
+              outside Amazon EC2 and outside the authorized IP ranges (for
+              example, from addresses outside your company) are still denied
+              access.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        and access to the AWS EKS endpoint. Re-evaluate this if or when we have
+        the ability to use network connections in rules.
       levels:
       - level_1
       rules: []
     - id: 5.4.2
       title: >-
         5.4.2 Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Disable access to the Kubernetes API from outside the node network if
+          it is not required.
+
+        Rationale:
+
+          In a private cluster, the master node has two endpoints, a private
+          and public endpoint. The private endpoint is the internal IP address
+          of the master, behind an internal load balancer in the master's VPC
+          network. Nodes communicate with the master using the private
+          endpoint. The public endpoint enables the Kubernetes API to be
+          accessed from outside the master's VPC network. Although Kubernetes
+          API requires an authorized token to perform sensitive actions, a
+          vulnerability could potentially expose the Kubernetes publically with
+          unrestricted access. Additionally, an attacker may be able to
+          identify the current cluster and Kubernetes API version and determine
+          whether it is vulnerable to an attack. Unless required, disabling
+          public endpoint will help prevent such threats, and require the
+          attacker to be on the master's VPC network to perform any attack on
+          the Kubernetes API.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        and access to AWS endpoints. Re-evaluate this if or when we have the
+        ability to use network connections in rules.
       levels:
       - level_2
       rules: []
     - id: 5.4.3
       title: >-
         5.4.3 Ensure clusters are created with Private Nodes
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Disable public IP addresses for cluster nodes, so that they only have
+          private IP addresses. Private Nodes are nodes with no public IP
+          addresses.
+
+        Rationale:
+
+          Disabling public IP addresses on cluster nodes restricts access to
+          only internal networks, forcing attackers to obtain local network
+          access before attempting to compromise the underlying Kubernetes
+          hosts.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        and access to AWS endpoints. Re-evaluate this if or when we have the
+        ability to use network connections in rules.
       levels:
       - level_1
       rules: []
     - id: 5.4.4
       title: >-
         5.4.4 Ensure Network Policy is Enabled and set as appropriate
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Use Network Policy to restrict pod to pod traffic within a cluster
+          and segregate workloads.
+
+        Rationale:
+
+          By default, all pod to pod traffic within a cluster is allowed.
+          Network Policy creates a pod-level firewall that can be used to
+          restrict traffic between sources. Pod traffic is restricted by having
+          a Network Policy that selects it (through the use of labels). Once
+          there is any Network Policy in a namespace selecting a particular
+          pod, that pod will reject any connections that are not allowed by any
+          Network Policy. Other pods in the namespace that are not selected by
+          any Network Policy will continue to accept all traffic. Network
+          Policies are managed via the Kubernetes Network Policy API and
+          enforced by a network plugin, simply creating the resource without a
+          compatible network plugin to implement it will have no effect. EKS
+          supports Network Policy enforcement through the use of Calico.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge.
       levels:
       - level_1
       rules: []
     - id: 5.4.5
       title: >-
         5.4.5 Encrypt traffic to HTTPS load balancers with TLS certificates
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Encrypt traffic to HTTPS load balancers using TLS certificates.
+
+        Rationale:
+
+          Encrypting traffic between users and your Kubernetes workload is
+          fundamental to protecting data sent over the web.
+      notes: |-
+        This check is manual because it requires access to the Kubernetes API
+        server configuration, which requires access to the Kubernetes API or
+        the AWS EKS configuration.
       levels:
       - level_2
       rules: []
