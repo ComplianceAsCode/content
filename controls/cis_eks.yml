@@ -707,14 +707,37 @@ controls:
   - id: '5.2'
     title: >-
       5.2 Identity and Access Management (IAM)
-    status: pending
+    status: manual
     levels:
-    - level_2
+    - level_1
     controls:
     - id: 5.2.1
       title: >-
         5.2.1 Prefer using dedicated EKS Service Accounts
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Kubernetes workloads should not use cluster node service accounts to
+          authenticate to Amazon EKS APIs. Each Kubernetes workload that needs
+          to authenticate to other AWS services using AWS IAM should be
+          provisioned with a dedicated Service account.
+
+        Rationale:
+
+          Manual approaches for authenticating Kubernetes workloads running on
+          Amazon EKS against AWS APIs are: storing service account keys as a
+          Kubernetes secret (which introduces manual key rotation and potential
+          for key compromise); or use of the underlying nodes' IAM Service
+          account, which violates the principle of least privilege on a
+          multi-tenanted node, when one pod needs to have access to a service,
+          but every other pod on the node that uses the Service account does
+          not.
+      notes: |-
+        This must be checked manually since it requires deployment-specific
+        knowledge and requires network access to the AWS IAM endpoint.
+        Re-evaluate this if or when we have the ability to use network
+        connections in rules.
       levels:
       - level_1
       rules: []
