@@ -1,5 +1,6 @@
 # This Dockerfile is a minimal example for a RHEL-based SSG test suite target container.
-FROM fedora
+ARG IMAGE=fedora
+FROM $IMAGE
 
 ENV AUTH_KEYS=/root/.ssh/authorized_keys
 
