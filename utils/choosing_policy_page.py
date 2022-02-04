@@ -17,7 +17,9 @@ def get_data(ssg_root):
     for product_file in p.glob("**/product.yml"):
         product_dir = product_file.parent
         product_id = product_dir.name
-        if product_id in ["example", "test_playbook_builder_data"]:
+        # disregard folders that contain samples of product.yml files
+        # they are not a real product folder
+        if product_id in ["data", "example", "test_playbook_builder_data"]:
             continue
         with open(product_file, "r") as f:
             product_yaml = yaml.full_load(f)
