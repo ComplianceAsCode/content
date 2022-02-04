@@ -15,5 +15,6 @@ tasks:
       mkdir -p .vscode && cp .gitpod.launch.json .vscode/launch.json
       sed -i "s/&&DEFAULT_PRODUCT&&/$PRODUCT/g" .vscode/launch.json
       ssh-keygen -N '' -f ~/.ssh/id_rsa
+      sed -i 's/^ARG ADDITIONAL_PACKAGES/ARG ADDITIONAL_PACKAGES\nADD https:\/\/github.com\/AkihiroSuda\/clone3-workaround\/releases\/download\/v1.0.0\/clone3-workaround.x86_64 \/clone3-workaround\nRUN chmod 755 \/clone3-workaround\nSHELL ["\/clone3-workaround","\/bin\/sh", "-c"]\n/g' Dockerfiles/test_suite-fedora
       docker build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f Dockerfiles/test_suite-fedora .
       ./build_product $PRODUCT --datastream-only
