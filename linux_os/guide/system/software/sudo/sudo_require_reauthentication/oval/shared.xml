@@ -3,6 +3,10 @@
     {{{ oval_metadata("'Ensure sudo timestamp_timeout is appropriate - sudo timestamp_timeout") }}}
     <criteria comment="The timestamp_timeout should be configured" >
       <criterion comment="check configuration in /etc/sudoers" test_ref="test_sudo_timestamp_timeout" />
+      {{% if product == "ol7" %}}
+      <criterion comment="Verify that results come from only one file" 
+      test_ref="test_sudo_require_reauthentication_n_files" />
+      {{% endif %}}
     </criteria>
   </definition>
 
@@ -21,5 +25,32 @@
   version="1">
     <ind:subexpression datatype="int" operation="greater than or equal">0</ind:subexpression>
   </ind:textfilecontent54_state>
+
+  {{% if product == "ol7" %}}
+  <ind:variable_test check="all" check_existence="all_exist"
+  comment="Verify that results come from only one file"
+  id="test_sudo_require_reauthentication_n_files" version="1">
+    <ind:object object_ref="obj_sudo_require_reauthentication_n_files" />
+    <ind:state state_ref="state_sudo_require_reauthentication_n_files" />
+  </ind:variable_test>
+
+  <ind:variable_object id="obj_sudo_require_reauthentication_n_files" version="1">
+    <ind:var_ref>local_variable_counter_sudo_require_reauthentication_n_files</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_sudo_require_reauthentication_n_files" version="1">
+    <ind:value operation="equals" datatype="int">1</ind:value>
+  </ind:variable_state>
+
+  <local_variable comment="Items counter" datatype="int" 
+  id="local_variable_counter_sudo_require_reauthentication_n_files" version="1">
+    <count>
+        <unique>
+          <object_component object_ref="obj_sudo_timestamp_timeout"
+          item_field="filepath" />
+        </unique>
+    </count>
+  </local_variable>
+  {{% endif %}}
 
 </def-group>
