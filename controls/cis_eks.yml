@@ -777,14 +777,33 @@ controls:
   - id: '5.5'
     title: >-
       5.5 Authentication and Authorization
-    status: pending
+    status: manual
     levels:
     - level_2
     controls:
     - id: 5.5.1
       title: >-
         5.5.1 Manage Kubernetes RBAC users with AWS IAM Authenticator for Kubernetes
-      status: pending
+      status: manual
+      description: |-
+        Description:
+
+          Amazon EKS uses IAM to provide authentication to your Kubernetes
+          cluster through the AWS IAM Authenticator for Kubernetes. You can
+          configure the stock kubectl client to work with Amazon EKS by
+          installing the AWS IAM Authenticator for Kubernetes and modifying
+          your kubectl configuration file to use it for authentication.
+
+        Rationale:
+
+          On- and off-boarding users is often difficult to automate and prone
+          to error. Using a single source of truth for user permissions reduces
+          the number of locations that an individual must be off-boarded from,
+          and prevents users gaining unique permissions sets that increase the
+          cost of audit.
+      notes: |-
+        This check is manual because it requires deployment-specific knowledge
+        about the namespaces to audit it effectively.
       levels:
       - level_2
       rules: []
