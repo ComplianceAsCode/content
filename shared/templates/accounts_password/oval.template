@@ -4,6 +4,10 @@
     <criteria operator="AND" comment="conditions for {{{ VARIABLE }}} are satisfied">
       <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
       <criterion comment="pwquality.conf" test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}" />
+      {{% if NONZERO_CHECK %}}
+      <criterion comment="{{{ VARIABLE }}} not set to zero"
+      test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}_nonzero" />
+      {{% endif %}}
     </criteria>
   </definition>
 
@@ -23,6 +27,19 @@
   <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}" version="3">
     <ind:subexpression datatype="int" operation="{{{ OPERATION }}}" var_ref="var_password_pam_{{{ VARIABLE }}}" />
   </ind:textfilecontent54_state>
+
+  {{% if NONZERO_CHECK %}}
+  <ind:textfilecontent54_test check="all"
+  comment="check the configuration of /etc/security/pwquality.conf"
+  id="test_password_pam_pwquality_{{{ VARIABLE }}}_nonzero" version="1">
+    <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
+    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}_nonzero" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}_nonzero" version="1">
+    <ind:subexpression datatype="int" operation="not equal" >0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{% endif %}}
 
   <external_variable comment="External variable for pam_{{{ VARIABLE }}}" datatype="int" id="var_password_pam_{{{ VARIABLE }}}" version="3" />
 </def-group>
