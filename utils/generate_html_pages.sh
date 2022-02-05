@@ -31,7 +31,7 @@ products=$(echo -e "import ssg.constants\nprint(ssg.constants.product_directorie
 for product in $products
 do
     if [ -d build/$product ]; then
-    mkdir -p $STATS_DIR/$product/product-statistics
+    mkdir -p $STATS_DIR/$product
     if [ -f build/$product/product-statistics/statistics.html ]; then
         cp -rf build/$product/product-statistics $STATS_DIR/$product/product-statistics
         echo "<li><a href=\"$product/product-statistics/statistics.html\">Statistics for product: ${product}</a></li>" >> $STATS_DIR/index.html
