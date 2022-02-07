@@ -1,4 +1,4 @@
-# platform = multi_platform_ol,multi_platform_sle
+# platform = multi_platform_sle
 
 {{{ bash_instantiate_variables("var_accounts_authorized_local_users_regex") }}}
 
@@ -13,4 +13,3 @@ for username in $( sed 's/:.*//' /etc/passwd ) ; do
 		userdel $username ;
 	fi
 done
-

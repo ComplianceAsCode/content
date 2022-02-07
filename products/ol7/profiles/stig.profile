@@ -18,6 +18,7 @@ selections:
     - var_password_pam_ocredit=1
     - var_password_pam_lcredit=1
     - var_password_pam_ucredit=1
+    - var_accounts_authorized_local_users_regex=ol7
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_deny=3
