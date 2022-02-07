@@ -4,4 +4,19 @@ controls:
             - medium
         title: The operating system must provide a logoff capability for user-initiated
             communications sessions when requiring user access authentication.
-        status: pending
+        status: inherently met
+        rationale : |-
+            If a user cannot explicitly end an operating system session, the session may remain open and be exploited by an attacker; this is referred to as a zombie session.
+
+            Information resources to which users gain access via authentication includes for example, local workstations and remote services. For some types of interactive sessions, including, for example, remote logon, information systems typically send logoff messages as final messages prior to terminating sessions.
+        check: |-
+           The technology supports this requirement and cannot be configured to be out of compliance.
+            The technology inherently meets this requirement.
+        fix: |-
+            The technology inherently meets this requirement. No fix is required.
+        artifact_description: |-
+            The "logoff" and "exit" commands are baked into the OS and are available to all users and the user can terminate a remote session by closing their SSH terminal.
+
+        status_justification: |-
+            The use of the "exit" command will end any communication session on the system.
+            This is part of the kernel and cannot be removed without recompiling.
