@@ -99,8 +99,8 @@ def instance_in_platforms(inst, platforms):
 def remove_machine_platform(root):
     remove_platforms_from_element(root, "xccdf-1.2:Rule", "cpe:/a:machine")
     remove_platforms_from_element(root, "xccdf-1.2:Group", "cpe:/a:machine")
-    remove_platforms_from_element(root, "xccdf-1.2:Rule", "#cpe_platform_machine")
-    remove_platforms_from_element(root, "xccdf-1.2:Group", "#cpe_platform_machine")
+    remove_platforms_from_element(root, "xccdf-1.2:Rule", "#machine")
+    remove_platforms_from_element(root, "xccdf-1.2:Group", "#machine")
 
 
 def remove_ocp4_platforms(root):
