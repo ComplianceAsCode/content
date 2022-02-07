@@ -1169,6 +1169,9 @@ selections:
     # RHEL-08-040320
     - xwindows_remove_packages
 
+    # RHEL-08-040321
+    - xwindows_runlevel_target
+
     # RHEL-08-040330
     - network_sniffer_disabled
 

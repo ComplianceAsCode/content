@@ -398,6 +398,7 @@ selections:
 - usbguard_generate_policy
 - wireless_disable_interfaces
 - xwindows_remove_packages
+- xwindows_runlevel_target
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
 - var_accounts_user_umask=077
