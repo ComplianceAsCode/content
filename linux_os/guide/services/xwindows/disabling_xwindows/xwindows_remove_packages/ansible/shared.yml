@@ -14,12 +14,3 @@
       - xorg-x11-server-Xwayland
 {{% endif %}}
     state: absent
-
-
-- name: Switch to multi-user runlevel
-  file:
-    src: /usr/lib/systemd/system/multi-user.target
-    dest: /etc/systemd/system/default.target
-    state: link
-    force: yes
-
