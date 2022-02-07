@@ -4,10 +4,24 @@ controls:
             - medium
         title: The operating system must separate user functionality (including user interface
             services) from operating system management functionality.
-        rules:
-            - sysctl_kernel_kptr_restrict
-            - sysctl_kernel_dmesg_restrict
-            - sysctl_kernel_perf_event_paranoid
-            - sysctl_kernel_unprivileged_bpf_disabled
-            - sysctl_kernel_yama_ptrace_scope
-        status: automated
+        status: inherently met
+        rationale: |-
+            Operating system management functionality includes functions necessary for administration and requires privileged user access.
+            Allowing non-privileged users to access operating system management functionality capabilities increases the risk that non-privileged users may obtain elevated privileges.
+
+            Operating system management functionality includes functions necessary to administer console, network components, workstations, or servers and typically requires privileged user access.
+
+            The separation of user functionality from information system management functionality is either physical or logical and is accomplished by using different computers, different central processing units, different instances of the operating system, different network addresses, different TCP/UDP ports, virtualization techniques, combinations of these methods, or other methods, as appropriate.
+
+            An example of this type of separation is observed in web administrative interfaces that use separate authentication methods for users of any other information system resources.
+            This may include isolating the administrative interface on a different security domain and with additional access controls.
+        check: |-
+            The technology supports this requirement and cannot be configured to be out of compliance.
+            The technology inherently meets this requirement.
+        fix: |-
+            The technology inherently meets this requirement.
+            No fix is required.
+        artifact_description:
+            RHEL 8 management functionality must be executed by the administrator user, which is only accessible through the sudo command (with a proper authentication request). The sudo manpage has more information.
+        status_justification:
+            The UNIX permissions construct separates user and privileged user (the {{{ full_name }}} operating system accounts) access.
