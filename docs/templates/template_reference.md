@@ -12,7 +12,11 @@
 
     -   **operation** - OVAL operation, eg. `less than or equal`
 
--   Languages: OVAL
+    -   **non_zerocheck** - effective only in OVAL checks, if
+        set to `"true"` it will test if the value is different
+        than zero. (default value: `"false"`).
+
+-   Languages: Ansible, Bash, OVAL
 
 #### auditd_lineinfile
 -   Checks configuration options of the Audit Daemon in
