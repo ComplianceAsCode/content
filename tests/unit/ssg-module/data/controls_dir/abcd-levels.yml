@@ -42,3 +42,29 @@ controls:
         rules:
           - var_password_pam_minlen=2
           - var_some_variable=3
+
+  # S5, S6 and S7 are used to test if level inheritance is working corectly
+  # when multiple levels select the same rule
+  - id: S5
+    title: Default Crypto Policy
+    levels:
+    - low
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=default_policy
+
+  - id: S6
+    title: FIPS Crypto Policy
+    levels:
+    - medium
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=fips
+
+  - id: S7
+    title: Future Crypto Policy
+    levels:
+    - high
+    rules:
+      - configure_crypto_policy
+      - var_system_crypto_policy=future
