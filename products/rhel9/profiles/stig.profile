@@ -561,6 +561,8 @@ selections:
 
     # RHEL-08-020220
     - accounts_password_pam_pwhistory_remember_system_auth
+
+    # RHEL-08-020221
     - accounts_password_pam_pwhistory_remember_password_auth
 
     # RHEL-08-020230
@@ -713,27 +715,17 @@ selections:
 
     # RHEL-08-030200
     - audit_rules_dac_modification_lremovexattr
-
-    # RHEL-08-030210
     - audit_rules_dac_modification_removexattr
-
-    # RHEL-08-030220
     - audit_rules_dac_modification_lsetxattr
-
-    # RHEL-08-030230
     - audit_rules_dac_modification_fsetxattr
-
-    # RHEL-08-030240
     - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_setxattr
 
     # RHEL-08-030250
     - audit_rules_privileged_commands_chage
 
     # RHEL-08-030260
     - audit_rules_execution_chcon
-
-    # RHEL-08-030270
-    - audit_rules_dac_modification_setxattr
 
     # RHEL-08-030280
     - audit_rules_privileged_commands_ssh_agent
@@ -788,27 +780,17 @@ selections:
 
     # RHEL-08-030360
     - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading_finit
 
     # RHEL-08-030361
     - audit_rules_file_deletion_events_rename
-
-    # RHEL-08-030362
     - audit_rules_file_deletion_events_renameat
-
-    # RHEL-08-030363
     - audit_rules_file_deletion_events_rmdir
-
-    # RHEL-08-030364
     - audit_rules_file_deletion_events_unlink
-
-    # RHEL-08-030365
     - audit_rules_file_deletion_events_unlinkat
 
     # RHEL-08-030370
     - audit_rules_privileged_commands_gpasswd
-
-    # RHEL-08-030380
-    - audit_rules_kernel_module_loading_finit
 
     # RHEL-08-030390
     - audit_rules_kernel_module_loading_delete
@@ -821,41 +803,21 @@ selections:
 
     # RHEL-08-030420
     - audit_rules_unsuccessful_file_modification_truncate
-
-    # RHEL-08-030430
     - audit_rules_unsuccessful_file_modification_openat
-
-    # RHEL-08-030440
     - audit_rules_unsuccessful_file_modification_open
-
-    # RHEL-08-030450
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
-
-    # RHEL-08-030460
     - audit_rules_unsuccessful_file_modification_ftruncate
-
-    # RHEL-08-030470
     - audit_rules_unsuccessful_file_modification_creat
 
     # RHEL-08-030480
     - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fchown
 
     # RHEL-08-030490
     - audit_rules_dac_modification_chmod
-
-    # RHEL-08-030500
-    - audit_rules_dac_modification_lchown
-
-    # RHEL-08-030510
-    - audit_rules_dac_modification_fchownat
-
-    # RHEL-08-030520
-    - audit_rules_dac_modification_fchown
-
-    # RHEL-08-030530
     - audit_rules_dac_modification_fchmodat
-
-    # RHEL-08-030540
     - audit_rules_dac_modification_fchmod
 
     # RHEL-08-030550
