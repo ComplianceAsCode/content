@@ -48,12 +48,11 @@ references:
     stigid@sle15: SLES-15-040260
     vmmsrg: SRG-OS-000480-VMM-002000
 
-{{{ complete_ocil_entry_sshd_option(default="yes", option="StrictModes", value="yes") }}}
+{{{ complete_ocil_entry_sshd_option(default="no", option="StrictModes", value="yes") }}}
 
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
         parameter: StrictModes
         rule_id: sshd_enable_strictmodes
         value: 'yes'

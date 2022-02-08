@@ -24,7 +24,7 @@ rationale: |-
 
 severity: medium
 
-{{{ complete_ocil_entry_sshd_option(default="yes", option="X11Forwarding", value="no") }}}
+{{{ complete_ocil_entry_sshd_option(default="no", option="X11Forwarding", value="no") }}}
 
 identifiers:
     cce@rhel7: CCE-83359-0
@@ -52,7 +52,6 @@ references:
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
         parameter: X11Forwarding
         rule_id: sshd_disable_x11_forwarding
         value: 'no'

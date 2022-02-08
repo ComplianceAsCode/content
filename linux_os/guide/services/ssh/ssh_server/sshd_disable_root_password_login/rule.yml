@@ -33,7 +33,6 @@ ocil: |-
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
         parameter: PermitRootLogin
         rule_id: sshd_disable_root_password_login
         value: 'prohibit-password'

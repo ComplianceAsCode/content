@@ -46,12 +46,11 @@ references:
 ocil_clause: "the display proxy is listening on wildcard address"
 
 ocil: |-
-    {{{ ocil_sshd_option(default="yes", option="X11UseLocalhost", value="yes") }}}
+    {{{ ocil_sshd_option(default="no", option="X11UseLocalhost", value="yes") }}}
 
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
         parameter: X11UseLocalhost
         rule_id: sshd_x11_use_localhost
         value: 'yes'

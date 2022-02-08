@@ -47,12 +47,11 @@ references:
     stigid@rhel8: RHEL-08-010521
     vmmsrg: SRG-OS-000480-VMM-002000
 
-{{{ complete_ocil_entry_sshd_option(default="yes", option="KerberosAuthentication", value="no") }}}
+{{{ complete_ocil_entry_sshd_option(default="no", option="KerberosAuthentication", value="no") }}}
 
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
         parameter: KerberosAuthentication
         rule_id: sshd_disable_kerb_auth
         value: 'no'
