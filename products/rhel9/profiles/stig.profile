@@ -561,6 +561,8 @@ selections:
 
     # RHEL-08-020220
     - accounts_password_pam_pwhistory_remember_system_auth
+
+    # RHEL-08-020221
     - accounts_password_pam_pwhistory_remember_password_auth
 
     # RHEL-08-020230
