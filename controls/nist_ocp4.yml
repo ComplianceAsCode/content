@@ -13866,7 +13866,7 @@ controls:
     https://issues.redhat.com/browse/CMP-496
   rules: []
 - id: SC-12
-  status: pending
+  status: automated
   notes: |-
     While OpenShift allows to provide a custom PKI for external-facing TLS
     endpoints such as routes, there are far more internal-only trust stores
@@ -13897,7 +13897,8 @@ controls:
     Note that a full respose to externally-facing certificates will be provided
     separately and is being tracked with:
     https://issues.redhat.com/browse/CMP-1042
-  rules: []
+  rules:
+    - ingress_controller_certificate
   description: |-
     The organization establishes and manages cryptographic keys for required cryptography employed within the information system in accordance with [Assignment: organization-defined requirements for key generation, distribution, storage, access, and destruction].
 
