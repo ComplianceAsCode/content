@@ -1726,10 +1726,10 @@ Example macro invocation:
 
 #}}
 {{%- macro bash_chromium_pol_setting(chrome_pol_file, chrome_pol_dir, pol_setting, pol_setting_val, pol_setting_val_edit=pol_setting_val) %}}
-grep -q {{{ pol_setting }}} {{{ chrome_pol_dir }}}/{{{ chrome_pol_file }}}
+grep -q {{{ pol_setting }}} {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
 
 if ! [ $? -eq 0 ] ; then
-   sed -i -e '/{/a \  "'{{{ pol_setting }}}'": '{{{ pol_setting_val_edit }}}',' {{{ chrome_pol_dir }}}/{{{ chrome_pol_file }}}
+   sed -i -e '/{/a \  "'{{{ pol_setting }}}'": '{{{ pol_setting_val_edit }}}',' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
 else
    sed -i -e 's/\"'{{{ pol_setting }}}'.*/\"'{{{ pol_setting }}}'\": '{{{ pol_setting_val }}}',/g' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
 fi
