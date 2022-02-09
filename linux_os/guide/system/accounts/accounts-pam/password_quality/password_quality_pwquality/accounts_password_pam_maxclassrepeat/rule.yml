@@ -47,7 +47,7 @@ ocil_clause: 'that is not the case'
 ocil: |-
     To check the value for maximum consecutive repeating characters, run the following command:
     <pre>$ grep maxclassrepeat /etc/security/pwquality.conf</pre>
-    For DoD systems, the output should show <tt>maxclassrepeat</tt>=4.
+    For DoD systems, the output should show <tt>maxclassrepeat</tt>=4 or less but greater than zero.
 
 platform: pam
 
@@ -56,3 +56,4 @@ template:
     vars:
         variable: maxclassrepeat
         operation: less than or equal
+        zero_comparison_operation: greater than

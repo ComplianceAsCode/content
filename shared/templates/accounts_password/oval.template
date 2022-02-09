@@ -7,11 +7,14 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all"
+  <ind:textfilecontent54_test check="all" state_operator="AND"
   comment="check the configuration of /etc/security/pwquality.conf"
   id="test_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
     <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
     <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}" />
+  {{%- if ZERO_COMPARISON_OPERATION %}}
+    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}_zero_comparison" />
+  {{%- endif %}}
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
@@ -23,6 +26,12 @@
   <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}" version="3">
     <ind:subexpression datatype="int" operation="{{{ OPERATION }}}" var_ref="var_password_pam_{{{ VARIABLE }}}" />
   </ind:textfilecontent54_state>
+
+  {{%- if ZERO_COMPARISON_OPERATION %}}
+  <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}_zero_comparison" version="1">
+    <ind:subexpression datatype="int" operation="{{{ ZERO_COMPARISON_OPERATION }}}" >0</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{%- endif %}}
 
   <external_variable comment="External variable for pam_{{{ VARIABLE }}}" datatype="int" id="var_password_pam_{{{ VARIABLE }}}" version="3" />
 </def-group>

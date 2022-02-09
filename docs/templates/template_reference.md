@@ -2,17 +2,20 @@
 
 #### accounts_password
 -   Checks if PAM enforces password quality requirements. Checks the
-    configuration in `/etc/pam.d/system-auth` (for RHEL 6 systems) or
-    `/etc/security/pwquality.conf` (on other systems).
+    configuration in `/etc/security/pwquality.conf`.
 
 -   Parameters:
 
-    -   **variable** - PAM `pam_cracklib` (on RHEL 6) or `pam_pwquality`
-        (on other systems) module name, eg. `ucredit`, `ocredit`
+    -   **variable** - PAM `pam_pwquality` password quality
+        requirement, eg. `ucredit`, `ocredit`
 
     -   **operation** - OVAL operation, eg. `less than or equal`
 
--   Languages: OVAL
+    -   **zero_comparison_operation** - (optional) OVAL operation, eg. `greater than`.
+        When set, it will test if the **variable** value matches the OVAL operation
+        when compared to zero.
+
+-   Languages: Ansible, Bash, OVAL
 
 #### auditd_lineinfile
 -   Checks configuration options of the Audit Daemon in
