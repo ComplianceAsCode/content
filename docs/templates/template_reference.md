@@ -11,13 +11,9 @@
 
     -   **operation** - OVAL operation, eg. `less than or equal`
 
-    -   **check_zero_boundary** - effective only in OVAL checks, if
-        set to `"true"` it will test if the value respects the a zero
-        boundary operation. The operation is defined by the
-        **zero_boundary_operation** parameter (default value: `"false"`)
-
-    -   **zero_boundary_operation** - OVAL operation, eg. `greater than`
-        (default value: `"greater than"`)
+    -   **zero_comparison_operation** - (optional) OVAL operation, eg. `greater than`.
+        When set, it will test if the **variable** value matches the OVAL operation
+        when compared to zero.
 
 -   Languages: Ansible, Bash, OVAL
 
