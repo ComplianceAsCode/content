@@ -4,18 +4,17 @@
     <criteria operator="AND" comment="conditions for {{{ VARIABLE }}} are satisfied">
       <extend_definition comment="pwquality.so exists in system-auth" definition_ref="accounts_password_pam_pwquality" />
       <criterion comment="pwquality.conf" test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}" />
-      {{% if CHECK_ZERO_BOUNDARY %}}
-      <criterion comment="{{{ VARIABLE }}} zero boundary check with operation {{{ ZERO_BOUNDARY_OPERATION }}}"
-      test_ref="test_password_pam_pwquality_{{{ VARIABLE }}}_zero_boundary" />
-      {{% endif %}}
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all"
+  <ind:textfilecontent54_test check="all" state_operator="AND"
   comment="check the configuration of /etc/security/pwquality.conf"
   id="test_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
     <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
     <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}" />
+  {{%- if ZERO_COMPARISON_OPERATION %}}
+    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}_zero_comparison" />
+  {{%- endif %}}
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_password_pam_pwquality_{{{ VARIABLE }}}" version="3">
@@ -28,18 +27,11 @@
     <ind:subexpression datatype="int" operation="{{{ OPERATION }}}" var_ref="var_password_pam_{{{ VARIABLE }}}" />
   </ind:textfilecontent54_state>
 
-  {{% if CHECK_ZERO_BOUNDARY %}}
-  <ind:textfilecontent54_test check="all"
-  comment="check the configuration of /etc/security/pwquality.conf"
-  id="test_password_pam_pwquality_{{{ VARIABLE }}}_zero_boundary" version="1">
-    <ind:object object_ref="obj_password_pam_pwquality_{{{ VARIABLE }}}" />
-    <ind:state state_ref="state_password_pam_{{{ VARIABLE }}}_zero_boundary" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}_zero_boundary" version="1">
-    <ind:subexpression datatype="int" operation="{{{ ZERO_BOUNDARY_OPERATION }}}" >0</ind:subexpression>
+  {{%- if ZERO_COMPARISON_OPERATION %}}
+  <ind:textfilecontent54_state id="state_password_pam_{{{ VARIABLE }}}_zero_comparison" version="1">
+    <ind:subexpression datatype="int" operation="{{{ ZERO_COMPARISON_OPERATION }}}" >0</ind:subexpression>
   </ind:textfilecontent54_state>
-  {{% endif %}}
+  {{%- endif %}}
 
   <external_variable comment="External variable for pam_{{{ VARIABLE }}}" datatype="int" id="var_password_pam_{{{ VARIABLE }}}" version="3" />
 </def-group>
