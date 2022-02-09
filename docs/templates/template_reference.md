@@ -2,19 +2,22 @@
 
 #### accounts_password
 -   Checks if PAM enforces password quality requirements. Checks the
-    configuration in `/etc/pam.d/system-auth` (for RHEL 6 systems) or
-    `/etc/security/pwquality.conf` (on other systems).
+    configuration in `/etc/security/pwquality.conf`.
 
 -   Parameters:
 
-    -   **variable** - PAM `pam_cracklib` (on RHEL 6) or `pam_pwquality`
-        (on other systems) module name, eg. `ucredit`, `ocredit`
+    -   **variable** - PAM `pam_pwquality` password quality
+        requirement, eg. `ucredit`, `ocredit`
 
     -   **operation** - OVAL operation, eg. `less than or equal`
 
-    -   **non_zerocheck** - effective only in OVAL checks, if
-        set to `"true"` it will test if the value is different
-        than zero. (default value: `"false"`).
+    -   **check_zero_boundary** - effective only in OVAL checks, if
+        set to `"true"` it will test if the value respects the a zero
+        boundary operation. The operation is defined by the
+        **zero_boundary_operation** parameter (default value: `"false"`)
+
+    -   **zero_boundary_operation** - OVAL operation, eg. `greater than`
+        (default value: `"greater than"`)
 
 -   Languages: Ansible, Bash, OVAL
 
