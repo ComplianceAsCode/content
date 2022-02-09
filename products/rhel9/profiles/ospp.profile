@@ -149,8 +149,6 @@ selections:
     - service_auditd_enabled
     - var_auditd_flush=incremental_async
     - auditd_data_retention_flush
-    - auditd_local_events
-    - auditd_write_logs
     - auditd_log_format
     - auditd_freq
     - auditd_name_format
