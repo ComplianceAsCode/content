@@ -1,7 +1,7 @@
 {{%- set parameter = "RekeyLimit" %}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set description = "Ensure RekeyLimit is configured with the appropriate value in " ~ sshd_config_path %}}
+{{%- set description = "Ensure {{{ parameter }}} is configured with the appropriate value in " ~ sshd_config_path %}}
 {{%- if sshd_distributed_config == "true" %}}
 {{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
 {{%- endif %}}
@@ -22,7 +22,7 @@
   </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in the file" id="test_sshd_rekey_limit" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of {{{ parameter }}} setting in the file" id="test_sshd_rekey_limit" version="1">
      <ind:object object_ref="obj_sshd_rekey_limit"/>
   </ind:textfilecontent54_test>
 
@@ -33,7 +33,7 @@
   </ind:textfilecontent54_object>
 
   {{%- if sshd_distributed_config %}}
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of RekeyLimit setting in SSHD config directory" id="test_sshd_rekey_limit_config_dir" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of {{{ parameter }}} setting in SSHD config directory" id="test_sshd_rekey_limit_config_dir" version="1">
      <ind:object object_ref="obj_sshd_rekey_limit_config_dir"/>
   </ind:textfilecontent54_test>
 
@@ -47,7 +47,7 @@
 
   <local_variable id="sshd_line_regex" datatype="string" comment="The regex of the directive" version="1">
     <concat>
-      <literal_component>^[\s]*RekeyLimit[\s]+</literal_component>
+      <literal_component>^[\s]*{{{ parameter }}}[\s]+</literal_component>
       <variable_component var_ref="var_rekey_limit_size"/>
       <literal_component>[\s]+</literal_component>
       <variable_component var_ref="var_rekey_limit_time"/>
