@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8,rhel9,rhv4
+
+title: 'Ensure PAM password complexity module is enabled in system-auth'
+
+description: |-
+    To enable PAM password complexity in system-auth file:
+    Edit the <tt>password</tt> section in
+    <tt>/etc/pam.d/system-auth</tt> to show
+    <tt>password    requisite                                    pam_pwquality.so</tt>.
+
+rationale: |-
+    Enabling PAM password complexity permits to enforce strong passwords and consequently
+    makes the system less prone to dictionary attacks.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-85874-6
+    cce@rhel8: CCE-85872-0
+    cce@rhel9: CCE-85873-8
+
+references:
+    stigid@rhel8: RHEL-08-020101
+
+ocil_clause: 'pam_pwquality.so is not enabled in system-auth'
+
+ocil: |-
+    To check if pam_pwhistory.so is enabled in system-auth, run the following command:
+    <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre></pre>
+    The output should be similar to the following:
+    <pre>password    requisite                                    pam_pwquality.so</pre>
+
+platform: pam
