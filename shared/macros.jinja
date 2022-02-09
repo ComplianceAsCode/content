@@ -1660,7 +1660,7 @@ If this option is set to true, then check that a line is output by the following
 If the recovery is disabled, check the line with
 <pre>$ grep 'GRUB_CMDLINE_LINUX.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>.
 {{%- if 'ubuntu' in product -%}}
-Moreover, current Grub2 config file in <tt>/etc/grub2/grub.cfg</tt> must be checked.
+Moreover, current Grub2 config file in <tt>{{{ grub2_boot_path }}}/grub.cfg</tt> must be checked.
 <pre># grep vmlinuz {{{ grub2_boot_path }}}/grub.cfg | grep -v '{{{ arg_name_value }}}'</pre>
 This command should not return any output.
 {{%- else -%}}
