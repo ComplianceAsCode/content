@@ -1,19 +1,22 @@
 documentation_complete: true
 
-prodtype: ubuntu2004
+prodtype: rhel7,rhel8,rhel9,ubuntu2004
 
 title: 'Install pam_pwquality Package'
 
 description: |-
+    {{% if 'ubuntu' not in product %}}
+    {{{ describe_package_install(package="libpwquality") }}}
+    {{% else %}}
     {{{ describe_package_install(package="libpam-pwquality") }}}
+    {{% endif %}}
 
 rationale: |-
     Use of a complex password helps to increase the time and resources required
     to compromise the password. Password complexity, or strength, is a measure
     of the effectiveness of a password in resisting attempts at guessing and
     brute-force attacks. "pwquality" enforces complex password construction
-    configuration and has the ability to limit brute-force attacks on the
-    system.
+    configuration and has the ability to limit brute-force attacks on the system.
 
 severity: medium
 
@@ -24,9 +27,14 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ ocil_package(package="libpam-pwquality") }}}'
+{{% if 'ubuntu' not in product %}}
+{{{ complete_ocil_entry_package(package="libpwquality") }}}
+{{% else %}}
+{{{ complete_ocil_entry_package(package="libpam-pwquality") }}}
+{{% endif %}}
 
 template:
     name: package_installed
     vars:
-        pkgname: libpam-pwquality
+        pkgname: libpwquality
+        pkgname@ubuntu2004: libpam-pwquality
