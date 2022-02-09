@@ -34,24 +34,6 @@ ocil_clause: 'vsyscalls are enabled'
 ocil: |-
     {{{ ocil_grub2_argument("vsyscall=none") | indent(4) }}}
 
-warnings:
-    - management: |-
-        The GRUB 2 configuration file, <tt>grub.cfg</tt>,
-        is automatically updated each time a new kernel is installed. Note that any
-        changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
-        file. To update the GRUB 2 configuration file manually, use the
-        <pre>grub2-mkconfig -o</pre> command as follows:
-        <ul>
-        <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
-        <pre>~]# grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre></li>
-        <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
-{{% if product in ["rhel7", "rhel8", "ol7", "ol8"] %}}
-        <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
-{{% else %}}
-        <pre>~]# grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre></li>
-{{% endif %}}
-        </ul>
-
 platform: machine
 
 template:
