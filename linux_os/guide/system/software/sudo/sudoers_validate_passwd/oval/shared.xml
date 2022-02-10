@@ -8,17 +8,17 @@
       </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
   id="test_sudoers_targetpw_config" version="1">
     <ind:object object_ref="object_test_sudoers_targetpw_config" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
   id="test_sudoers_rootpw_config" version="1">
     <ind:object object_ref="object_test_sudoers_rootpw_config" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Ensure invoking user's password for privilege escalation when using sudo"
+  <ind:textfilecontent54_test check="all" check_existence="only_one_exists" comment="Ensure invoking user's password for privilege escalation when using sudo"
   id="test_sudoers_runaspw_config" version="1">
     <ind:object object_ref="object_test_sudoers_runaspw_config" />
   </ind:textfilecontent54_test>
@@ -26,19 +26,19 @@
   <ind:textfilecontent54_object id="object_test_sudoers_targetpw_config" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
     <ind:pattern operation="pattern match">^Defaults !targetpw$\r?\n</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_test_sudoers_rootpw_config" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
     <ind:pattern operation="pattern match">^Defaults !rootpw$\r?\n</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_test_sudoers_runaspw_config" version="1">
     <ind:filepath operation="pattern match">^/etc/sudoers(\.d/.*)?$</ind:filepath>
     <ind:pattern operation="pattern match">^Defaults !runaspw$\r?\n</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
 </def-group>
