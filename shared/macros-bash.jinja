@@ -1674,6 +1674,7 @@ fi
 {{% endif %}}
 
 {{% endmacro %}}
+
 {{#
   This macro creates a bash conditional which is used to determine if a remediation is applicable.
   The macro takes package as an argument and chooses appropriate package manager.
@@ -1708,4 +1709,32 @@ rpm --quiet -q {{{ package }}}
 #}}
 {{%- macro bash_pkg_conditional_dpkg (package) -%}}
 dpkg-query --show --showformat='${db:Status-Status}\n' '{{{ package }}}' 2>/dev/null | grep -q installed
+{{%- endmacro -%}}
+
+{{#
+Macro to replace configuration setting(s) in the Chromium stig policy (.json) file or add the
+preference if it does not exist.
+
+Example macro invocation:
+
+    {{{ bash_chromium_pol_setting("chrome_stig_policy.json", "/etc/chromium/policies/managed/", "ExtensionInstallBlacklist", "\[\"*\"\]") }}}
+
+:param  chrome_pol_file:      Policy file to that will be modified
+:param  chrome_pol_dir:       Directory where the policy file is located
+:param  pol_setting:          The setting that will be modified
+:param  pol_setting_val:      Value of the setting to replace the current value with
+:param  pol_setting_val_edit: Value of the setting to be inserted if setting and value not present
+
+#}}
+{{%- macro bash_chromium_pol_setting(chrome_pol_file, chrome_pol_dir, pol_setting, pol_setting_val, pol_setting_val_edit=None) %}}
+{{% if not pol_setting_val_edit %}}
+{{ pol_setting_val_edit=pol_setting_val }}
+{{% endif %}}
+grep -q {{{ pol_setting }}} {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
+
+if ! [ $? -eq 0 ] ; then
+   sed -i -e '/{/a \  "'{{{ pol_setting }}}'": '{{{ pol_setting_val_edit }}}',' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
+else
+   sed -i -e 's/\"'{{{ pol_setting }}}'.*/\"'{{{ pol_setting }}}'\": '{{{ pol_setting_val }}}',/g' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
+fi
 {{%- endmacro -%}}
