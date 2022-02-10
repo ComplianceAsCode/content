@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = tmux
 
 cat > /etc/bashrc <<'EOF'
 # /etc/bashrc
@@ -100,3 +101,5 @@ if [ -z "$BASHRCSOURCED" ]; then
 fi
 # vim:ts=4:sw=4
 EOF
+
+tmux new-session -s root -d

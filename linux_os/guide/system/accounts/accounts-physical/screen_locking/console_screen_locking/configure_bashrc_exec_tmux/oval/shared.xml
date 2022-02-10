@@ -4,9 +4,10 @@
     <criteria comment="Check exec tmux configured at the end of bashrc" operator="AND">
       <criterion comment="check tmux is configured to exec on the last line of /etc/bashrc"
         test_ref="test_configure_bashrc_exec_tmux" />
+      <criterion comment="check tmux is running" test_ref="test_tmux_running"/>
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="only one" check_existence="only_one_exists"
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="check tmux is configured to exec on the last line of /etc/bashrc"
     id="test_configure_bashrc_exec_tmux" version="1">
     <ind:object object_ref="obj_configure_bashrc_exec_tmux" />
@@ -17,4 +18,13 @@
     <ind:pattern operation="pattern match">if \[ "\$PS1" \]; then\n\s+parent=\$\(ps -o ppid= -p \$\$\)\n\s+name=\$\(ps -o comm= -p \$parent\)\n\s+case "\$name" in sshd\|login\) exec tmux ;; esac\nfi</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <unix:process58_test check="all" id="test_tmux_running" comment="is tmux running" version="1">
+      <unix:object object_ref="obj_tmux_running"/>
+  </unix:process58_test>
+
+  <unix:process58_object id="obj_tmux_running" version="1">
+      <unix:command_line operation="pattern match">^tmux[\s]+.*$</unix:command_line>
+      <unix:pid datatype="int" operation="greater than">0</unix:pid>
+  </unix:process58_object>
 </def-group>

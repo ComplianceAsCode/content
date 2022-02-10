@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = tmux
 
 cat >> /etc/profile.d/00-complianceascode.conf <<'EOF'
 if [ "$PS1" ]; then
@@ -15,3 +16,5 @@ if [ "$PS1" ]; then
   case "$name" in sshd|login) exec tmux ;; esac
 fi
 EOF
+
+tmux new-session -s root -d

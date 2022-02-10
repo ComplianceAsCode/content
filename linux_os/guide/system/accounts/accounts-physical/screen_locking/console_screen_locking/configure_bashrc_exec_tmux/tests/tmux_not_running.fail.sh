@@ -1,8 +1,7 @@
 #!/bin/bash
 # packages = tmux
 
-
-cat >> /etc/profile.d/00-complianceascode.conf <<'EOF'
+cat >> /etc/bashrc <<'EOF'
 if [ "$PS1" ]; then
   parent=$(ps -o ppid= -p $$)
   name=$(ps -o comm= -p $parent)
@@ -10,4 +9,4 @@ if [ "$PS1" ]; then
 fi
 EOF
 
-tmux new-session -s root -d
+killall tmux || true
