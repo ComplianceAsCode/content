@@ -27,7 +27,9 @@ cat <<EOF > /etc/containers/policy.json
       "quay.io/keycloak": [{"type": "insecureAcceptAnything"}],
       "quay.io/openshift-release-dev": [{"type": "insecureAcceptAnything"}],
       "registry.build02.ci.openshift.org": [{"type": "insecureAcceptAnything"}],
-      "registry.build01.ci.openshift.org": [{"type": "insecureAcceptAnything"}]
+      "registry.build01.ci.openshift.org": [{"type": "insecureAcceptAnything"}],
+      "registry.build03.ci.openshift.org": [{"type": "insecureAcceptAnything"}],
+      "registry.build04.ci.openshift.org": [{"type": "insecureAcceptAnything"}]
     }
   }
 }
