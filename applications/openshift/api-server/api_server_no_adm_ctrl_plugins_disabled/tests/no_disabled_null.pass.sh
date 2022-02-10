@@ -14,7 +14,7 @@ cat <<EOF > "$kube_apipath$config_apipath"
 {
     "apiVersion": "v1",
     "data": {
-        "config.yaml": "{\"apiServerArguments\":{\"allow-privileged\":[\"true\"],\"disable-admission-plugins\":[\"PodSecurity\"]}}"
+        "config.yaml": "{\"apiServerArguments\":{\"allow-privileged\":[\"true\"]}}"
     },
     "kind": "ConfigMap",
     "metadata": {
@@ -28,7 +28,6 @@ cat <<EOF > "$kube_apipath$config_apipath"
 EOF
 
 jq_filter='[.data."config.yaml" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]'
-
 # Get file path. This will actually be read by the scan
 filteredpath="$kube_apipath$config_apipath#$(echo -n "$config_apipath$jq_filter" | sha256sum | awk '{print $1}')"
 
