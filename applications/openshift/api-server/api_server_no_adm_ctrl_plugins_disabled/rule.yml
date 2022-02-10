@@ -5,7 +5,7 @@ prodtype: ocp4
 title: 'Ensure all admission control plugins are enabled'
 
 
-{{% set jqfilter = '[.data."config.yaml" | fromjson | select(.apiServerArguments."disable-admission-plugins"!=["PodSecurity"] and .apiServerArguments."disable-admission-plugins"!=[]) | .apiServerArguments."disable-admission-plugins"]' %}}
+{{% set jqfilter = '[.data."config.yaml" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]' %}}
 
 description: |-
     To make sure none of them is explicitly disabled except PodSecurity, run the following command:
