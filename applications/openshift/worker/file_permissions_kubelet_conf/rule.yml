@@ -6,25 +6,69 @@ platform: {{{ product }}}-node
 
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
+{{% set description %}}
+  Ensure that if the kubelet refers to a configuration file with the
+  <tt>--config</tt> argument, that file has permissions of <tt>644</tt> or more
+  restrictive.
+{{% endset %}}
+{{% set rationale %}}
+  The kubelet reads various parameters, including security settings, from a
+  config file specified by the <tt>--config</tt> argument. If this file is
+  specified you should restrict its file permissions to maintain the integrity
+  of the file. The file should be writable by only the administrators on the
+  system.
+{{% endset %}}
+{{% set ocil %}}
+  First, SSH to the relevant worker node:
+  To check to see if the Kubelet Service is running:
+  <tt>sudo systemctl status kubelet</tt>
+  The output should return <tt>Active: active (running) since..</tt>
+  Run the following command on each node to find the appropriate Kubelet config file:
+  <tt>ps -ef | grep kubelet</tt>
+  The output of the above command should return something similar to
+  <tt>--config /etc/kubernetes/kubelet/kubelet-config.json</tt> which is the
+  location of the Kubelet config file.
+  Run the following command:
+  <tt>stat -c %a /etc/kubernetes/kubelet/kubelet-config.json</tt>
+  The output of the above command is the Kubelet config file's permissions.
+  Verify that the permissions are <tt>644</tt> or more restrictive.
+{{% endset %}}
 {{%- else %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet.conf" %}}
+{{% set description %}}
+  Ensure that the <tt>kubelet.conf</tt> file has permissions of <tt>644</tt> or
+  more restrictive.
+{{% endset %}}
+{{% set rationale %}}
+  The <tt>kubelet.conf</tt> file is the kubeconfig file for the node, and controls various parameters
+  that set the behavior and identity of the worker node. You should restrict its file
+  permissions to maintain the integrity of the file. The file should be writable by only the
+  administrators on the system.
+{{% endset %}}
+{{% set ocil %}}
+  The node's <tt>kubeconfig</tt> is created with <tt>644</tt> permissions.
+  Run the following command:
+  <tt># Check permissions
+  for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}')
+  do
+  oc debug node/${node} -- chroot /host stat -c %a
+  /etc/kubernetes/kubelet.conf
+  done</tt>
+  Verify that the permissions are <tt>644</tt>.
+{{% endset %}}
 {{%- endif %}}
 
-title: 'Verify Permissions on The Kubelet Configuration File'
+title: 'Verify Permissions on the Kubelet Configuration File'
 
-description: |-
-    {{{ describe_file_permissions(file=kubeletconf_path, perms="0644") }}}
+description: |-{{{ description }}}
 
-rationale: |-
-    If the kubelet configuration file is writable by a group-owner or the
-    world the risk of its compromise is increased. The file contains the configuration of
-    an OpenShift node that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+rationale: |-{{{ rationale }}}
 
 severity: medium
 
 identifiers:
     cce@ocp4: CCE-83470-5
+    cce@eks: CCE-86490-0
 
 references:
     cis@eks: 3.1.3
@@ -35,8 +79,7 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file=kubeletconf_path, perms="-rw-r--r--") }}}'
 
-ocil: |-
-    {{{ ocil_file_permissions(file=kubeletconf_path, perms="-rw-r--r--") }}}
+ocil: |-{{{ ocil }}}
 
 template:
     name: file_permissions

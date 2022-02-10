@@ -8,26 +8,77 @@ platforms:
 {{%- if product == "eks" %}}
 {{%- set octal_perms = "0644" %}}
 {{%- set text_perms = "-rw-r--r--" %}}
+{{% set description %}}
+    If <tt>kubelet</tt> is running, and if it is using a file-based kubeconfig
+    file, ensure that the proxy kubeconfig file has permissions of <tt>644</tt>
+    or more restrictive.
+{{% endset %}}
+{{% set rationale %}}
+    the <tt>kubelet</tt> kubeconfig file controls various parameters of the
+    <tt>kubelet</tt> service in the worker node. You should restrict its file
+    permissions to maintain the integrity of the file. the file should be
+    writable by only the administrators on the system.
+
+    It is possible to run <tt>kubelet</tt> with the kubeconfig parameters
+    configured as a kubernetes configmap instead of a file. in this case, there
+    is no proxy kubeconfig file.
+{{% endset %}}
+{{% set ocil %}}
+  ssh to the worker nodes
+  to check to see if the kubelet service is running:
+  <tt>sudo systemctl status kubelet</tt>
+  the output should return <tt>active: active (running) since..</tt>
+  run the following command on each node to find the appropriate kubeconfig file:
+  <tt>ps -ef | grep kubelet</tt>
+  the output of the above command should return something similar to
+  <tt>--kubeconfig /var/lib/kubelet/kubeconfig</tt> which is the location of
+  the kubeconfig file.
+  run this command to obtain the kubeconfig file permissions:
+  <tt>stat -c %a /var/lib/kubelet/kubeconfig</tt>
+  the output of the above command gives you the kubeconfig file's permissions.
+  verify that if a file is specified and it exists, the permissions are
+  <tt>644</tt> or more restrictive.
+{{% endset %}}
 {{%- else %}}
 {{%- set octal_perms = "0600" %}}
 {{%- set text_perms = "-rw-------" %}}
+{{% set description %}}
+  Ensure that if the kubelet refers to a configuration file with the
+  <tt>--config</tt> argument, that file has permissions of <tt>644</tt> or more
+  restrictive.
+{{% endset %}}
+{{% set rationale %}}
+  The kubelet reads various parameters, including security settings, from a
+  config file specified by the <tt>--config</tt> argument. If this file is
+  specified you should restrict its file permissions to maintain the integrity
+  of the file. The file should be writable by only the administrators on the
+  system.
+{{% endset %}}
+{{% set ocil %}}
+  In OpenShift 4, the <tt>kublet.conf</tt> file is managed by the Machine
+  Config Operator. The kubelet config file is found at
+  <tt>/var/lib/kubelet/kubeconfig</tt> with file permissions set to
+  <tt>600</tt>.
+  Run the command:
+  <tt>for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}')
+  do
+  oc debug node/${node} -- chroot /host stat -c %a /var/lib/kubelet/kubeconfig
+  done</tt>
+  Verify that the permissions are <tt>600</tt>.
+{{% endset %}}
 {{%- endif %}}
 
 title: 'Verify Permissions on the Worker Kubeconfig File'
 
-description: |-
-    {{{ describe_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=octal_perms) }}}
+description: |-{{{ description }}}
 
-rationale: |-
-    If the worker kubeconfig file is writable by a group-owner or the
-    world the risk of its compromise is increased. The file contains the administration configuration of the
-    OpenShift cluster that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+rationale: |-{{{ rationale }}}
 
 severity: medium
 
 identifiers:
     cce@ocp4: CCE-83509-0
+    cce@eks: CCE-85969-4
 
 references:
     cis@eks: 3.1.1
@@ -38,8 +89,7 @@ references:
 ocil_clause: |-
     {{{ ocil_clause_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=text_perms) }}}
 
-ocil: |-
-    {{{ ocil_file_permissions(file="/var/lib/kubelet/kubeconfig", perms=text_perms) }}}
+ocil: |-{{{ ocil }}}
 
 template:
     name: file_permissions

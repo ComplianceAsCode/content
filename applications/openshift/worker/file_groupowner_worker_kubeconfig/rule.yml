@@ -2,16 +2,61 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
+{{%- if product == 'ocp4' %}}
+{{% set rationale %}}
+   The kubelet reads various parameters, including security settings, from a
+   config file specified by the <tt>--config</tt> argument. If this file is
+   specified you should restrict its file permissions to maintain the integrity
+   of the file. The file should be owned by <tt>root:root</tt>.
+{{% endset %}}
+{{% set ocil %}}
+  In OpenShift 4, the kublet config file is managed by the Machine Config
+  Operator. The kubelet config file is found at
+  <tt>/var/lib/kubelet/kubeconfig</tt> with ownership set to
+  <tt>root:root</tt>.
+  Run the command:
+  <tt>for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}')
+  do
+  oc debug node/${node} -- chroot /host stat -c %U:%G
+  /var/lib/kubelet/kubeconfig
+  done</tt>
+  Verify that the ownership is set to <tt>root:root</tt>.
+{{% endset %}}
+{{%- elif product == 'eks' %}}
+{{% set rationale %}}
+  The kubelet reads various parameters, including security settings, from a
+  config file specified by the <tt>--config</tt> argument. If this file is
+  specified you should restrict its file permissions to maintain the integrity
+  of the file. The file should be writable by only the administrators on the
+  system.
+{{% endset %}}
+{{% set ocil %}}
+  First, SSH to the relevant worker node:
+  To check to see if the Kubelet Service is running:
+  <tt>sudo systemctl status kubelet</tt>
+  The output should return <tt>Active: active (running) since..</tt>
+  Run the following command on each node to find the appropriate Kubelet config file:
+  <tt>ps -ef | grep kubelet</tt>
+  The output of the above command should return something similar to <tt>--config
+  /etc/kubernetes/kubelet/kubelet-config.json</tt> which is the location of the Kubelet
+  config file.
+  Run the following command:
+  <tt>stat -c %U:%G /etc/kubernetes/kubelet/kubelet-config.json</tt>
+  The output of the above command is the Kubelet config file's ownership. Verify that the
+  ownership is set to <tt>root:root</tt>
+{{% endset %}}
+
+{{% endif %}}
+
 platform: {{{ product }}}-node
 
-title: 'Verify Group Who Owns The Worker Kubeconfig File'
+title: 'Verify Ownership of the The Worker Kubeconfig File'
 
-description: '{{{ describe_file_group_owner(file="/var/lib/kubelet/kubeconfig", group="root") }}}'
+description: |-
+  Ensure that if the kubelet refers to a configuration file with the
+  <tt>--config</tt> argument, that file is owned by <tt>root:root:</tt>.
 
-rationale: |-
-    The worker kubeconfig file contains information about the administrative configuration of the
-    OpenShift cluster that is configured on the system. Protection of this file is
-    critical for OpenShift security.
+rationale: |-{{{ rationale }}}
 
 severity: medium
 
@@ -20,14 +65,14 @@ identifiers:
 
 references:
     cis@ocp4: 4.1.10
+    cis@eks: 3.1.4
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/var/lib/kubelet/kubeconfig", group="root") }}}'
 
-ocil: |-
-    {{{ ocil_file_group_owner(file="/var/lib/kubelet/kubeconfig", group="root") }}}
+ocil: |-{{{ ocil }}}
 
 template:
     name: file_groupowner
