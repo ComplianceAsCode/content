@@ -1,0 +1,7 @@
+# platform = multi_platform_all
+# # reboot = false
+# # strategy = configure
+# # complexity = low
+# # disruption = low
+
+{{{ ansible_only_lineinfile(msg='Ensure sudo only has the default includedir', line_regex='^#includedir.*$', path='/etc/sudoers', new_line='#includedir /etc/sudoers.d') }}}
