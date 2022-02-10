@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8,rhel9
+
+title: 'Ensure sudo only includes the default configuration directory'
+
+description: |-
+    Administrators can configure authorized <tt>sudo</tt> users via drop-in files, and it is possible to include
+    other directories and configuration files from the file currently being parsed.
+  
+    Make sure that <tt>/etc/sudoers</tt> only includes drop-in configuration files from <tt>/etc/sudoers.d</tt>.
+    The <tt>/etc/sudoers</tt> should contain only one <tt>#includedir</tt> directive pointing to
+    <tt>/etc/sudoers.d</tt>
+    Note that the '#' character doesn't denote a comment in the configuration file.
+
+rationale: |-
+   Some <tt>sudo</tt> configurtion options allow users to run programs without re-authenticating.
+   Use of these configuration options makes it easier for one compromised accound to be used to
+   compromise other accounts.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86277-1
+    cce@rhel8: CCE-86377-9
+    cce@rhel9: CCE-86477-7
+
+references:
+    disa: CCI-000366
+    stigid@rhel8: RHEL-08-010379
+
+ocil_clause: "the /etc/sudoers doesn't include /etc/sudores.d or includes other directories?"
+
+ocil: |-
+    To determine whether <tt>sudo</tt> command includes configuration files from the appropriate directory,
+    run the following command:
+    <pre>$ sudo grep 'include' /etc/sudoers</pre>
+    If only the line <tt>#includedir /etc/sudoers> is returned, then the drop-in file configuration is set correctly.
