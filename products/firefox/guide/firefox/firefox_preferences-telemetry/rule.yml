@@ -23,3 +23,11 @@ ocil: |-
     <pre>$ grep 'toolkit.telemetry.enabled' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
     The output should return:
     <pre>lockPref("toolkit.telemetry.enabled", "false");</pre>
+
+template:
+    name: firefox_lockparameter
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: toolkit.telemetry.enabled
+        rule_id: firefox_preferences-telemetry
+        value: false
