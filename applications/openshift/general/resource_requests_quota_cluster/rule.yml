@@ -60,14 +60,14 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/apis/quota.openshift.io/v1/clusterresourcequotas?limit=500': jqfilter}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/apis/quota.openshift.io/v1/clusterresourcequotas': jqfilter}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: |-
-      {{{ openshift_filtered_path('/apis/quota.openshift.io/v1/clusterresourcequotas?limit=500', jqfilter) }}}
+      {{{ openshift_filtered_path('/apis/quota.openshift.io/v1/clusterresourcequotas', jqfilter) }}}
     yamlpath: "[:]"
     entity_check: "at least one"
     values:
