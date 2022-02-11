@@ -42,3 +42,4 @@ selections:
     - firefox_preferences-ssl_protocol_tls
     - firefox_preferences-verification
     - installed_firefox_version_supported
+    - firefox_preferences-telemetry
