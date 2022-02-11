@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable Weak Ciphers in Firefox SSL'
+
+description: |-
+    Extension recommendations may be disabled by setting
+    <tt>security.ssl3.rsa_des_ede3_sha</tt> to <tt>false</tt>.
+
+rationale: |-
+    A weak cipher is defined as an encryption/decryption algorithm that uses a key of insufficient length. Using an insufficient length for a key in an encryption/decryption algorithm opens up the possibility (or probability) that the encryption scheme could be broken.
+severity: medium
+
+references:
+    disa: CCI-000381
+    stigid: DTBF235
+
+{{{ ocil_firefox_config("weak ssl ciphers", "security.ssl3.rsa_des_ede3_sha", "false") }}}
+
+template:
+    name: firefox_lockparameter
+    vars:
+        parameter: security.ssl3.rsa_des_ede3_sha
+        rule_id: firefox_preferences-disable_ssl_weak_ciphers
+        value: false 
