@@ -1,5 +1,6 @@
 #!/bin/bash
 # packages = tmux
+# remediation = none
 
 cat >> /etc/bashrc <<'EOF'
 if [ "$PS1" ]; then
