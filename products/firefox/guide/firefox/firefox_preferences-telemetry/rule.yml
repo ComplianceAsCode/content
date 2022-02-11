@@ -4,7 +4,7 @@ title: 'Disable Firefox Telemetry'
 
 description: |-
     Telemetry can be disabled by setting
-    <tt>toolkit.telemtry.enabled</tt> to <tt>false</tt>.
+    <tt>toolkit.telemetry.enabled</tt> to <tt>false</tt>.
 
 rationale: |-
     The Telemetry feature provides this capability by sending performance and usage info to Mozilla. As you use Firefox, Telemetry measures and collects non-personal information, such as performance, hardware, usage and customizations. It then sends this information to Mozilla on a daily basis and we use it to improve Firefox
@@ -27,7 +27,6 @@ ocil: |-
 template:
     name: firefox_lockparameter
     vars:
-        missing_parameter_pass: 'false'
         parameter: toolkit.telemetry.enabled
         rule_id: firefox_preferences-telemetry
         value: false

@@ -1,11 +1,7 @@
-{{%- set regex = "^[\s]*" ~ (TEXT | escape_regex) ~ "[\s]*$" -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("Check setting of " + TEXT + " in Firefox configuration") }}}
-    <criteria operator="AND" comment="Test conditions - presence of the file plus {{{ OVAL_EXTEND_DEFINITIONS | length }}} extra definitions.">
-      {{%- for def in OVAL_EXTEND_DEFINITIONS %}}
-     <extend_definition comment="extend_definition added explicitly" definition_ref="{{{ def }}}" />
-      {{%- endfor %}}
+    {{{ oval_metadata("Check setting of " + PARAMETER + " in Firefox configuration") }}} 
+    <criteria operator="AND" comment="Test conditions - Firefox configuration item is set and locked.">
       <criterion comment="Check that Firefox configuration files have a set and locked configuration item." test_ref="test_{{{ rule_id }}}" />
     </criteria>
   </definition>
