@@ -1772,6 +1772,9 @@ done <   <({{{ command_and_its_args }}})
 
 
 {{#
+  # This macro is DEPRECATED and should not be used in new remediations, as it does not remediate
+  # config files in the /etc/sssd/conf.d directory
+  #
   # Try find SSSD_SECT section and SSSD_OPT setting in SSSD_CONF SSSD config file,
   # if SSSD_OPT option exists, set it to SSSD_OPT_VAL, if SSSD_OPT
   # doesn't exist add it, if SSSD_SECT section doesn't exist add both
@@ -1783,12 +1786,8 @@ done <   <({{{ command_and_its_args }}})
 :param SSSD_OPT_VAL:    the value of SSSD_OPT we are setting
 :param SECT_REGEX:      regex for the section we are adding the setting under
 
-  #}}
+#}}
 {{% macro bash_sssd_set_option(SSSD_SECT, SSSD_CONF, SSSD_OPT, SSSD_OPT_VAL, SECT_REGEX) -%}}
-# Try find {{{ SSSD_SECT }}} and {{{ SSSD_OPT }}} in {{{ SSSD_CONF }}}, if it exists
-# set it to {{{ SSSD_OPT_VAL }}}, if it doesn't exist add it, if {{{ SSSD_SECT }}} section doesn't exist add
-# the section and the configuration option.
-
 # find option in section and change value
 if grep -qzosP "{{{ SECT_REGEX }}}([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}" {{{ SSSD_CONF }}}; then
         sed -i "s/{{{ SSSD_OPT }}}[^(\n)]*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" {{{ SSSD_CONF }}}
@@ -1800,5 +1799,39 @@ else
         mkdir -p /etc/sssd
         touch {{{ SSSD_CONF }}}
         echo -e "{{{ SSSD_SECT }}}\n{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" >> {{{ SSSD_CONF }}}
+fi
+{{%- endmacro %}}
+
+{{# 
+  # Macro used to ensure the correct value of an sssd option is configured. Checks both the main
+  # /etc/sssd/sssd.conf file as well as any files in /etc/sssd/conf.d/*, if the option is not found
+  # then a new file is created in /etc/sssd/conf.d/*
+
+:param SSSD_SECT:       section of {{{ SSSD_CONF }}} under which we are looking for {{{ SSSD_OPT }}}}
+:param SSSD_CONF_NAME:  name of conf file to write to if option not found
+:param SSSD_OPT:        the SSSD option we are setting
+:param SSSD_OPT_VAL:    the value of SSSD_OPT we are setting
+
+#}}
+{{% macro bash_sssd_set_option_new(SSSD_SECT, SSSD_CONF_NAME, SSSD_OPT, SSSD_OPT_VAL) -%}}
+found=false
+for f in /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf; do
+    if [ ! -e "$f" ]; then
+        continue
+    fi
+    
+    if grep -qzosP '[[:space:]]*\[{{{ SSSD_SECT }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}' "$f"; then
+        sed -i "s/^{{{ SSSD_OPT }}}\s*=.*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" "$f"
+        found=true
+    fi
+done
+
+if ! $found ; then
+    SSSD_CONF="/etc/sssd/conf.d/{{{ SSSD_CONF_NAME }}}.conf"
+    mkdir -p "$(dirname "$SSSD_CONF")"
+    touch "$SSSD_CONF"
+    chown root:root "$SSSD_CONF"
+    chmod 600 "$SSSD_CONF"
+    echo -e "[{{{ SSSD_SECT }}}]\n{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" >> "$SSSD_CONF"
 fi
 {{%- endmacro %}}
