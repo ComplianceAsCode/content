@@ -221,7 +221,7 @@ additional_args=()
 test "$_arg_dontclean" = on && additional_args+=(--dontclean)
 
 # Don't act on the default value.
-test -n "$_arg_scenarios" && additional_args+=(--scenario "'$_arg_scenarios'")
+test -n "$_arg_scenarios" && additional_args+=(--scenario "$_arg_scenarios")
 
 test -n "$_arg_datastream" && additional_args+=(--datastream "$_arg_datastream")
 

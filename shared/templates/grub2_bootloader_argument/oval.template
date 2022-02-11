@@ -1,6 +1,6 @@
 {{#-
   We set defaults to "off", and products should enable relevant ones depending on how the product configures grub.
-   - /boot/loader/entries/* may not exist don't exist
+   - /boot/loader/entries/* may not exist.
    - If they exist, they can reference variables defined in grubenv, or they can contain literal args
    - The grub cfg may either use those loader entries, or it can contain literal values as well
    - Kernel opts can be stored in /etc/default/grub so they are persistent between kernel upgrades
@@ -116,7 +116,12 @@
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     <ind:pattern operation="pattern match">^options (.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_grub2_rescue_entry_for_{{{ _RULE_ID }}}</filter>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_grub2_rescue_entry_for_{{{ _RULE_ID }}}" version="1">
+    <ind:filename>rescue.conf</ind:filename>
+  </ind:textfilecontent54_state>
 {{%- endif %}}
 
 {{%- if system_with_expanded_kernel_options_in_grub_cfg %}}

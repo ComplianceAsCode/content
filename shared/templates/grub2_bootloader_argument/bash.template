@@ -4,59 +4,28 @@
    Product-specific categorization should be synced across all template content types
 -#}}
 
-{{% set system_with_expanded_kernel_options_in_loader_entries = false -%}}
-{{% set system_with_referenced_kernel_options_in_loader_entries = false -%}}
-{{% set system_with_kernel_options_in_grubenv = false -%}}
-{{% set system_with_kernel_options_in_etc_default_grub = true -%}}
-{{% set system_with_expanded_kernel_options_in_grub_cfg = false -%}}
+{{% set grub_helper_executable = "grubby" -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE] -%}}
 
-{{% if product in ["rhel9"] %}}
-{{% set system_with_expanded_kernel_options_in_loader_entries = true %}}
-{{% endif -%}}
-
-{{% if product in ["rhel8"] %}}
-{{% set system_with_referenced_kernel_options_in_loader_entries = true %}}
-{{% set system_with_kernel_options_in_grubenv = true %}}
-{{% endif -%}}
-
-{{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
-{{% set system_with_expanded_kernel_options_in_grub_cfg = true %}}
-{{% endif -%}}
-
-{{% macro update_etc_default_grub(arg_name_value) %}}
-{{% if 'ubuntu' in product %}}
-update-grub
-{{% else %}}
-grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
-{{% endif %}}
-{{% endmacro -%}}
-
-{{% if system_with_kernel_options_in_etc_default_grub %}}
-{{% if '/' in ARG_NAME %}}
-{{{ raise("ARG_NAME (" + ARG_NAME + ") uses sed path separator (/) in " + rule_id) }}}
-{{% elif '/' in ARG_NAME_VALUE %}}
-{{{ raise("ARG_NAME_VALUE (" + ARG_NAME_VALUE + ") uses sed path separator (/) in " + rule_id) }}}
-{{% endif %}}
+{{%- macro update_etc_default_grub_manually() -%}}
 # Correct the form of default kernel command line in GRUB
 if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
-	# modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
-	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=[^[:space:]]*\(.*"\)/\1 {{{ ARG_NAME_VALUE }}} \2/'  '/etc/default/grub'
+       # modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
+       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=[^[:space:]]*\(.*"\)/\1 {{{ ARG_NAME_VALUE }}} \2/'  '/etc/default/grub'
 else
-	# no {{{ ARG_NAME }}}=arg is present, append it
-	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 {{{ ARG_NAME_VALUE }}}"/'  '/etc/default/grub'
+       # no {{{ ARG_NAME }}}=arg is present, append it
+       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 {{{ ARG_NAME_VALUE }}}"/'  '/etc/default/grub'
 fi
-{{% endif %}}
+{{%- endmacro %}}
 
-{{{ update_etc_default_grub(ARG_NAME_VALUE) }}}
+{{% if 'ubuntu' in product %}}
+{{{ update_etc_default_grub_manually() }}}
+{{% set grub_helper_executable = "update-grub" -%}}
+{{% endif -%}}
 
-{{% if system_with_kernel_options_in_grubenv -%}}
-# Correct grub2 kernelopts value using grub2-editenv
-existing_kernelopts="$(grub2-editenv - list | grep kernelopts)"
-if ! printf '%s' "$existing_kernelopts" | grep -qE '^kernelopts=(.*\s)?{{{ ARG_NAME_VALUE }}}(\s.*)?$'; then
-  if test -n "$existing_kernelopts"; then
-    grub2-editenv - set "$existing_kernelopts {{{ ARG_NAME_VALUE }}}"
-  else
-    grub2-editenv - set "kernelopts={{{ ARG_NAME_VALUE }}}"
-  fi
-fi
-{{% endif %}}
+{{% if product in ["rhel8", "ol8"] %}}
+{{# Suppress the None output of append -#}}
+{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" -}}}
+{{% endif -%}}
+
+{{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
