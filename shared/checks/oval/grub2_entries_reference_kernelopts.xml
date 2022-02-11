@@ -19,7 +19,7 @@
   <ind:textfilecontent54_object id="object_grub2_entries_reference_kernelopts" version="1">
     <ind:path>/boot/loader/entries/</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^options .*\b\$kernelopts\b.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^options(?:\s+.*)?\s+\$kernelopts\b.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>                                                                             
   </ind:textfilecontent54_object>
 </def-group>
