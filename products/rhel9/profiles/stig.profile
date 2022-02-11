@@ -909,6 +909,7 @@ selections:
     # RHEL-08-030740
     # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
+    - chronyd_server_directive
 
     # RHEL-08-030741
     - chronyd_client_only
