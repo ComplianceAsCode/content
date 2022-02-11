@@ -1769,3 +1769,36 @@ while IFS= read -r {{{ varname }}}; do
     {{{ caller() | indent(4) }}}
 done <   <({{{ command_and_its_args }}})
 {{%- endmacro %}}
+
+
+{{#
+  # Try find SSSD_SECT section and SSSD_OPT setting in SSSD_CONF SSSD config file,
+  # if SSSD_OPT option exists, set it to SSSD_OPT_VAL, if SSSD_OPT
+  # doesn't exist add it, if SSSD_SECT section doesn't exist add both
+  # the SSSD_SECT section and the SSSD_OPT configuration option.
+
+:param SSSD_SECT:       section of {{{ SSSD_CONF }}} under which we are looking for {{{ SSSD_OPT }}}}
+:param SSSD_CONF:       the SSSD config file
+:param SSSD_OPT:        the SSSD option we are setting
+:param SSSD_OPT_VAL:    the value of SSSD_OPT we are setting
+:param SECT_REGEX:      regex for the section we are adding the setting under
+
+  #}}
+{{% macro bash_sssd_set_option(SSSD_SECT, SSSD_CONF, SSSD_OPT, SSSD_OPT_VAL, SECT_REGEX) -%}}
+# Try find {{{ SSSD_SECT }}} and {{{ SSSD_OPT }}} in {{{ SSSD_CONF }}}, if it exists
+# set it to {{{ SSSD_OPT_VAL }}}, if it doesn't exist add it, if {{{ SSSD_SECT }}} section doesn't exist add
+# the section and the configuration option.
+
+# find option in section and change value
+if grep -qzosP "{{{ SECT_REGEX }}}([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}" {{{ SSSD_CONF }}}; then
+        sed -i "s/{{{ SSSD_OPT }}}[^(\n)]*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" {{{ SSSD_CONF }}}
+# find section and add option to it
+elif grep -qs "{{{ SECT_REGEX }}}" {{{ SSSD_CONF }}}; then
+        sed -i "/{{{ SECT_REGEX }}}/a {{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" {{{ SSSD_CONF }}}
+else
+        # create .conf file and add section and option to it
+        mkdir -p /etc/sssd
+        touch {{{ SSSD_CONF }}}
+        echo -e "{{{ SSSD_SECT }}}\n{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" >> {{{ SSSD_CONF }}}
+fi
+{{%- endmacro %}}
