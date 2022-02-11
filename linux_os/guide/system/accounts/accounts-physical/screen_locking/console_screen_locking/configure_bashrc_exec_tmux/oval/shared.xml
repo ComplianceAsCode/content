@@ -24,7 +24,7 @@
   </unix:process58_test>
 
   <unix:process58_object id="obj_tmux_running" version="1">
-      <unix:command_line operation="pattern match">^tmux[\s]+.*$</unix:command_line>
+      <unix:command_line operation="pattern match">^tmux(?:|[\s]+.*)$</unix:command_line>
       <unix:pid datatype="int" operation="greater than">0</unix:pid>
   </unix:process58_object>
 </def-group>
