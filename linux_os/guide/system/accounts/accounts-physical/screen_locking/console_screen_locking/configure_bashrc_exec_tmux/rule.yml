@@ -8,10 +8,18 @@ description: |-
     The <tt>tmux</tt> terminal multiplexer is used to implement
     automatic session locking. It should be started from
     <tt>/etc/bashrc</tt> or drop-in files within <tt>/etc/profile.d/</tt>.
+    Additionally it must be ensured that the <tt>tmux</tt> process is running
+    and it can be verified with the following command:
+    <pre>ps all | grep tmux | grep -v grep</pre>
 
 rationale: |-
     Unlike <tt>bash</tt> itself, the <tt>tmux</tt> terminal multiplexer
     provides a mechanism to lock sessions after period of inactivity.
+
+warnings:
+  - general: |-
+        The remediation does not start the tmux process, so it must be
+        manually started or have the system rebooted after applying the fix.
 
 severity: medium
 
@@ -26,7 +34,7 @@ references:
     stigid@ol8: OL08-00-020041
     stigid@rhel8: RHEL-08-020041
 
-ocil_clause: 'exec tmux is not present at the end of bashrc'
+ocil_clause: 'exec tmux is not present at the end of bashrc or tmux process is not running'
 
 ocil: |-
     To verify that tmux is configured to execute,
@@ -38,5 +46,9 @@ ocil: |-
       name=$(ps -o comm= -p $parent)
       case "$name" in sshd|login) exec tmux ;; esac
     fi</pre>
+    To verify that the tmux process is running,
+    run the following command:
+    <pre>ps all | grep tmux | grep -v grep</pre>
+    If the command does not produce output, this is a finding.
 
 platform: machine
