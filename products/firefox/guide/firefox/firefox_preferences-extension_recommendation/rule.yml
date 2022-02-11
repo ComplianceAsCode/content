@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disabled Firefox Extension Recommendations'
+
+description: |-
+    Extension recommendations may be disabled by setting
+    <tt>extensions.htmlaboutaddons.recommendations.enabled</tt> to <tt>false</tt>.
+
+rationale: |-
+    The Recommended Extensions program will make it easier for users to discover extensions that have been reviewed for security, functionality, and user experience.
+severity: medium
+
+references:
+    disa: CCI-000381
+    stigid: DTBF225
+
+{{{ ocil_firefox_config("Recommended Extensions", " extensions.htmlaboutaddons.recommendations.enabled", "false") }}}
+
+template:
+    name: firefox_lockparameter
+    vars:
+        parameter: extensions.htmlaboutaddons.recommendations.enabled
+        rule_id: firefox_preferences-extension_recommendation
+        value: false 
