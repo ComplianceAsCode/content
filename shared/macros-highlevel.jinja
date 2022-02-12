@@ -327,15 +327,16 @@ Write out the OCIL for generating the common check for Firefox configuration
 ocil_clause: 'it is not enabled'
 {{%- elif value == "false" %}}
 ocil_clause: 'it is not disabled'
-{{%- endif -%}}
+{{%- endif %}}
+
 ocil: |-
-  {{%- if value == "true" -%}}
+    {{% if value == "true" -%}}
     To verify that {{preference}} is enabled,
-  {{%- elif value == "false" %}}
+    {{%- elif value == "false" %}}
     To verify that {{preference}} is disabled,
-  {{%- else -%}}
+{{% else %}}
     To verify the correct setting of {{preference}},
-  {{%- endif -%}}
+{{% endif %}}
     run the following command:
     <pre>$ grep '{{config}}' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
     The output should return:
