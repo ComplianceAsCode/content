@@ -43,3 +43,9 @@ selections:
     - firefox_preferences-verification
     - installed_firefox_version_supported
     - firefox_preferences-telemetry
+    - firefox_preferences-cryptomining
+    - firefox_preferences-disable_ssl_weak_ciphers
+    - firefox_preferences-enhanced_tracking
+    - firefox_preferences-extension_recommendation
+    - firefox_preferences-fingerprinting-protection
+    - firefox_preferences-telemetry-archive
