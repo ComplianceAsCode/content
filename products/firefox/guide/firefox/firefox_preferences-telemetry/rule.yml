@@ -12,21 +12,12 @@ severity: medium
 
 references:
     disa: CCI-000381
-    nist: CM-7
-    stigid: DTBF180
+    stigid: DTBF200
 
-ocil_clause: 'it is not disabled'
-
-ocil: |-
-    To verify that telemetry is disabled,
-    run the following command:
-    <pre>$ grep 'toolkit.telemetry.enabled' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
-    The output should return:
-    <pre>lockPref("toolkit.telemetry.enabled", "false");</pre>
+{{{ ocil_firefox_config("telemetry", "toolkit.telemetry.enabled", "true") }}}
 
 template:
     name: firefox_lockparameter
     vars:
         parameter: toolkit.telemetry.enabled
-        rule_id: firefox_preferences-telemetry
         value: false

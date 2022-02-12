@@ -351,6 +351,15 @@ is a **list** and **file_regex** is a string, it gets extended to be the same re
 for each path; if **filepath** and **file_regex** are both present and are lists,
 they must be of the same length.
 
+#### firefox_lockpreference
+-   Checks that a given Mozilla Firefox configuration item is locked and set.
+
+-   Parameters
+    -   **parameter** - Name of Mozilla Firefox configuration item to be checked/set.
+    -   **value** - Literal value to be set in the Mozilla Firefox default configuration.
+
+-   Languages: Bash, OVAL
+
 #### grub2_bootloader_argument
 -   Checks kernel command line arguments in GRUB 2 configuration.
 
