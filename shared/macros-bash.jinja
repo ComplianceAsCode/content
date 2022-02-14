@@ -638,7 +638,7 @@ zypper install -y "{{{ package }}}"
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
 {{% if SSG_TEST_SUITE_ENV %}}
-    {{{ pkg_manager }}} remove -y --setopt protected_packages= "{{{ package }}}"
+    rpm -e --nodeps "{{{ package }}}"
 {{% else %}}
     {{{ pkg_manager }}} remove -y "{{{ package }}}"
 {{% endif %}}
