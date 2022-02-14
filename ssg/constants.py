@@ -424,6 +424,8 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "non-uefi": None,
   "not_s390x_arch": None,
   "s390x_arch": None,
+  "not_aarch64_arch": None,
+  "aarch64_arch": None,
   "ovirt": None,
   "no_ovirt": None,
 }
