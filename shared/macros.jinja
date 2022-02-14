@@ -1671,7 +1671,12 @@ The command should not return any output.
 {{%- endif -%}}
 {{%- else -%}}
 Inspect the form of default GRUB 2 command line for the Linux operating system
-in <tt>{{{ grub2_boot_path }}}/grubenv</tt>. If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
+{{% if grub2_boot_path == grub2_uefi_boot_path or not grub2_uefi_boot_path -%}}
+in <tt>{{{ grub2_boot_path }}}/grubenv</tt>.
+{{%- else -%}}
+in <tt>grubenv</tt> that can be found either in <tt>{{{ grub2_boot_path }}}</tt> in case of legacy BIOS systems, or in <tt>{{{ grub2_uefi_boot_path }}}</tt> in case of UEFI systems.
+{{%- endif %}}
+If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
 is configured at boot time.
 <pre># grep 'kernelopts.*{{{ arg_name_value }}}.*' {{{ grub2_boot_path }}}/grubenv</pre>
 {{%- endif -%}}
