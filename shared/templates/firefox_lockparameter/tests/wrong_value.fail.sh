@@ -17,5 +17,5 @@ for firefox_dir in ${firefox_dirs}; do
         sed "/^lockPref(\"${FIREFOX_PARAM}\"/Id" $1
     fi
     # put bad value in
-    echo 'lockPref("'"${FIREFOX_PARAM}"'", '"${FIREFOX_VAL}"');' &gt;&gt; "${firefox_dir}/${firefox_cfg}"
+    echo 'lockPref("'"${FIREFOX_PARAM}"'", '"${FIREFOX_VAL}"');' >> "${firefox_dir}/${firefox_cfg}"
 done
