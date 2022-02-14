@@ -13,5 +13,9 @@ else
         sed -i "s|^#includedir.*|#includedir /etc/sudoers.d|g" "$sudoers_config_file"
     fi
 fi
-sed -i "/^#include\s\+.*/d" "$sudoers_config_file" "${sudoers_config_dir}"/*
-sed -i "/^#includedir\s\+.*/d" "${sudoers_config_dir}"/*
+
+sed -i "/^#include\s\+.*/d" "$sudoers_config_file"
+
+if grep -Pr "^#include(dir)? .*" "$sudoers_config_dir" ; then
+    sed -i "/^#include\(dir\)\?\s\+.*/d" "$sudoers_config_dir"/*
+fi
