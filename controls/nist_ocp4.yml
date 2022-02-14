@@ -13251,7 +13251,7 @@ controls:
     applicable to the configuration of OpenShift.
   rules: []
 - id: SC-6
-  status: pending
+  status: automated
   notes: |-
     The customer is responsible for the protection and availability of
     resources by allocating processor and memory resources by process
@@ -13269,7 +13269,10 @@ controls:
     [2] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html
     [3] https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-across-multiple-projects.html
     [4] https://docs.openshift.com/container-platform/4.7/nodes/pods/nodes-pods-priority.html
-  rules: []
+  rules: 
+  - resource_requests_limits_in_daemonset
+  - resource_requests_limits_in_statefulset
+  - resource_requests_limits_in_deployment
   description: |-
     The information system protects the availability of resources by allocating [Assignment: organization-defined resources] by [Selection (one or more); priority; quota; [Assignment: organization-defined security safeguards]].
 
