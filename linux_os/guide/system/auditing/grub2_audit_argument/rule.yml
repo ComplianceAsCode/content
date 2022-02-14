@@ -7,15 +7,8 @@ title: 'Enable Auditing for Processes Which Start Prior to the Audit Daemon'
 description: |-
     To ensure all processes can be audited, even those which start
     prior to the audit daemon, add the argument <tt>audit=1</tt> to the default
-    GRUB 2 command line for the Linux operating system in
-{{% if product in ["rhel7", "ol7"] %}}
-    <tt>/etc/default/grub</tt>, so that the line looks similar to
-    <pre>GRUB_CMDLINE_LINUX="... audit=1 ..."</pre>
-    In case the <tt>GRUB_DISABLE_RECOVERY</tt> is set to true, then the parameter should be added to the <tt>GRUB_CMDLINE_LINUX_DEFAULT</tt> instead.
-{{% else %}}
-    <tt>{{{ grub2_boot_path }}}/grubenv</tt>, in the manner below:
-    <pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit=1"</pre>
-{{% endif %}}
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("audit=1") | indent(4) }}}
 
 rationale: |-
     Each process on the system carries an "auditable" flag which indicates whether
@@ -59,57 +52,7 @@ references:
 ocil_clause: 'auditing is not enabled at boot time'
 
 ocil: |-
-{{% if product in ["rhel7", "ol7", "sle12","sle15"] %}}
-    Inspect the form of default GRUB 2 command line for the Linux operating system
-    in <tt>/etc/default/grub</tt>. If it includes <tt>audit=1</tt>, then auditing
-    is enabled at boot time.
-    First check if the GRUB recovery is enabled:
-    <pre>$ grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
-    If this option is set to true, then check that a line is output by the following command:
-    <pre>$ grep 'GRUB_CMDLINE_LINUX_DEFAULT.*audit=1.*' /etc/default/grub</pre>
-    If the recovery is disabled, check the line with
-    <pre>$ grep 'GRUB_CMDLINE_LINUX.*audit=1.*' /etc/default/grub</pre>.
-    Moreover, current Grub2 config file in <tt>/etc/grub2/grub.cfg</tt> must be checked.
-    <pre># grep vmlinuz {{{ grub2_boot_path }}}/grub.cfg | grep -v 'audit=1'</pre>
-    This command should not return any output. If it does, update the configuration with
-    <pre># grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre>
-    <br /><br />
-    Alternatively, to ensure <tt>audit=1</tt> is configured on all installed kernels, the
-    following command may be used:
-    <br />
-    <pre>$ sudo /sbin/grubby --update-kernel=ALL --args="audit=1"</pre>
-    <br />
-{{% else %}}
-    Inspect the form of default GRUB 2 command line for the Linux operating system
-    in <tt>{{{ grub2_boot_path }}}/grubenv</tt>. If they include <tt>audit=1</tt>, then auditing
-    is enabled at boot time.
-    <pre># grep 'kernelopts.*audit=1.*' {{{ grub2_boot_path }}}/grubenv</pre>
-    <br /><br />
-    To ensure <tt>audit=1</tt> is configured on all installed kernels, the
-    following command may be used:
-    <br />
-    <pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit=1"</pre>
-    <br />
-{{% endif %}}
-
-
-warnings:
-    - management: |-
-        The GRUB 2 configuration file, <tt>grub.cfg</tt>,
-        is automatically updated each time a new kernel is installed. Note that any
-        changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
-        file. To update the GRUB 2 configuration file manually, use the
-        <pre>grub2-mkconfig -o</pre> command as follows:
-        <ul>
-        <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
-        <pre>~]# grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre></li>
-        <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
-{{% if product in ["rhel7", "ol7", "rhel8", "ol8"] %}}
-        <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
-{{% else %}}
-        <pre>~]# grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre></li>
-{{% endif %}}
-        </ul>
+    {{{ ocil_grub2_argument("audit=1") | indent(4) }}}
 
 platform: grub2
 
