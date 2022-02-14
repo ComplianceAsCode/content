@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="grub2_entries_reference_kernelopts" version="2">
+  {{{ oval_metadata(
+	  "Ensure that grubenv-defined kernel options are referenced in individual boot loader entries",
+	  title="Use $kernelopts in /boot/loader/entries/*.conf",
+	  affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="AND">
+        <criterion test_ref="test_grub2_entries_reference_kernelopts"
+        comment="check kernel command line parameters for referenced boot entries reference the $kernelopts variable." />
+    </criteria>
+  </definition>
+
+    <ind:textfilecontent54_test id="test_grub2_entries_reference_kernelopts"
+                                comment="check kernel command line parameters for referenced boot entries reference the $kernelopts variable."
+                                check="all" check_existence="all_exist" version="1">
+      <ind:object object_ref="object_grub2_entries_reference_kernelopts" />
+    </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_grub2_entries_reference_kernelopts" version="1">
+    <ind:path>/boot/loader/entries/</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^options(?:\s+.*)?\s+\$kernelopts\b.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>                                                                             
+  </ind:textfilecontent54_object>
+</def-group>
