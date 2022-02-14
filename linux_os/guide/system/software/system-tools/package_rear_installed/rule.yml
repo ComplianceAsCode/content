@@ -25,6 +25,10 @@ ocil: '{{{ ocil_package(package="rear") }}}'
 # The package is not available for s309x on RHEL<8.5
 # platform: not_s390x_arch
 
+{{%- if product == "rhel9" %}}
+platform: not_aarch64_arch
+{{%- endif %}}
+
 template:
     name: package_installed
     vars:
