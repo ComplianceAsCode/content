@@ -1219,9 +1219,9 @@ directory, execute the following command:
 
     podman build --build-arg CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub) -t ssg_test_suite -f Dockerfiles/test_suite-fedora
 
-Unit tests reside en each rule's `tests/` directory. Tests are
+Unit tests reside in each rule's `tests/` directory. Tests are
 simply bash scripts that set up the required environment
-and set expectations on what the scan is suposed to output.
+and set expectations on what the scan is supposed to output.
 
 The naming convention is as follows:
 
