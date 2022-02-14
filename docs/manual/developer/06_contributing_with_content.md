@@ -1217,7 +1217,7 @@ is intended to run.
 To build the container, from the project's root
 directory, execute the following command:
 
-    podman build --build-arg CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub) -t ssg_test_suite -f Dockerfiles/test_suite-fedora
+    podman build --build-arg CLIENT_PUBLIC_KEY="$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f test_suite-fedora Dockerfiles
 
 Unit tests reside en each rule's `tests/` directory. Tests are
 simply bash scripts that set up the required environment
