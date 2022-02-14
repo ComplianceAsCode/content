@@ -1,0 +1,36 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_sudo_timestamp_timeout") }}}
+- name: "Find out if /etc/sudoers.d/* files contain 'Defaults timestamp_timeout' to be deduplicated"
+  find:
+    path: "/etc/sudoers.d"
+    patterns: "*"
+    contains: '^[\s]*Defaults\s.*\btimestamp_timeout=.*'
+  register: sudoers_d_defaults_timestamp_timeout
+
+- name: "Remove found occurrences of 'Defaults timestamp_timeout' from /etc/sudoers.d/* files"
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: '^[\s]*Defaults\s.*\btimestamp_timeout=.*'
+    state: absent
+  with_items: "{{ sudoers_d_defaults_timestamp_timeout.files }}"
+
+- name: Ensure timestamp_timeout is enabled with the appropriate value in /etc/sudoers
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^[\s]*Defaults\s(.*)\btimestamp_timeout=[-]?\w+\b(.*)$'
+    line: 'Defaults \1timestamp_timeout={{ var_sudo_timestamp_timeout }}\2'
+    validate: /usr/sbin/visudo -cf %s
+    backrefs: yes
+  register: edit_sudoers_timestamp_timeout_option
+
+- name: Enable timestamp_timeout option with appropriate value in /etc/sudoers
+  lineinfile: # noqa 503
+    path: /etc/sudoers
+    line: 'Defaults timestamp_timeout={{ var_sudo_timestamp_timeout }}'
+    validate: /usr/sbin/visudo -cf %s
+  when: edit_sudoers_timestamp_timeout_option is defined and not edit_sudoers_timestamp_timeout_option.changed
