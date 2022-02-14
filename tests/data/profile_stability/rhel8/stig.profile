@@ -366,6 +366,7 @@ selections:
 - sudo_remove_nopasswd
 - sudo_require_reauthentication
 - sudo_restrict_privilege_elevation_to_authorized
+- sudoers_default_includedir
 - sudoers_validate_passwd
 - sysctl_crypto_fips_enabled
 - sysctl_fs_protected_hardlinks
