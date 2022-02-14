@@ -13,6 +13,8 @@ description: |-
     <pre>maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>
     to <pre>server</pre> directives. If using chrony any <pre>pool</pre> directives
     should be configured too.
+    If no <tt>server</tt> or <tt>pool</tt> directives are configured, the rule evaluates
+    to pass.
     {{% if product == "rhcos4" %}}
     <p>
     Note that if the remediation shipping with this content is being used, the

@@ -160,6 +160,7 @@ selections:
 - chronyd_client_only
 - chronyd_no_chronyc_network
 - chronyd_or_ntpd_set_maxpoll
+- chronyd_server_directive
 - clean_components_post_updating
 - configure_bashrc_exec_tmux
 - configure_bind_crypto_policy
