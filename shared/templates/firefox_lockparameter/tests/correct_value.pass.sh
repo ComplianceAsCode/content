@@ -17,6 +17,6 @@ for firefox_dir in ${firefox_dirs}; do
     if LC_ALL=C grep -q "^lockPref(\"${FIREFOX_PARAM}\"" $1; then
         sed "/^lockPref(\"${FIREFOX_PARAM}\"/Id" $1
     fi
-    # put bad value in
-    echo 'lockPref("'"${FIREFOX_PARAM}"'", '"${FIREFOX_VAL}"');' &gt;&gt; "${firefox_dir}/${firefox_cfg}"
+    # put correct value in
+    echo 'lockPref("'"${FIREFOX_PARAM}"'", '"${FIREFOX_VAL}"');' >> "${firefox_dir}/${firefox_cfg}"
 done
