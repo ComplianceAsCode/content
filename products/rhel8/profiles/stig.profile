@@ -273,6 +273,9 @@ selections:
     # RHEL-08-010376
     - sysctl_kernel_perf_event_paranoid
 
+    # RHEL-08-010379
+    - sudoers_default_includedir
+
     # RHEL-08-010380
     - sudo_remove_nopasswd
 
