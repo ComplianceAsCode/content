@@ -18,6 +18,12 @@
 {{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
 {{% endif %}}
 
+{{% if 'rhel' not in product %}}
+{{% set configString = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
+{{% else %}}
+{{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
+{{% endif %}}
+
 {{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
 {{% for file in auditfiles %}}
 
