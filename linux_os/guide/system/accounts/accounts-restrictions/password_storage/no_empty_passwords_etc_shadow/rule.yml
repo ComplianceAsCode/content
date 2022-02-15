@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Ensure There Are No Accounts With Blank or Null Passwords'
+
+description: |-
+    Check the "/etc/shadow" file for blank passwords with the
+    following command:
+    <pre>$ sudo awk -F: '!$2 {print $1}' /etc/shadow</pre>
+    If the command returns any results, this is a finding.
+    Configure all accounts on the system to have a password or lock
+    the account with the following commands:
+    Perform a password reset:
+    <pre>$ sudo passwd [username]</pre>
+    Lock an account:
+    <pre>$ sudo passwd -l [username]</pre>
+
+rationale: |-
+    If an account has an empty password, anyone could log in and
+    run commands with the privileges of that account. Accounts with
+    empty passwords should never be used in operational environments.
+
+severity: high
+
+references:
+    disa: CCI-000366
+    nist: CM-6(b),CM-6.1(iv)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@ol7: OL07-00-010291
+
+ocil_clause: 'Blank or NULL passwords can be used'
+
+ocil: |-
+    To verify that null passwords cannot be used, run the following command:
+    <pre>$ sudo awk -F: '!$2 {print $1}' /etc/shadow</pre>
+    If this produces any output, it may be possible to log into accounts
+    with empty passwords.
+    Configure all accounts on the system to have a password or lock
+    the account with the following commands:
+    Perform a password reset:
+    <pre>$ sudo passwd [username]</pre>
+    Lock an account:
+    <pre>$ sudo passwd -l [username]</pre>

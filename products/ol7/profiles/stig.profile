@@ -316,3 +316,4 @@ selections:
     - selinux_context_elevation_for_sudo
     - sudoers_default_includedir
     - disallow_bypass_password_sudo
+    - no_empty_passwords_etc_shadow
