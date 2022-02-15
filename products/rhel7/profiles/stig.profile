@@ -326,3 +326,4 @@ selections:
     - auditd_overflow_action
     - auditd_name_format
     - sebool_ssh_sysadm_login
+    - sudoers_default_includedir
