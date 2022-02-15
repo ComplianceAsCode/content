@@ -4,13 +4,21 @@ image:
 
 vscode:
   extensions:
-    - ggbecker.content-navigator
-    - ms-vscode.live-server
+    - ggbecker.content-navigator # useful extension for the ComplianceAsCode/content project
+    - ms-vscode.live-server # HTML preview
     - rogalmic.bash-debug # support bashdb debug configurations
+    - eamodio.gitlens # cool git extension with a bunch of extra features
+    - twxs.cmake # support to CMakeLists.txt syntax highlighting and more
 
 tasks:
   - name: Prepare Env
     init: |
+      pip install docker ansible json2html docutils==0.17.1 \
+        commonmark \
+        recommonmark==0.6.0 \
+        sphinx \
+        sphinx-rtd-theme \
+        git+git://github.com/ggbecker/sphinxcontrib.jinjadomain.git#egg=sphinxcontrib-jinjadomain
       [ -z "$PRODUCT" ] && PRODUCT="fedora"
       [ -z "$CONTAINER" ] && CONTAINER="fedora:34"
       [ -z "$CPE" ] && CPE="cpe:/o:fedoraproject:fedora:34"
