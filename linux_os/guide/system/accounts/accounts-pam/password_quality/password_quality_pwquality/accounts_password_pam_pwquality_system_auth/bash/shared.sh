@@ -21,7 +21,7 @@ if [ -f /usr/bin/authselect ]; then
         # Include the desired configuration in the custom profile
         CUSTOM_FILE="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE"
         # The line should be included on the top password section
-		if [ $(grep -c "^\s*password.*requisite.*pam_pwquality.so" $CUSTOM_FILE) -eq 0 ]; then
+		if [ "$(grep -c "^\s*password.*requisite.*pam_pwquality.so" $CUSTOM_FILE)" -eq 0 ]; then
   		  sed -i --follow-symlinks '0,/^password.*/s/^password.*/password    requisite                                    pam_pwquality.so\n&/' $CUSTOM_FILE
 		fi
         authselect apply-changes -b --backup=after-pwquality-hardening.backup
@@ -35,7 +35,7 @@ In cases where the default authselect profile does not cover a specific demand, 
     fi
 else
     FILE_PATH="/etc/pam.d/$PAM_FILE"
-    if [ $(grep -c "^\s*password.*requisite.*pam_pwquality.so" $FILE_PATH) -eq 0 ]; then
+    if [ "$(grep -c "^\s*password.*requisite.*pam_pwquality.so" $FILE_PATH)" -eq 0 ]; then
         sed -i --follow-symlinks '0,/^password.*/s/^password.*/password    requisite                                    pam_pwquality.so\n&/' $FILE_PATH
     fi
 fi
