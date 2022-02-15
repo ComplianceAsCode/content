@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Only use approved container registries'
+
+description: |-
+  Use approved container registries.
+
+rationale: |-
+  Allowing unrestricted access to external container registries provides the
+  opportunity for malicious or unapproved containers to be deployed into the
+  cluster. Allowlisting only approved container registries reduces this risk.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-86901-6
+
+references:
+  cis@eks: 5.1.4
+
+ocil_clause: 'container images come from approved registries'
+
+ocil: |-
+  Ensure all containers and images are coming from approved registries.
+
+  References:
+
+  https://aws.amazon.com/blogs/opensource/using-open-policy-agent-on-amazon-eks/

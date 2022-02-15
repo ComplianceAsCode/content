@@ -816,7 +816,8 @@ controls:
         for known vulnerabilities.
       levels:
       - level_1
-      rules: []
+      rules:
+      - image_scanning
     - id: 5.1.2
       title: >-
         5.1.2 Minimize user access to Amazon ECR
@@ -836,7 +837,8 @@ controls:
         built images with vulnerable containers.
       levels:
       - level_1
-      rules: []
+      rules:
+      - registry_access
     - id: 5.1.3
       title: >-
         5.1.3 Minimize cluster access to read-only for Amazon ECR
@@ -859,7 +861,8 @@ controls:
           required role.
       levels:
       - level_1
-      rules: []
+      rules:
+      - read_only_registry_access
     - id: 5.1.4
       title: >-
         5.1.4 Minimize Container Registries to only those approved
@@ -879,7 +882,8 @@ controls:
           registries reduces this risk.
       levels:
       - level_2
-      rules: []
+      rules:
+      - approved_registries
   - id: '5.2'
     title: >-
       5.2 Identity and Access Management (IAM)

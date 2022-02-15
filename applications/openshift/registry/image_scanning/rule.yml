@@ -1,0 +1,48 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Ensure Image Vulnerability Scanning'
+
+description: |-
+  Scan images being deployed to Amazon EKS for vulnerabilities.
+
+rationale: |-
+  Vulnerabilities in software packages can be exploited by hackers or malicious
+  users to obtain unauthorized access to local cloud resources. Amazon ECR and
+  other third party products allow images to be scanned for known
+  vulnerabilities.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-88990-7
+
+references:
+  cis@eks: 5.1.1
+
+ocil_clause: 'image vulnerability scanning is enabled'
+
+ocil: |-
+  Please follow AWS ECS or your 3rd party image scanning provider's guidelines
+  for enabling Image Scanning.
+
+  Remediation:
+
+  To utilize AWS ECR for Image scanning please follow the steps below:
+
+  To create a repository configured for scan on push (AWS CLI)
+
+  <tt>aws ecr create-repository --repository-name <i>$REPO_NAME</i> --image-scanning- configuration scanOnPush=true --region <i>$REGION_CODE</i></tt>
+
+  To edit the settings of an existing repository (AWS CLI)
+
+  <tt>aws ecr put-image-scanning-configuration --repository-name <i>$REPO_NAME</i> -- image-scanning-configuration scanOnPush=true --region <i>$REGION_CODE</i></tt>
+
+  Use the following steps to start a manual image scan using the AWS Management Console.
+
+  1. Open the Amazon ECR console at https://console.aws.amazon.com/ecr/repositories.
+  2. From the navigation bar, choose the Region to create your repository in.
+  3. In the navigation pane, choose Repositories.
+  4. On the Repositories page, choose the repository that contains the image to scan.
+  5. On the Images page, select the image to scan and then choose Scan.
