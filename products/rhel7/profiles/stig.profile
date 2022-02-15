@@ -46,7 +46,7 @@ selections:
     - var_accounts_minimum_age_login_defs=1
     - var_password_pam_maxrepeat=3
     - var_accounts_maximum_age_login_defs=60
-    - var_account_disable_post_pw_expiration=0
+    - var_account_disable_post_pw_expiration=35
     - var_removable_partition=dev_cdrom
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
@@ -56,7 +56,7 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_tmout=15_min
     - var_accounts_authorized_local_users_regex=rhel7
-    - var_time_service_set_maxpoll=system_default
+    - var_time_service_set_maxpoll=18_hours
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
@@ -326,3 +326,5 @@ selections:
     - auditd_overflow_action
     - auditd_name_format
     - sebool_ssh_sysadm_login
+    - sudoers_default_includedir
+    - package_aide_installed
