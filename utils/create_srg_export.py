@@ -215,18 +215,18 @@ def main() -> None:
         sys.stderr.write("Hint: run ./utils/rule_dir_json.py\n")
         exit(2)
     srgs = get_srg_dict(args.manual)
-    control = ssg.controls.Policy(args.control)
-    control.load()
+    product_dir = os.path.join(args.root, "products", args.product)
+    product_yaml_path = os.path.join(product_dir, "product.yml")
+    env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
+
+    policy = ssg.controls.Policy(args.control, env_yaml=env_yaml)
+    policy.load()
     rule_json = get_rule_json(args.json)
     full_output = pathlib.Path(args.output)
     with open(full_output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
 
-        product_dir = os.path.join(args.root, "products", args.product)
-        product_yaml_path = os.path.join(product_dir, "product.yml")
-        env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
-
-        for control in control.controls:
+        for control in policy.controls:
             handle_control(args.product, control, csv_writer, env_yaml, rule_json, srgs)
         print(f"File written to {full_output}")
 
