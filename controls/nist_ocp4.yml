@@ -15892,17 +15892,35 @@ controls:
   - high
   - moderate
 - id: SI-7(2)
-  status: pending
+  status: automated
   notes: |-
-    A control response for SI-7(2) is planned. Engineering progress can be
-    tracked via:
+    The OpenShift Platform provides the File Integrity Operator to do
+    integrity verification of files and information on the nodes. [1]
 
-    https://issues.redhat.com/browse/CMP-545
-  rules: []
+    The operator can be configured to perform integrity checks at user-defined
+    intervals. [2]
+
+    A Prometheus rule will be added for the File Integrity Operator to alert
+    organization defined personnel for any integrity check failure. 
+
+    [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-installation.html
+    [2] https://docs.openshift.com/container-platform/4.6/security/file_integrity_operator/file-integrity-operator-configuring.html
+
+  rules:
+  - file_integrity_exists
+  - file_integrity_notification_enabled
+
   description: |-
-    The organization employs automated tools that provide notification to [Assignment: organization- defined personnel or roles] upon discovering discrepancies during integrity verification.
+    The organization employs automated tools that provide notification
+    to [Assignment: organization- defined personnel or roles] upon discovering
+    discrepancies during integrity verification.
 
-    Supplemental Guidance:  The use of automated tools to report integrity violations and to notify organizational personnel in a timely matter is an essential precursor to effective risk response. Personnel having an interest in integrity violations include, for example, mission/business owners, information system owners, systems administrators, software developers, systems integrators, and information security officers.
+    Supplemental Guidance:  The use of automated tools to report integrity violations
+    and to notify organizational personnel in a timely matter is an essential
+    precursor to effective risk response. Personnel having an interest in integrity
+    violations include, for example, mission/business owners, information system
+    owners, systems administrators, software developers, systems integrators, and
+    information security officers.    
   title: >-
     SI-7(2) - SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY | AUTOMATED NOTIFICATIONS
     OF INTEGRITY VIOLATIONS
