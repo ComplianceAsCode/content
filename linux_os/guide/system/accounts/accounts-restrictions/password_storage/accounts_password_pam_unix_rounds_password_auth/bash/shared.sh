@@ -20,7 +20,7 @@ if [ -f /usr/bin/authselect ]; then
         fi
         # Include the desired configuration in the custom profile
         CUSTOM_PASSWORD_AUTH="/etc/authselect/$CURRENT_PROFILE/password-auth"
-		if ! $(grep -q "^\s*password.*pam_unix.so.*rounds=" $CUSTOM_PASSWORD_AUTH); then
+		if ! grep -q "^\s*password.*pam_unix.so.*rounds=" $CUSTOM_PASSWORD_AUTH; then
 			sed -i --follow-symlinks "/^\s*password.*pam_unix.so/ s/$/ rounds=$var_password_pam_unix_rounds/" $CUSTOM_PASSWORD_AUTH
 		else
 			sed -r -i --follow-symlinks "s/(^\s*password.*pam_unix.so.*)(rounds=[[:digit:]]+)(.*)/\1rounds=$var_password_pam_unix_rounds \3/g" $CUSTOM_PASSWORD_AUTH
