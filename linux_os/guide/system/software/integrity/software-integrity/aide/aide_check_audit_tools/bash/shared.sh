@@ -24,7 +24,6 @@
 {{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
 {{% endif %}}
 
-{{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
 {{% for file in auditfiles %}}
 
 if grep -i '^.*{{{file}}}.*$' {{{ aide_conf_path }}}; then
