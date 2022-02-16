@@ -43,6 +43,18 @@ warnings:
         -a always,exit -F arch=b64 -S renameat2 -F auid>=1000 -F auid!=4294967295 -k perm_mod</pre>
 
 template:
+    {{% if product not in ["sle15"] %}}
+    name: audit_rules_unsuccessful_file_modification
+    vars:
+        name: renameat2
+        syscall_grouping:
+          - rename
+          - renameat
+          - renameat2
+          - unlink
+          - unlinkat
+    {{% else %}}
     name: audit_rules_syscall_events
     vars:
         attr: renameat2
+    {{% endif %}}
