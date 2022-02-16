@@ -38,13 +38,21 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the {{% i
 This rule's check operates on the cluster configuration dump.
 Therefore, you need to use a tool that can query the OCP API, retrieve the following:
 <ul>
-{{% for path, filter in path_filter_pairs.items() %}}
+{{% for obj_path, v in path_filter_pairs.items() %}}
+  {{% set vars = v.split(',') %}}
+  {{% if vars|length == 2 %}}
+    {{% set dump_path = vars[0] %}}
+    {{% set filter = vars[1] %}}
+  {{% else %}}
+    {{% set dump_path = obj_path %}}
+    {{% set filter = v %}}
+  {{% endif %}}
   <li>
-    <code class="ocp-api-endpoint" id="{{{ (path+filter)|sha256 }}}">{{{ path }}}</code>
+    <code class="ocp-api-endpoint" id="{{{ (dump_path+filter)|sha256 }}}">{{{ obj_path }}}</code>
     API endpoint, filter with with the <code>jq</code> utility using the following filter
-    <code class="ocp-api-filter" id="filter-{{{ (path+filter)|sha256 }}}">{{{ filter }}}</code>
+    <code class="ocp-api-filter" id="filter-{{{ (dump_path+filter)|sha256 }}}">{{{ filter }}}</code>
     and persist it to the local
-    <code class="ocp-dump-location" id="dump-{{{ (path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ path.lstrip("/") }}}#{{{ (path+filter)|sha256 }}}</code>
+    <code class="ocp-dump-location" id="dump-{{{ (dump_path+filter)|sha256 }}}">{{{ xccdf_value("ocp_data_root") }}}/{{{ dump_path.lstrip("/") }}}#{{{ (dump_path+filter)|sha256 }}}</code>
     file.
   </li>
 {{% endfor %}}
