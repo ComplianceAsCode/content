@@ -5,7 +5,12 @@ prodtype: ocp4
 title: 'Ensure all admission control plugins are enabled'
 
 
+
 {{% set jqfilter = '[.data."config.yaml" | fromjson | .apiServerArguments | select(has("disable-admission-plugins")) | if ."disable-admission-plugins" != ["PodSecurity"] then ."disable-admission-plugins" else empty end]' %}}
+{{% set apipath = '/apis/{{.openshift_kube_apiserver_namespace}}config.openshift.io/v1/clusterversions/version' %}}
+{{% set apipathdefault = '/apis/config.openshift.io/v1/clusterversions/version' %}}
+{{% set dump = apipathdefault ~ ',' ~ jqfilter %}}
+
 
 description: |-
     To make sure none of them is explicitly disabled except PodSecurity, run the following command:
@@ -40,7 +45,7 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/api/v1/namespaces/openshift-kube-apiserver/configmaps/config': jqfilter}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({apipath: dump}) | indent(4) }}}
 
 
 template:
@@ -48,7 +53,7 @@ template:
   vars:
     ocp_data: "true"
     filepath: |-
-      {{{ openshift_filtered_path('/api/v1/namespaces/openshift-kube-apiserver/configmaps/config', jqfilter) }}}
+      {{{ openshift_filtered_path(apipathdefault, jqfilter) }}}
     yamlpath: "[:]"
     check_existence: "none_exist"
     entity_check: "all"
