@@ -1,5 +1,10 @@
 documentation_complete: true
 
+metadata:
+   version: V6R1
+   SMEs:
+       - lenox-joseph
+
 title: 'Upstream Firefox STIG'
 
 description: |-
