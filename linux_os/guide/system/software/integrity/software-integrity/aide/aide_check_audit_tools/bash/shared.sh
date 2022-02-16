@@ -18,7 +18,12 @@
 {{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
 {{% endif %}}
 
+{{% if 'rhel' not in product %}}
+{{% set configString = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
+{{% else %}}
 {{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
+{{% endif %}}
+
 {{% for file in auditfiles %}}
 
 if grep -i '^.*{{{file}}}.*$' {{{ aide_conf_path }}}; then
