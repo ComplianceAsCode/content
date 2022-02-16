@@ -1,0 +1,52 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Ensure Network Policy is Enabled'
+
+description: |-
+  Use Network Policy to restrict pod to pod traffic within a cluster and
+  segregate workloads.
+
+rationale: |-
+  By default, all pod to pod traffic within a cluster is allowed. Network
+  Policy creates a pod- level firewall that can be used to restrict traffic
+  between sources. Pod traffic is restricted by having a Network Policy that
+  selects it (through the use of labels). Once there is any Network Policy in a
+  namespace selecting a particular pod, that pod will reject any connections
+  that are not allowed by any Network Policy. Other pods in the namespace that
+  are not selected by any Network Policy will continue to accept all traffic.
+
+  Network Policies are managed via the Kubernetes Network Policy API and
+  enforced by a network plugin, simply creating the resource without a
+  compatible network plugin to implement it will have no effect. EKS supports
+  Network Policy enforcement through the use of Calico.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-88207-6
+
+references:
+  cis@eks: 5.4.4
+
+ocil_clause: 'network policy is enabled'
+
+ocil: |-
+  Network Policy requires the Network Policy add-on. This add-on is included
+  automatically when a cluster with Network Policy is created, but for an
+  existing cluster, needs to be added prior to enabling Network Policy.
+
+  Enabling/Disabling Network Policy causes a rolling update of all cluster
+  nodes, similar to performing a cluster upgrade. This operation is
+  long-running and will block other operations on the cluster (including
+  delete) until it has run to completion.
+
+  If Network Policy is used, a cluster must have at least 2 nodes of type
+  <tt>n1-standard-1</tt> or higher. The recommended minimum size cluster to run
+  Network Policy enforcement is 3 <tt>n1-standard-1</tt> instances.
+
+  Enabling Network Policy enforcement consumes additional resources in nodes.
+  Specifically, it increases the memory footprint of the <tt>kube-system</tt>
+  process by approximately 128MB, and requires approximately 300 millicores of
+  CPU.

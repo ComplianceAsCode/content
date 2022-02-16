@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Ensure Private Endpoint Access'
+
+description: |-
+  Disable access to the Kubernetes API from outside the node network if it is
+  not required.
+
+rationale: |-
+  In a private cluster, the master node has two endpoints, a private and public
+  endpoint. The private endpoint is the internal IP address of the master,
+  behind an internal load balancer in the master's VPC network. Nodes
+  communicate with the master using the private endpoint. The public endpoint
+  enables the Kubernetes API to be accessed from outside the master's VPC
+  network.
+
+  Although Kubernetes API requires an authorized token to perform sensitive
+  actions, a vulnerability could potentially expose the Kubernetes publically
+  with unrestricted access. Additionally, an attacker may be able to identify
+  the current cluster and Kubernetes API version and determine whether it is
+  vulnerable to an attack. Unless required, disabling public endpoint will help
+  prevent such threats, and require the attacker to be on the master's VPC
+  network to perform any attack on the Kubernetes API.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-88813-1
+
+references:
+  cis@eks: 5.4.2
+
+ocil_clause: 'private acces is enabled and public access is disabled'
+
+ocil: |-
+  Configure the EKS cluster endpoint to be private. See Modifying Cluster
+  Endpoint Access for further information on this topic.
+  https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html
