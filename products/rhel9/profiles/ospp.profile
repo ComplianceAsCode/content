@@ -11,14 +11,13 @@ reference: https://www.niap-ccevs.org/Profile/PP.cfm
 title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
 
 description: |-
-    This profile reflects mandatory configuration controls identified in the
-    NIAP Configuration Annex to the Protection Profile for General Purpose
-    Operating Systems (Protection Profile Version 4.2.1).
+    This profile is part of Red Hat Enterprise Linux 9 Common Criteria Guidance
+    documentation for Target of Evaluation based on Protection Profile for
+    General Purpose Operating Systems (OSPP) version 4.2.1 and Functional
+    Package for SSH version 1.0.
 
-    This configuration profile is consistent with CNSSI-1253, which requires
-    U.S. National Security Systems to adhere to certain configuration
-    parameters. Accordingly, this configuration profile is suitable for
-    use in U.S. National Security Systems.
+    Where appropriate, CNSSI 1253 or DoD-specific values are used for
+    configuration, based on Configuration Annex to the OSPP.
 
 selections:
 
