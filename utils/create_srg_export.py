@@ -148,26 +148,29 @@ def parse_args() -> argparse.Namespace:
 
 
 def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.DictWriter,
-                   env_yaml: ssg.environment, rule_json: dict, srgs: dict) -> None:
+                   env_yaml: ssg.environment, rule_json: dict, srgs: dict,
+                   used_rules: list) -> None:
     if len(control.selections) > 0:
         for rule in control.selections:
-            row = create_base_row(control, srgs)
-            rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
-            if control.levels is not None:
-                row['Severity'] = control.levels[0]
-            row['Requirement'] = html_plain_text(rule_object.description)
-            row['Vul Discussion'] = html_plain_text(rule_object.rationale)
-            row['Check'] = f'{html_plain_text(rule_object.ocil)}\n\n' \
-                           f'If {rule_object.ocil_clause}, then this is a finding.'
-            row['Fix'] = html_plain_text(rule_object.fix)
-            if control.status is not None:
-                row['Status'] = DisaStatus.from_string(control.status)
-            else:
-                row['Status'] = DisaStatus.AUTOMATED
-            csv_writer.writerow(row)
+            if rule not in used_rules:
+                rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
+                row = create_base_row(control, srgs, rule_object)
+                if control.levels is not None:
                     row['Severity'] = get_severity(control.levels[0])
+                row['Requirement'] = srgs[control.id]['title'].replace('The operating system',
+                                                                       env_yaml['full_name'])
+                row['Vul Discussion'] = html_plain_text(rule_object.rationale)
+                row['Check'] = f'{html_plain_text(rule_object.ocil)}\n\n' \
+                               f'If {rule_object.ocil_clause}, then this is a finding.'
+                row['Fix'] = html_plain_text(rule_object.fix)
+                if control.status is not None:
+                    row['Status'] = DisaStatus.from_string(control.status)
+                else:
+                    row['Status'] = DisaStatus.AUTOMATED
+                csv_writer.writerow(row)
+                used_rules.append(rule)
     else:
-        row = create_base_row(control, srgs)
+        row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
         row['Requirement'] = control.description
         row['Status'] = DisaStatus.from_string(control.status)
         row['Vul Discussion'] = control.rationale
@@ -177,15 +180,17 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
         csv_writer.writerow(row)
 
 
-def create_base_row(item: ssg.controls.Control, srgs: dict) -> dict:
+def create_base_row(item: ssg.controls.Control, srgs: dict,
+                    rule_object: ssg.build_yaml.Rule) -> dict:
     row = dict()
     srg_id = item.id
     if srg_id not in srgs:
         print(f"Unable to find SRG {srg_id}. Id in the control must be a valid SRGID.")
         exit(1)
     srg = srgs[srg_id]
-    row['SRGID'] = srg_id
-    row['CCI'] = srg['cci']
+
+    row['SRGID'] = rule_object.references.get('srg', srg_id)
+    row['CCI'] = rule_object.references.get('disa', srg['cci'])
     row['SRG Requirement'] = srg['title']
     row['SRG VulDiscussion'] = srg['vuln_discussion']
     row['SRG Check'] = srg['check']
@@ -233,11 +238,13 @@ def main() -> None:
     policy.load()
     rule_json = get_rule_json(args.json)
     full_output = pathlib.Path(args.output)
+    used_rules = list()
     with open(full_output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
 
         for control in policy.controls:
-            handle_control(args.product, control, csv_writer, env_yaml, rule_json, srgs)
+            handle_control(args.product, control, csv_writer, env_yaml, rule_json, srgs,
+                           used_rules)
         print(f"File written to {full_output}")
 
 
