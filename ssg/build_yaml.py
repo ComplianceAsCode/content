@@ -2060,7 +2060,7 @@ class Platform(XCCDFEntity):
             cpe_platform.append(cpe_test)
         else:
             cpe_platform.append(self.test.to_xml_element())
-        xmlstr = ET.tostring(cpe_platform, encoding="utf8", method="xml")
+        xmlstr = ET.tostring(cpe_platform).decode()
         return xmlstr
 
     def to_xml_element(self):
