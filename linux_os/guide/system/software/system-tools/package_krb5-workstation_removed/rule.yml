@@ -27,6 +27,12 @@ references:
     stigid@ol8: OL08-00-010162
     stigid@rhel8: RHEL-08-010162
 
+platforms:
+{{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
+
+warnings:
+{{{ ovirt_rule_notapplicable_warning("RHV hosts require ipa-client package, which has dependency on krb5-workstation") | indent(4) }}}
+
 {{{ complete_ocil_entry_package(package="krb5-workstation") }}}
 
 template:
