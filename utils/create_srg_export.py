@@ -35,6 +35,15 @@ NS = {'scap': ssg.constants.datastream_namespace,
 SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 
 
+def get_severity(input_serverity: str) -> str:
+    if input_serverity not in ['CAT I', 'CAT II', 'CAT III', 'low', 'medium', 'high']:
+        raise ValueError(f'Severity of {input_serverity}')
+    elif input_serverity in ['CAT I', 'CAT II', 'CAT III']:
+        return input_serverity
+    else:
+        return SEVERITY[input_serverity]
+
+
 class DisaStatus:
     """
     Convert control status to a string for the spreadsheet
@@ -94,7 +103,7 @@ def get_srg_dict(xml_path: str) -> dict:
         for srg in group.findall('xccdf-1.1:Rule', NS):
             srg_id = srg.find('xccdf-1.1:version', NS).text
             srgs[srg_id] = dict()
-            srgs[srg_id]['severity'] = SEVERITY[srg.get('severity')]
+            srgs[srg_id]['severity'] = get_severity(srg.get('severity'))
             srgs[srg_id]['title'] = srg.find('xccdf-1.1:title', NS).text
             description_root = get_description_root(srg)
             srgs[srg_id]['vuln_discussion'] = \
@@ -156,6 +165,7 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
             else:
                 row['Status'] = DisaStatus.AUTOMATED
             csv_writer.writerow(row)
+                    row['Severity'] = get_severity(control.levels[0])
     else:
         row = create_base_row(control, srgs)
         row['Requirement'] = control.description
@@ -180,7 +190,7 @@ def create_base_row(item: ssg.controls.Control, srgs: dict) -> dict:
     row['SRG VulDiscussion'] = srg['vuln_discussion']
     row['SRG Check'] = srg['check']
     row['SRG Fix'] = srg['fix']
-    row['Severity'] = srg['severity']
+    row['Severity'] = get_severity(srg.get('severity'))
     row['IA Control'] = srg['ia_controls']
     row['Mitigation'] = item.mitigation
     row['Artifact Description'] = item.artifact_description
