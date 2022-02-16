@@ -1015,7 +1015,8 @@ controls:
         the ability to use network connections in rules.
       levels:
       - level_1
-      rules: []
+      rules:
+      - control_plane_access
     - id: 5.4.2
       title: >-
         5.4.2 Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled
@@ -1048,7 +1049,8 @@ controls:
         ability to use network connections in rules.
       levels:
       - level_2
-      rules: []
+      rules:
+      - endpoint_configuration
     - id: 5.4.3
       title: >-
         5.4.3 Ensure clusters are created with Private Nodes
@@ -1072,7 +1074,8 @@ controls:
         ability to use network connections in rules.
       levels:
       - level_1
-      rules: []
+      rules:
+      - private_nodes
     - id: 5.4.4
       title: >-
         5.4.4 Ensure Network Policy is Enabled and set as appropriate
@@ -1101,7 +1104,8 @@ controls:
         This check is manual because it requires deployment-specific knowledge.
       levels:
       - level_1
-      rules: []
+      rules:
+      - confirure_network_policy
     - id: 5.4.5
       title: >-
         5.4.5 Encrypt traffic to HTTPS load balancers with TLS certificates
@@ -1121,7 +1125,8 @@ controls:
         the AWS EKS configuration.
       levels:
       - level_2
-      rules: []
+      rules:
+      - configure_tls
   - id: '5.5'
     title: >-
       5.5 Authentication and Authorization
