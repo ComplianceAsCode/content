@@ -5,9 +5,7 @@
       <criterion comment="Check Defaults !targetpw exists in /etc/sudoers file" test_ref="test_sudoers_targetpw_config" />
       <criterion comment="Check Defaults !rootpw exists in /etc/sudoers file" test_ref="test_sudoers_rootpw_config" />
       <criterion comment="Check Defaults !runaspw exists in /etc/sudoers file" test_ref="test_sudoers_runaspw_config" />
-      {{% if product == "ol7" %}}
       <criterion comment="Verify that results come from only one file" test_ref="test_sudoers_passwd_n_files" />
-      {{% endif %}}
       </criteria>
   </definition>
 
@@ -44,7 +42,6 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product == "ol7" %}}
   <ind:variable_test check="all" check_existence="all_exist"
   comment="Verify that results come from only one file"
   id="test_sudoers_passwd_n_files" version="1">
@@ -73,6 +70,5 @@
       </unique>
     </count>
   </local_variable>
-  {{% endif %}}
 
 </def-group>
