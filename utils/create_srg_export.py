@@ -35,13 +35,13 @@ NS = {'scap': ssg.constants.datastream_namespace,
 SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 
 
-def get_severity(input_serverity: str) -> str:
-    if input_serverity not in ['CAT I', 'CAT II', 'CAT III', 'low', 'medium', 'high']:
-        raise ValueError(f'Severity of {input_serverity}')
-    elif input_serverity in ['CAT I', 'CAT II', 'CAT III']:
-        return input_serverity
+def get_severity(input_severity: str) -> str:
+    if input_severity not in ['CAT I', 'CAT II', 'CAT III', 'low', 'medium', 'high']:
+        raise ValueError(f'Severity of {input_severity}')
+    elif input_severity in ['CAT I', 'CAT II', 'CAT III']:
+        return input_severity
     else:
-        return SEVERITY[input_serverity]
+        return SEVERITY[input_severity]
 
 
 class DisaStatus:
