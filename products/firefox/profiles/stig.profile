@@ -1,5 +1,10 @@
 documentation_complete: true
 
+metadata:
+   version: V6R1
+   SMEs:
+       - lenox-joseph
+
 title: 'Upstream Firefox STIG'
 
 description: |-
@@ -42,3 +47,10 @@ selections:
     - firefox_preferences-ssl_protocol_tls
     - firefox_preferences-verification
     - installed_firefox_version_supported
+    - firefox_preferences-telemetry
+    - firefox_preferences-cryptomining
+    - firefox_preferences-disable_ssl_weak_ciphers
+    - firefox_preferences-enhanced_tracking
+    - firefox_preferences-extension_recommendation
+    - firefox_preferences-fingerprinting-protection
+    - firefox_preferences-telemetry-archive
