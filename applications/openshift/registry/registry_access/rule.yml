@@ -1,0 +1,119 @@
+documentation_complete: true
+
+prodtype: eks
+
+title: 'Minimize user access to Amazon ECR'
+
+description: |-
+  Restrict user access to Amazon ECR, limiting interaction with build images to
+  only authorized personnel and service accounts.
+
+rationale: |-
+  Weak access control to Amazon ECR may allow malicious users to replace built
+  images with vulnerable containers.
+
+severity: unknown
+
+identifiers:
+  cce@eks: CCE-89643-1
+
+references:
+  cis@eks: 5.1.2
+
+ocil_clause: 'access to the container image registry is restricted'
+
+ocil: |-
+  Remediation:
+
+  Before you use IAM to manage access to Amazon ECR, you should understand what
+  IAM features are available to use with Amazon ECR. To get a high-level view
+  of how Amazon ECR and other AWS services work with IAM, see AWS Services That
+  Work with IAM in the IAM User Guide.
+
+  <b>Topics</b>
+
+  <ol>
+  <li>Amazon ECR Identity-Based Policies</li>
+  <li>Amazon ECR Resource-Based Policies</li>
+  <li>Authorization Based on Amazon ECR Tags</li>
+  <li>Amazon ECR IAM Roles</li>
+  </ol>
+
+  <b>Amazon ECR Identity-Based Policies</b>
+
+  With IAM identity-based policies, you can specify allowed or denied actions
+  and resources as well as the conditions under which actions are allowed or
+  denied. Amazon ECR supports specific actions, resources, and condition keys.
+  To learn about all of the elements that you use in a JSON policy, see IAM
+  JSON Policy Elements Reference in the IAM User Guide.
+
+  <b>Actions</b>
+
+  The Action element of an IAM identity-based policy describes the specific
+  action or actions that will be allowed or denied by the policy. Policy
+  actions usually have the same name as the associated AWS API operation. The
+  action is used in a policy to grant permissions to perform the associated
+  operation.
+
+  Policy actions in Amazon ECR use the following prefix before the action:
+  ecr:. For example, to grant someone permission to create an Amazon ECR
+  repository with the Amazon ECR CreateRepository API operation, you include
+  the ecr:CreateRepository action in their policy. Policy statements must
+  include either an Action or NotAction element. Amazon ECR defines its own set
+  of actions that describe tasks that you can perform with this service. To
+  specify multiple actions in a single statement, separate them with commas as
+  follows: <tt>"Action": [ "ecr:action1", "ecr:action2"</tt> You can specify
+  multiple actions using wildcards (<tt>*</tt>). For example, to specify all
+  actions that begin with the word Describe, include the following action:
+  <tt>"Action": "ecr:Describe*"</tt> To see a list of Amazon ECR actions, see
+  Actions, Resources, and Condition Keys for Amazon Elastic Container
+  Registry in the IAM User Guide.
+
+  <b>Resources</b>
+
+  The Resource element specifies the object or objects to which the action
+  applies. Statements must include either a Resource or a NotResource element.
+  You specify a resource using an ARN or using the wildcard (<tt>*</tt>) to
+  indicate that the statement applies to all resources.
+
+  An Amazon ECR repository resource has the following ARN:
+  <tt>arn:$<i>{Partition}</i>:ecr:$<i>{Region}</i>:$<i>{Account}</i>:repository/$<i>{Repository-name}</i></tt>
+  For more information about the format of ARNs, see Amazon Resource Names
+  (ARNs) and AWS Service Namespaces.
+  For example, to specify the my-repo repository in the us-east-1 Region in
+  your statement, use the following ARN:
+  <tt>"Resource": "arn:aws:ecr:us-east-1:123456789012:repository/my-repo"</tt>
+  To specify all repositories that belong to a specific account, use the
+  wildcard (<tt>*</tt>): "Resource":
+  <tt>"arn:aws:ecr:us-east-1:123456789012:repository/*"</tt>
+  To specify multiple resources in a single statement, separate the ARNs with
+  commas. <tt>"Resource": [ "resource1", "resource2"</tt>
+  To see a list of Amazon ECR resource types and their ARNs, see Resources
+  Defined by Amazon Elastic Container Registry in the IAM User Guide. To learn
+  with which actions you can specify the ARN of each resource, see Actions
+  Defined by Amazon Elastic Container Registry.
+
+  <b>Condition Keys</b>
+
+  The Condition element (or Condition block) lets you specify conditions in
+  which a statement is in effect. The Condition element is optional. You can
+  build conditional expressions that use condition operators, such as equals or
+  less than, to match the condition in the policy with values in the request.
+  If you specify multiple Condition elements in a statement, or multiple keys
+  in a single Condition element, AWS evaluates them using a logical AND
+  operation. If you specify multiple values for a single condition key, AWS
+  evaluates the condition using a logical OR operation. All of the conditions
+  must be met before the statement's permissions are granted.
+  You can also use placeholder variables when you specify conditions. For
+  example, you can grant an IAM user permission to access a resource only if it
+  is tagged with their IAM user name. For more information, see IAM Policy
+  Elements: Variables and Tags in the IAM User Guide.
+  Amazon ECR defines its own set of condition keys and also supports using some global
+  condition keys. To see all AWS global condition keys, see AWS Global Condition Context
+  Keys in the IAM User Guide.
+  Most Amazon ECR actions support the aws:ResourceTag and ecr:ResourceTag
+  condition keys. For more information, see Using Tag-Based Access Control. To
+  see a list of Amazon ECR condition keys, see Condition Keys Defined by Amazon
+  Elastic Container Registry in the IAM User Guide. To learn with which actions
+  and resources you can use a condition key, see Actions Defined by Amazon
+  Elastic Container Registry.
