@@ -127,6 +127,7 @@ def get_implemented_stigs(product, root_path, build_config_yaml_path,
                 known_rules[ref].append(rule['id'])
             else:
                 known_rules[ref] = [rule['id']]
+    return known_rules
 
 
 get_implemented_stigs.__annotations__ = {'product': str, 'root_path': str,
