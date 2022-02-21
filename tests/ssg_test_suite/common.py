@@ -234,9 +234,7 @@ def run_with_stdout_logging(command, args, log_file):
     if result.stderr:
         log_file.write("STDERR: ")
         log_file.write(result.stderr)
-    if result.returncode:
-        raise RuntimeError("'%s' command returned non-zero." % command)
-    return result.stdout
+    return result
 
 
 def _exclude_garbage(tarinfo):
