@@ -4,6 +4,7 @@ import argparse
 import datetime
 import json
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -228,11 +229,19 @@ def main():
     ET.register_namespace('xccdf-1.2', ssg.constants.XCCDF12_NS)
     tailoring_root = create_tailoring(args)
     tree = ET.ElementTree(tailoring_root)
+    manual_version = re.search(r'(v[0-9]+r[0-9]+)', args.manual)
+    if manual_version is None:
+        sys.stderr.write("Unable to find version from file name.\n")
+        sys.stderr.write("The string v[NUM]r[NUM] must be in the filename.\n")
+        exit(1)
+
     if args.output:
         out = os.path.join(args.output)
     else:
-        out = os.path.join(SSG_ROOT, 'build', '{product}_{profile}_delta_tailoring.xml'
-                           .format(product=args.product, profile=args.profile))
+        out = os.path.join(SSG_ROOT, 'build',
+                           '{product}_{profile}_{manual_version}_delta_tailoring.xml'
+                           .format(product=args.product, profile=args.profile,
+                                   manual_version=manual_version.group(0)))
     tree.write(out)
     if not args.quiet:
         print("Wrote tailoring file to {out}.".format(out=out))
