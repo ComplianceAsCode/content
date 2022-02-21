@@ -17,4 +17,3 @@ if [ "$PS1" ]; then
 fi
 EOF
 
-tmux new-session -s root -d
