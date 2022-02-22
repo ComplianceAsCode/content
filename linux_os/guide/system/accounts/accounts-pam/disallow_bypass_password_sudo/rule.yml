@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: Disallow Configuration to Bypass Password Requirements for Privilege Escalation
+
+description: |-
+    Verify the operating system is not configured to bypass password requirements for privilege
+    escalation. Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+    <pre>$ sudo grep pam_succeed_if /etc/pam.d/sudo</pre>
+    If any occurrences of "pam_succeed_if" is returned from the command, this is a finding.
+
+
+rationale: |-
+    Without re-authentication, users may access resources or perform tasks for which they do not
+    have authorization. When operating systems provide the capability to escalate a functional
+    capability, it is critical the user re-authenticate.
+
+severity: medium
+
+references:
+    disa: CCI-002038
+    nist: IA-11
+    srg: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158
+    stigid@ol7: OL07-00-010344     
+
+ocil_clause: |-
+    system is configured to bypass password requirements for privilege escalation
+
+ocil: |-
+    Verify the operating system is not configured to bypass password requirements for privilege
+    escalation. Check the configuration of the "/etc/pam.d/sudo" file with the following command:
+    <pre>$ sudo grep pam_succeed_if /etc/pam.d/sudo</pre>
+
+platform: pam
