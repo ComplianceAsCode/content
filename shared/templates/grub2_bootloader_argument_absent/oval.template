@@ -31,17 +31,17 @@
 
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    {{{ oval_metadata("Ensure " + ARG_NAME_VALUE + " is configured in the kernel line in /etc/default/grub.") }}}
+    {{{ oval_metadata("Ensure " + ARG_NAME + " is not set in the kernel line in /etc/default/grub.") }}}
     <criteria operator="AND">
       {{% if system_with_kernel_options_in_grubenv -%}}
       {{% if system_with_bios_and_uefi_support -%}}
       <criteria operator="OR">
       {{%- endif %}}
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_boot_path }}}/grubenv" />
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_grub_env"
+        comment="Check if {{{ ARG_NAME }}} is absent in the GRUB2 environment variable block in {{{ grub2_boot_path }}}/grubenv" />
       {{% if system_with_bios_and_uefi_support -%}}
-        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_env_uefi"
-        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the GRUB2 environment variable block in {{{ grub2_uefi_boot_path }}}/grubenv" />
+        <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_grub_env_uefi"
+        comment="Check if {{{ ARG_NAME }}} is absent in the GRUB2 environment variable block in {{{ grub2_uefi_boot_path }}}/grubenv" />
       </criteria>
       {{%- endif %}}
       {{%- endif %}}
@@ -50,27 +50,27 @@
       {{%- endif %}}
       {{% if system_with_expanded_kernel_options_in_loader_entries -%}}
           <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
-                     comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/loader/entries/*.conf" />
+                     comment="Check if {{{ ARG_NAME }}} is absent in the boot parameters in the /boot/loader/entries/*.conf" />
       {{%- endif %}}
       {{% if system_with_expanded_kernel_options_in_grub_cfg -%}}
           {{% if system_with_bios_and_uefi_support -%}}
           <criteria operator="OR">
           {{%- endif %}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg"
-          comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
+          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_grub_cfg"
+          comment="Check if {{{ ARG_NAME}}} is absent in the boot parameters in the {{{ grub2_boot_path }}}/grub.cfg for all kernels" />
           {{% if system_with_bios_and_uefi_support -%}}
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_grub_cfg_uefi"
-          comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the {{{ grub2_uefi_boot_path }}}/grub.cfg for all kernels" />
+          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_grub_cfg_uefi"
+          comment="Check if {{{ ARG_NAME}}} is absent in the boot parameters in the {{{ grub2_uefi_boot_path }}}/grub.cfg for all kernels" />
           </criteria>
           {{%- endif %}}
       {{%- endif %}}
       {{% if system_with_kernel_options_in_etc_default_grub -%}}
         <criteria operator="OR">
-          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-          comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
+          <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent"
+          comment="check for absence of {{{ ARG_NAME }}} in /etc/default/grub on GRUB_CMDLINE_LINUX" />
           <criteria operator="AND">
-            <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
-            comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT" />
+            <criterion test_ref="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_default"
+            comment="check for absence of{{{ ARG_NAME }}} in /etc/default/grub on GRUB_CMDLINE_LINUX_DEFAULT" />
             <extend_definition definition_ref="bootloader_disable_recovery_set_to_true"
             comment="Check GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
           </criteria>
@@ -80,30 +80,28 @@
   </definition>
 
 {{%- if system_with_kernel_options_in_etc_default_grub %}}
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX"
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent"
+  comment="check for absence {{{ ARG_NAME }}} in /etc/default/grub via GRUB_CMDLINE_LINUX"
   check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" version="1">
+  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent" version="1">
     <ind:filepath>/etc/default/grub</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(.*)"$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX="(?!.*\b{{{ ARG_NAME }}}\b.*).*"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
-  comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT"
+  <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_default"
+  comment="check for absence {{{ ARG_NAME }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT"
   check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
+    <ind:object object_ref="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_default" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_default"
+  <ind:textfilecontent54_object id="object_grub2_{{{ SANITIZED_ARG_NAME }}}_argument_absent_default"
   version="1">
     <ind:filepath>/etc/default/grub</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(?!.*\b{{{ ARG_NAME }}}\b).*"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 {{%- endif %}}
@@ -111,32 +109,30 @@
 {{%- if system_with_kernel_options_in_grubenv %}}
 {{%- macro test_and_object_for_kernel_options_grub_env(base_name, path) %}}
   <ind:textfilecontent54_test id="test_{{{ base_name }}}"
-  comment="check for kernel command line parameters {{{ ARG_NAME_VALUE }}} in {{{ path }}} for all kernels"
+  comment="check for absence of kernel command line parameter {{{ ARG_NAME}}} in {{{ path }}} for all kernels"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_{{{ base_name }}}" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_{{{ base_name }}}"
   version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
+    <ind:pattern operation="pattern match">^kernelopts=(?!.*\b{{{ ARG_NAME }}}\b).*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
-{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env", grub2_boot_path ~ "/grubenv") }}}
+{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_absent_grub_env", grub2_boot_path ~ "/grubenv") }}}
 {{% if system_with_bios_and_uefi_support -%}}
-{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_grub_env_uefi", grub2_uefi_boot_path ~ "/grubenv") }}}
+{{{ test_and_object_for_kernel_options_grub_env("grub2_" ~ SANITIZED_ARG_NAME ~ "_argument_absent_grub_env_uefi", grub2_uefi_boot_path ~ "/grubenv") }}}
 {{%- endif %}}
 {{%- endif %}}
 
 {{%- if system_with_expanded_kernel_options_in_loader_entries %}}
     <ind:textfilecontent54_test id="test_grub2_{{{ SANITIZED_ARG_NAME }}}_entries"
-                                comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} for all boot entries."
+                                comment="check absence of kernel command line parameters {{{ ARG_NAME}}} on all boot entries."
                                 check="all" check_existence="all_exist" version="1">
       <ind:object object_ref="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" />
-      <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
     </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_grub2_{{{ SANITIZED_ARG_NAME }}}_entries" version="1">
@@ -155,10 +151,9 @@
 {{%- if system_with_expanded_kernel_options_in_grub_cfg %}}
 {{%- macro test_and_object_for_kernel_options_grub_cfg(base_name, path) %}}
   <ind:textfilecontent54_test id="test_{{{ base_name }}}"
-  comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} in {{{ path }}} for all kernels"
+  comment="check absence of kernel command line parameter {{{ ARG_NAME}}} in {{{ path }}} for all kernels"
   check="all" check_existence="all_exist" version="1">
     <ind:object object_ref="object_{{{ base_name }}}" />
-    <ind:state state_ref="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_{{{ base_name }}}"
@@ -173,15 +168,10 @@
   </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
-{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg", grub2_boot_path ~ "/grub.cfg") }}}
+{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_absent_grub_cfg", grub2_boot_path ~ "/grub.cfg") }}}
 {{% if system_with_bios_and_uefi_support -%}}
-{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_grub_cfg_uefi", grub2_uefi_boot_path ~ "/grub.cfg") }}}
+{{{ test_and_object_for_kernel_options_grub_cfg("grub2_" + SANITIZED_ARG_NAME + "_argument_absent_grub_cfg_uefi", grub2_uefi_boot_path ~ "/grub.cfg") }}}
 {{%- endif %}}
 {{%- endif %}}
-
-  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
-  version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
-  </ind:textfilecontent54_state>
 
 </def-group>
