@@ -5,16 +5,12 @@
 -#}}
 
 {{% set grub_helper_executable = "grubby" -%}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE] -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ ARG_NAME] -%}}
 
 {{%- macro update_etc_default_grub_manually() -%}}
 # Correct the form of default kernel command line in GRUB
 if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
-       # modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
-       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=[^[:space:]]*\(.*"\)/\1 {{{ ARG_NAME_VALUE }}} \2/'  '/etc/default/grub'
-else
-       # no {{{ ARG_NAME }}}=arg is present, append it
-       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 {{{ ARG_NAME_VALUE }}}"/'  '/etc/default/grub'
+       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'
 fi
 {{%- endmacro %}}
 
