@@ -70,6 +70,8 @@ selections:
   - var_accounts_password_warn_age_login_defs=7
   - var_accounts_minimum_age_login_defs=1
   - var_accounts_maximum_age_login_defs=60
+  - var_authselect_profile=sssd
+  - enable_authselect
   - accounts_password_warn_age_login_defs
   - accounts_maximum_age_login_defs
   - accounts_minimum_age_login_defs

@@ -46,6 +46,8 @@ selections:
     - accounts_password_minlen_login_defs
     - accounts_minimum_age_login_defs
     - accounts_password_warn_age_login_defs
+    - var_authselect_profile=sssd
+    - enable_authselect
     - accounts_password_pam_retry
     - accounts_password_pam_dcredit
     - accounts_password_pam_ucredit

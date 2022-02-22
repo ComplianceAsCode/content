@@ -220,6 +220,8 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
     - securetty_root_login_console_only
+    - var_authselect_profile=sssd
+    - enable_authselect
     - var_password_pam_unix_remember=5
     - accounts_password_pam_unix_remember
     - use_pam_wheel_for_su

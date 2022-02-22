@@ -54,6 +54,8 @@ selections:
     - service_xinetd_disabled
     - service_zebra_disabled
     - use_kerberos_security_all_exports
+    - var_authselect_profile=sssd
+    - enable_authselect
     - disable_host_auth
     - sshd_allow_only_protocol2
     - sshd_disable_compression
