@@ -13,11 +13,9 @@ description: |-
     <ul>
     <li>Setting the kernel FIPS mode flag (<tt>/proc/sys/crypto/fips_enabled</tt>) to <tt>1</tt></li>
     <li>Creating <tt>/etc/system-fips</tt></li>
-    <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>FIPS</tt></li>
+    <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt></li>
     <li>Loading the Dracut <tt>fips</tt> module</li>
     </ul>
-    This rule also ensures that the system policy is set to <tt>{{{ xccdf_value("var_system_crypto_policy") }}}</tt>.
-    Furthermore, the system running in FIPS mode should be FIPS certified by NIST.
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
@@ -48,7 +46,7 @@ references:
 ocil_clause: 'FIPS mode is not enabled'
 
 ocil: |-
-    To verify that FIPS is enabled properly, run the following command:
+    To verify that FIPS mode is enabled properly, run the following command:
     <pre>fips-mode-setup --check</pre>
     The output should contain the following:
     <pre>FIPS mode is enabled.</pre>
@@ -61,19 +59,6 @@ warnings:
     - general: |-
         The system needs to be rebooted for these changes to take effect.
     - regulatory: |-
-        System Crypto Modules must be provided by a vendor that undergoes
-        FIPS-140 certifications.
-        FIPS-140 is applicable to all Federal agencies that use
-        cryptographic-based security systems to protect sensitive information
-        in computer and telecommunication systems (including voice systems) as
-        defined in Section 5131 of the Information Technology Management Reform
-        Act of 1996, Public Law 104-106. This standard shall be used in
-        designing and implementing cryptographic modules that Federal
-        departments and agencies operate or are operated for them under
-        contract. See <b>{{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
-        To meet this, the system has to have cryptographic software provided by
-        a vendor that has undergone this certification. This means providing
-        documentation, test results, design information, and independent third
-        party review by an accredited lab. While open source software is
-        capable of meeting this, it does not meet FIPS-140 unless the vendor
-        submits to this process.
+        This rule DOES NOT CHECK if the components of the operating system are FIPS certified.
+        You can find the list of FIPS certified modules at {{{ weblink(link="https://csrc.nist.rip/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}.
+        This rule checks if the system is running in FIPS mode. See the rule description for more information about what it means.
