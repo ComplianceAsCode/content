@@ -1684,6 +1684,7 @@ fi
 
 {{% endmacro %}}
 
+
 {{#
   This macro creates a bash conditional which is used to determine if a remediation is applicable.
   The macro takes package as an argument and chooses appropriate package manager.
@@ -1746,3 +1747,25 @@ else
    sed -i -e 's/\"'{{{ pol_setting }}}'.*/\"'{{{ pol_setting }}}'\": '{{{ pol_setting_val }}}',/g' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
 fi
 {{%- endmacro -%}}
+
+
+{{#
+    Macro that lets you define the body of a loop that iterates over the output of the find command
+    Use with the call block syntax {{% call iterate_over_find_output("fname", "mydir -name *.conf") %}} ...
+#}}
+{{% macro iterate_over_find_output(varname, find_args="") -%}}
+while IFS= read -r -d '' {{{ varname }}}; do
+    {{{ caller() | indent(4) }}}
+done <   <(find {{{ find_args }}} -print0)
+{{%- endmacro %}}
+
+
+{{#
+    Macro that lets you define the body of a loop that iterates over the output of any command
+    Use with the call block syntax {{% call iterate_over_find_output("fname", "awk ... myfile") %}} ...
+#}}
+{{% macro iterate_over_command_output(varname, command_and_its_args) -%}}
+while IFS= read -r {{{ varname }}}; do
+    {{{ caller() | indent(4) }}}
+done <   <({{{ command_and_its_args }}})
+{{%- endmacro %}}
