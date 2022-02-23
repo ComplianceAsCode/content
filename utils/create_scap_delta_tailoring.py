@@ -103,24 +103,22 @@ def get_implemented_stigs(product, root_path, build_config_yaml_path,
                           build_root):
     platform_rules = get_platform_rules(product, json_path, resolved_rules_dir, build_root)
 
-    if resolved_rules_dir:
-        platform_rules_dict = dict()
-        for rule in platform_rules:
-            platform_rules_dict[rule['id']] = rule
-        return platform_rules_dict
     product_dir = os.path.join(root_path, "products", product)
     product_yaml_path = os.path.join(product_dir, "product.yml")
     env_yaml = ssg.environment.open_environment(build_config_yaml_path, str(product_yaml_path))
 
     known_rules = dict()
     for rule in platform_rules:
-        try:
-            rule_obj = handle_rule_yaml(product, rule['id'],
-                                        rule['dir'], rule['guide'], env_yaml)
-        except ssg.yaml.DocumentationNotComplete:
-            sys.stderr.write('Rule %s throw DocumentationNotComplete' % rule['id'])
-            # Happens on non-debug build when a rule is "documentation-incomplete"
-            continue
+        if resolved_rules_dir:
+            rule_obj = rule
+        else:
+            try:
+                rule_obj = handle_rule_yaml(product, rule['id'],
+                                            rule['dir'], rule['guide'], env_yaml)
+            except ssg.yaml.DocumentationNotComplete:
+                sys.stderr.write('Rule %s throw DocumentationNotComplete' % rule['id'])
+                # Happens on non-debug build when a rule is "documentation-incomplete"
+                continue
 
         if reference_str in rule_obj['references'].keys():
             ref = rule_obj['references'][reference_str]
