@@ -20,7 +20,7 @@ fi
 
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
-    if $(grep -q '^\s*fail_interval\s*=' $FAILLOCK_CONF); then
+    if grep -q '^\s*fail_interval\s*=' $FAILLOCK_CONF; then
         sed -i --follow-symlinks "s/^\s*\(fail_interval\s*\)=.*$/\1 = $var_accounts_passwords_pam_faillock_fail_interval/g" $FAILLOCK_CONF
     else
         echo "fail_interval = $var_accounts_passwords_pam_faillock_fail_interval" >> $FAILLOCK_CONF

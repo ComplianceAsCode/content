@@ -22,7 +22,7 @@ if [ -f /usr/bin/authselect ]; then
         CUSTOM_SYSTEM_AUTH="/etc/authselect/$CURRENT_PROFILE/system-auth"
         CUSTOM_PASSWORD_AUTH="/etc/authselect/$CURRENT_PROFILE/password-auth"
         for custom_pam_file in $CUSTOM_SYSTEM_AUTH $CUSTOM_PASSWORD_AUTH; do
-            if ! $(grep -q "^[^#].*pam_pwhistory.so.*remember=" $custom_pam_file); then
+            if ! grep -q "^[^#].*pam_pwhistory.so.*remember=" $custom_pam_file; then
                 sed -i --follow-symlinks "/^password.*requisite.*pam_pwquality.so/a password    requisite     pam_pwhistory.so remember=$var_password_pam_unix_remember use_authtok" $custom_pam_file
             else
                 sed -i --follow-symlinks "s/\(.*pam_pwhistory.so.*remember=\)[[:digit:]]\+\s\(.*\)/\1$var_password_pam_unix_remember \2/g" $custom_pam_file

@@ -14,7 +14,7 @@ fi
 
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
-    if [ ! $(grep -q '^\s*local_users_only' $FAILLOCK_CONF) ]; then
+    if ! grep -q '^\s*local_users_only' $FAILLOCK_CONF; then
         echo "local_users_only" >> $FAILLOCK_CONF
     fi
 fi

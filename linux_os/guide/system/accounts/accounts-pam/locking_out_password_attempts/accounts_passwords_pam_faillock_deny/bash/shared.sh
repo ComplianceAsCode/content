@@ -20,7 +20,7 @@ fi
 
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
-    if $(grep -q '^\s*deny\s*=' $FAILLOCK_CONF); then
+    if grep -q '^\s*deny\s*=' $FAILLOCK_CONF; then
         sed -i --follow-symlinks "s/^\s*\(deny\s*\)=.*$/\1 = $var_accounts_passwords_pam_faillock_deny/g" $FAILLOCK_CONF
     else
         echo "deny = $var_accounts_passwords_pam_faillock_deny" >> $FAILLOCK_CONF
