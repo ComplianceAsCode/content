@@ -275,8 +275,14 @@ do
         #   searched all of the files from /etc/audit/rules.d/*.rules location (since that audit rule can be defined
         #   in any of those files and if not, we want it to be inserted only once into /etc/audit/rules.d/privileged.rules file)
         #
-        elif [ "{{{ tool }}}" == "auditctl" ] || [[ "{{{ tool }}}" == "augenrules" && $count_of_inspected_files -eq "${#files_to_inspect[@]}" ]]
+	{{% if tool in ("augenrules", "auditctl") -%}}
+	{{% if tool == "augenrules" -%}}
+        elif [[ $count_of_inspected_files -eq "${#files_to_inspect[@]}" ]]
         then
+	{{%- endif %}}
+	{{% if tool == "auditctl" -%}}
+        else
+	{{%- endif %}}
             # Check if this sbinary wasn't already handled in some of the previous afile iterations
             # Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
             if [[ ! $(sed -ne "\|${sbinary}|p" <<< "${sbinaries_to_skip[*]}") ]]
@@ -286,6 +292,7 @@ do
                 echo "$expected_rule" >> "$output_audit_file"
             fi
             continue
+	{{%- endif %}}
         fi
     done
 done
