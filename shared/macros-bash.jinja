@@ -1750,7 +1750,7 @@ fi
 
 
 {{#
-    Macro that lets you to define the body of a loop that iterates over the output of the find command
+    Macro that lets you define the body of a loop that iterates over the output of the find command
     Use with the call block syntax {{% call iterate_over_find_output("fname", "mydir -name *.conf") %}} ...
 #}}
 {{% macro iterate_over_find_output(varname, find_args="") -%}}
@@ -1761,7 +1761,7 @@ done <   <(find {{{ find_args }}} -print0)
 
 
 {{#
-    Macro that lets you to define the body of a loop that iterates over the output of any command
+    Macro that lets you define the body of a loop that iterates over the output of any command
     Use with the call block syntax {{% call iterate_over_find_output("fname", "awk ... myfile") %}} ...
 #}}
 {{% macro iterate_over_command_output(varname, command_and_its_args) -%}}
