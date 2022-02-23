@@ -361,7 +361,7 @@ they must be of the same length.
 -   Languages: Bash, OVAL
 
 #### grub2_bootloader_argument
--   Checks kernel command line arguments in GRUB 2 configuration.
+-   Ensures that a kernel command line argument is present in GRUB 2 configuration.
 
 -   Parameters:
 
@@ -370,6 +370,24 @@ they must be of the same length.
     -   **arg_value** - argument value, eg. `'1'`
 
 -   Languages: Ansible, Bash, OVAL, Blueprint
+
+#### grub2_bootloader_argument_absent
+-   Ensures that a kernel command line argument is absent in GRUB 2 configuration.
+    The template can also remove arguments with a value assigned, eg. audit=1
+
+-   Parameters:
+
+    -   **arg_name** - argument name, eg. `audit`, `nosmep`
+
+-   Languages: Ansible, Bash, OVAL
+
+Example:
+```
+template:
+  name: grub2_bootloader_argument_absent
+  vars:
+    arg_name: audit
+```
 
 #### kernel_module_disabled
 -   Checks if the given Linux kernel module is disabled.
