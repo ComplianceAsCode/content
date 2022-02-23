@@ -903,7 +903,8 @@ for firefox_dir in ${firefox_dirs}; do
             firefox_pref_dir="${firefox_dir}/${firefox_pref}"
         else
             firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
-            mkdir -m 755 -p "${firefox_pref_dir}"
+            mkdir -p "${firefox_pref_dir}"
+            chmod 755 "${firefox_pref_dir}"
         fi
 
         # Make sure the Firefox .js file exists and has the appropriate permissions
@@ -953,10 +954,10 @@ for firefox_dir in ${firefox_dirs}; do
     if [ -d "${firefox_dir}" ]; then
         # Make sure the Firefox .cfg file exists and has the appropriate permissions
         if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
-            echo "//" "${firefox_dir}/${firefox_cfg}"
+            echo "//  IMPORTANT: Start your code on the 2nd line" > "${firefox_dir}/${firefox_cfg}"
             chmod 644 "${firefox_dir}/${firefox_cfg}"
-        elif ! [ $(head -1 "${firefox_dir}/${firefox_cfg}" | grep "^//$") ]; then
-            sed -i '1 i\//' "${firefox_dir}/${firefox_cfg}"
+        elif ! head -1 "${firefox_dir}/${firefox_cfg}" | grep -q "^//"; then
+            sed -i '1 i\// IMPORTANT: Start your code on the 2nd line' "${firefox_dir}/${firefox_cfg}"
         fi
 
         {{{ _put_into_firefox_cfg(config_item="lockPref", key=key, value_varname="value", where="${firefox_dir}/${firefox_cfg}", sed_separator=sed_separator) | indent(4 * 2) }}}
@@ -1736,11 +1737,10 @@ Example macro invocation:
 #}}
 {{%- macro bash_chromium_pol_setting(chrome_pol_file, chrome_pol_dir, pol_setting, pol_setting_val, pol_setting_val_edit=None) %}}
 {{% if not pol_setting_val_edit %}}
-{{ pol_setting_val_edit=pol_setting_val }}
+{{% set pol_setting_val_edit = pol_setting_val %}}
 {{% endif %}}
-grep -q {{{ pol_setting }}} {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
 
-if ! [ $? -eq 0 ] ; then
+if ! grep -q {{{ pol_setting }}} {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}; then
    sed -i -e '/{/a \  "'{{{ pol_setting }}}'": '{{{ pol_setting_val_edit }}}',' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
 else
    sed -i -e 's/\"'{{{ pol_setting }}}'.*/\"'{{{ pol_setting }}}'\": '{{{ pol_setting_val }}}',/g' {{{ chrome_pol_dir }}}{{{ chrome_pol_file }}}
