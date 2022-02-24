@@ -4,7 +4,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 set(PRODUCT "rhel7")
-set(DISA_SRG_TYPE "os")
 
 ssg_build_product(${PRODUCT})
 
@@ -22,7 +21,7 @@ ssg_build_html_profile_table("table-${PRODUCT}-anssirefs-nt28_high" "${PRODUCT}"
 
 ssg_build_html_cce_table(${PRODUCT})
 
-ssg_build_html_srgmap_tables(${PRODUCT} "stig" ${DISA_SRG_TYPE})
+ssg_build_html_srgmap_tables(${PRODUCT})
 
 ssg_build_html_stig_tables(${PRODUCT})
 ssg_build_html_stig_tables_per_profile( ${PRODUCT} "stig")

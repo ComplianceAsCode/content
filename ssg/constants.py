@@ -256,6 +256,10 @@ REFERENCES = dict(
     pcidss=Reference(
         id="pcidss", name=REF_PREFIX_MAP["pcidss"], url="",
         regex_with_groups=r"Req-(\d+)(?:\.(\w+)(?:\.(\w+)(?:\.(\w+))?)?)?"),
+    srg=Reference(
+        id="srg", name="SRG", url="",
+        regex_with_groups=r"(SRG-OS-\d+-GPOS-\d+)"
+    )
 )
 
 
