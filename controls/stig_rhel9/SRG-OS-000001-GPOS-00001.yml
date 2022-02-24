@@ -2,14 +2,16 @@ controls:
     -   id: SRG-OS-000001-GPOS-00001
         levels:
             - medium
-        title: The operating system must provide automated mechanisms for supporting account
+        title: {{{ full_name }}} must provide automated mechanisms for supporting account
             management functions.
         description: |-
-            The operating system must provide automated mechanisms for supporting account management functions.
+            {{{ full_name }}} must provide automated mechanisms for supporting account management functions.
         rationale: |-
-            Enterprise environments make account management challenging and complex. A manual process for account management functions adds the risk of a potential oversight or other errors.
+            Enterprise environments make account management challenging and complex.
+            A manual process for account management functions adds the risk of a potential oversight or other errors.
 
-            A comprehensive account management process that includes automation helps to ensure accounts designated as requiring attention are consistently and promptly addressed. Examples include, but are not limited to, using automation to take action on multiple accounts designated as inactive, suspended, or terminated, or by disabling accounts located in non-centralized account stores such as multiple servers. 
+            A comprehensive account management process that includes automation helps to ensure accounts designated as requiring attention are consistently and promptly addressed.
+            Examples include, but are not limited to, using automation to take action on multiple accounts designated as inactive, suspended, or terminated, or by disabling accounts located in non-centralized account stores such as multiple servers.
             This requirement applies to all account types, including individual/user, shared, group, system, guest/anonymous, emergency, developer/manufacturer/vendor, temporary, and service.
 
             The automated mechanisms may reside within the operating system itself or may be offered by another infrastructure providing automated account management capabilities.
@@ -22,11 +24,15 @@ controls:
 
             As noted in the vulnerability discussion, "The automated mechanisms may reside within the operating system itself or may be offered by another infrastructure providing automated account management capabilities.
             Automated mechanisms may be composed of differing technologies that, when placed together, contain an overall automated mechanism supporting an organization's automated account management requirements.
-            This is not required to be provided by RHEL 8 and must be implemented via a third party solution.
+            This is not required to be provided by {{{ full_name }}} and must be implemented via a third party solution.
         mitigation: |-
             Mitigate with third-party software.
 
             Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
-        fix: This requirement is a permanent finding and cannot be fixed. An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
-        check: The technology does not support this requirement. This is an applicable-does not meet finding.
+        fix: |-
+            This requirement is a permanent finding and cannot be fixed.
+            An appropriate mitigation for the system must be implemented, but this finding cannot be considered fixed.
+        check: |-
+            The technology does not support this requirement.
+            This is an applicable-does not meet finding.
         status: does not meet
