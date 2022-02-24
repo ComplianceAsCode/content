@@ -2,10 +2,9 @@ controls:
     -   id: SRG-OS-000066-GPOS-00034
         levels:
             - medium
-        title: The operating system, for PKI-based authentication, must validate certificates
+        title: {{{ full_name }}}, for PKI-based authentication, must validate certificates
             by constructing a certification path (which includes status information) to an
             accepted trust anchor.
-        description:
         rationale: |-
             Without path validation, an informed trust decision by the relying party cannot be made when presented with any certificate not already explicitly trusted.
 
@@ -20,7 +19,7 @@ controls:
             Status information for certification paths includes certificate revocation lists or online certificate status protocol responses.
             Validation of the certificate status information is out of scope for this requirement.
         check: |-
-            Verify RHEL 9 for PKI-based authentication has valid certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
+            Verify {{{ full_name }}} for PKI-based authentication has valid certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
 
             Check that the system has a valid DoD root CA installed with the following command:
 
@@ -41,7 +40,7 @@ controls:
 
             If the root CA file is not a DoD-issued certificate with a valid date and installed in the "/etc/sssd/pki/sssd_auth_ca_db.pem" location, this is a finding.
         fix: |-
-            Configure RHEL 9, for PKI-based authentication, to validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
+            Configure {{{ full_name }}}, for PKI-based authentication, to validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
 
             Obtain a valid copy of the DoD root CA file from the PKI CA certificate bundle from cyber.mil and copy the DoD_PKE_CA_chain.pem into the following file:
             /etc/sssd/pki/sssd_auth_ca_db.pem
