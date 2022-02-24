@@ -210,6 +210,13 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
         generate-internal-${PRODUCT}-all-fixes
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/collect-remediations-${PRODUCT}"
     )
+    if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE)
+        add_test(
+            NAME "${PRODUCT}-bash-shellcheck"
+	    COMMAND "${CMAKE_SOURCE_DIR}/utils/shellcheck_wrapper.sh" "${SHELLCHECK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/fixes/bash" -s bash -S warning
+        )
+        set_tests_properties("${PRODUCT}-bash-shellcheck" PROPERTIES LABELS quick)
+    endif()
 endmacro()
 
 # Builds the XML document containing all remediations of the given language.

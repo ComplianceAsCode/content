@@ -7,9 +7,9 @@ if [ -f /usr/bin/authselect ]; then
         CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
         # Standard profiles delivered with authselect should not be modified.
         # If not already in use, a custom profile is created preserving the enabled features.
-        if [[ ! $CURRENT_PROFILE == custom/* ]]; then
+        if [[ ! "$CURRENT_PROFILE" == custom/* ]]; then
             ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')
-            authselect create-profile hardening -b $CURRENT_PROFILE
+            authselect create-profile hardening -b "$CURRENT_PROFILE"
             CURRENT_PROFILE="custom/hardening"
             # Ensure a backup before changing the profile
             authselect apply-changes -b --backup=before-pwquality-hardening.backup
@@ -21,8 +21,8 @@ if [ -f /usr/bin/authselect ]; then
         # Include the desired configuration in the custom profile
         CUSTOM_FILE="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE"
         # The line should be included on the top password section
-		if [ $(grep -c "^\s*password.*requisite.*pam_pwquality.so" $CUSTOM_FILE) -eq 0 ]; then
-  		  sed -i --follow-symlinks '0,/^password.*/s/^password.*/password    requisite                                    pam_pwquality.so\n&/' $CUSTOM_FILE
+		if [ "$(grep -c "^\s*password.*requisite.*pam_pwquality.so" "$CUSTOM_FILE")" -eq 0 ]; then
+		    sed -i --follow-symlinks '0,/^password.*/s/^password.*/password    requisite                                    pam_pwquality.so\n&/' "$CUSTOM_FILE"
 		fi
         authselect apply-changes -b --backup=after-pwquality-hardening.backup
     else
@@ -35,7 +35,7 @@ In cases where the default authselect profile does not cover a specific demand, 
     fi
 else
     FILE_PATH="/etc/pam.d/$PAM_FILE"
-    if [ $(grep -c "^\s*password.*requisite.*pam_pwquality.so" $FILE_PATH) -eq 0 ]; then
-        sed -i --follow-symlinks '0,/^password.*/s/^password.*/password    requisite                                    pam_pwquality.so\n&/' $FILE_PATH
+    if [ "$(grep -c "^\s*password.*requisite.*pam_pwquality.so" "$FILE_PATH")" -eq 0 ]; then
+        sed -i --follow-symlinks '0,/^password.*/s/^password.*/password    requisite                                    pam_pwquality.so\n&/' "$FILE_PATH"
     fi
 fi
