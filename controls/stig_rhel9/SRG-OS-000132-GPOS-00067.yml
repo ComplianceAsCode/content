@@ -2,7 +2,7 @@ controls:
     -   id: SRG-OS-000132-GPOS-00067
         levels:
             - medium
-        title: The operating system must separate user functionality (including user interface
+        title: {{{ full_name }}} must separate user functionality (including user interface
             services) from operating system management functionality.
         status: inherently met
         rationale: |-
@@ -22,6 +22,6 @@ controls:
             The technology inherently meets this requirement.
             No fix is required.
         artifact_description:
-            RHEL 8 management functionality must be executed by the administrator user, which is only accessible through the sudo command (with a proper authentication request). The sudo manpage has more information.
+            {{{ full_name }}} management functionality must be executed by the administrator user, which is only accessible through the sudo command (with a proper authentication request). The sudo manpage has more information.
         status_justification:
             The UNIX permissions construct separates user and privileged user (the {{{ full_name }}} operating system accounts) access.
