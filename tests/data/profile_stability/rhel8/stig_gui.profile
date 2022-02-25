@@ -457,6 +457,7 @@ selections:
 - login_banner_text=dod_banners
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
+- var_slub_debug_options=P
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null
