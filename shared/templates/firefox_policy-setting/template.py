@@ -47,9 +47,15 @@ def parameter_find_oval(_path, parameter, value):
     _result = parameter
     for p in reversed(_path):
         if p == "policies":
-            _result = ''.join([r'"{0}"[\s]*:[\s]*'.format(p), r"\{.*[\s]*", _result, r"[^}]*\}"])
+            _result = ''.join([r'"{0}"[\s]*:[\s]*'.format(p),
+                               r"\{.*[\s]*",
+                               _result,
+                               r"[^}]*\}"])
         else:
-            _result = ''.join([r'"{0}"[\s]*:[\s]*'.format(p), r"(\{?(\{[^}]*\}?)*|[^}]*)[\s]*", _result, r"[^}]*\}"])
+            _result = ''.join([r'"{0}"[\s]*:[\s]*'.format(p),
+                               r"(\{?(\{[^}]*\}?)*|[^}]*)[\s]*",
+                               _result,
+                               r"[^}]*\}"])
     return _result
 
 
@@ -59,7 +65,10 @@ def parameter_find_grep(_path, parameter, tier=0):
     parameter = r'"{0}"\s*:\s*("?\w+"?),?'.format(parameter)
     _result = parameter
     for p in reversed(_path[tier:]):
-        _result = ''.join([r'"{0}"\s*:\s*'.format(p), r"(\{?(\{[^}]*\}?)*|[^}]*)\s*", _result, r"[^}]*\}"])
+        _result = ''.join([r'"{0}"\s*:\s*'.format(p),
+                           r"(\{?(\{[^}]*\}?)*|[^}]*)\s*",
+                           _result,
+                           r"[^}]*\}"])
     return _result
 
 
@@ -83,34 +92,46 @@ def path_find_python(_path, tier=0):
 
 def preprocess(data, lang):
     for i in range(0, len(data.get("policies", []))):
-        _path = regular_path(data["policies"][i].get("path", ""))
-        # regex used in OVAL
-        data["policies"][i]["oval_regex"] = parameter_find_oval(_path,
-                                                                data["policies"][i]["parameter"],
-                                                                data["policies"][i]["value"])
+        # Cache the policy setting to reduce line length
+        _policy = data["policies"][i]
+        _path = regular_path(_policy.get("path", ""))
+
+        # regex used in OVAL for detection
+        _policy["oval_regex"] = parameter_find_oval(_path,
+                                                    _policy["parameter"],
+                                                    _policy["value"])
 
         # Regex used in sed replacement item for this policy change.
-        data["policies"][i]["parameter_replace_sed"] = parameter_replace_search_sed(_path,
-                                                                                    data["policies"][i]["parameter"])
+        _policy["parameter_replace_sed"] = parameter_replace_search_sed(_path,
+                                                                        _policy["parameter"])
 
         # PCRE Regex for grep to see if a path entry exists.
-        data["policies"][i]["path_grep"] = [path_find_grep(_path, x) for x in range(0, len(_path))]
+        _policy["path_grep"] = [path_find_grep(_path, x) for x in range(0, len(_path))]
 
         # PCRE Regex for grep to see if a path entry exists.
-        data["policies"][i]["parameter_grep"] = [parameter_find_grep(_path,
-                                                                     data["policies"][i]["parameter"], x)
-                                                 for x in range(0, len(_path))]
+        _policy["parameter_grep"] = [parameter_find_grep(_path,
+                                                         _policy["parameter"],
+                                                         x)
+                                     for x in range(0, len(_path))]
 
         # Sed "append" insertion string.
-        data["policies"][i]["parameter_insert"] = [parameter_insert(_path,
-                                                                    data["policies"][i]["parameter"],
-                                                                    data["policies"][i]["value"], x)
-                                                   for x in range(0, len(_path))]
+        _policy["parameter_insert"] = [parameter_insert(_path,
+                                                        _policy["parameter"],
+                                                        _policy["value"],
+                                                        x)
+                                       for x in range(0, len(_path))]
         # path without "policies"
-        data["policies"][i]["subpath"] = _path[1:]
-        data["policies"][i]["path_python"] = [path_find_python(_path, x)
-                                              for x in range(0, len(_path))]
-        data["policies"][i]["subpath_string"] = '_'.join(_path[1:])
-        data["policies"][i]["path_list"] = _path
-        data["policies"][i]["value_escaped"] = make_json_boolean(data["policies"][i]["value"])
+        _policy["subpath"] = _path[1:]
+        # Precached notation for addressing JSON path
+        _policy["path_python"] = [path_find_python(_path, x)
+                                  for x in range(0, len(_path))]
+        # JSON path as iterable list, sans "policies"
+        _policy["subpath_string"] = '_'.join(_path[1:])
+        # entire JSON path to be set as an iterable list.
+        _policy["path_list"] = _path
+        # value with quotes added for simple insertion.
+        _policy["value_escaped"] = make_json_boolean(_policy["value"])
+
+        # Reassign the modified policy entry.
+        data["policies"][i] = _policy
     return data
