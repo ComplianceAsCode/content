@@ -1,0 +1,71 @@
+#!/bin/bash
+
+
+function call_bash_sssd_set_option {
+    {{{ bash_sssd_set_option("$1", "$2", "$3", "$4") | indent(4) }}}
+}
+
+@test "bash_sssd_set_option - Basic value remediation" {
+    tmp_file="$(mktemp)"
+    printf "[pam]\npam_cert_auth = false\n" > "$tmp_file"
+    expected_output="[pam]\npam_cert_auth = true\n"
+
+    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+
+    run diff "$tmp_file" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "bash_sssd_set_option - No remediation happened" {
+    tmp_file="$(mktemp)"
+    printf "[pam]\npam_cert_auth = true\n" > "$tmp_file"
+    expected_output="[pam]\npam_cert_auth = true\n"
+
+    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+
+    run diff "$tmp_file" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "bash_sssd_set_option - Append section with option to empty file" {
+    tmp_file="$(mktemp)"
+    printf "" > "$tmp_file"
+    expected_output="[pam]\npam_cert_auth = true\n"
+
+    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+
+    run diff "$tmp_file" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "bash_sssd_set_option - Append option to section" {
+    tmp_file="$(mktemp)"
+    printf "[pam]\n[ssh]\n" > "$tmp_file"
+    expected_output="[pam]\npam_cert_auth = true\n[ssh]\n"
+
+    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+
+    run diff "$tmp_file" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
+
+@test "bash_sssd_set_option - Append section with option to non-empty file" {
+    tmp_file="$(mktemp)"
+    printf "[ssh]\n" > "$tmp_file"
+    expected_output="[ssh]\n[pam]\npam_cert_auth = true\n"
+
+    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+
+    run diff "$tmp_file" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm "$tmp_file"
+}
