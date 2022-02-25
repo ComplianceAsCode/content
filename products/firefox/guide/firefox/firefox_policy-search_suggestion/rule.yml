@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox search suggestions must be disabled.'
+
+description: |-
+    Private browsing may be disabled in an administrative policy by setting
+    the <tt>SearchSuggestEnabled</tt> key under <tt>policies</tt> to <tt>false</tt>.
+
+rationale: |-
+    Search suggestions must be disabled as this could lead to searches being conducted that were never intended to be made.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000020
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable addon and plugin automatic update
+        policies:
+          - {path: "policies", parameter: "SearchSuggestEnabled", value: false}

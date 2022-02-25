@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured to ask which certificate to present to a website when a certificate is required.'
+
+description: |-
+    The default certificate to present may be configured by setting
+    the <tt>Value</tt> under <tt>security.default_personal_cert</tt> to <tt>"Ask Every Time"</tt>.
+
+rationale: |-
+    When a website asks for a certificate for user authentication, Firefox must be configured to have the user choose which certificate to present. Websites within DoD require user authentication for access, which increases security for DoD information. Access will be denied to the user if certificate management is not configured.
+severity: medium
+
+references:
+    disa: CCI-000187
+    nist: IA-5(2)
+    stigid@firefox: FFOX-00-000003
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Require default personal certificate be chosen every time
+        policies:
+          - {path: "Preferences security.default_personal_cert", parameter: "Value", value: "Ask Every Time"}
+          - {path: "Preferences security.default_personal_cert", parameter: "Status", value: "locked"}

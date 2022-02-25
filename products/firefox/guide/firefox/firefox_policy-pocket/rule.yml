@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'The Firefox New Tab page must not show recommended stories.'
+
+description: |-
+
+    Telemetry can be disabled by setting
+    <tt>toolkit.telemetry.enabled</tt> to <tt>false</tt>.
+
+
+rationale: |-
+    The New Tab page by default shows web pages recommended by a third party (Pocket). The new tab page must not show unrelated/unnecessary content to the user. 
+    It is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000030
+
+template:
+    name: firefox_policy-setting
+    vars:
+      name: Disable Firefox Pocket
+      policies:
+        - {path: "FirefoxHome", parameter: "Pocket", value: false}
