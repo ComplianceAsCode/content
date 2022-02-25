@@ -13,6 +13,22 @@ description: |-
     Check the crypto-policies(7) man page and choose a policy that configures TLS
     protocol to version 1.2 or higher, for example DEFAULT, FUTURE or FIPS policy.
     Or create and apply a custom policy that restricts minimum TLS version to 1.2.
+    
+    For example for versions prior to crypto-policies-20210617-1.gitc776d3e.el8.noarch
+    this is expected:
+
+    <pre>$ sudo grep -i MinProtocol /etc/crypto-policies/back-ends/opensslcnf.config
+
+    MinProtocol = TLSv1.2
+    </pre>
+
+    Or for version crypto-policies-20210617-1.gitc776d3e.el8.noarch and newer this is
+    expected:
+
+    <pre>$ sudo grep -i MinProtocol /etc/crypto-policies/back-ends/opensslcnf.config
+
+    TLS.MinProtocol = TLSv1.2
+    DTLS.MinProtocol = DTLSv1.2</pre>
 
 rationale: |-
     Without cryptographic integrity protections, information can be altered by
