@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured to not automatically update installed add-ons and plugins.'
+
+description: |-
+    The update check may be disabled in an administrative policy by setting
+    the <tt>ExtensionUpdate</tt> key under <tt>policies</tt> to <tt>false</tt>.
+
+rationale: |-
+    To protect privacy and sensitive data, Firefox provides the ability to configure the program so that data entered into forms is not saved. This mitigates the risk of a website gleaning private information from prefilled information.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000005
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable addon and plugin automatic update
+        policies:
+          - {path: "policies", parameter: "ExtensionUpdate", value: false}

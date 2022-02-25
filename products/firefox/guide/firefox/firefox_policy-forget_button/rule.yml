@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured to not automatically update installed add-ons and plugins.'
+
+description: |-
+    The update check may be disabled in an administrative policy by setting
+    the <tt>DisableForgetButton</tt> key under <tt>policies</tt> to <tt>true</tt>.
+
+rationale: |-
+    There should not be an option for a user to "forget" work they have done. This is required to meet non-repudiation controls.
+severity: medium
+
+references:
+    disa: CCI-002355
+    nist: AC-24(2)
+    stigid@firefox: FFOX-00-000018
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable Forget button
+        policies:
+          - {path: "policies", parameter: "DisableForgetButton", value: true}
