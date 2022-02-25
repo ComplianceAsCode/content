@@ -1788,11 +1788,11 @@ done <   <({{{ command_and_its_args }}})
 #}}
 {{% macro bash_sssd_set_option(SSSD_SECT, SSSD_CONF, SSSD_OPT, SSSD_OPT_VAL) -%}}
 # find option in section and change value
-if grep -qzosP "[[:space:]]*\{{{ SSSD_SECT }}}([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}" {{{ SSSD_CONF }}}; then
+if grep -qzosP "[[:space:]]*{{{ SSSD_SECT }}}([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}" {{{ SSSD_CONF }}}; then
         sed -i "s/{{{ SSSD_OPT }}}[^(\n)]*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" {{{ SSSD_CONF }}}
 # find section and add option to it
-elif grep -qs "[[:space:]]*\{{{ SSSD_SECT }}}" {{{ SSSD_CONF }}}; then
-        sed -i "/[[:space:]]*\{{{ SSSD_SECT }}}/a {{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" {{{ SSSD_CONF }}}
+elif grep -qs "[[:space:]]*{{{ SSSD_SECT }}}" {{{ SSSD_CONF }}}; then
+        sed -i "/[[:space:]]*{{{ SSSD_SECT }}}/a {{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" {{{ SSSD_CONF }}}
 else
         # create .conf file and add section and option to it
         mkdir -p /etc/sssd
@@ -1810,27 +1810,28 @@ fi
 :param SSSD_CONF_NAME:  name of conf file to write to if option not found
 :param SSSD_OPT:        the SSSD option we are setting
 :param SSSD_OPT_VAL:    the value of SSSD_OPT we are setting
+:param SSSD_CONF_DIR:   directory where sssd configuration is stored; used by unit tests
 
 #}}
-{{% macro bash_sssd_set_option_new(SSSD_SECT, SSSD_CONF_NAME, SSSD_OPT, SSSD_OPT_VAL) -%}}
+{{% macro bash_sssd_set_option_new(SSSD_SECT, SSSD_CONF_NAME, SSSD_OPT, SSSD_OPT_VAL, SSSD_CONF_DIR="/etc/sssd") -%}}
 found=false
-for f in /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf; do
+for f in {{{ SSSD_CONF_DIR }}}/sssd.conf {{{ SSSD_CONF_DIR }}}/conf.d/*.conf; do
     if [ ! -e "$f" ]; then
         continue
     fi
-    
-    if grep -qzosP '[[:space:]]*\[{{{ SSSD_SECT }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}' "$f"; then
-        sed -i "s/^{{{ SSSD_OPT }}}\s*=.*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" "$f"
+
+    if grep -qzosP "[[:space:]]*{{{ SSSD_SECT }}}([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}" "$f"; then
+        sed -i "s/{{{ SSSD_OPT }}}[^(\n)]*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" "$f"
         found=true
     fi
 done
 
 if ! $found ; then
-    SSSD_CONF="/etc/sssd/conf.d/{{{ SSSD_CONF_NAME }}}.conf"
+    SSSD_CONF="{{{ SSSD_CONF_DIR }}}/conf.d/{{{ SSSD_CONF_NAME }}}.conf"
     mkdir -p "$(dirname "$SSSD_CONF")"
     touch "$SSSD_CONF"
     chown root:root "$SSSD_CONF"
     chmod 600 "$SSSD_CONF"
-    echo -e "[{{{ SSSD_SECT }}}]\n{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" >> "$SSSD_CONF"
+    echo -e "{{{ SSSD_SECT }}}\n{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" >> "$SSSD_CONF"
 fi
 {{%- endmacro %}}
