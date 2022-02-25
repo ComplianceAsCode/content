@@ -179,9 +179,28 @@
 {{%- endif %}}
 {{%- endif %}}
 
+{{% if ARG_VALUE %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   version="1">
     <ind:subexpression datatype="string" operation="pattern match">^(?:.*\s)?{{{ ESCAPED_ARG_NAME_VALUE }}}(?:\s.*)?$</ind:subexpression>
   </ind:textfilecontent54_state>
+{{% else %}}
+  <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match" var_ref="local_var_regex_{{{ ARG_NAME }}}_{{{ ARG_VARIABLE }}}" />
+  </ind:textfilecontent54_state>
+
+  <local_variable id="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}"
+  comment="Regex that matches {{{ ARG_NAME }}} with value {{{ ARG_VARIABLE }}}"
+  datatype="string" version="1">
+    <concat>
+      <literal_component>^(?:.*\s)?{{{ ARG_NAME }}}=</literal_component>
+      <variable_component var_ref="{{{ ARG_VARIABLE }}}" />
+      <literal_component>(?:\s.*)?$</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="Variable defining the value the argument should have" datatype="string" id="{{{ ARG_VARIABLE }}}" version="1" />
+{{% endif %}}
 
 </def-group>

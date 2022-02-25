@@ -245,6 +245,7 @@ selections:
 - var_password_pam_difok=4
 - var_password_pam_maxrepeat=3
 - var_password_pam_maxclassrepeat=4
+- var_slub_debug_options=P
 - var_auditd_flush=incremental_async
 - var_accounts_max_concurrent_login_sessions=10
 - var_password_pam_unix_remember=5
