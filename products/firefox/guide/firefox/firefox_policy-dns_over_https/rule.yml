@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured so that DNS over HTTPS is disabled.'
+
+description: |-
+    DNS over HTTPS feature may be disabled via administrative policy by setting
+    <tt>Enabled</tt> under <tt>DNSOverHTTPS</tt> to <tt>false</tt>.
+
+rationale: |-
+    DNS over HTTPS has generally not been adopted in the DoD. DNS is tightly controlled.
+    It is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
+    Applications are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).
+    Examples of non-essential capabilities include but are not limited to advertising software or browser plug-ins that are not related to requirements or provide a wide array of functionality not required for every mission but that cannot be disabled.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000033
+
+template:
+    name: firefox_policy-setting
+    vars:
+      name: Disable DNS over HTTPS 
+      policies:
+        - {path: "DNSOverHTTPS", parameter: "Enabled", value: false}
