@@ -213,6 +213,7 @@ selections:
     - mount_option_nosuid_removable_partitions
     - network_sniffer_disabled
     - no_empty_passwords
+    - no_empty_passwords_etc_shadow
     - no_files_unowned_by_user
     - no_host_based_files
     - no_shelllogin_for_systemaccounts
