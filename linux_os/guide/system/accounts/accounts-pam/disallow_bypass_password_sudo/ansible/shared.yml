@@ -1,0 +1,8 @@
+# platform = multi_platform_ol,multi_platform_sle
+
+- name: Check for pam_succeed_if entry
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/sudo"
+    create: no
+    regexp: 'pam_succeed_if'
+    state: absent
