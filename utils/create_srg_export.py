@@ -56,7 +56,7 @@ class DisaStatus:
     PARTIAL = "Applicable - Configurable"
     SUPPORTED = "supported"
     AUTOMATED = "Applicable - Configurable"
-    DOES_NOT_MEET = "Applicable – Does Not Meet"
+    DOES_NOT_MEET = "Applicable - Does Not Meet"
 
     @staticmethod
     def from_string(source: str) -> str:
@@ -64,7 +64,7 @@ class DisaStatus:
             return DisaStatus.INHERENTLY_MET
         elif source == ssg.controls.Status.DOES_NOT_MEET:
             return DisaStatus.DOES_NOT_MEET
-        elif source == ssg.controls.Status.AUTOMATED:
+        elif source == ssg.controls.Status.AUTOMATED or ssg.controls.Status.MANUAL:
             return DisaStatus.AUTOMATED
         return source
 
