@@ -12,7 +12,9 @@ controls:
             Obfuscation of user-provided information that is typed into the system is a method used when addressing this risk.
 
             For example, displaying asterisks when a user types in a password is an example of obscuring feedback of authentication information.
-        check: The technology supports this requirement and cannot be configured to be out of compliance. The technology inherently meets this requirement.
+        check: |-
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}} inherently meets this requirement.
         fix: The technology inherently meets this requirement. No fix is required.
         mitigation: |-
             The "passwd", "login", and "sudo" do not display the passwords being typed.
