@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Ensure SMAP is not disabled during boot'
+
+description: |-
+    The SMAP is used to prevent the supervisor mode from unintentionally reading/writing into
+    memory pages in the user space, it is enabled by default since Linux kernel 3.7.
+    But it could be disabled through kernel boot parameters.
+
+    Ensure that Supervisor Mode Access Prevention (SMAP) is not disabled by
+    the <tt>nosmap</tt> boot paramenter option.
+
+    Check that the line <pre>GRUB_CMDLINE_LINUX="..."</pre> within <tt>/etc/default/grub</tt>
+    doesn't contain the argument <tt>nosmap</tt>.
+    Run the following command to update command line for already installed kernels:
+    <pre># grubby --update-kernel=ALL --remove-args="nosmap"</pre>
+
+rationale: |-
+    Disabling SMAP can facilitate exploitation of vulnerabilities caused by unintended access and
+    manipulation of data in the user space.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87345-5
+    cce@rhel9: CCE-88345-4
+
+ocil_clause: 'the kernel is configured to disable SMAP'
+
+ocil: |-
+    Make sure that the kernel is not disabling SMAP with the following
+    commands.
+    <pre>grep -q nosmap /boot/config-`uname -r`</pre>
+    If the command returns a line, it means that SMAP is being disabled.
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument_absent
+    vars:
+        arg_name: nosmap
