@@ -50,7 +50,7 @@ references:
 
 warnings:
     - general: |-
-        {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-apiserver/configmaps/config") | indent(8) }}}
+        {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(8) }}}
 
 template:
     name: yamlfile_value
