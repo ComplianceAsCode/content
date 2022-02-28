@@ -16,7 +16,7 @@
 {{% set system_with_expanded_kernel_options_in_loader_entries = true %}}
 {{%- endif -%}}
 
-{{% if product in ["rhel8"] -%}}
+{{% if product in ["ol8","rhel8"] -%}}
 {{% set system_with_referenced_kernel_options_in_loader_entries = true %}}
 {{% set system_with_kernel_options_in_grubenv = true %}}
 {{%- endif -%}}
