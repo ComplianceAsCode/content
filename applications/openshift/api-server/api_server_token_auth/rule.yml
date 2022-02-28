@@ -59,7 +59,7 @@ template:
     name: yamlfile_value
     vars:
         ocp_data: "true"
-        filepath: '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config'
+        filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
         yamlpath: '.data["config.yaml"]'
         entity_check: "none satisfy"
         values:
