@@ -61,8 +61,8 @@ def create_table(data, template_name, output_filename):
     env = ssg.jinja._get_jinja_environment(dict())
     env.loader = FlexibleLoader(os.path.dirname(html_jinja_template))
     result = ssg.jinja.process_file(html_jinja_template, data)
-    with open(output_filename, "w") as f:
-        f.write(result)
+    with open(output_filename, "wb") as f:
+        f.write(result.encode('utf8', 'replace'))
 
 
 def get_rules_by_srgid(build_dir, product):
