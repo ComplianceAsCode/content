@@ -31,7 +31,11 @@
     <td>{{{ srgid }}}</td>
     <td><i>TBD - Assigned by DISA after STIG release</i></td>
     <td>{{{ srg.requirement }}}</td>
+{{% if rule.identifiers["cce"] %}}
     <td>{{{ rule.identifiers["cce"] }}}: {{{ rule.title }}}</td>
+{{% else %}}
+    <td>{{{ rule.title }}}</td>
+{{% endif %}}
     <td>{{{ srg.vuln_discussion }}}</td>
     <td>{{{ rule.description }}}</td>
     <td>Applicable - Configurable</td>
