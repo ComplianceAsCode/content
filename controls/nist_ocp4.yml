@@ -689,11 +689,21 @@ controls:
     https://issues.redhat.com/browse/CMP-216
   rules: []
 - id: AC-4(8)
-  status: pending
+  status: not applicable
   notes: |-
-    A control response is planned. Progress can be tracked via:
+    Security policy filters for data structures can check for maximum file lengths,
+    maximum field sizes, and data/file types (for structured and unstructured data)
+    can be met by OpenShift.
 
-    https://issues.redhat.com/browse/CMP-103
+    All of OpenShift extends the Kubernetes API with custom resource defintions.
+    The api has built-in limits and there are additional validations we can perform. [1]
+
+    However security policy filters for data content which checks for specific words enumerated values
+    or data value ranges, and hidden content, are an organizational control outside the scope of
+    OpenShift configuration.
+
+    [1] https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation-rules
+
   rules: []
   description: |-
     The information system enforces information flow control using [Assignment: organization-defined security policy filters] as a basis for flow control decisions for [Assignment: organization-defined information flows].
