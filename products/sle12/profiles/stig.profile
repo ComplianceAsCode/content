@@ -167,6 +167,7 @@ selections:
     - dir_system_commands_group_root_owned
     - dir_system_commands_root_owned
     - disable_ctrlaltdel_reboot
+    - disallow_bypass_password_sudo
     - display_login_attempts
     - enable_dconf_user_profile
     - encrypt_partitions
