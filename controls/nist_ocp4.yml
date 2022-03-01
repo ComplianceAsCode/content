@@ -1467,16 +1467,27 @@ controls:
   - high
   - moderate
 - id: AC-12(1)
-  status: pending
+  status: partial
   notes: |-
-    Section a: A control response is planned. Progress can be tracked via:
+    With any authentication mechanism the ability to revoke credentials if they
+    are compromised or no longer required, is a key control. Kubernetes client
+    certificate authentication does not allow for this due to a lack of support
+    for certificate revocation.
 
-    https://issues.redhat.com/browse/CMP-223
+    OpenShift's built-in OAuth server allows credential revocation by relying on
+    the Identity provider, as well as giving the administrators the ability to
+    revoke any tokens given to a specific user.
 
-    Section b: A control response is planned. Progress can be tracked via:
+    The OpenShift does not have the logout capability when cert is being used with
+    the default kubeadmin account, therefore we need to check if kubeadmin account
+    is disabled.
 
-    https://issues.redhat.com/browse/CMP-223
-  rules: []
+    Section b: A RFE has been filed. Progress can be tracked via: 
+
+    https://issues.redhat.com/browse/RFE-2645
+  rules:
+  - idp_is_configured
+  - kubeadmin_removed
   description: |-
     The information system:
      (a)   Provides a logout capability for user-initiated communications sessions whenever authentication is used to gain access to [Assignment: organization-defined information resources]; and
