@@ -1052,15 +1052,29 @@ controls:
     https://issues.redhat.com/browse/CMP-119
   rules: []
 - id: AC-6(7)
-  status: pending
+  status: not applicable
   notes: |-
-    Section a: A control response is planned. Progress can be tracked via:
+    Reviews and manage the privileges assigned to user is an organization control.
 
-    https://issues.redhat.com/browse/CMP-120
+    However to facilitate a control response, using Role Based Access Control (RBAC),
+    OpenShift roles can be used to grant various levels of access both cluster-wide as well as at
+    the project scope. Users and groups can be associated with, or bound
+    to, multiple roles at the same time.
 
-    Section b: A control response is planned. Progress can be tracked via:
+    For service accounts that might also have privileged access, Security
+    Context Constraints (SCC) should be used to limit privileged actions
+    in service accounts.
 
-    https://issues.redhat.com/browse/CMP-120
+    For the cluster, the kubeadmin user should be completely disabled.
+
+    More information on RBAC can be viewed at:
+    https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+
+    More information for SCC can be viewed at:
+    https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
+    Section b: The organization monitoring privileged role assignments is an organizational
+
+
   rules: []
   description: |-
     The organization:
