@@ -35,7 +35,7 @@ SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 def get_severity(input_severity):
     if input_severity not in [
             'CAT I', 'CAT II', 'CAT III', 'low', 'medium', 'high']:
-        raise ValueError(f'Severity of {input_severity}')
+        raise ValueError("Severity of {}".format(input_severity))
     elif input_severity in ['CAT I', 'CAT II', 'CAT III']:
         return input_severity
     else:
