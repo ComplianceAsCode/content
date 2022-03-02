@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import pathlib
+import os
 import sys
 
 from .xml import ElementTree as ET
@@ -55,7 +55,7 @@ def get_description_root(srg):
 
 
 def parse_srgs(xml_path):
-    if not pathlib.Path(xml_path).exists():
+    if not os.path.exists(xml_path):
         sys.stderr.write("XML {} for SRG was not found\n".format(xml_path))
         exit(1)
     root = ET.parse(xml_path).getroot()
