@@ -32,7 +32,7 @@ def map_versions_to_rule_ids(reference_file_name):
 SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 
 
-def get_severity(input_severity: str) -> str:
+def get_severity(input_severity):
     if input_severity not in [
             'CAT I', 'CAT II', 'CAT III', 'low', 'medium', 'high']:
         raise ValueError(f'Severity of {input_severity}')
@@ -42,7 +42,7 @@ def get_severity(input_severity: str) -> str:
         return SEVERITY[input_severity]
 
 
-def get_description_root(srg: ET.Element) -> ET.Element:
+def get_description_root(srg):
     # DISA adds escaped XML to the description field
     # This method unescapes that XML and parses it
     description_xml = "<root>"
@@ -54,7 +54,7 @@ def get_description_root(srg: ET.Element) -> ET.Element:
     return description_root
 
 
-def parse_srgs(xml_path: str) -> dict:
+def parse_srgs(xml_path):
     if not pathlib.Path(xml_path).exists():
         sys.stderr.write("XML {} for SRG was not found\n".format(xml_path))
         exit(1)
