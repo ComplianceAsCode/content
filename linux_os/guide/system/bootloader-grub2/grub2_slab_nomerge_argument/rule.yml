@@ -1,0 +1,43 @@
+documentation_complete: true
+
+title: 'Disable merging of slabs with similar size'
+
+description: |-
+    The kernel may merge similar slabs together to reduce overhead and increase
+    cache hotness of objects.
+    Disabling merging of slabs keeps the slabs separate and reduces the risk of
+    kernel heap overflows overwriting objects in merged caches.
+
+    To disable merging of slabs in the Kernel add the argument <tt>slab_nomerge=yes</tt>
+    to the default GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("slab_nomerge=yes") | indent(4) }}}
+
+rationale: |-
+    Disabling the merge of slabs of similar sizes prevents the kernel from
+    merging a seemingly useless but vulnerable slab with a useful and valuable slab.
+    This increase the risk that a heap overflow could overwrite objects from merged caches,
+    with unmerged caches the heap overflow would only affect the objects in the same cache.
+    Overall, this reduces the kernel attack surface area by isolating slabs from each other.
+
+warnings:
+    - performance: |-
+       Disabling merge of slabs will slightly increase kernel memory utilization.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-86777-0
+    cce@rhel9: CCE-87770-4
+
+ocil_clause: 'merging of slabs with similar size is enabled'
+
+ocil: |-
+    {{{ ocil_grub2_argument("slab_nomerge=yes") | indent(4) }}}
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: slab_nomerge
+        arg_value: 'yes'
