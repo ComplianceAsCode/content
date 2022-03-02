@@ -6,9 +6,11 @@
     <criteria operator="AND">
       <criterion comment="Conditions are satisfied"
       test_ref="test_require_rescue_service" />
+      {{%- if product not in ["ol8", "rhel8"] -%}}
       <criterion test_ref="test_require_rescue_service_runlevel1" />
       <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
       <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
+      {{%- endif -%}}
     </criteria>
     {{%- else -%}}
     <criteria>
@@ -40,6 +42,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  {{%- if product not in ["ol8", "rhel8"] -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests that the systemd rescue.service is in the runlevel1.target"
     id="test_require_rescue_service_runlevel1" version="1">
@@ -74,6 +77,7 @@
     <unix:path operation="equals">/etc/systemd/system</unix:path>
     <unix:filename operation="pattern match">^runlevel1.target$</unix:filename>
   </unix:file_object>
+  {{%- endif -%}}
   {{%- else -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Tests that the SINGLE variable in the /etc/sysconfig/init file is set to /sbin/sulogin, to ensure that a password must be entered to access single user mode"
