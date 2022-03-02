@@ -53,8 +53,8 @@ template:
     ocp_data: "true"
     entity_check: "at least one"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
     values:
-    - value: '"enable-admission-plugins":\[[^]]*"ServiceAccount"'
+    - value: '^ServiceAccount$'
       operation: "pattern match"
-      type: "string"
+      
