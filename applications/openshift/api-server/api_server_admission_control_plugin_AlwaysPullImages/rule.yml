@@ -63,10 +63,9 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "none satisfy"
+    check_existence: "none_exist"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
     values:
-    - value: '"enable-admission-plugins":\[[^]]*"AlwaysPullImages"'
+    - value: '^AlwaysPullImages$'
       operation: "pattern match"
-      type: "string"

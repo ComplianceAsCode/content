@@ -55,10 +55,9 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
+    check_existence: "none_exist"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.apiServerArguments["enable-admission-plugins"][:]'
     values:
-    - value: '"enable-admission-plugins":\[[^]]*"SecurityContextDeny"'
+    - value: '^SecurityContextDeny$'
       operation: "pattern match"
-      type: "string"
-      entity_check: "none satisfy"
