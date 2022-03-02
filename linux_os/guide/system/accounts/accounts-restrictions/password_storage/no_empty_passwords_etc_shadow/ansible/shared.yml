@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Collect users with no password
+  command: >
+    awk -F: '!$2 {print $1}' /etc/shadow
+  register: users_nopasswd
+
+- name: Lock users with no password
+  command: >
+    passwd -l {{ item }}
+  with_items: "{{ users_nopasswd.stdout_lines }}"
+  when: users_nopasswd.stdout_lines | length > 0
+
+
