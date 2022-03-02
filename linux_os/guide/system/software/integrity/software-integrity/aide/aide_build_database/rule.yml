@@ -6,18 +6,36 @@ title: 'Build and Test AIDE Database'
 
 description: |-
     Run the following command to generate a new database:
-    <pre>$ sudo /usr/sbin/aide --init</pre>
-    By default, the database will be written to the file <tt>/var/lib/aide/aide.db.new.gz</tt>.
-    Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
-    <tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
-    The newly-generated database can be installed as follows:
-    {{% if 'ubuntu' not in product %}}
-    <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+    {{% if 'sle' in product %}}
+    <pre>$ sudo /usr/bin/aide --init</pre>
     {{% else %}}
+    <pre>$ sudo /usr/sbin/aide --init</pre>
+    {{% endif %}}
+    By default, the database will be written to the file
+    {{% if 'ubuntu' in product or 'sle' in product %}}
+    <tt>/var/lib/aide/aide.db.new</tt>.
+    {{% else %}}
+    <tt>/var/lib/aide/aide.db.new.gz</tt>.
+    {{% endif %}}
+    Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
+    {{% if 'sle' in product %}}
+    <tt>/usr/bin/aide</tt>
+    {{% else %}}
+    <tt>/usr/sbin/aide</tt>
+    {{% endif %}}
+    (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
+    The newly-generated database can be installed as follows:
+    {{% if 'ubuntu' in product or 'sle' in product %}}
     <pre>$ sudo cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db</pre>
+    {{% else %}}
+    <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
     {{% endif %}}
     To initiate a manual check, run the following command:
+    {{% if 'sle' in product %}}
+    <pre>$ sudo /usr/bin/aide --check</pre>
+    {{% else %}}
     <pre>$ sudo /usr/sbin/aide --check</pre>
+    {{% endif %}}
     If this check produces any unexpected output, investigate.
 
 rationale: |-

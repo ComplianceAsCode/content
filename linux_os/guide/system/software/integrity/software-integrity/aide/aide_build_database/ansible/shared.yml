@@ -11,7 +11,11 @@
     - aide
 
 - name: "Build and Test AIDE Database"
+{{% if 'sle' in product %}}
+  command: /usr/bin/aide --init
+{{% else %}}
   command: /usr/sbin/aide --init
+{{% endif %}}
   changed_when: True
 
 # mainly to allow ansible's check mode to work
@@ -22,8 +26,13 @@
 
 - name: "Stage AIDE Database"
   copy:
+{{% if 'sle' in product %}}
+    src: /var/lib/aide/aide.db.new
+    dest: /var/lib/aide/aide.db
+{{% else %}}
     src: /var/lib/aide/aide.db.new.gz
     dest: /var/lib/aide/aide.db.gz
+{{% endif %}}
     backup: yes
     remote_src: yes
   when: (aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists)
