@@ -27,21 +27,21 @@
 {{% if rules %}}
 {{% for rule in rules %}}
   <tr>
-    <td>{{{ srg.cci }}}</td>
+    <td>{{{ srg["first_ident"] }}}</td>
     <td>{{{ srgid }}}</td>
     <td><i>TBD - Assigned by DISA after STIG release</i></td>
-    <td>{{{ srg.requirement }}}</td>
+    <td>{{{ srg["title"] }}}</td>
 {{% if rule.identifiers["cce"] %}}
     <td>{{{ rule.identifiers["cce"] }}}: {{{ rule.title }}}</td>
 {{% else %}}
     <td>{{{ rule.title }}}</td>
 {{% endif %}}
-    <td>{{{ srg.vuln_discussion }}}</td>
+    <td>{{{ srg["vuln_discussion"] }}}</td>
     <td>{{{ rule.description }}}</td>
     <td>Applicable - Configurable</td>
-    <td>{{{ srg.check_content }}}</td>
+    <td>{{{ srg["check"] }}}</td>
     <td>{{{ rule.ocil }}} Is it the case that {{{ rule.ocil_clause }}}?</td>
-    <td>{{{ srg.fixtext }}}</td>
+    <td>{{{ srg["fixtext"] }}}</td>
     <td>{{{ rule.description }}}</td>
     <td>{{{ rule.severity }}}</td>
     <td></td>
@@ -51,12 +51,12 @@
 {{% endfor %}}
 {{% else %}}
   <tr>
-    <td>{{{ srg.cci }}}</td>
+    <td>{{{ srg["first_ident"] }}}</td>
     <td>{{{ srgid }}}</td>
     <td><i>TBD - Assigned by DISA after STIG release</i></td>
-    <td>{{{ srg.requirement }}}</td>
+    <td>{{{ srg["title"] }}}</td>
     <td></td>
-    <td>{{{ srg.vuln_discussion }}}</td>
+    <td>{{{ srg["vuln_discussion"] }}}</td>
     <td></td>
     <td></td>
     <td></td>

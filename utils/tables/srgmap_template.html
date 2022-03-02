@@ -14,11 +14,11 @@
 </thead>
 {{% for srgid, srg in srgs.items() %}}
   <tr>
-    <td>{{{ srg.cci }}}</td>
+    <td>{{{ srg["first_ident"] }}}</td>
     <td>{{{ srgid }}}</td>
     <td><i>TBD - Assigned by DISA after STIG release</i></td>
-    <td>{{{ srg.requirement }}}</td>
-    <td>{{{ srg.vuln_discussion }}}</td>
+    <td>{{{ srg["title"] }}}</td>
+    <td>{{{ srg["vuln_discussion"] }}}</td>
 {{% set rules = rules_by_srgid[srgid] %}}
 {{% if rules %}}
     <td>

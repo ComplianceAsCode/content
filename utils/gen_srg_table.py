@@ -5,40 +5,12 @@ import collections
 import os
 import xml.etree.ElementTree as ET
 
+import ssg.build_stig
 import ssg.build_yaml
 import ssg.constants
 import ssg.jinja
 from ssg.constants import PREFIX_TO_NS as NS
 from utils.template_renderer import FlexibleLoader
-
-Srg = collections.namedtuple(
-    "SRG", [
-        "cci", "requirement", "vuln_discussion", "check_content", "fixtext"])
-
-
-def parse_srgs(srgs_filename):
-    srgs = dict()
-    root = ET.parse(srgs_filename)
-    for rule in root.findall(".//xccdf-1.1:Rule", NS):
-        srgid = rule.find("./xccdf-1.1:version", NS).text
-        # The correct XPath query should be
-        # ./xccdf-1.1:ident[@system='http://cyber.mil/cci']
-        # This gets the V-number instead
-        cci = rule.find("./xccdf-1.1:ident", NS).text
-        requirement = rule.find("./xccdf-1.1:title", NS).text
-        description = rule.find("./xccdf-1.1:description", NS).text
-        description = description.replace("&", "&amp;")
-        description_xmlstring = "<description>" + \
-            description + "</description>"
-        description_as_tree = ET.fromstring(description_xmlstring)
-        vuln_discussion = description_as_tree.find("./VulnDiscussion").text
-        check_content = rule.find(
-            "./xccdf-1.1:check/xccdf-1.1:check-content", NS).text
-        fixtext = rule.find("./xccdf-1.1:fixtext", NS).text
-        srgs[srgid] = Srg(
-            cci=cci, requirement=requirement, vuln_discussion=vuln_discussion,
-            check_content=check_content, fixtext=fixtext)
-    return srgs
 
 
 def parse_args():
@@ -83,7 +55,7 @@ def get_rules_by_srgid(build_dir, product):
 if __name__ == "__main__":
     args = parse_args()
     data = dict()
-    data["srgs"] = parse_srgs(args.srgs)
+    data["srgs"] = ssg.build_stig.parse_srgs(args.srgs)
     data["rules_by_srgid"] = get_rules_by_srgid(args.build_dir, args.product)
     data["full_name"] = ssg.utils.prodtype_to_name(args.product)
     create_table(data, "srgmap_template.html", args.srgmap)
