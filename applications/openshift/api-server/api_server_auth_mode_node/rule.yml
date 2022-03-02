@@ -45,8 +45,8 @@ template:
     ocp_data: "true"
     entity_check: "at least one"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.apiServerArguments["authorization-mode"][:]'
     values:
-    - value: '"authorization-mode":\[[^]]*"Node"'
+    - value: 'Node'
       operation: "pattern match"
       type: "string"

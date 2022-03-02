@@ -42,10 +42,10 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "none exist"
+    check_existence: "none_exist"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.apiServerArguments["authorization-mode"][:]'
     values:
-    - value: '"authorization-mode":\[[^]]*"AlwaysAllow"'
+    - value: 'AlwaysAllow'
       operation: "pattern match"
       type: "string"

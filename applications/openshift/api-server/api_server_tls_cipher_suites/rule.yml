@@ -69,10 +69,10 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "at least one"
+    entity_check: "all"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.cipherSuites[:]'
     values:
-    - value: '\"cipherSuites\":\[(\"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\"|\"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256\"|\"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256\"|\"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384\"|\"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256\"|\"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\"|,| )*\]'
+    - value: 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
       operation: "pattern match"
       type: "string"

@@ -48,8 +48,5 @@ template:
     ocp_data: "true"
     entity_check: "all"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
-    values:
-    - value: '"servingInfo":{.*"bindAddress":"0.0.0.0:6443"'
-      operation: "pattern match"
-      type: "string"
+    yamlpath: '.servingInfo["bindAddress"][:]'
+    xccdf_value: var_apiserver_bind_address
