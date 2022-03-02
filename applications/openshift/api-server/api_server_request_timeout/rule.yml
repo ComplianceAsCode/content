@@ -59,10 +59,10 @@ template:
     ocp_data: "true"
     entity_check: "at least one"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.data["config.yaml"]'
+    yamlpath: '.apiServerArguments["min-request-timeout"][:]'
     xccdf_variable: var_api_min_request_timeout
     embedded_data: "true"
     values:
-    - value: '"apiServerArguments":{.*"min-request-timeout":\["(\d*)"\]'
+    - value: '(\d*)'
       operation: "pattern match"
       type: "string"

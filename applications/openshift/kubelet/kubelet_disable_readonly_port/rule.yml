@@ -57,8 +57,8 @@ template:
     vars:
         ocp_data: "true"
         filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-        yamlpath: ".data['config.yaml']"
+        yamlpath: '.apiServerArguments["kubelet-read-only-port"][:]'
         values:
-          - value: '.*kubelet-read-only-port"\:\["0"\].*'
+          - value: '0'
             type: "string"
             operation: "pattern match"

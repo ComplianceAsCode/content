@@ -61,9 +61,9 @@ template:
     vars:
         ocp_data: "true"
         filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-        yamlpath: '.data["config.yaml"]'
+        yamlpath: '.apiServerArguments["kubelet-certificate-authority"][:]'
         check_existence: "at_least_one_exists"
         values:
-            - value: '\"kubelet-certificate-authority\"\s*:\s*\[\s*\"/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt\"\s*\]'
+            - value: '/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt'
               type: "string"
               operation: "pattern match"
