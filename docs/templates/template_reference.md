@@ -369,6 +369,9 @@ they must be of the same length.
 
     -   **arg_value** - argument value, eg. `'1'`
 
+    -   **arg_variable** - the variable used as the value for the argument, eg. `'var_slub_debug_options'`
+        This parameter is mutually exclusive with **arg_value**.
+
 -   Languages: Ansible, Bash, OVAL, Blueprint
 
 #### grub2_bootloader_argument_absent
