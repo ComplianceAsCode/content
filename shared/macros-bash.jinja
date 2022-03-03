@@ -1645,14 +1645,11 @@ fi
 {{%- endmacro %}}
 
 {{#
-
-    Remediation for grub2 bootloader arguments
+    Ensures that /etc/default/grub file contains the ARG_NAME_VALUE.
+:param ARG_NAME: name of the grub parameter, e.g.: "audit"
+:param ARG_NAME_VALUE: parameter together with the value to ensure, e.g.: "audit=1"
 #}}
-{{% macro grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) %}}
-{{% set grub_helper_executable = "grubby" -%}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE] -%}}
-
-{{%- macro update_etc_default_grub_manually() -%}}
+{{%- macro update_etc_default_grub_manually(ARG_NAME, ARG_NAME_VALUE) -%}}
 # Correct the form of default kernel command line in GRUB
 if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
        # modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
@@ -1663,8 +1660,16 @@ else
 fi
 {{%- endmacro %}}
 
+{{#
+
+    Remediation for grub2 bootloader arguments
+#}}
+{{% macro grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) %}}
+{{% set grub_helper_executable = "grubby" -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE] -%}}
+
 {{% if 'ubuntu' in product %}}
-{{{ update_etc_default_grub_manually() }}}
+{{{ update_etc_default_grub_manually(ARG_NAME, ARG_NAME_VALUE) }}}
 {{% set grub_helper_executable = "update-grub" -%}}
 {{% endif -%}}
 
