@@ -282,6 +282,8 @@ def html_plain_text(source: str) -> str:
     result = source.replace("<br />", "\n")
     result = result.replace("<tt>", '"')
     result = result.replace("</tt>", '"')
+    result = result.replace("&gt;", ">")
+    result = result.replace("&lt;", "<")
     # Remove all other tags
     result = re.sub(r"(?s)<.*?>", " ", result)
     return result
