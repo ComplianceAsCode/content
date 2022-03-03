@@ -1,7 +1,15 @@
 #!/bin/bash
 
-firefox_cfg="distribution/policies.json"
-firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
+firefox_cfg="policies.json"
+firefox_dirs="/usr/lib/firefox/distribution /usr/lib64/firefox/distribution /usr/local/lib/firefox/distribution /usr/local/lib64/firefox/distribution"
+_PYTHON=$(which python3)
+if [ -x /usr/bin/python ]
+    _PYTHON=/usr/bin/python
+elif [ -x /usr/bin/python3 ]
+    _PYTHON=/usr/bin/python3
+elif [ -x /usr/bin/python2 ]
+    _PYTHON=/usr/bin/python2
+fi
 
 # Iterate over the possible Firefox install directories
 for firefox_dir in ${firefox_dirs}; do
@@ -26,5 +34,5 @@ _tree{{{ policy_item.path_python[0] }}}['{{{ policy_item.parameter }}}'] = 'bad_
 _file=open('${firefox_dir}/${firefox_cfg}', 'wb')
 json.dump(_tree, _file, indent=4, sort_keys=True)
 _file.close()
-""" | python
+""" | ${_PYTHON}
 done
