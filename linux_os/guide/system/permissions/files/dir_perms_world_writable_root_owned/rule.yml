@@ -26,7 +26,7 @@ identifiers:
 references:
     anssi: BP28(R40)
     disa: CCI-000366
-    srg: SRG-OS-000480-GPOS-00227
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000138-GPOS-00069
     stigid@rhel8: RHEL-08-010700
 
 ocil_clause: 'there is output'
@@ -35,3 +35,10 @@ ocil: |-
     The following command will discover and print world-writable directories that
     are not owned by root.  Run it once for each local partition <i>PART</i>:
     <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -uid +0 -print</pre>
+
+fix:
+    Configure all public directories to be owned by root or a system account to prevent unauthorized and unintended information transferred via shared system resources.
+
+    Set the owner of all public directories as root or a system account using the command, replace ""[Public Directory]"" with any directory path not owned by root or a system account:
+
+    $ sudo chown root [Public Directory]
