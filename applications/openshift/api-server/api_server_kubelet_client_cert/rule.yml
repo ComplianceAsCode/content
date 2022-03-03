@@ -61,7 +61,9 @@ template:
     entity_check: "all"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: '.apiServerArguments["kubelet-client-certificate"][:]'
+    xccdf_variable: var_apiserver_kubelet_client_cert
+    embedded_data: "true"
     values:
-    - value: '/etc/kubernetes/static-pod-(resources|certs)/secrets/kubelet-client/tls.crt'
+    - value: '(.+)'
       type: "string"
       operation: "pattern match"

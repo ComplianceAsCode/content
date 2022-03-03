@@ -64,7 +64,9 @@ template:
         filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
         yamlpath: '.apiServerArguments["etcd-cafile"][:]'
         entity_check: "all"
+        xccdf_variable: var_apiserver_etcd_ca
+        embedded_data: "true"
         values:
-            - value: '/etc/kubernetes/static-pod-resources/configmaps/etcd-serving-ca/ca-bundle.crt'
+            - value: '(.+)'
               operation: "pattern match"
               type: "string"

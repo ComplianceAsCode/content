@@ -62,7 +62,9 @@ template:
     entity_check: "all"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: '.apiServerArguments["tls-private-key-file"][:]'
+    xccdf_variable: var_apiserver_tls_private_key
+    embedded_data: "true"
     values:
-     - value: '/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls\.key'
+     - value: '(.+)'
        operation: "pattern match"
        type: "string"

@@ -62,9 +62,11 @@ template:
     vars:
         ocp_data: "true"
         filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-        yamlpath: '.apiServerArguments["client-ca-file"][:]'
+        yamlpath: '.apiServerArguments["client-ca-file"]'
         entity_check: "all"
+        xccdf_variable: var_apiserver_client_ca
+        embedded_data: "true"
         values:
-            - value: '/etc/kubernetes/static-pod-certs/configmaps/client-ca/ca-bundle.crt'
+            - value: '(.+)'
               operation: "pattern match"
               type: "string"
