@@ -124,7 +124,7 @@ def preprocess(data, lang):
         _policy["subpath"] = _path[1:]
         # Precached notation for addressing JSON path
         _policy["path_python"] = [path_find_python(_path, x)
-                                  for x in range(0, len(_path))]
+                                  for x in range(0, len(_path)+1)][:-1]
         # JSON path as iterable list, sans "policies"
         _policy["subpath_string"] = '_'.join(_path[1:])
         # entire JSON path to be set as an iterable list.
