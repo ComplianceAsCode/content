@@ -49,3 +49,9 @@ ocil: |-
     <pre>$ sudo chage -l <i>USER</i> | grep Minimum</pre>
     The output for each user should return something similary to the following:
     <pre>Minimum number of days between password change\t\t: 1</pre>
+
+fix: |-
+    Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
+
+    $ sudo passwd -n {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}} [user]
+
