@@ -64,8 +64,14 @@ ocil_clause: 'PASS_MAX_DAYS is not set equal to or greater than the required val
 ocil: |-
     To check the maximum password age, run the command:
     <pre>$ grep PASS_MAX_DAYS /etc/login.defs</pre>
-    The DoD and FISMA requirement is 60.
-    A value of 180 days is sufficient for many environments.
+    The profile requirement is <tt>{{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}</tt>.
+
+fix: |-
+    Configure {{{ full_name }}} to enforce a 60-day maximum password lifetime.
+
+    Add, or modify the following line in the ""/etc/login.defs"" file:
+
+    PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}
 
 fix: |-
     Configure {{{ full_name }}} to enforce a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime.
@@ -75,3 +81,4 @@ fix: |-
     PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}
 
 platform: login_defs
+
