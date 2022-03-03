@@ -4,8 +4,8 @@ prodtype: ocp4
 
 title: 'Configure the Audit Log Path'
 
-{{% set custom_jqfilter = '[.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson]' %}}
-{{% set default_jqfilter = '[.data."config.yaml" | fromjson]' %}}
+{{% set custom_jqfilter = '.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson' %}}
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
 {{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
 {{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
 {{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
@@ -57,9 +57,10 @@ template:
     vars:
         ocp_data: "true"
         filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.apiServerArguments["audit-log-path"][:]'
-        check_existence: "at_least_one_exists"
+        yamlpath: '.apiServerArguments["audit-log-path"][:]'
+        entity_check: "at least one"
         values:
             - value: '.+'
               type: "string"
               operation: "pattern match"
+              entity_check: "at least one"
