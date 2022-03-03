@@ -44,9 +44,9 @@ ocil_clause: 'any results are returned that are not associated with a system acc
 ocil: |-
     Check whether the maximum time period for existing passwords is restricted to {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} days with the following commands:
 
-    $ sudo awk -F: '$5 > 60 {print $1 "" "" $5}' /etc/shadow
+    $ sudo awk -F: '$5 &gt; 60 {print $1 "" "" $5}' /etc/shadow
 
-    $ sudo awk -F: '$5 <= 0 {print $1 "" "" $5}' /etc/shadow
+    $ sudo awk -F: '$5 &lt;= 0 {print $1 "" "" $5}' /etc/shadow
 
 fix: |-
     Configure non-compliant accounts to enforce a 60-day maximum password lifetime restriction.
