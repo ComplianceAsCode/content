@@ -56,7 +56,6 @@ selections:
     - firefox_preferences-telemetry-archive
     - firefox_policy-addons_permission
     - firefox_policy-autoplay_video
-    - firefox_policy-default_personal_cert
     - firefox_policy-disable_form_history
     - firefox_policy-dns_over_https
     - firefox_policy-encrypted_media_extensions
