@@ -36,7 +36,7 @@ ocil: |-
     are not owned by root.  Run it once for each local partition <i>PART</i>:
     <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -uid +0 -print</pre>
 
-fix:
+fix: |-
     Configure all public directories to be owned by root or a system account to prevent unauthorized and unintended information transferred via shared system resources.
 
     Set the owner of all public directories as root or a system account using the command, replace ""[Public Directory]"" with any directory path not owned by root or a system account:
