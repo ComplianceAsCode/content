@@ -362,7 +362,7 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                 row = create_base_row(control, srgs, rule_object)
                 if control.levels is not None:
                     row['Severity'] = get_severity(control.levels[0])
-                row['Requirement'] = srgs[control.id]['title'].replace('The operating system',
+                row['Requirement'] = srgs[control.id]['title'].replace('Operating systems',
                                                                        env_yaml['full_name'])
                 row['Vul Discussion'] = html_plain_text(rule_object.rationale)
                 row['Check'] = f'{html_plain_text(rule_object.ocil)}\n\n' \
@@ -376,7 +376,7 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                 used_rules.append(rule)
     else:
         row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
-        row['Requirement'] = control.description
+        row['Requirement'] = control.title
         row['Status'] = DisaStatus.from_string(control.status)
         row['Vul Discussion'] = control.rationale
         row['Fix'] = control.fix
