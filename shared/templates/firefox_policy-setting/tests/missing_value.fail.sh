@@ -2,12 +2,13 @@
 
 firefox_cfg="distribution/policies.json"
 firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
+{{{ find_python() }}}
 
 # Iterate over the possible Firefox install directories
 for firefox_dir in ${firefox_dirs}; do
     # write our bad config in every location to ensure remediation fixes it.
     mkdir -p ${firefox_dir}
-    touch ${firefox_dir}/${firefox_cfg}
+    echo "{ policies { } }" > ${firefox_dir}/${firefox_cfg}
 
     echo """
 import json
@@ -30,5 +31,5 @@ except KeyError:
 _file=open('${firefox_dir}/${firefox_cfg}', 'wb')
 json.dump(_tree, _file, indent=4, sort_keys=True)
 _file.close()
-""" | python
+""" | ${__REMEDIATE_PYTHON}
 done
