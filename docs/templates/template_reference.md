@@ -431,13 +431,15 @@ template:
 
 #### mount_option
 -   Checks if a given partition is mounted with a specific option such
-    as "nosuid".
+    as "nosuid". It is also possible to use options with arguments, such as "logdev=device". Finally, for options which expect an argument, like "hidepid=2", a variable can be informed for this argument.
 
 -   Parameters:
 
     -   **mountpoint** - mount point on the filesystem eg. `/dev/shm`
 
-    -   **mountoption** - mount option, eg. `nosuid`
+    -   **mountoption** - mount option, eg. `nosuid`, `logdev=device` or `hidepid`
+
+    -   **mountoption_arg_var** - variable which holds the argument for mount option, eg. `var_mount_option_proc_hidepid`
 
     -   **filesystem** - filesystem in `/etc/fstab`, eg. `tmpfs`. Used
         only in Bash remediation.
