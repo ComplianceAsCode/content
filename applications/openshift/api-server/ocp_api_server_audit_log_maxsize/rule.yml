@@ -4,6 +4,12 @@ prodtype: ocp4
 
 title: 'Configure OpenShift API Server Maximum Audit Log Size'
 
+{{% set custom_jqfilter = '.data."{{.var_openshift_kube_apiserver_config_data_name}}" | fromjson' %}}
+{{% set default_jqfilter = '.data."config.yaml" | fromjson' %}}
+{{% set custom_api_path = '/api/v1/namespaces/{{.var_openshift_kube_apiserver_namespace}}/configmaps/{{.var_openshift_kube_apiserver_config}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-apiserver/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     To rotate audit logs upon reaching a maximum size,
     edit the <tt>openshift-apiserver</tt> configmap
@@ -51,10 +57,11 @@ template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    entity_check: "at least one"
-    filepath: /api/v1/namespaces/openshift-apiserver/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '.apiServerArguments["audit-log-maxsize][:]'
+    xccdf_variable: var_apiserver_audit_log_maxsize
+    embedded_data: "true"
     values:
-    - value: '"apiServerArguments":{.*"audit-log-maxsize":\["100"\]'
-      operation: "pattern match"
+    - value: '(.+)'
       type: "string"
+      operation: "pattern match"
