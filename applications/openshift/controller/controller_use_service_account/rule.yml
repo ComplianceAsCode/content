@@ -4,6 +4,12 @@ prodtype: ocp4
 
 title: 'Ensure that use-service-account-credentials is enabled'
 
+{{% set custom_jqfilter = '{{.var_kube_controller_manager_use_service_account_filter}}' %}}
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["use-service-account-credentials"][]=="true" then true else false end]' %}}
+{{% set custom_api_path = '{{.var_kube_controller_manager_config_filepath}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
 description: |-
     To ensure individual service account credentials are used,
     set the <tt>use-service-account-credentials</tt> option to <tt>true</tt>
@@ -51,15 +57,16 @@ ocil: |-
 
 warnings:
 - general: |-
-    {{{ openshift_cluster_setting("/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config") | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: /api/v1/namespaces/openshift-kube-controller-manager/configmaps/config
-    yamlpath: '.data["config.yaml"]'
+    entity_check: "at least one"
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
+    yamlpath: '[:]'
     values:
-    - value: '\"use-service-account-credentials\":\[\"true\"\]'
-      operation: "pattern match"
+    - value: 'true'
       type: "string"
+      entity_check: "at least one"
