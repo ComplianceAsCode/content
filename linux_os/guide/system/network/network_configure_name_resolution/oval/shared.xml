@@ -3,7 +3,7 @@
     {{{ oval_metadata("Multiple Domain Name System (DNS) Servers should be configured
       in /etc/resolv.conf.") }}}
     <criteria operator="OR">
-      {{% if product == "ol8" %}}
+      {{% if "ol" in product or "rhel" in product %}}
       <criteria comment="If the DNS entry is found on the host's line of the /etc/nsswitch.conf
         file, verify the operating system is configured to use two or more name servers for DNS
         resolution."
@@ -38,7 +38,7 @@
     <ind:instance datatype="int" operation="greater than">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product == "ol8" %}}
+  {{% if "ol" in product or "rhel" in product %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="check if dns is set in host line in  /etc/nsswitch.conf"
   id="test_host_line_dns_parameter_nsswitch" version="1">
