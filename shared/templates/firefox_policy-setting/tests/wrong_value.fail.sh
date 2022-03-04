@@ -23,7 +23,7 @@ else:
    _tree{{{ policy_item.path_python[loop.revindex0] }}} = dict()
 {{% endfor %}}
 # Set the new value to the correct one
-_tree{{{ policy_item.path_python[0] }}}['{{{ policy_item.parameter }}}'] = 'bad_value'
+_tree{{{ policy_item.path_python[0] }}}['{{{ policy_item.parameter }}}'] = \"bad_value\"
 {{% endfor %}}
 _file=open('${firefox_dir}/${firefox_cfg}', 'wb')
 json.dump(_tree, _file, indent=4, sort_keys=True)
