@@ -1,8 +1,7 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 9,multi_platform_fedora
 
-# Clean sysctl config directories
-rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
+{{{ bash_sysctl_test_clean() }}}
 
 sed -i "/kernel.unprivileged_bpf_disabled/d" /etc/sysctl.conf
 echo "kernel.unprivileged_bpf_disabled = 0" >> /etc/sysctl.conf

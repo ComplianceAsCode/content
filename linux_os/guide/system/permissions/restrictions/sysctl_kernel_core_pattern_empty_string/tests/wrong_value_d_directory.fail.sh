@@ -1,6 +1,6 @@
 #!/bin/bash
-# Clean sysctl config directories
-rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
+
+{{{ bash_sysctl_test_clean() }}}
 
 sed -i "/kernel.core_pattern/d" /etc/sysctl.conf
 echo "kernel.core_pattern=|/bin/false" >> /etc/sysctl.d/98-sysctl.conf

@@ -1,8 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 
-# Clean sysctl config directories
-rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
+{{{ bash_sysctl_test_clean() }}}
 
 sed -i "/net.ipv4.conf.all.rp_filter/d" /etc/sysctl.conf
 echo "net.ipv4.conf.all.rp_filter = 2" >> /etc/sysctl.conf

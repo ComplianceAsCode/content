@@ -1,8 +1,7 @@
 #!/bin/bash
 # platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 
-# Clean sysctl config directories
-rm -rf /usr/lib/sysctl.d/* /run/sysctl.d/* /etc/sysctl.d/*
+{{{ bash_sysctl_test_clean() }}}
 
 sed -i "/kernel.kptr_restrict/d" /etc/sysctl.conf
 echo "kernel.kptr_restrict = 2" >> /etc/sysctl.conf
