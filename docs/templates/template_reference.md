@@ -818,6 +818,10 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     -   **embedded_data** - if set to `"true"` and used combined with `xccdf_variable`, the data retrieved by `yamlpath`
         is considered as a blob and the field `value` has to contain a capture regex.
+   
+    -   **regex_data** - if set to `"true"` and combined with `xccdf_variable`, it will use the value of `xccdf_variable` as a regex
+        and does pattern match operation instead of equal operation.
+
 
     -   **check_existence_yamlpath** - optional YAML Path that could be set to ensure that the target sequence from `yamlpath` has all
         required sub-elements. It is helpful when the `yamlpath` is targeting a map inside a sequence, and the document could be

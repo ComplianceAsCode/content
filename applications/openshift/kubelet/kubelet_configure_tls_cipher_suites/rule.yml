@@ -27,7 +27,8 @@ description: |-
           - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
     </pre>
-
+  In order to configure this rule to check for an alternative cipher, both var_kubelet_tls_cipher_suites_regex
+  and var_kubelet_tls_cipher_suites have to be set
 rationale: |-
   TLS ciphers have had a number of known vulnerabilities and weaknesses,
   which can reduce the protection provided by them. By default Kubernetes
@@ -58,12 +59,11 @@ ocil: |-
     TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
     </pre>
 
+
 template:
   name: yamlfile_value
   vars:
     filepath: /etc/kubernetes/kubelet.conf
     yamlpath: ".tlsCipherSuites[:]"
-    values:
-    - value: '^(TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384|TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256|TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256)$'
-      operation: 'pattern match'
-
+    xccdf_variable: var_kubelet_tls_cipher_suites_regex
+    regex_data: true

@@ -6,6 +6,9 @@ def preprocess(data, lang):
     embedded_data = parse_template_boolean_value(data, parameter="embedded_data", default_value=False)
     data["embedded_data"] = embedded_data
 
+    regex_data = parse_template_boolean_value(data, parameter="regex_data", default_value=False)
+    data["regex_data"] = regex_data
+
     if data.get("xccdf_variable") and embedded_data:
         values = data.get("values", [{}])
         if len(values) > 1:
