@@ -9,7 +9,7 @@ firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/lo
 for firefox_dir in ${firefox_dirs}; do
     # write our bad config in every location to ensure remediation fixes it.
     mkdir -p ${firefox_dir}
-    echo "{ policies { } }" > ${firefox_dir}/${firefox_cfg}
+    echo "{ \"policies\" :{ } }" > ${firefox_dir}/${firefox_cfg}
     echo """
 import json
 _file=open('${firefox_dir}/${firefox_cfg}', 'rb')
