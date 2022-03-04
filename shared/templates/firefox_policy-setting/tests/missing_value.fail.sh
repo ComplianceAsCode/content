@@ -1,7 +1,7 @@
 #!/bin/bash
 
-firefox_cfg="distribution/policies.json"
-firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
+firefox_cfg="policies.json"
+firefox_dirs="/usr/lib/firefox/distribution /usr/lib64/firefox/distribution /usr/local/lib/firefox/distribution /usr/local/lib64/firefox/distribution"
 {{{ find_python() }}}
 
 # Iterate over the possible Firefox install directories
