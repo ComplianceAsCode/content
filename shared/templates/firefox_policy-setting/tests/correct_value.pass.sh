@@ -12,7 +12,7 @@ for firefox_dir in ${firefox_dirs}; do
     echo "{ \"policies\" :{ } }" > ${firefox_dir}/${firefox_cfg}
     echo """
 import json
-_file=open('${firefox_dir}/${firefox_cfg}', 'rb')
+_file=open('${firefox_dir}/${firefox_cfg}', 'r')
 _tree=json.load(_file)
 _file.close()
 {{% for policy_item in POLICIES %}}
@@ -25,7 +25,7 @@ else:
 # Set the new value to the correct one
 _tree{{{ policy_item.path_python[0] }}}['{{{ policy_item.parameter }}}'] = {{{ policy_item.value_escaped }}}
 {{% endfor %}}
-_file=open('${firefox_dir}/${firefox_cfg}', 'wb')
+_file=open('${firefox_dir}/${firefox_cfg}', 'w')
 json.dump(_tree, _file, indent=4, sort_keys=True)
 _file.close()
 """ | ${__REMEDIATE_PYTHON}

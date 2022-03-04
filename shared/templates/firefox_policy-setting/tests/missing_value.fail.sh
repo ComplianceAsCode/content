@@ -12,7 +12,7 @@ for firefox_dir in ${firefox_dirs}; do
 
     echo """
 import json
-_file=open('${firefox_dir}/${firefox_cfg}', 'rb')
+_file=open('${firefox_dir}/${firefox_cfg}', 'r')
 _tree=json.load(_file)
 _file.close()
 {{% for policy_item in POLICIES %}}
@@ -28,7 +28,7 @@ try:
 except KeyError:
     pass
 {{% endfor %}}
-_file=open('${firefox_dir}/${firefox_cfg}', 'wb')
+_file=open('${firefox_dir}/${firefox_cfg}', 'w')
 json.dump(_tree, _file, indent=4, sort_keys=True)
 _file.close()
 """ | ${__REMEDIATE_PYTHON}
