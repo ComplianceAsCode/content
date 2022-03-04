@@ -289,6 +289,23 @@ def html_plain_text(source: str) -> str:
     return result
 
 
+def replace_variables(source: str, env_yaml: dict) -> str:
+    result = source
+    if source:
+        sub_match = r'<sub idref="([a-z0-9_]+)" \/>'
+        match = re.search(sub_match, source, re.MULTILINE)
+
+        if match:
+            name = re.findall(sub_match, source)[0].replace('var_', '')
+            result = result.replace(match.group(), env_yaml.get(name, ''))
+    return result
+
+
+def handle_variables(source: str, env_yaml: dict) -> str:
+    result = replace_variables(source, env_yaml)
+    return html_plain_text(result)
+
+
 def get_description_root(srg: ET.Element) -> ET.Element:
     # DISA adds escaped XML to the description field
     # This method unescapes that XML and parses it
@@ -359,6 +376,8 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                    used_rules: list) -> None:
     if len(control.selections) > 0:
         for rule in control.selections:
+            if rule.startswith('var_'):
+                continue
             if rule not in used_rules:
                 rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
                 row = create_base_row(control, srgs, rule_object)
@@ -366,10 +385,10 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                     row['Severity'] = get_severity(control.levels[0])
                 row['Requirement'] = srgs[control.id]['title'].replace('Operating systems',
                                                                        env_yaml['full_name'])
-                row['Vul Discussion'] = html_plain_text(rule_object.rationale)
-                row['Check'] = f'{html_plain_text(rule_object.ocil)}\n\n' \
+                row['Vul Discussion'] = handle_variables(rule_object.rationale, env_yaml)
+                row['Check'] = f'{handle_variables(rule_object.ocil, env_yaml)}\n\n' \
                                f'If {rule_object.ocil_clause}, then this is a finding.'
-                row['Fix'] = html_plain_text(rule_object.fix)
+                row['Fix'] = handle_variables(rule_object.fix, env_yaml)
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
                 else:
@@ -425,6 +444,17 @@ def get_rule_json(json_path: str) -> dict:
     return rule_json
 
 
+def add_variables(env_yaml, policy):
+    for control in policy.controls:
+        for rule in control.selections:
+            if rule.startswith('var_'):
+                parts = rule.split('=')
+                if len(parts) != 2:
+                    raise ValueError('Invalid variable definition')
+                env_yaml[parts[0].replace('var_', '')] = parts[1]
+                continue
+
+
 def main() -> None:
     args = parse_args()
 
@@ -446,6 +476,8 @@ def main() -> None:
     rule_json = get_rule_json(args.json)
     full_output = pathlib.Path(args.output)
     used_rules = list()
+    add_variables(env_yaml, policy)
+
     with open(full_output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
 
