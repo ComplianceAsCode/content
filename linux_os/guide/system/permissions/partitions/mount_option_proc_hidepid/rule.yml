@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: fedora,rhel7,rhel8,rhel9
+
 title: 'Add hidepid Option to /proc'
 
 description: |-
@@ -17,7 +19,7 @@ description: |-
     {{{ describe_mount(option="hidepid=2", part="/proc") }}}
 
 rationale: |-
-    User should not be able to see and access directories within /proc, which are not
+    Users should not be able to see and access directories within /proc, which are not
     related to their own processes in a system. Otherwise, sensitive information from
     other users could be seem.
 
@@ -26,8 +28,9 @@ rationale: |-
 severity: low
 
 identifiers:
-    cce@rhel8: CCE-85881-1
-    cce@rhel9: CCE-85882-9
+    cce@rhel7: CCE-85881-1
+    cce@rhel8: CCE-85882-9
+    cce@rhel9: CCE-85883-7
 
 references:
     anssi: BP28(R12)
