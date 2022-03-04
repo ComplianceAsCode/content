@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Configure L1 Terminal Fault mitigations'
+
+description: |-
+    L1 Terminal Fault (L1TF) is a hardware vunerability which allows unprivileged
+    speculative access to data which is available in the Level 1 Data Cache when
+    the page table entry.
+
+    Select the appropriate mitigation by adding the argument
+    <tt>l1tf={{{ xccdf_value(var_l1tf_options) }}}</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("l1tf=xccdf_value(var_l1tf_options)") | indent(4) }}}
+
+    Since Linux Kernel 4.19 you can check the L1TF vulnerability state with the
+    following command:
+    <tt>cat /sys/devices/system/cpu/vulnerabilities/l1tf</tt>
+
+rationale: |-
+    The L1TF vulnerability allows an attacker to bypass memory access security controls imposed
+    by the system or hypervisor. The L1TF vulnerability allows read access to any physical memory
+    location that is cached in the L1 Data Cache.
+
+warnings:
+    - performance: Enabling L1TF mitigations may impact performance of the system.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-88123-5
+    cce@rhel9: CCE-89123-4
+
+ocil_clause: 'l1tf mitigations are not configured appropriately'
+
+ocil: |-
+    {{{ ocil_grub2_argument("l1tf=xccdf_value(var_l1tf_options)") | indent(4) }}}
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: l1tf
+        arg_variable: var_l1tf_options
