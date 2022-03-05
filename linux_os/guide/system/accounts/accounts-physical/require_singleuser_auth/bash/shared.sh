@@ -1,10 +1,10 @@
-# platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# platform = multi_platform_all
 
 {{% if init_system == "systemd" -%}}
 
 service_file="/usr/lib/systemd/system/rescue.service"
 
-{{% if product in ["fedora", "rhel8", "rhel9", "ol8"] -%}}
+{{% if product in ["fedora", "rhel8", "rhel9", "ol8", "sle12", "sle15"] -%}}
 sulogin="/usr/lib/systemd/systemd-sulogin-shell rescue"
 {{%- elif product in ["rhel7"] -%}}
 sulogin='/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
