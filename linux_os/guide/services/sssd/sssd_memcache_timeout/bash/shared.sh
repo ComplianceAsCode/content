@@ -2,4 +2,4 @@
 
 {{{ bash_instantiate_variables("var_sssd_memcache_timeout") }}}
 
-{{{ bash_sssd_set_option("[nss]", "/etc/sssd/sssd.conf", "memcache_timeout", "$var_sssd_memcache_timeout") }}}
+{{{ bash_sssd_set_option("[nss]", "sssd.conf", "memcache_timeout", "$var_sssd_memcache_timeout") }}}

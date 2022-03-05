@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = medium
 
-{{{ bash_sssd_set_option("[pam]", "/etc/sssd/sssd.conf", "pam_cert_auth", "true") }}}
+{{{ bash_sssd_set_option("[pam]", "sssd.conf", "pam_cert_auth", "true") }}}
