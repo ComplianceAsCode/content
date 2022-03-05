@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = medium
 
-{{{ bash_sssd_set_option("[pam]", "sssd.conf", "offline_credentials_expiration", "1") }}}
+{{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1") }}}
