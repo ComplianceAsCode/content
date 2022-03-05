@@ -1770,70 +1770,47 @@ while IFS= read -r {{{ varname }}}; do
 done <   <({{{ command_and_its_args }}})
 {{%- endmacro %}}
 
-
 {{#
-  # This macro is DEPRECATED and should not be used in new remediations, as it does not remediate
-  # config files in the /etc/sssd/conf.d directory
-  #
-  # Try find SSSD_SECT section and SSSD_OPT setting in SSSD_CONF SSSD config file,
-  # if SSSD_OPT option exists, set it to SSSD_OPT_VAL, if SSSD_OPT
-  # doesn't exist add it, if SSSD_SECT section doesn't exist add both
-  # the SSSD_SECT section and the SSSD_OPT configuration option.
+  # Ensure key is set to correct value under a correct section in an .ini style config file
 
-:param SSSD_SECT:       section of {{{ SSSD_CONF }}} under which we are looking for {{{ SSSD_OPT }}}}
-:param SSSD_CONF:       conf file to write to if option not found
-:param SSSD_OPT:        the SSSD option we are setting
-:param SSSD_OPT_VAL:    the value of SSSD_OPT we are setting
-:param SSSD_CONF_DIR:   directory where sssd configuration is stored; used by unit tests
+:param files:   list of space-separated files to add key = value to (may contain wildcards)
+                if none contain section, create and append to FIRST file
+:param section: section to add key = value under
+:param key:     key
+:param value:   value
 
-#}}
-{{% macro bash_sssd_set_option(SSSD_SECT, SSSD_CONF, SSSD_OPT, SSSD_OPT_VAL, SSSD_CONF_DIR="/etc/sssd") -%}}
-conf_file="{{{ SSSD_CONF_DIR }}}/{{{ SSSD_CONF }}}"
-# find option in section and change value
-if grep -qzosP "[[:space:]]*{{{ SSSD_SECT }}}([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}" "$conf_file"; then
-        sed -i "s/{{{ SSSD_OPT }}}[^(\n)]*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" "$conf_file"
-# find section and add option to it
-elif grep -qs "[[:space:]]*{{{ SSSD_SECT }}}" "$conf_file"; then
-        sed -i "/[[:space:]]*{{{ SSSD_SECT }}}/a {{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" "$conf_file"
-else
-        # create .conf file and add section and option to it
-        mkdir -p {{{ SSSD_CONF_DIR }}}
-        touch "$conf_file"
-        echo -e "{{{ SSSD_SECT }}}\n{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" >> "$conf_file"
-fi
-{{%- endmacro %}}
+Example macro invocation(s):
 
-{{# 
-  # Macro used to ensure the correct value of an sssd option is configured. Checks both the main
-  # /etc/sssd/sssd.conf file as well as any files in /etc/sssd/conf.d/*, if the option is not found
-  # then a new file is created in /etc/sssd/conf.d/*
-
-:param SSSD_SECT:       section of {{{ SSSD_CONF }}} under which we are looking for {{{ SSSD_OPT }}}}
-:param SSSD_CONF_NAME:  name of conf file to write to if option not found
-:param SSSD_OPT:        the SSSD option we are setting
-:param SSSD_OPT_VAL:    the value of SSSD_OPT we are setting
-:param SSSD_CONF_DIR:   directory where sssd configuration is stored; used by unit tests
+    bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "offline_credentials_expiration", "1")
+    bash_ensure_ini_config("/etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf", "sssd", "user", "sssd")
 
 #}}
-{{% macro bash_sssd_set_option_new(SSSD_SECT, SSSD_CONF_NAME, SSSD_OPT, SSSD_OPT_VAL, SSSD_CONF_DIR="/etc/sssd") -%}}
+{{% macro bash_ensure_ini_config(files, section, key, value) -%}}
 found=false
-for f in {{{ SSSD_CONF_DIR }}}/sssd.conf {{{ SSSD_CONF_DIR }}}/conf.d/*.conf; do
+
+# set value in all files if they contain section or key
+for f in {{{ files }}}; do
     if [ ! -e "$f" ]; then
         continue
     fi
 
-    if grep -qzosP "[[:space:]]*{{{ SSSD_SECT }}}([^\n\[]*\n+)+?[[:space:]]*{{{ SSSD_OPT }}}" "$f"; then
-        sed -i "s/{{{ SSSD_OPT }}}[^(\n)]*/{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}/" "$f"
-        found=true
+    # find key in section and change value
+    if grep -qzosP "[[:space:]]*\[{{{ section }}}\]([^\n\[]*\n+)+?[[:space:]]*{{{ key }}}" "$f"; then
+            sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}} = {{{ value }}}/" "$f"
+            found=true
+
+    # find section and add key = value to it
+    elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
+            sed -i "/[[:space:]]*{{{ section }}}/a {{{ key }}} = {{{ value }}}" "$f"
+            found=true
     fi
 done
 
+# if section not in any file, append section with key = value to FIRST file in files parameter
 if ! $found ; then
-    SSSD_CONF="{{{ SSSD_CONF_DIR }}}/conf.d/{{{ SSSD_CONF_NAME }}}.conf"
-    mkdir -p "$(dirname "$SSSD_CONF")"
-    touch "$SSSD_CONF"
-    chown root:root "$SSSD_CONF"
-    chmod 600 "$SSSD_CONF"
-    echo -e "{{{ SSSD_SECT }}}\n{{{ SSSD_OPT }}} = {{{ SSSD_OPT_VAL }}}" >> "$SSSD_CONF"
+    file=$(echo "{{{ files }}}" | cut -f1 -d' ')
+    mkdir -p "$(dirname "$file")"
+    echo -e "[{{{ section }}}]\n{{{ key }}} = {{{ value }}}" >> "$file"
 fi
 {{%- endmacro %}}
+
