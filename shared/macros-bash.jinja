@@ -1789,7 +1789,7 @@ Example macro invocation(s):
 found=false
 
 # set value in all files if they contain section or key
-for f in {{{ files }}}; do
+for f in $(echo -n "{{{ files }}}"); do
     if [ ! -e "$f" ]; then
         continue
     fi

@@ -18,6 +18,24 @@ function call_bash_ensure_ini_config {
     rm -rf sssd_test
 }
 
+@test "bash_ensure_ini_config - Value remediation in multiple files" {
+    mkdir sssd_test
+    printf "[pam]\npam_cert_auth = false\n" > sssd_test/sssd.conf
+    printf "[pam]\npam_cert_auth = false\n" > pam_cert_auth.conf
+    expected_output="[pam]\npam_cert_auth = true\n"
+
+    call_bash_ensure_ini_config "sssd_test/sssd.conf pam_cert_auth.conf" "pam" "pam_cert_auth" "true"
+
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    run diff "pam_cert_auth.conf" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm pam_cert_auth.conf
+    rm -rf sssd_test
+}
+
 @test "bash_ensure_ini_config - No remediation happened" {
     mkdir sssd_test
     printf "[pam]\npam_cert_auth = true\n" > sssd_test/sssd.conf
@@ -65,6 +83,24 @@ function call_bash_ensure_ini_config {
     run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
+    rm -rf sssd_test
+}
+
+@test "bash_ensure_ini_config - Append option to section in multiple files" {
+    mkdir sssd_test
+    printf "[pam]\n" > sssd_test/sssd.conf
+    printf "[pam]\n" > pam_cert_auth.conf
+    expected_output="[pam]\npam_cert_auth = true\n"
+
+    call_bash_ensure_ini_config "pam_cert_auth.conf sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
+
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+    
+     run diff "pam_cert_auth.conf" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm pam_cert_auth.conf
     rm -rf sssd_test
 }
 
