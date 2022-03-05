@@ -6,66 +6,77 @@ function call_bash_sssd_set_option {
 }
 
 @test "bash_sssd_set_option - Basic value remediation" {
-    tmp_file="$(mktemp)"
-    printf "[pam]\npam_cert_auth = false\n" > "$tmp_file"
+    mkdir sssd_test
+    printf "[pam]\npam_cert_auth = false\n" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n"
 
-    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+    call_bash_sssd_set_option "[pam]" "sssd.conf" "pam_cert_auth" "true" "sssd_test"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
-    rm "$tmp_file"
+    rm -rf sssd_test
 }
 
 @test "bash_sssd_set_option - No remediation happened" {
-    tmp_file="$(mktemp)"
-    printf "[pam]\npam_cert_auth = true\n" > "$tmp_file"
+    mkdir sssd_test
+    printf "[pam]\npam_cert_auth = true\n" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n"
 
-    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+    call_bash_sssd_set_option "[pam]" "sssd.conf" "pam_cert_auth" "true" "sssd_test"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
-    rm "$tmp_file"
+    rm -rf sssd_test
 }
 
 @test "bash_sssd_set_option - Append section with option to empty file" {
-    tmp_file="$(mktemp)"
-    printf "" > "$tmp_file"
+    mkdir sssd_test
+    printf "" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n"
 
-    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+    call_bash_sssd_set_option "[pam]" "sssd.conf" "pam_cert_auth" "true" "sssd_test"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
-    rm "$tmp_file"
+    rm -rf sssd_test
+}
+
+@test "bash_sssd_set_option - Create file with section and option" {
+    expected_output="[pam]\npam_cert_auth = true\n"
+
+    call_bash_sssd_set_option "[pam]" "sssd.conf" "pam_cert_auth" "true" "sssd_test"
+
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+    [ "$status" -eq 0 ]
+
+    rm -rf sssd_test
 }
 
 @test "bash_sssd_set_option - Append option to section" {
-    tmp_file="$(mktemp)"
-    printf "[pam]\n[ssh]\n" > "$tmp_file"
+    mkdir sssd_test
+    printf "[pam]\n[ssh]\n" > sssd_test/sssd.conf
     expected_output="[pam]\npam_cert_auth = true\n[ssh]\n"
 
-    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+    call_bash_sssd_set_option "[pam]" "sssd.conf" "pam_cert_auth" "true" "sssd_test"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
-    rm "$tmp_file"
+    rm -rf sssd_test
 }
 
 @test "bash_sssd_set_option - Append section with option to non-empty file" {
-    tmp_file="$(mktemp)"
-    printf "[ssh]\n" > "$tmp_file"
+    mkdir sssd_test
+    printf "[ssh]\n" > sssd_test/sssd.conf
     expected_output="[ssh]\n[pam]\npam_cert_auth = true\n"
 
-    call_bash_sssd_set_option "[pam]" "$tmp_file" "pam_cert_auth" "true"
+    call_bash_sssd_set_option "[pam]" "sssd.conf" "pam_cert_auth" "true" "sssd_test"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
     [ "$status" -eq 0 ]
 
-    rm "$tmp_file"
+    rm -rf sssd_test
 }
