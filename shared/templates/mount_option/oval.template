@@ -1,29 +1,57 @@
 <def-group>
-  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
     {{{ oval_metadata(MOUNTPOINT + " should be mounted with mount option " + MOUNTOPTION + ".") }}}
     <criteria operator="OR">
-      <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}}" test_ref="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" />
-{{% if MOUNT_HAS_TO_EXIST == "no" %}}
-      <criterion comment="{{{ MOUNTPOINT }}} does not exist" test_ref="test_{{{ POINTID }}}_no_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" negate="true" />
-{{% endif %}}
+      <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}}"
+        test_ref="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
+    {{% if MOUNT_HAS_TO_EXIST == "no" %}}
+      <criterion comment="{{{ MOUNTPOINT }}} does not exist"
+        test_ref="test_{{{ POINTID }}}_no_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"
+        negate="true" />
+    {{% endif %}}
     </criteria>
   </definition>
 
-  <linux:partition_test check="all" check_existence="all_exist"
-  id="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" version="1" comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}} optional {{{ MOUNT_HAS_TO_EXIST }}}">
-    <linux:object object_ref="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" />
-    <linux:state state_ref="state_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" />
-  </linux:partition_test>
-{{% if MOUNT_HAS_TO_EXIST == "no" %}}
-  <linux:partition_test check="all" check_existence="all_exist"
-  id="test_{{{ POINTID }}}_no_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" version="1" comment="{{{ MOUNTPOINT }}} exists">
-    <linux:object object_ref="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" />
-  </linux:partition_test>
-{{% endif %}}
-  <linux:partition_object id="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" version="1">
+  <linux:partition_object version="1"
+    id="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
     <linux:mount_point>{{{ MOUNTPOINT }}}</linux:mount_point>
   </linux:partition_object>
-  <linux:partition_state id="state_{{{ POINTID }}}_partition_{{{ MOUNTOPTION }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}" version="1">
+
+  <linux:partition_state version="1"
+    id="state_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
+{{% if not MOUNTOPTION_ARG_VAR %}}
     <linux:mount_options datatype="string" entity_check="at least one" operation="equals">{{{ MOUNTOPTION }}}</linux:mount_options>
   </linux:partition_state>
+{{% else %}}
+    <linux:mount_options datatype="string" entity_check="at least one" operation="equals"
+      var_ref="local_var_mountoption_{{{ MOUNTOPTION }}}_with_value"/>
+  </linux:partition_state>
+
+  <external_variable datatype="string" id="{{{ MOUNTOPTION_ARG_VAR }}}" version="1"
+                     comment="Variable defining the value the argument should have"/>
+
+  <local_variable id="local_var_mountoption_{{{ MOUNTOPTION }}}_with_value"
+    comment="Value used in {{{ MOUNTOPTION }}} option as defined in {{{ MOUNTOPTION_ARG_VAR }}} variable"
+    datatype="string" version="1">
+    <concat>
+      <literal_component>{{{ MOUNTOPTION }}}=</literal_component>
+      <variable_component var_ref="{{{ MOUNTOPTION_ARG_VAR }}}"/>
+    </concat>
+  </local_variable>
+{{% endif %}}
+
+  <linux:partition_test check="all" check_existence="all_exist" version="2"
+    comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}} optional {{{ MOUNT_HAS_TO_EXIST }}}"
+    id="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
+    <linux:object object_ref="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
+    <linux:state state_ref="state_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
+  </linux:partition_test>
+
+  {{% if MOUNT_HAS_TO_EXIST == "no" %}}
+  <linux:partition_test check="all" check_existence="all_exist" version="1"
+    comment="{{{ MOUNTPOINT }}} exists"
+    id="test_{{{ POINTID }}}_no_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}">
+    <linux:object object_ref="object_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
+  </linux:partition_test>
+  {{% endif %}}
 </def-group>
