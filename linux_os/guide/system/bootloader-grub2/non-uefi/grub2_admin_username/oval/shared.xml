@@ -4,9 +4,6 @@
               "The grub2 boot loader superuser should have a username that is hard to guess.") }}}
 
     <criteria operator="OR">
-      {{% if product not in ["ol8", "rhel8"] %}}
-      {{{ oval_file_absent_criterion(grub2_boot_path + "/grub.cfg") }}}
-      {{% endif %}}
       <criterion comment="Superuser is defined in {{{ grub2_boot_path }}}/grub.cfg and it isn't
             root, admin, administrator nor equal to any system username"
             test_ref="test_bootloader_superuser_differ_from_other_users"/>
@@ -21,10 +18,6 @@
           including all system usernames">
     <object_component item_field="username" object_ref="object_user_accounts"/>
   </local_variable>
-
-  {{% if product not in ["ol8", "rhel8"] %}}
-  {{{ oval_file_absent(grub2_boot_path + "/grub.cfg") }}}
-  {{% endif %}}
 
   <ind:textfilecontent54_state id="state_bootloader_superuser_differ_from_other_users" 
           version="1">
