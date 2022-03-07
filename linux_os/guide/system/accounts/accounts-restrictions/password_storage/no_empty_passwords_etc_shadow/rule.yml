@@ -21,6 +21,8 @@ rationale: |-
 
 severity: high
 
+platform: machine
+
 identifiers:
     cce@sle12: CCE-83249-3
     cce@sle15: CCE-91155-2
@@ -46,3 +48,10 @@ ocil: |-
     <pre>$ sudo passwd [username]</pre>
     Lock an account:
     <pre>$ sudo passwd -l [username]</pre>
+
+warnings:
+    - general:
+       Note that this rule is not applicable for systems running within a
+       container. Having user with empty password within a container is not
+       considered a risk, because it should not be possible to directly login into
+       a container anyway.
