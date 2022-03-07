@@ -89,6 +89,8 @@ class ProductCPEs(object):
         return ref.startswith("cpe:")
 
     def get_cpe(self, ref):
+        # THIS IS UGLY, We'd better parse pkg_resources.Requirement.parse(ref) and get proper base id
+        ref = ref.split('[', 1)[0]
         try:
             if self._is_name(ref):
                 return self.cpes_by_name[ref]
@@ -155,6 +157,7 @@ class CPEItem(object):
         self.check_id = cpeitem_data["check_id"]
         self.bash_conditional = cpeitem_data.get("bash_conditional", "")
         self.ansible_conditional = cpeitem_data.get("ansible_conditional", "")
+        self.template = cpeitem_data.get("template", {})
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
@@ -162,12 +165,12 @@ class CPEItem(object):
 
         cpe_item_title = ET.SubElement(cpe_item, "{%s}title" % CPEItem.ns)
         cpe_item_title.set('xml:lang', "en-us")
-        cpe_item_title.text = self.title
+        cpe_item_title.text = self.title.format(**self.as_dict())
 
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id
+        cpe_item_check.text = self.check_id.format(**self.as_dict())
         return cpe_item
 
 
@@ -175,7 +178,6 @@ class CPEALLogicalTest(Function):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
-
 
     def to_xml_element(self):
         cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
@@ -246,7 +248,7 @@ class CPEALFactRef (Symbol):
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
-        cpe_factref.set('name', self.cpe_name)
+        cpe_factref.set('name', self.cpe_name.format(**self.as_dict()))
 
         return cpe_factref
 
