@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: fedora,rhel9
+
+title: 'Enable Kernel Parameter to Enforce DAC on Regular files'
+
+description: '{{{ describe_sysctl_option_value(sysctl="fs.protected_regular", value="2") }}}'
+
+rationale: |-
+    This parameter is available since Linux Kernel 4.19 and allows to prohibit opening
+    "regular" files that are not owned by the user in world and group writeable sticky
+    directories. It avoids writes to an attacker-controlled regular file, for example,
+    when a program expects to create the regular file.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-85885-2
+
+references:
+    nist: CM-6(a),AC-6(1)
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_regular", value="2") }}}
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: fs.protected_regular
+        sysctlval: '2'
+        datatype: int
+
+platform: machine
