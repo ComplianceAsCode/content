@@ -149,7 +149,7 @@ macro(ssg_build_templated_content PRODUCT)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes_from_templates")
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/templated-content-${PRODUCT}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_templated_content.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --templates-dir "${SSG_SHARED}/templates" --checks-dir "${BUILD_CHECKS_DIR}" --remediations-dir "${BUILD_REMEDIATIONS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_templated_content.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --templates-dir "${SSG_SHARED}/templates" --platforms-dir "${CMAKE_CURRENT_BINARY_DIR}/platforms" --checks-dir "${BUILD_CHECKS_DIR}" --remediations-dir "${BUILD_REMEDIATIONS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml"
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/templated-content-${PRODUCT}"
         # Actually we mean that it depends on resolved rules.
         DEPENDS ${PRODUCT}-compile-all
