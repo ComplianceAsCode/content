@@ -73,7 +73,7 @@ rationale: |-
 severity: medium
 
 platforms:
-    - ntp or chrony
+    - "package_installed[ntp] or package_installed[chrony]"
 
 identifiers:
     cce@rhcos4: CCE-82684-2

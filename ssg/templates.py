@@ -7,6 +7,7 @@ import imp
 import glob
 
 import ssg.build_yaml
+import ssg.build_cpe
 import ssg.utils
 import ssg.yaml
 from ssg.build_cpe import ProductCPEs
@@ -102,12 +103,13 @@ class Builder(object):
     """
     def __init__(
             self, env_yaml, resolved_rules_dir, templates_dir,
-            remediations_dir, checks_dir):
+            remediations_dir, checks_dir, platforms_dir):
         self.env_yaml = env_yaml
         self.resolved_rules_dir = resolved_rules_dir
         self.templates_dir = templates_dir
         self.remediations_dir = remediations_dir
         self.checks_dir = checks_dir
+        self.platforms_dir = platforms_dir
         self.output_dirs = dict()
         for lang in languages:
             lang_dir = lang
@@ -320,6 +322,41 @@ class Builder(object):
                 print("Error building templated {0} content for rule {1}".format(lang, rule_id), file=sys.stderr)
                 raise e
 
+    def build_platform(self, platform):
+        for symbol in platform.test.get_symbols():
+            name = symbol.name
+            symbol_dict = symbol.as_dict()
+            cpe = self.product_cpes.get_cpe(symbol_dict['name'])
+            if 'name' not in cpe.template:
+                continue
+            template_name = cpe.template['name']
+            try:
+                rendered_vars = {}
+                for var, var_fmt_str in cpe.template['vars'].items():
+                    rendered_vars[var] = var_fmt_str.format(**symbol_dict)
+                template_vars = self.process_product_vars(rendered_vars)
+            except KeyError:
+                raise ValueError(
+                    "Rule {0} does not contain mandatory 'vars:' key under "
+                    "'template:' key.".format(name))
+            # Add the rule ID which will be reused in OVAL templates as OVAL
+            # definition ID so that the build system matches the generated
+            # check with the rule.
+            template_vars["_rule_id"] = name
+            # checks and remediations are processed with a custom YAML dict
+            local_env_yaml = self.env_yaml.copy()
+            local_env_yaml["rule_id"] = name
+            #local_env_yaml["rule_title"] = rule_title
+            local_env_yaml["products"] = self.env_yaml["product"]
+
+            for lang in ['oval']:
+                try:
+                    self.build_lang(
+                        name, template_name, template_vars, lang, local_env_yaml)
+                except Exception as e:
+                    print("Error building templated {0} content for rule {1}".format(lang, name), file=sys.stderr)
+                    raise e
+
     def get_lang_for_rule(self, rule_id, rule_title, template, language):
         """
         For the specified rule, build and return only the specified language
@@ -371,6 +408,12 @@ class Builder(object):
             self.build_rule(rule.id_, rule.title, rule.template, langs_to_generate,
                             rule.identifiers, platforms=rule.platforms)
 
+    def build_all_platforms(self):
+        for platform_file in sorted(os.listdir(self.platforms_dir)):
+            platform_path = os.path.join(self.platforms_dir, platform_file)
+            platform = ssg.build_yaml.Platform.from_yaml(platform_path, self.env_yaml, self.product_cpes)
+            self.build_platform(platform)
+
     def build(self):
         """
         Builds all templated content for all languages, writing
@@ -383,3 +426,4 @@ class Builder(object):
 
         self.build_extra_ovals()
         self.build_all_rules()
+        self.build_all_platforms()

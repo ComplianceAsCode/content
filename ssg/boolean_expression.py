@@ -73,7 +73,10 @@ class Symbol(boolean.Symbol):
         self.obj = self.spec
 
     def __call__(self, **kwargs):
-        val = kwargs.get(self.name, False)
+        full_name = self.name
+        if self.spec.extras:
+            full_name += '[' + ','.join(self.spec.extras) + ']'
+        val = kwargs.get(full_name, False)
         if len(self.spec.specs):
             if type(val) is str:
                 return val in self.spec
@@ -85,9 +88,19 @@ class Symbol(boolean.Symbol):
 
     def as_id(self):
         id_str = self.name
+        if self.spec.extras:
+            id_str += '_' + self.spec.extras[0]
         for (op, ver) in self.spec.specs:
             id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
         return id_str
+
+    def as_dict(self):
+        res = {'name': self.name, 'arg': '', 'op': '', 'ver': ''}
+        if self.spec.extras:
+            res['arg'] = self.spec.extras[0]
+        if self.spec.specs:
+            res['op'], res['ver'] = self.spec.specs[0]
+        return res
 
     @property
     def name(self):
