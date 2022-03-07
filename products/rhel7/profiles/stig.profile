@@ -221,6 +221,7 @@ selections:
     - audit_rules_privileged_commands_userhelper
     - audit_rules_privileged_commands_su
     - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_kmod
     - audit_rules_sysadmin_actions
     - audit_rules_privileged_commands_newgrp
     - audit_rules_privileged_commands_chsh
@@ -234,6 +235,7 @@ selections:
     - audit_rules_kernel_module_loading_init
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_delete
+    - audit_rules_kernel_module_loading_create
     - audit_rules_usergroup_modification_passwd
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
