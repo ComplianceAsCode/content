@@ -33,7 +33,7 @@ selections:
     #
     # Note: must configure "var_accounts_authorized_local_users_regex" when
     # "accounts_authorized_local_users" rule is enabled
-    # - var_accounts_authorized_local_users_regex=<authorized local user accounts>
+    # - var_accounts_authorized_local_users_regex=sle12
     #
     # NOTE: must configure "var_audispd_remote_server" when
     # "auditd_audispd_configure_remote_server" rule is enabled

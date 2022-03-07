@@ -39,13 +39,9 @@ selections:
     - var_accounts_minimum_age_login_defs=7
     - account_disable_post_pw_expiration
     - account_emergency_admin
-    #
-    # NOTE: must configure "var_accounts_authorized_local_users_regex" variable
-    # when "accounts_authorized_local_users" rule is enabled
-    #
-    # - accounts_authorized_local_users
     - account_disable_post_pw_expiration
     - account_emergency_admin
+    - var_accounts_authorized_local_users_regex=sle15
     - accounts_authorized_local_users
     - accounts_have_homedir_login_defs
     - var_accounts_max_concurrent_login_sessions=10
