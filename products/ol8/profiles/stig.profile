@@ -5,10 +5,10 @@ metadata:
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
-title: 'DRAFT - DISA STIG for Oracle Linux 8'
+title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
-    This is a DRAFT profile which contains configuration checks that align to the
+    This profile contains configuration checks that align to the
     DISA STIG for Oracle Linux 8 V1R1.
 
 selections:
@@ -83,6 +83,8 @@ selections:
 
     # OL08-00-010020
     - sysctl_crypto_fips_enabled
+    - harden_sshd_ciphers_openssh_conf_crypto_policy
+    - harden_sshd_ciphers_openssh_conf_crypto_policy.severity=high
 
     # OL08-00-010030
     - encrypt_partitions
@@ -180,9 +182,7 @@ selections:
     # OL08-00-010260
     - file_groupowner_var_log
 
-    # *** SHARED *** #
-    # OL08-00-010290 && OL08-00-010291
-    # *** SHARED *** #
+    # OL08-00-010287
     - configure_ssh_crypto_policy
 
     # OL08-00-010290
@@ -190,7 +190,6 @@ selections:
     - harden_sshd_macs_opensshserver_conf_crypto_policy
 
     # OL08-00-010291
-    - harden_sshd_ciphers_openssh_conf_crypto_policy
     - harden_sshd_ciphers_opensshserver_conf_crypto_policy
 
     # OL08-00-010292
@@ -267,6 +266,7 @@ selections:
 
     # OL08-00-010390
     - install_smartcard_packages
+    - install_smartcard_packages.severity=low
 
     # OL08-00-010400
     - sssd_certificate_verification
@@ -339,6 +339,7 @@ selections:
 
     # OL08-00-010543
     - partition_for_tmp
+    - partition_for_tmp.severity=medium
 
     # OL08-00-010544
     ### NOTE: Will probably show up in V1R3 - Q3 of 21'
@@ -441,12 +442,14 @@ selections:
 
     # OL08-00-010800
     - partition_for_home
+    - partition_for_home.severity=medium
 
     # OL08-00-010820
     - gnome_gdm_disable_automatic_login
 
     # OL08-00-010830
     - sshd_do_not_permit_user_env
+    - sshd_do_not_permit_user_env.severity=high
 
     # OL08-00-020000
     - account_temp_expire_date
@@ -520,12 +523,15 @@ selections:
 
     # OL08-00-020110
     - accounts_password_pam_ucredit
+    - accounts_password_pam_ucredit.severity=low
 
     # OL08-00-020120
     - accounts_password_pam_lcredit
+    - accounts_password_pam_lcredit.severity=low
 
     # OL08-00-020130
     - accounts_password_pam_dcredit
+    - accounts_password_pam_dcredit.severity=low
 
     # OL08-00-020140
     - accounts_password_pam_maxclassrepeat
@@ -538,6 +544,7 @@ selections:
 
     # OL08-00-020170
     - accounts_password_pam_difok
+    - accounts_password_pam_difok.severity=low
 
     # OL08-00-020180
     - accounts_password_set_min_life_existing
@@ -553,7 +560,9 @@ selections:
 
     # OL08-00-020220
     - accounts_password_pam_pwhistory_remember_system_auth
+    - accounts_password_pam_pwhistory_remember_system_auth.severity=low
     - accounts_password_pam_pwhistory_remember_password_auth
+    - accounts_password_pam_pwhistory_remember_password_auth.severity=low
 
     # OL08-00-020230
     - accounts_password_pam_minlen
@@ -575,6 +584,7 @@ selections:
 
     # OL08-00-020280
     - accounts_password_pam_ocredit
+    - accounts_password_pam_ocredit.severity=low
 
     # OL08-00-020290
     - sssd_offline_cred_expiration
@@ -1066,9 +1076,11 @@ selections:
 
     # OL08-00-040172
     - disable_ctrlaltdel_burstaction
+    - disable_ctrlaltdel_burstaction.severity=medium
 
     # OL08-00-040180
     - service_debug-shell_disabled
+    - service_debug-shell_disabled.severity=low
 
     # OL08-00-040190
     - package_tftp-server_removed
@@ -1160,6 +1172,7 @@ selections:
 
     # OL08-00-040350
     - tftpd_uses_secure_mode
+    - tftpd_uses_secure_mode.severity=medium
 
     # OL08-00-040360
     - package_vsftpd_removed

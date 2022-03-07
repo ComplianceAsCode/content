@@ -16,7 +16,7 @@ rationale: |-
     Overriding the system crypto policy makes the behavior of Kerberos violate expectations,
     and makes system configuration more fragmented.
 
-severity: medium
+severity: high
 
 identifiers:
     cce@rhcos4: CCE-82547-1
@@ -38,4 +38,3 @@ ocil: |-
     <pre>file /etc/krb5.conf.d/crypto-policies</pre>
     If command ouput shows the following line, kerberos is configured to use the system-wide crypto policy.
     <pre>/etc/krb5.conf.d/crypto-policies: symbolic link to /etc/crypto-policies/back-ends/krb5.config</pre>
-
