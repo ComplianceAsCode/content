@@ -9,7 +9,7 @@ description: |-
     0: Everybody may access all /proc/[pid] directories.
     1: Users may not access files and subdirectories inside any /proc/[pid] directories
        but their own. The /proc/[pid] directories themselves remain visible.
-    2: As for mode 1, but in addition the /proc/[pid] directories belonging to other
+    2: Same as for mode 1, but in addition the /proc/[pid] directories belonging to other
        users become invisible.
 
 type: string
@@ -20,6 +20,12 @@ interactive: false
 
 options:
     "0": "0"
+    {{% if product in ['rhel9'] %}}
+    1: noaccess
+    2: invisible
+    default: invisible
+    {{% else %}}
     1: 1
     2: 2
     default: 2
+    {{% endif %}}
