@@ -48,3 +48,16 @@ ocil: |-
     switch to single-user mode, execute a script,
     or halt when the disk errors:
     <pre>disk_error_action single</pre>
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: disk_error_action
+        rule_id: {{{ rule_id }}}
+        value: halt
+        value@rhcos4: syslog
+        value_regex@ol8: 'syslog|single|halt'
+    backends:
+        ansible: "off"
+        bash: "off"
