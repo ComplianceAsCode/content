@@ -56,3 +56,17 @@ ocil: |-
     switch to single-user mode, execute a script,
     or halt when the disk is out of space:
     <pre>disk_full_action single</pre>
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: disk_full_action
+        rule_id: {{{ rule_id }}}
+        value: halt
+        value@sle15: syslog
+        value@rhcos4: syslog
+        value_regex@ol8: 'syslog|single|halt'
+    backends:
+        ansible: "off"
+        bash: "off"
