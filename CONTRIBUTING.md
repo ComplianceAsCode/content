@@ -17,8 +17,11 @@ When creating an issue, please be detailed as possible without writing an essay!
 issue actionable. Ideally, issues with small tasks should be created to help others understand what
 needs to be accomplished.
 
+
 Pull Requests
 ---
+
+### Contributor info
 
 Two-party review is needed for merging pull requests. This second set of eyes helps review the code
 for functionality and style, and helps create a shared understanding of why certain things are
@@ -53,6 +56,27 @@ approach is to keep the *one step = one commit* approach.
 
 Avoid merge commits in pull requests - use `git rebase` to get rid of them. This helps us keep git
 tree clean and helps to make it easy to understand historical changes done in past commits.
+
+
+### Maintainer info
+
+Reviewers should pay attention to the following points:
+
+The PR ...
+* ... has been approved by an SME of the area that the PR addresses, which indicates that it is generally a step in a right direction.
+* ... passes PR gating tests, or failing tests are waived by means of explaining the reason.
+* ... adheres to the [coding style](docs/manual/developer/04_style_guide.md#complianceascode-style-guide).
+* ... has been tested. There are following options that allow for testing various aspects of the project:
+  * [SSG Test Suite](tests/README.md) for rule tests that ensures that test OVAL checks and that test the ability of remediations to satisfy those checks.
+  * [BATS framework](tests/unit/bash) for bash tests that allows for fast and exhaustive testing of remediations that are parametrized by Jinja2.
+  * [Unit tests](tests/unit) that test components of the build system as well as components of the SSG Test Suite.
+  * Ad-hoc tests that are integrated into the `ctest` chain directly s.a. the shellcheck test.
+* ... updates READMEs, man pages or other documentation when changes of described behavior are introduced.
+* ... doesn't contain merge commits - those can be removed by rebasing.
+* ... is rebased against recent-enough branch that executes the whole range of expected integrated gating tests.
+* ... doesn't increase maintenance costs, and if it does, there is a substantial counterbalance.
+* ... doesn't impact the build time in a significant way.
+
 
 Contributing Content
 ---

@@ -15,7 +15,36 @@
 * Should use the [merge commit method](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
 * Should use the GitHub Web UI to document and ensure code reviews are done correctly
 
-## All files
+
+## General Coding Style
+
+Prioritize the human-readability of code to its machine efficiency.
+In practice, this implies:
+
+* Keep functions and methods small, just a couple of lines, so it is possible to understand what they do with minimal effort.
+  Prioritize the code readability over line count or code performance.
+* Don't mix low-level and high-level code in one function.
+  Extract functionality to separate functions or convert functions into classes with multiple methods to avoid this.
+* If a function contains try/except block, there should be no other logic present apart from exception handling.
+* Name variables and functions properly, don't hesitate to use longer identifiers.
+  Use explanatory variables to help the code to express itself -
+  assign a result of the operation into a variable that describes its meaning even if you intend to use it only once.
+* Don't copy-paste code, use e.g. jinja macros to reduce duplication.
+  Exception to this rule is code that is identical another piece of code only by coincidence, and there is a substantial probability that the code can diverge.
+* Include tests for your contribution.
+* Write comments only and only if there is no chance for the code to explain itself.
+* Don't put authorship information into the code, Git tracks everything for you.
+  Use [SPDX IDs](https://spdx.dev/ids/) for license-related boilerplate in newly written code.
+* Don't take part in making files longer - files longer than 400 lines should be an exception.
+  Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
+
+When working with old code that doesn't satisfy those recommendations at all, simply leave the code in a better shape than the shape in which it was before,
+and keep these guidelines in mind when writing new code.
+
+
+## Text-level Coding Style
+
+### All Files
 * Shall use UNIX style line endings
 * Shall have one newline at the end of the file
 * Shall not have trailing whitespace, unless syntactically necessary
@@ -26,7 +55,7 @@
 * Shall not use "smart quotes" or curved quotes
 * Maximum line length should be 99 characters
 
-## Jinja
+### Jinja
 * Shall use 4-space indentation
 * Shall have a docstring comment describe what the macro does
 * Shall have a docstring comment describing all parameters and their types
@@ -35,7 +64,7 @@
   * Shall have one blank after list before the close of the docstring block
 * Shall have two blank lines between macros
 
-## Python
+### Python
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
     * We use [PEP 8 Speaks](https://pep8speaks.com/) and it leaves a comment on PR if you have PEP8 issues in the Python file(s) you touched
     * We do make one change from PEP 8, our maximum line length is 99 characters
@@ -46,14 +75,14 @@
 * Shall use 4-space indentation
 * New Python 3 methods and scripts should have type hints
 
-## YAML
+### YAML
 * All new YAML files shall use 4-space indentation
     * Existing YAML files may use 2-space indentation
 * Must be able to be parsed with PyYAML
 * Shall use the `.yml` vs `.yaml` for the file extension
 * Shall have one blank line between sections
 
-### HTML Like Fields
+#### HTML Like Fields
 The sections below marked with an `(HTML Like)` means that a limited number of HTML elements are supported in these sections.
 The lists of elements below are **not** fully inclusive.
 Any elements that are not strictly for formatting shall not be used.
@@ -70,6 +99,8 @@ The following elements are not allowed:
 * `script`
 * `video`
 * `audio`
+
+## Schemas
 
 ### Rule
 This section describes the styleguide around the `rule.yml` files.
