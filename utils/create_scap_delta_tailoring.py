@@ -31,8 +31,12 @@ def get_profile(product, profile_name):
         './/{{{scap}}}component/{{{xccdf}}}Benchmark/{{{xccdf}}}Profile'.format(
             scap=NS["scap"], xccdf=NS["xccdf-1.2"])
     )
+
+    profile_name_fqdn = "xccdf_org.ssgproject.content_profile_{profile_name}".format(
+        profile_name=profile_name)
+
     for profile in profiles:
-        if profile.attrib['id'].endswith(profile_name):
+        if profile.attrib['id'] == profile_name_fqdn:
             return profile
 
 
