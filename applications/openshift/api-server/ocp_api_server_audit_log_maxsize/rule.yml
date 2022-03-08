@@ -58,7 +58,7 @@ template:
   vars:
     ocp_data: "true"
     filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
-    yamlpath: '.apiServerArguments["audit-log-maxsize][:]'
+    yamlpath: '.apiServerArguments["audit-log-maxsize"][:]'
     xccdf_variable: var_apiserver_audit_log_maxsize
     embedded_data: "true"
     values:
