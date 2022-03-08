@@ -15707,13 +15707,23 @@ controls:
   - high
   - moderate
 - id: SI-4(24)
-  status: pending
+  status: automated
   notes: |-
-    A control response for SI-4(20) is planned. Engineering progress can be
-    tracked via:
+    The OpenShift Platform provides the File Integrity Operator to do
+    integrity verification of files and information on the nodes. [1]
 
-    https://issues.redhat.com/browse/CMP-541
-  rules: []
+    The operator can be configured to perform integrity checks at user-defined
+    intervals. [2]
+    A File Integrity Operator Prometheus rule will alert organization defined personnel for any integrity check failure. 
+
+    A user can also use external antivirus engine for detecting trojans, viruses, malware & other malicious threats. 
+
+    [1] https://docs.openshift.com/container-platform/latest/security/file_integrity_operator/file-integrity-operator-installation.html
+    [2] https://docs.openshift.com/container-platform/4.6/security/file_integrity_operator/file-integrity-operator-configuring.html
+  rules:
+  - file_integrity_exists
+  - file_integrity_notification_enabled
+  - compliance_notification_enabled
   description: |-
     The information system discovers, collects, distributes, and uses indicators of compromise.
 
