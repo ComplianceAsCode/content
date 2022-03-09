@@ -2,12 +2,10 @@ controls:
     -   id: SRG-OS-000004-GPOS-00004
         levels:
             - medium
-        title: The operating system must audit all account creations.
+        title: {{{ full_name }}} must audit all account creations.
         rules:
             - audit_rules_sudoers
             - audit_rules_sudoers_d
-            - audit_rules_sysadmin_actions
-            - audit_rules_usergroup_modification
             - audit_rules_usergroup_modification_group
             - audit_rules_usergroup_modification_gshadow
             - audit_rules_usergroup_modification_opasswd
