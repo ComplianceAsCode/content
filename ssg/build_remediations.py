@@ -653,7 +653,7 @@ def expand_xccdf_subs(fix, remediation_type):
     elif remediation_type == "kubernetes":
         return
     elif remediation_type == "blueprint":
-        return
+        pattern = r'\(blueprint-populate\s*(\S+)\)'
     elif remediation_type == "ansible":
 
         if "(ansible-populate " in fix_text:
