@@ -6,7 +6,7 @@
 
 {{% if ARG_VARIABLE %}}
 {{{ ansible_instantiate_variables(ARG_VARIABLE) }}}
-{{% set ARG_NAME_VALUE= ARG_NAME ~ "=\"{{" ~ ARG_VARIABLE ~ "}}\""%}}
+{{% set ARG_NAME_VALUE = ARG_NAME ~ "={{ " ~ ARG_VARIABLE ~ " }}" %}}
 {{% endif %}}
 
 - name: Update grub defaults and the bootloader menu
