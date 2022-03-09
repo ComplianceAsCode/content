@@ -178,6 +178,25 @@ def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
     return True
 
 
+def _get_bash_remediation_error_message_template(formatting):
+    if "rule_id" in formatting:
+        result = (
+            'Bash remediation for rule {rule_id} '.format(** formatting) +
+            'has exited with these errors:\n{stderr}'
+        )
+    elif "profile" in formatting:
+        result = (
+            'Bash remediation for profile {profile} '.format(** formatting) +
+            'has exited with these errors:\n{stderr}'
+        )
+    else:
+        msg = (
+            "There was an error during remediation, but the remediation context "
+            "is unknown, which indicates a problem in the test suite.")
+        raise RuntimeError(msg)
+    return result
+
+
 def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
     """
        Returns False on error, or True in case of successful bash scripts
@@ -192,10 +211,7 @@ def run_stage_remediation_bash(run_type, test_env, formatting, verbose_path):
     command_string = '/bin/bash -x /{output_file}'.format(** formatting)
 
     with open(verbose_path, "a") as log_file:
-        error_msg_template = (
-            'Bash remediation for {rule_id} '.format(** formatting) +
-            'has exited with these errors: {stderr}'
-        )
+        error_msg_template = _get_bash_remediation_error_message_template(formatting)
         try:
             test_env.execute_ssh_command(
                 command_string, log_file, error_msg_template=error_msg_template)
