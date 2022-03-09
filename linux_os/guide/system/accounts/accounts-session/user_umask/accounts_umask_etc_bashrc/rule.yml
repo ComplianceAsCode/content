@@ -4,9 +4,15 @@ prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15,ubuntu2004
 
 title: 'Ensure the Default Bash Umask is Set Correctly'
 
+{{% if 'sle' in product %}}
+{{% set etc_bash_rc = "/etc/bash.bashrc" %}}
+{{% else %}}
+{{% set etc_bash_rc = "/etc/bashrc" %}}
+{{% endif %}}
+
 description: |-
     To ensure the default umask for users of the Bash shell is set properly,
-    add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
+    add or correct the <tt>umask</tt> setting in <tt>{{{ etc_bash_rc }}}</tt> to read
     as follows:
     <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
@@ -45,10 +51,10 @@ references:
 ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
 
 ocil: |-
-    Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
+    Verify the <tt>umask</tt> setting is configured correctly in the <tt>{{{ etc_bash_rc }}}</tt> file by
     running the following command:
-    <pre># grep "umask" /etc/bashrc</pre>
+    <pre># grep "umask" {{{ etc_bash_rc }}}</pre>
     All output must show the value of <tt>umask</tt> set as shown below:
-    <pre># grep "umask" /etc/bashrc
+    <pre># grep "umask" {{{ etc_bash_rc }}}
     umask {{{ xccdf_value("var_accounts_user_umask") }}}
     umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
