@@ -1686,3 +1686,25 @@ is configured at boot time.
 Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 {{%- endif -%}}
 {{%- endmacro -%}}
+
+{{#
+    Human readable text for how to fix ini files
+
+    :param section: Section on the value to be set
+    :type section: str
+    :param parameter: parameter to be change
+    :type parameter: str
+    :param value: value to be set
+    :type value: str
+
+#}}
+{{%- macro donf_ini_file_fix(section, parameter, value) -%}}
+    The dconf settings can be edited in the /etc/dconf/db/* location.
+    Edit or add the {{{ section }}} section of the database file and add or update the following lines:
+
+    {{{parameter}}}={{{value}}}
+
+    Update the system databases:
+
+    $ sudo dconf update
+{{%- endmacro -%}}
