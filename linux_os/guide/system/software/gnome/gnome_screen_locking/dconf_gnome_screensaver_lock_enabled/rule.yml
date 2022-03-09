@@ -80,4 +80,7 @@ ocil: |-
     If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>
     {{% endif %}}
 
+fix: |-
+    {{{ donf_ini_file_fix("/org/gnome/desktop/screensaver/lock-enabled", "lock-enabled", "true") }}}
+
 platform: machine
