@@ -11,6 +11,7 @@ import sys
 import string
 from typing.io import TextIO
 import xml.etree.ElementTree as ET
+import pandas as pd
 
 import convert_srg_export_to_xlsx
 
@@ -45,6 +46,44 @@ COLUMNS = string.ascii_uppercase[:17] # A-Q uppercase letters
 
 COLUMN_MAPPINGS = dict(zip(COLUMNS, HEADERS))
 
+HTML_OUTPUT_TEMPLATE = '''
+<html>
+<head>
+<title>HTML Pandas Dataframe with CSS</title>
+<style type="text/css">
+table
+{{
+    border-collapse:collapse;
+}}
+table, th, td
+{{
+    border: 2px solid #dcdcdc;
+    border-left: none;
+    border-right: none;
+    vertical-align: top;
+    padding: 2px;
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+}}
+pre {{
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap !important;
+    word-wrap:break-word;
+}}
+table tr:nth-child(2n+2) {{ background-color: #f4f4f4; }}
+thead
+{{
+    display: table-header-group;
+    font-weight: bold;
+    background-color: #dedede;
+}}
+</style>
+</head>
+<body>
+    {table}
+</body>
+</html>.
+'''
 
 srgid_to_iacontrol = {
     'SRG-OS-000001-GPOS-00001': 'AC-2 (1)',
@@ -379,7 +418,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
-    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx"), action="store",
+    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html"), action="store",
                         help="The format the output should take. Defaults to csv", default="csv")
     return parser.parse_args()
 
@@ -489,6 +528,18 @@ def handle_output(output: str, results: list, format_type: str, product: str) ->
             row['STIGID'] = ""
             row['IA Control'] = get_iacontrol(row['SRGID'])
         convert_srg_export_to_xlsx.handle_dict(results, output, f'{product} SRG Mapping')
+    elif format_type == 'html':
+        for row in results:
+            row['STIGID'] = ""
+            row['IA Control'] = get_iacontrol(row['SRGID'])
+        output = output.replace('.csv', '.html')
+        pd.set_option('colheader_justify', 'center')
+        df = pd.DataFrame(results, index=None)
+        df.fillna("",inplace=True)
+        df = df.reindex(HEADERS, axis=1)
+        with open(pathlib.Path(output), 'w+') as f:
+            f.write(HTML_OUTPUT_TEMPLATE.format(table=df.to_html().replace("\\n","<br>")))
+
     print(f'Wrote output to {output}')
 
 
