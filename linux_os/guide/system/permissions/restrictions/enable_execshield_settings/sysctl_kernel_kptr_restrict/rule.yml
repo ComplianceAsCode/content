@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Restrict Exposed Kernel Pointer Addresses Access'
 
-description: '{{{ describe_sysctl_option_value(sysctl="kernel.kptr_restrict", value="1") }}}'
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.kptr_restrict", value=xccdf_value("sysctl_kernel_kptr_restrict_value")) }}}'
 
 rationale: |-
     Exposing kernel pointers (through procfs or <tt>seq_printf()</tt>) exposes
@@ -40,5 +40,4 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.kptr_restrict
-        sysctlval: '1'
         datatype: int

@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Kernel panic on oops'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.panic_on_oops", value="1") }}}'
+
+rationale: |-
+    An attacker trying to exploit the kernel may trigger kernel OOPSes,
+    panicking the system will impede them from continuing.
+
+warnings:
+    - functionality: |-
+       The system may start to panic when it normally wouldn't. A non-catastrophic error that
+       would have allowed the system to continue operating will now result in a panic.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-87666-4
+    cce@rhel9: CCE-88666-3
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.panic_on_oops", value="1") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.panic_on_oops
+        sysctlval: '1'
+        datatype: int
