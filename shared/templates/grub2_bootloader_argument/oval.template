@@ -187,7 +187,7 @@
 {{% else %}}
   <ind:textfilecontent54_state id="state_grub2_{{{ SANITIZED_ARG_NAME }}}_argument"
   version="1">
-    <ind:subexpression datatype="string" operation="pattern match" var_ref="local_var_regex_{{{ ARG_NAME }}}_{{{ ARG_VARIABLE }}}" />
+    <ind:subexpression datatype="string" operation="pattern match" var_ref="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}" />
   </ind:textfilecontent54_state>
 
   <local_variable id="local_var_regex_{{{ SANITIZED_ARG_NAME }}}_{{{ ARG_VARIABLE }}}"
