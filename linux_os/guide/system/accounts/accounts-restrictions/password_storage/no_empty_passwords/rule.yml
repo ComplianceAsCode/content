@@ -13,10 +13,6 @@ description: |-
     <tt>/etc/pam.d/system-auth</tt>
     {{% endif %}}
     to prevent logins with empty passwords.
-    Note that this rule is not applicable for systems running within a
-    container. Having user with empty password within a container is not
-    considered a risk, because it should not be possible to directly login into
-    a container anyway.
 
 rationale: |-
     If an account has an empty password, anyone could log in and
@@ -78,3 +74,7 @@ warnings:
        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
        aborted in order to preserve intentional changes. In this case, an informative message will
        be shown in the remediation report.
+       Note that this rule is not applicable for systems running within a
+       container. Having user with empty password within a container is not
+       considered a risk, because it should not be possible to directly login into
+       a container anyway.
