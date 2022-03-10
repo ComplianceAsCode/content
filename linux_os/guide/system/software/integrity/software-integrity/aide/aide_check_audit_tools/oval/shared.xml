@@ -8,15 +8,18 @@
       <criterion comment="ausearch is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_ausearch" />
       <criterion comment="aureport is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_aureport" />
       <criterion comment="autrace is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_autrace" />
-      {{% if 'rhel' not in product %}}
+      {{% if 'rhel' not in product and product != 'ol8' %}}
       <criterion comment="audispd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_audispd" />
+      {{% endif %}}
+      {{% if product == 'ol8' %}}
+      <criterion comment="rsyslogd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_rsyslogd" />
       {{% endif %}}
       <criterion comment="augenrules is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_augenrules" />
     </criteria>
   </definition>
 
   <ind:textfilecontent54_state id="state_aide_check_attributes" version="1">
-    {{% if 'rhel' not in product and 'ubuntu' not in product %}}
+    {{% if 'rhel' not in product and 'ubuntu' not in product and product != 'ol8' %}}
     <ind:subexpression operation="equals">p+i+n+u+g+s+b+acl+selinux+xattrs+sha512</ind:subexpression>
     {{% else %}}
     <ind:subexpression operation="pattern match">p\+i\+n\+u\+g\+s\+b\+acl(|\+selinux)\+xattrs\+sha512</ind:subexpression>
@@ -114,7 +117,6 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
-
   <ind:textfilecontent54_test id="test_aide_verify_augenrules"
   comment="augenrules is checked in {{{ aide_conf_path }}}" check="all"
   check_existence="all_exist" version="1">
@@ -127,6 +129,5 @@
     <ind:pattern operation="pattern match">^/usr/sbin/augenrules\s+([^\n]+)$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
-
 
 </def-group>

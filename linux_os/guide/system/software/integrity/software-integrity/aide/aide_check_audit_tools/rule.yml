@@ -48,7 +48,7 @@ references:
 
 ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
 
-{{% if 'rhel' not in product and 'ubuntu' not in product %}}
+{{% if 'rhel' not in product and 'ubuntu' not in product and product != 'ol8' %}}
 {{% set aide_string = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
 {{% else %}}
 {{% set aide_string = 'p+i+n+u+g+s+b+acl+xattrs+sha512' %}}
@@ -65,7 +65,8 @@ ocil: |-
     /usr/sbin/ausearch {{{ aide_string }}}
     /usr/sbin/aureport {{{ aide_string }}}
     /usr/sbin/autrace {{{ aide_string }}}
-    {{% if 'rhel' not in product %}}/usr/sbin/audispd {{{ aide_string }}}{{% endif %}}
+    {{% if 'rhel' not in product and product != 'ol8' %}}/usr/sbin/audispd {{{ aide_string }}}{{% endif %}}
+    {{% if product == 'ol8' %}}/usr/sbin/rsyslogd {{{ aide_string }}}{{% endif %}}
     /usr/sbin/augenrules {{{ aide_string }}}</pre>
 
     If AIDE is configured properly to protect the integrity of the audit tools,
