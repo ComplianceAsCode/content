@@ -1,0 +1,47 @@
+documentation_complete: true
+
+title: 'Speculative Store Bypass Disable'
+
+description: |-
+    Certain CPUs are vulnerable to an exploit against a common wide industry wide performance
+    optimization known as Speculative Store Bypass (SSB).
+
+    In such cases, recent stores to the same memory location cannot always be observed by later
+    loads during speculative execution. However, such stores are unlikely and thus they can be
+    detected prior to instruction retirement at the end of a particular speculation execution
+    window.
+
+    Since Linux Kernel 4.17 you can check the SSB mitigation state with the following command:
+    <tt>cat /sys/devices/system/cpu/vulnerabilities/spec_store_bypass</tt>
+
+    Select the appropriate SSB state by adding the argument
+    <tt>spec_store_bypass_disable={{{ xccdf_value(var_spec_store_bypass_disable_options) }}}</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("spec_store_bypass_disable=xccdf_value(var_spec_store_bypass_disable_options)") | indent(4) }}}
+
+rationale: |-
+    In vulnerable processsors, the speculatively forwarded store can be used in a cache side channel
+    attack. An example of this is reading memory to which the attacker does not directly have access,
+    for example inside the sandboxed code.
+
+warnings:
+    - performance: Disabling Speculative Store Bypass may impact performance of the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-89234-9
+    cce@rhel9: CCE-90234-6
+
+ocil_clause: 'SSB is not configured appropriately'
+
+ocil: |-
+    {{{ ocil_grub2_argument("spec_store_bypass_disable=xccdf_value(var_spec_store_bypass_disable_options)") | indent(4) }}}
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: spec_store_bypass_disable
+        arg_variable: var_spec_store_bypass_disable_options
