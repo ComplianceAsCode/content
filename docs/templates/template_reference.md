@@ -88,6 +88,17 @@
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
+#### audit_rules_syscall_events
+-   Ensure there is an audit rule to record for all uses of 
+    specified system call
+
+-   Parameters:
+
+    -   **attr** - the name of the system call - eg.
+        `unlinkat`
+
+-   Languages: Ansible, Bash, OVAL, Kubernetes
+
 #### audit_file_contents
 -   Ensure that audit `.rules` file specified by parameter `filepath`
     contains the contents specified in parameter `contents`.
