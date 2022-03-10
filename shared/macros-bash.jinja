@@ -1542,11 +1542,7 @@ do
         # Strip all the options and fields we know of,
         # than check if there was any field left over
         extra_fields=$(sed -E -e "s/{{{ action_arch_filters }}}//"  -e "s#{{{ other_filters }}}##" -e "s/{{{ auid_filters }}}//" -e "s/((:?-S [[:alnum:],]+)+)//g" -e "s/-F key=\w+|-k \w+//"<<< "$s_rule")
-        grep -q -- "-F" <<< "$extra_fields"
-        if [ $? -ne 0 ]
-        then
-            candidate_rules+=("$s_rule")
-        fi
+        grep -q -- "-F" <<< "$extra_fields" || candidate_rules+=("$s_rule")
     done
 
     if [[ ${#syscall_a[@]} -ge 1 ]]
@@ -1558,12 +1554,10 @@ do
             all_syscalls_found=0
             for syscall in "${syscall_a[@]}"
             do
-                grep -q -- "\b${syscall}\b" <<< "$rule_syscalls"
-                if [ $? -eq 1 ]
-                then
-                    # A syscall was not found in the candidate rule
-                    all_syscalls_found=1
-                fi
+                grep -q -- "\b${syscall}\b" <<< "$rule_syscalls" || {
+                   # A syscall was not found in the candidate rule
+                   all_syscalls_found=1
+                   }
             done
             if [[ $all_syscalls_found -eq 0 ]]
             then
@@ -1613,9 +1607,9 @@ if [ "$skip" -ne 0 ]; then
                 syscall_string+=" -S $syscall"
             done
         fi
-        other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}")
-        auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}")
-        full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}"
+        other_string=$([[ {{{ other_filters }}} ]] && echo " {{{ other_filters }}}") || /bin/true
+        auid_string=$([[ {{{ auid_filters }}} ]] && echo " {{{ auid_filters }}}") || /bin/true
+        full_rule="{{{ action_arch_filters }}}${syscall_string}${other_string}${auid_string} -F key={{{ key }}}" || /bin/true
         echo "$full_rule" >> "$default_file"
         chmod o-rwx ${default_file}
     else
@@ -1630,12 +1624,10 @@ if [ "$skip" -ne 0 ]; then
         new_grouped_syscalls="${rule_syscalls_to_edit}"
         for syscall in "${syscall_a[@]}"
         do
-            grep -q -- "\b${syscall}\b" <<< "${rule_syscalls_to_edit}"
-            if [ $? -eq 1 ]
-            then
-                # A syscall was not found in the candidate rule
-                new_grouped_syscalls+="${delimiter}${syscall}"
-            fi
+            grep -q -- "\b${syscall}\b" <<< "${rule_syscalls_to_edit}" || {
+               # A syscall was not found in the candidate rule
+               new_grouped_syscalls+="${delimiter}${syscall}"
+               }
         done
 
         # Group the syscall in the rule
