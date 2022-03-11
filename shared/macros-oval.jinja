@@ -869,12 +869,12 @@
           {{%- if missing_parameter_pass %}}
           <criteria comment="sshd is not configured incorrectly" operator="AND">
           {{{- oval_line_in_file_criterion(sshd_config_path, parameter, missing_parameter_pass) | indent(10)}}}
-          {{%- if config_is_distributed %}}
+          {{%- if config_is_distributed == "true" %}}
           {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter, missing_parameter_pass) | indent(10) }}}
           {{%- endif %}}
           </criteria>
           {{%- endif %}}
-          {{%- if config_is_distributed %}}
+          {{%- if config_is_distributed == "true" %}}
           {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
           {{%- endif %}}
         </criteria>
@@ -890,7 +890,7 @@
   {{{ oval_line_in_file_object(sshd_config_path, parameter=parameter, missing_parameter_pass=missing_parameter_pass, ** case_insensitivity_kwargs) | indent(2) }}}
   {{%- endif %}}
 
-  {{%- if config_is_distributed %}}
+  {{%- if config_is_distributed == "true" %}}
   {{{ oval_line_in_directory_test(sshd_config_dir, parameter) | indent (2) }}}
   {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, ** case_insensitivity_kwargs) | indent (2) }}}
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
