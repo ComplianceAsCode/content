@@ -68,8 +68,6 @@ selections:
 - accounts_password_pam_pwquality_system_auth
 - accounts_password_pam_retry
 - accounts_password_pam_ucredit
-- accounts_password_pam_unix_rounds_password_auth
-- accounts_password_pam_unix_rounds_system_auth
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
 - accounts_passwords_pam_faillock_deny
@@ -159,7 +157,6 @@ selections:
 - auditd_data_disk_error_action
 - auditd_data_disk_full_action
 - auditd_data_retention_action_mail_acct
-- auditd_data_retention_max_log_file_action
 - auditd_data_retention_space_left_action
 - auditd_data_retention_space_left_percentage
 - auditd_local_events
@@ -355,6 +352,7 @@ selections:
 - set_password_hashing_algorithm_logindefs
 - set_password_hashing_algorithm_passwordauth
 - set_password_hashing_algorithm_systemauth
+- set_password_hashing_min_rounds_logindefs
 - sshd_disable_compression
 - sshd_disable_empty_passwords
 - sshd_disable_gssapi_auth
