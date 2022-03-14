@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Configure ARP filtering for All IPv4 Interfaces'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.arp_filter", value=xccdf_value("sysctl_net_ipv4_conf_all_arp_filter_value")) }}}'
+
+rationale: |-
+    Prevents the Linux Kernel from handling the ARP table globally.
+    By default, the kernel may respond to an ARP request from a certain interface with information
+    from another interface.
+
+warnings:
+    - functionality: |-
+       This behaviour may cause problems to system on a high availability or load balancing configuration.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-87555-9
+    cce@rhel8: CCE-88555-8
+    cce@rhel9: CCE-89555-7
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.arp_filter", value=xccdf_value("sysctl_net_ipv4_conf_all_arp_filter_value")) }}}
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.conf.all.arp_filter
+        datatype: int

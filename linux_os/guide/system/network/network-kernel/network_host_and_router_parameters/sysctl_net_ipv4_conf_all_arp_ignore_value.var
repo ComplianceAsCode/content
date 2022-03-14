@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: net.ipv4.conf.default.arp_ignore
+
+description: |-
+    Control the response modes for ARP queries that resolve local target IP addresses:
+
+    0 - (default): reply for any local target IP address, configured on any interface
+    1 - reply only if the target IP address is local address configured on the incoming interface
+    2 - reply only if the target IP address is local address configured on the incoming interface and both with the sender’s IP address are part from same subnet on this interface
+    3 - do not reply for local addresses configured with scope host, only resolutions for global and link addresses are replied
+    4-7 - reserved
+    8 - do not reply for all local addresses
+
+type: number
+
+operator: equals
+
+interactive: false
+
+options:
+    default: 0
+    0: 0
+    1: 1
+    2: 2
+    3: 3
+    8: 8
