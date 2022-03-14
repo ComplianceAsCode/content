@@ -26,7 +26,7 @@
     <linux:property>ActiveState</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_state id="state_service_not_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is not running">
-      <linux:value>inactive</linux:value>
+      <linux:value operation="pattern match">inactive|failed</linux:value>
   </linux:systemdunitproperty_state>
   <linux:systemdunitproperty_test id="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the property LoadState from the service {{{ SERVICENAME }}} is masked" version="1">
     <linux:object object_ref="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
