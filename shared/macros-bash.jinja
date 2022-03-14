@@ -1645,10 +1645,10 @@ fi
 # Correct the form of default kernel command line in GRUB
 if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
        # modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
-       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ ARG_NAME }}}=[^[:space:]]*\(.*"\)/\1 {{{ ARG_NAME_VALUE }}} \2/'  '/etc/default/grub'
+       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\){{{ ARG_NAME }}}=[^[:space:]]\+\(.*\"\)/\1{{{ ARG_NAME_VALUE }}}\2/"  '/etc/default/grub'
 else
        # no {{{ ARG_NAME }}}=arg is present, append it
-       sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 {{{ ARG_NAME_VALUE }}}"/'  '/etc/default/grub'
+       sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\)\"/\1 {{{ ARG_NAME_VALUE }}}\"/"  '/etc/default/grub'
 fi
 {{%- endmacro %}}
 
@@ -1657,12 +1657,15 @@ fi
     Remediation for grub2 bootloader arguments
 #}}
 {{% macro grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) %}}
-{{% set grub_helper_executable = "grubby" -%}}
+{{% if 'ubuntu' in product %}}
+	{{% set grub_helper_executable = "update-grub" -%}}
+{{% else %}}
+	{{% set grub_helper_executable = "grubby" -%}}
+{{% endif -%}}
 {{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE] -%}}
 
-{{% if 'ubuntu' in product %}}
+{{% if 'ubuntu' in product or product in ['rhel7', 'ol7'] %}}
 {{{ update_etc_default_grub_manually(ARG_NAME, ARG_NAME_VALUE) }}}
-{{% set grub_helper_executable = "update-grub" -%}}
 {{% endif -%}}
 
 {{% if product in ["rhel8", "ol8"] %}}
