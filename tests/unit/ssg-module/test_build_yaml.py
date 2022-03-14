@@ -139,7 +139,10 @@ def product_cpes():
     product_yaml_path = os.path.join(DATADIR, "product.yml")
     product_yaml = open_raw(product_yaml_path)
     product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
-    return ProductCPEs(product_yaml)
+    product_cpes = ProductCPEs()
+    product_cpes.load_product_cpes(product_yaml)
+    product_cpes.load_content_cpes(product_yaml)
+    return product_cpes
 
 
 def test_platform_from_text_unknown_platform(product_cpes):
