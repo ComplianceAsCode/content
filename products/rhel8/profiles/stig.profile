@@ -126,10 +126,7 @@ selections:
     - accounts_password_all_shadowed_sha512
 
     # RHEL-08-010130
-    - accounts_password_pam_unix_rounds_password_auth
-
-    # RHEL-08-010131
-    - accounts_password_pam_unix_rounds_system_auth
+    - set_password_hashing_min_rounds_logindefs
 
     # RHEL-08-010140
     - grub2_uefi_password
@@ -656,9 +653,6 @@ selections:
 
     # RHEL-08-030040
     - auditd_data_disk_error_action
-
-    # RHEL-08-030050
-    - auditd_data_retention_max_log_file_action
 
     # RHEL-08-030060
     - auditd_data_disk_full_action
