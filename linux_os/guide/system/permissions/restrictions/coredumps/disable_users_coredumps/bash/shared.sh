@@ -7,4 +7,4 @@ else
         echo "*     hard   core    0" >> $SECURITY_LIMITS_FILE
 fi
 
-sudo sed -ri '/^\s*\*\s+hard\s+core/d' /etc/security/limits.d/*.conf
+sed -ri '/^\s*\*\s+hard\s+core/d' /etc/security/limits.d/*.conf
