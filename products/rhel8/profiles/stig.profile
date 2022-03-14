@@ -450,6 +450,9 @@ selections:
     # RHEL-08-010740
     - file_groupownership_home_directories
 
+    # RHEL-08-010741
+    - accounts_users_home_files_groupownership
+
     # RHEL-08-010750
     - accounts_user_interactive_home_directory_exists
 
