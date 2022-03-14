@@ -63,6 +63,14 @@ cat << EOF > $kube_apipath$apipath
                 "state": "Completed",
                 "verified": true,
                 "version": "4.10.0-0.ci-2021-12-15-195801"
+            },
+            {
+                "completionTime": "2021-12-15T06:44:42Z",
+                "image": "registry.build01.ci.openshift.org/ci-ln-vhslt2k/release@sha256:cd38c2c90e01b6c3461afbc6f44743242b9e62fcb4a0c8b7593d7c459a164636",
+                "startedTime": "2021-12-15T06:23:17Z",
+                "state": "Completed",
+                "verified": false,
+                "version": "4.10.0-0.ci-2021-12-15-195801"
             }
         ],
         "observedGeneration": 2,
@@ -71,7 +79,7 @@ cat << EOF > $kube_apipath$apipath
 }
 EOF
 
-jq_filter='[.status.history[] | .verified]'
+jq_filter='[.status.history[0:-1]|.[]|.verified]'
 
 # Get file path. This will actually be read by the scan
 filteredpath="$kube_apipath$apipath#$(echo -n "$apipath$jq_filter" | sha256sum | awk '{print $1}')"
