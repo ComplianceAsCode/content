@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Configure Response Mode of ARP Requests for All IPv4 Interfaces'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.arp_ignore", value=xccdf_value("sysctl_net_ipv4_conf_all_arp_ignore_value")) }}}'
+
+rationale: |-
+    Avoids ARP Flux on system that have more than one interface on the same subnet.
+
+warnings:
+    - functionality: |-
+       The ARP response mode may impact behaviour of workloads and firewalls on the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-87889-2
+    cce@rhel8: CCE-88889-1
+    cce@rhel9: CCE-89889-0
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.arp_ignore", value=xccdf_value("sysctl_net_ipv4_conf_all_arp_ignore")) }}}
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.conf.all.arp_ignore
+        datatype: int
