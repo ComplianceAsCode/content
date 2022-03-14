@@ -18,13 +18,14 @@ except ImportError:
     from urllib import quote
 
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
-             "kubernetes", "blueprint", "sce-bash"]
+             "kubernetes", "blueprint", "sce-bash", "oval_platform"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
     "ansible": ".yml",
     "bash": ".sh",
     "oval": ".xml",
+    "oval_platform": ".xml",
     "puppet": ".pp",
     "ignition": ".yml",
     "kubernetes": ".yml",
@@ -346,7 +347,7 @@ class Builder(object):
             #local_env_yaml["rule_title"] = rule_title
             local_env_yaml["products"] = self.env_yaml["product"]
 
-            for lang in ['oval']:
+            for lang in ['oval_platform']:
                 try:
                     self.build_lang(
                         name, template_name, template_vars, lang, local_env_yaml)
