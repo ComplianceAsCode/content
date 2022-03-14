@@ -443,6 +443,9 @@ selections:
     # RHEL-08-010730
     - file_permissions_home_directories
 
+    # RHEL-08-010731
+    - accounts_users_home_files_permissions
+
     # RHEL-08-010740
     - file_groupownership_home_directories
 
