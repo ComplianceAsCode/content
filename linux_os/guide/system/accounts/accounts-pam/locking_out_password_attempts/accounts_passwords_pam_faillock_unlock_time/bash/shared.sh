@@ -2,20 +2,8 @@
 
 {{{ bash_instantiate_variables("var_accounts_passwords_pam_faillock_unlock_time") }}}
 
-if [ -f /usr/sbin/authconfig ]; then
-    authconfig --enablefaillock --update
-elif [ -f /usr/bin/authselect ]; then
-    if authselect check; then
-        authselect enable-feature with-faillock
-        authselect apply-changes
-    else
-        echo "
-authselect integrity check failed. Remediation aborted!
-This remediation could not be applied because the authselect profile is not intact.
-It is not recommended to manually edit the PAM files when authselect is available
-In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
-        false
-    fi
+if [ -f /usr/bin/authselect ]; then
+    {{{ bash_enable_pam_faillock_with_authselect() }}}
 fi
 
 FAILLOCK_CONF="/etc/security/faillock.conf"
