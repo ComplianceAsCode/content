@@ -165,12 +165,12 @@ class CPEItem(object):
 
         cpe_item_title = ET.SubElement(cpe_item, "{%s}title" % CPEItem.ns)
         cpe_item_title.set('xml:lang', "en-us")
-        cpe_item_title.text = self.title.format(**self.as_dict())
+        cpe_item_title.text = self.title
 
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id.format(**self.as_dict())
+        cpe_item_check.text = self.check_id
         return cpe_item
 
 
