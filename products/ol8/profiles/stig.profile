@@ -415,6 +415,7 @@ selections:
     - dir_perms_world_writable_system_owned
 
     # OL08-00-010710
+    - dir_perms_world_writable_system_owned_group
 
     # OL08-00-010720
     - accounts_user_interactive_home_directory_defined

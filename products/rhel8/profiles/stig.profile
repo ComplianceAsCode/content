@@ -435,6 +435,7 @@ selections:
     - dir_perms_world_writable_root_owned
 
     # RHEL-08-010710
+    - dir_perms_world_writable_system_owned_group
 
     # RHEL-08-010720
     - accounts_user_interactive_home_directory_defined
