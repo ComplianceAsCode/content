@@ -15,6 +15,8 @@ from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
 from .data_structures import XCCDFEntity
 
+import traceback
+
 class CPEDoesNotExist(Exception):
     pass
 
@@ -24,8 +26,8 @@ class ProductCPEs(object):
     and provides them in a structured way.
     """
 
-    def __init__(self, product_yaml):
-        self.product_yaml = product_yaml
+    def __init__(self):
+        traceback.print_stack()
 
         self.cpes_by_id = {}
         self.cpes_by_name = {}
@@ -33,17 +35,17 @@ class ProductCPEs(object):
         self.platforms = {}
         self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
 
-        self.load_product_cpes()
-        self.load_content_cpes()
+        #self.load_product_cpes(product_yaml)
+        #self.load_content_cpes()
 
     def _load_cpes_list(self, map_, cpes_list):
         for cpe in cpes_list:
             for cpe_id in cpe.keys():
                 map_[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
 
-    def load_product_cpes(self):
+    def load_product_cpes(self, env_yaml):
         try:
-            product_cpes_list = self.product_yaml["cpes"]
+            product_cpes_list = env_yaml["cpes"]
             #self._load_cpes_list(self.product_cpes, product_cpes_list)
             for cpe in product_cpes_list:
                 for cpe_id in cpe.keys():
@@ -52,15 +54,15 @@ class ProductCPEs(object):
 
 
         except KeyError:
-            print("Product %s does not define 'cpes'" % (self.product_yaml["product"]))
+            print("Product %s does not define 'cpes'" % (env_yaml["product"]))
             raise
 
-    def load_content_cpes(self):
+    def load_content_cpes(self, env_yaml):
 
-        cpes_root = required_key(self.product_yaml, "cpes_root")
-        # we have to "absolutize" the paths the right way, relative to the product_yaml path
+        cpes_root = required_key(env_yaml, "cpes_root")
+        # we have to "absolutize" the paths the right way, relative to the env_yaml path
         if not os.path.isabs(cpes_root):
-            cpes_root = os.path.join(self.product_yaml["product_dir"], cpes_root)
+            cpes_root = os.path.join(env_yaml["product_dir"], cpes_root)
 
         for dir_item in sorted(os.listdir(cpes_root)):
             dir_item_path = os.path.join(cpes_root, dir_item)
@@ -79,7 +81,7 @@ class ProductCPEs(object):
             # Get past "cpes" key, which was added for readability of the content
             #cpes_list = open_and_macro_expand(dir_item_path, self.product_yaml)["cpes"]
             #self._load_cpes_list(self.cpes_by_id, cpes_list)
-            cpe = CPEItem.from_yaml(dir_item_path, self.product_yaml)
+            cpe = CPEItem.from_yaml(dir_item_path, env_yaml)
             self.cpes_by_id[cpe.id_] = cpe
 
         # Add product_cpes to map of CPEs by ID
@@ -105,7 +107,7 @@ class ProductCPEs(object):
             else:
                 return self.cpes_by_id[ref]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, self.product_yaml["cpes_root"]))
+            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, env_yaml["cpes_root"]))
 
 
     def get_cpe_name(self, cpe_id):
