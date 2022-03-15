@@ -499,6 +499,10 @@ selections:
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
 
+    # RHEL-08-020031
+    - dconf_gnome_screensaver_lock_delay
+    - var_screensaver_lock_delay=5_seconds
+
     # RHEL-08-020039
     - package_tmux_installed
 
