@@ -1,6 +1,7 @@
 import ssg.utils
 import os
 
+
 def default_boolean(data, parameter, default):
     if parameter not in data:
         data[parameter] = default
@@ -8,6 +9,7 @@ def default_boolean(data, parameter, default):
         data[parameter] = True
     else:
         data[parameter] = False
+
 
 def preprocess(data, lang):
     path = data["path"]
