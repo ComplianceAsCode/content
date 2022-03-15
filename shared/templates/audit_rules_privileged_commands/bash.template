@@ -1,11 +1,21 @@
 {{%- if product in ["fedora", "ol8", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004"] %}}
   {{%- set perm_x=" -F perm=x" %}}
+{{%- elif product in ["rhel7"] %}}
+  {{%- set perm_x=" -p x" %}}
 {{%- endif %}}
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_ubuntu
 
+{{%- if not SKIP_ACTION %}}
 ACTION_ARCH_FILTERS="-a always,exit"
+{{%- else %}}
+ACTION_ARCH_FILTERS=""
+{{%- endif %}}
+{{%- if WATCH %}}
+OTHER_FILTERS="-w {{{ PATH }}}{{{ perm_x }}}"
+{{%- else %}}
 OTHER_FILTERS="-F path={{{ PATH }}}{{{ perm_x }}}"
-AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
+{{%- endif %}}
+AUID_FILTERS="{{{ '-F auid>={0} '.format(auid) if MIN_AUID > 0 else '' }}}-F auid!=unset"
 SYSCALL=""
 KEY="privileged"
 SYSCALL_GROUPING="{{{ SYSCALL_GROUPING }}}"

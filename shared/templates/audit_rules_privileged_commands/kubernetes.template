@@ -4,6 +4,23 @@
 # complexity = low
 # disruption = medium
 
+
+{{%- if not SKIP_ACTION %}}
+    {{%- set action_filter='-a%20always%2Cexit%20' %}}
+{{%- else %}}
+    {{%- set action_filter='' %}}
+{{%- endif %}}
+{{%- if WATCH %}}
+    {{%- set watch_filter='-w%20' %}}
+{{%- else %}}
+    {{%- set watch_filter='-F%20path%3D' %}}
+{{%- endif %}}
+{{%- if MIN_AUID > 0 %}}
+    {{%- set auid_filter='%20-F%20auid%3E%3D{0}'.format(auid) %}}
+{{%- else %}}
+    {{%- set auid_filter='' %}}
+{{%- endif %}}
+
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 spec:
@@ -13,7 +30,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:,-a%20always%2Cexit%20-F%20path%3D{{{ PATH }}}%20-F%20auid%3E%3D{{{ auid }}}%20-F%20auid%21%3Dunset%20-F%20key%3Dprivileged%0A
+          source: data:,{{{  action_filter }}}{{{ watch_filter }}}{{{ PATH }}}{{{ auid_filter }}}%20-F%20auid%21%3Dunset%20-F%20key%3Dprivileged%0A
         mode: 0644
         path: /etc/audit/rules.d/75-{{{ NORMALIZED_PATH }}}_execution.rules
         overwrite: true
