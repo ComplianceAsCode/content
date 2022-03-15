@@ -15,6 +15,7 @@
 - name: Register Crypto Policy value (runtime)
   command: /usr/bin/update-crypto-policies --show
   register: update_crypo_policies_show
+  changed_when: false
 
 - name: Verify that Crypto Policy is Set (runtime)
   command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
