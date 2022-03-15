@@ -873,7 +873,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
-        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)({{{ parameter }}})=[0-5]+(.*)
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)({{{ parameter }}})=[0-9]+(.*)
         line: \1required\3\4={{ {{{ faillock_var_name }}} }}\5
         state: present
       loop:
@@ -886,7 +886,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: "{{ item }}"
         backrefs: true
-        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so authfail.*)({{{ parameter }}})=[0-5]+(.*)
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so authfail.*)({{{ parameter }}})=[0-9]+(.*)
         line: \1required\3\4={{ {{{ faillock_var_name }}} }}\5
         state: present
       loop:
