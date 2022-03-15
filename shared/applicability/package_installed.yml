@@ -1,0 +1,9 @@
+name: "cpe:/a:{arg}"
+title: "Package {arg} is installed"
+check_id: "installed_env_has_{arg}_package"
+template:
+    name: package_installed
+    vars:
+        pkgname: '{arg}'
+        avr: '{ver}'
+        avr_op: '{op}'

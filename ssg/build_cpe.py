@@ -13,6 +13,7 @@ from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
+from .data_structures import XCCDFEntity
 
 class CPEDoesNotExist(Exception):
     pass
@@ -38,12 +39,17 @@ class ProductCPEs(object):
     def _load_cpes_list(self, map_, cpes_list):
         for cpe in cpes_list:
             for cpe_id in cpe.keys():
-                map_[cpe_id] = CPEItem(cpe[cpe_id])
+                map_[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
 
     def load_product_cpes(self):
         try:
             product_cpes_list = self.product_yaml["cpes"]
-            self._load_cpes_list(self.product_cpes, product_cpes_list)
+            #self._load_cpes_list(self.product_cpes, product_cpes_list)
+            for cpe in product_cpes_list:
+                for cpe_id in cpe.keys():
+                    cpe[cpe_id]["id_"] = cpe_id
+                    self.product_cpes[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
+
 
         except KeyError:
             print("Product %s does not define 'cpes'" % (self.product_yaml["product"]))
@@ -71,8 +77,10 @@ class ProductCPEs(object):
                 continue
 
             # Get past "cpes" key, which was added for readability of the content
-            cpes_list = open_and_macro_expand(dir_item_path, self.product_yaml)["cpes"]
-            self._load_cpes_list(self.cpes_by_id, cpes_list)
+            #cpes_list = open_and_macro_expand(dir_item_path, self.product_yaml)["cpes"]
+            #self._load_cpes_list(self.cpes_by_id, cpes_list)
+            cpe = CPEItem.from_yaml(dir_item_path, self.product_yaml)
+            self.cpes_by_id[cpe.id_] = cpe
 
         # Add product_cpes to map of CPEs by ID
         self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes)
@@ -141,23 +149,34 @@ class CPEList(object):
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8")
 
-
-class CPEItem(object):
+class CPEItem(XCCDFEntity):
     """
     Represents the cpe-item element from the CPE standard.
     """
 
+    KEYS = dict(
+        name=lambda: "",
+        title=lambda: "",
+        check_id=lambda: "",
+        bash_conditional=lambda: "",
+        ansible_conditional=lambda: "",
+        template=lambda: {},
+        ** XCCDFEntity.KEYS
+    )
+
+    MANDATORY_KEYS = [
+        "name",
+        "title",
+        "check_id"
+    ]
+
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
 
-    def __init__(self, cpeitem_data):
+#@classmethod
+#    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
+#        cpeitem = super(CPEItem, cls).from_yaml(yaml_file, env_yaml)
 
-        self.name = cpeitem_data["name"]
-        self.title = cpeitem_data["title"]
-        self.check_id = cpeitem_data["check_id"]
-        self.bash_conditional = cpeitem_data.get("bash_conditional", "")
-        self.ansible_conditional = cpeitem_data.get("ansible_conditional", "")
-        self.template = cpeitem_data.get("template", {})
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
