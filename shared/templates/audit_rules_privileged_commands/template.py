@@ -15,14 +15,15 @@ def preprocess(data, lang):
     path = data["path"]
     name = ssg.utils.escape_id(os.path.basename(path))
     data["name"] = name
+    if "min_auid" not in data:
+        data["min_auid"] = 1000
+    default_boolean(data, "skip_action", "false")
+    default_boolean(data, "watch", "false")
+
     if lang == "oval":
         data["id"] = data["_rule_id"]
         data["title"] = "Record Any Attempts to Run " + name
         data["path"] = path.replace("/", "\\/")
-        if "min_auid" not in data:
-            data["min_auid"] = 1000
-        default_boolean(data, "skip_action", "false")
-        default_boolean(data, "watch", "false")
     elif lang == "kubernetes":
         npath = path.replace("/", "_")
         if npath[0] == '_':
