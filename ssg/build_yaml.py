@@ -1689,6 +1689,11 @@ class DirectoryLoader(object):
         if self.product_cpes.platforms:
             self.save_entities(self.product_cpes.platforms.values(), destdir)
 
+        destdir = os.path.join(base_dir, "cpe_items")
+        mkdir_p(destdir)
+        if self.product_cpes.cpes_by_id:
+            self.save_entities(self.product_cpes.cpes_by_id.values(), destdir)
+
     def save_entities(self, entities, destdir):
         if not entities:
             return
