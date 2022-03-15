@@ -46,7 +46,7 @@ ocil: |-
     If properly configured, the output should be <tt>/org/gnome/settings-daemon/peripherals/smartcard/removal-action</tt>
 
 fix: |-
-  {{{ donf_ini_file_fix("org/gnome/settings-daemon/peripherals/smartcard", "removal-action", "'lock-screen'") }}}
+  {{{ dconf_ini_file_fix("org/gnome/settings-daemon/peripherals/smartcard", "removal-action", "'lock-screen'") }}}
 
 platform: machine
 
