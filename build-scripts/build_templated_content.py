@@ -37,6 +37,16 @@ def parse_args():
         "e.g.: ~/scap-security-guide/build/rhel7/checks"
     )
     p.add_argument(
+        "--platforms-dir", required=True,
+        help="Path to directory which contains prebuilt platforms. "
+             "e.g.: ~/scap-security-guide/build/rhel7/platforms"
+    )
+    p.add_argument(
+        "--cpe-items-dir", required=True,
+        help="Path to directory which contains compiled CPE items. "
+             "e.g.: ~/scap-security-guide/build/rhel7/cpe_items"
+    )
+    p.add_argument(
         "--remediations-dir", required=True,
         help="Path to which remediations will be generated. "
         "e.g.: ~/scap-security-guide/build/rhel7/fixes_from_templates"
@@ -52,5 +62,5 @@ if __name__ == "__main__":
         args.build_config_yaml, args.product_yaml)
     builder = ssg.templates.Builder(
         env_yaml, args.resolved_rules_dir, args.templates_dir,
-        args.remediations_dir, args.checks_dir)
+        args.remediations_dir, args.checks_dir, args.platforms_dir, args.cpe_items_dir)
     builder.build()
