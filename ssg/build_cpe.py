@@ -15,6 +15,7 @@ from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
 from .data_structures import XCCDFEntity
 
+
 class CPEDoesNotExist(Exception):
     pass
 
@@ -24,8 +25,7 @@ class ProductCPEs(object):
     and provides them in a structured way.
     """
 
-    def __init__(self, product_yaml):
-        self.product_yaml = product_yaml
+    def __init__(self):
 
         self.cpes_by_id = {}
         self.cpes_by_name = {}
@@ -33,17 +33,17 @@ class ProductCPEs(object):
         self.platforms = {}
         self.algebra = Algebra(symbol_cls=CPEALFactRef, function_cls=CPEALLogicalTest)
 
-        self.load_product_cpes()
-        self.load_content_cpes()
+        #self.load_product_cpes(product_yaml)
+        #self.load_content_cpes()
 
     def _load_cpes_list(self, map_, cpes_list):
         for cpe in cpes_list:
             for cpe_id in cpe.keys():
                 map_[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
 
-    def load_product_cpes(self):
+    def load_product_cpes(self, env_yaml):
         try:
-            product_cpes_list = self.product_yaml["cpes"]
+            product_cpes_list = env_yaml["cpes"]
             #self._load_cpes_list(self.product_cpes, product_cpes_list)
             for cpe in product_cpes_list:
                 for cpe_id in cpe.keys():
@@ -52,18 +52,19 @@ class ProductCPEs(object):
 
 
         except KeyError:
-            print("Product %s does not define 'cpes'" % (self.product_yaml["product"]))
+            print("Product %s does not define 'cpes'" % (env_yaml["product"]))
             raise
 
-    def load_content_cpes(self):
-
-        cpes_root = required_key(self.product_yaml, "cpes_root")
-        # we have to "absolutize" the paths the right way, relative to the product_yaml path
+    def load_content_cpes(self, env_yaml):
+        cpes_root = required_key(env_yaml, "cpes_root")
+        # we have to "absolutize" the paths the right way, relative to the env_yaml path
         if not os.path.isabs(cpes_root):
-            cpes_root = os.path.join(self.product_yaml["product_dir"], cpes_root)
+            cpes_root = os.path.join(env_yaml["product_dir"], cpes_root)
+        self.load_cpes_from_directory_tree(cpes_root, env_yaml)
 
-        for dir_item in sorted(os.listdir(cpes_root)):
-            dir_item_path = os.path.join(cpes_root, dir_item)
+    def load_cpes_from_directory_tree(self, root_path, env_yaml):
+        for dir_item in sorted(os.listdir(root_path)):
+            dir_item_path = os.path.join(root_path, dir_item)
             if not os.path.isfile(dir_item_path):
                 continue
 
@@ -79,7 +80,7 @@ class ProductCPEs(object):
             # Get past "cpes" key, which was added for readability of the content
             #cpes_list = open_and_macro_expand(dir_item_path, self.product_yaml)["cpes"]
             #self._load_cpes_list(self.cpes_by_id, cpes_list)
-            cpe = CPEItem.from_yaml(dir_item_path, self.product_yaml)
+            cpe = CPEItem.from_yaml(dir_item_path, env_yaml)
             self.cpes_by_id[cpe.id_] = cpe
 
         # Add product_cpes to map of CPEs by ID
@@ -91,6 +92,10 @@ class ProductCPEs(object):
         # all references to CPEs are by its name
         for cpe_id, cpe in self.cpes_by_id.items():
             self.cpes_by_name[cpe.name] = cpe
+
+    def add_cpe_item(self, cpe_item):
+        self.cpes_by_id[cpe_item.id_] = cpe_item
+        self.cpes_by_name[cpe_item.name] = cpe_item
 
 
     def _is_name(self, ref):
@@ -105,7 +110,7 @@ class ProductCPEs(object):
             else:
                 return self.cpes_by_id[ref]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined in %s" %(ref, self.product_yaml["cpes_root"]))
+            raise CPEDoesNotExist("CPE %s is not defined" %(ref))
 
 
     def get_cpe_name(self, cpe_id):
@@ -260,7 +265,20 @@ class CPEALFactRef (Symbol):
         self.bash_conditional = ""
         self.ansible_conditional = ""
 
+    def has_arguments(self):
+        k = self.as_dict().keys()
+        return "arg" in k or "op" in k or "ver" in k
+
     def enrich_with_cpe_info(self, cpe_products):
+        # if we have arguments, we have to copy the templated cpe and fill in the arguments
+        if self.has_arguments():
+            old_cpe_dict = cpe_products.get_cpe(self.cpe_name).represent_as_dict()
+            old_cpe_dict["id_"] = self.as_id()
+            print (old_cpe_dict["name"].format(self.as_dict()))
+            new_cpe = CPEItem.get_instance_from_full_dict(old_cpe_dict)
+            cpe_products.add_cpe_item(new_cpe)
+            self.cpe_name = self.as_id()
+
         self.bash_conditional = cpe_products.get_cpe(self.cpe_name).bash_conditional
         self.ansible_conditional = cpe_products.get_cpe(self.cpe_name).ansible_conditional
         self.cpe_name = cpe_products.get_cpe_name(self.cpe_name)

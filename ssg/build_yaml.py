@@ -15,7 +15,7 @@ import glob
 import yaml
 
 import ssg.build_remediations
-from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef
+from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef, CPEItem, ProductCPEs
 from .constants import (XCCDF_REFINABLE_PROPERTIES,
                         SCE_SYSTEM,
                         cce_uri,
@@ -42,7 +42,6 @@ from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
 from .shims import unicode_func
-from .build_cpe import ProductCPEs
 from .data_structures import XCCDFEntity
 import ssg.build_stig
 
@@ -1701,6 +1700,11 @@ class DirectoryLoader(object):
         if self.product_cpes.platforms:
             self.save_entities(self.product_cpes.platforms.values(), destdir)
 
+        destdir = os.path.join(base_dir, "cpe_items")
+        mkdir_p(destdir)
+        if self.product_cpes.cpes_by_id:
+            self.save_entities(self.product_cpes.cpes_by_id.values(), destdir)
+
     def save_entities(self, entities, destdir):
         if not entities:
             return
@@ -1784,9 +1788,12 @@ class LinearLoader(object):
         self.fixes_dir = os.path.join(resolved_path, "fixes")
         self.fixes = dict()
 
+        self.resolved_cpe_items_dir = os.path.join(resolved_path, "cpe_items")
+        self.cpe_items = dict()
+
         self.benchmark = None
         self.env_yaml = env_yaml
-        self.product_cpes = ProductCPEs(env_yaml)
+        self.product_cpes = ProductCPEs()
 
     def find_first_groups_ids(self, start_dir):
         group_files = glob.glob(os.path.join(start_dir, "*", "group.yml"))
@@ -1834,6 +1841,11 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
+
+        filenames = glob.glob(os.path.join(self.resolved_cpe_items_dir, "*.yml"))
+        self.load_entities_by_id(filenames, self.cpe_items, CPEItem)
+        self.product_cpes.platforms = self.platforms
+        self.product_cpes.cpes_by_id = self.cpe_items
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)

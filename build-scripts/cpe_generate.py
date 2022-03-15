@@ -41,6 +41,7 @@ def parse_args():
     p.add_argument("shorthandfile", help="shorthand xml to generate "
                    "the CPE dictionary from")
     p.add_argument("ovalfile", help="OVAL file to process")
+    p.add_argument("--cpe-items-dir", help="the directory where compiled CPE items are stored")
 
     return p.parse_args()
 
@@ -142,7 +143,8 @@ def main():
         cpe_factref_name = factref.get("name")
         benchmark_cpe_names.add(cpe_factref_name)
 
-    product_cpes = ssg.build_cpe.ProductCPEs(product_yaml)
+    product_cpes = ssg.build_cpe.ProductCPEs()
+    product_cpes.load_cpes_from_directory_tree(args.cpe_items_dir, product_yaml)
     cpe_list = ssg.build_cpe.CPEList()
     for cpe_name in benchmark_cpe_names:
         cpe_list.add(product_cpes.get_cpe(cpe_name))
