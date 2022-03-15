@@ -99,9 +99,6 @@ def main():
             "Make sure the input file is a resolved XCCDF Benchmark."
         )
 
-    # force another oscap resolve to fix namespace prefixes
-    root_element.set("resolved", "0")
-
     affected_profiles = []
     group_elements = root_element.findall(".//{%s}Group" % (XCCDF11_NS))
 
