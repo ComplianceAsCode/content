@@ -1,5 +1,16 @@
 {{%- if product in ["fedora", "ol8", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004"] %}}
   {{%- set perm_x="(?:[\s]+-F[\s]+perm=x)" %}}
+{{%- elif product in ["rhel7"] %}}
+  {{%- set perm_x="(?:[\s]+-p[\s]+x)" %}}
+{{%- endif %}}
+{{%- set path_term="-F[\s]+path=" + PATH %}}
+{{%- if WATCH %}}
+  {{%- set path_term="-w[\s]+" + PATH %}}
+{{%- endif %}}
+{{%- if MIN_AUID > 0 %}}
+  {{%- set __min_auid="[\s]+-F[\s]+auid>={0}[\s]+".format(auid) %}}
+{{%- else %}}
+  {{%- set __min_auid="" %}}
 {{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
@@ -26,7 +37,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_{{{ ID }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+path={{{ PATH }}}{{{ perm_x }}}[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*{{{ '-a[\s]+always,exit[\s]+' if not SKIP_ACTION else '' }}}{{{ path_term }}}{{{ perm_x }}}[\s]+{{{ __min_auid }}}-F[\s]+auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -35,7 +46,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_{{{ ID }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+path={{{ PATH }}}{{{ perm_x }}}[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset|-1)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*{{{ '-a[\s]+always,exit[\s]+' if not SKIP_ACTION else '' }}}{{{ path_term }}}{{{ perm_x }}}[\s]+{{{ __min_auid }}}-F[\s]+auid!=(?:4294967295|unset)[\s]+(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

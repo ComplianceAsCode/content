@@ -1,5 +1,22 @@
 {{%- if product in ["fedora", "ol8", "rhel8", "rhel9", "sle12", "sle15", "ubuntu2004"] %}}
   {{%- set perm_x=" -F perm=x" %}}
+{{%- elif product in ["rhel7"] %}}
+  {{%- set perm_x=" -p x" %}}
+{{%- endif %}}
+{{%- if WATCH %}}
+{{%- set path_term="-w "~PATH %}}
+{{% else %}}
+{{%- set path_term="-F path="~PATH %}}
+{{%- endif %}}
+{{%- if MIN_AUID > 0 %}}
+{{%- set auid_filter="-F auid>="~auid~" " %}}
+{{% else %}}
+{{%- set auid_filter="" %}}
+{{%- endif %}}
+{{%- if not SKIP_ACTION %}}
+{{%- set arch_filter="-a always,exit" %}}
+{{% else %}}
+{{%- set arch_filter="" %}}
 {{%- endif %}}
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle,multi_platform_ubuntu
 # reboot = false
@@ -10,17 +27,17 @@
 - name: Perform remediation of Audit rules for {{{ PATH }}}
   block:
     {{{ ansible_audit_augenrules_add_syscall_rule(
-      action_arch_filters="-a always,exit",
-      other_filters="-F path="~PATH~perm_x,
-      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      action_arch_filters=arch_filter,
+      other_filters=path_term~perm_x,
+      auid_filters=auid_filter~"-F auid!=unset",
       syscalls=SYSCALL,
       key="privileged",
       syscall_grouping=SYSCALL_GROUPING,
       )|indent(4) }}}
     {{{ ansible_audit_auditctl_add_syscall_rule(
-      action_arch_filters="-a always,exit",
-      other_filters="-F path="~PATH~perm_x,
-      auid_filters="-F auid>="~auid~" -F auid!=unset",
+      action_arch_filters=arch_filter,
+      other_filters=path_term~perm_x,
+      auid_filters=auid_filter~"-F auid!=unset",
       syscalls=SYSCALL,
       key="privileged",
       syscall_grouping=SYSCALL_GROUPING,
