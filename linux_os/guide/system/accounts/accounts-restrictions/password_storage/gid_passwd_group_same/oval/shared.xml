@@ -10,7 +10,7 @@
   <ind:textfilecontent54_object id="object_gid_passwd_group_same_var" version="1">
     <ind:filepath>/etc/group</ind:filepath>
     <!-- Group ID (GID) from /etc/group (3-rd column) captured as subexpression of this object -->
-    <ind:pattern operation="pattern match">^.*:x:([0-9]+):</ind:pattern>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]+:([0-9]+):</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -30,7 +30,7 @@
   <ind:textfilecontent54_object id="object_gid_passwd_group_same" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
     <!-- Group ID (GID) from /etc/passwd (4-th column) captured as subexpression of this object -->
-    <ind:pattern operation="pattern match">^.*:[0-9]+:([0-9]+):</ind:pattern>
+    <ind:pattern operation="pattern match">^[^:]+:[^:]+:[0-9]+:([0-9]+):</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
