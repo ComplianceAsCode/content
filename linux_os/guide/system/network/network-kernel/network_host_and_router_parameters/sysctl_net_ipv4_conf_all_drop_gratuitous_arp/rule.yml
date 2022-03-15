@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: fedora,rhel8,rhel9
+
+title: 'Drop Gratuitious ARP frames on All IPv4 Interfaces'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.drop_gratuitous_arp", value="1") }}}'
+
+rationale: |-
+    Drop Gratuitous ARP frames to prevent ARP poisoning.
+
+warnings:
+    - functionality: |-
+       This can cause problems if ARP proxies are used in the network.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-87001-4
+    cce@rhel8: CCE-88001-3
+    cce@rhel9: CCE-89001-2
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.drop_gratuitous_arp", value="1") }}}
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.conf.all.drop_gratuitous_arp
+        sysctlval: '1'
+        datatype: int
