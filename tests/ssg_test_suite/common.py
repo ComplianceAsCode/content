@@ -653,7 +653,7 @@ def install_packages(test_env, packages):
         log_file.flush()
         test_env.execute_ssh_command(
             command_str, log_file,
-            "Couldn't install required packages {packages}".format(packages=packages))
+            "Couldn't install required packages: {packages}".format(packages=",".join(packages)))
 
 
 def cpes_to_platform(cpes):
