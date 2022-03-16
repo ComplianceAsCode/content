@@ -415,7 +415,13 @@ def main():
     new_oval_defs = find_all_oval_defs(new_root, new_component_refs, new_uris)
     new_ocils = find_all_ocils(new_root, new_component_refs, new_uris)
     for old_benchmark in get_benchmarks(old_root):
-        new_benchmark = find_benchmark(new_root, old_benchmark.get("id"))
+        old_benchmark_id = old_benchmark.get("id")
+        new_benchmark = find_benchmark(new_root, old_benchmark_id)
+        if not new_benchmark:
+            print(
+                "Warning: Skipping comparison of the following benchmark "
+                "because it was not found in the new datastream: {}".format(old_benchmark_id))
+            continue
         process_benchmarks(
             old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
             old_ocils, new_ocils,
