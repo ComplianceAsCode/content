@@ -1708,3 +1708,28 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 
     $ sudo dconf update
 {{%- endmacro -%}}
+
+{{#
+    Describe how to fix an ssh configure
+    :param parameter: parameter to set
+    :type parameter: str
+    :parameter value: Value to set
+    :type value: str
+    :param config_is_distributed: Should the value go in 00-complianceascode-hardening.conf vs the main sshd config file
+
+#}}
+{{%- macro sshd_lineinfile_fix(parameter, value, config_is_distributed) -%}}
+{{%- if config_is_distributed -%}}
+{{%- set path = "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" -%}}
+{{%- else -%}}
+{{%- set path = "/etc/ssh/sshd_config" -%}}
+{{%- endif -%}}
+    To configure the system add or modify the following line in "{{{ path }}}".
+
+    {{{parameter}}}={{{value}}}
+
+    Restart the SSH daemon for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+{{%- endmacro -%}}
