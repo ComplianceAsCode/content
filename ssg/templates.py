@@ -104,17 +104,18 @@ class Builder(object):
     """
     def __init__(
             self, env_yaml, resolved_rules_dir, templates_dir,
-            remediations_dir, checks_dir, platforms_dir):
+            remediations_dir, checks_dir, platforms_dir, cpe_items_dir):
         self.env_yaml = env_yaml
         self.resolved_rules_dir = resolved_rules_dir
         self.templates_dir = templates_dir
         self.remediations_dir = remediations_dir
         self.checks_dir = checks_dir
         self.platforms_dir = platforms_dir
+        self.cpe_items_dir = cpe_items_dir
         self.output_dirs = dict()
         for lang in languages:
             lang_dir = lang
-            if lang == "oval" or lang.startswith("sce-"):
+            if lang.startswith("oval") or lang.startswith("sce-"):
                 # OVAL and SCE checks need to be put to a different directory
                 # because they are processed differently than remediations
                 # later in the build process
@@ -132,7 +133,8 @@ class Builder(object):
             if maybe_template.looks_like_template():
                 maybe_template.load()
                 templates[item] = maybe_template
-        self.product_cpes = ProductCPEs(env_yaml)
+        self.product_cpes = ProductCPEs()
+        self.product_cpes.load_cpes_from_directory_tree(cpe_items_dir, self.env_yaml)
 
     def build_lang_file(
             self, rule_id, template_name, template_vars, lang, local_env_yaml):
