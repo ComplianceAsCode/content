@@ -1824,6 +1824,9 @@ class LinearLoader(object):
         self.resolved_cpe_items_dir = os.path.join(resolved_path, "cpe_items")
         self.cpe_items = dict()
 
+        self.resolved_cpe_items_dir = os.path.join(resolved_path, "cpe_items")
+        self.cpe_items = dict()
+
         self.benchmark = None
         self.env_yaml = env_yaml
         self.product_cpes = ProductCPEs()
@@ -1877,7 +1880,7 @@ class LinearLoader(object):
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
 
-    
+
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
