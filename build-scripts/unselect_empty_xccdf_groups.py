@@ -94,11 +94,6 @@ def main():
             "a benchmark!"
         )
 
-    if root_element.get("resolved") not in ["1", "true"]:
-        raise RuntimeError(
-            "Make sure the input file is a resolved XCCDF Benchmark."
-        )
-
     affected_profiles = []
     group_elements = root_element.findall(".//{%s}Group" % (XCCDF11_NS))
 
