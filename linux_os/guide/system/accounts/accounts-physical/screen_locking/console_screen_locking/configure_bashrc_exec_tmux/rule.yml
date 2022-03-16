@@ -12,6 +12,10 @@ description: |-
 rationale: |-
     Unlike <tt>bash</tt> itself, the <tt>tmux</tt> terminal multiplexer
     provides a mechanism to lock sessions after period of inactivity.
+    A session lock is a temporary action taken when a user stops work and moves away from the
+    immediate physical vicinity of the information system but does not want to
+    log out because of the temporary nature of the absence.
+
 
 severity: medium
 
@@ -38,5 +42,14 @@ ocil: |-
       name=$(ps -o comm= -p $parent)
       case "$name" in sshd|login) exec tmux ;; esac
     fi</pre>
+
+fix: |-
+    Create or edit the following file /etc/profile.d/tmux.sh and add the following content:
+    if [ "$PS1" ]; then
+        parent=$(ps -o ppid= -p $$)
+        name=$(ps -o comm= -p $parent)
+        case "$name" in sshd|login) exec tmux ;; esac
+    fi
+
 
 platform: machine
