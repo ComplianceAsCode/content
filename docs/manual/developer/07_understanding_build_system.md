@@ -124,8 +124,6 @@ refer to their help text for more information and usage:
    in a specific XCCDF/Datastream file.
  - `relabel_ids.py` -- updates various internal identifiers to their final
    resolved values (e.g., with the `xccdf_org.ssgproject.content_` prefix).
- - `sds_move_ocil_to_checks.py` -- updates the datastream to have the correct
-   structure for OCIL checks; only necessary for old OpenSCAP versions.
  - `unselect_empty_xccdf_groups.py` -- updates the XCCDF document to remove
    selections of groups without any rules.
  - `update_sds_version.py` -- used to build XCCDF v1.2 (instead of XCCDF v1.3)
