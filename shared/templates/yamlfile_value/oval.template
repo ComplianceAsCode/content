@@ -113,7 +113,11 @@
       {{% if XCCDF_VARIABLE and not EMBEDDED_DATA %}}
       {{% set name = "#" if not VALUES else (VALUES|first).key|default("#")|escape_yaml_key %}}
       {{% set datatype = "string" if not VALUES else (VALUES|first).type|default("string") %}}
+      {{% if not REGEX_DATA %}}
       <field {{{ {'name': name, 'datatype': datatype, 'operation': 'equals'}|xmlattr }}} var_ref="{{{ XCCDF_VARIABLE }}}" />
+      {{% else %}}
+      <field {{{ {'name': "#", 'operation': 'pattern match'}|xmlattr }}} var_ref="{{{ XCCDF_VARIABLE }}}" />
+      {{% endif %}}
       {{% else %}}
       {{% for val in VALUES %}}
       <field {{{ {'name': val.key|default("#")|escape_yaml_key, 'datatype': val.type,  'operation':  val.operation, 'entity_check': val.entity_check}|xmlattr }}}>{{{ val.value }}}</field>
