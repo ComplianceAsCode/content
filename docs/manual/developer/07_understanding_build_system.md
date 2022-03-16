@@ -108,6 +108,8 @@ refer to their help text for more information and usage:
    remediations and places them into a single directory.
  - `compile_profiles.py` -- pre-processes profiles to handle inheritance and
    the product-independent controls format.
+ - `compose_ds.py` -- composes an SCAP source data stream from individual
+   SCAP components
  - `cpe_generate.py` -- generates the product-specific CPE dictionary and
    checks.
  - `enable_derivatives.py` -- generates derivative product content from a
