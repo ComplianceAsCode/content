@@ -8,6 +8,10 @@ import xml.etree.ElementTree as ET
 from ssg.constants import cat_namespace, datastream_namespace, xlink_namespace
 import ssg.xml
 
+from update_sds_version import \
+    move_patches_up_to_date_to_source_data_stream_component
+
+
 ID_NS = "org.open-scap"
 
 
@@ -20,7 +24,10 @@ def parse_args():
     parser.add_argument("--cpe-dict", help="CPE dictionary file name")
     parser.add_argument("--cpe-oval", help="CPE OVAL file name")
     parser.add_argument(
-        "--output", help="Output SCAP source data stream file name")
+        "--output-12", help="Output SCAP 1.2 source data stream file name")
+    parser.add_argument(
+        "--output-13", required=True,
+        help="Output SCAP 1.3 source data stream file name")
     return parser.parse_args()
 
 
@@ -91,9 +98,22 @@ def compose_ds(
     return ET.ElementTree(ds_collection)
 
 
+def upgrade_ds_to_scap_13(ds):
+    dsc_el = ds.getroot()
+    dsc_el.set("schematron-version", "1.3")
+    ds_el = ds.find("{%s}data-stream" % datastream_namespace)
+    ds_el.set("scap-version", '1.3')
+    # Move reference to remote OVAL content to a source data stream component
+    move_patches_up_to_date_to_source_data_stream_component(ds)
+    return ds
+
+
 if __name__ == "__main__":
     args = parse_args()
     ssg.xml.register_namespaces()
     ds = compose_ds(
         args.xccdf, args.oval, args.ocil, args.cpe_dict, args.cpe_oval)
-    ds.write(args.output)
+    if args.output_12:
+        ds.write(args.output_12)
+    ds_13 = upgrade_ds_to_scap_13(ds)
+    ds_13.write(args.output_13)
