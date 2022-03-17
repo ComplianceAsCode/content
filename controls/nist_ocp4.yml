@@ -1090,11 +1090,15 @@ controls:
   levels:
   - high
 - id: AC-6(8)
-  status: pending
+  status: supported
   notes: |-
-    A control response is planned. Progress can be tracked via:
+    Red Hat OpenShift provides security context constraints (SCC) [1] that control permissions for actions that a pod can perform and what resources a pod can access. 
 
-    https://issues.redhat.com/browse/CMP-121
+    Red Hat OpenShift does an admission control inspection for pods based on the capabilities granted to a user [2].
+
+    [1] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
+ 
+    [2] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html#admission_configuring-internal-oauth
   rules: []
   description: |-
     The information system prevents [Assignment: organization-defined software] from executing at higher privilege levels than users executing the software.
