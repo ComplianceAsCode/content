@@ -39,7 +39,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_{{{ basename }}}_in_namespace_conf" version="1">
-    <ind:filepath>/etc/security/namespace.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/security/namespace(?:|\.d/[^/]*)\.conf$</ind:filepath>
     <ind:pattern operation="pattern match">^\s*{{{ basedir }}}\s+{{{ basedir }}}/tmp-inst/\s+level\s+root,adm$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
