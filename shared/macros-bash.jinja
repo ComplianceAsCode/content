@@ -983,12 +983,30 @@ else
 fi
 {{%- endmacro -%}}
 
+{{#
+    Enable pam_faillock.so PAM module using authselect.
+    If an authselect profile is not selected or the selected profile is not intact, the operation is aborted.
+    If the operation is aborted, an informative message is shown in the remediation report.
+#}}
+{{%- macro bash_enable_pam_faillock_with_authselect() -%}}
+if authselect check; then
+    authselect enable-feature with-faillock
+    authselect apply-changes
+else
+    echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
+It is not recommended to manually edit the PAM files when authselect tool is available.
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+    false
+fi
+{{%- endmacro -%}}
 
 {{#
     Sets PAM faillock module options and values.
-    Also it adds pam_faillock.so as required module for account.
+    It also adds pam_faillock.so as required module for account.
 
-:param option: faillock option eg. deny, unlock_time
+:param option: faillock option eg. deny, unlock_time, fail_interval
 :param value: value of option
 
 #}}
@@ -997,12 +1015,57 @@ AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 
 for pam_file in "${AUTH_FILES[@]}"
 do
-    {{{ bash_set_faillock_option_preauth("$pam_file", option, value) | indent(4) }}}
-    {{{ bash_set_faillock_option_authfail("$pam_file", option, value) | indent(4) }}}
-    {{{ bash_set_faillock_option_account("$pam_file") | indent(4) }}}
+    {{{ bash_pam_faillock_enable("$pam_file") | indent(4) }}}
+    {{{ bash_pam_faillock_parameter_value("$pam_file", option, value) | indent(4) }}}
 done
 {{%- endmacro -%}}
 
+{{%- macro bash_pam_faillock_enable(pam_file) -%}}
+if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+(preauth silent|authfail).*$' "{{{ pam_file }}}" ; then
+    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent' "{{{ pam_file }}}"
+    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/a auth        required      pam_faillock.so authfail' "{{{ pam_file }}}"
+    sed -i --follow-symlinks '/^account.*required.*pam_unix.so.*/i account     required      pam_faillock.so' "{{{ pam_file }}}"
+fi
+{{%- endmacro -%}}
+
+{{%- macro bash_pam_faillock_parameter_value(pam_file, option, value='') -%}}
+FAILLOCK_CONF="/etc/security/faillock.conf"
+if [ -f $FAILLOCK_CONF ]; then
+    {{%- if value == '' %}}
+    regex="^\s*{{{ option }}}"
+    line="{{{ option }}}"
+    {{%- else %}}
+    regex="^\s*{{{ option }}}\s*="
+    line="{{{ option }}} = {{{ value }}}"
+    {{%- endif %}}
+    if ! grep -q $regex $FAILLOCK_CONF; then
+        echo $line >> $FAILLOCK_CONF
+    {{%- if value == '' %}}
+    fi
+    {{%- else %}}
+    else
+        sed -i --follow-symlinks 's/^\s*\({{{ option }}}\s*=\s*\)\([0-9]\+\)/\1'"{{{ value }}}"'/g' $FAILLOCK_CONF
+    fi
+    {{%- endif %}}
+else
+    if ! grep -qE '^\s*auth.*pam_faillock.so (preauth|authfail).*{{{ option }}}' "{{{ pam_file }}}"; then
+        {{%- if value == '' %}}
+        sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}/' "{{{ pam_file }}}"
+        sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}/' "{{{ pam_file }}}"
+        {{%- else %}}
+        sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "{{{ pam_file }}}"
+        sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "{{{ pam_file }}}"
+        {{%- endif %}}
+    {{%- if value == '' %}}
+    fi
+    {{%- else %}}
+    else
+        sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "{{{ pam_file }}}"
+        sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*authfail.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "{{{ pam_file }}}"
+    fi
+    {{%- endif %}}
+fi
+{{%- endmacro -%}}
 
 {{#
     Print a message to stderr and exit the shell
@@ -1116,49 +1179,6 @@ fi
 # Clean up after ourselves.
 rm "{{{ path }}}.bak"
 {{%- endmacro -%}}
-
-{{%- macro bash_set_faillock_option_preauth(pam_file, option, value) -%}}
-# is auth required pam_faillock.so preauth present?
-if grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "{{{ pam_file }}}" ; then
-    # is the option set?
-    if grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*'"{{{ option }}}"'=([0-9]*).*$' "{{{ pam_file }}}" ; then
-        # just change the value of option to a correct value
-        sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"{{{ option }}}"' *= *\).*/\1\2'"{{{ value }}}"'/' "{{{ pam_file }}}"
-    # the option is not set.
-    else
-        # append the option
-        sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ '"{{{ option }}}"'='"{{{ value }}}"'/' "{{{ pam_file }}}"
-    fi
-# auth required pam_faillock.so preauth is not present, insert the whole line
-else
-    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent '"{{{ option }}}"'='"{{{ value }}}" "{{{ pam_file }}}"
-fi
-{{%- endmacro -%}}
-
-{{%- macro bash_set_faillock_option_authfail(pam_file, option, value) -%}}
-# is auth default pam_faillock.so authfail present?
-if grep -qE '^\s*auth\s+(\[default=die\])\s+pam_faillock\.so\s+authfail.*$' "{{{ pam_file }}}" ; then
-    # is the option set?
-    if grep -qE '^\s*auth\s+(\[default=die\])\s+pam_faillock\.so\s+authfail.*'"{{{ option }}}"'=([0-9]*).*$' "{{{ pam_file }}}" ; then
-        # just change the value of option to a correct value
-        sed -i --follow-symlinks 's/\(^auth.*[default=die].*pam_faillock.so.*authfail.*\)\('"{{{ option }}}"' *= *\).*/\1\2'"{{{ value }}}"'/' "{{{ pam_file }}}"
-    # the option is not set.
-    else
-        # append the option
-        sed -i --follow-symlinks '/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ '"{{{ option }}}"'='"{{{ value }}}"'/' "{{{ pam_file }}}"
-    fi
-# auth default pam_faillock.so authfail is not present, insert the whole line
-else
-    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/a auth        [default=die] pam_faillock.so authfail '"{{{ option }}}"'='"{{{ value }}}" "{{{ pam_file }}}"
-fi
-{{%- endmacro -%}}
-
-{{%- macro bash_set_faillock_option_account(pam_file) -%}}
-if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "{{{ pam_file }}}" ; then
-    sed -E -i --follow-symlinks '/^\s*account\s*required\s*pam_unix.so/i account     required      pam_faillock.so' "{{{ pam_file }}}"
-fi
-{{%- endmacro -%}}
-
 
 {{#
   Generates bash script code that puts 'contents' into a file at 'filepath'
