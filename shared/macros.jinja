@@ -1733,3 +1733,15 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
     $ sudo systemctl restart sshd.service
 
 {{%- endmacro -%}}
+
+{{#
+    Describe how to enable a service
+    :param parameter: service to enable
+    :type parameter: str
+
+#}}
+{{%- macro service_enabled_fix(service) -%}}
+    To enable the {{{ service }}} service run the following command:
+
+    $ systemctl enable --now {{{ service }}}
+{{%- endmacro -%}}
