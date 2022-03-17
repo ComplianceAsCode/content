@@ -43,3 +43,12 @@ ocil: |-
     <pre>grep -rE '(auth.\*|authpriv.\*|daemon.\*)' /etc/rsyslog.*</pre>
     The output should contain <tt>auth.*</tt>, <tt>authpriv.*</tt>, and <tt>daemon.*</tt>
     pointing to a log file.
+
+fix: |-
+    add or update the following lines to the "/etc/rsyslog.conf" file:
+
+    auth.*;authpriv.*;daemon.* /var/log/secure
+
+    The "rsyslog" service must be restarted for the changes to take effect. To restart the "rsyslog" service, run the following command:
+
+    $ sudo systemctl restart rsyslog.service
