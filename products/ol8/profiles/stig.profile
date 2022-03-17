@@ -937,8 +937,6 @@ selections:
     - package_abrt-addon-kerneloops_removed
     - package_abrt-addon-python_removed
     - package_abrt-cli_removed
-    - package_abrt-plugin-logger_removed
-    - package_abrt-plugin-rhtsupport_removed
     - package_abrt-plugin-sosreport_removed
 
     # OL08-00-040002

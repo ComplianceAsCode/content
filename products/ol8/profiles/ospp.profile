@@ -201,7 +201,6 @@ selections:
     - package_abrt-addon-kerneloops_removed
     - package_abrt-addon-python_removed
     - package_abrt-addon-ccpp_removed
-    - package_abrt-plugin-logger_removed
     - package_abrt-plugin-sosreport_removed
     - package_abrt-cli_removed
     - package_abrt_removed
