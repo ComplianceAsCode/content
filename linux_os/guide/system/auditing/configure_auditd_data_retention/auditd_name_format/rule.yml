@@ -40,6 +40,11 @@ ocil: |-
     The output should return the following:
     <pre>name_format = hostname</pre>
 
+fix: |-
+    Edit the file "/etc/audit/auditd.conf" and add or edit the following line:
+
+    name_format=hostname
+
 template:
     name: auditd_lineinfile
     vars:
