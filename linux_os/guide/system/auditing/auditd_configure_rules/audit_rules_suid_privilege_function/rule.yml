@@ -8,10 +8,17 @@ description: |-
     Verify the system generates an audit record when privileged functions are executed.
     <pre># grep -iw execve <tt>/etc/audit/audit.rules</tt></pre>
 
+    {{% if product == "ol8" %}}
+    <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
+    <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
+    <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -k setgid</pre>
+    {{% else %}}
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
     <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
     <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
     <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+    {{% endif %}}
 
     If both the "b32" and "b64" audit rules for "SUID" files are not defined, this is a finding.
     If both the "b32" and "b64" audit rules for "SGID" files are not defined, this is a finding.
@@ -56,10 +63,17 @@ ocil_clause: 'it is not the case'
 ocil: |-
       Add or update the following rules in "<tt>/etc/audit/rules.d/audit.rules</tt>":
 
+      {{% if product == "ol8" %}}
+      <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
+      <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -k setuid</pre>
+      <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -k setgid</pre>
+      <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -k setgid</pre>
+      {{% else %}}
       <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
       <pre>-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid</pre>
       <pre>-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
       <pre>-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid</pre>
+      {{% endif %}}
 
       The audit daemon must be restarted for the changes to take effect.
 
