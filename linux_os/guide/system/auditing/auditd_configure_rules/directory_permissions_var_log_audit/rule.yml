@@ -3,12 +3,24 @@ documentation_complete: true
 title: 'System Audit Logs Must Have Mode 0750 or Less Permissive'
 
 description: |-
+    {{% if product in ["ol8", "rhel8"] %}}
+    Verify the audit log directories have a mode of "0700" or less permissive by first determining
+    where the audit logs are stored with the following command:
+    <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf
+
+    log_file = /var/log/audit/audit.log</pre>
+    Configure the audit log directory to be protected from unauthorized read access by setting the
+    correct permissive mode with the following command:
+    <pre>$ sudo chmod 0700 <i>audit_log_directory</i></pre>
+    By default, <tt><i>audit_log_directory</i></tt> is "/var/log/audit".
+    {{% else %}}
     If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the <tt>root</tt>
     group account, change the mode of the audit log files with the following command:
     <pre>$ sudo chmod 0750 /var/log/audit</pre>
     <br />
     Otherwise, change the mode of the audit log files with the following command:
     <pre>$ sudo chmod 0700 /var/log/audit</pre>
+    {{% endif %}}
 
 rationale: 'If users can write to audit logs, audit trails can be modified or destroyed.'
 
