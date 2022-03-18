@@ -21,7 +21,7 @@
 Prioritize the human-readability of code to its machine efficiency.
 In practice, this implies:
 
-* Keep functions and methods small, just a couple of lines, so it is possible to understand what they do with minimal effort.
+* Keep functions and methods small, just a few of lines, so it is possible to understand what they do with minimal effort.
   Prioritize the code readability over line count or code performance.
 * Don't mix low-level and high-level code in one function.
   Extract functionality to separate functions or convert functions into classes with multiple methods to avoid this.
@@ -32,13 +32,13 @@ In practice, this implies:
 * Don't copy-paste code, use e.g. jinja macros to reduce duplication.
   Exception to this rule is code that is identical another piece of code only by coincidence, and there is a substantial probability that the code can diverge.
 * Include tests for your contribution.
-* Write comments only and only if there is no chance for the code to explain itself.
-* Don't put authorship information into the code, Git tracks everything for you.
+* Write comments if and only if there is no chance for the code to explain itself.
+* Don't put authorship information into the code, Git tracks authorship for you.
   Use [SPDX IDs](https://spdx.dev/ids/) for license-related boilerplate in newly written code.
 * Don't take part in making files longer - files longer than 400 lines should be an exception.
   Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
 
-When working with old code that doesn't satisfy those recommendations at all, simply leave the code in a better shape than the shape in which it was before,
+When working with existing code that doesn't satisfy these recommendations, simply leave the code in a better shape than the shape in which it was before,
 and keep these guidelines in mind when writing new code.
 
 
