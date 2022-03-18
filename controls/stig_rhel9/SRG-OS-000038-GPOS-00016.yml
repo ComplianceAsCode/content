@@ -2,8 +2,9 @@ controls:
     -   id: SRG-OS-000038-GPOS-00016
         levels:
             - medium
-        title: The operating system must produce audit records containing information to
+        title: {{{ full_name }}} must produce audit records containing information to
             establish when (date and time) the events occurred.
         rules:
+            - package_audit_installed
             - service_auditd_enabled
         status: automated

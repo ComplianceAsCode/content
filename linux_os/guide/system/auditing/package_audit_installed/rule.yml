@@ -39,6 +39,12 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package("audit") }}}'
 
+fix: |-
+    Install the audit service (if the audit service is not already installed) with the following command:
+
+    {{{ package_install("audit") }}}
+
+
 template:
     name: package_installed
     vars:
