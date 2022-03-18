@@ -1,0 +1,9 @@
+# platform = multi_platform_ol,multi_platform_rhel
+#!/bin/bash
+
+source common_0700.sh
+
+echo "log_file = ${DIR2}/audit.log" >> /etc/audit/auditd.conf
+
+chmod 0700 ${DIR2}
+chmod 0750 ${DIR1}
