@@ -3,9 +3,9 @@ documentation_complete: true
 title: 'Configure L1 Terminal Fault mitigations'
 
 description: |-
-    L1 Terminal Fault (L1TF) is a hardware vunerability which allows unprivileged
+    L1 Terminal Fault (L1TF) is a hardware vulnerability which allows unprivileged
     speculative access to data which is available in the Level 1 Data Cache when
-    the page table entry.
+    the page table entry isn't present.
 
     Select the appropriate mitigation by adding the argument
     <tt>l1tf={{{ xccdf_value(var_l1tf_options) }}}</tt> to the default
