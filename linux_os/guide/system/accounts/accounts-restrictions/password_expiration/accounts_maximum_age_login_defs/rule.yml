@@ -67,4 +67,11 @@ ocil: |-
     The DoD and FISMA requirement is 60.
     A value of 180 days is sufficient for many environments.
 
+fix: |-
+    Configure {{{ full_name }}} to enforce a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime.
+
+    Add, or modify the following line in the "/etc/login.defs" file:
+
+    PASS_MAX_DAYS {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}
+
 platform: login_defs
