@@ -10,11 +10,20 @@
   <unix:password_object id="object_accounts_users_home_files_ownership_objects" version="1">
     <unix:username datatype="string" operation="not equal">nobody</unix:username>
     <filter action="include">state_accounts_users_home_files_ownership_interactive_uids</filter>
+{{%- if product == 'rhel7' %}}
+    <filter action="exclude">state_accounts_users_home_files_ownership_nfsnobody</filter>
+{{%- endif %}}
   </unix:password_object>
 
   <unix:password_state id="state_accounts_users_home_files_ownership_interactive_uids" version="1">
     <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
   </unix:password_state>
+
+{{%- if product == 'rhel7' %}}
+  <unix:password_state id="state_accounts_users_home_files_ownership_nfsnobody" version="1">
+    <unix:username datatype="string" operation="equals">nfsnobody</unix:username>
+  </unix:password_state>
+{{%- endif %}}
 
   <local_variable id="var_accounts_users_home_files_ownership_dirs" datatype="string" version="1"
                   comment="Variable including all home dirs from interactive users">
