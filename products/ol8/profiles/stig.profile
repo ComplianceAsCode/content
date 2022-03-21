@@ -933,11 +933,8 @@ selections:
 
     # OL08-00-040001
     - package_abrt_removed
-    - package_abrt-addon-ccpp_removed
-    - package_abrt-addon-kerneloops_removed
-    - package_abrt-addon-python_removed
-    - package_abrt-cli_removed
-    - package_abrt-plugin-sosreport_removed
+    - package_abrt-libs_removed
+    - package_abrt-server-info-page_removed
 
     # OL08-00-040002
     - package_sendmail_removed
