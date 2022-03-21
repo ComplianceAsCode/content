@@ -18,7 +18,11 @@
 {{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
 {{% endif %}}
 
-{{% if 'rhel' not in product %}}
+{{% if product == 'ol8' %}}
+{{% set auditfiles = auditfiles + ["/usr/sbin/rsyslogd"] %}}
+{{% endif %}}
+
+{{% if 'rhel' not in product and product != 'ol8' %}}
 {{% set configString = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
 {{% else %}}
 {{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
