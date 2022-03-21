@@ -13530,13 +13530,27 @@ controls:
     https://issues.redhat.com/browse/CMP-478
   rules: []
 - id: SC-7(10)
-  status: pending
+  status: partial
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    For applications, Network segmentation configuration and policies can
+    be achieved in the OpenShift platform using network policies.
 
-    https://issues.redhat.com/browse/CMP-482
-  rules: []
+    NetworkPolicies are on by default for the cluster when using the OCP CNI
+    plugin. [1][2] Cluster admin must add policies to relevant projects.
+
+    Depending on the SDN implementation, there will be different logs
+    and interfaces to monitor the network flows.
+    
+    Application level firewall can be provided by underlying cloud provider,
+    Firewall settings for the nodes themselves are usually controlled on the
+    underlying cloud's configurations. Additional host-based firewall settings
+    can be configured to address this requirement [3].
+
+    [1] https://docs.openshift.com/container-platform/4.7/networking/network_policy/multitenant-network-policy.html
+    [2] https://docs.openshift.com/container-platform/4.7/networking/network_policy/default-network-policy.html#default-network-policy
+    [3] https://docs.openshift.com/container-platform/4.7/installing/install_config/configuring-firewall.html
+  rules:
+  - configure_network_policies_namespaces
   description: |-
     The organization prevents the unauthorized exfiltration of information across managed interfaces.
 
