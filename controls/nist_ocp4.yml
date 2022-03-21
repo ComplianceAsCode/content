@@ -1096,9 +1096,18 @@ controls:
 
     Red Hat OpenShift does an admission control inspection for pods based on the capabilities granted to a user [2].
 
+    However to assist in developing and handling SCC to address this control [3], use of Role-based Access Control (RBAC) [4] and the architecture of OpenShift provide logical access restrictions based on user and group roles in addition to logical separation of systems and components [5].
+
     [1] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
  
     [2] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html#admission_configuring-internal-oauth
+
+    [3] https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html#role-based-access-to-ssc_configuring-internal-oauth
+
+    [4] https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+
+    [5] https://docs.openshift.com/container-platform/latest/architecture/architecture.html
+
   rules: []
   description: |-
     The information system prevents [Assignment: organization-defined software] from executing at higher privilege levels than users executing the software.
