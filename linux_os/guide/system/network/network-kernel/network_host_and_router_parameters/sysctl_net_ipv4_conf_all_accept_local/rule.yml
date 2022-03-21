@@ -6,7 +6,7 @@ description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.accept_
 
 rationale: |-
     Configure <tt>net.ipv4.conf.all.accept_local=0</tt> to consider as invalid the packets
-    received from outside whose source is the 127/8 network.
+    received from outside whose source is the 127.0.0.0/8 address block.
     In combination with suitable routing, this can be used to direct packets between two
     local interfaces over the wire and have them accepted properly.
 
