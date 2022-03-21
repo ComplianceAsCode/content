@@ -51,6 +51,18 @@ ocil: |-
     domains = testing.test
     </pre>
 
+fix: |-
+    Configure {{{ full_name }}} to map the authenticated identity to the user or group account by adding or modifying the certmap section of the "/etc/sssd/sssd.conf" file based on the following example:
+
+    [certmap/testing.test/rule_name]
+    matchrule =<SAN>.*EDIPI@mil
+    maprule = (userCertificate;binary={cert!bin})
+    dmains = testing.test
+
+    The "sssd" service must be restarted for the changes to take effect. To restart the "sssd" service, run the following command:
+
+    $ sudo systemctl restart sssd.service
+
 template:
     name: lineinfile
     vars:
