@@ -147,6 +147,8 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
+- package_libreport-plugin-logger_removed
+- package_libreport-plugin-rhtsupport_removed
 - package_nfs-utils_removed
 - package_openscap-scanner_installed
 - package_openssh-clients_installed

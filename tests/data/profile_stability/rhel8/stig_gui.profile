@@ -303,6 +303,8 @@ selections:
 - package_gssproxy_removed
 - package_iprutils_removed
 - package_krb5-workstation_removed
+- package_libreport-plugin-logger_removed
+- package_libreport-plugin-rhtsupport_removed
 - package_mcafeetp_installed
 - package_opensc_installed
 - package_openssh-server_installed

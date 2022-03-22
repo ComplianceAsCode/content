@@ -931,6 +931,8 @@ selections:
     - package_python3-abrt-addon_removed
     - package_abrt-cli_removed
     - package_abrt-plugin-sosreport_removed
+    - package_libreport-plugin-rhtsupport_removed
+    - package_libreport-plugin-logger_removed
 
     # RHEL-08-040002
     - package_sendmail_removed
