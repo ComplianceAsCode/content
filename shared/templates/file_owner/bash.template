@@ -9,7 +9,7 @@
 readarray -t files < <(find {{{ path }}})
 for file in "${files[@]}"; do
     if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chown {{{ FILEUID }}} $file
+        chown {{{ FILEUID }}} "$file"
     fi
 done
 {{% elif IS_DIRECTORY and RECURSIVE %}}

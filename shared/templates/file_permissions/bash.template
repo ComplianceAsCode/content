@@ -9,7 +9,7 @@
 readarray -t files < <(find {{{ path }}})
 for file in "${files[@]}"; do
     if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chmod {{{ FILEMODE }}} $file
+        chmod {{{ FILEMODE }}} "$file"
     fi    
 done
 {{% elif IS_DIRECTORY and RECURSIVE %}}
