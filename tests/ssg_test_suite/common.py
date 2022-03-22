@@ -195,7 +195,9 @@ def _get_platform_cpes(platform):
         for p in products:
             product_yaml_path = os.path.join(ssg_root, "products", p, "product.yml")
             product_yaml = load_product_yaml(product_yaml_path)
-            p_cpes = ProductCPEs(product_yaml)
+            p_cpes = ProductCPEs()
+            p_cpes.load_product_cpes(product_yaml)
+            p_cpes.load_content_cpes(product_yaml)
             platform_cpes |= set(p_cpes.get_product_cpe_names())
         return platform_cpes
     else:
@@ -209,7 +211,9 @@ def _get_platform_cpes(platform):
             raise ValueError
         product_yaml_path = os.path.join(ssg_root, "products", product, "product.yml")
         product_yaml = load_product_yaml(product_yaml_path)
-        product_cpes = ProductCPEs(product_yaml)
+        product_cpes = ProductCPEs()
+        product_cpes.load_product_cpes(product_yaml)
+        product_cpes.load_content_cpes(product_yaml)
         platform_cpes = set(product_cpes.get_product_cpe_names())
         return platform_cpes
 
