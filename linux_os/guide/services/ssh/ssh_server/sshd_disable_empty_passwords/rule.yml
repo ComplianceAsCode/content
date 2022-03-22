@@ -61,6 +61,9 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="yes", option="PermitEmptyPasswords", value="no") }}}
 
+fix: |-
+    {{{ sshd_lineinfile_fix("PermitEmptyPasswords", "no") }}}
+
 template:
     name: sshd_lineinfile
     vars:
