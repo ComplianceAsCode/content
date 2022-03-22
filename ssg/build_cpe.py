@@ -189,12 +189,12 @@ class CPEItem(XCCDFEntity):
 
         cpe_item_title = ET.SubElement(cpe_item, "{%s}title" % CPEItem.ns)
         cpe_item_title.set('xml:lang', "en-us")
-        cpe_item_title.text = self.title.format(**self.as_dict())
+        cpe_item_title.text = self.title
 
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id.format(**self.as_dict())
+        cpe_item_check.text = self.check_id
         return cpe_item
 
 
@@ -273,9 +273,11 @@ class CPEALFactRef (Symbol):
         # if we have arguments, we have to copy the templated cpe and fill in the arguments
         if self.has_arguments():
             old_cpe_dict = cpe_products.get_cpe(self.cpe_name).represent_as_dict()
-            old_cpe_dict["id_"] = self.as_id()
-            print (old_cpe_dict["name"].format(self.as_dict()))
-            new_cpe = CPEItem.get_instance_from_full_dict(old_cpe_dict)
+            # ignore remediation snippets for now when templating, they will be removed eventually from the CPE item definition
+            not_templated_keys = ["ansible_conditional", "bash_conditional"]
+            new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict(), not_templated_keys)
+            new_cpe_dict["id_"] = self.as_id()
+            new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
             cpe_products.add_cpe_item(new_cpe)
             self.cpe_name = self.as_id()
 
@@ -372,3 +374,18 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
+def apply_formatting_on_dict_values(source_dict, string_dict, not_templated_keys):
+    """
+    This works only for dictionaries whose values are dicts or strings
+    """
+    new_dict = {}
+    for k,v in source_dict.items():
+        if k not in not_templated_keys:
+            if isinstance(v, dict):
+                new_dict[k] = apply_formatting_on_dict_values(v, string_dict, not_templated_keys)
+            elif isinstance(v, str):
+                new_dict[k] = v.format(**string_dict)
+        else:
+            new_dict[k] = v
+    return new_dict
