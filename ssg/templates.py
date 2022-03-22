@@ -19,6 +19,7 @@ except ImportError:
 
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
              "kubernetes", "blueprint", "sce-bash", "oval_platform"]
+rule_related_languages = [l for l in languages if l != "oval_platform"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -229,19 +230,21 @@ class Builder(object):
         if "backends" in rule.template:
             backends = rule.template["backends"]
             for lang in backends:
-                if lang not in languages:
+                if lang not in rule_related_languages:
                     raise RuntimeError(
                         "Rule {0} wants to generate unknown language '{1}"
                         "from a template.".format(rule.id_, lang)
                     )
             langs_to_generate = []
-            for lang in languages:
+            for lang in rule_related_languages:
                 backend = backends.get(lang, "on")
                 if backend == "on":
                     langs_to_generate.append(lang)
             return langs_to_generate
         else:
-            return languages
+            # return all languages except for the one for OVAL inventory
+            # these are not related to rules
+            return rule_related_languages
 
     def get_template_name(self, template):
         """
@@ -325,8 +328,9 @@ class Builder(object):
     def build_platform(self, platform):
         for symbol in platform.test.get_symbols():
             name = symbol.name
+            full_name = symbol.as_id()
             symbol_dict = symbol.as_dict()
-            cpe = self.product_cpes.get_cpe(symbol_dict['name'])
+            cpe = self.product_cpes.get_cpe(full_name)
             if 'name' not in cpe.template:
                 continue
             template_name = cpe.template['name']
@@ -339,10 +343,10 @@ class Builder(object):
                 raise ValueError(
                     "Rule {0} does not contain mandatory 'vars:' key under "
                     "'template:' key.".format(name))
-            # Add the rule ID which will be reused in OVAL templates as OVAL
+            # Add the check_id ID which will be reused in OVAL templates as OVAL
             # definition ID so that the build system matches the generated
             # check with the rule.
-            template_vars["_rule_id"] = name
+            template_vars["_check_id"] = cpe.check_id
             # checks and remediations are processed with a custom YAML dict
             local_env_yaml = self.env_yaml.copy()
             local_env_yaml["rule_id"] = name
@@ -352,7 +356,7 @@ class Builder(object):
             for lang in ['oval_platform']:
                 try:
                     self.build_lang(
-                        name, template_name, template_vars, lang, local_env_yaml)
+                        full_name, template_name, template_vars, lang, local_env_yaml)
                 except Exception as e:
                     print("Error building templated {0} content for rule {1}".format(lang, name), file=sys.stderr)
                     raise e
