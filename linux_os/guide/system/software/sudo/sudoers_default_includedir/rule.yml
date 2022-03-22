@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,rhel7,rhel8,rhel9
+prodtype: fedora,ol7,rhel7,rhel8,rhel9,sle12,sle15
 
 title: 'Ensure sudo only includes the default configuration directory'
 
@@ -24,6 +24,8 @@ identifiers:
     cce@rhel7: CCE-86277-1
     cce@rhel8: CCE-86377-9
     cce@rhel9: CCE-86477-7
+    cce@sle12: CCE-83255-0
+    cce@sle15: CCE-91151-1
 
 references:
     disa: CCI-000366
@@ -31,6 +33,8 @@ references:
     stigid@ol7: OL07-00-010339
     stigid@rhel7: RHEL-07-010339
     stigid@rhel8: RHEL-08-010379
+    stigid@sle12: SLES-12-010109
+    stigid@sle15: SLES-15-020099
 
 ocil_clause: "the /etc/sudoers doesn't include /etc/sudores.d or includes other directories?"
 
