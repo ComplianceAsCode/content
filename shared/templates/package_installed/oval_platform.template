@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="inventory" id="platform_{{{ _RULE_ID }}}"
+  <definition class="inventory" id="{{{ _CHECK_ID }}}"
   version="1">
     {{{ oval_metadata("The " + pkg_system|upper + " package " + PKGNAME + " should be installed.", affected_platforms=["multi_platform_all"]) }}}
     <criteria>
