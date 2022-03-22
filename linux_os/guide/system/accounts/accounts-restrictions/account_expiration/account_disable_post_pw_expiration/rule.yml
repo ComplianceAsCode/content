@@ -18,9 +18,9 @@ description: |-
     <tt>useradd</tt> man page for more information.
 
 rationale: |-
-    Disabling inactive accounts ensures that accounts which may not
-    have been responsibly removed are not available to attackers
-    who may have compromised their credentials.
+    Inactive identifiers pose a risk to systems and applications because attackers may exploit an inactive identifier and potentially obtain undetected access to the system.
+    Disabling inactive accounts ensures that accounts which may not have been responsibly removed are not available to attackers who may have compromised their credentials.
+    Owners of inactive accounts will not notice if unauthorized access to their user account has been obtained.
 
 severity: medium
 
@@ -60,7 +60,7 @@ references:
     stigid@ubuntu2004: UBTU-20-010409
     vmmsrg: SRG-OS-000003-VMM-000030,SRG-OS-000118-VMM-000590
 
-ocil_clause: 'the value of INACTIVE is greater than the expected value'
+ocil_clause: 'the value of INACTIVE is greater than the expected value or is -1'
 
 ocil: |-
     To verify the <tt>INACTIVE</tt> setting, run the following command:
@@ -69,5 +69,15 @@ ocil: |-
     to an appropriate integer as shown in the example below:
     <pre>$ grep "INACTIVE" /etc/default/useradd
     INACTIVE={{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</pre>
+
+fix: |-
+    Configure {{{ full_name }}} to disable account identifiers after {{{ xccdf_value("var_account_disable_post_pw_expiration") }}} days of inactivity after the password expiration. 
+
+    Run the following command to change the configuration for useradd:
+
+    $ sudo useradd -D -f {{{ xccdf_value("var_account_disable_post_pw_expiration") }}}
+
+    A recommendation is {{{ xccdf_value("var_account_disable_post_pw_expiration") }}} days, but a lower value is acceptable.
+    The value "-1" will disable this feature, and "0" will disable the account immediately after the password expires.
 
 platform: login_defs
