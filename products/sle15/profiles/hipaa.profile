@@ -57,6 +57,7 @@ selections:
     - selinux_state
     - service_kdump_disabled
     - sysctl_fs_suid_dumpable
+    - sysctl_kernel_exec_shield
     - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_randomize_va_space
     - rpm_verify_hashes

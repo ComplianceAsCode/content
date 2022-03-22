@@ -1,0 +1,43 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+# What architecture are we on?
+- name: Set architecture for kernel exec-shield tasks
+  set_fact:
+    kexec_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+
+- name: Ensure sysctl kernel.exec-shield is set to 1
+  sysctl:
+    name: "kernel.exec-shield"
+    value: "1"
+    state: present
+    reload: yes
+  when: kexec_arch == "b32"
+
+- name: Ensure existence of grub config
+  stat:
+    path: "{{ item.path }}"
+  register: stat_results
+  with_items:
+    - { path: /etc/grub2.cfg }
+    - { path: /etc/default/grub }
+  ignore_errors: True
+
+- name: Ensure noexec is not present in grub config files
+  replace:
+    path: "{{ item.item }}"
+    regexp: 'noexec.*'
+    replace: ''
+  with_items:
+    - { path: /etc/grub2.cfg }
+    - { path: /etc/default/grub }
+  with_items: "{{ stat_results.results }}"
+  when: ( kexec_arch == "b64" ) and ( not item.stat.exists )
+  register: dropped_noexec_cfg
+
+- name: make grub config
+  command: "grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg"
+  when: dropped_noexec_cfg.changed

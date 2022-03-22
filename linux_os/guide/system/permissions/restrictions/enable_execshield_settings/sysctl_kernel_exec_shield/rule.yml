@@ -1,14 +1,14 @@
 documentation_complete: true
 
-prodtype: fedora,rhel7,rhel8,rhel9,rhv4
+prodtype: fedora,rhel7,rhel8,rhel9,rhv4,sle15
 
 title: 'Enable ExecShield via sysctl'
 
 description: |-
-    By default on Red Hat Enterprise Linux 7 64-bit systems, ExecShield is
+    By default on {{{ full_name }}} 64-bit systems, ExecShield is
     enabled and can only be disabled if the hardware does not support
-    ExecShield or is disabled in <tt>/etc/default/grub</tt>. For Red Hat
-    Enterprise Linux 7 32-bit systems, <tt>sysctl</tt> can be used to enable
+    ExecShield or is disabled in <tt>/etc/default/grub</tt>. For
+    {{{ full_name }}}  32-bit systems, <tt>sysctl</tt> can be used to enable
     ExecShield.
 
 rationale: |-
@@ -28,6 +28,7 @@ identifiers:
     cce@rhel7: CCE-27211-2
     cce@rhel8: CCE-80914-5
     cce@rhel9: CCE-83970-4
+    cce@sle15: CCE-91417-6
 
 references:
     anssi: BP28(R9)
@@ -46,7 +47,7 @@ references:
 ocil_clause: 'ExecShield is not supported by the hardware, is not enabled, or has been disabled by the kernel configuration.'
 
 ocil: |-
-    To verify ExecShield is enabled on 64-bit Red Hat Enterprise Linux 7 systems,
+    To verify ExecShield is enabled on 64-bit {{{ full_name }}} systems,
     run the following command:
     <pre>$ dmesg | grep '[NX|DX]*protection'</pre>
     The output should not contain <tt>'disabled by kernel command line option'</tt>.
@@ -54,7 +55,7 @@ ocil: |-
     run the following command:
     <pre>$ sudo grep noexec {{{ grub2_boot_path }}}/grub.cfg</pre>
     The output should not return <tt>noexec=off</tt>.
-    For 32-bit Red Hat Enterprise Linux 7 systems, run the following command:
+    For 32-bit {{{ full_name }}} systems, run the following command:
     <pre>$ sysctl kernel.exec-shield</pre>
     The output should be:
     {{{ describe_sysctl_option_value(sysctl="kernel.exec-shield", value="1") }}}
