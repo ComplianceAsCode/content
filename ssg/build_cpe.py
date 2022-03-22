@@ -273,9 +273,9 @@ class CPEALFactRef (Symbol):
         # if we have arguments, we have to copy the templated cpe and fill in the arguments
         if self.has_arguments():
             old_cpe_dict = cpe_products.get_cpe(self.cpe_name).represent_as_dict()
-            old_cpe_dict["id_"] = self.as_id()
-            print (old_cpe_dict["name"].format(self.as_dict()))
-            new_cpe = CPEItem.get_instance_from_full_dict(old_cpe_dict)
+            new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict())
+            new_cpe_dict["id_"] = self.as_id()
+            new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
             cpe_products.add_cpe_item(new_cpe)
             self.cpe_name = self.as_id()
 
@@ -372,3 +372,15 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
+def apply_formatting_on_dict_values(source_dict, string_dict):
+    """
+    This works only for dictionaries whose values are dicts or strings
+    """
+    new_dict = {}
+    for k,v in source_dict.items():
+        if isinstance(v, dict):
+            new_dict[k] = apply_formatting_on_dict_values(v, string_dict)
+        else:
+            new_dict[k] = v.format(**string_dict)
+    return new_dict
