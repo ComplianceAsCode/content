@@ -266,6 +266,7 @@ selections:
     - sudo_remove_nopasswd
     - sudo_require_reauthentication
     - sudo_restrict_privilege_elevation_to_authorized
+    - sudoers_default_includedir
     - sudoers_validate_passwd
     - susefirewall2_ddos_protection
     - susefirewall2_only_required_services
