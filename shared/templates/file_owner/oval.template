@@ -31,14 +31,14 @@
   </unix:file_state>
   <unix:file_object comment="{{{ filepath }}}" id="object_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
     {{%- if IS_DIRECTORY -%}}
-      {{%- if FILE_REGEX %}}
-      <unix:path>{{{ filepath[:-1] }}}</unix:path>
-      <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
-      {{%- elif RECURSIVE %}}
+      {{%- if RECURSIVE %}}
       <unix:path operation="pattern match">{{{ filepath[:-1] }}}</unix:path>
-      <unix:filename xsi:nil="true" />
       {{%- else %}}
       <unix:path>{{{ filepath[:-1] }}}</unix:path>
+      {{%- endif %}}
+      {{%- if FILE_REGEX %}}
+      <unix:filename operation="pattern match">{{{ FILE_REGEX[loop.index0] }}}</unix:filename>
+      {{%- else %}}
       <unix:filename xsi:nil="true" />
       {{%- endif %}}
     {{%- else %}}
