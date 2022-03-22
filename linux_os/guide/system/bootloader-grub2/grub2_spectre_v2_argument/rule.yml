@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Enforce Spectre v2 mitigation'
+
+description: |-
+    Spectre V2 is an indirect branch poisoning attack that can lead to data leakage.
+    An exploit for Spectre V2 tricks the indirect branch predictor into executing
+    code from a future indirect branch chosen by the attacker, even if the privilege
+    level is different.
+
+    Since Linux Kernel 4.15 you can check the Spectre V2 mitigation state with the following command:
+    <tt>cat /sys/devices/system/cpu/vulnerabilities/spectre_v2</tt>
+
+    Enforce the Spectre V2 mitigation by adding the argument
+    <tt>spectre_v2=on</tt> to the default
+    GRUB 2 command line for the Linux operating system.
+    {{{ describe_grub2_argument("spectre_v2=on)") | indent(4) }}}
+
+rationale: |-
+    The Spectre V2 vulnerability allows an attacker to read memory that he should not have
+    access to.
+
+severity: high
+
+identifiers:
+    cce@rhel8: CCE-89345-3
+    cce@rhel9: CCE-90345-0
+
+ocil_clause: 'spectre_v2 mitigation is not enforced'
+
+ocil: |-
+    {{{ ocil_grub2_argument("spectre_v2=on") | indent(4) }}}
+
+platform: machine
+
+template:
+    name: grub2_bootloader_argument
+    vars:
+        arg_name: spectre_v2
+        arg_value: on
