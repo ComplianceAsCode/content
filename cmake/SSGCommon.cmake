@@ -843,7 +843,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${DERIVATIVE} --id-name ssg
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${DERIVATIVE} --id-name ssg --cpe-items-dir "${CMAKE_CURRENT_BINARY_DIR}/cpe_items"
         DEPENDS generate-ssg-${ORIGINAL}-xccdf.xml
         COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-xccdf.xml"
     )
@@ -854,7 +854,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml" "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${DERIVATIVE} --id-name ssg
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml" "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${DERIVATIVE} --id-name ssg --cpe-items-dir "${CMAKE_CURRENT_BINARY_DIR}/cpe_items"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         DEPENDS generate-ssg-${ORIGINAL}-ds.xml
         COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-ds.xml"
@@ -867,7 +867,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     if (SSG_BUILD_SCAP_12_DS)
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml" "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${DERIVATIVE} --id-name ssg
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml" "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" ${DERIVATIVE} --id-name ssg --cpe-items-dir "${CMAKE_CURRENT_BINARY_DIR}/cpe_items"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
             DEPENDS generate-ssg-${ORIGINAL}-ds.xml
             COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-ds-1.2.xml"
