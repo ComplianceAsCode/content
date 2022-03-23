@@ -1813,10 +1813,7 @@ class LinearLoader(object):
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
 
-        filenames = glob.glob(os.path.join(self.resolved_cpe_items_dir, "*.yml"))
-        self.load_entities_by_id(filenames, self.cpe_items, CPEItem)
-        self.product_cpes.platforms = self.platforms
-        self.product_cpes.cpes_by_id = self.cpe_items
+        self.product_cpes.load_cpes_from_directory_tree(self.resolved_cpe_items_dir, self.env_yaml)
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
