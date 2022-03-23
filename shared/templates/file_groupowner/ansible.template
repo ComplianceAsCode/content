@@ -5,13 +5,18 @@
 # disruption = low
 
 {{% for path in FILEPATH %}}
-{{% if IS_DIRECTORY and FILE_REGEX %}}
+{{% if IS_DIRECTORY %}}
+{{% if FILE_REGEX %}}
 
-- name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}
+- name: Find {{{ path }}} file(s) matching {{{ FILE_REGEX[loop.index0] }}}{{% if RECURSIVE %}} recursively{{% endif %}}
+
   find:
     paths: "{{{ path }}}"
     patterns: {{{ FILE_REGEX[loop.index0] }}}
     use_regex: yes
+{{% if RECURSIVE %}}
+    recurse: yes
+{{% endif %}}
     hidden: yes
   register: files_found
 
@@ -22,15 +27,18 @@
   with_items:
     - "{{ files_found.files }}"
 
-{{% elif IS_DIRECTORY and RECURSIVE %}}
+{{% else %}}
 
-- name: Ensure group owner on {{{ path }}} recursively
+- name: Ensure group owner on {{{ path }}}{{% if RECURSIVE %}} recursively{{% endif %}}
   file:
     path: "{{{ path }}}"
     state: directory
+{{% if RECURSIVE %}}
     recurse: yes
+{{% endif %}}
     group: "{{{ FILEGID }}}"
 
+{{% endif %}}
 {{% else %}}
 
 - name: Test for existence {{{ path }}}
