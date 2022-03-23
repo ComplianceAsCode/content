@@ -240,7 +240,7 @@ def get_iacontrol(srg_str: str) -> str:
 
 def get_severity(input_severity: str) -> str:
     if input_severity not in ['CAT I', 'CAT II', 'CAT III', 'low', 'medium', 'high']:
-        raise ValueError(f'Severity of {input_severity}')
+        raise ValueError(f'Severity of {input_severity} is not valid')
     elif input_severity in ['CAT I', 'CAT II', 'CAT III']:
         return input_severity
     else:
@@ -248,9 +248,6 @@ def get_severity(input_severity: str) -> str:
 
 
 class DisaStatus:
-    """
-    Convert control status to a string for the spreadsheet
-    """
     PENDING = "pending"
     PLANNED = "planned"
     NOT_APPLICABLE = "Not Applicable"
@@ -289,20 +286,21 @@ def html_plain_text(source: str) -> str:
     return result
 
 
-def replace_variables(source: str, env_yaml: dict) -> str:
+def replace_variables(source: str, variables: dict) -> str:
     result = source
     if source:
-        sub_match = r'<sub idref="([a-z0-9_]+)" \/>'
-        match = re.search(sub_match, source, re.MULTILINE)
+        sub_element_regex = r'<sub idref="([a-z0-9_]+)" \/>'
+        matches = re.finditer(sub_element_regex, source, re.MULTILINE)
 
-        if match:
-            name = re.findall(sub_match, source)[0].replace('var_', '')
-            result = result.replace(match.group(), env_yaml.get(name, ''))
+        if matches:
+            for match in matches:
+                name = re.findall(sub_element_regex, source)[0]
+                result = result.replace(match.group(), variables.get(name, ''))
     return result
 
 
-def handle_variables(source: str, env_yaml: dict) -> str:
-    result = replace_variables(source, env_yaml)
+def handle_variables(source: str, variables: dict) -> str:
+    result = replace_variables(source, variables)
     return html_plain_text(result)
 
 
@@ -320,6 +318,7 @@ def get_description_root(srg: ET.Element) -> ET.Element:
 def get_srg_dict(xml_path: str) -> dict:
     if not pathlib.Path(xml_path).exists():
         sys.stderr.write("XML for SRG was not found\n")
+        sys.stderr.write(f"Could not open file {xml_path} \n")
         exit(1)
     root = ET.parse(xml_path).getroot()
     srgs = dict()
@@ -375,26 +374,24 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                    env_yaml: ssg.environment, rule_json: dict, srgs: dict,
                    used_rules: list) -> None:
     if len(control.selections) > 0:
-        for rule in control.selections:
-            if rule.startswith('var_'):
-                continue
-            if rule not in used_rules:
-                rule_object = handle_rule_yaml(product, rule_json[rule]['dir'], env_yaml)
+        for selection in control.selections:
+            if selection not in used_rules and selection in control.selected:
+                rule_object = handle_rule_yaml(product, rule_json[selection]['dir'], env_yaml)
                 row = create_base_row(control, srgs, rule_object)
                 if control.levels is not None:
                     row['Severity'] = get_severity(control.levels[0])
                 row['Requirement'] = srgs[control.id]['title'].replace('Operating systems',
                                                                        env_yaml['full_name'])
-                row['Vul Discussion'] = handle_variables(rule_object.rationale, env_yaml)
-                row['Check'] = f'{handle_variables(rule_object.ocil, env_yaml)}\n\n' \
+                row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables)
+                row['Check'] = f'{handle_variables(rule_object.ocil, control.variables)}\n\n' \
                                f'If {rule_object.ocil_clause}, then this is a finding.'
-                row['Fix'] = handle_variables(rule_object.fix, env_yaml)
+                row['Fix'] = handle_variables(rule_object.fix, control.variables)
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
                 else:
                     row['Status'] = DisaStatus.AUTOMATED
                 csv_writer.writerow(row)
-                used_rules.append(rule)
+                used_rules.append(selection)
     else:
         row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
         row['Requirement'] = control.title
@@ -412,7 +409,7 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
     srg_id = item.id
     if srg_id not in srgs:
         print(f"Unable to find SRG {srg_id}. Id in the control must be a valid SRGID.")
-        exit(1)
+        exit(4)
     srg = srgs[srg_id]
 
     row['SRGID'] = rule_object.references.get('srg', srg_id)
@@ -444,24 +441,13 @@ def get_rule_json(json_path: str) -> dict:
     return rule_json
 
 
-def add_variables(env_yaml, policy):
-    for control in policy.controls:
-        for rule in control.selections:
-            if rule.startswith('var_'):
-                parts = rule.split('=')
-                if len(parts) != 2:
-                    raise ValueError('Invalid variable definition')
-                env_yaml[parts[0].replace('var_', '')] = parts[1]
-                continue
-
-
 def main() -> None:
     args = parse_args()
 
     control_full_path = pathlib.Path(args.control).absolute()
     if not pathlib.Path.exists(control_full_path):
         sys.stderr.write(f"Unable to find control file {control_full_path}\n")
-        exit(1)
+        exit(5)
     if not os.path.exists(args.json):
         sys.stderr.write(f"Unable to find rule_dirs.json file {args.json}\n")
         sys.stderr.write("Hint: run ./utils/rule_dir_json.py\n")
@@ -476,7 +462,6 @@ def main() -> None:
     rule_json = get_rule_json(args.json)
     full_output = pathlib.Path(args.output)
     used_rules = list()
-    add_variables(env_yaml, policy)
 
     with open(full_output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
