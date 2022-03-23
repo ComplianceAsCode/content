@@ -24,6 +24,7 @@
   file:
     path: "{{ item.path }}"
     mode: "{{{ FILEMODE }}}"
+  when: item.mode != {{{ FILEMODE}}}
   with_items:
     - "{{ files_found.files }}"
 
