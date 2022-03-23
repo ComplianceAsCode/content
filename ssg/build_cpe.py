@@ -49,6 +49,7 @@ class ProductCPEs(object):
                 for cpe_id in cpe.keys():
                     cpe[cpe_id]["id_"] = cpe_id
                     self.product_cpes[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
+                    self.product_cpes[cpe_id].is_product_cpe = True
 
 
         except KeyError:
@@ -82,6 +83,8 @@ class ProductCPEs(object):
             #self._load_cpes_list(self.cpes_by_id, cpes_list)
             cpe = CPEItem.from_yaml(dir_item_path, env_yaml)
             self.cpes_by_id[cpe.id_] = cpe
+            if cpe.is_product_cpe == "true":
+                self.product_cpes[cpe.id_] = cpe
 
         # Add product_cpes to map of CPEs by ID
         self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes)
@@ -166,6 +169,7 @@ class CPEItem(XCCDFEntity):
         bash_conditional=lambda: "",
         ansible_conditional=lambda: "",
         template=lambda: {},
+        is_product_cpe=lambda: False,
         ** XCCDFEntity.KEYS
     )
 
