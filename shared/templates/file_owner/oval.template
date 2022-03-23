@@ -32,7 +32,7 @@
   <unix:file_object comment="{{{ filepath }}}" id="object_file_owner{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
     {{%- if IS_DIRECTORY -%}}
       {{%- if RECURSIVE %}}
-      <unix:path operation="pattern match">{{{ filepath[:-1] }}}</unix:path>
+      <unix:path operation="pattern match">^{{{ filepath[:-1] }}}</unix:path>
       {{%- else %}}
       <unix:path>{{{ filepath[:-1] }}}</unix:path>
       {{%- endif %}}
