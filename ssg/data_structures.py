@@ -100,7 +100,7 @@ class XCCDFEntity(object):
         - `definition_location` as the original location whenre the entity got defined.
         """
         file_basename = os.path.basename(yaml_file)
-        entity_id = file_basename.split(".")[0]
+        entity_id = os.path.splitext(file_basename)[0]
         if file_basename == cls.GENERIC_FILENAME:
             entity_id = os.path.basename(os.path.dirname(yaml_file))
 
