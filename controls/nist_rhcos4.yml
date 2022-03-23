@@ -1760,6 +1760,10 @@ controls:
   rules:
   - wireless_disable_in_bios
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - service_bluetooth_disabled
   - wireless_disable_interfaces
   - kernel_module_atm_disabled
@@ -1811,6 +1815,10 @@ controls:
   - kernel_module_bluetooth_disabled
   - service_bluetooth_disabled
   - wireless_disable_interfaces
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   description: |-
     The organization disables, when not intended for use, wireless networking capabilities internally embedded within information system components prior to issuance and deployment.
 
@@ -1820,12 +1828,18 @@ controls:
   levels:
   - high
 - id: AC-18(4)
-  status: pending
+  status: automated
   notes: |-
-    A control response is planned. Progress can be tracked via:
-
-    https://issues.redhat.com/browse/CMP-149
-  rules: []
+    The network capabilities should be disabled by default.
+  rules: 
+  - wireless_disable_in_bios
+  - kernel_module_bluetooth_disabled
+  - service_bluetooth_disabled
+  - wireless_disable_interfaces
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   description: |-
     The organization identifies and explicitly authorizes users allowed to independently configure wireless networking capabilities.
 
@@ -5015,6 +5029,10 @@ controls:
   - audit_rules_usergroup_modification_shadow
   - file_ownership_var_log_audit
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - sysctl_net_ipv6_conf_all_accept_source_route
   - no_empty_passwords
   - chronyd_or_ntpd_specify_remote_server
@@ -5191,6 +5209,10 @@ controls:
   - kernel_module_jffs2_disabled
   - sysctl_net_ipv4_conf_default_accept_redirects
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - kernel_module_sctp_disabled
   - wireless_disable_interfaces
   - sysctl_net_ipv6_conf_all_accept_ra
@@ -8908,6 +8930,10 @@ controls:
   - kernel_module_usb-storage_disabled
   - coreos_nousb_kernel_argument
   - kernel_module_bluetooth_disabled
+  - kernel_module_iwlmvm_disabled
+  - kernel_module_iwlwifi_disabled
+  - kernel_module_cfg80211_disabled
+  - kernel_module_mac80211_disabled
   - service_bluetooth_disabled
   - wireless_disable_interfaces
   description: |-

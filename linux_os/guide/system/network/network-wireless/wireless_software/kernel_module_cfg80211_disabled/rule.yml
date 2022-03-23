@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: fedora,rhcos4,rhel8,rhel9
+
+title: 'Disable Kernel cfg80211 Module'
+
+description: |-
+    {{{ describe_module_disable(module="cfg80211") }}}
+
+rationale: |-
+    If Wireless functionality must be disabled, preventing the kernel
+    from loading the kernel module provides an additional safeguard against its
+    activation.
+
+severity: medium
+
+identifiers:
+    cce@rhcos4: CCE-85932-2
+
+references:
+    nist: AC-18(a),AC-18(3),CM-7(a),CM-7(b),CM-6(a),MP-7,AC-18(4)
+
+{{{ complete_ocil_entry_module_disable(module="cfg80211") }}}
+
+platform: machine
+
+template:
+    name: kernel_module_disabled
+    vars:
+        kernmodule: cfg80211
