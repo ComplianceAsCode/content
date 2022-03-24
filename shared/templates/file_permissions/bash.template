@@ -15,7 +15,7 @@
 {{%- if FILE_REGEX %}}
 readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f)
 for file in "${files[@]}"; do
-    if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
+    if basename "$file" | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
         chmod {{{ FILEMODE }}} "$file"
     fi    
 done
