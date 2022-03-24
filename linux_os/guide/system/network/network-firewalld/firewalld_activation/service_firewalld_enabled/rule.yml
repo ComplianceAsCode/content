@@ -44,8 +44,13 @@ references:
     stigid@rhel8: RHEL-08-040101
     stigid@sle15: SLES-15-010220
 
+ocil_clause: 'the service is not enabled'
+
 ocil: |-
     {{{ ocil_service_enabled(service="firewalld") }}}
+
+fix: |-
+    {{{ service_enabled_fix("firewalld") }}}
 
 template:
     name: service_enabled
