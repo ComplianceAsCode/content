@@ -29,6 +29,9 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="fapolicyd") }}}'
 
+fix: |-
+    {{{ describe_package_install("fapolicyd") }}}
+
 template:
     name: package_installed
     vars:
