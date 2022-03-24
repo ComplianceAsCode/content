@@ -312,7 +312,7 @@ class RuleChecker(oscap.Checker):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
             rule_scenarios = self._get_scenarios(
-                rule.directory, rule.files, self.scenarios_regex,
+                rule.directory, rule.scenarios_basenames, self.scenarios_regex,
                 self.benchmark_cpes)
             scenarios_by_rule_id[rule.id] = rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,

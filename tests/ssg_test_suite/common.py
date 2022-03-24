@@ -10,6 +10,7 @@ import tempfile
 import re
 import shutil
 
+import ssg.yaml
 from ssg.build_cpe import ProductCPEs
 from ssg.build_yaml import Rule as RuleYAML
 from ssg.constants import MULTI_PLATFORM_MAPPING
@@ -31,7 +32,7 @@ Scenario_conditions = namedtuple(
     "Scenario_conditions",
     ("backend", "scanning_mode", "remediated_by", "datastream"))
 Rule = namedtuple(
-    "Rule", ["directory", "id", "short_id", "files", "template"])
+    "Rule", ["directory", "id", "short_id", "scenarios_basenames", "template"])
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
@@ -58,6 +59,8 @@ SSH_ADDITIONAL_OPTS = (
     "-o", "StrictHostKeyChecking=no",
     "-o", "UserKnownHostsFile=/dev/null",
 ) + SSH_ADDITIONAL_OPTS
+
+TESTS_CONFIG_NAME = "test_config.yml"
 
 
 def walk_through_benchmark_dirs(product=None):
@@ -516,6 +519,39 @@ def send_scripts(test_env):
     return remote_dir
 
 
+def get_test_dir_config(test_dir, product_yaml):
+    test_config = dict()
+    test_config_filename = os.path.join(test_dir, TESTS_CONFIG_NAME)
+    if os.path.exists(test_config_filename):
+        test_config = ssg.yaml.open_and_expand(test_config_filename, product_yaml)
+    return test_config
+
+
+def select_templated_tests(test_dir_config, available_scenarios_basenames):
+    deny_scenarios = set(test_dir_config.get("deny_templated_scenarios", []))
+    available_scenarios_basenames = {
+        test_name for test_name in available_scenarios_basenames
+        if test_name not in deny_scenarios
+    }
+
+    allow_scenarios = set(test_dir_config.get("allow_templated_scenarios", []))
+    if allow_scenarios:
+        available_scenarios_basenames = {
+            test_name for test_name in available_scenarios_basenames
+            if test_name in allow_scenarios
+        }
+    
+    allowed_and_denied = deny_scenarios.intersection(allow_scenarios)
+    if allowed_and_denied:
+        msg = (
+            "Test directory configuration contain inconsistencies: {allowed_and_denied} "
+            "scenarios are both allowed and denied."
+            .format(test_dir_config=test_dir_config, allowed_and_denied=allowed_and_denied)
+        )
+        raise ValueError(msg)
+    return available_scenarios_basenames
+
+
 def iterate_over_rules(product=None):
     """Iterate over rule directories which have test scenarios".
 
@@ -526,7 +562,7 @@ def iterate_over_rules(product=None):
             id -- full rule id as it is present in datastream
             short_id -- short rule ID, the same as basename of the directory
                         containing the test scenarios in Bash
-            files -- list of executable .sh files in the uploaded tarball
+            scenarios_basenames -- list of executable .sh files in the uploaded tarball
     """
 
     # Here we need to perform some magic to handle parsing the rule (from a
@@ -569,18 +605,23 @@ def iterate_over_rules(product=None):
             # templating system.
             all_tests = dict()
 
+            tests_dir = os.path.join(dirpath, "tests")
+            test_config = get_test_dir_config(tests_dir, product_yaml)
+
             # Start by checking for templating tests and provision them if
             # present.
             if rule.template and rule.template['vars']:
                 templated_tests = template_builder.get_all_tests(
                     rule.id_, rule.template, local_env_yaml)
-                all_tests.update(templated_tests)
+
+                allowed_templated_tests = select_templated_tests(
+                    test_config, templated_tests.keys())
+                all_tests.update({name: templated_tests[name] for name in allowed_templated_tests})
                 template_name = rule.template['name']
 
             # Add additional tests from the local rule directory. Note that,
             # like the behavior in template_tests, this will overwrite any
             # templated tests with the same file name.
-            tests_dir = os.path.join(dirpath, "tests")
             if os.path.exists(tests_dir):
                 tests_dir_files = os.listdir(tests_dir)
                 for test_case in tests_dir_files:
@@ -605,7 +646,7 @@ def iterate_over_rules(product=None):
             full_rule_id = OSCAP_RULE + short_rule_id
             result = Rule(
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
-                files=content_mapping, template=template_name)
+                scenarios_basenames=content_mapping, template=template_name)
             yield result
 
 
