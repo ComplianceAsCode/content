@@ -4,17 +4,25 @@
 # complexity = low
 # disruption = low
 
+{{%- if RECURSIVE %}}
+{{% set FIND_RECURSE_ARGS="" %}}
+{{%- else %}}
+{{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
+{{%- endif %}}
+
 {{% for path in FILEPATH %}}
-{{% if IS_DIRECTORY and FILE_REGEX %}}
-readarray -t files < <(find {{{ path }}})
+{{%- if IS_DIRECTORY %}}
+{{%- if FILE_REGEX %}}
+readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}})
 for file in "${files[@]}"; do
     if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chmod {{{ FILEMODE }}} $file
+        chmod {{{ FILEMODE }}} "$file"
     fi    
 done
-{{% elif IS_DIRECTORY and RECURSIVE %}}
-find -L {{{ path }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
-{{% else %}}
+{{%- else %}}
+find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
+{{%- endif %}}
+{{%- else %}}
 chmod {{{ FILEMODE }}} {{{ path }}}
-{{% endif %}}
+{{%- endif %}}
 {{% endfor %}}

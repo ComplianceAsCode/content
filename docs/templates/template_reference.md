@@ -259,6 +259,8 @@
 
     -   **filepath** - File path to be checked. If the file path ends
         with `/` it describes a directory. Can also be a list of paths.
+        If **file_regex** is not specified, the rule will only check
+        and remediate directories.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -294,6 +296,8 @@ they must be of the same length.
 
     -   **filepath** - File path to be checked. If the file path ends
         with `/` it describes a directory. Can also be a list of paths.
+        If **file_regex** is not specified, the rule will only check
+        and remediate directories.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
@@ -329,6 +333,8 @@ they must be of the same length.
 
     -   **filepath** - File path to be checked. If the file path ends
         with `/` it describes a directory. Can also be a list of paths.
+        If **file_regex** is not specified, the rule will only check
+        and remediate directories.
 
     -   **filepath_is_regex** - If set to `"true"` the OVAL will
         consider the value of **filepath** as a regular expression.
