@@ -13,10 +13,10 @@
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} ! -uid {{{ FILEUID }}})
+readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}})
 for file in "${files[@]}"; do
     if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chown -h {{{ FILEUID }}} "$file"
+        chown {{{ FILEUID }}} "$file"
     fi
 done
 {{%- else %}}

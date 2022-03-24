@@ -13,10 +13,10 @@
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} ! -gid {{{ FILEGID }}})
+readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -gid {{{ FILEGID }}})
 for file in "${files[@]}"; do
     if basename $file | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chgrp -h {{{ FILEGID }}} "$file"
+        chgrp {{{ FILEGID }}} "$file"
     fi
 done
 {{% else %}}
