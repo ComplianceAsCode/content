@@ -50,4 +50,7 @@ ocil: |-
     <pre>[daemon]
     AutomaticLoginEnable=false</pre>
 
+fix: |-
+    {{{ dconf_ini_file_fix("daemon", "AutomaticLoginEnable", "false") }}}
+
 platform: machine
