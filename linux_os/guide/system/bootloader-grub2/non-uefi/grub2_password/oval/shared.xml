@@ -6,7 +6,6 @@
       {{% if product in ["ol8", "rhel8"] %}}
       <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" test_ref="test_grub2_password_usercfg" />
       {{% else %}}
-      {{{ oval_file_absent_criterion(grub2_boot_path + "/grub.cfg") }}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documenation" operator="OR">
           <criterion comment="make sure a password is defined in {{{ grub2_boot_path }}}/user.cfg" test_ref="test_grub2_password_usercfg" />
@@ -17,9 +16,6 @@
       {{% endif %}}
     </criteria>
   </definition>
-  {{% if product not in ["ol8", "rhel8"] %}}
-  {{{ oval_file_absent(grub2_boot_path + "/grub.cfg") }}}
-  {{% endif %}}
 
   {{% if product not in ["ol8", "rhel8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in {{{ grub2_boot_path }}}/grub.cfg files." id="test_bootloader_superuser" version="2">
