@@ -14,11 +14,20 @@
   <unix:password_object id="object_file_groupownership_home_directories_objects" version="1">
     <unix:username datatype="string" operation="not equal">nobody</unix:username>
     <filter action="include">state_file_groupownership_home_directories_interactive_gids</filter>
+  {{%- if product == 'rhel7' %}}
+    <filter action="exclude">state_file_permissions_groupownership_nfsnobody</filter>
+  {{%- endif %}}
   </unix:password_object>
 
   <unix:password_state id="state_file_groupownership_home_directories_interactive_gids" version="1">
     <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
   </unix:password_state>
+
+{{%- if product == 'rhel7' %}}
+  <unix:password_state id="state_file_permissions_groupownership_nfsnobody" version="1">
+    <unix:username datatype="string" operation="equals">nfsnobody</unix:username>
+  </unix:password_state>
+{{%- endif %}}
 
   <!-- #### prepare for test_file_groupownership_home_directories #### -->
   <local_variable id="var_file_groupownership_home_directories_dirs" datatype="string" version="1"
