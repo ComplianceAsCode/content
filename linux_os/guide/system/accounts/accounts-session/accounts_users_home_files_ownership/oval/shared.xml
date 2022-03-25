@@ -8,12 +8,17 @@
   </definition>
 
   <unix:password_object id="object_accounts_users_home_files_ownership_objects" version="1">
-    <unix:username datatype="string" operation="not equal">nobody</unix:username>
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
     <filter action="include">state_accounts_users_home_files_ownership_interactive_uids</filter>
+    <filter action="exclude">state_accounts_users_home_files_ownership_user_list</filter>
   </unix:password_object>
 
   <unix:password_state id="state_accounts_users_home_files_ownership_interactive_uids" version="1">
     <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
+  </unix:password_state>
+
+  <unix:password_state id="state_accounts_users_home_files_ownership_user_list" version="1">
+    <unix:username datatype="string" operation="pattern match">^{{{ user_list }}}$</unix:username>
   </unix:password_state>
 
   <local_variable id="var_accounts_users_home_files_ownership_dirs" datatype="string" version="1"

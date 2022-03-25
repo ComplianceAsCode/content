@@ -1127,9 +1127,12 @@ class Group(XCCDFEntity):
         rules_in_group = list(self.rules.keys())
         regex = (r'(package_.*_(installed|removed))|' +
                  r'(service_.*_(enabled|disabled))|' +
-                 r'install_smartcard_packages$')
+                 r'install_smartcard_packages|' +
+                 r'sshd_set_keepalive(_0)?|' +
+                 r'sshd_set_idle_timeout$')
         priority_order = ["installed", "install_smartcard_packages", "removed",
-                          "enabled", "disabled"]
+                          "enabled", "disabled", "sshd_set_keepalive_0",
+                          "sshd_set_keepalive", "sshd_set_idle_timeout"]
         rules_in_group = reorder_according_to_ordering(rules_in_group, priority_order, regex)
 
         # Add rules in priority order, first all packages installed, then removed,
