@@ -6,7 +6,6 @@
       {{% if product in ["ol8", "rhel8"] %}}
       <criterion comment="make sure a password is defined in {{{ grub2_uefi_boot_path }}}/user.cfg" test_ref="test_grub2_uefi_password_usercfg" />
       {{% else %}}
-      {{{ oval_file_absent_criterion(grub2_uefi_boot_path + "/grub.cfg") }}}
       <criteria operator="AND">
         <criteria comment="check both files to account for procedure change in documenation" operator="OR">
           <criterion comment="make sure a password is defined in {{{ grub2_uefi_boot_path }}}/user.cfg" test_ref="test_grub2_uefi_password_usercfg" />
@@ -17,9 +16,6 @@
       {{% endif %}}
     </criteria>
   </definition>
-
-  {{% if product not in ["ol8", "rhel8"] %}}
-  {{{ oval_file_absent(grub2_uefi_boot_path + "/grub.cfg") }}}
   
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in {{{ grub2_uefi_boot_path }}}/grub.cfg." id="test_bootloader_uefi_superuser" version="2">
     <ind:object object_ref="object_bootloader_uefi_superuser" />
@@ -29,7 +25,6 @@
     <ind:pattern operation="pattern match">^[\s]*set[\s]+superusers=("?)[a-zA-Z_]+\1$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  {{% endif %}}
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make sure a password is defined in /boot/efi/EFI/redhat/user.cfg" id="test_grub2_uefi_password_usercfg" version="1">
     <ind:object object_ref="object_grub2_uefi_password_usercfg" />
