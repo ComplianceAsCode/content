@@ -499,7 +499,7 @@ selections:
     # RHEL-08-020030
     - dconf_gnome_screensaver_lock_enabled
 
-    # RHEL-08-020031
+    # RHEL-08-020031, RHEL-08-020080
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
 
@@ -523,8 +523,6 @@ selections:
 
     # RHEL-08-020070
     - configure_tmux_lock_after_time
-
-    # RHEL-08-020080
 
     # RHEL-08-020090
     - sssd_enable_certmap
