@@ -24,6 +24,7 @@
   file:
     path: "{{ item.path }}"
     group: "{{{ FILEGID }}}"
+    state: file
   when: item.gid != {{{ FILEGID }}}
   with_items:
     - "{{ files_found.files }}"

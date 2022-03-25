@@ -24,6 +24,7 @@
   file:
     path: "{{ item.path }}"
     owner: "{{{ FILEUID }}}"
+    state: file
   when: item.uid != {{{ FILEUID }}}
   with_items:
     - "{{ files_found.files }}"
