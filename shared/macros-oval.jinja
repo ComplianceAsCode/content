@@ -902,3 +902,12 @@
   {{%- endif %}}
 </def-group>
 {{%- endmacro %}}
+
+{{#
+  User list in form of regex that are excluded when checking user home directory permissions and ownerships.
+#}}
+{{%- if product in ["rhel7", "ol7"] %}}
+  {{%- set user_list="(nobody|nfsnobody)" %}}
+{{%- else %}}
+  {{%- set user_list="nobody" %}}
+{{%- endif %}}
