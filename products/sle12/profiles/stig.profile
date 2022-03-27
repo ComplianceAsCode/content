@@ -86,6 +86,7 @@ selections:
     - audit_rules_dac_modification_lremovexattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_umount
     - audit_rules_dac_modification_umount2
     - audit_rules_enable_syscall_auditing
