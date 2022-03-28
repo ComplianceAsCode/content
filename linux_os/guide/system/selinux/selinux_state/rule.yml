@@ -51,9 +51,17 @@ references:
 ocil_clause: 'SELINUX is not set to enforcing'
 
 ocil: |-
-    Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
-    <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
+    Ensure that {{{ full_name }}} verifies correct operation of security functions.
+
+    Check if "SELinux" is active and in "{{{ xccdf_value("var_selinux_state") }}}" mode with the following command:
+
+    $ sudo getenforce
+    {{{ xccdf_value("var_selinux_state") }}}
 
 fix: |-
+    Configure {{{ full_name }}} to verify correct operation of security functions.
+
     Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
     <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
+
+    A reboot is requirued for the changes to take effect.
