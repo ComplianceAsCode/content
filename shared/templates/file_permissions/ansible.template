@@ -8,26 +8,33 @@
 {{% if IS_DIRECTORY %}}
 {{% if FILE_REGEX %}}
 
-- name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
+{{%- if RECURSIVE %}}
+{{% set FIND_RECURSE_ARGS="" %}}
+{{%- else %}}
+{{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
+{{%- endif %}}
 
-  find:
-    paths: "{{{ path }}}"
-    patterns: {{{ FILE_REGEX[loop.index0] }}}
-    use_regex: yes
-{{% if RECURSIVE %}}
-    recurse: yes
-{{% endif %}}
-    hidden: yes
+{{%- if ALLOW_STRICTER_PERMISSIONS %}}
+{{% set PERMS="-perm /" + SEARCH_MODE %}}
+{{%- else %}}
+{{% set PERMS="\! -perm " + SEARCH_MODE %}}
+{{%- endif %}}
+
+- name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
+  command: "find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex {{{ FILE_REGEX[loop.index0] }}}"
   register: files_found
+  changed_when: False
+  failed_when: False
+  check_mode: no
 
 - name: Set permissions for {{{ path }}} file(s)
   file:
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     mode: "{{{ FILEMODE }}}"
     state: file
   when: item.mode != '{{{ FILEMODE}}}'
   with_items:
-    - "{{ files_found.files }}"
+    - "{{ files_found.stdout_lines}}"
 
 {{% else %}}
 

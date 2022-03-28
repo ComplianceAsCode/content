@@ -58,4 +58,31 @@ def preprocess(data, lang):
                     + field + ">\n" + mode_str)
             mode_int = mode_int >> 1
         data["statemode"] = mode_str.rstrip("\n")
+
+    if lang in ["bash", "ansible"]:
+        mode_int = int(data["filemode"], 8)
+        mode_dict = {'u': '', 'g': '', 'o': ''}
+        fields = [
+            ('o', 'x'), ('o', 'w'), ('o', 'r'),
+            ('g', 'x'), ('g', 'w'), ('g', 'r'),
+            ('u', 'x'), ('u', 'w'), ('u', 'r'),
+            ('o', 't'), ('g', 's'), ('u', 's')
+        ]
+        for field in fields:
+            if mode_int & 0x01 == 1:
+                if not data['allow_stricter_permissions']:
+                    mode_dict[field[0]] += field[1]
+            else:
+                if data['allow_stricter_permissions']:
+                    mode_dict[field[0]] += field[1]
+            mode_int = mode_int >> 1
+
+        search_mode = ''
+        for k in mode_dict:
+            if mode_dict[k] != '':
+                if search_mode != '':
+                    search_mode += ','
+                search_mode += "{}+{}".format(k, mode_dict[k])
+
+        data["search_mode"] = search_mode
     return data
