@@ -53,3 +53,7 @@ ocil_clause: 'SELINUX is not set to enforcing'
 ocil: |-
     Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
     <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
+
+fix: |-
+    Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
+    <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>

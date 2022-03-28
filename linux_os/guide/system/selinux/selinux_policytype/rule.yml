@@ -56,8 +56,12 @@ references:
     stigid@rhel8: RHEL-08-010450
     vmmsrg: SRG-OS-000445-VMM-001780
 
-ocil_clause: 'it does not'
+ocil_clause: 'SELINUXTYPE is set to the wrong value'
 
 ocil: |-
     Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+    <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>
+
+fix: |-
+    Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
     <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>
