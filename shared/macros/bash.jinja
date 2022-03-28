@@ -333,16 +333,18 @@ done
 :type value: str
 :parameter config_is_distributed: If true, will ok look in /etc/ssh/sshd_config.d
 :type config_is_distributed: str
+:parameter config_basename: Filename of configuration file when using distributed configuration
+:type config_basename: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed) -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed, config_basename="00-complianceascode-hardening.conf") -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 
 {{%- if config_is_distributed == "true" %}}
 {{%- set prefix_regex = "^\s*" -%}}
 {{%- set separator_regex = "\s\+" -%}}
-{{%- set hardening_config_basename = "00-complianceascode-hardening.conf" %}}
+{{%- set hardening_config_basename = config_basename %}}
 {{%- set line_regex = prefix_regex ~ parameter ~ separator_regex %}}
 mkdir -p {{{ sshd_config_dir }}}
 touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}

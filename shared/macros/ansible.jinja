@@ -166,17 +166,29 @@ value: :code:`Setting={{ varname1 }}`
 
 
 {{#
-  High level macro to set a value in the ssh daemon configuration file. This
-  takes three values: msg (the name for the Ansible task), a parameter to set
-  in the configuration file, and the value to set it to. We specify a case
-  insensitive comparison in the prefix since this is used to deduplicate since
-  sshd_config has case-insensitive parameters (but case-sensitive values).
-  We also specify the validation program here; -t specifies test and -f allows
-  Ansible to pass a file at a different path.
+  High level macro to set a value in the ssh daemon configuration file.
+  We specify a case insensitive comparison in the prefix since this is 
+  used to deduplicate since sshd_config has case-insensitive parameters
+  (but case-sensitive values). We also specify the validation program here;
+  -t specifies test and -f allows Ansible to pass a file at a different path.
+  
+  Set set a parameter in /etc/sshd_config or /etc/ssh/sshd_config.d/
+
+:parameter msg: Message to be set as Task Title, if not set the rule's title will be used instead
+:type msg: str
+:parameter parameter: Parameter to set
+:type parameter: str
+:parameter value: The value to set
+:type value: str
+:parameter config_is_distributed: If true, will ok look in /etc/ssh/sshd_config.d
+:type config_is_distributed: str
+:parameter config_basename: Filename of configuration file when using distributed configuration
+:type config_basename: str
+
 #}}
-{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false") %}}
+{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") %}}
 {{%- if config_is_distributed == "true" %}}
-{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir="/etc/ssh/sshd_config.d", set_file="/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf", parameter=parameter, separator_regex="\s+", value=value, prefix_regex="^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="^[#\s]*Match") }}}
+{{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir="/etc/ssh/sshd_config.d", set_file=config_basename, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="^[#\s]*Match") }}}
 {{%- else %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^[#\s]*Match") }}}
 {{%- endif %}}
