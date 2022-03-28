@@ -1,3 +1,4 @@
+{{% if VALUE_REGEX %}}
 {{{
 oval_auditd_config(
 	parameter=PARAMETER,
@@ -5,3 +6,12 @@ oval_auditd_config(
 	missing_parameter_pass=MISSING_PARAMETER_PASS
 )
 }}}
+{{% else %}}
+{{{
+oval_auditd_config(
+	parameter=PARAMETER,
+	missing_parameter_pass=MISSING_PARAMETER_PASS,
+	var_name=VAR_NAME
+)
+}}}
+{{% endif %}}

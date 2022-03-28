@@ -28,9 +28,13 @@
 :type section: str
 :param quotes: If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
 :type quotes: str
+:param var_name: The external variable to compare to, if any
+:type var_name: str
+:param  var_comparison: The operattion to use in state against the given variable in var_name
+:type var_comparison: str
 
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='') -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='', var_name='', var_comparison='') -%}}
 {{%- if application == '' -%}}
 	{{%- set application = "The respective application or service" -%}}
 {{%- endif -%}}
@@ -71,7 +75,7 @@
   </definition>
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
-  {{{ oval_line_in_file_state(value, multi_value, quotes) }}}
+  {{{ oval_line_in_file_state(value, multi_value, quotes, var_name=var_name, var_comparison=var_comparison) }}}
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
   {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
@@ -225,9 +229,13 @@
 :type quotes: str
 :param id_stem: The first suffix of tests, objects etc. that ensures uniqueness of the particular OVAL entity ID. Defaults to the rule ID.
 :type id_stem: str
+:param var_name: The external variable to compare to, if any
+:type var_name: str
+:param  var_comparison: The operattion to use in state against the given variable in var_name
+:type var_comparison: str
 
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value='', quotes='', id_stem='', var_name='', var_comparison='') -%}}
 {{%- set id_stem = id_stem or rule_id -%}}
 {{%- set regex = value -%}}
 {{%- if quotes != "" %}}
@@ -242,8 +250,15 @@
 {{%- set regex = "^"+regex+"$" -%}}
 {{%- endif %}}
 <ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
+  {{% if var_name %}}
+  <ind:subexpression operation="{{{ var_comparison }}}" var_check="all" var_ref="{{{ var_name }}}" />
+  {{% else %}}
   <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
+  {{%- endif %}}
 </ind:textfilecontent54_state>
+{{% if var_name %}}
+<external_variable comment="Expected value" datatype="string" id="{{{ var_name }}}" version="1" />
+{{%- endif %}}
 {{%- endmacro %}}
 
 {{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
@@ -487,10 +502,14 @@
 :type missing_parameter_pass: bool
 :param missing_config_file_fail: If set, the check will fail if the configuration file doesn't exist in the system.
 :type missing_config_file_fail: bool
+:param var_name: The external variable to compare to, if any
+:type var_name: str
+:param  var_comparison: The operattion to use in state against the given variable in var_name
+:type var_comparison: str
 
 #}}
-{{%- macro oval_auditd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{%- macro oval_auditd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, var_name='', var_comparison='') %}}
+{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail,var_name=var_name, var_comparison="case insensitive equals") }}}
 {{%- endmacro %}}
 
 {{#
