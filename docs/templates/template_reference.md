@@ -417,6 +417,8 @@ The template only generates a check and no remediation.
 
     - **config** - The kernel configuration to check
     - **value** - The value the configuration should have
+      When **value** is `"n"`, the check will pass when the config is absent or
+      commented out in the `/boot/config-*` files.
 
 - Languages: OVAL
 

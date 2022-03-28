@@ -8,13 +8,23 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" comment="Check /boot/config-.* files for {{{ CONFIG }}}={{{ VALUE }}}"
+  <ind:textfilecontent54_test check="all" check_existence="{{{ EXISTENCE }}}" comment="Check /boot/config-.* files for {{{ CONFIG }}}={{{ VALUE }}}"
   id="test_kernel_{{{ CONFIG}}}" version="1">
     <ind:object object_ref="object_kernel_{{{ CONFIG }}}" />
+{{% if EXISTENCE != "none_exist" %}}
+    <ind:state state_ref="state_kernel_{{{ CONFIG }}}" />
+{{% endif %}}
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="object_kernel_{{{ CONFIG }}}" version="1">
     <ind:filepath operation="pattern match">^/boot/config-.*$</ind:filepath>
-    <ind:pattern operation="pattern match">^{{{ CONFIG | upper }}}={{{ VALUE }}}$</ind:pattern>
+    <ind:pattern operation="pattern match">^{{{ CONFIG | upper }}}=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+{{% if EXISTENCE != "none_exist" %}}
+  <ind:textfilecontent54_state id="state_kernel_{{{ CONFIG }}}" version="1">
+    <ind:subexpression datatype="string" operation="equals">{{{ VALUE }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% endif %}}
 </def-group>
