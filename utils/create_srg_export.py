@@ -380,8 +380,7 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                 row = create_base_row(control, srgs, rule_object)
                 if control.levels is not None:
                     row['Severity'] = get_severity(control.levels[0])
-                row['Requirement'] = srgs[control.id]['title'].replace('Operating systems',
-                                                                       env_yaml['full_name'])
+                row['Requirement'] = control.title
                 row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables)
                 row['Check'] = f'{handle_variables(rule_object.ocil, control.variables)}\n\n' \
                                f'If {rule_object.ocil_clause}, then this is a finding.'
@@ -427,7 +426,7 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
 
 
 def setup_csv_writer(csv_file: TextIO) -> csv.DictWriter:
-    headers = ['IA Control', 'CCI', 'SRGID', 'SRG Requirement', 'Requirement',
+    headers = ['IA Control', 'CCI', 'SRGID', 'STIGID', 'SRG Requirement', 'Requirement',
                'SRG VulDiscussion', 'Vul Discussion', 'Status', 'SRG Check', 'Check', 'SRG Fix',
                'Fix', 'Severity', 'Mitigation', 'Artifact Description', 'Status Justification']
     csv_writer = csv.DictWriter(csv_file, headers)
