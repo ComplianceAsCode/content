@@ -59,9 +59,15 @@ references:
 ocil_clause: 'SELINUXTYPE is set to the wrong value'
 
 ocil: |-
+    Ensure that {{{ full_name }}} verifies correct operation of security functions.
+
     Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
     <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>
 
 fix: |-
+    Configure {{{ full_name }}} to verify correct operation of security functions.
+
     Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
     <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>
+
+    A reboot is requirued for the changes to take effect.
