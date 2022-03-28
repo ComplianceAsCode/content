@@ -78,11 +78,23 @@ def preprocess(data, lang):
             mode_int = mode_int >> 1
 
         search_mode = ''
+        fix_mode = ''
         for k in mode_dict:
             if mode_dict[k] != '':
                 if search_mode != '':
                     search_mode += ','
                 search_mode += "{}+{}".format(k, mode_dict[k])
 
+                if data['allow_stricter_permissions']:
+                    if fix_mode != '':
+                        fix_mode += ','
+                    fix_mode += "{}-{}".format(k, mode_dict[k])
+
         data["search_mode"] = search_mode
+        if data['allow_stricter_permissions']:
+            # overwrite "filemode" with a subtractive symbolic mode
+            # e.g., if filemode was "0755", now it is "u-s,g-ws,o-wt"
+            # This allows files to keep the permission in which they are already stricter
+            data["filemode"] = fix_mode
+
     return data
