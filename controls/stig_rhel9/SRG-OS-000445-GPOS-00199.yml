@@ -4,6 +4,8 @@ controls:
             - medium
         title: {{{ full_name }}} must verify correct operation of all security functions.
         rules:
+            - var_selinux_policy_name=targeted
+            - var_selinux_state=enforcing
             - selinux_policytype
             - selinux_state
         status: automated
