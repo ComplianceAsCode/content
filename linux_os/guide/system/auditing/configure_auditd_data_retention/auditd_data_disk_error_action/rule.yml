@@ -55,8 +55,7 @@ template:
         missing_parameter_pass: 'false'
         parameter: disk_error_action
         rule_id: {{{ rule_id }}}
-        value: halt
-        value@rhcos4: syslog
+        var_name: var_auditd_disk_error_action
         value_regex@ol8: 'syslog|single|halt'
         value_regex@rhel8: 'syslog|single|halt'
     backends:

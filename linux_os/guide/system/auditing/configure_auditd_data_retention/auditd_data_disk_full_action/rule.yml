@@ -63,9 +63,7 @@ template:
         missing_parameter_pass: 'false'
         parameter: disk_full_action
         rule_id: {{{ rule_id }}}
-        value: halt
-        value@sle15: syslog
-        value@rhcos4: syslog
+        var_name: var_audispd_disk_full_action
         value_regex@ol8: 'syslog|single|halt'
         value_regex@rhel8: 'syslog|single|halt'
     backends:
