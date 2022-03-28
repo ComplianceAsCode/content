@@ -2,7 +2,7 @@ controls:
     -   id: SRG-OS-000024-GPOS-00007
         levels:
             - medium
-        title: The operating system must display the Standard Mandatory DoD Notice and Consent
+        title: {{{ full_name }}} must display the Standard Mandatory DoD Notice and Consent
             Banner until users acknowledge the usage conditions and take explicit actions
             to log on for further access.
         rules:
@@ -11,4 +11,11 @@ controls:
             - banner_etc_issue
             - dconf_gnome_banner_enabled
             - dconf_gnome_login_banner_text
-        status: automated
+        status: does not meet
+        mitigation: |-
+            Ensure that the banner is prior to entering the user password to act as the "OK".
+
+            Although the listed mitigation is supporting the security function, it is not sufficient to reduce the residual risk of this requirement.
+
+        status_justification: |-
+          {{{ full_name }}} does not have configuration options to meet this requirement.

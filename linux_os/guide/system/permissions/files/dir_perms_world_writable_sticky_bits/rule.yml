@@ -66,4 +66,12 @@ ocil_clause: 'any world-writable directories are missing the sticky bit'
 
 ocil: |-
     To find world-writable directories that lack the sticky bit, run the following command:
-    <pre>$ sudo find / -xdev -type d -perm 002 ! -perm 1000</pre>
+    <pre>$ sudo find / -type d \( -perm -0002 -a ! -perm -1000 \) -print 2>/dev/null</pre>
+
+fix: |-
+    Configure all world-writable directories to have the sticky bit set to prevent unauthorized and unintended information transferred via shared system resources.
+
+    Set the sticky bit on all world-writable directories using the command, replace "[World-Writable Directory]" with any directory path missing the sticky bit:
+
+    $ chmod a+t [World-Writable Directory]
+

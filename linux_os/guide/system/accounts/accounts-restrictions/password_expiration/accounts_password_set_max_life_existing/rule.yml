@@ -5,9 +5,9 @@ prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
 title: 'Set Existing Passwords Maximum Age'
 
 description: |-
-    Configure non-compliant accounts to enforce a 60-day maximum password lifetime
+    Configure non-compliant accounts to enforce a {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}}-day maximum password lifetime
     restriction by running the following command:
-    <pre>$ sudo chage -M 60 <i>USER</i></pre>
+    <pre>$ sudo chage -M {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} <i>USER</i></pre>
 
 rationale: |-
     Any password, no matter how complex, can eventually be cracked. Therefore,
@@ -39,18 +39,17 @@ references:
     stigid@sle15: SLES-15-020230
     vmmsrg: SRG-OS-000076-VMM-000430
 
-ocil_clause: 'existing passwords are not configured correctly'
+ocil_clause: 'any results are returned that are not associated with a system account'
 
 ocil: |-
-    Check whether the maximum time period for existing passwords is restricted to 60 days with the following commands:
+    Check whether the maximum time period for existing passwords is restricted to {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} days with the following commands:
 
-    <pre>
-    $ sudo awk -F: '$5 > 60 {print $1 "" "" $5}' /etc/shadow
+    $ sudo awk -F: '$5 &gt; 60 {print $1 "" "" $5}' /etc/shadow
 
-    $ sudo awk -F: '$5 <= 0 {print $1 "" "" $5}' /etc/shadow
-    </pre>
+    $ sudo awk -F: '$5 &lt;= 0 {print $1 "" "" $5}' /etc/shadow
 
 fix: |-
     Configure non-compliant accounts to enforce a 60-day maximum password lifetime restriction.
 
-    $ sudo chage -M 60 [user]
+    passwd -x {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} [user]
+

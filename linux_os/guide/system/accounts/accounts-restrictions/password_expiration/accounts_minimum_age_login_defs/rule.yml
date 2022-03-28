@@ -63,4 +63,12 @@ ocil: |-
     To check the minimum password age, run the command:
     <pre>$ grep PASS_MIN_DAYS /etc/login.defs</pre>
 
+fix: |-
+    Configure {{{ full_name }}} to enforce 24 hours/1 day as the minimum password lifetime.
+
+    Add the following line in ""/etc/login.defs"" (or modify the line to have the required value):
+
+    PASS_MIN_DAYS {{{ xccdf_value("var_accounts_minimum_age_login_defs") }}}
+
 platform: login_defs
+
