@@ -504,6 +504,9 @@ selections:
     # OL08-00-020042
     - no_tmux_in_shells
 
+    # OL08-00-020043
+    - vlock_installed
+
     # OL08-00-020050
     - dconf_gnome_lock_screen_on_smartcard_removal
 
