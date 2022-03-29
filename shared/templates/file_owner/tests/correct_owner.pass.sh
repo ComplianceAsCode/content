@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 
 {{% for path in FILEPATH %}}
 {{% if IS_DIRECTORY and FILE_REGEX %}}

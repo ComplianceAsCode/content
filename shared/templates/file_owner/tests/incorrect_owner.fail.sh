@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 
 useradd testuser_123
 
