@@ -128,49 +128,30 @@ macro(ssg_build_shorthand_xml PRODUCT)
     )
 endmacro()
 
-# Apply the XSLT transformation to the shorthand to generate the intermediate
-# XCCDF document. Here, unlinked refers to the fact that we don't yet have
-# knowledge of the remediations and OVAL content present in the repo and thus
-# haven't removed extraneous <oval/> elements &c. There's two versions of this
-# macro depending on whether this product has a STIG guide.
-macro(ssg_build_xccdf_unlinked_no_stig PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked-resolved.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-    )
-endmacro()
-
-# See above.
-macro(ssg_build_xccdf_unlinked_stig PRODUCT STIG_REFERENCE_FILE)
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/add_stig_references.py" --disa-stig "${STIG_REFERENCE_FILE}" --unlinked-xccdf "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked-resolved.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-    )
-endmacro()
-
-macro(ssg_build_xccdf_unlinked PRODUCT)
+macro(ssg_build_xccdf_with_stig_references PRODUCT)
     file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
     list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
     list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
 
     if (STIG_REFERENCE_FILE STREQUAL "not-found")
-        ssg_build_xccdf_unlinked_no_stig(${PRODUCT})
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
+            COMMAND cp "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
+            DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
+            COMMENT "[${PRODUCT}-content] generating xccdf-with-stig-references.xml"
+        )
     else()
-        ssg_build_xccdf_unlinked_stig(${PRODUCT} ${STIG_REFERENCE_FILE})
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/add_stig_references.py" "${STIG_REFERENCE_FILE}" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
+            DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
+            COMMENT "[${PRODUCT}-content] generating xccdf-with-stig-references.xml"
+        )
     endif()
+    add_custom_target(
+        generate-internal-${PRODUCT}-xccdf-with-stig-references.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
+    )
 endmacro()
 
 # Build all templated content using the YAML "template" key in this product's
@@ -326,9 +307,9 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     endforeach()
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
+        DEPENDS generate-internal-${PRODUCT}-xccdf-with-stig-references.xml
         DEPENDS ${PRODUCT_LANGUAGE_DEPENDS}
         COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )
@@ -788,7 +769,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
-    ssg_build_xccdf_unlinked(${PRODUCT})
+    ssg_build_xccdf_with_stig_references(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
