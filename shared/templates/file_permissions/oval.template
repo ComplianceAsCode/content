@@ -1,19 +1,3 @@
-{{%- if ALLOW_STRICTER_PERMISSIONS %}}
-    {{#
-        When allowing stricter permissions, the check looks for files/directories
-        that have any extra permission bit set. The permissions mode (STATEMODE)
-        is negated (inverted) and becomes a mask for permissions that should not be set.
-    #}}
-  {{% set FILE_EXISTENCE = "at_least_one_exists" %}}
-{{%- else -%}}
-  {{%- if MISSING_FILE_PASS -%}}
-    {{# Any number of files can exist, from zero to any #}}
-    {{% set FILE_EXISTENCE = "any_exist" %}}
-  {{%- else -%}}
-    {{# All defined files must exist. When using regex, at least one file must match #}}
-    {{% set FILE_EXISTENCE = "all_exist" %}}
-  {{%- endif -%}}
-{{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
   {{% if FILEPATH is not string %}}
@@ -22,28 +6,24 @@
       ") }}}
     <criteria>
   {{% for filepath in FILEPATH %}}
-      <criterion comment="Check file mode of {{{ filepath }}}" test_ref="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+      <criterion comment="Check file mode of {{{ filepath }}}" test_ref="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}"/>
   {{% endfor %}}
   {{% else %}}
     {{{ oval_metadata("This test makes sure that " +  FILEPATH + " has mode " + FILEMODE + ".
       If the target file or directory has an extended ACL, then it will fail the mode check.
       ") }}}
     <criteria>
-      <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"{{{ ' negate="true"' if ALLOW_STRICTER_PERMISSIONS }}}/>
+      <criterion comment="Check file mode of {{{ FILEPATH }}}" test_ref="test_file_permissions{{{ FILEID }}}"/>
   {{% endif %}}
     </criteria>
   </definition>
 
   {{% for filepath in FILEPATH %}}
-  <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing mode of {{{ filepath }}}" id="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="2">
+  <unix:file_test check="all" check_existence="none_exist" comment="Testing mode of {{{ filepath }}}" id="test_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="3">
     <unix:object object_ref="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" />
-    <unix:state state_ref="state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}" />
   </unix:file_test>
-  <unix:file_state id="state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ 'not_' if ALLOW_STRICTER_PERMISSIONS }}}{{{ FILEMODE }}}"{{{ ' operator="OR"' if ALLOW_STRICTER_PERMISSIONS }}} version="2">
-      {{{ STATEMODE | indent(6) }}}
-  </unix:file_state>
-  <unix:file_object comment="{{{ filepath }}}" id="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
 
+  <unix:file_object comment="{{{ filepath }}}" id="object_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}" version="1">
     {{%- if IS_DIRECTORY %}}
       {{%- if RECURSIVE %}}
       <unix:path operation="pattern match">^{{{ filepath[:-1] }}}</unix:path>
@@ -58,17 +38,13 @@
     {{%- else %}}
       <unix:filepath{{% if FILEPATH_IS_REGEX %}} operation="pattern match"{{% endif %}}>{{{ filepath }}}</unix:filepath>
     {{%- endif %}}
-
-    {{%- if ALLOW_STRICTER_PERMISSIONS %}}
-      {{#
-          This filter is required because of an issue in OpenSCAP. The issue has been fixed in:
-          https://github.com/OpenSCAP/openscap/pull/1709 but this line should be kept until the
-          fix is widely available. The fix is expected to be part of OpenSCAP >= 1.3.5.
-      #}}
-      <filter action="include">state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_not_{{{ FILEMODE }}}</filter>
-    {{%- endif %}}
       <filter action="exclude">exclude_symlinks_{{{ FILEID }}}</filter>
+      <filter action="exclude">state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ FILEMODE }}}{{{ 'or_stricter_' if ALLOW_STRICTER_PERMISSIONS }}}</filter>
   </unix:file_object>
+
+  <unix:file_state id="state_file_permissions{{{ FILEID }}}_{{{ loop.index0 }}}_mode_{{{ FILEMODE }}}{{{ 'or_stricter_' if ALLOW_STRICTER_PERMISSIONS }}}" operator="AND" version="3">
+      {{{ STATEMODE | indent(6) }}}
+  </unix:file_state>
   {{% endfor %}}
 
   <unix:file_state id="exclude_symlinks_{{{ FILEID }}}" version="1">
