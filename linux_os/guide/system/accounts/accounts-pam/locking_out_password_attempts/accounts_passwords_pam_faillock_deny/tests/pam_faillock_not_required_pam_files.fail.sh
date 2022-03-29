@@ -3,8 +3,8 @@
 # packages = authconfig
 {{%- else %}}
 # packages = authselect
-{{%- endif %}}
 # remediation = none
+{{%- endif %}}
 # variables = var_accounts_passwords_pam_faillock_deny=3
 
 # This test scenario manually modify the pam_faillock.so entries in auth section from
