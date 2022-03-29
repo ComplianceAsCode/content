@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 
 groupadd group_test
 
