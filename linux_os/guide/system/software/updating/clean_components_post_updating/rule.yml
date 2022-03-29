@@ -64,6 +64,8 @@ ocil_clause: |-
     {{% endif %}}
 
 ocil: |-
+    Verify {{{ full_name }}} removes all software components after updated versions have been installed.
+
     {{% if product in ["sle12", "sle15"] %}}
     To verify that <tt>solver.upgradeRemoveDroppedPackages</tt> is configured properly, run the
     following command:
@@ -83,6 +85,14 @@ ocil: |-
     <pre>clean_requirements_on_remove=1</pre>
     {{% endif %}}
 
+{{% if 'rhel' in product %}}
+fix: |-
+    Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
+    
+    Edit the file {{{ pkg_manager_config_file }}} by adding or editing the following line:
+
+    <pre>clean_requirements_on_remove=1</pre>
+{{% endif %}}
 {{% if product == 'sle12' %}}
 platform: zypper
 {{% elif product in ['ol7', 'ol8', 'rhel7', 'rhel8', 'rhel9', 'rhv4', 'sle15'] %}}
