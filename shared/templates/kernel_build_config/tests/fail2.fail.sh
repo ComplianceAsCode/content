@@ -8,13 +8,13 @@
 # This is similar to fail1, but excplicitly sets "y"
 # (The test suite doesn't support dinamic pass fail handling)
 for file in /boot/config-* ; do
-    if grep -q ^{{{ CONFIG | upper }}} "$file" ; then
-        sed -i "s/^{{{ CONFIG | upper }}}.*/{{{ CONFIG | upper }}}=y/" /boot/config-*
+    if grep -q ^{{{ CONFIG }}} "$file" ; then
+        sed -i "s/^{{{ CONFIG }}}.*/{{{ CONFIG }}}=y/" /boot/config-*
     else
-        echo "{{{ CONFIG | upper }}}=y" >> "$file"
+        echo "{{{ CONFIG }}}=y" >> "$file"
     fi
 done
 {{% else %}}
 # When we set VALUE="y", a missing config is a fail scenario
-sed -i "/{{{ CONFIG | upper }}}.*/d" /boot/config-*
+sed -i "/{{{ CONFIG }}}.*/d" /boot/config-*
 {{%- endif %}}

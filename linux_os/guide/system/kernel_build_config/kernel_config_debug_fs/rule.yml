@@ -8,7 +8,7 @@ description: |-
     <tt>debugfs</tt> is a virtual file system that kernel developers use to put debugging files
     into. Enable this option to be able to read and write to these files.
 
-    {{{ kernel_build_config_describe_config("config_debug_fs", "n") | indent(4) }}}
+    {{{ kernel_build_config_describe_config("CONFIG_DEBUG_FS", "n") | indent(4) }}}
 
 rationale: |-
     To reduce the attack surface, this file system should be disabled if not in use.
@@ -26,11 +26,11 @@ identifiers:
 ocil_clause: 'the kernel was built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("config_debug_fs", "n") | indent(4) }}}
+    {{{ kernel_build_config_ocil("CONFIG_DEBUG_FS", "n") | indent(4) }}}
 
 template:
     name: kernel_build_config
     vars:
-        config: config_debug_fs
+        config: CONFIG_DEBUG_FS
         value: 'n'
 

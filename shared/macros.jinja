@@ -1786,8 +1786,8 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 #}}
 {{% macro kernel_build_config_describe_config(config, value) -%}}
     The configuration that was used to build kernel is available at <tt>/boot/config-*</tt>.
-    To check the configuration value for <tt>{{{ config | upper }}}</tt>, run the following command:
-    <tt>grep {{{ config | upper }}} /boot/config-*</tt>
+    To check the configuration value for <tt>{{{ config }}}</tt>, run the following command:
+    <tt>grep {{{ config }}} /boot/config-*</tt>
 {{%- endmacro %}}
 
 {{#
@@ -1813,5 +1813,5 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 #}}
 {{% macro kernel_build_config_ocil(config, value) -%}}
     To determine the config value the kernel was built with, run the following command:
-    <pre>$ grep {{{ config | upper}}} /boot/config.*</pre>
+    <pre>$ grep {{{ config }}} /boot/config.*</pre>
 {{%- endmacro %}}
