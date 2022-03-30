@@ -300,6 +300,7 @@ selections:
 - package_firewalld_installed
 - package_gssproxy_removed
 - package_iprutils_removed
+- package_krb5-server_removed
 - package_krb5-workstation_removed
 - package_libreport-plugin-logger_removed
 - package_libreport-plugin-rhtsupport_removed
