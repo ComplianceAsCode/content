@@ -10,17 +10,18 @@
 {{% set FIND_RECURSE_ARGS="-maxdepth 1" %}}
 {{%- endif %}}
 
+{{%- if ALLOW_STRICTER_PERMISSIONS %}}
+{{% set PERMS="-perm /" + SEARCH_MODE %}}
+{{%- else %}}
+{{% set PERMS="\! -perm " + SEARCH_MODE %}}
+{{%- endif %}}
+
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f)
-for file in "${files[@]}"; do
-    if basename "$file" | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chmod {{{ FILEMODE }}} "$file"
-    fi    
-done
+find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
 {{%- else %}}
-find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
+find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
 {{%- endif %}}
 {{%- else %}}
 chmod {{{ FILEMODE }}} {{{ path }}}
