@@ -85,11 +85,8 @@ def preprocess(data, lang):
                         "<unix:" + field + " datatype=\"boolean\">true</unix:"
                         + field + ">\n" + mode_str)
             else:
-                value = "false"
-                if data['allow_stricter_permissions']:
-                    value = "true"
                 mode_str = (
-                    "<unix:" + field + " datatype=\"boolean\">{}</unix:".format(value)
+                    "<unix:" + field + " datatype=\"boolean\">false</unix:"
                     + field + ">\n" + mode_str)
             mode_int = mode_int >> 1
         data["statemode"] = mode_str.rstrip("\n")
