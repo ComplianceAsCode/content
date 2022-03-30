@@ -80,6 +80,10 @@ def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num:
     sheet[f'Q{row_num}'] = row['Status Justification']
     sheet.row_dimensions[row_num].height = 42
 
+    # freeze header row represented by A1
+    # A2 is required because it freezes everything before it
+    # in this case we only want A1 row to be frozen
+    sheet.freeze_panes = "A2"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
