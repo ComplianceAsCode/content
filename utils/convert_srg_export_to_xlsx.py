@@ -54,7 +54,7 @@ def setup_headers(sheet: openpyxl.worksheet.worksheet.Worksheet) -> None:
         cell.font = Font(bold=True, name='Calibri')
 
 
-def format_cells(sheet: openpyxl.worksheet.worksheet.Worksheet, row_num: int):
+def format_cells(sheet: openpyxl.worksheet.worksheet.Worksheet):
     for row in sheet.iter_rows():
         for cell in row:
             cell.alignment = cell.alignment = Alignment(wrap_text=True, vertical='top')
@@ -85,6 +85,7 @@ def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num:
     # in this case we only want A1 row to be frozen
     sheet.freeze_panes = "A2"
 
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', '--output', type=str,
@@ -109,7 +110,7 @@ def main():
         for row in csv_reader:
             setup_row(sheet, row, row_num)
             row_num += 1
-    format_cells(sheet, row_num)
+    format_cells(sheet)
     xlsx.save(args.output)
 
 
