@@ -13,7 +13,7 @@
 
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
   replace:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     regexp: '^[\s]*{{{ SYSCTLVAR }}}'
     replace: '#{{{ SYSCTLVAR }}}'
   loop: "{{ find_sysctl_d.files }}"
