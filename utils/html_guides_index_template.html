@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Profiles in ComplianceAsCode</title>
+<style>
+</style>
+</head>
+<body>
+
+<h1>Profiles in ComplianceAsCode</h1>
+
+{{% for product in products|sort(attribute="name") %}}
+<h4>{{{ product.name }}}</h4>
+  <ul>
+    {{% for profile in product.profiles|sort(attribute="title") %}}
+    <li>
+      <a href="ssg-{{{ product.id }}}-guide-{{{ profile.id }}}.html">{{{ profile.title }}}</a>
+    </li>
+    {{% endfor %}}
+  </ul>
+{{% endfor %}}
+
+</body>
+</html>
