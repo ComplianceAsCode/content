@@ -49,7 +49,7 @@ echo "</html>" >> $STATS_DIR/index.html
 # Generate Guides page
 mkdir -p $PAGES_DIR/guides
 cp -rf build/guides $PAGES_DIR
-utils/choosing_policy_page.py . > $PAGES_DIR/guides/index.html
+utils/gen_html_guides_index.py . > $PAGES_DIR/guides/index.html
 
 
 # Generate Mapping Tables page
