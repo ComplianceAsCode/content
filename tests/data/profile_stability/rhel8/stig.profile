@@ -185,6 +185,7 @@ selections:
 - dir_permissions_library_dirs
 - dir_perms_world_writable_root_owned
 - dir_perms_world_writable_sticky_bits
+- dir_perms_world_writable_system_owned_group
 - directory_group_ownership_var_log_audit
 - directory_ownership_var_log_audit
 - directory_permissions_var_log_audit
