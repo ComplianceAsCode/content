@@ -6,7 +6,6 @@ platform: ocp4-on-sdn
 
 title: 'Verify User Who Owns The Worker Proxy Kubeconfig File'
 
-{{%- set kubeletconf_path = "/config/kube-proxy-config.yaml" %}}
 
 description: |-
   To ensure the Kubernetes ConfigMap is mounted into the sdn daemonset pods with the
@@ -51,9 +50,3 @@ ocil: |-
      done
   </pre>
   The output should be <tt>root:root</tt>
-
-template:
-    name: file_owner
-    vars:
-        filepath: {{{ kubeletconf_path }}}
-        fileuid: '0'
