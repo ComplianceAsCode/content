@@ -33,7 +33,7 @@
     mode: "{{{ FILEMODE }}}"
     state: file
   with_items:
-    - "{{ files_found.stdout_lines}}"
+    - "{{ files_found.stdout_lines }}"
 
 {{% else %}}
 
