@@ -687,6 +687,8 @@ def get_cpe_of_tested_os(test_env, log_file):
 
 INSTALL_COMMANDS = dict(
     fedora=("dnf", "install", "-y"),
+    ol7=("yum", "install", "-y"),
+    ol8=("yum", "install", "-y"),
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
     rhel9=("yum", "install", "-y"),
@@ -724,5 +726,10 @@ def cpes_to_platform(cpes):
                     return "rhel" + major_version
         if "ubuntu" in cpe:
             return "ubuntu"
+        if "oracle:linux" in cpe:
+            match = re.search(r":linux:([^:]+):", cpe)
+            if match:
+                major_version = match.groups()[0]
+                return "ol" + major_version
     msg = "Unable to deduce a platform from these CPEs: {cpes}".format(cpes=cpes)
     raise ValueError(msg)
