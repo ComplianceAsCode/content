@@ -14,7 +14,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_nfs_{{{ MOUNTOPTIONID }}}_etc_fstab" version="1">
     <ind:filepath>/etc/fstab</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*\[?[\.\w-:]+\]?:[/\w-]+\s+[/\w-]+\s+nfs[4]?\s+(.*)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*\[?[\.\w:-]+\]?[:=][/\w-]+\s+[/\w\\-]+\s+nfs[4]?\s+(.*)$</ind:pattern>
     <!-- the "not equal" operation essentially means all instances of the regexp -->
     <ind:instance datatype="int" operation="not equal">0</ind:instance>
   </ind:textfilecontent54_object>
@@ -27,7 +27,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_no_nfs_defined_etc_fstab_{{{ MOUNTOPTIONID }}}" version="1">
     <ind:filepath>/etc/fstab</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*\[?[\.\w-:]+\]?:[/\w-]+\s+[/\w-]+\s+nfs[4]?\s+.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*\[?[\.\w:-]+\]?[:=][/\w-]+\s+[/\w\\-]+\s+nfs[4]?\s+(.*)$</ind:pattern>
     <!-- the "not equal" operation below essentially means all instances of the regexp -->
     <ind:instance datatype="int" operation="not equal">0</ind:instance>
   </ind:textfilecontent54_object>

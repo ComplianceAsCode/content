@@ -1390,7 +1390,7 @@ readarray -t vfstype_points < <(grep -E "[[:space:]]{{{ vfstype }}}[[:space:]]" 
 
 for vfstype_point in "${vfstype_points[@]}"
 do
-    {{{ bash_ensure_mount_option_in_fstab("$vfstype_point", mount_opt, fs_spec, type) | indent(4) }}}
+    {{{ bash_ensure_mount_option_in_fstab("${vfstype_point//\\\\/\\\\\\\\}", mount_opt, fs_spec, type) | indent(4) }}}
 done
 {{%- endmacro %}}
 
