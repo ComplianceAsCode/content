@@ -21,7 +21,7 @@
 {{%- endif %}}
 
 - name: Find {{{ path }}} file(s){{% if RECURSIVE %}} recursively{{% endif %}}
-  command: "find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}'"
+  command: 'find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex "{{{ FILE_REGEX[loop.index0] }}}"'
   register: files_found
   changed_when: False
   failed_when: False
