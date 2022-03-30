@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Encrypt Partitions'
 
@@ -39,6 +39,8 @@ description: |-
         {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
     {{% elif product == "rhel7" %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-encryption") }}}
+    {{% elif product == "fedora" %}}
+        {{{ weblink(link="https://docs.fedoraproject.org/en-US/quick-docs/encrypting-drives-using-LUKS/") }}}
     {{% else %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/encrypting-block-devices-using-luks_security-hardening") }}}
     {{% endif %}}.
