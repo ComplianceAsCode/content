@@ -4,6 +4,13 @@ prodtype: ocp4
 
 title: 'Ensure Controller insecure port argument is unset'
 
+{{% set custom_jqfilter = '{{.var_kube_controller_manager_port_zero_filter}}' %}}
+{{% set default_jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["port"]!=null then .extendedArguments["port"]==["0"] else true end]' %}}
+{{% set custom_api_path = '{{.var_kube_controller_manager_config_filepath}}' %}}
+{{% set default_api_path = '/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config' %}}
+{{% set dump_path = default_api_path ~ ',' ~ default_jqfilter ~ ',' ~ custom_jqfilter %}}
+
+
 description: |-
     To ensure the Controller Manager service is bound to secure loopback
     address and a secure port,
@@ -31,8 +38,6 @@ rationale: |-
 
 severity: low
 
-{{% set jqfilter = '[.data."config.yaml" | fromjson | if .extendedArguments["port"]!=null then .extendedArguments["port"]==["0"] else true end]' %}}
-
 identifiers:
     cce@ocp4: CCE-83578-5
 
@@ -55,14 +60,13 @@ references:
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config': jqfilter}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({custom_api_path: dump_path}) | indent(4) }}}
 
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
-    filepath: |-
-      {{{ openshift_filtered_path('/api/v1/namespaces/openshift-kube-controller-manager/configmaps/config', jqfilter) }}}
+    filepath: {{{ openshift_filtered_path(default_api_path, default_jqfilter) }}}
     yamlpath: "[:]"
     values:
       - value: "true"
