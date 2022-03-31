@@ -19,9 +19,9 @@
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type f -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chmod {{{ FILEMODE }}} {} \;
 {{%- else %}}
-find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} {{{ PERMS }}} -type d -exec chmod {{{ FILEMODE }}} {} \;
 {{%- endif %}}
 {{%- else %}}
 chmod {{{ FILEMODE }}} {{{ path }}}

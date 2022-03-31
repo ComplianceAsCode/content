@@ -5,5 +5,5 @@ useradd user_test
 TESTDIR="/usr/lib/"
 
 # The check ignores this symlink and results in pass
-ln -s $TESTDIR/mising_test_file $TESTDIR/faulty_symlink
+ln -s $TESTDIR/missing_test_file $TESTDIR/faulty_symlink
 chown -h user_test $TESTDIR/faulty_symlink
