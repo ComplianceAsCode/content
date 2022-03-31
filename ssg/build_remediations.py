@@ -711,3 +711,19 @@ def expand_xccdf_subs(fix, remediation_type):
         # so text is in ".tail" of element
         xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
         xccdfvarsub.tail = text_between_vars
+
+
+def load_compiled_remediations(fixes_dir):
+    if not os.path.isdir(fixes_dir):
+        raise RuntimeError("Directory %s does not exist" % fixes_dir)
+    all_remediations = defaultdict(dict)
+    for language in os.listdir(fixes_dir):
+        language_dir = os.path.join(fixes_dir, language)
+        if not os.path.isdir(language_dir):
+            raise RuntimeError("%s is not a directory" % language_dir)
+        for filename in sorted(os.listdir(language_dir)):
+            file_path = os.path.join(language_dir, filename)
+            rule_id, _ = os.path.splitext(filename)
+            remediation = parse_from_file_without_jinja(file_path)
+            all_remediations[rule_id][language] = remediation
+    return all_remediations

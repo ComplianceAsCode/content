@@ -14,6 +14,7 @@ import glob
 
 import yaml
 
+import ssg.build_remediations
 from .build_cpe import CPEDoesNotExist, CPEALLogicalTest, CPEALFactRef
 from .constants import (XCCDF_REFINABLE_PROPERTIES,
                         SCE_SYSTEM,
@@ -29,7 +30,8 @@ from .constants import (XCCDF_REFINABLE_PROPERTIES,
                         SSG_BENCHMARK_LATEST_URI,
                         SSG_PROJECT_NAME,
                         SSG_REF_URIS,
-                        PREFIX_TO_NS
+                        PREFIX_TO_NS,
+                        FIX_TYPE_TO_SYSTEM
                         )
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
@@ -1272,6 +1274,7 @@ class Rule(XCCDFEntity):
         cpe_platform_names=lambda: set(),
         inherited_cpe_platform_names=lambda: list(),
         bash_conditional=lambda: None,
+        fixes=lambda:dict(),
         ** XCCDFEntity.KEYS
     )
 
@@ -1537,6 +1540,23 @@ class Rule(XCCDFEntity):
                     .format(prodtype=self.prodtype, yaml_file=yaml_file))
                 raise ValueError(msg)
 
+    def add_fixes(self, fixes):
+        self.fixes = fixes
+
+    def _add_fixes_elements(self, rule_el):
+        for fix_type, fix in self.fixes.items():
+            fix_el = ET.SubElement(rule_el, "fix")
+            fix_el.set("system", FIX_TYPE_TO_SYSTEM[fix_type])
+            fix_el.set("id", self.id_)
+            fix_contents, config = fix
+            for key in ssg.build_remediations.REMEDIATION_ELM_KEYS:
+                if config[key]:
+                    fix_el.set(key, config[key])
+            fix_el.text = fix_contents + "\n"
+            # Expand shell variables and remediation functions
+            # into corresponding XCCDF <sub> elements
+            ssg.build_remediations.expand_xccdf_subs(fix_el, fix_type)
+
     def to_xml_element(self, env_yaml=None):
         rule = ET.Element('Rule')
         rule.set('selected', 'false')
@@ -1566,6 +1586,7 @@ class Rule(XCCDFEntity):
             if ident_type == 'cce':
                 ident.set('system', cce_uri)
                 ident.text = ident_val
+        self._add_fixes_elements(rule)
 
         ocil_parent = rule
         check_parent = rule
@@ -1950,6 +1971,9 @@ class LinearLoader(object):
         self.resolved_platforms_dir = os.path.join(resolved_path, "platforms")
         self.platforms = dict()
 
+        self.fixes_dir = os.path.join(resolved_path, "fixes")
+        self.fixes = dict()
+
         self.benchmark = None
         self.env_yaml = env_yaml
         self.product_cpes = ProductCPEs(env_yaml)
@@ -1963,6 +1987,10 @@ class LinearLoader(object):
         for fname in filenames:
             entity = cls.from_yaml(fname, self.env_yaml, self.product_cpes)
             destination[entity.id_] = entity
+
+    def add_fixes_to_rules(self):
+        for rule_id, rule_fixes in self.fixes.items():
+            self.rules[rule_id].add_fixes(rule_fixes)
 
     def load_benchmark(self, directory):
         self.benchmark = Benchmark.from_yaml(
@@ -1979,6 +2007,8 @@ class LinearLoader(object):
                 pass
 
     def load_compiled_content(self):
+        self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
+
         filenames = glob.glob(os.path.join(self.resolved_rules_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.rules, Rule)
 
