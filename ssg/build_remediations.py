@@ -8,7 +8,7 @@ import re
 from collections import defaultdict, namedtuple, OrderedDict
 
 import ssg.yaml
-from . import build_yaml
+import ssg.build_yaml
 from . import rules
 from . import utils
 
@@ -461,7 +461,7 @@ class AnsibleRemediation(Remediation):
         if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
             result = cls(snippet_fname)
             try:
-                rule_obj = build_yaml.Rule.from_yaml(rule_fname)
+                rule_obj = ssg.build_yaml.Rule.from_yaml(rule_fname)
                 result.associate_rule(rule_obj)
             except ssg.yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
