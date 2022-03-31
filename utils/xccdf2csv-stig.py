@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """
 This script creates a CSV file from an XCCDF file formatted in the
