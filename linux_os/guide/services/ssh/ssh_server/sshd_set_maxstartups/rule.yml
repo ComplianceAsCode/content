@@ -32,9 +32,13 @@ references:
     cis@sle15: 5.2.21
     cis@ubuntu2004: 5.2.21
 
-ocil_clause: 'maxstartups is not configured'
+{{{ complete_ocil_entry_sshd_option(default="no", option="MaxStartups", xccdf_variable="var_sshd_set_maxstartups")}}}
 
-ocil: |-
-    To check if MaxStartups is configured, run the following command:
-    <pre>$ sudo grep MaxStartups /etc/ssh/sshd_config</pre>
-    If configured, this command should output the configuration.
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: MaxStartups
+        rule_id: sshd_set_maxstartups
+        value: ''
+        xccdf_variable: var_sshd_set_maxstartups
