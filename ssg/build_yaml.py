@@ -1274,7 +1274,7 @@ class Rule(XCCDFEntity):
         cpe_platform_names=lambda: set(),
         inherited_cpe_platform_names=lambda: list(),
         bash_conditional=lambda: None,
-        fixes=lambda:dict(),
+        fixes=lambda: dict(),
         ** XCCDFEntity.KEYS
     )
 
