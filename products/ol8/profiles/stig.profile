@@ -493,6 +493,10 @@ selections:
     # OL08-00-020030
     - dconf_gnome_screensaver_lock_enabled
 
+    # OL08-00-020031, OL08-00-020080
+    - dconf_gnome_screensaver_lock_delay
+    - var_screensaver_lock_delay=5_seconds
+
     # OL08-00-020039
     - package_tmux_installed
 
@@ -516,8 +520,6 @@ selections:
 
     # OL08-00-020070
     - configure_tmux_lock_after_time
-
-    # OL08-00-020080
 
     # OL08-00-020090
     - sssd_enable_certmap

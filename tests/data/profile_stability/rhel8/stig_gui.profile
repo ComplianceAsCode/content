@@ -190,6 +190,7 @@ selections:
 - dconf_gnome_lock_screen_on_smartcard_removal
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
+- dconf_gnome_screensaver_lock_delay
 - dconf_gnome_screensaver_lock_enabled
 - dir_group_ownership_library_dirs
 - dir_ownership_library_dirs
@@ -457,6 +458,7 @@ selections:
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
 - var_slub_debug_options=P
+- var_screensaver_lock_delay=5_seconds
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null
