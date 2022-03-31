@@ -1,5 +1,5 @@
-# remediation = none
 #!/bin/bash
+# remediation = none
 
 # fail2 is the second fail scenario
 

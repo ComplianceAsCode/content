@@ -1,4 +1,5 @@
 #!/bin/bash
+# remediation = none
 
 # fail1 is the plain expected fail scenario, the config with a wrong value
 
