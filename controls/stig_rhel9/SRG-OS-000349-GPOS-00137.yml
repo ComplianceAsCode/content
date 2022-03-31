@@ -2,9 +2,9 @@ controls:
     -   id: SRG-OS-000349-GPOS-00137
         levels:
             - medium
-        title: The operating system must provide an audit reduction capability that supports
+        title: {{{ full_name }}} must provide an audit reduction capability that supports
             after-the-fact investigations of security incidents.
         rules:
-            - audit_rules_suid_privilege_function
+            - service_auditd_enabled
             - package_audit_installed
         status: automated
