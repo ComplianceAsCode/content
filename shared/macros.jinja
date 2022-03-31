@@ -1774,3 +1774,56 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 
     $ systemctl enable --now {{{ service }}}
 {{%- endmacro -%}}
+
+{{#
+    Describe how to check a kernel compile parameter
+
+:param config: The kernel config parameter
+:type config: str
+:param value: The value for the given config
+:type value: str
+
+#}}
+{{% macro kernel_build_config_describe_config(config, value) -%}}
+    The configuration that was used to build kernel is available at <tt>/boot/config-*</tt>.
+    To check the configuration value for <tt>{{{ config }}}</tt>, run the following command:
+    <tt>grep {{{ config }}} /boot/config-*</tt>
+    {{% if value == "n" %}}
+    Configs with value 'n' are not explicitly set in the file, so either commented lines or no
+    lines should be returned.
+    {{% else %}}
+    For each kernel installed, a line with value "{{{ value }}}" should be returned.
+    {{% endif %}}
+{{%- endmacro %}}
+
+{{#
+    Adds a default "no easy remediation" warning for kernel_build_config warning.
+#}}
+{{% macro kernel_build_config_warning() %}}
+- general: |-
+    There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
+{{% endmacro %}}
+
+{{#
+    OCIL for a kernel build config rule.
+
+    Example usage::
+
+        ocil_kernel_build_config(config="config_kernel_strict_rwx", value="y")
+
+:param config: The kernel config parameter
+:type config: str
+:param value: The value for the given config
+:type value: str
+
+#}}
+{{% macro kernel_build_config_ocil(config, value) -%}}
+    To determine the config value the kernel was built with, run the following command:
+    <pre>$ grep {{{ config }}} /boot/config.*</pre>
+    {{% if value == "n" %}}
+    Configs with value 'n' are not explicitly set in the file, so either commented lines or no
+    lines should be returned.
+    {{% else %}}
+    For each kernel installed, a line with value "{{{ value }}}" should be returned.
+    {{% endif %}}
+{{%- endmacro %}}

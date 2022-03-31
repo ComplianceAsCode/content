@@ -409,6 +409,19 @@ template:
     arg_name: audit
 ```
 
+#### kernel_build_config
+This template checks the configuration used to build the kernel by checking the `/boot/config-*` files.
+The only way to remediate is to recompile and reinstall the kernel, so no remediation should be expected.
+
+- Parameters:
+
+    - **config** - The kernel configuration to check
+    - **value** - The value the configuration should have
+      When **value** is `"n"`, the check will pass when the config is absent, commented out or has the
+      value `n` in the `/boot/config-*` files.
+
+- Languages: OVAL
+
 #### kernel_module_disabled
 -   Checks if the given Linux kernel module is disabled.
 
