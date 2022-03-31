@@ -1,9 +1,14 @@
 #!/usr/bin/python3
 
 import argparse
+import os
 import pathlib
+import sys
 import yaml
 from collections import namedtuple
+
+import ssg.jinja
+from utils.template_renderer import FlexibleLoader
 
 # Helper script used to generate an HTML page to display guides.
 
@@ -11,8 +16,18 @@ Product = namedtuple("Product", ["id", "name", "profiles"])
 Profile = namedtuple("Profile", ["id", "title"])
 
 
+def create_index(data, template_name, output_filename):
+    html_jinja_template = os.path.join(
+        os.path.dirname(__file__), template_name)
+    env = ssg.jinja._get_jinja_environment(dict())
+    env.loader = FlexibleLoader(os.path.dirname(html_jinja_template))
+    result = ssg.jinja.process_file(html_jinja_template, data)
+    with open(output_filename, "wb") as f:
+        f.write(result.encode('utf8', 'replace'))
+
+
 def get_data(ssg_root):
-    data = []
+    products = []
     p = pathlib.Path(ssg_root)
     for product_file in p.glob("**/product.yml"):
         product_dir = product_file.parent
@@ -36,18 +51,9 @@ def get_data(ssg_root):
             profile_title = profile_yaml["title"]
             profile = Profile(id=profile_id, title=profile_title)
             product.profiles.append(profile)
-        data.append(product)
+        products.append(product)
+    data = {"products": products}
     return data
-
-
-def print_data(data):
-    for product in data:
-        print(f'<h4>{product.name}</h4>')
-        print(f'<ul>')
-        for profile in product.profiles:
-            print(f'<li><a class="light-link" href="ssg-{product.id}-guide-{profile.id}.html">{profile.title}</a></li>')
-        print('</ul>')
-        print('<div class="brSpace"></div>')
 
 
 if __name__ == "__main__":
@@ -55,6 +61,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "ssg_root",
         help="Path to the root directory of scap-security-guide")
+    parser.add_argument(
+        "output",
+        help="Path where the output HTML file should be generated")
     args = parser.parse_args()
     data = get_data(args.ssg_root)
-    print_data(data)
+    create_index(data, "html_guides_index_template.html", args.output)
