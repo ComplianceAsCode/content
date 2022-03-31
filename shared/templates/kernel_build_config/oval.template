@@ -3,8 +3,12 @@
   version="1">
     {{{ oval_metadata("The kernel " + CONFIG + " should have value" + VALUE, affected_platforms=["multi_platform_all"]) }}}
     <criteria operator="OR">
-      <criterion comment="Check presence of build configuration of installed kernels"
-      test_ref="test_kernel_{{{ CONFIG | lower }}}" />
+      <criteria operator="AND">
+        <criterion comment="Check presence of build configuration of installed kernels"
+        test_ref="test_kernel_{{{ CONFIG | lower }}}" />
+        <criterion comment="Ensure all kernels have the config"
+        test_ref="test_all_kernels_{{{ CONFIG | lower }}}_compliant" />
+      </criteria>
 {{% if SHOULD_CHECK_ABSENCE %}}
       <criterion comment="Check absense of build configuration of installed kernels"
       test_ref="test_kernel_{{{ CONFIG | lower }}}_absence" />
@@ -36,8 +40,46 @@
     <ind:pattern operation="pattern match">^{{{ CONFIG }}}</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-
-
-
 {{% endif %}}
+
+  <ind:variable_test check="all" check_existence="all_exist"
+  comment="Check if all installed kernels are compliant"
+  id="test_all_kernels_{{{ CONFIG | lower }}}_compliant" version="1">
+    <ind:object object_ref="object_var_kernel_{{{ CONFIG | lower }}}_count" />
+    <ind:state state_ref="state_var_kernel_{{{ CONFIG | lower }}}" />
+  </ind:variable_test>
+
+  <ind:variable_object id="object_var_kernel_{{{ CONFIG | lower }}}_count" version="1">
+    <ind:var_ref>local_var_{{{ CONFIG | lower }}}_count_kernels_installed</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_var_kernel_{{{ CONFIG | lower }}}" version="1">
+    <ind:value operation="equals" datatype="int"
+    var_ref="local_var_{{{ CONFIG | lower }}}_count_compliant_configs" />
+  </ind:variable_state>
+
+  <local_variable comment="Count number of kernels installed" datatype="int"
+  id="local_var_{{{ CONFIG | lower }}}_count_kernels_installed" version="1">
+    <count>
+      <unique>
+        <object_component object_ref="object_kernel_{{{ CONFIG | lower }}}_files"
+        item_field="filepath" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <local_variable comment="Count number of configs found" datatype="int"
+  id="local_var_{{{ CONFIG | lower }}}_count_compliant_configs" version="1">
+    <count>
+      <unique>
+        <object_component object_ref="object_kernel_{{{ CONFIG | lower }}}"
+        item_field="filepath" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <unix:file_object comment="Collect the kernel config files" id="object_kernel_{{{ CONFIG | lower }}}_files" version="1">
+      <unix:path>/boot</unix:path>
+      <unix:filename operation="pattern match">^config-.*$</unix:filename>
+  </unix:file_object>
 </def-group>
