@@ -40,6 +40,9 @@ def create_parser():
         "--sce-metadata",
         help="Combined SCE metadata to read."
     )
+    parser.add_argument(
+        "--stig-references", help="DISA STIG Reference XCCDF file"
+    )
     return parser
 
 
@@ -126,7 +129,7 @@ def main():
     logging.basicConfig(filename=logfile, level=logging.INFO)
 
     loader = ssg.build_yaml.BuildLoader(
-        None, env_yaml, product_cpes, args.sce_metadata)
+        None, env_yaml, product_cpes, args.sce_metadata, args.stig_references)
     load_benchmark_source_data_from_directory_tree(loader, env_yaml, args.product_yaml)
 
     profiles_by_id = get_all_resolved_profiles_by_id(env_yaml, args.product_yaml, loader, product_cpes, args.controls_dir)
