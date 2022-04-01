@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: fedora,rhel7,rhel8,rhel9
+
+title: 'Perform full reference count validation'
+
+description: |-
+    Enabling this switches the refcounting infrastructure from a fast unchecked atomic_t
+    implementation to a fully state checked implementation, which can be have a slight
+    impact in performance.
+    This configuration is available from kernel 4.13, but may be available if backported
+    by distros.
+
+    {{{ kernel_build_config_describe_config("CONFIG_REFCOUNT_FULL", "y") | indent(4) }}}
+
+rationale: |-
+    Refcounting provides protections against various use-after-free conditions that can be
+    used in security flaw exploits.
+
+warnings:
+    {{{ kernel_build_config_warning() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86421-5
+    cce@rhel8: CCE-86422-3
+    cce@rhel9: CCE-86423-1
+
+ocil_clause: 'the kernel was built with the required value'
+
+ocil: |-
+    {{{ kernel_build_config_ocil("CONFIG_REFCOUNT_FULL", "Y") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_REFCOUNT_FULL
+        value: 'y'
+
