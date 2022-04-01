@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: fedora,rhel9
+
+title: 'Disable vsyscall emluate execution only'
+
+description: |-
+    The kernel traps and emulates calls into the fixed vsyscall address mapping and does not allow
+    reads.
+    This configuration is available from kernel 5.3.
+
+    {{{ kernel_build_config_describe_config("CONFIG_LEGACY_VSYSCALL_XONLY", "n") | indent(4) }}}
+
+rationale: |-
+    Disabling this mitigates certain uses of the vsyscall area as an ASLR-bypassing buffer.
+
+warnings:
+    {{{ kernel_build_config_warning() | indent(4) }}}
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-87805-8
+
+ocil_clause: 'the kernel was built with the required value'
+
+ocil: |-
+    {{{ kernel_build_config_ocil("CONFIG_LEGACY_VSYSCALL_XONLY", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_LEGACY_VSYSCALL_XONLY
+        value: 'n'
+
