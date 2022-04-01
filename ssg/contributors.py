@@ -15,6 +15,8 @@ Last Modified: %s
 
 email_mappings = {
     # People here are sorted by last name
+    # Edgar Aguilar
+    "xeicker@gmail.com": "edgar.aguilar@oracle.com",
     # Firas AlShafei
     "firas.alshafei@gmail.com": "firas.alshafei@us.abb.com",
     # Dominique Blaze
@@ -40,8 +42,10 @@ email_mappings = {
     # Marc Jadoul
     "marc.jadoul@gmail.com": "mgjadoul@laptomatic.auth-o-matic.corp",
     # Joseph D Lenox
-    "jdlenox@labnet.rockwellcollins.lab": "Joseph.Lenox@collins.com",
-    "lordofhyphens@gmail.com": "Joseph.Lenox@collins.com",
+    "jdlenox@labnet.rockwellcollins.lab": "joseph.lenox@collins.com",
+    "lordofhyphens@gmail.com": "joseph.lenox@collins.com",
+    "Joseph.Lenox@corp.rockwellcollins.com": "joseph.lenox@collins.com",
+    "Joseph.Lenox@collins.com": "joseph.lenox@collins.com",
     # Simon Lukasik
     "isimluk@fedoraproject.org": "slukasik@redhat.com",
     # Milan Lysonek
@@ -88,6 +92,7 @@ email_mappings = {
 
 name_mappings = {
     "Gabe": "Gabe Alford",
+    "Lenox, Joseph D (Collins)": "Joseph Lenox",
     "Olivier": "Olivier Bonhomme",
     "OnceUponALoop": "Firas AlShafei",
     "lkinser": "Lee Kinser",
