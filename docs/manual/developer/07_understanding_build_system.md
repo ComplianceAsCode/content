@@ -91,8 +91,6 @@ of occurrence:
 Various Python utilities under `/build-scripts` contribute to this process;
 refer to their help text for more information and usage:
 
- - `add_stig_references.py` -- add STIG reference identifiers into the
-   unlinked XCCDF.
  - `build_all_guides.py` -- generates separate HTML guides for every profile
    in an XCCDF document.
  - `build_profile_remediations.py` -- generates separate remediation content
