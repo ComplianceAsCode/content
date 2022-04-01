@@ -204,7 +204,7 @@ def find_profiles(ssg_root, path, obj_name):
             new_file = loaded_file[:sec_range[0]]
             new_file.extend(loaded_file[sec_range[1]+1:])
             write_file(path, new_file)
-        
+
 
 
 def parse_from_yaml(file_contents, lines):

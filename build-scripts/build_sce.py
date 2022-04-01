@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """
 The build_sce.py script generates SCE (Script Check Engine) content that
