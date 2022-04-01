@@ -7,14 +7,7 @@ from .xml import ElementTree as ET
 from .constants import XCCDF11_NS, stig_ns, stig_refs
 
 
-def add_references(input_file_name, reference_file_name):
-    """
-    For a given input XCCDF file and DISA STIG reference XCCDF file, process
-    all STIG references in the rules from input XCCDF file and correctly link
-    them to the corresponding reference rule.
-
-    Returns the updated ElementTree containing updated reference elements.
-    """
+def get_versions(reference_file_name):
     try:
         reference_root = ET.parse(reference_file_name)
     except IOError:
@@ -31,6 +24,18 @@ def add_references(input_file_name, reference_file_name):
         version = rule.find('.//{%s}version' % XCCDF11_NS)
         if version is not None and version.text:
             dictionary[version.text] = rule.get('id')
+    return dictionary
+
+
+def add_references(input_file_name, reference_file_name):
+    """
+    For a given input XCCDF file and DISA STIG reference XCCDF file, process
+    all STIG references in the rules from input XCCDF file and correctly link
+    them to the corresponding reference rule.
+
+    Returns the updated ElementTree containing updated reference elements.
+    """
+    dictionary = get_versions(reference_file_name)
 
     target_root = ET.parse(input_file_name)
     target_rules = target_root.findall('.//{%s}Rule' % XCCDF11_NS)
