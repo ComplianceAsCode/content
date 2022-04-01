@@ -1880,7 +1880,8 @@ class DirectoryLoader(object):
 
 
 class BuildLoader(DirectoryLoader):
-    def __init__(self, profiles_dir, env_yaml, product_cpes,
+    def __init__(
+            self, profiles_dir, env_yaml, product_cpes,
             sce_metadata_path=None, stig_reference_path=None):
         super(BuildLoader, self).__init__(profiles_dir, env_yaml, product_cpes)
 
