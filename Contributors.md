@@ -1,14 +1,14 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2022-01-24 15:33
+Last Modified: 2022-04-01 16:31
 --->
 
 The following people have contributed to the SCAP Security Guide project
 (listed in alphabetical order):
 
 * Frank J Cameron (CAM1244) <cameron@ctc.com>
-* Lenox, Joseph D (Collins) <Joseph.Lenox@collins.com>
 * 0x66656c6978 <0x66656c6978@users.noreply.github.com>
 * Jack Adolph <jack.adolph@gmail.com>
+* Edgar Aguilar <edgar.aguilar@oracle.com>
 * Gabe Alford <redhatrises@gmail.com>
 * Firas AlShafei <firas.alshafei@us.abb.com>
 * Rodrigo Alvares <ralvares@redhat.com>
@@ -52,7 +52,6 @@ The following people have contributed to the SCAP Security Guide project
 * Maura Dailey <maura@eclipse.ncsc.mil>
 * Klaas Demter <demter@atix.de>
 * dhanushkar-wso2 <dhanushkar@wso2.com>
-* Edgar Miguel Aguilar Diaz <edgar.aguilar@oracle.com>
 * Andrew DiPrinzio <andrew.diprinzio@jhuapl.edu>
 * dom <dominique.blaze@devinci.fr>
 * Jean-Baptiste Donnette <jean-baptiste.donnette@epita.fr>
@@ -67,6 +66,7 @@ The following people have contributed to the SCAP Security Guide project
 * Leah Fisher <lfisher047@gmail.com>
 * Yavor Georgiev <strandjata@gmail.com>
 * Alijohn Ghassemlouei <alijohn@secureagc.com>
+* Swarup Ghosh <swghosh@redhat.com>
 * ghylock <ghylock@gmail.com>
 * Andrew Gilmore <agilmore2@gmail.com>
 * Joshua Glemza <jglemza@nasa.gov>
@@ -114,6 +114,7 @@ The following people have contributed to the SCAP Security Guide project
 * Christopher Lee <Crleekwc@gmail.com>
 * Ian Lee <lee1001@llnl.gov>
 * Jarrett Lee <jarrettl@umd.edu>
+* Joseph Lenox <joseph.lenox@collins.com>
 * Jan Lieskovsky <jlieskov@redhat.com>
 * Šimon Lukašík <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
@@ -187,6 +188,7 @@ The following people have contributed to the SCAP Security Guide project
 * Earl Sampson <ESampson@suse.com>
 * sampsone <esampson@suse.com>
 * Willy Santos <wsantos@redhat.com>
+* Nagarjuna Sarvepalli <snagarju@redhat.com>
 * Anderson Sasaki <33833274+ansasaki@users.noreply.github.com>
 * Gautam Satish <gautams@hpe.com>
 * Watson Sato <wsato@redhat.com>
