@@ -13,14 +13,9 @@
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -gid {{{ FILEGID }}})
-for file in "${files[@]}"; do
-    if basename "$file" | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chgrp {{{ FILEGID }}} "$file"
-    fi
-done
+find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -gid {{{ FILEGID }}} -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chgrp {{{ FILEGID }}} {} \;
 {{% else %}}
-find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chgrp {{{ FILEGID }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chgrp {{{ FILEGID }}} {} \;
 {{%- endif %}}
 {{%- else %}}
 chgrp {{{ FILEGID }}} {{{ path }}}

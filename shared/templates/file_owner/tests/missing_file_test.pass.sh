@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 
 {{% for path in FILEPATH %}}
     {{% if MISSING_FILE_PASS %}}

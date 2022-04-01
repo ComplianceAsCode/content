@@ -13,14 +13,9 @@
 {{% for path in FILEPATH %}}
 {{%- if IS_DIRECTORY %}}
 {{%- if FILE_REGEX %}}
-readarray -t files < <(find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}})
-for file in "${files[@]}"; do
-    if basename "$file" | grep -qE '{{{ FILE_REGEX[loop.index0] }}}'; then
-        chown {{{ FILEUID }}} "$file"
-    fi
-done
+find {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type f ! -uid {{{ FILEUID }}} -regex '{{{ FILE_REGEX[loop.index0] }}}' -exec chown {{{ FILEUID }}} {} \;
 {{%- else %}}
-find -L {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown {{{ FILEUID }}} {} \;
+find -H {{{ path }}} {{{ FIND_RECURSE_ARGS }}} -type d -exec chown {{{ FILEUID }}} {} \;
 {{%- endif %}}
 {{%- else %}}
 chown {{{ FILEUID }}} {{{ path }}}
