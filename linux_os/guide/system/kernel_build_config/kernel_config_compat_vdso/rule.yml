@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Disable the 32-bit vDSO'
+
+description: |-
+    Map the 32-bit VDSO to the predictable old-style address too.
+
+    {{{ kernel_build_config_describe_config("CONFIG_COMPAT_VDSO", "n") | indent(4) }}}
+
+rationale: |-
+    Enabling VDSO compatibility disables ASLR.
+
+warnings:
+    {{{ kernel_build_config_warning() | indent(4) }}}
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-87255-6
+    cce@rhel8: CCE-87256-4
+    cce@rhel9: CCE-87257-2
+
+ocil_clause: 'the kernel was built with the required value'
+
+ocil: |-
+    {{{ kernel_build_config_ocil("CONFIG_COMPAT_VDSO", "n") | indent(4) }}}
+
+template:
+    name: kernel_build_config
+    vars:
+        config: CONFIG_COMPAT_VDSO
+        value: 'n'
+
