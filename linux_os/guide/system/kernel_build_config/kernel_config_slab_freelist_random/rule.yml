@@ -22,7 +22,7 @@ identifiers:
     cce@rhel8: CCE-87725-8
     cce@rhel9: CCE-87726-6
 
-ocil_clause: 'the kernel was built with the required value'
+ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
     {{{ kernel_build_config_ocil("CONFIG_SLAB_FRELIST_RANDOM", "y") | indent(4) }}}
