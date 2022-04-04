@@ -912,7 +912,7 @@ class Benchmark(XCCDFEntity):
         root.set('xsi:schemaLocation',
                  'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
         root.set('style', 'SCAP_1.1')
-        root.set('resolved', 'false')
+        root.set('resolved', 'true')
         root.set('xml:lang', 'en-US')
         status = ET.SubElement(root, 'status')
         status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
