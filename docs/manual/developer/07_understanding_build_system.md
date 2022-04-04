@@ -128,8 +128,6 @@ refer to their help text for more information and usage:
    resolved values (e.g., with the `xccdf_org.ssgproject.content_` prefix).
  - `unselect_empty_xccdf_groups.py` -- updates the XCCDF document to remove
    selections of groups without any rules.
- - `update_sds_version.py` -- used to build XCCDF v1.2 (instead of XCCDF v1.3)
-   compatible content.
  - `verify_references.py` -- used by the test system to verify cross-linkage
    of identifiers between XCCDF and OVAL/OCIL documents.
  - `yaml_to_shorthand.py` -- generates the shorthand XML document from the
