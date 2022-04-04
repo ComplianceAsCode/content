@@ -22,7 +22,7 @@ identifiers:
     cce@rhel8: CCE-86814-1
     cce@rhel9: CCE-86815-8
 
-ocil_clause: 'the kernel was built with the required value'
+ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
     {{{ kernel_build_config_ocil("CONFIG_DEBUG_NOTIFIERS", "y") | indent(4) }}}
