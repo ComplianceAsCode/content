@@ -86,33 +86,18 @@ def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num:
     sheet.freeze_panes = "A2"
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-o', '--output', type=str,
-                        help=f"The path to the output. Defaults to {OUTPUT}",
-                        default=OUTPUT)
-    parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
-                        help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
-    parser.add_argument('input', type=str)
-    return parser.parse_args()
-
-
-def main():
-    args = parse_args()
+def handle_dict(data: list, output_path: str) -> None:
+    """
+    Given a dict with the fields for the srg export, create a formatted XLSX file
+    """
     xlsx = openpyxl.Workbook()
     sheet = xlsx.active
-    sheet.name = 'Sheet0'
+    sheet.name = f'Sheet0'
     setup_headers(sheet)
     setup_sheet(sheet)
     row_num = 2
-    with open(args.input) as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            setup_row(sheet, row, row_num)
-            row_num += 1
+    for row in data:
+        setup_row(sheet, row, row_num)
+        row_num += 1
     format_cells(sheet)
-    xlsx.save(args.output)
-
-
-if __name__ == '__main__':
-    main()
+    xlsx.save(output_path)

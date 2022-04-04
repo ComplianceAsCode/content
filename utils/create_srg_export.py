@@ -11,6 +11,8 @@ import sys
 from typing.io import TextIO
 import xml.etree.ElementTree as ET
 
+import convert_srg_export_to_xlsx
+
 try:
     import ssg.build_yaml
     import ssg.constants
@@ -367,12 +369,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
+    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlxs"), action="store",
+                        help="The format the output should take. Defaults to csv", default="csv")
     return parser.parse_args()
 
 
-def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.DictWriter,
-                   env_yaml: ssg.environment, rule_json: dict, srgs: dict,
-                   used_rules: list) -> None:
+def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
+                   rule_json: dict, srgs: dict, used_rules: list) -> dict:
+
     if len(control.selections) > 0:
         for selection in control.selections:
             if selection not in used_rules and selection in control.selected:
@@ -389,17 +393,24 @@ def handle_control(product: str, control: ssg.controls.Control, csv_writer: csv.
                     row['Status'] = DisaStatus.from_string(control.status)
                 else:
                     row['Status'] = DisaStatus.AUTOMATED
-                csv_writer.writerow(row)
                 used_rules.append(selection)
+                return row
+            else:
+                return no_selections_row(control, srgs)
+
     else:
-        row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
-        row['Requirement'] = control.title
-        row['Status'] = DisaStatus.from_string(control.status)
-        row['Vul Discussion'] = control.rationale
-        row['Fix'] = control.fix
-        row['Check'] = control.check
-        row['Vul Discussion'] = html_plain_text(control.rationale)
-        csv_writer.writerow(row)
+        return no_selections_row(control, srgs)
+
+
+def no_selections_row(control, srgs):
+    row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
+    row['Requirement'] = control.title
+    row['Status'] = DisaStatus.from_string(control.status)
+    row['Vul Discussion'] = control.rationale
+    row['Fix'] = control.fix
+    row['Check'] = control.check
+    row['Vul Discussion'] = html_plain_text(control.rationale)
+    return row
 
 
 def create_base_row(item: ssg.controls.Control, srgs: dict,
@@ -440,35 +451,63 @@ def get_rule_json(json_path: str) -> dict:
     return rule_json
 
 
-def main() -> None:
-    args = parse_args()
-
-    control_full_path = pathlib.Path(args.control).absolute()
+def check_paths(control_path: str, rule_json_path: str) -> None:
+    control_full_path = pathlib.Path(control_path).absolute()
     if not pathlib.Path.exists(control_full_path):
         sys.stderr.write(f"Unable to find control file {control_full_path}\n")
         exit(5)
-    if not os.path.exists(args.json):
-        sys.stderr.write(f"Unable to find rule_dirs.json file {args.json}\n")
+    rule_json_full_path = pathlib.Path(rule_json_path).absolute()
+    if not os.path.exists(rule_json_full_path):
+        sys.stderr.write(f"Unable to find rule_dirs.json file {rule_json_full_path}\n")
         sys.stderr.write("Hint: run ./utils/rule_dir_json.py\n")
         exit(2)
-    srgs = get_srg_dict(args.manual)
-    product_dir = os.path.join(args.root, "products", args.product)
-    product_yaml_path = os.path.join(product_dir, "product.yml")
-    env_yaml = ssg.environment.open_environment(args.build_config_yaml, str(product_yaml_path))
 
+
+def get_policy(args, env_yaml) -> ssg.controls.Policy:
     policy = ssg.controls.Policy(args.control, env_yaml=env_yaml)
     policy.load()
+    return policy
+
+
+def handle_output(output: str, results: list, format_type: str) -> None:
+    if format_type == 'csv':
+        with open(output, 'w') as csv_file:
+            csv_writer = setup_csv_writer(csv_file)
+            for row in results:
+                csv_writer.writerow(row)
+
+    elif format_type == 'xlxs':
+        output = output.replace('.csv', '.xlxs')
+        for row in results:
+            if row:
+                row['IA Control'] = get_iacontrol(row['SRGID'])
+        convert_srg_export_to_xlsx.handle_dict(results, output)
+    print(f'Wrote output to {output}')
+
+
+def get_env_yaml(root: str, product: str, build_config_yaml: str) -> dict:
+    product_dir = os.path.join(root, "products", product)
+    product_yaml_path = os.path.join(product_dir, "product.yml")
+    env_yaml = ssg.environment.open_environment(build_config_yaml, str(product_yaml_path))
+    return env_yaml
+
+
+def main() -> None:
+    args = parse_args()
+    check_paths(args.control, args.json)
+
+    srgs = get_srg_dict(args.manual)
+    env_yaml = get_env_yaml(args.root, args.product, args.build_config_yaml)
+    policy = get_policy(args, env_yaml)
     rule_json = get_rule_json(args.json)
-    full_output = pathlib.Path(args.output)
+
     used_rules = list()
+    results = list()
+    for control in policy.controls:
+        row = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules)
+        results.append(row)
 
-    with open(full_output, 'w') as csv_file:
-        csv_writer = setup_csv_writer(csv_file)
-
-        for control in policy.controls:
-            handle_control(args.product, control, csv_writer, env_yaml, rule_json, srgs,
-                           used_rules)
-        print(f"File written to {full_output}")
+    handle_output(args.output, results, args.out_format)
 
 
 if __name__ == '__main__':
