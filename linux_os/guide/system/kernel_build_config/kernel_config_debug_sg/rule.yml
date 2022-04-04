@@ -3,13 +3,13 @@ documentation_complete: true
 title: 'Enable checks on scatter-gather (SG) table operations'
 
 description: |-
-    Scatter-gatter tables are mechanism used for high performance I/O on DMA devices.
+    Scatter-gather tables are mechanism used for high performance I/O on DMA devices.
     Enable this to turn on checks on scatter-gather tables.
 
-    {{{ kernel_build_config_describe_config("CONFIG_DEGUG_SG", "y") | indent(4) }}}
+    {{{ kernel_build_config_describe_config("CONFIG_DEBUG_SG", "y") | indent(4) }}}
 
 rationale: |-
-    This can help find problems with drivers that do not properly initialize their sg tables.
+    This can help find problems with drivers that do not properly initialize their SG tables.
 
 warnings:
     {{{ kernel_build_config_warning() | indent(4) }}}
@@ -24,11 +24,11 @@ identifiers:
 ocil_clause: 'the kernel was built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_DEGUG_SG", "y") | indent(4) }}}
+    {{{ kernel_build_config_ocil("CONFIG_DEBUG_SG", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config
     vars:
-        config: CONFIG_DEGUG_SG
+        config: CONFIG_DEBUG_SG
         value: 'y'
 

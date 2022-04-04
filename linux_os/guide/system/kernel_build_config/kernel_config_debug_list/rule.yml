@@ -8,9 +8,9 @@ description: |-
     {{{ kernel_build_config_describe_config("CONFIG_DEBUG_LIST", "y") | indent(4) }}}
 
 rationale: |-
-    This add sanity checks to manipulation of linked lists strucutures in the kernel and may
+    This add sanity checks to manipulation of linked lists structures in the kernel and may
     prevent exploits such as CVE-2017-1661, where a race condition and simultaneos operations
-    caused a list to corrput.
+    caused a list to corrupt.
 
 warnings:
     {{{ kernel_build_config_warning() | indent(4) }}}
