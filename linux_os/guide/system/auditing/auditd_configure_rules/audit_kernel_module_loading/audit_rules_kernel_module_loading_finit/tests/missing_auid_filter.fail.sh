@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = Red Hat Enterprise Linux 8,Oracle Linux 8
+# packages = audit
 
 rm -f /etc/audit/rules.d/*
 
