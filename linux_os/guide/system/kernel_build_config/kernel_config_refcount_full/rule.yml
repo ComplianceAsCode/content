@@ -27,7 +27,7 @@ identifiers:
     cce@rhel8: CCE-86422-3
     cce@rhel9: CCE-86423-1
 
-ocil_clause: 'the kernel was built with the required value'
+ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
     {{{ kernel_build_config_ocil("CONFIG_REFCOUNT_FULL", "y") | indent(4) }}}

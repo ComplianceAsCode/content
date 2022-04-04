@@ -23,7 +23,7 @@ identifiers:
     cce@rhel8: CCE-87494-1
     cce@rhel9: CCE-87495-8
 
-ocil_clause: 'the kernel was built with the required value'
+ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
     {{{ kernel_build_config_ocil("CONFIG_RETPOLINE", "y") | indent(4) }}}

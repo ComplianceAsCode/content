@@ -23,7 +23,7 @@ identifiers:
     cce@rhel8: CCE-86778-8
     cce@rhel9: CCE-86779-6
 
-ocil_clause: 'the kernel was built with the required value'
+ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
     {{{ kernel_build_config_ocil("CONFIG_ACPI_CUSTOM_METHOD", "n") | indent(4) }}}

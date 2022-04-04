@@ -22,7 +22,7 @@ severity: medium
 identifiers:
     cce@rhel9: CCE-87805-8
 
-ocil_clause: 'the kernel was built with the required value'
+ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
     {{{ kernel_build_config_ocil("CONFIG_LEGACY_VSYSCALL_XONLY", "n") | indent(4) }}}
