@@ -24,7 +24,7 @@ identifiers:
     cce@rhel8: CCE-86091-6
     cce@rhel9: CCE-86092-4
 
-ocil_clause: 'the kernel was built with the required value'
+ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
     {{{ kernel_build_config_ocil("CONFIG_HARDENED_USERCOPY_FALLBACK", "n") | indent(4) }}}
