@@ -96,7 +96,7 @@ jobs:
       - name: Get oscap-ssh
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: |
-          wget https://raw.githubusercontent.com/OpenSCAP/openscap/maint-1.2/utils/oscap-ssh
+          wget https://raw.githubusercontent.com/OpenSCAP/openscap/maint-1.3/utils/oscap-ssh
           sudo chmod 755 oscap-ssh
           sudo mv -v oscap-ssh /usr/local/bin
           sudo chown root:root /usr/local/bin/oscap-ssh
