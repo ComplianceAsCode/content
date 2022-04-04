@@ -3,12 +3,15 @@ documentation_complete: true
 title: 'Disable the 32-bit vDSO'
 
 description: |-
-    Map the 32-bit VDSO to the predictable old-style address too.
+    Certain buggy versions of glibc (2.3.3) will crash if they are presented with a 32-bit vDSO
+    that is not mapped at the address indicated in its segment table.
+    Setting <tt>CONFIG_COMPAT_VDSO</tt> to <tt>y</tt> turns off the 32-bit VDSO and works
+    aroud the glibc bug.
 
     {{{ kernel_build_config_describe_config("CONFIG_COMPAT_VDSO", "n") | indent(4) }}}
 
 rationale: |-
-    Enabling VDSO compatibility disables ASLR.
+    Enabling VDSO compatibility hurts performance and disables ASLR.
 
 warnings:
     {{{ kernel_build_config_warning() | indent(4) }}}
