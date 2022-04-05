@@ -75,6 +75,7 @@
 				<td>CCI</td>
 				<td>CAT</td>
 				<td>Title</td>
+				<td>SRG</td>
 			</xsl:otherwise>
 			</xsl:choose>
 				<td>Description</td>
@@ -112,6 +113,7 @@
 				<!--<td> <xsl:value-of select="cdf:title" /></td>-->
 				<td> <xsl:value-of select="cdf:Rule/@severity" /></td>
 				<td> <xsl:value-of select="cdf:Rule/cdf:title" /></td>
+				<td> <xsl:value-of select="cdf:title/node()" /></td>
 			</xsl:otherwise>
 			</xsl:choose>
 			<td> <pre> <xsl:call-template name="extract-vulndiscussion"><xsl:with-param name="desc" select="cdf:Rule/cdf:description"/></xsl:call-template> </pre> </td>
