@@ -12,6 +12,10 @@ for file in /boot/config-* ; do
     fi
 done
 {{% else %}}
+{{%- if VARIABLE %}}
+# variables = {{{ VARIABLE }}}=correct_value
+{{%- set VALUE="correct_value" %}}
+{{%- endif %}}
 # There is only one passing scenario when we set VALUE="y", so pass2 is identical to pass1
 # (The test suite doesn't support dinamic pass fail handling)
 for file in /boot/config-* ; do

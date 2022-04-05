@@ -1,5 +1,9 @@
 #!/bin/bash
 # remediation = none
+{{%- if VARIABLE %}}
+# variables = {{{ VARIABLE }}}=correct_value
+{{%- set VALUE="correct_value" %}}
+{{%- endif %}}
 
 # fail1 is the plain expected fail scenario, the config with a wrong value
 

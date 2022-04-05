@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}"
   version="1">
-    {{{ oval_metadata("The kernel " + CONFIG + " should have value" + VALUE, affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata("The kernel " + CONFIG + " should have value " + (VALUE if VALUE else "according to " + VARIABLE), affected_platforms=["multi_platform_all"]) }}}
     <criteria operator="OR">
       <criteria operator="AND">
         <criterion comment="Check presence of build configuration of installed kernels"
@@ -17,29 +17,34 @@
   </definition>
 
   <ind:textfilecontent54_test check="all"
-  comment="Check /boot/config-.* files for {{{ CONFIG }}}={{{ VALUE }}}"
+  comment="Check /boot/config-.* files for {{{ CONFIG }}}{{{ '=' + VALUE if VALUE else " according to " + VARIABLE }}}"
   id="test_kernel_{{{ CONFIG | lower }}}" version="1">
     <ind:object object_ref="object_kernel_{{{ CONFIG | lower }}}" />
+    <ind:state state_ref="state_kernel_{{{ CONFIG | lower }}}" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_kernel_{{{ CONFIG | lower }}}" version="1">
     <ind:filepath operation="pattern match">^/boot/config-.*$</ind:filepath>
-    <ind:pattern operation="pattern match">^{{{ CONFIG }}}="?{{{ VALUE }}}"?$</ind:pattern>
+    <ind:pattern operation="pattern match">^{{{ CONFIG }}}=(.*)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+{{%- if VARIABLE %}}
+  <ind:textfilecontent54_state id="state_kernel_{{{ CONFIG | lower }}}" version="1">
+    <ind:subexpression operation="pattern match" datatype="string" var_ref="var_kernel_{{{ CONFIG | lower }}}"/>
+  </ind:textfilecontent54_state>
+{{% else %}}
+  <ind:textfilecontent54_state id="state_kernel_{{{ CONFIG | lower }}}" version="1">
+    <ind:subexpression operation="pattern match" datatype="string">"?{{{ VALUE }}}"?</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% endif %}}
 
 {{% if SHOULD_CHECK_ABSENCE %}}
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
   comment="Check /boot/config-.* files for absence of {{{ CONFIG }}}"
   id="test_kernel_{{{ CONFIG | lower }}}_absence" version="1">
-    <ind:object object_ref="object_kernel_{{{ CONFIG | lower }}}_absence" />
+    <ind:object object_ref="object_kernel_{{{ CONFIG | lower }}}" />
   </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_kernel_{{{ CONFIG | lower }}}_absence" version="1">
-    <ind:filepath operation="pattern match">^/boot/config-.*$</ind:filepath>
-    <ind:pattern operation="pattern match">^{{{ CONFIG }}}</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
 {{% endif %}}
 
   <ind:variable_test check="all" check_existence="all_exist"
@@ -82,4 +87,7 @@
       <unix:path>/boot</unix:path>
       <unix:filename operation="pattern match">^config-.*$</unix:filename>
   </unix:file_object>
+{{%- if VARIABLE %}}
+  <external_variable comment="Value for kernel {{{ CONFIG }}} setting" datatype="string" id="var_kernel_{{{ CONFIG | lower }}}" version="1" />
+{{%- endif %}}
 </def-group>
