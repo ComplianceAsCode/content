@@ -25,17 +25,17 @@
 
   <ind:textfilecontent54_object id="object_kernel_{{{ CONFIG | lower }}}" version="1">
     <ind:filepath operation="pattern match">^/boot/config-.*$</ind:filepath>
-    <ind:pattern operation="pattern match">^{{{ CONFIG }}}=(.*)$</ind:pattern>
+    <ind:pattern operation="pattern match">^{{{ CONFIG }}}="?(.*?)"?$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
 {{%- if VARIABLE %}}
   <ind:textfilecontent54_state id="state_kernel_{{{ CONFIG | lower }}}" version="1">
-    <ind:subexpression operation="pattern match" datatype="string" var_ref="var_kernel_{{{ CONFIG | lower }}}"/>
+    <ind:subexpression operation="equals" datatype="string" var_ref="var_kernel_{{{ CONFIG | lower }}}"/>
   </ind:textfilecontent54_state>
 {{% else %}}
   <ind:textfilecontent54_state id="state_kernel_{{{ CONFIG | lower }}}" version="1">
-    <ind:subexpression operation="pattern match" datatype="string">"?{{{ VALUE }}}"?</ind:subexpression>
+    <ind:subexpression operation="equals" datatype="string">{{{ VALUE }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 {{% endif %}}
 
