@@ -38,3 +38,9 @@ ocil: |-
     The output lines should include
     <pre>allow with-interface match-all { 03:*:* }</pre>
 
+fixtext: |-
+    Configure the USBGuard daemon to allow USB Human Interface Devices.
+
+    Add or edit the following line in "/etc/usbguard/rules.conf":
+
+    allow with-interface match-all { 03:*:* }
