@@ -3,9 +3,9 @@ documentation_complete: true
 title: 'Disable kernel support for MISC binaries'
 
 description: |-
-    Enabling <tt>CONFIG_BINFMT_MISC</tt> makes it possible to plug wrapper-drivven binary formats
+    Enabling <tt>CONFIG_BINFMT_MISC</tt> makes it possible to plug wrapper-driven binary formats
     into the kernel. This is specially useful for programs that need an interpreter to run like
-    Java,Python and DOS emulators. Once you have registered such a binary class with the kernel,
+    Java, Python and DOS emulators. Once you have registered such a binary class with the kernel,
     you can start one of those programs simply by typing in its name at a shell prompt.
 
     {{{ kernel_build_config_describe_config("CONFIG_BINFMT_MISC", "n") | indent(4) }}}

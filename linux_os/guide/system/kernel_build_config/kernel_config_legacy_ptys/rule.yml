@@ -4,7 +4,7 @@ title: 'Disable legacy (BSD) PTY support'
 
 description: |-
     Disable the Linux traditional BSD-like terminal names /dev/ptyxx for masters and /dev/ttyxx for
-    slaves of pseudo terminals, and use only the modern pyts (devpts) interface.
+    slaves of pseudo terminals, and use only the modern ptys (devpts) interface.
 
     {{{ kernel_build_config_describe_config("CONFIG_LEGACY_PTYS", "n") | indent(4) }}}
 
