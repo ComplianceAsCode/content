@@ -1186,3 +1186,6 @@ selections:
 
     # OL08-00-040390
     - package_tuned_removed
+
+    # OL08-00-010163
+    - package_krb5-server_removed

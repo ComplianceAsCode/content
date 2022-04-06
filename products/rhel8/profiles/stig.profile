@@ -1176,3 +1176,6 @@ selections:
 
     # RHEL-08-040390
     - package_tuned_removed
+
+    # RHEL-08-010163
+    - package_krb5-server_removed
