@@ -369,7 +369,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
-    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlxs"), action="store",
+    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx"), action="store",
                         help="The format the output should take. Defaults to csv", default="csv")
     return parser.parse_args()
 
@@ -469,19 +469,19 @@ def get_policy(args, env_yaml) -> ssg.controls.Policy:
     return policy
 
 
-def handle_output(output: str, results: list, format_type: str) -> None:
+def handle_output(output: str, results: list, format_type: str, product: str) -> None:
     if format_type == 'csv':
         with open(output, 'w') as csv_file:
             csv_writer = setup_csv_writer(csv_file)
             for row in results:
                 csv_writer.writerow(row)
 
-    elif format_type == 'xlxs':
-        output = output.replace('.csv', '.xlxs')
+    elif format_type == 'xlsx':
+        output = output.replace('.csv', '.xlsx')
         for row in results:
-            if row:
-                row['IA Control'] = get_iacontrol(row['SRGID'])
-        convert_srg_export_to_xlsx.handle_dict(results, output)
+            row['STIGID'] = ""
+            row['IA Control'] = get_iacontrol(row['SRGID'])
+        convert_srg_export_to_xlsx.handle_dict(results, output, f'{product} SRG Mapping')
     print(f'Wrote output to {output}')
 
 
@@ -507,7 +507,7 @@ def main() -> None:
         row = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules)
         results.append(row)
 
-    handle_output(args.output, results, args.out_format)
+    handle_output(args.output, results, args.out_format, args.product)
 
 
 if __name__ == '__main__':

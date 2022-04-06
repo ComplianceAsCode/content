@@ -86,13 +86,13 @@ def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num:
     sheet.freeze_panes = "A2"
 
 
-def handle_dict(data: list, output_path: str) -> None:
+def handle_dict(data: list, output_path: str, sheet_name: str) -> None:
     """
     Given a dict with the fields for the srg export, create a formatted XLSX file
     """
     xlsx = openpyxl.Workbook()
     sheet = xlsx.active
-    sheet.name = f'Sheet0'
+    sheet.name = sheet_name
     setup_headers(sheet)
     setup_sheet(sheet)
     row_num = 2
