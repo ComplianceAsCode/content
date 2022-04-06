@@ -16,13 +16,13 @@ done
 # variables = {{{ VARIABLE }}}=correct_value
 {{%- set VALUE="correct_value" %}}
 {{%- endif %}}
-# There is only one passing scenario when we set VALUE="y", so pass2 is identical to pass1
+# The second passing scenario is when the is double quoted, like VALUE="correct_value"
 # (The test suite doesn't support dinamic pass fail handling)
 for file in /boot/config-* ; do
     if grep -q ^{{{ CONFIG }}} "$file" ; then
-        sed -i "s/^{{{ CONFIG }}}.*/{{{ CONFIG }}}={{{ VALUE }}}/" "$file"
+        sed -i 's/^{{{ CONFIG }}}.*/{{{ CONFIG }}}="{{{ VALUE }}}"/' "$file"
     else
-        echo "{{{ CONFIG }}}={{{ VALUE }}}" >> "$file"
+        echo '{{{ CONFIG }}}="{{{ VALUE }}}"' >> "$file"
     fi
 done
 {{%- endif %}}
