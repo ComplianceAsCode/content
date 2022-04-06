@@ -3,7 +3,8 @@ documentation_complete: true
 title: 'Specify the hash to use when signing modules'
 
 description: |-
-    This configures the kernel to build and sign modules using SHA512 as the hash function.
+    This configures the kernel to build and sign modules using
+    {{{ xccdf_value("var_kernel_config_module_sig_hash") }}} as the hash function.
 
     {{{ kernel_build_config_describe_config("CONFIG_MODULE_SIG_HASH", xccdf_value("var_kernel_config_module_sig_hash")) | indent(4) }}}
 

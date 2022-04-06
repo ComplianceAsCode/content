@@ -3,12 +3,12 @@ documentation_complete: true
 title: 'Require modules to be validly signed'
 
 description: |-
-    Reject unsigned modules or signed modules for which we don't have a key.
+    Reject unsigned modules or signed modules with an unknown key.
 
     {{{ kernel_build_config_describe_config("CONFIG_MODULE_SIG_FORCE", "y") | indent(4) }}}
 
 rationale: |-
-    Prevent loading modules that are unsigned or signed with a key that we don't know about.
+    Prevent loading modules that are unsigned or signed with an unknown key.
 
 warnings:
     {{{ kernel_build_config_warning() | indent(4) }}}
