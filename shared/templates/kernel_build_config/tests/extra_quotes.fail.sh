@@ -1,16 +1,17 @@
 #!/bin/bash
 # remediation = none
+
+# The sets up a config file with extra double quotes
+
 {{%- if VARIABLE %}}
 # variables = {{{ VARIABLE }}}=correct_value
 {{%- set VALUE="correct_value" %}}
 {{%- endif %}}
 
-# fail1 is the plain expected fail scenario, the config with a wrong value
-
 for file in /boot/config-* ; do
     if grep -q ^{{{ CONFIG }}} "$file" ; then
-        sed -i "s/{{{ CONFIG }}}.*/{{{ CONFIG }}}=wrong_value/" "$file"
+        sed -i 's/{{{ CONFIG }}}.*/{{{ CONFIG }}}="{{{ VALUE }}}""/' "$file"
     else
-        echo "{{{ CONFIG }}}=wrong_value" >> "$file"
+        echo '{{{ CONFIG }}}="{{{ VALUE }}}""' >> "$file"
     fi
 done

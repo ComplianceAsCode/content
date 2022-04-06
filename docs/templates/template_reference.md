@@ -419,6 +419,8 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
     - **value** - The value the configuration should have
       When **value** is `"n"`, the check will pass when the config is absent, commented out or has the
       value `n` in the `/boot/config-*` files.
+    - **variable** - The variable to get the value from.
+      This parameter is mutually exclusive with **value**.
 
 - Languages: OVAL
 
