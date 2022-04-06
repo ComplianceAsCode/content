@@ -68,3 +68,7 @@ template:
     name: service_disabled
     vars:
         servicename: autofs
+
+fixtext: |-
+    Configure the operating system to disable the ability to automount devices.
+    {{{ describe_service_disable(service="autofs") }}}
