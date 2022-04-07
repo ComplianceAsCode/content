@@ -1,0 +1,17 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: Find keytab files
+  find:
+    paths: /etc/
+    patterns: "*.keytab"
+  register: keytab_files
+
+- name: Remove keytab files
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ keytab_files.files }}"
