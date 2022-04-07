@@ -9,7 +9,7 @@ description: |-
     {{{ kernel_build_config_describe_config("CONFIG_PANIC_ON_OOPS", "y") | indent(4) }}}
 
 rationale: |-
-    This feature is ensures that the kernel does not do anything erroneous after an oops which
+    This feature ensures that the kernel does not do anything erroneous after an oops which
     could result in data corruption or other issues.
 
 warnings:
@@ -31,5 +31,5 @@ template:
     name: kernel_build_config
     vars:
         config: CONFIG_PANIC_ON_OOPS
-        value: var_kernel_config_panic_timeout
+        value: 'y'
 

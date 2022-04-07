@@ -5,8 +5,8 @@ title: 'Kernel panic timeout'
 description: |-
     Set the timeout value (in seconds) until a reboot occurs when the kernel panics.
     A timeout of 0 configures the system to wait forever. With a timeout value greater than 0,
-    the system will wait the specified amount of time before rebooting. While a timeout value less
-    0 makes the system reboot immediately.
+    the system will wait the specified amount of seconds before rebooting. While a timeout value
+    less than 0 makes the system reboot immediately.
 
     {{{ kernel_build_config_describe_config("CONFIG_PANIC_TIMEOUT", xccdf_value("var_kernel_config_panic_timeout")) | indent(4) }}}
 
