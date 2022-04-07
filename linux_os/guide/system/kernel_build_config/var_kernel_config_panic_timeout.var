@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Kernel panic timeout'
+
+description: |-
+    The time, in seconds, to wait until a reboot occurs.
+    If the value is <tt>0</tt> the system never reboots.
+    If the value is less than <tt>0</tt> the system reboots immediately.
+
+type: string
+
+operator: equals
+
+interactive: true
+
+options:
+    default: 0
+    never: 0
+    5_minutes: 300
+    1_minute: 60
+    immediately: -1
