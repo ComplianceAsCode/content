@@ -18,6 +18,8 @@ references:
     cis@rhel7: 6.2.7
     cis@rhel8: 6.2.16
     cis@sle15: 6.2.15
+    disa: CCI-000764
+    srg: SRG-OS-000104-GPOS-00051
 
 ocil_clause: 'has duplicate group ids'
 
@@ -30,6 +32,9 @@ ocil: |-
     If output is produced, this is a finding.
     Configure the operating system to contain no duplicate names for groups.
     Edit the file "/etc/group" and provide each group that has a duplicate group id with a unique group id.
+
+fix: |-
+    Edit the file "/etc/group" and provide each group that has a duplicate Group ID (GID) with a unique GID.
 
 warnings:
     - general: |-
