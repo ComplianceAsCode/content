@@ -56,3 +56,21 @@ ocil: |-
     If properly configured, the output for <tt>autorun-never</tt> should be <tt>/org/gnome/desktop/media-handling/autorun-never</tt>
 
 platform: machine
+
+fixtext: |-
+    Configure GNOME 3 to disable automated mount of removable media.
+
+    First, add or update the following section
+    in "/etc/dconf/db/local.d/00-security-settings":
+
+    [org/gnome/desktop/media-handling]
+    autorun-never=true
+
+    Then, add the following line to
+    /etc/dconf/db/local.d/locks/00-security-settings-lock to prevent
+    user modification.
+
+    /org/gnome/desktop/media-handling/autorun-never
+
+    Finally, update the dconf system database:
+    $ dconf update
