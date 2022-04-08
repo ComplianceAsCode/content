@@ -50,3 +50,8 @@ ocil: |-
     <pre>$ sudo grep pam_cert_auth /etc/sssd/sssd.conf</pre>
     If configured properly, output should be
     <pre>pam_cert_auth = true</pre>
+
+fix: |-
+    Edit the file "/etc/sssd/sssd.conf" and add or edit the following line:
+
+    pam_cert_auth = true
