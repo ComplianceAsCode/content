@@ -27,11 +27,12 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-{{% if 'ubuntu' not in product %}}
-{{{ complete_ocil_entry_package(package="libpwquality") }}}
-{{% else %}}
-{{{ complete_ocil_entry_package(package="libpam-pwquality") }}}
-{{% endif %}}
+ocil: |-
+{{%- if 'ubuntu' not in product %}}
+    {{{ ocil_package(package="libpwquality") }}}
+{{%- else %}}
+    {{{ ocil_package(package="libpam-pwquality") }}}
+{{%- endif %}}
 
 template:
     name: package_installed
