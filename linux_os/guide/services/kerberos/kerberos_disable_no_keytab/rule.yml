@@ -25,7 +25,7 @@ references:
     stigid@ol8: OL08-00-010161
     stigid@rhel8: RHEL-08-010161
 
-ocil_clause: 'it is present on the system'
+ocil_clause: 'a keytab file is present on the system'
 
 ocil: |-
     Run the following command to see if there are some keytabs
@@ -33,3 +33,9 @@ ocil: |-
     <pre>$ ls -la /etc/*.keytab</pre>
     The expected result is
     <pre>ls: cannot access '/etc/*.keytab': No such file or directory</pre>
+
+fix: |-
+    Configure {{{ full_name }}} to prevent system daemons from using Kerberos for authentication.
+
+    Remove any files with the .keytab extension from the operating system.
+    rm -f /etc/*.keytab

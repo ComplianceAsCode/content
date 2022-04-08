@@ -43,3 +43,13 @@ ocil: |-
         StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")
     </pre>
     where the <tt>&lt;remote system></tt> present in the configuration line above must be a valid IP address or a host name of the remote logging server.
+
+fix: |-
+    Configure rsyslog to use Transport Layer Security (TLS) support for logging
+    to remote server for the Forwarding Output Module.
+
+    Add or update the following entry in /etc/rsyslog.conf:
+
+    action(type="omfwd" protocol="tcp" Target="remote system" port="6514" StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name" streamdriver.CheckExtendedKeyPurpose="on")
+
+    Replace the remote system in the above command with an IP address or a host name of the remote logging server.

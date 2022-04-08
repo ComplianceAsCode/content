@@ -57,3 +57,6 @@ ocil: |-
 
     If any interactive user password hash does not begin with <tt>$6</tt>,
     this is a finding.
+
+fix: |-
+    Lock all interactive user accounts not using SHA-512 hashing until the passwords can be regenerated with SHA-512.
