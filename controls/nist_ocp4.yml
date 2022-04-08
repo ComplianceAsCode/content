@@ -4536,13 +4536,27 @@ controls:
     https://issues.redhat.com/browse/CMP-267
   rules: []
 - id: CM-3(6)
-  status: pending
+  status: automated
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    FIPS mode can be enabled in OpenShift through a flag that
+    can be set at installation time [1]. Follow the relevant
+    documentation for the applicable cloud provider [2][3][4][5]
+    for more information. But note that this is also applicable
+    in on-prem deployments.
+    
+    OpenShift provides GitOps operator, configuration management
+    changes is recommended to be be made using GitOps, so that
+    any changes can tracked and audited. Other GitOps operators or
+    solutions can also be used to meet the requirements of this control.
 
-    https://issues.redhat.com/browse/CMP-268
-  rules: []
+
+    [1] https://docs.openshift.com/container-platform/latest/installing/installing-fips.html
+    [2] https://docs.openshift.com/container-platform/latest/installing/installing_aws/installing-aws-government-region.html#installation-configuration-parameters_installing-aws-government-region
+    [3] https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-customizations.html
+    [4] https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-customizations.html
+  rules:
+  - fips_mode_enabled
+  - gitops_operator_exists
   description: |-
     The organization ensures that cryptographic mechanisms used to provide [Assignment: organization-defined security safeguards] are under configuration management.
 
@@ -6991,6 +7005,8 @@ controls:
     the "insecure" flag so that TLS is used.
   rules:
   - ocp_no_ldap_insecure
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
   description: |-
     The information system implements replay-resistant authentication mechanisms for network access to privileged accounts.
 
@@ -7002,12 +7018,22 @@ controls:
   - high
   - moderate
 - id: IA-2(9)
-  status: supported
+  status: automated
   notes: |-
-    A control response is planned. Engineering progress can be tracked via:
+    OpenShift offers support for replay-resistant authentication
+    mechanisms, both for OpenShift console and 3rd party
+    authentication. Third party identity providers configured for
+    modern TLS is supported by OpenShift.
 
-    https://issues.redhat.com/browse/CMP-574
-  rules: []
+    Please see the specific identity provider documentation:
+    https://docs.openshift.com/container-platform/latest/authentication/understanding-authentication.html
+
+    When using the LDAP provider, care must be taken to not set
+    the "insecure" flag so that TLS is used.
+  rules: 
+  - ocp_no_ldap_insecure
+  - idp_is_configured
+  - ocp_idp_no_htpasswd
   description: |-
     The information system implements replay-resistant authentication mechanisms for network access to non-privileged accounts.
 
@@ -7654,12 +7680,22 @@ controls:
     OpenShift configuration.
   rules: []
 - id: IA-5(13)
-  status: pending
+  status: automated
   notes: |-
-    A control response is planned. Engineering progress can be tracked via:
+    OAuth token is the cached authenticator used in OpenShift,
+    it be configured to expire after a certain period of time.
 
-    https://issues.redhat.com/browse/CMP-331
-  rules: []
+    The OpenShift Oauth Server has a setting that enables the termination
+    of inactive sessions. The relevant setting is `accessTokenInactivityTimeout`
+    and it's possible to configure it under the OAuth object. [1]
+    A similar configuration exists in OAuthClient objects. This takes precedence
+    over the global OAuth object configuration, so it needs to be verified as
+    well.
+
+    [1] https://docs.openshift.com/container-platform/latest/authentication/configuring-internal-oauth.html#oauth-token-inactivity-timeout_configuring-internal-oauth
+  rules:
+  - var_oauth_inactivity_timeout=10m0s
+  - oauth_or_oauthclient_inactivity_timeout
   description: |-
     The information system prohibits the use of cached authenticators after [Assignment: organization-defined time period].
   title: >-
@@ -8594,16 +8630,16 @@ controls:
     This control was withdrawn by NIST.
   rules: []
 - id: MA-2(2)
-  status: pending
+  status: manual
   notes: |-
-    Section a: A control response is planned. Engineering progress can be tracked via:
+    OpenShift provides GitOps operator[1], configuration management
+    changes is recommended to be be made using GitOps, so that
+    any changes can tracked and audited. Other GitOps operators or
+    solutions can also be used to meet the requirements of this control.
 
-    https://issues.redhat.com/browse/CMP-341
-
-    Section b: A control response is planned. Engineering progress can be tracked via:
-
-    https://issues.redhat.com/browse/CMP-341
-  rules: []
+    [1] https://docs.openshift.com/container-platform/latest/cicd/gitops/understanding-openshift-gitops.html
+  rules:
+  - gitops_operator_exists
   description: |-
     The organization:
      (a)   Employs automated mechanisms to schedule, conduct, and document maintenance and repairs; and
@@ -8796,15 +8832,11 @@ controls:
   - high
   - moderate
 - id: MA-4(3)
-  status: pending
+  status: not applicable
   notes: |-
-    Section a: This control reflects organizational procedures/policies, and is not
+    This control reflects organizational procedures/policies, and is not
     applicable to the configuration of OpenShift.
 
-    Section b: A control response is planned. Engineering progress can be tracked via:
-
-    https://issues.redhat.com/browse/CMP-371
-  rules: []
   description: |-
     The organization:
      (a)   Requires that nonlocal maintenance and diagnostic services be performed from an information system that implements a security capability comparable to the capability implemented on the system being serviced; or
@@ -8838,11 +8870,12 @@ controls:
     the scope of OpenShift configuration.
   rules: []
 - id: MA-4(6)
-  status: pending
+  status: inherently met
   notes: |-
-    A control response is planned. Engineering progress can be tracked via:
+    Nonlocal maintenance and diagnostic activities are carried out through OpenShift CLI
+    'oc debug'[1] on the OpenShift. The command's TTY is protected by the cluster's standard TLS.
 
-    https://issues.redhat.com/browse/CMP-346
+    [1] https://access.redhat.com/documentation/en-us/openshift_container_platform/lateset/html/cli_tools/openshift-cli-oc#debug
   rules: []
   description: |-
     The information system implements cryptographic mechanisms to protect the integrity and confidentiality of nonlocal maintenance and diagnostic communications.
