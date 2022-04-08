@@ -38,3 +38,8 @@ ocil: |-
     <pre>file /etc/krb5.conf.d/crypto-policies</pre>
     If command ouput shows the following line, Kerberos is configured to use the system-wide crypto policy.
     <pre>/etc/krb5.conf.d/crypto-policies: symbolic link to /etc/crypto-policies/back-ends/krb5.config</pre>
+
+fix: |-
+    Configure Kerberos to use system crypto policy.
+    Create a symlink pointing to system crypto policy in the Kerberos configuration using the following command:
+    $ sudo ln -s /etc/crypto-policies/back-ends/krb5.config /etc/krb5.conf.d/crypto-policies
