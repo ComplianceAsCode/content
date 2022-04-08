@@ -41,7 +41,7 @@ ocil: |-
     To verify that kernel parameter 'crypto.fips_enabled' is set properly, run the following command:
     <pre>sysctl crypto.fips_enabled</pre>
     The output should contain the following:
-    <pre>crypto.fips_enabled =  1</pre>
+    <pre>crypto.fips_enabled = 1</pre>
 
 warnings:
     - general: |-
@@ -63,3 +63,14 @@ warnings:
         party review by an accredited lab. While open source software is
         capable of meeting this, it does not meet FIPS-140 unless the vendor
         submits to this process.
+
+fix: |-
+    Configure the operating system to implement DoD-approved encryption by following the steps below:
+
+    To enable strict FIPS compliance, the fips=1 kernel option needs to be added to the kernel boot parameters during system installation so key generation is done with FIPS-approved algorithms and continuous monitoring tests in place.
+
+    Enable FIPS mode after installation (not strict FIPS compliant) with the following command:
+
+    $ sudo fips-mode-setup --enable
+
+    Reboot the system for the changes to take effect.
