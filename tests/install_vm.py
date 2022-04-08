@@ -141,7 +141,7 @@ def main():
 
     if not data.url:
         if data.distro == "fedora":
-            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Everything/x86_64/os"
+            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Everything/x86_64/os"
         elif data.distro == "centos7":
             data.url = "http://mirror.centos.org/centos/7/os/x86_64"
         elif data.distro == "centos8":
@@ -221,7 +221,7 @@ def main():
     # The kernel option 'net.ifnames=0' is used to disable predictable network
     # interface names, for more details see:
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
-    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} ksdevice=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
+    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} {inst_opt} inst.ks.device=eth0 net.ifnames=0 console=ttyS0,115200" --serial pty --graphics={graphics_opt} --noautoconsole --rng /dev/random --wait={wait_opt} --location={url}'.format(**data.__dict__)
     if data.uefi == "normal":
         command = command+" --boot uefi"
     if data.uefi == "secureboot":
