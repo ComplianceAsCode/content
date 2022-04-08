@@ -1,12 +1,16 @@
 # Traffic rules
 
+The aim of this document is to help the project community to self-organize and deliver required changes at a fast pace, and to ensure that various parties can collaborate on the project without major friction.
+
+
 ## TLDR
+
 We need to:
 
-Allow independent groups in the content project to work at their own pace on parts of the project that don’t influence each other.
+Allow individuals and organizations in the content project to work at their own pace on parts of the project within their area of expertise, and to do so independently if they don’t influence each other.
 Introduce enter and exit criteria for roles with elevated privileges so the hierarchy can self-organize.
 Define a framework for organizations to join the project and assume responsibilities.
-Make sure that the project stays coherent and individual parts contribute to its value, and the project doesn’t become a disgusting spaghetti soup.
+Ensure that the project stays coherent and individual parts contribute to its value, and the project doesn’t become a disgusting spaghetti soup.
 
 
 ## Decomposition
@@ -16,10 +20,11 @@ Those areas are going to be segmented by
 
 - Products (RHEL, Ubuntu, …) - make it easy to develop content of a product that doesn’t influence the other content or the build system.
 - Product-specific profiles (PSPs s.a. Firefox STIG, Ubuntu CIS, …) and respective control files - make it easy for SMEs that only want to assign rules to profiles without going into details.
-- Product-independent profiles (PIPs s.a. ANSSI, HIPAA, PCI-DSS, …) and respective control files - ensure that PIP development benefits the whole community instead of cluttering the content with “if product in [...]”.
-- Shared resources - rules only loosely coupled to products, templates, CPEs etc. Same principles that apply to PIPs apply for the shared content as well.
-- Build system - decisions upon architecture of the build system impact build time, project capabilities, and can also move maintenance costs.
-- Test-related code - ensure that tests have the greatest coverage as possible, but that don’t waste time and don’t suffer from false positives.
+- Shared resources
+  - Product-independent profiles (PIPs s.a. ANSSI, HIPAA, PCI-DSS, …) and respective control files - ensure that PIP development benefits the whole community instead of cluttering the content with “if product in [...]”.
+  - Build system - decisions upon architecture of the build system impact build time, project capabilities, and can also move maintenance costs.
+  - Test-related code - ensure that tests have the greatest coverage as possible, but that don’t waste time and don’t suffer from false positives.
+  - Other - rules only loosely coupled to products, templates, CPEs etc. Same principles that apply to PIPs apply for the shared content as well.
 - Organization administration - ability to grant and remove rights, create and delete repositories etc.
 
 
@@ -87,6 +92,8 @@ Recommended way to get merge rights: Anybody who submits six non-trivial PRs tha
 A person can ask to be stripped of merge rights.
 If a person doesn’t actively contribute to the project for a period of 12 months, their merge rights are stripped. Active contribution consists of either non-trivial contributions of code, non-trivial reviews, or analyses of problems in issues.  Rights can be also revoked if coding style or conduct are consistently broken.
 The project maintainers decide about granting or strip of rights and about exceptions to the procedure e.g. when an applicant has deep prior experience with the project.
+
+When a person reapplies for merge rights after the timeout period, it is possible to satisfy formal conditions by submitting non-trivial PRs or non-trivial reviews -- 3 of those in 3 months.
 
 
 ### Organizations
