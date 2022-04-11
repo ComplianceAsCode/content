@@ -61,17 +61,4 @@ platform: machine
 fixtext: |-
     Configure GNOME 3 to disable automated mount of removable media.
 
-    First, add or update the following section
-    in "/etc/dconf/db/local.d/00-security-settings":
-
-    [org/gnome/desktop/media-handling]
-    automount-open=false
-
-    Then, add the following line to
-    /etc/dconf/db/local.d/locks/00-security-settings-lock to prevent
-    user modification.
-
-    /org/gnome/desktop/media-handling/automount-open
-
-    Finally, update the dconf system database:
-    $ dconf update
+    {{{ fixtext_dconf_ini_file("org/gnome/desktop/media-handling", "automount-open", "false") }}}

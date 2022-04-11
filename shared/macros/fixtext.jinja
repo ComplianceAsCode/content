@@ -31,11 +31,17 @@ The audit daemon must be restarted for the changes to take effect.
 #}}
 {{%- macro fixtext_dconf_ini_file(section, parameter, value) -%}}
     The dconf settings can be edited in the /etc/dconf/db/* location.
-    Edit or add the {{{ section }}} section of the database file and add or update the following lines:
 
-    {{{parameter}}}={{{value}}}
+    First, add or update the [{{{ section }}}] section of the "/etc/dconf/db/local.d/00-security-settings" database file and add or update the following lines:
 
-    Update the system databases:
+    [{{{ section }}}]
+    {{{ parameter }}}={{{ value }}}
+
+    Then, add the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock" to prevent user modification:
+
+    /{{{ section }}}/{{{ parameter }}}
+
+    Finally, update the dconf system databases:
 
     $ sudo dconf update
 {{%- endmacro -%}}

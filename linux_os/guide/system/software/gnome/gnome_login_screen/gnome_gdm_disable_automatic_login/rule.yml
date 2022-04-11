@@ -51,6 +51,11 @@ ocil: |-
     AutomaticLoginEnable=false</pre>
 
 fixtext: |-
-    {{{ fixtext_dconf_ini_file("daemon", "AutomaticLoginEnable", "false") }}}
+    Configure GDM to disable automatic login.
+
+    Set AutomaticLoginEnable to false in the [daemon] section in /etc/gdm/custom.conf. For example:
+
+    [daemon]
+    AutomaticLoginEnable=false
 
 platform: machine
