@@ -48,9 +48,9 @@ ComplianceAsCode/content
 .. toctree::
     :maxdepth: 2
     :glob:
-    :caption: Release Tools Documentation
+    :caption: Release Documentation
 
-    docs/release_process
+    release_process
 
 Indices and tables
 ==================
