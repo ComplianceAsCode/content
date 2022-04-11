@@ -24,6 +24,7 @@ from .constants import (XCCDF_REFINABLE_PROPERTIES,
                         oval_namespace,
                         xhtml_namespace,
                         xsi_namespace,
+                        stig_ns,
                         timestamp,
                         SSG_BENCHMARK_LATEST_URI,
                         SSG_PROJECT_NAME,
@@ -40,6 +41,7 @@ from .utils import required_key, mkdir_p
 from .xml import ElementTree as ET, add_xhtml_namespace, register_namespaces, parse_file
 from .shims import unicode_func
 from .build_cpe import ProductCPEs
+import ssg.build_stig
 
 def dump_yaml_preferably_in_original_order(dictionary, file_object):
     try:
@@ -1374,6 +1376,15 @@ class Rule(XCCDFEntity):
             )
             raise RuntimeError(msg)
 
+    def add_stig_references(self, stig_references):
+        stig_id = self.references.get("stigid", None)
+        if not stig_id:
+            return
+        reference = stig_references.get(stig_id, None)
+        if not reference:
+            return
+        self.references["stigref"] = reference
+
     def _get_product_only_references(self):
         product_references = dict()
 
@@ -1869,13 +1880,17 @@ class DirectoryLoader(object):
 
 
 class BuildLoader(DirectoryLoader):
-    def __init__(self, profiles_dir, env_yaml,
-                 product_cpes, sce_metadata_path=None):
+    def __init__(
+            self, profiles_dir, env_yaml, product_cpes,
+            sce_metadata_path=None, stig_reference_path=None):
         super(BuildLoader, self).__init__(profiles_dir, env_yaml, product_cpes)
 
         self.sce_metadata = None
         if sce_metadata_path and os.path.getsize(sce_metadata_path):
             self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
+        self.stig_references = None
+        if stig_reference_path:
+            self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
 
     def _process_values(self):
         for value_yaml in self.value_files:
@@ -1902,12 +1917,16 @@ class BuildLoader(DirectoryLoader):
                 rule.inherited_cpe_platform_names += self.loaded_group.cpe_platform_names
 
             rule.normalize(self.env_yaml["product"])
+            if self.stig_references:
+                rule.add_stig_references(self.stig_references)
 
     def _get_new_loader(self):
         loader = BuildLoader(
             self.profiles_dir, self.env_yaml, self.product_cpes)
         # Do it this way so we only have to parse the SCE metadata once.
         loader.sce_metadata = self.sce_metadata
+        # Do it this way so we only have to parse the STIG references once.
+        loader.stig_references = self.stig_references
         return loader
 
     def export_group_to_file(self, filename):

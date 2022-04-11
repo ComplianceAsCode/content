@@ -99,14 +99,27 @@ endmacro()
 # known. As part of this step, we also resolve/template the rules in the
 # content repository for each product.
 macro(ssg_build_shorthand_xml PRODUCT)
+    file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
+    list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
+    list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
 
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
-        DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
-        COMMENT "[${PRODUCT}-content] compiling everything"
-    )
+    if (STIG_REFERENCE_FILE STREQUAL "not-found")
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json"
+            DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
+            COMMENT "[${PRODUCT}-content] compiling everything"
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/profiles"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/compile_all.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --controls-dir "${CMAKE_SOURCE_DIR}/controls" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --sce-metadata "${CMAKE_CURRENT_BINARY_DIR}/checks/sce/metadata.json" --stig-references "${STIG_REFERENCE_FILE}"
+            DEPENDS generate-internal-${PRODUCT}-sce-metadata.json
+            COMMENT "[${PRODUCT}-content] compiling everything"
+        )
+    endif()
     add_custom_target(
         ${PRODUCT}-compile-all
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/profiles"
@@ -125,32 +138,6 @@ macro(ssg_build_shorthand_xml PRODUCT)
         ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
-    )
-endmacro()
-
-macro(ssg_build_xccdf_with_stig_references PRODUCT)
-    file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
-    list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
-    list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
-
-    if (STIG_REFERENCE_FILE STREQUAL "not-found")
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
-            COMMAND cp "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
-            DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-            COMMENT "[${PRODUCT}-content] generating xccdf-with-stig-references.xml"
-        )
-    else()
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/add_stig_references.py" "${STIG_REFERENCE_FILE}" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
-            DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-            COMMENT "[${PRODUCT}-content] generating xccdf-with-stig-references.xml"
-        )
-    endif()
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-with-stig-references.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
     )
 endmacro()
 
@@ -307,9 +294,9 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     endforeach()
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-with-stig-references.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        DEPENDS generate-internal-${PRODUCT}-xccdf-with-stig-references.xml
+        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
         DEPENDS ${PRODUCT_LANGUAGE_DEPENDS}
         COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )
@@ -754,7 +741,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_make_all_tables(${PRODUCT})
     ssg_build_templated_content(${PRODUCT})
-    ssg_build_xccdf_with_stig_references(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}" AND SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED)
