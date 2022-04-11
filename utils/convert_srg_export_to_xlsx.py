@@ -57,7 +57,7 @@ def setup_headers(sheet: openpyxl.worksheet.worksheet.Worksheet) -> None:
 def format_cells(sheet: openpyxl.worksheet.worksheet.Worksheet):
     for row in sheet.iter_rows():
         for cell in row:
-            cell.alignment = cell.alignment = Alignment(wrap_text=True, vertical='top')
+            cell.alignment = Alignment(wrap_text=True, vertical='top')
 
 
 def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num: int) -> None:
@@ -78,7 +78,7 @@ def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num:
     sheet[f'O{row_num}'] = row['Mitigation']
     sheet[f'P{row_num}'] = row['Artifact Description']
     sheet[f'Q{row_num}'] = row['Status Justification']
-    sheet.row_dimensions[row_num].height = 42
+    sheet.row_dimensions[row_num].height = 130
 
     # freeze header row represented by A1
     # A2 is required because it freezes everything before it
