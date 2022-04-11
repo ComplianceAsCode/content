@@ -1890,7 +1890,7 @@ class BuildLoader(DirectoryLoader):
             self.sce_metadata = json.load(open(sce_metadata_path, 'r'))
         self.stig_references = None
         if stig_reference_path:
-            self.stig_references = ssg.build_stig.get_versions(stig_reference_path)
+            self.stig_references = ssg.build_stig.map_versions_to_rule_ids(stig_reference_path)
 
     def _process_values(self):
         for value_yaml in self.value_files:

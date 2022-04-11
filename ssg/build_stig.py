@@ -4,10 +4,10 @@ from __future__ import print_function
 import sys
 
 from .xml import ElementTree as ET
-from .constants import XCCDF11_NS, stig_ns, stig_refs
+from .constants import XCCDF11_NS
 
 
-def get_versions(reference_file_name):
+def map_versions_to_rule_ids(reference_file_name):
     try:
         reference_root = ET.parse(reference_file_name)
     except IOError:
