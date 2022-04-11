@@ -32,7 +32,9 @@ references:
     ospp: FMT_SMF_EXT.1
     srg: SRG-OS-000355-GPOS-00143
 
-{{{ complete_ocil_entry_package(package="chrony") }}}
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="chrony") }}}'
 
 template:
     name: package_installed
