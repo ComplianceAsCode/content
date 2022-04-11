@@ -8,7 +8,7 @@
 :param rule_path: Full path to where the rule wil
 :type rule_path: str
 #}}
-{{% macro fix_audit_file_watch_rule(path, key, rule_path) -%}}
+{{% macro fixtext_audit_file_watch_rule(path, key, rule_path) -%}}
 Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect <tt>{{{ path }}}</tt>.
 
 Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
@@ -29,7 +29,7 @@ The audit daemon must be restarted for the changes to take effect.
     :type value: str
 
 #}}
-{{%- macro dconf_ini_file_fix(section, parameter, value) -%}}
+{{%- macro fixtext_dconf_ini_file(section, parameter, value) -%}}
     The dconf settings can be edited in the /etc/dconf/db/* location.
     Edit or add the {{{ section }}} section of the database file and add or update the following lines:
 
@@ -49,7 +49,7 @@ The audit daemon must be restarted for the changes to take effect.
     :param config_is_distributed: Should the value go in 00-complianceascode-hardening.conf vs the main sshd config file
 
 #}}
-{{%- macro sshd_lineinfile_fix(parameter, value, config_is_distributed) -%}}
+{{%- macro fixtext_sshd_lineinfile(parameter, value, config_is_distributed) -%}}
 {{%- if config_is_distributed -%}}
 {{%- set path = "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" -%}}
 {{%- else -%}}
@@ -71,7 +71,7 @@ The audit daemon must be restarted for the changes to take effect.
     :type parameter: str
 
 #}}
-{{%- macro service_enabled_fix(service) -%}}
+{{%- macro fixtext_service_enabled(service) -%}}
     To enable the {{{ service }}} service run the following command:
 
     $ systemctl enable --now {{{ service }}}

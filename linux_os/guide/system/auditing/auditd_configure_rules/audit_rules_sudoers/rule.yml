@@ -41,4 +41,4 @@ ocil: |-
     To verify that auditing is configured for system administrator actions, run the following command:
     <pre>$ sudo auditctl -l | grep "watch=/etc/sudoers\|-w /etc/sudoers\"</pre>
 
-fix: '{{{ fix_audit_file_watch_rule("/etc/sudoers", "identity", "/etc/audit/rules.d/audit.rules") }}}'
+fix: '{{{ fixtext_audit_file_watch_rule("/etc/sudoers", "identity", "/etc/audit/rules.d/audit.rules") }}}'

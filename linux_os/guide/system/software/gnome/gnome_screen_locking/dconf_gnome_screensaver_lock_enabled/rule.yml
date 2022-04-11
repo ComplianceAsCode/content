@@ -81,6 +81,6 @@ ocil: |-
     {{% endif %}}
 
 fix: |-
-    {{{ dconf_ini_file_fix("/org/gnome/desktop/screensaver/lock-enabled", "lock-enabled", "true") }}}
+    {{{ fixtext_dconf_ini_file("/org/gnome/desktop/screensaver/lock-enabled", "lock-enabled", "true") }}}
 
 platform: machine
