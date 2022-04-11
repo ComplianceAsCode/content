@@ -8,6 +8,7 @@ import pathlib
 import os
 import re
 import sys
+import string
 from typing.io import TextIO
 import xml.etree.ElementTree as ET
 
@@ -35,6 +36,15 @@ NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.2': ssg.constants.XCCDF12_NS,
       'xccdf-1.1': ssg.constants.XCCDF11_NS}
 SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
+
+
+HEADERS = ['IA Control', 'CCI', 'SRGID', 'STIGID', 'SRG Requirement', 'Requirement',
+            'SRG VulDiscussion', 'Vul Discussion', 'Status', 'SRG Check', 'Check', 'SRG Fix',
+            'Fix', 'Severity', 'Mitigation', 'Artifact Description', 'Status Justification']
+COLUMNS = string.ascii_uppercase[:17] # A-Q uppercase letters
+
+COLUMN_MAPPINGS = dict(zip(COLUMNS, HEADERS))
+
 
 srgid_to_iacontrol = {
     'SRG-OS-000001-GPOS-00001': 'AC-2 (1)',
@@ -437,10 +447,7 @@ def create_base_row(item: ssg.controls.Control, srgs: dict,
 
 
 def setup_csv_writer(csv_file: TextIO) -> csv.DictWriter:
-    headers = ['IA Control', 'CCI', 'SRGID', 'STIGID', 'SRG Requirement', 'Requirement',
-               'SRG VulDiscussion', 'Vul Discussion', 'Status', 'SRG Check', 'Check', 'SRG Fix',
-               'Fix', 'Severity', 'Mitigation', 'Artifact Description', 'Status Justification']
-    csv_writer = csv.DictWriter(csv_file, headers)
+    csv_writer = csv.DictWriter(csv_file, HEADERS)
     csv_writer.writeheader()
     return csv_writer
 
