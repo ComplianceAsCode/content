@@ -1,0 +1,79 @@
+{{#
+    How to fix an audit rule that watches a file.
+
+:param path: Full path of file to watch
+:type path: str
+:param key: Auditd key for the system
+:type key: str
+:param rule_path: Full path to where the rule wil
+:type rule_path: str
+#}}
+{{% macro fix_audit_file_watch_rule(path, key, rule_path) -%}}
+Configure {{{ full_name }}} to generate audit records for all account creations, modifications, disabling, and termination events that affect <tt>{{{ path }}}</tt>.
+
+Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
+
+-w {{{ path }}} -p wa -k {{{ key }}}
+
+The audit daemon must be restarted for the changes to take effect.
+{{% endmacro %}}
+
+{{#
+    Human readable text for how to fix ini files
+
+    :param section: Section on the value to be set
+    :type section: str
+    :param parameter: parameter to be change
+    :type parameter: str
+    :param value: value to be set
+    :type value: str
+
+#}}
+{{%- macro dconf_ini_file_fix(section, parameter, value) -%}}
+    The dconf settings can be edited in the /etc/dconf/db/* location.
+    Edit or add the {{{ section }}} section of the database file and add or update the following lines:
+
+    {{{parameter}}}={{{value}}}
+
+    Update the system databases:
+
+    $ sudo dconf update
+{{%- endmacro -%}}
+
+{{#
+    Describe how to fix an ssh configure
+    :param parameter: parameter to set
+    :type parameter: str
+    :parameter value: Value to set
+    :type value: str
+    :param config_is_distributed: Should the value go in 00-complianceascode-hardening.conf vs the main sshd config file
+
+#}}
+{{%- macro sshd_lineinfile_fix(parameter, value, config_is_distributed) -%}}
+{{%- if config_is_distributed -%}}
+{{%- set path = "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" -%}}
+{{%- else -%}}
+{{%- set path = "/etc/ssh/sshd_config" -%}}
+{{%- endif -%}}
+    To configure the system add or modify the following line in "{{{ path }}}".
+
+    {{{parameter}}} {{{value}}}
+
+    Restart the SSH daemon for the settings to take effect:
+
+    $ sudo systemctl restart sshd.service
+
+{{%- endmacro -%}}
+
+{{#
+    Describe how to enable a service
+    :param parameter: service to enable
+    :type parameter: str
+
+#}}
+{{%- macro service_enabled_fix(service) -%}}
+    To enable the {{{ service }}} service run the following command:
+
+    $ systemctl enable --now {{{ service }}}
+{{%- endmacro -%}}
+
