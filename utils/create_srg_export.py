@@ -38,11 +38,13 @@ NS = {'scap': ssg.constants.datastream_namespace,
       'xccdf-1.1': ssg.constants.XCCDF11_NS}
 SEVERITY = {'low': 'CAT III', 'medium': 'CAT II', 'high': 'CAT I'}
 
+HEADERS = [
+    'IA Control', 'CCI', 'SRGID', 'STIGID', 'SRG Requirement', 'Requirement',
+    'SRG VulDiscussion', 'Vul Discussion', 'Status', 'SRG Check', 'Check', 'SRG Fix',
+    'Fix', 'Severity', 'Mitigation', 'Artifact Description', 'Status Justification'
+    ]
 
-HEADERS = ['IA Control', 'CCI', 'SRGID', 'STIGID', 'SRG Requirement', 'Requirement',
-            'SRG VulDiscussion', 'Vul Discussion', 'Status', 'SRG Check', 'Check', 'SRG Fix',
-            'Fix', 'Severity', 'Mitigation', 'Artifact Description', 'Status Justification']
-COLUMNS = string.ascii_uppercase[:17] # A-Q uppercase letters
+COLUMNS = string.ascii_uppercase[:17]  # A-Q uppercase letters
 
 COLUMN_MAPPINGS = dict(zip(COLUMNS, HEADERS))
 
@@ -418,8 +420,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
-    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html"), action="store",
-                        help="The format the output should take. Defaults to csv", default="csv")
+    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html"),
+                        action="store", help="The format the output should take. Defaults to csv",
+                        default="csv")
     return parser.parse_args()
 
 
@@ -435,8 +438,10 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                     row['Severity'] = get_severity(control.levels[0])
                 row['Requirement'] = control.title
                 row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables)
-                row['Check'] = f'{handle_variables(rule_object.ocil, control.variables)}\n\n' \
-                               f'If {handle_variables(rule_object.ocil_clause, control.variables)}, then this is a finding.'
+                ocil_var = handle_variables(rule_object.ocil, control.variables)
+                ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables)
+                row['Check'] = f'{ocil_var}\n\n' \
+                               f'If {ocil_clause_var} then this is a finding.'
                 row['Fix'] = handle_variables(rule_object.fix, control.variables)
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
@@ -535,10 +540,10 @@ def handle_output(output: str, results: list, format_type: str, product: str) ->
         output = output.replace('.csv', '.html')
         pd.set_option('colheader_justify', 'center')
         df = pd.DataFrame(results, index=None)
-        df.fillna("",inplace=True)
+        df.fillna("", inplace=True)
         df = df.reindex(HEADERS, axis=1)
         with open(pathlib.Path(output), 'w+') as f:
-            f.write(HTML_OUTPUT_TEMPLATE.format(table=df.to_html().replace("\\n","<br>")))
+            f.write(HTML_OUTPUT_TEMPLATE.format(table=df.to_html().replace("\\n", "<br>")))
 
     print(f'Wrote output to {output}')
 
