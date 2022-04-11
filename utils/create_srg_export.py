@@ -397,7 +397,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 row['Requirement'] = control.title
                 row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables)
                 row['Check'] = f'{handle_variables(rule_object.ocil, control.variables)}\n\n' \
-                               f'If {rule_object.ocil_clause}, then this is a finding.'
+                               f'If {handle_variables(rule_object.ocil_clause, control.variables)}, then this is a finding.'
                 row['Fix'] = handle_variables(rule_object.fix, control.variables)
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
