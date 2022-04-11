@@ -81,6 +81,7 @@ echo "<ul>" >> index.html
 echo "<li><a href=\"statistics/index.html\">Statistics</a></li>" >> index.html
 echo "<li><a href=\"guides/index.html\">Guides</a></li>" >> index.html
 echo "<li><a href=\"tables/index.html\">Mapping Tables</a></li>" >> index.html
+echo "<li><a href=\"srg_mapping/\">SRG Mapping Tables</a></li>" >> index.html
 echo "</ul>" >> index.html
 echo "</body>" >> index.html
 echo "</html>" >> index.html
