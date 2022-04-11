@@ -55,7 +55,6 @@ selections:
 - audit_owner_change_success
 - audit_perm_change_failed
 - audit_perm_change_success
-- auditd_audispd_syslog_plugin_activated
 - auditd_data_retention_flush
 - auditd_freq
 - auditd_local_events
@@ -135,7 +134,6 @@ selections:
 - package_abrt-plugin-sosreport_removed
 - package_abrt_removed
 - package_aide_installed
-- package_audispd-plugins_installed
 - package_audit_installed
 - package_chrony_installed
 - package_crypto-policies_installed
@@ -156,7 +154,6 @@ selections:
 - package_policycoreutils-python-utils_installed
 - package_policycoreutils_installed
 - package_python3-abrt-addon_removed
-- package_rsyslog-gnutls_installed
 - package_rsyslog_installed
 - package_scap-security-guide_installed
 - package_sendmail_removed
@@ -170,8 +167,6 @@ selections:
 - partition_for_var_log_audit
 - partition_for_var_tmp
 - require_singleuser_auth
-- rsyslog_remote_tls
-- rsyslog_remote_tls_cacert
 - securetty_root_login_console_only
 - selinux_policytype
 - selinux_state
