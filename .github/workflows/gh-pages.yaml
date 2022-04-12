@@ -2,6 +2,8 @@ name: Github Pages
 on:
   push:
     branches: [ 'master' ]
+  pull_request:
+    branches: [ 'master' ]
 jobs:
   publish:
     name: Publish stats, tables and guides
@@ -29,7 +31,10 @@ jobs:
       - name: Generate HTML pages
         run: utils/generate_html_pages.sh $PAGES_DIR
         shell: bash
+        env:
+          PYTHONPATH: ${{ github.workspace }}
       - name: Deploy
+        if: ${{ github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           branch: gh-pages # The branch the action should deploy to.
