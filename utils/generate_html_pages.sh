@@ -50,7 +50,11 @@ echo "</html>" >> $STATS_DIR/index.html
 mkdir -p $PAGES_DIR/guides
 cp -rf build/guides $PAGES_DIR
 utils/gen_html_guides_index.py . $PAGES_DIR/guides/index.html
-
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Something wrong happened while generating the HTML Guides Index page"
+    exit 1
+fi
 
 # Generate Mapping Tables page
 pushd build/tables
