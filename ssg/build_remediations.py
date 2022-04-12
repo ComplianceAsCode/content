@@ -669,12 +669,15 @@ def expand_xccdf_subs(fix, remediation_type):
 
 def load_compiled_remediations(fixes_dir):
     if not os.path.isdir(fixes_dir):
-        raise RuntimeError("Directory %s does not exist" % fixes_dir)
+        raise RuntimeError(
+            "Directory with compiled fixes '%s' does not exist" % fixes_dir)
     all_remediations = defaultdict(dict)
     for language in os.listdir(fixes_dir):
         language_dir = os.path.join(fixes_dir, language)
         if not os.path.isdir(language_dir):
-            raise RuntimeError("%s is not a directory" % language_dir)
+            raise RuntimeError(
+                "Can't find the '%s' directory with fixes for %s" %
+                (language_dir, language))
         for filename in sorted(os.listdir(language_dir)):
             file_path = os.path.join(language_dir, filename)
             rule_id, _ = os.path.splitext(filename)
