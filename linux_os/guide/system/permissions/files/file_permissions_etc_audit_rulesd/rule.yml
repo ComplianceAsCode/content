@@ -35,7 +35,7 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/audit/rules.d/*.rules"
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/audit/rules.d/*.rules", perms="-rw-r-----") }}}
 
-fix: |-
+fixtext: |-
     {{{ describe_file_permissions(file="/etc/audit/rules.d/*.rules", perms="0640") }}}
 
 template:

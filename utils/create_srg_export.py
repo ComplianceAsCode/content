@@ -403,7 +403,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables)
                 row['Check'] = f'{ocil_var}\n\n' \
                                f'If {ocil_clause_var} then this is a finding.'
-                row['Fix'] = handle_variables(rule_object.fix, control.variables)
+                row['Fix'] = handle_variables(rule_object.fixtext, control.variables)
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
                 else:

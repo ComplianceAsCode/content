@@ -35,7 +35,7 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/audit/auditd.conf", pe
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/audit/auditd.conf", perms="-rw-r-----") }}}
 
-fix: |-
+fixtext: |-
     {{{ describe_file_permissions(file="/etc/audit/auditd.conf", perms="0640") }}}
 
 template:

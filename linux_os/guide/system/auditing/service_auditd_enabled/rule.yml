@@ -66,7 +66,7 @@ ocil_clause: 'the auditd service is not running'
 ocil: |-
     {{{ ocil_service_enabled(service="auditd") }}}
 
-fix: |-
+fixtext: |-
     {{{ fixtext_service_enabled("auditd") }}}
 
 platform: audit

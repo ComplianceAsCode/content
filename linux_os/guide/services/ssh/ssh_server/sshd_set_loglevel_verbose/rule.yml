@@ -41,7 +41,7 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="LogLevel", value="VERBOSE") }}}
 
-fix: |-
+fixtext: |-
     {{{ fixtext_sshd_lineinfile('LogLevel', 'VERBOSE', False) }}}
 
 template:

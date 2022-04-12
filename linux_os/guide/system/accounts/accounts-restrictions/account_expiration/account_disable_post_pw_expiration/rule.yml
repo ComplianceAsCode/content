@@ -70,7 +70,7 @@ ocil: |-
     <pre>$ grep "INACTIVE" /etc/default/useradd
     INACTIVE={{{ xccdf_value("var_account_disable_post_pw_expiration") }}}</pre>
 
-fix: |-
+fixtext: |-
     Configure {{{ full_name }}} to disable account identifiers after {{{ xccdf_value("var_account_disable_post_pw_expiration") }}} days of inactivity after the password expiration. 
 
     Run the following command to change the configuration for useradd:

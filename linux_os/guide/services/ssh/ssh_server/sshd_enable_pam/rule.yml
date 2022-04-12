@@ -44,5 +44,5 @@ template:
         rule_id: sshd_enable_pam
         value: 'yes'
 
-fix: |-
+fixtext: |-
     {{{ fixtext_sshd_lineinfile('UsePAM', 'yes') }}}

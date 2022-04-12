@@ -58,7 +58,7 @@ ocil: |-
     $ sudo getenforce
     {{{ xccdf_value("var_selinux_state") }}}
 
-fix: |-
+fixtext: |-
     Configure {{{ full_name }}} to verify correct operation of security functions.
 
     Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:

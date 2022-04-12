@@ -34,7 +34,7 @@ ocil: |-
     The expected result is
     <pre>ls: cannot access '/etc/*.keytab': No such file or directory</pre>
 
-fix: |-
+fixtext: |-
     Configure {{{ full_name }}} to prevent system daemons from using Kerberos for authentication.
 
     Remove any files with the .keytab extension from the operating system.
