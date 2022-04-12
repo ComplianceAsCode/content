@@ -1,0 +1,56 @@
+name: SRG Mapping Table
+on:
+  push:
+    branches: [ 'master' ]
+  pull_request:
+    branches: [ 'master', 'stabilization*' ]
+jobs:
+  generate-data:
+    name: SRG Mapping Table
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    env:
+      PAGES_DIR: __srg_mapping
+    steps:
+      - name: Install Deps
+        run: dnf install -y cmake git ninja-build openscap-utils python3-pyyaml python3-jinja2 python3-pytest ansible-lint expat libxslt python3-pip rsync
+      - name: Install deps python
+        run: pip3 install pandas openpyxl
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: cmake .. -G Ninja
+        working-directory: ./build
+      - name: Build rule dir json
+        run: python3 utils/rule_dir_json.py
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+      - name: Create data directory
+        run: mkdir -p $PAGES_DIR
+      - name: Generate XLSX
+        run: python3 utils/create_srg_export.py -c controls/stig_rhel9.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+      - name: Generate HTML
+        run: python3 utils/create_srg_export.py -c controls/stig_rhel9.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+      - uses: actions/upload-artifact@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: srg-mapping-rhel9.xlsx
+          path: ${{ env.PAGES_DIR }}/srg-mapping-rhel9.xlsx
+      - uses: actions/upload-artifact@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: srg-mapping-rhel9.html
+          path: ${{ env.PAGES_DIR }}/srg-mapping-rhel9.html
+      - name: Deploy
+        if: ${{ github.event_name == 'push' }}
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
+          target-folder: srg_mapping
+          clean: no
