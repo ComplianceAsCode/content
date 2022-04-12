@@ -1,19 +1,10 @@
 #!/usr/bin/env python3
 
-import argparse
-import csv
 import datetime
 import os
 import openpyxl
 from openpyxl.styles import Alignment, Font
-from create_srg_export import COLUMN_MAPPINGS
-
-
-SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
-BUILD_CONFIG = os.path.join(SSG_ROOT, "build", "build_config.yml")
-OUTPUT = os.path.join(SSG_ROOT, 'build',
-                      f'{datetime.datetime.now().strftime("%s")}_stig_export.xlsx')
+import create_srg_export
 
 MICRO_COLUMN_SIZE = 8
 SMALL_COLUMN_SIZE = 17
@@ -41,12 +32,12 @@ COLUMN_SIZES = {
 }
 
 def setup_sheet(sheet: openpyxl.worksheet.worksheet.Worksheet) -> None:
-    for column, header in COLUMN_MAPPINGS.items():
+    for column, header in create_srg_export.COLUMN_MAPPINGS.items():
         sheet.column_dimensions[f'{column}'].width = COLUMN_SIZES[header]
 
 
 def setup_headers(sheet: openpyxl.worksheet.worksheet.Worksheet) -> None:
-    for column, header in COLUMN_MAPPINGS.items():
+    for column, header in create_srg_export.COLUMN_MAPPINGS.items():
         sheet[f'{column}1'] = header
     for cell in list(sheet.iter_rows(max_row=1))[0]:
         cell.font = Font(bold=True, name='Calibri')
@@ -59,7 +50,7 @@ def format_cells(sheet: openpyxl.worksheet.worksheet.Worksheet):
 
 
 def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num: int) -> None:
-    for column, header in COLUMN_MAPPINGS.items():
+    for column, header in create_srg_export.COLUMN_MAPPINGS.items():
         sheet[f'{column}{row_num}'] = row[header]
     sheet.row_dimensions[row_num].height = 130
 

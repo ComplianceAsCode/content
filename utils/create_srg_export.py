@@ -11,9 +11,9 @@ import sys
 import string
 from typing.io import TextIO
 import xml.etree.ElementTree as ET
-import pandas as pd
 
 import convert_srg_export_to_xlsx
+import convert_srg_export_to_html
 
 try:
     import ssg.build_yaml
@@ -47,45 +47,6 @@ HEADERS = [
 COLUMNS = string.ascii_uppercase[:17]  # A-Q uppercase letters
 
 COLUMN_MAPPINGS = dict(zip(COLUMNS, HEADERS))
-
-HTML_OUTPUT_TEMPLATE = '''
-<html>
-<head>
-<title>HTML Pandas Dataframe with CSS</title>
-<style type="text/css">
-table
-{{
-    border-collapse:collapse;
-}}
-table, th, td
-{{
-    border: 2px solid #dcdcdc;
-    border-left: none;
-    border-right: none;
-    vertical-align: top;
-    padding: 2px;
-    font-family: verdana,arial,sans-serif;
-    font-size:11px;
-}}
-pre {{
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap !important;
-    word-wrap:break-word;
-}}
-table tr:nth-child(2n+2) {{ background-color: #f4f4f4; }}
-thead
-{{
-    display: table-header-group;
-    font-weight: bold;
-    background-color: #dedede;
-}}
-</style>
-</head>
-<body>
-    {table}
-</body>
-</html>.
-'''
 
 srgid_to_iacontrol = {
     'SRG-OS-000001-GPOS-00001': 'AC-2 (1)',
@@ -538,12 +499,8 @@ def handle_output(output: str, results: list, format_type: str, product: str) ->
             row['STIGID'] = ""
             row['IA Control'] = get_iacontrol(row['SRGID'])
         output = output.replace('.csv', '.html')
-        pd.set_option('colheader_justify', 'center')
-        df = pd.DataFrame(results, index=None)
-        df.fillna("", inplace=True)
-        df = df.reindex(HEADERS, axis=1)
-        with open(pathlib.Path(output), 'w+') as f:
-            f.write(HTML_OUTPUT_TEMPLATE.format(table=df.to_html().replace("\\n", "<br>")))
+        convert_srg_export_to_html.handle_dict(results, output, f'{product} SRG Mapping')
+
 
     print(f'Wrote output to {output}')
 
