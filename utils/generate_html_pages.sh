@@ -50,7 +50,11 @@ echo "</html>" >> $STATS_DIR/index.html
 mkdir -p $PAGES_DIR/guides
 cp -rf build/guides $PAGES_DIR
 utils/gen_html_guides_index.py . $PAGES_DIR/guides/index.html
-
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Something wrong happened while generating the HTML Guides Index page"
+    exit 1
+fi
 
 # Generate Mapping Tables page
 pushd build/tables
@@ -70,6 +74,27 @@ echo "</body>" >> index.html
 echo "</html>" >> index.html
 popd
 
+# Generate SRG Mapping Tables
+mkdir -p $PAGES_DIR/srg_mapping
+pushd $PAGES_DIR/srg_mapping
+touch index.html
+echo "<html>" > index.html
+echo "<header>" >> index.html
+echo "<h1>SRG Mapping Tables</h1>" >> index.html
+echo "</header>" >> index.html
+echo "<body>" >> index.html
+echo "<ul>" >> index.html
+srg_products="rhel9" # space separated list of products
+for product in $srg_products
+do
+echo "<li><a href=\"srg-mapping-${product}.html\">srg-mapping-${product}.html</a></li>" >> index.html
+echo "<li><a href=\"srg-mapping-${product}.xlsx\">srg-mapping-${product}.xlsx</a></li>" >> index.html
+done
+echo "</ul>" >> index.html
+echo "</body>" >> index.html
+echo "</html>" >> index.html
+popd
+
 pushd $PAGES_DIR
 touch index.html
 echo "<html>" > index.html
@@ -81,7 +106,7 @@ echo "<ul>" >> index.html
 echo "<li><a href=\"statistics/index.html\">Statistics</a></li>" >> index.html
 echo "<li><a href=\"guides/index.html\">Guides</a></li>" >> index.html
 echo "<li><a href=\"tables/index.html\">Mapping Tables</a></li>" >> index.html
-echo "<li><a href=\"srg_mapping/\">SRG Mapping Tables</a></li>" >> index.html
+echo "<li><a href=\"srg_mapping/index.html\">SRG Mapping Tables</a></li>" >> index.html
 echo "</ul>" >> index.html
 echo "</body>" >> index.html
 echo "</html>" >> index.html
