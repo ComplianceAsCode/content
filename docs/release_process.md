@@ -4,10 +4,10 @@ How to Perform An Upstream Release (GitHub)
 Stabilization Phase
 -------------------
 
-Before each release we iniate a stabilization period which is typically two weeks long.
-A stabilizaiton branch is branched from master and more extensive testing is done on the content.
+Before each release we initiate a stabilization period which is typically two weeks long.
+A stabilization branch is branched from master and more extensive testing is done on the content.
 The goal is to have space and time to find and fix issues before the release.
-Everybody is welcome to test the stabilization branch and propose fixes.
+Everyone is welcome to test the stabilization branch and propose fixes.
 
 This process reduces the risk of bringing a sudden breaking change into the release,
 and ultimately allows the release process to happen while development continues on master branch.
@@ -23,13 +23,13 @@ To start the stabilization:
 - Update the milestone of open issues to the new one, if they have any
 
 - Close the milestone for the current release.
-  This makes the milestone less visible and reduces chance of PRs and Issues being added to it
+  This makes the milestone less visible and reduces the chance of PRs and Issues being added to it
   accidentally.
-  It is still possible to add itens to the closed Milestone, just select it in the `closed` tab.
+  It is still possible to add items to the closed Milestone, just select it in the `closed` tab.
 
 - Bump the version of `CMakeLists.txt` on the **master** branch.
 
-- Announce start of stabilization period on the mailing list
+- Announce the start of stabilization period on the mailing list
 
 During the stabilization:
 
@@ -67,10 +67,10 @@ This action will also create a release draft with release notes automatically
 generated. The way in which the action will categorize and break down changes is
 controlled by the `.github/workflows/release-changelog.json` configuration file.
 
-General rule is that the PR Titles will compose the body of the changelog.
+The general rule is that the PR Titles will compose the body of the changelog.
 
 
-- Create and push **vX.Y.Z** tag to the GitHub repo. Wait for the release action
+- Create and push a **vX.Y.Z** tag to the GitHub repo. Wait for the release action
 to finish.\
   `git tag vX.Y.Z stabilization-vX.Y.Z`\
   `git push --tags`
