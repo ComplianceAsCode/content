@@ -41,3 +41,6 @@ template:
     vars:
         arg_name: vsyscall
         arg_value: none
+
+fix: |-
+    {{{ describe_grub2_argument("vsyscall=none") | indent(4) }}}
