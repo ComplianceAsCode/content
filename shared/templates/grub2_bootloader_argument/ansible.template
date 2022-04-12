@@ -32,7 +32,7 @@
 
 {{% if product in ['sle12', 'sle15'] %}}
 - name: Update grub defaults and the bootloader menu
-  command: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 {{% else %}}
 - name: Update grub defaults and the bootloader menu
   command: /sbin/grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
