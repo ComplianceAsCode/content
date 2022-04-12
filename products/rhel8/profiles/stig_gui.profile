@@ -38,3 +38,6 @@ selections:
 
     # RHEL-08-040321
     - '!xwindows_runlevel_target'
+
+    # RHEL-08-040001
+    - '!package_libreport-plugin-rhtsupport_removed'
