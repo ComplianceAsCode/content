@@ -131,6 +131,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_shorthand.py" --resolved-base "${CMAKE_CURRENT_BINARY_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --ocil "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${PRODUCT}-compile-all
+        DEPENDS generate-internal-${PRODUCT}-all-fixes
         COMMENT "[${PRODUCT}-content] generating shorthand.xml and ocil-unlinked.xml"
     )
 
@@ -187,24 +188,6 @@ macro(ssg_collect_remediations PRODUCT LANGUAGES)
     endif()
 endmacro()
 
-# Builds the XML document containing all remediations of the given language.
-# This is later combined with the unlinked XCCDF document.
-macro(ssg_combine_remediations PRODUCT LANGUAGES)
-    foreach(LANGUAGE ${LANGUAGES})
-      set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/${LANGUAGE}")
-      add_custom_command(
-          OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
-          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${ALL_FIXES_DIR}"
-          DEPENDS generate-internal-${PRODUCT}-all-fixes
-          COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-fixes.xml"
-      )
-      add_custom_target(
-          generate-internal-${PRODUCT}-${LANGUAGE}-fixes.xml
-          DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
-      )
-    endforeach()
-endmacro()
-
 # Output per-profile Ansible playbooks for the specified product. This allows
 # Ansible hardening to be applied directly from CaC's artifacts without
 # needing to invoke OpenSCAP.
@@ -237,7 +220,6 @@ macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet, anaconda, ignition, kubernetes and blueprint)...")
 
     ssg_collect_remediations(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
-    ssg_combine_remediations(${PRODUCT} "${PRODUCT_REMEDIATION_LANGUAGES}")
 
     if ("${PRODUCT_ANSIBLE_REMEDIATION_ENABLED}")
         # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
@@ -279,31 +261,6 @@ macro(ssg_build_remediations PRODUCT)
             endif()
         endif()
     endif()
-endmacro()
-
-# Combine the unlinked XCCDF and separate language-specific remediation XML
-# trees into a single unlinked XCCDF document.
-macro(ssg_build_xccdf_with_remediations PRODUCT)
-    # we have to encode spaces in paths before passing them as stringparams to xsltproc
-    string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
-    set(PRODUCT_XSLT_LANGUAGE_PARAMS "")
-    set(PRODUCT_LANGUAGE_DEPENDS "")
-    foreach(LANGUAGE ${PRODUCT_REMEDIATION_LANGUAGES})
-        list(APPEND PRODUCT_XSLT_LANGUAGE_PARAMS --stringparam ${LANGUAGE}_remediations ${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/${LANGUAGE}-fixes.xml )
-        list(APPEND PRODUCT_LANGUAGE_DEPENDS generate-internal-${PRODUCT}-${LANGUAGE}-fixes.xml)
-    endforeach()
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" ${PRODUCT_XSLT_LANGUAGE_PARAMS} --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        DEPENDS ${PRODUCT_LANGUAGE_DEPENDS}
-        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-xccdf-unlinked.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-    )
 endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
@@ -409,8 +366,7 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" ssg
-        DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked.xml
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml" ssg
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
         COMMENT "[${PRODUCT}-content] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
@@ -750,7 +706,6 @@ macro(ssg_build_product PRODUCT)
             generate-${PRODUCT}-ansible-playbooks
         )
     endif()
-    ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})

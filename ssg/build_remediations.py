@@ -8,7 +8,7 @@ import re
 from collections import defaultdict, namedtuple, OrderedDict
 
 import ssg.yaml
-from . import build_yaml
+import ssg.build_yaml
 from . import rules
 from . import utils
 
@@ -461,7 +461,7 @@ class AnsibleRemediation(Remediation):
         if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
             result = cls(snippet_fname)
             try:
-                rule_obj = build_yaml.Rule.from_yaml(rule_fname)
+                rule_obj = ssg.build_yaml.Rule.from_yaml(rule_fname)
                 result.associate_rule(rule_obj)
             except ssg.yaml.DocumentationNotComplete:
                 # Happens on non-debug build when a rule is "documentation-incomplete"
@@ -513,36 +513,6 @@ REMEDIATION_TO_CLASS = {
 }
 
 
-def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
-    """
-    Builds a fix-content XML tree from the contents of fixes
-    and writes it to output_path.
-    """
-
-    fixcontent = ElementTree.Element("fix-content", system="urn:xccdf:fix:script:sh",
-                                     xmlns="http://checklists.nist.gov/xccdf/1.1")
-    fixgroup = get_fixgroup_for_type(fixcontent, remediation_type)
-
-    for fix_name in fixes:
-        fix_contents, config = fixes[fix_name]
-
-        fix_elm = ElementTree.SubElement(fixgroup, "fix")
-        fix_elm.set("rule", fix_name)
-
-        for key in REMEDIATION_ELM_KEYS:
-            if config[key]:
-                fix_elm.set(key, config[key])
-
-        fix_elm.text = fix_contents + "\n"
-
-        # Expand shell variables and remediation functions
-        # into corresponding XCCDF <sub> elements
-        expand_xccdf_subs(fix_elm, remediation_type)
-
-    tree = ElementTree.ElementTree(fixcontent)
-    tree.write(output_path)
-
-
 def write_fix_to_file(fix, file_path):
     """
     Writes a single fix to the given file path.
@@ -552,22 +522,6 @@ def write_fix_to_file(fix, file_path):
         for k, v in config.items():
             f.write("# %s = %s\n" % (k, v))
         f.write(fix_contents)
-
-
-def write_fixes_to_dir(fixes, remediation_type, output_dir):
-    """
-    Writes fixes as files to output_dir, each fix as a separate file
-    """
-    try:
-        extension = REMEDIATION_TO_EXT_MAP[remediation_type]
-    except KeyError:
-        raise ValueError("Unknown remediation type %s." % remediation_type)
-
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    for fix_name, fix in fixes.items():
-        fix_path = os.path.join(output_dir, fix_name + extension)
-        write_fix_to_file(fix, fix_path)
 
 
 def get_rule_dir_remediations(dir_path, remediation_type, product=None):
@@ -711,3 +665,22 @@ def expand_xccdf_subs(fix, remediation_type):
         # so text is in ".tail" of element
         xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
         xccdfvarsub.tail = text_between_vars
+
+
+def load_compiled_remediations(fixes_dir):
+    if not os.path.isdir(fixes_dir):
+        raise RuntimeError(
+            "Directory with compiled fixes '%s' does not exist" % fixes_dir)
+    all_remediations = defaultdict(dict)
+    for language in os.listdir(fixes_dir):
+        language_dir = os.path.join(fixes_dir, language)
+        if not os.path.isdir(language_dir):
+            raise RuntimeError(
+                "Can't find the '%s' directory with fixes for %s" %
+                (language_dir, language))
+        for filename in sorted(os.listdir(language_dir)):
+            file_path = os.path.join(language_dir, filename)
+            rule_id, _ = os.path.splitext(filename)
+            remediation = parse_from_file_without_jinja(file_path)
+            all_remediations[rule_id][language] = remediation
+    return all_remediations

@@ -152,6 +152,15 @@ PREFIX_TO_NS = {
     "cpe-lang": "http://cpe.mitre.org/language/2.0",
 }
 
+FIX_TYPE_TO_SYSTEM = {
+    "bash": bash_system,
+    "ansible": ansible_system,
+    "ignition": ignition_system,
+    "kubernetes": kubernetes_system,
+    "blueprint": blueprint_system,
+    "puppet": puppet_system,
+    "anaconda": anaconda_system,
+}
 
 for prefix, url_part in OVAL_SUB_NS.items():
     assert prefix not in PREFIX_TO_NS, \

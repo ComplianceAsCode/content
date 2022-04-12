@@ -114,9 +114,6 @@ refer to their help text for more information and usage:
    base product.
  - `expand_jinja.py` -- helper script used by the BATS (Bash unit test
    framework) to expand Jinja in test scripts.
- - `generate_fixes_xml.py` -- combines the remediations (from the source
-   directory) into a single XML document to be merged with the unlinked
-   XCCDF.
  - `generate_man_page.py` -- generates the ComplianceAsCode man page.
  - `oscap_svg_support.py` -- helper script to check if OpenSCAP supports
    inline SVGs (used by the build system for feature detection).

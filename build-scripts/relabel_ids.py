@@ -24,6 +24,7 @@ def parse_args():
         description="This script finds check-content files (currently, "
         "OVAL and OCIL) referenced from XCCDF and synchronizes all IDs.")
     parser.add_argument("xccdf_file")
+    parser.add_argument("new_xccdf_file")
     parser.add_argument("id_name", help="ID naming scheme")
 
     return parser.parse_args()
@@ -56,8 +57,7 @@ def main():
     ocil_linker.save_linked_tree()
     ocil_linker.link_xccdf()
 
-    newxccdffile = xccdffile.replace("unlinked", "linked")
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(newxccdffile)
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.new_xccdf_file)
     sys.exit(0)
 
 
