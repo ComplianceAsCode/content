@@ -33,6 +33,7 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@ol8: OL08-00-010171
     stigid@rhel8: RHEL-08-010171
+    srg: SRG-OS-000134-GPOS-00068
 
 ocil_clause: 'the package is not installed'
 
@@ -42,3 +43,6 @@ template:
     name: package_installed
     vars:
         pkgname: policycoreutils
+
+fix: |-
+    {{{ describe_package_install(package="policycoreutils") }}}
