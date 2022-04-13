@@ -168,6 +168,7 @@ def process_stig_results(base_results: dict, target_results: dict,
 
 
 def do_compare(base_results: dict, target_results: dict) -> None:
+    return_code = 0
     same_status = list()
     missing_in_target = list()
     different_results = dict()
@@ -175,12 +176,15 @@ def do_compare(base_results: dict, target_results: dict) -> None:
         target_result = target_results.get(base_result_id)
         if not target_result:
             missing_in_target.append(base_result_id)
+            return_code = 1
             continue
         if base_result != target_result:
             different_results[base_result_id] = (base_result, target_result)
+            return_code = 1
         else:
             same_status.append(base_result_id)
     print_summary(base_results, different_results, missing_in_target, same_status)
+    return return_code
 
 
 def match_results(base_tree: ElementTree.ElementTree, target_tree: ElementTree.ElementTree):
@@ -194,10 +198,9 @@ def match_results(base_tree: ElementTree.ElementTree, target_tree: ElementTree.E
                                                                                 base_tree,
                                                                                 target_tree)
 
-        do_compare(base_stig_flat_results, target_stig_flat_results)
-        exit(0)
+        return do_compare(base_stig_flat_results, target_stig_flat_results)
 
-    do_compare(base_results, target_results)
+    return do_compare(base_results, target_results)
 
 
 def main():
@@ -206,7 +209,7 @@ def main():
     check_file(args.target)
     base_tree = ssg.xml.open_xml(args.base)
     target_tree = ssg.xml.open_xml(args.target)
-    match_results(base_tree, target_tree)
+    return match_results(base_tree, target_tree)
 
 
 if __name__ == '__main__':
