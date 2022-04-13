@@ -20,12 +20,14 @@ mkdir -p $PAGES_DIR
 STATS_DIR=$PAGES_DIR/statistics
 mkdir -p $STATS_DIR
 touch $STATS_DIR/index.html
-echo "<html>" > $STATS_DIR/index.html
+echo "<!DOCTYPE html>" > $STATS_DIR/index.html
+echo '<html lang="en">' >> $STATS_DIR/index.html
 echo "<head>" >> $STATS_DIR/index.html
+echo '<meta charset="utf-8" />' >> $STATS_DIR/index.html
 echo "<title>Statistics</title>" >> $STATS_DIR/index.html
 echo "</head>" >> $STATS_DIR/index.html
-echo "<h1>Statistics</h1>" >> $STATS_DIR/index.html
 echo "<body>" >> $STATS_DIR/index.html
+echo "<h1>Statistics</h1>" >> $STATS_DIR/index.html
 # get supported products
 products=$(echo -e "import ssg.constants\nprint(ssg.constants.product_directories)" | python3 | sed -s "s/'//g; s/,//g; s/\[//g; s/\]//g")
 for product in $products
@@ -61,12 +63,14 @@ fi
 # Generate Mapping Tables page
 pushd build/tables
 touch index.html
-echo "<html>" > index.html
+echo "<!DOCTYPE html>" > index.html
+echo '<html lang="en">' >> index.html
 echo "<head>" >> index.html
+echo '<meta charset="utf-8" />' >> index.html
 echo "<title>Mapping Tables</title>" >> index.html
 echo "</head>" >> index.html
-echo "<h1>Mapping Tables</h1>" >> index.html
 echo "<body>" >> index.html
+echo "<h1>Mapping Tables</h1>" >> index.html
 echo "<ul>" >> index.html
 for table in table-*.html
 do
@@ -79,12 +83,14 @@ popd
 
 pushd $PAGES_DIR
 touch index.html
-echo "<html>" > index.html
+echo "<!DOCTYPE html>" > index.html
+echo '<html lang="en">' >> index.html
 echo "<head>" >> index.html
+echo '<meta charset="utf-8" />' >> index.html
 echo "<title>Available Artifacts</title>" >> index.html
 echo "</head>" >> index.html
-echo "<h1>Available Artifacts</h1>" >> index.html
 echo "<body>" >> index.html
+echo "<h1>Available Artifacts</h1>" >> index.html
 echo "<ul>" >> index.html
 echo "<li><a href=\"statistics/index.html\">Statistics</a></li>" >> index.html
 echo "<li><a href=\"guides/index.html\">Guides</a></li>" >> index.html

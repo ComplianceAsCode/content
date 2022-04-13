@@ -25,12 +25,14 @@ mkdir -p $PAGES_DIR
 # Generate SRG Mapping Tables
 pushd $PAGES_DIR
 touch index.html
-echo "<html>" > index.html
+echo "<!DOCTYPE html>" > index.html
+echo '<html lang="en">' >> index.html
 echo "<head>" >> index.html
+echo '<meta charset="utf-8" />' >> index.html
 echo "<title>SRG Mapping Tables</title>" >> index.html
 echo "</head>" >> index.html
-echo "<h1>SRG Mapping Tables</h1>" >> index.html
 echo "<body>" >> index.html
+echo "<h1>SRG Mapping Tables</h1>" >> index.html
 for product in $srg_products
 do
 echo "<h4>Product: ${product}</h4>" >> index.html
