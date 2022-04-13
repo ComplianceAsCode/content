@@ -1,12 +1,12 @@
 documentation_complete: true
 
-title: 'Enale SLUB debugging support'
+title: 'Enable SLUB debugging support'
 
 description: |-
     SLUB has extensive debug support features and this allows the allocator validation checking to
     be enabled.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SLUB_DEBUG", "n") | indent(4) }}}
+    {{{ kernel_build_config_describe_config("CONFIG_SLUB_DEBUG", "y") | indent(4) }}}
 
 rationale: |-
     This activates the checking of the memory allocator structures and resets to zero the zones
@@ -25,11 +25,11 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_SLUB_DEBUG", "n") | indent(4) }}}
+    {{{ kernel_build_config_ocil("CONFIG_SLUB_DEBUG", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config
     vars:
         config: CONFIG_SLUB_DEBUG
-        value: 'n'
+        value: 'y'
 
