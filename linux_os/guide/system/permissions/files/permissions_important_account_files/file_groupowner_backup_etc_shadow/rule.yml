@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns Backup shadow File'
 
-{{% if "ubuntu" in product or "debian" in product %}}
+{{% if "ubuntu" in product or "debian" in product or "sle" in product %}}
     {{% set target_group="shadow" %}}
 {{% else %}}
     {{% set target_group="root" %}}
@@ -45,4 +45,5 @@ template:
         filegid@ubuntu1604: '42'
         filegid@ubuntu1804: '42'
         filegid@ubuntu2004: '42'
+        filegid@sle15: '15'
         missing_file_pass: 'true'
