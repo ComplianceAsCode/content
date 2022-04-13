@@ -5,8 +5,8 @@
 RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 # * And also the log file paths listed after rsyslog's $IncludeConfig directive
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
-readarray -t RSYSLOG_INCLUDE_CONFIG < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
-readarray -t RSYSLOG_INCLUDE < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' /etc/rsyslog.conf)
+readarray -t RSYSLOG_INCLUDE_CONFIG < <(printf '%s\n' $(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2))
+readarray -t RSYSLOG_INCLUDE < <(printf '%s\n' $(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(include\\(|\\s*)file=\"(\\S+)\".*","\\2",1); if($0!=nf){print nf}}' /etc/rsyslog.conf))
 
 # Declare an array to hold the final list of different log file paths
 declare -a LOG_FILE_PATHS
