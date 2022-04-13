@@ -10,15 +10,7 @@ except ImportError:
     from urllib import quote
 
 
-from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
-                        JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
-                        JINJA_MACROS_ANSIBLE_DEFINITIONS,
-                        JINJA_MACROS_BASH_DEFINITIONS,
-                        JINJA_MACROS_FIXTEXT_DEFINITIONS,
-                        JINJA_MACROS_OVAL_DEFINITIONS,
-                        JINJA_MACROS_IGNITION_DEFINITIONS,
-                        JINJA_MACROS_KUBERNETES_DEFINITIONS,
-                        )
+from .constants import JINJA_MACROS_DIRECTORY
 from .utils import (required_key,
                     prodtype_to_name,
                     name_to_platform,
@@ -155,18 +147,10 @@ def load_macros(substitutions_dict=None):
 
     add_python_functions(substitutions_dict)
     try:
-        filenames = [
-            JINJA_MACROS_BASE_DEFINITIONS,
-            JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
-            JINJA_MACROS_ANSIBLE_DEFINITIONS,
-            JINJA_MACROS_BASH_DEFINITIONS,
-            JINJA_MACROS_FIXTEXT_DEFINITIONS,
-            JINJA_MACROS_OVAL_DEFINITIONS,
-            JINJA_MACROS_IGNITION_DEFINITIONS,
-            JINJA_MACROS_KUBERNETES_DEFINITIONS,
-        ]
-        for filename in filenames:
-            update_substitutions_dict(filename, substitutions_dict)
+        for filename in os.listdir(JINJA_MACROS_DIRECTORY):
+            if filename.endswith(".jinja"):
+                macros_file = os.path.join(JINJA_MACROS_DIRECTORY, filename)
+                update_substitutions_dict(macros_file, substitutions_dict)
     except Exception as exc:
         msg = ("Error extracting macro definitions from '{1}': {0}"
                .format(str(exc), filename))
