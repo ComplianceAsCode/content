@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
-title: 'Enable Kernel Parameter to Use TCP Syncookies on IPv4 Interfaces'
+title: 'Enable Kernel Parameter to Use TCP Syncookies on Network Interfaces'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.tcp_syncookies", value="1") }}}'
 
@@ -53,3 +53,8 @@ template:
     vars:
         sysctlvar: net.ipv4.tcp_syncookies
         datatype: int
+
+fix: |-
+   Configure {{{ full_name }}} to use TCP syncookies.
+
+   {{{ fix_sysctl("net.ipv4.tcp_syncookies", "1") | indent(4) }}}

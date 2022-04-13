@@ -1827,3 +1827,23 @@ Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
     For each kernel installed, a line with value "{{{ value }}}" should be returned.
     {{% endif %}}
 {{%- endmacro %}}
+
+
+{{#
+    Macro describing fix for sysctl rules.
+
+:param sysctl: The kernel parameter to be changed.
+:type sysctl: str
+:param value: The value of the kernel parameter.
+:type value: str
+
+#}}
+{{% macro fix_sysctl(sysctl, value) -%}}
+Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
+
+{{{ sysctl }}} = {{{ value }}}
+
+Load settings from all system configuration files with the following command:
+
+$ sudo sysctl --system
+{{%- endmacro %}}
