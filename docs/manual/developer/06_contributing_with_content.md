@@ -1530,26 +1530,30 @@ wait for all of them to be done.
 
 #### Running the e2e tests on a local cluster
 
-Note that it’s possible to run the e2e tests on a cluster of your
-choice.
+The end-to-end tests for OpenShift are maintained in separate
+[repository](https://github.com/ComplianceAsCode/ocp4e2e):
+
+    $ git clone https://github.com/ComplianceAsCode/ocp4e2e; cd ocp4e2e
+
+Note that it’s possible to run the e2e tests on a cluster of your choice.
 
 To do so, ensure that you have a `KUBECONFIG` with appropriate
 credentials that points to the cluster where you’ll run the tests.
 
-From the root of the `ComplianceAsCode/content` repository, run:
+Run:
 
-    $ make -f tests/ocp4e2e/Makefile e2e PROFILE=<profile> PRODUCT=<product>
+    $ make e2e PROFILE=<profile> PRODUCT=<product>
 
 Where profile is the name of the profile you want to test, and product
 is a product relevant to `OCP4`, such as `ocp4` or `rhcos4`.
 
 For instance, to run the tests for the `cis` benchmark for `ocp4` do:
 
-    $ make -f tests/ocp4e2e/Makefile e2e PROFILE=cis PRODUCT=ocp4
+    $ make e2e PROFILE=cis PRODUCT=ocp4
 
 For more information on the available options, do:
 
-    $ make -f tests/ocp4e2e/Makefile help
+    $ make help
 
 It is important to note that the tests will do changes to your cluster
 and there currently isn’t an option to clean them up. So take that into
