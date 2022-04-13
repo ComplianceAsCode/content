@@ -172,13 +172,13 @@ def get_results_by_stig(results: dict, stigs: dict) -> dict:
 def print_summary(comparison: Comparison) -> None:
     print(f'Missing in target: {len(comparison.missing_in_target)}')
     for rule in comparison.missing_in_target:
-        print(f'\t{rule}')
+        print(f'  {rule}')
     print(f'Same Status: {len(comparison.same_status)}')
     for rule in comparison.same_status:
-        print(f'\t{rule}\t\t{comparison.base_results[rule]}')
+        print(f'  {rule:<90}   {comparison.base_results[rule]}')
     print(f'Different results: {len(comparison.different_results)}')
     for rule, value in comparison.different_results.items():
-        print(f'\t{rule}\t\t{value[0]} - {value[1]}')
+        print(f'  {rule:<90}   {value[0]} - {value[1]}')
 
 
 def process_stig_results(base_results: dict, target_results: dict,
