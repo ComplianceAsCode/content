@@ -80,7 +80,7 @@ class Control(ssg.build_yaml.SelectionHandler):
         self.mitigation = ""
         self.artifact_description = ""
         self.status_justification = ""
-        self.fix = ""
+        self.fixtext = ""
         self.check = ""
 
     def __hash__(self):
@@ -100,7 +100,7 @@ class Control(ssg.build_yaml.SelectionHandler):
         control.status_justification = control_dict.get('status_justification')
         control.artifact_description = control_dict.get('artifact_description')
         control.mitigation = control_dict.get('mitigation')
-        control.fix = control_dict.get('fix')
+        control.fixtext = control_dict.get('fixtext')
         control.check = control_dict.get('check')
         if control.status == "automated":
             control.automated = "yes"

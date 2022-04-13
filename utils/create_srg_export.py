@@ -422,7 +422,7 @@ def no_selections_row(control, srgs):
     row['Requirement'] = control.title
     row['Status'] = DisaStatus.from_string(control.status)
     row['Vul Discussion'] = control.rationale
-    row['Fix'] = control.fix
+    row['Fix'] = control.fixtext
     row['Check'] = control.check
     row['Vul Discussion'] = html_plain_text(control.rationale)
     return row
