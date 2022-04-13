@@ -1657,7 +1657,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{%- macro describe_grub2_argument(arg_name_value) -%}}
 {{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9"] or 'ubuntu' in product -%}}
 To ensure that <tt>{{{ arg_name_value }}}</tt> is added as a kernel command line
-argument to newly installed kernels, ad <tt>{{{ arg_name_value }}}</tt> to the
+argument to newly installed kernels, add <tt>{{{ arg_name_value }}}</tt> to the
 default Grub2 command line for Linux operating systems.  Modify the line within
 <tt>/etc/default/grub</tt> as shown below:
 <pre>GRUB_CMDLINE_LINUX="... {{{ arg_name_value }}} ..."</pre>

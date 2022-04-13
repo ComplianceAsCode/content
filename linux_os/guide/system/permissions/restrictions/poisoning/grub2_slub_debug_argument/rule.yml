@@ -43,3 +43,6 @@ template:
     vars:
         arg_name: slub_debug
         arg_variable: var_slub_debug_options
+
+fix: |-
+    {{{ describe_grub2_argument("slub_debug=P") | indent(4) }}}
