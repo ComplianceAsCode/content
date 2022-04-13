@@ -1,5 +1,9 @@
 # This dockerfile builds the content in the current repo for OCP4
-FROM registry.fedoraproject.org/fedora-minimal:35 as builder
+#
+# We're using Fedora 34 here because we're hitting issues with Fedora 35 (e.g.,
+# https://bugzilla.redhat.com/show_bug.cgi?id=2009047). Update this when Fedora
+# 35 is fixed.
+FROM registry.fedoraproject.org/fedora-minimal:34 as builder
 
 WORKDIR /content
 
