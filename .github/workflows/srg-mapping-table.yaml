@@ -46,6 +46,9 @@ jobs:
         with:
           name: srg-mapping-rhel9.html
           path: ${{ env.PAGES_DIR }}/srg-mapping-rhel9.html
+      - name: Generate HTML pages
+        run: utils/generate_html_index_srg_mapping.sh $PAGES_DIR "rhel9" # add more products to this list to generate their index
+        shell: bash
       - name: Deploy
         if: ${{ github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@v4.2.3
@@ -53,4 +56,4 @@ jobs:
           branch: gh-pages # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
           target-folder: srg_mapping
-          clean: no
+          clean: false
