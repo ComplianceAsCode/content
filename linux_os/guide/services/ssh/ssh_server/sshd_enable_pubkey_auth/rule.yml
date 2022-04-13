@@ -30,6 +30,9 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="PubkeyAuthentication", value="yes") }}}
 
+fix: |-
+    {{{ sshd_lineinfile_fix("PubkeyAuthentication", "yes") }}}
+
 template:
     name: sshd_lineinfile
     vars:
