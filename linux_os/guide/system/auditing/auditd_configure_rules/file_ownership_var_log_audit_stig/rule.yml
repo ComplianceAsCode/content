@@ -47,3 +47,10 @@ ocil: |-
     <pre>$ sudo stat -c "%n %U" /var/log/audit/audit.log</pre>
     Audit logs must be owned by user root.
     If the log_file isn't defined in /etc/audit/auditd.conf, check all files in /var/log/audit/ directory instead.
+
+fix: |-
+    Configure the audit log to be protected from unauthorized read access, by setting the correct owner as "root" with the following command:
+
+    $ sudo chown root [audit_log_file]
+
+    Replace "[audit_log_file]" to the correct audit log path, by default this location is "/var/log/audit/audit.log".
