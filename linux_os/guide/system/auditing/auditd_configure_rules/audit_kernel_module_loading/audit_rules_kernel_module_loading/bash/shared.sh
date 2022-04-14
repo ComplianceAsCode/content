@@ -12,7 +12,11 @@ for ARCH in "${RULE_ARCHS[@]}"
 do
         ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
         OTHER_FILTERS=""
+        {{% if product in ["ol8", "rhel8"] %}}
+        AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
+        {{% else %}}
         AUID_FILTERS=""
+        {{% endif %}}
         SYSCALL="init_module finit_module delete_module"
         KEY="modules"
         SYSCALL_GROUPING="init_module finit_module delete_module"
