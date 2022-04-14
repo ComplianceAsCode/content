@@ -1,4 +1,16 @@
 {{#
+Generates the :code:`<affected>` tag for OVAL check using correct product platforms.
+
+:param products: Name of products
+:type products: str
+#}}
+{{%- macro oval_affected(products) %}}
+<affected family="unix">
+{{{ prodtype_to_platform(products)|indent(2) }}}
+</affected>
+{{%- endmacro %}}
+
+{{#
   Constants.
 #}}
 {{%- set suffix_id_default_not_overriden = "_default_not_overriden" -%}}
