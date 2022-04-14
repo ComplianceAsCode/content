@@ -9,8 +9,11 @@ controls:
             session must be terminated after 15 minutes of inactivity, except to fulfill
             documented and validated mission requirements.'
         rules:
-            - sshd_set_idle_timeout
-            - sshd_set_keepalive
-            - sshd_set_keepalive_0
+            #- sshd_set_idle_timeout
+            #- sshd_set_keepalive
+            #- sshd_set_keepalive_0
             - accounts_tmout
-        status: automated
+        # We don't have a way to configure ssh timeout on RHEL 9, the
+        # sshd_config options ClientAliveInterval and ClientAliveCountMax
+        # dont't work on RHEL 9 as they used to in RHEL 8.
+        status: partial
