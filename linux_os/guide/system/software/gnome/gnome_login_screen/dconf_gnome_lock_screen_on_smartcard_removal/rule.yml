@@ -45,8 +45,8 @@ ocil: |-
     <pre>$ grep removal-action /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/settings-daemon/peripherals/smartcard/removal-action</tt>
 
-fix: |-
-  {{{ dconf_ini_file_fix("org/gnome/settings-daemon/peripherals/smartcard", "removal-action", "'lock-screen'") }}}
+fixtext: |-
+  {{{ fixtext_dconf_ini_file("org/gnome/settings-daemon/peripherals/smartcard", "removal-action", "'lock-screen'") }}}
 
 platform: machine
 

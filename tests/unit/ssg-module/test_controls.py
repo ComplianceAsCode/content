@@ -51,7 +51,7 @@ def _load_test(profile):
     c_r5 = controls_manager.get_control(profile, "R5")
     assert c_r5.id == "R5"
     assert c_r5.status == "does not meet"
-    assert c_r5.fix == "There is no fix."
+    assert c_r5.fixtext == "There is no fixtext."
     assert c_r5.check == "There is no check."
     assert "Although the listed mitigation is supporting the security function" in c_r5.mitigation
     assert c_r5.description == \

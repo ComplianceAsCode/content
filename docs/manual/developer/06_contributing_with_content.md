@@ -366,7 +366,7 @@ Some of existing rule definitions contain attributes that use macros.
 There are two implementations of macros:
 
 -   [Jinja macros](http://jinja.pocoo.org/docs/2.10/), that are defined
-    in `shared/macros.jinja`, and `shared/macros-highlevel.jinja`.
+    in `shared/macros/general.jinja`, and `shared/macros/highlevel.jinja`.
 
 -   Legacy XSLT macros, which are defined in `shared/transforms/*.xslt`.
 
@@ -379,8 +379,8 @@ example, invocation of the partition macro looks like
 are three opening and closing curly braces instead of the two that are
 documented in the Jinja guide.
 
-`shared/macros.jinja` contains specific low-level macros s.a.
-`systemd_ocil_service_enabled`, whereas `shared/macros-highlevel.jinja`
+`shared/macros/general.jinja` contains specific low-level macros s.a.
+`systemd_ocil_service_enabled`, whereas `shared/macros/highlevel.jinja`
 contains general macros s.a. `ocil_service_enabled`, that decide which
 one of the specialized macros to call based on the actual product being
 used.
@@ -973,7 +973,7 @@ profile. The Playbook is generated in
 `/build/ansible/<product>-playbook-<profile_id>.yml`.
 
 Jinja macros for Ansible content are located in
-`/shared/macros-ansible.jinja`. You can see their reference
+`/shared/macros/ansible.jinja`. You can see their reference
 [here](	jinja_macros/ansible:ansible).
 
 Whenever possible, please reuse the macros and form high-level
@@ -1004,7 +1004,7 @@ guidelines:
 
 -   Use four spaces for indentation rather than tabs.
 
--   You can use macros from `shared/macros-bash.jinja` in the
+-   You can use macros from `shared/macros/bash.jinja` in the
     remediation content. If the macro is used from a nested block, use
     the `indent` jinja2 filter assuming the 4-space indentation.
     Typically, you want to call the macro with the intended indentation,
@@ -1027,7 +1027,7 @@ guidelines:
     they violate the previous point. `[ $x != 1 ] || echo "$x is one"`
     is OK.
 
--   Use the `die` macro defined in `shared/macros-bash.jinja` to handle
+-   Use the `die` macro defined in `shared/macros/bash.jinja` to handle
     exceptions and terminate the remediation, such as
     `{{{ die("An error was encountered during the remediation of rule.") }}}`.
 
@@ -1039,13 +1039,13 @@ guidelines:
     `grep '^[[:space:]]*something'` over `grep '^\s*something'`.
 
 Jinja macros that generate Bash remediations can be found in
-`shared/macros-bash.jinja`. You can see their reference
+`shared/macros/bash.jinja`. You can see their reference
 [here](jinja_macros/bash:bash).
 
 ### Kubernetes
 
 Jinja macros for Kubernetes content are located in
-`/shared/macros-kubernetes.jinja`. You can see their reference
+`/shared/macros/kubernetes.jinja`. You can see their reference
 [here](jinja_macros/kubernetes:kubernetes)
 
 Templating

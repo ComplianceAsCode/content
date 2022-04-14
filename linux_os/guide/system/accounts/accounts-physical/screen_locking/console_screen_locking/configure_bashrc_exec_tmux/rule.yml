@@ -43,7 +43,7 @@ ocil: |-
       case "$name" in sshd|login) exec tmux ;; esac
     fi</pre>
 
-fix: |-
+fixtext: |-
     Create or edit the following file /etc/profile.d/tmux.sh and add the following content:
     if [ "$PS1" ]; then
         parent=$(ps -o ppid= -p $$)

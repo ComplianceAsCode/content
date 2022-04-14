@@ -1262,7 +1262,7 @@ class Rule(XCCDFEntity):
         ocil_clause=lambda: None,
         ocil=lambda: None,
         oval_external_content=lambda: None,
-        fix=lambda: "",
+        fixtext=lambda: "",
         warnings=lambda: list(),
         conflicts=lambda: list(),
         requires=lambda: list(),

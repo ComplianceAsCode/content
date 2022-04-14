@@ -55,8 +55,8 @@ references:
 
 {{{ complete_ocil_entry_sshd_option(default="yes", option="HostbasedAuthentication", value="no") }}}
 
-fix: |-
-    {{{ sshd_lineinfile_fix("HostbasedAuthentication", "no") }}}
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile("HostbasedAuthentication", "no") }}}
 
 template:
     name: sshd_lineinfile

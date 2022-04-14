@@ -54,7 +54,7 @@ ocil: |-
     The output should return something similar to:
     <pre>force_card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};</pre>
 
-fix: |-
+fixtext: |-
     Edit "/etc/opensc.conf" and add or edit the following line:
 
     force_card_drivers = {{{ xccdf_value("var_smartcard_drivers") }}};

@@ -1,3 +1,3 @@
 High Level
 ==========
-    .. autojinja:: shared/macros-highlevel.jinja
+    .. autojinja:: shared/macros/highlevel.jinja

@@ -302,18 +302,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
-Generates the :code:`<affected>` tag for OVAL check using correct product platforms.
-
-:param products: Name of products
-:type products: str
-#}}
-{{%- macro oval_affected(products) %}}
-<affected family="unix">
-{{{ prodtype_to_platform(products)|indent(2) }}}
-</affected>
-{{%- endmacro %}}
-
-{{#
 Write out the OCIL for generating the common check for Firefox configuration
 :param preference: Name of preference
 :type preference: str

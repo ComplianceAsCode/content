@@ -75,5 +75,5 @@ template:
         pkgname@ubuntu2004: libpam-pkcs11
 {{% endif %}}
 
-fix: |-
+fixtext: |-
     {{{ describe_package_install(package=smartcard_packages | join) }}}

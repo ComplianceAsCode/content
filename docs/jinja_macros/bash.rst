@@ -1,3 +1,3 @@
 Bash
 ====
-    .. autojinja:: shared/macros-bash.jinja
+    .. autojinja:: shared/macros/bash.jinja

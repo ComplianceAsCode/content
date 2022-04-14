@@ -403,7 +403,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables)
                 row['Check'] = f'{ocil_var}\n\n' \
                                f'If {ocil_clause_var} then this is a finding.'
-                row['Fix'] = handle_variables(rule_object.fix, control.variables)
+                row['Fix'] = handle_variables(rule_object.fixtext, control.variables)
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
                 else:
@@ -422,7 +422,7 @@ def no_selections_row(control, srgs):
     row['Requirement'] = control.title
     row['Status'] = DisaStatus.from_string(control.status)
     row['Vul Discussion'] = control.rationale
-    row['Fix'] = control.fix
+    row['Fix'] = control.fixtext
     row['Check'] = control.check
     row['Vul Discussion'] = html_plain_text(control.rationale)
     return row

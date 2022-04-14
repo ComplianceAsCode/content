@@ -54,7 +54,7 @@ template:
         sysctlvar: net.ipv4.tcp_syncookies
         datatype: int
 
-fix: |-
+fixtext: |-
    Configure {{{ full_name }}} to use TCP syncookies.
 
    {{{ fix_sysctl("net.ipv4.tcp_syncookies", "1") | indent(4) }}}
