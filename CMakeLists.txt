@@ -67,6 +67,7 @@ option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be bui
 # Products to build content for. These generally correspond to directories in
 # the root of this project. Note that the example product is always disabled
 # unless explicitly asked for.
+option(SSG_PRODUCT_ALINUX2 "If enabled, the Alinux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN9 "If enabled, the Debian 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN10 "If enabled, the Debian 10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -271,6 +272,7 @@ message(STATUS "STIG Delta Taloring files: ${SSG_BUILD_DISA_DELTA_FILES}")
 message(STATUS " ")
 
 message(STATUS "Products:")
+message(STATUS "Alinux 2: ${SSG_PRODUCT_ALINUX2}")
 message(STATUS "Chromium: ${SSG_PRODUCT_CHROMIUM}")
 message(STATUS "Debian 9: ${SSG_PRODUCT_DEBIAN9}")
 message(STATUS "Debian 10: ${SSG_PRODUCT_DEBIAN10}")
@@ -336,6 +338,9 @@ endif()
 
 ssg_build_man_page()
 
+if (SSG_PRODUCT_ALINUX2)
+    add_subdirectory("products/alinux2" "alinux2")
+endif()
 if (SSG_PRODUCT_CHROMIUM)
     add_subdirectory("products/chromium" "chromium")
 endif()
