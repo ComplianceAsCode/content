@@ -253,3 +253,111 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{%- endmacro %}}
 
 
+{{# Socket and Service Disabled macros #}}
+
+{{#
+    Describe how to check if service is disabled in system boot configuration with xinetd.
+
+:param service: service to disable
+:type service: str
+
+#}}
+{{%- macro xinetd_disabled_check_with_systemd(service) %}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration with xinetd, run the following command:
+    <pre>$ chkconfig <code>{{{ service }}}</code> --list</pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed, or has been disabled, as shown in the example below:
+    <pre>$ chkconfig <code>{{{ service }}}</code> --list
+
+    Note: This output shows SysV services only and does not include native
+    systemd services. SysV configuration data might be overridden by native
+    systemd configuration.
+
+    If you want to list systemd services use 'systemctl list-unit-files'.
+    To see services enabled on particular target use
+    'systemctl list-dependencies [target]'.
+
+    <code>{{{ service }}}</code>       off</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Describe how to check if socket is disabled with systemd.
+
+:param socket: The socket to check
+:type socket: str
+
+#}}
+{{%- macro socket_disabled_check_with_systemd(socket) %}}
+    To check that the <code>{{{ socket }}}</code> socket is disabled in system boot configuration with systemd, run the following command:
+    <pre>$ systemctl is-enabled <code>{{{ socket }}}</code></pre>
+    Output should indicate the <code>{{{ socket }}}</code> socket has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <pre>$ systemctl is-enabled <code>{{{ socket }}}</code><br/>disabled</pre>
+
+    Run the following command to verify <code>{{{ socket }}}</code> is not active (i.e. not running) through current runtime configuration:
+    <pre>systemctl is-active {{{ socket }}}</pre>
+
+    If the socket is not running the command will return the following output:
+    <pre>inactive</pre>
+
+    The socket will also be masked, to check that the <code>{{{ socket }}}</code> is masked, run the following command:
+    <pre>$ systemctl show <code>{{{ socket }}}</code> | grep "LoadState\|UnitFileState"</pre>
+
+    If the socket is masked the command will return the following outputs:
+
+    <pre>LoadState=masked</pre>
+
+    <pre>UnitFileState=masked</pre>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for ensure socket is disabled in systemd and xinetd.
+
+:param name: The socket to check
+:type name: str
+
+#}}
+{{%- macro systemd_complete_ocil_entry_socket_and_service_disabled(name) %}}
+ocil: |-
+    {{{ xinetd_disabled_check_with_systemd(name) }}}
+    {{{ socket_disabled_check_with_systemd(name) }}}
+
+ocil_clause: "service and/or socket are running"
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for ensure socket is disabled in systemd.
+
+:param name: The socket to check
+:type name: str
+
+#}}
+{{%- macro upstart_complete_ocil_entry_socket_and_service_disabled(name) %}}
+ocil:
+
+ocil_clause: "service and/or socket are running"
+{{%- endmacro %}}
+
+
+{{#
+    Inserts an OCIL for a case when a service and a corresponding socket should be
+    disabled, substituting the correct init system.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro complete_ocil_entry_socket_and_service_disabled(service) -%}}
+  {{% if init_system is defined %}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_complete_ocil_entry_socket_and_service_disabled(service) }}}
+    {{%- elif init_system == "upstart" -%}}
+        {{{ upstart_complete_ocil_entry_socket_and_service_disabled(service) }}}
+    {{%- else -%}}
+ocil: |-
+    JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}

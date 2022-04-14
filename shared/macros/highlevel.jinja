@@ -157,28 +157,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
-Inserts an OCIL for a case when a service and a corresponding socket should be
-disabled, substituting the correct init system.
-
-:param service: Name of service
-:type service: str
-
-#}}
-{{% macro complete_ocil_entry_socket_and_service_disabled(service) -%}}
-  {{% if init_system is defined %}}
-    {{%- if init_system == "systemd" -%}}
-        {{{ systemd_complete_ocil_entry_socket_and_service_disabled(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_complete_ocil_entry_socket_and_service_disabled(service) }}}
-    {{%- else -%}}
-ocil: |-
-    JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
-    {{%- endif -%}}
-  {{%- endif -%}}
-{{%- endmacro %}}
-
-
-{{#
 Inserts a rule description for a case when a timer should be enabled,
 substituting the correct init system.
 
