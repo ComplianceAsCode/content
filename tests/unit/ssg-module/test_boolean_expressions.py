@@ -90,10 +90,18 @@ def test_evaluate_simple_boolean_ops(algebra):
 
 def test_args(algebra):
     exp = algebra.parse(u'oranges[aaa] | oranges[bbb]')
-    print(repr(exp))
     assert exp(**{'oranges[aaa]': True, 'oranges[bbb]': True})
     assert not exp(**{'oranges[zzz]': True})
     assert not exp(**{'oranges': True})
+
+
+def test_args_and_version(algebra):
+    exp = algebra.parse(u'oranges[aaa] & oranges[bbb,zzz]>=2')
+    assert exp(**{'oranges[aaa]': True, 'oranges[bbb,zzz]': '2'})
+    assert not exp(**{'oranges[aaa]': True, 'oranges[bbb,zzz]': '1'})
+    assert not exp(**{'oranges[zzz]': True})
+    assert not exp(**{'oranges': True})
+    assert not exp(**{'oranges[bbb,zzz]': True})
 
 
 def test_evaluate_simple_version_ops(algebra):
