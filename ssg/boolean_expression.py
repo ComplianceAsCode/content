@@ -89,7 +89,7 @@ class Symbol(boolean.Symbol):
     def as_id(self):
         id_str = self.name
         if self.spec.extras:
-            id_str += '_' + self.spec.extras[0]
+            id_str += '_' + '_'.join(self.spec.extras)
         for (op, ver) in self.spec.specs:
             id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
         return id_str
@@ -98,8 +98,10 @@ class Symbol(boolean.Symbol):
         res = {'name': self.name, 'arg': '', 'op': '', 'ver': ''}
         if self.spec.extras:
             res['arg'] = self.spec.extras[0]
+            res['args'] = self.spec.extras
         if self.spec.specs:
             res['op'], res['ver'] = self.spec.specs[0]
+            res['specs'] = self.spec.specs
         return res
 
     @property
