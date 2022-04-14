@@ -30,3 +30,5 @@ template:
     vars:
         filepath: /var/log/messages
         filegid: '0'
+fix: |-
+    {{{ describe_file_group_owner(file="/var/log/messages", group="root") }}}
