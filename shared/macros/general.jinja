@@ -1,12 +1,4 @@
 {{#
-    An OCIL clause for an sshd option
-#}}
-{{% macro ocil_clause_entry_sshd_option() -%}}
-ocil_clause: "the required value is not set"
-{{%- endmacro %}}
-
-
-{{#
   Macro which generates a warning indicating how to make use of a
   Kubernetes/OpenShift-related rule. This is used by the Compliance
   Operator to automatically figure out what resources to fetch.
@@ -117,58 +109,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ namespace }}}{{% endif %}} {{{ object }}} -o json | jq '{{{ jqfilter }}}'
 {{%- endmacro %}}
 
-
-{{#
-    OCIL for an sshd option.
-
-    Example usage::
-
-        ocil_sshd_option(default="no", option="Banner", value="/etc/issue")
-
-:param default: If set to yes the default value is accepted
-:type default: str
-:param option: The sshd option to configure
-:type option: str
-:param value: The value for the given option
-:type value: str
-
-#}}
-{{% macro ocil_sshd_option(default, option, value) -%}}
-    To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
-    {{% if sshd_distributed_config == "true" %}}
-    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</pre>
-    {{% else %}}
-    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
-    {{% endif %}}
-    {{% if default == "yes" -%}}
-    If no line, a commented line, or a line indicating the value <tt>{{{ value }}}</tt> is returned, then the required value is set.
-    {{%- else %}}
-    If a line indicating <tt>{{{ value }}}</tt> is returned, then the required value is set.
-    {{%- endif %}}
-{{%- endmacro %}}
-
-
-{{#
-OCIL and OCIL clause for and sshd option.
-
-    Example usage::
-
-        complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue")
-
-:param default: If set to yes the default value is accepted
-:type default: str
-:param option: The sshd option to configure
-:type option: str
-:param value: The value for the given option
-:type value: str
-
-#}}
-{{% macro complete_ocil_entry_sshd_option(default, option, value) -%}}
-ocil: |
-    {{{ ocil_sshd_option(default, option, value) }}}
-
-{{{ ocil_clause_entry_sshd_option() }}}
-{{%- endmacro %}}
 
 {{% macro sshd_config_file() %}}
     {{% if sshd_distributed_config == "true" %}}
