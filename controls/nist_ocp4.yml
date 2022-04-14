@@ -11390,11 +11390,16 @@ controls:
   - high
   - moderate
 - id: RA-5(4)
-  status: pending
+  status: not applicable
   notes: |-
-    A control response is planned. Progress can be tracked via:
+    This control reflects organizational procedures/policies, and is not
+    applicable to the configuration of OpenShift.
 
-    https://issues.redhat.com/browse/CMP-354
+    The organization should reviews route[1] on the OpenShift platform to ensure that the
+    only routes that are exposed to the public are those that are within the scope of
+    the organizational defined policy.
+    
+    [1]https://docs.openshift.com/container-platform/4.10/networking/routes/route-configuration.html
   rules: []
   description: |-
     The organization determines what information about the information system is discoverable by adversaries and subsequently takes [Assignment: organization-defined corrective actions].
