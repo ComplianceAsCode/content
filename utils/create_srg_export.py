@@ -244,12 +244,12 @@ srgid_to_iacontrol = {
 
 def get_iacontrol(srg_str: str) -> str:
     srgs = srg_str.split(',')
-    result = ""
+    result = list()
     for srg in srgs:
         if srg in srgid_to_iacontrol:
-            result += srgid_to_iacontrol[srg]
-            result += ', '
-    return result.strip()[:-1]
+            result.append(srgid_to_iacontrol[srg])
+    result_set = set(result)
+    return ','.join(str(srg) for srg in result_set)
 
 
 def get_severity(input_severity: str) -> str:
