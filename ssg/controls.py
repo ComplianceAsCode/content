@@ -177,6 +177,9 @@ class Policy():
 
     def load(self):
         yaml_contents = ssg.yaml.open_and_expand(self.filepath, self.env_yaml)
+        controls_dir = yaml_contents.get("controls_dir")
+        if controls_dir:
+            self.controls_dir = os.path.join(os.path.dirname(self.filepath), controls_dir)
         self.id = ssg.utils.required_key(yaml_contents, "id")
         self.title = ssg.utils.required_key(yaml_contents, "title")
         self.source = yaml_contents.get("source", "")
