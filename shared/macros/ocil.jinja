@@ -13,6 +13,76 @@
 {{% endmacro %}}
 
 
+{{# Audit macros #}}
+
+{{#
+    OCIL for adding a syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro ocil_audit_syscall(syscall) -%}}
+    To determine if the system is configured to audit calls to the
+    <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for adding a syscall to audit logs
+#}}
+{{% macro ocil_clause_entry_audit_syscall() -%}}
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for adding a syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro complete_ocil_entry_audit_syscall(syscall) -%}}
+ocil: |
+    {{{ ocil_audit_syscall(syscall) }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for adding a successful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro ocil_audit_successful_syscall(syscall) -%}}
+    To determine if the system is configured to audit successful calls
+    to the <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause for adding a successful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro complete_ocil_entry_audit_successful_syscall(syscall) -%}}
+ocil: |
+    {{{ ocil_audit_successful_syscall(syscall) }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
+
 {{# Package macros #}}
 
 {{#
