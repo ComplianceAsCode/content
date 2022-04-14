@@ -276,35 +276,6 @@ ocil_clause: "no line is returned"
 
 
 
-{{#
-    OCIL for disabling a kernel module.
-
-:param module: The module to disable.
-:type module: str
-
-#}}
-{{%- macro ocil_module_disable(module) %}}
-    If the system is configured to prevent the loading of the <code>{{{ module }}}</code> kernel module,
-    it will contain lines inside any file in <code>/etc/modprobe.d</code> or the deprecated<code>/etc/modprobe.conf</code>.
-    These lines instruct the module loading system to run another program (such as <code>/bin/true</code>) upon a module <code>install</code> event.
-    Run the following command to search for such lines in all files in <code>/etc/modprobe.d</code> and the deprecated <code>/etc/modprobe.conf</code>:
-    <pre>$ grep -r {{{ module }}} /etc/modprobe.conf /etc/modprobe.d</pre>
-{{%- endmacro %}}
-
-
-{{#
-    OCIL and OCIL clause for disabling a kernel module.
-
-:param module: The module to disable.
-:type module: str
-
-#}}
-{{%- macro complete_ocil_entry_module_disable(module) %}}
-ocil: |-
-    {{{ ocil_module_disable(module) }}}
-
-ocil_clause: "no line is returned"
-{{%- endmacro %}}
 
 
 {{#
