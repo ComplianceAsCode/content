@@ -430,64 +430,6 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 {{%- endmacro %}}
 
 
-{{#
-    Describe how to check if given SELinux boolean is disabled.
-
-:param sebool: The SELinux boolean to check
-:type sebool: str
-
-#}}
-{{%- macro describe_sebool_check_disabled(sebool) %}}
-    Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is disabled:
-    <pre>$ getsebool {{{ sebool }}}</pre>
-    If properly configured, the output should show the following:
-    <code>{{{ sebool }}} --> off</code>
-{{%- endmacro %}}
-
-
-{{#
-    OCIL and OCIL clause for how to check if given SELinux boolean is disabled.
-
-:param sebool: The SELinux boolean to check
-:type sebool: str
-
-#}}
-{{%- macro complete_ocil_entry_sebool_disabled(sebool) %}}
-ocil: |-
-    {{{ describe_sebool_check_disabled(sebool) }}}
-
-ocil_clause: "{{{ sebool }}} is not disabled"
-{{%- endmacro %}}
-
-
-{{#
-    Describe how to check if given SELinux boolean is enabled.
-
-:param sebool: The SELinux boolean to check
-:type sebool: str
-
-#}}
-{{%- macro describe_sebool_check_enabled(sebool) %}}
-    Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is enabled:
-    <pre>$ getsebool {{{ sebool }}}</pre>
-    If properly configured, the output should show the following:
-    <code>{{{ sebool }}} --> on</code>
-{{%- endmacro %}}
-
-
-{{#
-    OCIL and OCIL clause for how to check if given SELinux boolean is enabled.
-
-:param sebool: The SELinux boolean to check
-:type sebool: str
-
-#}}
-{{%- macro complete_ocil_entry_sebool_enabled(sebool) %}}
-ocil: |-
-    {{{ describe_sebool_check_enabled(sebool) }}}
-
-ocil_clause: "{{{ sebool }}} is not enabled"
-{{%- endmacro %}}
 
 
 {{#
