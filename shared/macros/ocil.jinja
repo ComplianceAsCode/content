@@ -549,3 +549,61 @@ ocil: |
 
 {{{ ocil_clause_entry_mount_option() }}}
 {{%- endmacro %}}
+
+
+{{# Firewalld macros #}}
+
+{{%- macro _firewalld_check(access_action, port, proto, service) %}}
+    To determine if <code>firewalld</code> is configured to {{{ access_action }}} to <code>{{{ service }}}</code>
+    on port <code>{{{ port }}}/{{{ proto }}}</code>, run the following command(s):
+    {{% if port %}}
+        <code>firewall-cmd --list-ports</code>
+    {{% endif %}}
+    {{% if service %}}
+        <code>firewall-cmd --list-services</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for allowing a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
+{{%- macro ocil_firewalld_allow_access(port, proto, service) %}}
+{{{ _firewalld_check("allow access", port, proto, service) }}}
+    If <code>firewalld</code> is configured to allow access through the firewall, something similar to the following will be output:
+    {{% if service %}}
+    If it is a service:
+    <code>{{{ service }}}</code>
+    {{% endif %}}
+    {{% if port %}}
+    If it is a port:
+    <code>{{{ port }}}/{{{ proto }}}</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for preventing access a port or service in firewalld. If the :code:`service` parameter is defined
+    it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
+
+:param port: The port to allow
+:type port: int
+:param proto: The protocol to allow
+:type proto: str
+:param service: The service to allow
+:type service: str
+
+#}}
+{{%- macro ocil_firewalld_prevent_access(port, proto, service) %}}
+{{{ _firewalld_check("prevent access", port, proto, service) }}}
+    If <code>firewalld</code> is configured to prevent access, no output will be returned.
+{{%- endmacro %}}
