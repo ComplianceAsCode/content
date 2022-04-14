@@ -21,12 +21,12 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Human readable text for how to fix ini files
 
-    :param section: Section on the value to be set
-    :type section: str
-    :param parameter: parameter to be change
-    :type parameter: str
-    :param value: value to be set
-    :type value: str
+:param section: Section on the value to be set
+:type section: str
+:param parameter: parameter to be change
+:type parameter: str
+:param value: value to be set
+:type value: str
 
 #}}
 {{%- macro fixtext_dconf_ini_file(section, parameter, value) -%}}
@@ -42,11 +42,12 @@ The audit daemon must be restarted for the changes to take effect.
 
 {{#
     Describe how to fix an ssh configure
-    :param parameter: parameter to set
-    :type parameter: str
-    :parameter value: Value to set
-    :type value: str
-    :param config_is_distributed: Should the value go in 00-complianceascode-hardening.conf vs the main sshd config file
+
+:param parameter: parameter to set
+:type parameter: str
+:parameter value: Value to set
+:type value: str
+:param config_is_distributed: Should the value go in 00-complianceascode-hardening.conf vs the main sshd config file
 
 #}}
 {{%- macro fixtext_sshd_lineinfile(parameter, value, config_is_distributed) -%}}
@@ -67,8 +68,9 @@ The audit daemon must be restarted for the changes to take effect.
 
 {{#
     Describe how to enable a service
-    :param parameter: service to enable
-    :type parameter: str
+
+:param parameter: service to enable
+:type parameter: str
 
 #}}
 {{%- macro fixtext_service_enabled(service) -%}}
