@@ -655,61 +655,6 @@ ocil_clause: "service and/or socket are running"
 
 
 {{#
-    Describe how to check if a package is installed with rpm.
-
-:param package: The package to check
-:type package: str
-
-#}}
-{{%- macro rpm_ocil_package(package) -%}}
-    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
-    <pre>$ rpm -q {{{ package }}}</pre>
-{{%- endmacro -%}}
-
-
-{{#
-    Describe how to check if a package is installed with dpkg.
-
-:param package: The package to check
-:type package: str
-
-#}}
-{{%- macro dpkg_ocil_package(package) %}}
-    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
-    <pre>$ dpkg -l  {{{ package }}}</pre>
-{{%- endmacro %}}
-
-
-{{#
-    OCIL and OCIL clause how to check if a package is installed with rpm.
-
-:param package: The package to check
-:type package: str
-
-#}}
-{{%- macro rpm_complete_ocil_entry_package(package) %}}
-ocil: |-
-    {{{ rpm_ocil_package(package) }}}
-
-ocil_clause: "the package is installed"
-{{%- endmacro %}}
-
-
-{{#
-    OCIL and OCIL clause how to check if a package is installed with dpkg.
-
-:param package: The package to check
-:type package: str
-#}}
-{{%- macro dpkg_complete_ocil_entry_package(package) %}}
-ocil: |-
-    {{{ dpkg_ocil_package(package) }}}
-
-ocil_clause: "the package is installed"
-{{%- endmacro %}}
-
-
-{{#
     Describe how to check if a service is disabled via chkconfig.
 
 :param service: The service to check

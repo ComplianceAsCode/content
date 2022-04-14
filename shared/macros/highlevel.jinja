@@ -1,47 +1,4 @@
 {{#
-Insert general ocil clause to check if a package is installed, substituting the
-correct package management software.
-
-:param package: Name of package
-:type package: str
-
-#}}
-{{% macro ocil_package(package) -%}}
-  {{% if pkg_system is defined %}}
-    {{%- if pkg_system == "rpm" -%}}
-        {{{ rpm_ocil_package(package) }}}
-    {{%- elif pkg_system == "dpkg" -%}}
-        {{{ dpkg_ocil_package(package) }}}
-    {{%- else -%}}
-JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
-    {{%- endif -%}}
-  {{%- endif -%}}
-{{%- endmacro %}}
-
-
-{{#
-Insert a complete OCIL block for a case when a package should be removed,
-substituting the correct package management software.
-
-:param package: Name of package
-:type package: str
-
-#}}
-{{% macro complete_ocil_entry_package(package) -%}}
-  {{% if pkg_system is defined %}}
-    {{%- if pkg_system == "rpm" %}}
-        {{{ rpm_complete_ocil_entry_package(package) }}}
-    {{%- elif pkg_system == "dpkg" %}}
-        {{{ dpkg_complete_ocil_entry_package(package) }}}
-    {{%- else -%}}
-ocil: |-
-    JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
-    {{%- endif -%}}
-  {{%- endif -%}}
-{{%- endmacro %}}
-
-
-{{#
 Inserts a rule description for a case when a package should be installed,
 substituting the correct package management software.
 

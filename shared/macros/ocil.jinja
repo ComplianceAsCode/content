@@ -1,0 +1,100 @@
+{{# Package macros #}}
+
+{{#
+    Describe how to check if a package is installed with rpm.
+
+:param package: The package to check
+:type package: str
+
+#}}
+{{%- macro rpm_ocil_package(package) -%}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ rpm -q {{{ package }}}</pre>
+{{%- endmacro -%}}
+
+
+{{#
+    Describe how to check if a package is installed with dpkg.
+
+:param package: The package to check
+:type package: str
+
+#}}
+{{%- macro dpkg_ocil_package(package) %}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ dpkg -l  {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{#
+    Insert general ocil clause to check if a package is installed, substituting the
+    correct package management software.
+
+:param package: Name of package
+:type package: str
+
+#}}
+{{% macro ocil_package(package) -%}}
+  {{% if pkg_system is defined %}}
+    {{%- if pkg_system == "rpm" -%}}
+        {{{ rpm_ocil_package(package) }}}
+    {{%- elif pkg_system == "dpkg" -%}}
+        {{{ dpkg_ocil_package(package) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause how to check if a package is installed with rpm.
+
+:param package: The package to check
+:type package: str
+
+#}}
+{{%- macro rpm_complete_ocil_entry_package(package) %}}
+ocil: |-
+    {{{ rpm_ocil_package(package) }}}
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}
+
+
+{{#
+    OCIL and OCIL clause how to check if a package is installed with dpkg.
+
+:param package: The package to check
+:type package: str
+#}}
+{{%- macro dpkg_complete_ocil_entry_package(package) %}}
+ocil: |-
+    {{{ dpkg_ocil_package(package) }}}
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}
+
+
+{{#
+    Insert a complete OCIL block for a case when a package should be removed,
+    substituting the correct package management software.
+
+:param package: Name of package
+:type package: str
+
+#}}
+{{% macro complete_ocil_entry_package(package) -%}}
+  {{% if pkg_system is defined %}}
+    {{%- if pkg_system == "rpm" %}}
+        {{{ rpm_complete_ocil_entry_package(package) }}}
+    {{%- elif pkg_system == "dpkg" %}}
+        {{{ dpkg_complete_ocil_entry_package(package) }}}
+    {{%- else -%}}
+ocil: |-
+    JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- endmacro %}}
+
+
