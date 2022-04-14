@@ -551,6 +551,44 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{# Partition macros #}}
+
+{{#
+    Describe how to check if given path is on its own partition or logical volume.
+
+:param part: Path to check
+:type part: str
+
+#}}
+{{% macro partition_check(part) -%}}
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    Run the following command to determine if <code>{{{ part }}}</code>
+    is on its own partition or logical volume:
+    <pre>$ mount | grep "on {{{ part }}}"</pre>
+    If <code>{{{ part }}}</code> has its own partition or volume group, a line will be returned.
+{{%- endmacro %}}
+
+
+{{#
+    OCIL for how to check if given path is on its own partition or logical volume and the
+    correct OCIL clause.
+
+:param part: Path to check
+:type part: str
+
+#}}
+{{% macro complete_ocil_entry_separate_partition(part) -%}}
+ocil: |
+    {{{ partition_check(part) }}}
+
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
 {{# Firewalld macros #}}
 
 {{%- macro _firewalld_check(access_action, port, proto, service) %}}
