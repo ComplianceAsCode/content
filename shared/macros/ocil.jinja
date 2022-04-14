@@ -424,3 +424,58 @@ ocil: |
 
 {{{ ocil_clause_entry_sshd_option() }}}
 {{%- endmacro %}}
+
+
+{{# Mount option macros #}}
+
+{{#
+    The OCIL text for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
+{{% macro ocil_mount_option(point, option) -%}}
+    To verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
+    {{% if product == "rhcos4" -%}}
+    You'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Subsequently,
+    {{%- endif -%}}
+    run the following command:
+    <pre>$ mount | grep '\s{{{ point }}}\s'</pre>
+    The output should show the corresponding mount point along with the <tt>{{{ option }}}</tt> setting in parentheses.
+{{%- endmacro %}}
+
+
+{{#
+    The OCIL clause for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
+{{% macro ocil_clause_entry_mount_option(point, option) -%}}
+ocil_clause: "the {{{ option }}} is not present in the output line, or there is no output line at all"
+{{%- endmacro %}}
+
+
+{{#
+    The OCIL and OCIL clause for mount options.
+
+:param point: The mount point to check
+:type point: str
+:param option: The options the mount point should have
+:type option: str
+
+#}}
+{{% macro complete_ocil_entry_mount_option(point, option) -%}}
+ocil: |
+    {{{ ocil_mount_option(point, option) | indent(4) }}}
+
+{{{ ocil_clause_entry_mount_option() }}}
+{{%- endmacro %}}
