@@ -1,3 +1,3 @@
 OVAL
 ====
-    .. autojinja:: shared/macros-oval.jinja
+    .. autojinja:: shared/macros/oval.jinja
