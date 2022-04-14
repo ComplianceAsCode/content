@@ -709,24 +709,6 @@ ocil_clause: "service and/or socket are running"
 
 
 {{#
-    Describe how to check if a service is enabled via systemd.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro systemd_ocil_service_enabled(service) %}}
-    {{% if product == "rhcos4" -%}}
-    {{{ rhcos_node_login_instructions() }}}
-    {{%- endif %}}
-    Run the following command to determine the current status of the
-    <code>{{{ service }}}</code> service:
-    <pre>$ systemctl is-active {{{ service }}}</pre>
-    If the service is running, it should return the following: <pre>active</pre>
-{{%- endmacro %}}
-
-
-{{#
     Describe how to check if a service is disabled via upstart.
 
 :param service: The service to check
@@ -746,21 +728,6 @@ ocil_clause: "service and/or socket are running"
 
     If the service is disabled the command will return the following output:
     <pre>{{{ service }}} is stopped</pre>
-{{%- endmacro %}}
-
-
-{{#
-    Describe how to check if a service is enabled via upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_ocil_service_enabled(service) %}}
-    Run the following command to determine the current status of the
-    <code>{{{ service }}}</code> service:
-    <pre>$ sudo service {{{ service }}} status</pre>
-    If the service is enabled, it should return the following: <pre>{{{ service }}} is running...</pre>
 {{%- endmacro %}}
 
 
@@ -1534,20 +1501,6 @@ Operator see
 </p>
 {{% endmacro %}}
 
-
-{{#
-    How to log in to a Red Hat CoreOS Node
-#}}
-{{% macro rhcos_node_login_instructions() -%}}
-    As a user with administrator privileges, log into a node in the relevant pool:
-    <pre>
-    $ oc debug node/$NODE_NAME
-    </pre>
-    At the <pre>sh-4.4#</pre> prompt, run:
-    <pre>
-    # chroot /host
-    </pre>
-{{% endmacro %}}
 
 {{#
     Adds a boiler plate warning with a justification why a rule is disabled on RHV.
