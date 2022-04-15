@@ -50,4 +50,8 @@ cat << EOF > $RSYSLOG_CONF
 include(file="${test_conf}")
 
 \$IncludeConfig ${test_conf2}
+
+include(file="${RSYSLOG_TEST_DIR}/*.conf" mode="optional")
+
+\$IncludeConfig ${RSYSLOG_TEST_DIR}/*.conf
 EOF
