@@ -15649,12 +15649,10 @@ controls:
     applicable to the configuration of OpenShift.
   rules: []
 - id: SI-4(18)
-  status: pending
+  status: not applicable
   notes: |-
-    A control response for SI-4(18) is planned. Engineering progress can be
-    tracked via:
-
-    https://issues.redhat.com/browse/CMP-537
+    OpenShift Container Platform does not provides firewall gateway.
+    A third party firewall should be used for traffic analysis.
   rules: []
   description: |-
     The organization analyzes outbound communications traffic at the external boundary of the information system (i.e., system perimeter) and at [Assignment: organization-defined interior points within the system (e.g., subsystems, subnetworks)] to detect covert exfiltration of information.
@@ -15679,13 +15677,14 @@ controls:
   levels:
   - high
 - id: SI-4(20)
-  status: pending
+  status: automated
   notes: |-
-    A control response for SI-4(20) is planned. Engineering progress can be
-    tracked via:
-
-    https://issues.redhat.com/browse/CMP-538
-  rules: []
+    Audit logs are enabled and they can be used to track activities of privileged
+    users.
+  rules:
+  - audit_log_forwarding_enabled
+  - var_openshift_audit_profile=WriteRequestBodies
+  - audit_profile_set
   description: |-
     The organization implements [Assignment: organization-defined additional monitoring] of privileged users.
   title: >-
@@ -15699,13 +15698,26 @@ controls:
     applicable to the configuration of OpenShift.
   rules: []
 - id: SI-4(22)
-  status: pending
+  status: automated
   notes: |-
-    A control response for SI-4(20) is planned. Engineering progress can be
-    tracked via:
+    OpenShift does not provide ways to audit services, however
+    OpenShift provides ways to restrict traffic to pods the cluster,
+    organization can configure NetworkPolicies in all non-openshift 
+    namespaces to only allow approved traffic in the namespace and not
+    across namespaces[1]
 
-    https://issues.redhat.com/browse/CMP-539
-  rules: []
+    It is also recommended to check inventory of the approved services,
+    review all the routes[2] in the cluster and make sure they are authorized
+    and approved by the organization.
+
+    Routes created in Red Hat OpenShift must also have an appropriate
+    policy that prefers a secure endpoint.
+
+    [1]https://docs.openshift.com/container-platform/latest/networking/network_policy/about-network-policy.html
+    [2]https://docs.openshift.com/container-platform/latest/networking/routes/route-configuration.html
+  rules:
+  - configure_network_policies_namespaces
+  - routes_protected_by_tls
   description: |-
     The information system detects network services that have not been authorized or approved by [Assignment: organization-defined authorization or approval processes] and [Selection (one or more): audits; alerts [Assignment: organization-defined personnel or roles]].
 
