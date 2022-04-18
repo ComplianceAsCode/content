@@ -12412,13 +12412,18 @@ controls:
   - high
   - moderate
 - id: SA-12
-  status: pending
+  status: inherently met
   notes: |-
-    A control response to SA-12 is planned. Progress
-    can be tracked at:
+    Red Hat Product Security[1] has policies and procedures in place to ensure that the
+    integrity of sofware development lifecycle is protected. [2]
 
-    https://issues.redhat.com/browse/CMP-382
-  rules: []
+    There are few examples of them:
+    Code reviews, and CI test are required on all PRs.
+    Periodic static code analysis scans.
+    OpenShift containers only use a few approved base images and they are signed by Red Hat and periodicly scanned for CVEs.
+    
+    [1] https://access.redhat.com/security/overview
+    [2] https://www.redhat.com/en/topics/security/hybrid-cloud-security-approach?sc_cid=7013a0000026NrNAAU
   description: |-
     The organization protects against supply chain threats to the information system, system component, or information system service by employing [Assignment: organization-defined security safeguards] as part of a comprehensive, defense-in-breadth information security strategy.
 
@@ -12547,37 +12552,51 @@ controls:
     and incorporated into SA-20.
   rules: []
 - id: SA-15
-  status: pending
+  status: inherently met
   notes: |-
-    Section a: A control response to SA-15(a) is planned. Progress
-    can be tracked at:
+    Section a.1:
 
-    https://issues.redhat.com/browse/CMP-383
+    Security is continuous and integrated at every stage of the app and
+    infrastructure life cycle for OpenShift.[1]
+   
+    Section a.2,a.3:
 
-    Section a.1: A control response to SA-15(a)(1) is planned. Progress
-    can be tracked at:
+    There are many tools used to ensure that the security of the OpenShift
+    development process:
 
-    https://issues.redhat.com/browse/CMP-383
+    Red Hat uses git and github for development, so all changes including
+    their authorship are tracked in SCMs and identifiable with a hash.
+    Any downstream-specific changes are tracked in a special "midstream"
+    repository. 
 
-    Section a.2: A control response to SA-15(a)(2) is planned. Progress
-    can be tracked at:
+    All commits to repositories must be peer-reviewed. In addition,
+    changes are tracked in Jira where every Epic must be signed off.
+    Red Hat Security Team also does periodically static code analysis.
 
-    https://issues.redhat.com/browse/CMP-383
+    Each individual change goes through a peer review. Larger, system-wide
+    changes are tracked with a PR against the enhancements repository
+    (https://github.com/openshift/enhancements/). Each change tracked in
+    Jira also requires a signoff by the documentation team.
 
-    Section a.3: A control response to SA-15(a)(3) is planned. Progress
-    can be tracked at:
+    CI/CD pipelines are used to ensure that the changes are tested and
+    verified before they are merged into the downstream repository.
 
-    https://issues.redhat.com/browse/CMP-383
+    Peridoically, the Red Hat security team provides vulnerability scans, and
+    static code analysis, all the security risk are promptly addressed.
 
-    Section a.4: A control response to SA-15(a)(4) is planned. Progress
-    can be tracked at:
+    Section a.4:
+    All changes including their authorship are tracked in SCMs and identifiable
+    with a hash. Each commit change is signed by Author, any downstream-specific
+    changes are tracked in a special "midstream" repository.
 
-    https://issues.redhat.com/browse/CMP-382
+    All containers images are signed by Red Hat, and verified during runtime.
 
-    Section b: A control response to SA-15(b) is planned. Progress
-    can be tracked at:
+    Section b:
+    Development process, standards, and tools are constantly reviewed by Red
+    Hat Product Security Team.
 
-    https://issues.redhat.com/browse/CMP-382
+    [1]https://www.redhat.com/en/topics/devops/what-is-devsecops#built-in-security
+    [2]https://csrc.nist.gov/publications/detail/nistir/8176/final
   rules: []
   description: "The organization:\n a. Requires the developer of the information system,\
     \ system component, or information system service to follow a documented development\
@@ -12696,9 +12715,16 @@ controls:
     https://issues.redhat.com/browse/CMP-388
   rules: []
 - id: SA-16
-  status: pending
+  status: inherently met
   notes: |-
-    A control response to SA-16 is planned.
+    Trainnings and education on the use of the OpenShift is offered both
+    internally and externally. Red Hat has courses and certifications
+    covering all aspect of OpenShift.[1] 
+
+    We have documents and tutorials on security best practices for OpenShift.[2]
+
+    [1]https://www.redhat.com/en/openshift-training
+    [2]https://cloud.redhat.com/blog/openshift-runtime-security-best-practices
   rules: []
   description: |-
     The organization requires the developer of the information system, system component, or information system service to provide [Assignment: organization-defined training] on the correct use and operation of the implemented security functions, controls, and/or mechanisms.
@@ -12711,22 +12737,26 @@ controls:
   levels:
   - high
 - id: SA-17
-  status: pending
+  status: inherently met
   notes: |-
-    Section a: A control response to SA-17(a) is planned. Progress
-    can be tracked at:
+    Section a: Red Hat uses git and github for development, so all changes including
+    their authorship are tracked in SCMs and identifiable with a hash.
+    Any downstream-specific changes are tracked in a special "midstream"
+    repository. This makes the control inherently met.
 
-    https://issues.redhat.com/browse/CMP-389
+    Section b: Red Hat uses git and github for development, so all changes including
+    their authorship are tracked in SCMs and identifiable with a hash.
+    Any downstream-specific changes are tracked in a special "midstream"
+    repository.
 
-    Section b: A control response to SA-17(b) is planned. Progress
-    can be tracked at:
+    Section c: All commits to repositories must be peer-reviewed. In addition,
+    changes are tracked in Jira where every Epic must be signed off. 
 
-    https://issues.redhat.com/browse/CMP-389
+    Each individual change goes through a peer review. Larger, system-wide
+    changes are tracked with a PR against the enhancements repository
+    (https://github.com/openshift/enhancements/). Each change tracked in
+    Jira also requires a signoff by the documentation team.
 
-    Section c: A control response to SA-17(c) is planned. Progress
-    can be tracked at:
-
-    https://issues.redhat.com/browse/CMP-389
   rules: []
   description: "The organization requires the developer of the information system,\
     \ system component, or information system service to produce a design specification\
