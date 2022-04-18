@@ -13719,12 +13719,27 @@ controls:
   levels:
   - high
 - id: SC-7(21)
-  status: pending
+  status: inherently met
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    OpenShift uses Role Based Access Control (RBAC) to control access to resources.[1]
+    A user can be assigned to one or more groups, each of which represent a certain
+    set of users. Groups are useful when managing authorization policies to grant
+    permissions to multiple users at once, for example allowing access to objects
+    within a project, versus granting them to users individually.
 
-    https://issues.redhat.com/browse/CMP-489
+    OpenShift also uses the concept of namespaces or projects to ensure workload isolation.
+    The OpenShift platform comes with several default projects that start with the "openshift-"
+    prefix.[2] Such projects, host functionality that's critical for the cluster's operations.
+    Only Cluser Administrators have access to these namespaces, which ensures that regular users
+    don't hace access to cluster management functionality.
+
+    Besides the aforementioned project separation, OpenShift Security Context Constraints (SCC)
+    control the actions that a pod can perform and what it has the ability to access.[3]
+
+
+    [1]https://docs.openshift.com/container-platform/latest/authentication/using-rbac.html
+    [2]https://docs.openshift.com/container-platform/latest/applications/projects/working-with-projects.html
+    [3]https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
   rules: []
   description: |-
     The organization employs boundary protection mechanisms to separate [Assignment: organization-defined information system components] supporting [Assignment: organization- defined missions and/or business functions].
@@ -13988,13 +14003,24 @@ controls:
   - moderate
   - low
 - id: SC-12(1)
-  status: pending
+  status: automated
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    OpenShift does not store and manage store user login credential information,
+    This functionality would fall to third party software such as an Identity Provider (IdP),
+    Active Directory (MSAD), LDAP, etc. [1] 
+    
+    It is recommended to grant the cluster-admin clusterrole to a user or a group backed by
+    an IDP and subsequently remove the kubeadmin user as described[2]
 
-    https://issues.redhat.com/browse/CMP-497
-  rules: []
+    Notes: This control will not be compliant if the IdP is not configured, and default
+    kubeadmin is not removed.
+
+    [1]https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html
+    [2]https://docs.openshift.com/container-platform/latest/authentication/remove-kubeadmin.html
+  rules:
+  - kubeadmin_removed
+  - ocp_idp_no_htpasswd
+  - idp_is_configured
   description: |-
     The organization maintains availability of information in the event of the loss of cryptographic keys by users.
 
@@ -14561,12 +14587,26 @@ controls:
     https://issues.redhat.com/browse/CMP-505
   rules: []
 - id: SC-24
-  status: pending
+  status: inherently met
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    OpenShift Container Platform has etcd ran on all master nodes, and it is
+    highly available and highly scalable. OpenShift also has replicas, redundancy
+    built-in for all its components.
 
-    https://issues.redhat.com/browse/CMP-506
+    This implementation provides adequate fault tolerance since there
+    can be as many replicas as there are nodes in the cluster. Moreover,
+    by default nodes in the cluster are deployed in different availability
+    zones on the hosting cloud. This same pattern is recommended for
+    on-prem deployments.
+
+    OpenShift also provides OpenShift APIs for Data Protection Operator (OADP),
+    you can use it to back up and restore applications running on OpenShift
+    Container Platform.[1]
+
+    Integegrity of OpenShift is protected by Security Context Constraints and SELinux.[2]
+    
+    [1]https://docs.openshift.com/container-platform/latest/backup_and_restore/
+    [2]https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html
   rules: []
   description: "The information system fails to a [Assignment: organization-defined\
     \ known-state] for [Assignment: organization-defined types of failures] preserving\
