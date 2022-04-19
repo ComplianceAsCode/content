@@ -387,7 +387,8 @@ specified, and they depend on each other. Macros that begin with
 make sure that OCIL and OCIL clauses are defined and consistent. Macros
 that begin with underscores are not meant to be used in descriptions.
 
-You can check documentation for all macros in the [Jinja Macros Reference section](../../index.html#jinja-macros-reference).
+You can also check documentation for all macros in the `Jinja Macros Reference`
+section accessible from the table of contents.
 
 To parametrize rules and remediations as well as Jinja macros, you can
 use product-specific variables defined in `product.yml` in product root
