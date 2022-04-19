@@ -8,7 +8,7 @@ description: |-
     This feature protects integrity of the allocator's metadata.
     This configuration is available from kernel 4.14.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SLAB_FREELIST_HARDENED", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SLAB_FREELIST_HARDENED", "y") | indent(4) }}}
 
 rationale: |-
     Many kernel heap attacks try to target slab cache metadata and other infrastructure.

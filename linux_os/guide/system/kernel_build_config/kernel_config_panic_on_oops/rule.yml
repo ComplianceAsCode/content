@@ -6,7 +6,7 @@ description: |-
     Enable the kernel to panic when it oopses.
     This has the same effect as setting oops=panic on the kernel command line.
 
-    {{{ kernel_build_config_describe_config("CONFIG_PANIC_ON_OOPS", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_PANIC_ON_OOPS", "y") | indent(4) }}}
 
 rationale: |-
     This feature ensures that the kernel does not do anything erroneous after an oops which

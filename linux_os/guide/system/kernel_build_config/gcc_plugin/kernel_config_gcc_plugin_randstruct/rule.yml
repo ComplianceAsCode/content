@@ -11,7 +11,7 @@ description: |-
     This configuration is available from kernel 4.13, but may be available if backported
     by distros.
 
-    {{{ kernel_build_config_describe_config("CONFIG_GCC_PLUGIN_RANDSTRUCT", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_GCC_PLUGIN_RANDSTRUCT", "y") | indent(4) }}}
 
 rationale: |-
     Randomizing the layout of kernel data structures make it more difficult for an attacker to

@@ -8,7 +8,7 @@ description: |-
     Java, Python and DOS emulators. Once you have registered such a binary class with the kernel,
     you can start one of those programs simply by typing in its name at a shell prompt.
 
-    {{{ kernel_build_config_describe_config("CONFIG_BINFMT_MISC", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_BINFMT_MISC", "n") | indent(4) }}}
 
 rationale: |-
     This disables arbitrary binary format support and helps reduce attack surface.

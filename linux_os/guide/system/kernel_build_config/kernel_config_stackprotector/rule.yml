@@ -9,7 +9,7 @@ description: |-
     return address, and validates the value just before actually returning.
     This configuration is available from kernel 4.18.
 
-    {{{ kernel_build_config_describe_config("CONFIG_STACKPROTECTOR", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_STACKPROTECTOR", "y") | indent(4) }}}
 
 rationale: |-
     This halts the program when a stack overflow is detected, potentially reducing the impact of

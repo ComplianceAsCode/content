@@ -10,7 +10,7 @@ description: |-
     kernel boot option.
     This configuration is available from kernel 4.6.
 
-    {{{ kernel_build_config_describe_config("CONFIG_PAGE_POISONING", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_PAGE_POISONING", "y") | indent(4) }}}
 
 rationale: |-
     The filling of the memory helps reduce the risk of information leaks from freed data.

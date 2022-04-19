@@ -9,7 +9,7 @@ description: |-
     reads.
     This configuration is available from kernel 5.3.
 
-    {{{ kernel_build_config_describe_config("CONFIG_LEGACY_VSYSCALL_XONLY", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_LEGACY_VSYSCALL_XONLY", "n") | indent(4) }}}
 
 rationale: |-
     Disabling this mitigates certain uses of the vsyscall area as an ASLR-bypassing buffer.

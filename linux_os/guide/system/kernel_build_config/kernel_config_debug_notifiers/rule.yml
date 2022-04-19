@@ -6,7 +6,7 @@ description: |-
     Enable this to turn on sanity checking for notifier call chains. This is most useful for kernel
     developers to make sure that modules properly unregister themselves from notifier chains.
 
-    {{{ kernel_build_config_describe_config("CONFIG_DEBUG_NOTIFIERS", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_DEBUG_NOTIFIERS", "y") | indent(4) }}}
 
 rationale: |-
     This provides validation of notifier chains, it checks whether the notifiers are from the

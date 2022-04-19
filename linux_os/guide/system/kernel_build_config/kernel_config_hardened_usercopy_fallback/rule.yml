@@ -10,7 +10,7 @@ description: |-
     usercopy that checks the slab allocation size instead of the whitelist size.
     This configuration is available from kernel 4.16.
 
-    {{{ kernel_build_config_describe_config("CONFIG_HARDENED_USERCOPY_FALLBACK", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_HARDENED_USERCOPY_FALLBACK", "n") | indent(4) }}}
 
 rationale: |-
     This config prevents entire classes of heap overflow exploits and similar kernel memory exposures.

@@ -996,7 +996,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 :type value: str
 
 #}}
-{{% macro kernel_build_config_describe_config(config, value) -%}}
+{{% macro describe_kernel_build_config(config, value) -%}}
     The configuration that was used to build kernel is available at <tt>/boot/config-*</tt>.
     To check the configuration value for <tt>{{{ config }}}</tt>, run the following command:
     <tt>grep {{{ config }}} /boot/config-*</tt>

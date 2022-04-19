@@ -13,7 +13,7 @@ description: |-
 
     Disable LDT if 16-bit program emulation is not necessary.
 
-    {{{ kernel_build_config_describe_config("CONFIG_MODIFY_LDT_SYSCALL", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_MODIFY_LDT_SYSCALL", "n") | indent(4) }}}
 
 rationale: |-
     Disabling support for unnecessary code reduces attack surface.

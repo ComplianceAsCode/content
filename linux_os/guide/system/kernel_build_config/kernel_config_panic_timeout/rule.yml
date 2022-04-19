@@ -8,7 +8,7 @@ description: |-
     the system will wait the specified amount of seconds before rebooting. While a timeout value
     less than 0 makes the system reboot immediately.
 
-    {{{ kernel_build_config_describe_config("CONFIG_PANIC_TIMEOUT", xccdf_value("var_kernel_config_panic_timeout")) | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_PANIC_TIMEOUT", xccdf_value("var_kernel_config_panic_timeout")) | indent(4) }}}
 
 rationale: |-
     This is required to enable protection against Spectre v2.

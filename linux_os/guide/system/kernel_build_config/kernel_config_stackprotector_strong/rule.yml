@@ -11,7 +11,7 @@ description: |-
     This config requires gcc version 4.9 or above, or a distribution gcc with the feature
     backported ("-fstack-protector-strong").
 
-    {{{ kernel_build_config_describe_config("CONFIG_STACKPROTECTOR_STRONG", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_STACKPROTECTOR_STRONG", "y") | indent(4) }}}
 
 rationale: |-
     This provides a mechanism that protects more vulnerable functions than CONFIG_STACKPROTECTOR,

@@ -10,7 +10,7 @@ description: |-
     be trusted.
     This configuration is available from kernel 3.18.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SCHED_STACK_END_CHECK", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SCHED_STACK_END_CHECK", "y") | indent(4) }}}
 
 rationale: |-
    This ensures no erroneous behaviour occurs which could result in data corruption or a

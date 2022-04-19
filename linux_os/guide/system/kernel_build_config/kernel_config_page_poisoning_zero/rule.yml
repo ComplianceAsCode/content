@@ -8,7 +8,7 @@ description: |-
     no longer necessary to write zeros when GFP_ZERO is used on allocation.
     This configuration is available from kernel 4.19.
 
-    {{{ kernel_build_config_describe_config("CONFIG_PAGE_POISONING_ZERO", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_PAGE_POISONING_ZERO", "y") | indent(4) }}}
 
 rationale: |-
     This configuration helps alleviates the performance impact of poisonining.

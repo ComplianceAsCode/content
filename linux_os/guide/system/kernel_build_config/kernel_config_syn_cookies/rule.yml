@@ -10,7 +10,7 @@ description: |-
     When enabled the TCP/IP stack will use a cryptographic challenge protocol known as SYN cookies
     to enable legitimate users to continue to connect, even when your machine is under attack.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SYN_COOKIES", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SYN_COOKIES", "y") | indent(4) }}}
 
 rationale: |-
     SYN cookies provide protection against SYN flooding attacks.

@@ -5,7 +5,7 @@ title: 'Enable different security models'
 description: |-
     This allows you to choose different security modules to be configured into your kernel.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SECURITY", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SECURITY", "y") | indent(4) }}}
 
 rationale: |-
     This is enables kernel security primitives required by the LSM framework.

@@ -7,7 +7,7 @@ description: |-
     Note that this option adds the OpenSSL development packages as a kernel build dependency so
     that the signing tool can use its crypto library.
 
-    {{{ kernel_build_config_describe_config("CONFIG_MODULE_SIG", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_MODULE_SIG", "y") | indent(4) }}}
 
 rationale: |-
     Loaded modules must be signed.

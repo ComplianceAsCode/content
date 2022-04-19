@@ -8,7 +8,7 @@ description: |-
     Requires a compiler with -mindirect-branch=thunk-extern support for full protection.
     The kernel may run slower.
 
-    {{{ kernel_build_config_describe_config("CONFIG_RETPOLINE", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_RETPOLINE", "y") | indent(4) }}}
 
 rationale: |-
     This is required to enable protection against Spectre v2.

@@ -7,7 +7,7 @@ description: |-
     and to start another kernel. It is like a reboot but it is independent of the system firmware.
     And like a reboot you can start any kernel with it, not just Linux.
 
-    {{{ kernel_build_config_describe_config("CONFIG_KEXEC", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_KEXEC", "n") | indent(4) }}}
 
 rationale: |-
     Prohibits the execution of a new kernel image after reboot.

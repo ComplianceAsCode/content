@@ -12,7 +12,7 @@ description: |-
     This configuration is available from kernel 4.9, but may be available if backported
     by distros.
 
-    {{{ kernel_build_config_describe_config("CONFIG_GCC_PLUGIN_LATENT_ENTROPY", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_GCC_PLUGIN_LATENT_ENTROPY", "y") | indent(4) }}}
 
 rationale: |-
     This helps generate entropy during startup and is particularly relevant for devices with

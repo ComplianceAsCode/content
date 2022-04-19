@@ -9,7 +9,7 @@ description: |-
     when they get checked for validity.
     This configuration is available from kernel 4.10.
 
-    {{{ kernel_build_config_describe_config("CONFIG_BUG_ON_DATA_CORRUPTION", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_BUG_ON_DATA_CORRUPTION", "y") | indent(4) }}}
 
 rationale: |-
     This helps detect data corruptions early and stop with a BUG() error message.

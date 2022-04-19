@@ -8,7 +8,7 @@ description: |-
     The kernel traps and emulates calls into the fixed vsyscall address mapping.
     This configuration is available from kernel 5.3, but may be available if backported by distros.
 
-    {{{ kernel_build_config_describe_config("CONFIG_LEGACY_VSYSCALL_EMULATE", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_LEGACY_VSYSCALL_EMULATE", "n") | indent(4) }}}
 
 rationale: |-
     The mapping is non-executable, but it still contains known contents, which could be

@@ -5,7 +5,7 @@ title: 'Disable IA32 emulation'
 description: |-
     Disables support for legacy 32-bit programs under a 64-bit kernel.
 
-    {{{ kernel_build_config_describe_config("CONFIG_IA32_EMULATION", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_IA32_EMULATION", "n") | indent(4) }}}
 
 rationale: |-
     Disabling 32-bit backwards compatibility helps reduce the attack surface.

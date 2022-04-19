@@ -5,7 +5,7 @@ title: 'Disable the IPv6 protocol'
 description: |-
     Disable support for IP version 6 (IPv6).
 
-    {{{ kernel_build_config_describe_config("CONFIG_IPV6", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_IPV6", "n") | indent(4) }}}
 
 rationale: |-
     Any unnecessary network stacks, including IPv6, should be disabled to reduce

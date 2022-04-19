@@ -7,7 +7,7 @@ description: |-
     the system.
     This configuration is available from kernel 3.0.
 
-    {{{ kernel_build_config_describe_config("CONFIG_ACPI_CUSTOM_METHOD", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_ACPI_CUSTOM_METHOD", "n") | indent(4) }}}
 
 rationale: |-
     Enabling this feature allows arbitrary kernel memory to be written to by root (uid=0) users,

@@ -5,7 +5,7 @@ title: 'Restrict unprivileged access to the kernel syslog'
 description: |-
     Enforce restrictions on unprivileged users reading the kernel syslog via dmesg(8).
 
-    {{{ kernel_build_config_describe_config("CONFIG_SECURITY_DMESG_RESTRICT", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SECURITY_DMESG_RESTRICT", "n") | indent(4) }}}
 
 rationale: |-
     Prevents unprivileged users from retrieving kernel addresses with dmesg.

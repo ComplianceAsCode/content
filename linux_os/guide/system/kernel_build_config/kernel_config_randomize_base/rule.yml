@@ -7,7 +7,7 @@ description: |-
     address at which the kernel image is decompressed and the virtual address where the kernel
     image is mapped.
 
-    {{{ kernel_build_config_describe_config("CONFIG_RANDOMIZE_BASE", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_RANDOMIZE_BASE", "y") | indent(4) }}}
 
 rationale: |-
     An unpredictable kernel address makes it more difficult to succeed with exploits that rely on

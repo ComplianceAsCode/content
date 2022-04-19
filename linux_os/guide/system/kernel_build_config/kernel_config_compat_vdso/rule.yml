@@ -8,7 +8,7 @@ description: |-
     Setting <tt>CONFIG_COMPAT_VDSO</tt> to <tt>y</tt> turns off the 32-bit VDSO and works
     aroud the glibc bug.
 
-    {{{ kernel_build_config_describe_config("CONFIG_COMPAT_VDSO", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_COMPAT_VDSO", "n") | indent(4) }}}
 
 rationale: |-
     Enabling VDSO compatibility hurts performance and disables ASLR.

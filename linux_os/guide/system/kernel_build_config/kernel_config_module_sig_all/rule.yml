@@ -6,7 +6,7 @@ description: |-
     Sign all modules during make modules_install. Without this option, modules must be signed
     manually, using the scripts/sign-file tool.
 
-    {{{ kernel_build_config_describe_config("CONFIG_MODULE_SIG_ALL", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_MODULE_SIG_ALL", "y") | indent(4) }}}
 
 rationale: |-
     This ensures the modules are signed during install process.

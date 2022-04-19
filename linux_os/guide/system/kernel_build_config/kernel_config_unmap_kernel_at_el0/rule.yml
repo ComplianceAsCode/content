@@ -9,7 +9,7 @@ description: |-
     page in the vector table.
     This configuration is available from kernel 4.16, but may be available if backported
     by distros.
-    {{{ kernel_build_config_describe_config("CONFIG_UNMAP_KERNEL_AT_EL0", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_UNMAP_KERNEL_AT_EL0", "y") | indent(4) }}}
 
 rationale: |-
     This is a countermeasure to the Meltdown attack.

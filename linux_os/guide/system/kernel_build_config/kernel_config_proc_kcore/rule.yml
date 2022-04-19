@@ -5,7 +5,7 @@ title: 'Disable support for /proc/kkcore'
 description: |-
     Provides a virtual ELF core file of the live kernel.
 
-    {{{ kernel_build_config_describe_config("CONFIG_PROC_KCORE", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_PROC_KCORE", "n") | indent(4) }}}
 
 rationale: |-
     This feature exposes the memory to the userspace and can assist an attacker in discovering

@@ -6,7 +6,7 @@ description: |-
     Enable tasks to build secure computing environments defined in terms of Berkeley Packet Filter
     programs which implement task-defined system call filtering polices.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SECCOMP_FILTER", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SECCOMP_FILTER", "y") | indent(4) }}}
 
 rationale: |-
     Use of BPF filters allows for expressive filtering of system calls using a filter program

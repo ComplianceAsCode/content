@@ -8,7 +8,7 @@ description: |-
     Generate a warning if any W+X mappings are found at boot.
     This configuration is available from kernel 5.8.
 
-    {{{ kernel_build_config_describe_config("CONFIG_DEBUG_WX", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_DEBUG_WX", "y") | indent(4) }}}
 
 rationale: |-
     This is useful for discovering cases where the kernel is leaving W+X mappings after applying NX,

@@ -8,7 +8,7 @@ description: |-
     to the process as file descriptors supporting the read/write syscalls, it's possible to isolate
     those applications in their own address space using seccomp.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SECCOMP", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SECCOMP", "y") | indent(4) }}}
 
 rationale: |-
     <tt>seccomp</tt> enables the ability to filter system calls made by an application, effectively

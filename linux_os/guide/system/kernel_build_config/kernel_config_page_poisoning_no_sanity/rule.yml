@@ -7,7 +7,7 @@ description: |-
     of the overhead of the poisoning feature.
     This configuration is available from kernel 4.6.
 
-    {{{ kernel_build_config_describe_config("CONFIG_PAGE_POISONING_NO_SANITY", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_PAGE_POISONING_NO_SANITY", "y") | indent(4) }}}
 
 rationale: |-
     This configuration helps alleviates the performance impact of poisonining.

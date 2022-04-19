@@ -7,7 +7,7 @@ description: |-
     This configuration is available from kernel 3.14, but may be available if backported
     by distros.
 
-    {{{ kernel_build_config_describe_config("CONFIG_DEFAULT_MMAP_MIN_ADDR", "65536") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_DEFAULT_MMAP_MIN_ADDR", "65536") | indent(4) }}}
 
 rationale: |-
     Keeping a user from writing to low pages can help reduce the impact of kernel NULL pointer bugs.

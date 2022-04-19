@@ -9,7 +9,7 @@ description: |-
     dmesg, so that either old or malicious userspace programs can be identified.
     This configuration is available from kernel 4.4.
 
-    {{{ kernel_build_config_describe_config("CONFIG_LEGACY_VSYSCALL_NONE", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_LEGACY_VSYSCALL_NONE", "y") | indent(4) }}}
 
 rationale: |-
     This will eliminate any risk of ASLR bypass due to the vsyscall fixed address mapping.

@@ -5,7 +5,7 @@ title: 'Enable checks on linked list manipulation'
 description: |-
     Enable this to turn on extended checks in the linked-list walking routines.
 
-    {{{ kernel_build_config_describe_config("CONFIG_DEBUG_LIST", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_DEBUG_LIST", "y") | indent(4) }}}
 
 rationale: |-
     This add sanity checks to manipulation of linked lists structures in the kernel and may

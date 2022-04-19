@@ -11,7 +11,7 @@ description: |-
     heap attacks easier to exploit by attackers.
     This configuration is available from kernel 4.13.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SLAB_MERGE_DEFAULT", "n") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SLAB_MERGE_DEFAULT", "n") | indent(4) }}}
 
 rationale: |-
     Disabling the merge of slabs of similar sizes prevents the kernel from

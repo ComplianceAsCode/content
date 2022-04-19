@@ -11,7 +11,7 @@ description: |-
     This configuration is available from kernel 4.13, but may be available if backported
     by distros.
 
-    {{{ kernel_build_config_describe_config("CONFIG_REFCOUNT_FULL", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_REFCOUNT_FULL", "y") | indent(4) }}}
 
 rationale: |-
     Refcounting provides protections against various use-after-free conditions that can be

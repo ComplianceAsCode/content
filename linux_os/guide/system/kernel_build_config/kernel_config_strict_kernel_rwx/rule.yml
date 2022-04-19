@@ -8,7 +8,7 @@ description: |-
     When set, kernel text and rodata memory will be made read-only, and non-text memory will be made non-executable.
     This configuration is available from kernel 4.11.
 
-    {{{ kernel_build_config_describe_config("CONFIG_STRICT_KERNEL_RWX", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_STRICT_KERNEL_RWX", "y") | indent(4) }}}
 
 rationale: |-
     This provides protection against certain security exploits (e.g. executing the heap or modifying text)
