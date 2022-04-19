@@ -953,20 +953,6 @@ Operator see
 
 
 {{#
-    Adds a boiler plate warning with a justification why a rule is disabled on RHV.
-    Note: This is only applied on RHEL8 content.
-
-    :param rationale: Explanation why RHV needs the rule disabled.
-#}}
-{{% macro ovirt_rule_notapplicable_warning(rationale) %}}
-{{%- if product == "rhel8" %}}
-- general: |-
-    This rule is disabled on Red Hat Virtualization Hosts and Managers, it will report not applicable.
-    {{{ rationale }}}.
-{{%- endif %}}
-{{% endmacro %}}
-
-{{#
 
     Makes a rule not applicable on systems where oVirt is installed.
     Note: This is only applied on RHEL8 content.
@@ -1021,12 +1007,3 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
     For each kernel installed, a line with value "{{{ value }}}" should be returned.
     {{% endif %}}
 {{%- endmacro %}}
-
-{{#
-    Adds a default "no easy remediation" warning for kernel_build_config warning.
-#}}
-{{% macro kernel_build_config_warning() %}}
-- general: |-
-    There is no remediation for this besides re-compiling the kernel with the appropriate value for the config.
-{{% endmacro %}}
-
