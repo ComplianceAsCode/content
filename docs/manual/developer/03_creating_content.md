@@ -1383,7 +1383,7 @@ In order for export for DISA the IDs of your control must be SRG ID form the Gen
 
 If you have an existing product that you want to base your new STIG you can create the skeleton with the following command:
 
-    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r1.xml -o controls/stig_rhel9.yml
+    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r2.xml -o controls/srg_gpos.yml
 
 The manual (`-m`) should be an SRG XML from DISA.  
 
@@ -1423,7 +1423,7 @@ The **bolded** items are under direct control of content authors.
 #### Exporting
 To export the spreadsheet use the following command:
 
-    $ ./utils/create_srg_export.py -c controls/stig_rhel9.yml -p rhel9
+    $ ./utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9
 
 The output will be out in CSV file in build directory.
 The file will be a csv file named as the UNIX timestamp of when the file was created.
