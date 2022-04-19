@@ -29,6 +29,10 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}
 
+fixtext: |-
+    Verify the operating system is configured to enable DAC on hardlinks with the following commands:
+    {{{ fixtext_sysctl("fs.protected_hardlinks", "1") | indent(4) }}}
+
 template:
     name: sysctl
     vars:
