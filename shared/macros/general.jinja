@@ -702,55 +702,6 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 
 
 {{#
-    OCIL for a sysctl option
-
-:param sysctl: The kernel parameter to change
-:type sysctl: str
-:param value: The value to be set
-:type value: str
-
-#}}
-{{% macro ocil_sysctl_option_value(sysctl, value) -%}}
-    The runtime status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
-    by running the following command:
-    <pre>$ sysctl {{{ sysctl }}}</pre>
-    The output of the command should indicate a value of <code>{{{ value }}}</code>.
-    The preferable way how to assure the runtime compliance is to have
-    correct persistent configuration, and rebooting the system.
-
-    The persistent kernel parameter configuration is performed by specifying the appropriate
-    assignment in any file located in the <pre>/etc/sysctl.d</pre> directory.
-    Verify that there is not any existing incorrect configuration by executing the following command:
-    <pre>$ grep -r '^\s*{{{ sysctl }}}\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
-    If any assignments other than
-    <pre>{{{ sysctl }}} = {{{ value }}}</pre>
-    are found, or the correct assignment is duplicated, remove those offending lines from respective files,
-    and make sure that exactly one file in
-    <code>/etc/sysctl.d</code> contains <code>{{{ sysctl }}} = {{{ value }}}</code>, and that one assignment
-    is returned when
-    <pre>$ grep -r {{{ sysctl }}} /etc/sysctl.conf /etc/sysctl.d</pre>
-    is executed.
-{{%- endmacro %}}
-
-
-{{#
-    OCIL and OCIL clause for a sysctl option
-
-:param sysctl: The kernel parameter to change
-:type sysctl: str
-:param value: The value to be set
-:type value: str
-
-#}}
-{{% macro complete_ocil_entry_sysctl_option_value(sysctl, value) -%}}
-ocil: |
-    {{{ ocil_sysctl_option_value(sysctl, value) }}}
-
-ocil_clause: "the correct value is not returned"
-{{%- endmacro %}}
-
-
-{{#
     Describe how to set a sysctl kernel parameter.
 
 :param sysctl: The kernel parameter to change
