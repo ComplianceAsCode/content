@@ -1166,6 +1166,7 @@ This is a complete schema of the YAML file format.
 id: policy ID (required key)
 title: short title (required key)
 source: a link to the original policy, eg. a URL of a PDF document
+controls_dir: a directory containing files representing controls that will be imported into this policy
 levels: a list of levels, the first one is default.
   - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
@@ -1388,10 +1389,10 @@ The manual (`-m`) should be an SRG XML from DISA.
 
 ##### Filling out content
 Every control in the policy file will create at least one row in the export.
-For every rule on the control there will be row in the exported SRG.
+For every rule on the control there will be a row in the exported SRG.
 
 Below is the mapping from fields in the Compliance as Code to field in the spreadsheet.
-The **bolded** items are under direct control of  content authors.
+The **bolded** items are under direct control of content authors.
 
 * IA Control -> DISA OS SRG XML
   * As of v2r1 that field is blank
