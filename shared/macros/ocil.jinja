@@ -775,3 +775,116 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
   {{%- endif -%}}
 {{%- endmacro %}}
+
+
+{{# File macros #}}
+
+{{#
+    OCIL for how to check the permissions on a file.
+
+:param file: File to change
+:type file: str
+:param perms: The permissions for the file
+:type perms: str
+
+#}}
+{{%- macro ocil_file_permissions(file, perms) -%}}
+    To check the permissions of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for file permissions
+
+:param file: File to change
+:type file: str
+:param perms: the permissions for the file
+:type perms: str
+
+#}}
+{{%- macro ocil_clause_file_permissions(file, perms) -%}}
+    {{{ file }}} has unix mode {{{ perms }}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL how to check the file owner of a file.
+
+:param file: File to change
+:type file: str
+:param owner: The owner for the file
+:type owner: str
+
+#}}
+{{%- macro ocil_file_owner(file, owner) -%}}
+    To check the ownership of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following owner:
+    <code>{{{ owner }}}</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for file owner
+
+:param file: File to change
+:type file: str
+:param owner: the owner for the file
+:type owner: str
+
+#}}
+{{%- macro ocil_clause_file_owner(file, owner) -%}}
+    {{{ file }}} has owner {{{ owner }}}
+{{%- endmacro %}}
+
+
+{{#
+    OCIL how to check the file group owner of a file.
+
+:param file: File to change
+:type file: str
+:param group: the group owner for the file
+:type group: str
+
+#}}
+{{%- macro ocil_file_group_owner(file, group) -%}}
+    To check the group ownership of <code>{{{ file }}}</code>,
+    {{% if product == "rhcos4" or product == "ocp4" -%}}
+    you'll need to log into a node in the cluster.
+    {{{ rhcos_node_login_instructions() }}}
+    Then,
+    {{%- endif -%}}
+    run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following group-owner:
+    <code>{{{ group }}}</code>
+{{%- endmacro %}}
+
+
+{{#
+    OCIL clause for file group owner
+
+:param file: File to change
+:type file: str
+:param owner: the group owner for the file
+:type owner: str
+
+#}}
+{{%- macro ocil_clause_file_group_owner(file, group) -%}}
+    {{{ file }}} has group owner {{{ group }}}
+{{%- endmacro %}}
