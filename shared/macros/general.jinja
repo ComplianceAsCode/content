@@ -103,23 +103,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 
 {{#
-  Macro that creates a check from :code:`oc` output
-#}}
-{{% macro ocil_oc_pipe_jq_filter(object, jqfilter, namespace=none, all_namespaces=false) -%}}
-oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ namespace }}}{{% endif %}} {{{ object }}} -o json | jq '{{{ jqfilter }}}'
-{{%- endmacro %}}
-
-
-{{% macro sshd_config_file() %}}
-    {{% if sshd_distributed_config == "true" %}}
-    <tt>/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</tt>:
-    {{% else %}}
-    <tt>/etc/ssh/sshd_config</tt>:
-    {{% endif %}}
-{{%- endmacro %}}
-
-
-{{#
     Calls :code:`xccdf_value` macro under the hood
 
 :param varname: The name of the variable to reference
