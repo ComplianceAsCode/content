@@ -14,14 +14,14 @@ description: |-
     This configuration is available from kernel 4.20, but may be available if backported
     by distros.
 
-    {{{ kernel_build_config_describe_config("CONFIG_GCC_PLUGIN_STACKLEAK", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_GCC_PLUGIN_STACKLEAK", "y") | indent(4) }}}
 
 rationale: |-
     This blocks most uninitialized stack variable attacks, with the performance impact being
     driven by the depth of the stack usage, rather than the function calling complexity.
 
 warnings:
-    {{{ kernel_build_config_warning() | indent(4) }}}
+    {{{ warning_kernel_build_config() | indent(4) }}}
     - performance: |-
         The performance impact on a single CPU system kernel is of 1% slowdown.
 
@@ -33,7 +33,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_GCC_PLUGIN_STACKLEAK", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_GCC_PLUGIN_STACKLEAK", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config

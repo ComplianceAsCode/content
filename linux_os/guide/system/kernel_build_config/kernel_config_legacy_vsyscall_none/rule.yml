@@ -9,13 +9,13 @@ description: |-
     dmesg, so that either old or malicious userspace programs can be identified.
     This configuration is available from kernel 4.4.
 
-    {{{ kernel_build_config_describe_config("CONFIG_LEGACY_VSYSCALL_NONE", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_LEGACY_VSYSCALL_NONE", "y") | indent(4) }}}
 
 rationale: |-
     This will eliminate any risk of ASLR bypass due to the vsyscall fixed address mapping.
 
 warnings:
-    {{{ kernel_build_config_warning() | indent(4) }}}
+    {{{ warning_kernel_build_config() | indent(4) }}}
 
 severity: medium
 
@@ -26,7 +26,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_LEGACY_VSYSCALL_NONE", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_LEGACY_VSYSCALL_NONE", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config

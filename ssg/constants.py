@@ -60,22 +60,8 @@ product_directories = [
     'wrlinux8', 'wrlinux1019'
 ]
 
-JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "general.jinja")
-JINJA_MACROS_HIGHLEVEL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "highlevel.jinja")
-JINJA_MACROS_ANSIBLE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "ansible.jinja")
-JINJA_MACROS_IGNITION_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "ignition.jinja")
-JINJA_MACROS_KUBERNETES_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "kubernetes.jinja")
-JINJA_MACROS_OVAL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "oval.jinja")
-JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "bash.jinja")
-JINJA_MACROS_FIXTEXT_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
-    __file__)), "shared", "macros", "fixtext.jinja")
+JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros")
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 

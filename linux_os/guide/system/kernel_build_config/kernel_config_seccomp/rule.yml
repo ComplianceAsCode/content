@@ -8,14 +8,14 @@ description: |-
     to the process as file descriptors supporting the read/write syscalls, it's possible to isolate
     those applications in their own address space using seccomp.
 
-    {{{ kernel_build_config_describe_config("CONFIG_SECCOMP", "y") | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_SECCOMP", "y") | indent(4) }}}
 
 rationale: |-
     <tt>seccomp</tt> enables the ability to filter system calls made by an application, effectively
     isolating the system's resources from it.
 
 warnings:
-    {{{ kernel_build_config_warning() | indent(4) }}}
+    {{{ warning_kernel_build_config() | indent(4) }}}
 
 severity: medium
 
@@ -27,7 +27,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_SECCOMP", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_SECCOMP", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config

@@ -6,13 +6,13 @@ description: |-
     This configures the kernel to build and sign modules using
     {{{ xccdf_value("var_kernel_config_module_sig_hash") }}} as the hash function.
 
-    {{{ kernel_build_config_describe_config("CONFIG_MODULE_SIG_HASH", xccdf_value("var_kernel_config_module_sig_hash")) | indent(4) }}}
+    {{{ describe_kernel_build_config("CONFIG_MODULE_SIG_HASH", xccdf_value("var_kernel_config_module_sig_hash")) | indent(4) }}}
 
 rationale: |-
     Use of strong hash function is important to secure the module against counterfeit signatures.
 
 warnings:
-    {{{ kernel_build_config_warning() | indent(4) }}}
+    {{{ warning_kernel_build_config() | indent(4) }}}
 
 severity: medium
 
@@ -24,7 +24,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_MODULE_SIG_HASH", xccdf_value("var_kernel_config_module_sig_hash")) | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_MODULE_SIG_HASH", xccdf_value("var_kernel_config_module_sig_hash")) | indent(4) }}}
 
 template:
     name: kernel_build_config
