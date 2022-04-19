@@ -415,20 +415,6 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 {{%- endmacro %}}
 
 
-{{#
-    Describe how to check if timer is enabled in upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro systemd_ocil_timer_enabled(timer) %}}
-    Run the following command to determine the current status of the
-    <code>{{{ timer }}}</code> timer:
-    <pre>$ systemctl is-active {{{ timer }}}.timer</pre>
-    If the timer is running, it should return the following: <pre>active</pre>
-{{%- endmacro %}}
-
 
 
 

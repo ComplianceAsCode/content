@@ -176,25 +176,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
-Inserts an OCIL for a case when a timer should be enabled,
-substituting the correct init system.
-
-:param timer: Name of timer
-:type timer: str
-
-#}}
-{{% macro ocil_timer_enabled(timer) -%}}
-  {{% if init_system is defined %}}
-    {{%- if init_system == "systemd" -%}}
-        {{{ systemd_ocil_timer_enabled(timer) }}}
-    {{%- else -%}}
-JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
-    {{%- endif -%}}
-  {{%- endif -%}}
-{{%- endmacro %}}
-
-
-{{#
 Write out the OCIL for generating the common check for Firefox configuration
 :param preference: Name of preference
 :type preference: str
