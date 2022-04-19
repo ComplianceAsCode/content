@@ -257,22 +257,6 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 
 
 {{#
-    Describe how to check if a service is disabled via chkconfig.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro ocil_xinetd_service_disabled(service) %}}
-    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
-    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list</pre>
-    Output should indicate the <code>{{{ service }}}</code> service has either not been installed, or has been disabled, as shown in the example below:
-    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list
-    <code>{{{ service }}}</code>       off</pre>
-{{%- endmacro %}}
-
-
-{{#
     Describe how to disable socket in systemd.
 
 :param socket: The socket to check
