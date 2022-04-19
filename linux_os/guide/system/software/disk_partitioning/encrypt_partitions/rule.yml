@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Encrypt Partitions'
 
@@ -32,16 +32,18 @@ description: |-
     Detailed information on encrypting partitions using LUKS or LUKS ciphers can be found on
     the {{{ full_name }}} Documentation web site:<br />
     {{% if product == "ol7" %}}
-        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/security/ol7-install-sec.html") }}}.
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/security/ol7-install-sec.html") }}}
     {{% elif product == "ol8" %}}
-        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/install/install-InstallingOracleLinuxManually.html#install-storage-network") }}}.
+        {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/8/install/install-InstallingOracleLinuxManually.html#install-storage-network") }}}
     {{% elif product in ["sle12", "sle15"] %}}
         {{{ weblink(link="https://www.suse.com/documentation/sled-12/book_security/data/sec_security_cryptofs_y2.html") }}}
     {{% elif product == "rhel7" %}}
-        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-encryption") }}}.
+        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-encryption") }}}
+    {{% elif product == "fedora" %}}
+        {{{ weblink(link="https://docs.fedoraproject.org/en-US/quick-docs/encrypting-drives-using-LUKS/") }}}
     {{% else %}}
-        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/encrypting-block-devices-using-luks_security-hardening") }}}.
-    {{% endif %}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/encrypting-block-devices-using-luks_security-hardening") }}}
+    {{% endif %}}.
 
 rationale: |-
     The risk of a system's physical compromise, particularly mobile systems such as
