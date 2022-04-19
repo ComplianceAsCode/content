@@ -28,7 +28,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_DEBUG_CREDENTIALS", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_DEBUG_CREDENTIALS", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config

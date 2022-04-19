@@ -939,3 +939,76 @@ ocil: |
 
 ocil_clause: "the correct value is not returned"
 {{%- endmacro %}}
+
+
+{{# GRUB2 argument macros #}}
+
+{{#
+    Provide OCIL for checking if an argument for kernel command line is configured with Grub2.
+    The parameter should have form `parameter=value`.
+#}}
+{{%- macro ocil_grub2_argument(arg_name_value) -%}}
+{{%- if product in ["rhel7", "ol7", "rhel8", "ol8", "rhel9"] or 'ubuntu' in product -%}}
+Inspect the form of default GRUB 2 command line for the Linux operating system
+in <tt>/etc/default/grub</tt>. If it includes <tt>{{{ arg_name_value }}}</tt>,
+then the parameter will be configured for newly installed kernels.
+First check if the GRUB recovery is enabled:
+<pre>$ grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
+If this option is set to true, then check that a line is output by the following command:
+<pre>$ grep 'GRUB_CMDLINE_LINUX_DEFAULT.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>
+If the recovery is disabled, check the line with
+<pre>$ grep 'GRUB_CMDLINE_LINUX.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>.
+{{%- if 'ubuntu' in product -%}}
+Moreover, current Grub config file <tt>grub.cfg</tt> must be checked. The file can be found
+either in <tt>{{{ grub2_boot_path }}}</tt> in case of legacy BIOS systems, or in <tt>{{{ grub2_uefi_boot_path }}}</tt> in case of UEFI systems.
+If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
+is configured at boot time.
+<pre># grep vmlinuz GRUB_CFG_FILE_PATH | grep -v '{{{ arg_name_value }}}'</pre>
+Fill in <tt>GRUB_CFG_FILE_PATH</tt> based on information above.
+This command should not return any output.
+{{%- else -%}}
+Moreover, command line parameters for currently installed kernels should be checked as well.
+Run the following command:
+<pre># grubby --info=ALL | grep args | grep -v '{{{ arg_name_value }}}'</pre>
+The command should not return any output.
+{{%- endif -%}}
+{{%- else -%}}
+Inspect the form of default GRUB 2 command line for the Linux operating system
+{{% if grub2_boot_path == grub2_uefi_boot_path or not grub2_uefi_boot_path -%}}
+in <tt>{{{ grub2_boot_path }}}/grubenv</tt>.
+{{%- else -%}}
+in <tt>grubenv</tt> that can be found either in <tt>{{{ grub2_boot_path }}}</tt> in case of legacy BIOS systems, or in <tt>{{{ grub2_uefi_boot_path }}}</tt> in case of UEFI systems.
+{{%- endif %}}
+If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
+is configured at boot time.
+<pre># grep 'kernelopts.*{{{ arg_name_value }}}.*' GRUBENV_FILE_LOCATION</pre>
+Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
+{{# Kernel build config macros #}}
+
+{{#
+    OCIL for a kernel build config rule.
+
+    Example usage::
+
+        ocil_kernel_build_config(config="config_kernel_strict_rwx", value="y")
+
+:param config: The kernel config parameter
+:type config: str
+:param value: The value for the given config
+:type value: str
+
+#}}
+{{% macro ocil_kernel_build_config(config, value) -%}}
+    To determine the config value the kernel was built with, run the following command:
+    <pre>$ grep {{{ config }}} /boot/config.*</pre>
+    {{% if value == "n" %}}
+    Configs with value 'n' are not explicitly set in the file, so either commented lines or no
+    lines should be returned.
+    {{% else %}}
+    For each kernel installed, a line with value "{{{ value }}}" should be returned.
+    {{% endif %}}
+{{%- endmacro %}}

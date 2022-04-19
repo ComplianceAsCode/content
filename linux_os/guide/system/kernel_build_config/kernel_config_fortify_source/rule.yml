@@ -26,7 +26,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_FORTIFY_SOURCE", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_FORTIFY_SOURCE", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config

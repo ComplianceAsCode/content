@@ -24,7 +24,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_MODULE_SIG_HASH", xccdf_value("var_kernel_config_module_sig_hash")) | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_MODULE_SIG_HASH", xccdf_value("var_kernel_config_module_sig_hash")) | indent(4) }}}
 
 template:
     name: kernel_build_config

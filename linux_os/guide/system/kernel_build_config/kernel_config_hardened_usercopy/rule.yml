@@ -29,7 +29,7 @@ identifiers:
 ocil_clause: 'the kernel was not built with the required value'
 
 ocil: |-
-    {{{ kernel_build_config_ocil("CONFIG_HARDENED_USERCOPY", "y") | indent(4) }}}
+    {{{ ocil_kernel_build_config("CONFIG_HARDENED_USERCOPY", "y") | indent(4) }}}
 
 template:
     name: kernel_build_config
