@@ -7,5 +7,6 @@ SSHD_CONFIG="/etc/ssh/sshd_config"
 
 . "$SHARED/utilities.sh"
 
-assert_directive_in_file "$SSHD_CONFIG" ClientAliveInterval "ClientAliveInterval 10"
-assert_directive_in_file "$SSHD_CONFIG" ClientAliveCountMax "# ClientAliveCountMax 0"
+sed -i "/ClientAliveInterval/d" "$SSHD_CONFIG"
+assert_directive_in_file "$SSHD_CONFIG" ClientAliveInterval "# ClientAliveInterval 10"
+assert_directive_in_file "$SSHD_CONFIG" ClientAliveCountMax "ClientAliveCountMax 0"
