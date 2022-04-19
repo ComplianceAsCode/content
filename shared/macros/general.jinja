@@ -173,8 +173,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{%- endmacro %}}
 
 
-
-
 {{#
     Describe preventing access a port or service in firewalld. If the :code:`service` parameter is defined
     it is assumed to be a service and the :code:`port` and :code:`proto` parameters will have no effect.
@@ -219,10 +217,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
     <code>firewall-cmd --permanent --add-service={{{ service }}}</code>
     {{% endif %}}
 {{%- endmacro %}}
-
-
-
-
 
 
 {{#
@@ -417,6 +411,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     The <code>{{{ service }}}</code> service can be enabled with the following command:
     <pre>$ sudo chkconfig --level 2345 {{{ service }}} on</pre>
 {{%- endmacro %}}
+
 
 {{%- macro systemd_describe_timer_enable(timer) %}}
     The <code>{{{ timer }}}</code> timer can be enabled with the following command:
@@ -964,6 +959,7 @@ Operator see
 {{%- endif %}}
 {{% endmacro %}}
 
+
 {{#
     Describe how to configure Grub2 to add an argument to the default kernel command line.
     The parameter should be in form `parameter=value`.
@@ -986,6 +982,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 <pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ arg_name_value }}}"</pre>
 {{%- endif -%}}
 {{%- endmacro -%}}
+
 
 {{#
     Describe how to check a kernel compile parameter
