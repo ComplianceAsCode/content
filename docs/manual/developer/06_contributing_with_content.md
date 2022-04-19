@@ -969,7 +969,7 @@ profile. The Playbook is generated in
 
 Jinja macros for Ansible content are located in
 `/shared/macros/ansible.jinja`. You can see their reference
-[here](	jinja_macros/ansible:ansible).
+[here](jinja_macros/ansible:ansible).
 
 Whenever possible, please reuse the macros and form high-level
 simplifications. This ensures consistent, high quality remediations that
