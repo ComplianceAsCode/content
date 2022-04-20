@@ -1,4 +1,5 @@
 #!/bin/bash
+# platform = Red Hat Enterprise Linux 7
 
 SSHD_CONFIG="/etc/ssh/sshd_config"
 
