@@ -18,20 +18,21 @@ except ImportError:
     from urllib import quote
 
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
-             "kubernetes", "blueprint", "sce-bash", "oval_platform"]
-rule_related_languages = [l for l in languages if l != "oval_platform"]
+             "kubernetes", "blueprint", "sce-bash",
+             "conditional.oval"]
+rule_related_languages = [l for l in languages if not l.startswith("conditional")]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
     "ansible": ".yml",
     "bash": ".sh",
     "oval": ".xml",
-    "oval_platform": ".xml",
     "puppet": ".pp",
     "ignition": ".yml",
     "kubernetes": ".yml",
     "blueprint": ".toml",
     "sce-bash": ".sh",
+    "conditional.oval": ".conditional.xml",
 }
 
 
@@ -115,8 +116,8 @@ class Builder(object):
         self.cpe_items_dir = cpe_items_dir
         self.output_dirs = dict()
         for lang in languages:
-            lang_dir = lang
-            if lang.startswith("oval") or lang.startswith("sce-"):
+            lang_dir = lang.split('.', 1)[-1]
+            if lang.endswith("oval") or lang.startswith("sce-"):
                 # OVAL and SCE checks need to be put to a different directory
                 # because they are processed differently than remediations
                 # later in the build process
@@ -129,7 +130,6 @@ class Builder(object):
             self.output_dirs[lang] = dir_
         # scan directory structure and dynamically create list of templates
         for item in sorted(os.listdir(self.templates_dir)):
-            itempath = os.path.join(self.templates_dir, item)
             maybe_template = Template(templates_dir, item)
             if maybe_template.looks_like_template():
                 maybe_template.load()
@@ -338,13 +338,20 @@ class Builder(object):
                 continue
             template_name = cpe.template['name']
             try:
-                rendered_vars = {}
+                arg = symbol.get_arg()
+                if arg in cpe.args:
+                    rendered_vars = cpe.args[arg]
+                elif arg is None:
+                    rendered_vars = {}
+                else:
+                    raise ValueError("Platform {0} does not allow arg '{1}' ".format(name, arg))
+                rendered_vars.update(symbol_dict)
                 for var, var_fmt_str in cpe.template['vars'].items():
                     rendered_vars[var] = var_fmt_str.format(**symbol_dict)
                 template_vars = self.process_product_vars(rendered_vars)
             except KeyError:
                 raise ValueError(
-                    "Rule {0} does not contain mandatory 'vars:' key under "
+                    "Platform {0} does not contain mandatory 'vars:' key under "
                     "'template:' key.".format(name))
             # Add the check_id ID which will be reused in OVAL templates as OVAL
             # definition ID so that the build system matches the generated
@@ -356,12 +363,11 @@ class Builder(object):
             #local_env_yaml["rule_title"] = rule_title
             local_env_yaml["products"] = self.env_yaml["product"]
 
-            for lang in ['oval_platform']:
+            for lang in ['conditional.oval']:
                 try:
-                    self.build_lang(
-                        full_name, template_name, template_vars, lang, local_env_yaml)
+                    self.build_lang(full_name, template_name, template_vars, lang, local_env_yaml)
                 except Exception as e:
-                    print("Error building templated {0} content for rule {1}".format(lang, name), file=sys.stderr)
+                    print("Error building templated {0} content for platform {1}".format(lang, name), file=sys.stderr)
                     raise e
 
     def get_lang_for_rule(self, rule_id, rule_title, template, language):

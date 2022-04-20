@@ -21,6 +21,15 @@ SPEC_OP_ID_TRANSLATION = {
     '<=': 'le_or_eq',
 }
 
+SPEC_OP_OVAL_EVR_STRING_TRANSLATION = {
+    '==': 'equal',
+    '!=': 'not equal',
+    '>': 'greater than',
+    '<': 'less than',
+    '>=': 'greater than or equal',
+    '<=': 'less than or equal',
+}
+
 
 class Function(boolean.Function):
     """
@@ -75,7 +84,7 @@ class Symbol(boolean.Symbol):
     def __call__(self, **kwargs):
         full_name = self.name
         if self.spec.extras:
-            full_name += '[' + ','.join(self.spec.extras) + ']'
+            full_name += '[' + self.spec.extras[0] + ']'
         val = kwargs.get(full_name, False)
         if len(self.spec.specs):
             if type(val) is str:
@@ -89,20 +98,24 @@ class Symbol(boolean.Symbol):
     def as_id(self):
         id_str = self.name
         if self.spec.extras:
-            id_str += '_' + '_'.join(self.spec.extras)
+            id_str += '_' + self.spec.extras[0]
         for (op, ver) in self.spec.specs:
             id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
         return id_str
 
     def as_dict(self):
-        res = {'name': self.name, 'arg': '', 'op': '', 'ver': ''}
+        res = {'name': self.name, 'arg': '', 'op': '', 'ver': '', 'evr': '', 'evr_op': ''}
         if self.spec.extras:
             res['arg'] = self.spec.extras[0]
-            res['args'] = self.spec.extras
         if self.spec.specs:
             res['op'], res['ver'] = self.spec.specs[0]
-            res['specs'] = self.spec.specs
+            ver = pkg_resources.parse_version(res['ver'])
+            res['evr'] = str(ver.epoch) + ':' + '.'.join(str(x) for x in ver.release) + '-' + (str(ver.post) if ver.post else '0')
+            res['evr_op'] = SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(res['op'], 'equal')
         return res
+
+    def get_arg(self):
+        return self.spec.extras[0] if self.spec.extras else None
 
     @property
     def name(self):

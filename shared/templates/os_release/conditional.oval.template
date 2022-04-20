@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="inventory" id="{{{ _CHECK_ID }}}" version="1">
+    {{{ oval_metadata(OS_NAME + " " + VERSION_ID, affected_platforms=["multi_platform_all"]) }}}
+    <criteria operator="AND">
+      <criterion comment="The operating system installed on the system is {{{ OS_NAME }}}"
+      test_ref="test_os_id_is_{{{ OS_ID }}}" />
+      <criterion comment="The version of operating system {{{ OS_NAME }}} is {{{ VERSION_ID }}}"
+      test_ref="test_{{{ OS_ID }}}_version_id_is_{{{ VERSION_ID }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="ID in os-release is {{{ OS_ID }}}" id="test_os_id_is_{{{ OS_ID }}}" version="1">
+    <ind:object object_ref="obj_os_id_is_{{{ OS_ID }}}" />
+    <ind:state state_ref="state_os_id_is_{{{ OS_ID }}}" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_os_id_is_{{{ OS_ID }}}" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^ID=&quot;(\w+)&quot;$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_os_id_is_{{{ OS_ID }}}" version="1">
+    <ind:subexpression operation="pattern match">{{{ OS_ID }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" comment="VERSION_ID in os-release is {{{ VERSION_ID }}}" id="test_{{{ OS_ID }}}_version_id_is_{{{ VERSION_ID }}}" version="1">
+    <ind:object object_ref="obj_{{{ OS_ID }}}_version_id_is_{{{ VERSION_ID }}}" />
+    <ind:state state_ref="state_{{{ OS_ID }}}_version_id_is_{{{ VERSION_ID }}}" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ OS_ID }}}_version_id_is_{{{ VERSION_ID }}}" version="1">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VERSION_ID=&quot;(\d)\.\d+&quot;$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_{{{ OS_ID }}}_version_id_is_{{{ VERSION_ID }}}" version="1">
+    <ind:subexpression operation="pattern match">{{{ VERSION_ID }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

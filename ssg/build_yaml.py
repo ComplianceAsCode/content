@@ -1922,7 +1922,7 @@ class Platform(XCCDFEntity):
         cpe_platform = ET.Element("{%s}platform" % Platform.ns)
         cpe_platform.set('id', self.name)
         # in case the platform contains only single CPE name, fake the logical test
-        # we have to athere to CPE specification
+        # we have to adhere to CPE specification
         if isinstance(self.test, CPEALFactRef):
             cpe_test = ET.Element("{%s}logical-test" % CPEALLogicalTest.ns)
             cpe_test.set('operator', 'AND')
