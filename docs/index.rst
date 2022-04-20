@@ -6,6 +6,7 @@ ComplianceAsCode/content
     :maxdepth: 2
     :glob:
     :caption: Developer Guide
+    :name: Developer Guide
 
     manual/developer/*
 
@@ -13,6 +14,7 @@ ComplianceAsCode/content
     :maxdepth: 2
     :glob:
     :caption: Testing Content Using SSG Test Suite
+    :name: Testing Content Using SSG Test Suite
 
     tests/README
 
@@ -20,6 +22,7 @@ ComplianceAsCode/content
     :maxdepth: 1
     :glob:
     :caption: Graphs
+    :name: Graphs
 
     flowcharts/introduction
     flowcharts/*
@@ -28,6 +31,7 @@ ComplianceAsCode/content
     :maxdepth: 1
     :glob:
     :caption: Jinja Macros Reference
+    :name: Jinja Macros Reference
 
     jinja_macros/*
 
@@ -35,6 +39,7 @@ ComplianceAsCode/content
     :maxdepth: 1
     :glob:
     :caption: Templates Reference
+    :name: Templates Reference
 
     templates/*
 
@@ -42,6 +47,7 @@ ComplianceAsCode/content
     :maxdepth: 1
     :glob:
     :caption: Python Modules Reference
+    :name: Python Modules Reference
 
     modules/*
 
@@ -49,6 +55,7 @@ ComplianceAsCode/content
     :maxdepth: 2
     :glob:
     :caption: Release Documentation
+    :name: Release Documentation
 
     release_process
 

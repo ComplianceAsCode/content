@@ -366,7 +366,7 @@ Some of existing rule definitions contain attributes that use macros.
 There are two implementations of macros:
 
 -   [Jinja macros](http://jinja.pocoo.org/docs/2.10/), that are defined
-    in `shared/macros/general.jinja`, and `shared/macros/highlevel.jinja`.
+    in `*.jinja` files in `shared/macros` directory.
 
 -   Legacy XSLT macros, which are defined in `shared/transforms/*.xslt`.
 
@@ -379,14 +379,6 @@ example, invocation of the partition macro looks like
 are three opening and closing curly braces instead of the two that are
 documented in the Jinja guide.
 
-`shared/macros/general.jinja` contains specific low-level macros s.a.
-`systemd_ocil_service_enabled`, whereas `shared/macros/highlevel.jinja`
-contains general macros s.a. `ocil_service_enabled`, that decide which
-one of the specialized macros to call based on the actual product being
-used.
-
-You can see references of high level macros [here](jinja_macros/highlevel:high%20level).
-
 The macros that are likely to be used in descriptions begin by
 `describe_`, whereas macros likely to be used in OCIL entries begin with
 `ocil_`. Sometimes, a rule requires `ocil` and `ocil_clause` to be
@@ -394,6 +386,9 @@ specified, and they depend on each other. Macros that begin with
 `complete_ocil_entry_` were designed for exactly this purpose, as they
 make sure that OCIL and OCIL clauses are defined and consistent. Macros
 that begin with underscores are not meant to be used in descriptions.
+
+You can also check documentation for all macros in the `Jinja Macros Reference`
+section accessible from the table of contents.
 
 To parametrize rules and remediations as well as Jinja macros, you can
 use product-specific variables defined in `product.yml` in product root
@@ -974,7 +969,7 @@ profile. The Playbook is generated in
 
 Jinja macros for Ansible content are located in
 `/shared/macros/ansible.jinja`. You can see their reference
-[here](	jinja_macros/ansible:ansible).
+[here](jinja_macros/ansible:ansible).
 
 Whenever possible, please reuse the macros and form high-level
 simplifications. This ensures consistent, high quality remediations that
