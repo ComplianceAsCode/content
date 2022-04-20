@@ -170,6 +170,7 @@ class CPEItem(XCCDFEntity):
         ansible_conditional=lambda: "",
         template=lambda: {},
         is_product_cpe=lambda: False,
+        args=lambda: {},
         ** XCCDFEntity.KEYS
     )
 
