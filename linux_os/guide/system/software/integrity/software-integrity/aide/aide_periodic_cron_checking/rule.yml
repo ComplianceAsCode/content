@@ -61,9 +61,11 @@ references:
     stigid@sle15: SLES-15-010570
     stigid@ubuntu2004: UBTU-20-010074
 
-ocil_clause: 'there is no output'
+ocil_clause: 'AIDE is not configured to periodicly scan'
 
 ocil: |-
+    Verify the operating system routinely checks the baseline configuration for unauthorized changes.
+
     To determine that periodic AIDE execution has been scheduled, run the following command:
     <pre>$ grep aide /etc/crontab</pre>
     The output should return something similar to the following:
@@ -74,3 +76,14 @@ ocil: |-
     {{% endif %}}
 
     NOTE: The usage of special cron times, such as @daily or @weekly, is acceptable.
+
+fixtext: |-
+    Configure the file integrity to run at least weekly.
+    Edit "/etc/crontab" and add or edit the following line:
+
+    {{% if 'ubuntu' not in product %}}
+    <pre>05 4 * * * root {{{ aide_path }}} --check</pre>
+    {{% else %}}
+    <pre>05 4 * * * root /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check</pre>
+    {{% endif %}}
+
