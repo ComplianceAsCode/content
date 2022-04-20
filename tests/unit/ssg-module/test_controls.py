@@ -344,3 +344,7 @@ def test_load_control_from_folder():
 
 def test_load_control_from_folder_and_file():
     _load_test("qrst")
+
+
+def test_load_control_from_specific_folder_and_file():
+    _load_test("nopq")
