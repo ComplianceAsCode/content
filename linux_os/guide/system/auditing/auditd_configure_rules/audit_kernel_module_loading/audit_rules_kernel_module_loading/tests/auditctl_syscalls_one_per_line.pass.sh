@@ -8,3 +8,6 @@ rm -f /etc/audit/rules.d/*
 
 # cut out irrelevant rules for this test
 sed '8,15d' test_audit.rules > /etc/audit/audit.rules
+{{% if product in ["ol8", "rhel8"] %}}
+sed -i 's/-k modules/-F auid>=1000 -F auid!=unset -k modules/g' /etc/audit/audit.rules
+{{% endif %}}
