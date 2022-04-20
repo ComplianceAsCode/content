@@ -1688,7 +1688,7 @@ fi
     Remediation for grub2 bootloader arguments
 #}}
 {{% macro grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) %}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--args= ~ ARG_NAME_VALUE"] -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE ] -%}}
 {{% if 'ubuntu' in product %}}
 	{{% set grub_helper_executable = "update-grub" -%}}
 {{% elif product in ["sle12", "sle15"] %}}
