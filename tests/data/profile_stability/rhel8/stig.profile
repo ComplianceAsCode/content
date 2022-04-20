@@ -199,6 +199,8 @@ selections:
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
 - ensure_gpgcheck_local_packages
+- file_audit_tools_group_ownership
+- file_audit_tools_ownership
 - file_group_ownership_var_log_audit
 - file_groupowner_var_log
 - file_groupowner_var_log_messages
