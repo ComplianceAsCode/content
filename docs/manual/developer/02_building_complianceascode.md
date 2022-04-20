@@ -167,6 +167,15 @@ yum install python3-pandas
 apt-get install python3-pandas
 ```
 
+### OpenpyXL (SRG Export XLSX)
+```bash
+# Fedora/RHEL
+yum install python3-openpyxl
+
+# Ubuntu/Debian
+apt-get install python3-openpyxl
+```
+
 ## Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):

@@ -404,6 +404,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 row['Check'] = f'{ocil_var}\n\n' \
                                f'If {ocil_clause_var} then this is a finding.'
                 row['Fix'] = handle_variables(rule_object.fixtext, control.variables)
+                row['STIGID'] = rule_object.identifiers.get('cce', "")
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
                 else:
@@ -425,6 +426,7 @@ def no_selections_row(control, srgs):
     row['Fix'] = control.fixtext
     row['Check'] = control.check
     row['Vul Discussion'] = html_plain_text(control.rationale)
+    row["STIGID"] = ""
     return row
 
 
@@ -481,26 +483,36 @@ def get_policy(args, env_yaml) -> ssg.controls.Policy:
     return policy
 
 
+def handle_csv_output(output, results):
+    with open(output, 'w') as csv_file:
+        csv_writer = setup_csv_writer(csv_file)
+        for row in results:
+            csv_writer.writerow(row)
+
+
+def handle_xlsx_output(output, product, results):
+    output = output.replace('.csv', '.xlsx')
+    for row in results:
+        row['IA Control'] = get_iacontrol(row['SRGID'])
+    convert_srg_export_to_xlsx.handle_dict(results, output, f'{product} SRG Mapping')
+    return output
+
+
+def handle_html_output(output, product, results):
+    for row in results:
+        row['IA Control'] = get_iacontrol(row['SRGID'])
+    output = output.replace('.csv', '.html')
+    convert_srg_export_to_html.handle_dict(results, output, f'{product} SRG Mapping')
+    return output
+
+
 def handle_output(output: str, results: list, format_type: str, product: str) -> None:
     if format_type == 'csv':
-        with open(output, 'w') as csv_file:
-            csv_writer = setup_csv_writer(csv_file)
-            for row in results:
-                csv_writer.writerow(row)
-
+        handle_csv_output(output, results)
     elif format_type == 'xlsx':
-        output = output.replace('.csv', '.xlsx')
-        for row in results:
-            row['STIGID'] = ""
-            row['IA Control'] = get_iacontrol(row['SRGID'])
-        convert_srg_export_to_xlsx.handle_dict(results, output, f'{product} SRG Mapping')
+        output = handle_xlsx_output(output, product, results)
     elif format_type == 'html':
-        for row in results:
-            row['STIGID'] = ""
-            row['IA Control'] = get_iacontrol(row['SRGID'])
-        output = output.replace('.csv', '.html')
-        convert_srg_export_to_html.handle_dict(results, output, f'{product} SRG Mapping')
-
+        output = handle_html_output(output, product, results)
 
     print(f'Wrote output to {output}')
 
