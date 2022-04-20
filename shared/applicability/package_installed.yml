@@ -1,10 +1,16 @@
-name: "cpe:/a:{arg}"
-title: "Package {arg} is installed"
-check_id: "installed_env_has_{arg}_package"
-bash_conditional: "true"
+name: 'cpe:/a:{arg}'
+title: 'Package {arg} is installed'
+check_id: 'installed_env_has_{arg}_package_conditional'
+bash_conditional: {{{ bash_pkg_conditional(PKGNAME) }}}
+ansible_conditional: {{{ ansible_pkg_conditional(PKGNAME) }}}
 template:
     name: package_installed
-    vars:
-        pkgname: '{arg}'
-        avr: '{ver}'
-        avr_op: '{op}'
+    vars: {}
+args:
+    chronytest:
+        title: "Chrony Server Test"
+        pkgname: chrony
+        pkgname@debian10: chrony
+    ntptest:
+        title: "NTP Server Test"
+        pkgname: ntp
