@@ -1688,14 +1688,17 @@ fi
     Remediation for grub2 bootloader arguments
 #}}
 {{% macro grub2_bootloader_argument_remediation(ARG_NAME, ARG_NAME_VALUE) %}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE ] -%}}
 {{% if 'ubuntu' in product %}}
 	{{% set grub_helper_executable = "update-grub" -%}}
+{{% elif product in ["sle12", "sle15"] %}}
+{{% set grub_helper_executable = "grub2-mkconfig" -%}}
+{{% set grub_helper_args = ["-o {{{ grub2_boot_path }}}/grub2.cfg"] -%}}
 {{% else %}}
 	{{% set grub_helper_executable = "grubby" -%}}
 {{% endif -%}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ ARG_NAME_VALUE] -%}}
 
-{{% if 'ubuntu' in product or product in ['rhel7', 'ol7'] %}}
+{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 {{{ update_etc_default_grub_manually(ARG_NAME, ARG_NAME_VALUE) }}}
 {{% endif -%}}
 
