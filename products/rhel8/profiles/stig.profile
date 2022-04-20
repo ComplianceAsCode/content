@@ -873,6 +873,7 @@ selections:
     # RHEL-08-030620
 
     # RHEL-08-030630
+    - file_audit_tools_ownership
 
     # RHEL-08-030640
 
