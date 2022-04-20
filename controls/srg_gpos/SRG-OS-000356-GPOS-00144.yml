@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000356-GPOS-00144
+        levels:
+            - medium
+        title: {{{ full_name }}} must synchronize internal information system clocks
+            to the authoritative time source when the time difference is greater than one
+            second.
+        rules:
+            - chronyd_or_ntpd_set_maxpoll
+        status: automated

@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000300-GPOS-00118
+        levels:
+            - medium
+        title: {{{ full_name }}} must protect wireless access to the system using authentication
+            of users and/or devices.
+        rules:
+            - kernel_module_bluetooth_disabled
+            - wireless_disable_interfaces
+        status: automated

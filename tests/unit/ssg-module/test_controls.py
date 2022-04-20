@@ -339,8 +339,12 @@ def profile_resolution_all(cls, profile_all):
 
 
 def test_load_control_from_folder():
-    _load_test("jklm")
+    _load_test("qrst")
 
 
 def test_load_control_from_folder_and_file():
-    _load_test("qrst")
+    _load_test("jklm")
+
+
+def test_load_control_from_specific_folder_and_file():
+    _load_test("nopq")

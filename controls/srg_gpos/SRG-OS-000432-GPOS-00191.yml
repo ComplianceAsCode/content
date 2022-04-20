@@ -1,0 +1,24 @@
+controls:
+    -   id: SRG-OS-000432-GPOS-00191
+        levels:
+            - medium
+        title: {{{ full_name }}} must behave in a predictable and documented manner that
+            reflects organizational and system objectives when invalid inputs are received.
+        status: inherently met
+        rationale:
+            A common vulnerability of operating system is unpredictable behavior when invalid inputs are received.
+            This requirement guards against adverse or unintended system behavior caused by invalid inputs, where information system responses to the invalid input may be disruptive or cause the system to fail into an unsafe state.
+
+            The behavior will be derived from the organizational and system requirements and includes, but is not limited to, notification of the appropriate personnel, creating an audit record, and rejecting invalid input.
+        check:
+            {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
+            {{{ full_name }}}  inherently meets this requirement.
+        fixtext:
+            {{{ full_name }}} inherently meets this requirement.
+            No fix is required.
+        status_justification:
+            Manpages for system calls contain description of errors returned when invalid input are received.
+            Network protocols have RFCs associated which describe the expected behavior when those protocols receive invalid input.
+            The {{{ full_name }}} Linux kernel implements those protocols by following the RFC and properly dealing with invalid inputs.
+        artifact_description:
+            The {{{ full_name }}} operating system is tested by the vendor within the standards of the software industry for inconsistent actions based on known inputs.

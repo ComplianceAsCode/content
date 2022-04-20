@@ -1,0 +1,10 @@
+controls:
+    -   id: SRG-OS-000297-GPOS-00115
+        levels:
+            - medium
+        title: {{{ full_name }}} must control remote access methods.
+        rules:
+            - package_firewalld_installed
+            - service_firewalld_enabled
+            - configure_firewalld_ports
+        status: automated

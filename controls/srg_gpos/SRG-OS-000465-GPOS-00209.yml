@@ -1,0 +1,26 @@
+controls:
+    -   id: SRG-OS-000465-GPOS-00209
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            attempts to modify categories of information (e.g., classification levels) occur.
+        rules:
+            - audit_rules_execution_chcon
+            - audit_rules_execution_restorecon
+            - audit_rules_execution_semanage
+            - audit_rules_execution_setfiles
+            - audit_rules_execution_setsebool
+            - audit_access_failed
+            - audit_access_success
+            - audit_create_failed
+            - audit_create_success
+            - audit_delete_failed
+            - audit_delete_success
+            - audit_modify_failed
+            - audit_modify_success
+            - audit_owner_change_failed
+            - audit_owner_change_success
+            - audit_perm_change_failed
+            - audit_perm_change_success
+            - audit_rules_for_ospp
+        status: automated

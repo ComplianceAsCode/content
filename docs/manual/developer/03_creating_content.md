@@ -1166,6 +1166,7 @@ This is a complete schema of the YAML file format.
 id: policy ID (required key)
 title: short title (required key)
 source: a link to the original policy, eg. a URL of a PDF document
+controls_dir: a directory containing files representing controls that will be imported into this policy
 levels: a list of levels, the first one is default.
   - id: level ID (required key)
     inherits_from: a list of IDs of levels inheriting from
@@ -1382,16 +1383,16 @@ In order for export for DISA the IDs of your control must be SRG ID form the Gen
 
 If you have an existing product that you want to base your new STIG you can create the skeleton with the following command:
 
-    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r1.xml -o controls/stig_rhel9.yml
+    $ ./utils/build_stig_control.py --split -p rhel9 -m shared/references/disa-os-srg-v2r2.xml -o controls/srg_gpos.yml
 
 The manual (`-m`) should be an SRG XML from DISA.  
 
 ##### Filling out content
 Every control in the policy file will create at least one row in the export.
-For every rule on the control there will be row in the exported SRG.
+For every rule on the control there will be a row in the exported SRG.
 
 Below is the mapping from fields in the Compliance as Code to field in the spreadsheet.
-The **bolded** items are under direct control of  content authors.
+The **bolded** items are under direct control of content authors.
 
 * IA Control -> DISA OS SRG XML
   * As of v2r1 that field is blank
@@ -1422,7 +1423,7 @@ The **bolded** items are under direct control of  content authors.
 #### Exporting
 To export the spreadsheet use the following command:
 
-    $ ./utils/create_srg_export.py -c controls/stig_rhel9.yml -p rhel9
+    $ ./utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9
 
 The output will be out in CSV file in build directory.
 The file will be a csv file named as the UNIX timestamp of when the file was created.

@@ -1,0 +1,32 @@
+controls:
+    -   id: SRG-OS-000368-GPOS-00154
+        levels:
+            - medium
+        title: {{{ full_name }}} must prevent program execution in accordance with local
+            policies regarding software program usage and restrictions and/or rules authorizing
+            the terms and conditions of software program usage.
+        rules:
+            - package_fapolicyd_installed
+            - service_fapolicyd_enabled
+            - mount_option_boot_nodev
+            - mount_option_boot_nosuid
+            - mount_option_dev_shm_nodev
+            - mount_option_dev_shm_noexec
+            - mount_option_dev_shm_nosuid
+            - mount_option_home_nodev
+            - mount_option_home_nosuid
+            - mount_option_nodev_nonroot_local_partitions
+            - mount_option_tmp_nodev
+            - mount_option_tmp_noexec
+            - mount_option_tmp_nosuid
+            - mount_option_var_log_audit_nodev
+            - mount_option_var_log_audit_noexec
+            - mount_option_var_log_audit_nosuid
+            - mount_option_var_log_nodev
+            - mount_option_var_log_noexec
+            - mount_option_var_log_nosuid
+            - mount_option_var_nodev
+            - mount_option_var_tmp_nodev
+            - mount_option_var_tmp_noexec
+            - mount_option_var_tmp_nosuid
+        status: automated

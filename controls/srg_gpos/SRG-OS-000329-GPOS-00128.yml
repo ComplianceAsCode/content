@@ -1,0 +1,16 @@
+controls:
+    -   id: SRG-OS-000329-GPOS-00128
+        levels:
+            - medium
+        title: {{{ full_name }}} must automatically lock an account until the locked
+            account is released by an administrator when three unsuccessful logon attempts
+            in 15 minutes occur.
+        rules:
+            - var_accounts_passwords_pam_faillock_deny=3
+            - var_accounts_passwords_pam_faillock_fail_interval=900
+            - var_accounts_passwords_pam_faillock_unlock_time=never
+            - accounts_passwords_pam_faillock_deny
+            - accounts_passwords_pam_faillock_deny_root
+            - accounts_passwords_pam_faillock_interval
+            - accounts_passwords_pam_faillock_unlock_time
+        status: automated

@@ -1,0 +1,12 @@
+controls:
+    -   id: SRG-OS-000433-GPOS-00192
+        levels:
+            - medium
+        title: {{{ full_name }}} must implement non-executable data to protect its memory
+            from unauthorized code execution.
+        rules:
+            - sysctl_kernel_exec_shield
+            - sysctl_kernel_kptr_restrict
+            - bios_enable_execution_restrictions
+            - grub2_slub_debug_argument
+        status: automated

@@ -29,11 +29,11 @@ jobs:
       - name: Create data directory
         run: mkdir -p $PAGES_DIR
       - name: Generate XLSX
-        run: python3 utils/create_srg_export.py -c controls/stig_rhel9.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format xlsx --output $PAGES_DIR/srg-mapping-rhel9.xlsx
         env:
           PYTHONPATH: ${{ github.workspace }}
       - name: Generate HTML
-        run: python3 utils/create_srg_export.py -c controls/stig_rhel9.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
+        run: python3 utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9 -m shared/references/disa-os-srg-v2r2.xml --out-format html --output $PAGES_DIR/srg-mapping-rhel9.html
         env:
           PYTHONPATH: ${{ github.workspace }}
       - uses: actions/upload-artifact@v2

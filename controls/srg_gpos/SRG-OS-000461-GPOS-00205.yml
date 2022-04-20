@@ -1,0 +1,36 @@
+controls:
+    -   id: SRG-OS-000461-GPOS-00205
+        levels:
+            - medium
+        title: {{{ full_name }}} must generate audit records when successful/unsuccessful
+            attempts to access categories of information (e.g., classification levels) occur.
+        rules:
+            - audit_rules_unsuccessful_file_modification_creat
+            - audit_rules_unsuccessful_file_modification_ftruncate
+            - audit_rules_unsuccessful_file_modification_open
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
+            - audit_rules_unsuccessful_file_modification_open_by_handle_at_rule_order
+            - audit_rules_unsuccessful_file_modification_open_o_creat
+            - audit_rules_unsuccessful_file_modification_open_o_trunc_write
+            - audit_rules_unsuccessful_file_modification_open_rule_order
+            - audit_rules_unsuccessful_file_modification_openat
+            - audit_rules_unsuccessful_file_modification_openat_o_creat
+            - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
+            - audit_rules_unsuccessful_file_modification_openat_rule_order
+            - audit_rules_unsuccessful_file_modification_rename
+            - audit_rules_unsuccessful_file_modification_renameat
+            - audit_rules_unsuccessful_file_modification_truncate
+            - audit_rules_unsuccessful_file_modification_unlink
+            - audit_rules_unsuccessful_file_modification_unlinkat
+            - audit_access_failed
+            - audit_access_success
+            - audit_create_failed
+            - audit_create_success
+            - audit_delete_failed
+            - audit_delete_success
+            - audit_modify_failed
+            - audit_modify_success
+            - audit_rules_for_ospp
+        status: automated

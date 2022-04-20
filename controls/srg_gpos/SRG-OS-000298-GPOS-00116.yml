@@ -1,0 +1,9 @@
+controls:
+    -   id: SRG-OS-000298-GPOS-00116
+        levels:
+            - medium
+        title: {{{ full_name }}} must provide the capability to immediately disconnect
+            or disable remote access to the operating system.
+        rules:
+            - package_firewalld_installed
+        status: automated

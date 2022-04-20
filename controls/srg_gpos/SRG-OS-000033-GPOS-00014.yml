@@ -1,0 +1,13 @@
+controls:
+    -   id: SRG-OS-000033-GPOS-00014
+        levels:
+            - medium
+        title: {{{ full_name }}} must implement DoD-approved encryption to protect the
+            confidentiality of remote access sessions.
+        rules:
+            - ssh_client_rekey_limit
+            - sshd_rekey_limit
+            - configure_libreswan_crypto_policy
+            - harden_ssh_client_crypto_policy
+            - sysctl_crypto_fips_enabled
+        status: automated
