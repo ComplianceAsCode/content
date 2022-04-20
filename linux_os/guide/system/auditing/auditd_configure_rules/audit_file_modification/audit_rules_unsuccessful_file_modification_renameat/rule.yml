@@ -81,18 +81,15 @@ warnings:
         {{% endif %}} 
      
 template:
-    {{% if product not in ["sle12", "sle15"] %}}
     name: audit_rules_unsuccessful_file_modification
     vars:
         name: renameat
         syscall_grouping:
           - rename
           - renameat
+          {{% if product in ['sle15'] %}}
+          - renameat2
+          {{% endif %}}
           - unlink
           - unlinkat
-    {{% else %}}
-    name: audit_rules_syscall_events
-    vars:
-        attr: renameat
-    {{% endif %}}
 
