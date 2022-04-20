@@ -31,5 +31,5 @@ template:
         filepath: /var/log/messages
         fileuid: '0'
 
-fix: |-
+fixtext: |-
     {{{ describe_file_owner(file="/var/log/messages", owner="root") }}}
