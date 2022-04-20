@@ -877,6 +877,7 @@ selections:
     - file_audit_tools_ownership
 
     # RHEL-08-030640
+    - file_audit_tools_group_ownership
 
     # RHEL-08-030650
     - aide_check_audit_tools
