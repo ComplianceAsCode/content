@@ -49,6 +49,9 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="aide") }}}'
 
+fixtext: |-
+    {{{ describe_package_install("aide") }}}
+
 template:
     name: package_installed
     vars:
