@@ -39,6 +39,8 @@ template:
     name: package_removed
     vars:
         pkgname: krb5-workstation
+    backends:
+        anaconda@rhel8: "off"
 
 fixtext: |-
     {{{ describe_package_remove(package="krb5-workstation") }}}
