@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 """Compare and present build times to user and generate an HTML interactive graph"""
-from inspect import trace
 import sys
 import argparse
-import re
 
 
 def load_log_file(file) -> dict:
@@ -17,8 +15,8 @@ def load_log_file(file) -> dict:
 
     # an issue appeared with new versions of cmake where the targets are duplicated with a relative
     # and absolute path and therefore they must be filtered here; filters comments too
-    lines = [line for line in lines if not line.strip().split()[3].startswith('/') and not 
-            line.startswith('#')]
+    lines = [line for line in lines if not line.strip().split()[3].startswith('/') and not
+             line.startswith('#')]
     splitLines = [line.strip().split() for line in lines]
 
     # calculate target compilation duration and add it to dict
@@ -156,7 +154,8 @@ def print_report(current_dict: dict, baseline_dict: dict = None) -> None:
         if baseline_dict and target not in baseline_dict.keys():
             line.append("Not in baseline")
 
-        # if target has multiple output files, print them on separate lines (times only at the last)
+        # if target has multiple output files, print them on separate lines
+        # (times only on the last line)
         if(';' in target):
             print("\n".join(target.rsplit(';', 1)[0].split(';')))
             split_target = target.rsplit(';', 1)[1]
