@@ -85,6 +85,14 @@
 
     -   **path** - the path of the privileged command - eg.
         `/usr/bin/mount`
+    -   **skip_action** - Control the configuration of `auditd` rules.
+        Can be "true" or "false".
+        When "true", the snippet of the rule `-a always,exit` is not used.
+    -   **watch** - Control the configuration of the `auditd` rules.
+        Can be "true" or "false".
+        When "true", the filter string `-w xxx` is used.
+        When "false", the filter string `-F path=xxx` is used.
+        Defaults to "false".
 
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 

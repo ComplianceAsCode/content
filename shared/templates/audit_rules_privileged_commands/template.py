@@ -1,14 +1,5 @@
-import ssg.utils
+from ssg.utils import parse_template_boolean_value
 import os
-
-
-def default_boolean(data, parameter, default):
-    if parameter not in data:
-        data[parameter] = default
-    if data[parameter].strip().lower() == "true":
-        data[parameter] = True
-    else:
-        data[parameter] = False
 
 
 def preprocess(data, lang):
@@ -17,8 +8,12 @@ def preprocess(data, lang):
     data["name"] = name
     if "min_auid" not in data:
         data["min_auid"] = 1000
-    default_boolean(data, "skip_action", "false")
-    default_boolean(data, "watch", "false")
+    parse_template_boolean_value(data,
+                                 parameter="skip_action",
+                                 default_value=False)
+    parse_template_boolean_value(data,
+                                 parameter="watch",
+                                 default_value=False)
 
     if lang == "oval":
         data["id"] = data["_rule_id"]
