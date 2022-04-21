@@ -6,5 +6,6 @@ controls:
             to the authoritative time source when the time difference is greater than one
             second.
         rules:
+            - var_time_service_set_maxpoll=16
             - chronyd_or_ntpd_set_maxpoll
         status: automated
