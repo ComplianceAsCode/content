@@ -90,7 +90,6 @@ The audit daemon must be restarted for the changes to take effect.
 #}}
 {{% macro fixtext_sysctl(sysctl, value) -%}}
 Add or edit the following line in a system configuration file in the "/etc/sysctl.d/" directory:
-
 {{{ sysctl }}} = {{{ value }}}
 
 Load settings from all system configuration files with the following command:
