@@ -1,4 +1,4 @@
-from ssg.utils import parse_template_boolean_value
+import ssg.utils
 import os
 
 
@@ -8,12 +8,12 @@ def preprocess(data, lang):
     data["name"] = name
     if "min_auid" not in data:
         data["min_auid"] = 1000
-    parse_template_boolean_value(data,
-                                 parameter="skip_action",
-                                 default_value=False)
-    parse_template_boolean_value(data,
-                                 parameter="watch",
-                                 default_value=False)
+    ssg.utils.parse_template_boolean_value(data,
+                                           parameter="skip_action",
+                                           default_value=False)
+    ssg.utils.parse_template_boolean_value(data,
+                                           parameter="watch",
+                                           default_value=False)
 
     if lang == "oval":
         data["id"] = data["_rule_id"]
