@@ -13,7 +13,11 @@ description: |-
     Remove any instance of <pre>systemd.confirm_spawn=(1|yes|true|on)</pre> from
     the kernel arguments in that file to disable interactive boot. It is also
     required to change the runtime configuration, run:
+    {{% if 'sle' in product %}}
+    <pre>/usr/bin/grub2-editenv - unset systemd.confirm_spawn></pre>
+    {{% else %}}
     <pre>/sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"</pre>
+    {{% endif %}}
 
 rationale: |-
     Using interactive boot, the console user could disable auditing, firewalls,

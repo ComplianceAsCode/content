@@ -14,6 +14,16 @@
 - name: Verify that Interactive Boot is Disabled (runtime)
   command: /usr/bin/grub2-editenv - unset systemd.confirm_spawn
 
+- name: Veify GRUB_DISABLE_RECOVERY=true
+  lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_DISABLE_RECOVERY=.*'
+    line: 'GRUB_DISABLE_RECOVERY=true'
+    state: present
+
+- name: Verify that Recovery Boot is Disabled (runtime)
+  command: grub2-mkconfig -o /boot/grub2/grub.cfg
+
 {{% else %}}
 
 - name: Verify that Interactive Boot is Disabled in /etc/default/grub
