@@ -38,3 +38,9 @@ ocil_clause: the directory is not owned by root
 
 ocil: |-
     {{{ describe_file_owner(file="/var/log/audit", owner="root") }}}
+
+fixtext: |-
+    Change the owner of the directory /var/log/audit to root.
+    Run the following command:
+
+    $ sudo chown root /var/log/audit
