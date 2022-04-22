@@ -5,20 +5,18 @@ prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 title: 'Deactivate Wireless Network Interfaces'
 
 description: |-
-    Deactivating wireless network interfaces should prevent
-    normal usage of the wireless capability.
+    Deactivating wireless network interfaces should prevent normal usage of the wireless
+    capability.
     <br /><br />
     {{% if product in ["sle12", "sle15"] %}}
-    Configure the system to disable wireless network interfaces by issuing the
-    following command for every active <tt>&lt;WIFI-INTERFACE&gt;</tt> in the
-    system:
+    Configure the system to disable wireless network interfaces by issuing the following
+    command for every active <tt>&lt;WIFI-INTERFACE&gt;</tt> in the system:
     <pre>$ sudo wicked ifdown &lt;WIFI-INTERFACE&gt;</pre>
     Also remove the configuration files for every wifi adapter from
     <tt>/etc/wicked/ifconfig/&lt;WIFI-INTERFACE&gt;.xml</tt> to prevent future
     connections.
     {{% else %}}
-    Configure the system to disable all wireless network interfaces with the
-    following command:
+    Configure the system to disable all wireless network interfaces with the following command:
     <pre>$ sudo nmcli radio all off</pre>
     {{% endif %}}
 
@@ -67,7 +65,7 @@ references:
     stigid@sle15: SLES-15-010380
     stigid@ubuntu2004: UBTU-20-010455
 
-ocil_clause: 'it is not'
+ocil_clause: 'wireless interfaces are not active'
 
 ocil: |-
     Verify that there are no wireless interfaces configured on the system
@@ -97,8 +95,13 @@ ocil: |-
     the local Authorizing Official.
     {{% else %}}
     <pre>$ sudo nmcli device</pre>
-    The output should contain the following:
-    <pre>wifi disconnected</pre>
+    The output should only contain wireless devices in unavailable state, like in the
+    following example:
+    <pre>wlp0s20f3          wifi      unavailable             -- </pre>
     {{% endif %}}
+
+fixtext: |-
+    To disable all wireless devices use the following command:
+    <pre>nmcli radio all off</pre>
 
 platform: wifi-iface
