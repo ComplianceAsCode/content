@@ -50,8 +50,15 @@ ocil_clause: 'maxlogins is not equal to or less than the expected value'
 ocil: |-
     Run the following command to ensure the <tt>maxlogins</tt> value is
     configured for all users on the system:
-    <pre># grep "maxlogins" /etc/security/limits.conf</pre>
+    <pre># grep "maxlogins" /etc/security/limits.conf /etc/security/limits.d/*.conf</pre>
     You should receive output similar to the following:
     <pre>*\t\thard\tmaxlogins\t{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}</pre>
+
+fixtext: |-
+    Configure the operating system to limit the number of concurrent sessions to "{{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}" for all accounts and/or account types.
+
+    Add the following line to the top of the /etc/security/limits.conf or in a ".conf" file defined in /etc/security/limits.d/ :
+
+    * hard maxlogins {{{ xccdf_value("var_accounts_max_concurrent_login_sessions") }}}
 
 platform: pam
