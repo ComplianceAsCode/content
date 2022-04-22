@@ -28,8 +28,7 @@ description: |-
     which would allow the creation of configuration files to set these servers.
     </p>
 
-    If we'd like to set a configuration like the following:
-
+    If we'd like to set a configuration like the following:linux_os/guide/services/ntp/chronyd_or_ntpd_set_maxpoll/rule.yml
     <pre>
     pool 2.rhel.pool.ntp.org iburst
 
@@ -103,10 +102,17 @@ references:
     stigid@sle15: SLES-15-010400
     stigid@ubuntu2004: UBTU-20-010435
 
-ocil_clause: 'it does not exist or maxpoll has not been set to the expected value'
+ocil_clause: 'maxpoll does not exist or maxpoll has not been set to the expected value of {{{ xccdf_value("var_time_service_set_maxpoll") }}}'
 
 ocil: |-
+    Verify {{{ full_name }}} is securely comparing internal information system clocks at a regular interval with an NTP server with the following commands:
+    
     To verify that <tt>maxpoll</tt> has been set properly, perform the following:
     <pre>$ sudo grep maxpoll /etc/ntp.conf /etc/chrony.conf</pre>
     The output should return:
     <pre>maxpoll {{{ xccdf_value("var_time_service_set_maxpoll") }}}</pre>.
+
+fixtext: |-
+    Configure {{{ full_name }}} to securely compare internal information system clocks at a regular interval with an NTP server by adding/modifying the following line in the /etc/chrony.conf file.
+
+    server [ntp.server.name] iburst maxpoll 16
