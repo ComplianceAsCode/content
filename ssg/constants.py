@@ -420,8 +420,6 @@ XCCDF_PLATFORM_TO_PACKAGE = {
   "s390x_arch": None,
   "not_aarch64_arch": None,
   "aarch64_arch": None,
-  "ovirt": None,
-  "no_ovirt": None,
 }
 
 # _version_name_map = {

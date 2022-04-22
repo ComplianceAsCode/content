@@ -17,8 +17,12 @@ cpes:
       name: "cpe:/a:no_ovirt"
       title: "oVirt is not installed (no Host nor Manager)"
       check_id: installed_env_has_no_ovirt
+      bash_conditional: '! ( rpm --quiet -q ovirt-engine || rpm --quiet -q ovirt-host )'
+      ansible_conditional: 'not ("ovirt-engine" in ansible_facts.packages or "ovirt-host" in ansible_facts.packages)'
 
   - ovirt:
       name: "cpe:/a:ovirt"
       title: "oVirt is installed (Host or Manager)"
       check_id: installed_env_has_ovirt
+      bash_conditional: 'rpm --quiet -q ovirt-engine || rpm --quiet -q ovirt-host'
+      ansible_conditional: '"ovirt-engine" in ansible_facts.packages or "ovirt-host" in ansible_facts.packages'
