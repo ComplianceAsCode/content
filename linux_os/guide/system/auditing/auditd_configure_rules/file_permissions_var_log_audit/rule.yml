@@ -55,16 +55,24 @@ ocil: |-
 
 fixtext: |-
     Configure correct permissions of system audit logs.
+
     Determine the location of the system audit logs:
+
     $ sudo grep -iw log_file /etc/audit/auditd.conf
+
     If log_file is not defined, use /var/log/audit/audit.log.
+
     Check the group that owns the system audit logs:
+
     $ sudo grep -m 1 -q ^log_group /etc/audit/auditd.conf
 
     If the log_group is not defined or it is set to root, configure the permissions the following way:
-    chmod 0640 $log_file
-    chmod 0440 $log_file.*
+
+    $ sudo chmod 0640 $log_file
+    $ sudo chmod 0440 $log_file.*
+
     Otherwise, configure the permisssions the following way:
-    chmod 0600 $log_file
-    chmod 0400 $log_file.*
+
+    $ sudo chmod 0600 $log_file
+    $ sudo chmod 0400 $log_file.*
 
