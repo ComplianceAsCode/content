@@ -291,8 +291,7 @@ def html_plain_text(source: str) -> str:
     # Quick and dirty way to clean up HTML fields.
     # Add line breaks
     result = source.replace("<br />", "\n")
-    result = result.replace("<tt>", '"')
-    result = result.replace("</tt>", '"')
+    result = source.replace("<br/>", "\n")
     result = result.replace("&gt;", ">")
     result = result.replace("&lt;", "<")
     # Remove all other tags
@@ -388,9 +387,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
-                   rule_json: dict, srgs: dict, used_rules: list) -> dict:
+                   rule_json: dict, srgs: dict, used_rules: list) -> list:
 
     if len(control.selections) > 0:
+        rows = list()
         for selection in control.selections:
             if selection not in used_rules and selection in control.selected:
                 rule_object = handle_rule_yaml(product, rule_json[selection]['dir'], env_yaml)
@@ -410,19 +410,17 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 else:
                     row['Status'] = DisaStatus.AUTOMATED
                 used_rules.append(selection)
-                return row
-            else:
-                return no_selections_row(control, srgs)
+                rows.append(row)
+        return rows
 
     else:
-        return no_selections_row(control, srgs)
+        return [no_selections_row(control, srgs)]
 
 
 def no_selections_row(control, srgs):
     row = create_base_row(control, srgs, ssg.build_yaml.Rule('null'))
     row['Requirement'] = control.title
     row['Status'] = DisaStatus.from_string(control.status)
-    row['Vul Discussion'] = control.rationale
     row['Fix'] = control.fixtext
     row['Check'] = control.check
     row['Vul Discussion'] = html_plain_text(control.rationale)
@@ -536,8 +534,8 @@ def main() -> None:
     used_rules = list()
     results = list()
     for control in policy.controls:
-        row = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules)
-        results.append(row)
+        rows = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules)
+        results.extend(rows)
 
     handle_output(args.output, results, args.out_format, args.product)
 
