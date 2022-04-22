@@ -13,6 +13,7 @@ controls:
             #- sshd_set_keepalive
             #- sshd_set_keepalive_0
             - accounts_tmout
+            - var_accounts_tmout=10_min
         # We don't have a way to configure ssh timeout on RHEL 9, the
         # sshd_config options ClientAliveInterval and ClientAliveCountMax
         # dont't work on RHEL 9 as they used to in RHEL 8.
