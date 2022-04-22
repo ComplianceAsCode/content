@@ -52,3 +52,10 @@ ocil: |-
     <pre>$ sudo grep offline_credentials_expiration /etc/sssd/sssd.conf</pre>
     If configured properly, output should be
     <pre>offline_credentials_expiration = 1</pre>
+
+fixtext:
+    Configure the SSSD to prohibit the use of cached authentications after one day.
+
+    Add or change the following line in "/etc/sssd/sssd.conf" just below the line "[pam]".
+
+    offline_credentials_expiration = 1
