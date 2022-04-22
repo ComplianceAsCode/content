@@ -291,8 +291,7 @@ def html_plain_text(source: str) -> str:
     # Quick and dirty way to clean up HTML fields.
     # Add line breaks
     result = source.replace("<br />", "\n")
-    result = result.replace("<tt>", '"')
-    result = result.replace("</tt>", '"')
+    result = source.replace("<br/>", "\n")
     result = result.replace("&gt;", ">")
     result = result.replace("&lt;", "<")
     # Remove all other tags
