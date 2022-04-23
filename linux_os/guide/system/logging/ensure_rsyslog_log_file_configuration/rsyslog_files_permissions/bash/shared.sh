@@ -12,11 +12,17 @@ readarray -t RSYSLOG_INCLUDE < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(i
 declare -a LOG_FILE_PATHS
 
 declare -a RSYSLOG_CONFIGS
-RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
+RSYSLOG_CONFIGS+=(${RSYSLOG_ETC_CONFIG} ${RSYSLOG_INCLUDE_CONFIG[@]} ${RSYSLOG_INCLUDE[@]})
 
-# Browse each file selected above as containing paths of log files
+# Get full list of files to be checked
 # ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
-for LOG_FILE in "${RSYSLOG_CONFIGS[@]}"
+for ENTRY in "${RSYSLOG_CONFIGS[@]}"
+do
+     RSYSLOG_FILES+=("${RSYSLOG_FILES}" $(find $(dirname "${ENTRY}") -maxdepth 1 -name $(basename "${ENTRY}")))
+done
+
+# Check file and fix if needed.
+for LOG_FILE in "${RSYSLOG_FILES[@]}"
 do
 	# From each of these files extract just particular log file path(s), thus:
 	# * Ignore lines starting with space (' '), comment ('#"), or variable syntax ('$') characters,
