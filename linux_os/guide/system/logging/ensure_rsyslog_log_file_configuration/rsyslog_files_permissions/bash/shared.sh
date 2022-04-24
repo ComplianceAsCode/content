@@ -16,9 +16,11 @@ RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYS
 
 # Get full list of files to be checked
 # ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
+declare -a RSYSLOG_FILES
 for ENTRY in "${RSYSLOG_CONFIGS[@]}"
 do
-     RSYSLOG_FILES+=("${RSYSLOG_FILES}" $(find $(dirname "${ENTRY}") -maxdepth 1 -name $(basename "${ENTRY}")))
+     mapfile -t FINDOUT < <(find $(dirname "${ENTRY}") -maxdepth 1 -name $(basename "${ENTRY}"))
+     RSYSLOG_FILES+=("${RSYSLOG_FILES[@]}" "${FINDOUT[@]}")
 done
 
 # Check file and fix if needed.
