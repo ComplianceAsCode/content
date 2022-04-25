@@ -53,12 +53,28 @@ ocil: |-
     To check if authentication is required for emergency mode, run the following command:
     <pre>$ grep sulogin /usr/lib/systemd/system/emergency.service</pre>
     The output should be similar to the following, and the line must begin with
-    {{% if product in ["fedora", "rhel8", "rhel9", "ol8"] -%}}
+    {{% if product in ["fedora", "rhel8", "rhel9", "ol8", "sle12", "sle15"] -%}}
         ExecStart and /usr/lib/systemd/systemd-sulogin-shell.
         <pre>ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency</pre>
     {{%- else -%}}
         ExecStart and /sbin/sulogin.
         <pre>ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"</pre>
     {{%- endif %}}
+
+    Then, check if the emergency target requires the emergency service:
+    Run the following command:
+    <pre>$ sudo grep Requires /usr/lib/systemd/system/emergency.target</pre>
+    The output should be the following:
+    <pre>Requires=emergency.service</pre>
+
+    Then, check if there is no custom emergency target configured in systemd configuration.
+    Run the following command:
+    <pre>$ sudo grep -r emergency.target /etc/systemd/system/</pre>
+    The output should be empty.
+
+    Then, check if there is no custom emergency service configured in systemd configuration.
+    Run the following command:
+    <pre>$ sudo grep -r emergency.service /etc/systemd/system/</pre>
+    The output should be empty.
 
 platform: machine
