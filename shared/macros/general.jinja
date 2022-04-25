@@ -1006,6 +1006,7 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 {{%- endmacro %}}
 
 {{#
+
     Adds a default "no easy remediation" warning for kernel_build_config warning.
 #}}
 {{% macro kernel_build_config_warning() %}}
@@ -1036,3 +1037,32 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
     For each kernel installed, a line with value "{{{ value }}}" should be returned.
     {{% endif %}}
 {{%- endmacro %}}
+
+{{#
+    Returns the AIDE strings based on the current product
+
+#}}
+{{%- macro aide_string() -%}}
+{{%- if 'rhel' not in product and 'ubuntu' not in product and product != 'ol8' -%}}
+p+i+n+u+g+s+b+acl+selinux+xattrs+sha512
+{{%- else -%}}
+p+i+n+u+g+s+b+acl+xattrs+sha512
+{{% endif %}}
+{{%- endmacro -%}}
+
+{{#
+    Lists the files need for the rule aide_check_audit_tools with the AIDE string
+
+#}}
+{{%- macro aide_files() -%}}
+    /usr/sbin/auditctl {{{ aide_string() }}}
+    /usr/sbin/auditd {{{ aide_string() }}}
+    /usr/sbin/ausearch {{{ aide_string() }}}
+    /usr/sbin/aureport {{{ aide_string() }}}
+    /usr/sbin/autrace {{{ aide_string() }}}
+    {{% if 'rhel' not in product and product != 'ol8' %}}/usr/sbin/audispd {{{ aide_string() }}}{{% endif %}}
+    {{% if product == 'ol8' %}}/usr/sbin/rsyslogd {{{ aide_string() }}}{{% endif %}}
+    {{% if product == 'rhel9' %}}/usr/sbin/autrace {{{ aide_string() }}}{{% endif %}}
+    /usr/sbin/augenrules {{{ aide_string() }}}
+{{% endmacro %}}
+

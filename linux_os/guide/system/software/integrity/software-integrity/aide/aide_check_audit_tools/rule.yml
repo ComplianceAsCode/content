@@ -48,28 +48,23 @@ references:
 
 ocil_clause: 'integrity checks of the audit tools are missing or incomplete'
 
-{{% if 'rhel' not in product and 'ubuntu' not in product and product != 'ol8' %}}
-{{% set aide_string = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
-{{% else %}}
-{{% set aide_string = 'p+i+n+u+g+s+b+acl+xattrs+sha512' %}}
-{{% endif %}}
-
 ocil: |-
     Check that AIDE is properly configured to protect the integrity of the
     audit tools by running the following command:
 
     <pre># sudo cat {{{ aide_conf_path }}} | grep /usr/sbin/au
 
-    /usr/sbin/auditctl {{{ aide_string }}}
-    /usr/sbin/auditd {{{ aide_string }}}
-    /usr/sbin/ausearch {{{ aide_string }}}
-    /usr/sbin/aureport {{{ aide_string }}}
-    /usr/sbin/autrace {{{ aide_string }}}
-    {{% if 'rhel' not in product and product != 'ol8' %}}/usr/sbin/audispd {{{ aide_string }}}{{% endif %}}
-    {{% if product == 'ol8' %}}/usr/sbin/rsyslogd {{{ aide_string }}}{{% endif %}}
-    /usr/sbin/augenrules {{{ aide_string }}}</pre>
-
+    {{{ aide_files() }}}
+    </pre>
     If AIDE is configured properly to protect the integrity of the audit tools,
     all lines listed above will be returned from the command.
 
     If one or more lines are missing, this is a finding.
+
+fixtext: |-
+    Add or update the following lines to "/etc/aide.conf", to protect the integrity of the audit tools.
+
+    <pre>
+    {{{ aide_files() }}}
+    </pre>
+

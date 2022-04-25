@@ -4,14 +4,6 @@
 # complexity = low
 # disruption = low
 
-{{% if 'rhel' not in product %}}
-{{% set aide_string = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
-{{% else %}}
-{{% set aide_string = 'p+i+n+u+g+s+b+acl+xattrs+sha512' %}}
-{{% endif %}}
-
-
-
 - name: Ensure aide is installed
   package:
     name: "{{ item }}"
@@ -35,11 +27,11 @@
   lineinfile:
     path: /etc/aide.conf
     regexp: ^{{ item }}\s
-    line: "{{ item }} {{{ aide_string }}}"
+    line: "{{ item }} {{{ aide_string() }}}"
   with_items: "{{ audit_tools }}"
 
 - name: Configure AIDE to properly protect audit tools
   lineinfile:
     path: /etc/aide.conf
-    line: "{{ item }} {{{ aide_string }}}"
+    line: "{{ item }} {{{ aide_string() }}}"
   with_items: "{{ audit_tools }}"

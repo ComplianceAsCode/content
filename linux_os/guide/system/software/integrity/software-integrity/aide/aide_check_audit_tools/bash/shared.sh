@@ -22,17 +22,11 @@
 {{% set auditfiles = auditfiles + ["/usr/sbin/rsyslogd"] %}}
 {{% endif %}}
 
-{{% if 'rhel' not in product and product != 'ol8' %}}
-{{% set configString = 'p+i+n+u+g+s+b+acl+selinux+xattrs+sha512' %}}
-{{% else %}}
-{{% set configString = "p+i+n+u+g+s+b+acl+xattrs+sha512" %}}
-{{% endif %}}
-
 {{% for file in auditfiles %}}
 
 if grep -i '^.*{{{file}}}.*$' {{{ aide_conf_path }}}; then
-sed -i "s#.*{{{file}}}.*#{{{file}}} {{{ configString }}}#" {{{ aide_conf_path }}}
+sed -i "s#.*{{{file}}}.*#{{{file}}} {{{ aide_string() }}}#" {{{ aide_conf_path }}}
 else
-echo "{{{ file }}} {{{ configString }}}" >> {{{ aide_conf_path }}}
+echo "{{{ file }}} {{{ aide_string() }}}" >> {{{ aide_conf_path }}}
 fi
 {{% endfor %}}
