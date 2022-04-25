@@ -55,4 +55,11 @@ ocil: |-
     <pre>$ grep PASS_MIN_LEN /etc/login.defs</pre>
     The DoD requirement is <tt>15</tt>.
 
+fixtext: |-
+    Configure {{{ full_name }}} to enforce a minimum 15-character password length for new user accounts.
+
+    Add, or modify the following line in the "/etc/login.defs" file:
+
+    PASS_MIN_LEN {{{ xccdf_value("var_accounts_password_minlen_login_defs") }}}
+
 platform: login_defs
