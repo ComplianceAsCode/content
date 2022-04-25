@@ -26,14 +26,10 @@ fi
 {{% if 'sle' in product %}}
 #Verify that Interactive Boot is Disabled (runtime)
 /usr/bin/grub2-editenv - unset systemd.confirm_spawn
-
-#Verify that GRUB_DISABLE_RECOVERY is Disabled (runtime)
-grub2-mkconfig -o /boot/grub2/grub.cfg
-
 {{% else %}}
 # Remove 'systemd.confirm_spawn' kernel argument also from runtime settings
 /sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
-
-#Verify that GRUB_DISABLE_RECOVERY is Disabled (runtime)
-/sbin/grubby --update-kernel=ALL --args="GRUB_DISABLE_RECOVERY=true"
 {{% endif %}}
+
+#Regen grub.cfg handle updated GRUB_DISABLE_RECOVERY and confirm_spawn
+grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
