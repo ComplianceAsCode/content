@@ -73,3 +73,14 @@ warnings:
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
 platform: machine
+
+fixtext: |-
+    Configure the system to require a grub bootloader password for the grub superuser account.
+
+    Edit the "/etc/grub.d/01_users" file and add or modify the following lines in the "### BEGIN /etc/grub.d/01_users ###" section:
+
+    set superusers="<unique_user_id>"
+    export superusers
+
+    Once the superuser account has been added, update the grub.cfg file by running:
+    $ sudo grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg
