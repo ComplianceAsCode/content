@@ -98,3 +98,18 @@ warnings:
         <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 
 platform: machine
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a secure UEFI boot loader password.
+
+    Run the following command:
+    $ sudo grub2-setpassword
+
+    When prompted, enter the password that was selected.
+    Using the hash from the output, modify the "/etc/grub.d/40_custom" file with the following content:
+
+    set superusers="boot"
+    password_pbkdf2 boot grub.pbkdf2.sha512.$password_hash
+
+    Then, update the grub.cfg file by running:
+    $ sudo grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg
