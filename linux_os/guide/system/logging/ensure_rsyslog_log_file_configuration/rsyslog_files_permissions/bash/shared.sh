@@ -19,7 +19,7 @@ RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYS
 declare -a RSYSLOG_FILES
 for ENTRY in "${RSYSLOG_CONFIGS[@]}"
 do
-     mapfile -t FINDOUT < <(find "$(dirname ${ENTRY}\")" -maxdepth 1 -name "$(basename \"${ENTRY})")
+     mapfile -t FINDOUT < <(find "$(dirname "${ENTRY}")" -maxdepth 1 -name "$(basename "${ENTRY}")")
      RSYSLOG_FILES+=("${RSYSLOG_FILES[@]}" "${FINDOUT[@]}")
 done
 
