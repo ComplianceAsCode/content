@@ -21,7 +21,7 @@ rationale: |-
     <br /><br />
     Password complexity is one factor of several that determines how long it takes
     to crack a password. The more complex the password, the greater the number of
-    possble combinations that need to be tested before the password is compromised.
+    possible combinations that need to be tested before the password is compromised.
     Requiring a minimum number of special characters makes password guessing attacks
     more difficult by ensuring a larger search space.
 
@@ -56,14 +56,20 @@ references:
     stigid@ubuntu2004: UBTU-20-010055
     vmmsrg: SRG-OS-000266-VMM-000940
 
-ocil_clause: 'ocredit is not found or not equal to or less than the required value'
+ocil_clause: 'ocredit is not found or is not equal to or less than the required value'
 
 ocil: |-
     To check how many special characters are required in a password, run the following command:
     <pre>$ grep ocredit /etc/security/pwquality.conf</pre>
-    The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
+    The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special
+    characters are required.
     The DoD and FISMA require at least one special character in a password.
     This would appear as <tt>ocredit = -1</tt>.
+
+fixtext: |-
+    Add or modify the "ocredit" option line in /etc/security/pwquality.conf to have the required
+    value, like in the following example:
+    ocredit = -1
 
 platform: pam
 
