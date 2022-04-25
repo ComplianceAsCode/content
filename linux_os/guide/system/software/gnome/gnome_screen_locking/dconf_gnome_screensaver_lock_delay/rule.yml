@@ -11,10 +11,6 @@ description: |-
     <pre>[org/gnome/desktop/screensaver]
     lock-delay=uint32 {{{ xccdf_value("var_screensaver_lock_delay") }}}
     </pre>
-    Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
-    For example:
-    <pre>/org/gnome/desktop/screensaver/lock-delay</pre>
     After the settings have been set, run <tt>dconf update</tt>.
 
 rationale: |-
@@ -52,9 +48,8 @@ ocil: |-
     To check that the screen locks immediately when activated, run the following command:
     <pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
     If properly configured, the output should be <tt>'uint32 {{{ xccdf_value("var_screensaver_lock_delay") }}}'</tt>.
-    <br /><br />
-    To ensure that users cannot change how long until the the screensaver locks, run the following:
-    <pre>$ grep lock-delay /etc/dconf/db/local.d/locks/*</pre>
-    If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+
+fixtext: |-
+    {{{ fixtext_dconf_ini_file("org/gnome/desktop/screensaver/lock-delay", "lock-delay", xccdf_value("var_screensaver_lock_delay")) }}}
 
 platform: machine

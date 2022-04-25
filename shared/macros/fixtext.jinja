@@ -41,6 +41,27 @@ The audit daemon must be restarted for the changes to take effect.
 {{%- endmacro -%}}
 
 {{#
+    Human readable text for how to lock dconf settings
+
+:param section: Section on the value to be locked
+:type section: str
+
+#}}
+{{%- macro fixtext_dconf_lock_settings(section) -%}}
+    Configure the operating system to prevent a user from overriding settings for graphical user interfaces.
+
+    Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following command:
+
+    Note: The example below is using the database "local" for the system, so if the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
+
+    $ sudo touch /etc/dconf/db/local.d/locks/session
+
+    Add the following setting to prevent non-privileged users from modifying it:
+
+    {{{ section }}}
+{{%- endmacro -%}}
+
+{{#
     Describe how to fix an ssh configure
 
 :param parameter: parameter to set

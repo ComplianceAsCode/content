@@ -75,7 +75,7 @@ ocil: |-
     {{% else %}}
     <pre>$ gsettings get org.gnome.desktop.screensaver lock-enabled</pre>
     If properly configured, the output should be <tt>true</tt>.
-    To ensure that users cannot change how long until the the screensaver locks, run the following:
+    To ensure that users cannot change how long until the screensaver locks, run the following:
     <pre>$ grep lock-enabled /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/gnome/desktop/screensaver/lock-enabled</tt>
     {{% endif %}}

@@ -52,16 +52,6 @@ ocil: |-
     <tt>/org/gnome/desktop/session/idle-delay</tt>
 
 fixtext: |-
-    Configure the operating system to prevent a user from overriding settings for graphical user interfaces.
-
-    Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following command:
-
-    Note: The example below is using the database "local" for the system, so if the system is using another database in "/etc/dconf/profile/user", the file should be created under the appropriate subdirectory.
-
-    $ sudo touch /etc/dconf/db/local.d/locks/session
-
-    Add the following setting to prevent non-privileged users from modifying it:
-
-    /org/gnome/desktop/session/idle-delay
+    {{{ fixtext_dconf_lock_settings("/org/gnome/desktop/session/idle-delay") }}}
 
 platform: machine

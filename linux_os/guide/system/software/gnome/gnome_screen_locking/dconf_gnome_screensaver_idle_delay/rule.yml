@@ -64,20 +64,6 @@ ocil: |-
     If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
 
 fixtext: |-
-    Configure the operating system to initiate a screensaver after a {{{ xccdf_value("inactivity_timeout_value") }}}-second period of inactivity for graphical user interfaces.
-
-    Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following command:
-
-    $ sudo touch /etc/dconf/db/local.d/00-screensaver
-
-    Edit /etc/dconf/db/local.d/00-screensaver and add or update the following lines:
-
-    [org/gnome/desktop/session]
-    # Set the lock time out to {{{ xccdf_value("inactivity_timeout_value") }}} seconds before the session is considered idle
-    idle-delay=uint32 {{{ xccdf_value("inactivity_timeout_value") }}}
-
-    Update the system databases:
-
-    $ sudo dconf update
+    {{{ fixtext_dconf_ini_file("org/gnome/desktop/session", "idle-delay", "uint32 " ~ xccdf_value("inactivity_timeout_value")) }}}
 
 platform: machine
