@@ -69,7 +69,7 @@ ocil: |-
 fixtext: |-
     Add or modify the "ocredit" option line in /etc/security/pwquality.conf to have the required
     value, like in the following example:
-    ocredit = -1
+    ocredit = {{{ xccdf_value("var_password_pam_ocredit") }}}
 
 platform: pam
 
