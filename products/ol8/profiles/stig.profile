@@ -521,6 +521,9 @@ selections:
     # OL08-00-020070
     - configure_tmux_lock_after_time
 
+    # OL08-00-020081
+    - dconf_gnome_session_idle_user_locks
+
     # OL08-00-020090
     - sssd_enable_certmap
 

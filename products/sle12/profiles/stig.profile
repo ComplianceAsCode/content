@@ -195,6 +195,7 @@ selections:
     - ftp_present_banner
     - gnome_gdm_disable_unattended_automatic_login
     - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_session_idle_user_locks
     - grub2_password
     - grub2_uefi_password
     - gui_login_dod_acknowledgement

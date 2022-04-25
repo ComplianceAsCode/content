@@ -89,6 +89,7 @@ selections:
     - dconf_db_up_to_date
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_session_idle_user_locks
     - chronyd_or_ntpd_specify_multiple_servers
     - chronyd_specify_remote_server
     - configure_opensc_card_drivers

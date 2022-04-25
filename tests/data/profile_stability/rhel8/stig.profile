@@ -179,6 +179,7 @@ selections:
 - dconf_gnome_lock_screen_on_smartcard_removal
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
+- dconf_gnome_session_idle_user_locks
 - dconf_gnome_screensaver_lock_delay
 - dconf_gnome_screensaver_lock_enabled
 - dir_group_ownership_library_dirs

@@ -519,6 +519,9 @@ selections:
 
     # RHEL-08-020080
 
+    # RHEL-08-020081
+    - dconf_gnome_session_idle_user_locks
+
     # RHEL-08-020090
     - sssd_enable_certmap
 

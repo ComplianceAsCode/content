@@ -13,11 +13,6 @@ description: |-
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>:
     <pre>[org/gnome/desktop/session]
     idle-delay=uint32 900</pre>
-    Once the setting has been added, add a lock to
-    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
-    For example:
-    <pre>/org/gnome/desktop/session/idle-delay</pre>
-    After the settings have been set, run <tt>dconf update</tt>.
 
 rationale: |-
     A session time-out lock is a temporary action taken when a user stops work and moves away from
@@ -58,7 +53,7 @@ references:
     stigid@sle12: SLES-12-010080
     stigid@sle15: SLES-15-010120
 
-ocil_clause: 'idle-delay is not equal to or less than the expected value'
+ocil_clause: 'idle-delay is set to 0 or a value greater than {{{ xccdf_value("inactivity_timeout_value") }}}'
 
 ocil: |-
     To check the current idle time-out value, run the following command:
@@ -67,5 +62,22 @@ ocil: |-
     To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
     <pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
+
+fixtext: |-
+    Configure the operating system to initiate a screensaver after a {{{ xccdf_value("inactivity_timeout_value") }}}-second period of inactivity for graphical user interfaces.
+
+    Create a database to contain the system-wide screensaver settings (if it does not already exist) with the following command:
+
+    $ sudo touch /etc/dconf/db/local.d/00-screensaver
+
+    Edit /etc/dconf/db/local.d/00-screensaver and add or update the following lines:
+
+    [org/gnome/desktop/session]
+    # Set the lock time out to {{{ xccdf_value("inactivity_timeout_value") }}} seconds before the session is considered idle
+    idle-delay=uint32 {{{ xccdf_value("inactivity_timeout_value") }}}
+
+    Update the system databases:
+
+    $ sudo dconf update
 
 platform: machine
