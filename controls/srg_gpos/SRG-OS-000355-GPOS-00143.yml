@@ -5,7 +5,8 @@ controls:
         title: {{{ full_name }}} must, for networked systems, compare internal information
             system clocks at least every 24 hours with a server which is synchronized to one
             of the redundant United States Naval Observatory (USNO) time servers, or a time
-            server designat
+            server designated for the appropriate DoD network (NIPRNet/SIPRNet), 
+            and/or the Global Positioning System (GPS).
         rules:
             - chronyd_or_ntpd_set_maxpoll
             - package_chrony_installed
