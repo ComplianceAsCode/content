@@ -4,8 +4,9 @@ from .ext.boolean import boolean
 # Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
 import pkg_resources
 import re
-pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
+import ssg.utils
 
+pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
 
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
 SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
@@ -22,7 +23,7 @@ SPEC_OP_ID_TRANSLATION = {
 }
 
 SPEC_OP_OVAL_EVR_STRING_TRANSLATION = {
-    '==': 'equal',
+    '==': 'equals',
     '!=': 'not equal',
     '>': 'greater than',
     '<': 'less than',
@@ -95,23 +96,41 @@ class Symbol(boolean.Symbol):
     def __lt__(self, other):
         return self.as_id() < other.as_id()
 
+    @staticmethod
+    def _spec_id(spec):
+        op, ver = spec
+        return '{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'eq'), ssg.utils.escape_id(ver))
+
     def as_id(self):
         id_str = self.name
         if self.spec.extras:
             id_str += '_' + self.spec.extras[0]
-        for (op, ver) in self.spec.specs:
-            id_str += '_{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'unknown_spec_op'), ver)
+        for spec in sorted(self.spec.specs):
+            id_str += '_' + self._spec_id(spec)
         return id_str
 
     def as_dict(self):
-        res = {'name': self.name, 'arg': '', 'op': '', 'ver': '', 'evr': '', 'evr_op': ''}
+        res = {'id': self.as_id(), 'name': self.name, 'arg': '', 'ver_str': '', 'ver_cpe': '', 'specs': []}
+
+        if self.spec.specs:
+            res['ver_str'] = ' and '.join([op+ver for op, ver in self.spec.specs])
+            res['ver_cpe'] = ':'.join([ver for op, ver in self.spec.specs])
+
         if self.spec.extras:
             res['arg'] = self.spec.extras[0]
-        if self.spec.specs:
-            res['op'], res['ver'] = self.spec.specs[0]
-            ver = pkg_resources.parse_version(res['ver'])
-            res['evr'] = str(ver.epoch) + ':' + '.'.join(str(x) for x in ver.release) + '-' + (str(ver.post) if ver.post else '0')
-            res['evr_op'] = SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(res['op'], 'equal')
+
+        for spec in self.spec.specs:
+            op, ver = spec
+            version = pkg_resources.parse_version(ver)
+            res['specs'].append({
+                'id': self._spec_id(spec),
+                'op': op,
+                'ver': ver,
+                'evr_op': SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'),
+                'evr_ver': str(version.epoch) + ':'
+                    + '.'.join(str(x) for x in version.release) + '-'
+                    + (str(version.post) if version.post else '0')
+            })
         return res
 
     def get_arg(self):
@@ -146,6 +165,6 @@ class Algebra(boolean.BooleanAlgebra):
         not_cls = type('FunctionNOT', (function_cls, boolean.NOT), {})
         and_cls = type('FunctionAND', (function_cls, boolean.AND), {})
         or_cls = type('FunctionOR', (function_cls, boolean.OR), {})
-        super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS+SPEC_SYMBOLS,
+        super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS + SPEC_SYMBOLS,
                                       Symbol_class=symbol_cls,
                                       NOT_class=not_cls, AND_class=and_cls, OR_class=or_cls)

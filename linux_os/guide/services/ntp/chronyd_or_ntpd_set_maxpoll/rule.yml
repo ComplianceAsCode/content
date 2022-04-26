@@ -73,7 +73,7 @@ rationale: |-
 severity: medium
 
 platforms:
-    - "os_release[rhel]==8 and (package_installed[ntptest]>=1.0 or package_installed[chronytest])"
+    - "os_release[rhel]==8 and (package_installed[ntptest]>=1.0,<2 or package_installed[chronytest])"
 
 identifiers:
     cce@rhcos4: CCE-82684-2

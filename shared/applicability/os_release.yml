@@ -1,6 +1,6 @@
-name: "cpe:/o:{arg}"
-title: "Operating System is {arg} {ver}"
-check_id: "installed_os_is_{arg}_{ver}"
+name: "cpe:/o:{arg}:{ver_cpe}"
+title: "Operating System is {arg} {ver_str}"
+check_id: "installed_os_is_{id}"
 bash_conditional:
     conditional: 'true'
 ansible_conditional: 'true'
@@ -11,8 +11,6 @@ args:
     rhel:
         os_name: "Red Hat Enterprise Linux"
         os_id: 'rhel'
-        version_id: '8'
     fedora:
         os_name: "Fedora"
         os_id: 'fedora'
-        version_id: '35'

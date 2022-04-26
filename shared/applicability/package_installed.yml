@@ -1,9 +1,8 @@
-name: 'cpe:/a:{arg}'
-title: 'Package {arg} is installed'
-check_id: 'installed_env_has_{arg}_package_conditional'
+name: 'cpe:/a:{arg}:{ver_cpe}'
+title: 'Package {arg} {ver_str} is installed'
+check_id: 'installed_env_has_{id}_package_conditional'
 bash_conditional:
     conditional: {{{ bash_pkg_conditional(PKGNAME) }}}
-ansible_conditional: {{{ ansible_pkg_conditional(PKGNAME) }}}
 template:
     name: package_installed
     vars: {}
