@@ -41,3 +41,6 @@ template:
     vars:
         sysctlvar: kernel.kptr_restrict
         datatype: int
+
+fixtext: |-
+    {{{ fixtext_sysctl("kernel.kptr_restrict", "1") | indent(4) }}}
