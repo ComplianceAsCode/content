@@ -6,6 +6,7 @@ controls:
             (PIV) credentials.
         rules:
             - sssd_certificate_verification
+            - var_sssd_certificate_verification_digest_function=sha1
             - install_smartcard_packages
             - dconf_gnome_enable_smartcard_auth
         status: automated
