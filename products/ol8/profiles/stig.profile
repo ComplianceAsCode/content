@@ -927,6 +927,7 @@ selections:
     # OL08-00-030740
     # remediation fails because default configuration file contains pool instead of server keyword
     - chronyd_or_ntpd_set_maxpoll
+    - chronyd_server_directive
 
     # OL08-00-030741
     - chronyd_client_only
