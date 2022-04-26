@@ -9,6 +9,8 @@ import os
 import re
 import sys
 import string
+
+import yaml
 from typing.io import TextIO
 import xml.etree.ElementTree as ET
 
@@ -299,7 +301,33 @@ def html_plain_text(source: str) -> str:
     return result
 
 
-def replace_variables(source: str, variables: dict) -> str:
+def get_variable_value(root_path: str, product: str, name: str, selector: str) -> str:
+    product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product).joinpath('values')\
+        .joinpath(f'{name}.yml').absolute()
+    if not product_value_full_path.exists():
+        sys.stderr.write(f'Undefined variable {name}\n')
+        exit(7)
+    with open(product_value_full_path, 'r') as f:
+        var_yaml = yaml.load(Loader=yaml.SafeLoader, stream=f)
+        if selector and selector.isnumeric():
+            selector = int(selector)
+        if 'options' not in var_yaml:
+            sys.stderr.write(f'No options for {name}\n')
+            exit(8)
+        if not selector and 'default' not in var_yaml['options']:
+            sys.stderr.write(f'No default selector for {name}\n')
+            exit(10)
+        if not selector:
+            return str(var_yaml['options']['default'])
+
+        if selector not in var_yaml['options']:
+            sys.stderr.write(f'Option {selector} does not exist for {name}\n')
+            exit(9)
+        else:
+            return str(var_yaml['options'][selector])
+
+
+def replace_variables(source: str, variables: dict, root_path: str, product: str) -> str:
     result = source
     if source:
         sub_element_regex = r'<sub idref="([a-z0-9_]+)" \/>'
@@ -308,12 +336,13 @@ def replace_variables(source: str, variables: dict) -> str:
         if matches:
             for match in matches:
                 name = re.findall(sub_element_regex, source)[0]
-                result = result.replace(match.group(), variables.get(name, ''))
+                result = result.replace(match.group(), get_variable_value(root_path, product, name,
+                                                                          variables.get(name)))
     return result
 
 
-def handle_variables(source: str, variables: dict) -> str:
-    result = replace_variables(source, variables)
+def handle_variables(source: str, variables: dict, root_path: str, product: str) -> str:
+    result = replace_variables(source, variables, root_path, product)
     return html_plain_text(result)
 
 
@@ -387,7 +416,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
-                   rule_json: dict, srgs: dict, used_rules: list) -> list:
+                   rule_json: dict, srgs: dict, used_rules: list, root_path: str) -> list:
 
     if len(control.selections) > 0:
         rows = list()
@@ -398,12 +427,12 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 if control.levels is not None:
                     row['Severity'] = get_severity(control.levels[0])
                 row['Requirement'] = control.title
-                row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables)
-                ocil_var = handle_variables(rule_object.ocil, control.variables)
-                ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables)
+                row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables, root_path, product)
+                ocil_var = handle_variables(rule_object.ocil, control.variables, root_path, product)
+                ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables, root_path, product)
                 row['Check'] = f'{ocil_var}\n\n' \
                                f'If {ocil_clause_var} then this is a finding.'
-                row['Fix'] = handle_variables(rule_object.fixtext, control.variables)
+                row['Fix'] = handle_variables(rule_object.fixtext, control.variables, root_path, product)
                 row['STIGID'] = rule_object.identifiers.get('cce', "")
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
@@ -465,14 +494,22 @@ def get_rule_json(json_path: str) -> dict:
 
 def check_paths(control_path: str, rule_json_path: str) -> None:
     control_full_path = pathlib.Path(control_path).absolute()
-    if not pathlib.Path.exists(control_full_path):
+    if not control_full_path.exists():
         sys.stderr.write(f"Unable to find control file {control_full_path}\n")
         exit(5)
     rule_json_full_path = pathlib.Path(rule_json_path).absolute()
-    if not os.path.exists(rule_json_full_path):
+    if not rule_json_full_path.exists():
         sys.stderr.write(f"Unable to find rule_dirs.json file {rule_json_full_path}\n")
         sys.stderr.write("Hint: run ./utils/rule_dir_json.py\n")
         exit(2)
+
+
+def check_product_value_path(root_path: str, product: str) -> None:
+    product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product).joinpath('values').absolute()
+    if not pathlib.Path.exists(product_value_full_path):
+        sys.stderr.write(f"Unable to find values directory for {product} in {product_value_full_path}\n")
+        sys.stderr.write(f"Have you built {product}\n")
+        exit(6)
 
 
 def get_policy(args, env_yaml) -> ssg.controls.Policy:
@@ -525,6 +562,7 @@ def get_env_yaml(root: str, product: str, build_config_yaml: str) -> dict:
 def main() -> None:
     args = parse_args()
     check_paths(args.control, args.json)
+    check_product_value_path(args.root, args.product)
 
     srgs = get_srg_dict(args.manual)
     env_yaml = get_env_yaml(args.root, args.product, args.build_config_yaml)
@@ -534,7 +572,7 @@ def main() -> None:
     used_rules = list()
     results = list()
     for control in policy.controls:
-        rows = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules)
+        rows = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules, args.root)
         results.extend(rows)
 
     handle_output(args.output, results, args.out_format, args.product)
