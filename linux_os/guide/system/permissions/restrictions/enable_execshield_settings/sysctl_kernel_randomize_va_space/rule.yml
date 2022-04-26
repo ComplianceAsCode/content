@@ -52,3 +52,6 @@ template:
         sysctlvar: kernel.randomize_va_space
         sysctlval: '2'
         datatype: int
+
+fixtext: |-
+    {{{ fixtext_sysctl("kernel.randomize_va_space", "2") | indent(4) }}}
