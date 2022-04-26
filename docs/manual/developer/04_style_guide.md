@@ -34,7 +34,7 @@ In practice, this implies:
 * Include tests for your contribution.
 * Write comments if and only if there is no chance for the code to explain itself.
 * Don't put authorship information into the code, Git tracks authorship for you.
-  Use [SPDX IDs](https://spdx.dev/ids/) for license-related boilerplate in newly written code.
+  Don't copy-paste license text into source files -- use [SPDX IDs](https://spdx.dev/ids/) for that purpose.
 * Don't take part in making files longer - files longer than 400 lines should be an exception.
   Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
 
