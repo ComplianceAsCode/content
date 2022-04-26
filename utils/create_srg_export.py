@@ -302,8 +302,8 @@ def html_plain_text(source: str) -> str:
 
 
 def get_variable_value(root_path: str, product: str, name: str, selector: str) -> str:
-    product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product).joinpath('values')\
-        .joinpath(f'{name}.yml').absolute()
+    product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product)\
+        .joinpath('values').joinpath(f'{name}.yml').absolute()
     if not product_value_full_path.exists():
         sys.stderr.write(f'Undefined variable {name}\n')
         exit(7)
@@ -427,12 +427,16 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 if control.levels is not None:
                     row['Severity'] = get_severity(control.levels[0])
                 row['Requirement'] = control.title
-                row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables, root_path, product)
-                ocil_var = handle_variables(rule_object.ocil, control.variables, root_path, product)
-                ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables, root_path, product)
+                row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables,
+                                                         root_path, product)
+                ocil_var = handle_variables(rule_object.ocil, control.variables, root_path,
+                                            product)
+                ocil_clause_var = handle_variables(rule_object.ocil_clause, control.variables,
+                                                   root_path, product)
                 row['Check'] = f'{ocil_var}\n\n' \
                                f'If {ocil_clause_var} then this is a finding.'
-                row['Fix'] = handle_variables(rule_object.fixtext, control.variables, root_path, product)
+                row['Fix'] = handle_variables(rule_object.fixtext, control.variables, root_path,
+                                              product)
                 row['STIGID'] = rule_object.identifiers.get('cce', "")
                 if control.status is not None:
                     row['Status'] = DisaStatus.from_string(control.status)
@@ -505,9 +509,11 @@ def check_paths(control_path: str, rule_json_path: str) -> None:
 
 
 def check_product_value_path(root_path: str, product: str) -> None:
-    product_value_full_path = pathlib.Path(root_path).joinpath('build').joinpath(product).joinpath('values').absolute()
+    product_value_full_path = pathlib.Path(root_path).joinpath('build')\
+        .joinpath(product).joinpath('values').absolute()
     if not pathlib.Path.exists(product_value_full_path):
-        sys.stderr.write(f"Unable to find values directory for {product} in {product_value_full_path}\n")
+        sys.stderr.write(f"Unable to find values directory for"
+                         f" {product} in {product_value_full_path}\n")
         sys.stderr.write(f"Have you built {product}\n")
         exit(6)
 
@@ -572,7 +578,8 @@ def main() -> None:
     used_rules = list()
     results = list()
     for control in policy.controls:
-        rows = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules, args.root)
+        rows = handle_control(args.product, control, env_yaml, rule_json, srgs, used_rules,
+                              args.root)
         results.extend(rows)
 
     handle_output(args.output, results, args.out_format, args.product)
