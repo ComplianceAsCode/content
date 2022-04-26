@@ -14,7 +14,19 @@ controls:
             #- sshd_set_keepalive_0
             - accounts_tmout
             - var_accounts_tmout=10_min
-        # We don't have a way to configure ssh timeout on RHEL 9, the
-        # sshd_config options ClientAliveInterval and ClientAliveCountMax
-        # dont't work on RHEL 9 as they used to in RHEL 8.
-        status: partial
+        status: does not meet
+        status_justification: |-
+            Red Hat Enterprise Linux 9 does not have configuration options to
+            meet this requirement. There is no option to configure sshd timeout
+            interval. Red Hat Enterprise Linux 9 ships OpenSSH newer than
+            version 8.2. The sshd_config options ClientAliveInterval and
+            ClientAliveCountMax don't work on versions newer than v8.2 as they
+            used to work before this release.  For SSH earlier than v8.2, a
+            ClientAliveCountMax value of 0 causes an idle timeout precisely
+            when the ClientAliveInterval is set.  Starting with v8.2, a value
+            of 0 disables the timeout functionality completely. If the option
+            is set to a number greater than 0, then the idle session will be
+            disconnected after ClientAliveInterval * ClientAliveCountMax
+            seconds.
+        mitigation: |-
+            There is no mitigation.
