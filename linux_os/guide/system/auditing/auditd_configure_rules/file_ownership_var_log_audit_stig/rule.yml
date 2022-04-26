@@ -37,9 +37,20 @@ references:
     stigid@rhel8: RHEL-08-030080
     stigid@ubuntu2004: UBTU-20-010123
 
+ocil_clause: "the audit log is not owned by root"
+
 ocil: |-
-    Run the following commands to check who owns the system audit logs:
+    Verify the audit logs are owned by "root". First, determine where the audit logs are stored with the following command:
     <pre>$ sudo grep -iw log_file /etc/audit/auditd.conf</pre>
     <pre>log_file = /var/log/audit/audit.log</pre>
-    <pre>sudo stat -c "%n %U" /var/log/audit/*</pre>
+    Using the location of the audit log file, determine if the audit log is owned by "root" using the following command:
+    <pre>$ sudo stat -c "%n %U" /var/log/audit/audit.log</pre>
     Audit logs must be owned by user root.
+    If the log_file isn't defined in /etc/audit/auditd.conf, check all files in /var/log/audit/ directory instead.
+
+fixtext: |-
+    Configure the audit log to be protected from unauthorized read access, by setting the correct owner as "root" with the following command:
+
+    $ sudo chown root [audit_log_file]
+
+    Replace "[audit_log_file]" to the correct audit log path, by default this location is "/var/log/audit/audit.log".

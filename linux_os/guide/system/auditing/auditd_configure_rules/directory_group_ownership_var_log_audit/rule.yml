@@ -37,4 +37,26 @@ references:
     stigid@rhel8: RHEL-08-030110
 
 ocil: |-
-    {{{ describe_file_group_owner(file="/var/log/audit", group="root") }}}
+    Determine the audit log group by running the following command:
+
+    $ sudo grep -P '^[ ]*log_group[ ]+=.*$' /etc/audit/auditd.conf
+
+    Then, check that all directories within the /var/log/audit directory are owned by the group specified as log_group or by root if the log_group is not specified.
+    Run the following command:
+
+    $ sudo find /var/log/audit -type d -printf "%p %g\n"
+
+    All listed directories must be owned by the log_group or by root if the log_group is not specified.
+
+ocil_clause:
+    "there is a directory owned by different group"
+
+fixtext: |-
+    Change the group of the directory of "/var/log/audit" to be owned by a correct group.
+
+    Identify the group that is configured to own audit log:
+
+    $ sudo grep -P '^[ ]*log_group[ ]+=.*$' /etc/audit/auditd.conf
+
+    Change the ownership to that group:
+    $ sudo chgrp ${GROUP} /var/log/audit

@@ -43,7 +43,7 @@ references:
     stigid@rhel8: RHEL-08-030070
     stigid@ubuntu2004: UBTU-20-010122
 
-ocil_clause: 'any are more permissive'
+ocil_clause: 'any permissions are more permissive'
 
 ocil: |-
     Run the following command to check the mode of the system audit logs:
@@ -52,4 +52,27 @@ ocil: |-
     <pre>$ sudo stat -c "%n %a" /var/log/audit/*</pre>
     <pre>$ sudo ls -l /var/log/audit</pre>
     Audit logs must be mode 0640 or less permissive.
+
+fixtext: |-
+    Configure correct permissions of system audit logs.
+
+    Determine the location of the system audit logs:
+
+    $ sudo grep -iw log_file /etc/audit/auditd.conf
+
+    If log_file is not defined, use /var/log/audit/audit.log.
+
+    Check the group that owns the system audit logs:
+
+    $ sudo grep -m 1 -q ^log_group /etc/audit/auditd.conf
+
+    If the log_group is not defined or it is set to root, configure the permissions the following way:
+
+    $ sudo chmod 0640 $log_file
+    $ sudo chmod 0440 $log_file.*
+
+    Otherwise, configure the permisssions the following way:
+
+    $ sudo chmod 0600 $log_file
+    $ sudo chmod 0400 $log_file.*
 

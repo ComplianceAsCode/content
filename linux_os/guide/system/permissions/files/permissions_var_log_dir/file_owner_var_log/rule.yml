@@ -32,3 +32,6 @@ template:
     vars:
         filepath: /var/log/
         fileuid: '0'
+
+fixtext: |-
+   {{{ describe_file_owner(file="/var/log", owner="root") }}}
