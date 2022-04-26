@@ -2,6 +2,7 @@
 import collections
 import argparse
 import os
+import json
 
 # NOTE: This is not to be confused with the https://pypi.org/project/ssg/
 # package. The ssg package we're referencing here is actually a relative import
@@ -82,19 +83,34 @@ def calculate_stats(ctrls):
     print_specific_stat("Applicable", applicable, total)
     print_specific_stat("Assessed", assessed, applicable)
     print()
-    print_specific_stat("Automated", ctrlstats[controls.Status.AUTOMATED], applicable)
-    print_specific_stat("Manual", ctrlstats[controls.Status.MANUAL], applicable)
-    print_specific_stat("Supported", ctrlstats[controls.Status.SUPPORTED], applicable)
-    print_specific_stat("Documentation", ctrlstats[controls.Status.DOCUMENTATION], applicable)
-    print_specific_stat("Inherently Met", ctrlstats[controls.Status.INHERENTLY_MET], applicable)
-    print_specific_stat("Does Not Meet", ctrlstats[controls.Status.DOES_NOT_MEET], applicable)
-    print_specific_stat("Partial", ctrlstats[controls.Status.PARTIAL], applicable)
+    print_specific_stat("Automated",
+                        ctrlstats[controls.Status.AUTOMATED],
+                        applicable)
+    print_specific_stat("Manual",
+                        ctrlstats[controls.Status.MANUAL],
+                        applicable)
+    print_specific_stat("Supported",
+                        ctrlstats[controls.Status.SUPPORTED],
+                        applicable)
+    print_specific_stat("Documentation",
+                        ctrlstats[controls.Status.DOCUMENTATION],
+                        applicable)
+    print_specific_stat("Inherently Met",
+                        ctrlstats[controls.Status.INHERENTLY_MET],
+                        applicable)
+    print_specific_stat("Does Not Meet",
+                        ctrlstats[controls.Status.DOES_NOT_MEET],
+                        applicable)
+    print_specific_stat("Partial",
+                        ctrlstats[controls.Status.PARTIAL],
+                        applicable)
 
     applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
     assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
         .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
         .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.MANUAL])
-    print("Missing:", ", ".join(sorted(str(c.id) for c in applicablelist - assessedlist)))
+    print("Missing:", ", ".join(sorted(str(c.id)
+          for c in applicablelist - assessedlist)))
 
 
 def print_specific_stat(stat, current, total):
@@ -108,12 +124,70 @@ def print_specific_stat(stat, current, total):
 def stats(ctrlmgr, args):
     validate_args(ctrlmgr, args)
     ctrls = set(ctrlmgr.get_all_controls_of_level(args.id, args.level))
-    calculate_stats(ctrls)
+    total = len(ctrls)
+
+    if total == 0:
+        print("No controls founds with the given inputs. Maybe try another level.")
+        exit(1)
+
+    if args.output_format == 'json':
+        print_to_json(
+            ctrls,
+            args.product,
+            args.id,
+            args.level)
+    else:
+        calculate_stats(ctrls)
+
+
+def print_to_json(ctrls, product, id, level):
+    data = dict()
+    ctrllist = collections.defaultdict(set)
+
+    for ctrl in ctrls:
+        ctrllist[str(ctrl.status)].add(ctrl)
+
+    applicablelist = ctrls - ctrllist[controls.Status.NOT_APPLICABLE]
+    assessedlist = set().union(ctrllist[controls.Status.AUTOMATED]).union(ctrllist[controls.Status.SUPPORTED])\
+        .union(ctrllist[controls.Status.DOCUMENTATION]).union(ctrllist[controls.Status.INHERENTLY_MET])\
+        .union(ctrllist[controls.Status.PARTIAL]).union(ctrllist[controls.Status.MANUAL])
+
+    data["format_version"] = "v0.0.1"
+    data["product_name"] = product
+    data["benchmark"] = dict()
+    data["benchmark"]["name"] = id
+    data["benchmark"]["baseline"] = level
+    data["total_controls"] = len(applicablelist)
+    data["addressed_controls"] = dict()
+    data["addressed_controls"]["all"] = get_id_array(ctrls)
+    data["addressed_controls"]["applicable"] = get_id_array(applicablelist)
+    data["addressed_controls"]["assessed"] = get_id_array(assessedlist)
+    data["addressed_controls"]["inherently"] = get_id_array(
+        ctrllist[controls.Status.INHERENTLY_MET])
+    data["addressed_controls"]["manual"] = get_id_array(
+        ctrllist[controls.Status.MANUAL])
+    data["addressed_controls"]["supported"] = get_id_array(
+        ctrllist[controls.Status.SUPPORTED])
+    data["addressed_controls"]["automated"] = get_id_array(
+        ctrllist[controls.Status.AUTOMATED])
+    data["addressed_controls"]["notapplicable"] = get_id_array(
+        ctrllist[controls.Status.NOT_APPLICABLE])
+    data["addressed_controls"]["partial"] = get_id_array(
+        ctrllist[controls.Status.PARTIAL])
+    data["addressed_controls"]["pending"] = get_id_array(
+        ctrllist[controls.Status.PENDING])
+    data["addressed_controls"]["notassessed"] = get_id_array(
+        applicablelist - assessedlist)
+    print(json.dumps(data))
 
 
 subcmds = dict(
     stats=stats
 )
+
+
+def get_id_array(ctrls):
+    return [c.id for c in ctrls]
 
 
 def create_parser():
@@ -138,6 +212,11 @@ def create_parser():
         required=True)
     statsparser.add_argument(
         "-p", "--product", help="product to check has required references")
+    statsparser.add_argument(
+        "-o",
+        "--output-format",
+        choices=['json'],
+        help="The output format of the report")
     return parser
 
 
@@ -147,7 +226,8 @@ def main():
     product_base = os.path.join(SSG_ROOT, "products", args.product)
     product_yaml = os.path.join(product_base, "product.yml")
     env_yaml = ssg.products.load_product_yaml(product_yaml)
-    controls_manager = controls.ControlsManager(args.controls_dir, env_yaml=env_yaml)
+    controls_manager = controls.ControlsManager(
+        args.controls_dir, env_yaml=env_yaml)
     controls_manager.load()
     subcmds[args.subcmd](controls_manager, args)
 
