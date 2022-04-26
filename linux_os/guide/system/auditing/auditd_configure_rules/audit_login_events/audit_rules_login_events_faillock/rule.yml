@@ -65,4 +65,4 @@ template:
         path: /var/run/faillock
 
 fixtext: |-
-    {{{ fixtext_audit_file_watch_rule("/var/run/faillock", "logins", "/etc/audit/rules.d/audit.rules") }}}
+    {{{ fixtext_audit_file_watch_rule("/var/run/faillock", "logins", "/etc/audit/rules.d/audit.rules") | indent(4) }}}

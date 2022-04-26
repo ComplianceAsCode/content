@@ -65,4 +65,4 @@ template:
         path: /var/log/tallylog
 
 fixtext: |-
-    {{{ fixtext_audit_file_watch_rule("/var/log/tallylog", "logins", "/etc/audit/rules.d/audit.rules") }}}
+    {{{ fixtext_audit_file_watch_rule("/var/log/tallylog", "logins", "/etc/audit/rules.d/audit.rules") | indent(4) }}}

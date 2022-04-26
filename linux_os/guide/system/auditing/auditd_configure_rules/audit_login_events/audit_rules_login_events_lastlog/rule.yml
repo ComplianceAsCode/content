@@ -72,4 +72,4 @@ template:
         path: /var/log/lastlog
 
 fixtext: |-
-    {{{ fixtext_audit_file_watch_rule("/var/log/lastlog", "logins", "/etc/audit/rules.d/audit.rules") }}}
+    {{{ fixtext_audit_file_watch_rule("/var/log/lastlog", "logins", "/etc/audit/rules.d/audit.rules")  | indent(4) }}}
