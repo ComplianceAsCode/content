@@ -44,7 +44,7 @@ references:
     stigid@sle15: SLES-15-010450
     vsrg: SRG-OS-000373-VMM-001470,SRG-OS-000373-VMM-001480,SRG-OS-000373-VMM-001490
 
-ocil_clause: 'nopasswd is enabled in sudo'
+ocil_clause: 'nopasswd is specified in the sudo config files'
 
 ocil: |-
     To determine if <tt>NOPASSWD</tt> has been configured for sudo, run the following command:
@@ -56,3 +56,10 @@ platforms:
 
 warnings:
 {{{ warning_ovirt_rule_notapplicable("RHV requires to perform operations as root without being asked for password") | indent(4) }}}
+
+fixtext: |-
+    Check that {{{ full_name }}} is not configured to allow users to execute privileged actions without authenticating.
+
+    Make sure that file "/etc/sudoers" and any file in "/etc/sudoers.d/" dont contain the option '!authenticate'.
+
+    $ sed -i '/NOPASSWD/ s/^/# /g' /etc/sudoers /etc/sudoers.d/*
