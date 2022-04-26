@@ -45,7 +45,7 @@ def test_dyn():
 
 
 def test_id(expression1):
-    assert str(expression1.as_id()) == 'apple_and_banana_or_oranges_eq_2.0_or_not_pie'
+    assert str(expression1.as_id()) == 'apple_and_banana_or_oranges_eq_2_0_or_not_pie'
 
 
 def test_cnf(algebra, expression1):
@@ -59,7 +59,7 @@ def test_dnf(algebra, expression1):
 def test_as_cpe_xml(algebra, expression1):
     xml = algebra.as_cpe_lang_xml(algebra.dnf(expression1))
     assert xml == """<?xml version="1.0" ?>
-<cpe-lang:platform id="apple_and_banana_or_apple_and_oranges_eq_2.0_or_not_pie">
+<cpe-lang:platform id="apple_and_banana_or_apple_and_oranges_eq_2_0_or_not_pie">
 \t<cpe-lang:logical-test negate="false" operator="OR">
 \t\t<cpe-lang:logical-test negate="false" operator="AND">
 \t\t\t<cpe-lang:fact-ref name="cpe:/a:apple:"/>
@@ -116,7 +116,9 @@ def test_evaluate_simple_version_ops(algebra):
 
 def test_evaluate_full_version_ops(algebra):
     exp = algebra.parse(u'oranges==1!2.3.0-1')
-    exp.as_dict()
+    print(repr(exp.as_dict()))
+    exp = algebra.parse(u'oranges>=2,<3')
+    print(repr(exp.as_dict()))
 
 
 def test_evaluate_advanced_version_ops(algebra):
