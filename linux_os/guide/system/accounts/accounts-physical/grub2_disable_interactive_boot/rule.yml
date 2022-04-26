@@ -20,7 +20,7 @@ description: |-
     {{% else %}}
     <pre>/sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"</pre>
     {{% endif %}}
-    <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
+    <pre>grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
 
 rationale: |-
     Using interactive or recovery boot, the console user could disable auditing, firewalls,
