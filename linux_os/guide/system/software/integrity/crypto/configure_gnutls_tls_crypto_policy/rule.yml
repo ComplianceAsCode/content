@@ -36,6 +36,6 @@ ocil_clause: 'cryptographic policy for gnutls is not configured or is configured
 
 ocil: |-
     To verify if GnuTLS uses defined DoD-approved TLS Crypto Policy, run:
-    <pre>$ grep
+    <pre>$ sudo grep
     '+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0'
     /etc/crypto-policies/back-ends/gnutls.config</pre> and verify that a match exists.
