@@ -46,3 +46,10 @@ ocil: |-
     FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}</pre>
 
 platform: login_defs
+
+fixtext: |-
+    Configure the {{{ full_name }}} to enforce a delay of at least {{{ xccdf_value("var_accounts_fail_delay") }}} seconds between logon prompts following a failed console logon attempt.
+
+    Modify the "/etc/login.defs" file to set the "FAIL_DELAY" parameter to {{{ xccdf_value("var_accounts_fail_delay") }}} or greater:
+
+    FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}
