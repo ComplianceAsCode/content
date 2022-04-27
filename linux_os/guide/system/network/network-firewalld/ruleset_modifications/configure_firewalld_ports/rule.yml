@@ -5,31 +5,30 @@ prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,wrlinux1019
 title: 'Configure the Firewalld Ports'
 
 description: |-
-    Configure the <tt>firewalld</tt> ports to allow approved
-    services to have access to the system. To configure <tt>firewalld</tt>
-    to open ports, run the following command:
-    <pre>$ sudo firewall-cmd --permanent --add-port=<i>port_number</i>/tcp</pre>
-    or
-    <pre>$ sudo firewall-cmd --permanent --add-port=<i>service_name</i></pre>
+    Configure the <tt>firewalld</tt> ports to allow approved services to have access to the system.
+    To configure <tt>firewalld</tt> to open ports, run the following command:
+    <pre>firewall-cmd --permanent --add-port=<i>port_number/tcp</i></pre>
+    To configure <tt>firewalld</tt> to allow access for pre-defined services, run the following
+    command:
+    <pre>firewall-cmd --permanent --add-service=<i>service_name</i></pre>
 
 rationale: |-
-    In order to prevent unauthorized connection of devices, unauthorized
-    transfer of information, or unauthorized tunneling (i.e., embedding of data
-    types within data types), organizations must disable or restrict unused or
-    unnecessary physical and logical ports/protocols on information systems.
+    In order to prevent unauthorized connection of devices, unauthorized transfer of information,
+    or unauthorized tunneling (i.e., embedding of data types within data types), organizations must
+    disable or restrict unused or unnecessary physical and logical ports/protocols on information
+    systems.
     <br /><br />
-    Operating systems are capable of providing a wide variety of functions and
-    services. Some of the functions and services provided by default may not be
-    necessary to support essential organizational operations.
-    Additionally, it is sometimes convenient to provide multiple services from
-    a single component (e.g., VPN and IPS); however, doing so increases risk
-    over limiting the services provided by any one component.
+    Operating systems are capable of providing a wide variety of functions and services.
+    Some of the functions and services provided by default may not be necessary to support
+    essential organizational operations.
+    Additionally, it is sometimes convenient to provide multiple services from a single component
+    (e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by
+    one component.
     <br /><br />
-    To support the requirements and principles of least functionality, the
-    operating system must support the organizational requirements, providing
-    only essential capabilities and limiting the use of ports, protocols,
-    and/or services to only those required, authorized, and approved to conduct
-    official business or to address authorized quality of life issues.
+    To support the requirements and principles of least functionality, the operating system must
+    support the organizational requirements, providing only essential capabilities and limiting the
+    use of ports, protocols, and/or services to only those required, authorized, and approved to
+    conduct official business.
 
 severity: medium
 
@@ -55,11 +54,11 @@ references:
     stigid@rhel8: RHEL-08-040030
     vmmsrg: SRG-OS-000096-VMM-000490,SRG-OS-000480-VMM-002000
 
-ocil_clause: 'the default rules are not configured'
+ocil_clause: 'the firewalld rules are not configured'
 
 ocil: |-
-    Inspect the list of enabled firewall ports and verify they are configured
-    correctly by running the following command:
+    Inspect the list of enabled firewall ports and verify they are configured correctly by running
+    the following command:
     <pre>$ sudo firewall-cmd --list-all</pre>
 
 fixtext: |-
