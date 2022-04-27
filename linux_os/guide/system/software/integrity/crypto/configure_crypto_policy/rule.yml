@@ -107,3 +107,9 @@ warnings:
         party review by an accredited lab. While open source software is
         capable of meeting this, it does not meet FIPS-140 unless the vendor
         submits to this process.
+
+fixtext: |-
+    Configure {{{ full_name }}} to use system cryptography policy.
+    Run the following command:
+
+    $ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
