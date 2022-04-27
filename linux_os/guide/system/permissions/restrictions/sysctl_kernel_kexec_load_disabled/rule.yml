@@ -36,3 +36,6 @@ template:
         sysctlvar: kernel.kexec_load_disabled
         sysctlval: '1'
         datatype: int
+
+fixtext: |-
+    {{{ fixtext_sysctl("kernel.kexec_load_disabled", "1") | indent(4) }}}
