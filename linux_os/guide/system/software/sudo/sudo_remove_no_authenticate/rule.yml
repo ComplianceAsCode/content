@@ -53,6 +53,6 @@ ocil: |-
 fixtext: |-
     Check that {{{ full_name }}} is not configured to allow users to execute privileged actions without authenticating.
 
-    Make sure that file "/etc/sudoers" and any file in "/etc/sudoers.d/" dont contain the option '!authenticate'.
+    Remove any occurrence of "!authenticate" found in "/etc/sudoers" file or files in the "/etc/sudoers.d" directory.
 
     $ sed -i '/\!authenticate/ s/^/# /g' /etc/sudoers /etc/sudoers.d/*
