@@ -38,12 +38,18 @@ references:
     srg: SRG-OS-000480-GPOS-00228,SRG-OS-000480-GPOS-00227
     stigid@rhel8: RHEL-08-020353
 
-ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
+ocil_clause: 'the above command returns no output, or if umask is configured incorrectly'
 
 ocil: |-
     Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
     running the following command:
-    <pre># grep "umask" /etc/profile</pre>
+    <pre>$ sudo grep "umask" /etc/profile</pre>
     All output must show the value of <tt>umask</tt> set as shown in the below:
-    <pre># grep "umask" /etc/profile
-    umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+    <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+
+fixtext: |-
+    Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+
+    Add or edit the lines for the "umask" parameter in the "/etc/profile" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+
+    umask {{{ xccdf_value("var_accounts_user_umask") }}}
