@@ -130,6 +130,18 @@ def get_results(xml: ElementTree.ElementTree) -> dict:
     return rules
 
 
+def get_identifiers(xml: ElementTree.ElementTree) -> dict:
+    rules = dict()
+
+    results_xml = xml.findall('.//xccdf-1.2:rule-result', PREFIX_TO_NS)
+    for result in results_xml:
+        idref = result.attrib['idref']
+        idref = idref.replace("xccdf_mil.disa.stig_rule_", "")
+        rules[idref] = result.find('xccdf-1.2:ident', PREFIX_TO_NS).text
+
+    return rules
+
+
 def file_a_different_type(base_tree: ElementTree.ElementTree,
                           target_tree: ElementTree.ElementTree) \
         -> bool:
@@ -172,16 +184,17 @@ def get_results_by_stig(results: dict, stigs: dict) -> dict:
     return base_stig_results
 
 
-def print_summary(comparison: Comparison) -> None:
-    print(f'Missing in target: {len(comparison.missing_in_target)}')
-    for rule in comparison.missing_in_target:
-        print(f'  {rule}')
+def print_summary(comparison: Comparison, base_ident: dict, target_ident: dict) -> None:
     print(f'Same Status: {len(comparison.same_status)}')
     for rule in comparison.same_status:
-        print(f'  {rule:<90}   {comparison.base_results[rule]}')
+        print(f'  {base_ident[rule]} {target_ident[rule]} - {rule:<75}'
+              f'{comparison.base_results[rule]}')
+    print(f'Missing in target: {len(comparison.missing_in_target)}')
+    for rule in comparison.missing_in_target:
+        print(f'  {base_ident[rule]} - {rule}')
     print(f'Different results: {len(comparison.different_results)}')
     for rule, value in comparison.different_results.items():
-        print(f'  {rule:<90}   {value[0]} - {value[1]}')
+        print(f'  {base_ident[rule]} {target_ident[rule]} - {rule:<75}   {value[0]} - {value[1]}')
 
 
 def process_stig_results(base_results: dict, target_results: dict,
@@ -220,7 +233,9 @@ def main():
     base_tree = ssg.xml.open_xml(args.base)
     target_tree = ssg.xml.open_xml(args.target)
     comparison = match_results(base_tree, target_tree)
-    print_summary(comparison)
+    base_ident = get_identifiers(base_tree)
+    target_tree = get_identifiers(target_tree)
+    print_summary(comparison, base_ident, target_tree)
     if comparison.are_results_same():
         exit(0)
     else:
