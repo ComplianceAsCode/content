@@ -72,3 +72,9 @@ ocil: |-
     This would appear as <tt>retry=3</tt>, or a lower value.
 
 platform: pam
+
+fixtext: |-
+    Configure {{{ full_name }}} to allow at most {{{ xccdf_value("var_password_pam_retry") }}} password prompts per-session.
+    Add or edit the following line in "/etc/security/pwquality.conf":
+
+    retry={{{ xccdf_value("var_password_pam_retry") }}}
