@@ -55,3 +55,9 @@ ocil: |-
     sections:
     <pre>gpgcheck=0</pre>
     A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo.
+
+fixtext: |-
+    Ensure signature checking is enabled for all package repositories.
+    Run the following commnad:
+
+    $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' /etc/yum.repos.d/*
