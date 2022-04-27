@@ -23,7 +23,7 @@ jobs:
         run: cmake .. -G Ninja
         working-directory: ./build
       - name: Build
-        run: make -j2 rhel9
+        run: ninja -j2 rhel9
         working-directory: ./build
       - name: Build rule dir json
         run: python3 utils/rule_dir_json.py
