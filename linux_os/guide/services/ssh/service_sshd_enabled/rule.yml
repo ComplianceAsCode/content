@@ -61,3 +61,6 @@ template:
         packagename: openssh-server
         packagename@sle12: openssh
         packagename@sle15: openssh
+
+fixtext: |-
+    {{{ fixtext_service_enabled("sshd") }}}
