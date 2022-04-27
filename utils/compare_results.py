@@ -80,13 +80,11 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def is_file_disa(xml: ElementTree.ElementTree) -> bool:
-    return 'DISA' in xml.find(f'.//{XCCDF12}:metadata/dc:creator', PREFIX_TO_NS).text
-
-
-def is_file_ssg(xml: ElementTree.ElementTree) -> bool:
-    return 'SCAP Security Guide Project' in \
-           xml.find(f'.//{XCCDF12}:metadata/dc:creator', PREFIX_TO_NS).text
+def get_creator(xml: ElementTree.ElementTree) -> str:
+    creator_element = xml.find(f'.//{XCCDF12}:metadata/dc:creator', PREFIX_TO_NS)
+    if creator_element is None:
+        return ""
+    return creator_element.text
 
 
 def check_file(path: str) -> bool:
@@ -96,14 +94,15 @@ def check_file(path: str) -> bool:
     return True
 
 
-def get_rule_to_stig_dict(xml: ElementTree.ElementTree, is_disa: bool) -> dict:
+def get_rule_to_stig_dict(xml: ElementTree.ElementTree, benchmark_creator: str) -> dict:
     rules = dict()
     for group in xml.findall(f'{XCCDF12}:Group', PREFIX_TO_NS):
         for sub_groups in group.findall(f'{XCCDF12}:Group', PREFIX_TO_NS):
-            rules.update(get_rule_to_stig_dict(ElementTree.ElementTree(sub_groups), is_disa))
+            rules.update(get_rule_to_stig_dict(ElementTree.ElementTree(sub_groups),
+                                               benchmark_creator))
         for rule in group.findall(f'{XCCDF12}:Rule', PREFIX_TO_NS):
             rule_id = rule.attrib['id']
-            if is_disa:
+            if benchmark_creator == "DISA":
                 stig_id = rule.find(f'{XCCDF12}:version', PREFIX_TO_NS).text
             else:
                 elm = rule.find(f"{XCCDF12}:reference[@href='{SSG_REF_URIS['stigid']}']",
@@ -122,11 +121,11 @@ def get_rule_to_stig_dict(xml: ElementTree.ElementTree, is_disa: bool) -> dict:
 def get_results(xml: ElementTree.ElementTree) -> dict:
     rules = dict()
 
-    results_xml = xml.findall('.//xccdf-1.2:TestResult/xccdf-1.2:rule-result',
-                              ssg.constants.PREFIX_TO_NS)
+    results_xml = xml.findall('.//xccdf-1.2:rule-result', PREFIX_TO_NS)
     for result in results_xml:
         idref = result.attrib['idref']
-        rules[idref] = result.find('xccdf-1.2:result', ssg.constants.PREFIX_TO_NS).text
+        idref = idref.replace("xccdf_mil.disa.stig_rule_", "")
+        rules[idref] = result.find('xccdf-1.2:result', PREFIX_TO_NS).text
 
     return rules
 
@@ -141,8 +140,12 @@ def file_a_different_type(base_tree: ElementTree.ElementTree,
     :param target_tree: target tree to check
     :return: true if the give trees are not the same type, otherwise return false.
     """
-    return is_file_disa(base_tree) != is_file_disa(target_tree) or \
-           is_file_ssg(base_tree) != is_file_ssg(target_tree)
+    base_creator = get_creator(base_tree)
+    target_creator = get_creator(target_tree)
+
+    if not base_creator or not target_creator:
+        return False
+    return base_creator != target_creator
 
 
 def flatten_stig_results(stig_results: dict) -> dict:
@@ -184,8 +187,8 @@ def print_summary(comparison: Comparison) -> None:
 def process_stig_results(base_results: dict, target_results: dict,
                          base_tree: ElementTree.ElementTree,
                          target_tree: ElementTree.ElementTree) -> (dict, dict):
-    base_stigs = get_rule_to_stig_dict(base_tree, is_file_disa(base_tree))
-    target_stigs = get_rule_to_stig_dict(target_tree, is_file_disa(target_tree))
+    base_stigs = get_rule_to_stig_dict(base_tree, get_creator(base_tree))
+    target_stigs = get_rule_to_stig_dict(target_tree, get_creator(target_tree))
     base_stig_results = get_results_by_stig(base_results, base_stigs)
     target_stig_results = get_results_by_stig(target_results, target_stigs)
     base_stig_flat_results = flatten_stig_results(base_stig_results)
