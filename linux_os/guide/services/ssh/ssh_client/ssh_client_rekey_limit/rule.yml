@@ -45,3 +45,12 @@ ocil: |-
     main configuration file with the following command: <pre>$ sudo grep
     RekeyLimit /etc/ssh/ssh_config</pre> The command should not return any
     output.
+
+fixtext: |-
+    Configure the system to force a frequent session key renegotiation for SSH connections to the server by adding or modifying the following line in the "/etc/ssh/sshd_config" file:
+
+    RekeyLimit {{{ xccdf_value("var_ssh_client_rekey_limit_size") }}} {{{ xccdf_value("var_ssh_client_rekey_limit_time") }}}
+
+    Restart the SSH daemon for the settings to take effect.
+
+    $ sudo systemctl restart sshd.service
