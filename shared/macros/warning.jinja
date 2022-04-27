@@ -12,6 +12,19 @@
 {{%- endif %}}
 {{% endmacro %}}
 
+{{#
+    Includes a deprecation warning in rules which are no longer recommended in favor of a similar
+    and more updated rule.
+
+    :param rule: Rule which replaces the deprecated rule.
+    :param release: Release number since the rule is officially deprecated.
+#}}
+{{% macro warning_rule_deprecated_by(rule, release) %}}
+- general: |-
+    This rule is deprecated in favor of the <code>{{{ rule }}}</code> rule.
+    Please consider replacing this rule in your files as it is not expected to receive updates
+    as of version <code>{{{ release }}}</code>.
+{{% endmacro %}}
 
 {{#
     Adds a default "no easy remediation" warning for kernel_build_config warning.
