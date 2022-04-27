@@ -14,6 +14,7 @@ import ssg.build_remediations
 import ssg.rule_dir_stats as rds
 import ssg.rules
 import ssg.yaml
+import ssg.products
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
