@@ -62,3 +62,13 @@ warnings:
         This rule DOES NOT CHECK if the components of the operating system are FIPS certified.
         You can find the list of FIPS certified modules at {{{ weblink(link="https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search") }}}.
         This rule checks if the system is running in FIPS mode. See the rule description for more information about what it means.
+
+fixtext: |-
+    Configure {{{ full_name }}} to run in FIPS mode.
+
+    Run the following commands:
+
+    $ sudo fips-mode-setup --enable
+    $ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
+
+    The system needs to be rebooted for these changes to take effect.
