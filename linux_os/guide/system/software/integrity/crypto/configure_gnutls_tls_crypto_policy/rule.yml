@@ -39,3 +39,10 @@ ocil: |-
     <pre>$ sudo grep
     '+VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0'
     /etc/crypto-policies/back-ends/gnutls.config</pre> and verify that a match exists.
+
+fixtext: |-
+    Configure the {{{ full_name }}} GnuTLS library to use only DoD-approved encryption by adding the following line to "/etc/crypto-policies/back-ends/gnutls.config":
+
+    +VERS-ALL:-VERS-DTLS0.9:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS1.0
+
+    A reboot is required for the changes to take effect.
