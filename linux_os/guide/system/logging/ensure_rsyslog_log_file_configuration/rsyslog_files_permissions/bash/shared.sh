@@ -15,12 +15,14 @@ declare -a RSYSLOG_CONFIGS
 RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
 
 # Get full list of files to be checked
-# ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
+# RSYSLOG_CONFIGS may contain globs such as 
+# /etc/rsyslog.d/*.conf /etc/rsyslog.d/*.frule
+# So, loop over the entries in RSYSLOG_CONFIGS and use find to get the list of included files.
 declare -a RSYSLOG_FILES
 for ENTRY in "${RSYSLOG_CONFIGS[@]}"
 do
      mapfile -t FINDOUT < <(find "$(dirname "${ENTRY}")" -maxdepth 1 -name "$(basename "${ENTRY}")")
-     RSYSLOG_FILES+=("${RSYSLOG_FILES[@]}" "${FINDOUT[@]}")
+     RSYSLOG_FILES=("${RSYSLOG_FILES[@]}" "${FINDOUT[@]}")
 done
 
 # Check file and fix if needed.
