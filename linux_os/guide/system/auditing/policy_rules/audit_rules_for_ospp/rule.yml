@@ -39,6 +39,7 @@ severity: medium
 identifiers:
     cce@rhel7: CCE-82370-8
     cce@rhel8: CCE-82309-6
+    cce@rhel9: CCE-85991-8
 
 references:
     nist: NONE
@@ -52,3 +53,17 @@ ocil: |-
     <pre>for file in "10-base-config" "11-loginuid" "30-ospp-v42" "43-module-load";do diff /etc/audit/rules.d/$file.rules /usr/share/doc/audit*/rules/$file.rules; done</pre>
 
     If the system is configured properly, no lines should be returned.
+
+fixtext: |-
+    Configure audit to meet requirements for OSPP v4.2.1.
+
+    Run the following commands to copy all audit rules:
+
+    $ sudo cp /usr/share/doc/audit*/rules/10-base-config.rules /etc/audit/rules.d
+    $ sudo cp /usr/share/doc/audit*/rules/11-loginuid.rules /etc/audit/rules.d
+    $ sudo cp /usr/share/doc/audit*/rules/30-ospp-v42.rules /etc/audit/rules.d
+    $ sudo cp /usr/share/doc/audit*/rules/43-module-load.rules /etc/audit/rules.d
+
+    Then, run the following command to load all audit rules:
+
+    $ sudo augenrules --load
