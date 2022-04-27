@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 
 
 mkdir -p /etc/audit/rules.d

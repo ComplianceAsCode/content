@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
 # remediation = bash
 

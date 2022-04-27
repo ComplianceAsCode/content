@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # Remediation for this rule cannot remove the duplicates
 # remediation = none
 # platform = Fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8

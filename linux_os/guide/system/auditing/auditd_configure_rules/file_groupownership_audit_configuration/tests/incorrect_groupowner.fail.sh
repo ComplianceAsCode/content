@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 
 groupadd group_test
 export TESTFILLE=/etc/audit/rules.d/test_rule.rules

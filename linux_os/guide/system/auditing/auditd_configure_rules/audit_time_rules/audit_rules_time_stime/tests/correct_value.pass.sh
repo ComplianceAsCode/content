@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 
 mkdir -p /etc/audit/rules.d/
 if grep -qv "^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32.*(-S[\s]+stime[\s]+|([\s]+|[,])stime([\s]+|[,])).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" /etc/audit/rules.d/*.rules; then

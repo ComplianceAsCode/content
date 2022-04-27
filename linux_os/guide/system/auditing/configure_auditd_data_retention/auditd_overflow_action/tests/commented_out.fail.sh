@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # Ensure test system has proper directories/files for test scenario
 bash -x setup.sh
 
