@@ -81,3 +81,8 @@ platform: zypper
 {{% else %}}
 platform: yum
 {{% endif %}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to always check package signatures before installation.
+    Add or update the following line in {{{ pkg_manager_config_file }}}:
+    gpgcheck=1
