@@ -48,3 +48,10 @@ template:
     vars:
         variable: dictcheck
         operation: equals
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent the use of dictionary words for passwords.
+
+    Add or update the following line in the "/etc/security/pwquality.conf" file or a configuration file in the /etc/pwquality.conf.d/ directory to contain the "dictcheck" parameter:
+
+    dictcheck=1
