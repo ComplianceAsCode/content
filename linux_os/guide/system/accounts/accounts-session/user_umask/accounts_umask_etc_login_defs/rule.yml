@@ -51,15 +51,15 @@ ocil_clause: 'the above command returns no output, or the umask is configured in
 ocil: |-
     Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
     running the following command:
-    <pre>$ sudo grep -i "UMASK" /etc/login.defs</pre>
-    All output must show the value of <tt>umask</tt> set as shown in the below:
-    <pre>umask {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
+    <pre>$ sudo grep "UMASK" /etc/login.defs</pre>
+    All output must show the value of <tt>UMASK</tt> set as shown in the below:
+    <pre>UMASK {{{ xccdf_value("var_accounts_user_umask") }}}</pre>
 
 platform: login_defs
 
 fixtext: |-
     Configure the {{{ full_name }}} to define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
 
-    Add or edit the lines for the "umask" parameter in the "/etc/login.defs" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
+    Add or edit the lines for the "UMASK" parameter in the "/etc/login.defs" files to "{{{ xccdf_value("var_accounts_user_umask") }}}":
 
-    umask {{{ xccdf_value("var_accounts_user_umask") }}}
+    UMASK {{{ xccdf_value("var_accounts_user_umask") }}}
