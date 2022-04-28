@@ -163,13 +163,33 @@
   <local_variable comment="Count unique sysctls" datatype="int" id="local_var_unique_sysctl_{{{ SYSCTLID }}}_counter" version="1">
     <count>
       <unique>
-        <object_component object_ref="object_static_sysctl_{{{ SYSCTLID }}}" item_field="filepath" />
-        <object_component object_ref="object_static_etc_sysctld_{{{ SYSCTLID }}}" item_field="filepath" />
-        <object_component object_ref="object_static_run_sysctld_{{{ SYSCTLID }}}" item_field="filepath" />
-        <object_component object_ref="object_static_usr_lib_sysctld_{{{ SYSCTLID }}}" item_field="filepath" />
+        <object_component object_ref="object_static_set_sysctls_{{{ SYSCTLID }}}" item_field="filename" />
       </unique>
     </count>
   </local_variable>
+
+  <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
+       variable to have no value even when there are valid objects. -->
+  <ind:textfilecontent54_object id="object_static_set_sysctls_{{{ SYSCTLID }}}" version="1">
+    <set>
+      <object_reference>object_static_etc_sysctls_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_run_usr_sysctls_{{{ SYSCTLID }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctls_{{{ SYSCTLID }}}" version="1">
+    <set>
+      <object_reference>object_static_sysctl_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_etc_sysctld_{{{ SYSCTLID }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ SYSCTLID }}}" version="1">
+    <set>
+      <object_reference>object_static_run_sysctld_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_usr_lib_sysctld_{{{ SYSCTLID }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_static_sysctl_{{{ SYSCTLID }}}" version="1">
     <ind:filepath>/etc/sysctl.conf</ind:filepath>
