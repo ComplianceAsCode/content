@@ -5,8 +5,14 @@ OPENSSL_CRYPTO_POLICY_SECTION_REGEX='\[\s*crypto_policy\s*\]'
 OPENSSL_CRYPTO_POLICY_INCLUSION='.include /etc/crypto-policies/back-ends/opensslcnf.config'
 OPENSSL_CRYPTO_POLICY_INCLUSION_REGEX='^\s*\.include\s*/etc/crypto-policies/back-ends/opensslcnf.config$'
 
+{{% if 'sle' in product %}}
+  {{% set openssl_cnf_path="/etc/ssl/openssl.cnf" %}}
+{{% else %}}
+  {{% set openssl_cnf_path="/etc/pki/tls/openssl.cnf" %}}
+{{% endif %}}
+
 function remediate_openssl_crypto_policy() {
-	CONFIG_FILE="/etc/pki/tls/openssl.cnf"
+	CONFIG_FILE={{{ openssl_cnf_path }}}
 	if test -f "$CONFIG_FILE"; then
 		if ! grep -q "^\\s*$OPENSSL_CRYPTO_POLICY_SECTION_REGEX" "$CONFIG_FILE"; then
 			printf '\n%s\n\n%s' "$OPENSSL_CRYPTO_POLICY_SECTION" "$OPENSSL_CRYPTO_POLICY_INCLUSION" >> "$CONFIG_FILE"

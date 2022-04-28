@@ -1,4 +1,9 @@
-CONFIG_FILE="/etc/pki/tls/openssl.cnf"
+{{%- if 'sle' in product %}}
+  {{%- set openssl_cnf_path="/etc/ssl/openssl.cnf" %}}
+{{%- else %}}
+  {{%- set openssl_cnf_path=" /etc/pki/tls/openssl.cnf" %}}
+{{%- endif %}}
+CONFIG_FILE="{{{ openssl_cnf_path }}}"
 
 # $1: Pass content to the crypto policy location
 function create_config_file_with {
