@@ -1,3 +1,9 @@
+{{%- if SYSCTLVAL == "" %}}
+{{%- set COMMENT_VALUE="the appropriate value" %}}
+{{%- else %}}
+{{%- set COMMENT_VALUE=SYSCTLVAL %}}
+{{%- endif %}}
+
 {{% macro state_static_sysctld(prefix) -%}}
     <ind:object object_ref="object_static_{{{ prefix }}}_{{{ SYSCTLID }}}"/>
 {{%- if SYSCTLVAL == "" %}}
@@ -59,26 +65,15 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_runtime_{{{ SYSCTLID }}}" version="3">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system runtime.") }}}
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.") }}}
     <criteria operator="AND">
-{{%- if SYSCTLVAL == "" %}}
-      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to the appropriate value"
+      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                  test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}"/>
-{{%- else %}}
-      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}}"
-                 test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}"/>
-{{%- endif %}}
     </criteria>
   </definition>
-{{% if SYSCTLVAL == "" %}}
   <unix:sysctl_test id="test_sysctl_runtime_{{{ SYSCTLID }}}" version="1"
-                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to the appropriate value"
+                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                     check="all" check_existence="all_exist">
-{{%- else %}}
-  <unix:sysctl_test id="test_sysctl_runtime_{{{ SYSCTLID }}}" version="1"
-                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}}"
-                    check="all" check_existence="all_exist">
-{{%- endif %}}
     <unix:object object_ref="object_sysctl_runtime_{{{ SYSCTLID }}}"/>
     <unix:state state_ref="state_sysctl_runtime_{{{ SYSCTLID }}}"/>
   </unix:sysctl_test>
@@ -112,33 +107,18 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_static_{{{ SYSCTLID }}}" version="3">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system configuration.") }}}
-{{%- if SYSCTLVAL == "" %}}
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
     <criteria operator="OR">
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /etc/sysctl.conf"
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.conf"
                  test_ref="test_static_sysctl_{{{ SYSCTLID }}}"/>
       <!-- see sysctl.d(5) -->
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /etc/sysctl.d/*.conf"
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.d/*.conf"
                  test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /run/sysctl.d/*.conf"
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /run/sysctl.d/*.conf"
                  test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /usr/lib/sysctl.d/*.conf"
+      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                  test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
     </criteria>
-{{%- else %}}
-
-    <criteria operator="OR">
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /etc/sysctl.conf"
-                 test_ref="test_static_sysctl_{{{ SYSCTLID }}}"/>
-      <!-- see sysctl.d(5) -->
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /etc/sysctl.d/*.conf"
-                 test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /run/sysctl.d/*.conf"
-                 test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /usr/lib/sysctl.d/*.conf"
-                 test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
-    </criteria>
-{{%- endif %}}
   </definition>
 
   <ind:textfilecontent54_test id="test_static_sysctl_{{{ SYSCTLID }}}" version="1"
