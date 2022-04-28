@@ -61,7 +61,7 @@ ocil: |-
     <pre>$ grep fail_interval /etc/security/faillock.conf</pre>
     The output should show <tt>unlock_time = &lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt>{{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}}</tt> or greater.
     {{% endif %}}
-    It can also be <tt>0</tt> for <tt>never</tt>.
+    It can also be <tt>0</tt> or <tt>never</tt>.
 
 fixtext: |-
     To configure the system to lock out accounts during a specified time period after a number of
