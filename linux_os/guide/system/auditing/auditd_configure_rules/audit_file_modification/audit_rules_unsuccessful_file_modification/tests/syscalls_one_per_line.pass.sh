@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # remediation = bash
 
 # Use auditctl, on RHEL7, default is to use augenrules

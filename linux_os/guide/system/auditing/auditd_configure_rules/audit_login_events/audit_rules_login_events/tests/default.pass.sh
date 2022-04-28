@@ -1,4 +1,5 @@
 #!/bin/bash
+# packages = audit
 # remediation = bash
 
 echo "-w /var/run/faillock -p wa -k logins" >> /etc/audit/rules.d/logins.rules
