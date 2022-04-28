@@ -1,7 +1,7 @@
 {{%- if 'sle' in product %}}
   {{%- set openssl_cnf_path="/etc/ssl/openssl.cnf" %}}
 {{%- else %}}
-  {{%- set openssl_cnf_path=" /etc/pki/tls/openssl.cnf" %}}
+  {{%- set openssl_cnf_path="/etc/pki/tls/openssl.cnf" %}}
 {{%- endif %}}
 CONFIG_FILE="{{{ openssl_cnf_path }}}"
 
