@@ -119,8 +119,6 @@ selections:
 
     # OL08-00-010130
     - set_password_hashing_min_rounds_logindefs
-
-    # OL08-00-010130
     - accounts_password_pam_unix_rounds_system_auth
 
     # OL08-00-010140
@@ -482,15 +480,12 @@ selections:
     # OL08-00-020000
     - account_temp_expire_date
 
-    # OL08-00-020010
+    # OL08-00-020010, OL08-00-020011, OL08-00-020025, OL08-00-020026
     - accounts_passwords_pam_faillock_deny
 
-    # OL08-00-020011
-
-    # OL08-00-020012
+    # OL08-00-020012, OL08-00-020013
     - accounts_passwords_pam_faillock_interval
 
-    # OL08-00-020013
 
     # OL08-00-020014
     - accounts_passwords_pam_faillock_unlock_time
@@ -509,26 +504,20 @@ selections:
 
     # OL08-00-020021
 
-    # OL08-00-020022
+    # OL08-00-020022, OL08-00-020023
     - accounts_passwords_pam_faillock_deny_root
-
-    # OL08-00-020023
 
     # OL08-00-020024
     - accounts_max_concurrent_login_sessions
-
-    # OL08-00-020025
-
-    # OL08-00-020026
 
     # OL08-00-020027
 
     # OL08-00-020028
 
-    # OL08-00-020030
+    # OL08-00-020030, OL08-00-020082
     - dconf_gnome_screensaver_lock_enabled
 
-    # OL08-00-020031, OL08-00-020080
+    # OL08-00-020031
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
     
@@ -566,8 +555,6 @@ selections:
 
     # OL08-00-020081
     - dconf_gnome_session_idle_user_locks
-
-    # OL08-00-020082
 
     # OL08-00-020090
     - sssd_enable_certmap
@@ -780,17 +767,9 @@ selections:
 
     # OL08-00-030200
     - audit_rules_dac_modification_lremovexattr
-
-    # OL08-00-030200
     - audit_rules_dac_modification_removexattr
-
-    # OL08-00-030200
     - audit_rules_dac_modification_lsetxattr
-
-    # OL08-00-030200
     - audit_rules_dac_modification_fsetxattr
-
-    # OL08-00-030200
     - audit_rules_dac_modification_fremovexattr
 
     # OL08-00-030250
@@ -855,27 +834,17 @@ selections:
 
     # OL08-00-030360
     - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading_finit
 
     # OL08-00-030361
     - audit_rules_file_deletion_events_rename
-
-    # OL08-00-030361
     - audit_rules_file_deletion_events_renameat
-
-    # OL08-00-030361
     - audit_rules_file_deletion_events_rmdir
-
-    # OL08-00-030361
     - audit_rules_file_deletion_events_unlink
-
-    # OL08-00-030361
     - audit_rules_file_deletion_events_unlinkat
 
     # OL08-00-030370
     - audit_rules_privileged_commands_gpasswd
-
-    # OL08-00-030360
-    - audit_rules_kernel_module_loading_finit
 
     # OL08-00-030390
     - audit_rules_kernel_module_loading_delete
@@ -888,41 +857,21 @@ selections:
 
     # OL08-00-030420
     - audit_rules_unsuccessful_file_modification_truncate
-
-    # OL08-00-030420
     - audit_rules_unsuccessful_file_modification_openat
-
-    # OL08-00-030420
     - audit_rules_unsuccessful_file_modification_open
-
-    # OL08-00-030420
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
-
-    # OL08-00-030420
     - audit_rules_unsuccessful_file_modification_ftruncate
-
-    # OL08-00-030420
     - audit_rules_unsuccessful_file_modification_creat
 
     # OL08-00-030480
     - audit_rules_dac_modification_chown
-
-    # OL08-00-030490
-    - audit_rules_dac_modification_chmod
-
-    # OL08-00-030490
-    - audit_rules_dac_modification_fchmod
-
-    # OL08-00-030480
     - audit_rules_dac_modification_lchown
-
-    # OL08-00-030480
     - audit_rules_dac_modification_fchownat
-
-    # OL08-00-030480
     - audit_rules_dac_modification_fchown
 
     # OL08-00-030490
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_fchmod
     - audit_rules_dac_modification_fchmodat
 
     # OL08-00-030550
