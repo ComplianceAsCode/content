@@ -47,7 +47,7 @@ references:
     nist: CM-6(a),AC-7(a),IA-5(4)
     nist-csf: PR.AC-1,PR.AC-6,PR.AC-7,PR.IP-1
     ospp: FMT_MOF_EXT.1
-    srg: SRG-OS-000480-GPOS-00225,SRG-OS-000069-GPOS-00037
+    srg: SRG-OS-000069-GPOS-00037
     stigid@ol7: OL07-00-010119
     stigid@ol8: OL08-00-020100
     stigid@rhel7: RHEL-07-010119
@@ -69,6 +69,12 @@ ocil: |-
     {{% endif %}}
     The <tt>retry</tt> parameter will indicate how many attempts are permitted.
     The DoD required value is less than or equal to 3.
-    This would appear as <tt>retry=3</tt>, or a lower value.
+    This would appear as <tt>retry={{{ xccdf_value("var_password_pam_retry") }}}</tt>, or a lower value.
 
 platform: pam
+
+fixtext: |-
+    Configure {{{ full_name }}} to allow at most {{{ xccdf_value("var_password_pam_retry") }}} password prompts per-session.
+    Add or edit the following line in "/etc/security/pwquality.conf":
+
+    retry={{{ xccdf_value("var_password_pam_retry") }}}
