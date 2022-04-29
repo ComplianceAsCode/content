@@ -76,7 +76,7 @@ ocil: |-
     <tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
     disabled.
 
-{{% if product in ['sle12', 'sle15'] %}}
+{{% if 'sle' in product %}}
 platform: zypper
 {{% else %}}
 platform: yum

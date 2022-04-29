@@ -1,13 +1,13 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Ensure {{{ pkg_manager }}} Removes Previous Package Versions'
 
 description: |-
     <tt>{{{ pkg_manager }}}</tt> should be configured to remove previous software components after
     new versions have been installed. To configure <tt>{{{ pkg_manager }}}</tt> to remove the
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if 'sle' in product %}}
     previous software components after updating, set the <tt>solver.upgradeRemoveDroppedPackages</tt>
     {{% elif 'ubuntu' in product %}}
     previous software components after updating, set the <tt>::Remove-Unused-Dependencies</tt> and
@@ -54,7 +54,7 @@ references:
     vmmsrg: SRG-OS-000437-VMM-001760
 
 ocil_clause: |-
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if 'sle' in product %}}
     'solver.upgradeRemoveDroppedPackages is not enabled or configured correctly'
     {{% elif 'ubuntu' in product %}}
     '::Remove-Unused-Dependencies and ::Remove-Unused-Kernel-Packages is not
@@ -66,7 +66,7 @@ ocil_clause: |-
 ocil: |-
     Verify {{{ full_name }}} removes all software components after updated versions have been installed.
 
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if 'sle' in product %}}
     To verify that <tt>solver.upgradeRemoveDroppedPackages</tt> is configured properly, run the
     following command:
     <pre>$ grep -i upgradeRemoveDroppedPackages {{{ pkg_manager_config_file }}}</pre>
@@ -85,7 +85,7 @@ ocil: |-
     <pre>clean_requirements_on_remove=1</pre>
     {{% endif %}}
 
-{{% if 'rhel' in product %}}
+{{% if product in ['fedora'] or 'rhel' in product %}}
 fixtext: |-
     Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
     
@@ -93,8 +93,10 @@ fixtext: |-
 
     <pre>clean_requirements_on_remove=1</pre>
 {{% endif %}}
-{{% if product == 'sle12' %}}
+
+{{% if 'sle' in product %}}
 platform: zypper
-{{% elif product in ['ol7', 'ol8', 'rhel7', 'rhel8', 'rhel9', 'rhv4', 'sle15'] %}}
+{{% elif 'ubuntu' in product %}}
+{{% else %}}
 platform: yum
 {{% endif %}}
