@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Ensure {{{ pkg_manager }}} Removes Previous Package Versions'
 
@@ -85,7 +85,7 @@ ocil: |-
     <pre>clean_requirements_on_remove=1</pre>
     {{% endif %}}
 
-{{% if 'rhel' in product %}}
+{{% if product in ['fedora'] or 'rhel' in product %}}
 fixtext: |-
     Configure {{{ full_name }}} to remove all software components after updated versions have been installed.
     
