@@ -308,9 +308,7 @@ def get_variable_value(root_path: str, product: str, name: str, selector: str) -
         sys.stderr.write(f'Undefined variable {name}\n')
         exit(7)
     with open(product_value_full_path, 'r') as f:
-        var_yaml = yaml.load(Loader=yaml.SafeLoader, stream=f)
-        if selector and selector.isnumeric():
-            selector = int(selector)
+        var_yaml = yaml.load(Loader=yaml.BaseLoader, stream=f)
         if 'options' not in var_yaml:
             sys.stderr.write(f'No options for {name}\n')
             exit(8)
