@@ -3,9 +3,14 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
+{{% if 'sle' in product %}}
+  {{% set openssl_cnf_path="/etc/ssl/openssl.cnf" %}}
+{{% else %}}
+  {{%- set openssl_cnf_path="/etc/pki/tls/openssl.cnf" %}}
+{{% endif %}}
 
 - name: "Test for crypto_policy group"
-  command: grep '^\s*\[\s*crypto_policy\s*]' /etc/pki/tls/openssl.cnf
+  command: grep '^\s*\[\s*crypto_policy\s*]' {{{ openssl_cnf_path }}}
   register: test_crypto_policy_group
   ignore_errors: yes
   changed_when: False
@@ -16,7 +21,7 @@
     create: yes
     insertafter: '^\s*\[\s*crypto_policy\s*]\s*'
     line: ".include /etc/crypto-policies/back-ends/opensslcnf.config"
-    path: /etc/pki/tls/openssl.cnf
+    path: {{{ openssl_cnf_path }}}
   when:
     - test_crypto_policy_group.stdout is defined
     - test_crypto_policy_group.stdout | length > 0
@@ -25,7 +30,7 @@
   lineinfile:
     create: yes
     line: "[crypto_policy]\n.include /etc/crypto-policies/back-ends/opensslcnf.config"
-    path: /etc/pki/tls/openssl.cnf
+    path: {{{ openssl_cnf_path }}}
   when:
     - test_crypto_policy_group.stdout is defined
     - test_crypto_policy_group.stdout | length < 1
