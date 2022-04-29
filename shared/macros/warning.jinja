@@ -22,8 +22,12 @@
 {{% macro warning_rule_deprecated_by(rule, release) %}}
 - general: |-
     This rule is deprecated in favor of the <code>{{{ rule }}}</code> rule.
-    Please consider replacing this rule in your files as it is not expected to receive updates
-    as of version <code>{{{ release }}}</code>.
+    Please consider replacing this rule in your files as it is not expected to receive
+    {{%- if release %}}
+    updates as of version <code>{{{ release }}}</code>.
+    {{%- else %}}
+    further updates.
+    {{% endif -%}}
 {{% endmacro %}}
 
 {{#
