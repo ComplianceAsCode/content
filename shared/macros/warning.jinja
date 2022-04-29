@@ -19,7 +19,7 @@
     :param rule: Rule which replaces the deprecated rule.
     :param release: Release number since the rule is officially deprecated.
 #}}
-{{% macro warning_rule_deprecated_by(rule, release) %}}
+{{% macro warning_rule_deprecated_by(rule, release='') %}}
 - general: |-
     This rule is deprecated in favor of the <code>{{{ rule }}}</code> rule.
     Please consider replacing this rule in your files as it is not expected to receive

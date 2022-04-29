@@ -1385,6 +1385,21 @@ else
 fi
 {{%- endmacro -%}}
 
+{{#
+    Macro to restrict permissions in home directories of interactive users.
+#}}
+{{%- macro bash_restrict_permissions_home_directories(recursive=false) -%}}
+for home_dir in $(awk -F':' '{ if ($3 >= {{{ uid_min }}} && $3 != {{{ nobody_uid }}}) print $6 }' /etc/passwd); do
+    # Only update the permissions when necessary. This will avoid changing the inode timestamp when
+    # the permission is already defined as expected, therefore not impacting in possible integrity
+    # check systems that also check inodes timestamps.
+    {{%- if recursive %}}
+    find "$home_dir" -perm /7027 -exec chmod u-s,g-w-s,o=- {} \;
+    {{%- else %}}
+    find "$home_dir" -maxdepth 0 -perm /7027 -exec chmod u-s,g-w-s,o=- {} \;
+    {{%- endif %}}
+done
+{{%- endmacro -%}}
 
 {{#
     To see how args corresponds to an :code:`/etc/fstab` entry, see

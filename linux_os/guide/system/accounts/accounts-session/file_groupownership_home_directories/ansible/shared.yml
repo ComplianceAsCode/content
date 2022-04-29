@@ -20,7 +20,7 @@
   loop: '{{ local_users }}'
   when:
     - item.value[2]|int >= {{{ gid_min }}}
-    - item.value[2]|int != 65534
+    - item.value[2]|int != {{{ nobody_gid }}}
 
 - name: Ensure interactive local users are the group-owners of their respective home directories
   ansible.builtin.file:
