@@ -96,6 +96,7 @@ fixtext: |-
 
 {{% if 'sle' in product %}}
 platform: zypper
-{{% elif product in ['ol7', 'ol8', 'rhel7', 'rhel8', 'rhel9', 'rhv4'] %}}
+{{% elif 'ubuntu' in product %}}
+{{% else %}}
 platform: yum
 {{% endif %}}
