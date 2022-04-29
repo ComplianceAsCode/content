@@ -3,7 +3,8 @@
 import datetime
 import os
 import openpyxl
-from openpyxl.styles import Alignment, Font
+from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.styles.colors import Color
 import create_srg_export
 
 MICRO_COLUMN_SIZE = 8
@@ -31,6 +32,7 @@ COLUMN_SIZES = {
     'Status Justification': BIG_COLUMN_SIZE
 }
 
+
 def setup_sheet(sheet: openpyxl.worksheet.worksheet.Worksheet) -> None:
     for column, header in create_srg_export.COLUMN_MAPPINGS.items():
         sheet.column_dimensions[f'{column}'].width = COLUMN_SIZES[header]
@@ -53,11 +55,20 @@ def setup_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row: dict, row_num:
     for column, header in create_srg_export.COLUMN_MAPPINGS.items():
         sheet[f'{column}{row_num}'] = row[header]
     sheet.row_dimensions[row_num].height = 130
+    if row_num > 1 and ('Fix' not in row or not row['Fix']):
+        highlight_row(sheet, row_num, 23)
 
     # freeze header row represented by A1
     # A2 is required because it freezes everything before it
     # in this case we only want A1 row to be frozen
     sheet.freeze_panes = "A2"
+
+
+def highlight_row(sheet: openpyxl.worksheet.worksheet.Worksheet, row_num: int, color: int) -> None:
+    row = list(sheet.iter_rows(min_row=row_num, max_row=row_num, min_col=1))[0]
+    for cell in row:
+        cell.fill = PatternFill(start_color=Color(indexed=color), end_color=Color(indexed=color),
+                                fill_type="solid")
 
 
 def handle_dict(data: list, output_path: str, sheet_name: str) -> None:
