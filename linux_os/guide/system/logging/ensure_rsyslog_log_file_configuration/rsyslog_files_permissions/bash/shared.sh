@@ -11,18 +11,18 @@ readarray -t RSYSLOG_INCLUDE < <(awk '/)/{f=0} /include\(/{f=1} f{nf=gensub("^(i
 # Declare an array to hold the final list of different log file paths
 declare -a LOG_FILE_PATHS
 
-declare -a RSYSLOG_CONFIGS
-RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
+RSYSLOG_CONFIGS=()
+RSYSLOG_CONFIGS=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
 
 # Get full list of files to be checked
 # RSYSLOG_CONFIGS may contain globs such as 
 # /etc/rsyslog.d/*.conf /etc/rsyslog.d/*.frule
 # So, loop over the entries in RSYSLOG_CONFIGS and use find to get the list of included files.
-declare -a RSYSLOG_FILES
+RSYSLOG_FILES=()
 for ENTRY in "${RSYSLOG_CONFIGS[@]}"
 do
      mapfile -t FINDOUT < <(find "$(dirname "${ENTRY}")" -maxdepth 1 -name "$(basename "${ENTRY}")")
-     RSYSLOG_FILES=("${RSYSLOG_FILES[@]}" "${FINDOUT[@]}")
+     RSYSLOG_FILES+=("${FINDOUT[@]}")
 done
 
 # Check file and fix if needed.
