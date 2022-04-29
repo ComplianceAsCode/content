@@ -98,6 +98,29 @@ $ sudo sysctl --system
 {{%- endmacro %}}
 
 
+{{% macro grub_command(action, argument, value=None) %}}
+{{% if action == "add" %}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ argument ~ "=" ~ value ] -%}}
+{{% elif action == "remove" %}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ argument ] -%}}
+{{% else %}}
+{{{ raise("Unknown action" + action) }}}
+{{% endif %}}
+{{%- if 'ubuntu' in product -%}}
+	{{% set grub_helper_executable = "update-grub" -%}}
+{{%- elif product in ["sle12", "sle15"] -%}}
+{{%- set grub_helper_executable = "grub2-mkconfig" -%}}
+{{%- set grub_helper_args = ["-o {{{ grub2_boot_path }}}/grub2.cfg"] -%}}
+{{%- else -%}}
+	{{%- set grub_helper_executable = "grubby" -%}}
+{{%- endif -%}}
+{{%- if product in ["rhel8", "ol8"] -%}}
+{{# Suppress the None output of append -#}}
+{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
+{{%- endif -%}}
+{{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
+{{% endmacro %}}
+
 {{#
     Describe fix for GRUB 2 bootloader kernel argument
     This can be used for rules that use grub2_bootloader_argument template
@@ -110,30 +133,14 @@ $ sudo sysctl --system
 
 #}}
 {{% macro fixtext_grub2_bootloader_argument(argument, value) %}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ argument ~ "=" ~ value ] -%}}
-{{% if 'ubuntu' in product %}}
-	{{% set grub_helper_executable = "update-grub" -%}}
-{{% elif product in ["sle12", "sle15"] %}}
-{{% set grub_helper_executable = "grub2-mkconfig" -%}}
-{{% set grub_helper_args = ["-o {{{ grub2_boot_path }}}/grub2.cfg"] -%}}
-{{% else %}}
-	{{% set grub_helper_executable = "grubby" -%}}
-{{% endif -%}}
-
 {{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
 Update the GRUB_CMDLINE_LINUX line in '/etc/default/grub' so that it contains {{{ argument }}}={{{ value }}}.
 {{% endif -%}}
 
-{{% if product in ["rhel8", "ol8"] %}}
-{{# Suppress the None output of append -#}}
-{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" -}}}
-{{% endif -%}}
-
 Run the following command:
 
-$ sudo {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
+$ sudo {{{ grub_command("add", argument, value) }}}
 {{% endmacro %}}
-
 
 {{#
     Describe fix for removal of a GRUB 2 bootloader kernel argument
@@ -144,30 +151,13 @@ $ sudo {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
 :type argument: str
 
 #}}
-
 {{% macro fixtext_grub2_bootloader_argument_absent(argument) %}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ argument ] -%}}
-{{%- if 'ubuntu' in product -%}}
-	{{% set grub_helper_executable = "update-grub" -%}}
-{{%- elif product in ["sle12", "sle15"] -%}}
-{{%- set grub_helper_executable = "grub2-mkconfig" -%}}
-{{%- set grub_helper_args = ["-o {{{ grub2_boot_path }}}/grub2.cfg"] -%}}
-{{%- else -%}}
-	{{%- set grub_helper_executable = "grubby" -%}}
-{{%- endif -%}}
-
 {{%- if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] -%}}
 Update the GRUB_CMDLINE_LINUX line in '/etc/default/grub' so that it does not contain any occurrence of {{{ argument }}} using the following command:
 
 $ sudo sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ argument }}}=?[^[:space:]]*\(.*"\)/\1 \2/' '/etc/default/grub'
 {{%- endif -%}}
 
-{{%- if product in ["rhel8", "ol8"] -%}}
-{{# Suppress the None output of append -#}}
-{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
-{{%- endif -%}}
-
 Run the following command:
-
-$ sudo {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
+$ sudo {{{ grub_command("remove", argument) }}}
 {{% endmacro %}}
