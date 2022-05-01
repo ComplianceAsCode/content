@@ -3581,12 +3581,18 @@ controls:
   - moderate
   - low
 - id: AU-12(1)
-  status: pending
+  status: automated
   notes: |-
-    A control response is planned. Engineering progress can be tracked via:
+    OpenShift provides options to configure chrony time service through Machine Config.[1]
+    A correct NTP server is required for audit records to be generated with correct timestamp.
 
-    https://issues.redhat.com/browse/CMP-181
-  rules: []
+    [1] https://docs.openshift.com/container-platform/latest/installing/install_config/installing-customizing.html#installation-special-config-chrony_installing-customizing
+  rules:
+  - chronyd_or_ntpd_specify_multiple_servers
+  - service_chronyd_or_ntpd_enabled
+  - chronyd_client_only
+  - chronyd_or_ntpd_set_maxpoll
+  - chronyd_or_ntpd_specify_remote_server
   description: |-
     The information system compiles audit records from [Assignment: organization-defined information system components] into a system-wide (logical or physical) audit trail that is time- correlated to within [Assignment: organization-defined level of tolerance for relationship between time stamps of individual records in the audit trail].
 

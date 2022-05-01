@@ -1,0 +1,39 @@
+prodtype: ocp4
+
+title: Ensure the alert receiver is configured
+
+description: |-
+  In OpenShift Container Platform, an alert is fired when the conditions defined in an alerting
+  rule are true. An alert provides a notification that a set of circumstances are apparent within
+  a cluster. Firing alerts can be viewed in the Alerting UI in the OpenShift Container Platform
+  web console by default. After an installation, you can configure OpenShift Container Platform
+  to send alert notifications to external systems so that designate personnel can be alerted 
+  in real time.
+
+  OpenShift provides multiple alert recivers integrations to send realtime alerts to different
+  services such as email, slack, pagerduty, webhooks, etc. [1][2]
+  
+  [1]https://docs.openshift.com/container-platform/latest/post_installation_configuration/configuring-alert-notifications.html#configuring-alert-receivers_configuring-alert-notifications
+  [2]https://docs.openshift.com/container-platform/latest/monitoring/managing-alerts.html#applying-custom-alertmanager-configuration_managing-alerts
+
+rationale: |-
+  Alerts are a critical part of the OpenShift Container Platform. Proper configuration of
+  receiver is required so that alerts can be sent to external systems in real-time to notify
+  users of potential issues.
+
+identifiers:
+  cce@ocp4: CCE-85911-6
+
+references:
+  nist: AU-5(2)
+
+ocil_clause: 'Alert receiver is not configured'
+
+ocil: |-
+    Run the following command to see if alert receiver has been configured to send alerts to a orgzinational defined external system:
+    <pre>$ oc -n openshift-monitoring get secret alertmanager-main --template='{{ index .data "alertmanager.yaml" }}' | base64 --decode</pre>
+    Make sure that alert receiver has configured to send alerts to at least one real time external notification system.
+
+severity: medium
+
+
