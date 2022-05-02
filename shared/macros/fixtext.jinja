@@ -115,7 +115,7 @@ Update the GRUB_CMDLINE_LINUX line in '/etc/default/grub' so that it contains {{
 
 Run the following command:
 
-$ sudo {{{ grub_command("add", argument, value) }}}
+$ sudo {{{ grub_command("add", argument + "=" + value) }}}
 {{% endmacro %}}
 
 {{#

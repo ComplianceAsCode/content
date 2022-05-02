@@ -1067,11 +1067,11 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
 {{% endmacro %}}
 
 
-{{% macro grub_command(action, argument, value=None) %}}
+{{% macro grub_command(action, arg_name_value) %}}
 {{% if action == "add" %}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ argument ~ "=" ~ value ] -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ arg_name_value ] -%}}
 {{% elif action == "remove" %}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ argument ] -%}}
+{{% set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ arg_name_value ] -%}}
 {{% else %}}
 {{{ raise("Unknown action" + action) }}}
 {{% endif %}}
