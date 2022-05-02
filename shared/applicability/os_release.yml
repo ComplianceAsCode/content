@@ -1,7 +1,8 @@
 name: "cpe:/o:{arg}"
 title: "Operating System is {arg} {ver}"
 check_id: "installed_os_is_{arg}_{ver}"
-bash_conditional: 'true'
+bash_conditional:
+    conditional: 'true'
 ansible_conditional: 'true'
 template:
     name: os_release
