@@ -152,11 +152,7 @@ def test_platform_from_text_unknown_platform(product_cpes):
 
 def test_platform_from_text_simple(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("machine", product_cpes)
-    assert platform.to_ansible_conditional() == \
-        "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]"
-    assert platform.to_bash_conditional() == \
-        "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]"
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "machine"
     logical_tests = platform_el.findall(
@@ -172,9 +168,7 @@ def test_platform_from_text_simple(product_cpes):
 
 def test_platform_from_text_simple_product_cpe(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", product_cpes)
-    assert platform.to_bash_conditional() == ""
-    assert platform.to_ansible_conditional() == ""
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "rhel7-workstation"
     logical_tests = platform_el.findall(
@@ -191,10 +185,7 @@ def test_platform_from_text_simple_product_cpe(product_cpes):
 
 def test_platform_from_text_or(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
-    assert platform.to_bash_conditional() == "( rpm --quiet -q chrony || rpm --quiet -q ntp )"
-    assert platform.to_ansible_conditional() == \
-        "( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages )"
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "chrony_or_ntp"
     logical_tests = platform_el.findall(
@@ -212,9 +203,7 @@ def test_platform_from_text_or(product_cpes):
 def test_platform_from_text_complex_expression(product_cpes):
     platform = ssg.build_yaml.Platform.from_text(
         "systemd and !yum and (ntp or chrony)", product_cpes)
-    assert platform.to_bash_conditional() == "( rpm --quiet -q systemd && ( rpm --quiet -q chrony || rpm --quiet -q ntp ) && ! ( rpm --quiet -q yum ) )"
-    assert platform.to_ansible_conditional() == "( \"systemd\" in ansible_facts.packages and ( \"chrony\" in ansible_facts.packages or \"ntp\" in ansible_facts.packages ) and not ( \"yum\" in ansible_facts.packages ) )"
-    platform_el = ET.fromstring(platform.to_xml_element())
+    platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
     assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
     logical_tests = platform_el.findall(
@@ -260,8 +249,6 @@ def test_platform_as_dict(product_cpes):
     assert d["name"] == "chrony_and_rhel7"
     # the "rhel7" platform doesn't have any conditionals
     # therefore the final conditional doesn't use it
-    assert d["ansible_conditional"] == "( \"chrony\" in ansible_facts.packages )"
-    assert d["bash_conditional"] == "( rpm --quiet -q chrony )"
     assert "xml_content" in d
 
 

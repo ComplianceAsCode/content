@@ -124,7 +124,7 @@ def test_product_cpes():
     assert(rhel7_cpe.name == "cpe:/o:redhat:enterprise_linux:7")
     assert(rhel7_cpe.title == "Red Hat Enterprise Linux 7")
     assert(rhel7_cpe.check_id == "installed_OS_is_rhel7")
-    assert(rhel7_cpe.bash_conditional == "")
+    assert(rhel7_cpe.bash_conditional == {})
     assert(rhel7_cpe.ansible_conditional == "")
 
     # get CPE by ID and verify it's loaded, the get_cpe method should return
@@ -137,13 +137,13 @@ def test_product_cpes():
     assert(rhel7_cpe_2.ansible_conditional == rhel7_cpe.ansible_conditional)
 
     # get a content CPE by name and verify it's loaded
-    # this CPE is defined in `DATADIR/applicability/virtualization.yml`
+    # this CPE is defined in `DATADIR/applicability/machine.yml`
     cpe1 = product_cpes.get_cpe("machine")
     assert(cpe1.name == "cpe:/a:machine")
     assert(cpe1.title == "Bare-metal or Virtual Machine")
     assert(cpe1.check_id == "installed_env_is_a_machine")
     assert(cpe1.ansible_conditional == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]")
-    assert(cpe1.bash_conditional == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
+    assert(cpe1.bash_conditional["conditional"] == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
 
     # get CPE by ID and verify it's loaded, the get_cpe method should return
     # the same object as when CPE name was used above

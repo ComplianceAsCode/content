@@ -242,19 +242,28 @@ class BashRemediation(Remediation):
                     if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            cpe_platforms[p].to_bash_conditional()
+            cpe_platforms[p].get_bash_conditional_line()
             for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            cpe_platforms[p].to_bash_conditional()
+            cpe_platforms[p].get_bash_conditional_line()
             for p in rule_specific_cpe_platform_names]
+        lines_before_remediation = set()
+        all_lines_before_remediation = [
+            cpe_platforms[p].get_bash_inserted_before_remediation() for p in inherited_cpe_platform_names.union(rule_specific_cpe_platform_names)
+        ]
+        lines_before_remediation.update(all_lines_before_remediation)
+
         # remove potential "None" from lists
         inherited_conditionals = sorted([
             p for p in inherited_conditionals if p != ''])
         rule_specific_conditionals = sorted([
             p for p in rule_specific_conditionals if p != ''])
+        lines_before_remediation = sorted([
+            l for l in lines_before_remediation if l != ''])
 
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
+            wrapped_fix_text.append("\n".join(lines_before_remediation))
 
             all_conditions = ""
             if inherited_conditionals:
@@ -404,10 +413,10 @@ class AnsibleRemediation(Remediation):
                     if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            cpe_platforms[p].to_ansible_conditional()
+            cpe_platforms[p].get_ansible_conditional()
             for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            cpe_platforms[p].to_ansible_conditional()
+            cpe_platforms[p].get_ansible_conditional()
             for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
