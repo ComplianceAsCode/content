@@ -47,7 +47,7 @@ references:
 template:
     name: sshd_lineinfile
     vars:
-        missing_parameter_pass: 'true'
         parameter: PrintLastLog
         rule_id: sshd_print_last_log
         value: 'yes'
+        is_default_value: 'true'

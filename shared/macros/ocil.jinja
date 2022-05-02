@@ -481,14 +481,13 @@ ocil_clause: "the required value is not set"
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
     {{% if sshd_distributed_config == "true" %}}
     <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config.d/00-complianceascode-hardening.conf</pre>
+    {{% if default == "yes" -%}}
+    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config.d/01-complianceascode-reinforce-os-defaults.conf</pre>
+    {{%- endif %}}
     {{% else %}}
     <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
     {{% endif %}}
-    {{% if default == "yes" -%}}
-    If no line, a commented line, or a line indicating the value <tt>{{{ value }}}</tt> is returned, then the required value is set.
-    {{%- else %}}
     If a line indicating <tt>{{{ value }}}</tt> is returned, then the required value is set.
-    {{%- endif %}}
 {{%- endmacro %}}
 
 

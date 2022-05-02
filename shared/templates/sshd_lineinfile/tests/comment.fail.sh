@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SSHD_PARAM="PermitUserEnvironment"
-SSHD_VAL="no"
+SSHD_PARAM={{{ PARAMETER }}}
+SSHD_VAL={{{ VALUE }}}
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
