@@ -2,11 +2,14 @@
   <definition class="compliance" id="sysctl_kernel_exec_shield" version="2">
     {{{ oval_metadata("The kernel runtime parameter 'kernel.exec-shield' should not be disabled and set to 1 on 32-bit systems.") }}}
     <criteria operator="OR">
+      {{# products that are available also in a 32 bits form #}}
+      {{% if "rhel" not in product and product != "fedora" %}}
       <criteria operator="AND">
         <extend_definition comment="32-bit system" definition_ref="system_info_architecture_x86" />
         <criterion comment="kernel runtime parameter kernel.exec-shield set to 1" test_ref="test_runtime_sysctl_kernel_exec_shield" />
         <criterion comment="kernel /etc/sysctl.conf parameter kernel.exec-shield set to 1" test_ref="test_static_sysctl_kernel_exec_shield" />
       </criteria>
+      {{% endif %}}
       <criteria operator="AND">
         <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
         <criterion comment="NX is supported and is not disabled" test_ref="test_nx_disabled_grub" />

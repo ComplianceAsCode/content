@@ -4,6 +4,8 @@
 # complexity = low
 # disruption = low
 
+{{# products that are available also in a 32 bits form #}}
+{{% if "rhel" not in product and product != "fedora" %}}
 if [ "$(getconf LONG_BIT)" = "32" ] ; then
   #
   # Set runtime for kernel.exec-shield
@@ -20,3 +22,6 @@ fi
 if [ "$(getconf LONG_BIT)" = "64" ] ; then
     {{{ grub2_bootloader_argument_absent_remediation("noexec") }}}
 fi
+{{% else %}}
+    {{{ grub2_bootloader_argument_absent_remediation("noexec") }}}
+{{% endif %}}
