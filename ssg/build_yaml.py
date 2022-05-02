@@ -1918,7 +1918,8 @@ class Platform(XCCDFEntity):
         name=lambda: "",
         original_expression=lambda: "",
         xml_content=lambda: "",
-        bash_conditional=lambda: "",
+        bash_conditional_line=lambda: "",
+        bash_inserted_before_remediation=lambda: "",
         ansible_conditional=lambda: "",
         ** XCCDFEntity.KEYS
     )
@@ -1927,7 +1928,7 @@ class Platform(XCCDFEntity):
         "name",
         "xml_content",
         "original_expression",
-        "bash_conditional",
+        "bash_conditional_line",
         "ansible_conditional"
     ]
 
@@ -1947,7 +1948,8 @@ class Platform(XCCDFEntity):
         platform.name = id
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
-        platform.bash_conditional = platform.test.to_bash_conditional()
+        platform.bash_conditional_line = platform.test.get_bash_conditional_line()
+        platform.bash_inserted_before_remediation = platform.test.get_bash_inserted_before_remediation()
         platform.ansible_conditional = platform.test.to_ansible_conditional()
         return platform
 
@@ -1970,8 +1972,11 @@ class Platform(XCCDFEntity):
     def to_xml_element(self):
         return self.xml_content
 
-    def to_bash_conditional(self):
-        return self.bash_conditional
+    def get_bash_conditional_line(self):
+        return self.bash_conditional_line
+
+    def get_bash_inserted_before_remediation(self):
+        return self.bash_inserted_before_remediation
 
     def to_ansible_conditional(self):
         return self.ansible_conditional

@@ -224,22 +224,27 @@ class CPEALLogicalTest(Function):
         for arg in self.args:
             arg.enrich_with_cpe_info(cpe_products)
 
-    def to_bash_conditional(self):
-        cond = ""
+    def get_bash_conditional_line(self):
+        condline = ""
         if self.is_not():
-            cond += "! "
+            condline += "! "
             op = " "
-        cond += "( "
-        child_bash_conds = [
-            a.to_bash_conditional() for a in self.args
-            if a.to_bash_conditional() != '']
+        condline += "( "
+        child_condlines = [
+            a.get_bash_conditional_line() for a in self.args
+            if a.get_bash_conditional_line() != '']
         if self.is_or():
             op = " || "
         elif self.is_and():
             op = " && "
-        cond += op.join(child_bash_conds)
-        cond += " )"
-        return cond
+        condline += op.join(child_condlines)
+        condline += " )"
+        return condline
+
+    def get_bash_inserted_before_remediation(self):
+        lines = [a.get_bash_inserted_before_remediation() for a in self.args
+            if a.get_bash_inserted_before_remediation() is not None]
+        return "\n".join(lines)
 
     def to_ansible_conditional(self):
         cond = ""
@@ -267,7 +272,7 @@ class CPEALFactRef (Symbol):
     def __init__(self, obj):
         super(CPEALFactRef, self).__init__(obj)
         self.cpe_name = obj  # we do not want to modify original name used for platforms
-        self.bash_conditional = ""
+        self.bash_conditional = {}
         self.ansible_conditional = ""
 
     def has_arguments(self):
@@ -296,8 +301,18 @@ class CPEALFactRef (Symbol):
 
         return cpe_factref
 
-    def to_bash_conditional(self):
-        return self.bash_conditional
+    def get_bash_conditional_line(self):
+        if isinstance(self.bash_conditional, dict):
+            return self.bash_conditional["conditional"]
+        else:
+            return ""
+
+    def get_bash_inserted_before_remediation(self):
+        if isinstance(self.bash_conditional, dict):
+
+            return self.bash_conditional.get("insert_before_remediation")
+        else:
+            return None
 
     def to_ansible_conditional(self):
         return self.ansible_conditional
