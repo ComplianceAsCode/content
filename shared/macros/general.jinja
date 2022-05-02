@@ -228,7 +228,7 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 #}}
 {{%- macro describe_module_disable(module) %}}
     To configure the system to prevent the <code>{{{ module }}}</code>
-    kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+    kernel module from being loaded, add the following line to the file <code>/etc/modprobe.d/{{{ module }}}.conf</code>:
     <pre>install {{{ module }}} /bin/true</pre>
 {{%- endmacro %}}
 

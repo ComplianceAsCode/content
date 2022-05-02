@@ -11,8 +11,6 @@ description: |-
     <pre>$ sudo firewall-cmd --permanent --add-port=<i>port_number</i>/tcp</pre>
     or
     <pre>$ sudo firewall-cmd --permanent --add-port=<i>service_name</i></pre>
-    Run the command list above for each of the ports listed below:
-    {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}
 
 rationale: |-
     In order to prevent unauthorized connection of devices, unauthorized
@@ -63,3 +61,10 @@ ocil: |-
     Inspect the list of enabled firewall ports and verify they are configured
     correctly by running the following command:
     <pre>$ sudo firewall-cmd --list-all</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to allow approved services to have access to the system.
+    To open a port for a service, configure firewalld using the following command:
+    $ sudo firewall-cmd --permanent --add-port=port_number/tcp
+    or
+    $ sudo firewall-cmd --permanent --add-service=service_name
