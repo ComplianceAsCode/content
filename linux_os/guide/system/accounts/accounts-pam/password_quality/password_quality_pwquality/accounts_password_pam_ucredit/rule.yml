@@ -53,13 +53,12 @@ references:
     stigid@ubuntu2004: UBTU-20-010050
     vmmsrg: SRG-OS-000069-VMM-000360
 
-ocil_clause: 'ucredit is not found or not set less than or equal to the required value'
+ocil_clause: 'ucredit is not found or not set to the required value'
 
 ocil: |-
     To check how many uppercase characters are required in a password, run the following command:
     <pre>$ grep ucredit /etc/security/pwquality.conf</pre>
     The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
-    The DoD and FISMA require at least one uppercase character in a password.
     This would appear as <tt>ucredit = -1</tt>.
 
 fixtext: |-
