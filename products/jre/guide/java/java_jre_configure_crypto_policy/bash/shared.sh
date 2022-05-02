@@ -1,4 +1,4 @@
-# platform =  Java Runtime Environment
+# platform = Java Runtime Environment
 
 
 JRE_CONFIG_FILE="/usr/lib/jvm/jre/lib/security/java.security"

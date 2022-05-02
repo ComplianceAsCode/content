@@ -1,4 +1,4 @@
-# platform = multi_platform_wrlinux,multi_platform_all
+# platform = multi_platform_all
 
 {{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
 AUDISP_REMOTE_CONFIG="/etc/audit/audisp-remote.conf"
