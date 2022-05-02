@@ -1,3 +1,9 @@
+{{%- if SYSCTLVAL == "" %}}
+{{%- set COMMENT_VALUE="the appropriate value" %}}
+{{%- else %}}
+{{%- set COMMENT_VALUE=SYSCTLVAL %}}
+{{%- endif %}}
+
 {{% macro state_static_sysctld(prefix) -%}}
     <ind:object object_ref="object_static_{{{ prefix }}}_{{{ SYSCTLID }}}"/>
 {{%- if SYSCTLVAL == "" %}}
@@ -6,7 +12,7 @@
 {{%- endmacro -%}}
 {{%- macro sysctl_match() -%}}
 {{%- if SYSCTLVAL == "" -%}}
-    <ind:pattern operation="pattern match">(?:^|.*\n)[^#]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(\d+)[\s]*\n</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(\d+)[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- else -%}}
 {{% if OPERATION == "pattern match" %}}
@@ -59,26 +65,15 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_runtime_{{{ SYSCTLID }}}" version="3">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system runtime.") }}}
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.") }}}
     <criteria operator="AND">
-{{%- if SYSCTLVAL == "" %}}
-      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to the appropriate value"
+      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                  test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}"/>
-{{%- else %}}
-      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}}"
-                 test_ref="test_sysctl_runtime_{{{ SYSCTLID }}}"/>
-{{%- endif %}}
     </criteria>
   </definition>
-{{% if SYSCTLVAL == "" %}}
   <unix:sysctl_test id="test_sysctl_runtime_{{{ SYSCTLID }}}" version="1"
-                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to the appropriate value"
+                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                     check="all" check_existence="all_exist">
-{{%- else %}}
-  <unix:sysctl_test id="test_sysctl_runtime_{{{ SYSCTLID }}}" version="1"
-                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}}"
-                    check="all" check_existence="all_exist">
-{{%- endif %}}
     <unix:object object_ref="object_sysctl_runtime_{{{ SYSCTLID }}}"/>
     <unix:state state_ref="state_sysctl_runtime_{{{ SYSCTLID }}}"/>
   </unix:sysctl_test>
@@ -112,33 +107,21 @@
 
 <def-group>
   <definition class="compliance" id="sysctl_static_{{{ SYSCTLID }}}" version="3">
-    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + ("'" + SYSCTLVAL + "'") if SYSCTLVAL else " the appropriate value" + " in the system configuration.") }}}
-{{%- if SYSCTLVAL == "" %}}
-    <criteria operator="OR">
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /etc/sysctl.conf"
-                 test_ref="test_static_sysctl_{{{ SYSCTLID }}}"/>
-      <!-- see sysctl.d(5) -->
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /etc/sysctl.d/*.conf"
-                 test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /run/sysctl.d/*.conf"
-                 test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to the appropriate value in /usr/lib/sysctl.d/*.conf"
-                 test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
+    {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
+    <criteria operator="AND">
+      <criteria operator="OR">
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.conf"
+                   test_ref="test_static_sysctl_{{{ SYSCTLID }}}"/>
+        <!-- see sysctl.d(5) -->
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.d/*.conf"
+                   test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /run/sysctl.d/*.conf"
+                   test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
+                   test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
+      </criteria>
+      <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
     </criteria>
-{{%- else %}}
-
-    <criteria operator="OR">
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /etc/sysctl.conf"
-                 test_ref="test_static_sysctl_{{{ SYSCTLID }}}"/>
-      <!-- see sysctl.d(5) -->
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /etc/sysctl.d/*.conf"
-                 test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /run/sysctl.d/*.conf"
-                 test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
-      <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ SYSCTLVAL }}} in /usr/lib/sysctl.d/*.conf"
-                 test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
-    </criteria>
-{{%- endif %}}
   </definition>
 
   <ind:textfilecontent54_test id="test_static_sysctl_{{{ SYSCTLID }}}" version="1"
@@ -162,6 +145,51 @@
                           comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
+
+  <ind:variable_test check="all" check_existence="all_exist" comment="Check that only one file contains {{{ SYSCTLID }}}"
+  id="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
+    <ind:object object_ref="oject_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
+    <ind:state state_ref="state_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
+  </ind:variable_test>
+
+  <ind:variable_object id="oject_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
+    <ind:var_ref>local_var_unique_sysctl_{{{ SYSCTLID }}}_counter</ind:var_ref>
+  </ind:variable_object>
+
+  <ind:variable_state id="state_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
+    <ind:value operation="equals" datatype="int">1</ind:value>
+  </ind:variable_state>
+
+  <local_variable comment="Count unique sysctls" datatype="int" id="local_var_unique_sysctl_{{{ SYSCTLID }}}_counter" version="1">
+    <count>
+      <unique>
+        <object_component object_ref="object_static_set_sysctls_{{{ SYSCTLID }}}" item_field="filepath" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
+       variable to have no value even when there are valid objects. -->
+  <ind:textfilecontent54_object id="object_static_set_sysctls_{{{ SYSCTLID }}}" version="1">
+    <set>
+      <object_reference>object_static_etc_sysctls_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_run_usr_sysctls_{{{ SYSCTLID }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctls_{{{ SYSCTLID }}}" version="1">
+    <set>
+      <object_reference>object_static_sysctl_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_etc_sysctld_{{{ SYSCTLID }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ SYSCTLID }}}" version="1">
+    <set>
+      <object_reference>object_static_run_sysctld_{{{ SYSCTLID }}}</object_reference>
+      <object_reference>object_static_usr_lib_sysctld_{{{ SYSCTLID }}}</object_reference>
+    </set>
+  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_static_sysctl_{{{ SYSCTLID }}}" version="1">
     <ind:filepath>/etc/sysctl.conf</ind:filepath>
