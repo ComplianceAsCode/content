@@ -62,6 +62,13 @@ ocil: |-
     The DoD and FISMA require at least one uppercase character in a password.
     This would appear as <tt>ucredit = -1</tt>.
 
+fixtext: |-
+    Configure {{{ full_name }}} to enforce password complexity by requiring that at least one upper-case character be used by setting the "ucredit" option.
+
+    Add the following line to /etc/security/pwquality.conf (or modify the line to have the required value):
+
+    ucredit = {{{ xccdf_value("var_password_pam_ucredit") }}}
+
 platform: pam
 
 template:
