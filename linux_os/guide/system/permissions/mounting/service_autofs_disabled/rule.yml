@@ -60,9 +60,15 @@ references:
 ocil: |-
     {{{ ocil_service_disabled(service="autofs") }}}
 
+ocil_clause: the autofs service is not disabled
+
 platform: machine
 
 template:
     name: service_disabled
     vars:
         servicename: autofs
+
+fixtext: |-
+    Configure {{{ full_name }}} to disable the ability to automount devices.
+    {{{ describe_service_disable(service="autofs") }}}

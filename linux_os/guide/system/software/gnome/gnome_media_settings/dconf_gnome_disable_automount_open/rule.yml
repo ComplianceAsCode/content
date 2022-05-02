@@ -19,6 +19,7 @@ description: |-
     After the settings have been set, run <tt>dconf update</tt>.
 
 rationale: |-
+    Automatically mounting file systems permits easy introduction of unknown devices, thereby facilitating malicious activity.
     Disabling automatic mounting in GNOME3 can prevent
     the introduction of malware via removable media.
     It will, however, also prevent desktop users from legitimate use
@@ -56,3 +57,8 @@ ocil: |-
     If properly configured, the output for <tt>automount-open</tt> should be <tt>/org/gnome/desktop/media-handling/automount-open</tt>
 
 platform: machine
+
+fixtext: |-
+    Configure GNOME 3 to disable automated mount of removable media.
+
+    {{{ fixtext_dconf_ini_file("org/gnome/desktop/media-handling", "automount-open", "false") }}}
