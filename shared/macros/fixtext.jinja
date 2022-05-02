@@ -182,3 +182,18 @@ $ sudo sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ argument }}}=?[^[:space:]]*\(.*"
 Run the following command:
 $ sudo {{{ grub_command("remove", argument) }}}
 {{% endmacro %}}
+
+
+{{#
+    Macro describing fix for audit configuration.
+
+:param param: The audit configuration to be changed.
+:type param: str
+:param value: The value of the audit configuration.
+:type value: str
+#}}
+{{% macro fixtext_audit_configuration(param, value) -%}}
+Edit the file "/etc/audit/auditd.conf" and add or edit the following line:
+{{{ param }}} = {{{ value }}}
+
+{{%- endmacro %}}

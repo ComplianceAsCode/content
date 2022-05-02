@@ -41,9 +41,7 @@ ocil: |-
     <pre>name_format = hostname</pre>
 
 fixtext: |-
-    Edit the file "/etc/audit/auditd.conf" and add or edit the following line:
-
-    name_format=hostname
+    {{{ fixtext_audit_configuration(param="name_format", value="hostname") | indent(4) }}}
 
 template:
     name: auditd_lineinfile
