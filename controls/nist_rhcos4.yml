@@ -4683,13 +4683,16 @@ controls:
     https://issues.redhat.com/browse/CMP-267
   rules: []
 - id: CM-3(6)
-  status: pending
+  status: automated
   notes: |-
-    A complete control response is planned. Engineering progress can be
-    tracked via:
+    The only way to access the OpenShift nodes should through '$oc debug', remote SSH should
+    be disabled after the Installation
 
-    https://issues.redhat.com/browse/CMP-268
-  rules: []
+    OpenShift also support FIPS mode, which can be enabled in OpenShift through a flag that
+    can be set at installation time
+  rules:
+   - service_sshd_disabled
+   - enable_fips_mode
   description: |-
     The organization ensures that cryptographic mechanisms used to provide [Assignment: organization-defined security safeguards] are under configuration management.
 
@@ -6813,12 +6816,12 @@ controls:
   - high
   - moderate
 - id: IA-2(4)
-  status: pending
+  status: automated
   notes: |-
-    A control response is planned. Engineering progress can be tracked via:
-
-    https://issues.redhat.com/browse/CMP-303
-  rules: []
+    The only way to access the OpenShift nodes should through '$oc debug', remote SSH should
+    be disabled after the Installation
+  rules:
+  - service_sshd_disabled
   description: |-
     The information system implements multifactor authentication for local access to non-privileged accounts.
   title: >-
