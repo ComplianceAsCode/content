@@ -31,6 +31,8 @@ Configure the audit system to generate an audit event for any successful/unsucce
 -a always,exit -F arch=b32 -S {{{ syscall }}} -F auid>=1000 -F auid!=unset -k delete
 -a always,exit -F arch=b64 -S {{{ syscall }}} -F auid>=1000 -F auid!=unset -k delete
 
+It's allowed to group this system call within the same line as "rename", "unlink", "rmdir", "renameat", and "unlinkat".
+
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
