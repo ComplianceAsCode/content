@@ -17,6 +17,11 @@
     reload: yes
   when: kexec_arch == "b32"
 
+{{% if product == "rhel9" %}}
+- name: Update grub defaults and the bootloader menu
+  command: /sbin/grubby --update-kernel=ALL --args="kernel.exec-shield=1"
+  when: kexec_arch == "b64"
+{{% else %}}
 - name: Ensure existence of grub config
   stat:
     path: "{{ item.path }}"
@@ -41,3 +46,4 @@
 - name: make grub config
   command: "grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg"
   when: dropped_noexec_cfg.changed
+{{% endif %}}

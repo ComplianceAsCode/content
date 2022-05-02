@@ -51,11 +51,22 @@ ocil: |-
     run the following command:
     <pre>$ dmesg | grep '[NX|DX]*protection'</pre>
     The output should not contain <tt>'disabled by kernel command line option'</tt>.
-    To verify that ExecShield has not been disabled in the kernel configuration,
-    run the following command:
-    <pre>$ sudo grep noexec {{{ grub2_boot_path }}}/grub.cfg</pre>
-    The output should not return <tt>noexec=off</tt>.
+    {{{ ocil_grub2_argument("noexec=off") | indent(4) }}}
+
     For 32-bit {{{ full_name }}} systems, run the following command:
     <pre>$ sysctl kernel.exec-shield</pre>
     The output should be:
     {{{ describe_sysctl_option_value(sysctl="kernel.exec-shield", value="1") }}}
+
+fixtext: |-
+    On a 64-bit {{{ full_name }}} system update the GRUB bootloader configuration.
+
+    {{{ fixtext_grub2_bootloader_argument_absent("noexec") | indent(4) }}}
+
+    On a 32-bit {{{ full_name }}} system, run the following command:
+
+    $ sudo sysctl -q -n -w kernel.exec-shield=1
+
+    Then, add or edit the following line in "/etc/sysctl.conf":
+
+    kernel.exec-shield = 1
