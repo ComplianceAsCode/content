@@ -5,9 +5,11 @@ import ssg.build_remediations as sbr
 import ssg.utils
 import ssg.products
 from ssg.yaml import ordered_load
+import ssg.build_yaml
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 rule_dir = os.path.join(DATADIR, "group_dir", "rule_dir")
+rule_file = os.path.join(rule_dir, "rule.yml")
 rhel_bash = os.path.join(rule_dir, "bash", "rhel.sh")
 
 
@@ -34,6 +36,7 @@ def test_is_supported_file_name():
 def do_test_contents(remediation, config):
     assert 'do_something_magical' in remediation
     assert '# a random comment' in remediation
+
 
     assert 'platform' in config
     assert 'reboot' in config
@@ -63,10 +66,18 @@ def test_process_fix(env_yaml, cpe_platforms):
     fixes = {}
 
     remediation_obj = remediation_cls(rhel_bash)
+    # create a fake rule
+    # the rule uses the "machine" platform which has bash_conditional_line
+    # and bash_inserted_before_remediation defined
+    rule = ssg.build_yaml.Rule("test_rule")
+    rule.cpe_platform_names = ["machine"]
+    remediation_obj.associate_rule(rule)
     result = sbr.process(remediation_obj, env_yaml, cpe_platforms)
 
     assert result is not None
     assert len(result) == 2
+    assert 'some_helper_function' in result.contents
+    assert '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]' in result.contents
     do_test_contents(result.contents, result.config)
 
 
