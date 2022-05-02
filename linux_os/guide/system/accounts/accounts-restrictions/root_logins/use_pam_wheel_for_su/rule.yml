@@ -36,3 +36,12 @@ ocil: |-
     <pre>grep pam_wheel /etc/pam.d/su</pre>
     The output should contain the following line:
     <pre>auth             required        pam_wheel.so use_uid</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to require users to be in the "wheel" group to run "su" command.
+
+    In file "/etc/pam.d/su", uncomment the following line:
+
+    "#auth    required    pam_wheel.so use_id"
+
+    $ sed '/^[[:space:]]*#[[:space:]]*auth[[:space:]]\+required[[:space:]]\+pam_wheel\.so[[:space:]]\+use_uid$/s/^[[:space:]]*#//' -i /etc/pam.d/su
