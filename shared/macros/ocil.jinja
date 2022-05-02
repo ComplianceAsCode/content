@@ -972,23 +972,23 @@ Inspect the form of default GRUB 2 command line for the Linux operating system
 in <tt>/etc/default/grub</tt>. If it includes <tt>{{{ arg_name_value }}}</tt>,
 then the parameter will be configured for newly installed kernels.
 First check if the GRUB recovery is enabled:
-<pre>$ grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
+<pre>$ sudo grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
 If this option is set to true, then check that a line is output by the following command:
-<pre>$ grep 'GRUB_CMDLINE_LINUX_DEFAULT.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>
+<pre>$ sudo grep 'GRUB_CMDLINE_LINUX_DEFAULT.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>
 If the recovery is disabled, check the line with
-<pre>$ grep 'GRUB_CMDLINE_LINUX.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>.
+<pre>$ sudo grep 'GRUB_CMDLINE_LINUX.*{{{ arg_name_value }}}.*' /etc/default/grub</pre>.
 {{%- if 'ubuntu' in product -%}}
 Moreover, current Grub config file <tt>grub.cfg</tt> must be checked. The file can be found
 either in <tt>{{{ grub2_boot_path }}}</tt> in case of legacy BIOS systems, or in <tt>{{{ grub2_uefi_boot_path }}}</tt> in case of UEFI systems.
 If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
 is configured at boot time.
-<pre># grep vmlinuz GRUB_CFG_FILE_PATH | grep -v '{{{ arg_name_value }}}'</pre>
+<pre>$ sudo grep vmlinuz GRUB_CFG_FILE_PATH | grep -v '{{{ arg_name_value }}}'</pre>
 Fill in <tt>GRUB_CFG_FILE_PATH</tt> based on information above.
 This command should not return any output.
 {{%- else -%}}
 Moreover, command line parameters for currently installed kernels should be checked as well.
 Run the following command:
-<pre># grubby --info=ALL | grep args | grep -v '{{{ arg_name_value }}}'</pre>
+<pre>$ sudo grubby --info=ALL | grep args | grep -v '{{{ arg_name_value }}}'</pre>
 The command should not return any output.
 {{%- endif -%}}
 {{%- else -%}}
@@ -1000,7 +1000,7 @@ in <tt>grubenv</tt> that can be found either in <tt>{{{ grub2_boot_path }}}</tt>
 {{%- endif %}}
 If they include <tt>{{{ arg_name_value }}}</tt>, then the parameter
 is configured at boot time.
-<pre># grep 'kernelopts.*{{{ arg_name_value }}}.*' GRUBENV_FILE_LOCATION</pre>
+<pre>$ sudo grep 'kernelopts.*{{{ arg_name_value }}}.*' GRUBENV_FILE_LOCATION</pre>
 Fill in <tt>GRUBENV_FILE_LOCATION</tt> based on information above.
 {{%- endif -%}}
 {{%- endmacro -%}}

@@ -1066,3 +1066,37 @@ p+i+n+u+g+s+b+acl+xattrs+sha512
     /usr/sbin/augenrules {{{ aide_string() }}}
 {{% endmacro %}}
 
+
+{{#
+Macro to generate a command to modify (add or remove) kernel command line argument in a GRUB 2 bootloader.
+Generates a correct command based on the product (grubby, grub2-mkconfig, update-grub, etc.)
+Part of the grub2_bootloader_argument(_absent) templates.
+
+:param action: What to do with the argument, either "add" or "remove".
+:type action str:
+:param arg_name: :type arg_name str: :param arg_name_value: If action is "add", it's kernel command line argument concatenated with the value of this argument using an equal sign, eg. "audit=1". If action is "remove", it's only the kernel command line argument name, eg. "audit".
+:type arg_name_value str:
+
+#}}
+{{% macro grub_command(action, arg_name_value) -%}}
+{{%- if action == "add" -%}}
+{{%- set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ arg_name_value ] -%}}
+{{%- elif action == "remove" -%}}
+{{%- set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ arg_name_value ] -%}}
+{{%- else -%}}
+{{{ raise("Unknown action" + action) }}}
+{{%- endif -%}}
+{{%- if 'ubuntu' in product -%}}
+	{{%- set grub_helper_executable = "update-grub" -%}}
+{{%- elif product in ["sle12", "sle15"] -%}}
+{{%- set grub_helper_executable = "grub2-mkconfig" -%}}
+{{%- set grub_helper_args = ["-o " + grub2_boot_path + "/grub2.cfg"] -%}}
+{{%- else -%}}
+	{{%- set grub_helper_executable = "grubby" -%}}
+{{%- endif -%}}
+{{%- if product in ["rhel8", "ol8"] -%}}
+{{# Suppress the None output of append -#}}
+{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
+{{%- endif -%}}
+{{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
+{{%- endmacro %}}

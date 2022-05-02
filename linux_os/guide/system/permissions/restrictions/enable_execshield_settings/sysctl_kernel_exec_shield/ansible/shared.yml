@@ -4,6 +4,9 @@
 # complexity = low
 # disruption = low
 
+{{# products that are available also in a 32 bits form #}}
+{{% if "rhel" not in product and product != "fedora" %}}
+
 # What architecture are we on?
 - name: Set architecture for kernel exec-shield tasks
   set_fact:
@@ -17,27 +20,34 @@
     reload: yes
   when: kexec_arch == "b32"
 
-- name: Ensure existence of grub config
-  stat:
-    path: "{{ item.path }}"
-  register: stat_results
-  with_items:
-    - { path: /etc/grub2.cfg }
-    - { path: /etc/default/grub }
-  ignore_errors: True
+{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+- name: Check noexec argument exists
+  command: grep '^GRUB_CMDLINE_LINUX=.*noexec=.*"' /etc/default/grub
+  failed_when: False
+  register: argcheck
+  when: kexec_arch == "b64"
 
-- name: Ensure noexec is not present in grub config files
+- name: Replace existing noexec argument
   replace:
-    path: "{{ item.item }}"
-    regexp: 'noexec.*'
-    replace: ''
-  with_items:
-    - { path: /etc/grub2.cfg }
-    - { path: /etc/default/grub }
-  with_items: "{{ stat_results.results }}"
-  when: ( kexec_arch == "b64" ) and ( not item.stat.exists )
-  register: dropped_noexec_cfg
+      path: /etc/default/grub
+      regexp: '\(^GRUB_CMDLINE_LINUX=".*\)noexec=?[^[:space:]]*\(.*"\)'
+      replace: '\1 \2'
+  when:
+    - argcheck.rc == 0
+    - kexec_arch == "b64"
 
-- name: make grub config
-  command: "grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg"
-  when: dropped_noexec_cfg.changed
+{{% endif -%}}
+
+{{% if product in ['sle12', 'sle15'] %}}
+- name: Update grub defaults and the bootloader menu
+  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+  when: kexec_arch == "b64"
+{{% else %}}
+- name: Update grub defaults and the bootloader menu
+  command: /sbin/grubby --update-kernel=ALL --remove-args="noexec"
+  when: kexec_arch == "b64"
+{{% endif -%}}
+
+{{% else %}}
+{{{ ansible_grub2_bootloader_argument_absent("noexec") }}}
+{{% endif -%}}

@@ -7,9 +7,13 @@ title: 'Enable ExecShield via sysctl'
 description: |-
     By default on {{{ full_name }}} 64-bit systems, ExecShield is
     enabled and can only be disabled if the hardware does not support
-    ExecShield or is disabled in <tt>/etc/default/grub</tt>. For
-    {{{ full_name }}}  32-bit systems, <tt>sysctl</tt> can be used to enable
+    ExecShield or is disabled in <tt>/etc/default/grub</tt>.
+
+    {{# products that are available also in a 32 bits form #}}
+    {{% if "rhel" not in product and product != "fedora" %}}
+    For {{{ full_name }}}  32-bit systems, <tt>sysctl</tt> can be used to enable
     ExecShield.
+    {{% endif %}}
 
 rationale: |-
     ExecShield uses the segmentation feature on all x86 systems to prevent
@@ -51,13 +55,32 @@ ocil: |-
     run the following command:
     <pre>$ dmesg | grep '[NX|DX]*protection'</pre>
     The output should not contain <tt>'disabled by kernel command line option'</tt>.
-    To verify that ExecShield has not been disabled in the kernel configuration,
-    run the following command:
-    <pre>$ sudo grep noexec {{{ grub2_boot_path }}}/grub.cfg</pre>
-    The output should not return <tt>noexec=off</tt>.
+    {{{ ocil_grub2_argument("noexec=off") | indent(4) }}}
+
+    {{# products that are available also in a 32 bits form #}}
+    {{% if "rhel" not in product and product != "fedora" %}}
     For 32-bit {{{ full_name }}} systems, run the following command:
     <pre>$ sysctl kernel.exec-shield</pre>
     The output should be:
     {{{ describe_sysctl_option_value(sysctl="kernel.exec-shield", value="1") }}}
+    {{% endif %}}
 
-platform: machine
+fixtext: |-
+    {{# products that are available also in a 32 bits form #}}
+    {{%- if "rhel" not in product and product != "fedora" -%}}
+    On a 64-bit {{{ full_name }}} system update the GRUB bootloader configuration.
+
+    {{{ fixtext_grub2_bootloader_argument_absent("noexec") | indent(4) }}}
+
+    On a 32-bit {{{ full_name }}} system, run the following command:
+
+    $ sudo sysctl -q -n -w kernel.exec-shield=1
+
+    Then, add or edit the following line in "/etc/sysctl.conf":
+
+    kernel.exec-shield = 1
+    {{%- else -%}}
+    Update the GRUB 2 bootloader configuration.
+
+    {{{ fixtext_grub2_bootloader_argument_absent("noexec") | indent(4) }}}
+    {{%- endif -%}}

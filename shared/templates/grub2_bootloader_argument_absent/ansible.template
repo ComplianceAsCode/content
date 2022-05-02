@@ -4,5 +4,4 @@
 # complexity = medium
 # disruption = low
 
-- name: Update grub defaults and the bootloader menu
-  command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ ARG_NAME }}}"
+{{{ ansible_grub2_bootloader_argument_absent(ARG_NAME) }}}

@@ -898,3 +898,77 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   when:
     - not result_faillock_conf_check.stat.exists
 {{%- endmacro -%}}
+
+{{#
+Macro for Ansible remediation for adding a kernel command line argument to the GRUB 2 bootloader.
+Part of the grub2_bootloader_argument template.
+
+:param arg_name: Kernel command line argument
+:type arg_name str:
+:param arg_name_value: Kernel command line argument concatenated with the value of this argument using an equal sign, eg. "noexec=off".
+:type arg_name_value str:
+
+#}}
+{{%- macro ansible_grub2_bootloader_argument(arg_name, arg_name_value) -%}}
+{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+- name: Check {{{ arg_name }}} argument exists
+  command: grep 'GRUB_CMDLINE_LINUX.*{{{ arg_name }}}=' /etc/default/grub
+  failed_when: False
+  register: argcheck
+
+- name: Replace existing {{{ arg_name }}} argument
+  replace:
+      path: /etc/default/grub
+      regexp: '{{{ arg_name }}}=\w+'
+      replace: '{{{ arg_name_value }}}'
+  when: argcheck.rc == 0
+
+- name: Add {{{ arg_name }}} argument
+  replace:
+      path: /etc/default/grub
+      regexp: '(GRUB_CMDLINE_LINUX=.*)"'
+      replace: '\1 {{{ arg_name_value }}}"'
+  when: argcheck.rc != 0
+{{% endif -%}}
+
+{{% if product in ['sle12', 'sle15'] %}}
+- name: Update grub defaults and the bootloader menu
+  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+{{% else %}}
+- name: Update grub defaults and the bootloader menu
+  command: /sbin/grubby --update-kernel=ALL --args="{{{ arg_name_value }}}"
+{{% endif -%}}
+{{%- endmacro -%}}
+
+{{#
+Macro for Ansible remediation for removing a kernel command line argument from the GRUB 2 bootloader.
+Part of the grub2_bootloader_argument_absent template.
+
+:param arg_name: Name of the kernel command line argument that will be removed from GRUB 2 configuration.
+:type arg_name str:
+
+#}}
+{{%- macro ansible_grub2_bootloader_argument_absent(arg_name) -%}}
+{{% if 'ubuntu' in product or product in ['rhel7', 'ol7', 'sle12', 'sle15'] %}}
+- name: Check {{{ arg_name }}} argument exists
+  command: grep '^GRUB_CMDLINE_LINUX=.*{{{ arg_name }}}=.*"' /etc/default/grub
+  failed_when: False
+  register: argcheck
+
+- name: Replace existing {{{ arg_name }}} argument
+  replace:
+      path: /etc/default/grub
+      regexp: '\(^GRUB_CMDLINE_LINUX=".*\){{{ arg_name }}}=?[^[:space:]]*\(.*"\)'
+      replace: '\1 \2'
+  when: argcheck.rc == 0
+
+{{% endif -%}}
+
+{{% if product in ['sle12', 'sle15'] %}}
+- name: Update grub defaults and the bootloader menu
+  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+{{% else %}}
+- name: Update grub defaults and the bootloader menu
+  command: /sbin/grubby --update-kernel=ALL --remove-args="{{{ arg_name }}}"
+{{% endif -%}}
+{{%- endmacro -%}}
