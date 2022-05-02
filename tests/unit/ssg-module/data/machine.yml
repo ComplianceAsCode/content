@@ -7,6 +7,7 @@ xml_content: !!binary |
     ZiBuYW1lPSJjcGU6L2E6bWFjaGluZSIgLz48L25zMDpsb2dpY2FsLXRlc3Q+PC9uczA6cGxhdGZv
     cm0+
 bash_conditional_line: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
+bash_inserted_before_remediation: "some_helper_function"
 ansible_conditional: ansible_virtualization_type not in ["docker", "lxc", "openvz",
     "podman", "container"]
 definition_location: ''
