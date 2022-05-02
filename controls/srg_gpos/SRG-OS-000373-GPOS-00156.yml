@@ -8,6 +8,6 @@ controls:
             - use_pam_wheel_for_su
             - sudo_remove_no_authenticate
             - sudo_remove_nopasswd
-            - sudo_require_authentication
             - sudo_require_reauthentication
+            - var_sudo_timestamp_timeout=always_prompt
         status: automated

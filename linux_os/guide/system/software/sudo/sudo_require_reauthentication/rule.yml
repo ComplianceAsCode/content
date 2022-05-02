@@ -51,3 +51,10 @@ ocil: |-
     The output should be:
     <pre>/etc/sudoers:Defaults timestamp_timeout=0</pre> or "timestamp_timeout" is set to a positive number.
     If results are returned from more than one file location, this is a finding.
+
+fixtext: |-
+    Configure {{{ full_name }}} to re-authenticate "sudo" commands after the specified timeout:
+
+    Add the following line to "/etc/sudoers":
+
+    Defaults timestamp_timeout={{{ xccdf_value("var_sudo_timestamp_timeout") }}}
