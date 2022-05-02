@@ -31,3 +31,17 @@ ocil: |-
 
 severity: medium
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting("/apis/pipelines.openshift.io/v1alpha1/gitopsservices?limit=5") | indent(4) }}}
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: /apis/pipelines.openshift.io/v1alpha1/gitopsservices?limit=5
+    yamlpath: ".items[:].metadata.name"
+    entity_check: "at least one"
+    values:
+      - value: ".*"
+        operation: "pattern match"
