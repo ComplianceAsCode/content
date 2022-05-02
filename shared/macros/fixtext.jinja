@@ -97,30 +97,6 @@ Load settings from all system configuration files with the following command:
 $ sudo sysctl --system
 {{%- endmacro %}}
 
-
-{{% macro grub_command(action, argument, value=None) %}}
-{{% if action == "add" %}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--args=" ~ argument ~ "=" ~ value ] -%}}
-{{% elif action == "remove" %}}
-{{% set grub_helper_args = ["--update-kernel=ALL", "--remove-args=" ~ argument ] -%}}
-{{% else %}}
-{{{ raise("Unknown action" + action) }}}
-{{% endif %}}
-{{%- if 'ubuntu' in product -%}}
-	{{% set grub_helper_executable = "update-grub" -%}}
-{{%- elif product in ["sle12", "sle15"] -%}}
-{{%- set grub_helper_executable = "grub2-mkconfig" -%}}
-{{%- set grub_helper_args = ["-o {{{ grub2_boot_path }}}/grub2.cfg"] -%}}
-{{%- else -%}}
-	{{%- set grub_helper_executable = "grubby" -%}}
-{{%- endif -%}}
-{{%- if product in ["rhel8", "ol8"] -%}}
-{{# Suppress the None output of append -#}}
-{{{ grub_helper_args.append("--env=/boot/grub2/grubenv") or "" }}}
-{{%- endif -%}}
-{{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
-{{% endmacro %}}
-
 {{#
     Describe fix for GRUB 2 bootloader kernel argument
     This can be used for rules that use grub2_bootloader_argument template
