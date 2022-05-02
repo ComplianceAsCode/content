@@ -14,12 +14,5 @@
     create: yes
     no_extra_spaces: yes
 
-- name: "Prevent user modification of GNOME idle-delay"
-  lineinfile:
-    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/desktop/session/idle-delay$'
-    line: '/org/gnome/desktop/session/idle-delay'
-    create: yes
-
 - name: Dconf Update
   command: dconf update

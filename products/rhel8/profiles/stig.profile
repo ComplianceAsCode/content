@@ -525,6 +525,12 @@ selections:
     # RHEL-08-020070
     - configure_tmux_lock_after_time
 
+    # RHEL-08-020080
+    - dconf_gnome_screensaver_user_locks
+
+    # RHEL-08-020081
+    - dconf_gnome_session_idle_user_locks
+
     # RHEL-08-020090
     - sssd_enable_certmap
 
