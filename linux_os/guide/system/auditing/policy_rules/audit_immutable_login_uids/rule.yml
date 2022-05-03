@@ -56,3 +56,15 @@ template:
         filepath: /etc/audit/rules.d/11-loginuid.rules
         contents: |+
             {{{ file_contents_audit_immutable_login|indent(12) }}}
+
+fixtext: |-
+    Configure {{{ full_name }}} kernel to prevent modification of login UIDs once they are set.
+
+    Create file "/etc/audit/rules.d/11-loginuid.rules" with the exactly following content:
+
+    {{{ file_contents_audit_immutable_login|indent(4) }}}
+
+    Then, run the following commands:
+
+    $ sudo chmod o-rwx "/etc/audit/rules.d/11-loginuid.rules"
+    $ sudo augenrules --load
