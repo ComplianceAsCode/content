@@ -26,10 +26,11 @@ references:
     cis@sle12: 2.2.18
     cis@sle15: 2.2.17
 
-ocil_clause: 'the service is not disabled'
+ocil_clause: |-
+    {{{ ocil_clause_service_disabled(service="rsyncd") }}}
 
 ocil: |-
-    {{{ ocil_service_disabled("rsyncd") }}}
+    {{{ ocil_service_disabled(service="rsyncd") }}}
 
 template:
     name: service_disabled
