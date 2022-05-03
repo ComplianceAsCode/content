@@ -34,9 +34,42 @@ references:
     stigid@rhel8: RHEL-08-030120
     stigid@ubuntu2004: UBTU-20-010128
 
-ocil_clause: 'any are more permissive'
+ocil_clause: 'audit logs has more permissive mode'
 
 ocil: |-
+    Verify the audit log directories have a correct mode or less permissive mode.
+
+    Find the location of the audit logs:
+
+    $ sudo grep "^log_file" /etc/audit/auditd.conf
+
+    Find the group that owns audit logs:
+
+    $ sudo grep "^log_group" /etc/audit/auditd.conf
+
     Run the following command to check the mode of the system audit logs:
-    <pre>$ sudo ls -ld /var/log/audit</pre>
-    Audit log directories must be mode 0700 or less permissive.
+
+    $ sudo stat -c "%a %n" [audit_log_directory]
+
+    Replace "[audit_log_directory]" to the correct audit log directory path, by default this location is "/var/log/audit".
+
+    If the log_group is "root" or is not set, the correct permissions are 0700, otherwise they are 0750.
+
+fixtext: |-
+    Configure the audit log directory to be protected from unauthorized read access by setting the correct permissive mode.
+
+    Find the location of the audit logs:
+
+    $ sudo grep "^log_file" /etc/audit/auditd.conf
+
+    Find the group that owns audit logs:
+
+    $ sudo grep "^log_group" /etc/audit/auditd.conf
+
+    If the log_group is "root" or is not set, the correct permissions are 0700, otherwise they are 0750.
+
+    Set the correct permissions mode by the following command:
+
+    $ sudo chmod [correct_permissions] [audit_log_directory]
+
+    Replace "[audit_log_directory]" to the correct audit log directory path, by default this location is "/var/log/audit".
