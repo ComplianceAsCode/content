@@ -7,12 +7,12 @@ title: 'Shutdown System When Auditing Failures Occur'
 description: |-
     If the <tt>auditd</tt> daemon is configured to use the
     <tt>augenrules</tt> program to read audit rules during daemon startup (the
-    default), add the following line to a file with suffix <tt>.rules</tt> in the
-    directory <tt>/etc/audit/rules.d</tt>:
+    default), add the following line to to the bottom of a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-f 2</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to the
-    top of the <tt>/etc/audit/audit.rules</tt> file:
+    bottom of the <tt>/etc/audit/audit.rules</tt> file:
     <pre>-f 2</pre>
 
 rationale: |-
