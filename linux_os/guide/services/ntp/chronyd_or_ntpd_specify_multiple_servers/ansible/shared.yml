@@ -13,7 +13,7 @@
 
 - name: "Configure multiple time servers in chrony config"
   lineinfile:
-    path: /etc/chrony.conf
+    path: {{{ chrony_conf_path }}}
     line: 'server {{ item }}'
     state: present
     create: True
@@ -29,7 +29,7 @@
 
 - name: "Configure multiple time servers in NTP config"
   lineinfile:
-    path: /etc/chrony.conf
+    path: {{{ chrony_conf_path }}}
     line: 'pool {{ item }}'
     state: present
     create: True

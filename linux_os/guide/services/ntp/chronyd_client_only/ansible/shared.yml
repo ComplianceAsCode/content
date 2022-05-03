@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = low
 
-{{{ ansible_set_config_file(file='/etc/chrony.conf', parameter='port', separator=' ', value='0', create='yes') }}}
+{{{ ansible_set_config_file(file=chrony_conf_path, parameter='port', separator=' ', value='0', create='yes') }}}
