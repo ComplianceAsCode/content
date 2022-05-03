@@ -341,6 +341,17 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
   {{%- endif -%}}
 {{%- endmacro %}}
 
+{{#
+    Inserts an OCIL Clause for a case when a service should be disabled.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro ocil_clause_service_disabled(service) -%}}
+    the "{{{ service }}}" is loaded and not masked
+{{%- endmacro %}}
+
 
 {{# Socket and Service Disabled macros #}}
 
