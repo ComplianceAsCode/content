@@ -20,7 +20,7 @@ description: |-
     Once the superuser account has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    <pre>grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg</pre>
+    <pre>{{{ grub_command("update") }}}</pre>
 
 rationale: |-
     Having a non-default grub superuser username makes password-guessing attacks less effective.
@@ -83,4 +83,5 @@ fixtext: |-
     export superusers
 
     Once the superuser account has been added, update the grub.cfg file by running:
-    $ sudo grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg
+
+    $ sudo {{{ grub_command("update") }}}

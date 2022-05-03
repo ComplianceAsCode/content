@@ -28,11 +28,7 @@ description: |-
     Once the superuser password has been added,
     update the
     <tt>grub.cfg</tt> file by running:
-    {{% if "ubuntu" in product %}}
-    <pre>update-grub</pre>
-    {{% elif product in ["sle12", "sle15"] %}}
-    <pre>grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg</pre>
-    {{% endif %}}
+    <pre>{{{ grub_command("update") }}}</pre>
     {{% endif %}}
 
 rationale: |-
@@ -115,4 +111,5 @@ fixtext: |-
     export superusers
 
     Once the superuser account has been added, update the grub.cfg file by running:
-    $ sudo grub2-mkconfig -o {{{ grub2_uefi_boot_path }}}/grub.cfg
+
+    $ sudo {{{ grub_command("update") }}}
