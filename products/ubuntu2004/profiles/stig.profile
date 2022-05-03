@@ -211,7 +211,7 @@ selections:
     - audit_rules_privileged_commands_chfn
 
     # UBTU-20-010138 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the mount command.
-    - audit_rules_privileged_commands_mount 
+    - audit_rules_privileged_commands_mount
 
     # UBTU-20-010139 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the umount command.
     - audit_rules_privileged_commands_umount
