@@ -58,3 +58,15 @@ ocil: |-
     The output should contain:
     <pre>-f 2</pre>
 
+fixtext: |-
+    Configure {{{ full_name }}} to shutdown when auditing failures occur.
+
+    If the auditd daemon is configured to use the augenrules program to read
+    audit rules during daemon startup (the default), add the following line to
+    the bottom of "/etc/audit/rules.d/immutable.rules":
+    -f 2
+
+    If the auditd daemon is configured to use the auditctl utility to read
+    audit rules during daemon startup, add the following line to the
+    bottom of the /etc/audit/audit.rules file:
+    -f 2
