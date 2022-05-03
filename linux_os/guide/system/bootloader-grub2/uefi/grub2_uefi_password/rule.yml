@@ -103,9 +103,10 @@ fixtext: |-
 
     When prompted, enter the password that was selected.
     Using the hash from the output, modify the "/etc/grub.d/40_custom" file with the following content:
+    Use a unique account name for the superusers account.
 
-    set superusers="boot"
-    password_pbkdf2 boot grub.pbkdf2.sha512.$password_hash
+    set superusers="superusers-account"
+    password_pbkdf2 superusers-account grub.pbkdf2.sha512.$password_hash
 
     Then, update the grub.cfg file by running:
 
