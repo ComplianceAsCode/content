@@ -1,4 +1,5 @@
 name: cpe:/a:container
 title: Container
 check_id: installed_env_is_a_container
-bash_conditional: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
+bash_conditional:
+    conditional: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
