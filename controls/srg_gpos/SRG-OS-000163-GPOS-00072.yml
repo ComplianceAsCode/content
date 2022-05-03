@@ -3,9 +3,11 @@ controls:
         levels:
             - medium
         title: '{{{ full_name }}} must terminate all network connections associated with
-    a communications session at the end of the session, or as follows: for in-band
-    management sessions (privileged sessions), the session must be terminated after
-    10 minutes of inacti'
+            a communications session at the end of the session, or as follows: for in-band
+            management sessions (privileged sessions), the session must be terminated after
+            10 minutes of inactivity; and for user sessions (non-privileged session), the
+            session must be terminated after 15 minutes of inactivity, except to fulfill
+            documented and validated mission requirements.'
         rules:
             - sshd_set_idle_timeout
             - sshd_set_keepalive
