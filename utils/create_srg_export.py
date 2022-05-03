@@ -335,12 +335,11 @@ def replace_variables(source: str, variables: dict, root_path: str, product: str
     if source:
         sub_element_regex = r'<sub idref="([a-z0-9_]+)" \/>'
         matches = re.finditer(sub_element_regex, source, re.MULTILINE)
-
-        if matches:
-            for match in matches:
-                name = re.findall(sub_element_regex, source)[0]
-                result = result.replace(match.group(), get_variable_value(root_path, product, name,
-                                                                          variables.get(name)))
+        for match in matches:
+            name = match.group(1)
+            value = get_variable_value(
+                root_path, product, name, variables.get(name))
+            result = result.replace(match.group(), value)
     return result
 
 
