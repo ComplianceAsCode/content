@@ -38,3 +38,8 @@ ocil: |-
     <pre>$ sudo grep -i '$ActionSendStreamDriverMode' /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
     The output should be
     <pre>/etc/rsyslog.conf:$ActionSendStreamDriverMode 1</pre>
+
+fixtext: |-
+    Configure the operating system to encrypt off-loaded audit records by setting the following options in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
+
+    $ActionSendStreamDriverMode 1

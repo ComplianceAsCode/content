@@ -70,7 +70,7 @@ references:
     stigid@sle15: SLES-15-010580
     vmmsrg: SRG-OS-000032-VMM-000130
 
-ocil_clause: 'none of these are present'
+ocil_clause: 'no evidence that the audit logs are being off-loaded to another system or media'
 
 ocil: |-
     To ensure logs are sent to a remote host, examine the file
@@ -81,3 +81,8 @@ ocil: |-
     <pre> *.* @@<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
     If using RELP, a line similar to the following should be present:
     <pre> *.* :omrelp:<i>{{{ xccdf_value("rsyslog_remote_loghost_address") }}}</i></pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to off-load audit records onto a different system or media from the system being audited by specifying the remote logging server in "/etc/rsyslog.conf"" or "/etc/rsyslog.d/[customfile].conf" with the name or IP address of the log aggregation server.
+
+    *.* @@[remoteloggingserver]:[port]"

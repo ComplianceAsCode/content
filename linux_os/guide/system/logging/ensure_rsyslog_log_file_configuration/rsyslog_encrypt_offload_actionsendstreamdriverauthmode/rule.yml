@@ -39,4 +39,8 @@ ocil: |-
     The output should be
     <pre>$/etc/rsyslog.conf:$ActionSendStreamDriverAuthMode x509/name</pre>
 
+fixtext: |-
+    Configure {{{ full_name }}} to authenticate the remote logging server for off-loading audit logs by setting the following option in "/etc/rsyslog.conf" or "/etc/rsyslog.d/[customfile].conf":
+
+    $ActionSendStreamDriverAuthMode x509/name
 
