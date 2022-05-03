@@ -44,3 +44,8 @@ ocil: |-
     <pre>$ grep include /etc/ipsec.conf</pre>
     The output should return something similar to:
     <pre>include /etc/crypto-policies/back-ends/libreswan.config</pre>
+
+fixtext: |-
+    Configure Libreswan to use the system cryptographic policy.
+    Add the following line to "/etc/ipsec.conf":
+    include /etc/crypto-policies/back-ends/libreswan.config

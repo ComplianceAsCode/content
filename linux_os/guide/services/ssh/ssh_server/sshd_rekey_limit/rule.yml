@@ -41,3 +41,16 @@ ocil: |-
     {{% endif %}}
     If configured properly, output should be
     <pre>RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}</pre>
+
+fixtext: |-
+    {{% if sshd_distributed_config == "true" %}}
+    Configure {{{ full_name }}} to force a frequent session key renegotiation for SSH connections to the server by adding or modifying the following line in the "/etc/ssh/sshd_config.d/00-complianceascode-hardening.conf" file:
+    {{% else %}}
+    Configure {{{ full_name }}} to force a frequent session key renegotiation for SSH connections to the server by adding or modifying the following line in the "/etc/ssh/sshd_config" file:
+    {{% endif %}}
+
+    RekeyLimit {{{ xccdf_value("var_rekey_limit_size") }}} {{{ xccdf_value("var_rekey_limit_time") }}}
+
+    Restart the SSH daemon for the settings to take effect.
+
+    $ sudo systemctl restart sshd.service
