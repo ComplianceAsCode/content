@@ -78,6 +78,8 @@ ocil: |-
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/shadow", "identity", "/etc/audit/rules.d/audit.rules") }}}'
 
+srg_requirement: '{{{ srg_requirement_audit_file_watch_rule("/etc/shadow") }}}'
+
 template:
     name: audit_rules_usergroup_modification
     vars:
