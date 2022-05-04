@@ -54,6 +54,7 @@ ocil_clause: 'auditing is not enabled at boot time'
 ocil: |-
     {{{ ocil_grub2_argument("audit=1") | indent(4) }}}
 
+
 platform: grub2
 
 template:
@@ -64,3 +65,6 @@ template:
 
 fixtext: |-
     {{{ describe_grub2_argument("audit=1") | indent(4) }}}
+
+srg_requirement: |-
+    {{{ full_name }}} must enable auditing of processes that start prior to the audit daemon.
