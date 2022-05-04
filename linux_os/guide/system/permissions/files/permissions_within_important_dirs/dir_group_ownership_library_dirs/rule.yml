@@ -63,3 +63,10 @@ template:
             - /usr/lib64/
         recursive: 'true'
         filegid: '0'
+
+fixtext: |-
+    Configure the system-wide shared library directories (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
+
+    Run the following command, replacing "[DIRECTORY]" with any library directory not group-owned by "root".
+
+    $ sudo chgrp root [DIRECTORY]
