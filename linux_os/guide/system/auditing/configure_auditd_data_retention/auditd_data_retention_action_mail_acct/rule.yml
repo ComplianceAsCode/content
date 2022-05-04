@@ -66,4 +66,4 @@ fixtext: |-
 
     Edit the following line in "/etc/audit/auditd.conf" to ensure that administrators are notified via email for those situations:
 
-    action_mail_acct = root
+    action_mail_acct = {{{ xccdf_value("var_auditd_action_mail_acct") }}}
