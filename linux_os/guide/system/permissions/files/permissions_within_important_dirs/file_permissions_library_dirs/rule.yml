@@ -49,18 +49,12 @@ references:
     stigid@sle15: SLES-15-010351
     stigid@ubuntu2004: UBTU-20-010426
 
-ocil_clause: 'any of these files are group-writable or world-writable'
+ocil_clause: any system-wide shared library file is found to be group-writable or world-writable
 
 ocil: |-
-    Shared libraries are stored in the following directories:
-    <pre>/lib
-    /lib64
-    /usr/lib
-    /usr/lib64
-    </pre>
-    To find shared libraries that are group-writable or world-writable,
-    run the following command for each directory <i>DIR</i> which contains shared libraries:
-    <pre>$ sudo find -L <i>DIR</i> -perm /022 -type f</pre>
+    Verify the system-wide shared library files contained in the following directories have mode "755" or less permissive with the following command:
+
+    $ sudo find -L /lib /lib64 /usr/lib /usr/lib64 -perm /022 -type f -exec ls -l {} \;
 
 template:
     name: file_permissions
