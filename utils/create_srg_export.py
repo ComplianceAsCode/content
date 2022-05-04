@@ -417,6 +417,13 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def get_requirement(control: ssg.controls.Control, rule_obj: ssg.build_yaml.Rule) -> str:
+    if rule_obj.srg_requirement != "":
+        return rule_obj.srg_requirement
+    else:
+        return control.title()
+
+
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
                    rule_json: dict, srgs: dict, used_rules: list, root_path: str) -> list:
 
@@ -428,7 +435,7 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 row = create_base_row(control, srgs, rule_object)
                 if control.levels is not None:
                     row['Severity'] = get_severity(control.levels[0])
-                row['Requirement'] = control.title
+                row['Requirement'] = get_requirement(control.title, rule_object)
                 row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables,
                                                          root_path, product)
                 ocil_var = handle_variables(rule_object.ocil, control.variables, root_path,
