@@ -48,17 +48,9 @@ references:
     stigid@sle15: SLES-15-010358
     stigid@ubuntu2004: UBTU-20-010456
 
-ocil_clause: 'any system executables are found to be group or world writable'
+ocil_clause: any system commands are found to be group-writable or world-writable
 
 ocil: |-
-    System executables are stored in the following directories by default:
-    <pre>/bin
-    /sbin
-    /usr/bin
-    /usr/libexec
-    /usr/local/bin
-    /usr/local/sbin
-    /usr/sbin</pre>
-    To find system executables that are group-writable or world-writable,
-    run the following command for each directory <i>DIR</i> which contains system executables:
-    <pre>$ sudo find -L <i>DIR</i> -perm /022 -type f</pre>
+    Verify the system commands contained in the following directories have mode "755" or less permissive with the following command:
+
+    $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/libexec /usr/local/bin /usr/local/sbin -perm /022 -exec ls -l {} \;
