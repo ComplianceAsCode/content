@@ -6,12 +6,12 @@
 yum remove -y ntp
 
 # Remove all pool options
-sed -i "/^pool.*/d" /etc/chrony.conf
+sed -i "/^pool.*/d" {{{ chrony_conf_path }}}
 
-if ! grep "^server" /etc/chrony.conf ; then
-    echo "server foo.example.net iburst maxpoll 10" >> /etc/chrony.conf
-elif ! grep "^server.*maxpoll 10" /etc/chrony.conf; then
-    sed -i "s/^server.*/& maxpoll 10/" /etc/chrony.conf
+if ! grep "^server" {{{ chrony_conf_path }}} ; then
+    echo "server foo.example.net iburst maxpoll 10" >> {{{ chrony_conf_path }}}
+elif ! grep "^server.*maxpoll 10" {{{ chrony_conf_path }}}; then
+    sed -i "s/^server.*/& maxpoll 10/" {{{ chrony_conf_path }}}
 fi
 
 systemctl enable chronyd.service
