@@ -63,6 +63,9 @@ fixtext: |-
 
     $ sudo systemctl restart sssd.service
 
+srg_requirement: |-
+    {{{ full_name }}} must map the authenticated identity to the user or group account for PKI-based authentication.
+
 template:
     name: lineinfile
     vars:
