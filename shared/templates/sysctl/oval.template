@@ -168,9 +168,36 @@
     </count>
   </local_variable>
 
+  <ind:textfilecontent54_object id="object_static_set_sysctls_{{{ SYSCTLID }}}" version="1">
+    <set>
+      <object_reference>object_static_set_unfiltered_sysctls_{{{ SYSCTLID }}}</object_reference>
+      <filter action="exclude">state_{{{ SYSCTLID }}}_filepath_is_symlink</filter>
+    </set>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ SYSCTLID }}}_filepath_is_symlink" version="1">
+    <ind:filepath operation="equals" var_check="at least one" var_ref="local_var_symlinks_{{{ SYSCTLID }}}" datatype="string" />
+  </ind:textfilecontent54_state>
+
+  <local_variable comment="Unique list of symlink conf files" datatype="string" id="local_var_symlinks_{{{ SYSCTLID }}}" version="1">
+    <unique>
+      <object_component object_ref="object_{{{ SYSCTLID }}}_symlinks" item_field="filepath" />
+    </unique>
+  </local_variable>
+
+  <!-- "pattern match" doesn't seem to work with symlink_object, not sure if a bug or not.
+       Workaround by querying for all conf files found -->
+  <unix:symlink_object comment="syctl symlinks" id="object_{{{ SYSCTLID }}}_symlinks" version="1">
+    <unix:filepath operation="equals" var_ref="local_var_conf_files_{{{ SYSCTLID }}}" />
+  </unix:symlink_object>
+
+  <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_{{{ SYSCTLID }}}" version="1">
+    <object_component object_ref="object_static_set_unfiltered_sysctls_{{{ SYSCTLID }}}" item_field="filepath" />
+  </local_variable>
+
   <!-- Avoid directly referencing a possibly empty collection, one empty collection will cause the
        variable to have no value even when there are valid objects. -->
-  <ind:textfilecontent54_object id="object_static_set_sysctls_{{{ SYSCTLID }}}" version="1">
+  <ind:textfilecontent54_object id="object_static_set_unfiltered_sysctls_{{{ SYSCTLID }}}" version="1">
     <set>
       <object_reference>object_static_etc_sysctls_{{{ SYSCTLID }}}</object_reference>
       <object_reference>object_static_run_usr_sysctls_{{{ SYSCTLID }}}</object_reference>
