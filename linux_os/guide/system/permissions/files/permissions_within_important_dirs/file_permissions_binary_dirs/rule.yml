@@ -54,3 +54,10 @@ ocil: |-
     Verify the system commands contained in the following directories have mode "755" or less permissive with the following command:
 
     $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/libexec /usr/local/bin /usr/local/sbin -perm /022 -exec ls -l {} \;
+
+fixtext: |-
+    Configure the system commands to be protected from unauthorized access.
+
+    Run the following command, replacing "[FILE]" with any system command with a mode more permissive than "755".
+
+    $ sudo chmod 755 [FILE]
