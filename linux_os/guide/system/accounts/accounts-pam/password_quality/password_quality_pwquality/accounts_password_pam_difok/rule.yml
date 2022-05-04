@@ -70,7 +70,7 @@ template:
         operation: greater than or equal
 
 fixtext: |-
-    Configure the operating system to require the change of at least {{{ xccdf_value("var_password_pam_difok") }}} of the total number of characters when passwords are changed by setting the "difok" option.
+    Configure {{{ full_name }}} to require the change of at least {{{ xccdf_value("var_password_pam_difok") }}} of the total number of characters when passwords are changed by setting the "difok" option.
 
     Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
 
