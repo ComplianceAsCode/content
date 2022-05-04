@@ -73,3 +73,6 @@ fixtext: |-
     $ sudo chmod [correct_permissions] [audit_log_directory]
 
     Replace "[audit_log_directory]" to the correct audit log directory path, by default this location is "/var/log/audit".
+
+srg_requirement: |-
+    {{{ full_name }}} audit log directory must have a mode of 0750 or less permissive to prevent unauthorized read access.
