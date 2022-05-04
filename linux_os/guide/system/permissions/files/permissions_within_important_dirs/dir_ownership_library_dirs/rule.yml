@@ -41,17 +41,12 @@ references:
     stigid@sle15: SLES-15-010354
     stigid@ubuntu2004: UBTU-20-010429
 
-ocil_clause: 'any of these directories are not owned by root'
+ocil_clause: any system-wide shared library directory is not owned by root
 
 ocil: |-
-    Shared libraries are stored in the following directories:
-    <pre>/lib
-    /lib64
-    /usr/lib
-    /usr/lib64</pre>
-    For each of these directories, run the following command to find files not
-    owned by root:
-    <pre>$ sudo find -L <i>$DIR</i> ! -user root -type d -exec chown root {} \;</pre>
+    Verify the system-wide shared library directories are owned by "root" with the following command:
+
+    $ sudo find /lib /lib64 /usr/lib /usr/lib64 ! -user root -type d -exec stat -c "%n %U" '{}' \;
 
 template:
     name: file_owner
