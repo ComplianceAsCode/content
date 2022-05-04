@@ -42,13 +42,7 @@ ocil: |-
     {{{ ocil_grub2_argument("audit_backlog_limit=8192") | indent(4) }}}
 
 fixtext: |-
-    Configure {{{ full_name }}} to allocate sufficient audit_backlog_limit to capture processes that start prior to the audit daemon with the following command:
-
-    $ sudo grubby --update-kernel=ALL --args="audit_backlog_limit=8192"
-
-    Add or modify the following line in "/etc/default/grub" to ensure the configuration survives kernel updates:
-
-    GRUB_CMDLINE_LINUX="audit_backlog_limit=8192"
+    {{{ fixtext_grub2_bootloader_argument("audit_backlog_limit", "8192") | indent(4) }}}
 
 platform: grub2
 
