@@ -58,3 +58,10 @@ template:
             - /usr/lib64/
         recursive: 'true'
         fileuid: '0'
+
+fixtext: |-
+    Configure the system-wide shared library directories within (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.
+
+    Run the following command, replacing "[DIRECTORY]" with any library directory not owned by "root".
+
+    $ sudo chown root [DIRECTORY]
