@@ -54,3 +54,6 @@ fixtext: |-
     $ sudo chown root [audit_log_file]
 
     Replace "[audit_log_file]" to the correct audit log path, by default this location is "/var/log/audit/audit.log".
+
+srg_requirement: |-
+   {{{ full_name }}} audit log must be owned by the root to prevent unauthorized access.
