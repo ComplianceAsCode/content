@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: fedora,ol8,rhel8,rhel9
+prodtype: fedora,ol8,rhel8,rhel9,sle15
 
-title: Configure dnf-automatic to Install Available Updates Automatically
+title: 'Configure dnf-automatic to Install Available Updates Automatically'
 
 description: |-
     To ensure that the packages comprising the available updates will be automatically installed by <tt>dnf-automatic</tt>, set <tt>apply_updates</tt> to <tt>yes</tt> under <tt>[commands]</tt> section in <tt>/etc/dnf/automatic.conf</tt>.
@@ -21,6 +21,7 @@ severity: medium
 identifiers:
     cce@rhel8: CCE-82494-6
     cce@rhel9: CCE-83456-4
+    cce@sle15: CCE-91165-1
 
 references:
     anssi: BP28(R8)
