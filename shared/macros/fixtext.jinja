@@ -197,3 +197,17 @@ Edit the file "/etc/audit/auditd.conf" and add or edit the following line:
 {{{ param }}} = {{{ value }}}
 
 {{%- endmacro %}}
+
+{{#
+Fixtext macro describing configuration of mount option,
+for rules using the mount_option template.
+
+:param mountpoint: mount point on the filesystem eg. /dev/shm
+:type mountpoint: str
+:param mountoption: mount option, eg. nosuid, logdev=device or hidepid
+:type mountoption: str
+
+#}}
+{{% macro fixtext_mount_option(mountpoint, mountoption) -%}}
+Modify "/etc/fstab" to use the "{{{ mountoption }}}" option on the "{{{ mountpoint }}}" directory.
+{{%- endmacro %}}
