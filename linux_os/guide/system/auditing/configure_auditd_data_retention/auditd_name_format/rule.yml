@@ -43,6 +43,9 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_audit_configuration(param="name_format", value="hostname") | indent(4) }}}
 
+srg_requirement: |-
+    {{{ full_name }}} must label all off-loaded audit logs before sending them to the central log server.
+
 template:
     name: auditd_lineinfile
     vars:
