@@ -44,6 +44,9 @@ references:
 
 fixtext: '{{{ describe_package_remove(package="vsftpd") }}}'
 
+srg_requirement: |-
+    A File Transfer Protocol (FTP) server package must not be installed unless mission essential on {{{ full_name }}}.
+
 template:
     name: package_removed
     vars:
