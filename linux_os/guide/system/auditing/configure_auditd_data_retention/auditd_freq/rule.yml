@@ -37,6 +37,9 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_audit_configuration(param="freq", value="50") | indent(4) }}}
 
+srg_requirement: |-
+    {{{ full_name }}} must periodically flush audit records to disk to ensure that audit records are not lost.
+
 template:
     name: auditd_lineinfile
     vars:
