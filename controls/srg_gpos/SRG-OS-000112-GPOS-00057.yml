@@ -5,6 +5,14 @@ controls:
         title: {{{ full_name }}} must implement replay-resistant authentication mechanisms
             for network access to privileged accounts.
         status: inherently met
+        rationale: |-
+            A replay attack may enable an unauthorized user to gain access to {{{ full_name }}}. Authentication sessions between the authenticator and {{{ full_name }}} validating the user credentials must not be vulnerable to a replay attack.
+
+            An authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message.
+
+            A privileged account is any information system account with authorizations of a privileged user.
+
+            Techniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.
         check: |-
             {{{ full_name }}} supports this requirement and cannot be configured to be out of compliance.
             {{{ full_name }}} inherently meets this requirement.
