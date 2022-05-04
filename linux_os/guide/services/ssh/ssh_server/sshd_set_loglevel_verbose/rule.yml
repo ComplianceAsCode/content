@@ -44,6 +44,9 @@ references:
 fixtext: |-
     {{{ fixtext_sshd_lineinfile('LogLevel', 'VERBOSE', False) }}}
 
+srg_requirement: |-
+    {{{ full_name }}} must log SSH connection attempts and failures to the server.
+
 template:
     name: sshd_lineinfile
     vars:
