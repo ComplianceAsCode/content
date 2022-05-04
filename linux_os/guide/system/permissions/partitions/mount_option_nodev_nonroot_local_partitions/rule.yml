@@ -20,7 +20,7 @@ rationale: |-
 
 ocil: |
     To verify the <tt>nodev</tt> option is configured for non-root local partitions, run the following command:
-    <pre>$ mount | grep '^/dev\S* on /\S' | grep --invert-match 'nodev'</pre>
+    <pre>$ sudo mount | grep '^/dev\S* on /\S' | grep --invert-match 'nodev'</pre>
     The output shows local non-root partitions mounted without the <tt>nodev</tt> option, and there should be no output at all.
 
 ocil_clause: "some mounts appear among output lines"
