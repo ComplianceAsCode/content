@@ -57,3 +57,7 @@ ocil: |-
     If the "IPsec" service is active, check for configured IPsec connections (<tt>conn</tt>), perform the following:
     <pre>grep -rni conn /etc/ipsec.conf /etc/ipsec.d/</pre>
     Verify any returned results for organizational approval.
+
+fixtext: |-
+    Remove all unapproved tunnels from the system, or document them with the ISSO.
+
