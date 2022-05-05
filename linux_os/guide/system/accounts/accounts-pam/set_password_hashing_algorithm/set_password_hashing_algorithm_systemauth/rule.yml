@@ -75,21 +75,27 @@ references:
     stigid@sle15: SLES-15-020170
     vmmsrg: SRG-OS-000480-VMM-002000
 
-ocil_clause: 'it does not'
+ocil_clause: '"sha512" is missing, or is commented out'
 
 ocil: |-
-    {{% if product in ["sle12", "sle15"] %}}
+    {{% if product in ["sle12", "sle15"] -%}}
     Inspect the contents of <tt>/etc/pam.d/common-password</tt>
-    {{% else %}}
+    {{%- else -%}}
     Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>
-    {{% endif %}}
-    and ensure that the <tt>pam_unix.so</tt> module includes the argument
+    {{%- endif %}}
+    and ensure that the <tt>pam_unix.so</tt> module  is configured to use the argument
     <tt>sha512</tt>:
     {{% if product in ["sle12", "sle15"] %}}
-    <pre>$ grep sha512 /etc/pam.d/common-password</pre>
+    <pre>$ sudo grep "^password.*required.*pam_unix.so.*sha512" /etc/pam.d/common-password
+
+    password required pam_unix.so sha512
+    </pre>
     {{% else %}}
-    <pre>$ grep sha512 /etc/pam.d/system-auth</pre>
-    {{% endif %}}
+    <pre>$ sudo grep "^password.*sufficient.*pam_unix.so.*sha512" /etc/pam.d/system-auth
+
+    password sufficient pam_unix.so sha512
+    </pre>
+    {{%- endif %}}
 
 platform: pam
 
@@ -105,3 +111,16 @@ template:
         - argument: sha512
           new_argument: sha512
 {{% endif %}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.
+
+    {{% if product in ['sle12', 'sle15'] %}}
+    Edit/modify the following line in the "/etc/pam.d/common-password" file to include the sha512 option for pam_unix.so:
+
+    password required pam_unix.so sha512
+    {{% else %}}
+    Edit/modify the following line in the "/etc/pam.d/system-auth" file to include the sha512 option for pam_unix.so:
+
+    password sufficient pam_unix.so sha512
+    {{% endif %}}
