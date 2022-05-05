@@ -42,3 +42,5 @@ ocil: |-
     <pre>$ sudo auditctl -l | grep "watch=/etc/sudoers\|-w /etc/sudoers\"</pre>
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/sudoers", "identity", "/etc/audit/rules.d/audit.rules") }}}'
+
+srg_requirement: '{{{ srg_requirement_audit_file_watch_rule("/etc/sudoers") }}}'
