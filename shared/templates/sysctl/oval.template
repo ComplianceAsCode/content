@@ -6,21 +6,15 @@
 
 {{% macro state_static_sysctld(prefix) -%}}
     <ind:object object_ref="object_static_{{{ prefix }}}_{{{ SYSCTLID }}}"/>
-{{%- if SYSCTLVAL == "" %}}
     <ind:state state_ref="state_static_sysctld_{{{ SYSCTLID }}}"/>
-{{%- endif -%}}
 {{%- endmacro -%}}
 {{%- macro sysctl_match() -%}}
 {{%- if SYSCTLVAL == "" -%}}
     <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(\d+)[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- else -%}}
-{{% if OPERATION == "pattern match" %}}
-    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*{{{ SYSCTLVAL_REGEX }}}[\s]*$</ind:pattern>
-{{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*{{{ SYSCTLVAL }}}[\s]*$</ind:pattern>
-{{% endif %}}
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">^[\s]*{{{ SYSCTLVAR }}}[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
 {{%- endif -%}}
 {{%- endmacro -%}}
 {{%- if "P" in FLAGS -%}}
@@ -279,6 +273,14 @@
 
   <external_variable id="sysctl_{{{ SYSCTLID }}}_value" version="1"
                      comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}"/>
+{{% else %}}
+  <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
+{{% if OPERATION == "pattern match" %}}
+    <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL_REGEX }}}</ind:subexpression>
+{{% else %}}
+    <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL }}}</ind:subexpression>
+{{% endif %}}
+  </ind:textfilecontent54_state>
 {{% endif %}}
 </def-group>
 {{%- endif -%}}
