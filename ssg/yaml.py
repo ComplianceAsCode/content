@@ -169,6 +169,10 @@ def ordered_dump(data, stream=None, Dumper=yaml_Dumper, **kwds):
     unformatted_yaml = yaml.dump(data, None, OrderedDumper, **kwds)
     formatted_yaml = re.sub(r"[\n]+([\s]*)- name", r"\n\n\1- name", unformatted_yaml)
 
+    # Fix CDumper issue where it adds yaml document ending '...'
+    # in some templated ansible remediations
+    formatted_yaml = re.sub(r"\n\s*\.\.\.\s*", r"\n", formatted_yaml)
+
     if stream is not None:
         return stream.write(formatted_yaml)
     else:
