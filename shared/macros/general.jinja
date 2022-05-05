@@ -209,13 +209,16 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 
 #}}
 {{%- macro describe_firewalld_allow(port, proto, service) %}}
-    To configure <code>firewalld</code> to allow access, run the following command(s):
     {{% if port %}}
-    <code>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</code>
+    To configure <code>firewalld</code> to allow <code>{{{ port }}}/{{{ proto }}}</code> access, run the following command(s):
+    <pre>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</pre>
     {{% endif %}}
     {{% if service %}}
-    <code>firewall-cmd --permanent --add-service={{{ service }}}</code>
+    To configure <code>firewalld</code> to allow <code>{{{ service }}}</code> access, run the following command(s):
+    <pre>firewall-cmd --permanent --add-service={{{ service }}}</pre>
     {{% endif %}}
+    Then run the following command to load the newly created rule(s):
+    <pre>firewall-cmd --reload</pre>
 {{%- endmacro %}}
 
 
