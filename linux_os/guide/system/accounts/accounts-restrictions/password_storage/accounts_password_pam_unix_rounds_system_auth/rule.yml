@@ -8,9 +8,9 @@ description: |-
     Configure the number or rounds for the password hashing algorithm. This can be
     accomplished by using the <tt>rounds</tt> option for the <tt>pam_unix</tt> PAM module.
     <br /><br />
-    In file <tt>/etc/pam.d/system-auth</tt> append <tt>rounds=<sub idref="var_password_pam_unix_rounds" /></tt>
-    to the <tt>pam_unix.so</tt> file, as shown below:
-    <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds=<sub idref="var_password_pam_unix_rounds" /></pre>
+    In file <tt>/etc/pam.d/system-auth</tt> append <tt>rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</tt>
+    to the <tt>pam_unix.so</tt> entry, as shown below:
+    <pre>password sufficient pam_unix.so <i>...existing_options...</i> rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
     The system's default number of rounds is 5000.
 
 rationale: |-
@@ -35,12 +35,20 @@ references:
   srg: SRG-OS-000073-GPOS-00041
   stigid@ol8: OL08-00-010131
 
-ocil_clause: 'it does not set the appropriate number of hashing rounds'
+ocil_clause: 'rounds is not set to {{{ xccdf_value("var_password_pam_unix_rounds") }}} or is commented out'
 
 ocil: |-
-    To verify the number of rounds for the password hashing algorithm is compliant, run the following command:
-    <pre>$ grep rounds /etc/pam.d/system-auth</pre>
+    To verify the number of rounds for the password hashing algorithm is configured, run the following command:
+    <pre>$ sudo grep rounds /etc/pam.d/system-auth</pre>
     The output should show the following match:
-    <pre>rounds=<sub idref="var_password_pam_unix_rounds" /></pre>
+    <pre>password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}</pre>
 
 platform: pam
+
+fixtext: |-
+    Configure {{{ full_name }}} to use {{{ xccdf_value("var_password_pam_unix_rounds") }}} hashing rounds for hashing passwords.
+
+    Add or modify the following line in "/etc/pam.d/system-auth" and set "rounds" to {{{ xccdf_value("var_password_pam_unix_rounds") }}}.
+    For example:
+
+    password sufficient pam_unix.so sha512 rounds=5000
