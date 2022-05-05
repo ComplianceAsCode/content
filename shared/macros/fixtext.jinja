@@ -63,6 +63,17 @@ The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{#
+    Generate a fixtext for audit rules for dac modification events - attr
+
+:param syscall: Sycall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_dac_modification_attr(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_mod", '"fremovexattr", "lremovexattr", "removexattr", "fsetxattr", "lsetxattr" and "setxattr"') }}}
+{{% endmacro %}}
+
+{{#
     Human readable text for how to fix ini files
 
 :param section: Section on the value to be set
