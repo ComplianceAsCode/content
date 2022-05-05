@@ -36,6 +36,9 @@ references:
 fixtext: |-
     {{{ fixtext_sshd_lineinfile("PubkeyAuthentication", "yes") }}}
 
+srg_requirement:
+  {{{ full_name }}} SSHD must accept public key authentication.
+
 template:
     name: sshd_lineinfile
     vars:
