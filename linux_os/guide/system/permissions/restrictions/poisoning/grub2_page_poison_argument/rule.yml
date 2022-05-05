@@ -46,3 +46,6 @@ template:
 
 fixtext: |-
     {{{ describe_grub2_argument("page_poison=1") | indent(4) }}}
+
+srg_requirement:
+  {{{ full_name }}} must clear the page allocator to prevent use-after-free attacks.
