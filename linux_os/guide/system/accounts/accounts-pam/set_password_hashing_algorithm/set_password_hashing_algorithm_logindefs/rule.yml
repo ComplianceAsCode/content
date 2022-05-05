@@ -50,10 +50,22 @@ references:
     stigid@sle15: SLES-15-010260
     stigid@ubuntu2004: UBTU-20-010404
 
-ocil_clause: 'it does not'
+ocil_clause: '"ENCRYPT_METHOD" is not set to SHA512'
 
 ocil: |-
-    Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
-    <pre>ENCRYPT_METHOD SHA512</pre>
+    Verify that the shadow password suite configuration is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
+
+    Check the hashing algorithm that is being used to hash passwords with the following command:
+
+    $ sudo grep -i ENCRYPT_METHOD /etc/login.defs
+
+    ENCRYPT_METHOD SHA512
 
 platform: login_defs
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt all stored passwords.
+
+    Add or update the following line in the "/etc/login.defs" file:
+
+    ENCRYPT_METHOD SHA512
