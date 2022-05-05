@@ -217,7 +217,7 @@ ocil: |-
     {{%- endif %}}
     Run the following command to determine the current status of the
     <code>{{{ service }}}</code> service:
-    <pre>$ systemctl is-active {{{ service }}}</pre>
+    <pre>$ sudo systemctl is-active {{{ service }}}</pre>
     If the service is running, it should return the following: <pre>active</pre>
 {{%- endmacro %}}
 
@@ -275,19 +275,19 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     Subsequently,
     {{%- endif -%}}
     run the following command:
-    <pre>$ systemctl is-enabled <code>{{{ service }}}</code></pre>
+    <pre>$ sudo systemctl is-enabled <code>{{{ service }}}</code></pre>
     Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
-    <pre>$ systemctl is-enabled <code>{{{ service }}}</code><br/> disabled</pre>
+    <pre>$ sudo systemctl is-enabled <code>{{{ service }}}</code><br/> disabled</pre>
 
     Run the following command to verify <code>{{{ service }}}</code> is not active (i.e. not running) through current runtime configuration:
-    <pre>$ systemctl is-active {{{ service }}}</pre>
+    <pre>$ sudo systemctl is-active {{{ service }}}</pre>
 
     If the service is not running the command will return the following output:
     <pre>inactive</pre>
 
     The service will also be masked, to check that the <code>{{{ service }}}</code> is masked, run the following command:
-    <pre>$ systemctl show <code>{{{ service }}}</code> | grep "LoadState\|UnitFileState"</pre>
+    <pre>$ sudo systemctl show <code>{{{ service }}}</code> | grep "LoadState\|UnitFileState"</pre>
 
     If the service is masked the command will return the following outputs:
 
@@ -392,16 +392,16 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     <pre>$ systemctl is-enabled <code>{{{ socket }}}</code></pre>
     Output should indicate the <code>{{{ socket }}}</code> socket has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
-    <pre>$ systemctl is-enabled <code>{{{ socket }}}</code><br/>disabled</pre>
+    <pre>$ sudo systemctl is-enabled <code>{{{ socket }}}</code><br/>disabled</pre>
 
     Run the following command to verify <code>{{{ socket }}}</code> is not active (i.e. not running) through current runtime configuration:
-    <pre>systemctl is-active {{{ socket }}}</pre>
+    <pre>$ sudo systemctl is-active {{{ socket }}}</pre>
 
     If the socket is not running the command will return the following output:
     <pre>inactive</pre>
 
     The socket will also be masked, to check that the <code>{{{ socket }}}</code> is masked, run the following command:
-    <pre>$ systemctl show <code>{{{ socket }}}</code> | grep "LoadState\|UnitFileState"</pre>
+    <pre>$ sudo systemctl show <code>{{{ socket }}}</code> | grep "LoadState\|UnitFileState"</pre>
 
     If the socket is masked the command will return the following outputs:
 
@@ -782,7 +782,7 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- macro systemd_ocil_timer_enabled(timer) %}}
     Run the following command to determine the current status of the
     <code>{{{ timer }}}</code> timer:
-    <pre>$ systemctl is-active {{{ timer }}}.timer</pre>
+    <pre>$ sudo systemctl is-active {{{ timer }}}.timer</pre>
     If the timer is running, it should return the following: <pre>active</pre>
 {{%- endmacro %}}
 
