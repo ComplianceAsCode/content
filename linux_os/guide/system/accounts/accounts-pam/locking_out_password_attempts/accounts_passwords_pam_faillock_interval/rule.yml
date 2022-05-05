@@ -85,7 +85,7 @@ ocil: |-
     {{% endif %}}
 
 srg_requirement: |-
-    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur within {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} secconds.
+    {{{ full_name }}} must automatically lock an account when three unsuccessful logon attempts occur within {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}} seconds.
 
 platform: pam
 
