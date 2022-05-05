@@ -9,3 +9,14 @@
 {{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect {{{ path }}}.
 {{%- endmacro %}}
 
+{{#
+    Generate a SRG requirement text for audit syscall.
+
+:param path: Name of the syscall
+:type path: str
+
+#}}
+{{% macro srg_requirement_audit_syscall(event) %}}
+Successful/unsuccessful uses of the {{{ event }}} command in {{{ full_name }}} must generate an audit record.
+{{%- endmacro %}}
+
