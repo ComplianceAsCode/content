@@ -111,8 +111,10 @@
                    test_ref="test_static_etc_sysctld_{{{ SYSCTLID }}}"/>
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /run/sysctl.d/*.conf"
                    test_ref="test_static_run_sysctld_{{{ SYSCTLID }}}"/>
+{{% if "rhel" not in product %}}
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                    test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
+{{% endif %}}
       </criteria>
       <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
     </criteria>
@@ -134,11 +136,13 @@
     {{{ state_static_sysctld("run_sysctld") }}}
   </ind:textfilecontent54_test>
 
+{{% if "rhel" not in product %}}
   <ind:textfilecontent54_test id="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1"
                           check="all"
                           comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
+{{% endif %}}
 
   <ind:variable_test check="all" check_existence="all_exist" comment="Check that only one file contains {{{ SYSCTLID }}}"
   id="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
@@ -238,7 +242,9 @@
   <ind:textfilecontent54_object id="object_static_run_usr_sysctls_{{{ SYSCTLID }}}" version="1">
     <set>
       <object_reference>object_static_run_sysctld_{{{ SYSCTLID }}}</object_reference>
+{{% if "rhel" not in product %}}
       <object_reference>object_static_usr_lib_sysctld_{{{ SYSCTLID }}}</object_reference>
+{{% endif %}}
     </set>
   </ind:textfilecontent54_object>
 
@@ -259,11 +265,13 @@
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 
+{{% if "rhel" not in product %}}
   <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_{{{ SYSCTLID }}}" version="1">
     <ind:path>/usr/lib/sysctl.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
+{{% endif %}}
 {{% if SYSCTLVAL == "" %}}
 
   <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
