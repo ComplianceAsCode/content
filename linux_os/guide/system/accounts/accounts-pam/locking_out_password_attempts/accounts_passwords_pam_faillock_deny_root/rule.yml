@@ -103,3 +103,6 @@ warnings:
         be shown in the remediation report.
         If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
         parameters should be defined in <tt>faillock.conf</tt> file.
+
+srg_requirement: |-
+    {{{ full_name }}} must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.

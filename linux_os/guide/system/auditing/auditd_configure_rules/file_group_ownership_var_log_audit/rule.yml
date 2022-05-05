@@ -77,3 +77,6 @@ fixtext: |-
     Change the ownership to that group:
 
     $ sudo chgrp ${log_group} ${log_file}
+
+srg_requirement: |-
+   {{{ full_name }}} audit log files must be group-owned by root or a restricted logging group to prevent unauthorized access.
