@@ -58,3 +58,6 @@ fixtext: |-
    Configure {{{ full_name }}} to use TCP syncookies.
 
    {{{ fixtext_sysctl("net.ipv4.tcp_syncookies", "1") | indent(4) }}}
+
+srg_requirement:
+    {{{ full_name }}} must be configured to use TCP syncookies.
