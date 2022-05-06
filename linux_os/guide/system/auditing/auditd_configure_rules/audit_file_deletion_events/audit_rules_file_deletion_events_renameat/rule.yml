@@ -70,3 +70,5 @@ template:
           - rmdir
 fixtext: |-
     {{{ fixtext_audit_rules_file_deletion_events("renameat") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("renameat") }}}'
