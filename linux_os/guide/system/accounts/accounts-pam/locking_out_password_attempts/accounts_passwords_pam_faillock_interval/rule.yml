@@ -56,36 +56,27 @@ ocil: |-
 fixtext: |-
     To configure the fail_interval directive, first make sure the feature is enabled using the
     following command:
-    <br /><br />
     {{% if product in ["rhel7"] %}}
-    <ul>
-    <li><pre>authconfig --enablefaillock --update</pre></li>
-    </ul>
-    <br />
+    $ sudo authconfig --enablefaillock --update
+
     Then modify the content of both <tt>/etc/pam.d/system-auth</tt> and
     <tt>/etc/pam.d/password-auth</tt> as follows:
-    <br /><br />
-    <ul>
-    <li> edit the fail_interval parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
+    edit the fail_interval parameter in the following line <tt>before</tt> the <tt>pam_unix.so</tt>
     statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} <tt>fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt></pre></li>
-    <li> edit the deny parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
+    <pre>auth required pam_faillock.so preauth silent deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} <tt>fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt></pre>
+
+    edit the deny parameter in the following line <tt>after</tt> the <tt>pam_unix.so</tt>
     statement in the <tt>auth</tt> section, like this:
-    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} <tt>fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt></pre></li>
-    </ul>
+    <pre>auth required pam_faillock.so authfail deny={{{ xccdf_value("var_accounts_passwords_pam_faillock_deny") }}} unlock_time={{{ xccdf_value("var_accounts_passwords_pam_faillock_unlock_time") }}} <tt>fail_interval={{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</tt></pre>
     {{% else %}}
-    <ul>
-    <li><pre>authselect enable-feature with-faillock</pre></li>
-    </ul>
-    <br />
+    $ sudo authselect enable-feature with-faillock
+
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
-    <br /><br />
-    <ul>
-    <li> add, uncomment or edit the following line:
-    <pre>fail_interval = {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre></li>
-    <li> add or uncomment the following line:
-    <pre>silent</pre></li>
-    </ul>
+    add, uncomment or edit the following line:
+    <pre>fail_interval = {{{ xccdf_value("var_accounts_passwords_pam_faillock_fail_interval") }}}</pre>
+
+    add or uncomment the following line:
+    <pre>silent</pre>
     {{% endif %}}
 
 srg_requirement: |-
