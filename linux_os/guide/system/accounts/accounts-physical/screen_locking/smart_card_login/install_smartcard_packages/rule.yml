@@ -60,7 +60,7 @@ ocil_clause: 'smartcard software is not installed'
 
 ocil: |-
     {{% for pkg in smartcard_packages %}}
-    '{{{ ocil_package(package=pkg) }}}'
+    {{{ ocil_package(package=pkg) }}}
     {{% endfor %}}
 
 {{% if product not in ["sle12", "sle15"] %}}
