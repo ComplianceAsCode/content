@@ -63,7 +63,7 @@ ocil: |-
     {{% endif %}}
 
 fixtext: |-
-    To configure the system to lock out accounts after a number of incorrect login attempts
+    To configure {{{ full_name }}} to lock out accounts after a number of incorrect login attempts
     using <tt>pam_faillock.so</tt>, first enable the feature using the following command:
     {{% if product in ["rhel7"] %}}
     $ sudo authconfig --enablefaillock --update
