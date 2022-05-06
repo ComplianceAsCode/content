@@ -114,7 +114,9 @@
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                    test_ref="test_static_usr_lib_sysctld_{{{ SYSCTLID }}}"/>
       </criteria>
+{{% if target_oval_version >= [5, 11] %}}
       <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
+{{% endif %}}
     </criteria>
   </definition>
 
@@ -140,6 +142,7 @@
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
 
+{{% if target_oval_version >= [5, 11] %}}
   <ind:variable_test check="all" check_existence="all_exist" comment="Check that only one file contains {{{ SYSCTLID }}}"
   id="test_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" version="1">
     <ind:object object_ref="oject_sysctl_{{{ SYSCTLID }}}_defined_in_one_file" />
@@ -215,6 +218,7 @@
     <unix:filepath operation="equals" var_ref="local_var_conf_files_{{{ SYSCTLID }}}" />
     <filter action="exclude">state_symlink_points_outside_usual_dirs_{{{ SYSCTLID }}}</filter>
   </unix:symlink_object>
+{{% endif %}}
 
   <!-- The state matches symlinks that don't point to the default dirs, i.e. paths that are not:
        ^/etc/sysctl.conf$
