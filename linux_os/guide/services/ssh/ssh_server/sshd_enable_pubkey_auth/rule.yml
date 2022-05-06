@@ -23,6 +23,9 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel9: CCE-86138-5
+
 references:
     disa: CCI-000765,CCI-000766,CCI-000767,CCI-000768
     srg: SRG-OS-000105-GPOS-00052,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000108-GPOS-00055
@@ -32,6 +35,9 @@ references:
 
 fixtext: |-
     {{{ fixtext_sshd_lineinfile("PubkeyAuthentication", "yes") }}}
+
+srg_requirement:
+  {{{ full_name }}} SSHD must accept public key authentication.
 
 template:
     name: sshd_lineinfile

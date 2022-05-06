@@ -841,7 +841,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 #}}
 {{%- macro ocil_clause_file_permissions(file, perms) -%}}
-    {{{ file }}} has unix mode {{{ perms }}}
+    {{{ file }}} does not have unix mode {{{ perms }}}
 {{%- endmacro %}}
 
 
