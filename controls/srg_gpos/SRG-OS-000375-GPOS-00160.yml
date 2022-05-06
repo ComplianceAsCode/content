@@ -7,7 +7,7 @@ controls:
             by a device separate from the system gaining access.
         rules:
             - sssd_certificate_verification
-            - var_sssd_certificate_verification_digest_function=sha1
+            - var_sssd_certificate_verification_digest_function=sha512
             - sssd_enable_smartcards
             - install_smartcard_packages
             - package_opensc_installed
