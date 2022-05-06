@@ -44,13 +44,11 @@ references:
     stigid@rhel7: RHEL-07-010180
     stigid@rhel8: RHEL-08-020150
 
-ocil_clause: 'maxrepeat is not found or not greater than or equal to the required value'
+ocil_clause: the value of "maxrepeat" is set to more than "{{{ xccdf_value("var_password_pam_maxrepeat") }}}" or is commented out
 
 ocil: |-
     To check the maximum value for consecutive repeating characters, run the following command:
-    <pre>$ grep maxrepeat /etc/security/pwquality.conf</pre>
-    Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3, which would appear as
-    <tt>maxrepeat=3</tt>.
+    <pre>$ sudo grep maxrepeat /etc/security/pwquality.conf</pre>
 
 platform: pam
 
@@ -59,3 +57,10 @@ template:
     vars:
         variable: maxrepeat
         operation: less than or equal
+
+fixtext: |-
+    Configure {{{ full_name }}} to require the change of the number of repeating consecutive characters when passwords are changed by setting the "maxrepeat" option.
+
+    Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
+
+    maxrepeat = {{{ xccdf_value("var_password_pam_maxrepeat") }}}
