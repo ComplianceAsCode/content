@@ -65,3 +65,6 @@ fixtext: |-
     <pre>SELINUX={{{ xccdf_value("var_selinux_state") }}}</pre>
 
     A reboot is required for the changes to take effect.
+
+srg_requirement: |-
+    {{{ full_name }}} must use a Linux Security Module configured to enforce limits on system services.
