@@ -18,11 +18,19 @@ Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
-{{% macro fixtext_audit_rules(event, key, event_group) -%}}
-Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" command by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
+{{% macro fixtext_audit_rules(event, key, event_group, extra_params=False) -%}}
+Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" system call by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
 
+{{%- if extra_params %}}
+-a always,exit -F arch=b32 -S {{{ event }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+
+-a always,exit -F arch=b32 -S {{{ event }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+{{%- else %}}
 -a always,exit -F arch=b32 -S {{{ event }}} -F auid>=1000 -F auid!=unset -k {{{ key }}}
 -a always,exit -F arch=b64 -S {{{ event }}} -F auid>=1000 -F auid!=unset -k {{{ key }}}
+{{%- endif %}}
 
 It's allowed to group this system call within the same line as {{{ event_group }}}.
 
@@ -63,6 +71,17 @@ The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{#
+    Generate a fixtext for audit rules for dac modification events - chown
+
+:param syscall: Sycall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_dac_modification_chown(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_mod", '"chown", "fchown", "fchownat" and "lchown"') }}}
+{{% endmacro %}}
+
+{{#
     Generate a fixtext for audit rules for dac modification events - attr
 
 :param syscall: Sycall name
@@ -71,6 +90,17 @@ The audit daemon must be restarted for the changes to take effect.
 #}}
 {{% macro fixtext_audit_rules_dac_modification_attr(syscall) -%}}
 {{{ fixtext_audit_rules(syscall, "perm_mod", '"fremovexattr", "lremovexattr", "removexattr", "fsetxattr", "lsetxattr" and "setxattr"') }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for unsuccessful audit - creat
+
+:param syscall: Sycall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_creat(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "perm_access", '"creat", "ftruncate", "truncate", "open", "openat" and "open_by_handle_at"', extra_params=True) }}}
 {{% endmacro %}}
 
 {{#
