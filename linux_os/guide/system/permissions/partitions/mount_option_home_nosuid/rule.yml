@@ -52,3 +52,6 @@ template:
         mountpoint: /home
         mountoption: nosuid
         mount_has_to_exist: 'yes'
+
+fixtext: |-
+    {{{ fixtext_mount_option("/home", "nosuid") }}}

@@ -52,3 +52,6 @@ template:
         mountoption: nodev
         mount_has_to_exist: 'yes'
 # Note that /tmp on RHEL systems is not tmpfs
+
+fixtext: |-
+    {{{ fixtext_mount_option("/tmp", "nodev") }}}

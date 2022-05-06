@@ -544,7 +544,7 @@ ocil: |
     Subsequently,
     {{%- endif -%}}
     run the following command:
-    <pre>$ mount | grep '\s{{{ point }}}\s'</pre>
+    <pre>$ sudo mount | grep '\s{{{ point }}}\s'</pre>
     The output should show the corresponding mount point along with the <tt>{{{ option }}}</tt> setting in parentheses.
 {{%- endmacro %}}
 
@@ -559,7 +559,7 @@ ocil: |
 
 #}}
 {{% macro ocil_clause_entry_mount_option(point, option) -%}}
-ocil_clause: "the {{{ option }}} is not present in the output line, or there is no output line at all"
+ocil_clause: the "{{{ point }}}" file system does not have the "{{{ option }}}" option set
 {{%- endmacro %}}
 
 
@@ -576,7 +576,7 @@ ocil_clause: "the {{{ option }}} is not present in the output line, or there is 
 ocil: |
     {{{ ocil_mount_option(point, option) | indent(4) }}}
 
-{{{ ocil_clause_entry_mount_option() }}}
+{{{ ocil_clause_entry_mount_option(point, option) }}}
 {{%- endmacro %}}
 
 

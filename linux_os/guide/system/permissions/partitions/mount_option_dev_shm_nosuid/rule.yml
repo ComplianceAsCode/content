@@ -65,3 +65,6 @@ template:
         type@wrlinux1019: ''
     backends:
         anaconda: 'off'
+
+fixtext: |-
+    {{{ fixtext_mount_option("/dev/shm", "nosuid") }}}
