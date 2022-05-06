@@ -9,6 +9,7 @@
     paths: "/etc/sysctl.d/"
     contains: '^[\s]*{{{ SYSCTLVAR }}}.*$'
     patterns: "*.conf"
+    file_type: any
   register: find_sysctl_d
 
 - name: Comment out any occurrences of {{{ SYSCTLVAR }}} from /etc/sysctl.d/*.conf files
