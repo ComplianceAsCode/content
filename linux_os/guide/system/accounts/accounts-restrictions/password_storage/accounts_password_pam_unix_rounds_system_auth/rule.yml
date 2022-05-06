@@ -51,4 +51,4 @@ fixtext: |-
     Add or modify the following line in "/etc/pam.d/system-auth" and set "rounds" to {{{ xccdf_value("var_password_pam_unix_rounds") }}}.
     For example:
 
-    password sufficient pam_unix.so sha512 rounds=5000
+    password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}
