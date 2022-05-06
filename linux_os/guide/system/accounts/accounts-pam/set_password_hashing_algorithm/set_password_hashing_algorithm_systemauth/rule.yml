@@ -4,15 +4,15 @@ prodtype: fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
 
 title: "Set PAM's Password Hashing Algorithm"
 
+{{% if product in ["sle12", "sle15"] %}}
+{{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
+{{% else %}}
+{{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
+{{% endif %}}
+
 description: |-
     The PAM system service can be configured to only store encrypted
-    representations of passwords. In
-    {{% if product in ["sle12", "sle15"] %}}
-    <tt>/etc/pam.d/common-password</tt>,
-    {{% else %}}
-    <tt>/etc/pam.d/system-auth</tt>,
-    {{% endif %}}
-    the
+    representations of passwords. In "{{{ pam_passwd_file_path }}}", the
     <tt>password</tt> section of the file controls which PAM modules execute
     during a password change. Set the <tt>pam_unix.so</tt> module in the
     <tt>password</tt> section to include the argument <tt>sha512</tt>, as shown
@@ -78,24 +78,17 @@ references:
 ocil_clause: '"sha512" is missing, or is commented out'
 
 ocil: |-
-    {{% if product in ["sle12", "sle15"] -%}}
-    Inspect the contents of <tt>/etc/pam.d/common-password</tt>
-    {{%- else -%}}
-    Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt>
-    {{%- endif %}}
+    Inspect the <tt>password</tt> section of <tt>{{{ pam_passwd_file_path }}}</tt>
     and ensure that the <tt>pam_unix.so</tt> module  is configured to use the argument
     <tt>sha512</tt>:
-    {{% if product in ["sle12", "sle15"] %}}
-    <pre>$ sudo grep "^password.*required.*pam_unix.so.*sha512" /etc/pam.d/common-password
 
+    <pre>$ sudo grep "^password.*pam_unix.so.*sha512" {{{ pam_passwd_file_path }}}
+    {{% if product in ["sle12", "sle15"] -%}}
     password required pam_unix.so sha512
-    </pre>
     {{% else %}}
-    <pre>$ sudo grep "^password.*sufficient.*pam_unix.so.*sha512" /etc/pam.d/system-auth
-
     password sufficient pam_unix.so sha512
+    {{%- endif -%}}
     </pre>
-    {{%- endif %}}
 
 platform: pam
 
@@ -115,12 +108,9 @@ template:
 fixtext: |-
     Configure {{{ full_name }}} to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.
 
-    {{% if product in ['sle12', 'sle15'] %}}
-    Edit/modify the following line in the "/etc/pam.d/common-password" file to include the sha512 option for pam_unix.so:
-
+    Edit/modify the following line in the "{{{ pam_passwd_file_path }}}" file to include the sha512 option for pam_unix.so:
+    {{% if product in ['sle12', 'sle15'] -%}}
     password required pam_unix.so sha512
     {{% else %}}
-    Edit/modify the following line in the "/etc/pam.d/system-auth" file to include the sha512 option for pam_unix.so:
-
     password sufficient pam_unix.so sha512
-    {{% endif %}}
+    {{%- endif %}}
