@@ -5,9 +5,6 @@ controls:
         title: {{{ full_name }}} must uniquely identify peripherals before establishing
             a connection.
         rules:
-            - usbguard_allow_hid
-            - usbguard_allow_hid_and_hub
-            - usbguard_allow_hub
             - kernel_module_usb-storage_disabled
             - service_autofs_disabled
             - dconf_gnome_disable_automount_open
