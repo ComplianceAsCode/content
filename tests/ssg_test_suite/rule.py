@@ -308,14 +308,7 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = [scenario]
         return new_sbr
 
-    def _test_target(self, target):
-        rules_to_test = self._get_rules_to_test(target)
-        if not rules_to_test:
-            logging.error("No tests found matching the {0}(s) '{1}'".format(
-                self.target_type,
-                ", ".join(target)))
-            return
-
+    def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
             rule_scenarios = self._filter_scenarios(
@@ -325,12 +318,24 @@ class RuleChecker(oscap.Checker):
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
-        self._prepare_environment(sliced_scenarios_by_rule_id)
+        return sliced_scenarios_by_rule_id
+
+    def _test_target(self, target):
+        rules_to_test = self._get_rules_to_test(target)
+        if not rules_to_test:
+            logging.error("No tests found matching the {0}(s) '{1}'".format(
+                self.target_type,
+                ", ".join(target)))
+            return
+
+        scenarios_by_rule_id = self._get_scenarios_by_rule_id(rules_to_test)
+
+        self._prepare_environment(scenarios_by_rule_id)
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in rules_to_test:
                 try:
-                    self.test_rule(state, rule, sliced_scenarios_by_rule_id[rule.id])
+                    self.test_rule(state, rule, scenarios_by_rule_id[rule.id])
                 except KeyError:
                     # rule is not processed in given slice
                     pass
