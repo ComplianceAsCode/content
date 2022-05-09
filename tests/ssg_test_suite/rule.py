@@ -311,9 +311,7 @@ class RuleChecker(oscap.Checker):
     def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
-            rule_scenarios = self._filter_scenarios(
-                rule.scenarios_basenames, self.scenarios_regex,
-                self.benchmark_cpes)
+            rule_scenarios = self._filter_scenarios(rule.scenarios_basenames)
             scenarios_by_rule_id[rule.id] = rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
@@ -371,18 +369,18 @@ class RuleChecker(oscap.Checker):
 
         return params
 
-    def _filter_scenarios(self, scripts, scenarios_regex, benchmark_cpes):
+    def _filter_scenarios(self, scripts):
         """ Returns only valid scenario files, rest is ignored (is not meant
         to be executed directly.
         """
 
-        if scenarios_regex is not None:
-            scenarios_pattern = re.compile(scenarios_regex)
+        if self.scenarios_regex is not None:
+            scenarios_pattern = re.compile(self.scenarios_regex)
 
         scenarios = []
         for script in scripts:
             script_contents = scripts[script]
-            if scenarios_regex is not None:
+            if self.scenarios_regex is not None:
                 if scenarios_pattern.match(script) is None:
                     logging.debug("Skipping script %s - it did not match "
                                   "--scenarios regex" % script)
@@ -391,7 +389,7 @@ class RuleChecker(oscap.Checker):
             if script_context is not None:
                 script_params = self._parse_parameters(script_contents)
                 script_params = self._modify_parameters(script, script_params)
-                if common.matches_platform(script_params["platform"], benchmark_cpes):
+                if common.matches_platform(script_params["platform"], self.benchmark_cpes):
                     scenarios += [Scenario(script, script_context, script_params, script_contents)]
                 else:
                     logging.warning("Script %s is not applicable on given platform" % script)
