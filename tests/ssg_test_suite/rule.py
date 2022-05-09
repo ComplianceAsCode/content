@@ -25,10 +25,6 @@ from ssg_test_suite.log import LogHelper
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
-Scenario = collections.namedtuple(
-    "Scenario", ["script", "context", "script_params", "contents"])
-
-
 def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
     """Read datastream, and return set intersection of profiles of given
     benchmark and those provided in `selected_profiles` parameter.
@@ -95,14 +91,6 @@ def _apply_script(rule_dir, test_env, script):
             logging.error(str(exc))
             return False
     return True
-
-
-def _get_script_context(script):
-    """Return context of the script."""
-    result = re.search(r'.*\.([^.]*)\.[^.]*$', script)
-    if result is None:
-        return None
-    return result.group(1)
 
 
 class RuleChecker(oscap.Checker):
@@ -311,11 +299,8 @@ class RuleChecker(oscap.Checker):
     def _get_rule_scenarios(self, rule):
         scenarios = []
         for script, script_contents in rule.scenarios.items():
-            script_context = _get_script_context(script)
-            script_params = self._parse_parameters(script_contents)
-            script_params = self._modify_parameters(script, script_params)
             scenario = Scenario(
-                script, script_context, script_params, script_contents)
+                script, script_contents, self.scenarios_profile)
             scenarios.append(scenario)
         return scenarios
 
@@ -350,68 +335,14 @@ class RuleChecker(oscap.Checker):
                     # rule is not processed in given slice
                     pass
 
-    def _modify_parameters(self, script, params):
-        if self.scenarios_profile:
-            params['profiles'] = [self.scenarios_profile]
-
-        if not params["profiles"]:
-            params["profiles"].append(OSCAP_PROFILE_ALL_ID)
-            logging.debug(
-                "Added the {0} profile to the list of available profiles for {1}"
-                .format(OSCAP_PROFILE_ALL_ID, script))
-        return params
-
-    def _parse_parameters(self, script_content):
-        """Parse parameters from script header"""
-        params = {'profiles': [],
-                  'templates': [],
-                  'packages': [],
-                  'platform': ['multi_platform_all'],
-                  'remediation': ['all'],
-                  'variables': [],
-                  }
-
-        for parameter in params:
-            found = re.search(r'^# {0} = (.*)$'.format(parameter),
-                              script_content, re.MULTILINE)
-            if found is None:
-                continue
-            splitted = found.group(1).split(',')
-            params[parameter] = [value.strip() for value in splitted]
-
-        return params
-
-    def _scenario_matches_regex(self, scenario):
-        if self.scenarios_regex is not None:
-            scenarios_pattern = re.compile(self.scenarios_regex)
-            if scenarios_pattern.match(scenario.script) is None:
-                logging.debug(
-                    "Skipping script %s - it did not match "
-                    "--scenarios regex" % scenario.script
-                )
-                return False
-        return True
-
-    def _scenario_matches_platform(self, scenario):
-        if scenario.context is None:
-            return False
-        if common.matches_platform(
-                scenario.script_params["platform"], self.benchmark_cpes):
-            return True
-        else:
-            logging.warning(
-                "Script %s is not applicable on given platform" %
-                scenario.script)
-            return False
-
     def _filter_scenarios(self, scenarios):
         """ Returns only valid scenario files, rest is ignored (is not meant
         to be executed directly.
         """
         filtered_scenarios = []
         for scenario in scenarios:
-            if (self._scenario_matches_regex(scenario) and
-                    self._scenario_matches_platform(scenario)):
+            if (scenario.matches_regex(self.scenarios_regex) and
+                    scenario.matches_platform(self.benchmark_cpes)):
                 filtered_scenarios.append(scenario)
         return filtered_scenarios
 
@@ -509,6 +440,81 @@ class RuleChecker(oscap.Checker):
         super(RuleChecker, self).finalize()
         with open(os.path.join(LogHelper.LOG_DIR, "results.json"), "w") as f:
             json.dump(self.results, f)
+
+
+class Scenario():
+    def __init__(self, script, script_contents, scenarios_profile):
+        self.script = script
+        self.context = self._get_script_context(script)
+        script_params = self._parse_parameters(script_contents)
+        script_params = self._modify_parameters(
+            script, script_params, scenarios_profile)
+        self.script_params = script_params
+        self.contents = script_contents
+
+    def _get_script_context(self, script):
+        """Return context of the script."""
+        result = re.search(r'.*\.([^.]*)\.[^.]*$', script)
+        if result is None:
+            return None
+        return result.group(1)
+
+    def _parse_parameters(self, script_content):
+        """Parse parameters from script header"""
+        params = {
+            'profiles': [],
+            'templates': [],
+            'packages': [],
+            'platform': ['multi_platform_all'],
+            'remediation': ['all'],
+            'variables': [],
+        }
+
+        for parameter in params:
+            found = re.search(
+                r'^# {0} = (.*)$'.format(parameter),
+                script_content, re.MULTILINE)
+            if found is None:
+                continue
+            splitted = found.group(1).split(',')
+            params[parameter] = [value.strip() for value in splitted]
+
+        return params
+
+    def _modify_parameters(self, script, params, scenarios_profile):
+        if scenarios_profile:
+            params['profiles'] = [scenarios_profile]
+
+        if not params["profiles"]:
+            params["profiles"].append(OSCAP_PROFILE_ALL_ID)
+            logging.debug(
+                "Added the {0} profile to the list of available profiles "
+                "for {1}"
+                .format(OSCAP_PROFILE_ALL_ID, script))
+        return params
+
+    def matches_regex(self, scenarios_regex):
+        if scenarios_regex is not None:
+            scenarios_pattern = re.compile(scenarios_regex)
+            if scenarios_pattern.match(self.script) is None:
+                logging.debug(
+                    "Skipping script %s - it did not match "
+                    "--scenarios regex" % self.script
+                )
+                return False
+        return True
+
+    def matches_platform(self, benchmark_cpes):
+        if self.context is None:
+            return False
+        if common.matches_platform(
+                self.script_params["platform"], benchmark_cpes):
+            return True
+        else:
+            logging.warning(
+                "Script %s is not applicable on given platform" %
+                self.script)
+            return False
 
 
 def perform_rule_check(options):
