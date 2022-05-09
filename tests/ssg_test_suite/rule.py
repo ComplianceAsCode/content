@@ -321,7 +321,7 @@ class RuleChecker(oscap.Checker):
         self._prepare_environment(sliced_scenarios_by_rule_id)
 
         with test_env.SavedState.create_from_environment(self.test_env,
-                                    common.SNAPSHOT_PREFIX+"tests_uploaded") as state:
+            common.SNAPSHOT_PREFIX+"tests_uploaded") as state:
             for rule in rules_to_test:
                 try:
                     self.test_rule(state, rule, sliced_scenarios_by_rule_id[rule.id])

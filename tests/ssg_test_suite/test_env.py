@@ -220,11 +220,7 @@ class VMTestEnv(TestEnv):
         self._origin = None
 
     def snapshot_lookup(self, snapshot_name):
-        try:
-            snapshot = self.domain.snapshotLookupByName(snapshot_name)
-        except Exception as exc:
-            raise RuntimeError(exc)
-        return snapshot
+        return self.domain.snapshotLookupByName(snapshot_name)
 
     def snapshot_cleanup(self):
         snapshot_list = self.domain.snapshotListNames()
