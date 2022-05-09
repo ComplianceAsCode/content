@@ -301,15 +301,15 @@ class RuleChecker(oscap.Checker):
         for script, script_contents in rule.scenarios.items():
             scenario = Scenario(
                 script, script_contents, self.scenarios_profile)
-            scenarios.append(scenario)
+            if (scenario.matches_regex(self.scenarios_regex) and
+                    scenario.matches_platform(self.benchmark_cpes)):
+                scenarios.append(scenario)
         return scenarios
 
     def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
-            rule_scenarios = self._get_rule_scenarios(rule)
-            filtered_rule_scenarios = self._filter_scenarios(rule_scenarios)
-            scenarios_by_rule_id[rule.id] = filtered_rule_scenarios
+            scenarios_by_rule_id[rule.id] = self._get_rule_scenarios(rule)
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
@@ -334,17 +334,6 @@ class RuleChecker(oscap.Checker):
                 except KeyError:
                     # rule is not processed in given slice
                     pass
-
-    def _filter_scenarios(self, scenarios):
-        """ Returns only valid scenario files, rest is ignored (is not meant
-        to be executed directly.
-        """
-        filtered_scenarios = []
-        for scenario in scenarios:
-            if (scenario.matches_regex(self.scenarios_regex) and
-                    scenario.matches_platform(self.benchmark_cpes)):
-                filtered_scenarios.append(scenario)
-        return filtered_scenarios
 
     def _check_rule(self, rule, scenarios, remote_dir, state, remediation_available):
         remote_rule_dir = os.path.join(remote_dir, rule.short_id)
