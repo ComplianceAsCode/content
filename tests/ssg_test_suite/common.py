@@ -32,7 +32,7 @@ Scenario_conditions = namedtuple(
     "Scenario_conditions",
     ("backend", "scanning_mode", "remediated_by", "datastream"))
 Rule = namedtuple(
-    "Rule", ["directory", "id", "short_id", "scenarios_basenames", "template"])
+    "Rule", ["directory", "id", "short_id", "scenarios", "template"])
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
@@ -572,7 +572,8 @@ def iterate_over_rules(product=None):
             id -- full rule id as it is present in datastream
             short_id -- short rule ID, the same as basename of the directory
                         containing the test scenarios in Bash
-            scenarios_basenames -- list of executable .sh files in the uploaded tarball
+            scenarios -- dictionary mapping names of executable .sh files in
+                         the uploaded tarball to their content
     """
 
     # Here we need to perform some magic to handle parsing the rule (from a
@@ -660,7 +661,7 @@ def iterate_over_rules(product=None):
             full_rule_id = OSCAP_RULE + short_rule_id
             result = Rule(
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
-                scenarios_basenames=content_mapping, template=template_name)
+                scenarios=content_mapping, template=template_name)
             yield result
 
 

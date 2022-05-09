@@ -311,7 +311,7 @@ class RuleChecker(oscap.Checker):
     def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
-            rule_scenarios = self._filter_scenarios(rule.scenarios_basenames)
+            rule_scenarios = self._filter_scenarios(rule.scenarios)
             scenarios_by_rule_id[rule.id] = rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
