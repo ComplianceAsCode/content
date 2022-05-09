@@ -85,10 +85,14 @@ def _apply_script(rule_dir, test_env, script):
         command = "cd {0}; SHARED={1} bash -x {2}".format(rule_dir, shared_dir, script)
 
         try:
-            test_env.execute_ssh_command(command, log_file)
-        except subprocess.CalledProcessError as exc:
-            logging.error("Rule testing script {script} failed with exit code {rc}"
-                          .format(script=script, rc=exc.returncode))
+            error_msg_template = (
+                f"Rule '{rule_name}' test setup script '{script}' "
+                "failed with exit code {rc}"
+            )
+            test_env.execute_ssh_command(
+                command, log_file, error_msg_template=error_msg_template)
+        except RuntimeError as exc:
+            logging.error(str(exc))
             return False
     return True
 
