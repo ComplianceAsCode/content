@@ -381,21 +381,26 @@ class RuleChecker(oscap.Checker):
 
         return params
 
+    def _scenario_matches_regex(self, scenario):
+        if self.scenarios_regex is not None:
+            scenarios_pattern = re.compile(self.scenarios_regex)
+            if scenarios_pattern.match(scenario.script) is None:
+                logging.debug(
+                    "Skipping script %s - it did not match "
+                    "--scenarios regex" % scenario.script
+                )
+                return False
+        return True
+
     def _filter_scenarios(self, scenarios):
         """ Returns only valid scenario files, rest is ignored (is not meant
         to be executed directly.
         """
 
-        if self.scenarios_regex is not None:
-            scenarios_pattern = re.compile(self.scenarios_regex)
-
         filtered_scenarios = []
         for scenario in scenarios:
-            if self.scenarios_regex is not None:
-                if scenarios_pattern.match(scenario.script) is None:
-                    logging.debug("Skipping script %s - it did not match "
-                                  "--scenarios regex" % scenario.script)
-                    continue
+            if not self._scenario_matches_regex(scenario):
+                continue
             if scenario.context is not None:
                 if common.matches_platform(scenario.script_params["platform"], self.benchmark_cpes):
                     filtered_scenarios.append(scenario)
