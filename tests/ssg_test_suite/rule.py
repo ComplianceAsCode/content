@@ -308,11 +308,23 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = [scenario]
         return new_sbr
 
+    def _get_rule_scenarios(self, rule):
+        scenarios = []
+        for script, script_contents in rule.scenarios.items():
+            script_context = _get_script_context(script)
+            script_params = self._parse_parameters(script_contents)
+            script_params = self._modify_parameters(script, script_params)
+            scenario = Scenario(
+                script, script_context, script_params, script_contents)
+            scenarios.append(scenario)
+        return scenarios
+
     def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
-            rule_scenarios = self._filter_scenarios(rule.scenarios)
-            scenarios_by_rule_id[rule.id] = rule_scenarios
+            rule_scenarios = self._get_rule_scenarios(rule)
+            filtered_rule_scenarios = self._filter_scenarios(rule_scenarios)
+            scenarios_by_rule_id[rule.id] = filtered_rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
@@ -369,7 +381,7 @@ class RuleChecker(oscap.Checker):
 
         return params
 
-    def _filter_scenarios(self, scripts):
+    def _filter_scenarios(self, scenarios):
         """ Returns only valid scenario files, rest is ignored (is not meant
         to be executed directly.
         """
@@ -377,24 +389,20 @@ class RuleChecker(oscap.Checker):
         if self.scenarios_regex is not None:
             scenarios_pattern = re.compile(self.scenarios_regex)
 
-        scenarios = []
-        for script in scripts:
-            script_contents = scripts[script]
+        filtered_scenarios = []
+        for scenario in scenarios:
             if self.scenarios_regex is not None:
-                if scenarios_pattern.match(script) is None:
+                if scenarios_pattern.match(scenario.script) is None:
                     logging.debug("Skipping script %s - it did not match "
-                                  "--scenarios regex" % script)
+                                  "--scenarios regex" % scenario.script)
                     continue
-            script_context = _get_script_context(script)
-            if script_context is not None:
-                script_params = self._parse_parameters(script_contents)
-                script_params = self._modify_parameters(script, script_params)
-                if common.matches_platform(script_params["platform"], self.benchmark_cpes):
-                    scenarios += [Scenario(script, script_context, script_params, script_contents)]
+            if scenario.context is not None:
+                if common.matches_platform(scenario.script_params["platform"], self.benchmark_cpes):
+                    filtered_scenarios.append(scenario)
                 else:
                     logging.warning("Script %s is not applicable on given platform" % script)
 
-        return scenarios
+        return filtered_scenarios
 
     def _check_rule(self, rule, scenarios, remote_dir, state, remediation_available):
         remote_rule_dir = os.path.join(remote_dir, rule.short_id)
