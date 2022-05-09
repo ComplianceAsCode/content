@@ -392,21 +392,27 @@ class RuleChecker(oscap.Checker):
                 return False
         return True
 
+    def _scenario_matches_platform(self, scenario):
+        if scenario.context is None:
+            return False
+        if common.matches_platform(
+                scenario.script_params["platform"], self.benchmark_cpes):
+            return True
+        else:
+            logging.warning(
+                "Script %s is not applicable on given platform" %
+                scenario.script)
+            return False
+
     def _filter_scenarios(self, scenarios):
         """ Returns only valid scenario files, rest is ignored (is not meant
         to be executed directly.
         """
-
         filtered_scenarios = []
         for scenario in scenarios:
-            if not self._scenario_matches_regex(scenario):
-                continue
-            if scenario.context is not None:
-                if common.matches_platform(scenario.script_params["platform"], self.benchmark_cpes):
-                    filtered_scenarios.append(scenario)
-                else:
-                    logging.warning("Script %s is not applicable on given platform" % script)
-
+            if (self._scenario_matches_regex(scenario) and
+                    self._scenario_matches_platform(scenario)):
+                filtered_scenarios.append(scenario)
         return filtered_scenarios
 
     def _check_rule(self, rule, scenarios, remote_dir, state, remediation_available):
