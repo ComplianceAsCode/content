@@ -319,7 +319,7 @@ class RuleChecker(oscap.Checker):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
             rule_scenarios = self._get_scenarios(
-                rule.directory, rule.scenarios_basenames, self.scenarios_regex,
+                rule.scenarios_basenames, self.scenarios_regex,
                 self.benchmark_cpes)
             scenarios_by_rule_id[rule.id] = rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
@@ -366,7 +366,7 @@ class RuleChecker(oscap.Checker):
 
         return params
 
-    def _get_scenarios(self, rule_dir, scripts, scenarios_regex, benchmark_cpes):
+    def _get_scenarios(self, scripts, scenarios_regex, benchmark_cpes):
         """ Returns only valid scenario files, rest is ignored (is not meant
         to be executed directly.
         """
