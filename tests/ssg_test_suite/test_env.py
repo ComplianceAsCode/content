@@ -219,17 +219,32 @@ class VMTestEnv(TestEnv):
 
         self._origin = None
 
+    def snapshot_lookup(self, snapshot_name):
+        try:
+            snapshot = self.domain.snapshotLookupByName(snapshot_name)
+        except Exception as exc:
+            raise RuntimeError(exc)
+        return snapshot
+
+    def snapshot_cleanup(self):
+        snapshot_list = self.domain.snapshotListNames()
+        for snapshot_name in snapshot_list:
+            if str(snapshot_name).startswith(common.SNAPSHOT_PREFIX):
+                snapshot = self.snapshot_lookup(snapshot_name)
+                snapshot.delete()
+
     def start(self):
         from ssg_test_suite import virt
 
         self.domain = virt.connect_domain(
             self.hypervisor, self.domain_name)
 
+        self.snapshot_cleanup()
         self.snapshot_stack = virt.SnapshotStack(self.domain)
 
         virt.start_domain(self.domain)
 
-        self._origin = self._save_state("origin")
+        self._origin = self._save_state(common.SNAPSHOT_PREFIX+"origin")
 
         super().start()
 

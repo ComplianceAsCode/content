@@ -48,6 +48,7 @@ _SHARED_TEMPLATES = os.path.abspath(os.path.join(SSG_ROOT, 'shared/templates'))
 REMOTE_USER = "root"
 REMOTE_USER_HOME_DIRECTORY = "/root"
 REMOTE_TEST_SCENARIOS_DIRECTORY = os.path.join(REMOTE_USER_HOME_DIRECTORY, "ssgts")
+SNAPSHOT_PREFIX = "ssgts_"
 
 try:
     SSH_ADDITIONAL_OPTS = tuple(os.environ.get('SSH_ADDITIONAL_OPTIONS').split())
