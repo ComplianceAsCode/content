@@ -15,7 +15,7 @@ from ssg_test_suite import common
 
 class SavedState(object):
     def __init__(self, environment, name):
-        self.name = name
+        self.name = TestEnv.prefix_state_name(self, name)
         self.environment = environment
         self.initial_running_state = True
 
@@ -166,8 +166,11 @@ class TestEnv(object):
     def reset_state_to(self, state_name, new_running_state_name):
         raise NotImplementedError()
 
+    def prefix_state_name(self, state_name):
+        return common.SNAPSHOT_PREFIX+state_name
+
     def save_state(self, state_name):
-        self.running_state_base = state_name
+        self.running_state_base = self.prefix_state_name(state_name)
         running_state = self.running_state
         return self._save_state(state_name)
 
@@ -202,7 +205,7 @@ class TestEnv(object):
 class VMTestEnv(TestEnv):
     name = "libvirt-based"
 
-    def __init__(self, mode, hypervisor, domain_name):
+    def __init__(self, mode, hypervisor, domain_name, keep_snapshots):
         super(VMTestEnv, self).__init__(mode)
 
         try:
@@ -216,16 +219,17 @@ class VMTestEnv(TestEnv):
         self.hypervisor = hypervisor
         self.domain_name = domain_name
         self.snapshot_stack = None
+        self.keep_snapshots = keep_snapshots
 
         self._origin = None
 
     def snapshot_lookup(self, snapshot_name):
         return self.domain.snapshotLookupByName(snapshot_name)
 
-    def snapshot_cleanup(self):
+    def snapshots_cleanup(self):
         snapshot_list = self.domain.snapshotListNames()
         for snapshot_name in snapshot_list:
-            if str(snapshot_name).startswith(common.SNAPSHOT_PREFIX):
+            if str(snapshot_name).startswith(self.prefix_state_name('')):
                 snapshot = self.snapshot_lookup(snapshot_name)
                 snapshot.delete()
 
@@ -235,12 +239,14 @@ class VMTestEnv(TestEnv):
         self.domain = virt.connect_domain(
             self.hypervisor, self.domain_name)
 
-        self.snapshot_cleanup()
+        if not self.keep_snapshots:
+            self.snapshots_cleanup()
+
         self.snapshot_stack = virt.SnapshotStack(self.domain)
 
         virt.start_domain(self.domain)
 
-        self._origin = self._save_state(common.SNAPSHOT_PREFIX+"origin")
+        self._origin = self._save_state("origin")
 
         super().start()
 
@@ -272,7 +278,8 @@ class VMTestEnv(TestEnv):
         return state
 
     def _save_state(self, state_name):
-        state = self.snapshot_stack.create(state_name)
+        prefixed_state_name = self.prefix_state_name(state_name)
+        state = self.snapshot_stack.create(prefixed_state_name)
         return state
 
     def _delete_saved_state(self, snapshot):
@@ -329,7 +336,8 @@ class ContainerTestEnv(TestEnv):
         return new_image_name
 
     def _save_state(self, state_name):
-        state = self._create_new_image(self.current_container, state_name)
+        prefixed_state_name = self.prefix_state_name(state_name)
+        state = self._create_new_image(self.current_container, prefixed_state_name)
         return state
 
     def get_ssh_port(self):

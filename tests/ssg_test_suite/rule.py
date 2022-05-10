@@ -320,8 +320,7 @@ class RuleChecker(oscap.Checker):
                                                       self.slice_total)
         self._prepare_environment(sliced_scenarios_by_rule_id)
 
-        with test_env.SavedState.create_from_environment(self.test_env,
-            common.SNAPSHOT_PREFIX+"tests_uploaded") as state:
+        with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in rules_to_test:
                 try:
                     self.test_rule(state, rule, sliced_scenarios_by_rule_id[rule.id])
@@ -495,6 +494,7 @@ def perform_rule_check(options):
     checker.scenarios_regex = options.scenarios_regex
     checker.slice_current = options.slice_current
     checker.slice_total = options.slice_total
+    checker.keep_snapshots = options.keep_snapshots
 
     checker.scenarios_profile = options.scenarios_profile
     # check if target is a complete profile ID, if not prepend profile prefix
