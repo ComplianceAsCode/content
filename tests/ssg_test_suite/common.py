@@ -563,7 +563,8 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
 
 
 def fetch_templated_test_scenarios(
-        rule, template_builder, test_config, local_env_yaml):
+        rule, template_builder, tests_dir, product_yaml, local_env_yaml):
+    test_config = get_test_dir_config(tests_dir, product_yaml)
     if not rule.template or not rule.template['vars']:
         return dict()
     templated_tests = template_builder.get_all_tests(
@@ -637,12 +638,11 @@ def iterate_over_rules(template_builder, product=None):
             all_tests = dict()
 
             tests_dir = os.path.join(dirpath, "tests")
-            test_config = get_test_dir_config(tests_dir, product_yaml)
 
             # Start by checking for templating tests and provision them if
             # present.
             templated_test_scenarios = fetch_templated_test_scenarios(
-                rule, template_builder, test_config, local_env_yaml)
+                rule, template_builder, tests_dir, product_yaml, local_env_yaml)
             all_tests.update(templated_test_scenarios)
 
             # Add additional tests from the local rule directory. Note that,
