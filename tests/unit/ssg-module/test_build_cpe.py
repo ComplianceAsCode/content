@@ -124,7 +124,7 @@ def test_product_cpes():
     assert(rhel7_cpe.name == "cpe:/o:redhat:enterprise_linux:7")
     assert(rhel7_cpe.title == "Red Hat Enterprise Linux 7")
     assert(rhel7_cpe.check_id == "installed_OS_is_rhel7")
-    assert(rhel7_cpe.bash_conditional == "")
+    assert(rhel7_cpe.bash_conditional == {})
     assert(rhel7_cpe.ansible_conditional == "")
 
     # get CPE by ID and verify it's loaded, the get_cpe method should return
