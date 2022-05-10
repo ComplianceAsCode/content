@@ -1944,13 +1944,11 @@ class Platform(XCCDFEntity):
         id = test.as_id()
         platform = cls(id)
         platform.test = test
-        platform.test.enrich_with_cpe_info(product_cpes)
+        # in case some cpe_items were parametrized, we might need to create new CPE items
+        platform.test.add_enriched_cpe_items(product_cpes)
         platform.name = id
         platform.original_expression = expression
         platform.xml_content = platform.get_xml()
-        platform.bash_conditional_line = platform.test.get_bash_conditional_line()
-        platform.bash_inserted_before_remediation = platform.test.get_bash_inserted_before_remediation()
-        platform.ansible_conditional = platform.test.to_ansible_conditional()
         return platform
 
     def get_xml(self):
@@ -1978,18 +1976,21 @@ class Platform(XCCDFEntity):
     def get_bash_inserted_before_remediation(self):
         return self.bash_inserted_before_remediation
 
-    def to_ansible_conditional(self):
+    def get_ansible_conditional(self):
         return self.ansible_conditional
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
-        platform.xml_content = ET.fromstring(platform.xml_content)
         # if we did receive a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
             platform.test = product_cpes.algebra.parse(
                 platform.original_expression, simplify=True)
+            platform.bash_conditional_line = platform.test.get_bash_conditional_line(product_cpes)
+            platform.bash_inserted_before_remediation = platform.test.get_bash_inserted_before_remediation(product_cpes)
+            platform.ansible_conditional = platform.test.get_ansible_conditional(product_cpes)
+
         return platform
 
     def __eq__(self, other):
