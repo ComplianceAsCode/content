@@ -575,6 +575,19 @@ def fetch_templated_test_scenarios(
     return all_tests
 
 
+def fetch_local_test_scenarios(tests_dir, local_env_yaml):
+    all_tests = dict()
+    if os.path.exists(tests_dir):
+        tests_dir_files = os.listdir(tests_dir)
+        for test_case in tests_dir_files:
+            test_path = os.path.join(tests_dir, test_case)
+            if os.path.isdir(test_path):
+                continue
+            all_tests[test_case] = process_file_with_macros(
+                test_path, local_env_yaml)
+    return all_tests
+
+
 def iterate_over_rules(product=None):
     """Iterate over rule directories which have test scenarios".
 
@@ -640,18 +653,9 @@ def iterate_over_rules(product=None):
             # Add additional tests from the local rule directory. Note that,
             # like the behavior in template_tests, this will overwrite any
             # templated tests with the same file name.
-            if os.path.exists(tests_dir):
-                tests_dir_files = os.listdir(tests_dir)
-                for test_case in tests_dir_files:
-                    # Skip vim swap files,
-                    # they are not relevant and cause Jinja expansion tracebacks
-                    if test_case.endswith(".swp"):
-                        continue
-                    test_path = os.path.join(tests_dir, test_case)
-                    if os.path.isdir(test_path):
-                        continue
-
-                    all_tests[test_case] = process_file_with_macros(test_path, local_env_yaml)
+            local_test_scenarios = fetch_local_test_scenarios(
+                tests_dir, local_env_yaml)
+            all_tests.update(local_test_scenarios)
 
             # Filter out everything except the shell test scenarios.
             # Other files in rule directories are editor swap files
