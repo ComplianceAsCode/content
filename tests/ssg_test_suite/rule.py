@@ -258,13 +258,7 @@ class RuleChecker(oscap.Checker):
     def _get_rules_to_test(self, target):
         rules_to_test = []
         tested_templates = set()
-        product_yaml = common.get_product_context(self.test_env.product)
-        # Initialize a mock template_builder.
-        empty = "/ssgts/empty/placeholder"
-        template_builder = ssg.templates.Builder(
-            product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
-        for rule in common.iterate_over_rules(
-                template_builder, self.test_env.product):
+        for rule in common.iterate_over_rules(self.test_env.product):
             if not self._rule_should_be_tested(rule, target, tested_templates):
                 continue
             if not xml_operations.find_rule_in_benchmark(
@@ -305,7 +299,15 @@ class RuleChecker(oscap.Checker):
 
     def _get_rule_scenarios(self, rule):
         scenarios = []
-        for script, script_contents in rule.scenarios.items():
+        product_yaml = common.get_product_context(self.test_env.product)
+        # Initialize a mock template_builder.
+        empty = "/ssgts/empty/placeholder"
+        template_builder = ssg.templates.Builder(
+            product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
+        rule_scenarios = common.fetch_test_scenarios(
+            rule.directory, rule.rule, template_builder, product_yaml,
+            rule.local_env_yaml)
+        for script, script_contents in rule_scenarios.items():
             scenario = Scenario(script, script_contents)
             scenario.override_profile(self.scenarios_profile)
             if (scenario.matches_regex(self.scenarios_regex) and

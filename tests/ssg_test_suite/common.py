@@ -32,7 +32,7 @@ Scenario_conditions = namedtuple(
     "Scenario_conditions",
     ("backend", "scanning_mode", "remediated_by", "datastream"))
 Rule = namedtuple(
-    "Rule", ["directory", "id", "short_id", "scenarios", "template", "local_env_yaml", "rule"])
+    "Rule", ["directory", "id", "short_id", "template", "local_env_yaml", "rule"])
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
@@ -621,7 +621,7 @@ def fetch_test_scenarios(
     return content_mapping
 
 
-def iterate_over_rules(template_builder, product=None):
+def iterate_over_rules(product=None):
     """Iterate over rule directories which have test scenarios".
 
     Returns:
@@ -662,13 +662,6 @@ def iterate_over_rules(template_builder, product=None):
                     continue
 
             tests_dir = os.path.join(dirpath, "tests")
-            content_mapping = fetch_test_scenarios(
-                tests_dir, rule, template_builder, product_yaml, local_env_yaml)
-            # Skip any rules that lack any content. This ensures that if we
-            # end up with rules with a template lacking tests and without any
-            # rule directory tests, we don't include the empty rule here.
-            if not content_mapping:
-                continue
 
             full_rule_id = OSCAP_RULE + short_rule_id
             template_name = None
@@ -676,7 +669,7 @@ def iterate_over_rules(template_builder, product=None):
                 template_name = rule.template['name']
             result = Rule(
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
-                scenarios=content_mapping, template=template_name,
+                template=template_name,
                 local_env_yaml=local_env_yaml, rule=rule)
             yield result
 
