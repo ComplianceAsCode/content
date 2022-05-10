@@ -12,8 +12,9 @@ jobs:
       - name: Install Dependencies 
         run: dnf install -y grep findutils git
       - name: Files must use LF Line endings
-        run:  find . -not -type d -exec file "{}" ";" | grep CRLF | grep -v XML
+        run:  'find . -not -type d -exec file "{}" ";" | grep CRLF | grep -v XML'
       - name: Files must end in LF Endings
-        run: git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs -L1 bash -c 'if test "$(tail -c 1 "$0")"; then echo "No new line at end of $0"; exit 1; fi'
+        run: |-
+          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs -L1 bash -c 'if test "$(tail -c 1 "$0")"; then echo "No new line at end of $0"; exit 1; fi'
       - name: There should not be any merge commits
         run: "git log ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'Merge: '"
