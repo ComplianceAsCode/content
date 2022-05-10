@@ -32,7 +32,7 @@ Scenario_conditions = namedtuple(
     "Scenario_conditions",
     ("backend", "scanning_mode", "remediated_by", "datastream"))
 Rule = namedtuple(
-    "Rule", ["directory", "id", "short_id", "scenarios", "template", "local_env_yaml"])
+    "Rule", ["directory", "id", "short_id", "scenarios", "template", "local_env_yaml", "rule"])
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
@@ -671,7 +671,7 @@ def iterate_over_rules(template_builder, product=None):
             result = Rule(
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
                 scenarios=content_mapping, template=template_name,
-                local_env_yaml=local_env_yaml)
+                local_env_yaml=local_env_yaml, rule=rule)
             yield result
 
 
