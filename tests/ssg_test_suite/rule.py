@@ -299,8 +299,8 @@ class RuleChecker(oscap.Checker):
     def _get_rule_scenarios(self, rule):
         scenarios = []
         for script, script_contents in rule.scenarios.items():
-            scenario = Scenario(
-                script, script_contents, self.scenarios_profile)
+            scenario = Scenario(script, script_contents)
+            scenario.override_profile(self.scenarios_profile)
             if (scenario.matches_regex(self.scenarios_regex) and
                     scenario.matches_platform(self.benchmark_cpes)):
                 scenarios.append(scenario)
@@ -432,12 +432,11 @@ class RuleChecker(oscap.Checker):
 
 
 class Scenario():
-    def __init__(self, script, script_contents, scenarios_profile):
+    def __init__(self, script, script_contents):
         self.script = script
         self.context = self._get_script_context()
         self.contents = script_contents
         self.script_params = self._parse_parameters()
-        self._modify_parameters(scenarios_profile)
 
     def _get_script_context(self):
         """Return context of the script."""
@@ -466,18 +465,18 @@ class Scenario():
             splitted = found.group(1).split(',')
             params[parameter] = [value.strip() for value in splitted]
 
-        return params
-
-    def _modify_parameters(self, scenarios_profile):
-        if scenarios_profile:
-            self.script_params['profiles'] = [scenarios_profile]
-
-        if not self.script_params["profiles"]:
-            self.script_params["profiles"].append(OSCAP_PROFILE_ALL_ID)
+        if not params["profiles"]:
+            params["profiles"].append(OSCAP_PROFILE_ALL_ID)
             logging.debug(
                 "Added the {0} profile to the list of available profiles "
                 "for {1}"
                 .format(OSCAP_PROFILE_ALL_ID, self.script))
+
+        return params
+
+    def override_profile(self, scenarios_profile):
+        if scenarios_profile:
+            self.script_params['profiles'] = [scenarios_profile]
 
     def matches_regex(self, scenarios_regex):
         if scenarios_regex is not None:

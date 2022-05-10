@@ -11,7 +11,7 @@ DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 def test_scenario():
     file_name = "correct.pass.sh"
     file_contents = open(os.path.join(DATADIR, file_name)).read()
-    s = Scenario(file_name, file_contents, None)
+    s = Scenario(file_name, file_contents)
     assert s.script == file_name
     assert s.contents == file_contents
     assert s.context == "pass"
@@ -42,7 +42,7 @@ def test_scenario():
 def test_scenario_defaults():
     file_name = "correct_defaults.pass.sh"
     file_contents = open(os.path.join(DATADIR, file_name)).read()
-    s = Scenario(file_name, file_contents, None)
+    s = Scenario(file_name, file_contents)
     assert s.script == file_name
     assert s.contents == file_contents
     assert s.context == "pass"
@@ -57,3 +57,6 @@ def test_scenario_defaults():
     assert len(s.script_params["variables"]) == 0
     assert s.matches_platform({"cpe:/o:redhat:enterprise_linux:7"})
     assert s.matches_platform({"cpe:/o:debian:debian:8"})
+    s.override_profile("xccdf_org.ssgproject.content_profile_cis")
+    assert "xccdf_org.ssgproject.content_profile_cis" in \
+        s.script_params["profiles"]
