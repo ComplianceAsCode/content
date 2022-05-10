@@ -589,38 +589,6 @@ def fetch_local_test_scenarios(tests_dir, local_env_yaml):
     return all_tests
 
 
-def fetch_test_scenarios(
-        tests_dir, rule, template_builder, product_yaml, local_env_yaml):
-    # All tests is a mapping from path (in the tarball) to contents
-    # of the test case. This is necessary because later code (which
-    # attempts to parse headers from the test case) don't have easy
-    # access to templated content. By reading it and returning it
-    # here, we can save later code from having to understand the
-    # templating system.
-    all_tests = dict()
-
-    # Start by checking for templating tests and provision them if
-    # present.
-    templated_test_scenarios = fetch_templated_test_scenarios(
-        rule, template_builder, tests_dir, product_yaml, local_env_yaml)
-    all_tests.update(templated_test_scenarios)
-
-    # Add additional tests from the local rule directory. Note that,
-    # like the behavior in template_tests, this will overwrite any
-    # templated tests with the same file name.
-    local_test_scenarios = fetch_local_test_scenarios(
-        tests_dir, local_env_yaml)
-    all_tests.update(local_test_scenarios)
-
-    # Filter out everything except the shell test scenarios.
-    # Other files in rule directories are editor swap files
-    # or other content than a test case.
-    allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
-    content_mapping = {x: all_tests[x] for x in allowed_scripts}
-
-    return content_mapping
-
-
 def iterate_over_rules(product=None):
     """Iterate over rule directories which have test scenarios".
 
