@@ -307,8 +307,7 @@ class RuleChecker(oscap.Checker):
         rule_scenarios = fetch_test_scenarios(
             rule.directory, rule.rule, template_builder, product_yaml,
             rule.local_env_yaml)
-        for script, script_contents in rule_scenarios.items():
-            scenario = Scenario(script, script_contents)
+        for scenario in rule_scenarios:
             scenario.override_profile(self.scenarios_profile)
             if (scenario.matches_regex(self.scenarios_regex) and
                     scenario.matches_platform(self.benchmark_cpes)):
@@ -565,4 +564,8 @@ def fetch_test_scenarios(
     allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
     content_mapping = {x: all_tests[x] for x in allowed_scripts}
 
-    return content_mapping
+    scenarios = []
+    for script, script_contents in content_mapping.items():
+        scenario = Scenario(script, script_contents)
+        scenarios.append(scenario)
+    return scenarios
