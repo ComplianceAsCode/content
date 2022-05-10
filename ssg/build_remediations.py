@@ -413,10 +413,10 @@ class AnsibleRemediation(Remediation):
                     if p not in inherited_cpe_platform_names}
 
         inherited_conditionals = [
-            cpe_platforms[p].to_ansible_conditional()
+            cpe_platforms[p].get_ansible_conditional()
             for p in inherited_cpe_platform_names]
         rule_specific_conditionals = [
-            cpe_platforms[p].to_ansible_conditional()
+            cpe_platforms[p].get_ansible_conditional()
             for p in rule_specific_cpe_platform_names]
         # remove potential "None" from lists
         inherited_conditionals = sorted([
