@@ -1970,7 +1970,7 @@ class Platform(XCCDFEntity):
         return xmlstr
 
     def to_xml_element(self):
-        return self.xml_content
+        return ET.fromstring(self.xml_content)
 
     def get_bash_conditional_line(self):
         return self.bash_conditional_line
