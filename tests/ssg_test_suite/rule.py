@@ -434,21 +434,19 @@ class RuleChecker(oscap.Checker):
 class Scenario():
     def __init__(self, script, script_contents, scenarios_profile):
         self.script = script
-        self.context = self._get_script_context(script)
-        script_params = self._parse_parameters(script_contents)
-        script_params = self._modify_parameters(
-            script, script_params, scenarios_profile)
-        self.script_params = script_params
+        self.context = self._get_script_context()
         self.contents = script_contents
+        self.script_params = self._parse_parameters()
+        self._modify_parameters(scenarios_profile)
 
-    def _get_script_context(self, script):
+    def _get_script_context(self):
         """Return context of the script."""
-        result = re.search(r'.*\.([^.]*)\.[^.]*$', script)
+        result = re.search(r'.*\.([^.]*)\.[^.]*$', self.script)
         if result is None:
             return None
         return result.group(1)
 
-    def _parse_parameters(self, script_content):
+    def _parse_parameters(self):
         """Parse parameters from script header"""
         params = {
             'profiles': [],
@@ -462,7 +460,7 @@ class Scenario():
         for parameter in params:
             found = re.search(
                 r'^# {0} = (.*)$'.format(parameter),
-                script_content, re.MULTILINE)
+                self.contents, re.MULTILINE)
             if found is None:
                 continue
             splitted = found.group(1).split(',')
@@ -470,17 +468,16 @@ class Scenario():
 
         return params
 
-    def _modify_parameters(self, script, params, scenarios_profile):
+    def _modify_parameters(self, scenarios_profile):
         if scenarios_profile:
-            params['profiles'] = [scenarios_profile]
+            self.script_params['profiles'] = [scenarios_profile]
 
-        if not params["profiles"]:
-            params["profiles"].append(OSCAP_PROFILE_ALL_ID)
+        if not self.script_params["profiles"]:
+            self.script_params["profiles"].append(OSCAP_PROFILE_ALL_ID)
             logging.debug(
                 "Added the {0} profile to the list of available profiles "
                 "for {1}"
-                .format(OSCAP_PROFILE_ALL_ID, script))
-        return params
+                .format(OSCAP_PROFILE_ALL_ID, self.script))
 
     def matches_regex(self, scenarios_regex):
         if scenarios_regex is not None:
