@@ -21,6 +21,7 @@ from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
 
+import ssg.templates
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -257,7 +258,13 @@ class RuleChecker(oscap.Checker):
     def _get_rules_to_test(self, target):
         rules_to_test = []
         tested_templates = set()
-        for rule in common.iterate_over_rules(self.test_env.product):
+        product_yaml = common.get_product_context(self.test_env.product)
+        # Initialize a mock template_builder.
+        empty = "/ssgts/empty/placeholder"
+        template_builder = ssg.templates.Builder(
+            product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
+        for rule in common.iterate_over_rules(
+                template_builder, self.test_env.product):
             if not self._rule_should_be_tested(rule, target, tested_templates):
                 continue
             if not xml_operations.find_rule_in_benchmark(

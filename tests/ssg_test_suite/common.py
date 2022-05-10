@@ -588,7 +588,7 @@ def fetch_local_test_scenarios(tests_dir, local_env_yaml):
     return all_tests
 
 
-def iterate_over_rules(product=None):
+def iterate_over_rules(template_builder, product=None):
     """Iterate over rule directories which have test scenarios".
 
     Returns:
@@ -609,11 +609,6 @@ def iterate_over_rules(product=None):
     #
     # Begin by loading context about our execution environment, if any.
     product_yaml = get_product_context(product)
-
-    # Initialize a mock template_builder.
-    empty = "/{}/empty/placeholder".format(TEST_SUITE_NAME)
-    template_builder = ssg.templates.Builder(product_yaml, empty,
-                                             _SHARED_TEMPLATES, empty, empty)
 
     for dirpath, dirnames, filenames in walk_through_benchmark_dirs(product):
         if is_rule_dir(dirpath):
