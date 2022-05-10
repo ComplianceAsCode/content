@@ -33,12 +33,18 @@ jobs:
         shell: bash
         env:
           PYTHONPATH: ${{ github.workspace }}
+      - name: Configure git to trust the workspace despite the different owner
+        run:
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
-        if: ${{ github.event_name == 'push' }}
-        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' }}
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
           clean-exclude: srg_mapping/*
           repository-name: ComplianceAsCode/content-pages
           single-commit: true
+          token: ${{ secrets.CONTENT_PAGES_TOKEN }}
+          git-config-name: openscap-ci
+          git-config-email: openscap-ci@gmail.com
