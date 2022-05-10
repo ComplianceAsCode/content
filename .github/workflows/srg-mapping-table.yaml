@@ -56,7 +56,9 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
-          branch: gh-pages # The branch the action should deploy to.
+          branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
           target-folder: srg_mapping
           clean: false
+          repository-name: ComplianceAsCode/content-pages
+          single-commit: true
