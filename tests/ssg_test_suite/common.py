@@ -562,6 +562,19 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
     return available_scenarios_basenames
 
 
+def fetch_templated_test_scenarios(
+        rule, template_builder, test_config, local_env_yaml):
+    if not rule.template or not rule.template['vars']:
+        return dict()
+    templated_tests = template_builder.get_all_tests(
+        rule.id_, rule.template, local_env_yaml)
+
+    allowed_templated_tests = select_templated_tests(
+        test_config, templated_tests.keys())
+    all_tests = {name: templated_tests[name] for name in allowed_templated_tests}
+    return all_tests
+
+
 def iterate_over_rules(product=None):
     """Iterate over rule directories which have test scenarios".
 
@@ -620,13 +633,9 @@ def iterate_over_rules(product=None):
 
             # Start by checking for templating tests and provision them if
             # present.
-            if rule.template and rule.template['vars']:
-                templated_tests = template_builder.get_all_tests(
-                    rule.id_, rule.template, local_env_yaml)
-
-                allowed_templated_tests = select_templated_tests(
-                    test_config, templated_tests.keys())
-                all_tests.update({name: templated_tests[name] for name in allowed_templated_tests})
+            templated_test_scenarios = fetch_templated_test_scenarios(
+                rule, template_builder, test_config, local_env_yaml)
+            all_tests.update(templated_test_scenarios)
 
             # Add additional tests from the local rule directory. Note that,
             # like the behavior in template_tests, this will overwrite any
