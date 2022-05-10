@@ -4,4 +4,4 @@
 
 systemctl enable chronyd.service
 
-echo "port 0" >> /etc/chrony.conf
+echo "port 0" >> {{{ chrony_conf_path }}}

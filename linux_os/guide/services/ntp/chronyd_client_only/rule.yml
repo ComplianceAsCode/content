@@ -5,7 +5,7 @@ prodtype: fedora,ol8,rhcos4,rhel8,rhel9
 title: 'Disable chrony daemon from acting as server'
 
 description: |-
-    The <tt>port</tt> option in <tt>/etc/chrony.conf</tt> can be set to
+    The <tt>port</tt> option in <tt>{{{ chrony_conf_path }}}</tt> can be set to
     <tt>0</tt> to make chrony daemon to never open any listening port
     for server operation and to operate strictly in a client-only mode.
 
@@ -34,14 +34,14 @@ ocil_clause: 'port is not set or port is set to non-zero value'
 
 ocil: |-
     To verify that <tt>port</tt> has been set properly, perform the following:
-    <pre>$ grep '\bport\b' /etc/chrony.conf</pre>
+    <pre>$ grep '\bport\b' {{{ chrony_conf_path }}}</pre>
     The output should return
     <pre>port 0</pre>
 
 fixtext: |-
     Configure the chrony daemon to prevent acting as server.
 
-    Add or edit the following line in "/etc/chrony.conf":
+    Add or edit the following line in {{{ chrony_conf_path }}}:
 
     port 0
 

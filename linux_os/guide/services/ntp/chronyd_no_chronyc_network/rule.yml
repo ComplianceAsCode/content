@@ -5,7 +5,7 @@ prodtype: fedora,ol8,rhcos4,rhel8,rhel9
 title: 'Disable network management of chrony daemon'
 
 description: |-
-    The <tt>cmdport</tt> option in <tt>/etc/chrony.conf</tt> can be set to
+    The <tt>cmdport</tt> option in <tt>{{{ chrony_conf_path }}}</tt> can be set to
     <tt>0</tt> to stop chrony daemon from listening on the UDP port 323
     for management connections made by chronyc.
 
@@ -34,14 +34,14 @@ ocil_clause: 'cmdport is not set or cmdport is set to non-zero value'
 
 ocil: |-
     To verify that <tt>cmdport</tt> has been set properly, perform the following:
-    <pre>$ grep '\bcmdport\b' /etc/chrony.conf</pre>
+    <pre>$ grep '\bcmdport\b' {{{ chrony_conf_path }}}</pre>
     The output should return
     <pre>cmdport 0</pre>
 
 fixtext: |-
     Configure the chrony daemon to disable management over network.
 
-    Add or edit the following line in "/etc/chrony.conf":
+    Add or edit the following line in {{{ chrony_conf_path }}}:
 
     cmdport 0
 

@@ -22,7 +22,7 @@ description: |-
     To specify a remote NTP server for time synchronization, perform the following:
     <ul>
     <li> if the system is configured to use the <tt>chronyd</tt> as the NTP daemon (the
-    default), edit the file <tt>/etc/chrony.conf</tt> as follows,</li>
+    default), edit the file <tt>{{{ chrony_conf_path }}}</tt> as follows,</li>
     <li> if the system is configured to use the <tt>ntpd</tt> as the NTP daemon,
     edit the file <tt>/etc/ntp.conf</tt> as documented below.</li>
     </ul>
@@ -113,7 +113,7 @@ ocil: |-
     To verify that a remote NTP service is configured for time synchronization,
     open the following file:
     <ul>
-    <li><pre>/etc/chrony.conf</pre> in the case the system in question is
+    <li><pre>{{{ chrony_conf_path }}}</pre> in the case the system in question is
     configured to use the <tt>chronyd</tt> as the NTP daemon (default setting)</li>
     <li><pre>/etc/ntp.conf</pre> in the case the system in question is configured
     to use the <tt>ntpd</tt> as the NTP daemon</li>
