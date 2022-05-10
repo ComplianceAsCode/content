@@ -52,9 +52,12 @@ jobs:
       - name: Generate HTML pages
         run: utils/generate_html_index_srg_mapping.sh $PAGES_DIR "rhel9" # add more products to this list to generate their index
         shell: bash
+      - name: Configure git to trust the workspace despite the different owner
+        run:
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Deploy
-        if: ${{ github.event_name == 'push' }}
-        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        if: ${{ github.event_name == 'push' && github.repository == 'ComplianceAsCode/content' }}
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: main # The branch the action should deploy to.
           folder: ${{ env.PAGES_DIR }} # The folder the action should deploy.
@@ -62,3 +65,7 @@ jobs:
           clean: false
           repository-name: ComplianceAsCode/content-pages
           single-commit: true
+          token: ${{ secrets.CONTENT_PAGES_TOKEN }}
+          git-config-name: openscap-ci
+          git-config-email: openscap-ci@gmail.com
+
