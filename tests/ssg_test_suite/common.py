@@ -595,7 +595,6 @@ def iterate_over_rules(product=None):
 
             # Load the rule itself to check for a template.
             rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
-            template_name = None
 
             # Before we get too far, we wish to search the rule YAML to see if
             # it is applicable to the current product. If we have a product
@@ -628,7 +627,6 @@ def iterate_over_rules(product=None):
                 allowed_templated_tests = select_templated_tests(
                     test_config, templated_tests.keys())
                 all_tests.update({name: templated_tests[name] for name in allowed_templated_tests})
-                template_name = rule.template['name']
 
             # Add additional tests from the local rule directory. Note that,
             # like the behavior in template_tests, this will overwrite any
@@ -659,6 +657,9 @@ def iterate_over_rules(product=None):
                 continue
 
             full_rule_id = OSCAP_RULE + short_rule_id
+            template_name = None
+            if rule.template and rule.template['vars']:
+                template_name = rule.template['name']
             result = Rule(
                 directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
                 scenarios=content_mapping, template=template_name)
