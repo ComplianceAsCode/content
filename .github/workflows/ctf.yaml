@@ -16,6 +16,9 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+      # https://github.com/actions/checkout/issues/766
+      - name: Set git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Find forking point
         env:
           BASE_BRANCH: ${{ github.base_ref }}
