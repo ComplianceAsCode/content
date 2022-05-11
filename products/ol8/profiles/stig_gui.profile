@@ -19,3 +19,4 @@ extends: stig
 
 selections:
     - '!xwindows_remove_packages'
+    - '!xwindows_runlevel_target'
