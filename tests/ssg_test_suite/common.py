@@ -599,8 +599,9 @@ def iterate_over_rules(product=None):
             id -- full rule id as it is present in datastream
             short_id -- short rule ID, the same as basename of the directory
                         containing the test scenarios in Bash
-            scenarios -- dictionary mapping names of executable .sh files in
-                         the uploaded tarball to their content
+            template -- name of the template the rule uses
+            local_env_yaml -- env_yaml specific to rule's own context
+            rule -- rule class, contains information parsed from rule.yml
     """
 
     # Here we need to perform some magic to handle parsing the rule (from a
