@@ -589,60 +589,6 @@ def fetch_local_test_scenarios(tests_dir, local_env_yaml):
     return all_tests
 
 
-def iterate_over_rules(product=None):
-    """Iterate over rule directories which have test scenarios".
-
-    Returns:
-        Named tuple Rule having these fields:
-            directory -- absolute path to the rule "tests" subdirectory
-                         containing the test scenarios in Bash
-            id -- full rule id as it is present in datastream
-            short_id -- short rule ID, the same as basename of the directory
-                        containing the test scenarios in Bash
-            template -- name of the template the rule uses
-            local_env_yaml -- env_yaml specific to rule's own context
-            rule -- rule class, contains information parsed from rule.yml
-    """
-
-    # Here we need to perform some magic to handle parsing the rule (from a
-    # product perspective) and loading any templated tests. In particular,
-    # identifying which tests to potentially run involves invoking the
-    # templating engine.
-    #
-    # Begin by loading context about our execution environment, if any.
-    product_yaml = get_product_context(product)
-
-    for dirpath, dirnames, filenames in walk_through_benchmark_dirs(product):
-        if is_rule_dir(dirpath):
-            short_rule_id = os.path.basename(dirpath)
-
-            # Load the rule itself to check for a template.
-            rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
-
-            # Before we get too far, we wish to search the rule YAML to see if
-            # it is applicable to the current product. If we have a product
-            # and the rule isn't applicable for the product, there's no point
-            # in continuing with the rest of the loading. This should speed up
-            # the loading of the templated tests. Note that we've already
-            # parsed the prodtype into local_env_yaml
-            if product and local_env_yaml['products']:
-                prodtypes = local_env_yaml['products']
-                if "all" not in prodtypes and product not in prodtypes:
-                    continue
-
-            tests_dir = os.path.join(dirpath, "tests")
-
-            full_rule_id = OSCAP_RULE + short_rule_id
-            template_name = None
-            if rule.template and rule.template['vars']:
-                template_name = rule.template['name']
-            result = Rule(
-                directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
-                template=template_name,
-                local_env_yaml=local_env_yaml, rule=rule)
-            yield result
-
-
 def get_cpe_of_tested_os(test_env, log_file):
     os_release_file = "/etc/os-release"
     cpe_line = test_env.execute_ssh_command(
