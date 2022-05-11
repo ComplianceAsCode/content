@@ -284,7 +284,14 @@ class RuleChecker(oscap.Checker):
             if not common.is_rule_dir(dirpath):
                 continue
             short_rule_id = os.path.basename(dirpath)
+            full_rule_id = OSCAP_RULE + short_rule_id
             if not self._rule_should_be_tested(short_rule_id, target):
+                continue
+            if not xml_operations.find_rule_in_benchmark(
+                    self.datastream, self.benchmark_id, full_rule_id):
+                logging.error(
+                    "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
+                    .format(full_rule_id, self.benchmark_id, self.datastream))
                 continue
 
             # Load the rule itself to check for a template.
@@ -303,8 +310,6 @@ class RuleChecker(oscap.Checker):
                     continue
 
             tests_dir = os.path.join(dirpath, "tests")
-
-            full_rule_id = OSCAP_RULE + short_rule_id
             template_name = None
             if rule.template and rule.template['vars']:
                 template_name = rule.template['name']
@@ -319,12 +324,6 @@ class RuleChecker(oscap.Checker):
         tested_templates = set()
         for rule in self._iterate_over_rules(target, self.test_env.product):
             if self._rule_template_been_tested(rule, tested_templates):
-                continue
-            if not xml_operations.find_rule_in_benchmark(
-                    self.datastream, self.benchmark_id, rule.id):
-                logging.error(
-                    "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
-                    .format(rule.id, self.benchmark_id, self.datastream))
                 continue
             rules_to_test.append(rule)
 
