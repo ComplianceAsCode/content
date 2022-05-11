@@ -15,7 +15,7 @@ from ssg_test_suite import common
 
 class SavedState(object):
     def __init__(self, environment, name):
-        self.name = TestEnv.get_prefixed_name(self, name)
+        self.name = common.get_prefixed_name(name)
         self.environment = environment
         self.initial_running_state = True
 
@@ -166,11 +166,8 @@ class TestEnv(object):
     def reset_state_to(self, state_name, new_running_state_name):
         raise NotImplementedError()
 
-    def get_prefixed_name(self, state_name):
-        return common.SNAPSHOT_PREFIX+state_name
-
     def save_state(self, state_name):
-        self.running_state_base = self.get_prefixed_name(state_name)
+        self.running_state_base = common.get_prefixed_name(state_name)
         running_state = self.running_state
         return self._save_state(state_name)
 
@@ -223,8 +220,8 @@ class VMTestEnv(TestEnv):
 
         self._origin = None
 
-    def has_ssgts_prefix(self, snapshot_name):
-        if str(snapshot_name).startswith(common.SNAPSHOT_PREFIX):
+    def has_test_suite_prefix(self, snapshot_name):
+        if str(snapshot_name).startswith(common.TEST_SUITE_PREFIX):
             return True
         return False
 
@@ -234,7 +231,7 @@ class VMTestEnv(TestEnv):
     def snapshots_cleanup(self):
         snapshot_list = self.domain.snapshotListNames()
         for snapshot_name in snapshot_list:
-            if self.has_ssgts_prefix(snapshot_name):
+            if self.has_test_suite_prefix(snapshot_name):
                 snapshot = self.snapshot_lookup(snapshot_name)
                 snapshot.delete()
 
@@ -283,7 +280,7 @@ class VMTestEnv(TestEnv):
         return state
 
     def _save_state(self, state_name):
-        prefixed_state_name = self.get_prefixed_name(state_name)
+        prefixed_state_name = common.get_prefixed_name(state_name)
         state = self.snapshot_stack.create(prefixed_state_name)
         return state
 
@@ -341,7 +338,7 @@ class ContainerTestEnv(TestEnv):
         return new_image_name
 
     def _save_state(self, state_name):
-        prefixed_state_name = self.get_prefixed_name(state_name)
+        prefixed_state_name = common.get_prefixed_name(state_name)
         state = self._create_new_image(self.current_container, prefixed_state_name)
         return state
 

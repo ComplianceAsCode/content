@@ -412,9 +412,10 @@ class RuleChecker(oscap.Checker):
 
     @contextlib.contextmanager
     def copy_of_datastream(self, new_filename=None):
+        prefixed_name = common.get_prefixed_name("ds_modified")
         old_filename = self.datastream
         if not new_filename:
-            descriptor, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+            descriptor, new_filename = tempfile.mkstemp(prefix=prefixed_name, dir="/tmp")
         os.close(descriptor)
         shutil.copy(old_filename, new_filename)
         self.datastream = new_filename
