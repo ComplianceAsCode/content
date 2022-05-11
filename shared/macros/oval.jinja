@@ -479,10 +479,13 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 #}}
 {{%- macro oval_check_shell_file(path, parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
 {{% if no_quotes -%}}
-{{%- set quotes = "" -%}}
+  {{%- set quotes = "" -%}}
 {{%- else -%}}
-{{%- set quotes = "\"'" -%}}
+  {{%- set quotes = "\"'" -%}}
 {{%- endif -%}}
+{{% if "$" in value %}}
+  {{% set value = '%s' % value.replace("$", "\\$") %}}
+{{% endif %}}
 {{{ oval_check_config_file(path, prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, quotes=quotes) }}}
 {{%- endmacro %}}
 
