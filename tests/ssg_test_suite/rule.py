@@ -221,10 +221,6 @@ class RuleChecker(oscap.Checker):
     def _rule_should_be_tested(self, rule_short_id, rules_to_be_tested):
         rule_id = OSCAP_RULE + rule_short_id
         if 'ALL' in rules_to_be_tested:
-            # don't select rules that are not present in benchmark
-            if not xml_operations.find_rule_in_benchmark(
-                    self.datastream, self.benchmark_id, rule_id):
-                return False
             return True
         else:
             for rule_to_be_tested in rules_to_be_tested:
