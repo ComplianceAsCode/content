@@ -256,7 +256,7 @@ class RuleChecker(oscap.Checker):
 
         self._ensure_package_present_for_all_scenarios(scenarios_by_rule)
 
-    def _iterate_over_rules(self, product=None):
+    def _iterate_over_rules(self, target, product=None):
         """Iterate over rule directories which have test scenarios".
 
         Returns:
@@ -283,6 +283,8 @@ class RuleChecker(oscap.Checker):
                 product):
             if common.is_rule_dir(dirpath):
                 short_rule_id = os.path.basename(dirpath)
+                if not self._rule_should_be_tested(short_rule_id, target):
+                    continue
 
                 # Load the rule itself to check for a template.
                 rule, local_env_yaml = common.load_rule_and_env(
@@ -314,9 +316,7 @@ class RuleChecker(oscap.Checker):
     def _get_rules_to_test(self, target):
         rules_to_test = []
         tested_templates = set()
-        for rule in self._iterate_over_rules(self.test_env.product):
-            if not self._rule_should_be_tested(rule.short_id, target):
-                continue
+        for rule in self._iterate_over_rules(target, self.test_env.product):
             if self._rule_template_been_tested(rule, tested_templates):
                 continue
             if not xml_operations.find_rule_in_benchmark(
