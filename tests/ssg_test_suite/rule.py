@@ -297,8 +297,8 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = [scenario]
         return new_sbr
 
-    def _get_rule_scenarios(self, rule):
-        scenarios = []
+    def _get_all_rule_scenarios(self, rule):
+        rule_scenarios = []
         product_yaml = common.get_product_context(self.test_env.product)
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
@@ -307,6 +307,10 @@ class RuleChecker(oscap.Checker):
         rule_scenarios = fetch_test_scenarios(
             rule.directory, rule.rule, template_builder, product_yaml,
             rule.local_env_yaml)
+        return rule_scenarios
+
+    def _filter_rule_scenarios(self, rule_scenarios):
+        scenarios = []
         for scenario in rule_scenarios:
             scenario.override_profile(self.scenarios_profile)
             if (scenario.matches_regex(self.scenarios_regex) and
@@ -317,7 +321,10 @@ class RuleChecker(oscap.Checker):
     def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
-            scenarios_by_rule_id[rule.id] = self._get_rule_scenarios(rule)
+            all_rule_scenarios = self._get_all_rule_scenarios(rule)
+            filtered_rule_scenarios = self._filter_rule_scenarios(
+                all_rule_scenarios)
+            scenarios_by_rule_id[rule.id] = filtered_rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
