@@ -218,11 +218,12 @@ class RuleChecker(oscap.Checker):
         tested_templates.add(rule.template)
         return False
 
-    def _rule_should_be_tested(self, rule, rules_to_be_tested):
+    def _rule_should_be_tested(self, rule_short_id, rules_to_be_tested):
+        rule_id = OSCAP_RULE + rule_short_id
         if 'ALL' in rules_to_be_tested:
             # don't select rules that are not present in benchmark
             if not xml_operations.find_rule_in_benchmark(
-                    self.datastream, self.benchmark_id, rule.id):
+                    self.datastream, self.benchmark_id, rule_id):
                 return False
             return True
         else:
@@ -232,7 +233,7 @@ class RuleChecker(oscap.Checker):
                     pattern = rule_to_be_tested
                 else:
                     pattern = OSCAP_RULE + rule_to_be_tested
-                if fnmatch.fnmatch(rule.id, pattern):
+                if fnmatch.fnmatch(rule_id, pattern):
                     return True
             return False
 
@@ -314,7 +315,7 @@ class RuleChecker(oscap.Checker):
         rules_to_test = []
         tested_templates = set()
         for rule in self._iterate_over_rules(self.test_env.product):
-            if not self._rule_should_be_tested(rule, target):
+            if not self._rule_should_be_tested(rule.short_id, target):
                 continue
             if self._rule_template_been_tested(rule, tested_templates):
                 continue
