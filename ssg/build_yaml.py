@@ -1910,7 +1910,7 @@ class Platform(XCCDFEntity):
             return None
         test = product_cpes.algebra.parse(
             expression, simplify=True)
-        id = test.as_id()
+        id = test.as_uuid()
         platform = cls(id)
         platform.test = test
         # in case some cpe_items were parametrized, we might need to create new CPE items

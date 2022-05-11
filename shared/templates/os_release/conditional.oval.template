@@ -1,7 +1,7 @@
 <def-group>
 
   <definition class="inventory" id="{{{ _CHECK_ID }}}" version="1">
-    {{{ oval_metadata(OS_NAME + " " + VER_STR|escape, affected_platforms=["multi_platform_all"]) }}}
+    {{{ oval_metadata(OS_NAME + " " + VER_STR, affected_platforms=["multi_platform_all"]) }}}
     <criteria operator="AND">
       <criterion comment="The operating system installed on the system is {{{ OS_NAME }}}"
       test_ref="test_os_id_is_{{{ ID }}}" />

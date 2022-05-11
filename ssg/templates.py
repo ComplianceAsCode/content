@@ -338,7 +338,7 @@ class Builder(object):
                 continue
             template_name = cpe.template['name']
             try:
-                arg = symbol.get_arg()
+                arg = symbol.arg
                 if arg in cpe.args:
                     rendered_vars = cpe.args[arg]
                 elif arg is None:
@@ -359,8 +359,8 @@ class Builder(object):
             template_vars["_check_id"] = cpe.check_id
             # checks and remediations are processed with a custom YAML dict
             local_env_yaml = self.env_yaml.copy()
-            local_env_yaml["rule_id"] = name
-            #local_env_yaml["rule_title"] = rule_title
+            local_env_yaml["rule_id"] = cpe.check_id
+            local_env_yaml["rule_title"] = cpe.title
             local_env_yaml["products"] = self.env_yaml["product"]
 
             for lang in ['conditional.oval']:

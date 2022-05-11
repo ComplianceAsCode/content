@@ -19,6 +19,7 @@ from .data_structures import XCCDFEntity
 class CPEDoesNotExist(Exception):
     pass
 
+
 class ProductCPEs(object):
     """
     Reads from the disk all the yaml CPEs related to a product
@@ -73,7 +74,7 @@ class ProductCPEs(object):
             if ext != '.yml':
                 sys.stderr.write(
                     "Encountered file '%s' while looking for content CPEs, "
-                    "extension '%s' is unknown. Skipping..\n"
+                    "extension '%s' is unknown. Skipping...\n"
                     % (dir_item, ext)
                 )
                 continue
@@ -156,6 +157,7 @@ class CPEList(object):
         root = self.to_xml_element(cpe_oval_file)
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8")
+
 
 class CPEItem(XCCDFEntity):
     """
@@ -306,6 +308,7 @@ class CPEALFactRef (Symbol):
     def get_ansible_conditional(self, product_cpes):
         return product_cpes.get_cpe(self.as_id()).ansible_conditional
 
+
 def extract_subelement(objects, sub_elem_type):
     """
     From a collection of element objects, return the value of
@@ -320,7 +323,7 @@ def extract_subelement(objects, sub_elem_type):
         # decide on usage of .iter or .getiterator method of elementtree class.
         # getiterator is deprecated in Python 3.9, but iter is not available in
         # older versions
-        if getattr(obj, "iter", None) == None:
+        if getattr(obj, "iter", None) is None:
             obj_iterator = obj.getiterator()
         else:
             obj_iterator = obj.iter()
@@ -358,11 +361,10 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     reflist = []
     elementlist = []
 
-
     # decide on usage of .iter or .getiterator method of elementtree class.
     # getiterator is deprecated in Python 3.9, but iter is not available in
     # older versions
-    if getattr(tree_with_refs, "iter", None) == None:
+    if getattr(tree_with_refs, "iter", None) is None:
         tree_with_refs_iterator = tree_with_refs.getiterator()
     else:
         tree_with_refs_iterator = tree_with_refs.iter()
@@ -374,7 +376,7 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     # decide on usage of .iter or .getiterator method of elementtree class.
     # getiterator is deprecated in Python 3.9, but iter is not available in
     # older versions
-    if getattr(tree_with_ids, "iter", None) == None:
+    if getattr(tree_with_ids, "iter", None) is None:
         tree_with_ids_iterator = tree_with_ids.getiterator()
     else:
         tree_with_ids_iterator = tree_with_ids.iter()
@@ -383,6 +385,7 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
 
 def apply_formatting_on_dict_values(source_dict, string_dict, not_templated_keys):
     """

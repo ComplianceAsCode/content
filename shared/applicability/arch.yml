@@ -1,0 +1,13 @@
+name: 'cpe:/a:{arg}'
+title: 'The architecture is {arg}'
+check_id: 'kernel_osrelease_arch_{id}_conditional'
+bash_conditional:
+    conditional: 'true'
+template:
+    name: arch
+    vars: {}
+args:
+    aarch64:
+        arch_name: "AArch64"
+    s390x:
+        arch_name: "S390x"
