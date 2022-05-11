@@ -12,8 +12,8 @@
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 The purpose of this project is to create *security policy content* for various
-platforms -- *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, *SUSE Linux Enterprise Server (SLES)*,... --
-as well as products -- *Firefox*, *Chromium*, *JRE*, ...
+platforms &mdash; *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, *SUSE Linux Enterprise Server (SLES)*,... &mdash;
+as well as products &mdash; *Firefox*, *Chromium*, *JRE*, ...
 We aim to make it as easy as possible to write new and maintain existing
 security content in all the commonly used formats.
 
@@ -69,7 +69,7 @@ description: |-
     The <tt>MaxKeepAliveRequests</tt> directive should be set and configured to
     <sub idref="var_max_keepalive_requests" /> or greater by setting the following
     in <tt>/etc/httpd/conf/httpd.conf</tt>:
-    <pre>MaxKeepAliveRequests <sub idref="var_max_keepalive_requests" /></pre>
+    <pre>MaxKeepAliveRequests {{{ xccdf_value("var_max_keepalive_requests") }}}</pre>
 
 rationale: |-
     Resource exhaustion can occur when an unlimited number of concurrent requests
@@ -160,8 +160,7 @@ all possible choices using:
 oscap info /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 ```
 
-Please see the [OpenSCAP](https://www.open-scap.org/)
-for more info.
+Please see the [OpenSCAP](https://www.open-scap.org/) website for more information.
 
 ### SCAP Workbench
 
@@ -170,9 +169,7 @@ customization. It is suitable for scanning a single machine, either local
 or remote (via SSH). New versions of SCAP Workbench have SSG integration
 and will automatically offer it when the application is started.
 
-Please see the
-[SCAP Workbench](https://www.open-scap.org/tools/scap-workbench/)
-for more info.
+Please see the [SCAP Workbench](https://www.open-scap.org/tools/scap-workbench/) website for more information.
 
 ### `oscap-ssh` tool
 
@@ -246,8 +243,8 @@ You can also join the `#openscap` IRC channel on `libera.chat`.
 
 ## A little bit of history
 
-This project started in 2011 as a collaboration between government agencies and
-commercial operating system vendors. The original name was SCAP Security Guide.
+This project started in 2011 as a collaboration between United States Government agencies and commercial operating system vendors.
+The original name was SCAP Security Guide, commonly abbreviated as SSG.
 The original scope was to create SCAP datastreams. Over time, it grew into the
 biggest open-source beyond-SCAP content project.
 
