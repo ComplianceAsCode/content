@@ -298,16 +298,45 @@ class RuleChecker(oscap.Checker):
         return new_sbr
 
     def _get_all_rule_scenarios(self, rule):
-        rule_scenarios = []
         product_yaml = common.get_product_context(self.test_env.product)
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
         template_builder = ssg.templates.Builder(
             product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
-        rule_scenarios = fetch_test_scenarios(
-            rule.directory, rule.rule, template_builder, product_yaml,
+
+        # All tests is a mapping from path (in the tarball) to contents
+        # of the test case. This is necessary because later code (which
+        # attempts to parse headers from the test case) don't have easy
+        # access to templated content. By reading it and returning it
+        # here, we can save later code from having to understand the
+        # templating system.
+        all_tests = dict()
+
+        # Start by checking for templating tests and provision them if
+        # present.
+        templated_test_scenarios = common.fetch_templated_test_scenarios(
+            rule, template_builder, rule.directory, product_yaml,
             rule.local_env_yaml)
-        return rule_scenarios
+        all_tests.update(templated_test_scenarios)
+
+        # Add additional tests from the local rule directory. Note that,
+        # like the behavior in template_tests, this will overwrite any
+        # templated tests with the same file name.
+        local_test_scenarios = common.fetch_local_test_scenarios(
+            rule.directory, rule.local_env_yaml)
+        all_tests.update(local_test_scenarios)
+
+        # Filter out everything except the shell test scenarios.
+        # Other files in rule directories are editor swap files
+        # or other content than a test case.
+        allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
+        content_mapping = {x: all_tests[x] for x in allowed_scripts}
+
+        scenarios = []
+        for script, script_contents in content_mapping.items():
+            scenario = Scenario(script, script_contents)
+            scenarios.append(scenario)
+        return scenarios
 
     def _filter_rule_scenarios(self, rule_scenarios):
         scenarios = []
@@ -540,39 +569,3 @@ def perform_rule_check(options):
         checker.scenarios_profile = OSCAP_PROFILE+options.scenarios_profile
 
     checker.test_target(options.target)
-
-
-def fetch_test_scenarios(
-        tests_dir, rule, template_builder, product_yaml, local_env_yaml):
-    # All tests is a mapping from path (in the tarball) to contents
-    # of the test case. This is necessary because later code (which
-    # attempts to parse headers from the test case) don't have easy
-    # access to templated content. By reading it and returning it
-    # here, we can save later code from having to understand the
-    # templating system.
-    all_tests = dict()
-
-    # Start by checking for templating tests and provision them if
-    # present.
-    templated_test_scenarios = common.fetch_templated_test_scenarios(
-        rule, template_builder, tests_dir, product_yaml, local_env_yaml)
-    all_tests.update(templated_test_scenarios)
-
-    # Add additional tests from the local rule directory. Note that,
-    # like the behavior in template_tests, this will overwrite any
-    # templated tests with the same file name.
-    local_test_scenarios = common.fetch_local_test_scenarios(
-        tests_dir, local_env_yaml)
-    all_tests.update(local_test_scenarios)
-
-    # Filter out everything except the shell test scenarios.
-    # Other files in rule directories are editor swap files
-    # or other content than a test case.
-    allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
-    content_mapping = {x: all_tests[x] for x in allowed_scripts}
-
-    scenarios = []
-    for script, script_contents in content_mapping.items():
-        scenario = Scenario(script, script_contents)
-        scenarios.append(scenario)
-    return scenarios
