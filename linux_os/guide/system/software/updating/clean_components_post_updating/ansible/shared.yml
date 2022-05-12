@@ -3,6 +3,15 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+{{% if 'sle' in product %}}
+- name: Ensure Zypper Removes Previous Package Versions
+  ini_file:
+    dest: /etc/zypp/zypp.conf
+    section: main
+    option: solver.upgradeRemoveDroppedPackages
+    value: true
+    create: False
+{{% else %}}
 - name: "Ensure {{{ pkg_manager | upper }}} Removes Previous Package Versions"
   lineinfile:
       dest: {{{ pkg_manager_config_file }}}
@@ -10,3 +19,4 @@
       line: clean_requirements_on_remove=1
       insertafter: '\[main\]'
       create: yes
+{{% endif %}}
