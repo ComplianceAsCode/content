@@ -416,9 +416,10 @@ class RuleChecker(oscap.Checker):
 
     @contextlib.contextmanager
     def copy_of_datastream(self, new_filename=None):
+        prefixed_name = common.get_prefixed_name("ds_modified")
         old_filename = self.datastream
         if not new_filename:
-            descriptor, new_filename = tempfile.mkstemp(prefix="ssgts_ds_modified", dir="/tmp")
+            descriptor, new_filename = tempfile.mkstemp(prefix=prefixed_name, dir="/tmp")
         os.close(descriptor)
         shutil.copy(old_filename, new_filename)
         self.datastream = new_filename
@@ -498,6 +499,7 @@ def perform_rule_check(options):
     checker.scenarios_regex = options.scenarios_regex
     checker.slice_current = options.slice_current
     checker.slice_total = options.slice_total
+    checker.keep_snapshots = options.keep_snapshots
 
     checker.scenarios_profile = options.scenarios_profile
     # check if target is a complete profile ID, if not prepend profile prefix
