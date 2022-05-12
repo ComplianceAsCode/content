@@ -2,6 +2,10 @@ downstream_package_name: scap-security-guide
 upstream_package_name: scap-security-guide
 specfile_path: scap-security-guide.spec
 
+actions:
+  get-current-version:
+  - bash utils/version.sh
+
 jobs:
 - job: copr_build
   trigger: pull_request
