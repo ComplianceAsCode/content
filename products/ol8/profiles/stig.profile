@@ -88,6 +88,7 @@ selections:
 
     # OL08-00-010030
     - encrypt_partitions
+    - encrypt_partitions.severity=medium
 
     # OL08-00-010040
     - sshd_enable_warning_banner
@@ -572,7 +573,7 @@ selections:
 
     # OL08-00-020220
     - accounts_password_pam_pwhistory_remember_system_auth
-    - accounts_password_pam_pwhistory_remember_system_auth.severity=low
+    - accounts_password_pam_pwhistory_remember_system_auth.severity=medium
     - accounts_password_pam_pwhistory_remember_password_auth
     - accounts_password_pam_pwhistory_remember_password_auth.severity=low
 
