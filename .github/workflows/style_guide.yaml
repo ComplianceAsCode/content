@@ -11,6 +11,9 @@ jobs:
       steps:
       - name: Install Dependencies 
         run: dnf install -y grep findutils git
+      # https://github.com/actions/checkout/issues/766
+      - name: Set git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Files must use LF Line endings
         run: find . -not -type d -exec file "{}" ";" | grep CRLF
       - name: Files must end in LF Endings
