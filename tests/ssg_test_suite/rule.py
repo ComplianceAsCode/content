@@ -374,7 +374,7 @@ class RuleChecker(oscap.Checker):
         # Start by checking for templating tests and provision them if
         # present.
         templated_test_scenarios = common.fetch_templated_test_scenarios(
-            rule, template_builder, rule.directory, product_yaml,
+            rule.rule, template_builder, rule.directory, product_yaml,
             rule.local_env_yaml)
         all_tests.update(templated_test_scenarios)
 
