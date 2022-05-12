@@ -23,6 +23,11 @@ from ssg_test_suite.log import LogHelper
 
 import ssg.templates
 
+Rule = collections.namedtuple(
+    "Rule",
+    ["directory", "id", "short_id", "template", "local_env_yaml", "rule"])
+
+
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
@@ -309,7 +314,7 @@ class RuleChecker(oscap.Checker):
             template_name = None
             if rule.template and rule.template['vars']:
                 template_name = rule.template['name']
-            result = common.Rule(
+            result = Rule(
                 directory=tests_dir, id=full_rule_id,
                 short_id=short_rule_id, template=template_name,
                 local_env_yaml=local_env_yaml, rule=rule)

@@ -31,8 +31,6 @@ Scenario_run = namedtuple(
 Scenario_conditions = namedtuple(
     "Scenario_conditions",
     ("backend", "scanning_mode", "remediated_by", "datastream"))
-Rule = namedtuple(
-    "Rule", ["directory", "id", "short_id", "template", "local_env_yaml", "rule"])
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
