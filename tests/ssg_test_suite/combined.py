@@ -40,9 +40,7 @@ class CombinedChecker(rule.RuleChecker):
         self.run_aborted = False
 
     def _rule_should_be_tested(self, rule_short_id, rules_to_be_tested):
-        if rule_short_id not in rules_to_be_tested:
-            return False
-        return True
+        return (rule_short_id in rules_to_be_tested)
 
     def _modify_parameters(self, script, params):
         # If there is no profiles metadata in a script we will use
