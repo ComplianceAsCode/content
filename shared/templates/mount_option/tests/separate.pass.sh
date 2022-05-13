@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. $SHARED/partition.sh
+
+clean_up_partition {{{ MOUNTPOINT }}}
+
+create_partition
+
+make_fstab_correct_partition_line {{{ MOUNTPOINT }}}
+
+# $SHARED/fstab is correct, but we are not mounted.
