@@ -91,9 +91,7 @@ def path_find_python(_path, tier=0):
 
 
 def preprocess(data, lang):
-    for i in range(0, len(data.get("policies", []))):
-        # Cache the policy setting to reduce line length
-        _policy = data["policies"][i]
+    for i, _policy in enumerate(data.get("policies", [])):
         _path = regular_path(_policy.get("path", ""))
 
         # regex used in OVAL for detection
