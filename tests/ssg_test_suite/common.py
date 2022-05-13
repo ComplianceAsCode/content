@@ -46,7 +46,7 @@ _SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared
 _SHARED_TEMPLATES = os.path.abspath(os.path.join(SSG_ROOT, 'shared/templates'))
 
 TEST_SUITE_NAME="ssgts"
-TEST_SUITE_PREFIX = "__{}".format(TEST_SUITE_NAME)
+TEST_SUITE_PREFIX = "_{}".format(TEST_SUITE_NAME)
 REMOTE_USER = "root"
 REMOTE_USER_HOME_DIRECTORY = "/root"
 REMOTE_TEST_SCENARIOS_DIRECTORY = os.path.join(REMOTE_USER_HOME_DIRECTORY, TEST_SUITE_NAME)
