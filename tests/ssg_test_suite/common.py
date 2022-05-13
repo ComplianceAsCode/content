@@ -704,14 +704,16 @@ def install_packages(test_env, packages):
 
 
 def cpes_to_platform(cpes):
+    rhel_cpe = {"redhat:enterprise_linux": r":enterprise_linux:([^:]+):", "centos:centos": r"centos:centos:([0-9]+)"}
     for cpe in cpes:
         if "fedora" in cpe:
             return "fedora"
-        if "redhat:enterprise_linux" in cpe:
-            match = re.search(r":enterprise_linux:([^:]+):", cpe)
-            if match:
-                major_version = match.groups()[0].split(".")[0]
-                return "rhel" + major_version
+        for cpe_item in rhel_cpe.keys():
+            if cpe_item in cpe:
+                match = re.search(rhel_cpe.get(cpe_item), cpe)
+                if match:
+                    major_version = match.groups()[0].split(".")[0]
+                    return "rhel" + major_version
         if "ubuntu" in cpe:
             return "ubuntu"
     msg = "Unable to deduce a platform from these CPEs: {cpes}".format(cpes=cpes)
