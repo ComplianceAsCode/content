@@ -18,6 +18,10 @@ class TemplateChecker(rule.RuleChecker):
     with any extra tests available for the rule.
     """
 
+    def __init__(self, test_env):
+        super(TemplateChecker, self).__init__(test_env)
+        self.target_type = "template"
+
     def _rule_should_be_tested(self, rule, target_templates, tested_templates):
         if rule.template in target_templates:
             return True

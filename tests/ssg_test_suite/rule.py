@@ -124,6 +124,7 @@ class RuleChecker(oscap.Checker):
         self.results = list()
         self._current_result = None
         self.remote_dir = ""
+        self.target_type = "rule ID"
 
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
@@ -306,7 +307,9 @@ class RuleChecker(oscap.Checker):
     def _test_target(self, target):
         rules_to_test = self._get_rules_to_test(target)
         if not rules_to_test:
-            logging.error("No tests found matching the rule ID(s) '{0}'".format(", ".join(target)))
+            logging.error("No tests found matching the {0}(s) '{1}'".format(
+                self.target_type,
+                ", ".join(target)))
             return
 
         scenarios_by_rule_id = dict()
