@@ -1,27 +1,13 @@
 from __future__ import print_function
 import re
+import json
 
 
-def parameter_insert(_path, parameter, value, tier=0):
-    if tier > len(_path):
-        return r''
-    search_point = r'/"{0}"\s*:\s*/a '.format(_path[tier])
-    parameter = r'"{0}": {1},\n'.format(parameter, make_json_boolean(value))
-    _result = parameter
-    for p in reversed(_path[tier + 1:]):
-        _result = ''.join([r'"{0}": '.format(p), r"{\n", _result, r"},\n"])
-    # chop off the last newline
-    _result = _result[:-2]
-    return ''.join([search_point, _result])
-
-
-def parameter_replace_search_sed(_path, parameter):
-    preamble = r''.join([r'"{0}"\s*:'.format(x) + r'\s*\{.*\s*' for x in _path])
-    post = r'"' + parameter + r'"\s*:\s*)"?[a-zA-Z_ 0-9]+"?,?(\v.*)'
-    return str(''.join(['(', preamble, post]))
-
-
-def regular_path(path_string):
+def normalize_policy_path(path_string):
+    """Generate a normalized path array from yaml.
+       Paths are space-separated key names.
+       All firefox policies are under the policies key.
+    """
     path = []
     if len(path_string.strip()) > 0:
         path = re.split(" ", path_string)
@@ -30,20 +16,20 @@ def regular_path(path_string):
     return path
 
 
-def make_json_boolean(instr):
-    if instr in ["false", "true"]:
-        return instr.capitalize()
+def make_json_boolean(instr, oval_format=False):
+    if instr.lower() in ["false", "true"]:
+        if oval_format:
+            return r"[{0}{1}]{2}".format(instr[0].upper(), instr[0].lower(), instr[1:])
+        else:
+            return instr.lower() == "true"
+    if oval_format:
+        return "\"{0}\"".format(instr)
     return "\'{0}\'".format(instr)
 
 
-def make_json_boolean_oval(instr):
-    if instr in ["false", "true"]:
-        return instr
-    return "\"{0}\"".format(instr)
-
-
-def parameter_find_oval(_path, parameter, value):
-    parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter, make_json_boolean_oval(value))
+def build_oval_search_regex_for_json_parameter(_path, parameter, value):
+    parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter, make_json_boolean(value,
+                                                                             oval_format=True))
     _result = parameter
     for p in reversed(_path):
         if p == "policies":
@@ -59,29 +45,7 @@ def parameter_find_oval(_path, parameter, value):
     return _result
 
 
-def parameter_find_grep(_path, parameter, tier=0):
-    if tier >= len(_path):
-        return r''
-    parameter = r'"{0}"\s*:\s*("?\w+"?),?'.format(parameter)
-    _result = parameter
-    for p in reversed(_path[tier:]):
-        _result = ''.join([r'"{0}"\s*:\s*'.format(p),
-                           r"(\{?(\{[^}]*\}?)*|[^}]*)\s*",
-                           _result,
-                           r"[^}]*\}"])
-    return _result
-
-
-def path_find_grep(_path, tier=0):
-    if tier > len(_path):
-        return r''
-    _result = r''
-    for p in list(reversed(_path))[tier:]:
-        _result = ''.join([r'"{0}"\s*:\s*'.format(p), r"\{.*\s*", _result])
-    return _result
-
-
-def path_find_python(_path, tier=0):
+def build_python_json_notation(_path, tier=0):
     if tier > len(_path):
         return r''
     _result = r''
@@ -90,38 +54,47 @@ def path_find_python(_path, tier=0):
     return _result
 
 
+def build_test_json(policy, _test, missing=False, wrong=False):
+    """Generate a minimal JSON configuration for this particular policy object, based 
+       on a correct (set to value), missing, or wrong value. 
+       Returns a dict() containing this test entry.
+       
+       Parameters:
+           policy: current policy item to generate for
+           _test: dict() that has at least the value {"policies": {} }
+    """
+    _current = _test.get("policies")
+    _key =  policy["parameter"]
+    _value = make_json_boolean(policy["value"])
+
+    for p in policy["subpath"]:
+        if p not in _current:
+           _current[p] = dict()
+        _current = _current.get(p)
+    
+    if wrong:
+        _current[_key] = "VERYVERYBADVALUE"
+    elif not missing:
+        _current[_key] = _value
+    return _test
+
+
 def preprocess(data, lang):
+    _test_correct_config = { "policies": {} }
+    _test_bad_missing = { "policies": {} }
+    _test_bad_wrong = { "policies": {} }
     for i, _policy in enumerate(data.get("policies", [])):
-        _path = regular_path(_policy.get("path", ""))
+        _path = normalize_policy_path(_policy.get("path", ""))
 
         # regex used in OVAL for detection
-        _policy["oval_regex"] = parameter_find_oval(_path,
-                                                    _policy["parameter"],
-                                                    _policy["value"])
+        _policy["oval_regex"] = build_oval_search_regex_for_json_parameter(_path,
+                                                                           _policy["parameter"],
+                                                                           _policy["value"])
 
-        # Regex used in sed replacement item for this policy change.
-        _policy["parameter_replace_sed"] = parameter_replace_search_sed(_path,
-                                                                        _policy["parameter"])
-
-        # PCRE Regex for grep to see if a path entry exists.
-        _policy["path_grep"] = [path_find_grep(_path, x) for x in range(0, len(_path))]
-
-        # PCRE Regex for grep to see if a path entry exists.
-        _policy["parameter_grep"] = [parameter_find_grep(_path,
-                                                         _policy["parameter"],
-                                                         x)
-                                     for x in range(0, len(_path))]
-
-        # Sed "append" insertion string.
-        _policy["parameter_insert"] = [parameter_insert(_path,
-                                                        _policy["parameter"],
-                                                        _policy["value"],
-                                                        x)
-                                       for x in range(0, len(_path))]
         # path without "policies"
         _policy["subpath"] = _path[1:]
         # Precached notation for addressing JSON path
-        _policy["path_python"] = [path_find_python(_path, x)
+        _policy["path_python"] = [build_python_json_notation(_path, x)
                                   for x in range(0, len(_path)+1)][:-1]
         # JSON path as iterable list, sans "policies"
         _policy["subpath_string"] = '_'.join(_path[1:])
@@ -130,6 +103,29 @@ def preprocess(data, lang):
         # value with quotes added for simple insertion.
         _policy["value_escaped"] = make_json_boolean(_policy["value"])
 
+        # correct_value.pass tests
+        build_test_json(_policy,
+                        _test_correct_config,
+                        missing=False,
+                        wrong=False)
+
+        # missing_value.fail tests
+        build_test_json(_policy,
+                        _test_bad_missing,
+                        missing=True,
+                        wrong=False)
+
+        # wrong_value.fail tests 
+        build_test_json(_policy,
+                        _test_bad_wrong,
+                        missing=False,
+                        wrong=True)
+
         # Reassign the modified policy entry.
         data["policies"][i] = _policy
+
+    # Pretty-print the output for our test JSON to variables so that it can be used in the test templates.
+    data["_correct_config"] = json.dumps(_test_correct_config, indent=4, separators=(',', ': '))
+    data["_bad_missing"] = json.dumps(_test_bad_missing, indent=4, separators=(',', ': '))
+    data["_bad_wrong"] = json.dumps(_test_bad_wrong, indent=4, separators=(',', ': '))
     return data
