@@ -133,13 +133,8 @@ def parse_args():
         default=False,
         action="store_true",
         help="Execute all tests even for tests using shared templates; "
-        "otherwise, executes one test per template type")
-
-    common_parser.add_argument(
-        "--keep-snapshots",
-        dest="keep_snapshots",
-        action="store_true",
-        help="Do not remove existing snapshots created during previous tests.")
+        "otherwise, executes one test per template type"
+    )
 
     subparsers = parser.add_subparsers(dest="subparser_name",
                                        help="Subcommands: profile, rule, combined")
@@ -402,7 +397,7 @@ def normalize_passed_arguments(options):
         if not re.match(r"[\w\+]+:///", hypervisor):
             hypervisor = "qemu:///" + hypervisor
         options.test_env = ssg_test_suite.test_env.VMTestEnv(
-            options.scanning_mode, hypervisor, domain_name, options.keep_snapshots)
+            options.scanning_mode, hypervisor, domain_name)
         logging.info(
             "The base image option has not been specified, "
             "choosing libvirt-based test environment.")

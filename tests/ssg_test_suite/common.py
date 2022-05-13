@@ -45,11 +45,9 @@ _SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared
 
 _SHARED_TEMPLATES = os.path.abspath(os.path.join(SSG_ROOT, 'shared/templates'))
 
-TEST_SUITE_NAME="ssgts"
-TEST_SUITE_PREFIX = "__{}".format(TEST_SUITE_NAME)
 REMOTE_USER = "root"
 REMOTE_USER_HOME_DIRECTORY = "/root"
-REMOTE_TEST_SCENARIOS_DIRECTORY = os.path.join(REMOTE_USER_HOME_DIRECTORY, TEST_SUITE_NAME)
+REMOTE_TEST_SCENARIOS_DIRECTORY = os.path.join(REMOTE_USER_HOME_DIRECTORY, "ssgts")
 
 try:
     SSH_ADDITIONAL_OPTS = tuple(os.environ.get('SSH_ADDITIONAL_OPTIONS').split())
@@ -436,7 +434,7 @@ def template_tests(product=None):
         product_yaml = get_product_context(product)
 
         # Initialize a mock template_builder.
-        empty = "/{}/empty/placeholder".format(TEST_SUITE_NAME)
+        empty = "/ssgts/empty/placeholder"
         template_builder = ssg.templates.Builder(product_yaml, empty,
                                                  _SHARED_TEMPLATES, empty,
                                                  empty)
@@ -521,10 +519,6 @@ def send_scripts(test_env):
     return remote_dir
 
 
-def get_prefixed_name(state_name):
-    return "{}_{}".format(TEST_SUITE_PREFIX, state_name)
-
-
 def get_test_dir_config(test_dir, product_yaml):
     test_config = dict()
     test_config_filename = os.path.join(test_dir, TESTS_CONFIG_NAME)
@@ -580,7 +574,7 @@ def iterate_over_rules(product=None):
     product_yaml = get_product_context(product)
 
     # Initialize a mock template_builder.
-    empty = "/{}/empty/placeholder".format(TEST_SUITE_NAME)
+    empty = "/ssgts/empty/placeholder"
     template_builder = ssg.templates.Builder(product_yaml, empty,
                                              _SHARED_TEMPLATES, empty, empty)
 
