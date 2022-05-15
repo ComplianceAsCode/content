@@ -527,7 +527,7 @@ macro(ssg_build_sds PRODUCT)
         )
     endif()
 
-    if("${PRODUCT}" MATCHES "rhel(7|8|9)")
+    if("${PRODUCT}" MATCHES "rhel(7|8|9)|sle(12|15)")
         add_test(
             NAME "missing-cces-${PRODUCT}"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/missing_cces.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
