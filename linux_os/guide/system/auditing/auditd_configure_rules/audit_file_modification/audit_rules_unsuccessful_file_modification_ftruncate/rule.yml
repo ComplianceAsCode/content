@@ -15,7 +15,7 @@ description: |-
 
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S ftruncate -F exiu=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
+    -a always,exit -F arch=b64 -S ftruncate -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
     -a always,exit -F arch=b64 -S ftruncate -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
 
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
