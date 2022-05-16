@@ -794,10 +794,10 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     The following file and directories are checked for static
     sysctl configurations:
-    - /etc/sysct.conf
-    - /etc/sysct.d/\*.conf
-    - /run/sysct.d/\*.conf
-    - /usr/lib/sysct.d/\*.conf (does not apply to RHEL)
+    - /etc/sysctl.conf
+    - /etc/sysctl.d/\*.conf
+    - /run/sysctl.d/\*.conf
+    - /usr/lib/sysctl.d/\*.conf (does not apply to RHEL and OL)
 
     A sysctl option defined in more than one file within the scanned directories
     will result in `fail`.
