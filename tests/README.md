@@ -285,7 +285,7 @@ Mode of operation, specify one of the following commands;
 - `rule`: Evaluate a rule, remediate, and evaluate again in context of test scenarios.
 - `profile`: Evaluate, remediate and evaluate again using selected profile
 - `combined`: Evaluate, remediate, and evaluate again the rules from a profile in context of test scenarios.
-- `template`: Evaluate, remediate, and evaluate again the rules using a given templat in context of test scenarios.
+- `template`: Evaluate, remediate, and evaluate again the rules using a given template in context of test scenarios.
 
 Specify backend and image to use:
 - To use VM backend, use the following option on the command line:
@@ -518,7 +518,7 @@ If you would like to test all profile's rules against their test scenarios:
 ## Template-based testing
 
 ```
-./test_suite.py template ... <template_name other_template>
+./test_suite.py template ... <template_name1>[ <template_name2> <template_name3> ...]
 
 ```
 
@@ -531,7 +531,7 @@ The test scenarios executed are based on the template and the rule that uses it.
 If the specified template doesn't have tests, only the rule's test scenarios are executed,
 and if a rule doesn't have test scenarios it won't be tested.
 If the specified template does have tests they are combined with the rule's tests, this is
-the sambe behavior we see in the rule mode.
+the same behavior we see in the rule mode.
 
 # Analysis of results
 
