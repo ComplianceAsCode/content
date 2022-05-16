@@ -128,6 +128,19 @@ The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{#
+    Generate a fixtext for audit rules for unsuccessful file modification
+    when O_TRUNC_WRITE flag is specified.
+    Used in rules using template audit_rules_unsuccessful_file_modification_o_trunc_write
+
+:param syscall: Sycall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall) -%}}
+{{{ fixtext_audit_rules(syscall, "unsuccesful-modification", '"openat" and "open_by_handle_at"', extra_params=True, flag="a2&amp;01003") }}}
+{{% endmacro %}}
+
+{{#
     Human readable text for how to fix ini files
 
 :param section: Section on the value to be set
