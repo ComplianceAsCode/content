@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ubuntu2004
+
+title: 'Install ufw Package'
+
+description: |-
+    {{{ describe_package_install(package="ufw") }}}
+
+rationale: |-
+    <tt>ufw</tt> controls the Linux kernel network packet filtering
+    code. <tt>ufw</tt> allows system operators to set up firewalls and IP
+    masquerading, etc.
+
+severity: medium
+
+references:
+    cis@ubuntu2004: 3.5.1.1
+    disa: CCI-002314
+    srg: SRG-OS-000297-GPOS-00115
+    stigid@ubuntu2004: UBTU-20-010433
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="ufw") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: ufw

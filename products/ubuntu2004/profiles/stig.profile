@@ -211,7 +211,7 @@ selections:
     - audit_rules_privileged_commands_chfn
 
     # UBTU-20-010138 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the mount command.
-    - audit_rules_privileged_commands_mount 
+    - audit_rules_privileged_commands_mount
 
     # UBTU-20-010139 The Ubuntu operating system must generate audit records for successful/unsuccessful uses of the umount command.
     - audit_rules_privileged_commands_umount
@@ -437,6 +437,7 @@ selections:
     - package_rsh-server_removed
 
     # UBTU-20-010407 The Ubuntu operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.
+    - ufw_only_required_services
 
     # UBTU-20-010408 The Ubuntu operating system must prevent direct login into the root account.
     - prevent_direct_root_logins
@@ -513,8 +514,10 @@ selections:
     - service_rsyslog_enabled
 
     # UBTU-20-010433 The Ubuntu operating system must have an application firewall installed in order to control remote access methods.
+    - package_ufw_installed
 
     # UBTU-20-010434 The Ubuntu operating system must enable and run the uncomplicated firewall(ufw).
+    - service_ufw_enabled
 
     # UBTU-20-010435 The Ubuntu operating system must, for networked systems, compare internal information system clocks at least every 24 hours with a server which is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).
     - var_time_service_set_maxpoll=36_hours
@@ -550,6 +553,7 @@ selections:
     # UBTU-20-010445 Ubuntu operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest.
 
     # UBTU-20-010446 The Ubuntu operating system must configure the uncomplicated firewall to rate-limit impacted network interfaces.
+    - ufw_rate_limit
 
     # UBTU-20-010447 The Ubuntu operating system must implement non-executable data to protect its memory from unauthorized code execution.
     - bios_enable_execution_restrictions
