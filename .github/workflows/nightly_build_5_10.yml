@@ -1,9 +1,8 @@
-name: Nightly builds
+name: Nightly builds 5.10
 on:
     schedule:
         # Run daily at 03:00
         -   cron: "0 3 * * *"
-
 jobs:
     nightly-fedora-5-10:
         name: Nightly build OVAL 5.10 on Fedora Latest (Container)
