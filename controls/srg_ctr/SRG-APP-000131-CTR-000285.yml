@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000131-CTR-000285
+  levels:
+  - medium
+  title: {{{ full_name }}} must verify container images.
+  rules:
+  - reject_unsigned_images_by_default
+  - ocp_allowed_registries
+  - ocp_allowed_registries_for_import
+  status: automated

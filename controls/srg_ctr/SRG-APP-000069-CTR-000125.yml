@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000069-CTR-000125
+  levels:
+  - low
+  title: {{{ full_name }}} must retain the Standard Mandatory DoD Notice and
+    Consent Banner on the screen until users acknowledge the usage and conditions
+    and take explicit actions to log on for further access.
+  rules:
+  - banner_or_login_template_set
+  - classification_banner
+  - oauth_login_template_set
+  - openshift_motd_exists
+  status: automated
