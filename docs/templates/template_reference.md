@@ -788,9 +788,19 @@ The selected value can be changed in the profile (consult the actual variable fo
 ```
 
 #### sysctl
--   Checks sysctl parameters. The OVAL definition checks both
+-   Checks sysctl parameters. The OVAL definition checks both static
     configuration and runtime settings and require both of them to be
     set to the desired value to return true.
+
+    The following file and directories are checked for static
+    sysctl configurations:
+    - /etc/sysctl.conf
+    - /etc/sysctl.d/\*.conf
+    - /run/sysctl.d/\*.conf
+    - /usr/lib/sysctl.d/\*.conf (does not apply to RHEL and OL)
+
+    A sysctl option defined in more than one file within the scanned directories
+    will result in `fail`.
 
 -   Parameters:
 

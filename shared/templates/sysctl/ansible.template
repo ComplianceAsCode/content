@@ -6,7 +6,9 @@
 
 - name: List /etc/sysctl.d/*.conf files
   find:
-    paths: "/etc/sysctl.d/"
+    paths:
+      - "/etc/sysctl.d/"
+      - "/run/sysctl.d/"
     contains: '^[\s]*{{{ SYSCTLVAR }}}.*$'
     patterns: "*.conf"
     file_type: any
