@@ -1,0 +1,10 @@
+controls:
+- id: SRG-APP-000429-CTR-001060
+  levels:
+  - medium
+  title: {{{ full_name }}} keystore must implement encryption to prevent unauthorized
+    disclosure of information at rest within the container platform.
+  rules:
+  - api_server_encryption_provider_cipher
+  - api_server_encryption_provider_config
+  status: automated

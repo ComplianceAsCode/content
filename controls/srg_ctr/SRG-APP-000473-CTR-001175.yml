@@ -1,0 +1,13 @@
+controls:
+- id: SRG-APP-000473-CTR-001175
+  levels:
+  - medium
+  title: '{{{ full_name }}} must perform verification of the correct operation
+    of security functions: upon system startup and/or restart; upon command by a user
+    with privileged access; and/or every 30 days. Security functionality includes,
+    but is not limited to, establishing system accounts, configuring access authorizations
+    (i.e., permissions, privileges), setting events to be audited, and setting intrusion
+    detection parameters.'
+  rules:
+  - file_integrity_exists
+  status: automated
