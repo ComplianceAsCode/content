@@ -15,21 +15,20 @@ def normalize_policy_path(path_string):
         path = ['policies'] + path
     return path
 
+def make_json_boolean_match_regex(json_value):
+    if json_value.lower() in ["false", "true"]:
+        return r"[{0}{1}]{2}".format(json_value[0].upper(), json_value[0].lower(), json_value[1:])
+    return "\"{0}\"".format(json_value)
 
-def make_json_boolean(instr, oval_format=False):
-    if instr.lower() in ["false", "true"]:
-        if oval_format:
-            return r"[{0}{1}]{2}".format(instr[0].upper(), instr[0].lower(), instr[1:])
-        else:
-            return instr.lower() == "true"
-    if oval_format:
-        return "\"{0}\"".format(instr)
-    return "\'{0}\'".format(instr)
+
+def make_json_boolean_remediate(json_value):
+    if json_value.lower() in ["false", "true"]:
+        return json_value.lower() == "true"
+    return "\'{0}\'".format(json_value)
 
 
 def build_oval_search_regex_for_json_parameter(_path, parameter, value):
-    parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter, make_json_boolean(value,
-                                                                             oval_format=True))
+    parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter, make_json_boolean_match_regex(value)
     _result = parameter
     for p in reversed(_path):
         if p == "policies":
@@ -73,7 +72,7 @@ def build_test_json(policy, _test, missing=False, wrong=False):
     """
     _current = _test.get("policies")
     _key =  policy["parameter"]
-    _value = make_json_boolean(policy["value"])
+    _value = make_json_boolean_remediate(policy["value"])
 
     for p in policy["subpath"]:
         if p not in _current:
@@ -109,7 +108,7 @@ def preprocess(data, lang):
         # entire JSON path to be set as an iterable list.
         _policy["path_list"] = _path
         # value with quotes added for simple insertion.
-        _policy["value_escaped"] = make_json_boolean(_policy["value"])
+        _policy["value_escaped"] = make_json_boolean_remediate(_policy["value"])
 
         # correct_value.pass tests
         build_test_json(_policy,
