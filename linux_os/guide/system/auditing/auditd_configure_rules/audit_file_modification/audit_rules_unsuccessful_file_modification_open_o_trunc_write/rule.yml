@@ -70,3 +70,6 @@ template:
         pos: a1
         syscall: open
     name: audit_rules_unsuccessful_file_modification_o_trunc_write
+
+fixtext: |-
+    {{{ fixtext_audit_rules_unsuccessful_file_modification_o_trunc_write("open") | indent(4) }}}
