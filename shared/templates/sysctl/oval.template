@@ -222,7 +222,6 @@
     <unix:filepath operation="equals" var_ref="local_var_conf_files_{{{ SYSCTLID }}}" />
     <filter action="exclude">state_symlink_points_outside_usual_dirs_{{{ SYSCTLID }}}</filter>
   </unix:symlink_object>
-{{% endif %}}
 
   <!-- The state matches symlinks that don't point to the default dirs, i.e. paths that are not:
        ^/etc/sysctl.conf$
@@ -232,6 +231,7 @@
   <unix:symlink_state comment="State that matches symlinks referencing files not in the default dirs" id="state_symlink_points_outside_usual_dirs_{{{ SYSCTLID }}}" version="1">
     <unix:canonical_path operation="pattern match">^(?!(\/etc\/sysctl\.conf$|(\/etc|\/run|\/usr\/lib)\/sysctl\.d\/)).*$</unix:canonical_path>
   </unix:symlink_state>
+{{% endif %}}
 
   <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_{{{ SYSCTLID }}}" version="1">
     <object_component object_ref="object_static_set_unfiltered_sysctls_{{{ SYSCTLID }}}" item_field="filepath" />
