@@ -108,10 +108,13 @@ The audit daemon must be restarted for the changes to take effect.
 
 :param syscall: Sycall name
 :type path: str
+:param syscall_grouping: A list of other syscalls that can be audited with the
+    same audit rules.
+:type path: str
 
 #}}
-{{% macro fixtext_audit_rules_unsuccessful_file_modification(syscall) -%}}
-{{{ fixtext_audit_rules(syscall, "perm_access", '"creat", "ftruncate", "truncate", "open", "openat" and "open_by_handle_at"', extra_params=True) }}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification(syscall, syscall_grouping) -%}}
+{{{ fixtext_audit_rules(syscall, "access", syscall_grouping|join(", "), extra_params=True) }}}
 {{% endmacro %}}
 
 {{#
