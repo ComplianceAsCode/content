@@ -26,21 +26,29 @@ def make_json_boolean_remediate(json_value):
         return json_value.lower() == "true"
     return "\'{0}\'".format(json_value)
 
+# These regexes work under the complexities currently observed with the Firefox
+# policies.json, which is (so far) a subset of JSON that is just nested keys.
+# No JSON arrays are supported.
+# Remove the moment that OpenSCAP/OVAL spec supports a JSON configuration probe.
+OVAL_MATCH_ANY_FOLLOWING = r"[^}]*\}"
+OVAL_MATCH_OPEN_BRACES_FOR_BLOCK = r"(\{?(\{[^}]*\}?)*|[^}]*)[\s]*"
+OVAL_MATCH_ANYTHING_AFTER_OPEN_BRACE = r"\{.*[\s]*"
+
+# Note: str.format() notation.
+OVAL_MATCH_JSON_KEY = r'"{0}"[\s]*:[\s]*'
 
 def build_oval_search_regex_for_json_parameter(_path, parameter, value):
     parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter, make_json_boolean_match_regex(value)
     _result = parameter
     for p in reversed(_path):
+        depth_match_block = OVAL_MATCH_OPEN_BRACES_FOR_BLOCK
         if p == "policies":
-            _result = ''.join([r'"{0}"[\s]*:[\s]*'.format(p),
-                               r"\{.*[\s]*",
-                               _result,
-                               r"[^}]*\}"])
-        else:
-            _result = ''.join([r'"{0}"[\s]*:[\s]*'.format(p),
-                               r"(\{?(\{[^}]*\}?)*|[^}]*)[\s]*",
-                               _result,
-                               r"[^}]*\}"])
+            depth_match_block = OVAL_MATCH_ANYTHING_AFTER_OPEN_BRACE
+
+        _result = ''.join([OVAL_MATCH_JSON_KEY.format(p),
+                           depth_match_block,
+                           _result,
+                           OVAL_MATCH_ANY_FOLLOWING])
     return _result
 
 
