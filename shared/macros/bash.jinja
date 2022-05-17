@@ -367,19 +367,7 @@ touch {{{ sshd_config_dir }}}/{{{ hardening_config_basename }}}
 {{%- endif %}}
 {{%- endmacro %}}
 
-
-{{#
-    Macro that copies the audit rules into a file.
-    The purpose is to create exactly the same content in the file specified by filename argument
-    as in https://github.com/linux-audit/audit-userspace/blob/master/rules/30-ospp-v42.rules
-
-:param filename:    Name of the file to print the information to; written do directory specified by the filename
-:type filename: str
-
-#}}
-{{%- macro bash_create_audit_remediation_unsuccessful_file_modification_detailed(filename) -%}}
-mkdir -p "$(dirname '{{{ filename }}}')"
-cat <<EOF > "{{{ filename }}}"
+{{%- macro audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() -%}}
 ## This content is a section of an Audit config snapshot recommended for linux systems that target OSPP compliance.
 ## The following content has been retreived on 2019-03-11 from: https://github.com/linux-audit/audit-userspace/blob/master/rules/30-ospp-v42.rules
 
@@ -420,6 +408,22 @@ cat <<EOF > "{{{ filename }}}"
 -a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
 -a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
 -a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+{{%- endmacro -%}}
+
+
+{{#
+    Macro that copies the audit rules into a file.
+    The purpose is to create exactly the same content in the file specified by filename argument
+    as in https://github.com/linux-audit/audit-userspace/blob/master/rules/30-ospp-v42.rules
+
+:param filename:    Name of the file to print the information to; written do directory specified by the filename
+:type filename: str
+
+#}}
+{{%- macro bash_create_audit_remediation_unsuccessful_file_modification_detailed(filename) -%}}
+mkdir -p "$(dirname '{{{ filename }}}')"
+cat <<EOF > "{{{ filename }}}"
+{{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
 EOF
 {{%- endmacro -%}}
 
