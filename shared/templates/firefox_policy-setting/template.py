@@ -45,11 +45,19 @@ def build_oval_search_regex_for_json_parameter(_path, parameter, value):
     return _result
 
 
-def build_python_json_notation(_path, tier=0):
-    if tier > len(_path):
+def build_python_json_notation(_path, depth=0):
+    """Generate the Python call syntax for this path within a given distance
+       from the top-level node.
+
+       Parameters:
+           _path: the list of the entire path in the JSON document to this
+           particular key.
+           depth: How far along the path to generate this syntax.
+    """
+    if depth > len(_path):
         return r''
     _result = r''
-    for p in list(reversed(_path))[tier:]:
+    for p in list(reversed(_path))[depth:]:
         _result = ''.join(["['{0}']".format(p), _result])
     return _result
 
