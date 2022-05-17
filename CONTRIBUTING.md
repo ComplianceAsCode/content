@@ -69,7 +69,7 @@ The PR ...
 * ... has been tested. The following options allow for testing various aspects of the project:
   * [SSG Test Suite](tests/README.md) for rule tests to ensure that OVAL checks are correct and test the ability of remediations to satisfy those checks.
     Every testable rule that is newly created or that just got modified has to have at least one test scenario.
-    If a PR interacts with such rule that has been previously without tests, the author as to supply a test scenario as part of PR to get it merged.
+    If a PR interacts with a testable rule without tests, the author shall supply a test scenario as part of the PR to get it merged.
   * [BATS framework](tests/unit/bash) for bash tests that allows for fast and exhaustive testing of remediations that are parametrized by Jinja2.
   * [Unit tests](tests/unit) that test components of the build system as well as components of the SSG Test Suite.
   * Ad-hoc tests that are integrated into the `ctest` chain directly, i.e. the shellcheck test.
