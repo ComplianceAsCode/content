@@ -1411,7 +1411,7 @@ The **bolded** items are under direct control of content authors.
   * The last part is "If {OCIL clause}, then it is a finding"
 * SRG Fix -> DISA OS SRG XML
   * As of V2R1 that field is blank
-* **Fix** -> Rule's fix
+* **Fixtext** -> Rule's fix
 * **Severity** -> DISA OS SRG XML or Control
   * By default, it comes from the DISA OS SRG
   * Can be overridden by the control
