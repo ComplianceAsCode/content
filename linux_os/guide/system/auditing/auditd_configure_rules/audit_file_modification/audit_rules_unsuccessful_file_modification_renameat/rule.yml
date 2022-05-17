@@ -94,3 +94,9 @@ template:
           - unlink
           - unlinkat
 
+fixtext: |-
+    {{%- if product in ['sle15'] %}}
+    {{{ fixtext_audit_rules_unsuccessful_file_modification("renameat", ["rename", "renameat2", "unlink", "unlinkat"]) | indent(4) }}}
+    {{%- else %}}
+    {{{ fixtext_audit_rules_unsuccessful_file_modification("renameat", ["rename", "unlink", "unlinkat"]) | indent(4) }}}
+    {{%- endif %}}
