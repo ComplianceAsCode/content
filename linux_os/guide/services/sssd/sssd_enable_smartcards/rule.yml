@@ -12,6 +12,14 @@ description: |-
     <pre>[pam]
     pam_cert_auth = true
     </pre>
+    {{% if product in ["ol8", "rhel8"] %}}
+    Add or update "pam_sss.so" with "try_cert_auth" or "require_cert_auth" in the
+    "/etc/pam.d/system-auth" and "/etc/pam.d/smartcard-auth" files based on the following
+    examples:
+    <pre>/etc/pam.d/smartcard-auth:auth sufficient pam_sss.so try_cert_auth
+    /etc/pam.d/system-auth:auth [success=done authinfo_unavail=ignore ignore=ignore default=die] pam_sss.so try_cert_auth
+    </pre>
+    {{% endif %}}
 
 rationale: |-
     Using an authentication device, such as a CAC or token that is separate from
@@ -51,7 +59,21 @@ ocil: |-
     If configured properly, output should be
     <pre>pam_cert_auth = true</pre>
 
+    {{% if product in ["ol8", "rhel8"] %}}
+    <pre>$ sudo grep cert_auth /etc/sssd/sssd.conf /etc/pam.d/*</pre>
+    {{% endif %}}
+
+
 fixtext: |-
     Edit the file "/etc/sssd/sssd.conf" and add or edit the following line:
 
     pam_cert_auth = true
+
+    {{% if product in ["ol8", "rhel8"] %}}
+    Add or update "pam_sss.so" with "try_cert_auth" or "require_cert_auth" in the
+    "/etc/pam.d/system-auth" and "/etc/pam.d/smartcard-auth" files based on the following
+    examples:
+    <pre>/etc/pam.d/smartcard-auth:auth sufficient pam_sss.so try_cert_auth
+    /etc/pam.d/system-auth:auth [success=done authinfo_unavail=ignore ignore=ignore default=die] pam_sss.so try_cert_auth
+    </pre>
+    {{% endif %}}

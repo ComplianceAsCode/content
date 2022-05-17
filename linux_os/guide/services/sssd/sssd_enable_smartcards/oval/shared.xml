@@ -8,8 +8,16 @@
         <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
         definition_ref="sssd_conf_exists" negate="true"/>
       </criteria>
-      <criterion comment="Check pam_cert_auth in /etc/sssd/sssd.conf"
-      test_ref="test_sssd_enable_smartcards" />
+      <criteria operator="AND">
+        <criterion comment="Check pam_cert_auth in /etc/sssd/sssd.conf"
+        test_ref="test_sssd_enable_smartcards" />
+        {{% if product in ["ol8", "rhel8"] %}}
+        <criterion comment="Check try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
+        test_ref="test_sssd_enable_smartcards_cert_auth_smartcard_auth" />
+        <criterion comment="Check try_cert_auth or require_cert_auth in /etc/pam.d/system-auth"
+        test_ref="test_sssd_enable_smartcards_cert_auth_system_auth" />
+        {{% endif %}}
+      </criteria>
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -19,7 +27,39 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_enable_smartcards" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*pam_cert_auth[\s]*=[\s]*true$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[pam](?:[^\n\[]*\n+)+?[\s]*pam_cert_auth[\s]*=[\s]*(?i)true\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  {{% if product in ["ol8", "rhel8"] %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
+  id="test_sssd_enable_smartcards_cert_auth_smartcard_auth" version="1">
+    <ind:object object_ref="obj_sssd_enable_smartcards_cert_auth_smartcard_auth" />
+    <ind:state state_ref="test_sssd_enable_smartcards_cert_auth" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards_cert_auth_smartcard_auth" version="1">
+    <ind:filepath>/etc/pam.d/smartcard-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth.*?pam_sss\.so(.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
+  id="test_sssd_enable_smartcards_cert_auth_system_auth" version="1">
+    <ind:object object_ref="obj_sssd_enable_smartcards_cert_auth_system_auth" />
+    <ind:state state_ref="test_sssd_enable_smartcards_cert_auth" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sssd_enable_smartcards_cert_auth_system_auth" version="1">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth.*?pam_sss\.so(.*)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="test_sssd_enable_smartcards_cert_auth" version="1">
+    <ind:subexpression 
+    operation="pattern match">^.*(try_cert_auth|require_cert_auth).*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{% endif %}}
+
 </def-group>

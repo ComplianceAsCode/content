@@ -1862,7 +1862,7 @@ for f in $(echo -n "{{{ files }}}"); do
 
     # find section and add key = value to it
     elif grep -qs "[[:space:]]*\[{{{ section }}}\]" "$f"; then
-            sed -i "/[[:space:]]*{{{ section }}}/a {{{ key }}} = {{{ value }}}" "$f"
+            sed -i "/[[:space:]]*\[{{{ section }}}\]/a {{{ key }}} = {{{ value }}}" "$f"
             found=true
     fi
 done
