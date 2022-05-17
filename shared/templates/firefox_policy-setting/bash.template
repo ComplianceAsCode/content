@@ -43,16 +43,6 @@ json.dump(_tree, _file, indent=4, sort_keys=True)
 _file.close()
 """ | ${__REMEDIATE_PYTHON}
         fi
-        # fix dangling commas by passing through awk and replacing
-        tmpfile=$(mktemp __FF_SCAP_POLICIES.XXXXX)
-        awk '/}/{sub(/,$/, "", last)} NR>1{print last} {last=$0} END {print last}' "${firefox_dir}/${firefox_cfg}" > ${tmpfile}
-        if [ -f /usr/bin/python ]; then
-            # pretty-print if we have Python available
-            cat ${tmpfile} | /usr/bin/python -mjson.tool > "${firefox_dir}/${firefox_cfg}"
-        else
-            cat ${tmpfile} > "${firefox_dir}/${firefox_cfg}"
-        fi
-        rm ${tmpfile}
         chmod ${permissions} "${firefox_dir}/${firefox_cfg}"
     fi
 done
