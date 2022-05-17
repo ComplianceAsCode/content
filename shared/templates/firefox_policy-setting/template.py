@@ -11,7 +11,7 @@ def normalize_policy_path(path_string):
     path = []
     if len(path_string.strip()) > 0:
         path = re.split(" ", path_string)
-    if 'policies' not in path:
+    if path[0] != 'policies':
         path = ['policies'] + path
     return path
 
