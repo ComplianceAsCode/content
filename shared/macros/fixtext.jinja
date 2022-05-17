@@ -19,7 +19,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{% macro fixtext_audit_rules(event, key, event_group, extra_params=False, flag=None) -%}}
-Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" system call by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
+Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" system call by adding or updating the following rules in "/etc/audit/audit.rules" and adding the following rules to "/etc/audit/rules.d/{{{ key }}}.rules" or updating the existing rules in files in the "/etc/audit/rules.d/" directory:
 
 {{% if extra_params -%}}
 {{% if flag -%}}
