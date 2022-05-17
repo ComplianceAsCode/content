@@ -15,9 +15,13 @@ def normalize_policy_path(path_string):
         path = ['policies'] + path
     return path
 
+
 def make_json_boolean_match_regex(json_value):
     if json_value.lower() in ["false", "true"]:
-        return r"[{0}{1}]{2}".format(json_value[0].upper(), json_value[0].lower(), json_value[1:])
+        return r"[{0}{1}]{2}".format(json_value[0].upper(),
+                                     json_value[0].lower(),
+                                     json_value[1:]
+                                     )
     return "\"{0}\"".format(json_value)
 
 
@@ -25,6 +29,7 @@ def make_json_boolean_remediate(json_value):
     if json_value.lower() in ["false", "true"]:
         return json_value.lower() == "true"
     return "\'{0}\'".format(json_value)
+
 
 # These regexes work under the complexities currently observed with the Firefox
 # policies.json, which is (so far) a subset of JSON that is just nested keys.
@@ -37,8 +42,10 @@ OVAL_MATCH_ANYTHING_AFTER_OPEN_BRACE = r"\{.*[\s]*"
 # Note: str.format() notation.
 OVAL_MATCH_JSON_KEY = r'"{0}"[\s]*:[\s]*'
 
+
 def build_oval_search_regex_for_json_parameter(_path, parameter, value):
-    parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter, make_json_boolean_match_regex(value)
+    parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter,
+                                                make_json_boolean_match_regex(value))
     _result = parameter
     for p in reversed(_path):
         depth_match_block = OVAL_MATCH_OPEN_BRACES_FOR_BLOCK
@@ -70,23 +77,23 @@ def build_python_json_notation(_path, depth=0):
 
 
 def build_test_json(policy, _test, missing=False, wrong=False):
-    """Generate a minimal JSON configuration for this particular policy object, based 
-       on a correct (set to value), missing, or wrong value. 
+    """Generate a minimal JSON configuration for this particular policy object, based
+       on a correct (set to value), missing, or wrong value.
        Returns a dict() containing this test entry.
-       
+
        Parameters:
            policy: current policy item to generate for
            _test: dict() that has at least the value {"policies": {} }
     """
     _current = _test.get("policies")
-    _key =  policy["parameter"]
+    _key = policy["parameter"]
     _value = make_json_boolean_remediate(policy["value"])
 
     for p in policy["subpath"]:
         if p not in _current:
-           _current[p] = dict()
+            _current[p] = dict()
         _current = _current.get(p)
-    
+
     if wrong:
         _current[_key] = "VERYVERYBADVALUE"
     elif not missing:
@@ -95,9 +102,9 @@ def build_test_json(policy, _test, missing=False, wrong=False):
 
 
 def preprocess(data, lang):
-    _test_correct_config = { "policies": {} }
-    _test_bad_missing = { "policies": {} }
-    _test_bad_wrong = { "policies": {} }
+    _test_correct_config = {"policies": {}}
+    _test_bad_missing = {"policies": {}}
+    _test_bad_wrong = {"policies": {}}
     for i, _policy in enumerate(data.get("policies", [])):
         _path = normalize_policy_path(_policy.get("path", ""))
 
@@ -110,7 +117,7 @@ def preprocess(data, lang):
         _policy["subpath"] = _path[1:]
         # Precached notation for addressing JSON path
         _policy["path_python"] = [build_python_json_notation(_path, x)
-                                  for x in range(0, len(_path)+1)][:-1]
+                                  for x in range(0, len(_path) + 1)][:-1]
         # JSON path as iterable list, sans "policies"
         _policy["subpath_string"] = '_'.join(_path[1:])
         # entire JSON path to be set as an iterable list.
@@ -130,7 +137,7 @@ def preprocess(data, lang):
                         missing=True,
                         wrong=False)
 
-        # wrong_value.fail tests 
+        # wrong_value.fail tests
         build_test_json(_policy,
                         _test_bad_wrong,
                         missing=False,
