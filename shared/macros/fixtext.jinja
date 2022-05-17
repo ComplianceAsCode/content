@@ -141,6 +141,24 @@ The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{#
+    Generate a fixtext for ordering of audit rules for unsuccessful file modification.
+    Used in rules using template audit_rules_unsuccessful_file_modification_rule_order.
+
+:param syscall: Sycall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_rule_order(syscall) -%}}
+    Make sure that rules for unsuccessful calls of the {{{ syscall }}} syscall are in the order shown below.
+
+    Create the file "/etc/audit/rules.d/30-ospp-v42-remediation.rules" and insert exactly this content:
+
+    {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
+
+    The audit daemon must be restarted for the changes to take effect.
+{{% endmacro %}}
+
+{{#
     Human readable text for how to fix ini files
 
 :param section: Section on the value to be set
