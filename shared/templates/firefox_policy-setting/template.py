@@ -146,7 +146,8 @@ def preprocess(data, lang):
         # Reassign the modified policy entry.
         data["policies"][i] = _policy
 
-    # Pretty-print the output for our test JSON to variables so that it can be used in the test templates.
+    # Pretty-print the output for our test JSON to variables
+    # so that it can be used in the test templates.
     data["_correct_config"] = json.dumps(_test_correct_config, indent=4, separators=(',', ': '))
     data["_bad_missing"] = json.dumps(_test_bad_missing, indent=4, separators=(',', ': '))
     data["_bad_wrong"] = json.dumps(_test_bad_wrong, indent=4, separators=(',', ': '))
