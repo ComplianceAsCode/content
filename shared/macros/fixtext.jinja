@@ -124,10 +124,12 @@ The audit daemon must be restarted for the changes to take effect.
 
 :param syscall: Sycall name
 :type path: str
+:param pos: position of the O_CREAT argument in the syscall parameters
+:type pos: str
 
 #}}
-{{% macro fixtext_audit_rules_unsuccessful_file_modification_o_creat(syscall) -%}}
-{{{ fixtext_audit_rules(syscall, "unsuccesful-create", '"open", "openat" and "open_by_handle_at"', extra_params=True, flag="a2&amp;0100") }}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_o_creat(syscall, pos) -%}}
+{{{ fixtext_audit_rules(syscall, "unsuccesful-create", '"open", "openat" and "open_by_handle_at"', extra_params=True, flag=pos+"&amp;0100") }}}
 {{% endmacro %}}
 
 {{#
