@@ -1157,3 +1157,31 @@ The output should be the following:
 -a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
 
 {{%- endmacro %}}
+
+{{#
+Create an OCIL text for rules using the audit_rules_unsuccessful_file_modification_o_trunc_write template
+
+:param syscall: system call
+:type syscall: str
+:param position: the position of the system call O_TRUNC_WRITE argument, eg. a2
+:type position: str
+#}}
+{{% macro ocil_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall, position) -%}}
+Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to modify files using the {{{ syscall }}} system call with O_TRUNC_WRITE flag.
+
+If the auditd daemon is configured to use the "augenrules" program to read audit rules during daemon startup (the default), run the following command:
+
+$ sudo grep -r {{{ syscall }}} /etc/audit/rules.d
+
+If the auditd daemon is configured to use the "auditctl" utility to read audit rules during daemon startup, run the following command:
+
+$ sudo grep {{{ syscall }}} /etc/audit/audit.rules
+
+The output should be the following:
+
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F {{{ position }}}&amp;01003 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
+
+{{%- endmacro %}}
