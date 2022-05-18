@@ -241,6 +241,9 @@ class VMTestEnv(TestEnv):
         self.domain = virt.connect_domain(
             self.hypervisor, self.domain_name)
 
+        if self.domain is None:
+            sys.exit(1)
+
         if not self.keep_snapshots:
             self.snapshots_cleanup()
 
