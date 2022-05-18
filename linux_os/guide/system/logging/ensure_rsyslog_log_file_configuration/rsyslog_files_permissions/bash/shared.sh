@@ -13,22 +13,12 @@ readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf 
 # Declare an array to hold the final list of different log file paths
 declare -a LOG_FILE_PATHS
 
-RSYSLOG_CONFIGS=()
-RSYSLOG_CONFIGS=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
+declare -a RSYSLOG_CONFIGS
+RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
 
-# Get full list of files to be checked
-# RSYSLOG_CONFIGS may contain globs such as 
-# /etc/rsyslog.d/*.conf /etc/rsyslog.d/*.frule
-# So, loop over the entries in RSYSLOG_CONFIGS and use find to get the list of included files.
-RSYSLOG_FILES=()
-for ENTRY in "${RSYSLOG_CONFIGS[@]}"
-do
-     mapfile -t FINDOUT < <(find "$(dirname "${ENTRY}")" -maxdepth 1 -name "$(basename "${ENTRY}")")
-     RSYSLOG_FILES+=("${FINDOUT[@]}")
-done
-
-# Check file and fix if needed.
-for LOG_FILE in "${RSYSLOG_FILES[@]}"
+# Browse each file selected above as containing paths of log files
+# ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
+for LOG_FILE in "${RSYSLOG_CONFIGS[@]}"
 do
 	# From each of these files extract just particular log file path(s), thus:
 	# * Ignore lines starting with space (' '), comment ('#"), or variable syntax ('$') characters,
