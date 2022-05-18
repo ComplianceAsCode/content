@@ -105,7 +105,7 @@ jobs:
       image: fedora:34
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck
+        run: dnf install -y cmake make openscap-utils python3-pyyaml python3-setuptools python3-jinja2 bats python3-pytest python3-pytest-cov ansible python3-pip ShellCheck git
       - name: Install deps python
         run: pip install ruamel.yaml yamlpath
       - name: Checkout
@@ -131,6 +131,12 @@ jobs:
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
+      - name: Upload coverage to Code Climate  # Requires: git package
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: build/tests/coverage.xml:coverage.py
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
