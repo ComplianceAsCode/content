@@ -1,6 +1,81 @@
-{{{ oval_check_config_file(
-    path="/etc/crypto-policies/back-ends/opensslcnf.config",
-    prefix_regex="^(?:.*\\n)*\s*(?:TLS\.)?",
-    parameter="MinProtocol",
-    value="TLSv1.2",
-    separator_regex="\s*=\s*", ) }}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Configure OpenSSL library to use TLS Encryption") }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_{{{ rule_id }}}"
+      comment="OpenSSL library is configured to use only TLS v1.2 or newer encryption" />
+      <criteria operator="OR">
+        <criterion test_ref="test_installed_version_of_crypto_policies"
+        comment="Installed version of  crypto-policies is older than 20210617-1" />
+        <criterion test_ref="test_configure_openssl_dtls_crypto_policy"
+        comment="OpenSSL library is configured to use only DTLS v1.2 or newer encryption" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}" check="only one"
+  comment="Check that the SSH configuration mandates usage of system-wide crypto policies."
+  check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+    <ind:state state_ref="state_{{{ rule_id }}}_last_instance" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>/etc/crypto-policies/back-ends/opensslcnf.config</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*(?:TLS\.)?(?i)MinProtocol\s*=\s*TLSv(\S*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_configure_openssl_dtls_crypto_policy" check="only one"
+  comment="Check that the SSH configuration mandates usage of system-wide crypto policies."
+  check_existence="at_least_one_exists" version="1">
+    <ind:object object_ref="obj_configure_openssl_dtls_crypto_policy" />
+    <ind:state state_ref="state_{{{ rule_id }}}" />
+    <ind:state state_ref="state_configure_openssl_dtls_crypto_policy_last_instance" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_configure_openssl_dtls_crypto_policy" version="1">
+    <ind:filepath>/etc/crypto-policies/back-ends/opensslcnf.config</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*(?:DTLS\.)?(?i)MinProtocol\s*=\s*DTLSv(\S*)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:subexpression datatype="version" operation="greater than or equal">1.2</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_last_instance" version="1">
+    <ind:instance datatype="int" operation="equals" var_ref="var_count_{{{ rule_id }}}" />
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_configure_openssl_dtls_crypto_policy_last_instance" version="1">
+    <ind:instance datatype="int" operation="equals" var_ref="var_count_configure_openssl_dtls_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+  <linux:rpminfo_test check="all" check_existence="any_exist"
+  comment="Installed version of  crypto-policies is older than 20210617-1"
+  id="test_installed_version_of_crypto_policies" version="1">
+    <linux:object object_ref="obj_installed_version_of_crypto_policies" />
+    <linux:state state_ref="state_installed_version_of_crypto_policies" />
+  </linux:rpminfo_test>
+
+  <local_variable id="var_count_{{{ rule_id }}}" datatype="int" version="1"
+  comment="Number of matches of TLS versions">
+    <count>
+      <object_component item_field="instance" object_ref="obj_{{{ rule_id }}}" />
+    </count>
+  </local_variable>
+
+  <local_variable id="var_count_configure_openssl_dtls_crypto_policy" datatype="int" version="1"
+  comment="Number of matches of DTLS versions">
+    <count>
+      <object_component item_field="instance" object_ref="obj_configure_openssl_dtls_crypto_policy" />
+    </count>
+  </local_variable>
+
+  <linux:rpminfo_state id="state_installed_version_of_crypto_policies" version="1">
+    <linux:evr operation="less than" datatype="evr_string">0:20210617-1</linux:evr> 
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_installed_version_of_crypto_policies" version="1">
+    <linux:name>crypto-policies</linux:name>
+  </linux:rpminfo_object>
+</def-group>
