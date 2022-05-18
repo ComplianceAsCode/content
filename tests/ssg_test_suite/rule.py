@@ -123,6 +123,7 @@ class RuleChecker(oscap.Checker):
         self._current_result = None
         self.remote_dir = ""
         self.target_type = "rule ID"
+        self.used_templated_test_scenarios = collections.defaultdict(set)
 
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
@@ -321,14 +322,7 @@ class RuleChecker(oscap.Checker):
             yield result
 
     def _get_rules_to_test(self, target):
-        rules_to_test = []
-        tested_templates = set()
-        for rule in self._iterate_over_rules(target, self.test_env.product):
-            if self._rule_template_been_tested(rule, tested_templates):
-                continue
-            rules_to_test.append(rule)
-
-        return rules_to_test
+        return list(self._iterate_over_rules(target, self.test_env.product))
 
     def test_rule(self, state, rule, scenarios):
         remediation_available = self._is_remediation_available(rule)
@@ -376,13 +370,20 @@ class RuleChecker(oscap.Checker):
         templated_test_scenarios = common.fetch_templated_test_scenarios(
             rule.rule, template_builder, rule.directory, product_yaml,
             rule.local_env_yaml)
-        all_tests.update(templated_test_scenarios)
 
         # Add additional tests from the local rule directory. Note that,
         # like the behavior in template_tests, this will overwrite any
         # templated tests with the same file name.
         local_test_scenarios = common.fetch_local_test_scenarios(
             rule.directory, rule.local_env_yaml)
+
+        for filename in local_test_scenarios:
+            templated_test_scenarios.pop(filename, None)
+        for filename in self.used_templated_test_scenarios[rule.template]:
+            templated_test_scenarios.pop(filename, None)
+        self.used_templated_test_scenarios[rule.template] |= set(
+            templated_test_scenarios.keys())
+        all_tests.update(templated_test_scenarios)
         all_tests.update(local_test_scenarios)
 
         # Filter out everything except the shell test scenarios.
@@ -394,12 +395,6 @@ class RuleChecker(oscap.Checker):
         scenarios = []
         for script, script_contents in content_mapping.items():
             scenario = Scenario(script, script_contents)
-            scenarios.append(scenario)
-        return scenarios
-
-    def _filter_rule_scenarios(self, rule_scenarios):
-        scenarios = []
-        for scenario in rule_scenarios:
             scenario.override_profile(self.scenarios_profile)
             if (scenario.matches_regex(self.scenarios_regex) and
                     scenario.matches_platform(self.benchmark_cpes)):
@@ -410,9 +405,7 @@ class RuleChecker(oscap.Checker):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
             all_rule_scenarios = self._get_all_rule_scenarios(rule)
-            filtered_rule_scenarios = self._filter_rule_scenarios(
-                all_rule_scenarios)
-            scenarios_by_rule_id[rule.id] = filtered_rule_scenarios
+            scenarios_by_rule_id[rule.id] = all_rule_scenarios
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
