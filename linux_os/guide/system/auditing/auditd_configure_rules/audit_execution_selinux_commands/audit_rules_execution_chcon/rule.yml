@@ -72,6 +72,11 @@ ocil: |-
     The output should return something similar to:
     <pre>-a always,exit -F path=/usr/bin/chcon {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
 
+fixtext: |-
+    {{{ fixtext_audit_rules_command("chcon", "/usr/bin/chcon", "perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("chcon") }}}'
+
 template:
     name: audit_rules_privileged_commands
     vars:
