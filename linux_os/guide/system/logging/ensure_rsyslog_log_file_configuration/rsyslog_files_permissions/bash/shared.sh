@@ -13,12 +13,30 @@ readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf 
 # Declare an array to hold the final list of different log file paths
 declare -a LOG_FILE_PATHS
 
+# Array to hold all rsyslog config entries
 declare -a RSYSLOG_CONFIGS
 RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
 
+# Array to hold all rsyslog config files
+declare -a RSYSLOG_CONFIG_FILES
+for ENTRY in "${RSYSLOG_CONFIGS[@]}"
+do
+	# If directory, need to include files recursively
+	if [ -d "${ENTRY}" ]
+	then
+		readarray -t FINDOUT < <(find "${ENTRY}" -type f -name '*.conf')
+		RSYSLOG_CONFIG_FILES+=("${FINDOUT[@]}")
+	elif [ -f "${ENTRY}" ]
+	then
+		RSYSLOG_CONFIG_FILES+=("${ENTRY}")
+	else
+		echo "Invalid include object: ${ENTRY}"
+	fi
+done
+
 # Browse each file selected above as containing paths of log files
 # ('/etc/rsyslog.conf' and '/etc/rsyslog.d/*.conf' in the default configuration)
-for LOG_FILE in "${RSYSLOG_CONFIGS[@]}"
+for LOG_FILE in "${RSYSLOG_CONFIG_FILES[@]}"
 do
 	# From each of these files extract just particular log file path(s), thus:
 	# * Ignore lines starting with space (' '), comment ('#"), or variable syntax ('$') characters,
