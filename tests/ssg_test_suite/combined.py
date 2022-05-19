@@ -39,8 +39,8 @@ class CombinedChecker(rule.RuleChecker):
         self._current_result = None
         self.run_aborted = False
 
-    def _rule_should_be_tested(self, rule_short_id, rules_to_be_tested):
-        return (rule_short_id in rules_to_be_tested)
+    def _rule_matches_rule_spec(self, rule_short_id):
+        return (rule_short_id in self.rule_spec)
 
     def _modify_parameters(self, script, params):
         # If there is no profiles metadata in a script we will use
@@ -117,6 +117,8 @@ def perform_combined_check(options):
         checker.profile = profile
         target_rules = checker._generate_target_rules(profile)
 
+        checker.rule_spec = target_rules
+        checker.template_spec = None
         checker.test_target(target_rules)
         if checker.run_aborted:
             return

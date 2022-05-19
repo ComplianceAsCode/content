@@ -124,6 +124,8 @@ class RuleChecker(oscap.Checker):
         self.remote_dir = ""
         self.target_type = "rule ID"
         self.used_templated_test_scenarios = collections.defaultdict(set)
+        self.rule_spec = None
+        self.template_spec = None
 
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
@@ -224,12 +226,12 @@ class RuleChecker(oscap.Checker):
         tested_templates.add(rule.template)
         return False
 
-    def _rule_should_be_tested(self, rule_short_id, rules_to_be_tested):
+    def _rule_matches_rule_spec(self, rule_short_id):
         rule_id = OSCAP_RULE + rule_short_id
-        if 'ALL' in rules_to_be_tested:
+        if 'ALL' in self.rule_spec:
             return True
         else:
-            for rule_to_be_tested in rules_to_be_tested:
+            for rule_to_be_tested in self.rule_spec:
                 # we check for a substring
                 if rule_to_be_tested.startswith(OSCAP_RULE):
                     pattern = rule_to_be_tested
@@ -238,6 +240,9 @@ class RuleChecker(oscap.Checker):
                 if fnmatch.fnmatch(rule_id, pattern):
                     return True
             return False
+
+    def _rule_matches_template_spec(self, template):
+        return True
 
     def _ensure_package_present_for_all_scenarios(self, scenarios_by_rule):
         packages_required = set()
@@ -258,7 +263,7 @@ class RuleChecker(oscap.Checker):
 
         self._ensure_package_present_for_all_scenarios(scenarios_by_rule)
 
-    def _iterate_over_rules(self, target, product=None):
+    def _iterate_over_rules(self, product=None):
         """Iterate over rule directories which have test scenarios".
 
         Returns:
@@ -287,7 +292,7 @@ class RuleChecker(oscap.Checker):
                 continue
             short_rule_id = os.path.basename(dirpath)
             full_rule_id = OSCAP_RULE + short_rule_id
-            if not self._rule_should_be_tested(short_rule_id, target):
+            if not self._rule_matches_rule_spec(short_rule_id):
                 continue
             if not xml_operations.find_rule_in_benchmark(
                     self.datastream, self.benchmark_id, full_rule_id):
@@ -315,14 +320,16 @@ class RuleChecker(oscap.Checker):
             template_name = None
             if rule.template and rule.template['vars']:
                 template_name = rule.template['name']
+            if not self._rule_matches_template_spec(template_name):
+                continue
             result = Rule(
                 directory=tests_dir, id=full_rule_id,
                 short_id=short_rule_id, template=template_name,
                 local_env_yaml=local_env_yaml, rule=rule)
             yield result
 
-    def _get_rules_to_test(self, target):
-        return list(self._iterate_over_rules(target, self.test_env.product))
+    def _get_rules_to_test(self):
+        return list(self._iterate_over_rules(self.test_env.product))
 
     def test_rule(self, state, rule, scenarios):
         remediation_available = self._is_remediation_available(rule)
@@ -412,7 +419,7 @@ class RuleChecker(oscap.Checker):
         return sliced_scenarios_by_rule_id
 
     def _test_target(self, target):
-        rules_to_test = self._get_rules_to_test(target)
+        rules_to_test = self._get_rules_to_test()
         if not rules_to_test:
             logging.error("No tests found matching the {0}(s) '{1}'".format(
                 self.target_type,
@@ -620,4 +627,6 @@ def perform_rule_check(options):
             not oscap.is_virtual_oscap_profile(checker.scenarios_profile)):
         checker.scenarios_profile = OSCAP_PROFILE+options.scenarios_profile
 
+    checker.rule_spec = options.target
+    checker.template_spec = None
     checker.test_target(options.target)
