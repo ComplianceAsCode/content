@@ -1,4 +1,8 @@
-{{%- set regex = "^[\s]*" ~ (TEXT | escape_regex) ~ "[\s]*$" -%}}
+{{% if ESCAPE_TEXT %}}
+  {{%- set regex = "^[\s]*" ~ (TEXT | escape_regex) ~ "[\s]*$" -%}}
+{{% else %}}
+  {{%- set regex = "^[\s]*" ~ TEXT ~ "[\s]*$" -%}}
+{{% endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check presence of " + TEXT + " in " + PATH) }}}
