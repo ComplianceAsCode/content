@@ -32,7 +32,9 @@ Configure the audit system to generate an audit event for any successful/unsucce
 -a always,exit -F arch=b64 -S {{{ event }}} -F auid>=1000 -F auid!=unset -k {{{ key }}}
 {{%- endif %}}
 
+{{%- if event_group %}}
 It's allowed to group this system call within the same line as {{{ event_group }}}.
+{{%- endif %}}
 
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
