@@ -42,3 +42,11 @@ warnings:
         have been placed independent of other system calls. Grouping these system
         calls with others as identifying earlier in this guide is more efficient.
 
+fixtext: |-
+    Configure the audit system to generate an audit event for any successful/unsuccessful use of the "umount" system call by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
+
+    -a always,exit -F arch=b32 -S umount -F auid>=1000 -F auid!=unset -k perm_mod
+
+    The audit daemon must be restarted for the changes to take effect.
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("umount") }}}'
