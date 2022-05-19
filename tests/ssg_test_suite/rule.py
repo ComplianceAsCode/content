@@ -357,7 +357,7 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = [scenario]
         return new_sbr
 
-    def _get_all_rule_scenarios(self, rule):
+    def _get_rule_scenarios(self, rule):
         product_yaml = common.get_product_context(self.test_env.product)
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
@@ -412,8 +412,7 @@ class RuleChecker(oscap.Checker):
     def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
-            all_rule_scenarios = self._get_all_rule_scenarios(rule)
-            scenarios_by_rule_id[rule.id] = all_rule_scenarios
+            scenarios_by_rule_id[rule.id] = self._get_rule_scenarios(rule)
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
