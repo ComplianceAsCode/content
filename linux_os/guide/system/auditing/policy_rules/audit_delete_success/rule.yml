@@ -53,7 +53,7 @@ template:
     name: audit_file_contents
     vars:
         filepath: /etc/audit/rules.d/30-ospp-v42-4-delete-success.rules
-        contents: |+
+        contents: |-
             {{{ file_contents_audit_delete_success|indent(12) }}}
 
 fixtext: |-
