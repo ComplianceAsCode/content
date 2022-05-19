@@ -51,6 +51,11 @@ ocil: |-
     The audit daemon must be restarted for the changes to take effect.
     # sudo systemctl restart auditd.service
 
+fixtext: |-
+    {{{ fixtext_audit_rules_command("chacl", "/usr/bin/chacl", "perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("chacl") }}}'
+
 template:
     name: audit_rules_privileged_commands
     vars:
