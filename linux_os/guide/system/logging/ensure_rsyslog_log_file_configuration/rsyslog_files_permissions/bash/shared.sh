@@ -24,7 +24,7 @@ do
 	# If directory, need to include files recursively
 	if [ -d "${ENTRY}" ]
 	then
-		readarray -t FINDOUT < <(find "${ENTRY}" -type f -name '*.conf')
+		readarray -t FINDOUT < <(find "${ENTRY}" -type f)
 		RSYSLOG_CONFIG_FILES+=("${FINDOUT[@]}")
 	elif [ -f "${ENTRY}" ]
 	then
