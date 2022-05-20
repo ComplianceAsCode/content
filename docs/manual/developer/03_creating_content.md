@@ -141,19 +141,19 @@ multiple benchmarks in our project:
 </tr>
 <tr class="even">
 <td><p>Java Runtime Environment</p></td>
-<td><p><code>/jre/guide</code></p></td>
+<td><p><code>/products/jre/guide</code></p></td>
 </tr>
 <tr class="odd">
 <td><p>Fuse 6</p></td>
-<td><p><code>/fuse6/guide</code></p></td>
+<td><p><code>/products/fuse6/guide</code></p></td>
 </tr>
 <tr class="even">
 <td><p>Firefox</p></td>
-<td><p><code>/firefox/guide</code></p></td>
+<td><p><code>/products/firefox/guide</code></p></td>
 </tr>
 <tr class="odd">
 <td><p>Chromium</p></td>
-<td><p><code>/chromium/guide</code></p></td>
+<td><p><code>/products/chromium/guide</code></p></td>
 </tr>
 </tbody>
 </table>
