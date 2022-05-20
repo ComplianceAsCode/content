@@ -37,3 +37,34 @@ controls:
   levels:
   - high
   - moderate
+- id: AC-2(1)
+  status: automated
+  notes: |-
+    OpenShift supports several different types of identity providers.  In order
+    to add users and grant access to OpenShift, an identity provider needs to be
+    configured. Some of the identity provider types, such as HTPassword, only
+    provide simple user management and are not intended for production. Other
+    types are public services, like GitHub. These provider types may not be
+    appropriate as they are managed by public service providers and therefore
+    are unable to enforce the organizations account management requirements.
+    
+    Use either the LDAP or the OpenIDConnect Identity Provider type to configure
+    OpenShift to use the organizations centrally managed IdP that is able to
+    enforce the organization's policies in regard to user identity management.
+  rules:
+  - ocp_idp_no_htpasswd
+  - idp_is_configured
+  description: |-
+    The organization employs automated mechanisms to support the management of
+    information system accounts.
+    
+    Supplemental Guidance: The use of automated mechanisms can include, for
+    example: using email or text messaging to automatically notify account
+    managers when users are terminated or transferred; using the information
+    system to monitor account usage; and using telephonic notification to report
+    atypical system account usage.
+  title: >-
+    AC-2(1) - ACCOUNT MANAGEMENT | AUTOMATED SYSTEM ACCOUNT MANAGEMENT
+  levels:
+  - high
+  - moderate
