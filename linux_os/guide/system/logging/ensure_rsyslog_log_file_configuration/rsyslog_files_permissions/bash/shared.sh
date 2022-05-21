@@ -21,10 +21,11 @@ RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYS
 declare -a RSYSLOG_CONFIG_FILES
 for ENTRY in "${RSYSLOG_CONFIGS[@]}"
 do
-	# If directory, need to include files recursively
+	# If directory, rsyslog will search for config files in recursively.
+	# However, files in hidden sub-directories or hidden files will be ignored.
 	if [ -d "${ENTRY}" ]
 	then
-		readarray -t FINDOUT < <(find "${ENTRY}" -type f)
+		readarray -t FINDOUT < <(find "${ENTRY}" -not -path '*/.*' -type f)
 		RSYSLOG_CONFIG_FILES+=("${FINDOUT[@]}")
 	elif [ -f "${ENTRY}" ]
 	then
