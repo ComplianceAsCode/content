@@ -362,7 +362,7 @@ all_cmake_products=(
 ...
 </pre>
 
-4. Add the product to [constants.py](../ssg/constants.py) file:
+4. Add the product to [constants.py](../../../ssg/constants.py) file:
 <pre>
 ...
 product_directories = ['debian9', 'fedora', 'ol7', 'ol8', 'opensuse',
