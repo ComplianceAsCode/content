@@ -351,7 +351,7 @@ endif()
 ...
 </pre>
 
-3. Add the product to [build_product](../build_product) script:
+3. Add the product to [build_product](../../../build_product) script:
 <pre>
 ...
 all_cmake_products=(
