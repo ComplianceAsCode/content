@@ -54,7 +54,7 @@ do
 	then
 		NORMALIZED_CONFIG_FILE_LINES=$(sed -e "/^[#|$]/d" "${LOG_FILE}")
 		LINES_WITH_PATHS=$(grep '[^/]*\s\+\S*/\S\+$' <<< "${NORMALIZED_CONFIG_FILE_LINES}")
-		FILTERED_PATHS=$(sed -e 's/[^\/]*[[:space:]]*\([^:;[:space:]]*\)/\1/g' <<< "${LINES_WITH_PATHS}")
+		FILTERED_PATHS=$(awk '{if(NF>=2&&($2~/^\//||$2~/^-\//)){sub(/^-\//,"/",$2);print $2}}' <<< "${LINES_WITH_PATHS}")
 		CLEANED_PATHS=$(sed -e "s/[\"')]//g; /\\/etc.*\.conf/d; /\\/dev\\//d" <<< "${FILTERED_PATHS}")
 		MATCHED_ITEMS=$(sed -e "/^$/d" <<< "${CLEANED_PATHS}")
 		# Since above sed command might return more than one item (delimited by newline), split the particular
