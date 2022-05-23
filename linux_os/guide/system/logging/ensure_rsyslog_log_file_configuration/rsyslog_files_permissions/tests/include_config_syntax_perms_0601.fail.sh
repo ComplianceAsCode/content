@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_sle
 
 # Check rsyslog.conf with log file permissions 0600 from rules and
 # log file permissions 0601 from $IncludeConfig fails.
