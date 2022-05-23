@@ -8,6 +8,7 @@
   command: /usr/bin/fips-mode-setup --check
   register: is_fips_enabled
   changed_when: false
+  failed_when: "is_fips_enabled.rc not in [0,1]"
 
 - name: Enable FIPS mode
   command: /usr/bin/fips-mode-setup --enable
