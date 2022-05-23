@@ -458,7 +458,9 @@ controls:
       - etcd_peer_client_cert_auth
       - etcd_peer_key_file
       - kubelet_configure_tls_cert
+      - kubelet_configure_tls_cert_pre_4_9
       - kubelet_configure_tls_key
+      - kubelet_configure_tls_key_pre_4_9
   - id: Req-2.2.4
     title: 2.2.4 Configure system security parameters to prevent misuse.
     levels:
@@ -528,7 +530,9 @@ controls:
     - etcd_peer_client_cert_auth
     - etcd_peer_key_file
     - kubelet_configure_tls_cert
+    - kubelet_configure_tls_cert_pre_4_9
     - kubelet_configure_tls_key
+    - kubelet_configure_tls_key_pre_4_9
     - ocp_no_ldap_insecure
 
 - id: Req-2.4
