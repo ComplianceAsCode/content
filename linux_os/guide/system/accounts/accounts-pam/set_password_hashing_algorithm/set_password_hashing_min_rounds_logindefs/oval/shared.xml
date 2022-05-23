@@ -25,10 +25,11 @@
 
   <ind:textfilecontent54_test id="test_etc_login_defs_sha_crypt_min_rounds_present" check="all" check_existence="all_exist" comment="SHA_CRYPT_MIN_ROUNDS is explicitly configured in /etc/login.defs and its value most be greater or equal to 5000" version="1">
     <ind:object object_ref="object_etc_login_defs_sha_crypt_min_rounds_present" />
+    <ind:state state_ref="state_etc_login_defs_sha_crypt_rounds" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_etc_login_defs_sha_crypt_min_rounds_present" version="1">
     <ind:filepath>/etc/login.defs</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MIN_ROUNDS\s+([5-9]\d{3,}|\d{5,})\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MIN_ROUNDS\s+(\d+)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -43,10 +44,17 @@
 
   <ind:textfilecontent54_test id="test_etc_login_defs_sha_crypt_max_rounds_present" check="all" check_existence="all_exist" comment="SHA_CRYPT_MAX_ROUNDS is explicitly configured in /etc/login.defs and its value most be greater or equal to 5000" version="1">
     <ind:object object_ref="object_etc_login_defs_sha_crypt_max_rounds_present" />
+    <ind:state state_ref="state_etc_login_defs_sha_crypt_rounds" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_etc_login_defs_sha_crypt_max_rounds_present" version="1">
     <ind:filepath>/etc/login.defs</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MAX_ROUNDS\s+([5-9]\d{3,}|\d{5,})\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*SHA_CRYPT_MAX_ROUNDS\s+(\d+)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_etc_login_defs_sha_crypt_rounds"
+  comment="Rounds should be set to more than 5000" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal">5000</ind:subexpression>
+  </ind:textfilecontent54_state>
+
 </def-group>
