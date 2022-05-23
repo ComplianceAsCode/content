@@ -103,6 +103,28 @@ The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{#
+Join list of items to create a human readable list in which the last item is
+separated by an and and others are separated by a comma.
+
+:param items: list of strings
+:type items: list
+
+#}}
+{{%- macro join_list(items) -%}}
+{{%- for x in items -%}}
+{{%- if loop.first -%}}
+{{{ x }}}
+{{%- else -%}}
+{{%- if loop.last -%}}
+{{{ " and " + x }}}
+{{%- else -%}}
+{{{ ", " + x }}}
+{{%- endif -%}}
+{{%- endif -%}}
+{{%- endfor -%}}
+{{%- endmacro -%}}
+
+{{#
     Generate a fixtext for audit rules for unsuccessful file modification
     Used in rules using template audit_rules_unsuccessful_file_modification
 
@@ -114,19 +136,7 @@ The audit daemon must be restarted for the changes to take effect.
 
 #}}
 {{% macro fixtext_audit_rules_unsuccessful_file_modification(syscall, syscall_grouping) -%}}
-{{%- set syscall_grouping_text -%}}
-{{%- for syscall in syscall_grouping -%}}
-{{%- if loop.first -%}}
-{{{ syscall }}}
-{{%- else -%}}
-{{%- if loop.last -%}}
-{{{ " and " + syscall }}}
-{{%- else -%}}
-{{{ ", " + syscall }}}
-{{%- endif -%}}
-{{%- endif -%}}
-{{%- endfor -%}}
-{{%- endset -%}}
+{{%- set syscall_grouping_text = join_list(syscall_grouping) -%}}
 {{{ fixtext_audit_rules(syscall, "access", syscall_grouping_text, extra_params=True) }}}
 {{% endmacro %}}
 
