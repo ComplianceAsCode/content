@@ -114,7 +114,20 @@ The audit daemon must be restarted for the changes to take effect.
 
 #}}
 {{% macro fixtext_audit_rules_unsuccessful_file_modification(syscall, syscall_grouping) -%}}
-{{{ fixtext_audit_rules(syscall, "access", syscall_grouping|join(", "), extra_params=True) }}}
+{{%- set syscall_grouping_text -%}}
+{{%- for syscall in syscall_grouping -%}}
+{{%- if loop.first -%}}
+{{{ syscall }}}
+{{%- else -%}}
+{{%- if loop.last -%}}
+{{{ " and " + syscall }}}
+{{%- else -%}}
+{{{ ", " + syscall }}}
+{{%- endif -%}}
+{{%- endif -%}}
+{{%- endfor -%}}
+{{%- endset -%}}
+{{{ fixtext_audit_rules(syscall, "access", syscall_grouping_text, extra_params=True) }}}
 {{% endmacro %}}
 
 {{#
