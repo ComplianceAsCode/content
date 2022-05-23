@@ -362,6 +362,10 @@ def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
             os.mkdir(tmp_dir_path)
 
         for filename in filenames:
+            # Skip vim swap files, they are not relevant and cause Jinja expansion tracebacks
+            if filename.endswith(".swp"):
+                continue
+
             # We want to recreate the correct path under the temporary
             # directory. Resolve it to a relative path from the tests/
             # directory. Assumption: directories should be created
@@ -631,6 +635,10 @@ def iterate_over_rules(product=None):
             if os.path.exists(tests_dir):
                 tests_dir_files = os.listdir(tests_dir)
                 for test_case in tests_dir_files:
+                    # Skip vim swap files,
+                    # they are not relevant and cause Jinja expansion tracebacks
+                    if test_case.endswith(".swp"):
+                        continue
                     test_path = os.path.join(tests_dir, test_case)
                     if os.path.isdir(test_path):
                         continue
