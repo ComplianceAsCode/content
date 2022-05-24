@@ -158,9 +158,9 @@ class CPEItem(XCCDFEntity):
     KEYS = dict(
         name=lambda: "",
         title=lambda: "",
-        check_id=lambda: "",
         bash_conditional=lambda: dict(),
         ansible_conditional=lambda: "",
+        conditional=lambda: {},
         template=lambda: {},
         is_product_cpe=lambda: False,
         args=lambda: {},
@@ -170,7 +170,6 @@ class CPEItem(XCCDFEntity):
     MANDATORY_KEYS = [
         "name",
         "title",
-        "check_id"
     ]
 
     prefix = "cpe-dict"
@@ -187,7 +186,7 @@ class CPEItem(XCCDFEntity):
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id
+        cpe_item_check.text = self.conditional.get('oval_id', self.id_)
         return cpe_item
 
 

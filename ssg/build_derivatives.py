@@ -52,7 +52,7 @@ def add_cpe_item_to_dictionary(tree_root, product_yaml_path, cpe_ref, id_name, c
         product_cpes.load_cpes_from_directory_tree(cpe_items_dir, product_yaml)
         cpe_item = product_cpes.get_cpe(cpe_ref)
         translator = IDTranslator(id_name)
-        cpe_item.check_id = translator.generate_id("{" + oval_namespace + "}definition", cpe_item.check_id)
+        cpe_item.name = translator.generate_id("{" + oval_namespace + "}definition", cpe_item.name)
         cpe_list.append(cpe_item.to_xml_element("ssg-%s-cpe-oval.xml" % product_yaml.get("product")))
 
 

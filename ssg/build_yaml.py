@@ -1923,6 +1923,7 @@ class Platform(XCCDFEntity):
         bash_conditional_line=lambda: "",
         bash_inserted_before_remediation=lambda: "",
         ansible_conditional=lambda: "",
+        conditional=lambda: {},
         ** XCCDFEntity.KEYS
     )
 
@@ -1932,6 +1933,7 @@ class Platform(XCCDFEntity):
         "original_expression",
         "bash_conditional_line",
         "ansible_conditional"
+        "conditional",
     ]
 
     prefix = "cpe-lang"
