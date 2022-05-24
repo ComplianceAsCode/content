@@ -11,7 +11,6 @@ from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
-from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
 from .data_structures import XCCDFEntity
 
@@ -177,11 +176,6 @@ class CPEItem(XCCDFEntity):
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
 
-#@classmethod
-#    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
-#        cpeitem = super(CPEItem, cls).from_yaml(yaml_file, env_yaml)
-
-
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
         cpe_item.set('name', self.name)
@@ -258,7 +252,7 @@ class CPEALLogicalTest(Function):
         return cond
 
 
-class CPEALFactRef (Symbol):
+class CPEALFactRef(Symbol):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]

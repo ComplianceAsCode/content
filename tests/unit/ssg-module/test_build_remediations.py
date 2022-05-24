@@ -37,7 +37,6 @@ def do_test_contents(remediation, config):
     assert 'do_something_magical' in remediation
     assert '# a random comment' in remediation
 
-
     assert 'platform' in config
     assert 'reboot' in config
     assert 'complexity' in config
@@ -62,9 +61,6 @@ def test_parse_from_file_with_jinja():
 
 def test_process_fix(env_yaml, cpe_platforms):
     remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
-
-    fixes = {}
-
     remediation_obj = remediation_cls(rhel_bash)
     # create a fake rule
     # the rule uses the "machine" platform which has bash_conditional_line

@@ -140,6 +140,7 @@ class Symbol(boolean.Symbol):
                            + '.'.join(str(x) for x in version.release) + '-'
                            + (str(version.post) if version.post else '0')
             })
+
         return res
 
     @property
