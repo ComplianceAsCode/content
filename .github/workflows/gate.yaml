@@ -131,6 +131,8 @@ jobs:
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
+      - name: "Set git safe directory, ref: https://github.com/actions/checkout/issues/760"
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Upload coverage to Code Climate  # Requires: git package
         uses: paambaati/codeclimate-action@v3.0.0
         env:
