@@ -1,6 +1,7 @@
 name: "cpe:/a:sssd"
 title: "Package sssd-common is installed"
-check_id: installed_env_has_sssd-common_package
 bash_conditional:
     conditional: {{{ bash_pkg_conditional("sssd") }}}
 ansible_conditional: {{{ ansible_pkg_conditional("sssd") }}}
+conditional:
+    oval_id: installed_env_has_sssd-common_package

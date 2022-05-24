@@ -328,6 +328,7 @@ class Builder(object):
             full_name = symbol.as_id()
             symbol_dict = symbol.as_dict()
             cpe = self.product_cpes.get_cpe(full_name)
+            cpe_id = symbol.as_id()
             if 'name' not in cpe.template:
                 continue
             template_name = cpe.template['name']
@@ -350,10 +351,10 @@ class Builder(object):
             # Add the check_id ID which will be reused in OVAL templates as OVAL
             # definition ID so that the build system matches the generated
             # check with the rule.
-            template_vars["_check_id"] = cpe.check_id
+            template_vars["_rule_id"] = cpe_id
             # checks and remediations are processed with a custom YAML dict
             local_env_yaml = self.env_yaml.copy()
-            local_env_yaml["rule_id"] = cpe.check_id
+            local_env_yaml["rule_id"] = cpe_id
             local_env_yaml["rule_title"] = cpe.title
             local_env_yaml["products"] = self.env_yaml["product"]
 

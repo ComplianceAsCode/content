@@ -1,7 +1,8 @@
 name: cpe:/a:machine
 title: Bare-metal or Virtual Machine
-check_id: installed_env_is_a_machine
 bash_conditional:
     conditional: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
 ansible_conditional: ansible_virtualization_type not in ["docker", "lxc", "openvz",
   "podman", "container"]
+conditional:
+    oval_id: installed_env_is_a_machine
