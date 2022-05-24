@@ -1,4 +1,3 @@
-# platform = multi_platform_ol,multi_platform_rhel
 #!/bin/bash
 
 sed -i "/^\s*log_file.*/d" /etc/audit/auditd.conf
