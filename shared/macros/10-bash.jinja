@@ -1708,6 +1708,16 @@ Part of the grub2_bootloader_argument_absent template.
 
 {{#
   This macro creates a bash conditional which is used to determine if a remediation is applicable.
+  The macro takes OS id as an argument and matches it against ID field from /etc/os-release.
+  If id are the same, the Bash remediation will be applied.
+#}}
+{{%- macro bash_os_release_conditional(os_id) -%}}
+grep ID /etc/os-release | grep "{{{ os_id }}}"
+{{%- endmacro -%}}
+
+
+{{#
+  This macro creates a bash conditional which is used to determine if a remediation is applicable.
   The macro takes package as an argument and chooses appropriate package manager.
   If the package is installed, the Bash remediation will be applied.
   The macro respects `platform_package_overrides` variable.

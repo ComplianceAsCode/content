@@ -18,9 +18,7 @@ except ImportError:
     from urllib import quote
 
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
-             "kubernetes", "blueprint", "sce-bash",
-             "conditional.oval"]
-rule_related_languages = [l for l in languages if not l.startswith("conditional")]
+             "kubernetes", "blueprint", "sce-bash"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -32,7 +30,6 @@ lang_to_ext_map = {
     "kubernetes": ".yml",
     "blueprint": ".toml",
     "sce-bash": ".sh",
-    "conditional.oval": ".conditional.xml",
 }
 
 
@@ -233,21 +230,18 @@ class Builder(object):
         if "backends" in rule.template:
             backends = rule.template["backends"]
             for lang in backends:
-                if lang not in rule_related_languages:
+                if lang not in languages:
                     raise RuntimeError(
                         "Rule {0} wants to generate unknown language '{1}"
                         "from a template.".format(rule.id_, lang)
                     )
             langs_to_generate = []
-            for lang in rule_related_languages:
+            for lang in languages:
                 backend = backends.get(lang, "on")
                 if backend == "on":
                     langs_to_generate.append(lang)
             return langs_to_generate
-        else:
-            # return all languages except for the one for OVAL inventory
-            # these are not related to rules
-            return rule_related_languages
+        return languages
 
     def get_template_name(self, template):
         """
@@ -258,12 +252,12 @@ class Builder(object):
             template_name = template["name"]
         except KeyError:
             raise ValueError(
-                "Rule {0} is missing template name under template key".format(
-                    rule_id))
+                "Template {0} is missing template name key".format(
+                    repr(template)))
         if template_name not in templates.keys():
             raise ValueError(
-                "Rule {0} uses template {1} which does not exist.".format(
-                    rule_id, template_name))
+                "Template {0} uses template name {1} which does not exist in templates".format(
+                    repr(template), template_name))
         return template_name
 
     def get_resolved_langs_to_generate(self, rule):
@@ -363,11 +357,11 @@ class Builder(object):
             local_env_yaml["rule_title"] = cpe.title
             local_env_yaml["products"] = self.env_yaml["product"]
 
-            for lang in ['conditional.oval']:
+            for lang in ['oval', 'bash', 'ansible']:
                 try:
                     self.build_lang(full_name, template_name, template_vars, lang, local_env_yaml)
                 except Exception as e:
-                    print("Error building templated {0} content for platform {1}".format(lang, name), file=sys.stderr)
+                    print("Error building template {0} for platform {1}".format(lang, symbol.name), file=sys.stderr)
                     raise e
 
     def get_lang_for_rule(self, rule_id, rule_title, template, language):

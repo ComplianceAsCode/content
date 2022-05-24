@@ -4,8 +4,8 @@ check_id: 'installed_env_has_{id}_package_conditional'
 bash_conditional:
     conditional: {{{ bash_pkg_conditional(PKGNAME) }}}
 template:
-    name: package_installed
     vars: {}
+    name: cond_package
 args:
     chronytest:
         title: "Chrony Server Test"
