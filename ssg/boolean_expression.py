@@ -93,7 +93,7 @@ class Symbol(boolean.Symbol):
         val = kwargs.get(full_name, False)
         if len(self.spec.specs):
             if type(val) is str:
-                return val in self.spec
+                return val.replace(':', '!') in self.spec
             return False
         return bool(val)
 
@@ -117,16 +117,13 @@ class Symbol(boolean.Symbol):
         return str(uuid.uuid5(uuid.NAMESPACE_X500, self.as_id()))
 
     def as_dict(self):
-        res = {'id': self.as_id(), 'name': self.name, 'arg': '', 'ver_str': '', 'ver_cpe': '', 'specs': []}
+        res = {'id': self.as_id(), 'name': self.name, 'arg': self.arg, 'ver_str': '', 'ver_cpe': '', 'specs': []}
 
         if self.spec.specs:
             res['ver_str'] = ' and '.join([
                 '{0} {1}'.format(SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'), ver.replace('!', ':'))
                 for op, ver in self.spec.specs])
             res['ver_cpe'] = ':'.join([ver.replace('!', ':') for op, ver in self.spec.specs])
-
-        if self.spec.extras:
-            res['arg'] = self.spec.extras[0]
 
         for spec in self.spec.specs:
             op, ver = spec
