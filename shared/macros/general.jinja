@@ -1104,3 +1104,12 @@ Part of the grub2_bootloader_argument(_absent) templates.
 {{%- endif -%}}
 {{{ grub_helper_executable }}} {{{ " ".join(grub_helper_args) }}}
 {{%- endmacro %}}
+
+{{% macro ocil_fix_srg_privileged_command(cmd, path_prefix="/usr/bin/") %}}
+{{{ complete_ocil_entry_audit_privileged_commands(cmd, path_prefix) }}}
+
+fixtext: |-
+    {{{ fixtext_privileged_commands(cmd, path_prefix) | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_command(cmd) }}}'
+{{%- endmacro %}}
