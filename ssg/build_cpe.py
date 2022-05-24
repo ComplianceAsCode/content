@@ -11,7 +11,6 @@ from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
-from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
 from .data_structures import XCCDFEntity
 
@@ -36,11 +35,6 @@ class ProductCPEs(object):
 
         #self.load_product_cpes(product_yaml)
         #self.load_content_cpes()
-
-    def _load_cpes_list(self, map_, cpes_list):
-        for cpe in cpes_list:
-            for cpe_id in cpe.keys():
-                map_[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
 
     def load_product_cpes(self, env_yaml):
         try:
@@ -79,9 +73,6 @@ class ProductCPEs(object):
                 )
                 continue
 
-            # Get past "cpes" key, which was added for readability of the content
-            #cpes_list = open_and_macro_expand(dir_item_path, self.product_yaml)["cpes"]
-            #self._load_cpes_list(self.cpes_by_id, cpes_list)
             cpe = CPEItem.from_yaml(dir_item_path, env_yaml)
             self.cpes_by_id[cpe.id_] = cpe
             if cpe.is_product_cpe == "true":
@@ -185,11 +176,6 @@ class CPEItem(XCCDFEntity):
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
 
-#@classmethod
-#    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
-#        cpeitem = super(CPEItem, cls).from_yaml(yaml_file, env_yaml)
-
-
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
         cpe_item.set('name', self.name)
@@ -266,7 +252,7 @@ class CPEALLogicalTest(Function):
         return cond
 
 
-class CPEALFactRef (Symbol):
+class CPEALFactRef(Symbol):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]

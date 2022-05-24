@@ -39,7 +39,7 @@ lang_to_ext_map = {
 templates = dict()
 
 
-class Template():
+class Template:
     def __init__(self, template_root_directory, name):
         self.template_root_directory = template_root_directory
         self.name = name

@@ -139,7 +139,7 @@ def process(remediation, env_yaml, cpe_platforms):
             msg = (
                 "Comma-separated '{platform}' platforms "
                 "in '{remediation_file}' contains whitespace."
-                .format(platform=platforms, remediation_file=remediation.file_path))
+                    .format(platform=platforms, remediation_file=remediation.file_path))
             raise ValueError(msg)
 
     product = env_yaml["product"]
@@ -433,13 +433,14 @@ class IgnitionRemediation(Remediation):
 class KubernetesRemediation(Remediation):
     def __init__(self, file_path):
         super(KubernetesRemediation, self).__init__(
-              file_path, "kubernetes")
+            file_path, "kubernetes")
 
 
 class BlueprintRemediation(Remediation):
     """
     This provides class for OSBuild Blueprint remediations
     """
+
     def __init__(self, file_path):
         super(BlueprintRemediation, self).__init__(
             file_path, "blueprint")

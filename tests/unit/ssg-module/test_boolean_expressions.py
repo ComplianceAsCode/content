@@ -70,9 +70,7 @@ def test_evaluate_simple_version_ops(algebra):
 
 def test_evaluate_full_version_ops(algebra):
     exp = algebra.parse(u'oranges==1!2.3.0-1')
-    print(repr(exp.as_dict()))
     exp = algebra.parse(u'oranges>=2,<3')
-    print(repr(exp.as_dict()))
 
 
 def test_evaluate_advanced_version_ops(algebra):
