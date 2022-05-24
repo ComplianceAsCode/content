@@ -129,6 +129,15 @@ def process_file(filepath, substitutions_dict):
     return template.render(substitutions_dict)
 
 
+def process_string(string, substitutions_dict):
+    """
+    Process the jinja string. Return the result as a string. Note that this will not
+    load the project macros; use process_file_with_macros(...) for that.
+    """
+    template = _get_jinja_environment(substitutions_dict).from_string(string)
+    return template.render(substitutions_dict)
+
+
 def add_python_functions(substitutions_dict):
     substitutions_dict['prodtype_to_name'] = prodtype_to_name
     substitutions_dict['name_to_platform'] = name_to_platform
@@ -169,6 +178,18 @@ def process_file_with_macros(filepath, substitutions_dict):
     substitutions_dict = load_macros(substitutions_dict)
     assert 'indent' not in substitutions_dict
     return process_file(filepath, substitutions_dict)
+
+
+def process_string_with_macros(string, substitutions_dict):
+    """
+    Process the string with jinja macros with the specified
+    substitutions. Return the result as a string.
+
+    See also: process_string
+    """
+    substitutions_dict = load_macros(substitutions_dict)
+    assert 'indent' not in substitutions_dict
+    return process_string(string, substitutions_dict)
 
 
 def url_encode(source):
