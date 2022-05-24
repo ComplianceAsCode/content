@@ -12,7 +12,7 @@ pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
 SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
 
-VERSION_SYMBOLS = ['.', '-', '_', ':']
+VERSION_SYMBOLS = ['.', '-', '_', ':', '~', '^']
 
 SPEC_OP_ID_TRANSLATION = {
     '==': 'eq',
@@ -31,6 +31,14 @@ SPEC_OP_OVAL_EVR_STRING_TRANSLATION = {
     '>=': 'greater than or equal',
     '<=': 'less than or equal',
 }
+
+
+def version_to_pep440(ver):
+    return ver.replace(':', '!').replace('~', '+').replace('^', '+')
+
+
+def pep440_to_version(ver):
+    return ver.replace('!', ':').replace('+', '~')
 
 
 class Function(boolean.Function):
@@ -83,7 +91,7 @@ class Symbol(boolean.Symbol):
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.spec = pkg_resources.Requirement.parse(obj.replace(':', '!'))
+        self.spec = pkg_resources.Requirement.parse(version_to_pep440(obj))
         self.obj = self.spec
 
     def __call__(self, **kwargs):
@@ -93,7 +101,7 @@ class Symbol(boolean.Symbol):
         val = kwargs.get(full_name, False)
         if len(self.spec.specs):
             if type(val) is str:
-                return val in self.spec
+                return version_to_pep440(val) in self.spec
             return False
         return bool(val)
 
@@ -117,16 +125,13 @@ class Symbol(boolean.Symbol):
         return str(uuid.uuid5(uuid.NAMESPACE_X500, self.as_id()))
 
     def as_dict(self):
-        res = {'id': self.as_id(), 'name': self.name, 'arg': '', 'ver_str': '', 'ver_cpe': '', 'specs': []}
+        res = {'id': self.as_id(), 'name': self.name, 'arg': self.arg, 'ver_str': '', 'ver_cpe': '', 'specs': []}
 
         if self.spec.specs:
             res['ver_str'] = ' and '.join([
-                '{0} {1}'.format(SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'), ver.replace('!', ':'))
+                '{0} {1}'.format(SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'), pep440_to_version(ver))
                 for op, ver in self.spec.specs])
-            res['ver_cpe'] = ':'.join([ver.replace('!', ':') for op, ver in self.spec.specs])
-
-        if self.spec.extras:
-            res['arg'] = self.spec.extras[0]
+            res['ver_cpe'] = ':'.join([pep440_to_version(ver) for op, ver in self.spec.specs])
 
         for spec in self.spec.specs:
             op, ver = spec
@@ -134,11 +139,13 @@ class Symbol(boolean.Symbol):
             res['specs'].append({
                 'id': self._spec_id(spec),
                 'op': op,
-                'ver': ver.replace('!', ':'),
+                'ver': pep440_to_version(ver),
                 'evr_op': SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'),
-                'evr_ver': str(version.epoch) + ':'
-                           + '.'.join(str(x) for x in version.release) + '-'
-                           + (str(version.post) if version.post else '0')
+                # Older version of pkg_resources does not have 'epoch' attribute in Version,
+                # we have to get the data from the internal instance: 'Version._version.epoch'
+                'evr_ver': str(version._version.epoch) + ':'
+                           + '.'.join(str(x) for x in version._version.release) + '-'
+                           + (str(version._version.post) if version._version.post else '0')
             })
 
         return res
