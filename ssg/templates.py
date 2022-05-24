@@ -324,31 +324,24 @@ class Builder(object):
 
     def build_platform(self, platform):
         for symbol in platform.test.get_symbols():
-            name = symbol.name
-            full_name = symbol.as_id()
-            symbol_dict = symbol.as_dict()
-            cpe = self.product_cpes.get_cpe(full_name)
             cpe_id = symbol.as_id()
+            cpe = self.product_cpes.get_cpe(cpe_id)
+
             if 'name' not in cpe.template:
                 continue
             template_name = cpe.template['name']
-            try:
-                arg = symbol.arg
-                if arg in cpe.args:
-                    rendered_vars = cpe.args[arg]
-                elif arg is None:
-                    rendered_vars = {}
-                else:
-                    raise ValueError("Platform {0} does not allow arg '{1}' ".format(name, arg))
-                rendered_vars.update(symbol_dict)
-                for var, var_fmt_str in cpe.template['vars'].items():
-                    rendered_vars[var] = var_fmt_str.format(**symbol_dict)
-                template_vars = self.process_product_vars(rendered_vars)
-            except KeyError:
-                raise ValueError(
-                    "Platform {0} does not contain mandatory 'vars:' key under "
-                    "'template:' key.".format(name))
-            # Add the check_id ID which will be reused in OVAL templates as OVAL
+
+            arg = symbol.arg
+            if arg in cpe.args:
+                rendered_vars = cpe.args[arg]
+            elif arg is None:
+                rendered_vars = {}
+            else:
+                raise ValueError("Platform {0} does not allow arg '{1}' ".format(symbol.name, arg))
+            rendered_vars.update(symbol.as_dict())
+            template_vars = self.process_product_vars(rendered_vars)
+
+            # Add the rule_id ID which will be reused in OVAL templates as OVAL
             # definition ID so that the build system matches the generated
             # check with the rule.
             template_vars["_rule_id"] = cpe_id
@@ -360,7 +353,7 @@ class Builder(object):
 
             for lang in ['oval', 'bash', 'ansible']:
                 try:
-                    self.build_lang(full_name, template_name, template_vars, lang, local_env_yaml)
+                    self.build_lang(cpe_id, template_name, template_vars, lang, local_env_yaml)
                 except Exception as e:
                     print("Error building template {0} for platform {1}".format(lang, symbol.name), file=sys.stderr)
                     raise e
