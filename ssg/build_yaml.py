@@ -1887,9 +1887,6 @@ class Platform(XCCDFEntity):
         name=lambda: "",
         original_expression=lambda: "",
         xml_content=lambda: "",
-        bash_conditional_line=lambda: "",
-        bash_inserted_before_remediation=lambda: "",
-        ansible_conditional=lambda: "",
         conditional=lambda: {},
         ** XCCDFEntity.KEYS
     )
@@ -1898,8 +1895,6 @@ class Platform(XCCDFEntity):
         "name",
         "xml_content",
         "original_expression",
-        "bash_conditional_line",
-        "ansible_conditional"
         "conditional",
     ]
 
@@ -1941,26 +1936,24 @@ class Platform(XCCDFEntity):
     def to_xml_element(self):
         return ET.fromstring(self.xml_content)
 
-    def get_bash_conditional_line(self):
-        return self.bash_conditional_line
-
-    def get_bash_inserted_before_remediation(self):
-        return self.bash_inserted_before_remediation
+    def get_bash_conditional(self):
+        return self.conditional.get('bash', '')
 
     def get_ansible_conditional(self):
-        return self.ansible_conditional
+        return self.conditional.get('ansible', '')
 
     @classmethod
-    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, conditionals_path=None):
         platform = super(Platform, cls).from_yaml(yaml_file, env_yaml)
         # if we did receive a product_cpes, we can restore also the original test object
         # it can be later used e.g. for comparison
         if product_cpes:
             platform.test = product_cpes.algebra.parse(
                 platform.original_expression, simplify=True)
-            platform.bash_conditional_line = platform.test.get_bash_conditional_line(product_cpes)
-            platform.bash_inserted_before_remediation = platform.test.get_bash_inserted_before_remediation(product_cpes)
-            platform.ansible_conditional = platform.test.get_ansible_conditional(product_cpes)
+            platform.conditional = {
+                'bash': platform.test.get_bash_conditional(product_cpes, conditionals_path, env_yaml),
+                'ansible': platform.test.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
+            }
 
         return platform
 

@@ -1,7 +1,6 @@
 name: "cpe:/a:ntp"
 title: "Package ntp is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("ntp") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("ntp") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("ntp") }}}
+    ansible: {{{ ansible_pkg_conditional("ntp") }}}
     oval_id: installed_env_has_ntp_package

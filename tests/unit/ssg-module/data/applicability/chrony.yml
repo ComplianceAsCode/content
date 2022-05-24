@@ -1,7 +1,6 @@
 name: "cpe:/a:chrony"
 title: "Package chrony is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("chrony") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("chrony") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("chrony") }}}
+    ansible: {{{ ansible_pkg_conditional("chrony") }}}
     oval_id: installed_env_has_chrony_package

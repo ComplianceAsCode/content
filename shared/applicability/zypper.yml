@@ -1,7 +1,6 @@
 name: "cpe:/a:zypper"
 title: "Package zypper is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("zypper") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("zypper") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("zypper") }}}
+    ansible: {{{ ansible_pkg_conditional("zypper") }}}
     oval_id: installed_env_has_zypper_package

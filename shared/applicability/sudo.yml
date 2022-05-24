@@ -1,7 +1,6 @@
 name: "cpe:/a:sudo"
 title: "Package sudo is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("sudo") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("sudo") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("sudo") }}}
+    ansible: {{{ ansible_pkg_conditional("sudo") }}}
     oval_id: installed_env_has_sudo_package

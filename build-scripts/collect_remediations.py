@@ -129,7 +129,8 @@ def main():
     for platform_file in os.listdir(args.platforms_dir):
         platform_path = os.path.join(args.platforms_dir, platform_file)
         try:
-            platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml, product_cpes)
+            platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml, product_cpes,
+                                                         args.fixes_from_templates_dir)
         except ssg.build_yaml.DocumentationNotComplete:
             # Happens on non-debug build when a platform is
             # "documentation-incomplete"

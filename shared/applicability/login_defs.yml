@@ -1,7 +1,6 @@
 name: "cpe:/a:login_defs"
 title: "Package providing /etc/login.defs is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("login_defs") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("login_defs") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("login_defs") }}}
+    ansible: {{{ ansible_pkg_conditional("login_defs") }}}
     oval_id: installed_env_has_login_defs
