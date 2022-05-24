@@ -17,8 +17,6 @@ from .remediations import parse_from_file_with_jinja, parse_from_file_without_ji
 
 from .xml import ElementTree
 
-REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
-                           'strategy']
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
 
@@ -175,30 +173,32 @@ class BashRemediation(Remediation):
                     p for p in self.associated_rule.cpe_platform_names
                     if p not in inherited_cpe_platform_names}
 
-        inherited_conditionals = [
-            cpe_platforms[p].get_bash_conditional_line()
-            for p in inherited_cpe_platform_names]
-        rule_specific_conditionals = [
-            cpe_platforms[p].get_bash_conditional_line()
-            for p in rule_specific_cpe_platform_names]
         lines_before_remediation = set()
-        all_lines_before_remediation = [
-            cpe_platforms[p].get_bash_inserted_before_remediation() for p in inherited_cpe_platform_names.union(rule_specific_cpe_platform_names)
-        ]
-        lines_before_remediation.update(all_lines_before_remediation)
 
-        # remove potential "None" from lists
-        inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p != ''])
-        rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p != ''])
-        lines_before_remediation = sorted([
-            l for l in lines_before_remediation if l != ''])
+        inherited_conditionals = []
+        for p in inherited_cpe_platform_names:
+            r = cpe_platforms[p].get_bash_conditional()
+            if r is not None:
+                stripped = r.contents.strip()
+                if stripped:
+                    inherited_conditionals.append(stripped)
+                if 'include' in r.config and r.config['include']:
+                    lines_before_remediation.update(r.config['include'].split(','))
+
+        rule_specific_conditionals = []
+        for p in rule_specific_cpe_platform_names:
+            r = cpe_platforms[p].get_bash_conditional()
+            if r is not None:
+                stripped = r.contents.strip()
+                if stripped:
+                    rule_specific_conditionals.append(stripped)
+                if 'include' in r.config and r.config['include']:
+                    lines_before_remediation.update(r.config['include'].split(','))
 
         if inherited_conditionals or rule_specific_conditionals:
-            wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
-            wrapped_fix_text.append("\n".join(lines_before_remediation))
-
+            wrapped_fix_text = ["# Remediation is applicable only in certain platforms",
+                                # FIXME: Insert references to an XCCDF variable here
+                                ",".join(lines_before_remediation)]
             all_conditions = ""
             if inherited_conditionals:
                 all_conditions += " && ".join(inherited_conditionals)
@@ -219,9 +219,8 @@ class BashRemediation(Remediation):
                 "    >&2 echo 'Remediation is not applicable, nothing was done'")
             wrapped_fix_text.append("fi")
 
-            remediation = namedtuple('remediation', ['contents', 'config'])
-            result = remediation(contents="\n".join(wrapped_fix_text), config=result.config)
-
+            result = namedtuple('remediation', ['contents', 'config'])(contents="\n".join(wrapped_fix_text),
+                                                                       config=result.config)
         return result
 
 
@@ -346,25 +345,30 @@ class AnsibleRemediation(Remediation):
                     p for p in self.associated_rule.cpe_platform_names
                     if p not in inherited_cpe_platform_names}
 
-        inherited_conditionals = [
-            cpe_platforms[p].get_ansible_conditional()
-            for p in inherited_cpe_platform_names]
-        rule_specific_conditionals = [
-            cpe_platforms[p].get_ansible_conditional()
-            for p in rule_specific_cpe_platform_names]
-        # remove potential "None" from lists
-        inherited_conditionals = sorted([
-            p for p in inherited_conditionals if p != ''])
-        rule_specific_conditionals = sorted([
-            p for p in rule_specific_conditionals if p != ''])
+        inherited_conditionals = []
+        for p in inherited_cpe_platform_names:
+            r = cpe_platforms[p].get_ansible_conditional()
+            if r is not None:
+                stripped = r.contents.strip()
+                if stripped:
+                    inherited_conditionals.append(stripped)
 
-        # remove conditionals related to package CPEs if the updated task
-        # collects package facts
+        rule_specific_conditionals = []
+        for p in rule_specific_cpe_platform_names:
+            r = cpe_platforms[p].get_ansible_conditional()
+            if r is not None:
+                stripped = r.contents.strip()
+                if stripped:
+                    rule_specific_conditionals.append(stripped)
+
+            cpe_platforms[p].get_ansible_conditional()
+
+        # Remove conditionals related to package CPEs if the updated task collects package facts
         if "package_facts" in to_update:
-            inherited_conditionals = [
-                c for c in inherited_conditionals if "in ansible_facts.packages" not in c]
-            rule_specific_conditionals = [
-                c for c in rule_specific_conditionals if "in ansible_facts.packages" not in c]
+            inherited_conditionals = filter(lambda c: "in ansible_facts.packages" not in c,
+                                            inherited_conditionals)
+            rule_specific_conditionals = filter(lambda c: "in ansible_facts.packages" not in c,
+                                                rule_specific_conditionals)
 
         if inherited_conditionals:
             additional_when = additional_when + inherited_conditionals

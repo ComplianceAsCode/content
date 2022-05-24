@@ -1,6 +1,5 @@
 name: cpe:/a:aarch64_arch
 title: System architecture is AARCH64
-bash_conditional:
-    conditional: grep -q aarch64 /proc/sys/kernel/osrelease
 conditional:
+    bash: 'grep -q aarch64 /proc/sys/kernel/osrelease'
     oval_id: proc_sys_kernel_osrelease_arch_aarch64

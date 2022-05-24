@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
+from collections import namedtuple, defaultdict
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
@@ -13,6 +14,8 @@ from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
 from .data_structures import XCCDFEntity
+
+from . import remediations
 
 
 class CPEDoesNotExist(Exception):
@@ -158,8 +161,6 @@ class CPEItem(XCCDFEntity):
     KEYS = dict(
         name=lambda: "",
         title=lambda: "",
-        bash_conditional=lambda: dict(),
-        ansible_conditional=lambda: "",
         conditional=lambda: {},
         template=lambda: {},
         is_product_cpe=lambda: False,
@@ -211,44 +212,57 @@ class CPEALLogicalTest(Function):
         for arg in self.args:
             arg.add_enriched_cpe_items(product_cpes)
 
-    def get_bash_conditional_line(self, product_cpes):
-        condline = ""
+    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+        contents = ''
+        config = defaultdict(lambda: None)
+        op = " "
         if self.is_not():
-            condline += "! "
-            op = " "
-        condline += "( "
-        child_condlines = [
-            a.get_bash_conditional_line(product_cpes) for a in self.args
-            if a.get_bash_conditional_line(product_cpes) != '']
+            contents += "! "
+        contents += "( "
+        child_condlines = []
+        child_includes = set()
+        for a in self.args:
+            r = a.get_bash_conditional(product_cpes, conditionals_path, env_yaml)
+            if r is not None:
+                cont = r.contents.strip()
+                if cont:
+                    child_condlines.append(cont)
+                if 'include' in r.config:
+                    child_includes.update(r.config['include'].split(','))
         if self.is_or():
             op = " || "
         elif self.is_and():
             op = " && "
-        condline += op.join(child_condlines)
-        condline += " )"
-        return condline
+        contents += op.join(child_condlines)
+        contents += " )"
+        config['include'] = ",".join(child_includes)
+        return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
-    def get_bash_inserted_before_remediation(self, product_cpes):
-        lines = [a.get_bash_inserted_before_remediation(product_cpes) for a in self.args
-            if a.get_bash_inserted_before_remediation(product_cpes) is not None]
-        return "\n".join(lines)
-
-    def get_ansible_conditional(self, product_cpes):
-        cond = ""
+    def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
+        contents = ''
+        config = defaultdict(lambda: None)
+        op = " "
         if self.is_not():
-            cond += "not "
-            op = " "
-        cond += "( "
-        child_ansible_conds = [
-            a.get_ansible_conditional(product_cpes) for a in self.args
-            if a.get_ansible_conditional(product_cpes) != '']
+            contents += "not "
+        contents += "( "
+        child_ansible_conds = []
+        child_includes = set()
+        for a in self.args:
+            r = a.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
+            if r is not None:
+                cont = r.contents.strip()
+                if cont:
+                    child_ansible_conds.append(cont)
+                if 'include' in r.config:
+                    child_includes.update(r.config['include'].split(','))
         if self.is_or():
             op = " or "
         elif self.is_and():
             op = " and "
-        cond += op.join(child_ansible_conds)
-        cond += " )"
-        return cond
+        contents += op.join(child_ansible_conds)
+        contents += " )"
+        config['include'] = ",".join(child_includes)
+        return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
 
 class CPEALFactRef(Symbol):
@@ -259,24 +273,17 @@ class CPEALFactRef(Symbol):
     def __init__(self, obj):
         super(CPEALFactRef, self).__init__(obj)
         self.cpe_name = obj  # we do not want to modify original name used for platforms
-        self.bash_conditional = {}
-        self.ansible_conditional = ""
-
-    def has_arguments(self):
-        k = self.as_dict().keys()
-        return "arg" in k or "op" in k or "ver" in k
+        self.conditional = {}
 
     def add_enriched_cpe_items(self, product_cpes):
-        # if we have arguments, we have to copy the templated cpe and fill in the arguments
-        if self.has_arguments():
-            old_cpe_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
-            # ignore remediation snippets for now when templating, they will be removed eventually from the CPE item definition
-            not_templated_keys = ["ansible_conditional", "bash_conditional"]
-            new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict(), not_templated_keys)
-            new_cpe_dict["id_"] = self.as_id()
-            new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
-            self.cpe_name = product_cpes.get_cpe_name(self.cpe_name)
-            product_cpes.add_cpe_item(new_cpe)
+        old_cpe_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
+        # ignore remediation snippets for now when templating, they will be removed eventually from the CPE item definition
+        not_templated_keys = ["conditional"]
+        new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict(), not_templated_keys)
+        new_cpe_dict["id_"] = self.as_id()
+        new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
+        self.cpe_name = product_cpes.get_cpe_name(self.cpe_name)
+        product_cpes.add_cpe_item(new_cpe)
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
@@ -284,14 +291,30 @@ class CPEALFactRef(Symbol):
 
         return cpe_factref
 
-    def get_bash_conditional_line(self, product_cpes):
-        return product_cpes.get_cpe(self.as_id()).bash_conditional.get("conditional", "")
+    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+        cpe = product_cpes.get_cpe(self.as_id())
+        cond = cpe.conditional.get("bash", "")
+        if cond:
+            return remediations.parse_from_string_with_jinja(cond, env_yaml)
+        elif conditionals_path is not None:
+            templated_conditional_file = os.path.join(conditionals_path, 'bash',
+                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['bash'])
+            if os.path.exists(templated_conditional_file):
+                return remediations.parse_from_file_without_jinja(templated_conditional_file)
+        return None
 
-    def get_bash_inserted_before_remediation(self, product_cpes):
-        return product_cpes.get_cpe(self.as_id()).bash_conditional.get("inserted_before_remediation", "")
+    def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
+        cpe = product_cpes.get_cpe(self.as_id())
+        cond = cpe.conditional.get("ansible", "")
+        if cond:
+            return remediations.parse_from_string_with_jinja(cond, env_yaml)
+        elif conditionals_path is not None:
+            templated_conditional_file = os.path.join(conditionals_path,
+                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['ansible'])
+            if os.path.exists(templated_conditional_file):
+                return remediations.parse_from_file_without_jinja(templated_conditional_file)
+        return None
 
-    def get_ansible_conditional(self, product_cpes):
-        return product_cpes.get_cpe(self.as_id()).ansible_conditional
 
 
 def extract_subelement(objects, sub_elem_type):

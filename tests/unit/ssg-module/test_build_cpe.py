@@ -106,8 +106,7 @@ def test_extract_referred_nodes():
 #
 # This test case test that both types are used by the ProductCPEs class and
 # that both CPE types are handled equally.
-def test_product_cpes():
-
+def test_product_cpes_by_name_and_id():
     # CPEs are loaded from `DATADIR/product.yml` but also from
     # `DATADIR/applicability` because `DATADIR/product.yml` references the
     # `DATADIR/applicability` directory in the `cpes_root` key
@@ -123,8 +122,6 @@ def test_product_cpes():
     rhel7_cpe = product_cpes.get_cpe("rhel7")
     assert(rhel7_cpe.name == "cpe:/o:redhat:enterprise_linux:7")
     assert(rhel7_cpe.title == "Red Hat Enterprise Linux 7")
-    assert(rhel7_cpe.bash_conditional == {})
-    assert(rhel7_cpe.ansible_conditional == "")
     assert(rhel7_cpe.id_ == "rhel7")
     assert(rhel7_cpe.conditional == {'oval_id': 'installed_OS_is_rhel7'})
 
@@ -133,8 +130,6 @@ def test_product_cpes():
     rhel7_cpe_2 = product_cpes.get_cpe("cpe:/o:redhat:enterprise_linux:7")
     assert(rhel7_cpe_2.name == rhel7_cpe.name)
     assert(rhel7_cpe_2.title == rhel7_cpe_2.title)
-    assert(rhel7_cpe_2.bash_conditional == rhel7_cpe.bash_conditional)
-    assert(rhel7_cpe_2.ansible_conditional == rhel7_cpe.ansible_conditional)
     assert(rhel7_cpe_2.conditional == rhel7_cpe.conditional)
 
     # get a content CPE by name and verify it's loaded
@@ -142,15 +137,13 @@ def test_product_cpes():
     cpe1 = product_cpes.get_cpe("machine")
     assert(cpe1.name == "cpe:/a:machine")
     assert(cpe1.title == "Bare-metal or Virtual Machine")
-    assert(cpe1.ansible_conditional == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]")
-    assert(cpe1.bash_conditional["conditional"] == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
     assert(cpe1.id_ == "machine")
+    assert(cpe1.conditional["ansible"] == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]")
+    assert(cpe1.conditional["bash"] == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
 
     # get CPE by ID and verify it's loaded, the get_cpe method should return
     # the same object as when CPE name was used above
     cpe2 = product_cpes.get_cpe("cpe:/a:machine")
     assert(cpe2.name == cpe1.name)
     assert(cpe2.title == cpe1.title)
-    assert(cpe2.ansible_conditional == cpe1.ansible_conditional)
-    assert(cpe2.bash_conditional == cpe1.bash_conditional)
     assert(cpe2.conditional == cpe1.conditional)

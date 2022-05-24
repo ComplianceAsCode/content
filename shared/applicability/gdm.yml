@@ -1,7 +1,9 @@
 name: "cpe:/a:gdm"
 title: "Package gdm is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("gdm") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("gdm") }}}
 conditional:
+    bash: |-
+        # include = bash_pkg_compare
+        {{{ bash_pkg_conditional("gdm") }}}
+
+    ansible: {{{ ansible_pkg_conditional("gdm") }}}
     oval_id: installed_env_has_gdm_package

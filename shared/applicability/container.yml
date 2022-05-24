@@ -1,6 +1,5 @@
 name: cpe:/a:container
 title: Container
-bash_conditional:
-    conditional: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
 conditional:
+    bash: '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]'
     oval_id: installed_env_is_a_container

@@ -1,7 +1,6 @@
 name: "cpe:/a:systemd"
 title: "Package systemd is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("systemd") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("systemd") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("systemd") }}}
+    ansible: {{{ ansible_pkg_conditional("systemd") }}}
     oval_id: installed_env_has_systemd_package

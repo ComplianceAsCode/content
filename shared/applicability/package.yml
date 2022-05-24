@@ -1,7 +1,5 @@
 name: 'cpe:/a:{arg}:{ver_cpe}'
 title: 'Package {arg} {ver_str} is installed'
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional(PKGNAME) }}}
 template:
     vars: {}
     name: cond_package

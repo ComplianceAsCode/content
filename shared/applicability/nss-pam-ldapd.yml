@@ -1,7 +1,6 @@
 name: "cpe:/a:nss-pam-ldapd"
 title: "Package nss-pam-ldapd is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("nss-pam-ldapd") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("nss-pam-ldapd") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("nss-pam-ldapd") }}}
+    ansible: {{{ ansible_pkg_conditional("nss-pam-ldapd") }}}
     oval_id: installed_env_has_nss-pam-ldapd_package

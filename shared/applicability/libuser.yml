@@ -1,7 +1,6 @@
 name: "cpe:/a:libuser"
 title: "Package libuser is installed"
-bash_conditional:
-    conditional: {{{ bash_pkg_conditional("libuser") }}}
-ansible_conditional: {{{ ansible_pkg_conditional("libuser") }}}
 conditional:
+    bash: {{{ bash_pkg_conditional("libuser") }}}
+    ansible: {{{ ansible_pkg_conditional("libuser") }}}
     oval_id: installed_env_has_libuser_package
