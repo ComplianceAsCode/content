@@ -65,3 +65,8 @@ references:
     vmmsrg: SRG-OS-000477-VMM-001970
 
 {{{ complete_ocil_entry_audit_syscall(syscall="finit_module") }}}
+
+fixtext: |-
+    {{{ fixtext_audit_rules("finit_module", "module_chng") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_command("finit_module") }}}'
