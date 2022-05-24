@@ -20,3 +20,14 @@
 Successful/unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
 {{%- endmacro %}}
 
+{{#
+    Generate a SRG requirement text for auditing a command.
+
+:param command: Name of the command
+:type command: str
+
+#}}
+{{% macro srg_requirement_audit_command(command) %}}
+Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}} must generate an audit record.
+{{%- endmacro %}}
+
