@@ -440,6 +440,9 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
 
 -   Parameters:
 
+    -   **escape_text** - if set to true the given text is escaped to treat it as regex,
+        when set to false the text is taken directly as it is.
+
     -   **path** - path to the file to check.
 
     -   **text** - the line that should be present in the file.
