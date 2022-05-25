@@ -77,7 +77,23 @@ Those areas are going to be segmented by
 
 - Keeping track of the decomposition: Metadata in product.yml files, CODEOWNERS file
 - Area of effect: All PSPs that don’t have specific stakeholders, associated content and test scenarios.
-- Guidelines: Care needs to be taken when content requires a slightly different approach for different products - don’t copy paste, and also don’t change existing behavior for everybody (link to coding guidelines needed).
+- Guidelines: Care needs to be taken when content requires a slightly different approach for different products - don’t copy and paste, and also don’t change existing behavior for everybody.
+  See the [style guide](04_style_guide.md) for more details.
+
+##### Removal of Products
+Products that do not have any contributions for two years may be subject to removal.
+The following process shall be used:
+1. A pull request is created removing the product.
+This is pull request should mention the last few people who contributed to the product.
+   This includes the removal of
+   1. The product folder in `products/`
+   1. Removal of any Jinja templates that use the product
+   1. Removal of the product from all `prodtyes`
+1. A comment period of 21 days shall start once the pull request is ready for review.
+The pull reqeust description must explicitly state the date and time (in UTC) when the comment period will close.
+1. If there are no outstanding objections once the comment period closes the product should be removed.
+
+Once a product is no longer receiving security updates (end-of-life) may be removed using the normal pull request process.
 
 
 #### Product Specific Profiles (PSPs)
@@ -151,4 +167,3 @@ The project maintainers decide about granting or strip of rights and about excep
 Aside from an organization (s.a. a company or an institution) being composed of individuals with individual rights, other developers associated with the organization may get “backup” merge rights or organization administration rights.
 Those rights can be granted for a period of 12 months and their renewal can be requested.
 These rights can only be used in cases when regular developers aren’t available and the organization needs to get their things through.
-
