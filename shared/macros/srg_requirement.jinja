@@ -40,3 +40,13 @@ Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}}
 {{% macro srg_requirement_package_removed(package) %}}
 The package {{{ package }}} must be removed in {{{ full_name }}}.
 {{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for package removal.
+
+:param module: Name of the kernel module to be disabled
+:type module: str
+#}}
+{{% macro srg_requirement_kernel_module_disable(module) %}}
+The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
+{{%- endmacro %}}
