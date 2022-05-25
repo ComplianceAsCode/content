@@ -371,7 +371,7 @@ class AnsibleRemediation(Remediation):
                                                 rule_specific_conditionals)
 
         if inherited_conditionals:
-            additional_when = additional_when + inherited_conditionals
+            additional_when.extend(inherited_conditionals)
 
         if rule_specific_conditionals:
             additional_when.append(" or ".join(rule_specific_conditionals))
