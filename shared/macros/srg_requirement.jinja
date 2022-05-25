@@ -63,3 +63,8 @@ The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
 {{% macro srg_requirement_package_installed(package) %}}
 The {{{ full_name }}} package {{{ package }}} must be installed.
 {{%- endmacro %}}
+
+{{% macro srg_requirement_service_enabled(service) %}}
+The {{{ full_name }}} service {{{ service }}} must be enabled.
+{{%- endmacro %}}
+
