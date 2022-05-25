@@ -1,0 +1,6 @@
+name: cpe:/a:tftp-server
+title: Package tftp-server is installed
+conditional:
+    bash: {{{ bash_pkg_conditional("tftp-server") }}}
+    ansible: {{{ ansible_pkg_conditional("tftp-server") }}}
+    oval_id: installed_env_has_tftp_server_package

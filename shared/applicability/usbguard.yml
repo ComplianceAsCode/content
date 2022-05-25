@@ -1,0 +1,6 @@
+name: cpe:/a:usbguard
+title: Package usbguard is installed
+conditional:
+    bash: {{{ bash_pkg_conditional("usbguard") }}}
+    ansible: {{{ ansible_pkg_conditional("usbguard") }}}
+    oval_id: installed_env_has_usbguard_package
