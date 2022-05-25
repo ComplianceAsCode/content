@@ -424,6 +424,9 @@ selections:
     # OL08-00-010730
     - file_permissions_home_directories
 
+    # OL08-00-010731
+    - accounts_users_home_files_permissions
+
     # OL08-00-010740
     - file_groupownership_home_directories
 
