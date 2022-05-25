@@ -47,11 +47,9 @@ ocil_clause: '{{{ ocil_clause_audit() }}}'
 ocil: |-
     Verify {{{ full_name }}} generates an audit record for all uses of the "chacl" command.
     To verify that execution of the command is being audited, run the following command:
-    Add or update the following rules in the "/etc/audit/audit.rules" file:
-    -a always,exit -F arch=b32 path=/usr/bin/chacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged
-    -a always,exit -F arch=b64 path=/usr/bin/chacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged
-    The audit daemon must be restarted for the changes to take effect.
-    # sudo systemctl restart auditd.service
+    $ sudo grep chacl /etc/audit/rules.d/audit.*
+    The output should be similar to:
+    -a always,exit -F path=/usr/bin/chacl -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=perm_mod
 
 fixtext: |-
     {{{ fixtext_audit_rules_command("chacl", "/usr/bin/chacl", "perm_mod") | indent(4) }}}
