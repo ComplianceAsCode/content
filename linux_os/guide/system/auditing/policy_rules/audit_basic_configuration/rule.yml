@@ -16,8 +16,7 @@ title: 'Configure basic parameters of Audit system'
 --backlog_wait_time 60000
 
 ## Set failure mode to syslog
--f 1
-" %}}
+-f 1" %}}
 
 description: |-
     Perform basic configuration of Audit system.
@@ -74,3 +73,4 @@ template:
         filepath: /etc/audit/rules.d/10-base-config.rules
         contents: |+
             {{{ file_contents_audit_base_config|indent(12) }}}
+#do not remove this comment, it stops Jinja from including more blank lines to the variable
