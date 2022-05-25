@@ -60,7 +60,7 @@ references:
     stigid@ubuntu2004: UBTU-20-010013
     vmmsrg: SRG-OS-000163-VMM-000700,SRG-OS-000279-VMM-001010
 
-ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
+ocil_clause: 'TMOUT is not set or its value is greater than expected setting'
 
 ocil: |-
     Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
@@ -78,3 +78,9 @@ ocil: |-
     {{% endif %}}
 
 platform: machine
+
+fixtext: |-
+    Configure {{{ full_name }}} to terminate user sessions after {{{ xccdf_value("var_accounts_tmout") }}} seconds of inactivity.
+
+    Add or edit the following line in "/etc/profile.d/tmout.sh":
+    TMOUT={{{ xccdf_value("var_accounts_tmout") }}}
