@@ -164,7 +164,9 @@ controls:
     title: 32 and 64 bit architecture
     description: When the machine supports 64-bit operating systems, prefer it.
     notes: This requirement can be checked, but remediation requires manual reinstall of the OS.
-    # rules: TBD
+    status: automated
+    rules:
+     - prefer_64bit_os
 
   - id: R11
     levels:
@@ -180,7 +182,36 @@ controls:
     levels:
     - intermediary
     title: Partitioning type
-    # rules: TBD
+    status: partial
+    rules:
+    # The recommended partitioning type is as follows:
+    # / <without option> Root partition, contains the rest of the tree
+    # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader. No access required once the boot finished (except update)
+    - partition_for_boot
+
+    # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
+    - partition_for_opt
+
+    # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
+    - partition_for_tmp
+
+    # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
+    - partition_for_srv
+
+    # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
+    - partition_for_home
+
+    # /usr nodev Contains the majority of utilities and system files
+    - partition_for_usr
+
+    # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
+    - partition_for_var
+
+    # /var/log nosuid, nodev, noexec Contains system logs
+    - partition_for_var_log
+
+    # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
+    - partition_for_var_tmp
 
   - id: R13
     levels:
@@ -303,7 +334,15 @@ controls:
       Users will first login, then escalate to privileged (root) access.
       Change of privilege operations must be based on executables to monitor the activities
       performed (for example sudo).
-    # rules: TBD
+    status: partial
+    rules:
+    - no_direct_root_logins
+    #- sshd_disable_root_login
+    - package_sudo_installed
+    - audit_rules_privileged_commands_sudo
+
+    # This rule should be present in the profile at least once
+    - sshd_use_directory_configuration
 
   - id: R20
     levels:
@@ -331,7 +370,12 @@ controls:
       basic integrity checking. System logs are configured as part of R43.
       Hardening of particular services should be done on a case by case basis and is
       not automated by this content.
-    # rules: TBD
+    status: partial
+    rules:
+    #- selinux_state
+    #- var_selinux_state=enforcing
+    #- package_aide_installed
+    - aide_build_database
 
   - id: R22
     levels:
@@ -531,7 +575,13 @@ controls:
       Each user or service account must have its own temporary directory
       and dispose of it exclusively.
     notes: The approach of the selected rules is to use and configure pam_namespace module.
-    # rules: TBD
+    status: partial
+    rules:
+    - enable_pam_namespace
+    - accounts_polyinstantiated_tmp
+    - accounts_polyinstantiated_var_tmp
+    - var_polyinstantiation_enabled=on
+    #- sebool_polyinstantiation_enabled
 
   - id: R40
     levels:
@@ -566,7 +616,12 @@ controls:
       A lot of recommendations and requirements from the DAT-NT-012 document are administrative and hard to automate.
       The rules selected below address a few of the aspects that can be covered, keep in mind that these configurations should
       be customized for the systems deployment requirements.
-    # rules: TBD
+    status: partial
+    rules:
+    # Based on DAT-NT-012 R20
+    - rsyslog_files_ownership
+    - rsyslog_files_groupownership
+    #- rsyslog_files_permissions
 
   - id: R44
     levels:
@@ -695,13 +750,26 @@ controls:
     notes: >-
       The rules below create and configure a group named sudogrp, to change the group customize the
       value of var_sudo_dedicated_group.
-    # rules: TBD
+    status: automated
+    rules:
+    - sudo_dedicated_group
+    - var_sudo_dedicated_group=sudogrp
 
   - id: R58
     levels:
     - intermediary
     title: Sudo configuration guidelines
-    # rules: TBD
+    status: partial
+    rules:
+    - sudo_add_noexec
+    - sudo_add_requiretty
+    - sudo_add_use_pty
+    - sudo_add_umask
+    - var_sudo_umask=0027
+    - sudo_add_ignore_dot
+    - sudo_add_env_reset
+    - sudo_add_passwd_timeout
+    - var_sudo_passwd_timeout=1_minute
 
   - id: R59
     levels:
@@ -739,13 +807,16 @@ controls:
     title: Good use of negation in a sudoers file
     description: The sudoers configuration rules should not involve negation.
     status: automated
-    # rules: TBD
+    rules:
+    - sudoers_no_command_negation
 
   - id: R63
     levels:
     - intermediary
     title: Explicit arguments in sudo specifications
-    # rules: TBD
+    status: automated
+    rules:
+    - sudoers_explicit_command_args
 
   - id: R64
     levels:
