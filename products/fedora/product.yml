@@ -24,7 +24,8 @@ cpes:
   - fedora_37:
       name: "cpe:/o:fedoraproject:fedora:37"
       title: "Fedora 37"
-      check_id: installed_OS_is_fedora
+      conditional:
+        oval_id: installed_OS_is_fedora
 
   - fedora_36:
       name: "cpe:/o:fedoraproject:fedora:36"
