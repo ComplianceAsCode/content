@@ -21,13 +21,13 @@ def check_selection(product: str, selection: str) -> None:
 
 def check_fields(f: _io.TextIOWrapper, selection: str):
     rule_yaml = yaml.load(Loader=yaml.SafeLoader, stream=f)
-    if rule_yaml.get('fixtext', '') == '':
+    if rule_yaml.get('fixtext', '') == '' or rule_yaml['fixtext'] is None:
         print(f'{selection} is missing fixtext')
-    if rule_yaml.get('ocil', '') == '' == '':
+    if rule_yaml.get('ocil', '') == '' or rule_yaml['ocil'] is None:
         print(f'{selection} is missing ocil')
-    if rule_yaml.get('ocil_clause', '') == '' == '':
+    if rule_yaml.get('ocil_clause', '') == '' or rule_yaml['ocil_clause'] is None:
         print(f'{selection} is missing ocil_clause')
-    if rule_yaml.get('srg_requirement', '') == '':
+    if rule_yaml.get('srg_requirement', '') == '' or rule_yaml['srg_requirement'] is None:
         print(f'{selection} is missing srg_requirement')
 
 
