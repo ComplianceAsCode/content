@@ -44,8 +44,11 @@ fixtext: |-
 
     {{{ package_install("audit") }}}
 
-srg_requirement: |-
-    {{{ full_name }}} audit records must contain information to establish what type of events occurred, the source of events, where events occurred, and the outcome of events.
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+srg_requirement: '{{{ srg_requirement_package_installed("audit") }}}'
+{{% else %}}
+srg_requirement: '{{{ srg_requirement_package_installed("auditd") }}}'
+{{% endif %}}
 
 template:
     name: package_installed
