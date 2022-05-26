@@ -50,6 +50,5 @@ template:
         filepath: {{{ kubeletconf_path }}}
         yamlpath: ".streamingConnectionIdleTimeout"
         check_existence: "any_exist"
-        values:
-         - value: "0"
-           operation: "not equal"
+        xccdf_variable: var_streaming_connection_timeouts
+        regex_data: true
