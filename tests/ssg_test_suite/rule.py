@@ -263,11 +263,10 @@ class RuleChecker(oscap.Checker):
 
         self._ensure_package_present_for_all_scenarios(scenarios_by_rule)
 
-    def _iterate_over_rules(self, product=None):
-        """Iterate over rule directories which have test scenarios".
-
+    def _get_rules_to_test(self):
+        """
         Returns:
-            Named tuple Rule having these fields:
+            List of named tuples Rule having these fields:
                 directory -- absolute path to the rule "tests" subdirectory
                             containing the test scenarios in Bash
                 id -- full rule id as it is present in datastream
@@ -284,7 +283,9 @@ class RuleChecker(oscap.Checker):
         # templating engine.
         #
         # Begin by loading context about our execution environment, if any.
+        product = self.test_env.product
         product_yaml = common.get_product_context(product)
+        rules = []
 
         for dirpath, dirnames, filenames in common.walk_through_benchmark_dirs(
                 product):
@@ -326,10 +327,8 @@ class RuleChecker(oscap.Checker):
                 directory=tests_dir, id=full_rule_id,
                 short_id=short_rule_id, template=template_name,
                 local_env_yaml=local_env_yaml, rule=rule)
-            yield result
-
-    def _get_rules_to_test(self):
-        return list(self._iterate_over_rules(self.test_env.product))
+            rules.append(result)
+        return rules
 
     def test_rule(self, state, rule, scenarios):
         remediation_available = self._is_remediation_available(rule)
