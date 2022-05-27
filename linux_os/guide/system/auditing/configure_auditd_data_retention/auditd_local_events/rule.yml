@@ -39,6 +39,8 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_audit_configuration(param="local_events", value="yes") | indent(4) }}}
 
+srg_requirement: 'The {{{ full_name }}} must audit local events.'
+
 template:
     name: auditd_lineinfile
     vars:
