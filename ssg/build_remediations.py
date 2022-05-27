@@ -173,7 +173,7 @@ class BashRemediation(Remediation):
                     p for p in self.associated_rule.cpe_platform_names
                     if p not in inherited_cpe_platform_names}
 
-        lines_before_remediation = set()
+        # FIXME include: lines_before_remediation = set()
 
         inherited_conditionals = []
         for p in inherited_cpe_platform_names:
@@ -182,8 +182,8 @@ class BashRemediation(Remediation):
                 stripped = r.contents.strip()
                 if stripped:
                     inherited_conditionals.append(stripped)
-                if 'include' in r.config and r.config['include']:
-                    lines_before_remediation.update(r.config['include'].split(','))
+                # FIXME include: if 'include' in r.config and r.config['include']:
+                # FIXME include:    lines_before_remediation.update(r.config['include'].split(','))
 
         rule_specific_conditionals = []
         for p in rule_specific_cpe_platform_names:
@@ -192,13 +192,14 @@ class BashRemediation(Remediation):
                 stripped = r.contents.strip()
                 if stripped:
                     rule_specific_conditionals.append(stripped)
-                if 'include' in r.config and r.config['include']:
-                    lines_before_remediation.update(r.config['include'].split(','))
+                # FIXME include: if 'include' in r.config and r.config['include']:
+                # FIXME include:    lines_before_remediation.update(r.config['include'].split(','))
 
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms",
+                                "do_something_magical"]
                                 # FIXME: Insert references to an XCCDF variable here
-                                ",".join(lines_before_remediation)]
+                                # FIXME include: ",".join(lines_before_remediation)]
             all_conditions = ""
             if inherited_conditionals:
                 all_conditions += " && ".join(inherited_conditionals)

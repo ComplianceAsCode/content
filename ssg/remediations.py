@@ -15,7 +15,7 @@ REMEDIATION_TO_EXT_MAP = {
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
 
 REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
-                           'strategy', 'include']
+                           'strategy']
 
 
 def split_remediation_content_and_metadata(fix_file):
