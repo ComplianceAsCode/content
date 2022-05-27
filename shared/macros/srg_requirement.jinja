@@ -36,6 +36,7 @@ Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}}
 
 :param package: Name of the package to be removed
 :type package: str
+
 #}}
 {{% macro srg_requirement_package_removed(package) %}}
 The package {{{ package }}} must be removed in {{{ full_name }}}.
@@ -46,7 +47,19 @@ The package {{{ package }}} must be removed in {{{ full_name }}}.
 
 :param module: Name of the kernel module to be disabled
 :type module: str
+
 #}}
 {{% macro srg_requirement_kernel_module_disable(module) %}}
 The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for package installed.
+
+:param package: Name of the package to be installed
+:type package: str
+
+#}}
+{{% macro srg_requirement_package_installed(package) %}}
+The {{{ full_name }}} package {{{ package }}} must be installed.
 {{%- endmacro %}}
