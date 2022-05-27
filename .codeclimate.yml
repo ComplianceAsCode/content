@@ -1,0 +1,21 @@
+---
+version: "2"
+checks:
+  file-lines:
+    config:
+      threshold: 400
+
+plugins:
+  markdownlint:
+    enabled: true
+  pep8:
+    enabled: true
+  radon:
+    enabled: true
+  sonar-python:
+    enabled: true
+
+exclude_patterns:
+  - linux_os/
+  - applications/
+  - products/
