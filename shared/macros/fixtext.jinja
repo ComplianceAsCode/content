@@ -327,3 +327,21 @@ Fixtext for removing a package
 To remove the {{{ full_name }}} package {{{ package }}} run the following command:
 {{{ describe_package_remove(package) }}}
 {{%- endmacro %}}
+
+{{#
+Fixtext for disabling a kernel module
+
+:param module: module to disable
+:type module: str
+
+#}}
+{{% macro fixtext_kernel_module_disabled(module) %}}
+Configure {{{ full_name }}} to disable the ability to use the {{{ module }}} kernel module.
+
+Add or update the following lines in the file "/etc/modprobe.d/blacklist.conf":
+
+install {{{ module }}} /bin/true
+blacklist {{{ module }}}
+
+Reboot the system for the settings to take effect.
+{{%- endmacro %}}
