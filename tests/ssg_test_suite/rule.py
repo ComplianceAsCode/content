@@ -417,12 +417,12 @@ class RuleChecker(oscap.Checker):
                                                       self.slice_total)
         return sliced_scenarios_by_rule_id
 
-    def _test_target(self, target):
+    def _test_target(self):
         rules_to_test = self._get_rules_to_test()
         if not rules_to_test:
             logging.error("No tests found matching the {0}(s) '{1}'".format(
                 self.target_type,
-                ", ".join(target)))
+                ", ".join(self.rule_spec)))
             return
 
         scenarios_by_rule_id = self._get_scenarios_by_rule_id(rules_to_test)
@@ -618,14 +618,12 @@ def perform_rule_check(options):
     checker.slice_current = options.slice_current
     checker.slice_total = options.slice_total
     checker.keep_snapshots = options.keep_snapshots
-
+    checker.rule_spec = options.target
+    checker.template_spec = None
     checker.scenarios_profile = options.scenarios_profile
     # check if target is a complete profile ID, if not prepend profile prefix
     if (checker.scenarios_profile is not None and
             not checker.scenarios_profile.startswith(OSCAP_PROFILE) and
             not oscap.is_virtual_oscap_profile(checker.scenarios_profile)):
         checker.scenarios_profile = OSCAP_PROFILE+options.scenarios_profile
-
-    checker.rule_spec = options.target
-    checker.template_spec = None
-    checker.test_target(options.target)
+    checker.test_target()

@@ -44,5 +44,5 @@ def perform_template_check(options):
 
     checker.rule_spec = None
     checker.template_spec = options.target
-    checker.test_target(options.target)
+    checker.test_target()
     return

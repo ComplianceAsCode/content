@@ -76,11 +76,11 @@ class CombinedChecker(rule.RuleChecker):
                       "rules: {1}".format(profile, target_rules))
         return target_rules
 
-    def _test_target(self, target):
-        self.rules_not_tested_yet = set(target)
+    def _test_target(self):
+        self.rules_not_tested_yet = set(self.rule_spec)
 
         try:
-            super(CombinedChecker, self)._test_target(target)
+            super(CombinedChecker, self)._test_target()
         except KeyboardInterrupt as exec_interrupt:
             self.run_aborted = True
             raise exec_interrupt
@@ -119,6 +119,6 @@ def perform_combined_check(options):
 
         checker.rule_spec = target_rules
         checker.template_spec = None
-        checker.test_target(target_rules)
+        checker.test_target()
         if checker.run_aborted:
             return
