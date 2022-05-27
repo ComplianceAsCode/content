@@ -4,8 +4,10 @@ import pytest
 import ssg.build_remediations as sbr
 import ssg.utils
 import ssg.products
-from ssg.yaml import ordered_load
+from ssg.yaml import ordered_load, open_raw
 import ssg.build_yaml
+import ssg.build_cpe
+
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 rule_dir = os.path.join(DATADIR, "group_dir", "rule_dir")
@@ -20,10 +22,21 @@ def env_yaml():
 
 
 @pytest.fixture
-def cpe_platforms(env_yaml):
+def product_cpes():
+    product_yaml_path = os.path.join(DATADIR, "product.yml")
+    product_yaml = open_raw(product_yaml_path)
+    product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
+    product_cpes = ssg.build_cpe.ProductCPEs()
+    product_cpes.load_product_cpes(product_yaml)
+    product_cpes.load_content_cpes(product_yaml)
+    return product_cpes
+
+
+@pytest.fixture
+def cpe_platforms(env_yaml, product_cpes):
     platforms = dict()
     platform_path = os.path.join(DATADIR, "machine.yml")
-    platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
+    platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml, product_cpes)
     platforms[platform.name] = platform
     return platforms
 
