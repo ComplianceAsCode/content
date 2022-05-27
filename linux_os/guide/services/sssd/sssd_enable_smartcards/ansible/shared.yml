@@ -130,10 +130,32 @@
         - authselect_current_profile is not match("custom/")
         - not result_authselect_custom_profile_present.stat.exists
 
+    - name: Ensure the desired configuration is present in the custom profile smartcard-auth
+      ansible.builtin.lineinfile:
+        create: true
+        dest: "/etc/authselect/{{ authselect_custom_profile }}/smartcard-auth"
+        insertbefore: ^session.*
+        firstmatch: yes
+        regexp: '^(\s*auth.*pam_sss\.so)$'
+        line: "auth     sufficient                   pam_sss.so try_cert_auth"
+      when:
+        - result_authselect_profile is not skipped
+    
+    - name: Ensure the desired configuration is present in the custom profile system-auth
+      ansible.builtin.lineinfile:
+        create: true
+        dest: "/etc/authselect/{{ authselect_custom_profile }}/system-auth"
+        insertbefore: ^session.*
+        firstmatch: yes
+        regexp: '^(\s*auth.*pam_sss\.so)$'
+        line: "auth     sufficient                   pam_sss.so try_cert_auth"
+      when:
+        - result_authselect_profile is not skipped
+
     - name: Ensure the try_cert_auth option is in smartcard-auth
       ansible.builtin.replace:
         dest: "/etc/authselect/{{ authselect_custom_profile }}/smartcard-auth"
-        regexp: '^(auth.*sufficient.*pam_sss\.so)((?!try_cert_auth).)*$'
+        regexp: '^(\s*auth.*pam_sss\.so)((?!try_cert_auth).)*$'
         replace: '\g<1> try_cert_auth \g<2>'
       when:
         - result_authselect_profile is not skipped
@@ -142,7 +164,7 @@
     - name: Ensure the try_cert_auth option is in system-auth
       ansible.builtin.replace:
         dest: "/etc/authselect/{{ authselect_custom_profile }}/system-auth"
-        regexp: '^(auth.*sufficient.*pam_sss\.so)((?!try_cert_auth).)*$'
+        regexp: '^(\s*auth.*pam_sss\.so)((?!try_cert_auth).)*$'
         replace: '\g<1> try_cert_auth \g<2>'
       when:
         - result_authselect_profile is not skipped
@@ -190,6 +212,24 @@
 # For systems without authselect
 - name: "Remediation where authselect tool is not present and PAM files are directly edited"
   block:
+    - name: Ensure the desired configuration is present in the custom profile smartcard-auth
+      ansible.builtin.lineinfile:
+        create: true
+        dest: "/etc/pam.d/smartcard-auth"
+        insertbefore: ^session.*
+        firstmatch: yes
+        regexp: '^(\s*auth.*pam_sss\.so)$'
+        line: "auth     sufficient                   pam_sss.so try_cert_auth"
+    
+    - name: Ensure the desired configuration is present in the custom profile system-auth
+      ansible.builtin.lineinfile:
+        create: true
+        dest: "/etc/pam.d/system-auth"
+        insertbefore: ^session.*
+        firstmatch: yes
+        regexp: '^(\s*auth.*pam_sss\.so)$'
+        line: "auth     sufficient                   pam_sss.so try_cert_auth"
+
     - name: Ensure the try_cert_auth option is in smartcard-auth
       ansible.builtin.replace:
         dest: "/etc/pam.d/smartcard-auth"
