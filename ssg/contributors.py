@@ -64,6 +64,9 @@ email_mappings = {
     # Robin Price II
     "rprice@users.noreply.github.com": "robin@redhat.com",
     "rprice@redhat.com": "robin@redhat.com",
+    # Juan Antonio Osorio Robles
+    "jaosorior@redhat.com": "juan.osoriorobles@eu.equinix.com",
+    "jaosorior@gmail.com": "juan.osoriorobles@eu.equinix.com",
     # Vincent Shen
     "wenshen@redhat.com": "47534281+Vincent056@users.noreply.github.com",
     # Dave / David Smith
