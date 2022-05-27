@@ -1,7 +1,6 @@
 import pytest
 
 import os
-import re
 import ssg.build_cpe
 import ssg.xml
 from ssg.yaml import open_raw
