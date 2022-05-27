@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2022-04-01 16:31
+Last Modified: 2022-05-27 14:09
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -116,6 +116,7 @@ The following people have contributed to the SCAP Security Guide project
 * Jarrett Lee <jarrettl@umd.edu>
 * Joseph Lenox <joseph.lenox@collins.com>
 * Jan Lieskovsky <jlieskov@redhat.com>
+* Markus Linnala <Markus.Linnala@knowit.fi>
 * Šimon Lukašík <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
@@ -176,8 +177,7 @@ The following people have contributed to the SCAP Security Guide project
 * rhayes <rhayes@rivierautilities.com>
 * Pat Riehecky <riehecky@fnal.gov>
 * rlucente-se-jboss <rlucente@redhat.com>
-* Juan Antonio Osorio Robles <jaosorior@redhat.com>
-* Juan Osorio Robles <jaosorior@gmail.com>
+* Juan Antonio Osorio Robles <juan.osoriorobles@eu.equinix.com>
 * Matt Rogers <mrogers@redhat.com>
 * Jesse Roland <jesse.roland@onyxpoint.com>
 * Joshua Roys <roysjosh@gmail.com>
@@ -219,6 +219,7 @@ The following people have contributed to the SCAP Security Guide project
 * tom <tom@localhost.localdomain>
 * tomas.hudik <tomas.hudik@embedit.cz>
 * Jeb Trayer <jeb.d.trayer@uscg.mil>
+* TrilokGeer <tgeer@redhat.com>
 * Viktors Trubovics <viktors.trubovics@suse.com>
 * Nico Truzzolino <nico.truzzolino@gmx.de>
 * Brian Turek <brian.turek@gmail.com>
