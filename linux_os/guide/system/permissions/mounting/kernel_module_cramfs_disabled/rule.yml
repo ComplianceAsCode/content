@@ -48,7 +48,9 @@ references:
 
 {{{ complete_ocil_entry_module_disable(module="cramfs") }}}
 
-srg_requirement: '{{{ srg_requirement_kernel_module_disable('cramfs') }}}'
+fixtext: '{{{ fixtext_kernel_module_disabled("cramfs") }}}'
+
+srg_requirement: '{{{ srg_requirement_kernel_module_disable("cramfs") }}}'
 
 template:
     name: kernel_module_disabled
