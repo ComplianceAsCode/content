@@ -81,22 +81,26 @@ Those areas are going to be segmented by
   See the [style guide](04_style_guide.md) for more details.
 
 ##### Removal of Products
-Products
-  - that are past their declared EOL date, or
-  - that don't have contributions to files in their respective product folder for two years may be subject to removal.
-The following process shall be used:
-1. A pull request is created removing the product.
-This is pull request should mention the last few people who contributed to the product.
-   This includes the removal of
-   1. The product folder in `products/`
-   1. Removal of any Jinja templates that use the product
-   1. Removal of the product from all `prodtyes`
-1. A comment period of 21 days shall start once the pull request is ready for review.
-The pull reqeust description must explicitly state the date and time (in UTC) when the comment period will close.
+Products may be subject to removal from the project if at least one of the following is true:
+  - Past their declared EOL date
+  - Have not had contributions to files in their respective product folder for **two years**
+
+The following process shall be used to start the removal of the product:
+1. A GitHub issue is created proposing the removal the product.
+    The issue must contain the following:
+    1. The end date and time (in UTC) of the comment period 
+    1. Mention at last contributor, more than one is preferred
+    1. The reason for removal (lack of contributions or product EOL)
+1. A comment period of **21 days** shall be observed.
+The issue description must explicitly state the date and time (in UTC) when the comment period will close.
 1. If there are no outstanding objections once the comment period closes the product should be removed.
-
-Once a product is no longer receiving security updates (end-of-life) may be removed using the normal pull request process.
-
+This is pull request should mention the last few people who contributed to the product.
+    This includes the removal of
+    1. The product folder in `products/`
+    1. Removal of any Jinja templates that use the product
+    1. Removal of the product from all `prodtyes`
+    1. Removal of any product specific checks or remediatons
+    1. Removal of any product specific templates
 
 #### Product Specific Profiles (PSPs)
 
