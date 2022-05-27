@@ -72,7 +72,6 @@ def test_process_fix(env_yaml, cpe_platforms):
 
     assert result is not None
     assert len(result) == 2
-    assert 'some_helper_function' in result.contents
     assert '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]' in result.contents
     do_test_contents(result.contents, result.config)
 

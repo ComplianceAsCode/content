@@ -220,22 +220,18 @@ class CPEALLogicalTest(Function):
             contents += "! "
         contents += "( "
         child_condlines = []
-        child_includes = set()
         for a in self.args:
             r = a.get_bash_conditional(product_cpes, conditionals_path, env_yaml)
             if r is not None:
                 cont = r.contents.strip()
                 if cont:
                     child_condlines.append(cont)
-                if 'include' in r.config:
-                    child_includes.update(r.config['include'].split(','))
         if self.is_or():
             op = " || "
         elif self.is_and():
             op = " && "
         contents += op.join(child_condlines)
         contents += " )"
-        config['include'] = ",".join(child_includes)
         return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
     def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
@@ -246,22 +242,18 @@ class CPEALLogicalTest(Function):
             contents += "not "
         contents += "( "
         child_ansible_conds = []
-        child_includes = set()
         for a in self.args:
             r = a.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
             if r is not None:
                 cont = r.contents.strip()
                 if cont:
                     child_ansible_conds.append(cont)
-                if 'include' in r.config:
-                    child_includes.update(r.config['include'].split(','))
         if self.is_or():
             op = " or "
         elif self.is_and():
             op = " and "
         contents += op.join(child_ansible_conds)
         contents += " )"
-        config['include'] = ",".join(child_includes)
         return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
 
