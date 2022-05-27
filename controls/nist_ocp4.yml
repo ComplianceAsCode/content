@@ -2446,10 +2446,10 @@ controls:
     and:
     https://docs.openshift.com/container-platform/4.7/security/audit-log-policy-config.html
 
-    Note that in order to correlate RHCOS audit.log entries that audit
-    process activity with container workloads, the CRI-O container runtime
-    is being enhanced to log the PID<->container relation:
-      https://github.com/cri-o/cri-o/pull/5134
+    It is also possible to correlate the container IDs that can be found
+    in the Kubernetes audit log in the RequestResponses with Linux audit
+    subsystem logs that track processes by their PID. The containerID to PID
+    link is logged by the container runtime into the system journal.
 
     Section b: Coordinating the security audit function with other
     organizational entities is outside the scope of
