@@ -50,8 +50,7 @@ fixtext: |-
     
     Reboot the system for the settings to take effect.
 
-srg_requirement:
-  {{{ full_name }}} Bluetooth must be disabled.
+srg_requirement: '{{{ srg_requirement_kernel_module_disable('bluetooth') }}}'
 
 platform: machine
 

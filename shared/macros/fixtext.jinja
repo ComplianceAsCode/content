@@ -315,3 +315,33 @@ Configure the audit system to generate an audit event for any successful/unsucce
 
 The audit daemon must be restarted for the changes to take effect.
 {{%- endmacro %}}
+
+{{#
+Fixtext for removing a package
+
+:param package: The package to remove
+:type package: str
+
+#}}
+{{% macro fixtext_package_removed(package) %}}
+To remove the {{{ full_name }}} package {{{ package }}} run the following command:
+{{{ describe_package_remove(package) }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for disabling a kernel module
+
+:param module: module to disable
+:type module: str
+
+#}}
+{{% macro fixtext_kernel_module_disabled(module) %}}
+Configure {{{ full_name }}} to disable the ability to use the {{{ module }}} kernel module.
+
+Add or update the following lines in the file "/etc/modprobe.d/blacklist.conf":
+
+install {{{ module }}} /bin/true
+blacklist {{{ module }}}
+
+Reboot the system for the settings to take effect.
+{{%- endmacro %}}

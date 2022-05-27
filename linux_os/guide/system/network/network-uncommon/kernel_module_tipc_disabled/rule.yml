@@ -46,6 +46,10 @@ references:
 
 {{{ complete_ocil_entry_module_disable(module="tipc") }}}
 
+fixtext: '{{{ fixtext_kernel_module_disabled("tipc") }}}'
+
+srg_requirement: '{{{ srg_requirement_kernel_module_disable('tipc') }}}'
+
 template:
     name: kernel_module_disabled
     vars:

@@ -25,6 +25,10 @@ references:
 
 {{{ complete_ocil_entry_package(package="gssproxy") }}}
 
+srg_requirement: '{{{ srg_requirement_package_removed("gssproxy") }}}'
+
+fixtext: '{{{ fixtext_package_removed("gssproxy") }}}'
+
 platforms:
 {{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
 

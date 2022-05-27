@@ -32,6 +32,10 @@ references:
 
 {{{ complete_ocil_entry_module_disable(module="atm") }}}
 
+fixtext: '{{{ fixtext_kernel_module_disabled("atm") }}}'
+
+srg_requirement: '{{{ srg_requirement_kernel_module_disable('atm') }}}'
+
 template:
     name: kernel_module_disabled
     vars:

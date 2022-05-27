@@ -31,6 +31,8 @@ references:
 
 {{{ complete_ocil_entry_module_disable(module="firewire-core") }}}
 
+srg_requirement: '{{{ srg_requirement_kernel_module_disable('firewire-core') }}}'
+
 template:
     name: kernel_module_disabled
     vars:
