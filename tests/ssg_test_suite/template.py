@@ -19,10 +19,11 @@ class TemplateChecker(rule.RuleChecker):
         super(TemplateChecker, self).__init__(test_env)
         self.target_type = "template"
 
-    def _rule_should_be_tested(self, rule, target_templates, tested_templates):
-        if rule.template in target_templates:
-            return True
-        return False
+    def _rule_matches_rule_spec(self, rule_short_id):
+        return True
+
+    def _rule_matches_template_spec(self, template):
+        return (template in self.template_spec)
 
 
 def perform_template_check(options):
@@ -41,5 +42,7 @@ def perform_template_check(options):
     checker.slice_total = options.slice_total
     checker.scenarios_profile = options.scenarios_profile
 
-    checker.test_target(options.target)
+    checker.rule_spec = None
+    checker.template_spec = options.target
+    checker.test_target()
     return

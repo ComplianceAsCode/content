@@ -21,12 +21,14 @@ from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
 
+import ssg.templates
+
+Rule = collections.namedtuple(
+    "Rule",
+    ["directory", "id", "short_id", "template", "local_env_yaml", "rule"])
+
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
-
-
-Scenario = collections.namedtuple(
-    "Scenario", ["script", "context", "script_params", "contents"])
 
 
 def get_viable_profiles(selected_profiles, datastream, benchmark, script=None):
@@ -97,14 +99,6 @@ def _apply_script(rule_dir, test_env, script):
     return True
 
 
-def _get_script_context(script):
-    """Return context of the script."""
-    result = re.search(r'.*\.([^.]*)\.[^.]*$', script)
-    if result is None:
-        return None
-    return result.group(1)
-
-
 class RuleChecker(oscap.Checker):
     """
     Rule checks generally work like this -
@@ -129,6 +123,9 @@ class RuleChecker(oscap.Checker):
         self._current_result = None
         self.remote_dir = ""
         self.target_type = "rule ID"
+        self.used_templated_test_scenarios = collections.defaultdict(set)
+        self.rule_spec = None
+        self.template_spec = None
 
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
@@ -229,23 +226,23 @@ class RuleChecker(oscap.Checker):
         tested_templates.add(rule.template)
         return False
 
-    def _rule_should_be_tested(self, rule, rules_to_be_tested, tested_templates):
-        if 'ALL' in rules_to_be_tested:
-            # don't select rules that are not present in benchmark
-            if not xml_operations.find_rule_in_benchmark(
-                    self.datastream, self.benchmark_id, rule.id):
-                return False
-            return not self._rule_template_been_tested(rule, tested_templates)
+    def _rule_matches_rule_spec(self, rule_short_id):
+        rule_id = OSCAP_RULE + rule_short_id
+        if 'ALL' in self.rule_spec:
+            return True
         else:
-            for rule_to_be_tested in rules_to_be_tested:
+            for rule_to_be_tested in self.rule_spec:
                 # we check for a substring
                 if rule_to_be_tested.startswith(OSCAP_RULE):
                     pattern = rule_to_be_tested
                 else:
                     pattern = OSCAP_RULE + rule_to_be_tested
-                if fnmatch.fnmatch(rule.id, pattern):
-                    return not self._rule_template_been_tested(rule, tested_templates)
+                if fnmatch.fnmatch(rule_id, pattern):
+                    return True
             return False
+
+    def _rule_matches_template_spec(self, template):
+        return True
 
     def _ensure_package_present_for_all_scenarios(self, scenarios_by_rule):
         packages_required = set()
@@ -266,21 +263,72 @@ class RuleChecker(oscap.Checker):
 
         self._ensure_package_present_for_all_scenarios(scenarios_by_rule)
 
-    def _get_rules_to_test(self, target):
-        rules_to_test = []
-        tested_templates = set()
-        for rule in common.iterate_over_rules(self.test_env.product):
-            if not self._rule_should_be_tested(rule, target, tested_templates):
+    def _get_rules_to_test(self):
+        """
+        Returns:
+            List of named tuples Rule having these fields:
+                directory -- absolute path to the rule "tests" subdirectory
+                            containing the test scenarios in Bash
+                id -- full rule id as it is present in datastream
+                short_id -- short rule ID, the same as basename of the directory
+                            containing the test scenarios in Bash
+                template -- name of the template the rule uses
+                local_env_yaml -- env_yaml specific to rule's own context
+                rule -- rule class, contains information parsed from rule.yml
+        """
+
+        # Here we need to perform some magic to handle parsing the rule (from a
+        # product perspective) and loading any templated tests. In particular,
+        # identifying which tests to potentially run involves invoking the
+        # templating engine.
+        #
+        # Begin by loading context about our execution environment, if any.
+        product = self.test_env.product
+        product_yaml = common.get_product_context(product)
+        rules = []
+
+        for dirpath, dirnames, filenames in common.walk_through_benchmark_dirs(
+                product):
+            if not common.is_rule_dir(dirpath):
+                continue
+            short_rule_id = os.path.basename(dirpath)
+            full_rule_id = OSCAP_RULE + short_rule_id
+            if not self._rule_matches_rule_spec(short_rule_id):
                 continue
             if not xml_operations.find_rule_in_benchmark(
-                    self.datastream, self.benchmark_id, rule.id):
+                    self.datastream, self.benchmark_id, full_rule_id):
                 logging.error(
                     "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
-                    .format(rule.id, self.benchmark_id, self.datastream))
+                    .format(full_rule_id, self.benchmark_id, self.datastream))
                 continue
-            rules_to_test.append(rule)
 
-        return rules_to_test
+            # Load the rule itself to check for a template.
+            rule, local_env_yaml = common.load_rule_and_env(
+                dirpath, product_yaml, product)
+
+            # Before we get too far, we wish to search the rule YAML to see if
+            # it is applicable to the current product. If we have a product
+            # and the rule isn't applicable for the product, there's no point
+            # in continuing with the rest of the loading. This should speed up
+            # the loading of the templated tests. Note that we've already
+            # parsed the prodtype into local_env_yaml
+            if product and local_env_yaml['products']:
+                prodtypes = local_env_yaml['products']
+                if "all" not in prodtypes and product not in prodtypes:
+                    continue
+
+            tests_dir = os.path.join(dirpath, "tests")
+            template_name = None
+            if rule.template and rule.template['vars']:
+                template_name = rule.template['name']
+            if not self._rule_matches_template_spec(template_name):
+                continue
+            result = Rule(
+                directory=tests_dir, id=full_rule_id,
+                short_id=short_rule_id, template=template_name,
+                local_env_yaml=local_env_yaml, rule=rule)
+            rules.append(result)
+        return rules
 
     def test_rule(self, state, rule, scenarios):
         remediation_available = self._is_remediation_available(rule)
@@ -308,90 +356,86 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = [scenario]
         return new_sbr
 
-    def _test_target(self, target):
-        rules_to_test = self._get_rules_to_test(target)
-        if not rules_to_test:
-            logging.error("No tests found matching the {0}(s) '{1}'".format(
-                self.target_type,
-                ", ".join(target)))
-            return
+    def _get_rule_scenarios(self, rule):
+        product_yaml = common.get_product_context(self.test_env.product)
+        # Initialize a mock template_builder.
+        empty = "/ssgts/empty/placeholder"
+        template_builder = ssg.templates.Builder(
+            product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
 
+        # All tests is a mapping from path (in the tarball) to contents
+        # of the test case. This is necessary because later code (which
+        # attempts to parse headers from the test case) don't have easy
+        # access to templated content. By reading it and returning it
+        # here, we can save later code from having to understand the
+        # templating system.
+        all_tests = dict()
+
+        # Start by checking for templating tests and provision them if
+        # present.
+        all_templated_test_scenarios = common.fetch_templated_test_scenarios(
+            rule.rule, template_builder, rule.local_env_yaml)
+        templated_test_scenarios = common.apply_test_config(
+            rule.directory, product_yaml, all_templated_test_scenarios)
+
+        # Add additional tests from the local rule directory. Note that,
+        # like the behavior in template_tests, this will overwrite any
+        # templated tests with the same file name.
+        local_test_scenarios = common.fetch_local_test_scenarios(
+            rule.directory, rule.local_env_yaml)
+
+        for filename in local_test_scenarios:
+            templated_test_scenarios.pop(filename, None)
+        for filename in self.used_templated_test_scenarios[rule.template]:
+            templated_test_scenarios.pop(filename, None)
+        self.used_templated_test_scenarios[rule.template] |= set(
+            templated_test_scenarios.keys())
+        all_tests.update(templated_test_scenarios)
+        all_tests.update(local_test_scenarios)
+
+        # Filter out everything except the shell test scenarios.
+        # Other files in rule directories are editor swap files
+        # or other content than a test case.
+        allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
+        content_mapping = {x: all_tests[x] for x in allowed_scripts}
+
+        scenarios = []
+        for script, script_contents in content_mapping.items():
+            scenario = Scenario(script, script_contents)
+            scenario.override_profile(self.scenarios_profile)
+            if (scenario.matches_regex(self.scenarios_regex) and
+                    scenario.matches_platform(self.benchmark_cpes)):
+                scenarios.append(scenario)
+        return scenarios
+
+    def _get_scenarios_by_rule_id(self, rules_to_test):
         scenarios_by_rule_id = dict()
         for rule in rules_to_test:
-            rule_scenarios = self._get_scenarios(
-                rule.directory, rule.scenarios_basenames, self.scenarios_regex,
-                self.benchmark_cpes)
-            scenarios_by_rule_id[rule.id] = rule_scenarios
+            scenarios_by_rule_id[rule.id] = self._get_rule_scenarios(rule)
         sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
                                                       self.slice_current,
                                                       self.slice_total)
-        self._prepare_environment(sliced_scenarios_by_rule_id)
+        return sliced_scenarios_by_rule_id
+
+    def _test_target(self):
+        rules_to_test = self._get_rules_to_test()
+        if not rules_to_test:
+            logging.error("No tests found matching the {0}(s) '{1}'".format(
+                self.target_type,
+                ", ".join(self.rule_spec)))
+            return
+
+        scenarios_by_rule_id = self._get_scenarios_by_rule_id(rules_to_test)
+
+        self._prepare_environment(scenarios_by_rule_id)
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in rules_to_test:
                 try:
-                    self.test_rule(state, rule, sliced_scenarios_by_rule_id[rule.id])
+                    self.test_rule(state, rule, scenarios_by_rule_id[rule.id])
                 except KeyError:
                     # rule is not processed in given slice
                     pass
-
-    def _modify_parameters(self, script, params):
-        if self.scenarios_profile:
-            params['profiles'] = [self.scenarios_profile]
-
-        if not params["profiles"]:
-            params["profiles"].append(OSCAP_PROFILE_ALL_ID)
-            logging.debug(
-                "Added the {0} profile to the list of available profiles for {1}"
-                .format(OSCAP_PROFILE_ALL_ID, script))
-        return params
-
-    def _parse_parameters(self, script_content):
-        """Parse parameters from script header"""
-        params = {'profiles': [],
-                  'templates': [],
-                  'packages': [],
-                  'platform': ['multi_platform_all'],
-                  'remediation': ['all'],
-                  'variables': [],
-                  }
-
-        for parameter in params:
-            found = re.search(r'^# {0} = (.*)$'.format(parameter),
-                              script_content, re.MULTILINE)
-            if found is None:
-                continue
-            splitted = found.group(1).split(',')
-            params[parameter] = [value.strip() for value in splitted]
-
-        return params
-
-    def _get_scenarios(self, rule_dir, scripts, scenarios_regex, benchmark_cpes):
-        """ Returns only valid scenario files, rest is ignored (is not meant
-        to be executed directly.
-        """
-
-        if scenarios_regex is not None:
-            scenarios_pattern = re.compile(scenarios_regex)
-
-        scenarios = []
-        for script in scripts:
-            script_contents = scripts[script]
-            if scenarios_regex is not None:
-                if scenarios_pattern.match(script) is None:
-                    logging.debug("Skipping script %s - it did not match "
-                                  "--scenarios regex" % script)
-                    continue
-            script_context = _get_script_context(script)
-            if script_context is not None:
-                script_params = self._parse_parameters(script_contents)
-                script_params = self._modify_parameters(script, script_params)
-                if common.matches_platform(script_params["platform"], benchmark_cpes):
-                    scenarios += [Scenario(script, script_context, script_params, script_contents)]
-                else:
-                    logging.warning("Script %s is not applicable on given platform" % script)
-
-        return scenarios
 
     def _check_rule(self, rule, scenarios, remote_dir, state, remediation_available):
         remote_rule_dir = os.path.join(remote_dir, rule.short_id)
@@ -489,6 +533,77 @@ class RuleChecker(oscap.Checker):
             json.dump(self.results, f)
 
 
+class Scenario():
+    def __init__(self, script, script_contents):
+        self.script = script
+        self.context = self._get_script_context()
+        self.contents = script_contents
+        self.script_params = self._parse_parameters()
+
+    def _get_script_context(self):
+        """Return context of the script."""
+        result = re.search(r'.*\.([^.]*)\.[^.]*$', self.script)
+        if result is None:
+            return None
+        return result.group(1)
+
+    def _parse_parameters(self):
+        """Parse parameters from script header"""
+        params = {
+            'profiles': [],
+            'templates': [],
+            'packages': [],
+            'platform': ['multi_platform_all'],
+            'remediation': ['all'],
+            'variables': [],
+        }
+
+        for parameter in params:
+            found = re.search(
+                r'^# {0} = (.*)$'.format(parameter),
+                self.contents, re.MULTILINE)
+            if found is None:
+                continue
+            splitted = found.group(1).split(',')
+            params[parameter] = [value.strip() for value in splitted]
+
+        if not params["profiles"]:
+            params["profiles"].append(OSCAP_PROFILE_ALL_ID)
+            logging.debug(
+                "Added the {0} profile to the list of available profiles "
+                "for {1}"
+                .format(OSCAP_PROFILE_ALL_ID, self.script))
+
+        return params
+
+    def override_profile(self, scenarios_profile):
+        if scenarios_profile:
+            self.script_params['profiles'] = [scenarios_profile]
+
+    def matches_regex(self, scenarios_regex):
+        if scenarios_regex is not None:
+            scenarios_pattern = re.compile(scenarios_regex)
+            if scenarios_pattern.match(self.script) is None:
+                logging.debug(
+                    "Skipping script %s - it did not match "
+                    "--scenarios regex" % self.script
+                )
+                return False
+        return True
+
+    def matches_platform(self, benchmark_cpes):
+        if self.context is None:
+            return False
+        if common.matches_platform(
+                self.script_params["platform"], benchmark_cpes):
+            return True
+        else:
+            logging.warning(
+                "Script %s is not applicable on given platform" %
+                self.script)
+            return False
+
+
 def perform_rule_check(options):
     checker = RuleChecker(options.test_env)
 
@@ -503,12 +618,12 @@ def perform_rule_check(options):
     checker.slice_current = options.slice_current
     checker.slice_total = options.slice_total
     checker.keep_snapshots = options.keep_snapshots
-
+    checker.rule_spec = options.target
+    checker.template_spec = None
     checker.scenarios_profile = options.scenarios_profile
     # check if target is a complete profile ID, if not prepend profile prefix
     if (checker.scenarios_profile is not None and
             not checker.scenarios_profile.startswith(OSCAP_PROFILE) and
             not oscap.is_virtual_oscap_profile(checker.scenarios_profile)):
         checker.scenarios_profile = OSCAP_PROFILE+options.scenarios_profile
-
-    checker.test_target(options.target)
+    checker.test_target()

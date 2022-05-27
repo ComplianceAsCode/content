@@ -39,10 +39,8 @@ class CombinedChecker(rule.RuleChecker):
         self._current_result = None
         self.run_aborted = False
 
-    def _rule_should_be_tested(self, rule, rules_to_be_tested, tested_templates):
-        if rule.short_id not in rules_to_be_tested:
-            return False
-        return not self._rule_template_been_tested(rule, tested_templates)
+    def _rule_matches_rule_spec(self, rule_short_id):
+        return (rule_short_id in self.rule_spec)
 
     def _modify_parameters(self, script, params):
         # If there is no profiles metadata in a script we will use
@@ -78,11 +76,11 @@ class CombinedChecker(rule.RuleChecker):
                       "rules: {1}".format(profile, target_rules))
         return target_rules
 
-    def _test_target(self, target):
-        self.rules_not_tested_yet = set(target)
+    def _test_target(self):
+        self.rules_not_tested_yet = set(self.rule_spec)
 
         try:
-            super(CombinedChecker, self)._test_target(target)
+            super(CombinedChecker, self)._test_target()
         except KeyboardInterrupt as exec_interrupt:
             self.run_aborted = True
             raise exec_interrupt
@@ -119,6 +117,8 @@ def perform_combined_check(options):
         checker.profile = profile
         target_rules = checker._generate_target_rules(profile)
 
-        checker.test_target(target_rules)
+        checker.rule_spec = target_rules
+        checker.template_spec = None
+        checker.test_target()
         if checker.run_aborted:
             return

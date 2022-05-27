@@ -16,9 +16,9 @@ class ProfileChecker(ssg_test_suite.oscap.Checker):
     using every profile according to input. Also perform remediation run.
     Return value not defined, textual output and generated reports is the result.
     """
-    def _test_target(self, target):
+    def _test_target(self):
         profiles = get_viable_profiles(
-            target, self.datastream, self.benchmark_id)
+            self.profile_spec, self.datastream, self.benchmark_id)
         self.run_test_for_all_profiles(profiles)
 
     def _run_test(self, profile, test_data):
@@ -44,5 +44,6 @@ def perform_profile_check(options):
     checker.datastream = options.datastream
     checker.benchmark_id = options.benchmark_id
     checker.remediate_using = options.remediate_using
+    checker.profile_spec = options.target
 
-    checker.test_target(options.target)
+    checker.test_target()
