@@ -12,11 +12,22 @@
 {{#
     Generate a SRG requirement text for audit syscall.
 
-:param path: Name of the syscall
-:type path: str
+:param event: Name of the syscall
+:type event: str
 
 #}}
 {{% macro srg_requirement_audit_syscall(event) %}}
 Successful/unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for auditing a command.
+
+:param command: Name of the command
+:type command: str
+
+#}}
+{{% macro srg_requirement_audit_command(command) %}}
+Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}} must generate an audit record.
 {{%- endmacro %}}
 

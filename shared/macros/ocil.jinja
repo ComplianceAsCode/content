@@ -35,6 +35,34 @@ oc get {{% if all_namespaces %}}--all-namespaces{{% elif namespace %}}-n {{{ nam
 {{# Audit macros #}}
 
 {{#
+Standard audit OCIL clause
+
+#}}
+{{%- macro ocil_clause_audit() -%}}
+the command does not return a line, or the line is commented out
+{{%- endmacro %}}
+
+{{#
+OCIL and OCIL clause for ensuring that a privileged command is audited.
+
+:param cmd: The command to audit
+:type cmd: str
+:param path_prefix: The directory the command is in
+:type path_prefix: str
+
+#}}
+{{% macro complete_ocil_entry_audit_privileged_commands(cmd, path_prefix) %}}
+ocil_clause: '{{{ ocil_clause_audit() }}}'
+
+ocil: |-
+    Verify that an audit event is generated for any successful/unsuccessful use of the {{{ cmd }}} command by performing the following command to check the file system rules in "/etc/audit/audit.rules":
+
+    $ sudo grep -w {{{ cmd }}} /etc/audit/audit.rules
+
+    -a always,exit -F path={{{ path_prefix }}}{{{ cmd }}} -F perm=x -F auid>=1000 -F auid!=unset -k privileged-{{{ cmd }}}
+{{% endmacro %}}
+
+{{#
     OCIL for adding a syscall to audit logs
 
 :param syscall: The syscall to audit
