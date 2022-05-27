@@ -64,6 +64,13 @@ The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
 The {{{ full_name }}} package {{{ package }}} must be installed.
 {{%- endmacro %}}
 
+{{#
+    Generate a SRG requirement text for service enabled.
+
+:param service: Name of the service to be enabled
+:type service: str
+
+#}}
 {{% macro srg_requirement_service_enabled(service) %}}
 The {{{ full_name }}} service {{{ service }}} must be enabled.
 {{%- endmacro %}}
