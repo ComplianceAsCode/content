@@ -81,7 +81,9 @@ Those areas are going to be segmented by
   See the [style guide](04_style_guide.md) for more details.
 
 ##### Removal of Products
-Products that do not have any contributions for two years may be subject to removal.
+Products
+  - that are past their declared EOL date, or
+  - that don't have contributions to files in their respective product folder for two years may be subject to removal.
 The following process shall be used:
 1. A pull request is created removing the product.
 This is pull request should mention the last few people who contributed to the product.
