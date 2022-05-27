@@ -57,6 +57,16 @@ jobs:
         with:
           name: srg-mapping-rhel9.html
           path: ${{ env.PAGES_DIR }}/srg-mapping-rhel9.html
+      - uses: actions/upload-artifact@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: srg-mapping-ocp4.xlsx
+          path: ${{ env.PAGES_DIR }}/srg-mapping-ocp4.xlsx
+      - uses: actions/upload-artifact@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          name: srg-mapping-ocp4.html
+          path: ${{ env.PAGES_DIR }}/srg-mapping-ocp4.html
       - name: Generate HTML pages
         run: utils/generate_html_index_srg_mapping.sh $PAGES_DIR "rhel9 ocp4" # add more products to this list to generate their index
         shell: bash
