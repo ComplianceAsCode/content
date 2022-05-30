@@ -56,11 +56,7 @@ references:
     srg: SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209
     vmmsrg: SRG-OS-000463-VMM-001850
 
-ocil: |-
-    To verify that execution of the command is being audited, run the following command:
-    <pre>$ sudo grep "path=/usr/sbin/restorecon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
-    The output should return something similar to:
-    <pre>-a always,exit -F path=/usr/sbin/restorecon {{{ perm_x }}}-F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged</pre>
+{{{ ocil_fix_srg_privileged_command("restorecon", "/usr/sbin/") }}}
 
 template:
     name: audit_rules_privileged_commands
