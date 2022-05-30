@@ -69,8 +69,12 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("auditd") }}}
 
-srg_requirement: |-
-    {{{ full_name }}} audit records must contain information to establish what type of events occurred, the source of events, where events occurred, and the outcome of events.
+{{% if 'ubuntu' not in product and 'debian' not in product %}}
+srg_requirement: '{{{ srg_requirement_service_enabled("audit") }}}'
+{{% else %}}
+srg_requirement: '{{{ srg_requirement_service_enabled("auditd") }}}'
+{{% endif %}}
+
 
 platform: audit
 
