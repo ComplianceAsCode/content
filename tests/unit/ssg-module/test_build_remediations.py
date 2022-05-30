@@ -4,8 +4,10 @@ import pytest
 import ssg.build_remediations as sbr
 import ssg.utils
 import ssg.products
-from ssg.yaml import ordered_load
+from ssg.yaml import ordered_load, open_raw
 import ssg.build_yaml
+import ssg.build_cpe
+
 
 DATADIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 rule_dir = os.path.join(DATADIR, "group_dir", "rule_dir")
@@ -20,10 +22,21 @@ def env_yaml():
 
 
 @pytest.fixture
-def cpe_platforms(env_yaml):
+def product_cpes():
+    product_yaml_path = os.path.join(DATADIR, "product.yml")
+    product_yaml = open_raw(product_yaml_path)
+    product_yaml["product_dir"] = os.path.dirname(product_yaml_path)
+    product_cpes = ssg.build_cpe.ProductCPEs()
+    product_cpes.load_product_cpes(product_yaml)
+    product_cpes.load_content_cpes(product_yaml)
+    return product_cpes
+
+
+@pytest.fixture
+def cpe_platforms(env_yaml, product_cpes):
     platforms = dict()
     platform_path = os.path.join(DATADIR, "machine.yml")
-    platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml)
+    platform = ssg.build_yaml.Platform.from_yaml(platform_path, env_yaml, product_cpes)
     platforms[platform.name] = platform
     return platforms
 
@@ -36,7 +49,6 @@ def test_is_supported_file_name():
 def do_test_contents(remediation, config):
     assert 'do_something_magical' in remediation
     assert '# a random comment' in remediation
-
 
     assert 'platform' in config
     assert 'reboot' in config
@@ -62,9 +74,6 @@ def test_parse_from_file_with_jinja():
 
 def test_process_fix(env_yaml, cpe_platforms):
     remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
-
-    fixes = {}
-
     remediation_obj = remediation_cls(rhel_bash)
     # create a fake rule
     # the rule uses the "machine" platform which has bash_conditional_line
@@ -76,7 +85,6 @@ def test_process_fix(env_yaml, cpe_platforms):
 
     assert result is not None
     assert len(result) == 2
-    assert 'some_helper_function' in result.contents
     assert '[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]' in result.contents
     do_test_contents(result.contents, result.config)
 

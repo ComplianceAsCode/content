@@ -6,18 +6,21 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
+from collections import namedtuple, defaultdict
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
 from .utils import merge_dicts, required_key
 from .xml import ElementTree as ET
-from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
 from .data_structures import XCCDFEntity
+
+from . import remediations
 
 
 class CPEDoesNotExist(Exception):
     pass
+
 
 class ProductCPEs(object):
     """
@@ -68,7 +71,7 @@ class ProductCPEs(object):
             if ext != '.yml':
                 sys.stderr.write(
                     "Encountered file '%s' while looking for content CPEs, "
-                    "extension '%s' is unknown. Skipping..\n"
+                    "extension '%s' is unknown. Skipping...\n"
                     % (dir_item, ext)
                 )
                 continue
@@ -149,6 +152,7 @@ class CPEList(object):
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8")
 
+
 class CPEItem(XCCDFEntity):
     """
     Represents the cpe-item element from the CPE standard.
@@ -157,9 +161,7 @@ class CPEItem(XCCDFEntity):
     KEYS = dict(
         name=lambda: "",
         title=lambda: "",
-        check_id=lambda: "",
-        bash_conditional=lambda: dict(),
-        ansible_conditional=lambda: "",
+        conditional=lambda: {},
         template=lambda: {},
         is_product_cpe=lambda: False,
         args=lambda: {},
@@ -169,16 +171,10 @@ class CPEItem(XCCDFEntity):
     MANDATORY_KEYS = [
         "name",
         "title",
-        "check_id"
     ]
 
     prefix = "cpe-dict"
     ns = PREFIX_TO_NS[prefix]
-
-#@classmethod
-#    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
-#        cpeitem = super(CPEItem, cls).from_yaml(yaml_file, env_yaml)
-
 
     def to_xml_element(self, cpe_oval_filename):
         cpe_item = ET.Element("{%s}cpe-item" % CPEItem.ns)
@@ -191,7 +187,7 @@ class CPEItem(XCCDFEntity):
         cpe_item_check = ET.SubElement(cpe_item, "{%s}check" % CPEItem.ns)
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
-        cpe_item_check.text = self.check_id
+        cpe_item_check.text = self.conditional.get('oval_id', self.id_)
         return cpe_item
 
 
@@ -216,47 +212,52 @@ class CPEALLogicalTest(Function):
         for arg in self.args:
             arg.add_enriched_cpe_items(product_cpes)
 
-    def get_bash_conditional_line(self, product_cpes):
-        condline = ""
+    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+        contents = ''
+        config = defaultdict(lambda: None)
+        op = " "
         if self.is_not():
-            condline += "! "
-            op = " "
-        condline += "( "
-        child_condlines = [
-            a.get_bash_conditional_line(product_cpes) for a in self.args
-            if a.get_bash_conditional_line(product_cpes) != '']
+            contents += "! "
+        contents += "( "
+        child_condlines = []
+        for a in self.args:
+            r = a.get_bash_conditional(product_cpes, conditionals_path, env_yaml)
+            if r is not None:
+                cont = r.contents.strip()
+                if cont:
+                    child_condlines.append(cont)
         if self.is_or():
             op = " || "
         elif self.is_and():
             op = " && "
-        condline += op.join(child_condlines)
-        condline += " )"
-        return condline
+        contents += op.join(child_condlines)
+        contents += " )"
+        return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
-    def get_bash_inserted_before_remediation(self, product_cpes):
-        lines = [a.get_bash_inserted_before_remediation(product_cpes) for a in self.args
-            if a.get_bash_inserted_before_remediation(product_cpes) is not None]
-        return "\n".join(lines)
-
-    def get_ansible_conditional(self, product_cpes):
-        cond = ""
+    def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
+        contents = ''
+        config = defaultdict(lambda: None)
+        op = " "
         if self.is_not():
-            cond += "not "
-            op = " "
-        cond += "( "
-        child_ansible_conds = [
-            a.get_ansible_conditional(product_cpes) for a in self.args
-            if a.get_ansible_conditional(product_cpes) != '']
+            contents += "not "
+        contents += "( "
+        child_ansible_conds = []
+        for a in self.args:
+            r = a.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
+            if r is not None:
+                cont = r.contents.strip()
+                if cont:
+                    child_ansible_conds.append(cont)
         if self.is_or():
             op = " or "
         elif self.is_and():
             op = " and "
-        cond += op.join(child_ansible_conds)
-        cond += " )"
-        return cond
+        contents += op.join(child_ansible_conds)
+        contents += " )"
+        return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
 
-class CPEALFactRef (Symbol):
+class CPEALFactRef(Symbol):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
@@ -264,24 +265,17 @@ class CPEALFactRef (Symbol):
     def __init__(self, obj):
         super(CPEALFactRef, self).__init__(obj)
         self.cpe_name = obj  # we do not want to modify original name used for platforms
-        self.bash_conditional = {}
-        self.ansible_conditional = ""
-
-    def has_arguments(self):
-        k = self.as_dict().keys()
-        return "arg" in k or "op" in k or "ver" in k
+        self.conditional = {}
 
     def add_enriched_cpe_items(self, product_cpes):
-        # if we have arguments, we have to copy the templated cpe and fill in the arguments
-        if self.has_arguments():
-            old_cpe_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
-            # ignore remediation snippets for now when templating, they will be removed eventually from the CPE item definition
-            not_templated_keys = ["ansible_conditional", "bash_conditional"]
-            new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict(), not_templated_keys)
-            new_cpe_dict["id_"] = self.as_id()
-            new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
-            self.cpe_name = product_cpes.get_cpe_name(self.cpe_name)
-            product_cpes.add_cpe_item(new_cpe)
+        old_cpe_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
+        # ignore remediation snippets for now when templating, they will be removed eventually from the CPE item definition
+        not_templated_keys = ["conditional"]
+        new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict(), not_templated_keys)
+        new_cpe_dict["id_"] = self.as_id()
+        new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
+        self.cpe_name = product_cpes.get_cpe_name(self.cpe_name)
+        product_cpes.add_cpe_item(new_cpe)
 
     def to_xml_element(self):
         cpe_factref = ET.Element("{%s}fact-ref" % CPEALFactRef.ns)
@@ -289,14 +283,31 @@ class CPEALFactRef (Symbol):
 
         return cpe_factref
 
-    def get_bash_conditional_line(self, product_cpes):
-        return product_cpes.get_cpe(self.as_id()).bash_conditional.get("conditional", "")
+    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+        cpe = product_cpes.get_cpe(self.as_id())
+        cond = cpe.conditional.get("bash", "")
+        if cond:
+            return remediations.parse_from_string_with_jinja(cond, env_yaml)
+        elif conditionals_path is not None:
+            templated_conditional_file = os.path.join(conditionals_path, 'bash',
+                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['bash'])
+            if os.path.exists(templated_conditional_file):
+                return remediations.parse_from_file_without_jinja(templated_conditional_file)
+        return None
 
-    def get_bash_inserted_before_remediation(self, product_cpes):
-        return product_cpes.get_cpe(self.as_id()).bash_conditional.get("inserted_before_remediation", "")
+    def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
+        cpe = product_cpes.get_cpe(self.as_id())
+        cond = cpe.conditional.get("ansible", "")
+        if cond:
+            return remediations.parse_from_string_with_jinja(cond, env_yaml)
+        elif conditionals_path is not None:
+            templated_conditional_file = os.path.join(conditionals_path,
+                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['ansible'])
+            if os.path.exists(templated_conditional_file):
+                return remediations.parse_from_file_without_jinja(templated_conditional_file)
+        return None
 
-    def get_ansible_conditional(self, product_cpes):
-        return product_cpes.get_cpe(self.as_id()).ansible_conditional
+
 
 def extract_subelement(objects, sub_elem_type):
     """
@@ -312,7 +323,7 @@ def extract_subelement(objects, sub_elem_type):
         # decide on usage of .iter or .getiterator method of elementtree class.
         # getiterator is deprecated in Python 3.9, but iter is not available in
         # older versions
-        if getattr(obj, "iter", None) == None:
+        if getattr(obj, "iter", None) is None:
             obj_iterator = obj.getiterator()
         else:
             obj_iterator = obj.iter()
@@ -350,11 +361,10 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     reflist = []
     elementlist = []
 
-
     # decide on usage of .iter or .getiterator method of elementtree class.
     # getiterator is deprecated in Python 3.9, but iter is not available in
     # older versions
-    if getattr(tree_with_refs, "iter", None) == None:
+    if getattr(tree_with_refs, "iter", None) is None:
         tree_with_refs_iterator = tree_with_refs.getiterator()
     else:
         tree_with_refs_iterator = tree_with_refs.iter()
@@ -366,7 +376,7 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     # decide on usage of .iter or .getiterator method of elementtree class.
     # getiterator is deprecated in Python 3.9, but iter is not available in
     # older versions
-    if getattr(tree_with_ids, "iter", None) == None:
+    if getattr(tree_with_ids, "iter", None) is None:
         tree_with_ids_iterator = tree_with_ids.getiterator()
     else:
         tree_with_ids_iterator = tree_with_ids.iter()
@@ -375,6 +385,7 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
             elementlist.append(element)
 
     return elementlist
+
 
 def apply_formatting_on_dict_values(source_dict, string_dict, not_templated_keys):
     """

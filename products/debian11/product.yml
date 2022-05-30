@@ -18,7 +18,8 @@ cpes:
   - debian11:
       name: "cpe:/o:debian:debian_linux:11"
       title: "Debian Linux 11"
-      check_id: installed_OS_is_debian11
+      conditional:
+        oval_id: installed_OS_is_debian11
 
 # Mapping of CPE platform to package
 platform_package_overrides:

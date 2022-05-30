@@ -18,9 +18,7 @@ except ImportError:
     from urllib import quote
 
 languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition",
-             "kubernetes", "blueprint", "sce-bash",
-             "conditional.oval"]
-rule_related_languages = [l for l in languages if not l.startswith("conditional")]
+             "kubernetes", "blueprint", "sce-bash"]
 preprocessing_file_name = "template.py"
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -32,14 +30,13 @@ lang_to_ext_map = {
     "kubernetes": ".yml",
     "blueprint": ".toml",
     "sce-bash": ".sh",
-    "conditional.oval": ".conditional.xml",
 }
 
 
 templates = dict()
 
 
-class Template():
+class Template:
     def __init__(self, template_root_directory, name):
         self.template_root_directory = template_root_directory
         self.name = name
@@ -230,21 +227,18 @@ class Builder(object):
         if "backends" in rule.template:
             backends = rule.template["backends"]
             for lang in backends:
-                if lang not in rule_related_languages:
+                if lang not in languages:
                     raise RuntimeError(
                         "Rule {0} wants to generate unknown language '{1}"
                         "from a template.".format(rule.id_, lang)
                     )
             langs_to_generate = []
-            for lang in rule_related_languages:
+            for lang in languages:
                 backend = backends.get(lang, "on")
                 if backend == "on":
                     langs_to_generate.append(lang)
             return langs_to_generate
-        else:
-            # return all languages except for the one for OVAL inventory
-            # these are not related to rules
-            return rule_related_languages
+        return languages
 
     def get_template_name(self, template):
         """
@@ -255,12 +249,12 @@ class Builder(object):
             template_name = template["name"]
         except KeyError:
             raise ValueError(
-                "Rule {0} is missing template name under template key".format(
-                    rule_id))
+                "Template {0} is missing template name key".format(
+                    repr(template)))
         if template_name not in templates.keys():
             raise ValueError(
-                "Rule {0} uses template {1} which does not exist.".format(
-                    rule_id, template_name))
+                "Template {0} uses template name {1} which does not exist in templates".format(
+                    repr(template), template_name))
         return template_name
 
     def get_resolved_langs_to_generate(self, rule):
@@ -327,44 +321,38 @@ class Builder(object):
 
     def build_platform(self, platform):
         for symbol in platform.test.get_symbols():
-            name = symbol.name
-            full_name = symbol.as_id()
-            symbol_dict = symbol.as_dict()
-            cpe = self.product_cpes.get_cpe(full_name)
+            cpe_id = symbol.as_id()
+            cpe = self.product_cpes.get_cpe(cpe_id)
+
             if 'name' not in cpe.template:
                 continue
             template_name = cpe.template['name']
-            try:
-                arg = symbol.get_arg()
-                if arg in cpe.args:
-                    rendered_vars = cpe.args[arg]
-                elif arg is None:
-                    rendered_vars = {}
-                else:
-                    raise ValueError("Platform {0} does not allow arg '{1}' ".format(name, arg))
-                rendered_vars.update(symbol_dict)
-                for var, var_fmt_str in cpe.template['vars'].items():
-                    rendered_vars[var] = var_fmt_str.format(**symbol_dict)
-                template_vars = self.process_product_vars(rendered_vars)
-            except KeyError:
-                raise ValueError(
-                    "Platform {0} does not contain mandatory 'vars:' key under "
-                    "'template:' key.".format(name))
-            # Add the check_id ID which will be reused in OVAL templates as OVAL
+
+            arg = symbol.arg
+            if arg in cpe.args:
+                rendered_vars = cpe.args[arg]
+            elif arg is None:
+                rendered_vars = {}
+            else:
+                raise ValueError("Platform {0} does not allow arg '{1}' ".format(symbol.name, arg))
+            rendered_vars.update(symbol.as_dict())
+            template_vars = self.process_product_vars(rendered_vars)
+
+            # Add the rule_id ID which will be reused in OVAL templates as OVAL
             # definition ID so that the build system matches the generated
             # check with the rule.
-            template_vars["_check_id"] = cpe.check_id
+            template_vars["_rule_id"] = cpe_id
             # checks and remediations are processed with a custom YAML dict
             local_env_yaml = self.env_yaml.copy()
-            local_env_yaml["rule_id"] = name
-            #local_env_yaml["rule_title"] = rule_title
+            local_env_yaml["rule_id"] = cpe_id
+            local_env_yaml["rule_title"] = cpe.title
             local_env_yaml["products"] = self.env_yaml["product"]
 
-            for lang in ['conditional.oval']:
+            for lang in ['oval', 'bash', 'ansible']:
                 try:
-                    self.build_lang(full_name, template_name, template_vars, lang, local_env_yaml)
+                    self.build_lang(cpe_id, template_name, template_vars, lang, local_env_yaml)
                 except Exception as e:
-                    print("Error building templated {0} content for platform {1}".format(lang, name), file=sys.stderr)
+                    print("Error building template {0} for platform {1}".format(lang, symbol.name), file=sys.stderr)
                     raise e
 
     def get_lang_for_rule(self, rule_id, rule_title, template, language):

@@ -1,0 +1,12 @@
+name: 'cpe:/a:{arg}:{ver_cpe}'
+title: 'Package {arg} {ver_str} is installed'
+template:
+    name: cond_package
+args:
+    chronytest:
+        title: "Chrony Server Test"
+        pkgname: chrony
+        pkgname@debian10: chrony
+    ntptest:
+        title: "NTP Server Test"
+        pkgname: ntp

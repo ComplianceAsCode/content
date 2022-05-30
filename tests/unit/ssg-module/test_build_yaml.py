@@ -154,7 +154,7 @@ def test_platform_from_text_simple(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("machine", product_cpes)
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
-    assert platform_el.get("id") == "machine"
+    assert platform_el.get("id") == '50f29e3d-05ac-5d11-be18-a001abdef4c3'  # "machine"
     logical_tests = platform_el.findall(
         "{%s}logical-test" % cpe_language_namespace)
     assert len(logical_tests) == 1
@@ -170,7 +170,7 @@ def test_platform_from_text_simple_product_cpe(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("rhel7-workstation", product_cpes)
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
-    assert platform_el.get("id") == "rhel7-workstation"
+    assert platform_el.get("id") == '9dedf00c-2720-5990-9649-ae7d45a6be80'  # "rhel7-workstation"
     logical_tests = platform_el.findall(
         "{%s}logical-test" % cpe_language_namespace)
     assert len(logical_tests) == 1
@@ -187,7 +187,7 @@ def test_platform_from_text_or(product_cpes):
     platform = ssg.build_yaml.Platform.from_text("ntp or chrony", product_cpes)
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
-    assert platform_el.get("id") == "chrony_or_ntp"
+    assert platform_el.get("id") == '07f4f9e5-61f1-5bad-a650-8057ebce023d'  # "chrony_or_ntp"
     logical_tests = platform_el.findall(
         "{%s}logical-test" % cpe_language_namespace)
     assert len(logical_tests) == 1
@@ -205,7 +205,7 @@ def test_platform_from_text_complex_expression(product_cpes):
         "systemd and !yum and (ntp or chrony)", product_cpes)
     platform_el = platform.to_xml_element()
     assert platform_el.tag == "{%s}platform" % cpe_language_namespace
-    assert platform_el.get("id") == "systemd_and_chrony_or_ntp_and_not_yum"
+    assert platform_el.get("id") == 'f79e17f6-a0fc-5ea7-8cea-53ef9646704f'  # "systemd_and_chrony_or_ntp_and_not_yum"
     logical_tests = platform_el.findall(
         "{%s}logical-test" % cpe_language_namespace)
     assert len(logical_tests) == 1
@@ -246,7 +246,7 @@ def test_platform_as_dict(product_cpes):
     pl = ssg.build_yaml.Platform.from_text("chrony and rhel7", product_cpes)
     # represent_as_dict is used during dump_yaml
     d = pl.represent_as_dict()
-    assert d["name"] == "chrony_and_rhel7"
+    assert d["name"] == 'a37aa1d5-548f-5612-b378-3be8c3a068c9'  # "chrony_and_rhel7"
     # the "rhel7" platform doesn't have any conditionals
     # therefore the final conditional doesn't use it
     assert "xml_content" in d
