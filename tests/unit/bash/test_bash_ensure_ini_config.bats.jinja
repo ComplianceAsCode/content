@@ -86,6 +86,21 @@ function call_bash_ensure_ini_config {
     rm -rf sssd_test
 }
 
+@test "bash_ensure_ini_config - Append option to section when section is substring of option" {
+    mkdir sssd_test
+    printf "[pam]\n" > sssd_test/sssd.conf
+    expected_output="[pam]\npam_verbosity = 1\npam_cert_auth = true\n"
+
+    call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_cert_auth" "true"
+    call_bash_ensure_ini_config "sssd_test/sssd.conf" "pam" "pam_verbosity" "1"
+
+    run diff "sssd_test/sssd.conf" <(printf "$expected_output")
+
+    rm -rf sssd_test
+
+    [ "$status" -eq 0 ]
+}
+
 @test "bash_ensure_ini_config - Append option to section in multiple files" {
     mkdir sssd_test
     printf "[pam]\n" > sssd_test/sssd.conf
