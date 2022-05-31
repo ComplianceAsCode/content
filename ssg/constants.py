@@ -39,6 +39,7 @@ SSG_REF_URIS = {
 }
 
 product_directories = [
+    'alinux2',
     'chromium',
     'debian9', 'debian10', 'debian11',
     'example',
@@ -191,6 +192,7 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 }
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
+    "Alinux 2": "alinux2",
     "Chromium": "chromium",
     "Debian 9": "debian9",
     "Debian 10": "debian10",
@@ -259,9 +261,10 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks"]
+                       "example", "eks", "alinux"]
 
 MULTI_PLATFORM_MAPPING = {
+    "multi_platform_alinux": ["alinux2"],
     "multi_platform_debian": ["debian9", "debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
@@ -426,6 +429,7 @@ XCCDF_PLATFORM_TO_PACKAGE = {
 
 # _version_name_map = {
 MAKEFILE_ID_TO_PRODUCT_MAP = {
+    'alinux': 'Alibaba Cloud Linux',
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
