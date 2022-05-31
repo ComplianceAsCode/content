@@ -1399,31 +1399,31 @@ The **bolded** items are under direct control of content authors.
 * CCI -> DISA OS SRG XML
 * SRGID -> The control id
 * SRG Requirement ->  DISA OS SRG XML
-* **Requirement** -> The rule's description or if there are no rules the control's description.
+* **Requirement** -> The rule's `srg_requirement` or if there are no rules the control's `title`.
 * SRG VulDiscussion -> DISA OS SRG XML
-* **Vul Discussion** -> Rule's rationale
+* **Vul Discussion** -> Rule's `rationale` or the control's `rationale`
 * **Status** -> Control
-  * If there are rules the status will be `Applicable - Configurable`
+  * If there are rules the status should be `Applicable - Configurable`
   * The status can be set on the control as well
 * SRG Check -> DISA OS SRG XML
-* **Check** -> OCIL and OCIL clause from the rule
-  * The first part of the check comes from OCIL of the rule
-  * The last part is "If {OCIL clause}, then it is a finding"
+* **Check** -> `ocil` and `ocil_clause` from the rule
+  * The first part of the check comes from `ocil` of the rule
+  * The last part is "If {ocil_clause}, then it is a finding"
 * SRG Fix -> DISA OS SRG XML
   * As of V2R1 that field is blank
-* **Fixtext** -> Rule's fix
+* **Fixtext** -> Rule's `fixtext` or the control's `fix`
 * **Severity** -> DISA OS SRG XML or Control
   * By default, it comes from the DISA OS SRG
   * Can be overridden by the control
 * **Mitigation** -> Control
 * **Artifact Description** -> Control
 * **Status Justification** -> Control
-* **Status** -> Control
+
 
 #### Exporting
 To export the spreadsheet use the following command:
 
     $ ./utils/create_srg_export.py -c controls/srg_gpos.yml -p rhel9
 
-The output will be out in CSV file in build directory.
+The output by default will be out in CSV file in build directory.
 The file will be a csv file named as the UNIX timestamp of when the file was created.
