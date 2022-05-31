@@ -81,26 +81,26 @@ Those areas are going to be segmented by
   See the [style guide](04_style_guide.md) for more details.
 
 ##### Removal of Products
-Products may be subject to removal from the project if at least one of the following is true:
-  - Past their declared EOL date
+Products may be subject to removal from the project if at **least one** of the following is true:
+  - Past their declared end-of-life date
   - Have not had contributions to files in their respective product folder for **two years**
 
 The following process shall be used to start the removal of the product:
 1. A GitHub issue is created proposing the removal of the product.
     The issue must contain the following:
     1. The end date and time (in UTC) of the comment period 
-    1. Mention at last contributor, more than one is preferred
+    1. A mention of the last contributor to the product, more than one is preferred
     1. The reason for removal (lack of contributions or product EOL)
 1. A comment period of **21 days** shall be observed.
 The issue description must explicitly state the date and time (in UTC) when the comment period will close.
-1. If there are no outstanding objections once the comment period closes the product should be removed.
-This is pull request should mention the last few people who contributed to the product.
-    This includes the removal of
+1. In the case of lack of contributions, if there are no new contributors that volunteer once the comment period closes the product shall be removed.
+   Products that are going EOL the product shall be removed unless there is an objection form a representative of product.
+The pull request removing the product should include the removal of
     1. The product folder in `products/`
-    1. Removal of any Jinja templates that use the product
-    1. Removal of the product from all `prodtyes`
-    1. Removal of any product specific checks or remediatons
-    1. Removal of any product specific templates
+    1. any Jinja templates that use the product
+    1. the product from all `prodtyes`
+    1. any product specific checks or remediatons
+    1. any product specific templates
 
 #### Product Specific Profiles (PSPs)
 
