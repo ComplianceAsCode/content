@@ -50,7 +50,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for file deletion events
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -61,7 +61,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - chmod
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -72,7 +72,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - chown
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -83,7 +83,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - chown
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -94,7 +94,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - attr
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -128,7 +128,7 @@ separated by an and and others are separated by a comma.
     Generate a fixtext for audit rules for unsuccessful file modification
     Used in rules using template audit_rules_unsuccessful_file_modification
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 :param syscall_grouping: A list of other syscalls that can be audited with the
     same audit rules.
@@ -145,7 +145,7 @@ separated by an and and others are separated by a comma.
     when O_CREAT flag is specified.
     Used in rules using template audit_rules_unsuccessful_file_modification_o_creat
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 :param pos: position of the O_CREAT argument in the syscall parameters
 :type pos: str
@@ -160,7 +160,7 @@ separated by an and and others are separated by a comma.
     when O_TRUNC_WRITE flag is specified.
     Used in rules using template audit_rules_unsuccessful_file_modification_o_trunc_write
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 :param pos: position of the O_CREAT argument in the syscall parameters
 :type pos: str
@@ -174,7 +174,7 @@ separated by an and and others are separated by a comma.
     Generate a fixtext for ordering of audit rules for unsuccessful file modification.
     Used in rules using template audit_rules_unsuccessful_file_modification_rule_order.
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
