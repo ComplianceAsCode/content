@@ -447,9 +447,9 @@ selections:
 - var_accounts_maximum_age_login_defs=60
 - var_auditd_space_left_percentage=25pc
 - var_auditd_space_left_action=email
-- var_auditd_disk_error_action=halt
+- var_auditd_disk_error_action=rhel8
 - var_auditd_max_log_file_action=syslog
-- var_auditd_disk_full_action=halt
+- var_auditd_disk_full_action=rhel8
 - var_sssd_certificate_verification_digest_function=sha1
 - login_banner_text=dod_banners
 - var_system_crypto_policy=fips
