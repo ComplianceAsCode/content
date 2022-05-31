@@ -1109,7 +1109,7 @@ Create an OCIL text for rules using the audit_rules_unsuccessful_file_modificati
 :param syscall: system call
 :type syscall: str
 #}}
-{{% macro ocil_audit_rules_unsuccessful_file_modification(syscall) -%}}
+{{% macro ocil_audit_rules_unsuccessful_file_modification(syscall, key) -%}}
 Verify {{{ full_name }}} generates an audit record for unsuccessful attempts to use the {{{ syscall }}} system call.
 
 If the auditd daemon is configured to use the "augenrules" program to to read audit rules during daemon startup (the default), run the following command:
@@ -1122,10 +1122,10 @@ $ sudo grep {{{ syscall }}} /etc/audit/audit.rules
 
 The output should be the following:
 
--a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k key
--a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k key
--a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k key
--a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k key
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b32 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ syscall }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
 
 {{%- endmacro %}}
 
