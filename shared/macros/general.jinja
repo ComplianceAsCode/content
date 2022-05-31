@@ -1158,3 +1158,25 @@ srg_requirement: '{{{ srg_requirement_audit_command(cmd) }}}'
 -a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
 -a always,exit -F arch=b64 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
 {{%- endmacro -%}}
+
+{{#
+Join list of items to create a human readable list in which the last item is
+separated by an and and others are separated by a comma.
+
+:param items: list of strings
+:type items: list
+
+#}}
+{{%- macro join_list(items) -%}}
+{{%- for x in items -%}}
+{{%- if loop.first -%}}
+{{{ x }}}
+{{%- else -%}}
+{{%- if loop.last -%}}
+{{{ " and " + x }}}
+{{%- else -%}}
+{{{ ", " + x }}}
+{{%- endif -%}}
+{{%- endif -%}}
+{{%- endfor -%}}
+{{%- endmacro -%}}
