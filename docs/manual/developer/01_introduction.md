@@ -86,7 +86,7 @@ Products may be subject to removal from the project if at least one of the follo
   - Have not had contributions to files in their respective product folder for **two years**
 
 The following process shall be used to start the removal of the product:
-1. A GitHub issue is created proposing the removal the product.
+1. A GitHub issue is created proposing the removal of the product.
     The issue must contain the following:
     1. The end date and time (in UTC) of the comment period 
     1. Mention at last contributor, more than one is preferred
