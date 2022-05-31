@@ -1,5 +1,23 @@
 # ComplianceAsCode Style Guide
 
+## Labels
+* Label-less approach should be followed
+* Labels must have a clear and objective description
+* New labels should be created in lowercase
+* New labels should be agnostic to PRs and Issues
+* Labels related to the same group/category should share the same colors, like in these examples:
+  * Assessment languages related labels, like "OVAL" and "OCIL", share the color <span style="color:#0e8a16">#0e8a16</span>
+  * Attention required labels, like "BLOCKER" and "productization-issue", share the color <span style="color:#e11d21">#e11d21</span>
+  * Benchmarks related labels, like "CIS" and "STIG", share the color <span style="color:#08d2d8">#08d2d8</span>
+  * Components related labels, like "Test Suite" and "Documentation", share the color <span style="color:#84b6eb">#84b6eb</span>
+  * Improvements related labels, like "New Product" or "New Rule", share the color <span style="color:#c2e0c6">#c2e0c6</span>
+  * "EyeCatcher" related labels, like a "Highlight" or "bugfix", share the color <span style="color:#fbca04">#fbca04</span>
+  * Product related labels, like "RHEL" and "Ubuntu", share the color <span style="color:#4141f4">#4141f4</span>
+  * Remediation related labels, like "Ansible" and "Bash", share the color <span style="color:#9bf442">#9bf442</span>
+* It is possible to have custom labels for ad-hoc tasks. These must be properly managed and removed when no longer necessary.
+* Be careful changing labels names or removing labels. Some labels are used by bots and automated processes, like the release changelog generation:
+  * https://github.com/ComplianceAsCode/content/blob/master/.github/workflows/release-changelog.json
+
 ## Pull Requests
 * Should follow [the template](https://github.com/ComplianceAsCode/content/blob/master/.github/pull_request_template.md)
 * Shall remove the sample text from the template pull request
