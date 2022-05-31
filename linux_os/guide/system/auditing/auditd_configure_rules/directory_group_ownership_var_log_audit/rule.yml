@@ -7,8 +7,10 @@ title: 'System Audit Directories Must Be Group Owned By Root'
 description: |-
     All audit directories must be group owned by root user. By default, the path for audit log is <pre>/var/log/audit/</pre>.
     {{{ describe_file_group_owner(file="/var/log/audit", group="root") }}}
+    {{% if product != "ol8" %}}
     If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the <tt>root</tt>
     group account, change the group ownership of the audit directories to this specific group.
+    {{% endif %}}
 
 rationale: |-
     Unauthorized disclosure of audit records can reveal system and configuration data to
@@ -37,6 +39,23 @@ references:
     stigid@rhel8: RHEL-08-030110
 
 ocil: |-
+    {{% if product =="ol8" %}}
+    Determine where the audit logs are stored with the following command:
+
+    $ sudo grep -iw log_file /etc/audit/auditd.conf
+
+    log_file = /var/log/audit/audit.log
+
+    Determine the group owner of the audit log directory by using the output of the above command
+    (default: "/var/log/audit/"). Run the following command with the correct audit log directory
+    path:
+
+    $ sudo ls -ld /var/log/audit
+
+    drwx------ 2 root root 23 Jun 11 11:56 /var/log/audit
+
+    The audit log directory must be group-owned by "root".
+    {{% else %}}
     Determine the audit log group by running the following command:
 
     $ sudo grep -P '^[ ]*log_group[ ]+=.*$' /etc/audit/auditd.conf
@@ -47,11 +66,20 @@ ocil: |-
     $ sudo find /var/log/audit -type d -printf "%p %g\n"
 
     All listed directories must be owned by the log_group or by root if the log_group is not specified.
-
+    {{% endif %}}
 ocil_clause:
     "there is a directory owned by different group"
 
 fixtext: |-
+    {{% if product == "ol8" %}}
+    Configure the audit log to be protected from unauthorized read access by setting the correct
+    group-owner as "root" with the following command:
+
+    $ sudo chgrp root [audit_log_directory]
+
+    Replace "[audit_log_directory]" with the correct audit log directory path. By default, this
+    location is usually "/var/log/audit".
+    {{% else %}}
     Change the group of the directory of "/var/log/audit" to be owned by a correct group.
 
     Identify the group that is configured to own audit log:
@@ -60,6 +88,6 @@ fixtext: |-
 
     Change the ownership to that group:
     $ sudo chgrp ${GROUP} /var/log/audit
-
+    {{% endif %}}
 srg_requirement: |-
     {{{ full_name }}} audit logs must be group-owned by root or by a restricted logging group to prevent unauthorized read access.

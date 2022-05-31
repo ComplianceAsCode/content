@@ -2,39 +2,83 @@
   <definition class="compliance" id="directory_group_ownership_var_log_audit" version="1">
     {{{ oval_metadata("Checks that all /var/log/audit directories are group owned by the root user.") }}}
     <criteria operator="OR">
-      <criterion test_ref="test_group_ownership_var_log_audit_directories" />
+      <criteria operator="AND" comment="log_file set">
+        <extend_definition comment="log_file set in auditd.conf"
+        definition_ref="auditd_conf_log_file_not_set" negate="true" />
+        <criterion comment="log directory is owned by root"
+        test_ref="test_group_ownership_var_log_audit_directories" />
+      </criteria>
+      <criteria operator="AND" comment="log_file not set">
+        <extend_definition comment="log_file set in auditd.conf"
+        definition_ref="auditd_conf_log_file_not_set" />
+        <criterion comment="default log directory is owned by root"
+        test_ref="test_group_ownership_default_var_log_audit_directories" />
+      </criteria>
+      {{% if product != "ol8" %}}
       <criteria operator="AND" comment="log_group in auditd.conf is not root">
         <extend_definition comment="log_group in auditd.conf is not root"
         definition_ref="auditd_conf_log_group_not_root" />
         <criterion test_ref="test_group_ownership_var_log_audit_directories-non_root" />
       </criteria>
+      {{% endif %}}
     </criteria>
   </definition>
-  
-  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit directories uid root gid root" id="test_group_ownership_var_log_audit_directories" version="1">
-    <unix:object object_ref="object_group_ownership_var_log_audit_directories" />
+
+  <local_variable id="audit_log_dir_group_ownership" datatype="string" version="1"
+  comment="path to audit log directory">
+    <regex_capture pattern="^(.*)\/([^\/]+$)">
+      <variable_component var_ref="audit_log_file_path" />
+    </regex_capture>
+  </local_variable>
+
+  <unix:file_test check="all" check_existence="none_exist"
+  comment="/var/log/audit directories uid root gid root"
+  id="test_group_ownership_default_var_log_audit_directories" version="1">
+    <unix:object object_ref="object_group_ownership_default_var_log_audit_directories" />
   </unix:file_test>
 
-  <unix:file_object comment="/var/log/audit directories" id="object_group_ownership_var_log_audit_directories" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+  <unix:file_object comment="/var/log/audit directories"
+  id="object_group_ownership_default_var_log_audit_directories" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+    recurse_file_system="all" />
     <unix:path operation="equals">/var/log/audit</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_group_owner_not_root_var_log_audit_directories</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_group_owner_not_root_var_log_audit_directories" version="1" operator="OR">
+  <unix:file_state id="state_group_owner_not_root_var_log_audit_directories" version="1"
+  operator="OR">
     <unix:group_id datatype="int" operation="not equal">0</unix:group_id>
   </unix:file_state>
 
+  {{% if product != "ol8" %}}
   <unix:file_test check="all" check_existence="all_exist" comment="/var/log/audit directories uid root gid root" id="test_group_ownership_var_log_audit_directories-non_root" version="1">
     <unix:object object_ref="object_group_ownership_var_log_audit_directories-non_root" />
   </unix:file_test>
+  {{% endif %}}
 
+  <unix:file_test check="all" check_existence="none_exist"
+  comment="/var/log/audit directories uid root gid root"
+  id="test_group_ownership_var_log_audit_directories" version="1">
+    <unix:object object_ref="object_group_ownership_var_log_audit_directories" />
+  </unix:file_test>
+
+  {{% if product != "ol8" %}}
   <unix:file_object comment="/var/log/audit directories" id="object_group_ownership_var_log_audit_directories-non_root" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
     <unix:path operation="equals">/var/log/audit</unix:path>
     <unix:filename xsi:nil="true" />
     <filter action="include">state_group_owner_not_root_var_log_audit_directories-non_root</filter>
+  </unix:file_object>
+  {{% endif %}}
+
+  <unix:file_object comment="log directories"
+  id="object_group_ownership_var_log_audit_directories" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
+    recurse_file_system="all" />
+    <unix:path operation="equals" var_ref="audit_log_dir_group_ownership"/>
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_group_owner_not_root_var_log_audit_directories</filter>
   </unix:file_object>
 
   <unix:file_state id="state_group_owner_not_root_var_log_audit_directories-non_root" version="1" operator="OR">
