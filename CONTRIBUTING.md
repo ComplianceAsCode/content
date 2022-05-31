@@ -13,6 +13,8 @@ calibrated.
 
 Issues
 ---
+Before filing a new issue, search through existing issues to ensure a similar issue is not already reported. Sometimes there are similar issues with subtle differences or spanning different use cases, but essentially related to the same issue. If this is the case, we recommend expressing your support and including relevant information to existing issues.
+
 When creating an issue, please be detailed as possible without writing an essay! This makes the
 issue actionable. Ideally, issues with small tasks should be created to help others understand what
 needs to be accomplished.
