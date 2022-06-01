@@ -110,6 +110,7 @@ def perform_combined_check(options):
     checker.manual_debug = False
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
+    checker.scenarios_profile = None
     checker.slice_current = options.slice_current
     checker.slice_total = options.slice_total
     for profile in options.target:
