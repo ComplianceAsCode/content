@@ -18,19 +18,27 @@ Add or update the following file system rule to <tt>{{{ rule_path }}}</tt>:
 The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
-{{% macro fixtext_audit_rules(event, key, event_group, extra_params=False) -%}}
-Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" system call by adding or updating the following rules in the "/etc/audit/rules.d/audit.rules" file:
+{{% macro fixtext_audit_rules(event, key, event_group, extra_params=False, flag=None) -%}}
+Configure the audit system to generate an audit event for any successful/unsuccessful use of the "{{{ event }}}" system call by adding or updating the following rules in "/etc/audit/audit.rules" and adding the following rules to "/etc/audit/rules.d/{{{ key }}}.rules" or updating the existing rules in files in the "/etc/audit/rules.d/" directory:
 
-{{%- if extra_params %}}
+{{% if extra_params -%}}
+{{% if flag -%}}
+-a always,exit -F arch=b32 -S {{{ event }}} -F {{{ flag }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F {{{ flag }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
+
+-a always,exit -F arch=b32 -S {{{ event }}} -F {{{ flag }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+-a always,exit -F arch=b64 -S {{{ event }}} -F {{{ flag }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
+{{% else -%}}
 -a always,exit -F arch=b32 -S {{{ event }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
 -a always,exit -F arch=b64 -S {{{ event }}} -F exit=-EPERM -F auid>=1000 -F auid!=unset -k {{{ key }}}
 
 -a always,exit -F arch=b32 -S {{{ event }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
 -a always,exit -F arch=b64 -S {{{ event }}} -F exit=-EACCES -F auid>=1000 -F auid!=unset -k {{{ key }}}
-{{%- else %}}
+{{% endif %}}
+{{% else %}}
 -a always,exit -F arch=b32 -S {{{ event }}} -F auid>=1000 -F auid!=unset -k {{{ key }}}
 -a always,exit -F arch=b64 -S {{{ event }}} -F auid>=1000 -F auid!=unset -k {{{ key }}}
-{{%- endif %}}
+{{%- endif -%}}
 
 {{%- if event_group %}}
 It's allowed to group this system call within the same line as {{{ event_group }}}.
@@ -42,7 +50,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for file deletion events
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -53,7 +61,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - chmod
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -64,7 +72,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - chown
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -75,7 +83,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - chown
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -86,7 +94,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
     Generate a fixtext for audit rules for dac modification events - attr
 
-:param syscall: Sycall name
+:param syscall: syscall name
 :type path: str
 
 #}}
@@ -95,14 +103,67 @@ The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{#
-    Generate a fixtext for audit rules for unsuccessful audit - creat
+    Generate a fixtext for audit rules for unsuccessful file modification
+    Used in rules using template audit_rules_unsuccessful_file_modification
 
-:param syscall: Sycall name
+:param syscall: syscall name
+:type path: str
+:param syscall_grouping: A list of other syscalls that can be audited with the
+    same audit rules.
 :type path: str
 
 #}}
-{{% macro fixtext_audit_rules_unsuccessful_file_modification_creat(syscall) -%}}
-{{{ fixtext_audit_rules(syscall, "perm_access", '"creat", "ftruncate", "truncate", "open", "openat" and "open_by_handle_at"', extra_params=True) }}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification(syscall, syscall_grouping) -%}}
+{{%- set syscall_grouping_text = join_list(syscall_grouping) -%}}
+{{{ fixtext_audit_rules(syscall, "access", syscall_grouping_text, extra_params=True) }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for unsuccessful file modification
+    when O_CREAT flag is specified.
+    Used in rules using template audit_rules_unsuccessful_file_modification_o_creat
+
+:param syscall: syscall name
+:type path: str
+:param pos: position of the O_CREAT argument in the syscall parameters
+:type pos: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_o_creat(syscall, pos) -%}}
+{{{ fixtext_audit_rules(syscall, "unsuccesful-create", '"open", "openat" and "open_by_handle_at"', extra_params=True, flag=pos+"&amp;0100") }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for audit rules for unsuccessful file modification
+    when O_TRUNC_WRITE flag is specified.
+    Used in rules using template audit_rules_unsuccessful_file_modification_o_trunc_write
+
+:param syscall: syscall name
+:type path: str
+:param pos: position of the O_CREAT argument in the syscall parameters
+:type pos: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_o_trunc_write(syscall, pos) -%}}
+{{{ fixtext_audit_rules(syscall, "unsuccesful-modification", '"openat" and "open_by_handle_at"', extra_params=True, flag=pos+"&amp;01003") }}}
+{{% endmacro %}}
+
+{{#
+    Generate a fixtext for ordering of audit rules for unsuccessful file modification.
+    Used in rules using template audit_rules_unsuccessful_file_modification_rule_order.
+
+:param syscall: syscall name
+:type path: str
+
+#}}
+{{% macro fixtext_audit_rules_unsuccessful_file_modification_rule_order(syscall) -%}}
+    Make sure that rules for unsuccessful calls of the {{{ syscall }}} syscall are in the order shown below.
+
+    Create the file "/etc/audit/rules.d/30-ospp-v42-remediation.rules" and insert exactly this content:
+
+    {{{ audit_remediation_unsuccessful_file_modification_detailed_audit_file_content() }}}
+
+    The audit daemon must be restarted for the changes to take effect.
 {{% endmacro %}}
 
 {{#
