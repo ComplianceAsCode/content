@@ -66,3 +66,8 @@ references:
     vmmsrg: SRG-OS-000471-VMM-001910
 
 {{{ ocil_fix_srg_privileged_command("chage") }}}
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/chage
