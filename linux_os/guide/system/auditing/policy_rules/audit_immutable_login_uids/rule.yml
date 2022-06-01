@@ -50,13 +50,6 @@ ocil: |-
     The output has to be exactly as follows:
     <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
 
-template:
-    name: audit_file_contents
-    vars:
-        filepath: /etc/audit/rules.d/11-loginuid.rules
-        contents: |+
-            {{{ file_contents_audit_immutable_login|indent(12) }}}
-
 fixtext: |-
     Configure {{{ full_name }}} kernel to prevent modification of login UIDs once they are set.
 
@@ -68,5 +61,13 @@ fixtext: |-
 
     $ sudo chmod o-rwx "/etc/audit/rules.d/11-loginuid.rules"
     $ sudo augenrules --load
+
 srg_requirement: |-
     {{{ full_name }}} audit system must protect logon UIDs from unauthorized change.
+
+template:
+    name: audit_file_contents
+    vars:
+        filepath: /etc/audit/rules.d/11-loginuid.rules
+        contents: |+
+            {{{ file_contents_audit_immutable_login|indent(12) }}}
