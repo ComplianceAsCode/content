@@ -126,6 +126,7 @@ class RuleChecker(oscap.Checker):
         self.used_templated_test_scenarios = collections.defaultdict(set)
         self.rule_spec = None
         self.template_spec = None
+        self.scenarios_profile = None
 
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
