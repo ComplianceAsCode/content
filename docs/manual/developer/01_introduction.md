@@ -98,7 +98,7 @@ The issue description must explicitly state the date and time (in UTC) when the 
 The pull request removing the product should include the removal of
     1. The product folder in `products/`
     1. any Jinja templates that use the product
-    1. the product from all `prodtyes`
+    1. the product from all `prodtype`
     1. any product specific checks or remediatons
     1. any product specific templates
 
