@@ -27,6 +27,8 @@ Rule = collections.namedtuple(
     "Rule",
     ["directory", "id", "short_id", "template", "local_env_yaml", "rule"])
 
+RuleTestContent = collections.namedtuple(
+    "RuleTestContent", ["scenarios", "other_content"])
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -245,24 +247,25 @@ class RuleChecker(oscap.Checker):
     def _rule_matches_template_spec(self, template):
         return True
 
-    def _ensure_package_present_for_all_scenarios(self, scenarios_by_rule):
+    def _ensure_package_present_for_all_scenarios(
+            self, test_content_by_rule_id):
         packages_required = set()
-        for rule, scenarios in scenarios_by_rule.items():
-            for s in scenarios:
+        for rule_test_content in test_content_by_rule_id.values():
+            for s in rule_test_content.scenarios:
                 scenario_packages = s.script_params["packages"]
                 packages_required.update(scenario_packages)
         if packages_required:
             common.install_packages(self.test_env, packages_required)
 
-    def _prepare_environment(self, scenarios_by_rule):
-        domain_ip = self.test_env.domain_ip
+    def _prepare_environment(self, test_content_by_rule_id):
         try:
-            self.remote_dir = common.send_scripts(self.test_env)
+            self.remote_dir = common.send_scripts(
+                self.test_env, test_content_by_rule_id)
         except RuntimeError as exc:
             msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
             raise RuntimeError(msg)
 
-        self._ensure_package_present_for_all_scenarios(scenarios_by_rule)
+        self._ensure_package_present_for_all_scenarios(test_content_by_rule_id)
 
     def _get_rules_to_test(self):
         """
@@ -342,13 +345,14 @@ class RuleChecker(oscap.Checker):
             rule, scenarios,
             self.remote_dir, state, remediation_available)
 
-    def _slice_sbr(self, scenarios_by_rule_id, slice_current, slice_total):
+    def _slice_sbr(self, test_content_by_rule_id, slice_current, slice_total):
         """  Returns only a subset of test scenarios, representing slice_current-th
         slice out of slice_total"""
 
         tuple_repr = []
-        for rule_id in scenarios_by_rule_id:
-            tuple_repr += itertools.product([rule_id], scenarios_by_rule_id[rule_id])
+        for rule_id in test_content_by_rule_id:
+            tuple_repr += itertools.product([rule_id],
+                test_content_by_rule_id[rule_id].scenarios)
 
         total_scenarios = len(tuple_repr)
         slice_low_bound = math.ceil(total_scenarios / slice_total * (slice_current - 1))
@@ -357,12 +361,14 @@ class RuleChecker(oscap.Checker):
         new_sbr = {}
         for rule_id, scenario in tuple_repr[slice_low_bound:slice_high_bound]:
             try:
-                new_sbr[rule_id].append(scenario)
+                new_sbr[rule_id].scenarios.append(scenario)
             except KeyError:
-                new_sbr[rule_id] = [scenario]
+                scenarios = [scenario]
+                other_content = test_content_by_rule_id[rule_id].other_content
+                new_sbr[rule_id] = RuleTestContent(scenarios, other_content)
         return new_sbr
 
-    def _get_rule_scenarios(self, rule):
+    def _get_rule_test_content(self, rule):
         product_yaml = common.get_product_context(self.test_env.product)
         # Initialize a mock template_builder.
         empty = "/ssgts/empty/placeholder"
@@ -400,29 +406,28 @@ class RuleChecker(oscap.Checker):
         all_tests.update(templated_test_scenarios)
         all_tests.update(local_test_scenarios)
 
-        # Filter out everything except the shell test scenarios.
-        # Other files in rule directories are editor swap files
-        # or other content than a test case.
-        allowed_scripts = filter(lambda x: x.endswith(".sh"), all_tests)
-        content_mapping = {x: all_tests[x] for x in allowed_scripts}
-
         scenarios = []
-        for script, script_contents in content_mapping.items():
-            scenario = Scenario(script, script_contents)
-            scenario.override_profile(self.scenarios_profile)
-            if (scenario.matches_regex(self.scenarios_regex) and
-                    scenario.matches_platform(self.benchmark_cpes)):
-                scenarios.append(scenario)
-        return scenarios
+        other_content = dict()
+        for file_name, file_content in all_tests.items():
+            # if the file name matches this regex, the file is a scenario
+            if re.search(r'.*\.[^.]*\.sh$', file_name):
+                scenario = Scenario(file_name, file_content)
+                scenario.override_profile(self.scenarios_profile)
+                if (scenario.matches_regex(self.scenarios_regex) and
+                        scenario.matches_platform(self.benchmark_cpes)):
+                    scenarios.append(scenario)
+            else:
+                other_content[file_name] = file_content
+        return RuleTestContent(scenarios, other_content)
 
-    def _get_scenarios_by_rule_id(self, rules_to_test):
-        scenarios_by_rule_id = dict()
+    def _get_test_content_by_rule_id(self, rules_to_test):
+        test_content_by_rule_id = dict()
         for rule in rules_to_test:
-            scenarios_by_rule_id[rule.id] = self._get_rule_scenarios(rule)
-        sliced_scenarios_by_rule_id = self._slice_sbr(scenarios_by_rule_id,
-                                                      self.slice_current,
-                                                      self.slice_total)
-        return sliced_scenarios_by_rule_id
+            rule_test_content = self._get_rule_test_content(rule)
+            test_content_by_rule_id[rule.id] = rule_test_content
+        sliced_test_content_by_rule_id = self._slice_sbr(
+            test_content_by_rule_id, self.slice_current, self.slice_total)
+        return sliced_test_content_by_rule_id
 
     def _test_target(self):
         rules_to_test = self._get_rules_to_test()
@@ -432,14 +437,17 @@ class RuleChecker(oscap.Checker):
                 ", ".join(self.rule_spec)))
             return
 
-        scenarios_by_rule_id = self._get_scenarios_by_rule_id(rules_to_test)
+        test_content_by_rule_id = self._get_test_content_by_rule_id(
+            rules_to_test)
 
-        self._prepare_environment(scenarios_by_rule_id)
+        self._prepare_environment(test_content_by_rule_id)
 
-        with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
+        with test_env.SavedState.create_from_environment(
+                self.test_env, "tests_uploaded") as state:
             for rule in rules_to_test:
                 try:
-                    self.test_rule(state, rule, scenarios_by_rule_id[rule.id])
+                    scenarios = test_content_by_rule_id[rule.id].scenarios
+                    self.test_rule(state, rule, scenarios)
                 except KeyError:
                     # rule is not processed in given slice
                     pass
