@@ -7,6 +7,6 @@
 # to var_auditd_disk_error_action, else
 # add "disk_error_action = $var_auditd_disk_error_action" to /etc/audit/auditd.conf
 #
-var_auditd_disk_full_action="$(echo $var_auditd_disk_full_action | cut -d \| -f 1)"
+var_auditd_disk_error_action="$(echo $var_auditd_disk_error_action | cut -d \| -f 1)"
 
-{{{ bash_replace_or_append("/etc/audit/auditd.conf", '^disk_full_action', "$var_auditd_disk_full_action") }}}
+{{{ bash_replace_or_append("/etc/audit/auditd.conf", '^disk_error_action', "$var_auditd_disk_error_action") }}}
