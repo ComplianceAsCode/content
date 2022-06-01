@@ -86,3 +86,8 @@ def test_evaluate_advanced_version_ops(algebra):
     assert not exp(**{'oranges': '0.9.999'})
     assert not exp(**{'oranges': '0.9.999_beta_2'})
     assert not exp(**{'oranges': '2.6.0'})
+
+
+def test_as_dict(algebra):
+    exp = algebra.parse(u'oranges[fresh]>=1.0')
+    assert exp.as_dict()

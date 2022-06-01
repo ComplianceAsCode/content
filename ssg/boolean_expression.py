@@ -133,9 +133,11 @@ class Symbol(boolean.Symbol):
                 'op': op,
                 'ver': ver.replace('!', ':'),
                 'evr_op': SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'),
-                'evr_ver': str(version.epoch) + ':'
-                           + '.'.join(str(x) for x in version.release) + '-'
-                           + (str(version.post) if version.post else '0')
+                # Older version of pkg_resources does not have 'epoch' attribute in Version,
+                # we have to get the data from the internal instance: 'Version._version.epoch'
+                'evr_ver': str(version._version.epoch) + ':'
+                           + '.'.join(str(x) for x in version._version.release) + '-'
+                           + (str(version._version.post) if version._version.post else '0')
             })
 
         return res
