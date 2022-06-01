@@ -1,7 +1,8 @@
 # ComplianceAsCode Style Guide
 
 ## Labels
-* Label-less approach should be followed
+* Use labels efficiently
+  * For example, use only the minimal necessary labels
 * Labels must have a clear and objective description
 * New labels should be created in lowercase
 * New labels should be agnostic to PRs and Issues
