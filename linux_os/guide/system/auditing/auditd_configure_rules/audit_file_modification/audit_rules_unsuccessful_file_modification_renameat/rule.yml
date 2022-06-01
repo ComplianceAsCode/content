@@ -69,6 +69,11 @@ ocil: |-
 
 ocil_clause: the command does not return a line, or the line is commented out
 
+fixtext: |-
+    {{{ fixtext_audit_rules("renameat", "perm_mod", "perm_mod") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("renameat") }}}'
+
 warnings:
     - general: |-
         Note that these rules can be configured in a
