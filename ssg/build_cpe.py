@@ -301,7 +301,7 @@ class CPEALFactRef(Symbol):
         if cond:
             return remediations.parse_from_string_with_jinja(cond, env_yaml)
         elif conditionals_path is not None:
-            templated_conditional_file = os.path.join(conditionals_path,
+            templated_conditional_file = os.path.join(conditionals_path, "ansible",
                                                       self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['ansible'])
             if os.path.exists(templated_conditional_file):
                 return remediations.parse_from_file_without_jinja(templated_conditional_file)
