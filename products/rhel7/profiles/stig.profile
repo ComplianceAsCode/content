@@ -90,13 +90,15 @@ selections:
     - accounts_password_pam_maxrepeat
     - accounts_password_pam_maxclassrepeat
     - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_passwordauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - accounts_minimum_age_login_defs
     - accounts_password_set_min_life_existing
     - accounts_maximum_age_login_defs
     - accounts_password_set_max_life_existing
-    - accounts_password_pam_unix_remember
+    - accounts_password_pam_pwhistory_remember_password_auth
+    - accounts_password_pam_pwhistory_remember_system_auth
     - accounts_password_pam_minlen
     - no_empty_passwords
     - sshd_disable_empty_passwords
