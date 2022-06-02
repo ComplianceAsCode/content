@@ -32,6 +32,10 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="scap-security-guide") }}}'
 
+fixtext: "{{{ fixtext_package_installed("scap-security-guide") }}}"
+
+srg_requirement: '{{{ srg_requirement_package_installed("scap-security-guide") }}}'
+
 template:
     name: package_installed
     vars:
