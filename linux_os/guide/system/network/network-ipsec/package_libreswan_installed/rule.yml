@@ -39,10 +39,12 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="libreswan") }}}'
 
+fixtext: '{{{ fixtext_package_installed("libreswan") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("libreswan") }}}'
+
 template:
     name: package_installed
     vars:
         pkgname: libreswan
 
-fixtext: |-
-    {{{ describe_package_install("libreswan") }}}
