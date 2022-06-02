@@ -84,7 +84,7 @@ warnings:
 fixtext: |-
     {{{ fixtext_audit_rules_unsuccessful_file_modification("creat", ["ftruncate", "truncate", "open", "openat", "open_by_handle_at"]) | indent(4) }}}
 
-srg_requirement: '{{{ srg_requirement_audit_syscall("creat") }}}'
+srg_requirement: '{{{ srg_requirement_audit_unsuccessful_syscall("creat") | indent(4) }}}'
 
 template:
     name: audit_rules_unsuccessful_file_modification
