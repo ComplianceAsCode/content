@@ -68,3 +68,6 @@ fixtext: |-
     Edit the following line in "/etc/audit/auditd.conf" to ensure that administrators are notified via email for those situations:
 
     action_mail_acct = {{{ xccdf_value("var_auditd_action_mail_acct") }}}
+
+srg_requirement:
+  {{{ full_name }}} must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.
