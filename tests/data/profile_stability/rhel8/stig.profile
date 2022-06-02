@@ -1,7 +1,7 @@
 title: DISA STIG for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG for Red Hat Enterprise Linux 8 V1R5.
+    DISA STIG for Red Hat Enterprise Linux 8 V1R6.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -23,7 +23,7 @@ description: 'This profile contains configuration checks that align to the
     - Red Hat Containers with a Red Hat Enterprise Linux 8 image'
 extends: null
 metadata:
-    version: V1R5
+    version: V1R6
     SMEs:
     - mab879
     - ggbecker
@@ -69,10 +69,10 @@ selections:
 - accounts_umask_etc_profile
 - accounts_umask_interactive_users
 - accounts_user_dot_no_world_writable_programs
-- accounts_users_home_files_permissions
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
+- accounts_users_home_files_permissions
 - agent_mfetpd_running
 - aide_check_audit_tools
 - aide_scan_notification
@@ -181,10 +181,10 @@ selections:
 - dconf_gnome_lock_screen_on_smartcard_removal
 - dconf_gnome_login_banner_text
 - dconf_gnome_screensaver_idle_delay
-- dconf_gnome_session_idle_user_locks
 - dconf_gnome_screensaver_lock_delay
 - dconf_gnome_screensaver_lock_enabled
 - dconf_gnome_screensaver_user_locks
+- dconf_gnome_session_idle_user_locks
 - dir_group_ownership_library_dirs
 - dir_ownership_library_dirs
 - dir_permissions_library_dirs
@@ -205,6 +205,7 @@ selections:
 - ensure_gpgcheck_local_packages
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
+- file_audit_tools_permissions
 - file_group_ownership_var_log_audit
 - file_groupowner_var_log
 - file_groupowner_var_log_messages

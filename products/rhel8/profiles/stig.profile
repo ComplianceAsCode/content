@@ -883,7 +883,7 @@ selections:
     - file_permissions_etc_audit_rulesd
 
     # RHEL-08-030620
-    - file_audit_tool_permissions
+    - file_audit_tools_permissions
 
     # RHEL-08-030630
     - file_audit_tools_ownership
