@@ -8,7 +8,7 @@
 - name: Configure auditd Disk Error Action on Disk Error
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: "disk_error_action = {{ var_auditd_disk_error_action }}"
+    line: "disk_error_action = {{ var_auditd_disk_error_action.split('|')[0] }}"
     regexp: '^\s*disk_error_action\s*=\s*.*$'
     state: present
     create: yes
