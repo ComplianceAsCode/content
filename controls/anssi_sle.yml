@@ -131,7 +131,11 @@ controls:
     description: >-
       The activities of the running system and services must be logged and
       archived on an external, non-local system.
-    # rules: TBD
+    status: automated
+    rules:
+    # The default remote loghost is logcollector.
+    # Change the default value to the hostname or IP of the system to send the logs to
+    - rsyslog_remote_loghost
 
   - id: R8
     levels:
@@ -618,10 +622,19 @@ controls:
       be customized for the systems deployment requirements.
     status: partial
     rules:
+    # Derived from DAT-NT-012 R12
+    - package_rsyslog-gnutls_installed
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
+
+    # Based on DAT-NT-012 R18
+    # The rules sets the rotation frequency to daily
+    - ensure_logrotate_activated
+
     # Based on DAT-NT-012 R20
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
-    #- rsyslog_files_permissions
+    - rsyslog_files_permissions
 
   - id: R44
     levels:
