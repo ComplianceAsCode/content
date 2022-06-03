@@ -448,3 +448,18 @@ Change the group of the file {{{ file }}} to {{{ group }}} by running the follow
 
 $ sudo chgrp {{{ group }}} {{{ file }}}
 {{%- endmacro %}}
+
+{{#
+Fixtext for setting the owner on a directory.
+
+:param file: The directory to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_directory_owner(file, owner) %}}
+Change the owner of the directory {{{ file }}} to {{{ owner }}} by running the following command:
+
+$ sudo chown {{{ owner }}} {{{ file }}}
+{{%- endmacro %}}
