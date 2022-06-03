@@ -338,7 +338,7 @@ class XCCDFEntity(object):
         - `definition_location` as the original location whenre the entity got defined.
         """
         file_basename = os.path.basename(yaml_file)
-        entity_id = file_basename.split(".")[0]
+        entity_id = derive_id_from_file_name(file_basename)
         if file_basename == cls.GENERIC_FILENAME:
             entity_id = os.path.basename(os.path.dirname(yaml_file))
 
@@ -2150,3 +2150,7 @@ def add_platform_if_not_defined(platform, product_cpes):
             return p
     product_cpes.platforms[platform.id_] = platform
     return platform
+
+
+def derive_id_from_file_name(filename):
+    return os.path.splitext(filename)[0]
