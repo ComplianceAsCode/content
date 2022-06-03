@@ -251,7 +251,7 @@ The audit daemon must be restarted for the changes to take effect.
 {{%- macro fixtext_service_enabled(service) -%}}
     To enable the {{{ service }}} service run the following command:
 
-    $ systemctl enable --now {{{ service }}}
+    $ sudo systemctl enable --now {{{ service }}}
 {{%- endmacro -%}}
 
 {{#
