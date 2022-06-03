@@ -26,10 +26,14 @@ references:
     stigid@ol8: OL08-00-010471
     stigid@rhel8: RHEL-08-010471
 
-ocil_clause: 'the service is not enabled'
+ocil_clause: '{{{ ocil_clause_service_enabled("rngd") }}}'
 
 ocil: |-
     {{{ ocil_service_enabled(service="rngd") }}}
+
+fixtext: '{{{ fixtext_service_disabled("rngd") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_disabled("rngd") }}}'
 
 template:
     name: service_enabled
