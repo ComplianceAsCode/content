@@ -75,3 +75,18 @@ The {{{ full_name }}} package {{{ package }}} must be installed.
 The {{{ full_name }}} service {{{ service }}} must be enabled.
 {{%- endmacro %}}
 
+
+{{#
+SRG requirement for setting the owner on a file.
+
+:param file: The file to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro srg_requirement_file_owner(file, owner) %}}
+The {{{ full_name }}} {{{ file }}} file must be owned by {{{ owner }}}.
+{{%- endmacro %}}
+
+
