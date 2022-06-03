@@ -385,7 +385,117 @@ controls:
     levels:
     - intermediary
     title: Setting up network sysctl
-    # rules: TBD
+    status: automated
+    rules:
+    # No routing between interfaces
+    # net.ipv4.ip_forward = 0
+    - sysctl_net_ipv4_ip_forward
+
+    # Reverse path filtering
+    # net.ipv4.conf.all.rp_filter = 1
+    - sysctl_net_ipv4_conf_all_rp_filter
+
+    # net.ipv4.conf.default.rp_filter = 1
+    - sysctl_net_ipv4_conf_default_rp_filter
+
+    # Do not send ICMP redirects
+    # net.ipv4.conf.all.send_redirects = 0
+    - sysctl_net_ipv4_conf_all_send_redirects
+
+    # net.ipv4.conf.default.send_redirects = 0
+    - sysctl_net_ipv4_conf_default_send_redirects
+
+    # Deny source routing packets
+    # net.ipv4.conf.all.accept_source_route = 0
+    - sysctl_net_ipv4_conf_all_accept_source_route
+
+    # net.ipv4.conf.default.accept_source_route = 0
+    - sysctl_net_ipv4_conf_default_accept_source_route
+
+    # Do not accept ICMPs of redirect type
+    # net.ipv4.conf.all.accept_redirects = 0
+    - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_all_accept_redirects
+
+    # net.ipv4.conf.all.secure_redirects = 0
+    - sysctl_net_ipv4_conf_all_secure_redirects
+
+    # net.ipv4.conf.default.accept_redirects = 0
+    - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
+    - sysctl_net_ipv4_conf_default_accept_redirects
+
+    # net.ipv4.conf.default.secure_redirects = 0
+    - sysctl_net_ipv4_conf_default_secure_redirects
+
+    # Log packets with abnormal IPs
+    # net.ipv4.conf.all.log_martians = 1
+    - sysctl_net_ipv4_conf_all_log_martians
+
+    # RFC 1337
+    # net.ipv4.tcp_rfc1337 = 1
+    - sysctl_net_ipv4_tcp_rfc1337
+
+    # Ignore responses that do not comply with RFC 1122
+    # net.ipv4.icmp_ignore_bogus_error_responses = 1
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+
+    # Increase the range for ephemeral ports
+    # net.ipv4.ip_local_port_range = 32768 65535
+    - sysctl_net_ipv4_ip_local_port_range
+
+    # Use SYN cookies
+    # net.ipv4.tcp_syncookies = 1
+    - sysctl_net_ipv4_tcp_syncookies
+
+    # Disable support for "router solicitations"
+    # net.ipv6.conf.all.router_solicitations = 0
+    # net.ipv6.conf.default.router_solicitations = 0
+    - sysctl_net_ipv6_conf_all_router_solicitations
+    - sysctl_net_ipv6_conf_default_router_solicitations
+
+    # Do not accept "router preferences" by "router advertisements"
+    # net.ipv6.conf.all.accept_ra_rtr_pref = 0
+    # net.ipv6.conf.default.accept_ra_rtr_pref = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_rtr_pref
+    - sysctl_net_ipv6_conf_default_accept_ra_rtr_pref
+
+    # No auto configuration of prefixes by router advertisements
+    # net.ipv6.conf.all.accept_ra_pinfo = 0
+    # net.ipv6.conf.default.accept_ra_pinfo = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_pinfo
+    - sysctl_net_ipv6_conf_default_accept_ra_pinfo
+
+    # No default router learning by router advertisements
+    # net.ipv6.conf.all.accept_ra_defrtr = 0
+    # net.ipv6.conf.default.accept_ra_defrtr = 0
+    - sysctl_net_ipv6_conf_all_accept_ra_defrtr
+    - sysctl_net_ipv6_conf_default_accept_ra_defrtr
+
+    # No auto configuration of addresses from "routers" advertisements
+    # net.ipv6.conf.all.autoconf = 0
+    # net.ipv6.conf.default.autoconf = 0
+    - sysctl_net_ipv6_conf_all_autoconf
+    - sysctl_net_ipv6_conf_default_autoconf
+
+    # Do not accept ICMPs of redirect type
+    # net.ipv6.conf.all_accept_redirects = 0
+    - sysctl_net_ipv6_conf_all_accept_redirects
+
+    # net.ipv6.conf.default.accept_redirects = 0
+    - sysctl_net_ipv6_conf_default_accept_redirects
+
+    # Deny routing source packets
+    # net.ipv6.conf.all.accept_source_route = 0
+    - sysctl_net_ipv6_conf_all_accept_source_route
+
+    # net.ipv6.conf.default.accept_source_route = 0
+    - sysctl_net_ipv6_conf_default_accept_source_route
+
+    # Maximum number of autoconfigured addresses per interface
+    # net.ipv6.conf.all.max_addresses = 1
+    # net.ipv6.conf.default.max_addresses = 1
+    - sysctl_net_ipv6_conf_all_max_addresses
+    - sysctl_net_ipv6_conf_default_max_addresses
 
   - id: R23
     levels:
@@ -530,7 +640,11 @@ controls:
       (e.g. /etc/profile or /etc/bashrc).
       The current implementation checks and fixes both umask to the same value.
     status: partial
-    # rules: TBD
+    rules:
+    - var_accounts_user_umask=077
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
+    - accounts_umask_etc_bashrc
 
   - id: R36
     title: Rights to access sensitive content files
@@ -699,7 +813,13 @@ controls:
       configuration files, as well as any files that may contain sensitive
       elements (cryptographic keys, passwords, confidential data).
     status: automated
-    # rules: TBD
+    rules:
+    - package_aide_installed
+    - aide_build_database
+    - aide_periodic_cron_checking
+    - aide_scan_notification
+    - aide_verify_acls
+    - aide_verify_ext_attributes
 
   - id: R52
     levels:
