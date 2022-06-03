@@ -28,6 +28,11 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="rng-tools") }}}'
 
+fixtext: '{{{ fixtext_package_installed("rng-tools") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("rng-tools") }}}'
+
+
 template:
     name: package_installed
     vars:

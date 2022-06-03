@@ -28,6 +28,10 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="gnutls-utils") }}}'
 
+fixtext: '{{{ fixtext_package_installed("gnutls-utils") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("gnutls-utils") }}}'
+
 template:
     name: package_installed
     vars:

@@ -26,6 +26,11 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="nss-tools") }}}'
 
+fixtext: '{{{ fixtext_package_installed("nss-tools") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("nss-tools") }}}'
+
+
 template:
     name: package_installed
     vars:

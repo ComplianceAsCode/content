@@ -25,6 +25,10 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="openssh-clients") }}}'
 
+fixtext: '{{{ fixtext_package_removed("openssh-clients") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_removed("openssh-clients") }}}'
+
 template:
     name: package_installed
     vars:

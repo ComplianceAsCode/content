@@ -26,6 +26,11 @@ ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="openscap-scanner") }}}'
 
+fixtext: '{{{ fixtext_package_installed("openscap-scanner") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("openscap-scanner") }}}'
+
+
 template:
     name: package_installed
     vars:

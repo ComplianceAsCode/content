@@ -386,7 +386,19 @@ Fixtext for removing a package
 #}}
 {{% macro fixtext_package_removed(package) %}}
 To remove the {{{ full_name }}} package {{{ package }}} run the following command:
-{{{ describe_package_remove(package) }}}
+{{{ package_remove(package) }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for installing a package
+
+:param package: The package to install
+:type package: str
+
+#}}
+{{% macro fixtext_package_installed(package) %}}
+To install the {{{ full_name }}} package {{{ package }}} run the following command:
+{{{ package_install(package) }}}
 {{%- endmacro %}}
 
 {{#
