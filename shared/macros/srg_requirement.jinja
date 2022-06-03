@@ -104,3 +104,17 @@ The {{{ full_name }}} {{{ file }}} file must be group-owned by {{{ group }}}.
 {{%- endmacro %}}
 
 
+{{#
+SRG requirement for setting the owner on a directory.
+
+:param file: The directory to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro srg_requirement_directory_owner(file, owner) %}}
+The {{{ full_name }}} {{{ file }}} directory must be owned by {{{ owner }}}.
+{{%- endmacro %}}
+
+
