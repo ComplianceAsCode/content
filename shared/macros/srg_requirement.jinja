@@ -135,12 +135,12 @@ The {{{ full_name }}} {{{ file }}} directory must be group-owned by {{{ group }}
 {{#
 SRG requirement for setting permissions on a file
 
-:param file: The directory to set permissions on
+:param file: The file to set permissions on
 :type file: str
-:param mode: The group to be set
+:param mode: The mode to be set
 :type mode: str
 
 #}}
-{{% macro srg_requirement_directory_mode(file, mode) %}}
+{{% macro srg_requirement_file_mode(file, mode) %}}
 The {{{ full_name }}} {{{ file }}} file must have {{{ mode }}} or less permissive to prevent unauthorized access.
 {{%- endmacro %}}
