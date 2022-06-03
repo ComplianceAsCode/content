@@ -260,3 +260,9 @@ def test_platform_as_dict(product_cpes):
     assert d["ansible_conditional"] == "( \"chrony\" in ansible_facts.packages )"
     assert d["bash_conditional"] == "( rpm --quiet -q chrony )"
     assert "xml_content" in d
+
+
+def test_derive_id_from_file_name():
+    assert ssg.build_yaml.derive_id_from_file_name("rule.yml") == "rule"
+    assert ssg.build_yaml.derive_id_from_file_name("id.with.dots.yaml") == "id.with.dots"
+    assert ssg.build_yaml.derive_id_from_file_name("my_id") == "my_id"
