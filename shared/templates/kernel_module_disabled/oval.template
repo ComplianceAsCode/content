@@ -17,11 +17,6 @@
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_disabled" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" version="1" check="all"
-  comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf">
-    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf" />
-  </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_disabled"
   version="1" comment="kernel module {{{ KERNMODULE }}} disabled">
     {{% if product in ["sle12", "sle15"] %}}
@@ -35,13 +30,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf"
-  version="1" comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}">
-    <ind:filepath>/etc/modprobe.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
+{{% if product not in ["sle12", "sle15"] %}}
   <constant_variable datatype="string" comment="Paths where kernel modules can be configured"
   id="var_kernel_module_{{{ KERNMODULE }}}_paths" version="1">
     <value>/etc/modprobe.d</value>
@@ -51,5 +40,20 @@
     <value>/usr/lib/modprobe.d</value>
     <value>/usr/lib/modules-load.d</value>
   </constant_variable>
+{{% endif %}}
+
+{{% if "ubuntu" not in product %}}
+  <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" version="1" check="all"
+  comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf">
+    <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_modprobeconf"
+  version="1" comment="Check deprecated /etc/modprobe.conf for disablement of {{{ KERNMODULE }}}">
+    <ind:filepath>/etc/modprobe.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*install\s+{{{ KERNMODULE }}}\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 
 </def-group>
