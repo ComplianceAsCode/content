@@ -418,3 +418,18 @@ blacklist {{{ module }}}
 
 Reboot the system for the settings to take effect.
 {{%- endmacro %}}
+
+{{#
+Fixtext for setting the owner on a file.
+
+:param file: The file to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_file_owner(file, owner) %}}
+Change the owner of the file {{{ file }}} to {{{ owner }}} by running the following command:
+
+$ sudo chown {{{ owner }}} {{{ file }}}
+{{%- endmacro %}}
