@@ -39,6 +39,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/cron.weekly", group="r
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/cron.weekly", group="root") }}}
 
+fixtext: '{{{ fixtext_directory_group_owner(file="/etc/cron.weekly/", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_directory_group_owner(file="/etc/cron.weekly", group="root") }}}'
+
 template:
     name: file_groupowner
     vars:
