@@ -58,3 +58,5 @@ fixtext: |-
     Configure {{{ full_name }}} to notify the SA and ISSO when the audit storage volume is full by configuring the "max_log_file_action" parameter in the "/etc/audit/auditd.conf" file with the a value of "syslog" or "keep_logs":
 
     max_log_file_action = {{{ xccdf_value("var_auditd_max_log_file_action") }}}
+
+srg_requirement: The {{{ full_name }}} audit system must take appropriate action when the audit storage volume is full.
