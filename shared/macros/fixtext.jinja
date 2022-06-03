@@ -478,3 +478,18 @@ Change the group of the directory {{{ file }}} to {{{ group }}} by running the f
 
 $ sudo chgrp {{{ group }}} {{{ file }}}
 {{%- endmacro %}}
+
+{{#
+Fixtext for setting the permissions on a directory.
+
+:param file: The directory to set the permissions on
+:type file: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro fixtext_directory_permissions(file, mode) %}}
+Change the permissions of the directory "{{{ file }}}" to "{{{ mode }}}" by running the following command:
+
+$ sudo chmod {{{ mode }}} {{{ file }}}
+{{%- endmacro %}}
