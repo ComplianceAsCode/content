@@ -41,6 +41,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/ssh/sshd_config", grou
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/ssh/sshd_config", group="root") }}}
 
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/ssh/sshd_config", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/ssh/sshd_config", group="root") }}}'
+
 template:
     name: file_groupowner
     vars:
