@@ -39,8 +39,14 @@ references:
     stigid@rhel8: RHEL-08-010561
     stigid@ubuntu2004: UBTU-20-010432
 
+ocil_clause: '{{{ ocil_clause_service_enabled(service="rsyslog") }}}'
+
 ocil: |-
     {{{ ocil_service_enabled(service="rsyslog") }}}
+
+fixtext: '{{{ fixtext_service_disabled("rsyslog") }}}'
+
+srg_requirement: '{{{ srg_requirement_service_disabled("rsyslog") }}}'
 
 template:
     name: service_enabled
