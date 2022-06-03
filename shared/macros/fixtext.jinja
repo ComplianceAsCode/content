@@ -439,8 +439,8 @@ Fixtext for setting the group owner on a file.
 
 :param file: The file to set the group owner on
 :type file: str
-:param group: The group to be set
-:type group: str
+:param owner: The group to be set
+:type owner: str
 
 #}}
 {{% macro fixtext_file_group_owner(file, group) %}}
@@ -469,8 +469,8 @@ Fixtext for setting the group owner on a directory.
 
 :param file: The directory to set the group owner on
 :type file: str
-:param owner: The group to be set
-:type owner: str
+:param group: The group to be set
+:type group: str
 
 #}}
 {{% macro fixtext_directory_group_owner(file, group) %}}
@@ -490,6 +490,22 @@ Fixtext for setting the permissions on a directory.
 #}}
 {{% macro fixtext_directory_permissions(file, mode) %}}
 Change the permissions of the directory "{{{ file }}}" to "{{{ mode }}}" by running the following command:
+
+$ sudo chmod {{{ mode }}} {{{ file }}}
+{{%- endmacro %}}
+
+
+{{#
+Fixtext for setting the permissions on a file.
+
+:param file: The file to set the permissions on
+:type file: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro fixtext_file_permissions(file, mode) %}}
+Change the permissions of the file "{{{ file }}}" to "{{{ mode }}}" by running the following command:
 
 $ sudo chmod {{{ mode }}} {{{ file }}}
 {{%- endmacro %}}
