@@ -88,8 +88,8 @@ def _apply_script(rule_dir, test_env, script):
 
         try:
             error_msg_template = (
-                "Rule '{0}' test setup script '{1}' "
-                "failed with exit code {2}".format(rule_name, script, rc)
+                "Rule '{rule_name}' test setup script '{script}' "
+                "failed with exit code {{rc}}".format(rule_name=rule_name, script=script)
             )
             test_env.execute_ssh_command(
                 command, log_file, error_msg_template=error_msg_template)
