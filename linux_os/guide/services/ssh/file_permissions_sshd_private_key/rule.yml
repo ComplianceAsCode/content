@@ -55,7 +55,7 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms=perm
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/ssh/*_key", perms=perms) }}}
 
-fixtext: '{{{ srg_requirement_file_mode(file="/etc/ssh/*_key", mode="0600") }}}'
+fixtext: '{{{ srg_requirement_file_permission(file="/etc/ssh/*_key", mode="0600") }}}'
 
 srg_requirement: 'The RHEL 8 SSH private host key files must have mode 0600 or less permissive.'
 

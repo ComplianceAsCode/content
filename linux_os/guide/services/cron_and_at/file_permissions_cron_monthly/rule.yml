@@ -41,7 +41,7 @@ ocil: |-
 
 fixtext: '{{{ fixtext_directory_permissions("0700", "/etc/cron.monthly/") }}}'
 
-srg_requirement: '{{{ srg_requirement_directory_mode("0700", "/etc/cron.monthly") }}}'
+srg_requirement: '{{{ srg_requirement_directory_permission("0700", "/etc/cron.monthly") }}}'
 
 template:
     name: file_permissions

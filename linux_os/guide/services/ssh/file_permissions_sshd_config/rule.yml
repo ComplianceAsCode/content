@@ -43,7 +43,7 @@ ocil: |-
 
 fixtext: '{{{ fixtext_file_permissions(file="/etc/ssh/sshd_config", mode="0600") }}}'
 
-srg_requirement: '{{{ srg_requirement_file_mode(file="/etc/ssh/sshd_config", mode="0600") }}}'
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/ssh/sshd_config", mode="0600") }}}'
 
 template:
     name: file_permissions

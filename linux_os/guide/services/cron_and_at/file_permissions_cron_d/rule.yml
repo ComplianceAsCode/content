@@ -41,7 +41,7 @@ ocil: |-
 
 fixtext: '{{{ fixtext_directory_permissions("0600", "/etc/cron.d/") }}}'
 
-srg_requirement: '{{{ srg_requirement_directory_mode("0600", "/etc/cron.d") }}}'
+srg_requirement: '{{{ srg_requirement_directory_permission("0600", "/etc/cron.d") }}}'
 
 template:
     name: file_permissions

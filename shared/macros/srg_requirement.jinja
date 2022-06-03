@@ -141,7 +141,7 @@ SRG requirement for setting permissions on a file
 :type mode: str
 
 #}}
-{{% macro srg_requirement_file_mode(file, mode) %}}
+{{% macro srg_requirement_file_permission(file, mode) %}}
 The {{{ full_name }}} {{{ file }}} file must have {{{ mode }}} or less permissive to prevent unauthorized access.
 {{%- endmacro %}}
 
@@ -155,6 +155,6 @@ SRG requirement for setting permissions on a directory
 :type mode: str
 
 #}}
-{{% macro srg_requirement_directory_mode(file, mode) %}}
+{{% macro srg_requirement_directory_permission(file, mode) %}}
 The {{{ full_name }}} {{{ file }}} directory must have {{{ mode }}} or less permissive to prevent unauthorized access.
 {{%- endmacro %}}
