@@ -351,8 +351,8 @@ class RuleChecker(oscap.Checker):
 
         tuple_repr = []
         for rule_id in test_content_by_rule_id:
-            tuple_repr += itertools.product([rule_id],
-                test_content_by_rule_id[rule_id].scenarios)
+            tuple_repr += itertools.product(
+                [rule_id], test_content_by_rule_id[rule_id].scenarios)
 
         total_scenarios = len(tuple_repr)
         slice_low_bound = math.ceil(total_scenarios / slice_total * (slice_current - 1))
@@ -367,7 +367,6 @@ class RuleChecker(oscap.Checker):
                 other_content = test_content_by_rule_id[rule_id].other_content
                 new_sbr[rule_id] = RuleTestContent(scenarios, other_content)
         return new_sbr
-
 
     def _load_all_tests(self, rule):
         product_yaml = common.get_product_context(self.test_env.product)
