@@ -49,6 +49,15 @@ ocil: |-
     owned by that users primary GID, run the following command:
     <pre># ls -ld $(awk -F: '($3&gt;=1000)&amp;&amp;($7 !~ /nologin/){print $6}' /etc/passwd)</pre>
 
+fixtext: |-
+    Change the group owner of a local interactive user’s home directory to the group found in "/etc/passwd". To change the group owner of a local interactive user’s home directory, use the following command:
+
+    Note: The example will be for the user "smithj", who has a home directory of "/home/smithj", and has a primary group of users.
+
+    $ sudo chgrp users /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories must be group-owned by the home directory owner’s primary group.'
+
 warnings:
     - general: |-
        Due to OVAL limitation, this rule can report a false negative in a
