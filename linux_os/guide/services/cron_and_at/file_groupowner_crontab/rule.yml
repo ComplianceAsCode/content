@@ -39,6 +39,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/crontab", group="root"
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/crontab", group="root") }}}
 
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/crontab", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/crontab", group="root") }}}'
+
 template:
     name: file_groupowner
     vars:
