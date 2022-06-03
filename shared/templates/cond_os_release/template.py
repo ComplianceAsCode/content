@@ -1,13 +1,7 @@
 #!/usr/bin/env python
 
-OP_TO_ANSIBLE = {
-    'equals': '==',
-    'not equal': '!=',
-    'greater than': '>',
-    'less than': '<',
-    'greater than or equal': '>=',
-    'less than or equal': '<='
-}
+from ssg.constants import OP_TO_ANSIBLE
+
 
 def preprocess(data, lang):
     if lang == "ansible":

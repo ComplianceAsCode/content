@@ -462,3 +462,12 @@ DEFAULT_AIDE_BIN_PATH = '/usr/sbin/aide'
 DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
+
+OP_TO_ANSIBLE = {
+    'equals': '==',
+    'not equal': '!=',
+    'greater than': '>',
+    'less than': '<',
+    'greater than or equal': '>=',
+    'less than or equal': '<='
+}
