@@ -14,8 +14,6 @@ rationale: |-
     this directory should not be considered as trusted and users should not be
     able to execute them.
 
-{{{ complete_ocil_entry_mount_option("/home", "noexec") }}}
-
 severity: medium
 
 identifiers:
@@ -32,6 +30,12 @@ references:
     stigid@rhel8: RHEL-08-010590
 
 platform: machine
+
+{{{ complete_ocil_entry_mount_option("/home", "noexec") }}}
+
+fixtext: '{{{ fixtext_mount_option("/home", "noexec") }}}'
+
+srg_requirement: '{{{ srg_requirement_mount_option("/home", "noexec") }}}'
 
 template:
     name: mount_option
