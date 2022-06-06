@@ -65,6 +65,13 @@ ocil: |-
     or assign a valid group with the chgrp command:
     <pre>$ sudo chgrp <i>group</i> <i>file</i></pre>
 
+fixtext: |-
+    Either remove all files and directories from RHEL 8 that do not have a valid group, or assign a valid group to all files and directories on the system with the "chgrp" command:
+
+    $ sudo chgrp
+
+srg_requirement: 'All {{{ full_name }}} local files and directories must have a valid group owner.'
+
 warnings:
     - general: |-
         This rule only considers local groups.

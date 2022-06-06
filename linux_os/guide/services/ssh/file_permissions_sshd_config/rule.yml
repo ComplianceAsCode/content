@@ -41,6 +41,10 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/sshd_config", perm
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}
 
+fixtext: '{{{ fixtext_file_permissions(file="/etc/ssh/sshd_config", mode="0600") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/ssh/sshd_config", mode="0600") }}}'
+
 template:
     name: file_permissions
     vars:

@@ -39,6 +39,10 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/crontab", perms="-rw--
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/crontab", perms="-rw-------") }}}
 
+fixtext: '{{{ fixtext_file_permissions("0600", "/etc/crontab") }}}'
+
+srg_requirement: '{{{ srg_requirement_directory_permission("0600", "/etc/crontab") }}}'
+
 template:
     name: file_permissions
     vars:

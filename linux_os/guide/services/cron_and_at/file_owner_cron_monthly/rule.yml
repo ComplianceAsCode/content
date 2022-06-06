@@ -39,6 +39,10 @@ ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/cron.monthly", owner="root")
 ocil: |-
     {{{ ocil_file_owner(file="/etc/cron.monthly", owner="root") }}}
 
+fixtext: '{{{ fixtext_directory_owner(file="/etc/cron.monthly/", owner="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_directory_owner(file="/etc/cron.monthly", owner="root") }}}'
+
 template:
     name: file_owner
     vars:

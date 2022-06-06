@@ -45,3 +45,12 @@ ocil: |-
     have a mode of <pre>0750</pre> or less permissive, run the following command:
     <pre>$ sudo ls -l /home</pre>
     Inspect the output for any directories with incorrect permissions.
+
+fixtext: |-
+    Change the mode of interactive user’s home directories to "0750". To change the mode of a local interactive user’s home directory, use the following command:
+
+    Note: The example will be for the user "smithj".
+
+    $ sudo chmod 0750 /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories must have mode 0750 or less permissive.'

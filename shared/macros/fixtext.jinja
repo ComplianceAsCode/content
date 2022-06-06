@@ -418,3 +418,94 @@ blacklist {{{ module }}}
 
 Reboot the system for the settings to take effect.
 {{%- endmacro %}}
+
+{{#
+Fixtext for setting the owner on a file.
+
+:param file: The file to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_file_owner(file, owner) %}}
+Change the owner of the file {{{ file }}} to {{{ owner }}} by running the following command:
+
+$ sudo chown {{{ owner }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the group owner on a file.
+
+:param file: The file to set the group owner on
+:type file: str
+:param owner: The group to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_file_group_owner(file, group) %}}
+Change the group of the file {{{ file }}} to {{{ group }}} by running the following command:
+
+$ sudo chgrp {{{ group }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the owner on a directory.
+
+:param file: The directory to set the owner on
+:type file: str
+:param owner: The owner to be set
+:type owner: str
+
+#}}
+{{% macro fixtext_directory_owner(file, owner) %}}
+Change the owner of the directory {{{ file }}} to {{{ owner }}} by running the following command:
+
+$ sudo chown {{{ owner }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the group owner on a directory.
+
+:param file: The directory to set the group owner on
+:type file: str
+:param group: The group to be set
+:type group: str
+
+#}}
+{{% macro fixtext_directory_group_owner(file, group) %}}
+Change the group of the directory {{{ file }}} to {{{ group }}} by running the following command:
+
+$ sudo chgrp {{{ group }}} {{{ file }}}
+{{%- endmacro %}}
+
+{{#
+Fixtext for setting the permissions on a directory.
+
+:param file: The directory to set the permissions on
+:type file: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro fixtext_directory_permissions(file, mode) %}}
+Change the permissions of the directory "{{{ file }}}" to "{{{ mode }}}" by running the following command:
+
+$ sudo chmod {{{ mode }}} {{{ file }}}
+{{%- endmacro %}}
+
+
+{{#
+Fixtext for setting the permissions on a file.
+
+:param file: The file to set the permissions on
+:type file: str
+:param mode: The permissions to be set
+:type mode: str
+
+#}}
+{{% macro fixtext_file_permissions(file, mode) %}}
+Change the permissions of the file "{{{ file }}}" to "{{{ mode }}}" by running the following command:
+
+$ sudo chmod {{{ mode }}} {{{ file }}}
+{{%- endmacro %}}
