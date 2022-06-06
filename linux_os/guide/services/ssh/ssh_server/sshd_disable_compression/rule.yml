@@ -52,3 +52,7 @@ ocil: |-
     following command:
     <pre>$ sudo grep Compression /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>no</pre> or <pre>delayed</pre>.
+
+fixtext: '{{{ fixtext_sshd_lineinfile("Compression", xccdf_value("var_sshd_disable_compression"), no) }}}'
+
+srg_requirement: 'The {{{ full_name }}} SSH daemon must not allow compression or must only allow compression after successful authentication.'
