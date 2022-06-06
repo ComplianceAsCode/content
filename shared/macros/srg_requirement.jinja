@@ -158,3 +158,17 @@ SRG requirement for setting permissions on a directory
 {{% macro srg_requirement_directory_permission(file, mode) %}}
 The {{{ full_name }}} {{{ file }}} directory must have {{{ mode }}} or less permissive to prevent unauthorized access.
 {{%- endmacro %}}
+
+
+{{#
+SRG requirement for mount point options
+
+:param path: The path to check
+:type path:  str
+:param option: The mount option to use
+:type option:  str
+
+#}}
+{{% macro srg_requirement_mount_option(path, option) -%}}
+{{{ full_name }}} must mount {{{ path }}} with the {{{ option }}} option.
+{{%- endmacro -%}}
