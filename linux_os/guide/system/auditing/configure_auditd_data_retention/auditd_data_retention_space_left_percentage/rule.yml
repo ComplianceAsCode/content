@@ -47,3 +47,14 @@ ocil: |-
     Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
     determine if the system is configured correctly:
     <pre>space_left <i>PERCENTAGE</i>%</pre>
+
+fixtext: |-
+    Configure {{{ full_name }}} to initiate an action to notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity by adding/modifying the following line in the /etc/audit/auditd.conf file.
+
+    space_left = 25%
+
+    Note: Option names and values in the auditd.conf file are case insensitive.
+
+srg_requirement:
+  {{{ full_name }}} must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.
+
