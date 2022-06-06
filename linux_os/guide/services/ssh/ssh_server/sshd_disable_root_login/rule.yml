@@ -62,6 +62,11 @@ platforms:
 warnings:
 {{{ warning_ovirt_rule_notapplicable("RHV hosts require root access to be managed by RHV Manager") | indent(4) }}}
 
+fixtext: |-
+    {{{ fixtext_sshd_lineinfile("PermitRootLogin", "no", "no") }}}
+
+srg_requirement: '{{{ full_name }}} must not permit direct logons to the root account using remote access via SSH.'
+
 template:
     name: sshd_lineinfile
     vars:
