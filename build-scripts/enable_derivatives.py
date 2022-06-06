@@ -97,8 +97,8 @@ def main():
         raise RuntimeError("No Benchmark found!")
 
     for namespace, benchmark in benchmarks:
-        if args[1] != "cs9":
-            # In CentOS Stream 9 profiles are kept because it is a system
+        if args[1] != "cs9" and args[1] != "centos8":
+            # In CentOS Stream 8 and 9, profiles are kept because they are systems
             # intended to test content that will get into RHEL
             ssg.build_derivatives.profile_handling(benchmark, namespace)
         if not ssg.build_derivatives.add_cpes(benchmark, namespace, mapping):
