@@ -1,0 +1,18 @@
+# platform = multi_platform_all
+# reboot = false
+
+function perform_remediation (){
+
+    {{{ bash_ensure_mount_option_in_fstab( "$1" , MOUNTOPTION , FILESYSTEM , TYPE ) | indent(4) }}}
+
+    {{{ bash_ensure_partition_is_mounted( "$1" ) | indent(4) }}}
+}
+
+readarray -t all_fstab_partitions  < <(grep -Pv '^\s*#' /etc/fstab | grep -Po '^\S+\s+\S+'| grep -Po '\S+$' | grep -v '^/$')
+
+for fstab_partition in "${all_fstab_partitions[@]}"
+do
+    if [ "$(sudo awk -F':' '{if ($3>=1000 && $3!= 65534) print $6}' /etc/passwd | grep -c $fstab_partition)" -ne 0 ]; then
+        perform_remediation "$fstab_partition"
+    fi
+done
