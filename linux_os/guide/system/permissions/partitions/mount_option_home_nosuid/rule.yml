@@ -14,8 +14,6 @@ rationale: |-
     The presence of SUID and SGID executables should be tightly controlled. Users
     should not be able to execute SUID or SGID binaries from user home directory partitions.
 
-{{{ complete_ocil_entry_mount_option("/home", "nosuid") }}}
-
 severity: medium
 
 identifiers:
@@ -46,6 +44,13 @@ references:
 
 platform: machine
 
+{{{ complete_ocil_entry_mount_option("/home", "nosuid") }}}
+
+fixtext: |-
+    {{{ fixtext_mount_option("/home", "nosuid") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/home", "nosuid") }}}'
+
 template:
     name: mount_option
     vars:
@@ -53,5 +58,3 @@ template:
         mountoption: nosuid
         mount_has_to_exist: 'yes'
 
-fixtext: |-
-    {{{ fixtext_mount_option("/home", "nosuid") }}}

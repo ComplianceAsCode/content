@@ -39,6 +39,10 @@ ocil: |-
     All NFS mounts should show the <tt>nodev</tt> setting in parentheses. This
     is not applicable if NFS is not implemented.
 
+fixtext: 'Configure the "/etc/fstab" to use the "nodev" option on file systems that are being imported via NFS.'
+
+srg_requirement: '{{{ full_name }}} must prevent special devices on file systems that are imported via Network File System (NFS).'
+
 template:
     name: mount_option_remote_filesystems
     vars:

@@ -50,6 +50,11 @@ ocil: |-
     The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
     in the output are not removable media.
 
+fixtext: |-
+    Configure the "/etc/fstab" to use the "noexec" option on file systems that are associated with removable media. 
+
+srg_requirement: '{{{ full_name }}} must prevent code from being executed on file systems that are used with removable media.'
+
 platform: machine
 
 template:
