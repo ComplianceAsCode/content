@@ -57,3 +57,8 @@ ocil: |-
     $UDPServerRun <i>port</i>
     $ModLoad imrelp
     $InputRELPServerRun <i>port</i></pre>
+
+fixtext: 'The {{{ full_name }}} must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.'
+
+srg_requirement: |-
+    Modify the "/etc/rsyslog.conf" file to remove the "ModLoad imtcp", "ModLoad imudp", and "ModLoad imrelp" configuration lines, or document the system as being used for log aggregation.
