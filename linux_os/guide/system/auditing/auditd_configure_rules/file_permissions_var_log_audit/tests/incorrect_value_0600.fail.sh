@@ -1,5 +1,5 @@
-# platform = multi_platform_ol,multi_platform_rhel
 #!/bin/bash
+# platform = multi_platform_ol,multi_platform_rhel
 
 source common_0600.sh
 
