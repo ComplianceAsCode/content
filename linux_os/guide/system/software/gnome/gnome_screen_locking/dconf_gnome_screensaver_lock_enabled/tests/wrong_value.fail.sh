@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = dconf
+# packages = dconf,gdm
 
 . $SHARED/dconf_test_functions.sh
 
