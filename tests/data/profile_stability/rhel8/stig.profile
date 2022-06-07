@@ -202,6 +202,7 @@ selections:
 - enable_fips_mode
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
+- ensure_gpgcheck_never_disabled
 - ensure_gpgcheck_local_packages
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
