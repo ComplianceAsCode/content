@@ -1,0 +1,47 @@
+<def-group>
+    <definition class="inventory" id="krb5_server_older_than_1_17_18" version="1">
+        <metadata>
+            <title>Kerberos server is older than 1.17-18</title>
+            <affected family="unix">
+                <platform>multi_platform_all</platform>
+            </affected>
+            <reference ref_id="cpe:/a:krb5_server_older_than_1_17-18"
+                source="CPE" />
+            <description>Check if version of Kerberos server is lesser than 1.17-18
+            </description>
+        </metadata>
+        <criteria comment="Kerberos server version is lesser than 1.17-18"
+                operator="OR">
+            <criterion comment="Check if version of Kerberos server is lesser than 1.17-18"
+                test_ref="test_krb5_server_version_1_17_18" />
+        </criteria>
+    </definition>
+    {{%- if pkg_system == "rpm" -%}}
+    <linux:rpminfo_test check="all" check_existence="at_least_one_exists"
+            comment="Kerberos server version is lesser than 1.17-18"
+            id="test_krb5_server_version_1_17_18" version="1">
+        <linux:object object_ref="obj_krb5_server_version_1_17_18" />
+        <linux:state state_ref="state_krb5_server_version_1_17_18" />
+    </linux:rpminfo_test>
+    <linux:rpminfo_object id="obj_krb5_server_version_1_17_18" version="1">
+        <linux:name>krb5-server</linux:name>
+    </linux:rpminfo_object>
+    <linux:rpminfo_state id="state_krb5_server_version_1_17_18" version="1">
+        <linux:evr datatype="evr_string" operation="less than">0:1.17-18</linux:evr>
+    </linux:rpminfo_state>
+
+    {{%- elif pkg_system == "dpkg" -%}}
+    <linux:dpkginfo_test check="at least one" check_existence="any_exist"
+            comment="Kerberos server version is lesser than 1.17-18"
+            id="test_krb5_server_version_1_17_18" version="1">
+        <linux:object object_ref="obj_krb5_server_version_1_17_18" />
+        <linux:state state_ref="state_krb5_server_version_1_17_18" />
+    </linux:dpkginfo_test>
+    <linux:dpkginfo_object id="obj_krb5_server_version_1_17_18" version="1">
+        <linux:name>krb5-server</linux:name>
+    </linux:dpkginfo_object>
+    <linux:dpkginfo_state id="state_krb5_server_version_1_17_18" version="1">
+        <linux:evr datatype="evr_string" operation="less than">0:1.17-18</linux:evr>
+    </linux:dpkginfo_state>
+    {{%- endif -%}}
+</def-group>
