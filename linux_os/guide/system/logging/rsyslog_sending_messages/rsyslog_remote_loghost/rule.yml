@@ -86,3 +86,5 @@ fixtext: |-
     Configure {{{ full_name }}} to off-load audit records onto a different system or media from the system being audited by specifying the remote logging server in "/etc/rsyslog.conf"" or "/etc/rsyslog.d/[customfile].conf" with the name or IP address of the log aggregation server.
 
     *.* @@[remoteloggingserver]:[port]"
+
+srg_requirement: 'The {{{ full_name }}} audit records must be off-loaded onto a different system or storage media from the system being audited.'
