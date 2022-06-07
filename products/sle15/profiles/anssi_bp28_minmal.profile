@@ -23,3 +23,4 @@ description: |-
 
 selections:
   - anssi_sle:all:minimal
+  - file_permissions_unauthorized_world_writable
