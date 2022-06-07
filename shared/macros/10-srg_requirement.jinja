@@ -75,6 +75,7 @@ The {{{ full_name }}} package {{{ package }}} must be installed.
 The {{{ full_name }}} service {{{ service }}} must be enabled.
 {{%- endmacro %}}
 
+<<<<<<< HEAD
 
 {{#
 SRG requirement for setting the owner on a file.
@@ -172,3 +173,15 @@ SRG requirement for mount point options
 {{% macro srg_requirement_mount_option(path, option) -%}}
 {{{ full_name }}} must mount {{{ path }}} with the {{{ option }}} option.
 {{%- endmacro -%}}
+
+
+{{#
+Generate a SRG requirement text for service the disabled.
+
+:param service: Name of the service to be enabled
+:type service: str
+
+#}}
+{{% macro srg_requirement_service_disabled(service) -%}}
+The {{{ full_name }}} service {{{ service }}} must be disabled.
+{{%- endmacro %}}
