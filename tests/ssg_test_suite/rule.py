@@ -286,6 +286,8 @@ class RuleChecker(oscap.Checker):
         # Begin by loading context about our execution environment, if any.
         product = self.test_env.product
         product_yaml = common.get_product_context(product)
+        all_rules_in_benchmark = xml_operations.get_all_rules_in_benchmark(
+            self.datastream, self.benchmark_id)
         rules = []
 
         for dirpath, dirnames, filenames in common.walk_through_benchmark_dirs(
@@ -296,11 +298,14 @@ class RuleChecker(oscap.Checker):
             full_rule_id = OSCAP_RULE + short_rule_id
             if not self._rule_matches_rule_spec(short_rule_id):
                 continue
-            if not xml_operations.find_rule_in_benchmark(
-                    self.datastream, self.benchmark_id, full_rule_id):
-                logging.error(
-                    "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
-                    .format(full_rule_id, self.benchmark_id, self.datastream))
+            if full_rule_id not in all_rules_in_benchmark:
+                # This is an error only if the user specified the rules to be
+                # tested explicitly using command line arguments
+                if self.target_type == "rule ID":
+                    logging.error(
+                        "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
+                        .format(
+                            full_rule_id, self.benchmark_id, self.datastream))
                 continue
 
             # Load the rule itself to check for a template.
@@ -387,10 +392,11 @@ class RuleChecker(oscap.Checker):
 
         for filename in local_test_scenarios:
             templated_test_scenarios.pop(filename, None)
-        for filename in self.used_templated_test_scenarios[rule.template]:
-            templated_test_scenarios.pop(filename, None)
-        self.used_templated_test_scenarios[rule.template] |= set(
-            templated_test_scenarios.keys())
+        if self.target_type != "template":
+            for filename in self.used_templated_test_scenarios[rule.template]:
+                templated_test_scenarios.pop(filename, None)
+            self.used_templated_test_scenarios[rule.template] |= set(
+                templated_test_scenarios.keys())
         all_tests.update(templated_test_scenarios)
         all_tests.update(local_test_scenarios)
 
