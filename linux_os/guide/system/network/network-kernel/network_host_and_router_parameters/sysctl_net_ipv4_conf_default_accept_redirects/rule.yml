@@ -51,6 +51,11 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.accept_redirects", value="0") }}}
 
+fixtext: |-
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.default.accept_redirects", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must prevent IPv4 Internet Control Message Protocol (ICMP) redirect messages from being accepted.'
+
 template:
     name: sysctl
     vars:
