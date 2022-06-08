@@ -46,11 +46,9 @@ ocil_clause: |-
 ocil: |-
     {{{ ocil_service_disabled(service="debug-shell") }}}
 
-fixtext: |-
-    Configure the system to mask the debug-shell systemd service with the following command:
+fixtext: '{{{ srg_requirement_service_disabled("debug-shell") }}}'
 
-    $ sudo systemctl disable --now debug-shell.service
-    $ sudo systemctl mask --now debug-shell.service
+srg_requirement: '{{{ srg_requirement_service_disabled("debug-shell") }}}'
 
 platform: machine
 

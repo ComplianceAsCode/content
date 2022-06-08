@@ -44,13 +44,15 @@ references:
     stigid@rhel8: RHEL-08-040101
     stigid@sle15: SLES-15-010220
 
-ocil_clause: 'the service is not enabled'
+ocil_clause: '{{{ ocil_clause_service_enabled("firewalld") }}}'
 
 ocil: |-
     {{{ ocil_service_enabled(service="firewalld") }}}
 
 fixtext: |-
     {{{ fixtext_service_enabled("firewalld") }}}
+
+srg_requirement: '{{{ srg_requirement_service_disabled("firewalld") }}}'
 
 template:
     name: service_enabled

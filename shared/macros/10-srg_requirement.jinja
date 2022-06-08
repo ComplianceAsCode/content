@@ -71,7 +71,7 @@ The {{{ full_name }}} package {{{ package }}} must be installed.
 :type service: str
 
 #}}
-{{% macro srg_requirement_service_enabled(service) %}}
+{{% macro srg_requirement_service_enabled(service) -%}}
 The {{{ full_name }}} service {{{ service }}} must be enabled.
 {{%- endmacro %}}
 
@@ -172,3 +172,15 @@ SRG requirement for mount point options
 {{% macro srg_requirement_mount_option(path, option) -%}}
 {{{ full_name }}} must mount {{{ path }}} with the {{{ option }}} option.
 {{%- endmacro -%}}
+
+
+{{#
+Generate a SRG requirement text for disabling services.
+
+:param service: Name of the service to be disabled
+:type service: str
+
+#}}
+{{% macro srg_requirement_service_disabled(service) -%}}
+The {{{ full_name }}} service {{{ service }}} must be disabled.
+{{%- endmacro %}}

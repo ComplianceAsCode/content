@@ -285,6 +285,17 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
   {{%- endif -%}}
 {{%- endmacro %}}
 
+{{#
+    Inserts an OCIL Clause for a case when a service should be enabled.
+
+:param service: Name of service
+:type service: str
+
+#}}
+{{% macro ocil_clause_service_enabled(service) -%}}
+    the "{{{ service }}}" service is disabled, masked, or not started.
+{{%- endmacro %}}
+
 
 {{# Service Disabled macros #}}
 
@@ -295,7 +306,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 :type service: str
 
 #}}
-{{%- macro systemd_ocil_service_disabled(service) %}}
+{{%- macro systemd_ocil_service_disabled(service) -%}}
     To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration,
     {{% if product == "rhcos4" -%}}
     You'll need to log into a node in the cluster.
