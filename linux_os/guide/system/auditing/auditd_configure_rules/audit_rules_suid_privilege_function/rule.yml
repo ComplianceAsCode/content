@@ -70,15 +70,9 @@ ocil_clause: 'the command does not return all lines, or the lines are commented 
 ocil: |-
     Verify {{{ full_name }}} audits the execution of privileged functions.
 
-    Check if {{{ full_name }}} is configured to audit the execution of the "execve" system call.
-
-    If audit is using the "auditctl" tool to load the rules, run the following command:
+    Check if {{{ full_name }}} is configured to audit the execution of the "execve" system call using the following command:
 
     <pre>$ sudo grep execve /etc/audit/audit.rules</pre>
-
-    If audit is using the "augenrules" tool to load the rules, run the following command:
-
-    <pre>$ sudo grep -r execve /etc/audit/rules.d</pre>
 
     The output should be the following:
 
@@ -97,7 +91,7 @@ ocil: |-
 fixtext: |-
     Configure {{{ full_name }}} to audit the execution of the "execve" system call.
 
-    If audit is using the "auditctl" tool to load the rules, then add or update the following file system rules to "/etc/audit/audit.rules", if audit is using the "augenrules" tool to load the rules, then add or update the following file system rules to "/etc/audit/rules.d/audit.rules":
+    Add or update the following rules to "/etc/audit/rules.d/audit.rules":
 
     {{% if product == "ol8" %}}
     <pre>-a always,exit -F arch=b32 -S execve -C uid!=euid -k setuid</pre>
@@ -114,3 +108,5 @@ fixtext: |-
     The audit daemon must be restarted for the changes to take effect.
 
 platform: machine
+
+srg_requirement: '{{{ full_name }}} must audit the execution of privileged functions.'
