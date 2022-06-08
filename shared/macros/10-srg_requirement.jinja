@@ -184,3 +184,15 @@ Generate a SRG requirement text for disabling services.
 {{% macro srg_requirement_service_disabled(service) -%}}
 The {{{ full_name }}} service {{{ service }}} must be disabled.
 {{%- endmacro %}}
+
+
+{{#
+SRG requirement for separate filesystems
+
+:param part: The path to check
+:type part:  str
+
+#}}
+{{% macro srg_requirement_separate_partition(part) -%}}
+A separate {{{ full_name }}} filesystem must be used for the {{{ part }}} directory.
+{{%- endmacro -%}}
