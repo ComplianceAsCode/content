@@ -55,8 +55,9 @@ references:
 
 {{{ complete_ocil_entry_separate_partition(part="/var/log/audit") }}}
 
-fixtext: |-
-    Migrate the system audit data path onto a separate file system.
+fixtext: '{{{ fixtext_separate_partition(part="/var/log/audit") }}}'
+
+srg_requirement: '{{{ srg_requirement_separate_partition("/var/log/audit") }}}'
 
 platform: machine
 

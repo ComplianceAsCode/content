@@ -525,3 +525,14 @@ Change the permissions of the file "{{{ file }}}" to "{{{ mode }}}" by running t
 
 $ sudo chmod {{{ mode }}} {{{ file }}}
 {{%- endmacro %}}
+
+{{#
+Fixtext for having a mount point on another partition
+
+:param part: The mount point
+:type part: str
+
+#}}
+{{% macro fixtext_separate_partition(part) -%}}
+Migrate the "{{{ part }}}" directory onto a separate file system/partition.
+{{%- endmacro %}}
