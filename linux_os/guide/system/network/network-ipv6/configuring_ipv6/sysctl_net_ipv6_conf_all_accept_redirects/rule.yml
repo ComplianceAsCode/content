@@ -42,6 +42,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_redirects", value="0") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to ignore IPv6 ICMP redirect messages.
+    {{{ fixtext_sysctl("net.ipv6.conf.all.accept_redirects", "0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must ignore IPv6 Internet Control Message Protocol (ICMP) redirect messages.'
+
 platform: machine
 
 template:
