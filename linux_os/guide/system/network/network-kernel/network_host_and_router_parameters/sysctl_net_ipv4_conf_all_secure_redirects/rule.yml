@@ -39,6 +39,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.secure_redirects", value="0") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to not accept secure ICMP redirects.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.secure_redirects", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must be configured to accept secure ICMP redirects.'
+
 template:
     name: sysctl
     vars:
