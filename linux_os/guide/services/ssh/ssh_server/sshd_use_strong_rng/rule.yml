@@ -38,7 +38,18 @@ ocil: |-
     then the option is set correctly.
 
 ocil_clause: |-
-    The SSH_USE_STRONG_RNG is not set to 32 in /etc/sysconfig/sshd
+    the SSH_USE_STRONG_RNG is not set to 32 in /etc/sysconfig/sshd
+
+fixtext: |-
+    Configure the {{{ full_name }}} SSH server to use strong entropy.
+
+    Add or modify the following line in the "/etc/sysconfig/sshd" file.
+
+    SSH_USE_STRONG_RNG=32
+
+    The SSH service must be restarted for changes to take effect.
+
+srg_requirement: 'The {{{ full_name }}} must ensure the SSH server uses strong entropy.'
 
 warnings:
     - general: "This setting can cause problems on computers without the hardware random generator, because insufficient entropy causes the connection to be blocked until enough entropy is available."

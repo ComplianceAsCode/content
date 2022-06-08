@@ -64,6 +64,8 @@ references:
 fixtext: |-
     {{{ fixtext_sshd_lineinfile("PermitEmptyPasswords", "no") }}}
 
+srg_requirement: 'The {{{ full_name }}} SSH daemon must not allow accounts configured with blank or null passwords.'
+
 template:
     name: sshd_lineinfile
     vars:
