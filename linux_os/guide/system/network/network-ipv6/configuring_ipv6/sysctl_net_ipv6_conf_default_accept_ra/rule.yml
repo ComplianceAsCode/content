@@ -37,6 +37,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_ra", value="0") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to not accept router advertisements on all IPv6 interfaces by default unless the system is a router.
+    {{{ fixtext_sysctl(sysctl="net.ipv6.conf.default.accept_ra", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not accept router advertisements on all IPv6 interfaces by default.'
+
 platform: machine
 
 template:
