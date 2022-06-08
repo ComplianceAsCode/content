@@ -41,6 +41,8 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_audit_configuration(param="log_format", value="ENRICHED") | indent(4) }}}
 
+srg_requirement: '{{{ full_name }}} must resolve audit information before writing to disk.'
+
 template:
     name: auditd_lineinfile
     vars:
