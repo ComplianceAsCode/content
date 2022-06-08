@@ -301,7 +301,7 @@ class RuleChecker(oscap.Checker):
             if full_rule_id not in all_rules_in_benchmark:
                 # This is an error only if the user specified the rules to be
                 # tested explicitly using command line arguments
-                if self.rule_spec:
+                if self.target_type == "rule ID":
                     logging.error(
                         "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
                         .format(
