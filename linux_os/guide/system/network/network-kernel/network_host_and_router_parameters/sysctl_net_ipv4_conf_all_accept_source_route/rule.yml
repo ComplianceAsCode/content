@@ -53,6 +53,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.accept_source_route", value="0") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to not forward IPv4 source-routed packets.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.accept_source_route", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not forward IPv4 source-routed packets.'
+
 template:
     name: sysctl
     vars:
