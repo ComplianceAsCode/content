@@ -1,0 +1,12 @@
+{{%- set ansible_os_release_name_cond = 'ansible_distribution == "' + OS_ID_ANSIBLE + '"' -%}}
+{{%- macro ansible_os_release_conditional(specs) -%}}
+  {{%- for spec in specs -%}}
+    ansible_distribution_version is version("{{{ spec.ver }}}", "{{{ spec.op }}}")
+  {{% endfor %}}
+{{%- endmacro -%}}
+{{%- if SPECS|length() >= 1 -%}}
+  {{%- set cond = ansible_os_release_conditional(SPECS).strip() +" and " + ansible_os_release_name_cond -%}}
+  {{{ cond.strip().split("\n")|join(" and ") }}}
+{{%- else -%}}
+  {{{ ansible_os_release_name_cond.strip() }}}
+{{%- endif -%}}
