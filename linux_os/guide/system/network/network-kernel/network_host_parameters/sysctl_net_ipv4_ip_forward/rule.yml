@@ -47,9 +47,16 @@ references:
     stigid@sle12: SLES-12-030430
     stigid@sle15: SLES-15-040380
 
+ocil_clause: "the correct value is not returned"
+
 ocil: |-
     {{{ ocil_sysctl_option_value(sysctl="net.ipv4.ip_forward", value="0") }}}
     The ability to forward packets is only appropriate for routers.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not allow IPv4 packet forwarding, unless the system is a router.
+
+srg_requirement: '{{{ full_name }}} must not enable IPv4 packet forwarding unless the system is a router.'
 
 warnings:
     - functionality: |-
