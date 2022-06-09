@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check if postmaster has the correct mail alias.") }}}
+    <criteria comment="Check if postmaster has the correct mail alias.">
+      <criterion comment="Check if postmaster has the correct mail alias."
+      test_ref="test_postfix_client_configure_mail_alias_postmaster"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check if postmaster has the correct mail alias"
+  id="test_postfix_client_configure_mail_alias_postmaster" version="1" >
+    <ind:object object_ref="obj_postmaster_mail_alias"/>
+    <ind:state state_ref="state_postmaster_mail_alias"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_postmaster_mail_alias" version="1">
+    <ind:filepath operation="equals">/etc/aliases</ind:filepath>
+    <ind:pattern operation="pattern match">^(?i)postmaster\s*:\s*(.+)$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_postmaster_mail_alias" version="1" comment="postmaster email alias">
+    <ind:subexpression operation="pattern match">(?i)root</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>
