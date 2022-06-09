@@ -41,11 +41,21 @@ references:
 
 ocil_clause: |-
     the OpenSSL config file doesn't contain the whole section,
-    or that the section doesn't have the <pre>.include /etc/crypto-policies/back-ends/opensslcnf.config</pre> directive
+    or the section doesn't contain the <pre>.include /etc/crypto-policies/back-ends/opensslcnf.config</pre> directive
 
 ocil: |-
     To verify that OpenSSL uses the system crypto policy, check out that the OpenSSL config file
     <pre>{{{ openssl_cnf_path }}}</pre> contains the <pre>[ crypto_policy ]</pre> section with the
     <pre>.include /etc/crypto-policies/back-ends/opensslcnf.config</pre> directive:
-    <pre>grep '\.include\s* /etc/crypto-policies/back-ends/opensslcnf.config$' {{{ openssl_cnf_path }}}</pre>.
 
+    <pre>$ sudo grep '\.include\s* /etc/crypto-policies/back-ends/opensslcnf.config$' {{{ openssl_cnf_path }}}</pre>.
+
+fixtext: |-
+    Configure OpenSSL to use the system cryptography policy.
+
+    Add or edit the "[ crypto_policy ]" section in "{{{ openssl_cnf_path }}}" to contain the following line:
+
+    .include /etc/crypto-policies/back-ends/opensslcnf.config
+
+srg_requirement: |-
+    {{{ full_name }}} must implement DoD-approved encryption in the OpenSSL package.
