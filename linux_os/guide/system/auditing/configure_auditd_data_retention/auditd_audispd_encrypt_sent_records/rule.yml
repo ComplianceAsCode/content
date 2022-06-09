@@ -54,3 +54,15 @@ ocil: |-
     The output should return the following:
     <pre>enable_krb5 = yes</pre>
 {{% endif %}}
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt audit records sent with audispd plugin.
+{{% if product in ["rhel8", "rhel9", "fedora", "ol8", "rhv4"] %}}
+    Set the "transport" option in "{{{ audisp_conf_path }}}/audisp-remote.conf" to "KRB5".
+{{% else %}}
+    Uncomment the "enable_krb5" option in "{{{ audisp_conf_path }}}/audisp-remote.conf",
+    and set it with the following line:
+    enable_krb5 = yes
+{{% endif %}}
+
+srg_requirement: "{{{ full_name }}} must encrypt audit records sent over the network."
