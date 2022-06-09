@@ -1,6 +1,6 @@
 documentation_complete: false
 
-platform: ocp4
+platform: ocp4-node
 
 metadata:
     SMEs:
@@ -12,7 +12,7 @@ metadata:
 
 reference: https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Container_Platform_V1R3_SRG.zip
 
-title: '[DRAFT] DISA STIG for Red Hat OpenShift Container Platform 4 - Platform level'
+title: '[DRAFT] DISA STIG for Red Hat OpenShift Container Platform 4 - Node level'
 
 description: |-
     This is a draft profile for experimental purposes. It is not based on the 
@@ -20,7 +20,7 @@ description: |-
     profile contains configuration checks that align to the DISA STIG for 
     Red Hat OpenShift Container Platform 4.
 
-filter_rules: '"ocp4-node" not in platforms and "ocp4-master-node" not in platforms and "ocp4-node-on-sdn" not in platforms and "ocp4-node-on-ovn" not in platforms'
+filter_rules: '"ocp4-node" in platforms or "ocp4-master-node" in platforms or "ocp4-node-on-sdn" in platforms or "ocp4-node-on-ovn" in platforms'
 
 selections:
     - srg_ctr:all
