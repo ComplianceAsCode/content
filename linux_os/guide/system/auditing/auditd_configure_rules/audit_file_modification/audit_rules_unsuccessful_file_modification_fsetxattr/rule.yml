@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9
 
-title: 'Record Unsuccessul Permission Changes to Files - fsetxattr'
+title: 'Record Unsuccessful Permission Changes to Files - fsetxattr'
 
 description: |-
     The audit system should collect unsuccessful file permission change
@@ -37,7 +37,7 @@ references:
     nist: AU-2(d),AU-12(c),CM-6(a)
     vmmsrg: SRG-OS-000458-VMM-001810,SRG-OS-000461-VMM-001830
 
-{{{ complete_ocil_entry_audit_syscall(syscall="fsetxattr") }}}
+{{{ complete_ocil_entry_audit_unsuccessful_syscall(syscall="fsetxattr") }}}
 
 warnings:
     - general: |-

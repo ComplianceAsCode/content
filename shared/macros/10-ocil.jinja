@@ -114,6 +114,20 @@ ocil: |
     If the system is configured to audit this activity, it will return a line.
 {{%- endmacro %}}
 
+{{#
+    OCIL for adding a unsuccessful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro ocil_audit_unsuccessful_syscall(syscall) -%}}
+    To determine if the system is configured to audit unsuccessful calls
+    to the <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
 
 {{#
     OCIL and OCIL clause for adding a successful syscall to audit logs
@@ -128,6 +142,21 @@ ocil: |
 
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}
+
+{{#
+    OCIL and OCIL clause for adding a unsuccessful syscall to audit logs
+
+:param syscall: The syscall to audit
+:type syscall: str
+
+#}}
+{{% macro complete_ocil_entry_audit_unsuccessful_syscall(syscall) -%}}
+ocil: |
+    {{{ ocil_audit_unsuccessful_syscall(syscall) }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
 
 
 {{# Package macros #}}

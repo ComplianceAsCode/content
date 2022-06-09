@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,sle12,sle15
 
-title: 'Record Unsuccessul Delete Attempts to Files - unlinkat'
+title: 'Record Unsuccessful Delete Attempts to Files - unlinkat'
 
 description: |-
     {{% if product not in ["sle12", "sle15"] %}}
@@ -71,6 +71,11 @@ ocil: |-
     {{{ ocil_audit_rules_unsuccessful_file_modification("unlinkat", "unsuccessful-delete") | indent(4) }}}
 
 ocil_clause: the command does not return a line, or the line is commented out
+
+fixtext: |-
+    {{{ fixtext_audit_rules("unlinkat", "perm_mod", "perm_mod") | indent(4)}}}
+
+srg_requirement: '{{{ srg_requirement_audit_syscall("unlinkat") }}}'
 
 warnings:
     - general: |-

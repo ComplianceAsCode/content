@@ -10,14 +10,25 @@
 {{%- endmacro %}}
 
 {{#
-    Generate a SRG requirement text for audit syscall.
+    Generate a SRG requirement text for auditing all calls to a syscall.
 
 :param event: Name of the syscall
 :type event: str
 
 #}}
-{{% macro srg_requirement_audit_syscall(event) %}}
+{{% macro srg_requirement_audit_syscall(event) -%}}
 Successful/unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
+{{%- endmacro %}}
+
+{{#
+    Generate a SRG requirement text for auditing unsuccessful calls to a syscall.
+
+:param event: Name of the syscall
+:type event: str
+
+#}}
+{{% macro srg_requirement_audit_unsuccessful_syscall(event) -%}}
+Unsuccessful uses of the {{{ event }}} system call in {{{ full_name }}} must generate an audit record.
 {{%- endmacro %}}
 
 {{#
