@@ -2731,7 +2731,9 @@ controls:
         levels:
             - medium
         title: RHEL 8 must disable the user list at logon for graphical user interfaces.
-        status: pending
+        status: automated
+        rules:
+            - dconf_gnome_disable_user_list
     -   id: RHEL-08-020039
         levels:
             - medium
