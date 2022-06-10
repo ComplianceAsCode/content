@@ -35,3 +35,5 @@ selections:
   - sshd_disable_root_login
   - sshd_set_keepalive
   - file_permissions_sshd_private_key
+  - sysctl_net_ipv4_conf_default_accept_redirects
+  - sysctl_net_ipv4_conf_default_accept_source_route
