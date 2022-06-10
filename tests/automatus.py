@@ -58,19 +58,14 @@ def parse_args():
         "if it follows the ssg-<product>-ds*.xml naming convention.")
 
     benchmarks = common_parser.add_mutually_exclusive_group()
-    benchmarks.add_argument("--xccdf-id",
-                               dest="xccdf_id",
-                               metavar="REF-ID",
-                               default=None,
-                               help="Reference ID related to benchmark to "
-                                    "be used.")
-    benchmarks.add_argument("--xccdf-id-number",
-                               dest="xccdf_id_number",
-                               metavar="REF-ID-SELECT",
-                               type=int,
-                               default=0,
-                               help="Selection number of reference ID related "
-                                    "to benchmark to be used.")
+    benchmarks.add_argument(
+        "--xccdf-id", dest="xccdf_id", metavar="REF-ID", default=None,
+        help="Reference ID related to benchmark to be used.")
+
+    benchmarks.add_argument(
+        "--xccdf-id-number", dest="xccdf_id_number", metavar="REF-ID-SELECT", type=int, default=0,
+        help="Selection number of reference ID related to benchmark to be used.")
+
     common_parser.add_argument(
             "--add-platform",
             metavar="<CPE REGEX>",
@@ -306,7 +301,6 @@ def parse_args():
             raise argparse.ArgumentTypeError(
                 'Current slice cannot be greater than number of slices')
     return options
-
 
 
 def get_logging_dir(options):
