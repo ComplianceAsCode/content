@@ -52,6 +52,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.send_redirects", value="0") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} o not allow interfaces to perform Internet Protocol version 4 (IPv4) ICMP redirects by default.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.default.send_redirects", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not allow interfaces to perform Internet Control Message Protocol (ICMP) redirects by default.'
+
 template:
     name: sysctl
     vars:

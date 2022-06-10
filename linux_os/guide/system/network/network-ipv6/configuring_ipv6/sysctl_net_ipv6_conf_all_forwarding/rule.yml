@@ -40,9 +40,17 @@ references:
     stigid@sle12: SLES-12-030364
     stigid@sle15: SLES-15-040381
 
+ocil_clause: 'IP forwarding value is "1" and the system is not router'
+
 ocil: |-
     {{{ ocil_sysctl_option_value(sysctl="net.ipv6.conf.all.forwarding", value="0") }}}
     The ability to forward packets is only appropriate for routers.
+
+fixtext: |-
+    Configure {{{ full_name }}} to not allow packet forwarding unless the system is a router with the following commands:
+    {{{ fixtext_sysctl(sysctl="net.ipv6.conf.all.forwarding", value="0") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not perform packet forwarding unless the system is a router.'
 
 platform: machine
 

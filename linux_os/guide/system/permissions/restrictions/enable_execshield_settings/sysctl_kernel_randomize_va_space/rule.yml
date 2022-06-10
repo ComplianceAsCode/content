@@ -45,6 +45,8 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.randomize_va_space", value="2") }}}
 
+srg_requirement: '{{{ full_name }}} must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution.'
+
 platform: machine
 
 template:
@@ -55,4 +57,5 @@ template:
         datatype: int
 
 fixtext: |-
+    Configure {{{ full_name }}} to implement virtual address space randomization.
     {{{ fixtext_sysctl("kernel.randomize_va_space", "2") | indent(4) }}}

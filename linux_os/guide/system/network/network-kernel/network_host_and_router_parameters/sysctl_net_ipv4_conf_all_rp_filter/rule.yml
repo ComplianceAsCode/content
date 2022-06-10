@@ -46,6 +46,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.rp_filter", value="1") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to use reverse path filtering on all IPv4 interfaces.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.rp_filter", value="1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must use reverse path filtering on all IPv4 interfaces.'
+
 template:
     name: sysctl
     vars:

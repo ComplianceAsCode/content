@@ -49,6 +49,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.icmp_echo_ignore_broadcasts", value="1") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to not respond to IPv4 ICMP echoes sent to a broadcast address.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.icmp_echo_ignore_broadcasts", value="1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.'
+
 template:
     name: sysctl
     vars:

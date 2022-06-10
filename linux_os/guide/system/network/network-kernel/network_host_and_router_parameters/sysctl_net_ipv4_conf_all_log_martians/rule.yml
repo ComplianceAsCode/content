@@ -41,6 +41,13 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.log_martians", value="1") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to log malformed packets.
+    {{{ fixtext_sysctl(sysctl="net.ipv4.conf.all.log_martians", value="1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must log malformed packets.'
+
+
 template:
     name: sysctl
     vars:

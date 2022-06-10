@@ -28,6 +28,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.core.bpf_jit_harden", value="2") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}}  to enable hardening for the BPF JIT compiler.
+    {{{ fixtext_sysctl(sysctl="net.core.bpf_jit_harden", value="2") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must enable hardening for the Berkeley Packet Filter Just-in-time compiler.'
+
 platform: machine
 
 template:
