@@ -164,7 +164,7 @@
   <ind:textfilecontent54_object id="object_{{{ base_name }}}"
   version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
-    {{% if product in ["rhel7"] or 'ubuntu' in product %}}
+    {{% if product in ["rhel7", "ol7"] or 'ubuntu' in product %}}
       <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
     {{% else %}}
       <ind:pattern operation="pattern match">^set default_kernelopts=(.*)$</ind:pattern>
