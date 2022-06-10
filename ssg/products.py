@@ -18,6 +18,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_AIDE_BIN_PATH,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_CHRONY_CONF_PATH,
+                        DEFAULT_AUDISP_CONF_PATH,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE,
@@ -86,6 +87,9 @@ def _get_implied_properties(existing_properties):
 
     if "chrony_conf_path" not in existing_properties:
         result["chrony_conf_path"] = DEFAULT_CHRONY_CONF_PATH
+
+    if "audisp_conf_path" not in existing_properties:
+        result["audisp_conf_path"] = DEFAULT_AUDISP_CONF_PATH
 
     return result
 
