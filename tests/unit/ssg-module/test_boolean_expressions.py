@@ -5,7 +5,8 @@ from ssg import boolean_expression
 
 @pytest.fixture
 def algebra():
-    return boolean_expression.Algebra(symbol_cls=boolean_expression.Symbol, function_cls=boolean_expression.Function)
+    return boolean_expression.Algebra(
+        symbol_cls=boolean_expression.Symbol, function_cls=boolean_expression.Function)
 
 
 @pytest.fixture
@@ -25,7 +26,8 @@ def test_expression1_cnf_dnf(algebra, expression1):
 
 
 def test_dynamic_algebra():
-    alg = boolean_expression.Algebra(symbol_cls=boolean_expression.Symbol, function_cls=boolean_expression.Function)
+    alg = boolean_expression.Algebra(
+        symbol_cls=boolean_expression.Symbol, function_cls=boolean_expression.Function)
     exp = alg.parse('not banana and not apple or anything')
     assert str(exp) == '(~banana&~apple)|anything'
     assert str(exp.simplify()) == 'anything|(~apple&~banana)'

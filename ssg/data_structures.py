@@ -6,6 +6,7 @@ import yaml
 
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
 
+
 def dump_yaml_preferably_in_original_order(dictionary, file_object):
     try:
         return yaml.dump(dictionary, file_object, indent=4, sort_keys=False)
@@ -174,4 +175,3 @@ class XCCDFEntity(object):
 
     def to_xml_element(self):
         raise NotImplementedError()
-

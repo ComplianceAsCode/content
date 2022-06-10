@@ -42,7 +42,7 @@ def split_remediation_content_and_metadata(fix_file):
 
     contents = "\n".join(remediation_contents)
     remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(contents=contents, config=config) #defaultdict(lambda: None)
+    return remediation(contents=contents, config=config)  # defaultdict(lambda: None)
 
 
 def parse_from_string_with_jinja(string, env_yaml):

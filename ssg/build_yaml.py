@@ -1951,8 +1951,10 @@ class Platform(XCCDFEntity):
             platform.test = product_cpes.algebra.parse(
                 platform.original_expression, simplify=True)
             platform.conditional = {
-                'bash': platform.test.get_bash_conditional(product_cpes, conditionals_path, env_yaml),
-                'ansible': platform.test.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
+                'bash': platform.test.get_bash_conditional(
+                    product_cpes, conditionals_path, env_yaml),
+                'ansible': platform.test.get_ansible_conditional(
+                    product_cpes, conditionals_path, env_yaml)
             }
 
         return platform

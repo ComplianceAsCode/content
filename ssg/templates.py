@@ -355,7 +355,8 @@ class Builder(object):
                 try:
                     self.build_lang(cpe_id, template_name, template_vars, lang, local_env_yaml)
                 except Exception as e:
-                    print("Error building template {0} for platform {1}".format(lang, symbol.name), file=sys.stderr)
+                    print("Error building template {0} for platform {1}".format(lang, symbol.name),
+                          file=sys.stderr)
                     raise e
 
     def get_lang_for_rule(self, rule_id, rule_title, template, language):
@@ -412,7 +413,8 @@ class Builder(object):
     def build_all_platforms(self):
         for platform_file in sorted(os.listdir(self.platforms_dir)):
             platform_path = os.path.join(self.platforms_dir, platform_file)
-            platform = ssg.build_yaml.Platform.from_yaml(platform_path, self.env_yaml, self.product_cpes)
+            platform = ssg.build_yaml.Platform.from_yaml(
+                platform_path, self.env_yaml, self.product_cpes)
             self.build_platform(platform)
 
     def build(self):

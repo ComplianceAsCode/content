@@ -13,7 +13,8 @@ from . import rules
 from . import utils
 from . import constants
 
-from .remediations import parse_from_file_with_jinja, parse_from_file_without_jinja, REMEDIATION_TO_EXT_MAP
+from .remediations import parse_from_file_with_jinja, parse_from_file_without_jinja
+from .remediations import REMEDIATION_TO_EXT_MAP
 
 from .xml import ElementTree
 
@@ -137,7 +138,7 @@ def process(remediation, env_yaml, cpe_platforms):
             msg = (
                 "Comma-separated '{platform}' platforms "
                 "in '{remediation_file}' contains whitespace."
-                    .format(platform=platforms, remediation_file=remediation.file_path))
+                .format(platform=platforms, remediation_file=remediation.file_path))
             raise ValueError(msg)
 
     product = env_yaml["product"]
@@ -212,8 +213,8 @@ class BashRemediation(Remediation):
                 "    >&2 echo 'Remediation is not applicable, nothing was done'")
             wrapped_fix_text.append("fi")
 
-            result = namedtuple('remediation', ['contents', 'config'])(contents="\n".join(wrapped_fix_text),
-                                                                       config=result.config)
+            result = namedtuple('remediation', ['contents', 'config'])(
+                contents="\n".join(wrapped_fix_text), config=result.config)
         return result
 
 

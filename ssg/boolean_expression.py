@@ -125,11 +125,12 @@ class Symbol(boolean.Symbol):
         return str(uuid.uuid5(uuid.NAMESPACE_X500, self.as_id()))
 
     def as_dict(self):
-        res = {'id': self.as_id(), 'name': self.name, 'arg': self.arg, 'ver_str': '', 'ver_cpe': '', 'specs': []}
+        res = {'id': self.as_id(), 'name': self.name, 'arg': self.arg, 'ver_str': '',
+               'ver_cpe': '', 'specs': []}
 
         if self.spec.specs:
-            res['ver_str'] = ' and '.join([
-                '{0} {1}'.format(SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'), pep440_to_version(ver))
+            res['ver_str'] = ' and '.join(['{0} {1}'.format(
+                SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'), pep440_to_version(ver))
                 for op, ver in self.spec.specs])
             res['ver_cpe'] = ':'.join([pep440_to_version(ver) for op, ver in self.spec.specs])
 
@@ -144,8 +145,8 @@ class Symbol(boolean.Symbol):
                 # Older version of pkg_resources does not have 'epoch' attribute in Version,
                 # we have to get the data from the internal instance: 'Version._version.epoch'
                 'evr_ver': str(version._version.epoch) + ':'
-                           + '.'.join(str(x) for x in version._version.release) + '-'
-                           + (str(version._version.post) if version._version.post else '0')
+                + '.'.join(str(x) for x in version._version.release) + '-'
+                + (str(version._version.post) if version._version.post else '0')
             })
 
         return res

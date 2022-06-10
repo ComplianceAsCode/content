@@ -137,7 +137,8 @@ def test_product_cpes_by_name_and_id():
     assert(cpe1.name == "cpe:/a:machine")
     assert(cpe1.title == "Bare-metal or Virtual Machine")
     assert(cpe1.id_ == "machine")
-    assert(cpe1.conditional["ansible"] == "ansible_virtualization_type not in [\"docker\", \"lxc\", \"openvz\", \"podman\", \"container\"]")
+    assert(cpe1.conditional["ansible"] == "ansible_virtualization_type not in [\"docker\", "
+           "\"lxc\", \"openvz\", \"podman\", \"container\"]")
     assert(cpe1.conditional["bash"] == "[ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]")
 
     # get CPE by ID and verify it's loaded, the get_cpe method should return

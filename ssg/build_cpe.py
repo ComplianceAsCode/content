@@ -100,7 +100,8 @@ class ProductCPEs(object):
         return ref.startswith("cpe:")
 
     def get_cpe(self, ref):
-        # THIS IS UGLY, We'd better parse pkg_resources.Requirement.parse(ref) and get proper base id
+        # THIS IS UGLY, We'd better parse pkg_resources.Requirement.parse(ref)
+        # and get proper base id
         ref = ref.split('[', 1)[0]
         try:
             if self._is_name(ref):
@@ -108,7 +109,7 @@ class ProductCPEs(object):
             else:
                 return self.cpes_by_id[ref]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined" %(ref))
+            raise CPEDoesNotExist("CPE %s is not defined" % (ref))
 
 
     def get_cpe_name(self, cpe_id):
@@ -269,9 +270,11 @@ class CPEALFactRef(Symbol):
 
     def add_enriched_cpe_items(self, product_cpes):
         old_cpe_dict = product_cpes.get_cpe(self.cpe_name).represent_as_dict()
-        # ignore remediation snippets for now when templating, they will be removed eventually from the CPE item definition
+        # ignore remediation snippets for now when templating
+        # they will be removed eventually from the CPE item definition
         not_templated_keys = ["conditional"]
-        new_cpe_dict = apply_formatting_on_dict_values(old_cpe_dict, self.as_dict(), not_templated_keys)
+        new_cpe_dict = apply_formatting_on_dict_values(
+            old_cpe_dict, self.as_dict(), not_templated_keys)
         new_cpe_dict["id_"] = self.as_id()
         new_cpe = CPEItem.get_instance_from_full_dict(new_cpe_dict)
         self.cpe_name = product_cpes.get_cpe_name(self.cpe_name)
@@ -289,8 +292,8 @@ class CPEALFactRef(Symbol):
         if cond:
             return remediations.parse_from_string_with_jinja(cond, env_yaml)
         elif conditionals_path is not None:
-            templated_conditional_file = os.path.join(conditionals_path, 'bash',
-                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['bash'])
+            templated_conditional_file = os.path.join(conditionals_path, 'bash', self.as_id() +
+                                                      remediations.REMEDIATION_TO_EXT_MAP['bash'])
             if os.path.exists(templated_conditional_file):
                 return remediations.parse_from_file_without_jinja(templated_conditional_file)
         return None
@@ -301,8 +304,9 @@ class CPEALFactRef(Symbol):
         if cond:
             return remediations.parse_from_string_with_jinja(cond, env_yaml)
         elif conditionals_path is not None:
-            templated_conditional_file = os.path.join(conditionals_path, "ansible",
-                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['ansible'])
+            templated_conditional_file = os.path.join(conditionals_path, "ansible", self.as_id() +
+                                                      remediations.REMEDIATION_TO_EXT_MAP[
+                                                          'ansible'])
             if os.path.exists(templated_conditional_file):
                 return remediations.parse_from_file_without_jinja(templated_conditional_file)
         return None
@@ -392,7 +396,7 @@ def apply_formatting_on_dict_values(source_dict, string_dict, not_templated_keys
     This works only for dictionaries whose values are dicts or strings
     """
     new_dict = {}
-    for k,v in source_dict.items():
+    for k, v in source_dict.items():
         if k not in not_templated_keys:
             if isinstance(v, dict):
                 new_dict[k] = apply_formatting_on_dict_values(v, string_dict, not_templated_keys)
