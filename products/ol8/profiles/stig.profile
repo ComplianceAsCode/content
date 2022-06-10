@@ -305,6 +305,7 @@ selections:
     - grub2_slub_debug_argument
 
     # OL08-00-010424
+    - grub2_mitigation_argument
 
     # OL08-00-010430
     - sysctl_kernel_randomize_va_space
