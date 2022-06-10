@@ -1,9 +1,7 @@
-name: SSGTS CS9
+name: Automatus Fedora
 on:
   pull_request:
     branches: [ master, 'stabilization*' ]
-env:
-  DATASTREAM: ssg-cs9-ds.xml
 jobs:
   build-content:
     name: Build Content
@@ -54,12 +52,12 @@ jobs:
           prop_path: 'product'
       - name: Build product
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: ./build_product rhel9 --derivatives
+        run: ./build_product ${{steps.product.outputs.prop}} --datastream-only
       - uses: actions/upload-artifact@v2
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
-          name: ${{ env.DATASTREAM }}
-          path: build/${{ env.DATASTREAM }}
+          name: ssg-${{steps.product.outputs.prop}}-ds.xml
+          path: build/ssg-${{steps.product.outputs.prop}}-ds.xml
   validate-ubuntu:
     name: Run Tests
     needs: build-content
@@ -91,7 +89,7 @@ jobs:
         run: ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
       - name: Build test suite container
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: podman build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f test_suite-cs9
+        run: podman build --build-arg "CLIENT_PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)" -t ssg_test_suite -f test_suite-fedora
         working-directory: ./Dockerfiles
       - name: Get oscap-ssh
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
@@ -132,12 +130,12 @@ jobs:
       - uses: actions/download-artifact@v2
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         with:
-          name: ${{ env.DATASTREAM }}
+          name: ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Run tests in a container - Bash
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream $DATASTREAM ${{join(steps.rules.outputs.prop)}}
+        run: tests/test_rule_in_container.sh --dontclean --logdir logs_bash --remediate-using bash --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
         env:
-          ADDITIONAL_SSGTS_OPTIONS: "--duplicate-templates --add-product-to-fips-certified centos9 --product rhel9"
+          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified fedora"
       - name: Check for ERROR in logs
         if: ${{steps.bash.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_bash/test_suite.log
@@ -156,9 +154,9 @@ jobs:
           path: logs_bash/
       - name: Run tests in a container - Ansible
         if: ${{ steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
-        run: tests/test_rule_in_container.sh --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream $DATASTREAM ${{join(steps.rules.outputs.prop)}}
+        run: tests/test_rule_in_container.sh --dontclean --logdir logs_ansible --remediate-using ansible --name ssg_test_suite --datastream ssg-${{steps.product.outputs.prop}}-ds.xml ${{join(steps.rules.outputs.prop)}}
         env:
-          ADDITIONAL_SSGTS_OPTIONS: "--duplicate-templates --add-product-to-fips-certified centos9 --product rhel9"
+          ADDITIONAL_TEST_OPTIONS: "--duplicate-templates --add-product-to-fips-certified fedora"
       - name: Check for ERROR in logs
         if: ${{steps.ansible.outputs.prop == 'True' && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: grep -q "^ERROR" logs_ansible/test_suite.log
@@ -174,7 +172,7 @@ jobs:
         if: ${{ steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         uses: geekyeggo/delete-artifact@v1
         with:
-          name: ${{ env.DATASTREAM }}
+          name: ssg-${{steps.product.outputs.prop}}-ds.xml
       - name: Fail in case of ERROR present in logs_bash/test_suite.log or logs_ansible/test_suite.log
         if: ${{ (steps.check_results_bash.outcome == 'success' || steps.check_results_ansible.outcome == 'success') && steps.ctf.outputs.CTF_OUTPUT_SIZE != '0' }}
         run: |
