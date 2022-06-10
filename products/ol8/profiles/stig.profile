@@ -139,8 +139,11 @@ selections:
     # OL08-00-010152
     - require_emergency_target_auth
 
-    # OL08-00-010160
+    # OL08-00-010159
     - set_password_hashing_algorithm_systemauth
+
+    # OL08-00-010160
+    - set_password_hashing_algorithm_passwordauth
 
     # OL08-00-010161
     - kerberos_disable_no_keytab
