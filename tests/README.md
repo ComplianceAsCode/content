@@ -72,7 +72,7 @@ to partitioning scheme. Note that the Libvirt backend cannot make snapshots of
 UEFI based machines. Therefore, you can't use them with Automatus.
 
 *TIP*: Create a snapshot as soon as your VM is setup. This way, you can manually revert
-in case the test run breaks something and fails to revert. Do not use snapshot names starting with `ssg_`.\
+in case the test run breaks something and fails to revert. Do not use snapshot names starting with the `_ssgts` prefix.
 You can create a snapshot using `virsh` or `virt-manager`.
 
 ## Container backends
@@ -101,7 +101,7 @@ To use Podman backend, you need to have:
 #### Building podman base image
 
 Automatus will interact with the container by means of the root SSH access.
-If you don't have an SSH key pair, lets setup a key without passphrase, so the procedure could happen without any additional interaction.
+If you don't have an SSH key pair, setup a key without passphrase, so the procedure could happen without any additional interaction.
 You can skip this step if you already have an SSH key pair.
 
 ```
@@ -252,9 +252,9 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`.
  into *DIR*
 3. write a pass script into *DIR* - (some rules can have more than one pass scenario)
 4. build the data stream by running `./build_product --datastream-only fedora`
-5. run `test_suite.py` with command:
+5. run `automatus.py` with command:
 ```
-./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
+./automatus.py rule --libvirt qemu:///session ssg-test-suite-fedora accounts_password_minlen_login_defs
 ```
 
 Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
@@ -279,7 +279,7 @@ common code to the shared directory.
 
 # Running tests
 
-To test you profile or rule use `test_suite.py` script. It can take your SCAP source data stream, and test it on the specified backend.
+To test you profile or rule use `automatus.py` script. It can take your SCAP source data stream, and test it on the specified backend.
 Automatus can test a whole profile or just a specific rule within a profile.
 
 ## Argument summary
@@ -366,7 +366,7 @@ even if the `--dontclean` argument has been specified.
 ## Rule-based testing
 
 ```
-./test_suite.py rule RULE ...
+./automatus.py rule RULE ...
 ```
 
 In this mode, you supply one or more rule IDs or wildcards as positional
@@ -389,12 +389,12 @@ If you would like to test the rule `sshd_disable_kerb_auth`:
 
 Using Libvirt:
 ```
-./test_suite.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 Using Podman:
 ```
-./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 or just call the `test_rule_in_container.sh` script that passes the backend options for you
@@ -403,7 +403,7 @@ that remove some testing limitations of the container backend.
 
 Using Docker:
 ```
-./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
+./automatus.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
@@ -438,17 +438,17 @@ target domain and remediates it based on particular profile.
 
 To test RHEL7 STIG Profile on a VM:
 ```
-./test_suite.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig
+./automatus.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig
 ```
 
 To test Fedora Standard Profile on a Podman container:
 ```
-./test_suite.py profile --container ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
+./automatus.py profile --container ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
 ```
 
 To test Fedora Standard Profile on a Docker container:
 ```
-./test_suite.py profile --docker ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
+./automatus.py profile --docker ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
 ```
 
 Note that `profile-id` is matched by the suffix, so it works the same as in `oscap` tool
@@ -515,13 +515,13 @@ If a rule doesn't have any test scenario, it will be skipped and a `INFO` messag
 
 If you would like to test all profile's rules against their test scenarios:
 ```
-./test_suite.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
+./automatus.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
 ```
 
 ## Template-based testing
 
 ```
-./test_suite.py template ... <template_name1>[ <template_name2> <template_name3> ...]
+./automatus.py template ... <template_name1>[ <template_name2> <template_name3> ...]
 
 ```
 
