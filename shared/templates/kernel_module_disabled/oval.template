@@ -6,6 +6,13 @@
       {{% if product in ["sle12", "sle15"] %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
       comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
+      {{% elif product in ["ol7", "ol8", "rhel7", "rhel8"] %}}
+      <criteria operator="AND">
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
+        comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
+        <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
+        comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
+      </criteria>
       {{% else %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
       comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
@@ -42,7 +49,7 @@
   </constant_variable>
 {{% endif %}}
 
-{{% if product in ["sle12", "sle15"] %}}
+{{% if product in ["ol7", "ol8", "rhel7", "rhel8", "sle12", "sle15"] %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} blacklisted">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_blacklisted" />
@@ -50,7 +57,12 @@
 
   <ind:textfilecontent54_object id="obj_kernmod_{{{ KERNMODULE }}}_blacklisted"
   version="1" comment="kernel module {{{ KERNMODULE }}} blacklisted">
+    {{% if product in ["sle12", "sle15"] %}}
     <ind:filepath>/etc/modprobe.d/50-blacklist.conf</ind:filepath>
+    {{% else %}}
+    <ind:path var_ref="var_kernel_module_{{{ KERNMODULE }}}_paths" var_check="at least one" />
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    {{% endif %}}
     <ind:pattern operation="pattern match">^blacklist\s+{{{ KERNMODULE }}}$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
