@@ -239,7 +239,9 @@ The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/lis
 
 If you encounter issues with OpenSCAP or SCAP Workbench, use [https://www.redhat.com/mailman/listinfo/open-scap-list](https://www.redhat.com/mailman/listinfo/open-scap-list)
 
-You can also join the `#openscap` IRC channel on `libera.chat`.
+If you prefer more interactive contact with the community, you can join us on Gitter and IRC:
+- Gitter: https://gitter.im/Compliance-As-Code-The/content
+- IRC: join the `#openscap` IRC channel on `libera.chat`.
 
 ## A little bit of history
 
@@ -249,13 +251,13 @@ The original scope was to create SCAP datastreams. Over time, it grew into the
 biggest open-source beyond-SCAP content project.
 
 The next few years saw the introduction of not just government-specific security
-profiles but also commercial, such as PCI-DSS.
+profiles but also commercial, such as PCI-DSS and CIS.
 
 Later, the industry starts moving towards different security content formats,
 such as Ansible, Puppet, and Chef InSpec. The community reacted by evolving the
 tooling and helped transform SSG into a more general-purpose security content
 project. This change happened over time in 2017 and 2018. In September 2018, we
-decided to change the name of the project to avoid confusion.
+decided to change the name of the project to `ComplianceAsCode`, in order to avoid confusion.
 
 We envision that the future will be format-agnostic. That's why opted for an
 abstraction instead of using XCCDF for the input format.
@@ -269,4 +271,9 @@ The SSG homepage is [https://www.open-scap.org/security-policies/scap-security-g
 * [Compliance As Code Blog](https://complianceascode.github.io/)
 
 ## Contributors
-See [Contributors.md](Contributors.md)
+This project is welcome to new contributors. We are continually trying to remove the complexities to make contributions easier and more enjoyable for everyone. This is a nice project and a friendly community.
+
+There are many ways to contribute. Check the documentation for more details:
+https://complianceascode.readthedocs.io/en/latest/manual/developer/01_introduction.html
+
+Check the updated list of [Contributors](Contributors.md).
