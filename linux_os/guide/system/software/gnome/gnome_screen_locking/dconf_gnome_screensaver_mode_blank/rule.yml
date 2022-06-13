@@ -32,7 +32,7 @@ description: |-
     add or set <tt>picture-uri</tt> to <tt>string ''</tt> in
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
     <pre>[org/gnome/desktop/screensaver]
-    picture-uri=''
+    picture-uri=string ''
     </pre>
     Once the settings have been added, add a lock to
     <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
@@ -82,7 +82,7 @@ ocil: |-
     If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/picture-uri</tt>
 
 fixtext: |-
-    {{{ fixtext_dconf_ini_file("org/gnome/desktop/screensaver", "picture-uri", "''") }}}
+    {{{ fixtext_dconf_ini_file("org/gnome/desktop/screensaver", "picture-uri", "string ''") }}}
 
 
 platform: machine
