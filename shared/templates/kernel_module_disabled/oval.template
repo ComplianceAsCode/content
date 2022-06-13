@@ -3,12 +3,13 @@
   id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
     {{{ oval_metadata("The kernel module " + KERNMODULE + " should be disabled.") }}}
     <criteria operator="OR">
-      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
-      comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
-{{% if product in ["sle12", "sle15"] %}}
+      {{% if product in ["sle12", "sle15"] %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_blacklisted"
       comment="kernel module {{{ KERNMODULE }}} blacklisted in modprobe.d" />
-{{% endif %}}
+      {{% else %}}
+      <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_disabled"
+      comment="kernel module {{{ KERNMODULE }}} disabled in modprobe.d" />
+      {{% endif %}}
 {{% if "ubuntu" not in product %}}
       <criterion test_ref="test_kernmod_{{{ KERNMODULE }}}_modprobeconf" comment="kernel module {{{ KERNMODULE }}} disabled in /etc/modprobe.conf" />
 {{% endif %}}
@@ -16,6 +17,7 @@
     </criteria>
   </definition>
 
+{{% if product not in ["sle12", "sle15"] %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_disabled" version="1" check="all"
   comment="kernel module {{{ KERNMODULE }}} disabled">
     <ind:object object_ref="obj_kernmod_{{{ KERNMODULE }}}_disabled" />
@@ -38,6 +40,7 @@
     <value>/usr/lib/modprobe.d</value>
     <value>/usr/lib/modules-load.d</value>
   </constant_variable>
+{{% endif %}}
 
 {{% if product in ["sle12", "sle15"] %}}
   <ind:textfilecontent54_test id="test_kernmod_{{{ KERNMODULE }}}_blacklisted" version="1" check="all"
