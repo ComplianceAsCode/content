@@ -32,7 +32,7 @@ The following people have contributed to the SCAP Security Guide project
 * Olivier Bonhomme <ptitoliv@ptitoliv.net>
 * Lance Bragstad <lbragstad@gmail.com>
 * Ted Brunell <tbrunell@redhat.com>
-* Marcus Burghardt <marcus@mbsec.com.br>
+* Marcus Burghardt <maburgha@redhat.com>
 * Matthew Burket <mburket@redhat.com>
 * Blake Burkhart <blake.burkhart@us.af.mil>
 * Patrick Callahan <pmc@patrickcallahan.com>
