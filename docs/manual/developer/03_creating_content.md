@@ -1175,7 +1175,6 @@ controls: a list of controls (required key)
   - id: control ID (required key)
     title: control title
     description: description of the control in a few sentences
-    automated: Can be one of: ["yes", "no", "partially"]. Default value: "yes".
     levels: The list of policy levels that the control belongs to.
     notes: a short paragraph of text
     rules: a list of rule IDs that cover this control
