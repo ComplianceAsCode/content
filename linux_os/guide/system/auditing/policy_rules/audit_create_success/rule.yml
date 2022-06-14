@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhcos4,rhel8,rhel9
+prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure auditing of successful file creations'
 
@@ -24,10 +24,10 @@ description: |-
     <pre>
     cp /usr/share/audit/sample-rules/30-ospp-v42-1-create-success.rules /etc/audit/rules.d/
     </pre>
-    
+
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
-    
+
 
 rationale: |-
     Auditing of successful attempts to create a file helps in investigation of actions which happened on the system.
