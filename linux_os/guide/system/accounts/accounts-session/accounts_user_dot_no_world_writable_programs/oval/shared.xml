@@ -54,12 +54,12 @@
   </unix:file_object>
 
   <ind:textfilecontent54_object id="object_accounts_user_dot_no_world_writable_programs_init_files"
-      version="1">
+      version="2">
     <ind:behaviors recurse="directories" recurse_direction="down" max_depth="-1"
       recurse_file_system="local"/>
     <ind:path var_ref="var_accounts_user_dot_no_world_writable_programs_dirs"
       var_check="at least one"/>
-    <ind:filename operation="pattern match">^\..*</ind:filename>
+    <ind:filename operation="pattern match" var_ref="var_user_initialization_files_regex"/>
     <ind:pattern operation="pattern match" var_ref="var_world_writable_programs_regex"
       var_check="at least one"/>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
@@ -70,4 +70,6 @@
       comment="Init files do not execute world-writable programs">
     <ind:object object_ref="object_accounts_user_dot_no_world_writable_programs_init_files"/>
   </ind:textfilecontent54_test>
+
+  <external_variable id="var_user_initialization_files_regex" datatype="string" version="1" comment="User initialization files" />
 </def-group>
