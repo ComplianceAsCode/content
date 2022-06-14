@@ -7,9 +7,13 @@ labels: governance
 
 * Include the URL for the github profile.
 
+#### About me:
+
+* Could you please introduce yourself briefly and share your interactions with the project?
+
 #### Reason for having merge rights:
 
-* Give a clear and objective context about why do you need merge rights.
+* Please, consult the [list of project areas](https://complianceascode.readthedocs.io/en/latest/manual/developer/01_introduction.html#decomposition) and specify in which area would you like to get merge rights. This will help us to understand the context.
 
 #### List of PRs:
 
