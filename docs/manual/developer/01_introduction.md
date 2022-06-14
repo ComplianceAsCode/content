@@ -152,7 +152,14 @@ The pull request removing the product should include the removal of
 
 TLDR: 6 non-trivial PRs within 6 months => merge rights for 1 year since the last activity.
 
-Contributors can ask for merge rights on the mailing list or on Gitter.
+Contributors can ask for merge rights by opening a Github issue using the `Request Merge Rights` issue template.
+1. The issue must contain the following:
+    1. The Github ID of the user
+    1. The Reasoning for the requested merge rights
+    1. The links for PRs
+
+1. The rights can only be granted after, at least, three maintainers express their approval by commenting on the issue.
+
 Although one can technically merge code, the code contribution guidelines still have to be obeyed.
 
 Loss of merge rights:
