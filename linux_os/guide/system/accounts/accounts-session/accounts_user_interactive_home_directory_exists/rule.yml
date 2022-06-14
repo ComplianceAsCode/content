@@ -49,3 +49,15 @@ ocil: |-
     exist, run the following command:
     <pre>$ sudo pwck -r</pre>
     The output should not return any interactive users.
+
+fixtext: |-
+    Create home directories to all local interactive users that currently do not have a home directory assigned. Use the following commands to create the user home directory assigned in "/etc/ passwd":
+
+    Note: The example will be for the user smithj, who has a home directory of "/home/smithj", a UID of "smithj", and a Group Identifier (GID) of "users assigned" in "/etc/passwd".
+
+    $ sudo mkdir /home/smithj
+    $ sudo chown smithj /home/smithj
+    $ sudo chgrp users /home/smithj
+    $ sudo chmod 0750 /home/smithj
+
+srg_requirement: 'All {{{ full_name }}} local interactive user home directories defined in the /etc/passwd file must exist.'
