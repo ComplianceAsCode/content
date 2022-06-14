@@ -1707,7 +1707,7 @@ controls:
     verify that OpenShift is being deployed on a version of Red Hat Enterprise Linux
     that has been FIPS validated.
   rules:
-  - fips_mode_enabled
+  - fips_mode_enabled_on_all_nodes
   description: |-
     The information system implements cryptographic mechanisms to protect the confidentiality and integrity of remote access sessions.
 
@@ -4576,7 +4576,7 @@ controls:
     [3] https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-customizations.html
     [4] https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-customizations.html
   rules:
-  - fips_mode_enabled
+  - fips_mode_enabled_on_all_nodes
   - gitops_operator_exists
   description: |-
     The organization ensures that cryptographic mechanisms used to provide [Assignment: organization-defined security safeguards] are under configuration management.
@@ -7776,7 +7776,7 @@ controls:
     [3] https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-customizations.html
     [4] https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-customizations.html
   rules:
-  - fips_mode_enabled
+  - fips_mode_enabled_on_all_nodes
   description: |-
     The information system implements mechanisms for authentication to a cryptographic module that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for such authentication.
 
@@ -14149,7 +14149,7 @@ controls:
     [5] https://docs.openshift.com/container-platform/latest/security/certificates/service-serving-certificate.html
 
   rules:
-  - fips_mode_enabled
+  - fips_mode_enabled_on_all_nodes
   description: |-
     The organization produces, controls, and distributes symmetric cryptographic keys using [Selection: NIST FIPS-compliant; NSA-approved] key management technology and processes.
 
@@ -14183,7 +14183,7 @@ controls:
     [5] https://docs.openshift.com/container-platform/latest/security/certificates/service-serving-certificate.html
 
   rules:
-  - fips_mode_enabled
+  - fips_mode_enabled_on_all_nodes
   description: "The organization produces, controls, and distributes asymmetric cryptographic\
     \ keys using [Selection: NSA-approved key management technology and processes;\
     \ approved PKI Class 3 certificates or prepositioned keying material; approved\
@@ -14220,7 +14220,7 @@ controls:
     [3] https://docs.openshift.com/container-platform/4.7/installing/installing_azure/installing-azure-customizations.html
     [4] https://docs.openshift.com/container-platform/4.7/installing/installing_gcp/installing-gcp-customizations.html
   rules:
-  - fips_mode_enabled
+  - fips_mode_enabled_on_all_nodes
   description: |-
     The information system implements [Assignment: organization-defined cryptographic uses and type of cryptography required for each use] in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
 

@@ -6,7 +6,7 @@ description: |-
   OpenShift has an installation-time flag that can enable FIPS mode
   for the cluster. The flag <pre>fips: true</pre> must be enabled
   at install time in the <pre>install-config.yaml</pre> file.
-  
+
 rationale: |-
   Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
   protect data. The system must implement cryptographic modules adhering to the higher
@@ -18,26 +18,29 @@ identifiers:
   cce@ocp4: CCE-85860-5
 
 references:
+  nerc-cip: CIP-003-8 R4.2,CIP-007-3 R5.1,CIP-007-3 R7.1
+  nist: AC-17(2),SC-13,IA-7
   pcidss: Req-3.4.1
+  srg: SRG-APP-000014-CTR-000035,SRG-APP-000014-CTR-000040,SRG-APP-000416-CTR-001015,SRG-APP-000514-CTR-001315,SRG-APP-000560-CTR-001340,SRG-APP-000610-CTR-001385,SRG-APP-000635-CTR-001405,SRG-APP-000126-CTR-000275
 
 ocil_clause: 'FIPS mode is not enabled on all nodes (control plane and workers)'
 
 ocil: |-
     Run the following command to retrieve if the FIPS flag is enabled:
-    <pre>$ oc get machineconfig -o json | jq '[.items[] | select(.metadata.name | test("^[0-9]{2}-worker$|^[0-9]{2}-master$"))]|map(.spec.fips == true)'</pre>
+    <pre>$ oc get machineconfig -o json | jq '[.items[] | select(.metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.fips == true)'</pre>
     Make sure that the result is an array of 'true' values.
 
 severity: high
 
 warnings:
 - general: |-
-    {{{ openshift_filtered_cluster_setting({'/apis/machineconfiguration.openshift.io/v1/machineconfigs': '[.items[] | select(.metadata.name | test("^[0-9]{2}-worker$|^[0-9]{2}-master$"))]|map(.spec.fips == true)'}) | indent(4) }}}
+    {{{ openshift_filtered_cluster_setting({'/apis/machineconfiguration.openshift.io/v1/machineconfigs': '[.items[] | select(.metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.fips == true)'}) | indent(4) }}}
 template:
   name: yamlfile_value
   vars:
     ocp_data: "true"
     filepath: |-
-      {{{ openshift_filtered_path('/apis/machineconfiguration.openshift.io/v1/machineconfigs', '[.items[] | select(.metadata.name | test("^[0-9]{2}-worker$|^[0-9]{2}-master$"))]|map(.spec.fips == true)') }}}
+      {{{ openshift_filtered_path('/apis/machineconfiguration.openshift.io/v1/machineconfigs', '[.items[] | select(.metadata.name | test("^rendered-worker-[0-9a-z]+$|^rendered-master-[0-9a-z]+$"))] | map(.spec.fips == true)') }}}
     yamlpath: "[:]"
     check_existence: "all_exist"
     entity_check: "all"
