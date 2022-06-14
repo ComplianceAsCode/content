@@ -17,12 +17,21 @@ plugins:
 
 exclude_patterns:
   - "**/"
+  - "*"
+  - ".*"
+  - ".*/"
 
   - "!build-scripts/*.py"
   - "!ssg/*.py"
+  - "!ssg/**/*.py"
   - "!utils/*.py"
 
   - "!shared/**/*.py"
 
+  - "!*.md"
+  - "!**/*.md"
+  - "!.*/*.md"
+
   - "!tests/*.py"
+  - "!tests/ssg_test_suite/*.py"
   - "!tests/ssg_test_suite/**/*.py"
