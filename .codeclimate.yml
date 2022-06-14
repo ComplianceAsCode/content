@@ -14,6 +14,8 @@ plugins:
     enabled: true
   sonar-python:
     enabled: true
+  shellcheck:
+    enabled: true
 
 exclude_patterns:
   - "**/"
@@ -31,6 +33,11 @@ exclude_patterns:
   - "!*.md"
   - "!**/*.md"
   - "!.*/*.md"
+
+  - "!tests/*.sh"
+  - "!tests/shared/*.sh"
+  - "!utils/*.sh"
+  - "!build_product"
 
   - "!tests/*.py"
   - "!tests/ssg_test_suite/*.py"
