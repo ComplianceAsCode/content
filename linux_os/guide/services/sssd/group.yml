@@ -13,7 +13,9 @@ description: |-
     {{%- if product == "rhel7" -%}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/sssd") }}}
     {{%- elif product == "rhel8" -%}}
-        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/installing_identity_management/installing-an-ipa-client-basic-scenario_installing-identity-management#sssd-deployment-operations_install-client-basic") }}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/installing_identity_management/index#assembly_installing-an-idm-client_installing-identity-management") }}}
+    {{%- elif product == "rhel9" -%}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/installing_identity_management/index#assembly_installing-an-idm-client_installing-identity-management") }}}
     {{%- elif product == "ol7" -%}}
         {{{ weblink(link="https://docs.oracle.com/en/operating-systems/oracle-linux/7/userauth/ol7-auth.html#ol7-sssd-auth") }}}
     {{%- elif product == "ol8" -%}}
