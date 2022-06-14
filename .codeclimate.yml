@@ -16,6 +16,13 @@ plugins:
     enabled: true
 
 exclude_patterns:
-  - linux_os/
-  - applications/
-  - products/
+  - "**/"
+
+  - "!build-scripts/*.py"
+  - "!ssg/*.py"
+  - "!utils/*.py"
+
+  - "!shared/**/*.py"
+
+  - "!tests/*.py"
+  - "!tests/ssg_test_suite/**/*.py"
