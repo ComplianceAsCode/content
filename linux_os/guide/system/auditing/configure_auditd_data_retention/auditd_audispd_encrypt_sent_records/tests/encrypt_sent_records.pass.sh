@@ -3,4 +3,4 @@
 
 . $SHARED/auditd_utils.sh
 prepare_auditd_test_enviroment
-set_parameters_value /etc/audisp/audisp-remote.conf "enable_krb5" "yes"
+set_parameters_value {{{ audisp_conf_path }}}/audisp-remote.conf "enable_krb5" "yes"
