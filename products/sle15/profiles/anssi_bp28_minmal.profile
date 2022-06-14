@@ -25,4 +25,5 @@ selections:
   - anssi_sle:all:minimal
   - file_owner_etc_gshadow
   - file_owner_etc_shadow
+  - file_permissions_etc_passwd
   - file_permissions_unauthorized_world_writable
