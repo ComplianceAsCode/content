@@ -19,12 +19,14 @@ email_mappings = {
     "xeicker@gmail.com": "edgar.aguilar@oracle.com",
     # Firas AlShafei
     "firas.alshafei@gmail.com": "firas.alshafei@us.abb.com",
+    # Jeff Blank
+    "jeff@t440.local": "blank@eclipse.ncsc.mil",
     # Dominique Blaze
     "dominique.blaze@edu.devinci.fr": "dominique.blaze@devinci.fr",
     # Ted Brunell
     "tbrunell@tbrunell.corp.redhat.com": "tbrunell@redhat.com",
-    # Jeff Blank
-    "jeff@t440.local": "blank@eclipse.ncsc.mil",
+    # Marcus Burghardt
+    "marcus@mbsec.com.br": "maburgha@redhat.com",
     # Frank Caviggia
     "fcaviggia@users.noreply.github.com": "fcaviggi@ra.iad.redhat.com",
     # Will Cushen
