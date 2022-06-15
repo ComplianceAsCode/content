@@ -18,4 +18,4 @@ sed -i "/\s*log_group.*/d" /etc/audit/auditd.conf
 echo "log_group = group_test" >> /etc/audit/auditd.conf
 
 touch $FILE
-chgrp group_test $FILE*
+chgrp root $FILE*
