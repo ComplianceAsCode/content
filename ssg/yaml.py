@@ -16,6 +16,11 @@ except ImportError:
     from yaml import SafeLoader as yaml_SafeLoader
 
 try:
+    from yaml import CLoader as yaml_Loader
+except ImportError:
+    from yaml import Loader as yaml_Loader
+
+try:
     from yaml import CDumper as yaml_Dumper
 except ImportError:
     from yaml import Dumper as yaml_Dumper
@@ -125,7 +130,7 @@ def open_raw(yaml_file):
     return yaml_contents
 
 
-def ordered_load(stream, Loader=yaml_SafeLoader, object_pairs_hook=OrderedDict):
+def ordered_load(stream, Loader=yaml_Loader, object_pairs_hook=OrderedDict):
     """
     Drop-in replacement for yaml.load(), but preserves order of dictionaries
     """
