@@ -1110,7 +1110,7 @@ macro(ssg_build_html_srgmap_tables PRODUCT)
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_srg_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${SSG_SHARED_REFS}/disa-os-srg-v2r2.xml" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_srg_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${SSG_SHARED_REFS}/disa-os-srg-v2r3.xml" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         DEPENDS ${PRODUCT}-compile-all
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map tables"
     )
