@@ -62,4 +62,13 @@ ocil: |-
     The output should show output <tt>showfailed</tt> and must not contain
     <tt>silent</tt>.
 
+fixtext: |-
+    Configure {{{ full_name }}} to provide users with feedback on when account accesses last occurred by setting the required configuration options in "/etc/pam.d/postlogin".
+
+    Add the following line to the top of "/etc/pam.d/postlogin":
+
+    session required pam_lastlog.so showfailed
+
+srg_requirement: '{{{ full_name }}} must display the date and time of the last successful account logon upon logon.'
+
 platform: pam
