@@ -4,4 +4,4 @@
 
 . $SHARED/auditd_utils.sh
 prepare_auditd_test_enviroment
-delete_parameter /etc/audit/audisp-remote.conf "remote_server"
+delete_parameter {{{ audisp_conf_path }}}/audisp-remote.conf "remote_server"

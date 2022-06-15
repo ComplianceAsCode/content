@@ -1,7 +1,7 @@
 {{%- if product in ["rhel7", "ol7"] %}}
-  {{%- set auditd_conf_path="/etc/audisp/audispd.conf" %}}
+  {{%- set auditd_conf_path="{{{ audisp_conf_path }}}/audispd.conf" %}}
 {{%- else %}}
-  {{%- set auditd_conf_path="/etc/audit/auditd.conf" %}}
+  {{%- set auditd_conf_path="{{{ audisp_conf_path }}}/auditd.conf" %}}
 {{%- endif %}}
 
 documentation_complete: true
@@ -42,6 +42,6 @@ ocil: |-
 
     The output should contain be like <tt>overflow_action = syslog</tt>
 
-    If the value of the "overflow_action" option is not set to <tt>syslog</tt>, 
+    If the value of the "overflow_action" option is not set to <tt>syslog</tt>,
     <tt>single</tt>, <tt>halt</tt> or the line is commented out, ask the System Administrator
-    to indicate how the audit logs are off-loaded to a different system or media. 
+    to indicate how the audit logs are off-loaded to a different system or media.

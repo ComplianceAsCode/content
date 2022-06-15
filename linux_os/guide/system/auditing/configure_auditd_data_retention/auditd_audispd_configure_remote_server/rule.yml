@@ -12,11 +12,7 @@ description: |-
     <pre>/etc/audisp/plugins.d/au-remote.conf</pre>
 {{% endif %}}
     Set the <tt>remote_server</tt> option in <pre>
-{{%- if product in ["rhel8", "fedora", "ol8", "rhv4"] -%}}
-    /etc/audit/audisp-remote.conf
-{{%- else -%}}
-    /etc/audisp/audisp-remote.conf
-{{%- endif -%}}
+    {{{ audisp_conf_path }}}/audisp-remote.conf
     </pre>
     with an IP address or hostname of the system that the audispd plugin should
     send audit records to. For example
@@ -60,11 +56,6 @@ ocil: |-
 {{% endif %}}
     To verify the audispd plugin off-loads audit records onto a different system or
     media from the system being audited, run the following command:
-{{% if product in ["rhel8", "fedora", "ol8", "rhv4"] %}}
-    <pre>$ sudo grep -i remote_server /etc/audit/audisp-remote.conf</pre>
-{{% else %}}
-    <pre>$ sudo grep -i remote_server /etc/audisp/audisp-remote.conf</pre>
-{{% endif %}}
+    <pre>$ sudo grep -i remote_server {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
     The output should return something similar to
     <pre>remote_server = <i>{{{ xccdf_value("var_audispd_remote_server") }}}</i></pre>
-

@@ -6,7 +6,7 @@
 
 - name: Configure Kerberos 5 Encryption in Audit Event Multiplexor (audispd)
   lineinfile:
-    dest: /etc/audisp/audisp-remote.conf
+    dest: {{{ audisp_conf_path }}}/audisp-remote.conf
     line: enable_krb5 = yes
     regexp: ^\s*enable_krb5\s*=\s*.*$
     state: present
