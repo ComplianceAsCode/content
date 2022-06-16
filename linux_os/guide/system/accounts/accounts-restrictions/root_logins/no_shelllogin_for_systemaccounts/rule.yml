@@ -62,6 +62,15 @@ ocil: |-
     directive is set in /etc/login.defs configuration file. In the default
     configuration UID_MIN is set to 1000.
 
+fixtext: |-
+    Configure {{{ full_name }}} so that all non-interactive accounts on the system have no interactive shell assigned to them.
+
+    Run the following command to disable the interactive shell for a specific non-interactive user account:
+
+    $ sudo usermod --shell /sbin/nologin nobody
+
+srg_requirement: '{{{ full_name }}} system accounts must not have have login shell.'
+
 warnings:
     - functionality: |-
         Do not perform the steps in this section on the root account. Doing so might

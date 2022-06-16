@@ -49,4 +49,15 @@ ocil: |-
     The output should show the following:
     <pre>multi-user.target</pre>
 
+fixtext: |-
+    Document the requirement for a graphical user interface with the ISSO or reinstall the operating system without the graphical user interface.
+    If reinstallation is not feasible, then continue with the following procedure:
+    Open an SSH session and enter the following commands:
+
+    $ sudo systemctl set-default multi-user.target
+
+    A reboot is required for the changes to take effect.
+
+srg_requirement: 'The graphical display manager must not be the default target on {{{ full_name }}} unless approved.'
+
 platform: machine

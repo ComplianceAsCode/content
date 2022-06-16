@@ -43,3 +43,11 @@ ocil: |-
     execute the following command:
     <pre>$ sudo find /home -perm -002 -type f -name ".[^.]*" -exec ls -ld {} \;</pre>
     There should be no output.
+
+fixtext: |-
+    Set the mode on files being executed by the local initialization files with the following command:
+
+    $ sudo chmod 0755
+
+srg_requirement: |-
+    'Local {{{ full_name }}} initialization files must not execute world-writable programs.

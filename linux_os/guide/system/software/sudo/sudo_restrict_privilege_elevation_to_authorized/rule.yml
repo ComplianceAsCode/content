@@ -46,6 +46,13 @@ ocil: |-
     <pre>$ sudo grep -PR '^\s*ALL\s+ALL\=\(ALL\:ALL\)\s+ALL\s*$' /etc/sudoers /etc/sudoers.d/*</pre>
     Both commands should return no output.
 
+fixtext: |-
+    Remove the following entries from /etc/sudoers or any file in /etc/sudoers.d/*:
+    ALL ALL=(ALL) ALL
+    ALL ALL=(ALL:ALL) ALL
+
+srg_requirement: '{{{ full_name }}} must restrict privilege elevation to authorized personnel.'
+
 platform: sudo
 
 warnings:
