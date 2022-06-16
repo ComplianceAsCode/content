@@ -2,7 +2,7 @@
   {{%- for spec in specs %}}
     ansible_facts.packages["{{{ pkgname }}}"][0]["version"] is version("{{{ spec.ver }}}", "{{{ spec.op }}}")
   {{%- else %}}
-    {{{ ansible_pkg_conditional(pigname) }}}
+    {{{ ansible_pkg_conditional(pkgname) }}}
   {{% endfor %}}
 {{% endmacro %}}
 {{{ ansible_package_conditionals(PKGNAME, SPECS).strip().split("\n")|join(" and ") }}}
