@@ -123,7 +123,7 @@ class BashRemediation(Remediation):
 
         inherited_conditionals = []
         for p in inherited_cpe_platform_names:
-            r = cpe_platforms[p].get_bash_conditional()
+            r = cpe_platforms[p].get_remediation_conditional("bash")
             if r is not None:
                 stripped = r.contents.strip()
                 if stripped:
@@ -131,7 +131,7 @@ class BashRemediation(Remediation):
 
         rule_specific_conditionals = []
         for p in rule_specific_cpe_platform_names:
-            r = cpe_platforms[p].get_bash_conditional()
+            r = cpe_platforms[p].get_remediation_conditional("bash")
             if r is not None:
                 stripped = r.contents.strip()
                 if stripped:
@@ -287,7 +287,7 @@ class AnsibleRemediation(Remediation):
 
         inherited_conditionals = []
         for p in inherited_cpe_platform_names:
-            r = cpe_platforms[p].get_ansible_conditional()
+            r = cpe_platforms[p].get_remediation_conditional("ansible")
             if r is not None:
                 stripped = r.contents.strip()
                 if stripped:
@@ -295,13 +295,13 @@ class AnsibleRemediation(Remediation):
 
         rule_specific_conditionals = []
         for p in rule_specific_cpe_platform_names:
-            r = cpe_platforms[p].get_ansible_conditional()
+            r = cpe_platforms[p].get_remediation_conditional("ansible")
             if r is not None:
                 stripped = r.contents.strip()
                 if stripped:
                     rule_specific_conditionals.append(stripped)
 
-            cpe_platforms[p].get_ansible_conditional()
+            cpe_platforms[p].get_remediation_conditional("ansible")
 
         # Remove conditionals related to package CPEs if the updated task collects package facts
         if "package_facts" in to_update:

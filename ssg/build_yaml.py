@@ -1636,11 +1636,10 @@ class Platform(XCCDFEntity):
     def to_xml_element(self):
         return ET.fromstring(self.xml_content)
 
-    def get_bash_conditional(self):
-        return self.conditional.get('bash', '')
+    def get_remediation_conditional(self, language):
+        return self.conditional.get(language, '')
 
-    def get_ansible_conditional(self):
-        return self.conditional.get('ansible', '')
+
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, conditionals_path=None):
@@ -1651,8 +1650,10 @@ class Platform(XCCDFEntity):
             platform.test = product_cpes.algebra.parse(
                 platform.original_expression, simplify=True)
             platform.conditional = {
-                'bash': platform.test.get_bash_conditional(product_cpes, conditionals_path, env_yaml),
-                'ansible': platform.test.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
+                'bash': platform.test.get_remediation_conditional(
+                    "bash", product_cpes, conditionals_path, env_yaml),
+                'ansible': platform.test.get_remediation_conditional(
+                    "ansible", product_cpes, conditionals_path, env_yaml)
             }
 
         return platform
