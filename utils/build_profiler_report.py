@@ -2,7 +2,6 @@
 """Compare and present build times to user and generate an HTML interactive graph"""
 import sys
 import argparse
-import re
 
 
 def load_log_file(file) -> dict:
@@ -13,18 +12,34 @@ def load_log_file(file) -> dict:
 
     # {Target: duration} dict
     target_duration_dict = {}
-    for line in lines:
-        line = line.strip()
 
-        # pattern to match target names that are an absolute path - these should be skipped
-        # --> an issue appeared with new versions of cmake where the targets are duplicated for some
-        # reason and therefore they must be filtered here
-        duplicate_pattern = re.compile("[0-9]+\s+[0-9]+\s+[0-9]+\s+/.*")
-        if not line.startswith('#') and not duplicate_pattern.match(line):
-            # calculate target compilation duration and add it to dict
-            line = line.split()
-            duration = int(line[1]) - int(line[0])
-            target_duration_dict[line[3]] = duration
+    # an issue appeared with new versions of cmake where the targets are duplicated with a relative
+    # and absolute path and therefore they must be filtered here; filters comments too
+    lines = [line for line in lines if not line.strip().split()[3].startswith('/') and not
+             line.startswith('#')]
+    splitLines = [line.strip().split() for line in lines]
+
+    # calculate target compilation duration and add it to dict
+    hash_target_duration_dict = {}
+    for line in splitLines:
+        duration = int(line[1]) - int(line[0])
+        hash = line[2]
+        target = line[3]
+
+        # filter out lines with duplicate times and concatenate target names
+        if hash not in hash_target_duration_dict:
+            target_duration_dict[target] = duration
+            # add target,duration with new hash
+            hash_target_duration_dict[hash] = (target, duration)
+        else:
+            previous_target = hash_target_duration_dict[hash][0]
+            # concatenate previous target with same hash to this one
+            concated_target = previous_target + ";" + target
+            # remove old target entry and add concatenated target = duraiton
+            target_duration_dict[concated_target] = \
+                target_duration_dict.pop(previous_target)
+            # update target name in hash dict
+            hash_target_duration_dict[hash] = (concated_target, duration)
 
     return target_duration_dict
 
@@ -138,6 +153,13 @@ def print_report(current_dict: dict, baseline_dict: dict = None) -> None:
         # if target was not in baseline, append note
         if baseline_dict and target not in baseline_dict.keys():
             line.append("Not in baseline")
+
+        # if target has multiple output files, print them on separate lines
+        # (times only on the last line)
+        if(';' in target):
+            print("\n".join(target.rsplit(';', 1)[0].split(';')))
+            split_target = target.rsplit(';', 1)[1]
+            line[0] = f'{split_target:60}'
         print(' | '.join(line))
 
     # Print time and % delta of the whole build time

@@ -15,6 +15,15 @@ try:
 except ImportError:
     from yaml import SafeLoader as yaml_SafeLoader
 
+try:
+    from yaml import CLoader as yaml_Loader
+except ImportError:
+    from yaml import Loader as yaml_Loader
+
+try:
+    from yaml import CDumper as yaml_Dumper
+except ImportError:
+    from yaml import Dumper as yaml_Dumper
 
 def _bool_constructor(self, node):
     return self.construct_scalar(node)
@@ -121,7 +130,7 @@ def open_raw(yaml_file):
     return yaml_contents
 
 
-def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
+def ordered_load(stream, Loader=yaml_Loader, object_pairs_hook=OrderedDict):
     """
     Drop-in replacement for yaml.load(), but preserves order of dictionaries
     """
@@ -137,7 +146,7 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     return yaml.load(stream, OrderedLoader)
 
 
-def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
+def ordered_dump(data, stream=None, Dumper=yaml_Dumper, **kwds):
     """
     Drop-in replacement for yaml.dump(), but preserves order of dictionaries
     """
@@ -164,6 +173,10 @@ def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
     # Fix formatting by adding a space in between tasks
     unformatted_yaml = yaml.dump(data, None, OrderedDumper, **kwds)
     formatted_yaml = re.sub(r"[\n]+([\s]*)- name", r"\n\n\1- name", unformatted_yaml)
+
+    # Fix CDumper issue where it adds yaml document ending '...'
+    # in some templated ansible remediations
+    formatted_yaml = re.sub(r"\n\s*\.\.\.\s*", r"\n", formatted_yaml)
 
     if stream is not None:
         return stream.write(formatted_yaml)
