@@ -1093,15 +1093,6 @@ class Group(XCCDFEntity):
 
         return yaml_contents
 
-    def validate_prodtype(self, yaml_file):
-        for ptype in self.prodtype.split(","):
-            if ptype.strip() != ptype:
-                msg = (
-                    "Comma-separated '{prodtype}' prodtype "
-                    "in {yaml_file} contains whitespace."
-                    .format(prodtype=self.prodtype, yaml_file=yaml_file))
-                raise ValueError(msg)
-
     def to_xml_element(self, env_yaml=None):
         group = ET.Element('Group')
         group.set('id', self.id_)
