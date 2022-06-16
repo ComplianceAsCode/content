@@ -203,7 +203,7 @@ class CPEALLogicalTest(Function):
         for arg in self.args:
             arg.add_enriched_cpe_items(product_cpes)
 
-    def get_conditional(self, language, product_cpes, conditionals_path, env_yaml):
+    def get_remediation_conditional(self, language, product_cpes, conditionals_path, env_yaml):
         contents = ''
         config = defaultdict(lambda: None)
         op = " "
@@ -212,12 +212,7 @@ class CPEALLogicalTest(Function):
         contents += "( "
         child_condlines = []
         for a in self.args:
-            if language == "bash":
-                r = a.get_bash_conditional(product_cpes, conditionals_path, env_yaml)
-            elif language == "ansible":
-                r = a.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
-            else:
-                raise Exception("Conditionals for {0} are not supported.".format(language))
+            r = a.get_remediation_conditional(language, product_cpes, conditionals_path, env_yaml)
             if r is not None:
                 cont = r.contents.strip()
                 if cont:
@@ -230,14 +225,8 @@ class CPEALLogicalTest(Function):
         contents += " )"
         return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
-    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
-        return self.get_conditional("bash", product_cpes, conditionals_path, env_yaml)
 
-    def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
-        return self.get_conditional("ansible", product_cpes, conditionals_path, env_yaml)
-
-
-class CPEALFactRef (Symbol):
+class CPEALFactRef(Symbol):
 
     prefix = "cpe-lang"
     ns = PREFIX_TO_NS[prefix]
@@ -263,7 +252,7 @@ class CPEALFactRef (Symbol):
 
         return cpe_factref
 
-    def get_conditional(self, language, product_cpes, conditionals_path, env_yaml):
+    def get_remediation_conditional(self, language, product_cpes, conditionals_path, env_yaml):
         cpe = product_cpes.get_cpe(self.as_id())
         cond = cpe.conditional.get(language, "")
         if cond:
@@ -276,13 +265,6 @@ class CPEALFactRef (Symbol):
             if os.path.exists(templated_conditional_file):
                 return remediations.parse_from_file_without_jinja(templated_conditional_file)
         return None
-
-    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
-        return self.get_conditional("bash", product_cpes, conditionals_path, env_yaml)
-
-    def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
-        return self.get_conditional("ansible", product_cpes, conditionals_path, env_yaml)
-
 
 def extract_subelement(objects, sub_elem_type):
     """
