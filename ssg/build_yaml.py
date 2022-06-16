@@ -1196,19 +1196,7 @@ class Group(XCCDFEntity):
         self.values[value.id_] = value
 
     def add_group(self, group, env_yaml=None, product_cpes=None):
-        if group is None:
-            return
-        if self.platforms and not group.platforms:
-            group.platforms = self.platforms
-        self.groups[group.id_] = group
-        self._pass_our_properties_on_to(group)
-
-        # Once the group has inherited properties, update cpe_names
-        if env_yaml:
-            for platform in group.platforms:
-                cpe_platform = Platform.from_text(platform, product_cpes)
-                cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                group.cpe_platform_names.add(cpe_platform.id_)
+        self._add_child(group, self.groups, env_yaml, product_cpes)
 
     def _pass_our_properties_on_to(self, obj):
         for attr in self.ATTRIBUTES_TO_PASS_ON:
@@ -1216,19 +1204,22 @@ class Group(XCCDFEntity):
                 setattr(obj, attr, getattr(self, attr))
 
     def add_rule(self, rule, env_yaml=None, product_cpes=None):
-        if rule is None:
-            return
-        if self.platforms and not rule.platforms:
-            rule.platforms = self.platforms
-        self.rules[rule.id_] = rule
-        self._pass_our_properties_on_to(rule)
+        self._add_child(rule, self.rules, env_yaml, product_cpes)
 
-        # Once the rule has inherited properties, update cpe_platform_names
+    def _add_child(self, child, childs, env_yaml=None, product_cpes=None):
+        if child is None:
+            return
+        if self.platforms and not child.platforms:
+            child.platforms = self.platforms
+        childs[child.id_] = child
+        self._pass_our_properties_on_to(child)
+
+        # Once the child has inherited properties, update cpe_names
         if env_yaml:
-            for platform in rule.platforms:
+            for platform in child.platforms:
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
-                rule.cpe_platform_names.add(cpe_platform.id_)
+                child.cpe_platform_names.add(cpe_platform.id_)
 
     def __str__(self):
         return self.id_
