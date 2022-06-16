@@ -10,6 +10,7 @@ from collections import namedtuple, defaultdict
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
+from .constants import CONDITIONAL_OPERATORS
 from .utils import required_key
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
@@ -202,49 +203,38 @@ class CPEALLogicalTest(Function):
         for arg in self.args:
             arg.add_enriched_cpe_items(product_cpes)
 
-    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+    def get_conditional(self, language, product_cpes, conditionals_path, env_yaml):
         contents = ''
         config = defaultdict(lambda: None)
         op = " "
         if self.is_not():
-            contents += "! "
+            contents += CONDITIONAL_OPERATORS[language]["not"] + " "
         contents += "( "
         child_condlines = []
         for a in self.args:
-            r = a.get_bash_conditional(product_cpes, conditionals_path, env_yaml)
+            if language == "bash":
+                r = a.get_bash_conditional(product_cpes, conditionals_path, env_yaml)
+            elif language == "ansible":
+                r = a.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
+            else:
+                raise Exception("Conditionals for {0} are not supported.".format(language))
             if r is not None:
                 cont = r.contents.strip()
                 if cont:
                     child_condlines.append(cont)
         if self.is_or():
-            op = " || "
+            op = " " + CONDITIONAL_OPERATORS[language]["or"] + " "
         elif self.is_and():
-            op = " && "
+            op = " " + CONDITIONAL_OPERATORS[language]["and"] + " "
         contents += op.join(child_condlines)
         contents += " )"
         return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
+    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+        return self.get_conditional("bash", product_cpes, conditionals_path, env_yaml)
+
     def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
-        contents = ''
-        config = defaultdict(lambda: None)
-        op = " "
-        if self.is_not():
-            contents += "not "
-        contents += "( "
-        child_ansible_conds = []
-        for a in self.args:
-            r = a.get_ansible_conditional(product_cpes, conditionals_path, env_yaml)
-            if r is not None:
-                cont = r.contents.strip()
-                if cont:
-                    child_ansible_conds.append(cont)
-        if self.is_or():
-            op = " or "
-        elif self.is_and():
-            op = " and "
-        contents += op.join(child_ansible_conds)
-        contents += " )"
-        return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
+        return self.get_conditional("ansible", product_cpes, conditionals_path, env_yaml)
 
 
 class CPEALFactRef (Symbol):
@@ -273,30 +263,25 @@ class CPEALFactRef (Symbol):
 
         return cpe_factref
 
-    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+    def get_conditional(self, language, product_cpes, conditionals_path, env_yaml):
         cpe = product_cpes.get_cpe(self.as_id())
-        cond = cpe.conditional.get("bash", "")
+        cond = cpe.conditional.get(language, "")
         if cond:
             return remediations.parse_from_string_with_jinja(cond, env_yaml)
         elif conditionals_path is not None:
-            templated_conditional_file = os.path.join(conditionals_path, 'bash',
-                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['bash'])
+            templated_conditional_file = os.path.join(
+                                                      conditionals_path, language, self.as_id() +
+                                                      remediations.REMEDIATION_TO_EXT_MAP[language]
+                                                      )
             if os.path.exists(templated_conditional_file):
                 return remediations.parse_from_file_without_jinja(templated_conditional_file)
         return None
+
+    def get_bash_conditional(self, product_cpes, conditionals_path, env_yaml):
+        return self.get_conditional("bash", product_cpes, conditionals_path, env_yaml)
 
     def get_ansible_conditional(self, product_cpes, conditionals_path, env_yaml):
-        cpe = product_cpes.get_cpe(self.as_id())
-        cond = cpe.conditional.get("ansible", "")
-        if cond:
-            return remediations.parse_from_string_with_jinja(cond, env_yaml)
-        elif conditionals_path is not None:
-            templated_conditional_file = os.path.join(conditionals_path, "ansible",
-                                                      self.as_id() + remediations.REMEDIATION_TO_EXT_MAP['ansible'])
-            if os.path.exists(templated_conditional_file):
-                return remediations.parse_from_file_without_jinja(templated_conditional_file)
-        return None
-
+        return self.get_conditional("ansible", product_cpes, conditionals_path, env_yaml)
 
 
 def extract_subelement(objects, sub_elem_type):
