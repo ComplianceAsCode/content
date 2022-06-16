@@ -1,7 +1,7 @@
 documentation_complete: true
 
 metadata:
-    version: V1R1
+    version: V1R2
 
 reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux
 
@@ -9,7 +9,7 @@ title: 'DISA STIG for Oracle Linux 8'
 
 description: |-
     This profile contains configuration checks that align to the
-    DISA STIG for Oracle Linux 8 V1R1.
+    DISA STIG for Oracle Linux 8 V1R2.
 
 selections:
     ### Variables
@@ -115,10 +115,10 @@ selections:
     # OL08-00-010120
     - accounts_password_all_shadowed_sha512
 
-    # OL08-00-010130
-    - accounts_password_pam_unix_rounds_password_auth
+    # OL08-00-010121
 
-    # OL08-00-010131
+    # OL08-00-010130
+    - set_password_hashing_min_rounds_logindefs
     - accounts_password_pam_unix_rounds_system_auth
 
     # OL08-00-010140
@@ -156,8 +156,6 @@ selections:
 
     # OL08-00-010171
     - package_policycoreutils_installed
-
-    # OL08-00-010180
 
     # OL08-00-010190
     - dir_perms_world_writable_sticky_bits
@@ -220,15 +218,25 @@ selections:
     # OL08-00-010330
     - file_permissions_library_dirs
 
+    # OL08-00-010331
+    - dir_permissions_library_dirs
+
     # OL08-00-010340
     - file_ownership_library_dirs
 
+    # OL08-00-010341
+    - dir_ownership_library_dirs
+
     # OL08-00-010350
     - root_permissions_syslibrary_files
+
+    # OL08-00-010351
     - dir_group_ownership_library_dirs
 
-    # OL08-00-010360
+    # OL08-00-010359
     - package_aide_installed
+
+    # OL08-00-010360
     - aide_scan_notification
 
     # OL08-00-010370
@@ -253,6 +261,9 @@ selections:
     # OL08-00-010376
     - sysctl_kernel_perf_event_paranoid
 
+    # OL08-00-010379
+    - sudoers_default_includedir
+
     # OL08-00-010380
     - sudo_remove_nopasswd
 
@@ -268,6 +279,8 @@ selections:
     # OL08-00-010384
     - sudo_require_reauthentication
     - var_sudo_timestamp_timeout=always_prompt
+
+    # OL08-00-010385
 
     # OL08-00-010390
     - install_smartcard_packages
@@ -290,6 +303,8 @@ selections:
 
     # OL08-00-010423
     - grub2_slub_debug_argument
+
+    # OL08-00-010424
 
     # OL08-00-010430
     - sysctl_kernel_randomize_va_space
@@ -353,9 +368,6 @@ selections:
     # OL08-00-010550
     - sshd_disable_root_login
 
-    # OL08-00-010560
-    - service_auditd_enabled
-
     # OL08-00-010561
     - service_rsyslog_enabled
 
@@ -364,6 +376,8 @@ selections:
 
     # OL08-00-010571
     - mount_option_boot_nosuid
+
+    # OL08-00-010572
 
     # OL08-00-010580
     - mount_option_nodev_nonroot_local_partitions
@@ -466,15 +480,12 @@ selections:
     # OL08-00-020000
     - account_temp_expire_date
 
-    # OL08-00-020010
+    # OL08-00-020010, OL08-00-020011, OL08-00-020025, OL08-00-020026
     - accounts_passwords_pam_faillock_deny
 
-    # OL08-00-020011
-
-    # OL08-00-020012
+    # OL08-00-020012, OL08-00-020013
     - accounts_passwords_pam_faillock_interval
 
-    # OL08-00-020013
 
     # OL08-00-020014
     - accounts_passwords_pam_faillock_unlock_time
@@ -493,23 +504,27 @@ selections:
 
     # OL08-00-020021
 
-    # OL08-00-020022
+    # OL08-00-020022, OL08-00-020023
     - accounts_passwords_pam_faillock_deny_root
-
-    # OL08-00-020023
 
     # OL08-00-020024
     - accounts_max_concurrent_login_sessions
 
-    # OL08-00-020030
+    # OL08-00-020027
+
+    # OL08-00-020028
+
+    # OL08-00-020030, OL08-00-020082
     - dconf_gnome_screensaver_lock_enabled
 
-    # OL08-00-020031, OL08-00-020080
+    # OL08-00-020031
     - dconf_gnome_screensaver_lock_delay
     - var_screensaver_lock_delay=5_seconds
     
     # OL08-00-020032
     - dconf_gnome_disable_user_list
+
+    # OL08-00-020032
 
     # OL08-00-020039
     - package_tmux_installed
@@ -545,6 +560,16 @@ selections:
     - sssd_enable_certmap
 
     # OL08-00-020100
+    - accounts_password_pam_pwquality_password_auth
+
+    # OL08-00-020101
+    - accounts_password_pam_pwquality_system_auth
+
+    # OL08-00-020102
+
+    # OL08-00-020103
+
+    # OL08-00-020104
     - accounts_password_pam_retry
 
     # OL08-00-020110
@@ -584,9 +609,11 @@ selections:
     # OL08-00-020210
     - accounts_password_set_max_life_existing
 
-    # OL08-00-020220
+    # OL08-00-020221
     - accounts_password_pam_pwhistory_remember_system_auth
     - accounts_password_pam_pwhistory_remember_system_auth.severity=medium
+
+    # OL08-00-020220
     - accounts_password_pam_pwhistory_remember_password_auth
     - accounts_password_pam_pwhistory_remember_password_auth.severity=low
 
@@ -604,6 +631,14 @@ selections:
 
     # OL08-00-020260
     - account_disable_post_pw_expiration
+
+    # OL08-00-020261
+
+    # OL08-00-020262
+
+    # OL08-00-020263
+
+    # OL08-00-020264
 
     # OL08-00-020270
     - account_emergency_expire_date
@@ -647,6 +682,7 @@ selections:
     # OL08-00-020353
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_csh_cshrc
+    - accounts_umask_etc_profile
 
     # OL08-00-030000
     - audit_rules_suid_privilege_function
@@ -662,9 +698,6 @@ selections:
 
     # OL08-00-030040
     - auditd_data_disk_error_action
-
-    # OL08-00-030050
-    - auditd_data_retention_max_log_file_action
 
     # OL08-00-030060
     - auditd_data_disk_full_action
@@ -734,17 +767,9 @@ selections:
 
     # OL08-00-030200
     - audit_rules_dac_modification_lremovexattr
-
-    # OL08-00-030210
     - audit_rules_dac_modification_removexattr
-
-    # OL08-00-030220
     - audit_rules_dac_modification_lsetxattr
-
-    # OL08-00-030230
     - audit_rules_dac_modification_fsetxattr
-
-    # OL08-00-030240
     - audit_rules_dac_modification_fremovexattr
 
     # OL08-00-030250
@@ -809,27 +834,17 @@ selections:
 
     # OL08-00-030360
     - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading_finit
 
     # OL08-00-030361
     - audit_rules_file_deletion_events_rename
-
-    # OL08-00-030362
     - audit_rules_file_deletion_events_renameat
-
-    # OL08-00-030363
     - audit_rules_file_deletion_events_rmdir
-
-    # OL08-00-030364
     - audit_rules_file_deletion_events_unlink
-
-    # OL08-00-030365
     - audit_rules_file_deletion_events_unlinkat
 
     # OL08-00-030370
     - audit_rules_privileged_commands_gpasswd
-
-    # OL08-00-030380
-    - audit_rules_kernel_module_loading_finit
 
     # OL08-00-030390
     - audit_rules_kernel_module_loading_delete
@@ -842,42 +857,22 @@ selections:
 
     # OL08-00-030420
     - audit_rules_unsuccessful_file_modification_truncate
-
-    # OL08-00-030430
     - audit_rules_unsuccessful_file_modification_openat
-
-    # OL08-00-030440
     - audit_rules_unsuccessful_file_modification_open
-
-    # OL08-00-030450
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
-
-    # OL08-00-030460
     - audit_rules_unsuccessful_file_modification_ftruncate
-
-    # OL08-00-030470
     - audit_rules_unsuccessful_file_modification_creat
 
     # OL08-00-030480
     - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fchown
 
     # OL08-00-030490
     - audit_rules_dac_modification_chmod
-
-    # OL08-00-030500
-    - audit_rules_dac_modification_lchown
-
-    # OL08-00-030510
-    - audit_rules_dac_modification_fchownat
-
-    # OL08-00-030520
-    - audit_rules_dac_modification_fchown
-
-    # OL08-00-030530
-    - audit_rules_dac_modification_fchmodat
-
-    # OL08-00-030540
     - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fchmodat
 
     # OL08-00-030550
     - audit_rules_privileged_commands_sudo
@@ -890,6 +885,8 @@ selections:
 
     # OL08-00-030580
     - audit_rules_privileged_commands_kmod
+
+    # OL08-00-030590
 
     # OL08-00-030600
     - audit_rules_login_events_lastlog
@@ -908,10 +905,13 @@ selections:
     - file_permissions_etc_audit_rulesd
 
     # OL08-00-030620
+    - file_audit_tools_permissions
 
     # OL08-00-030630
+    - file_audit_tools_ownership
 
     # OL08-00-030640
+    - file_audit_tools_group_ownership
 
     # OL08-00-030650
     - aide_check_audit_tools
@@ -966,8 +966,6 @@ selections:
     # OL08-00-040002
     - package_sendmail_removed
 
-    # OL08-00-040003
-
     # OL08-00-040004
     - grub2_pti_argument
 
@@ -996,8 +994,6 @@ selections:
 
     # OL08-00-040030
     - configure_firewalld_ports
-
-    # OL08-00-040060
 
     # OL08-00-040070
     - service_autofs_disabled
@@ -1070,6 +1066,8 @@ selections:
     # OL08-00-040136
     - service_fapolicyd_enabled
 
+    # OL08-00-040137
+
     # OL08-00-040139
     - package_usbguard_installed
 
@@ -1134,6 +1132,8 @@ selections:
     # OL08-00-040250
     - sysctl_net_ipv6_conf_default_accept_source_route
 
+    # OL08-00-040259
+
     # OL08-00-040260
     - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv6_conf_all_forwarding
@@ -1183,6 +1183,9 @@ selections:
     # OL08-00-040320
     - xwindows_remove_packages
 
+    # OL08-00-040321
+    - xwindows_runlevel_target
+
     # OL08-00-040330
     - network_sniffer_disabled
 
@@ -1207,6 +1210,8 @@ selections:
 
     # OL08-00-040390
     - package_tuned_removed
+
+    # OL08-00-040400
 
     # OL08-00-010163
     - package_krb5-server_removed
