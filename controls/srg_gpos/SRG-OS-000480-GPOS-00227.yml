@@ -188,8 +188,7 @@ controls:
             - grub2_page_poison_argument
 
             # network
-            - set_firewalld_default_zone
-            - libreswan_approved_tunnels
+            - configured_firewalld_default_deny
             - network_configure_name_resolution
             - network_sniffer_disabled
             - postfix_prevent_unrestricted_relay

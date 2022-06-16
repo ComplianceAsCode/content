@@ -53,7 +53,7 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("firewalld") }}}
 
-srg_requirement: '{{{ srg_requirement_service_disabled("firewalld") }}}'
+srg_requirement: '{{{ srg_requirement_service_enabled("firewalld") }}}'
 
 template:
     name: service_enabled
