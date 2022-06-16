@@ -8,3 +8,76 @@ controls:
   - ocp_allowed_registries
   - ocp_allowed_registries_for_import
   status: automated
+  check: |-
+    Check to see if a policy has been put in place by running the commands:
+
+    > for node in $(oc get node -oname); do \
+    oc debug $node -- chroot /host/bin/bash \
+    -c 'echo -n "$HOSTNAME "; cat /etc/containers/policy.json'2>/dev/null; \ 
+    done
+
+    Make sure that the default policy to verify container images is set
+    to reject. Also, ensure that the registries have the appropriate
+    signature keys.  This should look as follows:
+
+    <pre>
+      {
+    "default": [{"type": "reject"}],
+    "transports": {
+      "docker": {
+        "registry.access.redhat.com": [
+          {
+            "type": "signedBy",
+            "keyType": "GPGKeys",
+            "keyPath": "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+          }
+        ],
+        "registry.redhat.io": [
+          {
+            "type": "signedBy",
+            "keyType": "GPGKeys",
+            "keyPath": "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
+          }
+        ],
+
+        ...
+      }
+
+    If the policy is not set to reject by default, and the signature keys
+    are not configure appropriately on the registries, this is a finding.
+  fixtext: |-
+    Configure the OpenShift Container policy to validate that images signatures are verified and enforced.  This can be configured manually or through the use of the MachineConfig Operator published by Red Hat.
+
+    > for mcpool in $(oc get mcp -oname | sed "s:.*/::" ); do
+    echo "apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: $mcpool
+      name: 51-rh-registry-trust-$mcpool
+    spec:
+      config:
+        ignition:
+          version: 3.2.0
+        storage:
+          files:
+          - contents:
+              source: data:text/plain;charset=utf-8;base64,LS0tCmRvY2tlcjoKICByZWdpc3RyeS5hY2Nlc3MucmVkaGF0LmNvbToKICAgIHNpZ3N0b3JlOiBodHRwczovL2FjY2Vzcy5yZWRoYXQuY29tL3dlYmFzc2V0cy9kb2NrZXIvY29udGVudC9zaWdzdG9yZQo=
+              verification: {}
+            filesystem: root
+            mode: 420
+            path: /etc/containers/registries.d/registry.access.redhat.com.yaml
+          - contents:
+              source: data:text/plain;charset=utf-8;base64,LS0tCmRvY2tlcjoKICByZWdpc3RyeS5yZWRoYXQuaW86CiAgICBzaWdzdG9yZTogaHR0cHM6Ly9yZWdpc3RyeS5yZWRoYXQuaW8vY29udGFpbmVycy9zaWdzdG9yZQo=
+              verification: {}
+            filesystem: root
+            mode: 420
+            path: /etc/containers/registries.d/registry.redhat.io.yaml
+          - contents:
+              source: data:text/plain;charset=utf-8;base64,ewogICJkZWZhdWx0IjogW3sidHlwZSI6ICJyZWplY3QifV0sCiAgInRyYW5zcG9ydHMiOiB7CiAgICAiZG9ja2VyIjogewogICAgICAicmVnaXN0cnkuYWNjZXNzLnJlZGhhdC5jb20iOiBbCiAgICAgICAgewogICAgICAgICAgInR5cGUiOiAic2lnbmVkQnkiLAogICAgICAgICAgImtleVR5cGUiOiAiR1BHS2V5cyIsCiAgICAgICAgICAia2V5UGF0aCI6ICIvZXRjL3BraS9ycG0tZ3BnL1JQTS1HUEctS0VZLXJlZGhhdC1yZWxlYXNlIgogICAgICAgIH0KICAgICAgXSwKICAgICAgInJlZ2lzdHJ5LnJlZGhhdC5pbyI6IFsKICAgICAgICB7CiAgICAgICAgICAidHlwZSI6ICJzaWduZWRCeSIsCiAgICAgICAgICAia2V5VHlwZSI6ICJHUEdLZXlzIiwKICAgICAgICAgICJrZXlQYXRoIjogIi9ldGMvcGtpL3JwbS1ncGcvUlBNLUdQRy1LRVktcmVkaGF0LXJlbGVhc2UiCiAgICAgICAgfQogICAgICBdLAogICAgICAiaW1hZ2UtcmVnaXN0cnkub3BlbnNoaWZ0LWltYWdlLXJlZ2lzdHJ5LnN2Yzo1MDAwIjogW3sidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dLAogICAgICAicXVheS5pby9jb21wbGlhbmNlYXNjb2RlIjogW3sidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dLAogICAgICAicXVheS5pby9jb21wbGlhbmNlLW9wZXJhdG9yIjogW3sidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dLAogICAgICAicXVheS5pby9rZXljbG9hayI6IFt7InR5cGUiOiAiaW5zZWN1cmVBY2NlcHRBbnl0aGluZyJ9XSwKICAgICAgInF1YXkuaW8vb3BlbnNoaWZ0LXJlbGVhc2UtZGV2IjogW3sidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dLAogICAgICAicmVnaXN0cnkuYnVpbGQwMi5jaS5vcGVuc2hpZnQub3JnIjogW3sidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dLAogICAgICAicmVnaXN0cnkuYnVpbGQwMS5jaS5vcGVuc2hpZnQub3JnIjogW3sidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dCiAgICB9CiAgfQp9Cg==
+              verification: {}
+            filesystem: root
+            mode: 420
+            path: /etc/containers/policy.json
+    " | oc apply -f -
+    done
