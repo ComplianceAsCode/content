@@ -9,9 +9,11 @@ description: |-
     be configured via <tt>log_file</tt> parameter in <pre>/etc/audit/auditd.conf</pre>
     or, by default, the path for audit log is <pre>/var/log/audit/</pre>.
     {{{ describe_file_group_owner(file="/var/log/audit/*", group="root") }}}
+    {{% if product != "ol8" %}}
     If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other
     than the <tt>root</tt> group account, change the group ownership of the audit logs
     to this specific group.
+    {{% endif %}}
 
 rationale: |-
     Unauthorized disclosure of audit records can reveal system and configuration data to
@@ -51,15 +53,21 @@ ocil: |-
     The log_file option specifies the audit log file path.
     If the log_file option isn't defined, check all files within /var/log/audit directory.
 
+    {{% if product != "ol8" %}}
     Then, determine the audit log group by running the following command:
     <pre>$ sudo grep -P '^[ ]*log_group[ ]+=.*$' /etc/audit/auditd.conf</pre>
 
+    {{% endif %}}
     Then, check that the audit log file is owned by the correct group.
     Run the following command to display the owner of the audit log file:
 
     <pre>$ sudo stat -c "%n %G" <tt>log_file</tt></pre>
 
+    {{% if product == "ol8" %}}
+    The audit log file must be owned by root
+    {{% else %}}
     The audit log file must be owned by the log_group or by root if the log_group is not specified.
+    {{% endif %}}
 
 ocil_clause: audit log files are owned by incorrect group
 
@@ -69,14 +77,19 @@ fixtext: |-
     Identify where the audit log file is located:
 
     $ sudo grep -iw ^log_file /etc/audit/auditd.conf
-
+    {{% if product != "ol8" %}}
     Identify the group that is configured to own audit log:
 
     $ sudo grep -P '^[ ]*log_group[ ]+=.*$' /etc/audit/auditd.conf
 
+    {{% endif %}}
     Change the ownership to that group:
 
+    {{% if product == "ol8" %}}
+    $ sudo chgrp root ${log_file}
+    {{% else %}}
     $ sudo chgrp ${log_group} ${log_file}
+    {{% endif %}}
 
 srg_requirement: |-
    {{{ full_name }}} audit log files must be group-owned by root or a restricted logging group to prevent unauthorized access.
