@@ -38,7 +38,7 @@ template:
     vars:
         mountpoint: /boot
         mountoption: nodev
-        mount_has_to_exist: 'yes'
+        mount_has_to_exist: 'no'
 
 fixtext: |-
     {{{ fixtext_mount_option("/boot", "nodev") }}}

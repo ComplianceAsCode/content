@@ -42,7 +42,7 @@ template:
     vars:
         mountpoint: /boot
         mountoption: nosuid
-        mount_has_to_exist: 'yes'
+        mount_has_to_exist: 'no'
 
 fixtext: |-
     {{{ fixtext_mount_option("/boot", "nosuid") }}}
