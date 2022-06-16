@@ -413,6 +413,11 @@ class XCCDFEntity(object):
     def to_xml_element(self):
         raise NotImplementedError()
 
+    def to_file(self, file_name):
+        root = self.to_xml_element()
+        tree = ET.ElementTree(root)
+        tree.write(file_name)
+
 
 class Profile(XCCDFEntity, SelectionHandler):
     """Represents XCCDF profile
@@ -785,11 +790,6 @@ class Value(XCCDFEntity):
             value_small.text = str(option)
 
         return value
-
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
 
 
 class Benchmark(XCCDFEntity):
@@ -1175,11 +1175,6 @@ class Group(XCCDFEntity):
             group.append(_group.to_xml_element(env_yaml))
 
         return group
-
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
 
     def add_value(self, value):
         if value is None:
@@ -1653,11 +1648,6 @@ class Rule(XCCDFEntity):
             ocil_check_ref.set("name", self.id_ + "_ocil")
 
         return rule
-
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
 
     def to_ocil(self):
         if not self.ocil and not self.ocil_clause:
