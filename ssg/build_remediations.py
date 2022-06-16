@@ -60,6 +60,43 @@ class Remediation(object):
     def parse_from_file_with_jinja(self, env_yaml, cpe_platforms):
         return parse_from_file_with_jinja(self.file_path, env_yaml)
 
+    def get_inherited_cpe_platform_names(self):
+        inherited_cpe_platform_names = set()
+        if self.associated_rule:
+            # There can be repeated inherited platforms and rule platforms
+            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
+        return inherited_cpe_platform_names
+
+    def get_rule_specific_cpe_platform_names(self):
+        rule_specific_cpe_platform_names = set()
+        inherited_cpe_platform_names = self.get_inherited_cpe_platform_names()
+        if self.associated_rule:
+            if self.associated_rule.cpe_platform_names is not None:
+                rule_specific_cpe_platform_names = {
+                    p for p in self.associated_rule.cpe_platform_names
+                    if p not in inherited_cpe_platform_names}
+        return rule_specific_cpe_platform_names
+
+    def get_rule_specific_conditionals(self, language, cpe_platforms):
+        rule_specific_conditionals = []
+        for p in self.get_rule_specific_cpe_platform_names():
+            r = cpe_platforms[p].get_remediation_conditional(language)
+            if r is not None:
+                stripped = r.contents.strip()
+                if stripped:
+                    rule_specific_conditionals.append(stripped)
+        return rule_specific_conditionals
+
+    def get_inherited_conditionals(self, language, cpe_platforms):
+        inherited_conditionals = []
+        for p in self.get_inherited_cpe_platform_names():
+            r = cpe_platforms[p].get_remediation_conditional(language)
+            if r is not None:
+                stripped = r.contents.strip()
+                if stripped:
+                    inherited_conditionals.append(stripped)
+        return inherited_conditionals
+
 
 def process(remediation, env_yaml, cpe_platforms):
     """
@@ -111,32 +148,14 @@ class BashRemediation(Remediation):
         if stripped_fix_text == "":
             return result
 
-        rule_specific_cpe_platform_names = set()
-        inherited_cpe_platform_names = set()
-        if self.associated_rule:
-            # There can be repeated inherited platforms and rule platforms
-            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
-            if self.associated_rule.cpe_platform_names is not None:
-                rule_specific_cpe_platform_names = {
-                    p for p in self.associated_rule.cpe_platform_names
-                    if p not in inherited_cpe_platform_names}
-
-        inherited_conditionals = []
-        for p in inherited_cpe_platform_names:
-            r = cpe_platforms[p].get_remediation_conditional("bash")
-            if r is not None:
-                stripped = r.contents.strip()
-                if stripped:
-                    inherited_conditionals.append(stripped)
-
-        rule_specific_conditionals = []
-        for p in rule_specific_cpe_platform_names:
-            r = cpe_platforms[p].get_remediation_conditional("bash")
-            if r is not None:
-                stripped = r.contents.strip()
-                if stripped:
-                    rule_specific_conditionals.append(stripped)
-
+        inherited_conditionals = super(
+                                       BashRemediation,
+                                       self).get_inherited_conditionals(
+                                       "bash", cpe_platforms)
+        rule_specific_conditionals = super(
+                                           BashRemediation,
+                                           self).get_rule_specific_conditionals(
+                                           "bash", cpe_platforms)
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
             all_conditions = ""
@@ -275,34 +294,14 @@ class AnsibleRemediation(Remediation):
 
     def update_when_from_rule(self, to_update, cpe_platforms):
         additional_when = []
-        rule_specific_cpe_platform_names = set()
-        inherited_cpe_platform_names = set()
-        if self.associated_rule:
-            # There can be repeated inherited platforms and rule platforms
-            inherited_cpe_platform_names.update(self.associated_rule.inherited_cpe_platform_names)
-            if self.associated_rule.cpe_platform_names is not None:
-                rule_specific_cpe_platform_names = {
-                    p for p in self.associated_rule.cpe_platform_names
-                    if p not in inherited_cpe_platform_names}
-
-        inherited_conditionals = []
-        for p in inherited_cpe_platform_names:
-            r = cpe_platforms[p].get_remediation_conditional("ansible")
-            if r is not None:
-                stripped = r.contents.strip()
-                if stripped:
-                    inherited_conditionals.append(stripped)
-
-        rule_specific_conditionals = []
-        for p in rule_specific_cpe_platform_names:
-            r = cpe_platforms[p].get_remediation_conditional("ansible")
-            if r is not None:
-                stripped = r.contents.strip()
-                if stripped:
-                    rule_specific_conditionals.append(stripped)
-
-            cpe_platforms[p].get_remediation_conditional("ansible")
-
+        inherited_conditionals = super(
+                                       AnsibleRemediation,
+                                       self).get_inherited_conditionals(
+                                       "ansible", cpe_platforms)
+        rule_specific_conditionals = super(
+                                           AnsibleRemediation,
+                                           self).get_rule_specific_conditionals(
+                                           "ansible", cpe_platforms)
         # Remove conditionals related to package CPEs if the updated task collects package facts
         if "package_facts" in to_update:
             inherited_conditionals = filter(lambda c: "in ansible_facts.packages" not in c,
