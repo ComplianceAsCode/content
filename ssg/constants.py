@@ -465,3 +465,16 @@ DEFAULT_SSH_DISTRIBUTED_CONFIG = 'false'
 DEFAULT_PRODUCT = 'example'
 DEFAULT_CHRONY_CONF_PATH = '/etc/chrony.conf'
 DEFAULT_AUDISP_CONF_PATH = '/etc/audit'
+
+CONDITIONAL_OPERATORS = {
+    "ansible": {
+        "or": "or",
+        "and": "and",
+        "not": "not"
+    },
+    "bash": {
+        "and": "&&",
+        "or": "||",
+        "not": "!"
+    }
+}
