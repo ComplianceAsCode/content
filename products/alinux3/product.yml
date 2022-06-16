@@ -1,0 +1,26 @@
+product: alinux3
+full_name: Alibaba Cloud Linux 3
+type: platform
+
+benchmark_id: ALINUX-3
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - alinux3:
+      name: "cpe:/o:alinux:alibaba_cloud_linux:3"
+      title: "Alibaba Cloud Linux 3"
+      check_id: installed_OS_is_alinux3
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+reference_uris:
+  cis: 'https://www.cisecurity.org/benchmark/aliyun_linux'

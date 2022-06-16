@@ -19,6 +19,7 @@ jobs:
         run: |-
           ./build_product \
               alinux2 \
+              alinux3 \
               chromium \
               fedora \
               firefox \
@@ -43,7 +44,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product alinux2 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004
+        run: ./build_product alinux2 alinux3 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -85,6 +86,7 @@ jobs:
         run: |-
           ./build_product \
               alinux2 \
+              alinux3 \
               chromium \
               fedora \
               firefox \
@@ -116,6 +118,7 @@ jobs:
         run: |-
           ./build_product \
               alinux2 \
+              alinux3 \
               chromium \
               fedora \
               firefox \
@@ -160,6 +163,7 @@ jobs:
           run: |-
             ./build_product \
                 alinux2 \
+                alinux3 \
                 chromium \
                 fedora \
                 firefox \

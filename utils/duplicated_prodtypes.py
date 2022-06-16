@@ -11,9 +11,9 @@ import ssg
 def _create_profile_cache(ssg_root):
     profile_cache = {}
 
-    product_list = ['alinux2', 'debian9', 'debian10', 'debian11', 'fedora', 'ol7', 'opensuse',
-                    'rhel7', 'sle12', 'sle15', 'ubuntu1604', 'ubuntu1804', 'ubuntu2004',
-                    'wrlinux']
+    product_list = ['alinux2', 'alinux3', 'debian9', 'debian10', 'debian11', 'fedora', 'ol7',
+                    'opensuse', 'rhel7', 'sle12', 'sle15', 'ubuntu1604', 'ubuntu1804',
+                    'ubuntu2004', 'wrlinux']
 
     for product in product_list:
         found_obj_name = False
