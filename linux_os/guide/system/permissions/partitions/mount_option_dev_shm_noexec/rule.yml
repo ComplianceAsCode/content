@@ -50,6 +50,11 @@ references:
 
 platform: machine
 
+fixtext: |-
+    {{{ fixtext_mount_option("/dev/shm", "noexec") }}}
+
+srg_requirement: '{{{ srg_requirement_mount_option("/dev/shm", "noexec") }}}'
+
 template:
     name: mount_option
     vars:
