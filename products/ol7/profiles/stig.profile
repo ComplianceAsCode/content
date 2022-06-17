@@ -318,3 +318,4 @@ selections:
     - disallow_bypass_password_sudo
     - no_empty_passwords_etc_shadow
     - audit_rules_privileged_commands_kmod
+    - passwd_system-auth_substack
