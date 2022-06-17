@@ -32,6 +32,8 @@ ocil: '{{{ ocil_package(package="fapolicyd") }}}'
 fixtext: |-
     {{{ describe_package_install("fapolicyd") }}}
 
+srg_requirement: '{{{ srg_requirement_package_installed("fapolicyd") }}}'
+
 template:
     name: package_installed
     vars:
