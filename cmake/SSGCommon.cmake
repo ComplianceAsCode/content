@@ -1105,39 +1105,14 @@ macro(ssg_build_html_cce_table PRODUCT)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_srgmap_tables PRODUCT PROFILE_ID DISA_SRG_TYPE)
-    file(GLOB DISA_SRG_REF "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-v[0-9]*r[0-9]*.xml")
-    # we have to encode spaces in paths before passing them as stringparams to xsltproc
-    string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
-    add_custom_command(
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked-srg-overlay.xml"
-      COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam profileId ${PROFILE_ID} --stringparam productXccdf ${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml --stringparam overlay ${CMAKE_CURRENT_SOURCE_DIR}/overlays/srg_support.xml --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked-srg-overlay.xml" "${CMAKE_SOURCE_DIR}/shared/transforms/srg-overlay.xslt" ${DISA_SRG_REF}
-      DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-      DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-      DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/overlays/srg_support.xml"
-      DEPENDS "${CMAKE_SOURCE_DIR}/shared/transforms/srg-overlay.xslt"
-      DEPENDS "${DISA_SRG_REF}"
-      COMMENT "[${PRODUCT}-tables] Adding custom SRG overrides to XCCDF"
-    )
+macro(ssg_build_html_srgmap_tables PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked-srg-overlay.xml" --stringparam ocil-document "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ocil-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked-srg-overlay.xml"
-        DEPENDS "${DISA_SRG_REF}"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt"
-        COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=no)"
-    )
-    add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked-srg-overlay.xml" --stringparam ocil-document "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ocil-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked-srg-overlay.xml"
-        DEPENDS "${DISA_SRG_REF}"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt"
-        COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=yes)"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_srg_table.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${SSG_SHARED_REFS}/disa-os-srg-v2r3.xml" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
+        DEPENDS ${PRODUCT}-compile-all
+        COMMENT "[${PRODUCT}-tables] generating HTML SRG map tables"
     )
     add_custom_target(
         generate-${PRODUCT}-table-srg

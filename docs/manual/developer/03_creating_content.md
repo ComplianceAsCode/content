@@ -505,24 +505,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
 EOF
 ```
 
-12. Create a new file under `transforms` directory called `table-srgmap.xslt`:
-```
-cat << EOF >> $NEW_PRODUCT/transforms/table-srgmap.xslt 
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-<xsl:include href="../../shared/transforms/shared_table-srgmap.xslt"/>
-<xsl:include href="constants.xslt"/>
-<xsl:include href="table-style.xslt"/>
-
-<xsl:variable name="items" select="document($map-to-items)//*[cdf:reference]" />
-<xsl:variable name="title" select="document($map-to-items)/cdf:Benchmark/cdf:title" />
-
-</xsl:stylesheet>
-EOF
-```
-
-13. Create a new file under `transforms` directory called `xccdf-apply-overlay-stig.xslt`:
+12. Create a new file under `transforms` directory called `xccdf-apply-overlay-stig.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 <?xml version="1.0"?>
@@ -536,7 +519,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 EOF
 ```
 
-14. Create a new file under `transforms` directory called `xccdf2table-byref.xslt`:
+13. Create a new file under `transforms` directory called `xccdf2table-byref.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -551,7 +534,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt
 EOF
 ```
 
-15. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
+14. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -566,7 +549,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 EOF
 ```
 
-16. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
+15. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -684,7 +667,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt
 EOF
 ```
 
-17. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
+16. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -699,7 +682,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 EOF
 ```
 
-18. Create a new file under `transforms` directory called `xccdf2table-profilecisrefs.xslt`:
+17. Create a new file under `transforms` directory called `xccdf2table-profilecisrefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -714,7 +697,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
 EOF
 ```
 
-19. Create a new file under `transforms` directory called `xccdf2table-profilenistrefs.xslt`:
+18. Create a new file under `transforms` directory called `xccdf2table-profilenistrefs.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -728,7 +711,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
 EOF
 ```
 
-20. Create a new file under `transforms` directory called `xccdf2table-stig.xslt`:
+19. Create a new file under `transforms` directory called `xccdf2table-stig.xslt`:
 ```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -743,7 +726,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
 EOF
 ```
 
-21. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
+20. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
 ```
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
