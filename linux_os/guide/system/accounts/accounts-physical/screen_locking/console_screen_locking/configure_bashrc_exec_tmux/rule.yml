@@ -52,3 +52,5 @@ fixtext: |-
         name=$(ps -o comm= -p $parent)
         case "$name" in sshd|login) exec tmux ;; esac
     fi
+
+srg_requirement: '{{{ full_name }}} must ensure session control is automatically started at shell initialization.'
