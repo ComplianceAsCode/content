@@ -53,6 +53,8 @@ ocil: '{{{ ocil_package(package="aide") }}}'
 fixtext: |-
     {{{ describe_package_install("aide") }}}
 
+srg_requirement: '{{{ srg_requirement_package_installed("aide") }}}'
+
 template:
     name: package_installed
     vars:
