@@ -41,14 +41,6 @@ utils.create\-stig\-overlay module
    :undoc-members:
    :show-inheritance:
 
-utils.duplicated\_prodtypes module
-----------------------------------
-
-.. automodule:: utils.duplicated_prodtypes
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 utils.find\_duplicates module
 -----------------------------
 
@@ -69,14 +61,6 @@ utils.fix\-rules module
 -----------------------
 
 .. automodule:: utils.fix-rules
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-utils.fix\_file\_ocilclause module
-----------------------------------
-
-.. automodule:: utils.fix_file_ocilclause
    :members:
    :undoc-members:
    :show-inheritance:
@@ -133,14 +117,6 @@ utils.mod\_prodtype module
 --------------------------
 
 .. automodule:: utils.mod_prodtype
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-utils.move\_rules module
-------------------------
-
-.. automodule:: utils.move_rules
    :members:
    :undoc-members:
    :show-inheritance:
