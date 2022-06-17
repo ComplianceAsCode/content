@@ -45,3 +45,5 @@ template:
 
 fixtext: |-
     {{{ describe_file_group_owner(file="/var/log", group=gid) }}}
+
+srg_requirement: '{{{ srg_requirement_directory_group_owner("/var/log", group=gid) }}}'
