@@ -44,3 +44,10 @@ ocil: |-
     on the system, run the following command:
     <pre>$ sudo find / -name '.shosts'</pre>
     No output should be returned.
+
+fixtext: |-
+    Remove any found ".shosts" files from the system.
+
+    $ sudo rm /[path]/[to]/[file]/.shosts
+
+srg_requirement: 'There must be no .shosts files on {{{ full_name }}}.'

@@ -58,3 +58,10 @@ ocil: |-
     with the <tt>-s</tt> flag, matching the example below:
     <pre>$ grep "server_args" /etc/xinetd.d/tftp
     server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}</pre>
+
+fixtext: |-
+    Configure the TFTP daemon to operate in secure mode by adding the following line to "/etc/xinetd.d/tftp" (or modify the line to have the required value):
+
+    server_args = -s {{{ sub_var_value("var_tftpd_secure_directory") }}}
+
+srg_requirement: 'If the Trivial File Transfer Protocol (TFTP) server is required, the {{{ full_name }}} TFTP daemon must be configured to operate in secure mode.'
