@@ -1,0 +1,25 @@
+product: uos20
+full_name: UnionTech OS Server 20
+type: platform
+
+benchmark_id: UOS-20 
+benchmark_root: "../../linux_os/guide"
+
+profiles_root: "./profiles"
+
+pkg_manager: "yum"
+
+init_system: "systemd"
+
+cpes_root: "../../shared/applicability"
+cpes:
+  - uos20:
+      name: "cpe:/o:uos:uniontech_os_server:20"
+      title: "UnionTech OS Server 20"
+      check_id: installed_OS_is_uos20
+
+# Mapping of CPE platform to package
+platform_package_overrides:
+  login_defs: "shadow-utils"
+
+
