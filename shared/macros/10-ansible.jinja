@@ -187,9 +187,15 @@ value: :code:`Setting={{ varname1 }}`
 :type config_is_distributed: str
 :parameter config_basename: Filename of configuration file when using distributed configuration
 :type config_basename: str
+:param xccdf_variable: XCCDF variable selector. Use this field if the comparison involves checking for a value selected by a XCCDF variable.
+:type value: str
 
 #}}
-{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf") %}}
+{{%- macro ansible_sshd_set(msg='', parameter='', value='', config_is_distributed="false", config_basename="00-complianceascode-hardening.conf", xccdf_variable=none) %}}
+{{%- if xccdf_variable is not none and xccdf_variable is defined -%}}
+{{{ ansible_instantiate_variables(xccdf_variable) }}}
+{{%- set value = "{{ " + xccdf_variable + " }}" -%}}
+{{%- endif -%}}
 {{%- if config_is_distributed == "true" %}}
 {{% set config_dir = "/etc/ssh/sshd_config.d" %}}
 {{{ ansible_set_config_file_dir(msg, config_file="/etc/ssh/sshd_config", config_dir=config_dir, set_file=config_dir~"/"~config_basename, parameter=parameter, separator_regex="\s+", value=value, prefix_regex="(?i)^\s*", create='yes', validate='/usr/sbin/sshd -t -f %s', insert_after='', insert_before="^[#\s]*Match") }}}

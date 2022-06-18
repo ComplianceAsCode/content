@@ -583,11 +583,13 @@ OCIL and OCIL clause for and sshd option.
 :type option: str
 :param value: The value for the given option
 :type value: str
+:param xccdf_variable: XCCDF variable selector. Use this field if the comparison involves checking for a value selected by a XCCDF variable.
+:type value: str
 
 #}}
-{{% macro complete_ocil_entry_sshd_option(default, option, value) -%}}
+{{% macro complete_ocil_entry_sshd_option(default, option, value, xccdf_variable=none) -%}}
 ocil: |
-    {{{ ocil_sshd_option(default, option, value) }}}
+    {{{ ocil_sshd_option(default, option, value if (xccdf_variable is none or xccdf_variable is not defined) else xccdf_value(xccdf_variable)) }}}
 
 {{{ ocil_clause_entry_sshd_option() }}}
 {{%- endmacro %}}

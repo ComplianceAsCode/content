@@ -744,6 +744,9 @@ The only way to remediate is to recompile and reinstall the kernel, so no remedi
         called (in case of Fedora or RHEL9 and newer):
         `/etc/ssh/sshd_config.d/01-complianceascode-reinforce-os-defaults.conf`
 
+    -   **xccdf_variable** - XCCDF variable selector. Use this field if the comparison involves
+        checking for a value selected by a XCCDF variable.
+
 -   Languages: Ansible, Bash, OVAL, Kubernetes
 
 #### sudo_defaults_option

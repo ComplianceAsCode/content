@@ -4,4 +4,4 @@
 
 source common.sh
 
-{{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=true) -}}}
+{{{ bash_sshd_remediation(parameter=PARAMETER, value=VALUE, config_is_distributed=true, xccdf_variable=XCCDF_VARIABLE) -}}}

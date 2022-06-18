@@ -306,9 +306,15 @@ done
 :type parameter: str
 :parameter value: The value to set
 :type value: str
+:param xccdf_variable: XCCDF variable selector. Use this field if the comparison involves checking for a value selected by a XCCDF variable.
+:type value: str
 
 #}}
-{{%- macro bash_sshd_config_set(parameter, value) -%}}
+{{%- macro bash_sshd_config_set(parameter, value, xccdf_variable=none) -%}}
+{{%- if xccdf_variable is not none and xccdf_variable is defined -%}}
+{{{ bash_instantiate_variables(xccdf_variable) }}}
+{{%- set value = "${"+xccdf_variable+"}" -%}}
+{{%- endif -%}}
 {{{ set_config_file(
         path="/etc/ssh/sshd_config",
         parameter=parameter,
@@ -335,9 +341,15 @@ done
 :type config_is_distributed: str
 :parameter config_basename: Filename of configuration file when using distributed configuration
 :type config_basename: str
+:param xccdf_variable: XCCDF variable selector. Use this field if the comparison involves checking for a value selected by a XCCDF variable.
+:type value: str
 
 #}}
-{{% macro bash_sshd_remediation(parameter, value, config_is_distributed, config_basename="00-complianceascode-hardening.conf") -%}}
+{{% macro bash_sshd_remediation(parameter, value, config_is_distributed, config_basename="00-complianceascode-hardening.conf", xccdf_variable=none) -%}}
+{{%- if xccdf_variable is not none and xccdf_variable is defined -%}}
+{{{ bash_instantiate_variables(xccdf_variable) }}}
+{{%- set value = "${"+xccdf_variable+"}" -%}}
+{{%- endif -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
 

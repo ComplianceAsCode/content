@@ -258,6 +258,13 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 </ind:textfilecontent54_state>
 {{%- endmacro %}}
 
+{{%- macro oval_line_in_file_state_ref(xccdf_variable='', multi_value='', quotes='', id_stem='') -%}}
+{{%- set id_stem = id_stem or rule_id -%}}
+<ind:textfilecontent54_state id="state_{{{ id_stem }}}" version="1">
+  <ind:subexpression datatype="string" operation="equals" var_ref="{{{ xccdf_variable }}}" />
+</ind:textfilecontent54_state>
+{{%- endmacro %}}
+
 {{%- macro oval_line_in_directory_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
 {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass, id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
@@ -272,6 +279,10 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 
 {{%- macro oval_line_in_directory_state(value='', multi_value='', quotes='') -%}}
 {{{- oval_line_in_file_state(value, multi_value, quotes, id_stem=rule_id ~ "_config_dir") -}}}
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_directory_state_ref(xccdf_variable='', multi_value='', quotes='') -%}}
+{{{- oval_line_in_file_state_ref(xccdf_variable, multi_value, quotes, id_stem=rule_id ~ "_config_dir") -}}}
 {{%- endmacro %}}
 
 {{#
@@ -853,12 +864,14 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 :type missing_parameter_pass: bool
 :param config_is_distributed: Is the param in /etc/sshd_config.d vs just /etc/ssh/sshd_config
 :type config_is_distributed: bool
+:param xccdf_variable: XCCDF variable selector. Use this field if the comparison involves checking for a value selected by a XCCDF variable.
+:type value: str
 
 #}}
-{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed) -%}}
+{{%- macro sshd_oval_check(parameter, value, missing_parameter_pass, config_is_distributed, xccdf_variable=none) -%}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set description = "Ensure '" ~ parameter ~ "' is configured with value '" ~ value ~ "' in " ~ sshd_config_path %}}
+{{%- set description = "Ensure '" ~ parameter ~ "' is configured with correct value in " ~ sshd_config_path %}}
 {{%- if config_is_distributed == "true" %}}
 {{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
 {{%- endif %}}
@@ -901,6 +914,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{{ oval_line_in_directory_object(sshd_config_dir, parameter=parameter, ** case_insensitivity_kwargs) | indent (2) }}}
   {{%- endif %}}
 
+{{%- if xccdf_variable is none or xccdf_variable is not defined %}}
   {{{ oval_line_in_file_test(sshd_config_path, parameter) | indent (2) }}}
   {{{ oval_line_in_file_state(value) | indent (2) }}}
 
@@ -908,6 +922,17 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{{ oval_line_in_directory_test(sshd_config_dir, parameter) | indent (2) }}}
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
   {{%- endif %}}
+{{%- else %}}
+  <external_variable comment="Compare {{{ parameter }}} value to value of this variable" datatype="string" id="{{{ xccdf_variable }}}" version="1" />
+
+  {{{ oval_line_in_file_test(sshd_config_path, parameter) | indent (2) }}}
+  {{{ oval_line_in_file_state_ref(xccdf_variable) | indent (2) }}}
+
+  {{%- if config_is_distributed == "true" %}}
+  {{{ oval_line_in_directory_test(sshd_config_dir, parameter) | indent (2) }}}
+  {{{ oval_line_in_directory_state_ref(xccdf_variable) | indent (2) }}}
+  {{%- endif %}}
+{{%- endif %}}
 
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(sshd_config_path, parameter, missing_parameter_pass) | indent(2) }}}
