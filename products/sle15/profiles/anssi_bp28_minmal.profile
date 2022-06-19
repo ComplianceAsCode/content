@@ -28,3 +28,5 @@ selections:
   - file_permissions_etc_passwd
   - file_permissions_unauthorized_world_writable
   - package_tftp-server_removed
+  - sysctl_net_ipv4_conf_default_accept_redirects
+  - sysctl_net_ipv4_conf_default_accept_source_route
