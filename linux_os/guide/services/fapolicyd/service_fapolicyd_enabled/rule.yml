@@ -35,6 +35,8 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("fapolicyd") }}}
 
+srg_requirement: '{{{ fixtext_service_enabled(service="fapolicyd") }}}'
+
 template:
     name: service_enabled
     vars:

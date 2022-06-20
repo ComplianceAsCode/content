@@ -39,6 +39,8 @@ ocil: '{{{ ocil_package(package="sudo") }}}'
 fixtext: |-
     {{{ describe_package_install(package="sudo") }}}
 
+srg_requirement: '{{{ srg_requirement_package_installed("sudo") }}}'
+
 template:
     name: package_installed
     vars:

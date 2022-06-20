@@ -45,7 +45,7 @@ def check_selections(product: str, control: ssg.controls.Control) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--srg', required=True, help="What SRG ID to check")
+    parser.add_argument('-s', '--srg', help="What SRG ID to check")
     parser.add_argument('-c', '--control', required=True, help='Id of the control to load')
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                         help=f"Path to SSG root directory (defaults to {SSG_ROOT})")
@@ -65,7 +65,7 @@ def main():
     env_yaml = get_env_yaml(args.root, args.product, args.build_config_yaml)
     policy = get_policy(args, env_yaml)
     for control in policy.controls:
-        if control.id != args.srg:
+        if args.srg is not None and control.id != args.srg:
             continue
         check_selections(args.product, control)
 
