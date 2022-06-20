@@ -253,6 +253,9 @@ selections:
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
 
+    # Necessary for package installs after gpgcheck is enabled
+    - ensure_redhat_gpgkey_installed
+
     # RHEL-08-010371
     - ensure_gpgcheck_local_packages
 
