@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
 
 title: 'Configure Time Service Maxpoll Interval'
 
@@ -106,7 +106,7 @@ ocil_clause: 'maxpoll does not exist or maxpoll has not been set to the expected
 
 ocil: |-
     Verify {{{ full_name }}} is securely comparing internal information system clocks at a regular interval with an NTP server with the following commands:
-    
+
     To verify that <tt>maxpoll</tt> has been set properly, perform the following:
     <pre>$ sudo grep maxpoll /etc/ntp.conf {{{ chrony_conf_path }}}</pre>
     The output should return:
