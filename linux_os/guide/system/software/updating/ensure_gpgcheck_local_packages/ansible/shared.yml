@@ -4,11 +4,18 @@
 # complexity = low
 # disruption = medium
 
-- name: Ensure GPG check Enabled for Local Packages (Yum)
-  ini_file:
-    dest: {{{ pkg_manager_config_file }}}
-    section: main
-    option: localpkg_gpgcheck
-    value: 1
-    no_extra_spaces: yes
-    create: True
+- name: Ensure GPG check Enabled for Local Packages ({{{ pkg_manager }}})
+  block:
+    - name: Check stats of {{{ pkg_manager }}}
+      stat:
+        path: {{{ pkg_manager_config_file }}}
+      register: stat_pkg_manager_config_file
+
+    - name: Ensure GPG check Enabled for Local Packages ({{{ pkg_manager }}})
+      ini_file:
+        dest: "{{ stat_pkg_manager_config_file.stat.lnk_target | default('{{{ pkg_manager_config_file }}}') }}"
+        section: main
+        option: localpkg_gpgcheck
+        value: 1
+        no_extra_spaces: yes
+        create: True
