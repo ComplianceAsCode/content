@@ -80,10 +80,10 @@ selections:
 - accounts_umask_etc_profile
 - accounts_umask_interactive_users
 - accounts_user_dot_no_world_writable_programs
-- accounts_users_home_files_groupownership
 - accounts_user_home_paths_only
 - accounts_user_interactive_home_directory_defined
 - accounts_user_interactive_home_directory_exists
+- accounts_users_home_files_groupownership
 - accounts_users_home_files_permissions
 - agent_mfetpd_running
 - aide_check_audit_tools
@@ -214,8 +214,9 @@ selections:
 - enable_fips_mode
 - encrypt_partitions
 - ensure_gpgcheck_globally_activated
-- ensure_gpgcheck_never_disabled
 - ensure_gpgcheck_local_packages
+- ensure_gpgcheck_never_disabled
+- ensure_redhat_gpgkey_installed
 - file_audit_tools_group_ownership
 - file_audit_tools_ownership
 - file_audit_tools_permissions
