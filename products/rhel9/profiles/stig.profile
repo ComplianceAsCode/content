@@ -153,12 +153,6 @@ selections:
     # RHEL-08-010160
     - set_password_hashing_algorithm_systemauth
 
-    # RHEL-08-010161
-    - kerberos_disable_no_keytab
-
-    # RHEL-08-010162
-    - package_krb5-workstation_removed
-
     # RHEL-08-010170
     - selinux_state
 

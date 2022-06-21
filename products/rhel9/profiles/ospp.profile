@@ -187,7 +187,6 @@ selections:
     - package_iprutils_removed
     - package_gssproxy_removed
     - package_nfs-utils_removed
-    - package_krb5-workstation_removed
 
     ### Login
     - disable_users_coredumps
@@ -394,9 +393,6 @@ selections:
     # Configure TLS for remote logging
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
-
-    # Prevent Kerberos use by system daemons
-    - kerberos_disable_no_keytab
 
     # set ssh client rekey limit
     - ssh_client_rekey_limit
