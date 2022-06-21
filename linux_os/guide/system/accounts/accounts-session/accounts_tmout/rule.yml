@@ -6,7 +6,9 @@ title: 'Set Interactive Session Timeout'
 
 description: |-
     Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
-    all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
+    all user sessions will terminate based on inactivity.
+    The value of TMOUT should be exported and read only.
+    The <tt>TMOUT</tt>
     {{% if product in ["sle12", "sle15"] %}}
     setting in <tt>/etc/profile.d/autologout.sh</tt> should read as follows:
     <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
@@ -15,7 +17,7 @@ description: |-
     {{% else %}}
     setting in a file loaded by <tt>/etc/profile</tt>, e.g.
     <tt>/etc/profile.d/tmout.sh</tt> should read as follows:
-    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    <pre>declare -xr TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
     {{% endif %}}
 
 rationale: |-
