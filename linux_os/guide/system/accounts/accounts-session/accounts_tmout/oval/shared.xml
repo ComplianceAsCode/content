@@ -28,7 +28,7 @@
     {{% if product in ['sle12', 'sle15'] %}}
     <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+)[\s]*readonly TMOUT[\s]*export TMOUT$</ind:pattern>
     {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*TMOUT=([\w$]+).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*declare[\s]+-xr[\s]+TMOUT=([\w$]+).*$</ind:pattern>
     {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
