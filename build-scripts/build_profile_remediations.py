@@ -86,7 +86,7 @@ def main():
             output_dir, template
         )
 
-        for remediation_path in role_paths:
+        for remediation_path in remediation_paths:
             print(remediation_path)
 
         sys.exit(0)
