@@ -635,10 +635,13 @@ selections:
     # OL08-00-020261
 
     # OL08-00-020262
+    - file_permissions_lastlog
 
     # OL08-00-020263
+    - file_ownership_lastlog
 
     # OL08-00-020264
+    - file_groupownership_lastlog
 
     # OL08-00-020270
     - account_emergency_expire_date
