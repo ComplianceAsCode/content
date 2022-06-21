@@ -132,7 +132,9 @@ class Symbol(boolean.Symbol):
             res['ver_str'] = ' and '.join(['{0} {1}'.format(
                 SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'), pep440_to_version(ver))
                 for op, ver in self.spec.specs])
-            res['ver_cpe'] = ':'.join([pep440_to_version(ver) for op, ver in self.spec.specs])
+            res['ver_cpe'] = ':'.join(['{0}:{1}'.format(
+                SPEC_OP_ID_TRANSLATION.get(op, 'eq'), pep440_to_version(ver))
+                for op, ver in self.spec.specs])
 
         for spec in self.spec.specs:
             op, ver = spec
