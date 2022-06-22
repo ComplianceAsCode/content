@@ -71,6 +71,13 @@ ocil: |-
     the system with the <tt>chown</tt> command:
     <pre>$ sudo chown <tt>user</tt> <tt>file</tt></pre>
 
+fixtext: |-
+    Either remove all files and directories from the system that do not have a valid user, or assign a valid user to all unowned files and directories on {{{ full_name }}} with the "chown" command:
+
+    $ sudo chown [user] [file]
+
+srg_requirement: 'All {{{ full_name }}} local files and directories must have a valid owner.'
+
 warnings:
     - functionality: |-
         For this rule to evaluate centralized user accounts, <tt>getent</tt> must be working properly
