@@ -49,4 +49,13 @@ ocil: |-
     The output should be:
     <pre>*     hard   core    0</pre>
 
+fixtext: |-
+    Configure {{{ full_name }}} to disable core dumps for all users.
+
+    Add the following line to the top of the /etc/security/limits.conf or in a ".conf" file defined in /etc/security/limits.d/:
+
+    * hard core 0
+
+srg_requirement: '{{{ full_name }}} must disable core dumps for all users.'
+
 platform: pam
