@@ -28,6 +28,11 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to only allow root to do kernel profiling.
+    {{{ fixtext_sysctl(sysctl="kernel.perf_event_paranoid", value="2") | indent(4) }}}
+
+
 platform: machine
 
 template:
