@@ -31,6 +31,12 @@ references:
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.dmesg_restrict", value="1") }}}
 
+fixtext: |-
+    Configure {{{ full_name }}} to restrict access to the dmesg bus.
+    {{{ fixtext_sysctl("kernel.dmesg_restrict", "1") | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must restrict access to the kernel message buffer.'
+
 platform: machine
 
 template:
