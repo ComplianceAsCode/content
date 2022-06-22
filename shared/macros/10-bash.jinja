@@ -1961,7 +1961,7 @@ fi
 :param after_match:     Regex used as reference to include the PAM line below, if necessary.
 
 #}}
-{{%- macro bash_ensure_pam_module_configuration(pam_file, group, control, module, option, value='', after_match='') -%}}
+{{%- macro bash_ensure_pam_module_configuration(pam_file, group, control, module, option='', value='', after_match='') -%}}
 if [ -e "{{{ pam_file }}}" ] ; then
     PAM_FILE_PATH="{{{ pam_file }}}"
     if [ -f /usr/bin/authselect ]; then
@@ -1971,7 +1971,11 @@ if [ -e "{{{ pam_file }}}" ] ; then
         PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
         authselect apply-changes -b --backup=before-hardening-{{{ module }}}-{{{ option }}}.backup
     fi
+    {{%- if option == '' %}}
+    {{{ bash_ensure_pam_module_line("$PAM_FILE_PATH", group, control, module, after_match) }}}
+    {{%- else %}}
     {{{ bash_ensure_pam_module_option("$PAM_FILE_PATH", group, control, module, option, value, after_match) | indent(8) }}}
+    {{%- endif %}}
     if [ -f /usr/bin/authselect ]; then
         authselect apply-changes -b --backup=after-hardening-{{{ module }}}-{{{ option }}}.backup
     fi
