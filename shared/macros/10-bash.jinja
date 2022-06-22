@@ -945,23 +945,25 @@ else
 fi
 {{%- endmacro -%}}
 
+
+{{#
+    Enable authselect feature if the authselect current profile is instact or inform that its
+    integrity check failed.
+#}}
+{{%- macro bash_enable_authselect_feature(feature) -%}}
+{{{ bash_check_authselect_integrity() }}}
+authselect enable-feature {{{ feature }}}
+authselect apply-changes
+{{%- endmacro -%}}
+
+
 {{#
     Enable pam_faillock.so PAM module using authselect.
     If an authselect profile is not selected or the selected profile is not intact, the operation is aborted.
     If the operation is aborted, an informative message is shown in the remediation report.
 #}}
 {{%- macro bash_enable_pam_faillock_with_authselect() -%}}
-if authselect check; then
-    authselect enable-feature with-faillock
-    authselect apply-changes
-else
-    echo "
-authselect integrity check failed. Remediation aborted!
-This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
-It is not recommended to manually edit the PAM files when authselect tool is available.
-In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
-    false
-fi
+{{{ bash_enable_authselect_feature('with-faillock') }}}
 {{%- endmacro -%}}
 
 {{#
