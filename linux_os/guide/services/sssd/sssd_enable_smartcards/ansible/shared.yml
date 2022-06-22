@@ -34,7 +34,7 @@
     create: yes
     mode: 0600
 
-{{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+{{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
 - name: '{{{ rule_title }}} - Check if system relies on authselect'
   ansible.builtin.stat:
     path: /usr/bin/authselect

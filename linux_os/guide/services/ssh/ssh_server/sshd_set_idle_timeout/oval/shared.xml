@@ -33,7 +33,7 @@
           test_ref="test_sshd_idle_timeout_config_dir" />
           {{%- endif %}}
         </criteria>
-        {{%- if product not in ["ol8", "rhel8", "rhel9"] %}}
+        {{%- if product not in ["ol8", "ol9", "rhel8", "rhel9"] %}}
         <extend_definition comment="The SSH ClientAliveCountMax is set to zero" definition_ref="sshd_set_keepalive" />
         {{% endif %}}
       </criteria>
