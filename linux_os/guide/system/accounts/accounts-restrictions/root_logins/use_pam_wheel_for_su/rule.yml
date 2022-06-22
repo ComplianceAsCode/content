@@ -46,3 +46,5 @@ fixtext: |-
     "#auth    required    pam_wheel.so use_id"
 
     $ sed '/^[[:space:]]*#[[:space:]]*auth[[:space:]]\+required[[:space:]]\+pam_wheel\.so[[:space:]]\+use_uid$/s/^[[:space:]]*#//' -i /etc/pam.d/su
+
+srg_requirement: '{{{ full_name }}} must restrict access to the su command.'
