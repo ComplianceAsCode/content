@@ -1888,7 +1888,7 @@ fi
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
 {{{ bash_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
 # Check the option
-if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s+.*{{{ option }}}' "{{{ pam_file }}}"; then
+if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}' "{{{ pam_file }}}"; then
     {{%- if value == '' %}}
     sed -i -E --follow-symlinks '/\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}.*/ s/$/ {{{ option }}}/' "{{{ pam_file }}}"
     {{%- else %}}
@@ -1901,6 +1901,23 @@ else
     sed -i -E --follow-symlinks 's/(\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s+.*)('"{{{ option }}}"'=)[[:alnum:]]+\s*(.*)/\1\2'"{{{ value }}}"' \3/' "{{{ pam_file }}}"
 fi
 {{%- endif %}}
+{{%- endmacro -%}}
+
+
+{{#
+    Remove a PAM module option if present in a PAM module line.
+
+:param pam_file:        PAM config file.
+:param group:           PAM management group: auth, account, password or session.
+:param control:         PAM control flags.
+:param module:          PAM module name.
+:param option:          PAM module option.
+
+#}}
+{{%- macro bash_remove_pam_module_option(pam_file, group, control, module, option) -%}}
+if grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}[$\s]' "{{{ pam_file }}}"; then
+    sed -i -E --follow-symlinks 's/(.*{{{ module }}}.*)\s{{{ option }}}[=]{0,1}[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+fi
 {{%- endmacro -%}}
 
 
@@ -1978,6 +1995,37 @@ if [ -e "{{{ pam_file }}}" ] ; then
     {{%- endif %}}
     if [ -f /usr/bin/authselect ]; then
         authselect apply-changes -b --backup=after-hardening-{{{ module }}}-{{{ option }}}.backup
+    fi
+else
+    echo "{{{ pam_file }}} was not found" >&2
+fi
+{{%- endmacro -%}}
+
+{{#
+    Remove a PAM module option from an existing PAM module line. This macro is compatible with
+    custom authselect profiles if the system relies on authselect. Otherwise, the PAM files will
+    be directly edited.
+
+:param pam_file:        PAM config file.
+:param group:           PAM management group: auth, account, password or session.
+:param control:         PAM control flags.
+:param module:          PAM module name.
+:param option:          PAM module option.
+
+#}}
+{{%- macro bash_remove_pam_module_option_configuration(pam_file, group, control, module, option) -%}}
+if [ -e "{{{ pam_file }}}" ] ; then
+    PAM_FILE_PATH="{{{ pam_file }}}"
+    if [ -f /usr/bin/authselect ]; then
+        {{{ bash_check_authselect_integrity() | indent(12) }}}
+        {{{ bash_ensure_authselect_custom_profile() | indent(8) }}}
+        PAM_FILE_NAME=$(basename "{{{ pam_file }}}")
+        PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
+        authselect apply-changes -b --backup=before-hardening-{{{ module }}}-{{{ option }}}-removal.backup
+    fi
+    {{{ bash_remove_pam_module_option("$PAM_FILE_PATH", group, control, module, option) }}}
+    if [ -f /usr/bin/authselect ]; then
+        authselect apply-changes -b --backup=after-hardening-{{{ module }}}-{{{ option }}}-removal.backup
     fi
 else
     echo "{{{ pam_file }}} was not found" >&2
