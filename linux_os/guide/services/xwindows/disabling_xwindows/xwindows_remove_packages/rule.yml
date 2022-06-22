@@ -57,6 +57,17 @@ ocil: |-
     For each <tt>package</tt> mentioned above you should receive following line:
     <pre>package &lt;package&gt; is not installed</pre>
 
+fixtext: |-
+    To ensure the X Windows package group is removed, run the following command:
+    {{% if product in ["rhel7", "ol7"] %}}
+    <pre>$ sudo yum remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils</pre>
+    {{% else %}}
+    {{{ package_remove("xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland") }}}
+    {{% endif %}}
+
+
+srg_requirement: 'The graphical display manager must not be installed on {{{ full_name }}} unless approved.'
+
 platforms:
 {{{ rule_notapplicable_when_ovirt_installed() | indent(4)}}}
 
