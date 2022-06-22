@@ -64,6 +64,18 @@ ocil: |-
     is expected by the RPM database:
     <pre>$ rpm -Va | awk '{ if (substr($0,2,1)=="M") print $NF }'</pre>
 
+fixtext: |-
+    Run the following command to determine which package owns the file:
+
+    $ sudo rpm -qf [path to file]
+
+
+    Reset the permissions of files within a package with the following command:
+
+    $ sudo rpm --setperms [package]
+
+srg_requirement: '{{{ full_name }}} must be configured so that the file permissions of system files and commands match the vendor values.'
+
 warnings:
     - general: |-
         Profiles may require that specific files have stricter file permissions than defined by the
