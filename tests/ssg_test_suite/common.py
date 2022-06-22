@@ -9,6 +9,7 @@ import tarfile
 import tempfile
 import re
 import shutil
+import time
 
 import ssg.yaml
 from ssg.build_cpe import ProductCPEs
@@ -658,3 +659,14 @@ def cpes_to_platform(cpes):
                 return "ol" + major_version
     msg = "Unable to deduce a platform from these CPEs: {cpes}".format(cpes=cpes)
     raise ValueError(msg)
+
+
+def retry_with_stdout_logging(command, args, log_file, max_attempts=5):
+    attempt = 0
+    while attempt < max_attempts:
+        result = run_with_stdout_logging(command, args, log_file)
+        if result.returncode == 0:
+            return result
+        attempt += 1
+        time.sleep(1)
+    return result
