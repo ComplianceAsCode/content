@@ -92,8 +92,8 @@
     - name: Ensure the silent option is not present in the custom profile
       ansible.builtin.replace:
         dest: "/etc/authselect/{{ authselect_custom_profile }}/postlogin"
-        regexp: '^(session.*required.*pam_lastlog.so).*$'
-        replace: '\g<1> showfailed'
+        regexp: '^(session.*pam_lastlog.so.*) silent( .*)$'
+        replace: '\g<1>\g<2>'
       when:
         - result_authselect_profile is not skipped
 
@@ -157,8 +157,8 @@
     - name: Ensure the silent option is not present in PAM files
       ansible.builtin.replace:
         dest: /etc/pam.d/{{{ pam_lastlog_filename }}}
-        regexp: '^(session.*required.*pam_lastlog.so).*$'
-        replace: '\g<1> showfailed'
+        regexp: '^(session.*pam_lastlog.so.*) silent( .*)$'
+        replace: '\g<1>\g<2>'
 
     - name: Ensure the desired configuration is present in PAM files
       ansible.builtin.lineinfile:
