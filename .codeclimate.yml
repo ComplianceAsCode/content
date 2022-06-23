@@ -22,6 +22,8 @@ plugins:
     enabled: true
   shellcheck:
     enabled: true
+  editorconfig:
+    enabled: true
 
 exclude_patterns:
   - "**/*"
@@ -37,6 +39,8 @@ exclude_patterns:
   - "!*.md"
   - "!**/*.md"
   - "!.*/*.md"
+
+  - ".editorconfig"
 
   - "!tests/*.sh"
   - "!tests/shared/*.sh"
