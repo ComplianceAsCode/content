@@ -94,6 +94,8 @@ fixtext: |-
     <pre>clean_requirements_on_remove=1</pre>
 {{% endif %}}
 
+srg_requirement: '{{{ pkg_manager }}} must remove all software components after updated versions have been installed on {{{ full_name }}}.'
+
 {{% if 'sle' in product %}}
 platform: zypper
 {{% elif 'ubuntu' in product %}}
