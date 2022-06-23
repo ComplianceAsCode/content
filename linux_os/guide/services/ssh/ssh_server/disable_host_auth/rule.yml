@@ -59,6 +59,8 @@ references:
 fixtext: |-
     {{{ fixtext_sshd_lineinfile("HostbasedAuthentication", "no") }}}
 
+srg_requirement: '{{{ full_name }}}  must not allow a non-certificate trusted host SSH logon to the system.'
+
 template:
     name: sshd_lineinfile
     vars:
