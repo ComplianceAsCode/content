@@ -1,13 +1,8 @@
 from .ext.boolean import boolean
-
-# Monkey-patch pkg_resources.safe_name function to keep underscores intact
-# Setuptools recognize the issue: https://github.com/pypa/setuptools/issues/2522
-import pkg_resources
-import re
+from .ext.packaging import requirements, version
 import uuid
 import ssg.utils
 
-pkg_resources.safe_name = lambda name: re.sub('[^A-Za-z0-9_.]+', '-', name)
 
 # We don't support ~= to avoid confusion with boolean operator NOT (~)
 SPEC_SYMBOLS = ['<', '>', '=', '!', ',', '[', ']']
@@ -39,6 +34,11 @@ def version_to_pep440(ver):
 
 def pep440_to_version(ver):
     return ver.replace('!', ':').replace('+', '~')
+
+
+def specifier_to_id(spec):
+    op, ver = spec
+    return '{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'eq'), ssg.utils.escape_id(ver))
 
 
 class Function(boolean.Function):
@@ -91,34 +91,35 @@ class Symbol(boolean.Symbol):
 
     def __init__(self, obj):
         super(Symbol, self).__init__(obj)
-        self.spec = pkg_resources.Requirement.parse(version_to_pep440(obj))
-        self.obj = self.spec
+        self.req = requirements.Requirement(version_to_pep440(obj))
+        self.obj = self.req
 
     def __call__(self, **kwargs):
         full_name = self.name
-        if self.spec.extras:
-            full_name += '[' + self.spec.extras[0] + ']'
+        if self.req.extras:
+            full_name += '[' + ','.join(self.req.extras) + ']'
         val = kwargs.get(full_name, False)
-        if len(self.spec.specs):
+        if len(self.specs):
             if type(val) is str:
-                return version_to_pep440(val) in self.spec
+                return version_to_pep440(val) in self.req.specifier
             return False
         return bool(val)
+
+    def __hash__(self):
+        return hash(self.as_id())
 
     def __lt__(self, other):
         return self.as_id() < other.as_id()
 
-    @staticmethod
-    def _spec_id(spec):
-        op, ver = spec
-        return '{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'eq'), ssg.utils.escape_id(ver))
+    def __eq__(self, other):
+        return hash(self) == hash(other)
 
     def as_id(self):
         id_str = self.name
-        if self.spec.extras:
-            id_str += '_' + self.spec.extras[0]
-        for spec in sorted(self.spec.specs):
-            id_str += '_' + self._spec_id(spec)
+        if self.req.extras:
+            id_str += '_' + '_'.join(self.req.extras)
+        for spec in sorted(self.specs):
+            id_str += '_' + specifier_to_id(spec)
         return id_str
 
     def as_uuid(self):
@@ -128,38 +129,40 @@ class Symbol(boolean.Symbol):
         res = {'id': self.as_id(), 'name': self.name, 'arg': self.arg, 'ver_str': '',
                'ver_cpe': '', 'specs': []}
 
-        if self.spec.specs:
+        if self.specs:
             res['ver_str'] = ' and '.join(['{0} {1}'.format(
                 SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'), pep440_to_version(ver))
-                for op, ver in self.spec.specs])
+                for op, ver in self.specs])
             res['ver_cpe'] = ':'.join(['{0}:{1}'.format(
                 SPEC_OP_ID_TRANSLATION.get(op, 'eq'), pep440_to_version(ver))
-                for op, ver in self.spec.specs])
+                for op, ver in self.specs])
 
-        for spec in self.spec.specs:
+        for spec in self.specs:
             op, ver = spec
-            version = pkg_resources.parse_version(ver)
+            v = version.Version(ver)
             res['specs'].append({
-                'id': self._spec_id(spec),
+                'id': specifier_to_id(spec),
                 'op': op,
                 'ver': pep440_to_version(ver),
                 'evr_op': SPEC_OP_OVAL_EVR_STRING_TRANSLATION.get(op, 'equals'),
-                # Older version of pkg_resources does not have 'epoch' attribute in Version,
-                # we have to get the data from the internal instance: 'Version._version.epoch'
-                'evr_ver': str(version._version.epoch) + ':'
-                + '.'.join(str(x) for x in version._version.release) + '-'
-                + (str(version._version.post) if version._version.post else '0')
+                'evr_ver': str(v.epoch) + ':'
+                + '.'.join(str(x) for x in v.release) + '-'
+                + (str(v.post) if v.post else '0')
             })
 
         return res
 
     @property
+    def specs(self):
+        return [(spec.operator, spec.version) for spec in self.req.specifier]
+
+    @property
     def arg(self):
-        return self.spec.extras[0] if self.spec.extras else None
+        return ','.join(self.req.extras) if self.req.extras else None
 
     @property
     def name(self):
-        return self.spec.project_name
+        return self.req.name
 
 
 class Algebra(boolean.BooleanAlgebra):

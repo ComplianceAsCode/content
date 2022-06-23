@@ -33,6 +33,12 @@ def test_dynamic_algebra():
     assert str(exp.simplify()) == 'anything|(~apple&~banana)'
 
 
+def test_compare_expressions(algebra):
+    exp1 = algebra.parse('banana1 and apple1')
+    exp2 = algebra.parse('apple1 and banana1')
+    assert exp1 == exp2
+
+
 def test_underscores_and_dashes_in_name(algebra):
     exp = algebra.parse(u'not_s390x_arch and dashed-name')
     assert exp(**{'not_s390x_arch': True, 'dashed-name': True})
@@ -83,7 +89,7 @@ def test_evaluate_advanced_version_ops(algebra):
     assert exp(**{'oranges': '2'})
     assert exp(**{'oranges': '2.9'})
     assert exp(**{'oranges': '2.0.1'})
-    assert exp(**{'oranges': '2.9.0-rc'})
+    assert exp(**{'oranges': '2.9.0-1'})
     assert not exp(**{'oranges': '3.0'})
     assert not exp(**{'oranges': '0.9.999'})
     assert not exp(**{'oranges': '0.9.999_beta_2'})
