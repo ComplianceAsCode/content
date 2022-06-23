@@ -88,3 +88,5 @@ fixtext: |-
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"
     {{%- endif %}}
+
+srg_requirement: '{{{ full_name }}} must require authentication upon booting into emergency mode.'
