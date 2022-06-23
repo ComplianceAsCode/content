@@ -33,4 +33,6 @@ template:
         filemode: '0640'
 
 fixtext: |-
-    {{{ describe_file_permissions(file="/var/log/messages", perms="0640") }}}
+    {{{ fixtext_file_permissions("/var/log/messages", "0640") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_file_permission("/var/log/messages", "0640") }}}'
