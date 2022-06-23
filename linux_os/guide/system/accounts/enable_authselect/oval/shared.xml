@@ -9,25 +9,13 @@
 <def-group>
 	<definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check that authselect is enabled") }}}
-    <criteria operator="AND" comment="Check that /etc/authselect/authselect.conf is not empty">
+    <criteria operator="AND" comment="Check that authselect symlinks are set up properly.">
       {{%- for name_element, filename in pam_config_map.items() -%}}
 	    <criterion comment="The '{{{ filename }}}' PAM config is a symlink to its authselect counterpart"
 		    test_ref="test_pam_{{{ name_element }}}_symlinked_to_authselect" />
       {{% endfor %}}
     </criteria>
   </definition>
-
-  <ind:textfilecontent54_test check="all"
-    comment="Check that /etc/authselect/authselect.conf is not empty"
-    id="test_authselect_conf_not_empty" version="1">
-  <ind:object object_ref="obj_authselect_conf_not_empty" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="obj_authselect_conf_not_empty" version="1">
-    <ind:filepath>/etc/authselect/authselect.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^.+$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   {{%- for name_element, filename in pam_config_map.items() %}}
   <unix:symlink_test check="all" check_existence="all_exist" id="test_pam_{{{ name_element }}}_symlinked_to_authselect"
