@@ -45,6 +45,15 @@ ocil: |-
     The output should be:
     <pre>Storage=none</pre>
 
+fixtext: |-
+    Configure {{{ full_name }}} to disable storing core dumps for all users.
+
+    Add or modify the following line in /etc/systemd/coredump.conf:
+
+    Storage=none
+
+srg_requirement: '{{{ full_name }}} must disable storing core dumps.'
+
 warnings:
     - general: |-
         If the <tt>/etc/systemd/coredump.conf</tt> file

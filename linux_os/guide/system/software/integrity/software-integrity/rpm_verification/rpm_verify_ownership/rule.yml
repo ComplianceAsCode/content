@@ -57,6 +57,17 @@ ocil: |-
     is expected by the RPM database:
     <pre>$ rpm -Va | rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
 
+fixtext: |-
+    Run the following command to determine which package owns the file:
+
+    $ sudo rpm -qf [path to file]
+
+    Reset the user and group ownership of files within a package with the following command:
+
+    $ sudo rpm --setugids [package]
+
+srg_requirement: '{{{ full_name }}} must be configured so that the file ownership and group membership of system files and commands match the vendor values.'
+
 warnings:
     - general: |-
         Profiles may require that specific files be owned by root while the default owner defined

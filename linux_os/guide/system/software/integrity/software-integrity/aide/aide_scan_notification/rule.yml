@@ -60,3 +60,18 @@ ocil: |-
     <pre>05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
     The email address that the notifications are sent to can be changed by overriding
     <pre><sub idref="var_aide_scan_notification_email" /></pre>.
+
+fixtext: |-
+    Configure the file integrity tool to run automatically on the system at least weekly and to notify designated personnel if baseline configurations are changed in an unauthorized manner.
+    The AIDE tool can be configured to email designated personnel with the use of the cron system.
+
+    The following example output is generic. It will set cron to run AIDE daily and to send email at the completion of the analysis.
+
+    $ sudo more /etc/cron.daily/aide
+
+    #!/bin/bash
+
+    /usr/sbin/aide --check | /bin/mail -s "$HOSTNAME - Daily aide integrity check run" root@sysname.mil
+
+srg_requirement: |-
+    The {{{ full_name }}} file integrity tool must notify the system administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered within an organizationally defined frequency.

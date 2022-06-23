@@ -66,3 +66,5 @@ fixtext: |-
     Configure {{{ full_name }}} to limit the maximal rate for sending duplicate acknowledgments.
 
     {{{ fixtext_sysctl("net.ipv4.tcp_invalid_ratelimit", xccdf_value("sysctl_net_ipv4_tcp_invalid_ratelimit_value")) | indent(4) }}}
+
+srg_requirement: '{{{ full_name }}} must protect against or limit the effects of Denial of Service (DoS) attacks by validating the operating system is implementing rate-limiting measures on impacted network interfaces.'
