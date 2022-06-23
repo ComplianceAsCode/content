@@ -23,6 +23,7 @@ BuildRequires:	python%{python3_pkgversion}
 BuildRequires:	python%{python3_pkgversion}-jinja2
 BuildRequires:	python%{python3_pkgversion}-PyYAML
 BuildRequires:	python%{python3_pkgversion}-setuptools
+BuildRequires:	python%{python3_pkgversion}-pyparsing
 Requires:	xml-common, openscap-scanner >= 1.2.5
 
 %description
