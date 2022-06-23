@@ -66,4 +66,6 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_dconf_ini_file("org/gnome/desktop/session", "idle-delay", "uint32 " ~ xccdf_value("inactivity_timeout_value")) }}}
 
+srg_requirement: '{{{ full_name }}} must automatically lock graphical user sessions after 15 minutes of inactivity.'
+
 platform: machine
