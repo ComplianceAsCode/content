@@ -63,9 +63,6 @@ template:
         ocp_data: 'true'
         filepath: /apis/oauth.openshift.io/v1/oauthclients
         yamlpath: ".items[:].accessTokenInactivityTimeoutSeconds"
-        check_existence_yamlpath: ".items[:].grantMethod"
         check_existence: "all_exist"
         entity_check: "all"
-        values:
-            - value: ".*"
-              operation: "pattern match"
+        xccdf_variable: var_oauth_inactivity_timeout
