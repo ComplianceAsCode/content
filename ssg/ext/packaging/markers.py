@@ -8,7 +8,7 @@ import os
 import platform
 import sys
 
-from pyparsing import (  # noqa: N817
+from ..pyparsing.pyparsing import (  # noqa: N817
     Forward,
     Group,
     Literal as L,

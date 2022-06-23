@@ -7,7 +7,7 @@ import re
 import string
 import sys
 
-from pyparsing import (  # noqa: N817
+from ..pyparsing.pyparsing import (  # noqa: N817
     Combine,
     Literal as L,
     Optional,
