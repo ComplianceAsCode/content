@@ -7,9 +7,6 @@ controls:
         rules:
             - package_openssh-server_installed
             - service_sshd_enabled
-            - ssh_client_rekey_limit
-            - var_ssh_client_rekey_limit_size=1G
-            - var_ssh_client_rekey_limit_time=1hour
             - configure_bind_crypto_policy
             - configure_gnutls_tls_crypto_policy
             - sysctl_crypto_fips_enabled
