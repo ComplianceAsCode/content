@@ -33,6 +33,8 @@ fixtext: |-
     Verify the operating system is configured to enable DAC on hardlinks with the following commands:
     {{{ fixtext_sysctl("fs.protected_hardlinks", "1") | indent(4) }}}
 
+srg_requirement: '{{{ full_name }}} must enable kernel parameters to enforce discretionary access control on hardlinks.'
+
 template:
     name: sysctl
     vars:
