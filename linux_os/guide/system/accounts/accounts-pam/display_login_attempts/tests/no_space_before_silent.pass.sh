@@ -7,6 +7,9 @@ CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 
 CUSTOM_POSTLOGIN="/etc/authselect/$CUSTOM_PROFILE/postlogin"
+if [ $(grep -c "^\s*session.*pam_lastlog.so.*silent$" $CUSTOM_POSTLOGIN) -eq 0 ]; then
+    sed -i --follow-symlinks 's/^\(session.*pam_lastlog.so.*\) silent\( .*\)/\1\2/g' $CUSTOM_POSTLOGIN
+fi
 if [ $(grep -Ec "^\s*session\s+required\s+pam_lastlog\.so(\s.*)?\ssilent($|\s)" $CUSTOM_POSTLOGIN) -eq 0 ]; then
     # If no such line, add
     sed -i --follow-symlinks '0,/^session.*/s/^session.*/session     required                   pam_lastlog.so unknown=silent showfailed\n&/' $CUSTOM_POSTLOGIN
