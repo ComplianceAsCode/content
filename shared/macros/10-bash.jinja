@@ -1829,7 +1829,7 @@ done
 
 # if section not in any file, append section with key = value to FIRST file in files parameter
 if ! $found ; then
-    file=$(echo "{{{ files }}}" | cut -f1 -d' ')
+    file=$(echo "{{{ files }}}" | cut -f1 -d ' ')
     mkdir -p "$(dirname "$file")"
     echo -e "[{{{ section }}}]\n{{{ key }}} = {{{ value }}}" >> "$file"
 fi
