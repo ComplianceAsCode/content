@@ -5,8 +5,8 @@
 authselect create-profile hardening -b sssd
 CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
-CUSTOM_SYSTEM_AUTH="/etc/authselect/$CUSTOM_PROFILE/system-auth"
-if ! $(grep -q "^password.*sufficient.*pam_unix.so.*sha512" "$CUSTOM_SYSTEM_AUTH"); then
-    sed -i --follow-symlinks '/^password.*sufficient.*pam_unix.so/ s/$/ sha512/' "$CUSTOM_SYSTEM_AUTH"
+CUSTOM_PASSWORD_AUTH="/etc/authselect/$CUSTOM_PROFILE/password-auth"
+if ! $(grep -q "^password.*sufficient.*pam_unix.so.*sha512" "$CUSTOM_PASSWORD_AUTH"); then
+    sed -i --follow-symlinks '/^password.*sufficient.*pam_unix.so/ s/$/ sha512/' "$CUSTOM_PASSWORD_AUTH"
 fi
 authselect apply-changes -b
