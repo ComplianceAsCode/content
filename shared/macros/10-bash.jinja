@@ -1794,6 +1794,7 @@ while IFS= read -r {{{ varname }}}; do
 done <   <({{{ command_and_its_args }}})
 {{%- endmacro %}}
 
+
 {{#
   # Ensure key is set to correct value under a correct section in an .ini style config file
 
@@ -1852,10 +1853,10 @@ fi
     specific cases, this macro is not recommened and a custom remediation should be considered.
 
 :param pam_file:        PAM config file.
-:param group:           PAM management group: auth, account, password or session.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
 :param control:         PAM control flags.
 :param module:          PAM module name.
-:param after_match:     Regex used as reference to include the line below, if necessary.
+:param after_match:     Regex used as reference to include the line below, if necessary. Optional parameter.
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
@@ -1863,7 +1864,7 @@ if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{
     # Line matching group + control + module was not found. Check group + module.
     if grep -qP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}"; then
         # If more occurrences match the search, only the first will be updated.
-        sed -i -E --follow-symlinks '0,/^\s*{{{ group }}}\s+.*{{{ module }}}\s*.*/ s/^(\s*{{{ group }}}\s+).*(\s+{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
+        sed -i -E --follow-symlinks '0,/^\s*{{{ group }}}\s+.*{{{ module }}}\s*.*/ s/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
     else
         {{%- if after_match == '' %}}
         echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
@@ -1879,12 +1880,12 @@ fi
     Make sure that an existing PAM module line is properly configured with an option.
 
 :param pam_file:        PAM config file.
-:param group:           PAM management group: auth, account, password or session.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
 :param control:         PAM control flags.
 :param module:          PAM module name.
 :param option:          PAM module option.
-:param value:           PAM module option argument, if is case.
-:param after_match:     Regex used as reference to include the PAM line below, if necessary.
+:param value:           PAM module option argument, if is case. Optional parameter.
+:param after_match:     Regex used as reference to include the PAM line below, if necessary. Optional parameter.
 
 #}}
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
@@ -1910,15 +1911,20 @@ fi
     Remove a PAM module option if present in a PAM module line.
 
 :param pam_file:        PAM config file.
-:param group:           PAM management group: auth, account, password or session.
-:param control:         PAM control flags.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
+:param control:         PAM control flags. Optional parameter, but recommended to be informed whenever possible.
 :param module:          PAM module name.
 :param option:          PAM module option.
 
 #}}
 {{%- macro bash_remove_pam_module_option(pam_file, group, control, module, option) -%}}
-if grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}[$\s]' "{{{ pam_file }}}"; then
-    sed -i -E --follow-symlinks 's/(.*{{{ module }}}.*)\s{{{ option }}}[=]{0,1}[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+{{%- if control == '' %}}
+if grep -qP '^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}[$\s]' "{{{ pam_file }}}"; then
+    sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+{{%- else %}}
+if grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s.*\b{{{ option }}}[$\s]' "{{{ pam_file }}}"; then
+    sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*'"{{{ control }}}"'.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
+{{%- endif %}}
 fi
 {{%- endmacro -%}}
 
@@ -1972,12 +1978,12 @@ fi
     relies on authselect. Otherwise, the PAM files will be directly edited.
 
 :param pam_file:        PAM config file.
-:param group:           PAM management group: auth, account, password or session.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
 :param control:         PAM control flags.
 :param module:          PAM module name.
-:param option:          PAM module option.
-:param value:           PAM module option argument, if is case.
-:param after_match:     Regex used as reference to include the PAM line below, if necessary.
+:param option:          PAM module option. Optional parameter.
+:param value:           PAM module option argument, if is case. Optional parameter.
+:param after_match:     Regex used as reference to include the PAM line below, if necessary. Optional parameter.
 
 #}}
 {{%- macro bash_ensure_pam_module_configuration(pam_file, group, control, module, option='', value='', after_match='') -%}}
@@ -2009,8 +2015,8 @@ fi
     be directly edited.
 
 :param pam_file:        PAM config file.
-:param group:           PAM management group: auth, account, password or session.
-:param control:         PAM control flags.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
+:param control:         PAM control flags. Optional parameter, but recommended to be informed whenever possible.
 :param module:          PAM module name.
 :param option:          PAM module option.
 
