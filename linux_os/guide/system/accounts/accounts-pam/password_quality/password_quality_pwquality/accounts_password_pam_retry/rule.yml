@@ -78,3 +78,5 @@ fixtext: |-
     Add or edit the following line in "/etc/security/pwquality.conf":
 
     retry={{{ xccdf_value("var_password_pam_retry") }}}
+
+srg_requirement: '{{{ full_name }}} must ensure the password complexity module is configured for three retries or less.'
