@@ -81,6 +81,7 @@ selections:
 - disable_users_coredumps
 - dnf-automatic_apply_updates
 - dnf-automatic_security_updates_only
+- enable_authselect
 - enable_dracut_fips_module
 - enable_fips_mode
 - ensure_gpgcheck_globally_activated
@@ -243,6 +244,7 @@ selections:
 - var_slub_debug_options=P
 - var_auditd_flush=incremental_async
 - var_accounts_max_concurrent_login_sessions=10
+- var_authselect_profile=sssd
 - var_password_pam_unix_remember=5
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted

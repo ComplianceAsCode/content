@@ -26,6 +26,18 @@ controls:
     rules:
       - dconf_db_up_to_date
 
+  - id: enable_authselect
+    title: Enable Authselect
+    levels:
+      - l1_server
+      - l1_workstation
+    notes: <-
+      We need this in all CIS versions, but the policy doesn't have any section where this would fit better.
+    status: automated
+    rules:
+      - var_authselect_profile=sssd
+      - enable_authselect
+
   - id: 1.1.1.1
     title: Ensure mounting of cramfs filesystems is disabled (Automated)
     levels:

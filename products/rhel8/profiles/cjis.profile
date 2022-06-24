@@ -75,6 +75,8 @@ selections:
     - accounts_password_pam_minlen
     - accounts_minimum_age_login_defs
     - accounts_password_pam_difok
+    - var_authselect_profile=sssd
+    - enable_authselect
     - accounts_max_concurrent_login_sessions
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_passwordauth
