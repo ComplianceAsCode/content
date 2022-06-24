@@ -81,6 +81,13 @@ ocil: |-
     <pre>$ ls /etc/crypto-policies/local.d/ | awk -F'-' '{print $1}' | uniq | sort</pre>
     Outputs of two previous commands should match.
 
+fixtext: |-
+    Configure {{{ full_name }}} to implement approved encryption.
+    
+    update-crypto-policies --set "FIPS"
+
+srg_requirement: '{{{ full_name }}} must use the FIPS crypto policy.'
+
 warnings:
     - general: |-
         The system needs to be rebooted for these changes to take effect.
