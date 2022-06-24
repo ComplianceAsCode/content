@@ -211,7 +211,7 @@ class PlaybookToRoleConverter():
             elif isinstance(task["when"], str):
                 task["when"] = [task["when"]]
 
-            variables_to_add = {tag for tag in task["tags"] if self._tag_is_valid_variable(tag)}
+            variables_to_add = {tag.replace("-", "_") for tag in task["tags"] if self._tag_is_valid_variable(tag) or "DISA-STIG" in tag}
             task["when"] = ["{varname} | bool".format(varname=v) for v in sorted(variables_to_add)] + task["when"]
             variables.update(variables_to_add)
 
