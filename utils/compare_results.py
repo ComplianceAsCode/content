@@ -125,7 +125,10 @@ def get_results(xml: ElementTree.ElementTree) -> dict:
     for result in results_xml:
         idref = result.attrib['idref']
         idref = idref.replace("xccdf_mil.disa.stig_rule_", "")
-        rules[idref] = result.find('xccdf-1.2:result', PREFIX_TO_NS).text
+        try:
+            rules[idref] = result.find('xccdf-1.2:result', PREFIX_TO_NS).text
+        except AttributeError:
+            rules[idref] = "MISSING_RESULT"
 
     return rules
 
@@ -137,7 +140,10 @@ def get_identifiers(xml: ElementTree.ElementTree) -> dict:
     for result in results_xml:
         idref = result.attrib['idref']
         idref = idref.replace("xccdf_mil.disa.stig_rule_", "")
-        rules[idref] = result.find('xccdf-1.2:ident', PREFIX_TO_NS).text
+        try:
+            rules[idref] = result.find('xccdf-1.2:ident', PREFIX_TO_NS).text
+        except AttributeError:
+            rules[idref] = "MISSING_IDREF"
 
     return rules
 
