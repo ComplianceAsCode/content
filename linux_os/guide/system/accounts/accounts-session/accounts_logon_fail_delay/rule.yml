@@ -53,3 +53,5 @@ fixtext: |-
     Modify the "/etc/login.defs" file to set the "FAIL_DELAY" parameter to {{{ xccdf_value("var_accounts_fail_delay") }}} or greater:
 
     FAIL_DELAY {{{ xccdf_value("var_accounts_fail_delay") }}}
+
+srg_requirement: '{{{ full_name }}} must enforce a delay of at least four seconds between logon prompts following a failed logon attempt.'
