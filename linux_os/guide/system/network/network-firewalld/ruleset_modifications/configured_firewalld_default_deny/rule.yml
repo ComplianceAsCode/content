@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel9
+prodtype: rhel8,rhel9
 
 title: 'Firewalld Must Employ a Deny-all, Allow-by-exception Policy for Allowing Connections to Other Systems'
 
@@ -16,12 +16,14 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel8: CCE-86266-4
     cce@rhel9: CCE-86049-4
 
 references:
     disa: CCI-002314
     nist: AC-17 (1)
     srg: SRG-OS-000297-GPOS-00115
+    stigid@rhel8: RHEL-08-040090
 
 ocil_clause: 'no zones are active on the interfaces or if the target is set to a different option other than "DROP"'
 
