@@ -9,6 +9,7 @@
 {{% if product in ["ol8", "rhel8"] %}}
 if [ -f /usr/bin/authselect ]; then
     if authselect check; then
+        {{% if product in ["ol8"] %}}
         CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
         # Standard profiles delivered with authselect should not be modified.
         # If not already in use, a custom profile is created preserving the enabled features.
@@ -37,6 +38,9 @@ if [ -f /usr/bin/authselect ]; then
                                            'sufficient', 
                                            'pam_sss.so',
                                            'try_cert_auth', '', '') }}}
+        {{% else %}}
+        authselect enable-feature with-smartcard
+        {{% endif %}}
         authselect apply-changes -b --backup=after-pwhistory-hardening.backup
     else
         echo "

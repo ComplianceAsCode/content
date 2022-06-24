@@ -11,9 +11,11 @@
       <criteria operator="AND">
         <criterion comment="Check pam_cert_auth in /etc/sssd/sssd.conf"
         test_ref="test_sssd_enable_smartcards" />
-        {{% if product in ["ol8", "rhel8"] %}}
+        {{% if product in ["ol8"] %}}
         <criterion comment="Check try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
         test_ref="test_sssd_enable_smartcards_cert_auth_smartcard_auth" />
+        {{% endif %}}
+        {{% if product in ["ol8", "rhel8"] %}}
         <criterion comment="Check try_cert_auth or require_cert_auth in /etc/pam.d/system-auth"
         test_ref="test_sssd_enable_smartcards_cert_auth_system_auth" />
         {{% endif %}}
@@ -31,7 +33,7 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  {{% if product in ["ol8", "rhel8"] %}}
+  {{% if product in ["ol8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
   id="test_sssd_enable_smartcards_cert_auth_smartcard_auth" version="1">
@@ -43,7 +45,9 @@
     <ind:pattern operation="pattern match">^\s*auth.*?pam_sss\.so(.*)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{% endif %}}
 
+  {{% if product in ["ol8", "rhel8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the presence of try_cert_auth or require_cert_auth in /etc/pam.d/smartcard-auth"
   id="test_sssd_enable_smartcards_cert_auth_system_auth" version="1">

@@ -6,7 +6,12 @@ source common.sh
 
 {{{ bash_package_install("authselect") }}}
 
+{{% if product in ["ol8"] %}}
 authselect create-profile testingProfile --base-on minimal
+{{% else %}}
+# The minimal profile doesn't have with-smartcard feature
+authselect create-profile testingProfile --base-on sssd
+{{% endif %}}
 authselect select --force custom/testingProfile
 
 echo "[pam]" > $SSSD_FILE

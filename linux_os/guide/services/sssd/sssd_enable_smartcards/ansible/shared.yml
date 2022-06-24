@@ -89,6 +89,7 @@
       when:
         - result_authselect_check_cmd is success
 
+{{% if product in ["ol8"] %}}
     - name: Define the current authselect profile as a local fact
       ansible.builtin.set_fact:
         authselect_current_profile: "{{ result_authselect_profile.stdout }}"
@@ -198,7 +199,24 @@
         - result_authselect_profile is not skipped
         - result_authselect_features is not skipped
         - result_pam_authselect_select_profile is not skipped
+{{% else %}}
+    - name: Get authselect current features
+      ansible.builtin.shell:
+        cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+      register: result_authselect_features
+      changed_when: false
+      when:
+        - result_authselect_check_cmd is success
+        - result_authselect_profile is not skipped
 
+    - name: Ensure smartcards are enabled via authselect tool
+      ansible.builtin.command:
+        cmd: authselect enable-feature with-smartcard
+      when:
+        - result_authselect_check_cmd is success
+        - result_authselect_features.stdout is not search("with-smartcard")
+        - result_authselect_profile is not skipped
+{{% endif %}}
     - name: Ensure the custom profile changes are applied
       ansible.builtin.command:
         cmd: authselect apply-changes -b --backup=after-pwhistory-hardening.backup
