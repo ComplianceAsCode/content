@@ -59,6 +59,8 @@ references:
 fixtext: |-
     {{{ fixtext_sshd_lineinfile("PermitUserEnvironment", "no") }}}
 
+srg_requirement: '{{{ full_name }}} must not allow users to override SSH environment variables.'
+
 template:
     name: sshd_lineinfile
     vars:

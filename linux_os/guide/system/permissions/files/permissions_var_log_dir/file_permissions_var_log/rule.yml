@@ -36,4 +36,6 @@ template:
         filemode: '0755'
 
 fixtext: |-
-    {{{ describe_file_permissions(file="/var/log", perms="0755") }}}
+    {{{ fixtext_directory_permissions("/var/log", "0755") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_directory_permission("/var/log", "0755") }}}'

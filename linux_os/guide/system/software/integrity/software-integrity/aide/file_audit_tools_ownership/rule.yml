@@ -52,6 +52,8 @@ fixtext: |-
 
     Replace "[audit_tool]" with each audit tool not owned by "root".
 
+srg_requirement: '{{{ full_name }}} audit tools must be owned by root.'
+
 template:
     name: file_owner
     vars:

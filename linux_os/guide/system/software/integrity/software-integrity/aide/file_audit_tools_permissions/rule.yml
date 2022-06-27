@@ -44,6 +44,8 @@ fixtext: |-
 
     Replace "[audit_tool]" with each audit tool that has a more permissive mode than 0755.
 
+srg_requirement: '{{{ full_name }}} audit tools must have a mode of 0755 or less permissive.'
+
 template:
     name: file_permissions
     vars:

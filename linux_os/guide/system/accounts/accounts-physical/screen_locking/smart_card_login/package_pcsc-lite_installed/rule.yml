@@ -35,4 +35,6 @@ template:
         pkgname: pcsc-lite
 
 fixtext: |-
-    {{{ describe_package_install(package="pcsc-lite") }}}
+    {{{ fixtext_package_installed(package="pcsc-lite") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_package_installed("pcsc-lite") }}}'

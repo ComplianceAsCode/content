@@ -35,6 +35,8 @@ fixtext: |-
     Verify the operating system is configured to enable DAC on symlinks with the following commands:
     {{{ fixtext_sysctl("fs.protected_symlinks", "1") | indent(4) }}}
 
+srg_requirement: '{{{ full_name }}} must enable kernel parameters to enforce discretionary access control on symlinks.'
+
 template:
     name: sysctl
     vars:

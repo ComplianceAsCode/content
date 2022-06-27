@@ -44,6 +44,8 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_grub2_bootloader_argument("audit_backlog_limit", "8192") | indent(4) }}}
 
+srg_requirement: '{{{ full_name }}} must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon.'
+
 platform: grub2
 
 template:
