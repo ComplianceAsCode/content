@@ -85,3 +85,5 @@ fixtext: |-
     Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
 
     minclass = {{{ xccdf_value("var_password_pam_minclass") }}}
+
+srg_requirement: '{{{ full_name }}} must require the change of at least four character classes when passwords are changed.'

@@ -18,7 +18,7 @@ rationale: |-
     Password length is one factor of several that helps to determine strength
     and how long it takes to crack a password. Use of more characters in a password
     helps to exponentially increase the time and/or resources required to
-    compromose the password.
+    compromise the password.
 
 severity: medium
 
@@ -69,6 +69,8 @@ fixtext: |-
     Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
 
     minlen = {{{ xccdf_value("var_password_pam_minlen") }}}
+
+srg_requirement: '{{{ full_name }}} passwords must have a minimum of 15 characters.'
 
 platform: pam
 

@@ -64,3 +64,5 @@ fixtext: |-
     Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value):
 
     maxrepeat = {{{ xccdf_value("var_password_pam_maxrepeat") }}}
+
+srg_requirement: '{{{ full_name }}} must require the maximum number of repeating characters be limited to three when passwords are changed.'
