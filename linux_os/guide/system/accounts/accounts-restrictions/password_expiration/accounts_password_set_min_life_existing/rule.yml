@@ -45,7 +45,7 @@ ocil_clause: 'any results are returned that are not associated with a system acc
 ocil: |-
     Check whether the minimum time period between password changes for each user account is one day or greater.
 
-    $ sudo awk -F: '$4 &lt; 1 {print $1 "" "" $4}' /etc/shadow
+    $ sudo awk -F: '$4 &lt; 1 {print $1 " " $4}' /etc/shadow
 
 fixtext: |-
     Configure non-compliant accounts to enforce a 24 hours/1 day minimum password lifetime:
