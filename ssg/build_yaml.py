@@ -45,6 +45,7 @@ from .shims import unicode_func
 from .data_structures import XCCDFEntity
 import ssg.build_stig
 
+
 def dump_yaml_preferably_in_original_order(dictionary, file_object):
     try:
         return yaml.dump(dictionary, file_object, indent=4, sort_keys=False)
@@ -73,7 +74,8 @@ def add_sub_element(parent, tag, data):
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode_func('<{0} xmlns:xhtml="{2}">{1}</{0}>').format(tag, namespaced_data, xhtml_namespace)
+    ustr = unicode_func('<{0} xmlns:xhtml="{2}">{1}</{0}>').format(
+        tag, namespaced_data, xhtml_namespace)
 
     try:
         element = ET.fromstring(ustr.encode("utf-8"))
@@ -150,7 +152,7 @@ def add_reference_elements(element, references, ref_uri_dict):
             else:
                 try:
                     ref_href = ref_uri_dict[ref_type]
-                except KeyError as exc:
+                except KeyError:
                     msg = (
                         "Error processing reference {0}: {1} in Rule {2}."
                         .format(ref_type, ref_vals, self.id_))
@@ -446,8 +448,9 @@ class Profile(XCCDFEntity, SelectionHandler):
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
-        profile.variables = dict ((k, v) for (k, v) in self.variables.items()
-                             if k not in other.variables or v != other.variables[k])
+        profile.variables = dict(
+            (k, v) for (k, v) in self.variables.items()
+            if k not in other.variables or v != other.variables[k])
         return profile
 
 
@@ -731,7 +734,8 @@ class Benchmark(XCCDFEntity):
                 continue
 
             try:
-                new_profile = ProfileWithInlinePolicies.from_yaml(dir_item_path, env_yaml, product_cpes)
+                new_profile = ProfileWithInlinePolicies.from_yaml(
+                    dir_item_path, env_yaml, product_cpes)
             except DocumentationNotComplete:
                 continue
             except Exception as exc:
@@ -889,7 +893,8 @@ class Group(XCCDFEntity):
         if data["platform"]:
             data["platforms"].add(data["platform"])
 
-        # parse platform definition and get CPEAL platform if cpe_platform_names not already defined
+        # parse platform definition
+        # and get CPEAL platform if cpe_platform_names not already defined
         if data["platforms"] and not data["cpe_platform_names"]:
             for platform in data["platforms"]:
                 cpe_platform = Platform.from_text(platform, product_cpes)
@@ -1049,6 +1054,7 @@ class Group(XCCDFEntity):
 def noop_rule_filterfunc(rule):
     return True
 
+
 def rule_filter_from_def(filterdef):
     if filterdef is None or filterdef == "":
         return noop_rule_filterfunc
@@ -1142,15 +1148,14 @@ class Rule(XCCDFEntity):
         # to lookup), and the rule's prodtype matches the product being built
         # also if the rule already has cpe_platform_names specified (compiled rule)
         # do not evaluate platforms again
-        if (
-                env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype)
-                or env_yaml and rule.prodtype == "all") and product_cpes and not rule.cpe_platform_names:
+        if ((env_yaml and env_yaml["product"] in parse_prodtype(rule.prodtype)
+                or env_yaml and rule.prodtype == "all")
+                and product_cpes and not rule.cpe_platform_names):
             # parse platform definition and get CPEAL platform
             for platform in rule.platforms:
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 rule.cpe_platform_names.add(cpe_platform.id_)
-
 
         if sce_metadata and rule.id_ in sce_metadata:
             rule.sce_metadata = sce_metadata[rule.id_]
@@ -1317,11 +1322,13 @@ class Rule(XCCDFEntity):
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
                 if not is_cce_format_valid(ident_val):
-                    raise ValueError("CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
-                                     " in file '%s'" % (ident_val, ident_type, yaml_file))
+                    raise ValueError(
+                        "CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
+                        " in file '%s'" % (ident_val, ident_type, yaml_file))
                 if not is_cce_value_valid("CCE-" + ident_val):
-                    raise ValueError("CCE Identifier value is not a valid checksum: invalid value '%s' for CEE '%s'"
-                                     " in file '%s'" % (ident_val, ident_type, yaml_file))
+                    raise ValueError(
+                        "CCE Identifier value is not a valid checksum: invalid value '%s'"
+                        "for CEE '%s' in file '%s'" % (ident_val, ident_type, yaml_file))
 
     def validate_references(self, yaml_file):
         if self.references is None:
@@ -1813,13 +1820,14 @@ class LinearLoader(object):
         self.benchmark = Benchmark.from_yaml(
             os.path.join(directory, "benchmark.yml"), self.env_yaml, self.product_cpes)
 
-        self.benchmark.add_profiles_from_dir(self.resolved_profiles_dir, self.env_yaml, self.product_cpes)
+        self.benchmark.add_profiles_from_dir(
+            self.resolved_profiles_dir, self.env_yaml, self.product_cpes)
 
         benchmark_first_groups = self.find_first_groups_ids(directory)
         for gid in benchmark_first_groups:
             try:
                 self.benchmark.add_group(self.groups[gid], self.env_yaml, self.product_cpes)
-            except KeyError as exc:
+            except KeyError:
                 # Add only the groups we have compiled and loaded
                 pass
 
@@ -1843,8 +1851,6 @@ class LinearLoader(object):
         filenames = glob.glob(os.path.join(self.resolved_platforms_dir, "*.yml"))
         self.load_entities_by_id(filenames, self.platforms, Platform)
         self.product_cpes.platforms = self.platforms
-
-
 
         for g in self.groups.values():
             g.load_entities(self.rules, self.values, self.groups)
@@ -1938,8 +1944,6 @@ class Platform(XCCDFEntity):
 
     def get_remediation_conditional(self, language):
         return self.conditional.get(language, '')
-
-
 
     @classmethod
     def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None, conditionals_path=None):

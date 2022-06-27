@@ -45,8 +45,6 @@ class ProductCPEs(object):
                     cpe[cpe_id]["id_"] = cpe_id
                     self.product_cpes[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
                     self.product_cpes[cpe_id].is_product_cpe = True
-
-
         except KeyError:
             print("Product %s does not define 'cpes'" % (env_yaml["product"]))
             raise
@@ -92,7 +90,6 @@ class ProductCPEs(object):
         self.cpes_by_id[cpe_item.id_] = cpe_item
         self.cpes_by_name[cpe_item.name] = cpe_item
 
-
     def _is_name(self, ref):
         return ref.startswith("cpe:")
 
@@ -108,14 +105,12 @@ class ProductCPEs(object):
         except KeyError:
             raise CPEDoesNotExist("CPE %s is not defined" % (ref))
 
-
     def get_cpe_name(self, cpe_id):
         cpe = self.get_cpe(cpe_id)
         return cpe.name
 
     def get_product_cpe_names(self):
-        return [ cpe.name for cpe in self.product_cpes.values() ]
-
+        return [cpe.name for cpe in self.product_cpes.values()]
 
 
 class CPEList(object):
@@ -232,7 +227,7 @@ class CPEALLogicalTest(Function):
         contents += " )"
         return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
 
-    
+
 class CPEALFactRef(Symbol):
 
     prefix = "cpe-lang"
@@ -268,12 +263,12 @@ class CPEALFactRef(Symbol):
             return remediations.parse_from_string_with_jinja(cond, env_yaml)
         elif conditionals_path is not None:
             templated_conditional_file = os.path.join(
-                                                      conditionals_path, language, self.as_id() +
-                                                      remediations.REMEDIATION_TO_EXT_MAP[language]
-                                                      )
+                conditionals_path, language, self.as_id() +
+                remediations.REMEDIATION_TO_EXT_MAP[language])
             if os.path.exists(templated_conditional_file):
                 return remediations.parse_from_file_without_jinja(templated_conditional_file)
         return None
+
 
 def extract_subelement(objects, sub_elem_type):
     """

@@ -126,8 +126,14 @@ class Symbol(boolean.Symbol):
         return str(uuid.uuid5(uuid.NAMESPACE_X500, self.as_id()))
 
     def as_dict(self):
-        res = {'id': self.as_id(), 'name': self.name, 'arg': self.arg, 'ver_str': '',
-               'ver_cpe': '', 'specs': []}
+        res = {
+            'id': self.as_id(),
+            'name': self.name,
+            'arg': self.arg,
+            'ver_str': '',
+            'ver_cpe': '',
+            'specs': []
+        }
 
         if self.specs:
             res['ver_str'] = ' and '.join(['{0} {1}'.format(
@@ -185,6 +191,7 @@ class Algebra(boolean.BooleanAlgebra):
         not_cls = type('FunctionNOT', (function_cls, boolean.NOT), {})
         and_cls = type('FunctionAND', (function_cls, boolean.AND), {})
         or_cls = type('FunctionOR', (function_cls, boolean.OR), {})
-        super(Algebra, self).__init__(allowed_in_token=VERSION_SYMBOLS + SPEC_SYMBOLS,
-                                      Symbol_class=symbol_cls,
-                                      NOT_class=not_cls, AND_class=and_cls, OR_class=or_cls)
+        super(
+            Algebra, self).__init__(
+                allowed_in_token=VERSION_SYMBOLS + SPEC_SYMBOLS,
+                Symbol_class=symbol_cls, NOT_class=not_cls, AND_class=and_cls, OR_class=or_cls)

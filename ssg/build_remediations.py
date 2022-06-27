@@ -202,13 +202,9 @@ class BashRemediation(Remediation):
             return result
 
         inherited_conditionals = super(
-                                       BashRemediation,
-                                       self).get_inherited_conditionals(
-                                       "bash", cpe_platforms)
+            BashRemediation, self).get_inherited_conditionals("bash", cpe_platforms)
         rule_specific_conditionals = super(
-                                           BashRemediation,
-                                           self).get_rule_specific_conditionals(
-                                           "bash", cpe_platforms)
+            BashRemediation, self).get_rule_specific_conditionals("bash", cpe_platforms)
         if inherited_conditionals or rule_specific_conditionals:
             wrapped_fix_text = ["# Remediation is applicable only in certain platforms",
                                 "do_something_magical"]
@@ -342,26 +338,22 @@ class AnsibleRemediation(Remediation):
                     has_ansible_facts_packages_clause = True
 
         if has_ansible_facts_packages_clause and not has_package_facts_task:
-            facts_task = OrderedDict({'name': 'Gather the package facts',
-                                      'package_facts': {'manager': 'auto'}})
+            facts_task = OrderedDict(
+                {'name': 'Gather the package facts', 'package_facts': {'manager': 'auto'}})
             parsed_snippet.insert(0, facts_task)
 
     def update_when_from_rule(self, to_update, cpe_platforms):
         additional_when = []
         inherited_conditionals = super(
-                                       AnsibleRemediation,
-                                       self).get_inherited_conditionals(
-                                       "ansible", cpe_platforms)
+            AnsibleRemediation, self).get_inherited_conditionals("ansible", cpe_platforms)
         rule_specific_conditionals = super(
-                                           AnsibleRemediation,
-                                           self).get_rule_specific_conditionals(
-                                           "ansible", cpe_platforms)
+            AnsibleRemediation, self).get_rule_specific_conditionals("ansible", cpe_platforms)
         # Remove conditionals related to package CPEs if the updated task collects package facts
         if "package_facts" in to_update:
-            inherited_conditionals = filter(lambda c: "in ansible_facts.packages" not in c,
-                                            inherited_conditionals)
-            rule_specific_conditionals = filter(lambda c: "in ansible_facts.packages" not in c,
-                                                rule_specific_conditionals)
+            inherited_conditionals = filter(
+                lambda c: "in ansible_facts.packages" not in c, inherited_conditionals)
+            rule_specific_conditionals = filter(
+                lambda c: "in ansible_facts.packages" not in c, rule_specific_conditionals)
 
         if inherited_conditionals:
             additional_when.extend(inherited_conditionals)
