@@ -67,4 +67,4 @@ fixtext: |-
     $ sudo sed -i 's/gpgcheck\s*=.*/gpgcheck=1/g' /etc/yum.repos.d/*
 
 srg_requirement: |-
-    {{{ full_name }}} must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.
+    {{{ full_name }}} must not have any repositories with GPG checking disabled.
