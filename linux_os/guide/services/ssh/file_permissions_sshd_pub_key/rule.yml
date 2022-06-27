@@ -49,7 +49,7 @@ ocil: |-
 
 fixtext: '{{{ fixtext_file_permissions(file="/etc/ssh/*_key.pub", mode="0600") }}}'
 
-srg_requirement: 'The RHEL 8 SSH public host key files must have mode 0644 or less permissive.'
+srg_requirement: 'The {{{ full_name }}} SSH public host key files must have mode 0644 or less permissive.'
 
 template:
     name: file_permissions
