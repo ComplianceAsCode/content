@@ -6,7 +6,7 @@
 
 #}}
 {{% macro srg_requirement_audit_file_watch_rule(path) %}}
-{{{ full_name }}} must generate audit records for all account creations, modifications, disabling, and termination events that affect {{{ path }}}.
+{{{ full_name }}} must generate audit records for all modifications that affect {{{ path }}}.
 {{%- endmacro %}}
 
 {{#
