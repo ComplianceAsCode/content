@@ -113,3 +113,5 @@ fixtext: |-
     Run the following command:
 
     $ sudo update-crypto-policies --set {{{ xccdf_value("var_system_crypto_policy") }}}
+
+srg_requirement: '{{{ full_name }}} must use {{{ xccdf_value("var_system_crypto_policy") }}} for the system cryptography policy.'
