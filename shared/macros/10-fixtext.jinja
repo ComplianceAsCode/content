@@ -326,6 +326,7 @@ $ sudo sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\){{{ argument }}}=?[^[:space:]]*\(.*"
 {{%- endif -%}}
 
 Run the following command:
+
 $ sudo {{{ grub_command("remove", argument) }}}
 {{% endmacro %}}
 
@@ -402,6 +403,7 @@ Fixtext for removing a package
 #}}
 {{% macro fixtext_package_removed(package) %}}
 To remove the {{{ full_name }}} package {{{ package }}} run the following command:
+
 {{{ package_remove(package) }}}
 {{%- endmacro %}}
 
@@ -414,6 +416,7 @@ Fixtext for installing a package
 #}}
 {{% macro fixtext_package_installed(package) %}}
 To install the {{{ full_name }}} package {{{ package }}} run the following command:
+
 {{{ package_install(package) }}}
 {{%- endmacro %}}
 
