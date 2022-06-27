@@ -32,7 +32,6 @@ ocil: |-
     <pre>$ sudo ssh-keygen -y -f /path/to/file</pre>
 
 fixtext: |-
-    Replace existing private keys with new ones protected by a passphrase. Create a new private
-    and public key pair that uses a passcode with the following command:
+    Set a passphrase to all keys that didn't have it with the following command:
 
-    $ sudo ssh-keygen -n [passphrase]
+    <pre>$ sudo ssh-keygen -p -N passphrase -f /path/to/file</pre>
