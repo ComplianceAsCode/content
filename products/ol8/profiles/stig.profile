@@ -108,6 +108,7 @@ selections:
     # OL08-00-010090
 
     # OL08-00-010100
+    - ssh_private_keys_have_passcode
 
     # OL08-00-010110
     - set_password_hashing_algorithm_logindefs
