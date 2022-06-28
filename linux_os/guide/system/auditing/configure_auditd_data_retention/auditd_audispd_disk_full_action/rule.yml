@@ -42,8 +42,16 @@ ocil: |-
     Inspect <tt>{{{ audisp_conf_path }}}/audisp-remote.conf</tt> and locate the following line to
     determine if the system is configured to either send to syslog, switch to single user mode,
     or halt when the disk is full:
-    <pre>grep -i disk_full_action {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
+    <pre>$ sudo grep -i disk_full_action {{{ audisp_conf_path }}}/audisp-remote.conf</pre>
     The output should return something similar to:
     <pre>disk_full_action = single</pre>
-    Acceptable values also include <tt>syslog</tt> and
-    <tt>halt</tt>.
+    Acceptable values also include <tt>syslog</tt> and <tt>halt</tt>.
+
+fixtext: |-
+    Configure {{{ full_name }}} to switch to single user mode when the disk is full.
+
+    Add or edit the following line in "{{{ audisp_conf_path }}}/audisp-remote.conf":
+
+    disk_full_action = single
+
+srg_requirement: '{{{ full_name }}} must switch to single user mode when the disk is full.'

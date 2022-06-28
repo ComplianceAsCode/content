@@ -5,16 +5,8 @@ controls:
         title: {{{ full_name }}} must off-load audit records onto a different system
             or media from the system being audited.
         rules:
-            - auditd_audispd_configure_remote_server
-            - auditd_audispd_configure_sufficiently_large_partition
-            - auditd_audispd_disk_full_action
-            - auditd_audispd_encrypt_sent_records
-            - auditd_audispd_network_failure_action
-            - auditd_audispd_syslog_plugin_activated
             - auditd_name_format
             - auditd_overflow_action
-            - package_audispd-plugins_installed
-            - package_audit-audispd-plugins_installed
             - rsyslog_encrypt_offload_actionsendstreamdriverauthmode
             - rsyslog_encrypt_offload_actionsendstreamdrivermode
             - rsyslog_encrypt_offload_defaultnetstreamdriver
