@@ -1,7 +1,7 @@
 {{%- if product in ["rhel7", "ol7"] %}}
-  {{%- set auditd_conf_path="{{{ audisp_conf_path }}}/audispd.conf" %}}
+  {{%- set auditd_conf_path = audisp_conf_path + "/audispd.conf" %}}
 {{%- else %}}
-  {{%- set auditd_conf_path="{{{ audisp_conf_path }}}/auditd.conf" %}}
+  {{%- set auditd_conf_path = audisp_conf_path + "/auditd.conf" %}}
 {{%- endif %}}
 
 documentation_complete: true
