@@ -65,7 +65,14 @@ jobs:
           body: |
             Start a new ephemeral environment with changes proposed in this pull request:
 
-            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#PRODUCT=${{steps.product.outputs.prop}}/${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
+            ${{steps.product.outputs.prop}} (from CTF) Environment (using Fedora as testing environment)
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#PRODUCT=${{steps.product.outputs.prop}},CONTAINER=fedora/${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
+
+            Fedora Testing Environment
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
+
+            Oracle Linux 8 Environment
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#PRODUCT=ol8/${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
 
           edit-mode: replace
       - name: Create or update a trimmed comment
@@ -77,6 +84,10 @@ jobs:
           body: |
             Start a new ephemeral environment with changes proposed in this pull request:
 
+            Fedora Environment
             [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
+
+            Oracle Linux 8 Environment
+            [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#PRODUCT=ol8/${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
 
           edit-mode: replace
