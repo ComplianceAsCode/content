@@ -53,7 +53,7 @@ def add_cpe_item_to_dictionary(tree_root, product_yaml_path, cpe_ref, id_name, c
         cpe_item = product_cpes.get_cpe(cpe_ref)
         translator = IDTranslator(id_name)
         cpe_item.conditional["oval_id"] = translator.generate_id(
-            "{" + oval_namespace + "}definition", cpe_item.conditional["oval_id"])
+            "{%s}definition" % oval_namespace, cpe_item.conditional["oval_id"])
         cpe_list.append(
             cpe_item.to_xml_element("ssg-%s-cpe-oval.xml" % product_yaml.get("product")))
 
