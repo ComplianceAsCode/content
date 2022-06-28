@@ -16,7 +16,7 @@ for f in $SSSD_CONF $SSSD_CONF_DIR; do
 	fi
 	# finds all services entries under [sssd] configuration category, get a unique list so it doesn't add redundant fix
 	services_list=$( awk '/^\s*\[/{f=0} /^\s*\[sssd\]/{f=1}f' $f | grep -P '^services[ \t]*=' | uniq )
-    if [ -z "$services_list"]; then
+    if [ -z "$services_list" ]; then
         continue
     fi
 
