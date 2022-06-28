@@ -76,6 +76,7 @@ class ProductCPEs(object):
 
             cpe = CPEItem.from_yaml(dir_item_path, env_yaml)
             self.cpes_by_id[cpe.id_] = cpe
+            # we check for "true" here because the structure is loaded from a yaml file
             if cpe.is_product_cpe == "true":
                 self.product_cpes[cpe.id_] = cpe
 
