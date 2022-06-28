@@ -9,7 +9,7 @@ import sys
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
-from .utils import merge_dicts, required_key
+from .utils import required_key
 from .xml import ElementTree as ET
 from .yaml import open_and_macro_expand
 from .boolean_expression import Algebra, Symbol, Function
@@ -43,11 +43,13 @@ class ProductCPEs(object):
             product_cpes_list = env_yaml["cpes"]
             for cpe in product_cpes_list:
                 for cpe_id in cpe.keys():
+                    # these product CPEs defined in product.yml are defined
+                    # differently than CPEs in shared/applicability/*.yml
+                    # therefore we have to place the ID at the place where it is expected
                     cpe[cpe_id]["id_"] = cpe_id
-                    self.product_cpes[cpe_id] = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
-                    self.product_cpes[cpe_id].is_product_cpe = True
-
-
+                    cpe_item = CPEItem.get_instance_from_full_dict(cpe[cpe_id])
+                    cpe_item.is_product_cpe = True
+                    self.add_cpe_item(cpe_item)
         except KeyError:
             print("Product %s does not define 'cpes'" % (env_yaml["product"]))
             raise
@@ -74,25 +76,15 @@ class ProductCPEs(object):
                 )
                 continue
 
-            cpe = CPEItem.from_yaml(dir_item_path, env_yaml)
-            self.cpes_by_id[cpe.id_] = cpe
-            # we check for "true" here because the structure is loaded from a yaml file
-            if cpe.is_product_cpe == "true":
-                self.product_cpes[cpe.id_] = cpe
-
-        # Add product_cpes to map of CPEs by ID
-        self.cpes_by_id = merge_dicts(self.cpes_by_id, self.product_cpes)
-
-        # Generate a CPE map by name,
-        # so that we can easily reference them by CPE Name
-        # Note: After the shorthand is generated,
-        # all references to CPEs are by its name
-        for cpe_id, cpe in self.cpes_by_id.items():
-            self.cpes_by_name[cpe.name] = cpe
+            cpe_item = CPEItem.from_yaml(dir_item_path, env_yaml)
+            self.add_cpe_item(cpe_item)
 
     def add_cpe_item(self, cpe_item):
         self.cpes_by_id[cpe_item.id_] = cpe_item
         self.cpes_by_name[cpe_item.name] = cpe_item
+        # we check for "true" here because the structure is loaded from a yaml file
+        if cpe_item.is_product_cpe:
+            self.product_cpes[cpe_item.id_] = cpe_item
 
 
     def _is_name(self, ref):
@@ -195,6 +187,21 @@ class CPEItem(XCCDFEntity):
         cpe_item_check.set('system', oval_namespace)
         cpe_item_check.set('href', cpe_oval_filename)
         cpe_item_check.text = self.check_id
+        return cpe_item
+
+    @classmethod
+    def from_yaml(cls, yaml_file, env_yaml=None, product_cpes=None):
+        cpe_item = super(CPEItem, cls).from_yaml(yaml_file, env_yaml, product_cpes)
+        # the is_product_cpe attribute is stored as string
+        # convert it to boolean
+        if cpe_item.is_product_cpe:
+            if cpe_item.is_product_cpe.lower() == "true":
+                cpe_item.is_product_cpe = True
+            elif cpe_item.is_product_cpe.lower() == "false":
+                cpe_item.is_product_cpe = False
+            else:
+                raise AttributeError(
+                    "Invalid value %s for is_product_cpe" % cpe_item.is_product_cpe)
         return cpe_item
 
 
