@@ -58,7 +58,7 @@ ocil: |-
 
 fixtext: '{{{ srg_requirement_file_permission(file="/etc/ssh/*_key", mode="0600") }}}'
 
-srg_requirement: 'The RHEL 8 SSH private host key files must have mode 0600 or less permissive.'
+srg_requirement: 'The {{{ full_namne }}} SSH private host key files must have mode 0600 or less permissive.'
 
 template:
     name: file_permissions

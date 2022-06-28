@@ -62,4 +62,4 @@ fixtext: |-
     Add or update the following line in {{{ pkg_manager_config_file }}}:
     localpkg_gpgcheck=1
 
-srg_requirement: '{{{ full_name }}} must prevent the installation of software, patches, service packs, device drivers, or operating system components of local packages without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.'
+srg_requirement: '{{{ full_name }}} package manage must check GPG signatures of local packages.'

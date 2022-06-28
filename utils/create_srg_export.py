@@ -417,7 +417,6 @@ def get_requirement(control: ssg.controls.Control, rule_obj: ssg.build_yaml.Rule
 
 def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.environment,
                    rule_json: dict, srgs: dict, used_rules: list, root_path: str) -> list:
-
     if len(control.selections) > 0:
         rows = list()
         for selection in control.selections:
@@ -426,7 +425,9 @@ def handle_control(product: str, control: ssg.controls.Control, env_yaml: ssg.en
                 row = create_base_row(control, srgs, rule_object)
                 if control.levels is not None:
                     row['Severity'] = ssg.build_stig.get_severity(control.levels[0])
-                row['Requirement'] = get_requirement(control.title, rule_object)
+                row['Requirement'] = handle_variables(get_requirement(control.title, rule_object),
+                                                      control.variables, root_path,
+                                                      product)
                 row['Vul Discussion'] = handle_variables(rule_object.rationale, control.variables,
                                                          root_path, product)
                 ocil_var = handle_variables(rule_object.ocil, control.variables, root_path,

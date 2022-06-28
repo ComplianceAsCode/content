@@ -54,4 +54,4 @@ fixtext: |-
 
     password sufficient pam_unix.so sha512 rounds={{{ xccdf_value("var_password_pam_unix_rounds") }}}
 
-srg_requirement: 'shadow password suite must be configured to use a sufficient number of hashing rounds in /etc/pam.d/system-auth.'
+srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds in /etc/pam.d/system-auth.'
