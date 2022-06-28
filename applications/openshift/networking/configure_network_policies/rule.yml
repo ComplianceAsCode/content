@@ -20,9 +20,11 @@ severity: high
 ocil_clause: 'Support for Network Policies needs review'
 
 ocil: |-
-    Verify on OpenShift that the NetworkPolicy plugin is being used:
-    <pre>$ oc explain networkpolicy</pre>
-    The resulting output should be an explanation of the NetworkPolicy resource.
+    Verify that your CNI plugin supports NetworkPolicies:
+    <pre>$ oc get network cluster -oyaml -ojsonpath='{.spec.networkType}'</pre>
+    The result should list a CNI plugin that supports NetworkPolicies,
+    currently the plugins in the rule's pass list are OpenShiftSDN, OVN
+    and Calico.
 
 {{% set api_path = '/apis/operator.openshift.io/v1/networks/cluster' %}}
 {{% set jqfilter = '[.spec.defaultNetwork.type]' %}}
@@ -48,5 +50,5 @@ template:
     check_existence: "any_exist"
     entity_check: "all"
     values:
-      - value: "OpenShiftSDN|OVN"
+      - value: "OpenShiftSDN|OVN|Calico"
         operation: "pattern match"
