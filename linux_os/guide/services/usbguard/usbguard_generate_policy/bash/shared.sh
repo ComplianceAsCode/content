@@ -10,6 +10,12 @@ then
     USBGUARD_CONF=/etc/usbguard/rules.conf
     if [ ! -f "$USBGUARD_CONF" ] || [ ! -s "$USBGUARD_CONF" ]; then
         usbguard generate-policy > $USBGUARD_CONF
+        if [ ! -s "$USBGUARD_CONF" ]; then
+            # make sure OVAL check doesn't fail on systems where
+            # generate-policy doesn't find any USB devices (for
+            # example a system might not have a USB bus)
+            echo "# No USB devices found" > $USBGUARD_CONF
+        fi
         # make sure it has correct permissions
         chmod 600 $USBGUARD_CONF
 
