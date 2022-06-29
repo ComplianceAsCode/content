@@ -58,6 +58,7 @@ product_directories = [
     'rhv4',
     'sle12', 'sle15',
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004',
+    'uos20',
     'vsel',
     'wrlinux8', 'wrlinux1019'
 ]
@@ -222,6 +223,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
+    "UnionTech OS Server 20": "uos20",
     "WRLinux 8": "wrlinux8",
     "WRLinux 1019": "wrlinux1019",
 }
@@ -267,7 +269,7 @@ REFERENCES = dict(
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos",
-                       "example", "eks", "alinux"]
+                       "example", "eks", "alinux", "uos"]
 
 MULTI_PLATFORM_MAPPING = {
     "multi_platform_alinux": ["alinux2"],
@@ -284,6 +286,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004"],
+    "multi_platform_uos": ["uos20"],
     "multi_platform_wrlinux": ["wrlinux8", "wrlinux1019"],
 }
 
@@ -446,6 +449,7 @@ MAKEFILE_ID_TO_PRODUCT_MAP = {
     'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
+    'uos': 'UnionTech OS Server',
     'eap': 'JBoss Enterprise Application Platform',
     'fuse': 'JBoss Fuse',
     'opensuse': 'openSUSE',
