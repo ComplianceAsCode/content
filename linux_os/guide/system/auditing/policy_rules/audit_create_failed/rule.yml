@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhcos4,rhel8,rhel9
+prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure auditing of unsuccessful file creations'
 
@@ -30,10 +30,10 @@ description: |-
     <pre>
     cp /usr/share/audit/sample-rules/30-ospp-v42-1-create-failed.rules /etc/audit/rules.d/
     </pre>
-    
+
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
-    
+
     Note: This rule utilizes a file provided by <tt>Audit</tt> package to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
 
 rationale: |-

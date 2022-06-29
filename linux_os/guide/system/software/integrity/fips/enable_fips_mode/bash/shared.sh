@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,Oracle Linux 8,Red Hat Virtualization 4
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,Red Hat Virtualization 4
 {{{ bash_instantiate_variables("var_system_crypto_policy") }}}
 
 fips-mode-setup --enable
@@ -17,4 +17,3 @@ elif test "$rc" != 0; then
 	echo "Error invoking the update-crypto-policies script: $stderr_of_call" >&2
 	false  # end with an error code
 fi
-

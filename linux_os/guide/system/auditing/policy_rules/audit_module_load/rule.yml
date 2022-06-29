@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol8,rhcos4,rhel8,rhel9
+prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure auditing of loading and unloading of kernel modules'
 
@@ -23,7 +23,7 @@ description: |-
     <pre>
     cp /usr/share/audit/sample-rules/43-module-load.rules /etc/audit/rules.d/
     </pre>
-    
+
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
 
