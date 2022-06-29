@@ -13,6 +13,9 @@ description: |-
   make sure that the <tt>feature-gates</tt> API server argument, typically
   set in the <tt>config</tt> configMap in the <tt>openshift-kube-apiserver</tt>
   namespace contains <tt>APIPriorityAndFairness=true</tt>.
+  Note that since Kubernetes 1.20, this feature gate is enabled by default.
+  As a result, this rule is only applicable to OpenShift releases prior
+  to 4.7 which was the first OCP release to ship Kubernetes 1.20.
 
 rationale: |-
   The <tt>APIPriorityAndFairness</tt> feature gate enables the use of the
@@ -26,6 +29,8 @@ rationale: |-
 identifiers:
   cce@ocp4: CCE-83656-9
 
+platforms:
+    - ocp4.6
 
 severity: medium
 
