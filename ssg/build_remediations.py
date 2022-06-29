@@ -130,25 +130,27 @@ class Remediation(object):
                     if p not in inherited_cpe_platform_names}
         return rule_specific_cpe_platform_names
 
+    def get_stripped_conditionals(self, language, cpe_platform_names, cpe_platforms):
+        """
+        collect conditionals of platforms defined by cpe_platform_names
+        and strip them of white spaces
+        """
+        stripped_conditionals = []
+        for p in cpe_platform_names:
+            conditional = cpe_platforms[p].get_remediation_conditional(language)
+            if conditional is not None:
+                stripped_conditional = conditional.contents.strip()
+                if stripped_conditional:
+                    stripped_conditionals.append(stripped_conditional)
+        return stripped_conditionals
+
     def get_rule_specific_conditionals(self, language, cpe_platforms):
-        rule_specific_conditionals = []
-        for p in self.get_rule_specific_cpe_platform_names():
-            r = cpe_platforms[p].get_remediation_conditional(language)
-            if r is not None:
-                stripped = r.contents.strip()
-                if stripped:
-                    rule_specific_conditionals.append(stripped)
-        return rule_specific_conditionals
+        cpe_platform_names = self.get_rule_specific_cpe_platform_names()
+        return self.get_stripped_conditionals(language, cpe_platform_names, cpe_platforms)
 
     def get_inherited_conditionals(self, language, cpe_platforms):
-        inherited_conditionals = []
-        for p in self.get_inherited_cpe_platform_names():
-            r = cpe_platforms[p].get_remediation_conditional(language)
-            if r is not None:
-                stripped = r.contents.strip()
-                if stripped:
-                    inherited_conditionals.append(stripped)
-        return inherited_conditionals
+        cpe_platform_names = self.get_inherited_cpe_platform_names()
+        return self.get_stripped_conditionals(language, cpe_platform_names, cpe_platforms)
 
 
 def process(remediation, env_yaml, cpe_platforms):
