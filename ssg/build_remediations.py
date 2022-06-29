@@ -208,8 +208,7 @@ class BashRemediation(Remediation):
         rule_specific_conditionals = super(
             BashRemediation, self).get_rule_specific_conditionals("bash", cpe_platforms)
         if inherited_conditionals or rule_specific_conditionals:
-            wrapped_fix_text = ["# Remediation is applicable only in certain platforms",
-                                "do_something_magical"]
+            wrapped_fix_text = ["# Remediation is applicable only in certain platforms"]
             all_conditions = ""
             if inherited_conditionals:
                 all_conditions += " && ".join(inherited_conditionals)
