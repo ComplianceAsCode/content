@@ -5,7 +5,7 @@
 {{% if product in ["rhel8", "rhel9"] %}}
 {{% set faillock_path="/var/log/faillock" %}}
 {{% else %}}
-{{% set faillock_path="{{{ faillock_path }}}" %}}
+{{% set faillock_path="/var/run/faillock" %}}
 {{% endif %}}
 
 
