@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import os
 import yaml
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from copy import deepcopy
 
 from ..xml import ElementTree as ET, add_xhtml_namespace
@@ -309,3 +309,11 @@ class SelectionHandler(object):
         updated_refinements = self._subtract_refinements(extended_refinements)
         updated_refinements.update(self.refine_rules)
         self.refine_rules = updated_refinements
+
+
+# this named tuple is a structure used for remediations
+# it holds the remediation config values (platform etc)
+# and the actual content
+#it is here because the structure is needed in several modules
+# currently in ssg/build_remediations and ssg/build_cpe.py
+RemediationObject = namedtuple('remediation', ['contents', 'config'])
