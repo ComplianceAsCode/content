@@ -17,8 +17,8 @@
 - name: Replace user umask in /etc/profile
   ansible.builtin.replace:
     path: /etc/profile
-    regexp: '^[^#]*umask'
-    replace: "umask {{ var_accounts_user_umask }}"
+    regexp: '^(\s*)umask\s+\d+'
+    replace: '\1umask {{ var_accounts_user_umask }}'
 
 - name: Append user umask in /etc/profile
   ansible.builtin.lineinfile:
