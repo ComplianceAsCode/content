@@ -1,5 +1,5 @@
 #!/bin/bash
-# packages = /usr/lib/systemd/system/sssd.service
+# packages = sssd
 #
 
 rm -rf /etc/sssd/conf.d/
