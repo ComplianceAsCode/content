@@ -341,6 +341,18 @@ def extract_env_obj(objects, local_var):
     return None
 
 
+def get_correct_elementtree_iterator(tree):
+    """
+    decide on usage of .iter or .getiterator method of elementtree class.
+    getiterator is deprecated in Python 3.9, but iter is not available in
+    older versions
+    """
+    if getattr(tree, "iter", None) is None:
+        return tree.getiterator()
+    else:
+        return tree.iter()
+
+
 def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     """
     Return the elements in tree_with_ids which are referenced
@@ -350,26 +362,13 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     reflist = []
     elementlist = []
 
-
-    # decide on usage of .iter or .getiterator method of elementtree class.
-    # getiterator is deprecated in Python 3.9, but iter is not available in
-    # older versions
-    if getattr(tree_with_refs, "iter", None) == None:
-        tree_with_refs_iterator = tree_with_refs.getiterator()
-    else:
-        tree_with_refs_iterator = tree_with_refs.iter()
+    tree_with_refs_iterator = get_correct_elementtree_iterator(tree_with_refs)
     for element in tree_with_refs_iterator:
         value = element.get(attrname)
         if value is not None:
             reflist.append(value)
 
-    # decide on usage of .iter or .getiterator method of elementtree class.
-    # getiterator is deprecated in Python 3.9, but iter is not available in
-    # older versions
-    if getattr(tree_with_ids, "iter", None) == None:
-        tree_with_ids_iterator = tree_with_ids.getiterator()
-    else:
-        tree_with_ids_iterator = tree_with_ids.iter()
+    tree_with_ids_iterator = get_correct_elementtree_iterator(tree_with_ids)
     for element in tree_with_ids_iterator:
         if element.get("id") in reflist:
             elementlist.append(element)
