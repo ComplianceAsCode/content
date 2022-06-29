@@ -12,14 +12,6 @@ description: |-
     The following rules configure audit as described above:
     <pre>--loginuid-immutable</pre>
 
-    The <tt>Audit</tt> provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>.
-    The above content can be found in <tt>/usr/share/audit/sample-rules/11-loginuid.rules</tt>.
-    To deploy this configuration, it is recommended to copy it over to the
-    <tt>/etc/audit/rules.d/</tt> directory:
-    <pre>
-    cp /usr/share/audit/sample-rules/11-loginuid.rules /etc/audit/rules.d/
-    </pre>
-
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
 
