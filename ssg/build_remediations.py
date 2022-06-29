@@ -5,7 +5,7 @@ import sys
 import os
 import os.path
 import re
-from collections import defaultdict, namedtuple, OrderedDict
+from collections import defaultdict, OrderedDict
 
 import ssg.yaml
 import ssg.build_yaml
@@ -15,8 +15,9 @@ from . import constants
 
 from .remediations import parse_from_file_with_jinja, parse_from_file_without_jinja
 from .remediations import REMEDIATION_TO_EXT_MAP
-
+from .data_structures import RemediationObject
 from .xml import ElementTree
+
 
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
@@ -229,8 +230,7 @@ class BashRemediation(Remediation):
                 "    >&2 echo 'Remediation is not applicable, nothing was done'")
             wrapped_fix_text.append("fi")
 
-            result = namedtuple('remediation', ['contents', 'config'])(
-                contents="\n".join(wrapped_fix_text), config=result.config)
+            result = RemediationObject(contents="\n".join(wrapped_fix_text), config=result.config)
         return result
 
 

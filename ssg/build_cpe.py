@@ -6,7 +6,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
-from collections import namedtuple, defaultdict
+from collections import defaultdict
 
 from .constants import oval_namespace
 from .constants import PREFIX_TO_NS
@@ -14,7 +14,7 @@ from .constants import CONDITIONAL_OPERATORS
 from .utils import required_key
 from .xml import ElementTree as ET
 from .boolean_expression import Algebra, Symbol, Function
-from .data_structures import XCCDFEntity
+from .data_structures import XCCDFEntity, RemediationObject
 
 from . import remediations
 
@@ -235,7 +235,7 @@ class CPEALLogicalTest(Function):
             op = " " + CONDITIONAL_OPERATORS[language]["and"] + " "
         contents += op.join(child_condlines)
         contents += " )"
-        return namedtuple('remediation', ['contents', 'config'])(contents=contents, config=config)
+        return RemediationObject(contents=contents, config=config)
 
 
 class CPEALFactRef(Symbol):

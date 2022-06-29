@@ -5,7 +5,7 @@ import os.path
 import yaml
 
 from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
-
+from collections import namedtuple
 
 def dump_yaml_preferably_in_original_order(dictionary, file_object):
     try:
@@ -175,3 +175,10 @@ class XCCDFEntity(object):
 
     def to_xml_element(self):
         raise NotImplementedError()
+
+# this named tuple is a structure used for remediations
+# it holds the remediation config values (platform etc)
+# and the actual content
+#it is here because the structure is needed in several modules
+# currently in ssg/build_remediations and ssg/build_cpe.py
+RemediationObject = namedtuple('remediation', ['contents', 'config'])
