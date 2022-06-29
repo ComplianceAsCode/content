@@ -526,14 +526,15 @@ def get_policy(args, env_yaml) -> ssg.controls.Policy:
     return policy
 
 
-def handle_csv_output(output, results):
+def handle_csv_output(output: str, results: list) -> str:
     with open(output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
         for row in results:
             csv_writer.writerow(row)
+        return output
 
 
-def handle_xlsx_output(output, product, results):
+def handle_xlsx_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.xlsx')
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
@@ -541,7 +542,7 @@ def handle_xlsx_output(output, product, results):
     return output
 
 
-def handle_html_output(output, product, results):
+def handle_html_output(output: str, product: str, results: list) -> str:
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
     output = output.replace('.csv', '.html')
@@ -549,7 +550,7 @@ def handle_html_output(output, product, results):
     return output
 
 
-def handle_md_output(output, product, results):
+def handle_md_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.md')
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
@@ -559,7 +560,7 @@ def handle_md_output(output, product, results):
 
 def handle_output(output: str, results: list, format_type: str, product: str) -> None:
     if format_type == 'csv':
-        handle_csv_output(output, results)
+        output = handle_csv_output(output, results)
     elif format_type == 'xlsx':
         output = handle_xlsx_output(output, product, results)
     elif format_type == 'md':
