@@ -4,10 +4,7 @@
 # complexity = low
 # disruption = low
 
-SMARTCARD_PACKAGES=( "pam_pkcs11"  "mozilla-nss"  "mozilla-nss-tools"  "pcsc-ccid"  "pcsc-lite"  "pcsc-tools"  "opensc")
-{{% if product not in ["sle15"] %}}
-SMARTCARD_PACKAGES+=("coolkey")
-{{% endif %}}
+SMARTCARD_PACKAGES=( "pam_pkcs11"  "mozilla-nss"  "mozilla-nss-tools"  "pcsc-ccid"  "pcsc-lite"  "pcsc-tools"  "opensc" "coolkey")
 
 for PKGNAME in "${SMARTCARD_PACKAGES[@]}"
 do
