@@ -8,7 +8,7 @@ def get_heading(row: dict) -> str:
         return row['SRGID']
 
 
-def get_content(header, output, row):
+def get_content(header: str, row: dict) -> str:
     if row[header] is None:
         output.append('')
     else:
