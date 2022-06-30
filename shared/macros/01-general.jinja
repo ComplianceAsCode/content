@@ -489,6 +489,19 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
+    Describe how to set an SELinux boolean depending on a variable.
+
+:param sebool: The SELinux boolean to disable
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_var(sebool) %}}
+    To set the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} {{{ xccdf_value("var_" + sebool) }}}</pre>
+{{%- endmacro %}}
+
+
+{{#
     Describe how to disable an SELinux boolean.
 
 :param sebool: The SELinux boolean to disable
