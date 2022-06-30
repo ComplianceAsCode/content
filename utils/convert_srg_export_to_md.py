@@ -1,3 +1,5 @@
+import re
+
 import create_srg_export
 
 
@@ -10,9 +12,12 @@ def get_heading(row: dict) -> str:
 
 def get_content(header: str, row: dict) -> str:
     if row[header] is None:
-        output.append('')
+        return ''
     else:
-        output.append(row[header])
+        content = row[header]
+        content = content.replace('\n', '\n\n')
+        content = content.replace('*', '&#42;')
+        return content
 
 
 def write_md_file(output, output_path):
@@ -38,7 +43,8 @@ def handle_dict(data: list, output_path: str, title: str) -> None:
         output.append('')
         for _, header in create_srg_export.COLUMN_MAPPINGS.items():
             output.append(f'## {header}')
-            get_content(header, output, row)
+            content = get_content(header, row)
+            output.append(content)
             output.append('')
         output.append('')
         output.append('\\newpage')
