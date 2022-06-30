@@ -14,12 +14,6 @@ def expression1(algebra):
     return algebra.parse(u'(oranges==2.0 | banana) and not ~apple + !pie', simplify=True)
 
 
-def test_expression1_id(expression1):
-    assert str(expression1.as_id()) == 'apple_and_banana_or_oranges_eq_2_0_or_not_pie'
-    assert str(expression1.as_uuid()) == '314ed18f-90e5-5d59-9842-cc64fdd2e520'
-    assert str(expression1.simplify()) == '(apple&(banana|oranges==2.0))|~pie'
-
-
 def test_expression1_cnf_dnf(algebra, expression1):
     assert str(algebra.cnf(expression1)) == '(apple|~pie)&(banana|oranges==2.0|~pie)'
     assert str(algebra.dnf(expression1)) == '(apple&banana)|(apple&oranges==2.0)|~pie'
