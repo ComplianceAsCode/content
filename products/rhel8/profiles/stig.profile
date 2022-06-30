@@ -500,6 +500,7 @@ selections:
     # RHEL-08-020020
 
     # RHEL-08-020021
+    - account_passwords_pam_faillock_audit
 
     # RHEL-08-020022, RHEL-08-020023
     - accounts_passwords_pam_faillock_deny_root
@@ -1124,8 +1125,11 @@ selections:
     # RHEL-08-040250
     - sysctl_net_ipv6_conf_default_accept_source_route
 
-    # RHEL-08-040260
+    # RHEL-08-040259
     - sysctl_net_ipv4_ip_forward
+
+    # RHEL-08-040260
+    - sysctl_net_ipv6_conf_all_forwarding
 
     # RHEL-08-040261
     - sysctl_net_ipv6_conf_all_accept_ra
