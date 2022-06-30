@@ -1,4 +1,8 @@
 # platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
 
 {{{ set_config_file(path="/etc/aliases",
                     parameter="postmaster",
