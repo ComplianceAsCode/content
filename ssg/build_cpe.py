@@ -13,7 +13,7 @@ from .constants import PREFIX_TO_NS
 from .constants import CONDITIONAL_OPERATORS
 from .utils import required_key
 from .xml import ElementTree as ET
-from .boolean_expression import Algebra, Symbol, Function
+from .boolean_expression import Algebra, Symbol, Function, get_platform_id
 from .data_structures import XCCDFEntity, RemediationObject
 
 from . import remediations
@@ -85,20 +85,14 @@ class ProductCPEs(object):
         if cpe_item.is_product_cpe:
             self.product_cpes[cpe_item.id_] = cpe_item
 
-    def _is_name(self, ref):
-        return ref.startswith("cpe:")
-
-    def get_cpe(self, ref):
-        # THIS IS UGLY, We'd better parse pkg_resources.Requirement.parse(ref)
-        # and get proper base id
-        ref = ref.split('[', 1)[0]
+    def get_cpe(self, cpe_id):
         try:
-            if self._is_name(ref):
-                return self.cpes_by_name[ref]
+            if cpe_id.startswith("cpe:"):
+                return self.cpes_by_name[cpe_id]
             else:
-                return self.cpes_by_id[ref]
+                return self.cpes_by_id[get_platform_id(cpe_id)]
         except KeyError:
-            raise CPEDoesNotExist("CPE %s is not defined" % (ref))
+            raise CPEDoesNotExist("CPE %s is not defined" % (cpe_id,))
 
     def get_cpe_name(self, cpe_id):
         cpe = self.get_cpe(cpe_id)

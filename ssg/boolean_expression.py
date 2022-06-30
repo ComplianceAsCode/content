@@ -41,6 +41,11 @@ def specifier_to_id(spec):
     return '{0}_{1}'.format(SPEC_OP_ID_TRANSLATION.get(op, 'eq'), ssg.utils.escape_id(ver))
 
 
+def get_platform_id(expr):
+    req = requirements.Requirement(version_to_pep440(expr))
+    return req.name
+
+
 class Function(boolean.Function):
     """
     Base class for boolean functions
