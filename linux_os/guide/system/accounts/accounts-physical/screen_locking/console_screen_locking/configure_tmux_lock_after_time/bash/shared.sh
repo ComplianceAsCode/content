@@ -7,4 +7,4 @@ if grep -qP '^\s*set\s+-g\s+lock-after-time' "$tmux_conf" ; then
 else
     echo "set -g lock-after-time 900" >> "$tmux_conf"
 fi
-
+chmod 0644 "$tmux_conf"

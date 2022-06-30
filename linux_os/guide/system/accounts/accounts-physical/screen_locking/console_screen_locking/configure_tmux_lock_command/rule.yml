@@ -46,6 +46,10 @@ fixtext: |-
 
     <pre>set -g lock-command vlock</pre>
 
+    Then, ensure a correct mode of /etc/tmux.conf using this command:
+
+    $ sudo chmod 0644 /etc/tmux.conf
+
 srg_requirement: '{{{ full_name }}} must enable a user session lock until that user re-establishes access using established identification and authentication procedures for command line sessions.'
 
 platform: machine

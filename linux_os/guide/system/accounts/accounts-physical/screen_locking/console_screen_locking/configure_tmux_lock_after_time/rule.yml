@@ -42,6 +42,10 @@ fixtext: |-
 
     set -g lock-after-time 900
 
+    Then, ensure a correct mode of /etc/tmux.conf using this command:
+
+    $ sudo chmod 0644 /etc/tmux.conf
+
 srg_requirement: '{{{ full_name }}} must automatically lock command line user sessions after 15 minutes of inactivity.'
 
 platform: machine
