@@ -31,6 +31,7 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 selections:
 - account_disable_post_pw_expiration
 - account_emergency_expire_date
+- account_passwords_pam_faillock_audit
 - account_temp_expire_date
 - account_unique_id
 - accounts_authorized_local_users
@@ -403,6 +404,7 @@ selections:
 - sysctl_net_ipv6_conf_all_accept_ra
 - sysctl_net_ipv6_conf_all_accept_redirects
 - sysctl_net_ipv6_conf_all_accept_source_route
+- sysctl_net_ipv6_conf_all_forwarding
 - sysctl_net_ipv6_conf_default_accept_ra
 - sysctl_net_ipv6_conf_default_accept_redirects
 - sysctl_net_ipv6_conf_default_accept_source_route
