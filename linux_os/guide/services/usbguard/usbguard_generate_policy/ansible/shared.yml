@@ -34,7 +34,7 @@
       path: "{{{ usbguard_config_path }}}"
       line: "# No USB devices found"
       state: present
-    when: policy.stdout | length == 0
+    when: not policy_file.stat.exists or policy_file.stat.size == 0
 
   - name: Enable service usbguard
     service:
