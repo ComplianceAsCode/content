@@ -141,10 +141,6 @@ selections:
     - sysctl_net_core_bpf_jit_harden
     - service_kdump_disabled
 
-    ## File System Settings
-    - sysctl_fs_protected_hardlinks
-    - sysctl_fs_protected_symlinks
-
     ### Audit
     - service_auditd_enabled
     - var_auditd_flush=incremental_async
