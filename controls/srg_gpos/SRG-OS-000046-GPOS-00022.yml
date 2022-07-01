@@ -6,6 +6,7 @@ controls:
             of an audit processing failure.
         rules:
             - postfix_client_configure_mail_alias
+            - postfix_client_configure_mail_alias_postmaster
             - var_postfix_root_mail_alias=default
             - audit_rules_system_shutdown
             - auditd_data_retention_action_mail_acct
