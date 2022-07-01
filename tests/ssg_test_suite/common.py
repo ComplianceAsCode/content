@@ -319,6 +319,17 @@ def load_rule_and_env(rule_dir_path, env_yaml, product=None):
     return rule, local_env_yaml
 
 
+def write_rule_test_content_to_dir(rule_dir, test_content):
+    for scenario in test_content.scenarios:
+        scenario_file_path = os.path.join(rule_dir, scenario.script)
+        with open(scenario_file_path, "w") as f:
+            f.write(scenario.contents)
+    for file_name, file_content in test_content.other_content.items():
+        file_path = os.path.join(rule_dir, file_name)
+        with open(file_path, "w") as f:
+            f.write(file_content)
+
+
 def create_tarball(test_content_by_rule_id):
     """
     Create a tarball which contains all test scenarios and additional
@@ -332,14 +343,7 @@ def create_tarball(test_content_by_rule_id):
         short_rule_id = rule_id.replace(OSCAP_RULE, "")
         rule_dir = os.path.join(tmpdir, short_rule_id)
         os.mkdir(rule_dir)
-        for scenario in test_content.scenarios:
-            scenario_file_path = os.path.join(rule_dir, scenario.script)
-            with open(scenario_file_path, "w") as f:
-                f.write(scenario.contents)
-        for file_name, file_content in test_content.other_content.items():
-            file_path = os.path.join(rule_dir, file_name)
-            with open(file_path, "w") as f:
-                f.write(file_content)
+        write_rule_test_content_to_dir(rule_dir, test_content)
 
     try:
         with tempfile.NamedTemporaryFile(
