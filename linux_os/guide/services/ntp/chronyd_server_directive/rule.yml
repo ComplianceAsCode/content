@@ -25,9 +25,16 @@ references:
     stigid@ol8: OL08-00-030740
     stigid@rhel8: RHEL-08-030740
 
-ocil_clause: 'a remote time server is not configured or configured with pool directive'
+ocil_clause: 'an authoritative remote time server is not configured or configured with pool directive'
 
 ocil: |-
     Run the following command and verify that time sources are only configure with <tt>server</tt> directive:
     <pre># grep -E "^(server|pool)" {{{ chrony_conf_path }}}</pre>
     A line with the appropriate server should be returned, any line returned starting with <tt>pool</tt> is a finding.
+
+srg_requirement: '{{{ full_name }}} must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).'
+
+fixtext: |-
+    Configure {{{ full_name }}} to securely compare internal information system clocks at least every 24 hours with an NTP server by adding/modifying the following line in the /etc/chrony.conf file.
+
+    server [ntp.server.name] iburst maxpoll 16
