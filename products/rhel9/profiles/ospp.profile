@@ -402,6 +402,5 @@ selections:
     - zipl_bootmap_is_up_to_date
     - zipl_audit_argument
     - zipl_audit_backlog_limit_argument
-    - zipl_vsyscall_argument
     - zipl_init_on_alloc_argument
     - zipl_page_alloc_shuffle_argument
