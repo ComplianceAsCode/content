@@ -233,7 +233,6 @@ selections:
 - zipl_bootmap_is_up_to_date
 - zipl_page_poison_argument
 - zipl_slub_debug_argument
-- zipl_vsyscall_argument
 - var_sshd_set_keepalive=0
 - var_rekey_limit_size=1G
 - var_rekey_limit_time=1hour
@@ -265,8 +264,6 @@ selections:
 - grub2_vsyscall_argument.severity=info
 - sysctl_user_max_user_namespaces.role=unscored
 - sysctl_user_max_user_namespaces.severity=info
-- zipl_vsyscall_argument.role=unscored
-- zipl_vsyscall_argument.severity=info
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null
