@@ -416,8 +416,8 @@ class RuleChecker(oscap.Checker):
             if re.search(scenario_matches_regex, file_name):
                 scenario = Scenario(file_name, file_content)
                 scenario.override_profile(self.scenarios_profile)
-                if (scenario.matches_regex(self.scenarios_regex) and
-                        scenario.matches_platform(self.benchmark_cpes)):
+                if scenario.matches_regex_and_platform(
+                        self.scenarios_regex, self.benchmark_cpes):
                     scenarios.append(scenario)
             else:
                 other_content[file_name] = file_content
@@ -620,6 +620,10 @@ class Scenario():
                 "Script %s is not applicable on given platform" %
                 self.script)
             return False
+
+    def matches_regex_and_platform(self, scenarios_regex, benchmark_cpes):
+        return (self.matches_regex(scenarios_regex) and
+            self.matches_platform(benchmark_cpes))
 
 
 def perform_rule_check(options):
