@@ -361,6 +361,7 @@ selections:
     - audit_basic_configuration
     - audit_immutable_login_uids
     - audit_create_failed
+    - audit_create_failed_aarch64
     - audit_create_success
     - audit_modify_failed
     - audit_modify_success
