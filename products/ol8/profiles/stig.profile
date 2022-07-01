@@ -700,7 +700,7 @@ selections:
     - auditd_data_retention_action_mail_acct
 
     # OL08-00-030030
-    - postfix_client_configure_mail_alias
+    - postfix_client_configure_mail_alias_postmaster
 
     # OL08-00-030040
     - auditd_data_disk_error_action

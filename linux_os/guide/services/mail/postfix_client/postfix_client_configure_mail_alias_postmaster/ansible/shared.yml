@@ -1,0 +1,17 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+{{{ ansible_set_config_file(file="/etc/aliases",
+                            parameter='postmaster',
+                            separator=': ',
+                            separator_regex='\s*:\s*',
+                            value='root',
+                            create='yes') }}}
+
+- name: Update postfix aliases
+  ansible.builtin.command:
+    cmd: newaliases
+
