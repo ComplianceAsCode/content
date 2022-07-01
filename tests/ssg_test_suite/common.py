@@ -452,6 +452,10 @@ def apply_test_config(tests_dir, product_yaml, templated_tests):
     return all_tests
 
 
+def file_known_as_useless(file_name):
+    return file_name.endswith(".swp")
+
+
 def fetch_local_test_scenarios(tests_dir, local_env_yaml):
     all_tests = dict()
     if os.path.exists(tests_dir):
@@ -459,7 +463,7 @@ def fetch_local_test_scenarios(tests_dir, local_env_yaml):
         for test_case in tests_dir_files:
             # Skip vim swap files, they are not relevant and cause Jinja
             # expansion tracebacks
-            if test_case.endswith(".swp"):
+            if file_known_as_useless(test_case):
                 continue
             test_path = os.path.join(tests_dir, test_case)
             if os.path.isdir(test_path):
