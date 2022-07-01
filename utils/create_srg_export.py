@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 
 import convert_srg_export_to_xlsx
 import convert_srg_export_to_html
+import convert_srg_export_to_md
 
 try:
     import ssg.build_stig
@@ -402,7 +403,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-m", "--manual", type=str, action="store",
                         help="Path to XML XCCDF manual file to use as the source of the SRGs",
                         default=SRG_PATH)
-    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html"),
+    parser.add_argument("-f", "--out-format", type=str, choices=("csv", "xlsx", "html", "md"),
                         action="store", help="The format the output should take. Defaults to csv",
                         default="csv")
     return parser.parse_args()
@@ -525,14 +526,15 @@ def get_policy(args, env_yaml) -> ssg.controls.Policy:
     return policy
 
 
-def handle_csv_output(output, results):
+def handle_csv_output(output: str, results: list) -> str:
     with open(output, 'w') as csv_file:
         csv_writer = setup_csv_writer(csv_file)
         for row in results:
             csv_writer.writerow(row)
+        return output
 
 
-def handle_xlsx_output(output, product, results):
+def handle_xlsx_output(output: str, product: str, results: list) -> str:
     output = output.replace('.csv', '.xlsx')
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
@@ -540,7 +542,7 @@ def handle_xlsx_output(output, product, results):
     return output
 
 
-def handle_html_output(output, product, results):
+def handle_html_output(output: str, product: str, results: list) -> str:
     for row in results:
         row['IA Control'] = get_iacontrol(row['SRGID'])
     output = output.replace('.csv', '.html')
@@ -548,11 +550,21 @@ def handle_html_output(output, product, results):
     return output
 
 
+def handle_md_output(output: str, product: str, results: list) -> str:
+    output = output.replace('.csv', '.md')
+    for row in results:
+        row['IA Control'] = get_iacontrol(row['SRGID'])
+    convert_srg_export_to_md.handle_dict(results, output, f'{product} SRG Mapping')
+    return output
+
+
 def handle_output(output: str, results: list, format_type: str, product: str) -> None:
     if format_type == 'csv':
-        handle_csv_output(output, results)
+        output = handle_csv_output(output, results)
     elif format_type == 'xlsx':
         output = handle_xlsx_output(output, product, results)
+    elif format_type == 'md':
+        output = handle_md_output(output, product, results)
     elif format_type == 'html':
         output = handle_html_output(output, product, results)
 
