@@ -35,6 +35,10 @@ ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shadow-", group=target
 ocil: |-
     {{{ ocil_file_group_owner(file="/etc/shadow-", group=target_group) }}}
 
+fixtext: '{{{ fixtext_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="/etc/shadow-", group=target_group) }}}'
+
 template:
     name: file_groupowner
     vars:
