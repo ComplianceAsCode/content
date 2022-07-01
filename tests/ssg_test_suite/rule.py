@@ -412,8 +412,8 @@ class RuleChecker(oscap.Checker):
         scenarios = []
         other_content = dict()
         for file_name, file_content in all_tests.items():
-            # if the file name matches this regex, the file is a scenario
-            if re.search(r'.*\.[^.]*\.sh$', file_name):
+            scenario_matches_regex = r'.*\.[^.]*\.sh$'
+            if re.search(scenario_matches_regex, file_name):
                 scenario = Scenario(file_name, file_content)
                 scenario.override_profile(self.scenarios_profile)
                 if (scenario.matches_regex(self.scenarios_regex) and
