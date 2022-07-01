@@ -10,3 +10,6 @@ if grep -q "^.*retry\s*=" "$CONF_FILE"; then
 else
 	echo "retry = $retry_cnt" >> "$CONF_FILE"
 fi
+
+{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/system-auth', 'password', '', 'pam_pwquality.so', 'retry') }}}
+{{{ bash_remove_pam_module_option_configuration('/etc/pam.d/password-auth', 'password', '', 'pam_pwquality.so', 'retry') }}}
