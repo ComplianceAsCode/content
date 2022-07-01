@@ -40,11 +40,16 @@ references:
     nist: CM-6(a),AC-6(1)
     nist-csf: PR.AC-4,PR.DS-5
     pcidss: Req-7.1
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}'
 
 ocil: |-
     {{{ ocil_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}
+
+fixtext: '{{{ fixtext_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}'
+
+srg_requirement: '{{{ srg_requirement_file_group_owner(file="{{{ grub2_boot_path }}}/grub.cfg", group="root") }}}'
 
 platform: machine
 
