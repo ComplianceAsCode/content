@@ -1,0 +1,37 @@
+# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+{{{ ansible_instantiate_variables("var_authselect_profile") }}}
+
+- name: Select authselect profile
+  ansible.builtin.command:
+    cmd: authselect select "{{ var_authselect_profile }}"
+  ignore_errors: yes
+  register: result_authselect_select
+
+- name: Verify if PAM has been altered
+  ansible.builtin.command:
+    cmd: rpm -qV pam
+  register: result_altered_authselect
+  ignore_errors: yes
+  args:
+    warn: False
+  when:
+    - result_authselect_select is failed
+
+- name: Informative message based on the authselect integrity check
+  ansible.builtin.assert:
+    that:
+      - result_altered_authselect is success
+    fail_msg:
+      - Files in the 'pam' package have been altered, so the authselect configuration won't be forced.
+
+- name: Force authselect profile select
+  ansible.builtin.command:
+    cmd: authselect select --force "{{ var_authselect_profile }}"
+  when:
+    - result_altered_authselect is success
+    - result_authselect_select is failed
