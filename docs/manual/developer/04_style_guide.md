@@ -46,20 +46,25 @@ In practice, this implies:
   Extract functionality to separate functions or convert functions into classes with multiple methods to avoid this.
 * If a function contains try/except block, there should be no other logic present apart from exception handling.
 * Name variables and functions properly, don't hesitate to use longer identifiers.
-  Use explanatory variables to help the code to express itself -
+  Use explanatory variables to help the code to express itself --
   assign a result of the operation into a variable that describes its meaning even if you intend to use it only once.
-* Don't copy-paste code, use e.g. jinja macros to reduce duplication.
-  Exception to this rule is code that is identical another piece of code only by coincidence, and there is a substantial probability that the code can diverge.
-* Include tests for your contribution.
 * Write comments if and only if there is no chance for the code to explain itself.
-* Don't put authorship information into the code, Git tracks authorship for you.
-  Don't copy-paste license text into source files -- use [SPDX IDs](https://spdx.dev/ids/) for that purpose.
-* Don't take part in making files longer - files longer than 400 lines should be an exception.
-  Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
 
 When working with existing code that doesn't satisfy these recommendations, simply leave the code in a better shape than the shape in which it was before,
 and keep these guidelines in mind when writing new code.
 
+## Project-level Coding Style
+
+* Include tests for your contribution.
+* Don't take part in making files longer -- files longer than 400 lines should be an exception.
+  Add your new code into a new file, and possibly move existing code to it in the same or in a follow-up PR.
+* Don't copy-paste code, use e.g. Jinja macros to reduce duplication.
+  Exception to this rule is code that is identical another piece of code only by coincidence, and there is a substantial probability that the code can diverge.
+* Don't put authorship information into the code, Git tracks authorship for you.
+  Don't copy-paste license text into source files -- use [SPDX IDs](https://spdx.dev/ids/) for that purpose.
+* Don't commit one-off scripts to the project.
+  On occasions when one would like to get a feedback on the approach or debug the script,
+  that makes automated changes to the project in a PR, it is strongly recommended to add a removal commit before merging the PR.
 
 ## Text-level Coding Style
 
