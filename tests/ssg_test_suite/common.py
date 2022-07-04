@@ -319,168 +319,43 @@ def load_rule_and_env(rule_dir_path, env_yaml, product=None):
     return rule, local_env_yaml
 
 
-def write_rule_templated_tests(dest_path, relative_path, test_content):
-    output_path = os.path.join(dest_path, relative_path)
-
-    # If there's a separator in the file name, it means we have nested
-    # directories to deal with.
-    if os.path.sep in relative_path:
-        parts = os.path.split(relative_path)[:-1]
-        for subdir_index in range(len(parts)):
-            # We need to expand all directories in the correct order,
-            # preserving any previous directories (as they're nested).
-            # Use the star operator to splat array parts into arguments
-            # to os.path.join(...).
-            new_directory = os.path.join(dest_path, *parts[:subdir_index])
-            os.mkdir(new_directory)
-
-    # Write out the test content to the desired location on disk.
-    with open(output_path, 'w') as output_fp:
-        print(test_content, file=output_fp)
+def write_rule_test_content_to_dir(rule_dir, test_content):
+    for scenario in test_content.scenarios:
+        scenario_file_path = os.path.join(rule_dir, scenario.script)
+        with open(scenario_file_path, "w") as f:
+            f.write(scenario.contents)
+    for file_name, file_content in test_content.other_content.items():
+        file_path = os.path.join(rule_dir, file_name)
+        with open(file_path, "w") as f:
+            f.write(file_content)
 
 
-def write_rule_dir_tests(local_env_yaml, dest_path, dirpath):
-    # Walk the test directory, writing all tests into the output
-    # directory, recursively.
-    tests_dir_path = os.path.join(dirpath, "tests")
-    tests_dir_path = os.path.abspath(tests_dir_path)
-
-    # Note that the tests/ directory may not always exist any more. In
-    # particular, when a rule uses a template, tests may be present there
-    # but not present in the actual rule directory.
-    if not os.path.exists(tests_dir_path):
-        return
-
-    for dirpath, dirnames, filenames in os.walk(tests_dir_path):
-        for dirname in dirnames:
-            # We want to recreate the correct path under the temporary
-            # directory. Resolve it to a relative path from the tests/
-            # directory.
-            dir_path = os.path.relpath(os.path.join(dirpath, dirname), tests_dir_path)
-            tmp_dir_path = os.path.join(dest_path, dir_path)
-            os.mkdir(tmp_dir_path)
-
-        for filename in filenames:
-            # Skip vim swap files, they are not relevant and cause Jinja expansion tracebacks
-            if filename.endswith(".swp"):
-                continue
-
-            # We want to recreate the correct path under the temporary
-            # directory. Resolve it to a relative path from the tests/
-            # directory. Assumption: directories should be created
-            # prior to recursing into them, so we don't need to handle
-            # if a file's parent directory doesn't yet exist under the
-            # destination.
-            src_test_path = os.path.join(dirpath, filename)
-            rel_test_path = os.path.relpath(src_test_path, tests_dir_path)
-            dest_test_path = os.path.join(dest_path, rel_test_path)
-
-            # Rather than performing an OS-level copy, we need to
-            # first parse the test with jinja and then write it back
-            # out to the destination.
-            parsed_test = process_file_with_macros(src_test_path, local_env_yaml)
-            with open(dest_test_path, 'w') as output_fp:
-                print(parsed_test, file=output_fp)
-
-
-def template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath):
+def create_tarball(test_content_by_rule_id):
     """
-    For a given rule directory, templates all contained tests into the output
-    (tmpdir) directory.
+    Create a tarball which contains all test scenarios and additional
+    content for every rule that is selected to be tested. The tarball contains
+    directories with the test scenarios. The name of the directories is the
+    same as short rule ID. There is no tree structure.
     """
 
-    # Load the rule and its environment
-    rule, local_env_yaml = load_rule_and_env(dirpath, product_yaml, product)
-
-    # Before we get too far, we wish to search the rule YAML to see if
-    # it is applicable to the current product. If we have a product
-    # and the rule isn't applicable for the product, there's no point
-    # in continuing with the rest of the loading. This should speed up
-    # the loading of the templated tests. Note that we've already
-    # parsed the prodtype into local_env_yaml
-    if product and local_env_yaml['products']:
-        prodtypes = local_env_yaml['products']
-        if "all" not in prodtypes and product not in prodtypes:
-            return
-
-    # Create the destination directory.
-    dest_path = os.path.join(tmpdir, rule.id_)
-    os.mkdir(dest_path)
-
-    # The priority order is rule-specific tests over templated tests.
-    # That is, for any test under rule_id/tests with a name matching a
-    # test under shared/templates/<template_name>/tests/, the former
-    # will preferred. This means we need to process templates first,
-    # so they'll be overwritten later if necessary.
-    if rule.template and rule.template['vars']:
-        templated_tests = template_builder.get_all_tests(rule.id_, rule.template,
-                                                         local_env_yaml)
-
-        for relative_path in templated_tests:
-            test_content = templated_tests[relative_path]
-            write_rule_templated_tests(dest_path, relative_path, test_content)
-
-    write_rule_dir_tests(local_env_yaml, dest_path, dirpath)
-
-
-def template_tests(product=None):
-    """
-    Create a temporary directory with test cases parsed via jinja using
-    product-specific context.
-    """
-    # Set up an empty temp directory
     tmpdir = tempfile.mkdtemp()
-
-    # We want to remove the temporary directory on failure, but preserve
-    # it on success. Wrap in a try/except block and reraise the original
-    # exception after removing the temporary directory.
-    try:
-        # Load the product context we're executing under, if any.
-        product_yaml = get_product_context(product)
-
-        # Initialize a mock template_builder.
-        empty = "/{}/empty/placeholder".format(TEST_SUITE_NAME)
-        template_builder = ssg.templates.Builder(product_yaml, empty,
-                                                 _SHARED_TEMPLATES, empty,
-                                                 empty)
-
-        # Note that we're not exactly copying 1-for-1 the contents of the
-        # directory structure into the temporary one. Instead we want a
-        # flattened mapping with all rules in a single top-level directory
-        # and all tests immediately contained within it. That is:
-        #
-        # /group_a/rule_a/tests/something.pass.sh -> /rule_a/something.pass.sh
-        for dirpath, dirnames, _ in walk_through_benchmark_dirs(product):
-            # Skip anything that isn't obviously a rule.
-            if not is_rule_dir(dirpath):
-                continue
-
-            template_rule_tests(product, product_yaml, template_builder, tmpdir, dirpath)
-    except Exception as exp:
-        shutil.rmtree(tmpdir, ignore_errors=True)
-        raise exp
-
-    return tmpdir
-
-
-def create_tarball(product):
-    """Create a tarball which contains all test scenarios for every rule.
-    Tarball contains directories with the test scenarios. The name of the
-    directories is the same as short rule ID. There is no tree structure.
-    """
-    templated_tests = template_tests(product=product)
+    for rule_id, test_content in test_content_by_rule_id.items():
+        short_rule_id = rule_id.replace(OSCAP_RULE, "")
+        rule_dir = os.path.join(tmpdir, short_rule_id)
+        os.mkdir(rule_dir)
+        write_rule_test_content_to_dir(rule_dir, test_content)
 
     try:
         with tempfile.NamedTemporaryFile(
                 "wb", suffix=".tar.gz", delete=False) as fp:
             with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
                 tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
-                for rule_id in os.listdir(templated_tests):
+                for rule_id in os.listdir(tmpdir):
                     # When a top-level directory exists under the temporary
                     # templated tests directory, we've already validated that
                     # it is a valid rule directory. Thus we can simply add it
                     # to the tarball.
-                    absolute_dir = os.path.join(templated_tests, rule_id)
+                    absolute_dir = os.path.join(tmpdir, rule_id)
                     if not os.path.isdir(absolute_dir):
                         continue
 
@@ -491,16 +366,16 @@ def create_tarball(product):
 
             # Since we've added the templated contents into the tarball, we
             # can now delete the tree.
-            shutil.rmtree(templated_tests, ignore_errors=True)
+            shutil.rmtree(tmpdir, ignore_errors=True)
             return fp.name
     except Exception as exp:
-        shutil.rmtree(templated_tests, ignore_errors=True)
+        shutil.rmtree(tmpdir, ignore_errors=True)
         raise exp
 
 
-def send_scripts(test_env):
+def send_scripts(test_env, test_content_by_rule_id):
     remote_dir = REMOTE_TEST_SCENARIOS_DIRECTORY
-    archive_file = create_tarball(test_env.product)
+    archive_file = create_tarball(test_content_by_rule_id)
     archive_file_basename = os.path.basename(archive_file)
     remote_archive_file = os.path.join(remote_dir, archive_file_basename)
     logging.debug("Uploading scripts.")
@@ -577,11 +452,19 @@ def apply_test_config(tests_dir, product_yaml, templated_tests):
     return all_tests
 
 
+def file_known_as_useless(file_name):
+    return file_name.endswith(".swp")
+
+
 def fetch_local_test_scenarios(tests_dir, local_env_yaml):
     all_tests = dict()
     if os.path.exists(tests_dir):
         tests_dir_files = os.listdir(tests_dir)
         for test_case in tests_dir_files:
+            # Skip vim swap files, they are not relevant and cause Jinja
+            # expansion tracebacks
+            if file_known_as_useless(test_case):
+                continue
             test_path = os.path.join(tests_dir, test_case)
             if os.path.isdir(test_path):
                 continue
