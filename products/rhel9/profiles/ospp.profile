@@ -381,6 +381,7 @@ selections:
     - audit_perm_change_failed
     - audit_perm_change_success
     - audit_owner_change_failed
+    - audit_owner_change_failed_aarch64
     - audit_owner_change_success
     - audit_ospp_general
     - audit_ospp_general_aarch64
