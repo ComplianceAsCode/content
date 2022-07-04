@@ -404,6 +404,7 @@ selections:
     - audit_access_success
     - audit_access_success_aarch64
     - audit_delete_failed
+    - audit_delete_failed_aarch64
     - audit_delete_success
     - audit_perm_change_failed
     - audit_perm_change_success
