@@ -71,9 +71,6 @@ selections:
     # Time Server
     - chronyd_client_only
 
-    ### Network Settings
-    - sysctl_net_ipv4_ip_forward
-
     ### systemd
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
