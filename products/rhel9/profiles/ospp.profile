@@ -72,10 +72,6 @@ selections:
     - chronyd_client_only
 
     ### Network Settings
-    - sysctl_net_ipv4_conf_all_accept_redirects
-    - sysctl_net_ipv4_conf_default_accept_redirects
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_redirects
     - sysctl_net_ipv4_conf_all_secure_redirects
     - sysctl_net_ipv4_conf_default_secure_redirects
     - sysctl_net_ipv4_conf_all_send_redirects
