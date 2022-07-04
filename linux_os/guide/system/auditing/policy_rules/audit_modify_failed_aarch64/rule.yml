@@ -2,22 +2,20 @@ documentation_complete: true
 
 prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
-title: 'Configure auditing of unsuccessful file modifications'
+title: 'Configure auditing of unsuccessful file modifications (AARch64)'
 
 {{% set file_contents_audit_modify_failed =
 "## Unsuccessful file modifications (open for write or truncate)
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
--a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification" %}}
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification" %}}
 
 description: |-
     Ensure that unsuccessful attempts to modify a file are audited.
@@ -36,11 +34,11 @@ rationale: |-
 severity: medium
 
 platforms:
-    - not aarch64_arch
+    - aarch64_arch
 
 identifiers:
-    cce@rhel8: CCE-82830-1
-    cce@rhel9: CCE-83671-8
+    cce@rhel8: CCE-85906-6
+    cce@rhel9: CCE-85907-4
 
 references:
     nist: AU-2(a)

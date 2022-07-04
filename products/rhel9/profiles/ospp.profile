@@ -365,6 +365,7 @@ selections:
     - audit_create_success
     - audit_create_success_aarch64
     - audit_modify_failed
+    - audit_modify_failed_aarch64
     - audit_modify_success
     - audit_access_failed
     - audit_access_success
