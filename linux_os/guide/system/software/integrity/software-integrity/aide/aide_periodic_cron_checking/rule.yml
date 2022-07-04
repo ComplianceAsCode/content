@@ -10,13 +10,13 @@ description: |-
     {{%- if 'ubuntu' not in product %}}
     <pre>05 4 * * * root {{{ aide_bin_path }}} --check</pre>
     {{%- else %}}
-    <pre>05 4 * * * root /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check</pre>
+    <pre>05 4 * * * root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
     {{%- endif %}}
     To implement a weekly execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
     {{%- if 'ubuntu' not in product %}}
     <pre>05 4 * * 0 root {{{ aide_bin_path }}} --check</pre>
     {{%- else %}}
-    <pre>05 4 * * 0 root /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check</pre>
+    <pre>05 4 * * 0 root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
     {{%- endif %}}
     AIDE can be executed periodically through other means; this is merely one example.
     The usage of cron's special time codes, such as  <tt>@daily</tt> and
@@ -81,7 +81,7 @@ ocil: |-
     {{%- if 'ubuntu' not in product %}}
     <pre>05 4 * * * root {{{ aide_bin_path }}} --check</pre>
     {{%- else %}}
-    <pre>05 4 * * * root /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check</pre>
+    <pre>05 4 * * * root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
     {{%- endif %}}
 
     NOTE: The usage of special cron times, such as @daily or @weekly, is acceptable.
@@ -91,9 +91,9 @@ fixtext: |-
     Edit "/etc/crontab" and add or edit the following line:
 
     {{% if 'ubuntu' not in product %}}
-    <pre>05 4 * * * root {{{ aide_path }}} --check</pre>
+    <pre>05 4 * * * root {{{ aide_bin_path }}} --check</pre>
     {{% else %}}
-    <pre>05 4 * * * root /usr/bin/aide.wrapper --config /etc/aide/aide.conf --check</pre>
+    <pre>05 4 * * * root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
     {{% endif %}}
 
 srg_requirement: '{{{ full_name }}} must notify the system administrator when Advanced Intrusion Detection Environment (AIDE) discovers anomalies in the operation of any security functions.'
