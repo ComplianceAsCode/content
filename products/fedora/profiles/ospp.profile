@@ -29,7 +29,6 @@ selections:
     - var_selinux_state=enforcing
     - var_password_pam_minlen=12
     - accounts_password_pam_minlen
-    - accounts_password_minlen_login_defs
     - var_password_pam_ocredit=1
     - accounts_password_pam_ocredit
     - var_password_pam_dcredit=1

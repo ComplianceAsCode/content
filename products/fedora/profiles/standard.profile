@@ -26,8 +26,6 @@ selections:
     - accounts_password_all_shadowed
     - gid_passwd_group_same
     - no_netrc_files
-    - var_accounts_password_minlen_login_defs=12
-    - accounts_password_minlen_login_defs
     - var_accounts_minimum_age_login_defs=7
     - accounts_minimum_age_login_defs
     - var_accounts_maximum_age_login_defs=90
