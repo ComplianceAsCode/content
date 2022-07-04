@@ -74,8 +74,6 @@ selections:
     ### Network Settings
     - sysctl_net_ipv4_conf_all_secure_redirects
     - sysctl_net_ipv4_conf_default_secure_redirects
-    - sysctl_net_ipv4_conf_all_send_redirects
-    - sysctl_net_ipv4_conf_default_send_redirects
     - sysctl_net_ipv4_conf_all_log_martians
     - sysctl_net_ipv4_conf_default_log_martians
     - sysctl_net_ipv4_ip_forward
