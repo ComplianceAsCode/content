@@ -367,6 +367,7 @@ selections:
     - audit_modify_failed
     - audit_modify_failed_aarch64
     - audit_modify_success
+    - audit_modify_success_aarch64
     - audit_access_failed
     - audit_access_success
     - audit_access_success.severity=info
