@@ -23,7 +23,6 @@ metadata:
 reference: https://www.niap-ccevs.org/Profile/PP.cfm
 selections:
 - accounts_max_concurrent_login_sessions
-- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_difok
 - accounts_password_pam_lcredit
@@ -248,7 +247,6 @@ selections:
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
 - var_system_crypto_policy=fips_ospp
-- var_accounts_password_minlen_login_defs=12
 - var_password_pam_minlen=12
 - var_password_pam_ocredit=1
 - var_password_pam_dcredit=1

@@ -42,7 +42,6 @@ selections:
 - accounts_minimum_age_login_defs
 - accounts_no_uid_except_zero
 - accounts_password_all_shadowed_sha512
-- accounts_password_minlen_login_defs
 - accounts_password_pam_dcredit
 - accounts_password_pam_dictcheck
 - accounts_password_pam_difok
@@ -429,7 +428,6 @@ selections:
 - var_password_pam_remember_control_flag=required
 - var_selinux_state=enforcing
 - var_selinux_policy_name=targeted
-- var_accounts_password_minlen_login_defs=15
 - var_password_pam_unix_rounds=5000
 - var_password_pam_minlen=15
 - var_password_pam_ocredit=1
