@@ -6,7 +6,11 @@ title: 'Build and Test AIDE Database'
 
 description: |-
     Run the following command to generate a new database:
+    {{% if 'ubuntu' in product %}}
+    <pre>$ sudo aideinit</pre>
+    {{% else %}}
     <pre>$ sudo {{{ aide_bin_path }}} --init</pre>
+    {{% endif %}}
     By default, the database will be written to the file
     {{% if 'ubuntu' in product or 'sle' in product %}}
     <tt>/var/lib/aide/aide.db.new</tt>.
