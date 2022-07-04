@@ -1,0 +1,20 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Verify GRUB_DISABLE_RECOVERY=true
+  lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_DISABLE_RECOVERY=.*'
+    line: 'GRUB_DISABLE_RECOVERY=true'
+    state: present
+
+{{% if product in ['sle12', 'sle15'] %}}
+- name: Update grub defaults and the bootloader menu
+  command: /usr/sbin/grub2-mkconfig -o {{{ grub2_boot_path }}}/grub.cfg
+{{% else %}}
+- name: Update grub defaults and the bootloader menu
+  command: /sbin/grubby --update-kernel=ALL
+{{% endif -%}}
