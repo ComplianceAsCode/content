@@ -622,8 +622,9 @@ class Scenario():
             return False
 
     def matches_regex_and_platform(self, scenarios_regex, benchmark_cpes):
-        return (self.matches_regex(scenarios_regex) and
-            self.matches_platform(benchmark_cpes))
+        return (
+            self.matches_regex(scenarios_regex)
+            and self.matches_platform(benchmark_cpes))
 
 
 def perform_rule_check(options):
