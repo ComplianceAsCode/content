@@ -285,7 +285,6 @@ selections:
     - var_account_disable_post_pw_expiration=35
     - var_accounts_maximum_age_login_defs=60
     - var_accounts_minimum_age_login_defs=7
-    - var_accounts_password_minlen_login_defs=6
     - var_accounts_password_warn_age_login_defs=7
     - var_accounts_tmout=10_min
     - var_password_pam_difok=8

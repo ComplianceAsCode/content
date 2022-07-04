@@ -63,7 +63,6 @@ selections:
     - accounts_password_all_shadowed
     - no_empty_passwords
     - display_login_attempts
-    - var_accounts_password_minlen_login_defs=12
     - var_accounts_maximum_age_login_defs=90
     - var_password_pam_unix_remember=10
     - var_account_disable_post_pw_expiration=0
