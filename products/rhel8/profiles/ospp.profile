@@ -404,6 +404,7 @@ selections:
     - audit_owner_change_failed
     - audit_owner_change_success
     - audit_ospp_general
+    - audit_ospp_general_aarch64
     - audit_module_load
 
     ## Enable Automatic Software Updates
