@@ -1,3 +1,7 @@
+{{% if 'ubuntu' in product %}}
+{{% set config_command_line="--config {{{ aide_conf_path }}} " %}}
+{{% endif %}}
+
 documentation_complete: true
 
 prodtype: alinux2,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,wrlinux1019
@@ -7,17 +11,9 @@ title: 'Configure Periodic Execution of AIDE'
 description: |-
     At a minimum, AIDE should be configured to run a weekly scan.
     To implement a daily execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
-    {{%- if 'ubuntu' not in product %}}
-    <pre>05 4 * * * root {{{ aide_bin_path }}} --check</pre>
-    {{%- else %}}
-    <pre>05 4 * * * root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
-    {{%- endif %}}
+    <pre>05 4 * * * root {{{ aide_bin_path }}} {{{ config_command_line }}}--check</pre>
     To implement a weekly execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
-    {{%- if 'ubuntu' not in product %}}
-    <pre>05 4 * * 0 root {{{ aide_bin_path }}} --check</pre>
-    {{%- else %}}
-    <pre>05 4 * * 0 root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
-    {{%- endif %}}
+    <pre>05 4 * * 0 root {{{ aide_bin_path }}} {{{ config_command_line }}}--check</pre>
     AIDE can be executed periodically through other means; this is merely one example.
     The usage of cron's special time codes, such as  <tt>@daily</tt> and
     <tt>@weekly</tt> is acceptable.
@@ -78,11 +74,7 @@ ocil: |-
     To determine that periodic AIDE execution has been scheduled, run the following command:
     <pre>$ grep aide /etc/crontab</pre>
     The output should return something similar to the following:
-    {{%- if 'ubuntu' not in product %}}
-    <pre>05 4 * * * root {{{ aide_bin_path }}} --check</pre>
-    {{%- else %}}
-    <pre>05 4 * * * root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
-    {{%- endif %}}
+    <pre>05 4 * * * root {{{ aide_bin_path }}} {{{ config_command_line }}}--check</pre>
 
     NOTE: The usage of special cron times, such as @daily or @weekly, is acceptable.
 
@@ -90,10 +82,6 @@ fixtext: |-
     Configure the file integrity to run at least weekly.
     Edit "/etc/crontab" and add or edit the following line:
 
-    {{% if 'ubuntu' not in product %}}
-    <pre>05 4 * * * root {{{ aide_bin_path }}} --check</pre>
-    {{% else %}}
-    <pre>05 4 * * * root /usr/bin/aide.wrapper --config {{{ aide_conf_path }}} --check</pre>
-    {{% endif %}}
+    <pre>05 4 * * * root {{{ aide_bin_path }}} {{{ config_command_line }}}--check</pre>
 
 srg_requirement: '{{{ full_name }}} must notify the system administrator when Advanced Intrusion Detection Environment (AIDE) discovers anomalies in the operation of any security functions.'
