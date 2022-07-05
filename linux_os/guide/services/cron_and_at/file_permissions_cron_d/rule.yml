@@ -40,9 +40,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cron.d", perms="-rwx--
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/cron.d", perms="-rwx------") }}}
 
-fixtext: '{{{ fixtext_directory_permissions("0600", "/etc/cron.d/") }}}'
+fixtext: '{{{ fixtext_directory_permissions(file="/etc/cron.d/", mode="0600") }}}'
 
-srg_requirement: '{{{ srg_requirement_directory_permission("0600", "/etc/cron.d") }}}'
+srg_requirement: '{{{ srg_requirement_directory_permission(file="/etc/cron.d", mode="0600") }}}'
 
 template:
     name: file_permissions
