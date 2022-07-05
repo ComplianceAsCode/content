@@ -1079,7 +1079,7 @@ Part of the grub2_bootloader_argument_absent template.
       ansible.builtin.replace:
         dest: "{{{ pam_file }}}"
         regexp: '^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)'
-        replace: '\g<1>{{{ control }}}\g<3>'
+        replace: '\1{{{ control }}} \2'
       when:
         - result_pam_line_other_control_present.found == 1
 
