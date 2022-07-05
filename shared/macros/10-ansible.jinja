@@ -734,6 +734,31 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 
 {{#
+    Enable authselect feature if the authselect current profile is intact or inform that its
+    integrity check failed.
+#}}
+{{%- macro ansible_enable_authselect_feature(feature) -%}}
+{{{ ansible_check_authselect_integrity() }}}
+
+- name: '{{{ rule_title }}} - Get authselect current features'
+  ansible.builtin.shell:
+    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+  register: result_authselect_features
+  changed_when: false
+  when:
+    - result_authselect_check_cmd is success
+
+- name: '{{{ rule_title }}} - Ensure "{{{ feature }}}" feature is enabled using authselect tool'
+  ansible.builtin.command:
+    cmd: authselect enable-feature {{{ feature }}}
+  register: result_authselect_cmd
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_features.stdout is not search("{{{ feature }}}")
+{{%- endmacro -%}}
+
+
+{{#
   This macro ensures the pam_faillock.so PAM module is enabled.
   It is enabled using the authselect tool or editing the PAM files, only if authselect tool is not available.
 #}}
@@ -746,23 +771,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: {{{ rule_title }}} - Remediation where authselect tool is present
   block:
-    {{{ ansible_check_authselect_integrity() | indent(4) }}}
-
-    - name: {{{ rule_title }}} - Get authselect current features
-      ansible.builtin.shell:
-        cmd: authselect current | tail -n+3 | awk '{ print $2 }'
-      register: result_authselect_features
-      changed_when: false
-      when:
-        - result_authselect_check_cmd is success
-
-    - name: {{{ rule_title }}} - Ensure with-faillock feature is enabled using authselect tool
-      ansible.builtin.command:
-        cmd: authselect enable-feature with-faillock
-      register: result_authselect_cmd
-      when:
-        - result_authselect_check_cmd is success
-        - result_authselect_features.stdout is not search("with-faillock")
+    {{{ ansible_enable_authselect_feature('with-faillock') | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 
