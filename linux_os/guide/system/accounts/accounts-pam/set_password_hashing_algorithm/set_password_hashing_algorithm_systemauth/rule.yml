@@ -2,12 +2,12 @@ documentation_complete: true
 
 prodtype: alinux2,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15,wrlinux1019
 
-title: "Set PAM's Password Hashing Algorithm"
+title: "Set PAM''s Password Hashing Algorithm"
 
 {{% if product in ["sle12", "sle15"] %}}
 {{% set pam_passwd_file_path = "/etc/pam.d/common-password" %}}
 {{% else %}}
-{{% set pam_passwd_file_path = "/etc/pam.d/password-auth" %}}
+{{% set pam_passwd_file_path = "/etc/pam.d/system-auth" %}}
 {{% endif %}}
 
 description: |-
