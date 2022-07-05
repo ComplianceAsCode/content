@@ -1041,11 +1041,11 @@ Part of the grub2_bootloader_argument_absent template.
     parameter. If the "after_match" parameter is empty, the line will be included at the end of
     the file informed in the "pam_file" parameter.
     If the line was already present, but with a different control, the control will be updated.
-    Note: If there are multiple lines matching the "group" + "module", only the first line will be
-    updated. This is a conservative safeguard for improper use of this macro in rare cases of
-    modules configured by multiple lines, like pam_sss.so and pam_faillock.so. In some situations,
-    these special modules may have similar lines sharing the same "group" and "module". For these
-    specific cases, this macro is not recommened and a custom remediation should be considered.
+    Note: If there are multiple lines matching the "group" + "module", all lines will be updated.
+    There are cases where modules are configured by multiple lines, like pam_sss.so and
+    pam_faillock.so. In some situations, these special modules may have similar lines sharing the
+    same "group" and "module". For these specific cases, carefull tests should be done to make sure
+    the module is working as expected.
 
 :param pam_file:        PAM config file.
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
@@ -1081,7 +1081,7 @@ Part of the grub2_bootloader_argument_absent template.
         regexp: '^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)'
         replace: '\1{{{ control }}} \2'
       when:
-        - result_pam_line_other_control_present.found == 1
+        - result_pam_line_other_control_present.found > 0
 
     - name: '{{{ rule_title }}} - Ensure the required PAM module line is included in {{{ pam_file }}}'
       ansible.builtin.lineinfile:
