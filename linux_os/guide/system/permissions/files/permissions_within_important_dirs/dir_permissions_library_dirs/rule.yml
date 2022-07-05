@@ -62,6 +62,13 @@ ocil: |-
     run the following command for each directory <i>DIR</i> which contains shared libraries:
     <pre>$ sudo find -L <i>DIR</i> -perm /022 -type d</pre>
 
+fixtext: |-
+    Configure the {{{ full_name }}} library directories to be protected from unauthorized access. Run the following command, replacing "[DIRECTORY]" with any library directory with a mode more permissive than 755.
+
+    $ sudo chmod 755 [DIRECTORY]
+
+srg_requirement: '{{{ full_name }}} library directories must have mode 755 or less permissive.'
+
 template:
     name: file_permissions
     vars:
