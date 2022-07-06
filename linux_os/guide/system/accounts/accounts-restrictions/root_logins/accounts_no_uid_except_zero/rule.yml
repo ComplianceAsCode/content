@@ -59,16 +59,8 @@ references:
 ocil_clause: 'any account other than root has a UID of 0'
 
 ocil: |-
-    To list all password file entries for accounts with UID 0, run the
-    following command:
+    Check the system for duplicate UID "0" assignments with the following command:
     <pre>$ awk -F: '($3 == \"0\") {print}' /etc/passwd</pre>
-    This should print only one line, for the user root.
-    <br />
-    If there is a finding, change the UID of the failing (non-root) user. If
-    the account is associated with the system commands or applications the UID
-    should be changed to one greater than <tt>0</tt> but less than
-    <tt>1000</tt>. Otherwise assign a UID of greater than <tt>1000</tt> that
-    has not already been assigned.
 
 fixtext: |-
     Change the UID of any account on the system, other than root, that has a UID of "0".
