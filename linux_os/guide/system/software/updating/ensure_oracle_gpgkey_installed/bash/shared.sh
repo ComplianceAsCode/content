@@ -1,6 +1,5 @@
 # platform = multi_platform_ol
-# OL fingerprints below retrieved from Oracle Linux Yum Server "Frequently Asked Questions"
-# https://yum.oracle.com/faq.html#a10
+# OL fingerprints below retrieved from: https://linux.oracle.com/security/gpg/#gpg
 readonly OL_RELEASE_FINGERPRINT="{{{ release_key_fingerprint }}}"
 readonly OL_AUXILIARY_FINGERPRINT="{{{ auxiliary_key_fingerprint }}}"
 
