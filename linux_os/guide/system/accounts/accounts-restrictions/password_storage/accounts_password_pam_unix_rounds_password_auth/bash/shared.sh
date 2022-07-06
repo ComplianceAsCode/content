@@ -2,7 +2,7 @@
 
 {{{ bash_instantiate_variables("var_password_pam_unix_rounds") }}}
 
-{{% if product in ["sle15", "sle12"] %}}
+{{% if product in ["sle12", "sle15"] %}}
 {{{ bash_ensure_pam_module_configuration('/etc/pam.d/common-password', 'password', 'sufficient', 'pam_unix.so', 'rounds', "$var_password_pam_unix_rounds", '') }}}
 {{% else %}}
 {{{ bash_ensure_pam_module_configuration('/etc/pam.d/password-auth', 'password', 'sufficient', 'pam_unix.so', 'rounds', "$var_password_pam_unix_rounds", '') }}}

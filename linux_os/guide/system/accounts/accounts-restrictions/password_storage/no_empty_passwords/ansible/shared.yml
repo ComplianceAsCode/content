@@ -8,13 +8,13 @@
     path: /usr/bin/authselect
   register: result_authselect_present
 
-- name: '{{{ rule_title }}} - Remediation using authselect'
+- name: '{{{ rule_title }}} - Remediate using authselect'
   block:
     {{{ ansible_enable_authselect_feature('without-nullok') | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 
-- name: '{{{ rule_title }}} - Remediation directly editing PAM files'
+- name: '{{{ rule_title }}} - Remediate directly editing PAM files'
   ansible.builtin.replace:
     dest: "{{ item }}"
     regexp: 'nullok'
