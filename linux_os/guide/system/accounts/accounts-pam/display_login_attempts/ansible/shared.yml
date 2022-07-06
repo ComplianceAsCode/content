@@ -5,9 +5,9 @@
 # disruption = low
 
 {{% if product in ["sle12", "sle15", "ubuntu"] %}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/login', 'session', 'required', 'pam_lastlog.so', 'showfailed', '', '^$') }}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/login', 'session', 'required', 'pam_lastlog.so', 'showfailed', '', 'BOF') }}}
 {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/login', 'session', '', 'pam_lastlog.so', 'silent') }}}
 {{% else %}}
-{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/postlogin', 'session', 'required', 'pam_lastlog.so', 'showfailed', '', '^$') }}}
+{{{ ansible_ensure_pam_module_configuration('/etc/pam.d/postlogin', 'session', 'required', 'pam_lastlog.so', 'showfailed', '', 'BOF') }}}
 {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/postlogin', 'session', '', 'pam_lastlog.so', 'silent') }}}
 {{% endif %}}
