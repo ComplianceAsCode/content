@@ -605,7 +605,7 @@ ocil: |
 
 #}}
 {{% macro ocil_mount_option(point, option) -%}}
-    To verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
+    Verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
     {{% if product == "rhcos4" -%}}
     You'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
@@ -613,7 +613,7 @@ ocil: |
     {{%- endif -%}}
     run the following command:
     <pre>$ sudo mount | grep '\s{{{ point }}}\s'</pre>
-    The output should show the corresponding mount point along with the <tt>{{{ option }}}</tt> setting in parentheses.
+    <pre>. . . {{{ point }}} . . . {{{ option }}} . . . 0 0</pre>
 {{%- endmacro %}}
 
 
