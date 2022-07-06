@@ -751,10 +751,16 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 - name: '{{{ rule_title }}} - Ensure "{{{ feature }}}" feature is enabled using authselect tool'
   ansible.builtin.command:
     cmd: authselect enable-feature {{{ feature }}}
-  register: result_authselect_cmd
+  register: result_authselect_enable_feature_cmd
   when:
     - result_authselect_check_cmd is success
     - result_authselect_features.stdout is not search("{{{ feature }}}")
+
+- name: '{{{ rule_title }}} - Ensure changes are applied after enabling a feature'
+  ansible.builtin.command:
+    cmd: authselect apply-changes -b --backup=before-hardening-custom-profile.backup
+  when:
+    - result_authselect_enable_feature_cmd is success
 {{%- endmacro -%}}
 
 
@@ -1050,11 +1056,14 @@ Part of the grub2_bootloader_argument_absent template.
     parameter. If the "after_match" parameter is empty, the line will be included at the end of
     the file informed in the "pam_file" parameter.
     If the line was already present, but with a different control, the control will be updated.
-    Note: If there are multiple lines matching the "group" + "module", all lines will be updated.
-    There are cases where modules are configured by multiple lines, like pam_sss.so and
-    pam_faillock.so. In some situations, these special modules may have similar lines sharing the
-    same "group" and "module". For these specific cases, carefull tests should be done to make sure
-    the module is working as expected.
+    Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
+    Instead, a new line will be included after the regex informed in "after_match" or at the
+    end of file if "after_match" parameter is empty.
+    This is a conservative safeguard for improper use of this macro in rare cases of modules
+    configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
+    situations, these special modules may have similar lines sharing the same "group" and "module".
+    For these specific cases, this macro is not recommened without careful tests to make sure the
+    PAM module is working as expected. Otherwise, a custom remediation should be considered.
 
 :param pam_file:        PAM config file.
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
@@ -1090,7 +1099,7 @@ Part of the grub2_bootloader_argument_absent template.
         regexp: '^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)'
         replace: '\1{{{ control }}} \2'
       when:
-        - result_pam_line_other_control_present.found > 0
+        - result_pam_line_other_control_present.found == 1
 
     - name: '{{{ rule_title }}} - Ensure the required PAM module line is included in {{{ pam_file }}}'
       ansible.builtin.lineinfile:
@@ -1100,8 +1109,9 @@ Part of the grub2_bootloader_argument_absent template.
         {{%- endif %}}
         line: {{{ group }}}    {{{ control }}}    {{{ module }}}
       when:
-        - result_pam_line_other_control_present.found == 0
+        - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
   when:
+    - result_pam_line_present.found is defined
     - result_pam_line_present.found == 0
 {{%- endmacro -%}}
 
@@ -1124,7 +1134,7 @@ Part of the grub2_bootloader_argument_absent template.
 - name: '{{{ rule_title }}} - Check if the required PAM module option is present in {{{ pam_file }}}'
   ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
-    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}
+    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b
     state: absent
   check_mode: true
   changed_when: false
@@ -1146,10 +1156,11 @@ Part of the grub2_bootloader_argument_absent template.
 
 {{%- if value != '' %}}
 - name: '{{{ rule_title }}} - Ensure the required value for "{{{ option }}}" PAM option from "{{{ module }}}" in {{{ pam_file }}}'
-  ansible.builtin.replace:
+  ansible.builtin.lineinfile:
     path: "{{{ pam_file }}}"
+    backrefs: true
     regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
-    replace: \1\2={{{ value }}} \3
+    line: \1\2={{{ value }}} \3
   when:
     - result_pam_module_{{{ option }}}_option_present.found > 0
 {{%- endif %}}
@@ -1183,7 +1194,7 @@ Part of the grub2_bootloader_argument_absent template.
     Macro used to ensure a custom authselect profile is in use before changing any PAM file.
     This macro is useful in cases where an authselect profile doesn't provide a feature to enable
     the desired PAM module or option. In these cases, a custom authselect profile is necessary.
-    If the system already uses a custom authselect profile, no action is necessary. Otherwise, a
+    If the system already uses a custom authselect profile, no action is taken. Otherwise, a
     new custom profile will be created based on the current profile and preserving the already
     enabled features. Custom profiles are only recommeded if an authselect feature for the same
     purpose is not available.
@@ -1294,7 +1305,7 @@ Part of the grub2_bootloader_argument_absent template.
     path: /usr/bin/authselect
   register: result_authselect_present
 
-- name: '{{{ rule_title }}} - Remediation using authselect'
+- name: '{{{ rule_title }}} - Remediate using authselect'
   block:
     {{{ ansible_check_authselect_integrity() | indent(4) }}}
 
@@ -1302,7 +1313,7 @@ Part of the grub2_bootloader_argument_absent template.
 
     - name: '{{{ rule_title }}} - Change the PAM file to be edited according to the custom authselect profile'
       ansible.builtin.set_fact:
-        pam_file_path: "/etc/authselect/{{ authselect_current_profile }}/{{ pam_file_path | basename }}"
+        pam_file_path: "/etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path | basename }}"
 
     - name: '{{{ rule_title }}} - Ensure a backup of current authselect profile before changing the custom profile'
       ansible.builtin.command:
