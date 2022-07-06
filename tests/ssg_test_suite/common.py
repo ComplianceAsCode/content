@@ -424,7 +424,7 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
             test_name for test_name in available_scenarios_basenames
             if test_name in allow_scenarios
         }
-    
+
     allowed_and_denied = deny_scenarios.intersection(allow_scenarios)
     if allowed_and_denied:
         msg = (
@@ -498,6 +498,7 @@ INSTALL_COMMANDS = dict(
     fedora=("dnf", "install", "-y"),
     ol7=("yum", "install", "-y"),
     ol8=("yum", "install", "-y"),
+    ol9=("yum", "install", "-y"),
     rhel7=("yum", "install", "-y"),
     rhel8=("yum", "install", "-y"),
     rhel9=("yum", "install", "-y"),
