@@ -37,13 +37,12 @@ references:
     stigid@sle12: SLES-12-010410
     stigid@sle15: SLES-15-040030
 
-ocil_clause: 'these files exist'
+ocil_clause: 'there is output'
 
 ocil: |-
-    To verify that there are no <tt>shosts.equiv</tt> files
+    Verify that there are no <tt>shosts.equiv</tt> files
     on the system, run the following command:
     <pre>$ find / -name shosts.equiv</pre>
-    No output should be returned.
 
 fixtext: |-
     Remove any found "shosts.equiv" files from the system.
