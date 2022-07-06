@@ -44,11 +44,10 @@ references:
 ocil_clause: ProcessSizeMax is not set to zero
 
 ocil: |-
-    To verify that logging core dump backtraces is disabled, run the
+    Verify that logging core dump backtraces is disabled, run the
     following command:
     <pre>$ grep ProcessSizeMax /etc/systemd/coredump.conf</pre>
-    The output should be:
-    <pre>ProcessSizeMax=0</pre>
+
 
 fixtext: |-
     Configure {{{ full_name }}} to disable core dump backtraces.
