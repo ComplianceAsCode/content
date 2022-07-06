@@ -49,7 +49,7 @@ def create_reduction_dicts() -> (dict, dict, dict, dict):
     #
     # Optional values should reduce to 2 if defined or if not defined should remain 3.
     config_dict = {'Requirement': 1,
-                   'VulDiscussion': 1,
+                   'Vul Discussion': 1,
                    'Status': 1,
                    'Check': 1,
                    'Fix': 1,
@@ -71,7 +71,7 @@ def create_reduction_dicts() -> (dict, dict, dict, dict):
                   'CCI': 1,
                   'SRGID': 1}
     does_not_meet = {'Requirement': 1,
-                     'VulDiscussion': 1,
+                     'Vul Discussion': 1,
                      'Status': 1,
                      'Check': 0,
                      'Fix': 0,
@@ -82,7 +82,7 @@ def create_reduction_dicts() -> (dict, dict, dict, dict):
                      'CCI': 1,
                      'SRGID': 1}
     not_applicable = {'Requirement': 1,
-                      'VulDiscussion': 0,
+                      'Vul Discussion': 0,
                       'Status': 1,
                       'Check': 0,
                       'Fix': 0,
