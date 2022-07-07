@@ -760,6 +760,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
   ansible.builtin.command:
     cmd: authselect apply-changes -b --backup=before-hardening-custom-profile.backup
   when:
+    - result_authselect_enable_feature_cmd is not skipped
     - result_authselect_enable_feature_cmd is success
 {{%- endmacro -%}}
 
@@ -1098,6 +1099,7 @@ Part of the grub2_bootloader_argument_absent template.
         dest: "{{{ pam_file }}}"
         regexp: '^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)'
         replace: '\1{{{ control }}} \2'
+      register: result_pam_module_edit
       when:
         - result_pam_line_other_control_present.found == 1
 
@@ -1108,8 +1110,15 @@ Part of the grub2_bootloader_argument_absent template.
         insertafter: {{{ after_match }}}
         {{%- endif %}}
         line: {{{ group }}}    {{{ control }}}    {{{ module }}}
+      register: result_pam_module_add
       when:
         - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
+
+    - name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied after module line changes'
+      ansible.builtin.command:
+        cmd: authselect apply-changes -b --backup=after-hardening-{{{ module }}}.backup
+      when:
+        - (result_pam_module_add is defined and result_pam_module_add.changed) or (result_pam_module_edit is defined and result_pam_module_edit.changed)
   when:
     - result_pam_line_present.found is defined
     - result_pam_line_present.found == 0
@@ -1151,6 +1160,7 @@ Part of the grub2_bootloader_argument_absent template.
     line: \1 {{{ option }}}={{{ value }}}
     {{%- endif %}}
     state: present
+  register: result_pam_{{{ option }}}_add
   when:
     - result_pam_module_{{{ option }}}_option_present.found == 0
 
@@ -1161,6 +1171,7 @@ Part of the grub2_bootloader_argument_absent template.
     backrefs: true
     regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
     line: \1\2={{{ value }}} \3
+  register: result_pam_{{{ option }}}_edit
   when:
     - result_pam_module_{{{ option }}}_option_present.found > 0
 {{%- endif %}}
@@ -1187,6 +1198,7 @@ Part of the grub2_bootloader_argument_absent template.
     regexp: (.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
     {{%- endif %}}
     replace: '\1\2'
+  register: result_pam_option_removal
 {{%- endmacro -%}}
 
 
@@ -1273,6 +1285,7 @@ Part of the grub2_bootloader_argument_absent template.
   ansible.builtin.command:
     cmd: authselect enable-feature {{ item }}
   loop: "{{ result_authselect_features.stdout_lines }}"
+  register: result_pam_authselect_restore_features
   when:
     - result_authselect_profile is not skipped
     - result_authselect_features is not skipped
@@ -1284,6 +1297,7 @@ Part of the grub2_bootloader_argument_absent template.
   when:
     - result_authselect_check_cmd is success
     - result_authselect_profile is not skipped
+    - result_pam_authselect_restore_features is not skipped
 {{%- endmacro %}}
 
 
@@ -1314,10 +1328,6 @@ Part of the grub2_bootloader_argument_absent template.
     - name: '{{{ rule_title }}} - Change the PAM file to be edited according to the custom authselect profile'
       ansible.builtin.set_fact:
         pam_file_path: "/etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path | basename }}"
-
-    - name: '{{{ rule_title }}} - Ensure a backup of current authselect profile before changing the custom profile'
-      ansible.builtin.command:
-        cmd: authselect apply-changes -b --backup=before-hardening-{{{ module }}}-{{{ option }}}.backup
   when:
     - result_authselect_present.stat.exists
 {{%- endmacro -%}}
@@ -1358,6 +1368,7 @@ Part of the grub2_bootloader_argument_absent template.
         cmd: authselect apply-changes -b --backup=after-hardening-custom-profile.backup
       when:
         - result_authselect_present.stat.exists
+        - (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed) or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
   when:
     - result_pam_file_present.stat.exists
 {{%- endmacro -%}}
@@ -1392,6 +1403,7 @@ Part of the grub2_bootloader_argument_absent template.
         cmd: authselect apply-changes -b --backup=after-{{{ module }}}-{{{ option }}}-removal.backup
       when:
         - result_authselect_present.stat.exists
+        - result_pam_option_removal is changed
   when:
     - result_pam_file_present.stat.exists
 {{%- endmacro -%}}
