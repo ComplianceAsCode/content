@@ -81,12 +81,14 @@ jobs:
       - name: Get diff.log
         if: ${{ steps.compare_ds.outputs.COMPARE_DS_OUTPUT_SIZE != '0'}}
         id: diff
-        run: |
+        run: | # set -f to disable any glob expansion that can be triggered in the echo command
+          set -f
           body=$(cat diff.log)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
           echo ::set-output name=log::${body:0:65000}
+          set +f
       - name: Find Comment
         uses: peter-evans/find-comment@v1
         id: fc
