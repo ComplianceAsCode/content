@@ -1846,11 +1846,14 @@ fi
     parameter. If the "after_match" parameter is empty, the line will be included at the end of
     the file informed in the "pam_file" parameter.
     If the line was already present, but with a different control, the control will be updated.
-    Note: If there are multiple lines matching the "group" + "module", only the first line will be
-    updated. This is a conservative safeguard for improper use of this macro in rare cases of
-    modules configured by multiple lines, like pam_sss.so and pam_faillock.so. In some situations,
-    these special modules may have similar lines sharing the same "group" and "module". For these
-    specific cases, this macro is not recommened and a custom remediation should be considered.
+    Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
+    Instead, a new line will be included after the regex informed in "after_match" or at the
+    end of file if "after_match" parameter is empty.
+    This is a conservative safeguard for improper use of this macro in rare cases of modules
+    configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
+    situations, these special modules may have similar lines sharing the same "group" and "module".
+    For these specific cases, this macro is not recommened without careful tests to make sure the
+    PAM module is working as expected. Otherwise, a custom remediation should be considered.
 
 :param pam_file:        PAM config file.
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
@@ -1862,9 +1865,9 @@ fi
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
 if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{{{ pam_file }}}"; then
     # Line matching group + control + module was not found. Check group + module.
-    if grep -qP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}"; then
-        # If more occurrences match the search, only the first will be updated.
-        sed -i -E --follow-symlinks '0,/^\s*{{{ group }}}\s+.*{{{ module }}}\s*.*/ s/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
+    if [ $(grep -cP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}") -eq 1 ]; then
+        # The control is updated only if one single line matches.
+        sed -i -E --follow-symlinks 's/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
     else
         {{%- if after_match == '' %}}
         echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
@@ -1891,7 +1894,7 @@ fi
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
 {{{ bash_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
 # Check the option
-if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}' "{{{ pam_file }}}"; then
+if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}\b' "{{{ pam_file }}}"; then
     {{%- if value == '' %}}
     sed -i -E --follow-symlinks '/\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}.*/ s/$/ {{{ option }}}/' "{{{ pam_file }}}"
     {{%- else %}}
