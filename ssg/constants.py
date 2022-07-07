@@ -60,7 +60,6 @@ product_directories = [
     'ubuntu1604', 'ubuntu1804', 'ubuntu2004',
     'uos20',
     'vsel',
-    'wrlinux8', 'wrlinux1019'
 ]
 
 JINJA_MACROS_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(
@@ -224,7 +223,6 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 18.04": "ubuntu1804",
     "Ubuntu 20.04": "ubuntu2004",
     "UnionTech OS Server 20": "uos20",
-    "WRLinux 8": "wrlinux8",
     "WRLinux 1019": "wrlinux1019",
 }
 
@@ -287,7 +285,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_sle": ["sle12", "sle15"],
     "multi_platform_ubuntu": ["ubuntu1604", "ubuntu1804", "ubuntu2004"],
     "multi_platform_uos": ["uos20"],
-    "multi_platform_wrlinux": ["wrlinux8", "wrlinux1019"],
+    "multi_platform_wrlinux": ["wrlinux1019"],
 }
 
 RHEL_CENTOS_CPE_MAPPING = {
