@@ -4,6 +4,7 @@
     <criteria comment="Configure tmux to lock session after inactivity" operator="AND">
       <criterion comment="check lock-after-time is set to 900 in /etc/tmux.conf"
         test_ref="test_configure_tmux_lock_after_time" />
+      <criterion comment="Check /etc/tmux.conf is readable by others" test_ref="test_configure_tmux_lock_after_time_mode"/>
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
@@ -26,4 +27,14 @@
   comment="the value is less than or equal to 900">
     <ind:subexpression datatype="int" operation="less than or equal">900</ind:subexpression>
   </ind:textfilecontent54_state>
+  <unix:file_test check="all" comment="Check /etc/tmux.conf is readable by others" id="test_configure_tmux_lock_after_time_mode" version="3">
+    <unix:object object_ref="object_configure_tmux_lock_after_time_mode" />
+    <unix:state state_ref="state_configure_tmux_lock_after_time_mode" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/tmux.conf" id="object_configure_tmux_lock_after_time_mode" version="1">
+    <unix:filepath operation="equals">/etc/tmux.conf</unix:filepath>
+  </unix:file_object>
+  <unix:file_state id="state_configure_tmux_lock_after_time_mode" version="1" operator="AND">
+    <unix:oread datatype="boolean">true</unix:oread>
+  </unix:file_state>
 </def-group>
