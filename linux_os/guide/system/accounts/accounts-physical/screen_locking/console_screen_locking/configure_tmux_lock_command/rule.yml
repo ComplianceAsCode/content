@@ -37,9 +37,16 @@ ocil_clause: 'lock-command is not set'
 
 ocil: |-
     To verify that vlock is configured as a locking mechanism in tmux, run the following command:
-    <pre>$ grep lock-command /etc/tmux.conf</pre>
+
+    <pre>$ sudo grep lock-command /etc/tmux.conf</pre>
+
     The output should return the following:
+
     <pre>set -g lock-command vlock</pre>
+
+    Then, verify that the /etc/tmux.conf file can be read by other users than root:
+
+    <pre>$ sudo ls -al /etc/tmux.conf
 
 fixtext: |-
     Add the following line to the file "/etc/tmux.conf":
