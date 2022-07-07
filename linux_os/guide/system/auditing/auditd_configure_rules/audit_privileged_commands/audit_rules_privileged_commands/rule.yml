@@ -62,7 +62,7 @@ references:
     srg: SRG-OS-000327-GPOS-00127
     vmmsrg: SRG-OS-000471-VMM-001910
 
-ocil_clause: 'it is not the case'
+ocil_clause: "any setuid or setgid programs doesn't have a line in the audit rules"
 
 ocil: |-
     To verify that auditing of privileged command use is configured, run the
@@ -72,7 +72,7 @@ ocil: |-
     Run the following command to verify entries in the audit rules for all programs
     found with the previous command:
     <pre>$ sudo grep path /etc/audit/audit.rules</pre>
-    It should be the case that all relevant setuid / setgid programs have a line
+    All relevant setuid / setgid programs have a line
     in the audit rules.
 
 warnings:
