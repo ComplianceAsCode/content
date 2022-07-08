@@ -26,4 +26,6 @@ selections:
   - dir_perms_world_writable_root_owned
   - dir_perms_world_writable_sticky_bits
   - file_permissions_unauthorized_world_writable
+  - sysctl_kernel_exec_shield
+  - sysctl_kernel_kptr_restrict
   - sysctl_net_ipv4_conf_default_accept_redirects
