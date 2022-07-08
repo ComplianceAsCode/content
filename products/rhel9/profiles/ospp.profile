@@ -146,9 +146,6 @@ selections:
     - package_openssh-server_installed
     - package_openssh-clients_installed
     - package_policycoreutils-python-utils_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
-    - package_audispd-plugins_installed
     - package_chrony_installed
     - package_gnutls-utils_installed
 
@@ -376,10 +373,6 @@ selections:
 
     # Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
-
-    # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
 
     # set ssh client rekey limit
     - ssh_client_rekey_limit
