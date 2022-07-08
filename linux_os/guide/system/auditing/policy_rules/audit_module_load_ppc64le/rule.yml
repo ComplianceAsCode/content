@@ -2,14 +2,12 @@ documentation_complete: true
 
 prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
-title: 'Configure auditing of loading and unloading of kernel modules'
+title: 'Configure auditing of loading and unloading of kernel modules (ppc64le)'
 
 {{% set file_contents_audit_module_load =
 "## These rules watch for kernel module insertion. By monitoring
 ## the syscall, we do not need any watches on programs.
--a always,exit -F arch=b32 -S init_module,finit_module -F key=module-load
 -a always,exit -F arch=b64 -S init_module,finit_module -F key=module-load
--a always,exit -F arch=b32 -S delete_module -F key=module-unload
 -a always,exit -F arch=b64 -S delete_module -F key=module-unload" %}}
 
 description: |-
@@ -27,11 +25,11 @@ rationale: |-
 severity: medium
 
 platforms:
-    - not ppc64le_arch
+    - ppc64le_arch
 
 identifiers:
-    cce@rhel8: CCE-82838-4
-    cce@rhel9: CCE-90814-5
+    cce@rhel8: CCE-85981-9
+    cce@rhel9: CCE-85982-7
 
 references:
     nist: AU-2(a)
