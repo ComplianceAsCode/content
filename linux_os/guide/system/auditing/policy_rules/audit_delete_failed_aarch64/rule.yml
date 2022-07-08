@@ -2,14 +2,14 @@ documentation_complete: true
 
 prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
-title: 'Configure auditing of unsuccessful file deletions'
+title: 'Configure auditing of unsuccessful file deletions (AArch64)'
 
 {{% set file_contents_audit_delete_failed =
 "## Unsuccessful file delete
--a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-delete
--a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-delete
--a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-delete
--a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-delete" %}}
+-a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-delete
+-a always,exit -F arch=b64 -S unlinkat,renameat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-delete
+-a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-delete
+-a always,exit -F arch=b64 -S unlinkat,renameat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-delete" %}}
 
 description: |-
     Ensure that unsuccessful attempts to delete a file are audited.
@@ -28,11 +28,11 @@ rationale: |-
 severity: medium
 
 platforms:
-    - not aarch64_arch
+    - aarch64_arch
 
 identifiers:
-    cce@rhel8: CCE-82835-0
-    cce@rhel9: CCE-83667-6
+    cce@rhel8: CCE-85926-4
+    cce@rhel9: CCE-85937-1
 
 references:
     nist: AU-2(a)

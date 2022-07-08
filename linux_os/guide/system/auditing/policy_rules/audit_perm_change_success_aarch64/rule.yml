@@ -2,12 +2,12 @@ documentation_complete: true
 
 prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
-title: 'Configure auditing of successful permission changes'
+title: 'Configure auditing of successful permission changes (AArch64)'
 
 {{% set file_contents_audit_perm_change_success =
 "## Successful permission change
--a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-perm-change
--a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-perm-change" %}}
+-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+-a always,exit -F arch=b64 -S fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change" %}}
 
 description: |-
     Ensure that successful attempts to modify permissions of files or directories are audited.
@@ -26,11 +26,11 @@ rationale: |-
 severity: medium
 
 platforms:
-    - not aarch64_arch
+    - aarch64_arch
 
 identifiers:
-    cce@rhel8: CCE-82383-1
-    cce@rhel9: CCE-83678-3
+    cce@rhel8: CCE-85951-2
+    cce@rhel9: CCE-85952-0
 
 references:
     nist: AU-2(a)

@@ -2,13 +2,13 @@ documentation_complete: true
 
 prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
-title: 'Configure auditing of successful file accesses'
+title: 'Configure auditing of successful file accesses (AArch64'
 
 {{% set file_contents_audit_access_success =
 "## Successful file access (any other opens) This has to go last.
 ## These next two are likely to result in a whole lot of events
 -a always,exit -F arch=b32 -S open,openat,openat2,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
--a always,exit -F arch=b64 -S open,openat,openat2,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access" %}}
+-a always,exit -F arch=b64 -S openat,openat2,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access" %}}
 
 description: |-
     Ensure that successful attempts to access a file are audited.
@@ -27,11 +27,11 @@ rationale: |-
 severity: medium
 
 platforms:
-    - not aarch64_arch
+    - aarch64_arch
 
 identifiers:
-    cce@rhel8: CCE-82834-3
-    cce@rhel9: CCE-83653-6
+    cce@rhel8: CCE-85923-1
+    cce@rhel9: CCE-85924-9
 
 references:
     ism: 0582,0584,05885,0586,0846,0957

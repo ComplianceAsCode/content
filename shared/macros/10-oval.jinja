@@ -730,25 +730,25 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
     <definition class="compliance" id="{{{ rule_id }}}" version="1">
       {{{ oval_metadata("Inspect the contents of " + filepath) }}}
       <criteria>
-          <criterion comment="Check contents of file" test_ref="test_whole_file_contents_{{{ filepath_id }}}" />
+          <criterion comment="Check contents of file" test_ref="{{{ rule_id }}}_test_whole_file_contents_{{{ filepath_id }}}" />
       </criteria>
     </definition>
 
     <ind:textfilecontent54_test check="all" check_existence="all_exist"
     comment="Tests if contents of {{{ filepath }}} is exactly what is defined in rule description"
-    id="test_whole_file_contents_{{{ filepath_id }}}" version="1">
-      <ind:object object_ref="object_whole_file_contents_{{{ filepath_id }}}" />
-      <ind:state state_ref="state_whole_file_contents_{{{ filepath_id }}}" />
+    id="{{{ rule_id }}}_test_whole_file_contents_{{{ filepath_id }}}" version="1">
+      <ind:object object_ref="{{{ rule_id }}}_object_whole_file_contents_{{{ filepath_id }}}" />
+      <ind:state state_ref="{{{ rule_id }}}_state_whole_file_contents_{{{ filepath_id }}}" />
     </ind:textfilecontent54_test>
 
-    <ind:textfilecontent54_object id="object_whole_file_contents_{{{ filepath_id }}}" version="1">
+    <ind:textfilecontent54_object id="{{{ rule_id }}}_object_whole_file_contents_{{{ filepath_id }}}" version="1">
       <ind:behaviors singleline="true" multiline="false" />
       <ind:filepath>{{{ filepath }}}</ind:filepath>
       <ind:pattern operation="pattern match">^.*$</ind:pattern>
       <ind:instance datatype="int">1</ind:instance>
     </ind:textfilecontent54_object>
 
-    <ind:textfilecontent54_state id="state_whole_file_contents_{{{ filepath_id }}}" version="1">
+    <ind:textfilecontent54_state id="{{{ rule_id }}}_state_whole_file_contents_{{{ filepath_id }}}" version="1">
       <ind:text operation="equals">{{{ contents }}}
 </ind:text>
     </ind:textfilecontent54_state>

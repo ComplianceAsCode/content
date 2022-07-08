@@ -1,0 +1,15 @@
+---
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_rhcos
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+spec:
+  config:
+    ignition:
+      version: 3.1.0
+    storage:
+      files:
+      - contents:
+          source: data:,%23%23%20Unsuccessful%20file%20modifications%20%28open%20for%20write%20or%20truncate%29%0A-a%20always%2Cexit%20-F%20arch%3Db32%20-S%20openat%2Copen_by_handle_at%20-F%20a2%26amp%3B01003%20-F%20exit%3D-EACCES%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-S%20openat%2Copen_by_handle_at%20-F%20a2%26amp%3B01003%20-F%20exit%3D-EACCES%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db32%20-S%20open%20-F%20a1%26amp%3B01003%20-F%20exit%3D-EACCES%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db32%20-S%20truncate%2Cftruncate%20-F%20exit%3D-EACCES%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-S%20truncate%2Cftruncate%20-F%20exit%3D-EACCES%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db32%20-S%20openat%2Copen_by_handle_at%20-F%20a2%26amp%3B01003%20-F%20exit%3D-EPERM%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-S%20openat%2Copen_by_handle_at%20-F%20a2%26amp%3B01003%20-F%20exit%3D-EPERM%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db32%20-S%20open%20-F%20a1%26amp%3B01003%20-F%20exit%3D-EPERM%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db32%20-S%20truncate%2Cftruncate%20-F%20exit%3D-EPERM%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A-a%20always%2Cexit%20-F%20arch%3Db64%20-S%20truncate%2Cftruncate%20-F%20exit%3D-EPERM%20-F%20auid%3E%3D1000%20-F%20auid%21%3Dunset%20-F%20key%3Dunsuccessful-modification%0A
+        mode: 0600
+        path: /etc/audit/rules.d/30-ospp-v42-2-modify-failed.rules 
+        overwrite: true
