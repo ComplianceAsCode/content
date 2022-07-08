@@ -374,6 +374,8 @@ selections:
     - audit_access_success.severity=info
     - audit_access_success.role=unscored
     - audit_access_success_aarch64
+    - audit_access_success_aarch64.severity=info
+    - audit_access_success_aarch64.role=unscored
     - audit_delete_failed
     - audit_delete_failed_aarch64
     - audit_delete_success
