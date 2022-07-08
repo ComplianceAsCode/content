@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: rhcos4,rhel8,rhel9
+
+title: 'Ensure debug-shell service is not enabled in zIPL'
+
+description: |-
+    systemd's <tt>debug-shell</tt> service is intended to
+    diagnose systemd related boot issues with various <tt>systemctl</tt>
+    commands. Once enabled and following a system reboot, the root shell
+    will be available on <tt>tty9</tt> which is access by pressing
+    <tt>CTRL-ALT-F9</tt>. The <tt>debug-shell</tt> service should only be used
+    for systemd related issues and should otherwise be disabled.
+    <br /><br />
+    By default, the <tt>debug-shell</tt> systemd service is already disabled.
+
+    Ensure the debug-shell is not enabled by the <tt>systemd.debug-shel=1</tt>
+    boot paramenter option.
+
+    Check that not boot entries in <tt>/boot/loader/entries/*.conf</tt> have
+    <tt>systemd.debug-shell=1</tt> included in its options.<br />
+    To ensure that new kernels and boot entries don't enable the debug-shell, check
+    that <tt>systemd.debug-shell=1</tt> is not present in <tt>/etc/kernel/cmdline</tt>.
+
+rationale: |-
+    This prevents attackers with physical access from trivially bypassing security
+    on the machine through valid troubleshooting configurations and gaining root
+    access when the system is rebooted.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86420-7
+
+references:
+    ospp: FIA_UAU.1
+
+ocil_clause: 'the comand returns a line'
+
+ocil: |-
+    Ensure that debug-shell service is not enabled with the following command:
+    <pre>sudo grep -L "^options\s+.*\bsystemd.debug-shell=1\b" /boot/loader/entries/*.conf</pre>
+    No line should be returned, each line returned is a boot entry that enables the debug-shell.
+
+platform: machine
+
+#template:
+#  name: zipl_bls_entries_option_absent
+#  vars:
+#    arg_name: systemd.debug-shell

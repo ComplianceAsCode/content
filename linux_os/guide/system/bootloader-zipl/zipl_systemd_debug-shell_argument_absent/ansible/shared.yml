@@ -1,0 +1,38 @@
+# platform = Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
+# reboot = true
+# strategy = configure
+# complexity = medium
+# disruption = low
+
+- name: "Ensure BLS boot entries options contain systemd.debug-shell"
+  block:
+    - name: "Check how many boot entries set systemd.debug-shell"
+      find:
+        paths: "/boot/loader/entries/"
+        contains: "^options .*systemd.debug-shell.*$"
+        patterns: "*.conf"
+      register: n_entries
+
+    - name: "Remove systemd.debug-shell from boot entries"
+      command: grubby --update-kernel=ALL --remove-args="systemd.debug-shell"
+      when: n_entries is defined and n_entries.matched >= 1
+
+    - name: "Check if /etc/kernel/cmdline exists"
+      stat:
+        path: /etc/kernel/cmdline
+      register: cmdline_stat
+
+    - name: "Check if /etc/kernel/cmdline contains systemd.debug-shell"
+      find:
+        paths: "/etc/kernel/"
+        patterns: "cmdline"
+        contains: "^.*systemd.debug-shell.*$"
+      register: cmdline_find
+
+    - name: "Remove systemd.debug-shell from /etc/kernel/cmdline"
+      lineinfile:
+        path: "/etc/kernel/cmdline"
+        backrefs: yes
+        regexp: '^(.*)\s*systemd.debug-shell\b\S*(.*)$'
+        line: '\1\2'
+      when: cmdline_stat is defined and cmdline_stat.stat.exists and cmdline_find is defined and cmdline_find.matched >= 1
