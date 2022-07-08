@@ -7,10 +7,10 @@ title: 'Enable Smartcards in SSSD'
 description: |-
     SSSD should be configured to authenticate access to the system
     using smart cards. To enable smart cards in SSSD, set <tt>pam_cert_auth</tt>
-    to <tt>true</tt> under the <tt>[pam]</tt>
+    to <tt>True</tt> under the <tt>[pam]</tt>
     section in <tt>/etc/sssd/sssd.conf</tt>. For example:
     <pre>[pam]
-    pam_cert_auth = true
+    pam_cert_auth = True
     </pre>
     {{% if product in ["ol8", "rhel8"] %}}
     Add or update "pam_sss.so" with "try_cert_auth" or "require_cert_auth" in the
@@ -58,7 +58,7 @@ ocil: |-
     To verify that smart cards are enabled in SSSD, run the following command:
     <pre>$ sudo grep pam_cert_auth /etc/sssd/sssd.conf</pre>
     If configured properly, output should be
-    <pre>pam_cert_auth = true</pre>
+    <pre>pam_cert_auth = True</pre>
 
     {{% if product in ["ol8", "rhel8"] %}}
     <pre>$ sudo grep cert_auth /etc/sssd/sssd.conf /etc/pam.d/*</pre>
@@ -68,7 +68,7 @@ ocil: |-
 fixtext: |-
     Edit the file "/etc/sssd/sssd.conf" and add or edit the following line:
 
-    pam_cert_auth = true
+    pam_cert_auth = True
 
     {{% if product in ["ol8", "rhel8"] %}}
     Add or update "pam_sss.so" with "try_cert_auth" or "require_cert_auth" in the

@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = medium
 
-{{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "pam_cert_auth", "true") }}}
+{{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "pam_cert_auth", "True") }}}
 
 {{% if product in ["ol8", "rhel8"] %}}
 if [ -f /usr/bin/authselect ]; then
