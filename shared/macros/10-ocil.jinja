@@ -605,7 +605,7 @@ ocil: |
 
 #}}
 {{% macro ocil_mount_option(point, option) -%}}
-    To verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
+    Verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point,
     {{% if product == "rhcos4" -%}}
     You'll need to log into a node in the cluster.
     {{{ rhcos_node_login_instructions() }}}
@@ -613,7 +613,7 @@ ocil: |
     {{%- endif -%}}
     run the following command:
     <pre>$ sudo mount | grep '\s{{{ point }}}\s'</pre>
-    The output should show the corresponding mount point along with the <tt>{{{ option }}}</tt> setting in parentheses.
+    <pre>. . . {{{ point }}} . . . {{{ option }}} . . ./pre>
 {{%- endmacro %}}
 
 
@@ -1005,22 +1005,7 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     The runtime status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
     by running the following command:
     <pre>$ sysctl {{{ sysctl }}}</pre>
-    The output of the command should indicate a value of <code>{{{ value }}}</code>.
-    The preferable way how to assure the runtime compliance is to have
-    correct persistent configuration, and rebooting the system.
-
-    The persistent kernel parameter configuration is performed by specifying the appropriate
-    assignment in any file located in the <pre>/etc/sysctl.d</pre> directory.
-    Verify that there is not any existing incorrect configuration by executing the following command:
-    <pre>$ grep -r '^\s*{{{ sysctl }}}\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
-    If any assignments other than
-    <pre>{{{ sysctl }}} = {{{ value }}}</pre>
-    are found, or the correct assignment is duplicated, remove those offending lines from respective files,
-    and make sure that exactly one file in
-    <code>/etc/sysctl.d</code> contains <code>{{{ sysctl }}} = {{{ value }}}</code>, and that one assignment
-    is returned when
-    <pre>$ grep -r {{{ sysctl }}} /etc/sysctl.conf /etc/sysctl.d</pre>
-    is executed.
+    <code>{{{ value }}}</code>.
 {{%- endmacro %}}
 
 

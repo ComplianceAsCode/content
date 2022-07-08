@@ -43,10 +43,9 @@ references:
 ocil_clause: 'cron is not logging to rsyslog'
 
 ocil: |-
-    To verify that <tt>cron</tt> is logging to <tt>rsyslog</tt>,
+    Verify that <tt>cron</tt> is logging to <tt>rsyslog</tt>,
     run the following command:
     <pre>grep -rni "cron\.\*" /etc/rsyslog.*</pre>
-    The output should return some similar to:
     <pre>cron.*                                                  /var/log/cron</pre>
 
 fixtext: |-

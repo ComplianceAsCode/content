@@ -32,11 +32,10 @@ references:
 ocil_clause: 'the "smtpd_client_restrictions" parameter contains any entries other than "permit_mynetworks" and "reject"'
 
 ocil: |-
-    To verify the system is configured to prevent unrestricted mail relaying,
+    Verify that {{{ full_name }}} is configured to prevent unrestricted mail relaying,
     run the following command:
     <pre>$ sudo postconf -n smtpd_client_restrictions</pre>
-    The output should return:
-    <pre>smtpd_client_restrictions = permit_mynetworks,reject</pre>
+
 
 fixtext: |-
     If "postfix" is installed, modify the "/etc/postfix/main.cf" file to restrict client connections to the local network with the following command:
