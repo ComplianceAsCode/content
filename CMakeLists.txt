@@ -97,8 +97,6 @@ option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU2004 "If enabled, the Ubuntu 20.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UOS20 "If enabled, the Uos 20 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_VSEL "If enabled, the McAfee VSEL SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_WRLINUX8 "If enabled, the WRLinux8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_WRLINUX1019 "If enabled, the WRLinux1019 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -304,8 +302,7 @@ message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "Ubuntu 20.04: ${SSG_PRODUCT_UBUNTU2004}")
 message(STATUS "Uos 20: ${SSG_PRODUCT_UOS20}")
 message(STATUS "McAfee VSEL: ${SSG_PRODUCT_VSEL}")
-message(STATUS "WRLinux 8: ${SSG_PRODUCT_WRLINUX8}")
-message(STATUS "WRLinux 1019: ${SSG_PRODUCT_WRLINUX1019}")
+
 
 
 

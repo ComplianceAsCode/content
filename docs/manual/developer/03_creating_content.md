@@ -387,7 +387,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 <pre>
 ...
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
+                       "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
 ...
 </pre>
 <pre>

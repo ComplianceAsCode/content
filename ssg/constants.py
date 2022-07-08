@@ -265,7 +265,7 @@ REFERENCES = dict(
 
 
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "rhcos",
+                      "opensuse", "sle", "ol", "ocp", "rhcos",
                        "example", "eks", "alinux", "uos"]
 
 MULTI_PLATFORM_MAPPING = {
