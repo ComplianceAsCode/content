@@ -3,6 +3,8 @@
 # platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol
 # variables = var_password_pam_remember=5,var_password_pam_remember_control_flag=requisite
 
+{{{ bash_package_remove("authselect") }}}
+
 remember_cnt=5
 control_flag='requisite'
 

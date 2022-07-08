@@ -2,6 +2,8 @@
 # platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol
 # packages = pam
 
+{{{ bash_package_remove("authselect") }}}
+
 config_file=/etc/pam.d/password-auth
 
 if grep -q "pam_pwhistory\.so.*remember=" "$config_file" ; then
