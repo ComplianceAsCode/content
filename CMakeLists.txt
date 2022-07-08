@@ -433,10 +433,6 @@ if (SSG_PRODUCT_VSEL)
     add_subdirectory("products/vsel" "vsel")
 endif()
 
-if (SSG_PRODUCT_WRLINUX1019)
-    add_subdirectory("products/wrlinux1019" "wrlinux1019")
-endif()
-
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
 if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
