@@ -2,12 +2,11 @@ documentation_complete: true
 
 prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
-title: 'Configure auditing of successful file deletions'
+title: 'Configure auditing of successful file deletions (ppc64le)'
 
 {{% set file_contents_audit_delete_success =
 "## Successful file delete
--a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-delete
--a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-delete" %}}
+-a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete" %}}
 
 description: |-
     Ensure that successful attempts to delete a file are audited.
@@ -26,11 +25,11 @@ rationale: |-
 severity: medium
 
 platforms:
-    - not aarch64_arch and not ppc64le_arch
+    - ppc64le_arch
 
 identifiers:
-    cce@rhel8: CCE-82836-8
-    cce@rhel9: CCE-83680-9
+    cce@rhel8: CCE-85974-4
+    cce@rhel9: CCE-85976-9
 
 references:
     nist: AU-2(a)
