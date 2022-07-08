@@ -58,7 +58,7 @@ references:
     nist@sle15: AC-2(4).1(i&ii),AU-12.1(iv)
     ospp: FAU_GEN.1.1.c
     pcidss: Req-10.2.5
-    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000304-GPOS-00121,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000470-GPOS-00214,SRG-OS-000471-GPOS-00215,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000304-GPOS-00121,SRG-OS-000476-GPOS-00221,SRG-OS-000463-GPOS-00207
+    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000304-GPOS-00121,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000470-GPOS-00214,SRG-OS-000471-GPOS-00215,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000466-GPOS-00210,SRG-OS-000476-GPOS-00221
     stigid@ol7: OL07-00-030874
     stigid@ol8: OL08-00-030140
     stigid@rhel7: RHEL-07-030874
@@ -68,16 +68,15 @@ references:
     stigid@ubuntu2004: UBTU-20-010104
     vmmsrg: SRG-OS-000004-VMM-000040,SRG-OS-000239-VMM-000810,SRG-OS-000240-VMM-000820,SRG-OS-000241-VMM-000830,SRG-OS-000274-VMM-000960,SRG-OS-000275-VMM-000970,SRG-OS-000276-VMM-000980,SRG-OS-000277-VMM-000990,SRG-OS-000303-VMM-001090,SRG-OS-000304-VMM-001100,SRG-OS-000476-VMM-001960
 
-ocil_clause: 'the system is not configured to audit account changes'
+ocil_clause: 'the command does not return a line, or the line is commented out'
 
 ocil: |-
-    To determine if the system is configured to audit account changes,
-    run the following command:
-    <br /><br />
-    <pre>auditctl -l | egrep '(/etc/security/opasswd)'</pre>
-    <br /><br />
-    If the system is configured to watch for account changes, lines should be returned for
-    each file specified (and with <tt>perm=wa</tt> for each).
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/security/opasswd" with the following command:
+
+    $ sudo auditctl -l | egrep '(/etc/security/opasswd)' 
+
+    -w /etc/security/opasswd -p wa -k identity
+
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/security/opasswd", "identity", "/etc/audit/rules.d/audit.rules") }}}'
 
