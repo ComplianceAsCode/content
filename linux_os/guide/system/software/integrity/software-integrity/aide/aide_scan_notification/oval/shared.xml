@@ -1,9 +1,3 @@
-{{% if product in ["sle12", "sle15"] %}} 
-{{% set aide_bin_path = "/usr/bin/aide" %}} 
-{{% else %}} 
-{{% set aide_bin_path = "/usr/sbin/aide" %}} 
-{{% endif %}} 
-
 <def-group>
   <definition class="compliance" id="aide_scan_notification" version="1">
     {{{ oval_metadata("AIDE should notify appropriate personnel of the details
