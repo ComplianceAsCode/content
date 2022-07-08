@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_wrlinux,multi_platform_ubuntu,multi_platform_sle
+# platform = Red Hat Virtualization 4,multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu,multi_platform_sle
 
 {{{ bash_instantiate_variables("var_accounts_max_concurrent_login_sessions") }}}
 
