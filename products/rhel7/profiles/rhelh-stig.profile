@@ -13,7 +13,6 @@ selections:
     - inactivity_timeout_value=15_minutes
     - var_password_pam_minlen=15
     - accounts_password_pam_minlen
-    - accounts_password_minlen_login_defs
     - var_password_pam_ocredit=1
     - accounts_password_pam_ocredit
     - var_password_pam_dcredit=1
@@ -330,7 +329,6 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_maximum_age_login_defs=60
     - var_accounts_minimum_age_login_defs=7
-    - var_accounts_password_minlen_login_defs=6
     - var_accounts_password_warn_age_login_defs=7
     - var_accounts_tmout=10_min
     - var_password_pam_difok=8
