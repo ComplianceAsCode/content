@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="inventory" id="proc_sys_kernel_osrelease_arch_ppc64le"
+  version="1">
+    <metadata>
+      <title>Test that the architecture is ppc64le</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check that architecture of kernel in /proc/sys/kernel/osrelease is ppc64le</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Architecture is ppc64le"
+      test_ref="test_proc_sys_kernel_osrelease_arch_ppc64le" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+      comment="proc_sys_kernel is for ppc64le architecture"
+      id="test_proc_sys_kernel_osrelease_arch_ppc64le"
+  version="1">
+    <ind:object object_ref="object_proc_sys_kernel_osrelease_arch_ppc64le" />
+    <ind:state state_ref="state_proc_sys_kernel_osrelease_arch_ppc64le" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_proc_sys_kernel_osrelease_arch_ppc64le" version="1">
+    <ind:filepath>/proc/sys/kernel/osrelease</ind:filepath>
+    <ind:pattern operation="pattern match">^.*\.(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_proc_sys_kernel_osrelease_arch_ppc64le" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^ppc64le$</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>
