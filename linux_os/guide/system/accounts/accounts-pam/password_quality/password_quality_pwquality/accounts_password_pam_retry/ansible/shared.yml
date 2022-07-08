@@ -13,15 +13,5 @@
     regexp: '^#?\s*retry'
     line: "retry = {{ var_password_pam_retry }}"
 {{%- else -%}}
-- name: "Set Password Retry Prompts Permitted Per-Session - system-auth (change)"
-  replace:
-    dest: /etc/pam.d/system-auth
-    regexp: '(^.*\spam_pwquality.so\s.*retry\s*=\s*)(\S+)(.*$)'
-    replace: '\g<1>{{ var_password_pam_retry }}\g<3>'
-
-- name: "Set Password Retry Prompts Permitted Per-Session - system-auth (add)"
-  replace:
-    dest: /etc/pam.d/system-auth
-    regexp: '^.*\spam_pwquality.so\s(?!.*retry\s*=\s*).*$'
-    replace: '\g<0> retry={{ var_password_pam_retry }}'
+{{{ ansible_ensure_pam_module_option('/etc/pam.d/system-auth', 'password', 'requisite', 'pam_pwquality.so', 'retry', '{{ var_password_pam_retry }}', '^account.*required.*pam_permit.so') }}}
 {{%- endif %}}

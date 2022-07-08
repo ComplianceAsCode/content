@@ -705,6 +705,66 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 '"{{{ package }}}" in ansible_facts.packages'
 {{%- endmacro -%}}
 
+
+{{#
+    Macro used to check if authselect files are intact. When used, it will exit the respective
+    script if any authselect file was modified without proper use of authselect tool and
+    respective profiles.
+#}}
+{{% macro ansible_check_authselect_integrity() -%}}
+- name: '{{{ rule_title }}} - Check integrity of authselect current profile'
+  ansible.builtin.command:
+    cmd: authselect check
+  register: result_authselect_check_cmd
+  changed_when: false
+  ignore_errors: yes
+
+- name: '{{{ rule_title }}} - Informative message based on the authselect integrity check result'
+  ansible.builtin.assert:
+    that:
+      - result_authselect_check_cmd is success
+    fail_msg:
+      - authselect integrity check failed. Remediation aborted!
+      - This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
+      - It is not recommended to manually edit the PAM files when authselect tool is available.
+      - In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
+    success_msg:
+      - authselect integrity check passed
+{{%- endmacro %}}
+
+
+{{#
+    Enable authselect feature if the authselect current profile is intact or inform that its
+    integrity check failed.
+#}}
+{{%- macro ansible_enable_authselect_feature(feature) -%}}
+{{{ ansible_check_authselect_integrity() }}}
+
+- name: '{{{ rule_title }}} - Get authselect current features'
+  ansible.builtin.shell:
+    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+  register: result_authselect_features
+  changed_when: false
+  when:
+    - result_authselect_check_cmd is success
+
+- name: '{{{ rule_title }}} - Ensure "{{{ feature }}}" feature is enabled using authselect tool'
+  ansible.builtin.command:
+    cmd: authselect enable-feature {{{ feature }}}
+  register: result_authselect_enable_feature_cmd
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_features.stdout is not search("{{{ feature }}}")
+
+- name: '{{{ rule_title }}} - Ensure changes are applied after enabling a feature'
+  ansible.builtin.command:
+    cmd: authselect apply-changes -b --backup=before-hardening-custom-profile.backup
+  when:
+    - result_authselect_enable_feature_cmd is not skipped
+    - result_authselect_enable_feature_cmd is success
+{{%- endmacro -%}}
+
+
 {{#
   This macro ensures the pam_faillock.so PAM module is enabled.
   It is enabled using the authselect tool or editing the PAM files, only if authselect tool is not available.
@@ -718,40 +778,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 - name: {{{ rule_title }}} - Remediation where authselect tool is present
   block:
-    - name: {{{ rule_title }}} - Check integrity of authselect current profile
-      ansible.builtin.command:
-        cmd: authselect check
-      register: result_authselect_check_cmd
-      changed_when: false
-      ignore_errors: yes
-
-    - name: {{{ rule_title }}} - Informative message based on the authselect integrity check result
-      ansible.builtin.assert:
-        that:
-          - result_authselect_check_cmd is success
-        fail_msg:
-        - authselect integrity check failed. Remediation aborted!
-        - This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
-        - It is not recommended to manually edit the PAM files when authselect tool is available.
-        - In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.
-        success_msg:
-        - authselect integrity check passed
-
-    - name: {{{ rule_title }}} - Get authselect current features
-      ansible.builtin.shell:
-        cmd: authselect current | tail -n+3 | awk '{ print $2 }'
-      register: result_authselect_features
-      changed_when: false
-      when:
-        - result_authselect_check_cmd is success
-
-    - name: {{{ rule_title }}} - Ensure with-faillock feature is enabled using authselect tool
-      ansible.builtin.command:
-        cmd: authselect enable-feature with-faillock
-      register: result_authselect_cmd
-      when:
-        - result_authselect_check_cmd is success
-        - result_authselect_features.stdout is not search("with-faillock")
+    {{{ ansible_enable_authselect_feature('with-faillock') | indent(4) }}}
   when:
     - result_authselect_present.stat.exists
 
@@ -1021,4 +1048,362 @@ Part of the grub2_bootloader_argument_absent template.
   loop: '{{ local_users|zip(path_exists.results)|list }}'
   when:
     - item.1.stat is defined and item.1.stat.exists
+{{%- endmacro -%}}
+
+
+{{#
+    Make sure that a line with a specific PAM module is present with the correct control.
+    If the line is not present, it will be included after the regex informed in the "after_match"
+    parameter. If the "after_match" parameter is empty, the line will be included at the end of
+    the file informed in the "pam_file" parameter.
+    If the line was already present, but with a different control, the control will be updated.
+    Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
+    Instead, a new line will be included after the regex informed in "after_match" or at the
+    end of file if "after_match" parameter is empty.
+    This is a conservative safeguard for improper use of this macro in rare cases of modules
+    configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
+    situations, these special modules may have similar lines sharing the same "group" and "module".
+    For these specific cases, this macro is not recommened without careful tests to make sure the
+    PAM module is working as expected. Otherwise, a custom remediation should be considered.
+
+:param pam_file:        PAM config file.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
+:param control:         PAM control flags.
+:param module:          PAM module name.
+:param after_match:     Regex used as reference to include the line below, if necessary. Optional parameter.
+
+#}}
+{{%- macro ansible_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
+- name: '{{{ rule_title }}} - Check if expected PAM module line is present in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: result_pam_line_present
+
+- name: '{{{ rule_title }}} - Include or update the PAM module line in {{{ pam_file }}}'
+  block:
+    - name: '{{{ rule_title }}} - Check if required PAM module line is present in {{{ pam_file }}} with different control'
+      ansible.builtin.lineinfile:
+        path: "{{{ pam_file }}}"
+        regexp: ^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*
+        state: absent
+      check_mode: yes
+      changed_when: false
+      register: result_pam_line_other_control_present
+
+    - name: '{{{ rule_title }}} - Ensure the correct control for the required PAM module line in {{{ pam_file }}}'
+      ansible.builtin.replace:
+        dest: "{{{ pam_file }}}"
+        regexp: '^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)'
+        replace: '\1{{{ control }}} \2'
+      register: result_pam_module_edit
+      when:
+        - result_pam_line_other_control_present.found == 1
+
+    - name: '{{{ rule_title }}} - Ensure the required PAM module line is included in {{{ pam_file }}}'
+      ansible.builtin.lineinfile:
+        dest: "{{{ pam_file }}}"
+        {{%- if after_match != '' %}}
+        insertafter: {{{ after_match }}}
+        {{%- endif %}}
+        line: {{{ group }}}    {{{ control }}}    {{{ module }}}
+      register: result_pam_module_add
+      when:
+        - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
+
+    - name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied after module line changes'
+      ansible.builtin.command:
+        cmd: authselect apply-changes -b --backup=after-hardening-{{{ module }}}.backup
+      when:
+        - (result_pam_module_add is defined and result_pam_module_add.changed) or (result_pam_module_edit is defined and result_pam_module_edit.changed)
+  when:
+    - result_pam_line_present.found is defined
+    - result_pam_line_present.found == 0
+{{%- endmacro -%}}
+
+
+{{#
+    Make sure that an existing PAM module line is properly configured with an option.
+
+:param pam_file:        PAM config file.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
+:param control:         PAM control flags.
+:param module:          PAM module name.
+:param option:          PAM module option.
+:param value:           PAM module option argument, if is case. Optional parameter.
+:param after_match:     Regex used as reference to include the PAM line below, if necessary. Optional parameter.
+
+#}}
+{{%- macro ansible_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
+{{{ ansible_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
+
+- name: '{{{ rule_title }}} - Check if the required PAM module option is present in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    regexp: ^\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s*.*\s{{{ option }}}\b
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_module_{{{ option }}}_option_present
+
+- name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" PAM option for "{{{ module }}}" is included in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    backrefs: true
+    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}.*)
+    {{%- if value == '' %}}
+    line: \1 {{{ option }}}
+    {{%- else %}}
+    line: \1 {{{ option }}}={{{ value }}}
+    {{%- endif %}}
+    state: present
+  register: result_pam_{{{ option }}}_add
+  when:
+    - result_pam_module_{{{ option }}}_option_present.found == 0
+
+{{%- if value != '' %}}
+- name: '{{{ rule_title }}} - Ensure the required value for "{{{ option }}}" PAM option from "{{{ module }}}" in {{{ pam_file }}}'
+  ansible.builtin.lineinfile:
+    path: "{{{ pam_file }}}"
+    backrefs: true
+    regexp: ^(\s*{{{ group }}}\s+{{{ control }}}\s+{{{ module }}}\s+.*)({{{ option }}})=[0-9a-zA-Z]+\s*(.*)
+    line: \1\2={{{ value }}} \3
+  register: result_pam_{{{ option }}}_edit
+  when:
+    - result_pam_module_{{{ option }}}_option_present.found > 0
+{{%- endif %}}
+{{%- endmacro -%}}
+
+
+{{#
+    Remove a PAM module option if present in a PAM module line.
+
+:param pam_file:        PAM config file.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
+:param control:         PAM control flags. Optional parameter, but recommended to be informed whenever possible.
+:param module:          PAM module name.
+:param option:          PAM module option.
+
+#}}
+{{%- macro ansible_remove_pam_module_option(pam_file, group, control, module, option) -%}}
+- name: '{{{ rule_title }}} - Ensure the "{{{ option }}}" option from "{{{ module }}}" is not present in {{{ pam_file }}}'
+  ansible.builtin.replace:
+    dest: "{{{ pam_file }}}"
+    {{%- if control == '' %}}
+    regexp: (.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
+    {{%- else %}}
+    regexp: (.*{{{ group }}}.*{{{ control }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[0-9a-zA-Z]*(.*)
+    {{%- endif %}}
+    replace: '\1\2'
+  register: result_pam_option_removal
+{{%- endmacro -%}}
+
+
+{{#
+    Macro used to ensure a custom authselect profile is in use before changing any PAM file.
+    This macro is useful in cases where an authselect profile doesn't provide a feature to enable
+    the desired PAM module or option. In these cases, a custom authselect profile is necessary.
+    If the system already uses a custom authselect profile, no action is taken. Otherwise, a
+    new custom profile will be created based on the current profile and preserving the already
+    enabled features. Custom profiles are only recommeded if an authselect feature for the same
+    purpose is not available.
+#}}
+{{% macro ansible_ensure_authselect_custom_profile() -%}}
+- name: '{{{ rule_title }}} - Get authselect current profile'
+  ansible.builtin.shell:
+    cmd: authselect current -r | awk '{ print $1 }'
+  register: result_authselect_profile
+  changed_when: false
+  when:
+    - result_authselect_check_cmd is success
+
+- name: '{{{ rule_title }}} - Define the current authselect profile as a local fact'
+  ansible.builtin.set_fact:
+    authselect_current_profile: "{{ result_authselect_profile.stdout }}"
+    authselect_custom_profile: "{{ result_authselect_profile.stdout }}"
+  when:
+    - result_authselect_profile is not skipped
+    - result_authselect_profile.stdout is match("custom/")
+
+- name: '{{{ rule_title }}} - Define the new authselect custom profile as a local fact'
+  ansible.builtin.set_fact:
+    authselect_current_profile: "{{ result_authselect_profile.stdout }}"
+    authselect_custom_profile: "custom/hardening"
+  when:
+    - result_authselect_profile is not skipped
+    - result_authselect_profile.stdout is not match("custom/")
+
+- name: '{{{ rule_title }}} - Get authselect current features to also enable them in the custom profile'
+  ansible.builtin.shell:
+    cmd: authselect current | tail -n+3 | awk '{ print $2 }'
+  register: result_authselect_features
+  changed_when: false
+  when:
+    - result_authselect_profile is not skipped
+    - authselect_current_profile is not match("custom/")
+
+- name: '{{{ rule_title }}} - Check if any custom profile with the same name was already created'
+  ansible.builtin.stat:
+    path: /etc/authselect/{{ authselect_custom_profile }}
+  register: result_authselect_custom_profile_present
+  changed_when: false
+  when:
+    - authselect_current_profile is not match("custom/")
+
+- name: '{{{ rule_title }}} - Create an authselect custom profile based on the current profile'
+  ansible.builtin.command:
+    cmd: authselect create-profile hardening -b {{ authselect_current_profile }}
+  when:
+    - result_authselect_check_cmd is success
+    - authselect_current_profile is not match("custom/")
+    - not result_authselect_custom_profile_present.stat.exists
+
+- name: '{{{ rule_title }}} - Ensure a backup of current authselect profile before selecting the custom profile'
+  ansible.builtin.command:
+    cmd: authselect apply-changes -b --backup=before-hardening-custom-profile.backup
+  register: result_authselect_backup
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - authselect_current_profile is not match("custom/")
+    - authselect_custom_profile is not match(authselect_current_profile)
+
+- name: '{{{ rule_title }}} - Ensure the authselect custom profile is selected'
+  ansible.builtin.command:
+    cmd: authselect select {{ authselect_custom_profile }}
+  register: result_pam_authselect_select_profile
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - authselect_current_profile is not match("custom/")
+    - authselect_custom_profile is not match(authselect_current_profile)
+
+- name: '{{{ rule_title }}} - Restore the authselect features in the custom profile'
+  ansible.builtin.command:
+    cmd: authselect enable-feature {{ item }}
+  loop: "{{ result_authselect_features.stdout_lines }}"
+  register: result_pam_authselect_restore_features
+  when:
+    - result_authselect_profile is not skipped
+    - result_authselect_features is not skipped
+    - result_pam_authselect_select_profile is not skipped
+
+- name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied'
+  ansible.builtin.command:
+    cmd: authselect apply-changes -b --backup=after-hardening-custom-profile.backup
+  when:
+    - result_authselect_check_cmd is success
+    - result_authselect_profile is not skipped
+    - result_pam_authselect_restore_features is not skipped
+{{%- endmacro %}}
+
+
+{{#
+    Check if the system is using authselect. If so, check the profile integrity and make sure
+    a custom profile is ready to be updated. Otherwise, ensures the ansible fact referring
+    to the PAM file to be edited is correctly set.
+
+:param pam_file:        PAM config file.
+
+#}}
+{{%- macro ansible_ensure_pam_facts_and_authselect_profile(pam_file) -%}}
+- name: '{{{ rule_title }}} - Define the PAM file to be edited as a local fact'
+  ansible.builtin.set_fact:
+    pam_file_path: {{{ pam_file }}}
+
+- name: '{{{ rule_title }}} - Check if system relies on authselect'
+  ansible.builtin.stat:
+    path: /usr/bin/authselect
+  register: result_authselect_present
+
+- name: '{{{ rule_title }}} - Remediate using authselect'
+  block:
+    {{{ ansible_check_authselect_integrity() | indent(4) }}}
+
+    {{{ ansible_ensure_authselect_custom_profile() | indent(4) }}}
+
+    - name: '{{{ rule_title }}} - Change the PAM file to be edited according to the custom authselect profile'
+      ansible.builtin.set_fact:
+        pam_file_path: "/etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path | basename }}"
+  when:
+    - result_authselect_present.stat.exists
+{{%- endmacro -%}}
+
+
+{{#
+    Make sure that an existing PAM module line is properly configured, in aligment to the current
+    system configuration. This macro is compatible with custom authselect profiles if the system
+    relies on authselect. Otherwise, the PAM files will be directly edited.
+
+:param pam_file:        PAM config file.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
+:param control:         PAM control flags.
+:param module:          PAM module name.
+:param option:          PAM module option. Optional parameter.
+:param value:           PAM module option argument, if is case. Optional parameter.
+:param after_match:     Regex used as reference to include the PAM line below, if necessary. Optional parameter.
+
+#}}
+{{%- macro ansible_ensure_pam_module_configuration(pam_file, group, control, module, option, value='', after_match='') -%}}
+- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
+  ansible.builtin.stat:
+    path: {{{ pam_file }}}
+  register: result_pam_file_present
+
+- name: '{{{ rule_title }}} - Check the proper remediation for the system'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+
+    {{%- if option == '' %}}
+    {{{ ansible_ensure_pam_module_line('{{ pam_file_path }}', group, control, module, after_match) | indent(4) }}}
+    {{%- else %}}
+    {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', group, control, module, option, value, after_match) | indent(4) }}}
+    {{%- endif %}}
+
+    - name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied'
+      ansible.builtin.command:
+        cmd: authselect apply-changes -b --backup=after-hardening-custom-profile.backup
+      when:
+        - result_authselect_present.stat.exists
+        - (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed) or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
+  when:
+    - result_pam_file_present.stat.exists
+{{%- endmacro -%}}
+
+
+{{#
+    Remove a PAM module option from an existing PAM module line. This macro is compatible with
+    custom authselect profiles if the system relies on authselect. Otherwise, the PAM files will
+    be directly edited.
+
+:param pam_file:        PAM config file.
+:param group:           PAM management group: auth, account, password or session. Also known as "type".
+:param control:         PAM control flags. Optional parameter, but recommended to be informed whenever possible.
+:param module:          PAM module name.
+:param option:          PAM module option.
+
+#}}
+{{%- macro ansible_remove_pam_module_option_configuration(pam_file, group, control, module, option) -%}}
+- name: '{{{ rule_title }}} - Check if {{{ pam_file }}} file is present'
+  ansible.builtin.stat:
+    path: {{{ pam_file }}}
+  register: result_pam_file_present
+
+- name: '{{{ rule_title }}} - Check the proper remediation for the system'
+  block:
+    {{{ ansible_ensure_pam_facts_and_authselect_profile(pam_file) | indent(4) }}}
+
+    {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', group, control, module, option) | indent(4) }}}
+
+    - name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied'
+      ansible.builtin.command:
+        cmd: authselect apply-changes -b --backup=after-{{{ module }}}-{{{ option }}}-removal.backup
+      when:
+        - result_authselect_present.stat.exists
+        - result_pam_option_removal is changed
+  when:
+    - result_pam_file_present.stat.exists
 {{%- endmacro -%}}
