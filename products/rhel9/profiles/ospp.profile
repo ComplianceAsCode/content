@@ -75,7 +75,6 @@ selections:
     - sysctl_kernel_perf_event_paranoid
     - sysctl_user_max_user_namespaces
     - sysctl_kernel_unprivileged_bpf_disabled
-    - sysctl_net_core_bpf_jit_harden
     - service_kdump_disabled
 
     ### Audit
