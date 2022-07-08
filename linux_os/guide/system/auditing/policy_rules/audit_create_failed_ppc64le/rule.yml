@@ -2,22 +2,16 @@ documentation_complete: true
 
 prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
-title: 'Configure auditing of unsuccessful file creations'
+title: 'Configure auditing of unsuccessful file creations (ppc64le)'
 
 {{% set file_contents_audit_create_failed =
 "## Unsuccessful file creation (open with O_CREAT)
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;0100 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;0100 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b32 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;0100 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;0100 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b32 -S open -F a1&amp;0100 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b32 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create
--a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-create" %}}
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-create
+-a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-create
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-create
+-a always,exit -F arch=b64 -S open -F a1&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-create
+-a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-create" %}}
 
 description: |-
     Ensure that unsuccessful attempts to create a file are audited.
@@ -36,11 +30,11 @@ rationale: |-
 severity: medium
 
 platforms:
-    - not aarch64_arch and not ppc64le_arch
+    - ppc64le_arch
 
 identifiers:
-    cce@rhel8: CCE-82374-0
-    cce@rhel9: CCE-83669-2
+    cce@rhel8: CCE-85962-9
+    cce@rhel9: CCE-85965-2
 
 references:
     nist: AU-2(a)
