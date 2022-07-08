@@ -25,7 +25,7 @@ selections:
     - var_accounts_minimum_age_login_defs=1
     - var_accounts_max_concurrent_login_sessions=10
     - var_password_pam_remember=5
-    - var_password_pam_remember_control_flag=required
+    - var_password_pam_remember_control_flag=ol8
     - var_selinux_state=enforcing
     - var_selinux_policy_name=targeted
     - var_accounts_password_minlen_login_defs=15
