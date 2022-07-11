@@ -9,5 +9,7 @@ controls:
             and/or the Global Positioning System (GPS).
         rules:
             - chronyd_or_ntpd_set_maxpoll
+            - chronyd_server_directive
             - package_chrony_installed
+            - service_chronyd_enabled
         status: automated

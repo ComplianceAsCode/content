@@ -24,9 +24,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/usr/bin/lastlog", perms="-
 ocil: |-
     {{{ ocil_file_permissions(file="/usr/bin/lastlog", perms="-rwxr-x---") }}}
 
-fixtext: '{{{ fixtext_directory_permissions("0750", "/usr/bin/lastlog/") }}}'
+fixtext: '{{{ fixtext_directory_permissions(file="/usr/bin/lastlog/", mode="0750") }}}'
 
-srg_requirement: '{{{ srg_requirement_directory_permission("0750", "/usr/bin/lastlog") }}}'
+srg_requirement: '{{{ srg_requirement_directory_permission(file="/usr/bin/lastlog", mode="0750") }}}'
 
 template:
     name: file_permissions

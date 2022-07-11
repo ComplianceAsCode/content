@@ -45,3 +45,12 @@ ocil: |-
     Inspect <tt>/etc/login.defs</tt> and ensure that if eihter
     <tt>SHA_CRYPT_MIN_ROUNDS</tt> or <tt>SHA_CRYPT_MAX_ROUNDS</tt>
     are set, they must have the minimum value of <tt>5000</tt>.
+
+srg_requirement: '{{{ full_name }}} shadow password suite must be configured to use a sufficient number of hashing rounds.'
+
+fixtext: |-
+    Configure {{{ full_name }}} to encrypt all stored passwords with a strong cryptographic hash.
+
+    Edit/modify the following line in the "/etc/login.defs" file and set "SHA_CRYPT_MIN_ROUNDS" to a value no lower than "5000":
+
+    SHA_CRYPT_MIN_ROUNDS 5000
