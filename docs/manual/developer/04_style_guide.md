@@ -1,6 +1,7 @@
 # ComplianceAsCode Style Guide
 
 ## Labels
+
 * Use labels efficiently
   * For example, use only the minimal necessary labels
 * Labels must have a clear and objective description
@@ -20,20 +21,22 @@
   * https://github.com/ComplianceAsCode/content/blob/master/.github/workflows/release-changelog.json
 
 ## Pull Requests
+
 * Should follow [the template](https://github.com/ComplianceAsCode/content/blob/master/.github/pull_request_template.md)
 * Shall remove the sample text from the template pull request
 * Shall not have merge commits, they should have to be taken out by [rebasing](https://docs.github.com/en/get-started/using-git/about-git-rebase)
 * Should target `master`, unless pulling an already merged pull request to a stabilization branch
 
 ### Before Merging
+
 * Must have the milestone set correctly
 * Must have the correct labels
 * Should be assigned to the reviewers
 
 ### Merging
+
 * Should use the [merge commit method](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges)
 * Should use the GitHub Web UI to document and ensure code reviews are done correctly
-
 
 ## General Coding Style
 
@@ -69,6 +72,7 @@ and keep these guidelines in mind when writing new code.
 ## Text-level Coding Style
 
 ### All Files
+
 * Shall use UNIX style line endings
 * Shall have one newline at the end of the file
 * Shall not have trailing whitespace, unless syntactically necessary
@@ -80,6 +84,7 @@ and keep these guidelines in mind when writing new code.
 * Maximum line length should be 99 characters
 
 ### Jinja
+
 * Shall use 4-space indentation
 * Shall have a docstring comment describe what the macro does
 * Shall have a docstring comment describing all parameters and their types
@@ -89,6 +94,7 @@ and keep these guidelines in mind when writing new code.
 * Shall have two blank lines between macros
 
 ### Python
+
 * All Python files should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
     * We use [PEP 8 Speaks](https://pep8speaks.com/) and it leaves a comment on PR if you have PEP8 issues in the Python file(s) you touched
     * We do make one change from PEP 8, our maximum line length is 99 characters
@@ -100,6 +106,7 @@ and keep these guidelines in mind when writing new code.
 * New Python 3 methods and scripts should have type hints
 
 ### YAML
+
 * All new YAML files shall use 4-space indentation
     * Existing YAML files may use 2-space indentation
 * Must be able to be parsed with PyYAML
@@ -107,11 +114,13 @@ and keep these guidelines in mind when writing new code.
 * Shall have one blank line between sections
 
 #### HTML Like Fields
+
 The sections below marked with an `(HTML Like)` means that a limited number of HTML elements are supported in these sections.
 The lists of elements below are **not** fully inclusive.
 Any elements that are not strictly for formatting shall not be used.
 
 We support the following elements:
+
 * `b` - Boldface
 * `br` - Line break
 * `code` - Inline code blocks
@@ -120,6 +129,7 @@ We support the following elements:
 * `tt` - Inline code blocks
 
 The following elements are not allowed:
+
 * `script`
 * `video`
 * `audio`
@@ -127,6 +137,7 @@ The following elements are not allowed:
 ## Schemas
 
 ### Rule
+
 This section describes the styleguide around the `rule.yml` files.
 * All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 * A rule should only address one configuration item change.
@@ -134,7 +145,9 @@ This section describes the styleguide around the `rule.yml` files.
 * When writing rule and a template is available, the template should be used over custom content
 
 #### Rule Sections
+
 Rules sections must be in the following order, if they are present.
+
 * `documentation_complete`
 * `prodtype`
     * Comma separated list
@@ -172,12 +185,16 @@ Rules sections must be in the following order, if they are present.
 * `template`
 
 ### Group
+
 This section describes the styleguide around the `group.yml` files.
+
 * All the above [YAML](manual/developer/04_style_guide:yaml) rules apply
 * A group should only contain rules that effect the same software or service
 
 #### Group Sections
+
 Group sections must be in the following order, if present.
+
 * `documentation_complete`
 * `title`
     * Must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
@@ -185,11 +202,14 @@ Group sections must be in the following order, if present.
 * `description` (HTML-Like)
 
 ### Benchmark
+
 This section describes the styleguide around the `benchmark.yml` files.
 All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 
 #### Benchmark Sections
+
 Benchmark sections must be in the following order, if they are present.
+
 * `documentation_complete`
 * `status`
 * `title`
@@ -201,11 +221,14 @@ Benchmark sections must be in the following order, if they are present.
 * `version`
 
 ### Controls
-These rules apply to the files in `controls/`
+
+These rules apply to the files in `controls/`.
 All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 
 #### Control Sections
+
 Control sections must be in the following order, if they are present.
+
 * `policy`
 * `title`
     * Must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
@@ -236,7 +259,9 @@ Control sections must be in the following order, if they are present.
 ### Profile
 
 #### Profile Sections
+
 Control sections must be in the following order, all sections are required unless otherwise noted.
+
 * `documentation_complete`
 * `id`
 * `metadata`
@@ -254,8 +279,10 @@ Control sections must be in the following order, all sections are required unles
 ## Remediation
 
 ### Header
+
 All remediations should have the following header with the appropriate values.
 The header should start on the first line.
+
 ```bash
 # platform = multi_platform_all
 # reboot = false
@@ -265,15 +292,18 @@ The header should start on the first line.
 ```
 
 #### `platform`
+
 Unless there is a good reason this should be `multi_platform_all`. 
 But if the rule only applies to a specific operating system or family of operating then should be used. 
 The values can be product names or values from `MULTI_PLATFORM_LIST` or `MULTI_PLATFORM_LIST` in [ssg/constants.py](https://github.com/ComplianceAsCode/content/blob/master/ssg/constants.py).
 
 #### `reboot`
+
 Must be true or false.
 Shall be true if the system needs to be rebooted in order for the changes to take effect.
 
 #### `strategy`
+
 Should be one of the following values:
 * configure
 * disable
@@ -283,30 +313,37 @@ Should be one of the following values:
 * unknown
 
 #### `complexity`
+
 Value must be low, medium, or high.
 
 #### `disruption`
+
 Value must be low, medium, or high.
 
 ### Ansible
+
 * Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
 * Should prefer using Ansible modules over just calling system commands
 * Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
 
 ### Bash
+
 * Should use Jinja macros instead of shared functions
 * Must use 4-space indentation
 * Shall put `do` or `then` on the same line as `for` or `if` respectively, e.g. `for file in *; do`
 
 ### Kubernetes
+
 * Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
 
 ## XML
+
 * Shall use the `.xml` for the file extension
 * Must be able to be parsed by Python's XML parser
 * Shall use 4-space indentation
 
 ### OVAL
+
 * The `id` attribute of `<definition>` should be `{{{ rule_id }}}`
 * The elements should be in the following order:
     * `def-group`
@@ -322,26 +359,33 @@ Value must be low, medium, or high.
 * If an element has an optional a `comment` it should be added
 
 #### Test Elements
+
 * `id` should start with `test_`
 
 #### Object Elements
+
 * `id` should start with `obj_`
 
 #### State Elements
+
 * `id` should start with `state_`
 
 ## Tests
+
 * Shall always do something, even if testing default behavior
 * Shall test one change
 * Shall use the `.sh` for the file extension
 * Shall use the `#!/bin/bash` shebang at the first line
 * Shall have a single empty line after the shebang line or after the last [header parameter](https://complianceascode.readthedocs.io/en/latest/tests/README.html#scenarios-format), like in the following valid examples:
+
 ```bash
 #!/bin/bash
 
 <code here>
 ```
+
 or
+
 ```bash
 #!/bin/bash
 # packages = audit
@@ -352,19 +396,24 @@ or
 * Must follow all the rules in the [Bash](manual/developer/04_style_guide:bash) section
 
 ## Markup Languages
+
 * Shall have [one sentence per line](https://asciidoctor.org/docs/asciidoc-recommended-practices/#one-sentence-per-line)
 
 ### Headings
+
 * Must have one blank line above headings
 * Must be in [Title case](https://en.wikipedia.org/wiki/Title_case)
 
 ### Markdown
+
 * Shall use the `.md` for the file extension
 
 ### ASCIIDoc
+
 * Shall use the `.adoc` for the file extension
 * Shall not be used for new documentation
 
 ### reStructuredText
+
 * Shall use the `.rst` for the file extension
 * Must only be used when necessary
