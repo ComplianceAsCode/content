@@ -102,6 +102,8 @@ The pull request removing the product should include the removal of
     1. any product specific checks or remediatons
     1. any product specific templates
 
+All issues and pull requests for product removal must use the [product-removal](https://github.com/ComplianceAsCode/content/labels/product-removal) label.
+
 #### Product Specific Profiles (PSPs)
 
 - Keeping track of the decomposition: Metadata in profile yml files, CODEOWNERS file
