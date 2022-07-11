@@ -1,9 +1,7 @@
 #!/bin/bash
 # packages = pam
-# platform = Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol
+# platform = Oracle Linux 7,Red Hat Enterprise Linux 7,Red Hat Virtualization 4,multi_platform_fedora
 # variables = var_password_pam_remember=5,var_password_pam_remember_control_flag=requisite
-
-{{{ bash_package_remove("authselect") }}}
 
 remember_cnt=3
 control_flag='requisite'
