@@ -75,6 +75,7 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
     - service_debug-shell_disabled
+    - grub2_systemd_debug-shell_argument_absent
 
     ### umask
     - var_accounts_user_umask=027
@@ -386,3 +387,4 @@ selections:
     - zipl_audit_backlog_limit_argument
     - zipl_init_on_alloc_argument
     - zipl_page_alloc_shuffle_argument
+    - zipl_systemd_debug-shell_argument_absent
