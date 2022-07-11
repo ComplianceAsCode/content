@@ -44,6 +44,7 @@ selections:
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_authorized_local_users_regex=ol8
     - var_accounts_passwords_pam_faillock_deny=3
+    - var_accounts_passwords_pam_faillock_dir=ol8
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - var_ssh_client_rekey_limit_size=1G
@@ -496,9 +497,8 @@ selections:
     # OL08-00-020014, OL08-00-020015
     - accounts_passwords_pam_faillock_unlock_time
 
-    # OL08-00-020016
-
-    # OL08-00-020017
+    # OL08-00-020016, OL08-00-020017
+    - accounts_passwords_pam_faillock_dir
 
     # OL08-00-020018
 

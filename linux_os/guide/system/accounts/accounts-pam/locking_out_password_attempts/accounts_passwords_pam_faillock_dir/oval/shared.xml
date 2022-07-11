@@ -1,0 +1,200 @@
+{{% set default_dir = "/var/run/faillock" %}}
+<def-group>
+      <definition class="compliance" id="{{{ rule_id }}}" version="5">
+            {{{ oval_metadata(" Persist lockout account after reboot") }}}
+            <!-- pam_faillock.so parameters should be defined in /etc/security/faillock.conf whenever
+                  possible. But due to backwards compatibility, they are also allowed in pam files
+                  directly. In case they are defined in both places, pam files have precedence and this
+                  may confuse the assessment. The following tests ensure only one option is used. Note
+                  that if faillock.conf is available, authselect tool only manage parameters on it -->
+            <criteria operator="OR"
+            comment="Check expected value for pam_faillock.so dir parameter">
+                  <criteria operator="AND"
+                  comment="Check expected pam_faillock.so dir parameter in pam files">
+                        <criterion
+                        test_ref="test_pam_faillock_dir_parameter_system_auth"
+                        comment="Check the dir parameter in auth section of system-auth file"/>
+                        <criterion
+                        test_ref="test_pam_faillock_dir_parameter_password_auth"
+                        comment="Check the dir parameter in auth section of password-auth file"/>
+                        <criterion
+                        test_ref="test_pam_faillock_dir_parameter_no_faillock_conf"
+                        comment="Ensure /etc/security/faillock.conf is not used together with pam files"/>
+                  </criteria>
+                  <criteria operator="AND"
+                  comment="Check expected pam_faillock.so dir parameter in faillock.conf">
+                        <criterion
+                        test_ref="test_pam_faillock_dir_parameter_no_pamd_system"
+                        comment="Check the dir parameter is not present system-auth file"/>
+                        <criterion
+                        test_ref="test_pam_faillock_dir_parameter_no_pamd_password"
+                        comment="Check the dir parameter is not present password-auth file"/>
+                        <criterion
+                        test_ref="test_pam_faillock_dir_parameter_faillock_conf"
+                        comment="Ensure the dir parameter is present in /etc/security/faillock.conf"/>
+                  </criteria>
+            </criteria>
+      </definition>
+
+      <constant_variable id="var_faillock_dir_parameter_regex" datatype="string" version="1"
+      comment="common regex to identify dir entry">
+            <value>dir\s*=\s*(\S+|"[^"]+)</value>
+      </constant_variable>
+
+      <local_variable id="var_pam_faillock_dir_parameter_regex" version="1" datatype="string"
+      comment="regex to identify dir parameter in pam files">
+            <concat>
+                  <literal_component>^[\s]*auth[\s]+(?:required|requisite)</literal_component>
+                  <literal_component>[\s]+pam_faillock.so[^\n#]*</literal_component>
+                  <variable_component var_ref="var_faillock_dir_parameter_regex"/>
+            </concat>
+      </local_variable>
+
+      <local_variable id="var_faillock_conf_dir_parameter_regex" version="1" datatype="string"
+      comment="regex to identify dir parameter in faillock.conf file">
+            <concat>
+                  <literal_component>^[\s]*</literal_component>
+                  <variable_component var_ref="var_faillock_dir_parameter_regex"/>
+            </concat>
+      </local_variable>
+
+      <local_variable id="var_faillock_dir_set_both_preauth_authfail_system_auth" version="1"
+      comment="Counts the unique occurrences of preauth and authfail so if it is two, it
+      demonstrates both are present, this takes the results from system-auth file" datatype="int">
+            <count>
+                  <unique>
+                        <regex_capture pattern="(authfail|preauth)">
+                              <object_component
+                              item_field="text"
+                              object_ref="obj_all_pam_faillock_dir_parameter_system_auth" />
+                        </regex_capture>
+                  </unique>
+            </count>
+      </local_variable>
+
+      <local_variable id="var_faillock_dir_set_both_preauth_authfail_password_auth" version="1"
+      comment="Counts the unique occurrences of preauth and authfail so if it is two, it
+      demonstrates both are present, this takes the results from password-auth file"
+      datatype="int">
+            <count>
+                  <unique>
+                        <regex_capture pattern="(authfail|preauth)">
+                              <object_component
+                              item_field="text"
+                              object_ref="obj_all_pam_faillock_dir_parameter_password_auth" />
+                        </regex_capture>
+                  </unique>
+            </count>
+      </local_variable>
+
+      <ind:textfilecontent54_state version="1"
+      id="state_pam_faillock_dir_parameter_not_default_value">
+            <ind:subexpression datatype="string" operation="not equal">{{{
+            default_dir }}}</ind:subexpression>
+      </ind:textfilecontent54_state>
+
+      <ind:textfilecontent54_object id="obj_all_pam_faillock_dir_parameter_system_auth"
+      comment="Get the pam_faillock.so preauth dir parameter from system-auth file" version="1">
+            <ind:filepath >/etc/pam.d/system-auth</ind:filepath>
+            <ind:pattern operation="pattern match"
+            var_ref="var_pam_faillock_dir_parameter_regex" />
+            <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+            <filter action="include"
+            >state_pam_faillock_dir_parameter_not_default_value</filter>
+      </ind:textfilecontent54_object>
+
+      <ind:textfilecontent54_object id="obj_all_pam_faillock_dir_parameter_password_auth"
+      comment="Get the pam_faillock.so preauth dir parameter from system-auth file" version="1">
+            <ind:filepath >/etc/pam.d/password-auth</ind:filepath>
+            <ind:pattern operation="pattern match"
+            var_ref="var_pam_faillock_dir_parameter_regex" />
+            <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+            <filter action="include">state_pam_faillock_dir_parameter_not_default_value</filter>
+      </ind:textfilecontent54_object>
+
+      <ind:textfilecontent54_object version="1"
+      id="obj_pam_faillock_authfail_dir_parameter_system_auth"
+      comment="Get the pam_faillock.so authfail dir parameter from system-auth file">
+            <ind:filepath >/etc/pam.d/system-auth</ind:filepath>
+            <ind:pattern operation="pattern match"
+            var_ref="var_pam_faillock_dir_parameter_regex"/>
+            <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+      </ind:textfilecontent54_object>
+
+      <!-- Check the pam_faillock.so dir parameter in system-auth -->
+      <ind:variable_state id="state_pam_faillock_dir_parameter_system_auth" version="1">
+            <ind:value>2</ind:value>
+      </ind:variable_state>
+
+      <ind:variable_object id="obj_pam_faillock_dir_parameter_system_auth"
+      version="1">
+            <ind:var_ref>var_faillock_dir_set_both_preauth_authfail_system_auth</ind:var_ref>
+      </ind:variable_object>
+
+      <ind:variable_test id="test_pam_faillock_dir_parameter_system_auth"
+      check="all" check_existence="all_exist" version="1"
+      comment="Check that the expected dir value in system-auth is present both with preauth and
+      authfail">
+            <ind:object
+            object_ref="obj_pam_faillock_dir_parameter_system_auth" />
+            <ind:state
+            state_ref="state_pam_faillock_dir_parameter_system_auth" />
+      </ind:variable_test>
+
+      <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      id="test_pam_faillock_dir_parameter_no_pamd_system"
+      comment="Check the absence of dir parameter in system-auth">
+            <ind:object
+            object_ref="obj_all_pam_faillock_dir_parameter_system_auth"/>
+      </ind:textfilecontent54_test>
+
+      <!-- Check the pam_faillock.so dir parameter in password-auth -->
+      <ind:variable_state id="state_pam_faillock_dir_parameter_password_auth" version="1">
+            <ind:value>2</ind:value>
+      </ind:variable_state>
+
+      <ind:variable_object id="obj_pam_faillock_dir_parameter_password_auth"
+      version="1">
+            <ind:var_ref>var_faillock_dir_set_both_preauth_authfail_password_auth</ind:var_ref>
+      </ind:variable_object>
+
+      <ind:variable_test id="test_pam_faillock_dir_parameter_password_auth"
+      check="all" check_existence="all_exist" version="1"
+      comment="Check that the expected dir value in password-auth is present both with preauth and
+      authfail">
+            <ind:object
+            object_ref="obj_pam_faillock_dir_parameter_password_auth" />
+            <ind:state
+            state_ref="state_pam_faillock_dir_parameter_password_auth" />
+      </ind:variable_test>
+
+      <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      id="test_pam_faillock_dir_parameter_no_pamd_password"
+      comment="Check the absence of dir parameter in password-auth">
+            <ind:object
+            object_ref="obj_all_pam_faillock_dir_parameter_password_auth"/>
+      </ind:textfilecontent54_test>
+
+      <!-- Check pam_faillock.so dir parameter in /etc/security/faillock.conf -->
+      <ind:textfilecontent54_object version="1"
+      id="object_pam_faillock_dir_parameter_faillock_conf"
+      comment="Check the expected pam_faillock.so dir parameter in /etc/security/faillock.conf">
+            <ind:filepath>/etc/security/faillock.conf</ind:filepath>
+            <ind:pattern operation="pattern match"
+            var_ref="var_faillock_conf_dir_parameter_regex"/>
+            <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+      </ind:textfilecontent54_object>
+
+      <ind:textfilecontent54_test check="all" check_existence="all_exist" version="1"
+      id="test_pam_faillock_dir_parameter_faillock_conf"
+      comment="Check the expected dir value in in /etc/security/faillock.conf">
+            <ind:object object_ref="object_pam_faillock_dir_parameter_faillock_conf"/>
+            <ind:state state_ref="state_pam_faillock_dir_parameter_not_default_value"/>
+      </ind:textfilecontent54_test>
+
+      <ind:textfilecontent54_test check="all" check_existence="none_exist" version="1"
+      id="test_pam_faillock_dir_parameter_no_faillock_conf"
+      comment="Check the absence of dir parameter in /etc/security/faillock.conf">
+            <ind:object object_ref="object_pam_faillock_dir_parameter_faillock_conf"/>
+      </ind:textfilecontent54_test>
+</def-group>
