@@ -389,7 +389,7 @@ controls:
     status: automated
     rules:
     - chronyd_specify_remote_server
-    - var_multiple_time_servers=rhel
+    - var_multiple_time_servers=alinux
     - chronyd_run_as_chrony_user
 
   - id: 2.1.2
@@ -1291,7 +1291,7 @@ controls:
     notes: <-
       The rule checks for default list of MACs provided in the benchmark.
     rules:
-    - sshd_approved_macs=cis_rhel7
+    - sshd_approved_macs=cis_alinux2
     - sshd_use_approved_macs
 
   - id: 5.2.14
@@ -1328,7 +1328,7 @@ controls:
     notes: <-
       The rule checks for default list of ciphers provided in the benchmark.
     rules:
-    - sshd_approved_ciphers=cis_rhel7
+    - sshd_approved_ciphers=cis_alinux2
     - sshd_use_approved_ciphers
 
   - id: 5.2.18
@@ -1384,8 +1384,6 @@ controls:
     status: automated
     notes: |-
       Usage of pam_unix.so module together with "remember" option is deprecated and is not supported by this policy interpretation.
-      See here for more details about pam_unix.so:
-      https://bugzilla.redhat.com/show_bug.cgi?id=1778929
     rules:
     - var_password_pam_remember=5
     - var_password_pam_remember_control_flag=required
