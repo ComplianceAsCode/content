@@ -367,7 +367,7 @@ all_cmake_products=(
 ...
 product_directories = ['debian9', 'fedora', 'ol7', 'ol8', 'opensuse',
                        'rhel7', 'rhel8', 'sle12',
-                       'ubuntu1604', 'ubuntu1804', 'wrlinux', 'rhosp13',
+                       'ubuntu1604', 'ubuntu1804', 'rhosp13',
                        'chromium', 'eap6', 'firefox', 'fuse6', 'jre',
                        'example'<b>, 'custom6'</b>]
 ...
@@ -387,7 +387,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
 <pre>
 ...
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
+                       "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
 ...
 </pre>
 <pre>
