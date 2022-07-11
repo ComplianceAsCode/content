@@ -734,6 +734,30 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
 
 {{#
+    Macro used to apply changes on authselect profiles. The command automatically creates a backup
+    of the current settings before applying the changes. It is possible to inform a custom backup
+    name through the "backup_name" parameter. If the "backup_name" parameter is not defined, the
+    authselect default name is used. The default name is formed by the current date and time
+    suffixed by 6 random alphanumeric characters. The authselect backups are stored in sub-folders
+    inside the "/var/lib/authselect/backups" folder, identified by their respective backup names.
+    Note: An existing backup can be overwritten if the same backup name is informed. If this is
+    not desired, avoid defining a backup name.
+
+:param backup_name:        Changes the default backup name used by authselect.
+
+#}}
+{{% macro ansible_apply_authselect_changes(backup_name='') -%}}
+- name: '{{{ rule_title }}} - Ensure authselect changes are applied'
+  ansible.builtin.command:
+    {{%- if backup_name == '' %}}
+    cmd: authselect apply-changes -b
+    {{%- else %}}
+    cmd: authselect apply-changes -b --backup={{{ backup_name }}}
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
     Enable authselect feature if the authselect current profile is intact or inform that its
     integrity check failed.
 #}}
@@ -756,9 +780,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     - result_authselect_check_cmd is success
     - result_authselect_features.stdout is not search("{{{ feature }}}")
 
-- name: '{{{ rule_title }}} - Ensure changes are applied after enabling a feature'
-  ansible.builtin.command:
-    cmd: authselect apply-changes -b --backup=before-hardening-custom-profile.backup
+{{{ ansible_apply_authselect_changes() }}}
   when:
     - result_authselect_enable_feature_cmd is not skipped
     - result_authselect_enable_feature_cmd is success
@@ -1114,9 +1136,7 @@ Part of the grub2_bootloader_argument_absent template.
       when:
         - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
 
-    - name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied after module line changes'
-      ansible.builtin.command:
-        cmd: authselect apply-changes -b --backup=after-hardening-{{{ module }}}.backup
+    {{{ ansible_apply_authselect_changes() | indent(4) }}}
       when:
         - (result_pam_module_add is defined and result_pam_module_add.changed) or (result_pam_module_edit is defined and result_pam_module_edit.changed)
   when:
@@ -1261,10 +1281,7 @@ Part of the grub2_bootloader_argument_absent template.
     - authselect_current_profile is not match("custom/")
     - not result_authselect_custom_profile_present.stat.exists
 
-- name: '{{{ rule_title }}} - Ensure a backup of current authselect profile before selecting the custom profile'
-  ansible.builtin.command:
-    cmd: authselect apply-changes -b --backup=before-hardening-custom-profile.backup
-  register: result_authselect_backup
+{{{ ansible_apply_authselect_changes('before-hardening-custom-profile') }}}
   when:
     - result_authselect_check_cmd is success
     - result_authselect_profile is not skipped
@@ -1291,9 +1308,7 @@ Part of the grub2_bootloader_argument_absent template.
     - result_authselect_features is not skipped
     - result_pam_authselect_select_profile is not skipped
 
-- name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied'
-  ansible.builtin.command:
-    cmd: authselect apply-changes -b --backup=after-hardening-custom-profile.backup
+{{{ ansible_apply_authselect_changes('after-hardening-custom-profile') }}}
   when:
     - result_authselect_check_cmd is success
     - result_authselect_profile is not skipped
@@ -1363,9 +1378,7 @@ Part of the grub2_bootloader_argument_absent template.
     {{{ ansible_ensure_pam_module_option('{{ pam_file_path }}', group, control, module, option, value, after_match) | indent(4) }}}
     {{%- endif %}}
 
-    - name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied'
-      ansible.builtin.command:
-        cmd: authselect apply-changes -b --backup=after-hardening-custom-profile.backup
+    {{{ ansible_apply_authselect_changes() | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
         - (result_pam_{{{ option }}}_add is defined and result_pam_{{{ option }}}_add.changed) or (result_pam_{{{ option }}}_edit is defined and result_pam_{{{ option }}}_edit.changed)
@@ -1398,9 +1411,7 @@ Part of the grub2_bootloader_argument_absent template.
 
     {{{ ansible_remove_pam_module_option('{{ pam_file_path }}', group, control, module, option) | indent(4) }}}
 
-    - name: '{{{ rule_title }}} - Ensure the authselect custom profile changes are applied'
-      ansible.builtin.command:
-        cmd: authselect apply-changes -b --backup=after-{{{ module }}}-{{{ option }}}-removal.backup
+    {{{ ansible_apply_authselect_changes() | indent(4) }}}
       when:
         - result_authselect_present.stat.exists
         - result_pam_option_removal is changed
