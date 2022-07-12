@@ -4,7 +4,7 @@
 . $SHARED/dconf_test_functions.sh
 
 clean_dconf_settings
-{{% if 'sle' in product }}
+{{% if 'sle' in product %}}
 {{{ add_dconf_setting("org/gnome/desktop/lockdown", "disable-lock-screen", "false", "local.d", "00-security-settings") }}}
 {{% else %}}
 {{{ add_dconf_setting "org/gnome/desktop/screensaver" "lock-enabled" "false" "local.d" "00-security-settings" }}}
