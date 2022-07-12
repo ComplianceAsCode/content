@@ -1881,20 +1881,23 @@ fi
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
 :param control:         PAM control flags.
 :param module:          PAM module name.
-:param after_match:     Regex used as reference to include the line below, if necessary. Optional parameter.
+:param after_match:     Regex used as reference to append a line, if necessary. Optional parameter.
+                        Note: For this macro, there is a special value used to include a line at the beginning of the file: "BOF"
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
 if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{{{ pam_file }}}"; then
     # Line matching group + control + module was not found. Check group + module.
-    if [ $(grep -cP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}") -eq 1 ]; then
+    if [ "$(grep -cP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}")" -eq 1 ]; then
         # The control is updated only if one single line matches.
         sed -i -E --follow-symlinks 's/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
     else
         {{%- if after_match == '' %}}
         echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
+        {{%- elif after_match == 'BOF'  %}}
+        sed -i --follow-symlinks '1i {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
         {{%- else %}}
-        sed -i --follow-symlinks '/{{{ after_match }}}/a {{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+        sed -i --follow-symlinks '/{{{ after_match }}}/a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
         {{%- endif %}}
     fi
 fi
