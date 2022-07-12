@@ -947,13 +947,35 @@ fi
 
 
 {{#
+    Macro used to apply changes on authselect profiles. The command automatically creates a backup
+    of the current settings before applying the changes. It is possible to inform a custom backup
+    name through the "backup_name" parameter. If the "backup_name" parameter is not defined, the
+    authselect default name is used. The default name is formed by the current date and time
+    suffixed by 6 random alphanumeric characters. The authselect backups are stored in sub-folders
+    inside the "/var/lib/authselect/backups" folder, identified by their respective backup names.
+    Note: An existing backup can be overwritten if the same backup name is informed. If this is
+    not desired, avoid defining a backup name.
+
+:param backup_name:        Changes the default backup name used by authselect.
+
+#}}
+{{% macro bash_apply_authselect_changes(backup_name='') -%}}
+{{%- if backup_name == '' %}}
+authselect apply-changes -b
+{{%- else %}}
+authselect apply-changes -b --backup={{{ backup_name }}}
+{{%- endif %}}
+{{%- endmacro %}}
+
+
+{{#
     Enable authselect feature if the authselect current profile is intact or inform that its
     integrity check failed.
 #}}
 {{%- macro bash_enable_authselect_feature(feature) -%}}
 {{{ bash_check_authselect_integrity() }}}
 authselect enable-feature {{{ feature }}}
-authselect apply-changes
+{{{ bash_apply_authselect_changes() }}}
 {{%- endmacro -%}}
 
 
@@ -1846,30 +1868,36 @@ fi
     parameter. If the "after_match" parameter is empty, the line will be included at the end of
     the file informed in the "pam_file" parameter.
     If the line was already present, but with a different control, the control will be updated.
-    Note: If there are multiple lines matching the "group" + "module", only the first line will be
-    updated. This is a conservative safeguard for improper use of this macro in rare cases of
-    modules configured by multiple lines, like pam_sss.so and pam_faillock.so. In some situations,
-    these special modules may have similar lines sharing the same "group" and "module". For these
-    specific cases, this macro is not recommened and a custom remediation should be considered.
+    Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
+    Instead, a new line will be included after the regex informed in "after_match" or at the
+    end of file if "after_match" parameter is empty.
+    This is a conservative safeguard for improper use of this macro in rare cases of modules
+    configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
+    situations, these special modules may have similar lines sharing the same "group" and "module".
+    For these specific cases, this macro is not recommened without careful tests to make sure the
+    PAM module is working as expected. Otherwise, a custom remediation should be considered.
 
 :param pam_file:        PAM config file.
 :param group:           PAM management group: auth, account, password or session. Also known as "type".
 :param control:         PAM control flags.
 :param module:          PAM module name.
-:param after_match:     Regex used as reference to include the line below, if necessary. Optional parameter.
+:param after_match:     Regex used as reference to append a line, if necessary. Optional parameter.
+                        Note: For this macro, there is a special value used to include a line at the beginning of the file: "BOF"
 
 #}}
 {{%- macro bash_ensure_pam_module_line(pam_file, group, control, module, after_match='') -%}}
 if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{{{ pam_file }}}"; then
     # Line matching group + control + module was not found. Check group + module.
-    if grep -qP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}"; then
-        # If more occurrences match the search, only the first will be updated.
-        sed -i -E --follow-symlinks '0,/^\s*{{{ group }}}\s+.*{{{ module }}}\s*.*/ s/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
+    if [ "$(grep -cP '^\s*{{{ group }}}\s+.*\s+{{{ module }}}\s*' "{{{ pam_file }}}")" -eq 1 ]; then
+        # The control is updated only if one single line matches.
+        sed -i -E --follow-symlinks 's/^(\s*{{{ group }}}\s+).*(\b{{{ module }}}.*)/\1'"{{{ control }}}"' \2/' "{{{ pam_file }}}"
     else
         {{%- if after_match == '' %}}
         echo '{{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' >> "{{{ pam_file }}}"
+        {{%- elif after_match == 'BOF'  %}}
+        sed -i --follow-symlinks '1i {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
         {{%- else %}}
-        sed -i --follow-symlinks '/{{{ after_match }}}/a {{{ group }}}    '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+        sed -i --follow-symlinks '/{{{ after_match }}}/a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
         {{%- endif %}}
     fi
 fi
@@ -1891,7 +1919,7 @@ fi
 {{%- macro bash_ensure_pam_module_option(pam_file, group, control, module, option, value='', after_match='') -%}}
 {{{ bash_ensure_pam_module_line(pam_file, group, control, module, after_match) }}}
 # Check the option
-if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}' "{{{ pam_file }}}"; then
+if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*\s{{{ option }}}\b' "{{{ pam_file }}}"; then
     {{%- if value == '' %}}
     sed -i -E --follow-symlinks '/\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}.*/ s/$/ {{{ option }}}/' "{{{ pam_file }}}"
     {{%- else %}}
@@ -1962,12 +1990,12 @@ if [[ ! $CURRENT_PROFILE == custom/* ]]; then
     ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')
     authselect create-profile hardening -b $CURRENT_PROFILE
     CURRENT_PROFILE="custom/hardening"
-    authselect apply-changes -b --backup=before-hardening-custom-profile.backup
+    {{{ bash_apply_authselect_changes('before-hardening-custom-profile') | indent(4) }}}
     authselect select $CURRENT_PROFILE
     for feature in $ENABLED_FEATURES; do
         authselect enable-feature $feature;
     done
-    authselect apply-changes -b --backup=after-hardening-custom-profile.backup
+    {{{ bash_apply_authselect_changes('after-hardening-custom-profile') | indent(4) }}}
 fi
 {{%- endmacro %}}
 
@@ -1990,11 +2018,11 @@ fi
 if [ -e "{{{ pam_file }}}" ] ; then
     PAM_FILE_PATH="{{{ pam_file }}}"
     if [ -f /usr/bin/authselect ]; then
-        {{{ bash_check_authselect_integrity() | indent(12) }}}
+        {{{ bash_check_authselect_integrity() | indent(8) }}}
         {{{ bash_ensure_authselect_custom_profile() | indent(8) }}}
         PAM_FILE_NAME=$(basename "{{{ pam_file }}}")
         PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
-        authselect apply-changes -b --backup=before-hardening-{{{ module }}}-{{{ option }}}.backup
+        {{{ bash_apply_authselect_changes() | indent(8) }}}
     fi
     {{%- if option == '' %}}
     {{{ bash_ensure_pam_module_line("$PAM_FILE_PATH", group, control, module, after_match) }}}
@@ -2002,7 +2030,7 @@ if [ -e "{{{ pam_file }}}" ] ; then
     {{{ bash_ensure_pam_module_option("$PAM_FILE_PATH", group, control, module, option, value, after_match) | indent(8) }}}
     {{%- endif %}}
     if [ -f /usr/bin/authselect ]; then
-        authselect apply-changes -b --backup=after-hardening-{{{ module }}}-{{{ option }}}.backup
+        {{{ bash_apply_authselect_changes() | indent(8) }}}
     fi
 else
     echo "{{{ pam_file }}} was not found" >&2
@@ -2029,11 +2057,11 @@ if [ -e "{{{ pam_file }}}" ] ; then
         {{{ bash_ensure_authselect_custom_profile() | indent(8) }}}
         PAM_FILE_NAME=$(basename "{{{ pam_file }}}")
         PAM_FILE_PATH="/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME"
-        authselect apply-changes -b --backup=before-hardening-{{{ module }}}-{{{ option }}}-removal.backup
+        {{{ bash_apply_authselect_changes() | indent(8) }}}
     fi
     {{{ bash_remove_pam_module_option("$PAM_FILE_PATH", group, control, module, option) }}}
     if [ -f /usr/bin/authselect ]; then
-        authselect apply-changes -b --backup=after-hardening-{{{ module }}}-{{{ option }}}-removal.backup
+        {{{ bash_apply_authselect_changes() | indent(8) }}}
     fi
 else
     echo "{{{ pam_file }}} was not found" >&2
