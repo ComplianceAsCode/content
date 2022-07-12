@@ -33,8 +33,7 @@ cat << EOF > /kubernetes-api-resources/apis/oauth.openshift.io/v1/oauthclients
             },
             "redirectURIs": [
                 "https://console-openshift-console.apps.wenshen-51.devcluster.openshift.com/auth/callback"
-            ],
-            "secret": "dJMp_5ycCRhHs3I5292BHRWjgS6AEuCEEYc5SIuelts"
+            ]
         },
         {
             "apiVersion": "oauth.openshift.io/v1",
@@ -49,8 +48,7 @@ cat << EOF > /kubernetes-api-resources/apis/oauth.openshift.io/v1/oauthclients
             },
             "redirectURIs": [
                 "https://oauth-openshift.apps.wenshen-51.devcluster.openshift.com/oauth/token/display"
-            ],
-            "secret": "8QYXnBP3Hna9GZKn3Uf5cBUPiGGJfobsdClkZkQKYQM"
+            ]
         },
         {
             "apiVersion": "oauth.openshift.io/v1",
