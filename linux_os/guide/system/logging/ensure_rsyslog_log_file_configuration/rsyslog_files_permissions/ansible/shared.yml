@@ -20,17 +20,20 @@
     set -o pipefail
     grep -e '$IncludeConfig' {{ rsyslog_etc_config }} | cut -d ' ' -f 2 || true
   register: include_config_output
+  changed_when: False
 
 - name: "Get include files directives"
   shell: |
     set -o pipefail
     grep -oP '^\s*include\s*\(\s*file.*' {{ rsyslog_etc_config }} |cut  -d"\"" -f 2 || true
   register: include_files_output
+  changed_when: False
 
 - name: "List all config files"
   shell: find "$(dirname "{{ item }}" )" -maxdepth 1 -name "$(basename "{{ item }}")"
   loop: "{{ include_config_output.stdout_lines + include_files_output.stdout_lines }}"
   register: rsyslog_config_files
+  changed_when: False
 
 - name: "Extract log files"
   shell: |
@@ -38,6 +41,7 @@
     grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item }}  |awk '{print $NF}'|sed -e 's/^-//'
   loop: "{{ rsyslog_config_files.results|map(attribute='stdout_lines')|list|flatten|unique + [ rsyslog_etc_config ] }}"
   register: log_files
+  changed_when: False
 
 - name: "Setup log files permissions"
   ignore_errors: yes
