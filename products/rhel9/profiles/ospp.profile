@@ -58,7 +58,6 @@ selections:
     # sshd
     - sshd_use_directory_configuration
     - sshd_disable_root_login
-    - sshd_enable_strictmodes
     - disable_host_auth
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
