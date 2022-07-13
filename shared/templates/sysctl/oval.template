@@ -136,6 +136,7 @@
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
     <criteria operator="AND">
       <criteria operator="OR">
+{{% if SYSCTLVAL is string %}}
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.conf"
                    test_ref="test_{{{ rule_id }}}_static"/>
         <!-- see sysctl.d(5) -->
@@ -147,6 +148,21 @@
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                    test_ref="test_{{{ rule_id }}}_static_usr_lib_sysctld"/>
 {{% endif %}}
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /etc/sysctl.conf"
+                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}"/>
+        <!-- see sysctl.d(5) -->
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /etc/sysctl.d/*.conf"
+                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}_etc_sysctld"/>
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /run/sysctl.d/*.conf"
+                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}_run_sysctld"/>
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /usr/lib/sysctl.d/*.conf"
+                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}_usr_lib_sysctld"/>
+{{% endif %}}
+{{% endfor %}}
+{{% endif %}}
       </criteria>
 {{% if target_oval_version >= [5, 11] %}}
       <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_{{{ rule_id }}}_defined_in_one_file" />
@@ -154,6 +170,7 @@
     </criteria>
   </definition>
 
+{{% if SYSCTLVAL is string %}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static" version="1"
                               check="all" check_existence="all_exist"
                               comment="{{{ SYSCTLVAR }}} static configuration">
@@ -176,6 +193,37 @@
                           comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
+{{% endif %}}
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}" version="1"
+                              check="all" check_existence="all_exist"
+                              comment="{{{ SYSCTLVAR }}} static configuration">
+    <ind:object object_ref="object_static_sysctl_{{{ rule_id }}}"/>
+    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}_etc_sysctld" version="1" check="all"
+                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
+    <ind:object object_ref="object_static_etc_sysctld_{{{ rule_id }}}"/>
+    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}_run_sysctld" version="1" check="all"
+                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf">
+    <ind:object object_ref="object_static_run_sysctld_{{{ rule_id }}}"/>
+    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
+  </ind:textfilecontent54_test>
+
+{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}_usr_lib_sysctld" version="1"
+                          check="all"
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf">
+    <ind:object object_ref="object_static_usr_lib_sysctld_{{{ rule_id }}}"/>
+    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
+  </ind:textfilecontent54_test>
+{{% endif %}}
+{{% endfor %}}
 {{% endif %}}
 
 {{% if target_oval_version >= [5, 11] %}}
@@ -318,6 +366,7 @@
     {{{ sysctl_match() }}}
   </ind:textfilecontent54_object>
 {{% endif %}}
+{{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" %}}
 
   <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}" version="1">
@@ -335,6 +384,13 @@
     <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ SYSCTLVAL }}}</ind:subexpression>
 {{% endif %}}
   </ind:textfilecontent54_state>
+{{% endif %}}
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+  <ind:textfilecontent54_state id="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}" version="1">
+    <ind:subexpression operation="{{{ OPERATION }}}" datatype="{{{ DATATYPE }}}">{{{ x }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+{{% endfor %}}
 {{% endif %}}
 </def-group>
 {{%- endif -%}}
