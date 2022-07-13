@@ -1,0 +1,73 @@
+{{% set path = "/etc/ssh" %}}
+{{% set key_regex = ".*_key$" %}}
+
+{{% set ssh_group_id = 995 %}}
+{{% set name_to_id = {"root": 0, "ssh_keys": ssh_group_id} %}}
+
+{{% macro _name(user_name, type) -%}}
+{{{ type }}}_ssh_key_owner_{{{ user_name }}}
+{{%- endmacro %}}
+
+{{% macro _test_object_state(username, groupname) %}}
+
+  <unix:file_state comment="All keys in {{{ path }}} have the right permissions" id="{{{ _name(groupname, 'filter') }}}" version="1">
+      <unix:path>{{{ path }}}</unix:path>
+      <unix:filename operation="pattern match">{{{ key_regex }}}</unix:filename>
+      <unix:group_id datatype="int">{{{ name_to_id[groupname] }}}</unix:group_id>
+      <unix:user_id datatype="int">{{{ name_to_id[username] }}}</unix:user_id>
+
+      {{{ caller() }}}
+
+  </unix:file_state>
+{{% endmacro %}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The system sshd key is owned by root:root and has the 0600 permission, or by a root:ssh_keys with 0640 permission") }}}
+
+    <criteria operator="OR">
+      <criterion comment="foo"
+      test_ref="test_no_offending_keys" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="No keys that have unsafe ownership/permissions combination" id="test_no_offending_keys" version="1">
+	  <unix:object object_ref="object_offending_keys" />
+  </unix:file_test>
+
+  <unix:file_object comment="All keys in {{{ path }}} with unsafe ownership/permission combination" id="object_offending_keys" version="1">
+      <unix:path>{{{ path }}}</unix:path>
+      <unix:filename operation="pattern match">{{{ key_regex }}}</unix:filename>
+      <filter action="exclude">{{{ _name('root', 'filter') }}}</filter>
+      <filter action="exclude">{{{ _name('ssh_keys', 'filter') }}}</filter>
+  </unix:file_object>
+
+  {{% call _test_object_state("root", "root") %}}
+      {{# <unix:uread datatype="boolean">true</unix:uread> #}}
+      {{# <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
+      <unix:uexec datatype="boolean">false</unix:uexec>
+
+      <unix:gread datatype="boolean">false</unix:gread>
+      <unix:gwrite datatype="boolean">false</unix:gwrite>
+      <unix:gexec datatype="boolean">false</unix:gexec>
+
+      <unix:oread datatype="boolean">false</unix:oread>
+      <unix:owrite datatype="boolean">false</unix:owrite>
+      <unix:oexec datatype="boolean">false</unix:oexec>
+  {{% endcall %}}
+
+  {{% call _test_object_state("root", "ssh_keys") %}}
+      {{# <unix:uread datatype="boolean">true</unix:uread> #}}
+      {{# <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
+      <unix:uexec datatype="boolean">false</unix:uexec>
+
+      {{# <unix:gread datatype="boolean">true</unix:gread> #}}
+      <unix:gwrite datatype="boolean">false</unix:gwrite>
+      <unix:gexec datatype="boolean">false</unix:gexec>
+
+      <unix:oread datatype="boolean">false</unix:oread>
+      <unix:owrite datatype="boolean">false</unix:owrite>
+      <unix:oexec datatype="boolean">false</unix:oexec>
+  {{% endcall %}}
+
+</def-group>
