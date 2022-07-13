@@ -20,7 +20,7 @@ for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf; do
   fi
 done
 
-{{%- if SYSCTLVAL == "" %}}
+{{%- if SYSCTLVAL_REMEDIATE == "" %}}
 {{{ bash_instantiate_variables("sysctl_" + SYSCTLID + "_value") }}}
 
 #
@@ -38,11 +38,11 @@ done
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
+/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL_REMEDIATE }}}"
 
 #
-# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
-#	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL }}}" to /etc/sysctl.conf
+# If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL_REMEDIATE }}}"
+#	else, add "{{{ SYSCTLVAR }}} = {{{ SYSCTLVAL_REMEDIATE }}}" to /etc/sysctl.conf
 #
-{{{ bash_replace_or_append('/etc/sysctl.conf', '^' + SYSCTLVAR , SYSCTLVAL ) }}}
+{{{ bash_replace_or_append('/etc/sysctl.conf', '^' + SYSCTLVAR , SYSCTLVAL_REMEDIATE ) }}}
 {{%- endif %}}

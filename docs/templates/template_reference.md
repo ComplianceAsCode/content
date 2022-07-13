@@ -818,6 +818,14 @@ The selected value can be changed in the profile (consult the actual variable fo
     -   **sysctlval** - value of the sysctl value, eg. `'1'`. If this
         parameter is not specified, XCCDF Value is used instead.
 
+    -   **sysctlval_remediate** - the value that will be used in remediations.
+        If **sysctlval_remediate** is not specified, the template will use the
+        value of the **sysctlval** parameter in the remediations.
+        This parameter is mandatory when the **sysctlval** parameter is a list
+        because we need to know which of the values in the list the system
+        should be remedied to. When  the **sysctlval** parameter is not a list
+        this parameter is optional.
+
     -   **operation** - operation used for comparison of collected object
         with **sysctlval**. Default value: `equals`.
 
