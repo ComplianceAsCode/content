@@ -1,5 +1,7 @@
 {{%- if SYSCTLVAL == "" %}}
 {{%- set COMMENT_VALUE="the appropriate value" %}}
+{{%- elif SYSCTLVAL is sequence %}}
+{{%- set COMMENT_VALUE = SYSCTLVAL | join(" or " ) %}}
 {{%- else %}}
 {{%- set COMMENT_VALUE=SYSCTLVAL %}}
 {{%- endif %}}
@@ -60,21 +62,43 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_runtime" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.") }}}
+{{% if SYSCTLVAL is string %}}
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                  test_ref="test_{{{ rule_id }}}_runtime"/>
     </criteria>
+{{% elif SYSCTLVAL is sequence %}}
+    <criteria operator="OR">
+{{% for x in SYSCTLVAL %}}
+      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ x }}}"
+                 test_ref="test_{{{ rule_id }}}_runtime_{{{ x }}}"/>
+{{% endfor %}}
+    </criteria>
+{{% endif %}}
   </definition>
+
+{{% if SYSCTLVAL is string %}}
   <unix:sysctl_test id="test_{{{ rule_id }}}_runtime" version="1"
                     comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                     check="all" check_existence="all_exist">
     <unix:object object_ref="object_{{{ rule_id }}}_runtime"/>
     <unix:state state_ref="state_{{{ rule_id }}}_runtime"/>
   </unix:sysctl_test>
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+  <unix:sysctl_test id="test_{{{ rule_id }}}_runtime_{{{ x }}}" version="1"
+                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ x }}}"
+                    check="all" check_existence="all_exist">
+    <unix:object object_ref="object_{{{ rule_id }}}_runtime"/>
+    <unix:state state_ref="state_{{{ rule_id }}}_runtime_{{{ x }}}" />
+  </unix:sysctl_test>
+{{% endfor %}}
+{{% endif %}}
 
   <unix:sysctl_object id="object_{{{ rule_id }}}_runtime" version="1">
     <unix:name>{{{ SYSCTLVAR }}}</unix:name>
   </unix:sysctl_object>
+{{% if SYSCTLVAL is string %}}
 {{% if SYSCTLVAL == "" %}}
   <unix:sysctl_state id="state_{{{ rule_id }}}_runtime" version="1">
     <unix:value datatype="{{{ DATATYPE }}}" operation="equals"
@@ -94,6 +118,14 @@
 {{% endif %}}
   </unix:sysctl_state>
 {{%- endif %}}
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+  <unix:sysctl_state id="state_{{{ rule_id }}}_runtime_{{{ x }}}" version="1">
+    <unix:value datatype="{{{ DATATYPE }}}"
+                operation="{{{ OPERATION }}}">{{{ x }}}</unix:value>
+  </unix:sysctl_state>
+{{% endfor %}}
+{{% endif %}}
 </def-group>
 
 {{%- endif -%}}

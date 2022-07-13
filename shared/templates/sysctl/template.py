@@ -12,6 +12,13 @@ def preprocess(data, lang):
     if "operation" not in data:
         data["operation"] = "equals"
 
+    if data["datatype"] not in ["string", "int"]:
+        raise ValueError(
+            "Test scenarios for data type '{0}' are not implemented yet.\n"
+            "Please check if rule '{1}' has correct data type and edit "
+            "{2} to add tests for it.".format(
+                data["datatype"], data["_rule_id"], __file__))
+
     # Configure data for test scenarios
     if data["sysctlval"] == "":
         if data["datatype"] == "int":
@@ -20,20 +27,19 @@ def preprocess(data, lang):
         elif data["datatype"] == "string":
             data["sysctl_correct_value"] = "correct_value"
             data["sysctl_wrong_value"] = "wrong_value"
-        else:
+    elif isinstance(data["sysctlval"], list):
+        if len(data["sysctlval"]) == 0:
             raise ValueError(
-                "Test scenarios for data type '{0}' are not implemented yet.\n"
-                "Please check if rule '{1}' has correct data type and edit "
-                "{2} to add tests for it.".format(data["datatype"], data["_rule_id"], __file__))
+                "The sysctlval parameter of {0} is an empty list".format(data["_rule_id"]))
+        data["sysctl_correct_value"] = data["sysctlval"][0]
+        if data["datatype"] == "int":
+            data["sysctl_wrong_value"] = "1" + data["sysctlval"][0]
+        elif data["datatype"] == "string":
+            data["sysctl_wrong_value"] = "wrong_value"
     else:
         data["sysctl_correct_value"] = data["sysctlval"]
         if data["datatype"] == "int":
             data["sysctl_wrong_value"] = "1" + data["sysctlval"]
         elif data["datatype"] == "string":
             data["sysctl_wrong_value"] = "wrong_value"
-        else:
-            raise ValueError(
-                "Test scenarios for data type '{0}' are not implemented yet.\n"
-                "Please check if rule '{1}' has correct data type and edit "
-                "{2} to add tests for it.".format(data["datatype"], data["_rule_id"], __file__))
     return data
