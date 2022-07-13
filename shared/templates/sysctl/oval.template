@@ -134,6 +134,9 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
+{{% if MISSING_STATIC_PASS == "true" %}}
+    <criteria operator="OR">
+{{% endif %}}
     <criteria operator="AND">
       <criteria operator="OR">
 {{% if SYSCTLVAL is string %}}
@@ -168,7 +171,19 @@
       <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_{{{ rule_id }}}_defined_in_one_file" />
 {{% endif %}}
     </criteria>
+{{% if MISSING_STATIC_PASS == "true" %}}
+      <criterion comment="Check that {{{ SYSCTLID }}} is not defined in any file" test_ref="test_{{{ rule_id }}}_not_defined" />
+    </criteria>
+{{% endif %}}
   </definition>
+
+{{% if MISSING_STATIC_PASS == "true" %}}
+  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_not_defined" version="1"
+                              check="all" check_existence="none_exist"
+                              comment="{{{ SYSCTLVAR }}} static configuration">
+    <ind:object object_ref="object_{{{ rule_id }}}_static_set_sysctls" />
+  </ind:textfilecontent54_test>
+{{% endif %}}
 
 {{% if SYSCTLVAL is string %}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static" version="1"
