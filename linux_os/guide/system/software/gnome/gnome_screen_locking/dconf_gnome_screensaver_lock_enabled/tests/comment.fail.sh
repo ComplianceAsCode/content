@@ -8,6 +8,6 @@ clean_dconf_settings
 {{{ add_dconf_setting("org/gnome/desktop/lockdown", "disable-lock-screen", "false", "local.d", "00-security-settings") }}}
 {{{ add_dconf_lock("org/gnome/desktop/lockdown", "disable-lock-screen", "local.d", "00-security-settings-lock") }}}
 {{% else %}}
-{{{ add_dconf_setting "org/gnome/desktop/screensaver" "#lock-enabled" "true" "local.d" "00-security-settings"}}}
-{{{ add_dconf_lock "org/gnome/desktop/screensaver" "lock-enabled" "local.d" "00-security-settings"}}}
+{{{ add_dconf_setting("org/gnome/desktop/screensaver", "#lock-enabled", "true", "local.d", "00-security-settings") }}}
+{{{ add_dconf_lock("org/gnome/desktop/screensaver", "lock-enabled", "local.d", "00-security-settings") }}}
 {{% endif %}}
