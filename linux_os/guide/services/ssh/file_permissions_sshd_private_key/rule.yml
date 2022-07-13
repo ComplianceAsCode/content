@@ -2,16 +2,13 @@ documentation_complete: true
 
 title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
-{{% if product == 'rhcos4' %}}
-{{% set perms = "-rw-r-----" %}}
-{{% set perms_num = "0640" %}}
-{{% else %}}
 {{% set perms = "-rw-------" %}}
 {{% set perms_num = "0600" %}}
-{{% endif %}}
 
 description: |-
-    {{{ describe_file_permissions(file="/etc/ssh/*_key", perms=perms_num) }}}
+    SSH server private keys - files that match the <code>/etc/ssh/*_key</code> glob, have to have restricted permissions.
+    If those files are owned by the <code>root</code> user and the <code>root</code> group, they have to have the <code>0600</code> permission or stricter.
+    If they are owned by the <code>root</code> user, but by a dedicated group with <code>gid0</code> > 0, they can have the <code>0640</code> permission or stricter.
 
 rationale: |-
     If an unauthorized user obtains the private SSH host key file, the host could be
