@@ -827,6 +827,9 @@ The selected value can be changed in the profile (consult the actual variable fo
         should be remedied to. When  the **sysctlval** parameter is not a list
         this parameter is optional.
 
+    -   **sysctlval_wrong** - the value that is always wrong. This will be used
+        only in the test scenarios only if **sysctlval** is a list.
+
     -   **missing_static_pass** - if set to `true` the check will pass if the
         setting for the given **sysctlvar** is not present in sysctl
         configuration files. In other words, the check will pass if the system
