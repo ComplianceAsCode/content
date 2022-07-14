@@ -815,7 +815,8 @@ The selected value can be changed in the profile (consult the actual variable fo
 
     -   **datatype** - data type of the sysctl value, eg. `int`.
 
-    -   **sysctlval** - value of the sysctl value, eg. `'1'`. If this
+    -   **sysctlval** - value of the sysctl value. This can be either an atomic
+        value, eg. `'1'`, or a list of values, eg. `['1','2']`. If this
         parameter is not specified, XCCDF Value is used instead.
 
     -   **sysctlval_remediate** - the value that will be used in remediations.
