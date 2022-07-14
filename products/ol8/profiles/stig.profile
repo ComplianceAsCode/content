@@ -668,10 +668,8 @@ selections:
     # OL08-00-020330
     - sshd_disable_empty_passwords
 
-    # OL08-00-020331
+    # OL08-00-020331, OL08-00-020332
     - no_empty_passwords
-
-    # OL08-00-020332
 
     # OL08-00-020340
     - display_login_attempts
