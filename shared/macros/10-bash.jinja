@@ -1014,7 +1014,9 @@ fi
 {{%- endmacro -%}}
 
 {{#
-    Sets PAM faillock module options and values.
+    Sets PAM faillock module options and values. In case the file
+    /etc/security/faillock.conf is present in the system, the option is removed from pam files
+    since it is not needed there in that case.
     It also adds pam_faillock.so as required module for account.
 
 :param option: faillock option eg. deny, unlock_time, fail_interval
@@ -1022,6 +1024,7 @@ fi
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='') -%}}
+AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
     {{%- if value == '' %}}
@@ -1037,11 +1040,14 @@ if [ -f $FAILLOCK_CONF ]; then
     fi
     {{%- else %}}
     else
-        sed -i --follow-symlinks 's/^\s*\({{{ option }}}\s*=\s*\)\([0-9]\+\)/\1'"{{{ value }}}"'/g' $FAILLOCK_CONF
+        sed -i --follow-symlinks 's|^\s*\({{{ option }}}\s*=\s*\)\(\S\+\)|\1'"{{{ value }}}"'|g' $FAILLOCK_CONF
     fi
     {{%- endif %}}
+    for pam_file in "${AUTH_FILES[@]}"
+    do
+        {{{ bash_remove_pam_module_option_configuration("$pam_file",'auth','','pam_faillock.so', option ) | indent(8) }}}
+    done
 else
-    AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
     for pam_file in "${AUTH_FILES[@]}"
     do
         if ! grep -qE '^\s*auth.*pam_faillock.so (preauth|authfail).*{{{ option }}}' "$pam_file"; then
@@ -1947,10 +1953,10 @@ fi
 #}}
 {{%- macro bash_remove_pam_module_option(pam_file, group, control, module, option) -%}}
 {{%- if control == '' %}}
-if grep -qP '^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}[=\s$]' "{{{ pam_file }}}"; then
+if grep -qP '^\s*{{{ group }}}\s.*\b{{{ module }}}\s.*\b{{{ option }}}\b' "{{{ pam_file }}}"; then
     sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*{{{ module }}}.*)\b{{{ option }}}\b=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
 {{%- else %}}
-if grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s.*\b{{{ option }}}[=\s$]' "{{{ pam_file }}}"; then
+if grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s.*\b{{{ option }}}\b' "{{{ pam_file }}}"; then
     sed -i -E --follow-symlinks 's/(.*{{{ group }}}.*'"{{{ control }}}"'.*{{{ module }}}.*)\s{{{ option }}}=?[[:alnum:]]*(.*)/\1\2/g' "{{{ pam_file }}}"
 {{%- endif %}}
 fi
