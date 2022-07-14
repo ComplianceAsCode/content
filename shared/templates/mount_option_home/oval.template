@@ -1,9 +1,19 @@
+{{% set non_allowed_partitions = ["/lib",
+                                  "/opt",
+                                  "/usr",
+                                  "/bin",
+                                  "/sbin",
+                                  "/boot",
+                                  "/dev",
+                                  "/proc"] %}}
 <def-group>
     <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
         {{{ oval_metadata("Home mount points should be mounted with mount option " + MOUNTOPTION + ".") }}}
         <criteria>
             <criterion comment="{{{ MOUNTOPTION }}} on Home mount points"
             test_ref="test_home_partition_{{{ MOUNTOPTION }}}" />
+            <criterion comment="Home directory is not in a unexpected partition"
+            test_ref="test_home_allowed_partition_{{{ MOUNTOPTION }}}" />
         </criteria>
     </definition>
 
@@ -46,4 +56,20 @@
     <linux:partition_state id="state_home_partition_{{{ MOUNTOPTION }}}" version="1">
         <linux:mount_options datatype="string" entity_check="at least one" operation="equals">{{{ MOUNTOPTION }}}</linux:mount_options>
     </linux:partition_state>
+
+    <ind:variable_test check="none satisfy" check_existence="all_exist"
+    comment="Home mount points aren't in unexpected partition"
+    id="test_home_allowed_partition_{{{ MOUNTOPTION }}}" version="1">
+      <ind:object object_ref="object_home_allowed_partition_{{{ MOUNTOPTION }}}" />
+      <ind:state state_ref="state_home_allowed_partition_{{{ MOUNTOPTION }}}" />
+    </ind:variable_test>
+    <ind:variable_object id="object_home_allowed_partition_{{{ MOUNTOPTION }}}" version="1">
+      <ind:var_ref>var_home_partitions_mount_points_{{{ MOUNTOPTION }}}</ind:var_ref>
+    </ind:variable_object>
+    <ind:variable_state comment="unexpected partition"
+    id="state_home_allowed_partition_{{{ MOUNTOPTION }}}" version="1">
+      <ind:value entity_check="at least one" operation="pattern match"
+      datatype="string">^{{{ non_allowed_partitions | join("$|^") }}}$</ind:value>
+    </ind:variable_state>
+
 </def-group>
