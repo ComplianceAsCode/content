@@ -1,0 +1,26 @@
+{{% set audisp_config_file_path = audisp_conf_path + "/audisp-remote.conf" %}}
+<def-group>
+  <definition class="compliance" id="auditd_audispd_network_failure_action" version="1">
+    {{{ oval_metadata("remote_server setting in " + audisp_config_file_path + " is set to a certain IP address or hostname") }}}
+    <criteria>
+        <criterion comment="remote_server setting in audisp-remote.conf" test_ref="test_auditd_audispd_network_failure_action" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="the action the operating system takes if there is an error sending audit records to a remote system" id="test_auditd_audispd_network_failure_action" version="1">
+    <ind:object object_ref="object_auditd_audispd_network_failure_action" />
+    <ind:state state_ref="state_auditd_audispd_network_failure_action" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_auditd_audispd_network_failure_action" version="1">
+    <ind:filepath>{{{ audisp_config_file_path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[ ]*network_failure_action[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_auditd_audispd_network_failure_action" version="1">
+    <ind:subexpression operation="equals" var_ref="var_audispd_network_failure_action" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="audispd network failure action" datatype="string" id="var_audispd_network_failure_action" version="1" />
+</def-group>
