@@ -11,6 +11,10 @@ pkg_system: "rpm"
 
 init_system: "systemd"
 
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
 cpes_root: "../../shared/applicability"
 cpes:
   - rhcos4:
