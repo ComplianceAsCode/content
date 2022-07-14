@@ -21,7 +21,12 @@
     <ind:var_ref>var_system_crypto_policy</ind:var_ref>
   </ind:variable_object>
   <ind:variable_state comment="variable value is set to 'FIPS' or 'FIPS:modifier', where the modifier corresponds to a crypto policy module that further restricts the modified crypto policy." id="ste_system_crypto_policy_value" version="2">
+  {{% if product in ["ol9","rhel9"] -%}}
+    <ind:value operation="pattern match" datatype="string">^FIPS(:OSPP)?$</ind:value>
+  {{%- else %}}
+  {{# Legacy and more relaxed list of crypto policies that were historically considered FIPS-compatible. More recent products should use the more restricted list of options #}}
     <ind:value operation="pattern match" datatype="string">^FIPS(:(OSPP|NO-SHA1|NO-CAMELLIA))?$</ind:value>
+  {{%- endif %}}
   </ind:variable_state>
   {{% if product in ["ol8","rhel8"] %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" id="test_grubenv_fips_mode"
