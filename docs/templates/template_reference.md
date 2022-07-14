@@ -827,6 +827,11 @@ The selected value can be changed in the profile (consult the actual variable fo
         should be remedied to. When  the **sysctlval** parameter is not a list
         this parameter is optional.
 
+    -   **missing_static_pass** - if set to `true` the check will pass if the
+        setting for the given **sysctlvar** is not present in sysctl
+        configuration files. In other words, the check will pass if the system
+        default isn't overriden by configuration. Default value: `false`.
+
     -   **operation** - operation used for comparison of collected object
         with **sysctlval**. Default value: `equals`.
 
