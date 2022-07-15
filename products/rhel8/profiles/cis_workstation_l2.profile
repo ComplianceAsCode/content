@@ -1,8 +1,9 @@
 documentation_complete: true
 
 metadata:
-    version: 1.0.1
+    version: 2.0.0
     SMEs:
+        - marcusburghardt
         - vojtapolasek
         - yuumasato
 
@@ -13,7 +14,7 @@ title: 'CIS Red Hat Enterprise Linux 8 Benchmark for Level 2 - Workstation'
 description: |-
     This profile defines a baseline that aligns to the "Level 2 - Workstation"
     configuration from the Center for Internet Security® Red Hat Enterprise
-    Linux 8 Benchmark™, v1.0.1, released 2021-05-19.
+    Linux 8 Benchmark™, v2.0.0, released 2022-02-23.
 
     This profile includes Center for Internet Security®
     Red Hat Enterprise Linux 8 CIS Benchmarks™ content.
