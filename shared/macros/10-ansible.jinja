@@ -857,7 +857,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{#
   This macro make sure the informed parameter from pam_faillock.so PAM module is properly set. In
   case the file /etc/security/faillock.conf is present in the system, the option is removed from
-  pam files since it is not needed there in that case.
+  PAM files since it is not needed there in that case.
 
   :param parameter:         The pam_faillock.so parameter name.
   :param faillock_var_name: If the parameter expects a value from a variable, the variable name is informed here.
