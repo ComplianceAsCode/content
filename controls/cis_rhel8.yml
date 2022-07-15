@@ -1299,14 +1299,17 @@ controls:
       - l1_workstation
     status: pending
 
+  # NEEDS RULE
   - id: 3.4.3.2.6
     title: Ensure iptables is enabled and active (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: automated
-    rules:
+    status: pending
+    related_rules:
       - service_iptables_enabled
+      # This rule returns error in RHEL8 because the iptables service is not there.
+      # This requirement and respective rules should be reviewed.
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5258
@@ -1350,14 +1353,17 @@ controls:
       - l1_workstation
     status: pending
 
+  # NEEDS RULE
   - id: 3.4.3.3.6
     title: Ensure ip6tables is enabled and active (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: automated
-    rules:
+    status: pending
+    related_rules:
       - service_ip6tables_enabled
+      # This rule returns error in RHEL8 because the ip6tables service is not there.
+      # This requirement and respective rules should be reviewed.
 
   - id: 4.1.1.1
     title: Ensure auditd is installed (Automated)
