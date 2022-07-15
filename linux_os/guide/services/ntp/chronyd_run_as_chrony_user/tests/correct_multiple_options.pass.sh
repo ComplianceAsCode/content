@@ -2,4 +2,4 @@
 # packages = chrony
 
 
-echo 'OPTIONS="-g -u chrony"' > /etc/sysconfig/chronyd
+echo 'OPTIONS="-g -uchrony"' > /etc/sysconfig/chronyd
