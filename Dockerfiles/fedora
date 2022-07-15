@@ -1,8 +1,9 @@
-FROM fedora:28
+FROM fedora:latest
 
 ENV OSCAP_USERNAME oscap
 ENV OSCAP_DIR content
 ENV BUILD_JOBS 4
+ENV ANSIBLE_LOCAL_TEMP /home/$OSCAP_USERNAME/.ansible/tmp
 
 RUN true \
 	&& dnf -y upgrade \
