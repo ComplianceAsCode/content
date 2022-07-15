@@ -11,6 +11,10 @@ rationale: |-
 
 severity: medium
 
+identifiers:
+    cce@rhel8: CCE-85955-3
+    cce@rhel9: CCE-85960-3
+
 references:
     cis-csc: 1,11,12,13,14,15,16,18,3,4,6,8,9
     cis@rhel7: 3.5.3.3.6
@@ -23,6 +27,8 @@ references:
     nist: AC-4,CM-7(b),CA-3(5),SC-7(21),CM-6(a)
     nist-csf: DE.AE-1,ID.AM-3,PR.AC-5,PR.DS-5,PR.IP-1,PR.PT-3,PR.PT-4
 
+platform: machine
+
 ocil: |-
     If IPv6 is disabled, this is not applicable.
     <br /><br />
@@ -33,5 +39,3 @@ template:
     vars:
         servicename: ip6tables
         packagename: iptables-ipv6
-
-platform: machine
