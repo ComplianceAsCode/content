@@ -585,16 +585,6 @@ cd build/
 make zipfile
 ```
 
-There is also target to build zip file containing contents specific for a vendor's product.
-
-```bash
-cd build/
-# To build content zipfiles of all vendors:
-make vendor-zipfile
-# To build Red Hat zipfiles:
-make redhat-zipfile
-```
-
 ### Build the Docker container image
 
 Find a suitable Dockerfile present in the
