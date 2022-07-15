@@ -979,6 +979,7 @@ selections:
     - package_rsh-server_removed
 
     # OL08-00-040020
+    - kernel_module_uvcvideo_disabled
 
     # OL08-00-040021
     - kernel_module_atm_disabled
