@@ -72,6 +72,7 @@ selections:
     - var_auditd_disk_full_action=rhel8
     - var_sssd_certificate_verification_digest_function=sha1
     - login_banner_text=dod_banners
+    - var_authselect_profile=sssd
 
     ### Enable / Configure FIPS
     - enable_fips_mode
@@ -81,6 +82,9 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
+
+    # Other needed rules
+    - enable_authselect
 
     ### Rules:
     # RHEL-08-010000
