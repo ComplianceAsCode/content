@@ -210,6 +210,7 @@ selections:
 - disable_ctrlaltdel_reboot
 - disable_users_coredumps
 - display_login_attempts
+- enable_authselect
 - enable_dracut_fips_module
 - enable_fips_mode
 - encrypt_partitions
@@ -465,6 +466,7 @@ selections:
 - var_auditd_disk_full_action=rhel8
 - var_sssd_certificate_verification_digest_function=sha1
 - login_banner_text=dod_banners
+- var_authselect_profile=sssd
 - var_system_crypto_policy=fips
 - var_sudo_timestamp_timeout=always_prompt
 - var_slub_debug_options=P
