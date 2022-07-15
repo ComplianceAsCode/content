@@ -1084,6 +1084,7 @@ selections:
     - service_usbguard_enabled
 
     # OL08-00-040150
+    - firewalld-backend
 
     # OL08-00-040159
     - package_openssh-server_installed
