@@ -8,7 +8,13 @@
 
 {{% macro state_static_sysctld(prefix) -%}}
     <ind:object object_ref="object_static_{{{ prefix }}}_{{{ rule_id }}}"/>
+{{% if SYSCTLVAL is string %}}
     <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}"/>
+{{% elif SYSCTLVAL is sequence %}}
+{{% for x in SYSCTLVAL %}}
+    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}" />
+{{% endfor %}}
+{{% endif %}}
 {{%- endmacro -%}}
 {{%- macro sysctl_match() -%}}
 {{%- if SYSCTLVAL == "" -%}}
@@ -62,38 +68,24 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_runtime" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system runtime.") }}}
-{{% if SYSCTLVAL is string %}}
     <criteria operator="AND">
       <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
                  test_ref="test_{{{ rule_id }}}_runtime"/>
     </criteria>
-{{% elif SYSCTLVAL is sequence %}}
-    <criteria operator="OR">
-{{% for x in SYSCTLVAL %}}
-      <criterion comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ x }}}"
-                 test_ref="test_{{{ rule_id }}}_runtime_{{{ x }}}"/>
-{{% endfor %}}
-    </criteria>
-{{% endif %}}
   </definition>
 
-{{% if SYSCTLVAL is string %}}
   <unix:sysctl_test id="test_{{{ rule_id }}}_runtime" version="1"
                     comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}}"
-                    check="all" check_existence="all_exist">
+                    check="all" check_existence="all_exist" state_operator="OR">
     <unix:object object_ref="object_{{{ rule_id }}}_runtime"/>
+{{% if SYSCTLVAL is string %}}
     <unix:state state_ref="state_{{{ rule_id }}}_runtime"/>
-  </unix:sysctl_test>
 {{% elif SYSCTLVAL is sequence %}}
 {{% for x in SYSCTLVAL %}}
-  <unix:sysctl_test id="test_{{{ rule_id }}}_runtime_{{{ x }}}" version="1"
-                    comment="kernel runtime parameter {{{ SYSCTLVAR }}} set to {{{ x }}}"
-                    check="all" check_existence="all_exist">
-    <unix:object object_ref="object_{{{ rule_id }}}_runtime"/>
     <unix:state state_ref="state_{{{ rule_id }}}_runtime_{{{ x }}}" />
-  </unix:sysctl_test>
 {{% endfor %}}
 {{% endif %}}
+  </unix:sysctl_test>
 
   <unix:sysctl_object id="object_{{{ rule_id }}}_runtime" version="1">
     <unix:name>{{{ SYSCTLVAR }}}</unix:name>
@@ -139,7 +131,6 @@
 {{% endif %}}
     <criteria operator="AND">
       <criteria operator="OR">
-{{% if SYSCTLVAL is string %}}
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /etc/sysctl.conf"
                    test_ref="test_{{{ rule_id }}}_static"/>
         <!-- see sysctl.d(5) -->
@@ -150,21 +141,6 @@
 {{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
         <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ COMMENT_VALUE }}} in /usr/lib/sysctl.d/*.conf"
                    test_ref="test_{{{ rule_id }}}_static_usr_lib_sysctld"/>
-{{% endif %}}
-{{% elif SYSCTLVAL is sequence %}}
-{{% for x in SYSCTLVAL %}}
-        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /etc/sysctl.conf"
-                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}"/>
-        <!-- see sysctl.d(5) -->
-        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /etc/sysctl.d/*.conf"
-                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}_etc_sysctld"/>
-        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /run/sysctl.d/*.conf"
-                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}_run_sysctld"/>
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-        <criterion comment="kernel static parameter {{{ SYSCTLVAR }}} set to {{{ x }}} in /usr/lib/sysctl.d/*.conf"
-                   test_ref="test_{{{ rule_id }}}_static_{{{ x }}}_usr_lib_sysctld"/>
-{{% endif %}}
-{{% endfor %}}
 {{% endif %}}
       </criteria>
 {{% if target_oval_version >= [5, 11] %}}
@@ -185,60 +161,28 @@
   </ind:textfilecontent54_test>
 {{% endif %}}
 
-{{% if SYSCTLVAL is string %}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static" version="1"
                               check="all" check_existence="all_exist"
-                              comment="{{{ SYSCTLVAR }}} static configuration">
+                              comment="{{{ SYSCTLVAR }}} static configuration" state_operator="OR">
     {{{ state_static_sysctld("sysctl") }}}
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_etc_sysctld" version="1" check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("etc_sysctld") }}}
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_run_sysctld" version="1" check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("run_sysctld") }}}
   </ind:textfilecontent54_test>
 
 {{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
   <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_usr_lib_sysctld" version="1"
                           check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf">
+                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf" state_operator="OR">
     {{{ state_static_sysctld("usr_lib_sysctld") }}}
   </ind:textfilecontent54_test>
-{{% endif %}}
-{{% elif SYSCTLVAL is sequence %}}
-{{% for x in SYSCTLVAL %}}
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}" version="1"
-                              check="all" check_existence="all_exist"
-                              comment="{{{ SYSCTLVAR }}} static configuration">
-    <ind:object object_ref="object_static_sysctl_{{{ rule_id }}}"/>
-    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}_etc_sysctld" version="1" check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /etc/sysctl.d/*.conf">
-    <ind:object object_ref="object_static_etc_sysctld_{{{ rule_id }}}"/>
-    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}_run_sysctld" version="1" check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /run/sysctl.d/*.conf">
-    <ind:object object_ref="object_static_run_sysctld_{{{ rule_id }}}"/>
-    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
-  </ind:textfilecontent54_test>
-
-{{% if product not in [ "ol7", "ol8", "ol9", "rhcos4", "rhel7", "rhel8", "rhel9"] %}}
-  <ind:textfilecontent54_test id="test_{{{ rule_id }}}_static_{{{ x }}}_usr_lib_sysctld" version="1"
-                          check="all"
-                          comment="{{{ SYSCTLVAR }}} static configuration in /usr/lib/sysctl.d/*.conf">
-    <ind:object object_ref="object_static_usr_lib_sysctld_{{{ rule_id }}}"/>
-    <ind:state state_ref="state_static_sysctld_{{{ rule_id }}}_{{{ x }}}"/>
-  </ind:textfilecontent54_test>
-{{% endif %}}
-{{% endfor %}}
 {{% endif %}}
 
 {{% if target_oval_version >= [5, 11] %}}
