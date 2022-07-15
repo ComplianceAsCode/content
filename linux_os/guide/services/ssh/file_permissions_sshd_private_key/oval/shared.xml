@@ -50,7 +50,9 @@
       {{# <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
       <unix:uexec datatype="boolean">false</unix:uexec>
 
+      {{% if product != 'rhcos4' -%}}
       <unix:gread datatype="boolean">false</unix:gread>
+{{%- endif %}}
       <unix:gwrite datatype="boolean">false</unix:gwrite>
       <unix:gexec datatype="boolean">false</unix:gexec>
 
