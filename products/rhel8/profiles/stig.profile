@@ -82,6 +82,9 @@ selections:
     - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
 
+    # Other needed rules
+    - enable_authselect
+
     ### Rules:
     # RHEL-08-010000
     - installed_OS_is_vendor_supported
