@@ -855,7 +855,9 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 {{%- endmacro -%}}
 
 {{#
-  This macro make sure the informed parameter from pam_faillock.so PAM module is properly set.
+  This macro make sure the informed parameter from pam_faillock.so PAM module is properly set. In
+  case the file /etc/security/faillock.conf is present in the system, the option is removed from
+  PAM files since it is not needed there in that case.
 
   :param parameter:         The pam_faillock.so parameter name.
   :param faillock_var_name: If the parameter expects a value from a variable, the variable name is informed here.
@@ -884,6 +886,14 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
     state: present
   when:
     - result_faillock_conf_check.stat.exists
+
+- name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter not in PAM files
+  block:
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
+  when:
+    - result_faillock_conf_check.stat.exists
+
 
 - name: {{{ rule_title }}} - Ensure the pam_faillock.so {{{ parameter }}} parameter in PAM files
   block:
