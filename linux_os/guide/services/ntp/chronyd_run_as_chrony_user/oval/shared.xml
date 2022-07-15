@@ -30,5 +30,5 @@
 
 </def-group>
 {{%- else -%}}
-{{{ oval_check_config_file(path='/etc/sysconfig/chronyd', prefix_regex='^[ \\t]*', parameter='OPTIONS', separator_regex='=', value='["]?.*-u chrony.*["]?', missing_parameter_pass=ok_by_default, missing_config_file_fail=true) }}}
+{{{ oval_check_config_file(path='/etc/sysconfig/chronyd', prefix_regex='^[ \\t]*', parameter='OPTIONS', separator_regex='=', value='["]?.*-u[\s]*chrony.*["]?', missing_parameter_pass=ok_by_default, missing_config_file_fail=true) }}}
 {{%- endif %}}

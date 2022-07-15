@@ -19,7 +19,7 @@
 - name: "Remove any previous configuration of user used to run chronyd process"
   replace:
     path: /etc/sysconfig/chronyd
-    regexp: '\s*-u\s+\w+\s*'
+    regexp: '\s*-u\s*\w+\s*'
     replace: ' '
   when: chronyd_file is defined and chronyd_file.matched > 0
 
