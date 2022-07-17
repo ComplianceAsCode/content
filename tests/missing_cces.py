@@ -20,8 +20,7 @@ def match_profile(needle, haystack):
 def good_profile(profile_id, filter_profiles):
     if len(filter_profiles) == 0:
         return True
-    if len(list(filter(lambda x: match_profile(x, profile_id),
-                       filter_profiles))) == 0:
+    if len(list(filter(lambda x: match_profile(x, profile_id), filter_profiles))) == 0:
         return False
     return True
 
@@ -72,7 +71,6 @@ if __name__ == "__main__":
         "-p", "--profiles", help="Comma-separated list to check for missing CCEs",
         default='', required=False)
     args = parser.parse_args()
-    print(args)
     root = ssg.xml.parse_file(args.datastream_path)
     rules_missing_cce = check_all_rules(root, args.profiles.split(","))
     ds = os.path.basename(args.datastream_path)
