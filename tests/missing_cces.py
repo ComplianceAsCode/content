@@ -58,16 +58,17 @@ def check_all_rules(root, filter_profiles):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Checks the all rules that are part of at least one "
-        "profile have a CCE assigned."
-        "Optionally with -p provide comma-separated profile list to check against.")
+        "profile have a CCE assigned. "
+        "Optionally with -p/--profiles provide comma-separated profile list to check against.")
     parser.add_argument(
         "datastream_path", help="Path to a SCAP source datastream")
     parser.add_argument(
-        "-p", help="Comma-separated list to check for missing CCEs",
+        "-p", "--profiles", help="Comma-separated list to check for missing CCEs",
         default='', required=False)
     args = parser.parse_args()
+    print(args)
     root = ssg.xml.parse_file(args.datastream_path)
-    rules_missing_cce = check_all_rules(root, args.p.split(","))
+    rules_missing_cce = check_all_rules(root, args.profiles.split(","))
     ds = os.path.basename(args.datastream_path)
     if len(rules_missing_cce) > 0:
         print("The following rules in %s are missing CCEs:" % (ds))
