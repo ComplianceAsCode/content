@@ -3,6 +3,7 @@ from __future__ import print_function
 import argparse
 import os.path
 import sys
+import itertools
 
 import ssg.xml
 from ssg.constants import cce_uri, OSCAP_RULE, XCCDF12_NS
@@ -23,17 +24,31 @@ def good_profile(profile_id, filter_profiles):
     return True
 
 
-def get_selected_rules(benchmark, filter_profiles):
-    rules = set()
+def get_selections_by_profile(benchmark, filter_profiles):
+    selections = []
     for profile in benchmark.findall(".//{%s}Profile" % (XCCDF12_NS)):
         if not good_profile(profile.get('id'), filter_profiles):
             continue
-        for selection in profile.findall(".//{%s}select" % (XCCDF12_NS)):
-            idref = selection.get("idref")
-            selected = selection.get("selected")
-            if idref.startswith(OSCAP_RULE) and selected == "true":
-                rules.add(idref)
+        selections.append(profile.findall(".//{%s}select" % (XCCDF12_NS)))
+    return list(itertools.chain(*selections))
+
+
+def get_selected_rules(benchmark, filter_profiles):
+    rules = set()
+    selections = get_selections_by_profile(benchmark, filter_profiles)
+    for selection in selections:
+        idref = selection.get("idref")
+        selected = selection.get("selected")
+        if idref.startswith(OSCAP_RULE) and selected == "true":
+            rules.add(idref)
     return rules
+
+
+def match_rule_by_ident(rule):
+    for ident in rule.findall("{%s}ident" % (XCCDF12_NS)):
+        if ident.get("system") == cce_uri:
+            return True
+    return False
 
 
 def check_all_rules(root, filter_profiles):
@@ -45,11 +60,7 @@ def check_all_rules(root, filter_profiles):
             rule_id = rule.get("id")
             if rule_id not in selected_rules:
                 continue
-            match = False
-            for ident in rule.findall("{%s}ident" % (XCCDF12_NS)):
-                if ident.get("system") == cce_uri:
-                    match = True
-                    break
+            match = match_rule_by_ident(rule)
             if not match:
                 rules_missing_cce.append(rule_id)
     return rules_missing_cce
