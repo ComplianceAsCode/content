@@ -6,6 +6,7 @@ import sys
 import itertools
 
 import ssg.xml
+from ssg.build_renumber import _find_identcce
 from ssg.constants import cce_uri, OSCAP_RULE, XCCDF12_NS
 
 
@@ -19,7 +20,8 @@ def match_profile(needle, haystack):
 def good_profile(profile_id, filter_profiles):
     if len(filter_profiles) == 0:
         return True
-    if len(list(filter(lambda x: match_profile(x, profile_id), filter_profiles))) == 0:
+    if len(list(filter(lambda x: match_profile(x, profile_id),
+                       filter_profiles))) == 0:
         return False
     return True
 
@@ -44,13 +46,6 @@ def get_selected_rules(benchmark, filter_profiles):
     return rules
 
 
-def match_rule_by_ident(rule):
-    for ident in rule.findall("{%s}ident" % (XCCDF12_NS)):
-        if ident.get("system") == cce_uri:
-            return True
-    return False
-
-
 def check_all_rules(root, filter_profiles):
     rules_missing_cce = []
     root = ssg.xml.parse_file(args.datastream_path)
@@ -60,8 +55,8 @@ def check_all_rules(root, filter_profiles):
             rule_id = rule.get("id")
             if rule_id not in selected_rules:
                 continue
-            match = match_rule_by_ident(rule)
-            if not match:
+            match = _find_identcce(rule, XCCDF12_NS)
+            if match is None:
                 rules_missing_cce.append(rule_id)
     return rules_missing_cce
 
