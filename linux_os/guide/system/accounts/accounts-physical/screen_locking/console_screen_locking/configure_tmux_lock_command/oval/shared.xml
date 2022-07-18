@@ -4,6 +4,7 @@
     <criteria comment="Configure the tmux Lock Command" operator="AND">
       <criterion comment="check lock-command is set to vlock in /etc/tmux.conf"
         test_ref="test_configure_tmux_lock_command" />
+      <extend_definition comment="Check /etc/tmux.conf is readable by others" definition_ref="tmux_conf_readable_by_others" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"

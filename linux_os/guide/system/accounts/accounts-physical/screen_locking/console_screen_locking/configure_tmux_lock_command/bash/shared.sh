@@ -7,4 +7,4 @@ if grep -qP '^\s*set\s+-g\s+lock-command' "$tmux_conf" ; then
 else
     echo "set -g lock-command vlock" >> "$tmux_conf"
 fi
-
+chmod 0644 "$tmux_conf"
