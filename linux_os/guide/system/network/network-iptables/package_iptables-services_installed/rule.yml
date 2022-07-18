@@ -8,8 +8,10 @@ description: |-
     {{{ describe_package_install(package="iptables-services") }}}
 
 rationale: |-
-    <tt>iptables-services</tt> permits to load iptables rules during the system startup or
-    to reload iptables rules in runtime.
+    <tt>iptables-services</tt> provides the services iptables and ip6tables that have been split
+    out of the base package since they are not active by default anymore.
+    These services load the iptables rules during the system startup and also allow one to reload
+    the iptables rules during runtime.
 
 severity: medium
 
