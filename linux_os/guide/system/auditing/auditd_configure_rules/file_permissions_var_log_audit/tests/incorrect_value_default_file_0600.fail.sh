@@ -1,5 +1,6 @@
 #!/bin/bash
 # platform = multi_platform_ol,multi_platform_rhel
+# packages = audit
 
 source common_0600.sh
 
