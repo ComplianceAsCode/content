@@ -16,6 +16,7 @@
     value: "true"
     create: yes
     no_extra_spaces: yes
+  when: ansible_distribution != 'SLES'
 
 - name: "Prevent user modification of GNOME lock-enabled"
   lineinfile:
@@ -23,6 +24,25 @@
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled$'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes
+  when: ansible_distribution != 'SLES'
+
+- name: "Enable GNOME3 Screensaver Lock After Idle Period"
+  ini_file:
+    dest: "/etc/dconf/db/local.d/00-security-settings"
+    section: "org/gnome/desktop/lockdown"
+    option: disable-lock-screen
+    value: "false"
+    create: yes
+    no_extra_spaces: yes
+  when: ansible_distribution == 'SLES'
+
+- name: "Prevent user modification of GNOME disable-lock-screen"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/lockdown/disable-lock-screen$'
+    line: '/org/gnome/desktop/lockdown/disable-lock-screen'
+    create: yes
+  when: ansible_distribution == 'SLES'
 
 - name: "Check GNOME3 screenserver disable-lock-screen false"
   command: gsettings get org.gnome.desktop.lockdown disable-lock-screen
