@@ -106,6 +106,7 @@ selections:
     - rsyslog_remote_access_monitoring
 
     # OL08-00-010090
+    - sssd_has_trust_anchor
 
     # OL08-00-010100
     - ssh_private_keys_have_passcode
@@ -117,6 +118,7 @@ selections:
     - accounts_password_all_shadowed_sha512
 
     # OL08-00-010121
+    - no_empty_passwords_etc_shadow
 
     # OL08-00-010130
     - set_password_hashing_min_rounds_logindefs
@@ -282,6 +284,7 @@ selections:
     - var_sudo_timestamp_timeout=always_prompt
 
     # OL08-00-010385
+    - disallow_bypass_password_sudo
 
     # OL08-00-010390
     - install_smartcard_packages
@@ -490,10 +493,8 @@ selections:
     - accounts_passwords_pam_faillock_interval
 
 
-    # OL08-00-020014
+    # OL08-00-020014, OL08-00-020015
     - accounts_passwords_pam_faillock_unlock_time
-
-    # OL08-00-020015
 
     # OL08-00-020016
 
@@ -526,8 +527,6 @@ selections:
     
     # OL08-00-020032
     - dconf_gnome_disable_user_list
-
-    # OL08-00-020032
 
     # OL08-00-020039
     - package_tmux_installed
@@ -893,6 +892,7 @@ selections:
     - audit_rules_privileged_commands_kmod
 
     # OL08-00-030590
+    - audit_rules_login_events_faillock
 
     # OL08-00-030600
     - audit_rules_login_events_lastlog
@@ -1009,6 +1009,7 @@ selections:
     - kernel_module_usb-storage_disabled
 
     # OL08-00-040090
+    - configured_firewalld_default_deny
 
     # OL08-00-040100
     - package_firewalld_installed
@@ -1141,9 +1142,9 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # OL08-00-040259
+    - sysctl_net_ipv4_ip_forward
 
     # OL08-00-040260
-    - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv6_conf_all_forwarding
 
     # OL08-00-040261
@@ -1220,6 +1221,7 @@ selections:
     - package_tuned_removed
 
     # OL08-00-040400
+    - selinux_user_login_roles
 
     # OL08-00-010163
     - package_krb5-server_removed
