@@ -1240,6 +1240,7 @@ controls:
     status: automated
     rules:
       - package_iptables_installed
+      - package_iptables-services_installed
 
   # NEEDS RULE
   - id: 3.4.3.1.2
@@ -1299,17 +1300,16 @@ controls:
       - l1_workstation
     status: pending
 
-  # NEEDS RULE
   - id: 3.4.3.2.6
     title: Ensure iptables is enabled and active (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: pending
-    related_rules:
+    status: automated
+    rules:
       - service_iptables_enabled
-      # This rule returns error in RHEL8 because the iptables service is not there.
-      # This requirement and respective rules should be reviewed.
+    related_rules:
+      - package_iptables-services_installed
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5258

@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Install iptables-services Package'
+
+description: |-
+    {{{ describe_package_install(package="iptables-services") }}}
+
+rationale: |-
+    <tt>iptables-services</tt> permits to load iptables rules during the system startup or
+    to reload iptables rules in runtime.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85982-7
+
+references:
+    cis@rhel8: 3.4.3.1.1
+    nist: CM-6(a)
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'the iptables-services package is not installed'
+
+ocil: '{{{ ocil_package(package="iptables-services") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: iptables-services
