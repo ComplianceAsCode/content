@@ -688,7 +688,7 @@ controls:
 
   # NEEDS RULE
   - id: 2.2.4
-    title: Ensure CUPS is not enabled (Automated)
+    title: Ensure CUPS is not installed (Automated)
     levels:
       - l1_server
       - l2_workstation
@@ -2148,7 +2148,7 @@ controls:
       - sudo_require_authentication
 
   - id: 5.3.5
-    title: Ensure users must provide password for escalation (Automated)
+    title: Ensure re-authentication for privilege escalation is not disabled globally (Automated)
     levels:
       - l1_server
       - l1_workstation
