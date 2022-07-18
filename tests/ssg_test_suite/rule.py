@@ -506,7 +506,7 @@ class RuleChecker(oscap.Checker):
                     log_file)
             if result.returncode:
                 msg = (
-                    "Error changing value of '{varname}': {stdout}"
+                    "Error changing value of '{varname}': {stderr}"
                     .format(varname=varname, stderr=result.stderr)
                 )
                 raise RuntimeError(msg)
