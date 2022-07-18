@@ -57,7 +57,7 @@ references:
     nist-csf: DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.AC-1,PR.AC-3,PR.AC-4,PR.AC-6,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4
     ospp: FAU_GEN.1.1.c
     pcidss: Req-10.2.5
-    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000304-GPOS-00121,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000470-GPOS-00214,SRG-OS-000471-GPOS-00215,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000304-GPOS-00121,SRG-OS-000466-GPOS-00210,SRG-OS-000476-GPOS-00221
+    srg: SRG-OS-000004-GPOS-00004,SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000062-GPOS-00031,SRG-OS-000304-GPOS-00121,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000470-GPOS-00214,SRG-OS-000471-GPOS-00215,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000466-GPOS-00210,SRG-OS-000476-GPOS-00221
     stigid@ol7: OL07-00-030872
     stigid@ol8: OL08-00-030160
     stigid@rhel7: RHEL-07-030872
@@ -70,13 +70,14 @@ references:
 ocil_clause: 'the system is not configured to audit account changes'
 
 ocil: |-
-    To determine if the system is configured to audit account changes,
-    run the following command:
-    <br /><br />
-    <pre>auditctl -l | egrep '(/etc/gshadow)'</pre>
-    <br /><br />
-    If the system is configured to watch for account changes, lines should be returned for
-    each file specified (and with <tt>perm=wa</tt> for each).
+    Verify {{{ full_name }}} generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/gshadow" with the following command:
+
+    $ sudo auditctl -l | egrep '(/etc/gshadow)'
+
+    -w /etc/gshadow -p wa -k identity
+
+    If the command does not return a line, or the line is commented out, this is a finding.
+
 
 fixtext: '{{{ fixtext_audit_file_watch_rule("/etc/gshadow", "identity", "/etc/audit/rules.d/audit.rules") }}}'
 
