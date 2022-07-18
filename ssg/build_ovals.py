@@ -313,6 +313,9 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
 
             xml_content = process_file_with_macros(_path, local_env_yaml)
 
+            if not _check_is_applicable_for_product(xml_content, product):
+                continue
+
             if build_ovals_dir:
                 # store intermediate files
                 output_file_name = rule_id + ".xml"
@@ -320,8 +323,6 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs, build_ovals_dir=None):
                 with open(output_filepath, "w") as f:
                     f.write(xml_content)
 
-            if not _check_is_applicable_for_product(xml_content, product):
-                continue
             if _check_is_loaded(already_loaded, filename, oval_version):
                 continue
             oval_file_tree = _create_oval_tree_from_string(xml_content)
