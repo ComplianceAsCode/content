@@ -17,7 +17,7 @@
 - name: Set permissions for root:root-owned keys
   file:
     path: "{{ item }}"
-    mode: "0600"
+    mode: "u-xs,g-xwrs,o-xwrt"
     state: file
   with_items:
     - "{{ root_owned_keys.stdout_lines }}"
@@ -33,7 +33,7 @@
 - name: Set permissions for root:{{{ dedicated_ssh_groupname }}}-owned keys
   file:
     path: "{{ item }}"
-    mode: "0640"
+    mode: "u-xs,g-xws,o-xwrt"
     state: file
   with_items:
     - "{{ dedicated_group_owned_keys.stdout_lines }}"
