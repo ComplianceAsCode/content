@@ -119,7 +119,7 @@ def wait_vm_not_running(domain):
     try:
         while True:
             time.sleep(5)
-            if subprocess.getoutput("virsh domstate {0}".format(domain)).rstrip() != "running":
+            if "running" not in subprocess.getoutput("virsh domstate {0}".format(domain)).rstrip():
                 return
             if time.time() >= end_time:
                 print("Timeout reached: {0} VM failed to shutdown, cancelling wait."
