@@ -55,13 +55,11 @@
       <unix:sgid datatype="boolean">false</unix:sgid>
       <unix:sticky datatype="boolean">false</unix:sticky>
 
-      {{# <unix:uread datatype="boolean">true</unix:uread> #}}
-      {{# <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
+      {{# intentionally not considered: <unix:uread datatype="boolean">true</unix:uread> #}}
+      {{# intentionally not considered: <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
       <unix:uexec datatype="boolean">false</unix:uexec>
 
-      {{% if product != 'rhcos4' -%}}
       <unix:gread datatype="boolean">false</unix:gread>
-      {{%- endif %}}
       <unix:gwrite datatype="boolean">false</unix:gwrite>
       <unix:gexec datatype="boolean">false</unix:gexec>
 
@@ -79,11 +77,11 @@
       <unix:sgid datatype="boolean">false</unix:sgid>
       <unix:sticky datatype="boolean">false</unix:sticky>
 
-      {{# <unix:uread datatype="boolean">true</unix:uread> #}}
-      {{# <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
+      {{# intentionally not considered: <unix:uread datatype="boolean">true</unix:uread> #}}
+      {{# intentionally not considered: <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
       <unix:uexec datatype="boolean">false</unix:uexec>
 
-      {{# <unix:gread datatype="boolean">true</unix:gread> #}}
+      {{# intentionally not considered: <unix:gread datatype="boolean">true</unix:gread> #}}
       <unix:gwrite datatype="boolean">false</unix:gwrite>
       <unix:gexec datatype="boolean">false</unix:gexec>
 
@@ -93,7 +91,12 @@
   {{% endcall %}}
 
     <ind:textfilecontent54_object id="obj_dedicated_group_gid" version="1" comment="gid of the dedicated ssh key group">
+      {{% if product != 'rhcos4' -%}}
         <ind:filepath>/etc/group</ind:filepath>
+      {{%- else %}}
+        {{# CoreOS doesn't list all groups in /etc/group - that's probably related to the FS immutability #}}
+	<ind:filepath>/usr/lib/group</ind:filepath>
+      {{%- endif %}}
         <ind:pattern operation="pattern match">^{{{ dedicated_ssh_groupname }}}:\w+:(\w+):.*</ind:pattern>
         <ind:instance datatype="int" operation="equals">1</ind:instance>
     </ind:textfilecontent54_object>
