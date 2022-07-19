@@ -38,7 +38,7 @@
 - name: "Extract log files"
   shell: |
     set -o pipefail
-    grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item }}  |awk '{print $NF}'|sed -e 's/^-//'
+    grep -oP '^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*\.*$' {{ item }}  |awk '{print $NF}'|sed -e 's/^-//' || true
   loop: "{{ rsyslog_config_files.results|map(attribute='stdout_lines')|list|flatten|unique + [ rsyslog_etc_config ] }}"
   register: log_files
   changed_when: False
