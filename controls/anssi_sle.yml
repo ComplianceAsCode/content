@@ -160,7 +160,11 @@ controls:
       Configurations recommended for this requirement are to be performed at the BIOS level.
       The content automation cannot really configure the BIOS, but can in some cases,
       check settings that are visible to the OS. Like for example the NX/DX setting.
-    # rules: TBD
+    status: partial
+    rules:
+    - sysctl_kernel_exec_shield
+    - bios_enable_execution_restrictions
+    - install_PAE_kernel_on_x86-32
 
   - id: R10
     levels:
