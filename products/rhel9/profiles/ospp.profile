@@ -365,9 +365,6 @@ selections:
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1
-    # Configure dnf-automatic to Install Only Security Updates
-    - dnf-automatic_security_updates_only
-
     # Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
 
