@@ -560,7 +560,9 @@ controls:
       It is recommended to load the Yama security module at startup (by example
       passing the security = yama argument to the kernel) and configure the
       sysctl kernel.yama.ptrace_scope to a value of at least 1.
-    # rules: TBD
+    status: automated
+    rules:
+    - sysctl_kernel_yama_ptrace_scope
 
   - id: R26
     levels:
