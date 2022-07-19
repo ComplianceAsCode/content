@@ -191,10 +191,7 @@ selections:
     - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
     - configure_ssh_crypto_policy
-    - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
-    - configure_libreswan_crypto_policy
-    - configure_kerberos_crypto_policy
     - enable_dracut_fips_module
 
     #######################################################
