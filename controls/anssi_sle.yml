@@ -501,7 +501,20 @@ controls:
     levels:
     - intermediary
     title: Setting up system sysctl
-    # rules: TBD
+    status: automated
+    rules:
+    # Disabling SysReq
+    # kernel.sysrq = 0
+    # - sysctl_kernel_sysrq
+
+    # No core dump of executable setuid
+    # - sysctl_fs_suid_dumpable
+
+    # Prohibit links to find links to files
+    # the current user is not the owner
+    # Can prevent some programs from working properly
+    - sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
 
   
   - id: R24
