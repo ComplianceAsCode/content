@@ -782,6 +782,38 @@ ocil_clause: "no line is returned"
 {{# SELinux boolean macros #}}
 
 {{#
+    OCIL and OCIL clause for how to check if given SELinux boolean is set depending on a variable.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
+{{%- macro complete_ocil_entry_sebool_var(sebool) %}}
+ocil: |-
+    {{{ describe_sebool_check_var(sebool) }}}
+
+ocil_clause: "{{{ sebool }}} is not set as expected"
+{{%- endmacro %}}
+
+{{#
+    Describe how to check if given SELinux boolean is set depending on a variable.
+
+:param sebool: The SELinux boolean to check
+:type sebool: str
+
+#}}
+{{%- macro describe_sebool_check_var(sebool) %}}
+    Run the following command to get the current configured value for <code>{{{ sebool }}}</code>
+    SELinux boolean:
+    <pre>$ getsebool {{{ sebool }}}</pre>
+    The expected cofiguration is {{{ xccdf_value("var_" + sebool) }}}.
+    "on" means true, and "off" means false
+{{%- endmacro %}}
+
+
+{{# SELinux boolean macros #}}
+
+{{#
     Describe how to check if given SELinux boolean is disabled.
 
 :param sebool: The SELinux boolean to check
