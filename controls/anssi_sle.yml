@@ -520,6 +520,10 @@ controls:
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
 
+    # Prohibit mapping of memory in low addresses (0)
+    # vm.mmap_min_addr = 65536
+    - sysctl_vm_mmap_min_addr
+
     # Larger choice space for PID values
     # kernel.pid_max = 65536
     - sysctl_kernel_pid_max
