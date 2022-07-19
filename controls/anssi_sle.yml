@@ -522,6 +522,18 @@ controls:
 
     # Access restriction to the dmesg buffer
     - sysctl_kernel_dmesg_restrict
+
+    # Disallow kernel profiling by unprivileged users
+    - sysctl_kernel_perf_event_paranoid
+
+    # Restricts the use of the perf system
+    # kernel.perf_event_paranoid = 2
+    # kernel.perf_event_max_sample_rate = 1
+    # kernel.perf_cpu_time_max_percent = 1
+    - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_perf_event_max_sample_rate
+    - sysctl_kernel_perf_cpu_time_max_percent
+
   
   - id: R24
     levels:
