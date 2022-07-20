@@ -160,7 +160,11 @@ controls:
       Configurations recommended for this requirement are to be performed at the BIOS level.
       The content automation cannot really configure the BIOS, but can in some cases,
       check settings that are visible to the OS. Like for example the NX/DX setting.
-    # rules: TBD
+    status: partial
+    rules:
+    - sysctl_kernel_exec_shield
+    - bios_enable_execution_restrictions
+    - install_PAE_kernel_on_x86-32
 
   - id: R10
     levels:
@@ -501,7 +505,42 @@ controls:
     levels:
     - intermediary
     title: Setting up system sysctl
-    # rules: TBD
+    status: automated
+    rules:
+    # Disabling SysReq
+    # kernel.sysrq = 0
+    - sysctl_kernel_sysrq
+
+    # No core dump of executable setuid
+    - sysctl_fs_suid_dumpable
+
+    # Prohibit links to find links to files
+    # the current user is not the owner
+    # Can prevent some programs from working properly
+    - sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
+
+    # Prohibit mapping of memory in low addresses (0)
+    # vm.mmap_min_addr = 65536
+    - sysctl_vm_mmap_min_addr
+
+    # Larger choice space for PID values
+    # kernel.pid_max = 65536
+    - sysctl_kernel_pid_max
+
+    # Access restriction to the dmesg buffer
+    - sysctl_kernel_dmesg_restrict
+
+    # Disallow kernel profiling by unprivileged users
+    - sysctl_kernel_perf_event_paranoid
+
+    # Restricts the use of the perf system
+    # kernel.perf_event_paranoid = 2
+    # kernel.perf_event_max_sample_rate = 1
+    # kernel.perf_cpu_time_max_percent = 1
+    - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_perf_event_max_sample_rate
+    - sysctl_kernel_perf_cpu_time_max_percent
 
   
   - id: R24
@@ -513,7 +552,9 @@ controls:
       sysctl kernel.modules_disabledconf:
       Prohibition of loading modules (except those already loaded to this point)
       kernel.modules_disabled = 1
-    # rules: TBD
+    status: automated # without remediation
+    rules:
+    - sysctl_kernel_modules_disabled
 
   - id: R25
     levels:
@@ -523,7 +564,9 @@ controls:
       It is recommended to load the Yama security module at startup (by example
       passing the security = yama argument to the kernel) and configure the
       sysctl kernel.yama.ptrace_scope to a value of at least 1.
-    # rules: TBD
+    status: automated
+    rules:
+    - sysctl_kernel_yama_ptrace_scope
 
   - id: R26
     levels:
