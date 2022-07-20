@@ -821,18 +821,17 @@ controls:
       - postfix_network_listening_disabled
       - var_postfix_inet_interfaces=loopback-only
 
-  # NEEDS RULE
   - id: 2.2.18
     title: Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)
     levels:
       - l1_server
       - l1_workstation
-    status: partial
+    status: automated
     rules:
-      - package_nfs-utils_removed
-      # Needs a rule to mask nfs-server
-    related_rules:
       - service_nfs_disabled
+    related_rules:
+      - package_nfs-utils_removed
+      # The nfs-utils package is required for systems with GUI or by some libvirt packages
 
   # NEEDS RULE
   - id: 2.2.19
