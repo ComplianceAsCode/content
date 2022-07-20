@@ -1014,7 +1014,11 @@ controls:
     description: >-
       SELinux policy manipulation and debugging tools should not be installed
       on a machine in production.
-    # rules: TBD
+    status: automated
+    rules:
+    - package_setroubleshoot_removed
+    - package_setroubleshoot-server_removed
+    - package_setroubleshoot-plugins_removed
 
   - id: R69
     levels:
