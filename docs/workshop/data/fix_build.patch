@@ -1,0 +1,356 @@
+commit 174293162e5840684d967e36840fc1f9f57c90be
+Author: Matěj Týč <matyc@redhat.com>
+Date:   Thu Dec 5 15:02:05 2019 +0100
+
+    Fix XML "parsing" of the remediation functions file.
+    
+    A proper fix is not worth the effort, as we aim to kill shared Bash remediation
+    with Jinja2 macros.
+
+diff --git a/ssg/build_remediations.py b/ssg/build_remediations.py
+index 7da807bd6..13e90f732 100644
+--- a/ssg/build_remediations.py
++++ b/ssg/build_remediations.py
+@@ -56,11 +56,11 @@ def get_available_functions(build_dir):
+     remediation_functions = []
+     with codecs.open(xmlfilepath, "r", encoding="utf-8") as xmlfile:
+         filestring = xmlfile.read()
+-        # This regex looks implementation dependent but we can rely on
+-        # ElementTree sorting XML attrs alphabetically. Hidden is guaranteed
+-        # to be the first attr and ID is guaranteed to be second.
++        # This regex looks implementation dependent but we can rely on the element attributes
++        # being present on one line.
++        # We can't rely on ElementTree sorting XML attrs in any way since Python 3.7.
+         remediation_functions = re.findall(
+-            r'<Value hidden=\"true\" id=\"function_(\S+)\"',
++            r'<Value.*id=\"function_(\S+)\"',
+             filestring, re.DOTALL
+         )
+ 
+commit 28a35d63a0cc6b7beb51c77d93bb30778e6960cd
+Author: Matěj Týč <matyc@redhat.com>
+Date:   Mon Dec 9 13:41:47 2019 +0100
+
+    Fixed the broken fix, when greedy regex ate the whole file.
+    
+    We want to match attributes in an XML element, not in the whole file.
+
+diff --git a/ssg/build_remediations.py b/ssg/build_remediations.py
+index 13e90f732..edf31c0cf 100644
+--- a/ssg/build_remediations.py
++++ b/ssg/build_remediations.py
+@@ -57,10 +57,10 @@ def get_available_functions(build_dir):
+     with codecs.open(xmlfilepath, "r", encoding="utf-8") as xmlfile:
+         filestring = xmlfile.read()
+         # This regex looks implementation dependent but we can rely on the element attributes
+-        # being present on one line.
++        # being present. Beware, DOTALL means we go through the whole file at once.
+         # We can't rely on ElementTree sorting XML attrs in any way since Python 3.7.
+         remediation_functions = re.findall(
+-            r'<Value.*id=\"function_(\S+)\"',
++            r'<Value[^>]+id=\"function_(\S+)\"',
+             filestring, re.DOTALL
+         )
+ 
+
+From 27dc7ecafe8ab5c2e0bbbb2fcdc399bece5c250e Mon Sep 17 00:00:00 2001
+From: Vojtech Polasek <vpolasek@redhat.com>
+Date: Mon, 8 Jun 2020 12:02:16 +0200
+Subject: [PATCH 1/5] fix python imports of ElementTree
+
+---
+ shared/transforms/pcidss/transform_benchmark_to_pcidss.py | 5 ++++-
+ ssg/xml.py                                                | 2 +-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/shared/transforms/pcidss/transform_benchmark_to_pcidss.py b/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
+index 3023e0435f..0ceaf727d3 100755
+--- a/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
++++ b/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
+@@ -20,7 +20,10 @@
+ #      Martin Preisler <mpreisle@redhat.com>
+ 
+ import logging
+-from xml.etree import cElementTree as ElementTree
++try:
++    from xml.etree import cElementTree as ElementTree
++except ImportError:
++    from xml.etree import ElementTree as ElementTree
+ import json
+ import sys
+ import os
+diff --git a/ssg/xml.py b/ssg/xml.py
+index 736875a9d2..71c1381c23 100644
+--- a/ssg/xml.py
++++ b/ssg/xml.py
+@@ -9,7 +9,7 @@
+ try:
+     from xml.etree import cElementTree as ElementTree
+ except ImportError:
+-    import cElementTree as ElementTree
++    from xml.etree import ElementTree as ElementTree
+ 
+ 
+ def oval_generated_header(product_name, schema_version, ssg_version):
+
+From e435bf2dc59d652710104a1c59332e410b12bb64 Mon Sep 17 00:00:00 2001
+From: Vojtech Polasek <vpolasek@redhat.com>
+Date: Mon, 8 Jun 2020 12:33:48 +0200
+Subject: [PATCH 2/5] fix deprecated instance of element.getchildren
+
+---
+ ssg/build_remediations.py | 2 +-
+ ssg/build_stig.py         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ssg/build_remediations.py b/ssg/build_remediations.py
+index fdde0f268a..c18d6bd549 100644
+--- a/ssg/build_remediations.py
++++ b/ssg/build_remediations.py
+@@ -735,7 +735,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
+         # First concat output form of modified fix text (including text appended
+         # to all children of the fix)
+         modfix = [fix.text]
+-        for child in fix.getchildren():
++        for child in list(fix):
+             if child is not None and child.text is not None:
+                 modfix.append(child.text)
+         modfixtext = "".join(modfix)
+diff --git a/ssg/build_stig.py b/ssg/build_stig.py
+index 528285f3d1..6122981fcb 100644
+--- a/ssg/build_stig.py
++++ b/ssg/build_stig.py
+@@ -38,7 +38,7 @@ def add_references(reference, destination):
+         for ref in refs:
+             if (ref.get('href').startswith(stig_refs) and
+                     ref.text in dictionary):
+-                index = rule.getchildren().index(ref)
++                index = list(rule).index(ref)
+                 new_ref = ET.Element(
+                     '{%s}reference' % XCCDF11_NS, {'href': stig_ns})
+                 new_ref.text = dictionary[ref.text]
+
+From b0adc1d53780def4a95e310b6d26bb91ee97177e Mon Sep 17 00:00:00 2001
+From: Vojtech Polasek <vpolasek@redhat.com>
+Date: Mon, 8 Jun 2020 13:27:41 +0200
+Subject: [PATCH 3/5] fix deprecated getiterator function
+
+---
+ ssg/build_cpe.py    | 6 +++---
+ ssg/id_translate.py | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/ssg/build_cpe.py b/ssg/build_cpe.py
+index 2e5d24a5da..8c046777a5 100644
+--- a/ssg/build_cpe.py
++++ b/ssg/build_cpe.py
+@@ -17,7 +17,7 @@ def extract_subelement(objects, sub_elem_type):
+     """
+ 
+     for obj in objects:
+-        for subelement in obj.getiterator():
++        for subelement in obj.iter():
+             if subelement.get(sub_elem_type):
+                 sub_element = subelement.get(sub_elem_type)
+                 return sub_element
+@@ -44,12 +44,12 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
+     reflist = []
+     elementlist = []
+ 
+-    for element in tree_with_refs.getiterator():
++    for element in tree_with_refs.iter():
+         value = element.get(attrname)
+         if value is not None:
+             reflist.append(value)
+ 
+-    for element in tree_with_ids.getiterator():
++    for element in tree_with_ids.iter():
+         if element.get("id") in reflist:
+             elementlist.append(element)
+ 
+diff --git a/ssg/id_translate.py b/ssg/id_translate.py
+index 72b07be181..ba92259049 100644
+--- a/ssg/id_translate.py
++++ b/ssg/id_translate.py
+@@ -64,7 +64,7 @@ def generate_id(self, tagname, name):
+         )
+ 
+     def translate(self, tree, store_defname=False):
+-        for element in tree.getiterator():
++        for element in tree.iter():
+             idname = element.get("id")
+             if idname:
+                 # store the old name if requested (for OVAL definitions)
+
+From a0da16c5eeb9a7414f7f2a37a6b270c8d04b2ddf Mon Sep 17 00:00:00 2001
+From: Vojtech Polasek <vpolasek@redhat.com>
+Date: Mon, 8 Jun 2020 14:01:55 +0200
+Subject: [PATCH 4/5] fix remaining getchildren and getiterator functions
+
+---
+ build-scripts/sds_move_ocil_to_checks.py                  | 2 +-
+ build-scripts/verify_references.py                        | 2 +-
+ shared/transforms/pcidss/transform_benchmark_to_pcidss.py | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/build-scripts/sds_move_ocil_to_checks.py b/build-scripts/sds_move_ocil_to_checks.py
+index 5f5139659e..64dc19084d 100755
+--- a/build-scripts/sds_move_ocil_to_checks.py
++++ b/build-scripts/sds_move_ocil_to_checks.py
+@@ -106,7 +106,7 @@ def move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree,
+     timestamp = extendedcomp.get('timestamp')
+ 
+     # Get children elements of <ds:extended-component> containing OCIL content
+-    extchildren = extendedcomp.getchildren()
++    extchildren = list(extendedcomp)
+     # There should be just one OCIL subcomponent in <ds:extended-component>
+     if len(extchildren) != 1:
+         sys.stderr.write("ds:extended-component contains more than one element!"
+diff --git a/build-scripts/verify_references.py b/build-scripts/verify_references.py
+index 69b3e2d1f7..95d387f46f 100755
+--- a/build-scripts/verify_references.py
++++ b/build-scripts/verify_references.py
+@@ -179,7 +179,7 @@ def main():
+     check_content_refs = xccdftree.findall(".//{%s}check-content-ref"
+                                            % xccdf_ns)
+ 
+-    xccdf_parent_map = dict((c, p) for p in xccdftree.getiterator() for c in p)
++    xccdf_parent_map = dict((c, p) for p in xccdftree.iter() for c in p)
+     # now we can actually do the verification work here
+     if options.rules_with_invalid_checks or options.all_checks:
+         for check_content_ref in check_content_refs:
+diff --git a/shared/transforms/pcidss/transform_benchmark_to_pcidss.py b/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
+index 0ceaf727d3..c94b12c45c 100755
+--- a/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
++++ b/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
+@@ -111,7 +111,7 @@ def main():
+             benchmark.findall(".//{%s}Value" % (XCCDF_NAMESPACE)):
+         values.append(value)
+ 
+-    parent_map = dict((c, p) for p in benchmark.getiterator() for c in p)
++    parent_map = dict((c, p) for p in benchmark.iter() for c in p)
+     for rule in \
+             benchmark.findall(".//{%s}Rule" % (XCCDF_NAMESPACE)):
+         parent_map[rule].remove(rule)
+
+From 435ad2a81f4d56da42a2b24cad9e0e04d0523fd4 Mon Sep 17 00:00:00 2001
+From: Vojtech Polasek <vpolasek@redhat.com>
+Date: Tue, 9 Jun 2020 18:55:42 +0200
+Subject: [PATCH 5/5] fix for older python versions lacking .iter method
+
+---
+ build-scripts/verify_references.py            |  8 +++++-
+ .../pcidss/transform_benchmark_to_pcidss.py   |  8 +++++-
+ ssg/build_cpe.py                              | 28 +++++++++++++++++--
+ ssg/id_translate.py                           |  9 +++++-
+ 4 files changed, 47 insertions(+), 6 deletions(-)
+
+diff --git a/build-scripts/verify_references.py b/build-scripts/verify_references.py
+index 95d387f46f..003aa4c48c 100755
+--- a/build-scripts/verify_references.py
++++ b/build-scripts/verify_references.py
+@@ -179,7 +179,13 @@ def main():
+     check_content_refs = xccdftree.findall(".//{%s}check-content-ref"
+                                            % xccdf_ns)
+ 
+-    xccdf_parent_map = dict((c, p) for p in xccdftree.iter() for c in p)
++    # decide on usage of .iter or .getiterator method of elementtree class.
++    # getiterator is deprecated in Python 3.9, but iter is not available in
++    # older versions
++    if getattr(xccdftree, 'iter', None) == None:
++        xccdf_parent_map = dict((c, p) for p in xccdftree.getiterator() for c in p)
++    else:
++        xccdf_parent_map = dict((c, p) for p in xccdftree.iter() for c in p)
+     # now we can actually do the verification work here
+     if options.rules_with_invalid_checks or options.all_checks:
+         for check_content_ref in check_content_refs:
+diff --git a/shared/transforms/pcidss/transform_benchmark_to_pcidss.py b/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
+index c94b12c45c..05df5a9889 100755
+--- a/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
++++ b/shared/transforms/pcidss/transform_benchmark_to_pcidss.py
+@@ -111,7 +111,13 @@ def main():
+             benchmark.findall(".//{%s}Value" % (XCCDF_NAMESPACE)):
+         values.append(value)
+ 
+-    parent_map = dict((c, p) for p in benchmark.iter() for c in p)
++    # decide on usage of .iter or .getiterator method of elementtree class.
++    # getiterator is deprecated in Python 3.9, but iter is not available in
++    # older versions
++    if getattr(benchmark, "iter", None) == None:
++        parent_map = dict((c, p) for p in benchmark.getiterator() for c in p)
++    else:
++        parent_map = dict((c, p) for p in benchmark.iter() for c in p)
+     for rule in \
+             benchmark.findall(".//{%s}Rule" % (XCCDF_NAMESPACE)):
+         parent_map[rule].remove(rule)
+diff --git a/ssg/build_cpe.py b/ssg/build_cpe.py
+index 8c046777a5..26f182395e 100644
+--- a/ssg/build_cpe.py
++++ b/ssg/build_cpe.py
+@@ -17,7 +17,14 @@ def extract_subelement(objects, sub_elem_type):
+     """
+ 
+     for obj in objects:
+-        for subelement in obj.iter():
++        # decide on usage of .iter or .getiterator method of elementtree class.
++        # getiterator is deprecated in Python 3.9, but iter is not available in
++        # older versions
++        if getattr(obj, "iter", None) == None:
++            obj_iterator = obj.getiterator()
++        else:
++            obj_iterator = obj.iter()
++        for subelement in obj_iterator:
+             if subelement.get(sub_elem_type):
+                 sub_element = subelement.get(sub_elem_type)
+                 return sub_element
+@@ -44,12 +51,27 @@ def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
+     reflist = []
+     elementlist = []
+ 
+-    for element in tree_with_refs.iter():
++
++    # decide on usage of .iter or .getiterator method of elementtree class.
++    # getiterator is deprecated in Python 3.9, but iter is not available in
++    # older versions
++    if getattr(tree_with_refs, "iter", None) == None:
++        tree_with_refs_iterator = tree_with_refs.getiterator()
++    else:
++        tree_with_refs_iterator = tree_with_refs.iter()
++    for element in tree_with_refs_iterator:
+         value = element.get(attrname)
+         if value is not None:
+             reflist.append(value)
+ 
+-    for element in tree_with_ids.iter():
++    # decide on usage of .iter or .getiterator method of elementtree class.
++    # getiterator is deprecated in Python 3.9, but iter is not available in
++    # older versions
++    if getattr(tree_with_ids, "iter", None) == None:
++        tree_with_ids_iterator = tree_with_ids.getiterator()
++    else:
++        tree_with_ids_iterator = tree_with_ids.iter()
++    for element in tree_with_ids_iterator:
+         if element.get("id") in reflist:
+             elementlist.append(element)
+ 
+diff --git a/ssg/id_translate.py b/ssg/id_translate.py
+index ba92259049..520c47fbfd 100644
+--- a/ssg/id_translate.py
++++ b/ssg/id_translate.py
+@@ -64,7 +64,14 @@ def generate_id(self, tagname, name):
+         )
+ 
+     def translate(self, tree, store_defname=False):
+-        for element in tree.iter():
++        # decide on usage of .iter or .getiterator method of elementtree class.
++        # getiterator is deprecated in Python 3.9, but iter is not available in
++        # older versions
++        if getattr(tree, "iter", None) == None:
++            tree_iterator = tree.getiterator()
++        else:
++            tree_iterator = tree.iter()
++        for element in tree_iterator:
+             idname = element.get("id")
+             if idname:
+                 # store the old name if requested (for OVAL definitions)
+
