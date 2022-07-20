@@ -1,0 +1,216 @@
+---
+
+# Run me as a verification-only playbook:
+# ansible-playbook ... -e VERIFICATION_RUN=true --check --diff
+
+- hosts: all
+
+  become: yes
+  become_method: sudo
+  become_user: "{{ student_name }}"
+
+  vars:
+    LABS_CONTENT_PART: "2019Labs/CustomSecurityContent/documentation"
+    TRACK_1_LABEL: "lab1_introduction"
+    TRACK_2_LABEL: "lab2_openscap"
+    TRACK_3_LABEL: "lab3_profiles"
+    TRACK_4_LABEL: "lab4_ansible"
+    TRACK_5_LABEL: "lab5_oval"
+    CACC_LOCAL: "/tmp/complianceAsCode"
+    LABS_ROOT: "/home/{{ student_name }}/labs"
+    TARGET_PRODUCT:
+      RedHat: "rhel8"
+      Fedora: "fedora"
+    CONTAINER_PRODUCT:
+      RedHat: "rhel8"
+      Fedora: "fedora"
+    DOCKERFILE_BASENAME:
+      RedHat: "test_suite-rhel8"
+      Fedora: "test_suite-fedora"
+    VERIFICATION_RUN: false
+    ssh_key_basename: "id_rsa"
+    content_version: "v0.1.60"
+
+  tasks:
+  - name: Clone the CaC/c Git repository
+    git:
+      repo: 'https://github.com/ComplianceAsCode/content.git'
+      dest: "{{ CACC_LOCAL }}"
+    when: "VERIFICATION_RUN == false"
+
+  - name: Remove the Labs directory, so we start from scratch.
+    file:
+      path: "{{ LABS_ROOT }}"
+      state: absent
+    when: "VERIFICATION_RUN == false"
+
+  - name: Create {{ student_name }} SSH directory
+    file:
+      path: /home/{{ student_name }}/.ssh/
+      state: directory
+
+  - name: Generate SSH keys
+    shell: ssh-keygen -b 2048 -t rsa -f "/home/{{ student_name }}/.ssh/{{ ssh_key_basename }}" -q -N ""
+    args:
+      creates: "/home/{{ student_name }}/.ssh/{{ ssh_key_basename }}"
+    when: "VERIFICATION_RUN == false"
+
+  - name: Set root's .ssh directory permission
+    file:
+      state: directory
+      mode: 0700
+      path: /root/.ssh
+    become_user: root
+
+  - name: Copy the RSA key pair to the root user
+    copy:
+      src: /home/{{ student_name }}/.ssh/{{ item }}
+      remote_src: yes
+      dest: /root/.ssh/
+      mode: 0600
+    loop:
+     - "{{ ssh_key_basename }}"
+     - "{{ ssh_key_basename }}.pub"
+    become_user: root
+
+  - name: Creates directories for Lab Tracks
+    file:
+      path: "{{ LABS_ROOT }}/{{ item }}"
+      state: directory
+    loop:
+      - "{{ TRACK_1_LABEL }}"
+      - "{{ TRACK_2_LABEL }}"
+      - "{{ TRACK_3_LABEL }}"
+      - "{{ TRACK_4_LABEL }}"
+      - "{{ TRACK_5_LABEL }}"
+
+  - name: Clone the CaC/c Git for Lab Tracks
+    git:
+      repo: "{{ CACC_LOCAL }}"
+      version: '{{ content_version }}'
+      dest: "{{ LABS_ROOT }}/{{ item }}"
+      force: yes
+    loop:
+      - "{{ TRACK_1_LABEL }}"
+      - "{{ TRACK_2_LABEL }}"
+      - "{{ TRACK_3_LABEL }}"
+      - "{{ TRACK_4_LABEL }}"
+      - "{{ TRACK_5_LABEL }}"
+
+  - name: Apply patch to fix build
+    patch:
+      src: data/fix_build.patch
+      basedir: "{{ LABS_ROOT }}/{{ item }}"
+      strip: 1
+    loop:
+      - "{{ TRACK_1_LABEL }}"
+      - "{{ TRACK_2_LABEL }}"
+      - "{{ TRACK_3_LABEL }}"
+      - "{{ TRACK_4_LABEL }}"
+      - "{{ TRACK_5_LABEL }}"
+    when: false
+
+  - name: "Ex. 1: Copy rule file from v0.1.43"
+    copy:
+      src: "data/accounts_tmout/rule.yml"
+      dest: "{{ LABS_ROOT }}/{{ TRACK_1_LABEL }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout"
+
+  - name: "Ex. 1: Introduce a typo 1/2"
+    replace:
+      dest: "{{ LABS_ROOT }}/{{ TRACK_1_LABEL }}/linux_os/guide/system/accounts/accounts-pam/password_quality/password_quality_pwquality/accounts_password_pam_minlen/rule.yml"
+      regexp: '(    after pam_pwquality to set minimum password length requirements.)'
+      replace: '\1\n\1'
+    when: "VERIFICATION_RUN == false"
+
+  - name: "Ex. 1: Introduce a typo 2/2"
+    replace:
+      dest: "{{ LABS_ROOT }}/{{ TRACK_1_LABEL }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml"
+      regexp: '(    Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that)'
+      replace: '\1\n\1'
+    when: "VERIFICATION_RUN == false"
+
+  - name: "Ex. 3: Remove the RHEL8 OSPP stability test"
+    file:
+      path: "{{ LABS_ROOT }}/{{ TRACK_3_LABEL }}/tests/data/profile_stability/rhel8/ospp.profile"
+      state: absent
+
+  - name: "Ex. 4: Remove the Ansible content from rule accounts_tmout so that the attendees can create them themselves"
+    file:
+      path: "{{ LABS_ROOT }}/{{ TRACK_4_LABEL }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/ansible/"
+      state: absent
+
+  - name: "Ex. 5: Remove tests"
+    file:
+      path: "{{ LABS_ROOT }}/{{ TRACK_5_LABEL }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/tests"
+      state: absent
+    when: "VERIFICATION_RUN == false"
+
+  - name: "Ex. 5: Copy bad tests"
+    copy:
+      src: "data/rule_accounts_tmout/"
+      dest: "{{ LABS_ROOT }}/{{ TRACK_5_LABEL }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/tests/"
+
+  - name: "Ex. 5: Copy rule from v0.1.43"
+    copy:
+      src: "data/accounts_tmout"
+      dest: "{{ LABS_ROOT }}/{{ TRACK_5_LABEL }}/linux_os/guide/system/accounts/accounts-session/"
+
+  - name: "Ex. 5: Bust the OVAL"
+    replace:
+      dest: "{{ LABS_ROOT }}/{{ TRACK_5_LABEL }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/oval/shared.xml"
+      regexp: '(operation=")greater than or equal(")'
+      replace: '\1equals\2'
+    when: "VERIFICATION_RUN == false"
+
+  - name: "Copy our RHEL8 OSPP profile to the target system"
+    copy:
+      src: "data/ospp-rhel8.profile"
+      dest: "{{ LABS_ROOT }}/{{ item }}/products/rhel8/profiles/ospp.profile"
+    loop:
+      - "{{ TRACK_1_LABEL }}"
+      - "{{ TRACK_2_LABEL }}"
+      - "{{ TRACK_3_LABEL }}"
+      - "{{ TRACK_4_LABEL }}"
+      - "{{ TRACK_5_LABEL }}"
+
+  - name: "Copy our Fedora OSPP profile to the target system"
+    copy:
+      src: "data/ospp-fedora.profile"
+      dest: "{{ LABS_ROOT }}/{{ item }}/products/fedora/profiles/ospp.profile"
+    loop:
+      - "{{ TRACK_1_LABEL }}"
+      - "{{ TRACK_2_LABEL }}"
+      - "{{ TRACK_3_LABEL }}"
+      - "{{ TRACK_4_LABEL }}"
+      - "{{ TRACK_5_LABEL }}"
+
+  - name: "Build the {{ TARGET_PRODUCT[ansible_distribution] }} content to be used in exercises"
+    command: "./build_product {{ TARGET_PRODUCT[ansible_distribution] }}"
+    args:
+      chdir: "{{ LABS_ROOT }}/{{ item }}"
+    loop:
+      - "{{ TRACK_1_LABEL }}"
+      - "{{ TRACK_2_LABEL }}"
+#     - "{{ TRACK_3_LABEL }}"  # This exercise creates new profile before doing anything, so there is no need to build it in advance.
+#     - "{{ TRACK_4_LABEL }}"  # This exercise creates new Ansible content before doing anything, so there is no need to build it in advance.
+    when: "VERIFICATION_RUN == false"
+
+  - name: "Build the {{ CONTAINER_PRODUCT[ansible_distribution] }} content to be used in the container scanning exercise"
+    command: "./build_product {{ CONTAINER_PRODUCT[ansible_distribution] }}"
+    args:
+      chdir: "{{ LABS_ROOT }}/{{ item }}"
+    loop:
+      - "{{ TRACK_5_LABEL }}"
+    when: "VERIFICATION_RUN == false"
+
+  - name: "Copy custom Dockerfiles"
+    copy:
+      src: "data/Dockerfiles"
+      dest: "{{ LABS_ROOT }}/{{ TRACK_5_LABEL }}"
+
+  - name: "Build a {{ CONTAINER_PRODUCT[ansible_distribution] }} podman image for testing"
+    shell: 'podman build --build-arg "CLIENT_PUBLIC_KEY=$(cat /root/.ssh/{{ ssh_key_basename }}.pub)" -t ssg_test_suite -f {{ DOCKERFILE_BASENAME[ansible_distribution] }} .'
+    args:
+      chdir: "{{ LABS_ROOT }}/{{ TRACK_5_LABEL }}/Dockerfiles"
+    when: "VERIFICATION_RUN == false"
+    become_user: root
