@@ -693,13 +693,13 @@ controls:
       Each user or service account must have its own temporary directory
       and dispose of it exclusively.
     notes: The approach of the selected rules is to use and configure pam_namespace module.
-    status: partial
+    status: automated
     rules:
     - enable_pam_namespace
     - accounts_polyinstantiated_tmp
     - accounts_polyinstantiated_var_tmp
     - var_polyinstantiation_enabled=on
-    #- sebool_polyinstantiation_enabled
+    - sebool_polyinstantiation_enabled
 
   - id: R40
     levels:
