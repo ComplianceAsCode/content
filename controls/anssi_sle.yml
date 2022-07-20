@@ -620,7 +620,13 @@ controls:
       The semantics of "ClientAliveCountMax 0" has changed from "disconnect on first timeout" to
       "don't disconnect network inactive sessions". The server either probes for the client liveness
       or keeps inactive sessions connected.
-    # rules: TBD
+    status: automated
+    rules:
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+    - sshd_set_idle_timeout
+    - sshd_idle_timeout_value=10_minutes
+    - sshd_set_keepalive
 
   - id: R30
     levels:
@@ -736,13 +742,13 @@ controls:
       Each user or service account must have its own temporary directory
       and dispose of it exclusively.
     notes: The approach of the selected rules is to use and configure pam_namespace module.
-    status: partial
+    status: automated
     rules:
     - enable_pam_namespace
     - accounts_polyinstantiated_tmp
     - accounts_polyinstantiated_var_tmp
     - var_polyinstantiation_enabled=on
-    #- sebool_polyinstantiation_enabled
+    - sebool_polyinstantiation_enabled
 
   - id: R40
     levels:
@@ -1038,7 +1044,17 @@ controls:
       In RHEL, the SELinux boolean allow_execheap is renamed to selinuxuser_execheap, and the
       boolean allow_execstack is renamed to selinuxuser_execstack. And allow_execmem is not
       available, deny_execmem provides the same functionality.
-    # rules: TBD
+    status: automated
+    rules:
+    - var_selinuxuser_execheap=off
+    - sebool_selinuxuser_execheap
+    - var_deny_execmem=on
+    - sebool_deny_execmem
+    - var_selinuxuser_execstack=off
+    - sebool_selinuxuser_execstack
+    - var_secure_mode_insmod=on
+    - sebool_secure_mode_insmod
+    - sebool_ssh_sysadm_login
 
   - id: R68
     levels:
@@ -1047,7 +1063,11 @@ controls:
     description: >-
       SELinux policy manipulation and debugging tools should not be installed
       on a machine in production.
-    # rules: TBD
+    status: automated
+    rules:
+    - package_setroubleshoot_removed
+    - package_setroubleshoot-server_removed
+    - package_setroubleshoot-plugins_removed
 
   - id: R69
     levels:
