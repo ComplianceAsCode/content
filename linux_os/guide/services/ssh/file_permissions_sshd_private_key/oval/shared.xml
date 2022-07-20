@@ -1,0 +1,111 @@
+{{% set path = "/etc/ssh" %}}
+{{% set key_regex = ".*_key$" %}}
+
+{{% set root_uid_and_gid = 0 %}}
+{{% set dedicated_ssh_groupname = groups.get("dedicated_ssh_keyowner", {}).get("name") %}}
+
+{{% macro _name(user_name, type) -%}}
+{{{ type }}}_ssh_key_owner_{{{ user_name }}}
+{{%- endmacro %}}
+
+{{% macro _test_object_state(username, groupname) %}}
+
+  <unix:file_state comment="All keys in {{{ path }}} groupowned by {{{ groupname }}} have the right permissions" id="{{{ _name(groupname, 'filter') }}}" version="1">
+      <unix:path>{{{ path }}}</unix:path>
+      <unix:filename operation="pattern match">{{{ key_regex }}}</unix:filename>
+
+      {{{ caller() }}}
+
+  </unix:file_state>
+{{% endmacro %}}
+
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+	  {{{ oval_metadata("The system sshd key is owned by root:root and has the 0600 permission" ~ (", or by a root:" ~ dedicated_ssh_groupname ~ " with the 0640 permission") if dedicated_ssh_groupname) }}}
+
+    <criteria operator="AND">
+      <criterion comment="No keys that have unsafe ownership/permissions combination exist"
+      test_ref="test_no_offending_keys" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="No keys that have unsafe ownership/permissions combination exist" id="test_no_offending_keys" version="1">
+	  <unix:object object_ref="object_offending_keys" />
+  </unix:file_test>
+
+  <unix:file_object comment="All keys in {{{ path }}} with unsafe ownership/permission combination" id="object_offending_keys" version="1">
+      <unix:path>{{{ path }}}</unix:path>
+      <unix:filename operation="pattern match">{{{ key_regex }}}</unix:filename>
+      <filter action="exclude">exclude_symlinks__sshd_private_key</filter>
+      <filter action="exclude">{{{ _name('root', 'filter') }}}</filter>
+    {{% if dedicated_ssh_groupname -%}}
+      <filter action="exclude">{{{ _name(dedicated_ssh_groupname, 'filter') }}}</filter>
+    {{%- endif %}}
+  </unix:file_object>
+
+  <unix:file_state id="exclude_symlinks__sshd_private_key" version="1">
+      <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
+
+  {{% call _test_object_state("root", "root") %}}
+      <unix:group_id datatype="int">{{{ root_uid_and_gid }}}</unix:group_id>
+      <unix:user_id datatype="int">{{{ root_uid_and_gid }}}</unix:user_id>
+
+      <unix:suid datatype="boolean">false</unix:suid>
+      <unix:sgid datatype="boolean">false</unix:sgid>
+      <unix:sticky datatype="boolean">false</unix:sticky>
+
+      {{# intentionally not considered: <unix:uread datatype="boolean">true</unix:uread> #}}
+      {{# intentionally not considered: <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
+      <unix:uexec datatype="boolean">false</unix:uexec>
+
+      <unix:gread datatype="boolean">false</unix:gread>
+      <unix:gwrite datatype="boolean">false</unix:gwrite>
+      <unix:gexec datatype="boolean">false</unix:gexec>
+
+      <unix:oread datatype="boolean">false</unix:oread>
+      <unix:owrite datatype="boolean">false</unix:owrite>
+      <unix:oexec datatype="boolean">false</unix:oexec>
+  {{% endcall %}}
+
+    {{% if dedicated_ssh_groupname -%}}
+  {{% call _test_object_state("root", dedicated_ssh_groupname) %}}
+      <unix:group_id datatype="int" var_ref="group_gid"></unix:group_id>
+      <unix:user_id datatype="int">{{{ root_uid_and_gid }}}</unix:user_id>
+
+      <unix:suid datatype="boolean">false</unix:suid>
+      <unix:sgid datatype="boolean">false</unix:sgid>
+      <unix:sticky datatype="boolean">false</unix:sticky>
+
+      {{# intentionally not considered: <unix:uread datatype="boolean">true</unix:uread> #}}
+      {{# intentionally not considered: <unix:uwrite datatype="boolean">true</unix:uwrite> #}}
+      <unix:uexec datatype="boolean">false</unix:uexec>
+
+      {{# intentionally not considered: <unix:gread datatype="boolean">true</unix:gread> #}}
+      <unix:gwrite datatype="boolean">false</unix:gwrite>
+      <unix:gexec datatype="boolean">false</unix:gexec>
+
+      <unix:oread datatype="boolean">false</unix:oread>
+      <unix:owrite datatype="boolean">false</unix:owrite>
+      <unix:oexec datatype="boolean">false</unix:oexec>
+  {{% endcall %}}
+
+    <ind:textfilecontent54_object id="obj_dedicated_group_gid" version="1" comment="gid of the dedicated ssh key group">
+      {{% if product != 'rhcos4' -%}}
+        <ind:filepath>/etc/group</ind:filepath>
+      {{%- else %}}
+        {{# CoreOS doesn't list all groups in /etc/group - that's probably related to the FS immutability #}}
+	<ind:filepath>/usr/lib/group</ind:filepath>
+      {{%- endif %}}
+        <ind:pattern operation="pattern match">^{{{ dedicated_ssh_groupname }}}:\w+:(\w+):.*</ind:pattern>
+        <ind:instance datatype="int" operation="equals">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <!-- variable storing count of all group names - including duplicates -->
+    <local_variable id="group_gid" datatype="int" version="1"
+                    comment="Count of all group names (including duplicates if any)">
+            <object_component item_field="subexpression" object_ref="obj_dedicated_group_gid"/>
+    </local_variable>
+    {{%- endif %}}
+
+</def-group>
