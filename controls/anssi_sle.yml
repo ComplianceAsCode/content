@@ -577,7 +577,13 @@ controls:
       The semantics of "ClientAliveCountMax 0" has changed from "disconnect on first timeout" to
       "don't disconnect network inactive sessions". The server either probes for the client liveness
       or keeps inactive sessions connected.
-    # rules: TBD
+    status: automated
+    rules:
+    - accounts_tmout
+    - var_accounts_tmout=10_min
+    - sshd_set_idle_timeout
+    - sshd_idle_timeout_value=10_minutes
+    - sshd_set_keepalive
 
   - id: R30
     levels:
