@@ -309,6 +309,7 @@ selections:
 - package_opensc_installed
 - package_openssh-server_installed
 - package_policycoreutils_installed
+- package_postfix_installed
 - package_python3-abrt-addon_removed
 - package_rng-tools_installed
 - package_rsh-server_removed
