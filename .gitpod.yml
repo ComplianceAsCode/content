@@ -35,4 +35,5 @@ tasks:
       mkdir -p $PRIVATE_KEY_FOLDER
       ssh-keygen -N '' -f $PRIVATE_KEY_FILEPATH
       docker build --build-arg "CLIENT_PUBLIC_KEY=$(cat $PRIVATE_KEY_FILEPATH.pub)" -t $CONTAINER_NAME --build-arg IMAGE=$CONTAINER_VERSION -f Dockerfiles/test_suite-$CONTAINER .
-      ./build_product $PRODUCT --datastream-only
+      [ -n "$WORKSHOP" ] && ansible-playbook -i 127.0.0.1, docs/workshop/labs_setup.yml -e EXERCISE=$WORKSHOP -e LAB_DIR=$GITPOD_REPO_ROOT --connection=local -u gitpod --ssh-extra-args '-F docs/workshop/data/ssh_config'
+      [ -z "$WORKSHOP" ] && ./build_product $PRODUCT --datastream-only
