@@ -5,9 +5,6 @@
 
 - hosts: all
 
-  become: yes
-  become_method: sudo
-
   vars:
     EXERCISE: "lab1_introduction"
     TRACK_1_LABEL: "lab1_introduction"
@@ -75,11 +72,6 @@
       regexp: '(operation=")greater than or equal(")'
       replace: '\1equals\2'
     when: EXERCISE == TRACK_5_LABEL
-
-  - name: "Copy our RHEL8 OSPP profile to the target system"
-    copy:
-      src: "data/ospp-rhel8.profile"
-      dest: "products/rhel8/profiles/ospp.profile"
 
   - name: "Copy our Fedora OSPP profile to the target system"
     copy:
