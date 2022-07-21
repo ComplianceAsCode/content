@@ -9,6 +9,7 @@ import ssg.constants
 
 ns = {
     "ds": ssg.constants.datastream_namespace,
+    "xccdf-1.1": ssg.constants.XCCDF11_NS,
     "xccdf": ssg.constants.XCCDF12_NS,
     "oval": ssg.constants.oval_namespace,
     "catalog": ssg.constants.cat_namespace,
@@ -16,6 +17,8 @@ ns = {
     "ocil": ssg.constants.ocil_namespace,
     "cpe-lang": ssg.constants.cpe_language_namespace,
 }
+content_xccdf_ns = "xccdf"
+
 remediation_type_to_uri = {
     "bash": ssg.constants.bash_system,
     "ansible": ssg.constants.ansible_system,
@@ -57,6 +60,10 @@ def parse_args():
 def is_benchmark(root):
     if root.tag == "{%s}Benchmark" % (ns["xccdf"]):
         return True
+    elif root.tag == "{%s}Benchmark" % (ns["xccdf-1.1"]):
+        global content_xccdf_ns
+        content_xccdf_ns = "xccdf-1.1"
+        return True
 
 
 def get_benchmarks(root):
@@ -66,7 +73,7 @@ def get_benchmarks(root):
         if is_benchmark(root):
             yield root
     for component in ds_components:
-        for benchmark in component.findall("xccdf:Benchmark", ns):
+        for benchmark in component.findall("%s:Benchmark" % content_xccdf_ns, ns):
             yield benchmark
 
 
@@ -77,7 +84,7 @@ def find_benchmark(root, id_):
         if is_benchmark(root):
             return root
     for component in ds_components:
-        benchmark = component.find("xccdf:Benchmark[@id='%s']" % (id_), ns)
+        benchmark = component.find("%s:Benchmark[@id='%s']" % (content_xccdf_ns, id_), ns)
         if benchmark is not None:
             return benchmark
     return None
@@ -128,7 +135,7 @@ def compare_platforms(old_rule, new_rule, old_benchmark, new_benchmark):
         }]
 
     for entry in entries:
-        for platform in entry["rule"].findall(".//xccdf:platform", ns):
+        for platform in entry["rule"].findall(".//%s:platform" % (content_xccdf_ns), ns):
             idref = platform.get("idref")
             if idref.startswith("#"):
                 cpe_platforms = entry["benchmark"].findall(
@@ -218,9 +225,9 @@ def compare_checks(
         old_rule, new_rule, old_checks, new_checks, show_diffs, system):
     check_system_uri = check_system_to_uri[system]
     old_check = old_rule.find(
-        "xccdf:check[@system='%s']" % check_system_uri, ns)
+        "%s:check[@system='%s']" % (content_xccdf_ns, check_system_uri), ns)
     new_check = new_rule.find(
-        "xccdf:check[@system='%s']" % check_system_uri, ns)
+        "%s:check[@system='%s']" % (content_xccdf_ns, check_system_uri), ns)
     rule_id = old_rule.get("id")
     if (old_check is None and new_check is not None):
         print("New datastream adds %s for rule '%s'." % (system, rule_id))
@@ -229,9 +236,9 @@ def compare_checks(
             "New datastream is missing %s for rule '%s'." % (system, rule_id))
     elif (old_check is not None and new_check is not None):
         old_check_content_ref = old_check.find(
-            "xccdf:check-content-ref", ns)
+            "%s:check-content-ref" % (content_xccdf_ns), ns)
         new_check_content_ref = new_check.find(
-            "xccdf:check-content-ref", ns)
+            "%s:check-content-ref" % (content_xccdf_ns), ns)
         old_check_id = old_check_content_ref.get("name")
         new_check_id = new_check_content_ref.get("name")
         old_check_file_name = old_check_content_ref.get("href")
@@ -305,8 +312,8 @@ def compare_fix_elements(
 
 def compare_remediations(old_rule, new_rule, remediation_type, show_diffs):
     system = remediation_type_to_uri[remediation_type]
-    old_fix = old_rule.find("xccdf:fix[@system='%s']" % (system), ns)
-    new_fix = new_rule.find("xccdf:fix[@system='%s']" % (system), ns)
+    old_fix = old_rule.find("%s:fix[@system='%s']" % (content_xccdf_ns, system), ns)
+    new_fix = new_rule.find("%s:fix[@system='%s']" % (content_xccdf_ns, system), ns)
     rule_id = old_rule.get("id")
     if (old_fix is None and new_fix is not None):
         print("New datastream adds %s remediation for rule '%s'." % (
@@ -324,11 +331,11 @@ def get_rules_to_compare(benchmark, rule_id):
         if not rule_id.startswith(ssg.constants.OSCAP_RULE):
             rule_id = ssg.constants.OSCAP_RULE + rule_id
         rules = benchmark.findall(
-            ".//xccdf:Rule[@id='%s']" % (rule_id), ns)
+            ".//%s:Rule[@id='%s']" % (content_xccdf_ns, rule_id), ns)
         if len(rules) == 0:
             raise ValueError("Can't find rule %s" % (rule_id))
     else:
-        rules = benchmark.findall(".//xccdf:Rule", ns)
+        rules = benchmark.findall(".//%s:Rule" % (content_xccdf_ns), ns)
     return rules
 
 
@@ -355,7 +362,7 @@ def process_benchmarks(
     for old_rule in rules_in_old_benchmark:
         rule_id = old_rule.get("id")
         new_rule = new_benchmark.find(
-            ".//xccdf:Rule[@id='%s']" % (rule_id), ns)
+            ".//%s:Rule[@id='%s']" % (content_xccdf_ns, rule_id), ns)
         if new_rule is None:
             missing_rules.append(rule_id)
             print("%s is missing in new datastream." % (rule_id))
