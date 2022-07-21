@@ -54,14 +54,29 @@ def parse_args():
     return parser.parse_args()
 
 
+def is_benchmark(root):
+    if root.tag == "{%s}Benchmark" % (ns["xccdf"]):
+        return True
+
+
 def get_benchmarks(root):
-    for component in root.findall("ds:component", ns):
+    ds_components = root.findall("ds:component", ns)
+    if not ds_components:
+        # The content is not a DS, maybe it is just an XCCDF Benchmark
+        if is_benchmark(root):
+            yield root
+    for component in ds_components:
         for benchmark in component.findall("xccdf:Benchmark", ns):
             yield benchmark
 
 
 def find_benchmark(root, id_):
-    for component in root.findall("ds:component", ns):
+    ds_components = root.findall("ds:component", ns)
+    if not ds_components:
+        # The content is not a DS, maybe it is just an XCCDF Benchmark
+        if is_benchmark(root):
+            return root
+    for component in ds_components:
         benchmark = component.find("xccdf:Benchmark[@id='%s']" % (id_), ns)
         if benchmark is not None:
             return benchmark
