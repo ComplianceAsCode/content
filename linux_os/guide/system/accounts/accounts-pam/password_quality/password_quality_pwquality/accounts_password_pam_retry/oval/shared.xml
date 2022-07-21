@@ -14,15 +14,12 @@
         <criterion comment="pam_pwquality has correctly set the retry argument in  {{{ file }}}"
         test_ref="test_password_pam_pwquality_retry_{{{ file | escape_id }}}" />
         {{% endfor %}}
-        <criterion comment="check retry parameter in pwquality.conf"
-        test_ref="test_password_pam_pwquality_retry_pwquality_conf" negate="true" />
       </criteria>
       <criteria operator="AND" comment="Conditions for retry in pwquality.conf file are satisfied">
         {{% for file in configuration_files %}}
         <criterion 
-        comment="pwquality.so exists in {{{ 
-                file }}} and doesn't override retry value in pwquality.conf"
-        test_ref="test_password_pam_pwquality_retry_{{{ (file | escape_id) }}}_override"/>
+        comment="retry value not set in PAM files"
+        test_ref="test_password_pam_pwquality_retry_{{{ (file | escape_id) }}}_not_set"/>
         {{% endfor %}}
         <criterion comment="check retry parameter in pwquality.conf"
         test_ref="test_password_pam_pwquality_retry_pwquality_conf"/>
@@ -40,12 +37,11 @@
   </ind:textfilecontent54_test>
   {{% endmacro %}}
 
-  {{% macro test_pwquality_override(file, test_ref) %}}
-  <ind:textfilecontent54_test check="none satisfy" id="test_{{{ test_ref }}}" version="1"
-                              check_existence="at_least_one_exists"
+  {{% macro test_pwquality_notset(file, test_ref, pam_retry_test_ref) %}}
+  <ind:textfilecontent54_test check="all" id="test_{{{ test_ref }}}" version="1"
+                              check_existence="none_exist"
                               comment="check the configuration of /etc/pam.d/{{{ file }}}">
-    <ind:object object_ref="obj_{{{ test_ref }}}" />
-    <ind:state state_ref="state_password_pam_retry_existance"/>
+    <ind:object object_ref="obj_{{{ pam_retry_test_ref }}}" />
   </ind:textfilecontent54_test>
   {{% endmacro %}}
 
@@ -57,23 +53,15 @@
   </ind:textfilecontent54_object>
   {{% endmacro %}}
 
-  {{% macro object_pwquality_override(file, test_ref) %}}
-  <ind:textfilecontent54_object id="obj_{{{ test_ref }}}" version="1">
-    <ind:path>/etc/pam.d/</ind:path>
-    <ind:filename>{{{ file }}}</ind:filename>
-    <ind:pattern operation="pattern match">^\s*password\s+(?:(?:required)|(?:requisite))\s+pam_pwquality\.so(.*)$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-  {{% endmacro %}}
-
   {{% for file in configuration_files %}}
   {{{ test_pwquality_retry( path="/etc/pam.d/" ~ file ,
                             test_ref="password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
   {{{ object_pwquality_retry( path="/etc/pam.d/" ~ file ,
                             test_ref="password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
 
-  {{{ test_pwquality_override(file,"password_pam_pwquality_retry_" ~ (file | escape_id) ~"_override") }}}
-  {{{ object_pwquality_override(file,"password_pam_pwquality_retry_" ~ (file | escape_id) ~"_override") }}}
+  {{{ test_pwquality_notset(file,
+                            "password_pam_pwquality_retry_" ~ (file | escape_id) ~"_not_set",
+                            "password_pam_pwquality_retry_" ~ (file | escape_id)) }}}
   {{% endfor %}}
 
   <ind:textfilecontent54_state id="state_password_pam_retry_upper_bound" version="1"
@@ -85,11 +73,6 @@
   <ind:textfilecontent54_state id="state_password_pam_retry_lower_bound" version="1"
                                comment="lower bound of password_pam_retry">
     <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
-  </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_state id="state_password_pam_retry_existance" version="1"
-                               comment="retry parameter is set">
-    <ind:subexpression datatype="string" operation="pattern match">retry</ind:subexpression>
   </ind:textfilecontent54_state>
 
   <external_variable datatype="int" id="var_password_pam_retry" version="1"

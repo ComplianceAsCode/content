@@ -20,12 +20,6 @@
 														control=".*",
 									      				module='pam_pwquality.so',
 									      				option='retry') }}}
-		{{{ bash_ensure_pam_module_configuration ('/etc/pam.d/' ~ cfile,
-										  'password',
-										  'requisite',
-										  'pam_pwquality.so',
-										  '',
-										  '')}}}
 	{{% endfor %}}
 {{% else %}}
 	{{% for cfile in configuration_files %}}
@@ -34,6 +28,7 @@
 										  'requisite',
 										  'pam_pwquality.so',
 										  'retry',
-										  "$var_password_pam_retry") }}}
+										  "$var_password_pam_retry",
+										  '^\s*account') }}}
 	{{% endfor %}}
 {{%- endif %}}

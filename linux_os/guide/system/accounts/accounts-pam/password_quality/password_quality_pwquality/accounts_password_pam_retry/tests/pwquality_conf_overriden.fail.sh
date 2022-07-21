@@ -1,6 +1,7 @@
 #!/bin/bash
-# packages = authselect,pam
+# packages = authselect
 # platform = Oracle Linux 8,Oracle Linux 9,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9
+# variables = var_password_pam_retry=3
 
 source common.sh
 
@@ -12,8 +13,8 @@ for file in ${configuration_files[@]}; do
 								   'required',
 								   'pam_pwquality.so',
 								   "retry",
-								   "3",
-								   "3") }}}
+								   "4",
+								   "4") }}}
 done
 
 authselect apply-changes
