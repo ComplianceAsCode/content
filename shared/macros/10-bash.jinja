@@ -2085,3 +2085,8 @@ else
     echo "{{{ pam_file }}} was not found" >&2
 fi
 {{%- endmacro -%}}
+
+
+{{%- macro bash_partition_conditional(path) -%}}
+'findmnt --mountpoint "{{{ path }}}" > /dev/null'
+{{%- endmacro -%}}

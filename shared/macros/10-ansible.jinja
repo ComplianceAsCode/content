@@ -1439,3 +1439,8 @@ Part of the grub2_bootloader_argument_absent template.
   when:
     - result_pam_file_present.stat.exists
 {{%- endmacro -%}}
+
+
+{{%- macro ansible_partition_conditional(path) -%}}
+"ansible_facts.ansible_mounts | json_query(\"[?mount=='{{{ path }}}'].mount\") | length == 1"
+{{%- endmacro -%}}
