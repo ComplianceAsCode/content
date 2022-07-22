@@ -33,3 +33,7 @@ selections:
   - sysctl_kernel_randomize_va_space
   - sysctl_net_ipv4_conf_default_accept_redirects
   - sysctl_net_ipv4_conf_default_rp_filter
+  - sysctl_net_ipv4_tcp_syncookies
+  - sysctl_net_ipv4_conf_all_send_redirects
+  - sysctl_net_ipv4_conf_default_send_redirects
+  - sysctl_net_ipv4_ip_forward
