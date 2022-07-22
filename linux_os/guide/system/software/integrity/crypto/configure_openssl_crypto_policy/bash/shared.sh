@@ -2,8 +2,8 @@
 
 OPENSSL_CRYPTO_POLICY_SECTION='[ crypto_policy ]'
 OPENSSL_CRYPTO_POLICY_SECTION_REGEX='\[\s*crypto_policy\s*\]'
-OPENSSL_CRYPTO_POLICY_INCLUSION='.include /etc/crypto-policies/back-ends/opensslcnf.config'
-OPENSSL_CRYPTO_POLICY_INCLUSION_REGEX='^\s*\.include\s*/etc/crypto-policies/back-ends/opensslcnf.config$'
+OPENSSL_CRYPTO_POLICY_INCLUSION='.include = /etc/crypto-policies/back-ends/opensslcnf.config'
+OPENSSL_CRYPTO_POLICY_INCLUSION_REGEX='^\s*\.include\s*(?:=\s*)?/etc/crypto-policies/back-ends/opensslcnf.config$'
 
 {{% if 'sle' in product %}}
   {{% set openssl_cnf_path="/etc/ssl/openssl.cnf" %}}
