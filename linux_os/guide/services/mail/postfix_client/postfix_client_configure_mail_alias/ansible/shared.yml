@@ -13,3 +13,6 @@
     create: true
     state: present
 
+- name: Update postfix aliases
+  ansible.builtin.command:
+    cmd: newaliases
