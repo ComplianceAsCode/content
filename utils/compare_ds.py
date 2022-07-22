@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import re
 import sys
 import xml.etree.ElementTree as ET
 import difflib
@@ -56,9 +57,18 @@ def parse_args():
     )
     parser.add_argument(
         "--stig-benchmark", action="store_true",
-        help="Print only removals from rule set."
+        help="This compares the content in the STIG Benchmark mode. "
+             "A file is generated for each STIGID that changed."
     )
     return parser.parse_args()
+
+
+def get_tag_without_ns(tag):
+    return re.search(r'^{.*}(.*)', tag).group(1)
+
+
+def get_stig_rule_SV(rule_id):
+    return re.search(r'(SV-\d+)r\d+_rule', rule_id).group(1)
 
 
 def is_benchmark(root):
@@ -225,6 +235,66 @@ def compare_ocils(
         print("OCIL for rule '%s' differs:\n%s" % (rule_id, diff))
 
 
+
+def join_text_elements(element):
+    """
+    This function collects the text of almost all subelements.
+    Similar to what itertext() would do, except that this function skips some elements that
+    are not relevant for comparison.
+
+    This function also injects a line for each element whose text was collected, to
+    facilitate tracking of where in the rule the text came from.
+    """
+    text = ""
+    for el in element:
+        if el.tag == "{%s}fix" % ns[content_xccdf_ns]:
+            # We ignore the fix element because it has its own dedicated differ
+            continue
+        if el.tag == "{%s}reference" % ns[content_xccdf_ns]:
+            # We ignore references to DISA Benchmark Rules, they have a format of SV-\d+r\d+_rule
+            # and can change for non-text related changes
+            if ssg.constants.stig_ns == el.get("href"):
+                continue
+        text += "\n[%s]:\n" % get_tag_without_ns(el.tag)
+        text += "".join(el.itertext()) + "\n"
+    return text
+
+
+def compare_texts(old_rule, new_rule, show_diffs, stig_benchmark):
+    old_rule_text = join_text_elements(old_rule)
+    new_rule_text = join_text_elements(new_rule)
+
+    stig_id = None
+    rule_id = None
+
+    if old_rule_text == new_rule_text:
+        return
+
+    if stig_benchmark:
+        stig_id = new_rule.find(
+            "%s:version" % (content_xccdf_ns), ns)
+        print(
+            "New content has different text for '%s'." % (stig_id.text))
+    else:
+        rule_id = old_rule.get("id")
+        print(
+            "New content has different text for rule '%s':" % (rule_id))
+
+    if show_diffs:
+        if stig_benchmark:
+            stig_id = new_rule.find(
+                "%s:version" % (content_xccdf_ns), ns)
+            diff = compare_fix_texts(old_rule_text, new_rule_text,
+                                     fromfile=stig_id.text, tofile=stig_id.text, n=200)
+            with open("%s" % stig_id.text, "w") as f:
+                f.write(diff)
+        else:
+            diff = compare_fix_texts(old_rule_text, new_rule_text)
+            print(
+                "New content has different text for rule '%s':" % (rule_id))
+            print(diff)
+
+
 def compare_checks(
         old_rule, new_rule, old_checks, new_checks, show_diffs, system):
     check_system_uri = check_system_to_uri[system]
@@ -286,11 +356,11 @@ def compare_checks(
                 raise RuntimeError("Unknown check system '%s'" % system)
 
 
-def compare_fix_texts(old_r, new_r):
+def compare_fix_texts(old_r, new_r, fromfile="old datastream", tofile="new datastream", n=3):
     if old_r != new_r:
         diff = "".join(difflib.unified_diff(
             old_r.splitlines(keepends=True), new_r.splitlines(keepends=True),
-            fromfile="old datastream", tofile="new datastream"))
+            fromfile=fromfile, tofile=tofile, n=n))
         return diff
     return None
 
@@ -346,6 +416,7 @@ def get_rules_to_compare(benchmark, rule_id):
 def compare_rules(
         old_rule, new_rule, old_oval_defs, new_oval_defs, old_ocils, new_ocils,
         show_diffs, stig_benchmark):
+    compare_texts(old_rule, new_rule, show_diffs, stig_benchmark)
     compare_checks(
         old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs, "OVAL")
     compare_checks(
