@@ -269,8 +269,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhv", "debian", "ubuntu",
                        "example", "eks", "alinux", "uos"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_alinux": ["alinux2"],
-    "multi_platform_alinux": ["alinux3"],
+    "multi_platform_alinux": ["alinux2", "alinux3"],
     "multi_platform_debian": ["debian9", "debian10", "debian11"],
     "multi_platform_example": ["example"],
     "multi_platform_eks": ["eks"],
