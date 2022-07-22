@@ -54,6 +54,10 @@ def parse_args():
         "--only-rules", action="store_true",
         help="Print only removals from rule set."
     )
+    parser.add_argument(
+        "--stig-benchmark", action="store_true",
+        help="Print only removals from rule set."
+    )
     return parser.parse_args()
 
 
@@ -341,7 +345,7 @@ def get_rules_to_compare(benchmark, rule_id):
 
 def compare_rules(
         old_rule, new_rule, old_oval_defs, new_oval_defs, old_ocils, new_ocils,
-        show_diffs):
+        show_diffs, stig_benchmark):
     compare_checks(
         old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs, "OVAL")
     compare_checks(
@@ -352,15 +356,26 @@ def compare_rules(
 
 def process_benchmarks(
         old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
-        old_ocils, new_ocils, rule_id, show_diffs, only_rules):
+        old_ocils, new_ocils, rule_id, show_diffs, only_rules, stig_benchmark):
     missing_rules = []
     try:
         rules_in_old_benchmark = get_rules_to_compare(old_benchmark, rule_id)
+        rules_in_new_benchmark = get_rules_to_compare(new_benchmark, rule_id)
+        if stig_benchmark:
+            # The rules in STIG Benchmarks will have their IDS changed whenever there is an update.
+            # However, only the release number changes, the SV number stays the same.
+            # This creates map the SV numbers to their equivalent full IDs in the new Benchmark.
+            new_rule_mapping = {get_stig_rule_SV(rule.get("id")): rule.get("id")
+                                for rule in rules_in_new_benchmark}
+
     except ValueError as e:
         print(str(e))
         return
     for old_rule in rules_in_old_benchmark:
-        rule_id = old_rule.get("id")
+        if stig_benchmark:
+            rule_id = new_rule_mapping[get_stig_rule_SV(old_rule.get("id"))]
+        else:
+            rule_id = old_rule.get("id")
         new_rule = new_benchmark.find(
             ".//%s:Rule[@id='%s']" % (content_xccdf_ns, rule_id), ns)
         if new_rule is None:
@@ -371,7 +386,7 @@ def process_benchmarks(
             continue
         compare_rules(old_rule, new_rule,
                       old_oval_defs, new_oval_defs,
-                      old_ocils, new_ocils, show_diffs)
+                      old_ocils, new_ocils, show_diffs, stig_benchmark)
         compare_platforms(old_rule, new_rule,
                           old_benchmark, new_benchmark)
 
@@ -447,7 +462,7 @@ def main():
         process_benchmarks(
             old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
             old_ocils, new_ocils,
-            args.rule, not args.no_diffs, args.only_rules)
+            args.rule, not args.no_diffs, args.only_rules, args.stig_benchmark)
     return 0
 
 
