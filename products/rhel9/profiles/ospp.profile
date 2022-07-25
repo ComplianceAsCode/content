@@ -6,7 +6,7 @@ metadata:
         - comps
         - stevegrubb
 
-reference: https://www.niap-ccevs.org/Profile/PP.cfm
+reference: https://www.niap-ccevs.org/Profile/Info.cfm?PPID=442&id=442
 
 title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
 
