@@ -126,12 +126,10 @@ selections:
     ### rpcbind
 
     ### Install Required Packages
-    - package_aide_installed
     - package_dnf-automatic_installed
     - package_subscription-manager_installed
     - package_firewalld_installed
     - package_openscap-scanner_installed
-    - package_policycoreutils_installed
     - package_sudo_installed
     - package_usbguard_installed
     - package_scap-security-guide_installed
@@ -139,7 +137,6 @@ selections:
     - package_crypto-policies_installed
     - package_openssh-server_installed
     - package_openssh-clients_installed
-    - package_policycoreutils-python-utils_installed
     - package_chrony_installed
     - package_gnutls-utils_installed
 
