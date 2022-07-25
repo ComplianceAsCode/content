@@ -826,8 +826,8 @@ The selected value can be changed in the profile (consult the actual variable fo
             in the OVAL check, but won't be used in the remediations.
             All remediations will use an XCCDF value instead.
 
-    -   **sysctlval_wrong** - the value that is always wrong. This will be used
-        only in the test scenarios only if **sysctlval** is a list.
+    -   **wrong_sysctlval_for_testing** - the value that is always wrong. This will be used
+        only in the templated test scenarios only if **sysctlval** is a list.
 
     -   **missing_static_pass** - if set to `true` the check will pass if the
         setting for the given **sysctlvar** is not present in sysctl

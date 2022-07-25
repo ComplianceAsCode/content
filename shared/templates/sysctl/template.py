@@ -33,7 +33,7 @@ def preprocess(data, lang):
             data["sysctl_wrong_value"] = "wrong_value"
     elif isinstance(data["sysctlval"], list):
         data["sysctl_correct_value"] = data["sysctlval"][0]
-        data["sysctl_wrong_value"] = data["sysctlval_wrong"]
+        data["sysctl_wrong_value"] = data["wrong_sysctlval_for_testing"]
     else:
         data["sysctl_correct_value"] = data["sysctlval"]
         if data["datatype"] == "int":
