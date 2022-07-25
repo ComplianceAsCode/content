@@ -27,28 +27,6 @@ selections:
     #######################################################
 
     ### Partitioning
-    - mount_option_home_nodev
-    - mount_option_home_nosuid
-    - mount_option_tmp_nodev
-    - mount_option_tmp_noexec
-    - mount_option_tmp_nosuid
-    - partition_for_var_tmp
-    - mount_option_var_tmp_nodev
-    - mount_option_var_tmp_noexec
-    - mount_option_var_tmp_nosuid
-    - mount_option_dev_shm_nodev
-    - mount_option_dev_shm_noexec
-    - mount_option_dev_shm_nosuid
-    - mount_option_nodev_nonroot_local_partitions
-    - mount_option_boot_nodev
-    - mount_option_boot_nosuid
-    - partition_for_home
-    - partition_for_var
-    - mount_option_var_nodev
-    - partition_for_var_log
-    - mount_option_var_log_nodev
-    - mount_option_var_log_nosuid
-    - mount_option_var_log_noexec
     - partition_for_var_log_audit
     - mount_option_var_log_audit_nodev
     - mount_option_var_log_audit_nosuid
