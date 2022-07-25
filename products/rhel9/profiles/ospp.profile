@@ -242,11 +242,12 @@ selections:
     ## Configure Name/Addres of Remote Management Server
     ##  From Which to Receive Config Settings
     ## CM-3(3) / FMT_MOF_EXT.1
+    # Management server not selected in FTP_ITC_EXT.1
 
     ## Configure the System to Offload Audit Records to a Log
     ##  Server
     ## AU-4(1) / FAU_GEN.1.1.c
-    # temporarily dropped
+    # Audit server not selected in FTP_ITC_EXT.1
 
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
