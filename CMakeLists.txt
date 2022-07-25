@@ -46,7 +46,6 @@ option(SSG_BUILD_SCAP_12_DS "If enabled, ssg-*-ds-1.2.xml will be built along wi
 option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
 option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests. Shellcheck tests don't pass right now, this option is discouraged until that's fixed." TRUE)
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
-option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the SVG SCAP Security Guide logo." TRUE)
 option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_ENABLED "If enabled, Ansible Playbooks for each profile will be built and installed." TRUE)
 option(SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED "If enabled, Ansible Playbooks for each rule will be built and installed." FALSE)
@@ -155,16 +154,6 @@ if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VER
     message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.10 and 5.11 only!")
 endif()
 
-execute_process(
-    COMMAND "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/oscap_svg_support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
-    RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
-)
-# OSCAP_SVG_SUPPORT_RESULT == 0 means SVG is supported
-if (SSG_SVG_IN_XCCDF_ENABLED AND NOT OSCAP_SVG_SUPPORT_RESULT EQUAL 0)
-    set(SSG_SVG_IN_XCCDF_ENABLED OFF CACHE BOOL "SVG in XCCDF disabled because your version OpenSCAP doesn't support it" FORCE)
-    message(WARNING "Your version of OpenSCAP does not support having the SVG logo in the XCCDF, disabling SVG logo.")
-endif()
-
 # OCP4 requires non-standard extensions. Vanilla OpenSCAP 1.2 doesn't support
 # it. See also: https://github.com/ComplianceAsCode/content/issues/6798
 if ("${OSCAP_VERSION}" VERSION_LESS "1.3.4" AND SSG_PRODUCT_OCP4)
@@ -257,7 +246,6 @@ message(STATUS "Target OVAL version: ${SSG_TARGET_OVAL_VERSION}")
 message(STATUS "Build SCAP 1.2 source data streams: ${SSG_BUILD_SCAP_12_DS}")
 message(STATUS "OVAL schematron validation: ${SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED}")
 message(STATUS "shellcheck bash fixes validation: ${SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED}")
-message(STATUS "SVG logo in XCCDFs: ${SSG_SVG_IN_XCCDF_ENABLED}")
 message(STATUS "Separate SCAP files: ${SSG_SEPARATE_SCAP_FILES_ENABLED}")
 message(STATUS "Ansible Playbooks: ${SSG_ANSIBLE_PLAYBOOKS_ENABLED}")
 message(STATUS "Ansible Playbooks Per Rule: ${SSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED}")
