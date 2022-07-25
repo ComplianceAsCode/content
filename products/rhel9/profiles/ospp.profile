@@ -150,7 +150,6 @@ selections:
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
-    - securetty_root_login_console_only
     - var_authselect_profile=sssd
     - enable_authselect
     - use_pam_wheel_for_su
