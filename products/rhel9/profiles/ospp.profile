@@ -88,14 +88,6 @@ selections:
     - ensure_gpgcheck_local_packages
     - ensure_gpgcheck_never_disabled
 
-    ### Passwords
-    - var_password_pam_difok=4
-    - accounts_password_pam_difok
-    - var_password_pam_maxrepeat=3
-    - accounts_password_pam_maxrepeat
-    - var_password_pam_maxclassrepeat=4
-    - accounts_password_pam_maxclassrepeat
-
     ### Kernel Config
     ## Boot prompt
     - grub2_audit_argument
@@ -163,8 +155,6 @@ selections:
     - securetty_root_login_console_only
     - var_authselect_profile=sssd
     - enable_authselect
-    - var_password_pam_unix_remember=5
-    - accounts_password_pam_unix_remember
     - use_pam_wheel_for_su
 
     ### SELinux Configuration
