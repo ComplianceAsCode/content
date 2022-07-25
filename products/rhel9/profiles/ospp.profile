@@ -62,7 +62,6 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
-    - sshd_enable_warning_banner
     - sshd_rekey_limit
     - var_rekey_limit_size=1G
     - var_rekey_limit_time=1hour
@@ -183,41 +182,40 @@ selections:
     #######################################################
 
     ## Configure Minimum Password Length to 12 Characters
-    ## IA-5 (1)(a) / FMT_MOF_EXT.1
+    ## IA-5 (1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_minlen=12
     - accounts_password_pam_minlen
 
     ## Require at Least 1 Special Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_ocredit=1
     - accounts_password_pam_ocredit
 
     ## Require at Least 1 Numeric Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_dcredit=1
     - accounts_password_pam_dcredit
 
     ## Require at Least 1 Uppercase Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_ucredit=1
     - accounts_password_pam_ucredit
 
     ## Require at Least 1 Lowercase Character in Password
-    ## IA-5(1)(a) / FMT_MOF_EXT.1
+    ## IA-5(1)(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
 
     ## Enable Screen Lock
-    ## FMT_MOF_EXT.1
+    ## FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - package_tmux_installed
     - configure_bashrc_exec_tmux
     - no_tmux_in_shells
     - configure_tmux_lock_command
-    - configure_tmux_lock_after_time
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
-    ## AC-11(a) / FMT_MOF_EXT.1
-    ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
+    ## AC-11(a) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
+    - configure_tmux_lock_after_time
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
@@ -236,7 +234,7 @@ selections:
     - accounts_passwords_pam_faillock_unlock_time
 
     ## Enable Host-Based Firewall
-    ## SC-7(12) / FMT_MOF_EXT.1
+    ## SC-7(12) / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     - service_firewalld_enabled
 
     ## Configure Name/Addres of Remote Management Server
@@ -250,7 +248,8 @@ selections:
     # Audit server not selected in FTP_ITC_EXT.1
 
     ## Set Logon Warning Banner
-    ## AC-8(a) / FMT_MOF_EXT.1
+    ## AC-8(a) / FMT_MOF_EXT.1 (FTA_TAB.1)
+    - sshd_enable_warning_banner
 
     ## Audit All Logons (Success/Failure) and Logoffs (Success)
     ##  CNSSI 1253 Value or DoD-Specific Values:
@@ -357,7 +356,7 @@ selections:
     - audit_module_load_ppc64le
 
     ## Enable Automatic Software Updates
-    ## SI-2 / FMT_MOF_EXT.1
+    ## SI-2 / FMT_MOF_EXT.1 (FMT_SMF_EXT.1)
     # Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
 
