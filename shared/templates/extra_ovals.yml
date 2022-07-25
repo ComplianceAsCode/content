@@ -44,14 +44,6 @@ package_prelink_removed:
   vars:
     pkgname: prelink
 
-service_sssd_disabled:
-  name: service_disabled
-  vars:
-    servicename: sssd
-    packagename: sssd-common
-    packagename@sle12: sssd
-    packagename@sle15: sssd
-
 service_syslog_disabled:
   name: service_disabled
   vars:
