@@ -76,12 +76,6 @@ selections:
     - service_debug-shell_disabled
     - grub2_systemd_debug-shell_argument_absent
 
-    ### umask
-    - var_accounts_user_umask=027
-    - accounts_umask_etc_profile
-    - accounts_umask_etc_bashrc
-    - accounts_umask_etc_csh_cshrc
-
     ### Software update
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
