@@ -1,15 +1,13 @@
 documentation_complete: true
 
-prodtype: ol8,ol9,rhcos4,rhel8,rhel9
+prodtype: rhel9
 
-title: 'Configure auditing of unsuccessful ownership changes'
+title: 'Configure auditing of unsuccessful ownership changes (ppc64le)'
 
 {{% set file_contents_audit_owner_change_failed =
 "## Unsuccessful ownership change
--a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change
--a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change
--a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change
--a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-owner-change" %}}
+-a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-owner-change
+-a always,exit -F arch=b64 -S lchown,fchown,chown,fchownat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-owner-change" %}}
 
 description: |-
     Ensure that unsuccessful attempts to change an ownership of files or directories are audited.
@@ -27,16 +25,11 @@ rationale: |-
 
 severity: medium
 
-# on RHEL9 there are rules which cover particular hardware architectures
-# so do not apply this rule but apply the specific one instead
-{{% if product == "rhel9" %}}
 platforms:
-    - not aarch64_arch and not ppc64le_arch
-{{% endif %}}
+    - ppc64le_arch
 
 identifiers:
-    cce@rhel8: CCE-82384-9
-    cce@rhel9: CCE-83675-9
+    cce@rhel9: CCE-85988-4
 
 references:
     nist: AU-2(a)

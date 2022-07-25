@@ -28,3 +28,9 @@ cpes:
       bash_conditional: 'grep -q aarch64 /proc/sys/kernel/osrelease'
       ansible_conditional: 'ansible_architecture == "aarch64"'
 
+  - ppc64le_arch:
+      name: "cpe:/a:ppc64le_arch"
+      title: "System architecture is ppc64le"
+      check_id: proc_sys_kernel_osrelease_arch_ppc64le
+      bash_conditional: 'grep -q ppc64le /proc/sys/kernel/osrelease'
+      ansible_conditional: 'ansible_architecture == "ppc64le"'

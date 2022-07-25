@@ -315,35 +315,51 @@ selections:
     - audit_immutable_login_uids
     - audit_create_failed
     - audit_create_failed_aarch64
+    - audit_create_failed_ppc64le
     - audit_create_success
     - audit_create_success_aarch64
+    - audit_create_success_ppc64le
     - audit_modify_failed
     - audit_modify_failed_aarch64
+    - audit_modify_failed_ppc64le
     - audit_modify_success
     - audit_modify_success_aarch64
+    - audit_modify_success_ppc64le
     - audit_access_failed
     - audit_access_failed_aarch64
+    - audit_access_failed_ppc64le
     - audit_access_success
     - audit_access_success.severity=info
     - audit_access_success.role=unscored
     - audit_access_success_aarch64
     - audit_access_success_aarch64.severity=info
     - audit_access_success_aarch64.role=unscored
+    - audit_access_success_ppc64le
+    - audit_access_success_ppc64le.severity=info
+    - audit_access_success_ppc64le.role=unscored
     - audit_delete_failed
     - audit_delete_failed_aarch64
+    - audit_delete_failed_ppc64le
     - audit_delete_success
     - audit_delete_success_aarch64
+    - audit_delete_success_ppc64le
     - audit_perm_change_failed
     - audit_perm_change_failed_aarch64
+    - audit_perm_change_failed_ppc64le
     - audit_perm_change_success
     - audit_perm_change_success_aarch64
+    - audit_perm_change_success_ppc64le
     - audit_owner_change_failed
     - audit_owner_change_failed_aarch64
+    - audit_owner_change_failed_ppc64le
     - audit_owner_change_success
     - audit_owner_change_success_aarch64
+    - audit_owner_change_success_ppc64le
     - audit_ospp_general
     - audit_ospp_general_aarch64
+    - audit_ospp_general_ppc64le
     - audit_module_load
+    - audit_module_load_ppc64le
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1
