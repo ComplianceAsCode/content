@@ -150,8 +150,6 @@ selections:
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
-    - var_accounts_max_concurrent_login_sessions=10
-    - accounts_max_concurrent_login_sessions
     - securetty_root_login_console_only
     - var_authselect_profile=sssd
     - enable_authselect
