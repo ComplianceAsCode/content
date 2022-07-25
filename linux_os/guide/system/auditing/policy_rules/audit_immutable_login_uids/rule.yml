@@ -4,13 +4,17 @@ prodtype: ol8,ol9,rhcos4,rhel8,rhel9
 
 title: 'Configure immutable Audit login UIDs'
 
+{{% set file_contents_audit_immutable_login =
+"## Make the loginuid immutable. This prevents tampering with the auid.
+--loginuid-immutable" %}}
+
 description: |-
     Configure kernel to prevent modification of login UIDs once they are set.
     Changing login UIDs while this configuration is enforced requires special capabilities which
     are not available to unprivileged users.
 
     The following rules configure audit as described above:
-    <pre>--loginuid-immutable</pre>
+    <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
 
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
@@ -36,17 +40,18 @@ references:
 ocil_clause: 'the file does not exist or the content differs'
 
 ocil: |-
-    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules,
-    check the content of the file with the following command:
-    <pre>sudo grep -i loginuid-immutable /etc/audit/audit.rules</pre>
-    The output has to contain a non commented line as follows:
-    <pre>--loginuid-immutable</pre>
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>$ sudo cat /etc/audit/rules.d/11-loginuid.rules</pre>
+    The output has to be exactly as follows:
+    <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
 
 template:
-    name: lineinfile
+    name: audit_file_contents
     vars:
-        path: /etc/audit/rules.d/11-loginuid.rules
-        text: "--loginuid-immutable"
+        filepath: /etc/audit/rules.d/11-loginuid.rules
+        contents: |+
+            {{{ file_contents_audit_immutable_login|indent(12) }}}
+#do not remove this comment, it stops Jinja from including more blank lines to the variable
 
 fixtext: |-
     Configure {{{ full_name }}} kernel to prevent modification of login UIDs once they are set.
