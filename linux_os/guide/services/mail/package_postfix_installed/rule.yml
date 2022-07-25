@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'The Postfix package is installed'
+
+description: |-
+    A mail server is required for sending emails.
+    {{{ describe_package_install(package="postfix") }}}
+
+rationale: |-
+    Emails can be used to notify designated personnel about important
+    system events such as failures or warnings.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: CCE-85983-5
+    cce@rhel9: CCE-85984-3
+
+references:
+    srg: SRG-OS-000046-GPOS-00022
+    stigid@rhel8: RHEL-08-030030
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="postfix") }}}'
+
+fixtext: '{{{ describe_package_install(package="postfix") }}}'
+
+srg_requirement: '{{{ srg_requirement_package_installed("postfix") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: postfix

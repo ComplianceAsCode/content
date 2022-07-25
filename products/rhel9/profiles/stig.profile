@@ -644,6 +644,7 @@ selections:
 
     # RHEL-08-030030
     - postfix_client_configure_mail_alias
+    - package_postfix_installed
 
     # RHEL-08-030040
     - auditd_data_disk_error_action
