@@ -34,7 +34,7 @@ ocil_clause: 'the kubelet cannot rotate client certificate'
 ocil: |-
     Run the following command on the kubelet node(s):
     <pre>$ sudo grep RotateKubeletClientCertificate {{{ kubeletconf_path }}}</pre>
-    The output should return <tt>true</tt>.
+    The output should return nothing or <tt>true</tt>.
 
 identifiers:
     cce@ocp4: CCE-83352-5
