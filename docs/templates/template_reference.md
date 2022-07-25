@@ -829,7 +829,7 @@ The selected value can be changed in the profile (consult the actual variable fo
     -   **wrong_sysctlval_for_testing** - the value that is always wrong. This will be used
         only in the templated test scenarios only if **sysctlval** is a list.
 
-    -   **missing_static_pass** - if set to `true` the check will pass if the
+    -   **missing_parameter_pass** - if set to `true` the check will pass if the
         setting for the given **sysctlvar** is not present in sysctl
         configuration files. In other words, the check will pass if the system
         default isn't overriden by configuration. Default value: `false`.
