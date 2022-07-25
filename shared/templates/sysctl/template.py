@@ -16,15 +16,6 @@ def preprocess(data, lang):
             "The sysctlval parameter of {0} is an empty list".format(
                 data["_rule_id"]))
 
-    if not data.get("sysctlval_remediate"):
-        if isinstance(data["sysctlval"], list):
-            raise ValueError(
-                "Problem with rule {0}: the 'sysctlval' parameter is a list "
-                "but we are missing the 'sysctlval_remediate' parameter, so "
-                "we don't know how to generate remediation content.".format(
-                    data["_rule_id"]))
-        data["sysctlval_remediate"] = data["sysctlval"]
-
     # Configure data for test scenarios
     if data["datatype"] not in ["string", "int"]:
         raise ValueError(
@@ -41,7 +32,7 @@ def preprocess(data, lang):
             data["sysctl_correct_value"] = "correct_value"
             data["sysctl_wrong_value"] = "wrong_value"
     elif isinstance(data["sysctlval"], list):
-        data["sysctl_correct_value"] = data["sysctlval_remediate"]
+        data["sysctl_correct_value"] = data["sysctlval"][0]
         data["sysctl_wrong_value"] = data["sysctlval_wrong"]
     else:
         data["sysctl_correct_value"] = data["sysctlval"]

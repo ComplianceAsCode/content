@@ -21,7 +21,7 @@
     replace: '#{{{ SYSCTLVAR }}}'
   loop: "{{ find_sysctl_d.files }}"
 
-{{%- if SYSCTLVAL_REMEDIATE == "" %}}
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
@@ -29,10 +29,10 @@
     name: "{{{ SYSCTLVAR }}}"
     value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
 {{%- else %}}
-- name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL_REMEDIATE }}}
+- name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
   sysctl:
     name: "{{{ SYSCTLVAR }}}"
-    value: "{{{ SYSCTLVAL_REMEDIATE }}}"
+    value: "{{{ SYSCTLVAL }}}"
 {{%- endif %}}
     state: present
     reload: yes
