@@ -6,7 +6,7 @@
 
 {{{ bash_ensure_ini_config("/etc/sssd/sssd.conf", "pam", "pam_cert_auth", "True") }}}
 
-{{% if product in ["fedora", "ol8", "rhel8", "rhel9"] %}}
+{{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
 if [ -f /usr/bin/authselect ]; then
     if authselect check; then
         {{{ bash_enable_authselect_feature('with-smartcard') | indent(8) }}}

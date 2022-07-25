@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux2,alinux3,fedora,ol7,ol8,rhel7,rhel8,rhel9,rhv4,sle12,sle15
+prodtype: alinux2,alinux3,fedora,ol7,ol8,ol9,rhel7,rhel8,rhel9,rhv4,sle12,sle15
 
 title: 'Require Authentication for Emergency Systemd Target'
 
@@ -54,7 +54,7 @@ ocil: |-
     To check if authentication is required for emergency mode, run the following command:
     <pre>$ grep sulogin /usr/lib/systemd/system/emergency.service</pre>
     The output should be similar to the following, and the line must begin with
-    {{% if product in ["fedora", "rhel8", "rhel9", "ol8", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
         ExecStart and /usr/lib/systemd/systemd-sulogin-shell.
         <pre>ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency</pre>
     {{%- else -%}}
@@ -84,7 +84,7 @@ fixtext: |-
     Configure {{{ full_name }}} to require authentication for system emergency mode.
 
     Add or edit the following line in "/usr/lib/systemd/system/emergency.service":
-    {{% if product in ["fedora", "rhel8", "rhel9", "ol8", "sle12", "sle15"] -%}}
+    {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"

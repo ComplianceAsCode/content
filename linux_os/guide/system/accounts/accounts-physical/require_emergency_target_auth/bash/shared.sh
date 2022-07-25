@@ -2,7 +2,7 @@
 
 service_file="/usr/lib/systemd/system/emergency.service"
 
-{{% if product in ["fedora", "rhel8", "rhel9", "ol8", "sle12", "sle15"] -%}}
+{{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
 sulogin="/usr/lib/systemd/systemd-sulogin-shell emergency"
 {{%- else -%}}
 sulogin='/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
