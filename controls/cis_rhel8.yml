@@ -1238,7 +1238,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
+    related_rules:
       - package_iptables_installed
       - package_iptables-services_installed
 
@@ -1289,7 +1289,7 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
+    related_rules:
       - set_iptables_default_rule
 
   # NEEDS RULE
@@ -1306,10 +1306,9 @@ controls:
       - l1_server
       - l1_workstation
     status: automated
-    rules:
-      - service_iptables_enabled
     related_rules:
       - package_iptables-services_installed
+      - service_iptables_enabled
 
   # NEEDS RULE
   # https://github.com/ComplianceAsCode/content/issues/5258
