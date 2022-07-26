@@ -83,13 +83,24 @@
       replace: '\1equals\2'
     when: EXERCISE == TRACK_5_LABEL
 
-  - name: "Copy our Fedora OSPP profile to the target system"
+  - name: "Copy our RHEL8 OSPP profile to the target system"
     copy:
-      src: "data/ospp-fedora.profile"
-      dest: "{{ LAB_DIR }}/products/fedora/profiles/ospp.profile"
+      src: "data/ospp-rhel8.profile"
+      dest: "{{ LAB_DIR }}/products/rhel8/profiles/ospp.profile"
 
-  - name: "Build the fedora content to be used in exercises"
-    command: "./build_product fedora"
+  - name: "Build the rhel8 content to be used in exercises"
+    command: "./build_product rhel8"
     args:
       chdir: "{{ LAB_DIR }}"
     when: EXERCISE == TRACK_1_LABEL or EXERCISE == TRACK_2_LABEL
+
+  # - name: "Copy our Fedora OSPP profile to the target system"
+  #   copy:
+  #     src: "data/ospp-fedora.profile"
+  #     dest: "{{ LAB_DIR }}/products/fedora/profiles/ospp.profile"
+
+  # - name: "Build the fedora content to be used in exercises"
+  #   command: "./build_product fedora"
+  #   args:
+  #     chdir: "{{ LAB_DIR }}"
+  #   when: EXERCISE == TRACK_1_LABEL or EXERCISE == TRACK_2_LABEL
