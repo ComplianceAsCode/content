@@ -132,12 +132,6 @@ selections:
     - package_chrony_installed
     - package_gnutls-utils_installed
 
-    ### Remove Prohibited Packages
-    - package_sendmail_removed
-    - package_iprutils_removed
-    - package_gssproxy_removed
-    - package_nfs-utils_removed
-
     ### Login
     - disable_users_coredumps
     - sysctl_kernel_core_pattern
