@@ -11,4 +11,6 @@
                     separator=": ",
                     separator_regex="\s*:\s*") }}}
 
-newaliases
+if [ -f /usr/bin/newaliases ]; then
+    newaliases
+fi
