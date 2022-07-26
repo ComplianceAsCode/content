@@ -637,6 +637,7 @@ selections:
     - account_disable_inactivity_system_auth
 
     # OL08-00-020261
+    - account_disable_inactivity_password_auth
 
     # OL08-00-020262
     - file_permissions_lastlog
