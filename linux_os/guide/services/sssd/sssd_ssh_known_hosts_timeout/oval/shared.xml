@@ -2,11 +2,6 @@
   <definition class="compliance" id="sssd_ssh_known_hosts_timeout" version="1">
     {{{ oval_metadata("SSSD should be configured to expire keys from known SSH hosts after 1 day.") }}}
     <criteria operator="OR">
-      <criteria operator="OR">
-        <extend_definition comment="Check if sssd service is disabled" definition_ref="service_sssd_disabled" />
-        <extend_definition comment="Check if /etc/sssd/sssd.conf is configured for usage"
-        definition_ref="sssd_conf_exists" negate="true"/>
-      </criteria>
       <criterion comment="Check ssh_known_hosts_timeout in /etc/sssd/sssd.conf"
       test_ref="test_sssd_ssh_known_hosts_timeout" />
     </criteria>
