@@ -819,15 +819,19 @@ The selected value can be changed in the profile (consult the actual variable fo
         specified, or an atomic value, eg. `'1'`, or a list of values,
         eg. `['1','2']`.
         -   If this parameter is not specified, an XCCDF Value is used instead
-            in OVAL check and remediations.
+            in OVAL check and remediations. The XCCDF Value should have a file
+            name in the form `"sysctl_" + $escaped_sysctlvar + "_value.var"`,
+            where the `escaped_sysctlvar` is a value of the **sysctlvar**
+            parameter in which all characters that don't match the `\w` regular
+            expression are replaced by an underscore (`_`).
         -   If this parameter is set to an atomic value, this atomic value
             will be used in OVAL check and remediations.
         -   If this parameter is set to a list of values, the list will be used
             in the OVAL check, but won't be used in the remediations.
             All remediations will use an XCCDF value instead.
 
-    -   **wrong_sysctlval_for_testing** - the value that is always wrong. This will be used
-        only in the templated test scenarios only if **sysctlval** is a list.
+    -   **wrong_sysctlval_for_testing** - the value that is always wrong. This
+        will be used in templated test scenarios when **sysctlval** is a list.
 
     -   **missing_parameter_pass** - if set to `true` the check will pass if the
         setting for the given **sysctlvar** is not present in sysctl
