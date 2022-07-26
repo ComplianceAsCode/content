@@ -8,7 +8,7 @@ source common.sh
 echo "retry = 3" >  /etc/security/pwquality.conf
 
 for file in ${configuration_files[@]}; do
-	{{{ bash_ensure_pam_module_options('/etc/authselect/custom/testingProfile/$file',
+	{{{ bash_ensure_pam_module_option('/etc/authselect/custom/testingProfile/$file',
                                    'password',
 								   'required',
 								   'pam_pwquality.so',

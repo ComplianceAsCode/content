@@ -5,7 +5,7 @@
 source common.sh
 
 for file in ${configuration_files[@]}; do
-{{{ bash_ensure_pam_module_options('/etc/pam.d/$file',
+{{{ bash_ensure_pam_module_option('/etc/pam.d/$file',
                                    'password',
 								   'required',
 								   'pam_pwquality.so',
