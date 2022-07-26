@@ -4,4 +4,6 @@
 
 {{{ bash_replace_or_append('/etc/aliases', '^root', "$var_postfix_root_mail_alias", '%s: %s') }}}
 
-newaliases
+if [ -f /usr/bin/newaliases ]; then
+    newaliases
+fi
