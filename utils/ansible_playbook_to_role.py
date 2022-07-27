@@ -324,6 +324,12 @@ class PlaybookToRoleConverter():
     def _tag_is_valid_variable(self, tag):
         if "DISA-STIG" in tag:
             return True
+
+        # rules of kind package_* and service_* can have hyphen in their rule IDs
+        pattern = re.compile('(package_.*_(installed|removed))|(service_.*_(enabled|disabled))')
+        if pattern.match(tag):
+            return True
+
         return '-' not in tag and tag != 'always'
 
     def _sanitize_tag(self, tag):
