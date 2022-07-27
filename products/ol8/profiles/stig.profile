@@ -567,11 +567,7 @@ selections:
     # OL08-00-020101
     - accounts_password_pam_pwquality_system_auth
 
-    # OL08-00-020102
-
-    # OL08-00-020103
-
-    # OL08-00-020104
+    # OL08-00-020102, OL08-00-020103, OL08-00-020104
     - accounts_password_pam_retry
 
     # OL08-00-020110

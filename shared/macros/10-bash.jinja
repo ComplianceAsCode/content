@@ -1903,7 +1903,8 @@ if ! grep -qP '^\s*{{{ group }}}\s+'"{{{ control }}}"'\s+{{{ module }}}\s*.*' "{
         {{%- elif after_match == 'BOF'  %}}
         sed -i --follow-symlinks '1i {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
         {{%- else %}}
-        sed -i --follow-symlinks '/{{{ after_match }}}/a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
+        LAST_MATCH_LINE=$(grep -nP "{{{ after_match }}}" "{{{ pam_file }}}" | tail -n 1 | cut -d: -f 1)
+        sed -i --follow-symlinks $LAST_MATCH_LINE' a {{{ group }}}     '"{{{ control }}}"'    {{{ module }}}' "{{{ pam_file }}}"
         {{%- endif %}}
     fi
 fi
