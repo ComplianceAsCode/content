@@ -493,7 +493,8 @@ class RuleChecker(oscap.Checker):
         os.unlink(new_filename)
 
     def _change_variable_value(self, varname, value):
-        _, xslt_filename = tempfile.mkstemp(prefix="xslt-change-value", dir="/tmp")
+        descriptor, xslt_filename = tempfile.mkstemp(prefix="xslt-change-value", dir="/tmp")
+        os.close(descriptor)
         template = generate_xslt_change_value_template(varname, value)
         with open(xslt_filename, "w") as fp:
             fp.write(template)
