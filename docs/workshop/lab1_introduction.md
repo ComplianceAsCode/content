@@ -19,6 +19,8 @@ In Red Hat<sup>®</sup> Enterprise Linux<sup>®</sup> (RHEL), the SCAP
 content generated from `ComplianceAsCode` data is shipped as the
 `scap-security-guide` RPM package.
 
+## Goals
+
 -   Learn about the `ComplianceAsCode` project to understand what is
     where and what you can use the project for.
 
@@ -33,7 +35,15 @@ content generated from `ComplianceAsCode` data is shipped as the
 -   Learn where to find additional rule content, such as checks and
     remediations.
 
-Content used in this lab has been altered to increase its educative
+## Preconfigured Lab Environment
+
+- The `ComplianceAsCode` repository is already cloned.
+- The following required dependencies for the `ComplianceAsCode` content build are already installed using `yum install`:
+    - Generic build utilities: `cmake` and `make`
+    - Utilities for generating SCAP content: `openscap-scanner`
+    - Python dependencies for putting content together: `python3-pyyaml` and `python3-jinja2`
+
+IMPORTANT: Content used in this lab has been altered to increase its educative
 potential, and is therefore different from the content in
 ComplianceAsCode upstream repository.
 
@@ -69,12 +79,12 @@ profile) is `ssg-rhel8-guide-ospp.html`.
 1.  On the lab environment, you navigate to the `build/guides` folder.
 
 1.  Right click the `ssg-rhel8-guide-ospp.html` file and select
-    `Download` to download the HTML guide for the RHEL 8 OSPP profile.
+    `Open with Live Server` to preview the file. Note: Your browser can
+    block the pop-up. You must allow it when asked.
 
-    <!-- <img src="images/navigateospp.png" alt="1000" width="1000"/> -->
     ![OSPP Profile Guide](images/navigateospp.png)
 
-1. Open the downloaded HTML file in your browser.
+1. Viewing HTML file in your browser.
 
     1.  Rules are organized in a system of hierarchical groups. Take a
         look through this HTML guide to see the various rules of the
@@ -159,8 +169,8 @@ Interactive Session Timeout** rule entry.
         ![Completed build of security content for RHEL 8 in the Terminal
         window](images/0-02-post_build.png)
 
-1.  Download the guide `ssg-rhel8-guide-ospp.html` again from the `build/guides`
-    directory and open it again.
+1.  Refresh the tab with the guide `ssg-rhel8-guide-ospp.html` or right click
+    the file in `build/guides` and select `Open with Live Server`.
 
 1.  Review the fix. Expect to now see the fixed description, without the
     duplicate **Setting the TMOUT option in /etc/profile ensures that**
@@ -223,8 +233,8 @@ umask, and other settings. You will learn about parameterized rules by:
 
         1. `./build_product rhel8`
 
-        After the build finishes, download the HTML guide
-        `build/guides/ssg-rhel8-guide-ospp.html` and open it on your browser.
+        After the build finishes, refresh the tab with the guide `ssg-rhel8-guide-ospp.html`
+        or right click the file in `build/guides` and select `Open with Live Server`.
         Expect the variable value to be updated to `1800`.
 
 1.  What happens if you omit the variable definition?
@@ -258,9 +268,9 @@ umask, and other settings. You will learn about parameterized rules by:
             bring up the "save and exit" option. If you are asked about
             saving any changes, you probably do not want that, so enter `n`.
 
-    1.  Time to review the HTML guide - when downloading and reopening
-        `build/guides/ssg-rhel8-guide-ospp.html`, you can clearly see
-        the rule’s timeout indeed equals to 600.
+    1.  Time to review the HTML guide - refresh the tab with the guide
+        `ssg-rhel8-guide-ospp.html` or right click the file in `build/guides`
+        and select `Open with Live Server`. The rule's timeout indeed equals to 600.
 
 The set of values a variable can have is discrete - all values have to be
 defined in the variable file. Therefore, it is possible to specify
@@ -403,8 +413,9 @@ guide open, and see for yourself.
 
     1. `./build_product rhel8`
 
-1.  Once the build is done, download the guide again and open it. Expect the remediation to
-    contain the newly added comment.
+1.  Once the build is done, refresh the tab with the guide `ssg-rhel8-guide-ospp.html`
+    or right click the file in `build/guides` and select `Open with Live Server`.
+    Expect the remediation to contain the newly added comment.
 
 Congratulations, by completing this lab exercise, you became familiar
 with a comprehensive content creation tool and one of the largest open
