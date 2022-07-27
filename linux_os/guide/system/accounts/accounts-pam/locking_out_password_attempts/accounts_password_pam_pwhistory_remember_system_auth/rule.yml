@@ -16,7 +16,6 @@ description: |-
     xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
     <i>control_flag</i> should be one of the next values: <tt>{{{
     xccdf_value("var_password_pam_remember_control_flag") }}}</tt><br />
-    The DoD STIG requirement is 5 passwords.
 
 rationale: 'Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.'
 
@@ -59,15 +58,15 @@ ocil: |-
     <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt> generations with the following command:
     <pre># grep pam_pwhistory.so /etc/pam.d/system-auth
     password <i>control_flag</i> pam_pwhistory.so remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
-    If the command does not return a result, or the returned line is commented out,
-    <i>control_flag</i> value isn't one of the next: <tt>{{{
-    xccdf_value("var_password_pam_remember_control_flag") }}}</tt>, does not contain
-    "remember" value, or the value is less than
-    <tt>{{{ xccdf_value("var_password_pam_remember") }}}</tt>, this is a finding.
+    If the command does not return a result, the returned line is commented out,
+    the line does not contain "remember" value, the value is less than <tt>{{{
+    xccdf_value("var_password_pam_remember") }}}</tt>, the <i>control_flag</i> value isn't one of
+    the next: <tt>{{{ xccdf_value("var_password_pam_remember_control_flag") }}}</tt> this is a
+    finding.
 
 fixtext: |-
     To configure the <tt>remember</tt> option for the <tt>pam_pwhistory</tt> PAM module, in the
-    file <tt>/etc/pam.d/system-auth</tt>, make sure the parameter <tt>remember</tt> is present
+    file <tt>/etc/pam.d/system-auth</tt>, make sure the <tt>remember</tt> parameter is present
     and it has a value equal to or greater than {{{ xccdf_value("var_password_pam_remember") }}}
     For example:
     <pre>password {{{ xccdf_value("var_password_pam_remember_control_flag") }}} pam_pwhistory.so <i>...existing_options...</i> remember={{{ xccdf_value("var_password_pam_remember") }}} use_authtok</pre>
