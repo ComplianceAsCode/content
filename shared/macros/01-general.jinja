@@ -1006,6 +1006,31 @@ Configure the default Grub2 kernel command line to contain {{{ arg_name_value }}
 
 
 {{#
+    Describe how to configure Grub2 to not have an argument on the default kernel command line.
+    The parameter should be the argument name.
+#}}
+{{%- macro describe_grub2_argument_absent(arg_name) -%}}
+{{%- if product in ["ol7", "ol8", "ol9", "rhel7", "rhel8", "rhel9"] or 'ubuntu' in product -%}}
+To ensure that <tt>{{{ arg_name }}}</tt> is not part of the kernel command line
+to newly installed kernels, remove <tt>{{{ arg_name }}}</tt> from the
+default Grub2 command line for Linux operating systems. Modify the line within
+<tt>/etc/default/grub</tt>, so the
+<pre>GRUB_CMDLINE_LINUX="..."</pre>
+assignment doesn't contain the <tt>{{{ arg_name }}}</tt>.
+Run the following command to update command line for already installed kernels:
+{{%- if 'ubuntu' in product -%}}
+<pre># update-grub</pre>
+{{%- else -%}}
+<pre># grubby --update-kernel=ALL --args="{{{ arg_name }}}"</pre>
+{{%- endif -%}}
+{{%- else -%}}
+Configure the default Grub2 kernel command line to contain {{{ arg_name }}} as follows:
+<pre># grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ arg_name }}}"</pre>
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
+{{#
     Describe how to check a kernel compile parameter
 
 :param config: The kernel config parameter
