@@ -13,11 +13,13 @@ description: |-
     disabled, calling <code>bpf()</code> without <code>CAP_SYS_ADMIN</code> or <code>CAP_BPF</code> will return <code>-EPERM</code>.
     Once set to <code>1</code>, this can't be cleared from the running kernel anymore.
 
+    {{{ describe_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
+
     Writing <code>2</code> to this entry will also disable unprivileged calls to <code>bpf()</code>,
     however, an admin can still change this setting later on, if needed, by
     writing <code>0</code> or <code>1</code> to this entry.
 
-    {{{ describe_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
+    {{{ describe_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="2") }}}
 
 rationale: |-
     Loading and accessing the packet filters programs and maps using the bpf()
