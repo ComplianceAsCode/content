@@ -385,10 +385,9 @@ class RuleChecker(oscap.Checker):
 
         # Start by checking for templating tests and provision them if
         # present.
-        all_templated_test_scenarios = common.fetch_templated_test_scenarios(
-            rule.rule, template_builder, rule.local_env_yaml)
-        templated_test_scenarios = common.apply_test_config(
-            rule.directory, product_yaml, all_templated_test_scenarios)
+        templated_test_scenarios = common.fetch_templated_test_scenarios(
+            rule.rule, template_builder, rule.directory, rule.local_env_yaml,
+            product_yaml)
 
         # Add additional tests from the local rule directory. Note that,
         # like the behavior in template_tests, this will overwrite any
