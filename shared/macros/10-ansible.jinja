@@ -834,7 +834,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       ansible.builtin.lineinfile:
         path: '{{ item }}'
         line: auth        required      pam_faillock.so authfail
-        insertafter: ^auth.*sufficient.*pam_unix.so.*
+        insertbefore: ^auth.*required.*pam_deny.so.*
         state: present
       loop:
         - /etc/pam.d/system-auth
