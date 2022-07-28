@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: fedora,ol8,rhel8,rhel9,sle12,sle15,ubuntu2004
 
-title: 'Verify that system commands files are group owned by root'
+title: 'Verify that system commands files are group owned by root or a system account'
 
 description: |-
     System commands files are stored in the following directories by default:
@@ -13,9 +13,11 @@ description: |-
     /usr/local/bin
     /usr/local/sbin
     </pre>
-    All files in these directories should be owned by the <tt>root</tt> group.
+    All files in these directories should be owned by the <tt>root</tt> group,
+    or a system account.
     If the directory, or any file in these directories, is found to be owned
-    by a group other than root correct its ownership with the following command:
+    by a group other than root or a a system account correct its ownership
+    with the following command:
     <pre>$ sudo chgrp root <i>FILE</i></pre>
 
 rationale: |-
@@ -63,4 +65,4 @@ fixtext: |-
     $ sudo chgrp root [FILE]
 
 srg_requirement:
-    {{{ full_name }}} system commands must be group-owned by root.
+    {{{ full_name }}} system commands must be group-owned by root or a system account.
