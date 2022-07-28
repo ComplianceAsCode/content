@@ -402,11 +402,9 @@ class RuleChecker(oscap.Checker):
         # here, we can save later code from having to understand the
         # templating system.
         all_tests = dict()
-        templated_test_scenarios = {
-            name: template_builder.get_test(
-                templated_test_scenarios_paths[name], rule.rule.template,
-                rule.local_env_yaml)
-            for name in templated_test_scenarios_paths}
+        templated_test_scenarios = common.load_templated_test_scenarios(
+            templated_test_scenarios_paths, template_builder,
+            rule.rule.template, rule.local_env_yaml)
         local_test_scenarios = {
             name: process_file_with_macros(
                 local_test_scenarios_paths[name], rule.local_env_yaml)

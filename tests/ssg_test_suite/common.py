@@ -450,6 +450,16 @@ def fetch_templated_test_scenarios_paths(
     return templated_test_scenarios
 
 
+def load_templated_test_scenarios(
+        templated_test_scenarios_paths,
+        template_builder, template, local_env_yaml):
+    templated_test_scenarios = dict()
+    for name, path in templated_test_scenarios_paths.items():
+        scenario = template_builder.get_test(path, template, local_env_yaml)
+        templated_test_scenarios[name] = scenario
+    return templated_test_scenarios
+
+
 def file_known_as_useless(file_name):
     return file_name.endswith(".swp")
 
