@@ -162,7 +162,6 @@ class Builder(object):
         appropriate location.
         """
         template_name = rule_template['name']
-        template_vars = rule_template['vars']
 
         base_dir = os.path.abspath(os.path.join(self.templates_dir, template_name, "tests"))
         results = dict()
@@ -186,16 +185,21 @@ class Builder(object):
                 absolute_path = os.path.abspath(os.path.join(dirpath, filename))
                 relative_path = os.path.relpath(absolute_path, base_dir)
 
-                # Load template parameters and apply it to the test case.
-                template_parameters = templates[template_name].preprocess(template_vars, "tests")
-                jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
-                filled_template = ssg.jinja.process_file_with_macros(
-                    absolute_path, jinja_dict)
-
                 # Save the results under the relative path.
-                results[relative_path] = filled_template
-
+                results[relative_path] = self.get_test(
+                    absolute_path, rule_template, local_env_yaml)
         return results
+
+    def get_test(self, absolute_path, rule_template, local_env_yaml):
+        template_name = rule_template['name']
+        template_vars = rule_template['vars']
+        # Load template parameters and apply it to the test case.
+        template_parameters = templates[template_name].preprocess(
+            template_vars, "tests")
+        jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
+        filled_template = ssg.jinja.process_file_with_macros(
+            absolute_path, jinja_dict)
+        return filled_template
 
     def build_lang(
             self, rule_id, template_name, template_vars, lang, local_env_yaml, platforms=None):
