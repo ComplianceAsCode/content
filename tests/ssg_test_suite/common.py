@@ -445,8 +445,8 @@ def fetch_templated_test_scenarios_paths(
     test_config = get_test_dir_config(rule_namedtuple.directory, product_yaml)
     allowed_tests_paths = select_templated_tests(
         test_config, tests_paths.keys())
-    templated_test_scenarios = {name: tests_paths[name]
-        for name in allowed_tests_paths}
+    templated_test_scenarios = {
+        name: tests_paths[name] for name in allowed_tests_paths}
     return templated_test_scenarios
 
 
