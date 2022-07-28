@@ -149,17 +149,13 @@ class Builder(object):
 
         return filled_template
 
-    def get_all_tests(self, rule_template, local_env_yaml):
+    def get_all_tests(self, rule_template):
         """
-        Builds a dictionary of a test case path -> test case value mapping.
+        Builds a dictionary of a test case relative path -> test case absolute path mapping.
 
         Here, we want to know what the relative path on disk (under the tests/
         subdirectory) is (such as "installed.pass.sh"), along with the actual
-        contents of the test case.
-
-        Presumably, we'll find the test case we want (all of them when
-        building a test case tarball) and write them to disk in the
-        appropriate location.
+        absolute path.
         """
         template_name = rule_template['name']
 
@@ -186,8 +182,7 @@ class Builder(object):
                 relative_path = os.path.relpath(absolute_path, base_dir)
 
                 # Save the results under the relative path.
-                results[relative_path] = self.get_test(
-                    absolute_path, rule_template, local_env_yaml)
+                results[relative_path] = absolute_path
         return results
 
     def get_test(self, absolute_path, rule_template, local_env_yaml):

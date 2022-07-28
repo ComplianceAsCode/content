@@ -440,12 +440,14 @@ def fetch_templated_test_scenarios(
         rule, template_builder, tests_dir, local_env_yaml, product_yaml):
     if not rule.template or not rule.template['vars']:
         return dict()
-    templated_tests = template_builder.get_all_tests(
-        rule.template, local_env_yaml)
+    templated_tests = template_builder.get_all_tests(rule.template)
     test_config = get_test_dir_config(tests_dir, product_yaml)
     allowed_templated_tests = select_templated_tests(
         test_config, templated_tests.keys())
-    all_tests = {name: templated_tests[name] for name in allowed_templated_tests}
+    all_tests = {
+        name: template_builder.get_test(
+            templated_tests[name], rule.template, local_env_yaml)
+        for name in allowed_templated_tests}
     return all_tests
 
 
