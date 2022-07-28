@@ -84,7 +84,7 @@ profile) is `ssg-rhel8-guide-ospp.html`.
 
     ![OSPP Profile Guide](images/navigateospp.png)
 
-1. Viewing HTML file in your browser.
+1. Viewing the HTML report in your browser.
 
     1.  Rules are organized in a system of hierarchical groups. Take a
         look through this HTML guide to see the various rules of the
@@ -246,7 +246,7 @@ umask, and other settings. You will learn about parameterized rules by:
     1.  Comment out the line containing `- var_accounts_tmout=30_min` by
         inserting `#` just before the leading dash.
 
-    1.  After you are done, press `Ctrl+S` to save the file
+    1.  After you are done, press `Ctrl+S` to save the file.
 
     1.  Rebuild the content from the terminal:
 
@@ -264,9 +264,7 @@ umask, and other settings. You will learn about parameterized rules by:
             mappings between the supplied and effective values. As the
             `default: 600` line indicates, if you do not specify the timeout
             duration in a profile, it is going to be 600 seconds (10
-            minutes). .. After you are finished looking, press `Ctrl+X` to
-            bring up the "save and exit" option. If you are asked about
-            saving any changes, you probably do not want that, so enter `n`.
+            minutes).
 
     1.  Time to review the HTML guide - refresh the tab with the guide
         `ssg-rhel8-guide-ospp.html` or right click the file in `build/guides`
@@ -293,7 +291,7 @@ rule, so explore your `accounts_tmout` rule.
 You can browse the associated content if you list the contents of the
 directory:
 
-1.  Press `Ctrl+P` and a pop up window will appear type `accounts_tmout/rule.yml`
+1.  Press `Ctrl+P` and a pop up window will appear, type `accounts_tmout/rule.yml`
     and the first file you will see is the one we are looking for.
 
     ![`accounts_tmout` folder](images/accounts_tmout_folder.png)
@@ -367,7 +365,7 @@ directory - there is a `shared.sh` file in it. The `shared` basename has a
 special meaning - it indicates that the remediation can be used with any
 product. If the remediation is named `rhel8.sh`, it means that it is a
 RHEL8-only remediation and cannot be used to remediate RHEL7 systems.
-This name coding is relevant for all types of additional content.
+This naming convention is relevant for all types of additional content.
 
 Unlike checks, you can review remediations in the guide - there is a
 clickable `(show)` link to do so. Bring back the browser window with the
@@ -382,7 +380,7 @@ guide open, and see for yourself.
     1.  Press `Ctrl+P` and search for `accounts_tmout/bash/shared.sh`.
 
         You can see that there are some extra lines, but the script
-        corresponds to the content displayed in the HTML guide. . The
+        corresponds to the content displayed in the HTML guide. The
         `{{{ bash_instantiate_variables("var_accounts_tmout") }}}` line is the one
         that gets transformed into the variable assignment statement.
         Put the explanatory comment just above it:
