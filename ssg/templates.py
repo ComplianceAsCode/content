@@ -149,8 +149,7 @@ class Builder(object):
 
         return filled_template
 
-    def get_all_tests(
-            self, rule_id, rule_template, local_env_yaml, platforms=None):
+    def get_all_tests(self, rule_template, local_env_yaml):
         """
         Builds a dictionary of a test case path -> test case value mapping.
 

@@ -440,7 +440,7 @@ def fetch_templated_test_scenarios(rule, template_builder, local_env_yaml):
     if not rule.template or not rule.template['vars']:
         return dict()
     templated_tests = template_builder.get_all_tests(
-        rule.id_, rule.template, local_env_yaml)
+        rule.template, local_env_yaml)
     return templated_tests
 
 
