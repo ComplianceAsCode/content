@@ -15,6 +15,7 @@ import itertools
 import math
 
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
+from ssg.jinja import process_file_with_macros
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
@@ -385,22 +386,32 @@ class RuleChecker(oscap.Checker):
 
         # Start by checking for templating tests and provision them if
         # present.
-        templated_test_scenarios = common.fetch_templated_test_scenarios(
+        templated_test_scenarios_paths = common.fetch_templated_test_scenarios_paths(
             rule, template_builder, product_yaml)
 
         # Add additional tests from the local rule directory. Note that,
         # like the behavior in template_tests, this will overwrite any
         # templated tests with the same file name.
-        local_test_scenarios = common.fetch_local_test_scenarios(
-            rule.directory, rule.local_env_yaml)
+        local_test_scenarios_paths = common.fetch_local_test_scenarios_paths(
+            rule.directory)
 
-        for filename in local_test_scenarios:
-            templated_test_scenarios.pop(filename, None)
+        for filename in local_test_scenarios_paths:
+            templated_test_scenarios_paths.pop(filename, None)
         if self.target_type != "template":
             for filename in self.used_templated_test_scenarios[rule.template]:
-                templated_test_scenarios.pop(filename, None)
+                templated_test_scenarios_paths.pop(filename, None)
             self.used_templated_test_scenarios[rule.template] |= set(
-                templated_test_scenarios.keys())
+                templated_test_scenarios_paths.keys())
+        templated_test_scenarios = {
+            name: template_builder.get_test(
+                templated_test_scenarios_paths[name], rule.rule.template,
+                rule.local_env_yaml)
+            for name in templated_test_scenarios_paths}
+        local_test_scenarios = {
+            name: process_file_with_macros(
+                local_test_scenarios_paths[name], rule.local_env_yaml)
+            for name in local_test_scenarios_paths
+        }
         all_tests.update(templated_test_scenarios)
         all_tests.update(local_test_scenarios)
         return all_tests

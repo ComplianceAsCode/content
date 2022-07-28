@@ -436,7 +436,7 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
     return available_scenarios_basenames
 
 
-def fetch_templated_test_scenarios(
+def fetch_templated_test_scenarios_paths(
         rule_namedtuple, template_builder, product_yaml):
     rule = rule_namedtuple.rule
     if not rule.template or not rule.template['vars']:
@@ -445,9 +445,7 @@ def fetch_templated_test_scenarios(
     test_config = get_test_dir_config(rule_namedtuple.directory, product_yaml)
     allowed_tests_paths = select_templated_tests(
         test_config, tests_paths.keys())
-    templated_test_scenarios = {
-        name: template_builder.get_test(
-            tests_paths[name], rule.template, rule_namedtuple.local_env_yaml)
+    templated_test_scenarios = {name: tests_paths[name]
         for name in allowed_tests_paths}
     return templated_test_scenarios
 
@@ -456,7 +454,7 @@ def file_known_as_useless(file_name):
     return file_name.endswith(".swp")
 
 
-def fetch_local_test_scenarios(tests_dir, local_env_yaml):
+def fetch_local_test_scenarios_paths(tests_dir):
     all_tests = dict()
     if os.path.exists(tests_dir):
         tests_dir_files = os.listdir(tests_dir)
@@ -468,8 +466,7 @@ def fetch_local_test_scenarios(tests_dir, local_env_yaml):
             test_path = os.path.join(tests_dir, test_case)
             if os.path.isdir(test_path):
                 continue
-            all_tests[test_case] = process_file_with_macros(
-                test_path, local_env_yaml)
+            all_tests[test_case] = test_path
     return all_tests
 
 
