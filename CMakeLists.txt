@@ -67,7 +67,7 @@ option(SSG_PRODUCT_DEFAULT "If enabled, all default release products will be bui
 # the root of this project. Note that the example product is always disabled
 # unless explicitly asked for.
 option(SSG_PRODUCT_ALINUX2 "If enabled, the Alibaba Cloud Linux 2 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-option(SSG_PRODUCT_ALINUX3 "If enabled, the Alinux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_ALINUX3 "If enabled, the Alibaba Cloud Linux 3 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN9 "If enabled, the Debian 9 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_DEBIAN10 "If enabled, the Debian 10 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
@@ -261,7 +261,7 @@ message(STATUS " ")
 
 message(STATUS "Products:")
 message(STATUS "Alibaba Cloud Linux 2: ${SSG_PRODUCT_ALINUX2}")
-message(STATUS "Alinux 3: ${SSG_PRODUCT_ALINUX3}")
+message(STATUS "Alibaba Cloud Linux 3: ${SSG_PRODUCT_ALINUX3}")
 message(STATUS "Chromium: ${SSG_PRODUCT_CHROMIUM}")
 message(STATUS "Debian 9: ${SSG_PRODUCT_DEBIAN9}")
 message(STATUS "Debian 10: ${SSG_PRODUCT_DEBIAN10}")
