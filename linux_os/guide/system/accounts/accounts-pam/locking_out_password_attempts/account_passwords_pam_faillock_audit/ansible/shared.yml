@@ -1,0 +1,53 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+{{{ ansible_pam_faillock_enable() }}}
+
+- name: {{{ rule_title }}} - Check the presence of /etc/security/faillock.conf file
+  ansible.builtin.stat:
+    path: /etc/security/faillock.conf
+  register: result_faillock_conf_check
+
+- name: {{{ rule_title }}} - Ensure the pam_faillock.so audit parameter in /etc/security/faillock.conf
+  ansible.builtin.lineinfile:
+    path: /etc/security/faillock.conf
+    regexp: ^\s*audit
+    line: audit
+    state: present
+  when:
+    - result_faillock_conf_check.stat.exists
+
+- name: {{{ rule_title }}} - Ensure the pam_faillock.so audit parameter not in PAM files
+  block:
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/system-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
+    {{{ ansible_remove_pam_module_option_configuration('/etc/pam.d/password-auth','auth','','pam_faillock.so',parameter) | indent(4) }}}
+  when:
+    - result_faillock_conf_check.stat.exists
+
+- name: {{{ rule_title }}} - Ensure the pam_faillock.so audit parameter in PAM files
+  block:
+    - name: {{{ rule_title }}} - Check if pam_faillock.so audit parameter is already enabled in pam files
+      ansible.builtin.lineinfile:
+        path: /etc/pam.d/system-auth
+        regexp: .*auth.*pam_faillock.so.*preauth.*audit
+        state: absent
+      check_mode: yes
+      changed_when: false
+      register: result_pam_faillock_audit_parameter_is_present
+
+    - name: {{{ rule_title }}} - Ensure the inclusion of pam_faillock.so preauth audit parameter in auth section
+      ansible.builtin.lineinfile:
+        path: "{{ item }}"
+        backrefs: true
+        regexp: (^\s*auth\s+)([\w\[].*\b)(\s+pam_faillock.so preauth.*)
+        line: \1required\3 audit
+        state: present
+      loop:
+        - /etc/pam.d/system-auth
+        - /etc/pam.d/password-auth
+      when:
+        - result_pam_faillock_audit_parameter_is_present.found == 0
+  when:
+    - not result_faillock_conf_check.stat.exists
