@@ -480,6 +480,14 @@ def fetch_local_test_scenarios_paths(tests_dir):
     return all_tests
 
 
+def load_local_test_scenarios(local_test_scenarios_paths, local_env_yaml):
+    local_test_scenarios = dict()
+    for name, path in local_test_scenarios_paths.items():
+        scenario = process_file_with_macros(path, local_env_yaml)
+        local_test_scenarios[name] = scenario
+    return local_test_scenarios
+
+
 def get_cpe_of_tested_os(test_env, log_file):
     os_release_file = "/etc/os-release"
     cpe_line = test_env.execute_ssh_command(

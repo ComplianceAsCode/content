@@ -405,11 +405,8 @@ class RuleChecker(oscap.Checker):
         templated_test_scenarios = common.load_templated_test_scenarios(
             templated_test_scenarios_paths, template_builder,
             rule.rule.template, rule.local_env_yaml)
-        local_test_scenarios = {
-            name: process_file_with_macros(
-                local_test_scenarios_paths[name], rule.local_env_yaml)
-            for name in local_test_scenarios_paths
-        }
+        local_test_scenarios = common.load_local_test_scenarios(
+            local_test_scenarios_paths, rule.local_env_yaml)
         all_tests.update(templated_test_scenarios)
         all_tests.update(local_test_scenarios)
         return all_tests
