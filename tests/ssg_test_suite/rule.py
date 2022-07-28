@@ -376,14 +376,6 @@ class RuleChecker(oscap.Checker):
         template_builder = ssg.templates.Builder(
             product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
 
-        # All tests is a mapping from path (in the tarball) to contents
-        # of the test case. This is necessary because later code (which
-        # attempts to parse headers from the test case) don't have easy
-        # access to templated content. By reading it and returning it
-        # here, we can save later code from having to understand the
-        # templating system.
-        all_tests = dict()
-
         # Start by checking for templating tests and provision them if
         # present.
         templated_test_scenarios_paths = common.fetch_templated_test_scenarios_paths(
@@ -402,6 +394,14 @@ class RuleChecker(oscap.Checker):
                 templated_test_scenarios_paths.pop(filename, None)
             self.used_templated_test_scenarios[rule.template] |= set(
                 templated_test_scenarios_paths.keys())
+
+        # All tests is a mapping from path (in the tarball) to contents
+        # of the test case. This is necessary because later code (which
+        # attempts to parse headers from the test case) don't have easy
+        # access to templated content. By reading it and returning it
+        # here, we can save later code from having to understand the
+        # templating system.
+        all_tests = dict()
         templated_test_scenarios = {
             name: template_builder.get_test(
                 templated_test_scenarios_paths[name], rule.rule.template,
