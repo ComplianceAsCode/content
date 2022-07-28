@@ -9,7 +9,7 @@ for file in ${configuration_files[@]}; do
                                    'password',
 								   'required',
 								   'pam_pwquality.so',
-								   "retry",
-								   "3",
-								   "3") }}}
+								   'retry',
+								   '3',
+								   '^\s*account') }}}
 done

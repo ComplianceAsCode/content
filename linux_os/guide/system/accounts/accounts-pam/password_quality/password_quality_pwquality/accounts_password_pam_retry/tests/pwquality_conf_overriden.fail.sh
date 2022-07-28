@@ -12,9 +12,9 @@ for file in ${configuration_files[@]}; do
                                    'password',
 								   'required',
 								   'pam_pwquality.so',
-								   "retry",
-								   "4",
-								   "4") }}}
+								   'retry',
+								   '4',
+								   '^\s*account') }}}
 done
 
 authselect apply-changes
