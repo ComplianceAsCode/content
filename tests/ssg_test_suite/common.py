@@ -437,16 +437,17 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
 
 
 def fetch_templated_test_scenarios(
-        rule, template_builder, tests_dir, local_env_yaml, product_yaml):
+        rule_namedtuple, template_builder, product_yaml):
+    rule = rule_namedtuple.rule
     if not rule.template or not rule.template['vars']:
         return dict()
     tests_paths = template_builder.get_all_tests(rule.template)
-    test_config = get_test_dir_config(tests_dir, product_yaml)
+    test_config = get_test_dir_config(rule_namedtuple.directory, product_yaml)
     allowed_tests_paths = select_templated_tests(
         test_config, tests_paths.keys())
     templated_test_scenarios = {
         name: template_builder.get_test(
-            tests_paths[name], rule.template, local_env_yaml)
+            tests_paths[name], rule.template, rule_namedtuple.local_env_yaml)
         for name in allowed_tests_paths}
     return templated_test_scenarios
 
