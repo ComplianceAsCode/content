@@ -453,9 +453,10 @@ def fetch_templated_tests_paths(
 def load_templated_tests(
         templated_tests_paths, template_builder, template, local_env_yaml):
     templated_tests = dict()
-    for name, path in templated_tests_paths.items():
+    for path in templated_tests_paths:
         test = template_builder.get_test(path, template, local_env_yaml)
-        templated_tests[name] = test
+        basename = os.path.basename(path)
+        templated_tests[basename] = test
     return templated_tests
 
 
@@ -482,9 +483,10 @@ def fetch_local_tests_paths(tests_dir):
 
 def load_local_tests(local_tests_paths, local_env_yaml):
     local_tests = dict()
-    for name, path in local_tests_paths.items():
+    for path in local_tests_paths:
         test = process_file_with_macros(path, local_env_yaml)
-        local_tests[name] = test
+        basename = os.path.basename(path)
+        local_tests[basename] = test
     return local_tests
 
 

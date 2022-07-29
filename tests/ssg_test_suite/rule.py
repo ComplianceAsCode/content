@@ -406,10 +406,10 @@ class RuleChecker(oscap.Checker):
         # templating system.
         all_tests = dict()
         templated_tests = common.load_templated_tests(
-            templated_tests_paths, template_builder, rule.rule.template,
+            templated_tests_paths.values(), template_builder, rule.rule.template,
             rule.local_env_yaml)
         local_tests = common.load_local_tests(
-            local_tests_paths, rule.local_env_yaml)
+            local_tests_paths.values(), rule.local_env_yaml)
         all_tests.update(templated_tests)
         all_tests.update(local_tests)
         return all_tests
