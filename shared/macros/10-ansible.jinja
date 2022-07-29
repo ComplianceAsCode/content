@@ -1094,7 +1094,7 @@ Part of the grub2_bootloader_argument_absent template.
     If the line was already present, but with a different control, the control will be updated.
     Note: If there are multiple lines matching the "group" + "module", no lines will be updated.
     Instead, a new line will be included after the regex informed in "after_match" or at the
-    end of file if "after_match" parameter is empty.
+    end of file if "after_match" parameter is empty or there is no match.
     This is a conservative safeguard for improper use of this macro in rare cases of modules
     configured by multiple lines, like pam_sss.so, pam_faillock.so and pam_lastlog.so. In some
     situations, these special modules may have similar lines sharing the same "group" and "module".
