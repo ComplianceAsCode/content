@@ -56,5 +56,5 @@
     path: "{{ item }}"
     regexp: '(^(?:server|pool|peer)\s+((?!maxpoll).)*)$'
     replace: '\1 maxpoll {{ var_time_service_set_maxpoll }}\n'
-  loop: "{{ update_chrony_files.stdout_lines|list|flatten|unique} }"
+  loop: "{{ update_chrony_files.stdout_lines|list|flatten|unique }}"
   when: chrony_conf_exist_result.stat.exists
