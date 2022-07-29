@@ -369,15 +369,8 @@ class RuleChecker(oscap.Checker):
                 new_sbr[rule_id] = RuleTestContent(scenarios, other_content)
         return new_sbr
 
-    def _load_all_tests(self, rule):
-        product_yaml = common.get_product_context(self.test_env.product)
-        # Initialize a mock template_builder.
-        empty = "/ssgts/empty/placeholder"
-        template_builder = ssg.templates.Builder(
-            product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
-
-        # Start by checking for templating tests and provision them if
-        # present.
+    def _find_tests_paths(self, rule, template_builder, product_yaml):
+        # Start by checking for templating tests
         templated_test_scenarios_paths = common.fetch_templated_test_scenarios_paths(
             rule, template_builder, product_yaml)
 
@@ -394,6 +387,17 @@ class RuleChecker(oscap.Checker):
                 templated_test_scenarios_paths.pop(filename, None)
             self.used_templated_test_scenarios[rule.template] |= set(
                 templated_test_scenarios_paths.keys())
+        return templated_test_scenarios_paths, local_test_scenarios_paths
+
+    def _load_all_tests(self, rule):
+        product_yaml = common.get_product_context(self.test_env.product)
+        # Initialize a mock template_builder.
+        empty = "/ssgts/empty/placeholder"
+        template_builder = ssg.templates.Builder(
+            product_yaml, empty, common._SHARED_TEMPLATES, empty, empty)
+
+        templated_test_scenarios_paths, local_test_scenarios_paths = self._find_tests_paths(
+            rule, template_builder, product_yaml)
 
         # All tests is a mapping from path (in the tarball) to contents
         # of the test case. This is necessary because later code (which
