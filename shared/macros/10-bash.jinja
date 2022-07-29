@@ -1021,9 +1021,10 @@ fi
 
 :param option: faillock option eg. deny, unlock_time, fail_interval
 :param value: value of option
+:param authfail: check the pam_faillock.so conf line with authfail 
 
 #}}
-{{%- macro bash_pam_faillock_parameter_value(option, value='') -%}}
+{{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
 AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 FAILLOCK_CONF="/etc/security/faillock.conf"
 if [ -f $FAILLOCK_CONF ]; then
@@ -1053,17 +1054,23 @@ else
         if ! grep -qE '^\s*auth.*pam_faillock.so (preauth|authfail).*{{{ option }}}' "$pam_file"; then
             {{%- if value == '' %}}
             sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}/' "$pam_file"
+            {{%- if authfail %}}
             sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}/' "$pam_file"
+            {{%- endif %}}
             {{%- else %}}
             sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            {{%- if authfail %}}
             sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ {{{ option }}}='"{{{ value }}}"'/' "$pam_file"
+            {{%- endif %}}
             {{%- endif %}}
         {{%- if value == '' %}}
         fi
         {{%- else %}}
         else
             sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            {{%- if authfail %}}
             sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*authfail.*\)\('"{{{ option }}}"'=\)[0-9]\+\(.*\)/\1\2'"{{{ value }}}"'\3/' "$pam_file"
+            {{%- endif %}}
         fi
         {{%- endif %}}
     done
