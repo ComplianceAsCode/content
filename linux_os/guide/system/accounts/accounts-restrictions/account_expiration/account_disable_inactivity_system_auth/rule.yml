@@ -8,10 +8,12 @@ description: |-
     Verify the account identifiers (individuals, groups, roles, and devices) are disabled after
     {{{ xccdf_value("var_account_disable_inactivity") }}} or less days of inactivity by
     checking the account inactivity value with the following command:
-    <pre>grep 'inactive\|pam_unix' /etc/pam.d/system-auth | grep -w auth</pre>
+    <pre>grep 'inactive\|pam_unix' /etc/pam.d/password-auth | grep -w auth
+    
+    auth required pam_lastlog.so inactive=35
+    auth sufficient pam_unix.so</pre>
     The line with the inactive parameter should be placed before <tt>pam_unix.so</tt> module as in
-    the line:
-    <pre>auth sufficient pam_unix.so</pre>
+    the example output.
 
 rationale: |-
     Inactive identifiers pose a risk to systems and applications because attackers may exploit an
