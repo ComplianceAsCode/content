@@ -465,18 +465,19 @@ def file_known_as_useless(file_name):
 
 
 def fetch_local_test_scenarios_paths(tests_dir):
+    if not os.path.exists(tests_dir):
+        return dict()
     all_tests = dict()
-    if os.path.exists(tests_dir):
-        tests_dir_files = os.listdir(tests_dir)
-        for test_case in tests_dir_files:
-            # Skip vim swap files, they are not relevant and cause Jinja
-            # expansion tracebacks
-            if file_known_as_useless(test_case):
-                continue
-            test_path = os.path.join(tests_dir, test_case)
-            if os.path.isdir(test_path):
-                continue
-            all_tests[test_case] = test_path
+    tests_dir_files = os.listdir(tests_dir)
+    for test_case in tests_dir_files:
+        # Skip vim swap files, they are not relevant and cause Jinja
+        # expansion tracebacks
+        if file_known_as_useless(test_case):
+            continue
+        test_path = os.path.join(tests_dir, test_case)
+        if os.path.isdir(test_path):
+            continue
+        all_tests[test_case] = test_path
     return all_tests
 
 
