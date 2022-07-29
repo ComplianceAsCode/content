@@ -436,7 +436,7 @@ def select_templated_tests(test_dir_config, available_scenarios_basenames):
     return available_scenarios_basenames
 
 
-def fetch_templated_test_scenarios_paths(
+def fetch_templated_tests_paths(
         rule_namedtuple, template_builder, product_yaml):
     rule = rule_namedtuple.rule
     if not rule.template or not rule.template['vars']:
@@ -450,21 +450,20 @@ def fetch_templated_test_scenarios_paths(
     return templated_test_scenarios
 
 
-def load_templated_test_scenarios(
-        templated_test_scenarios_paths,
-        template_builder, template, local_env_yaml):
-    templated_test_scenarios = dict()
-    for name, path in templated_test_scenarios_paths.items():
-        scenario = template_builder.get_test(path, template, local_env_yaml)
-        templated_test_scenarios[name] = scenario
-    return templated_test_scenarios
+def load_templated_tests(
+        templated_tests_paths, template_builder, template, local_env_yaml):
+    templated_tests = dict()
+    for name, path in templated_tests_paths.items():
+        test = template_builder.get_test(path, template, local_env_yaml)
+        templated_tests[name] = test
+    return templated_tests
 
 
 def file_known_as_useless(file_name):
     return file_name.endswith(".swp")
 
 
-def fetch_local_test_scenarios_paths(tests_dir):
+def fetch_local_tests_paths(tests_dir):
     if not os.path.exists(tests_dir):
         return dict()
     all_tests = dict()
@@ -481,12 +480,12 @@ def fetch_local_test_scenarios_paths(tests_dir):
     return all_tests
 
 
-def load_local_test_scenarios(local_test_scenarios_paths, local_env_yaml):
-    local_test_scenarios = dict()
-    for name, path in local_test_scenarios_paths.items():
-        scenario = process_file_with_macros(path, local_env_yaml)
-        local_test_scenarios[name] = scenario
-    return local_test_scenarios
+def load_local_tests(local_tests_paths, local_env_yaml):
+    local_tests = dict()
+    for name, path in local_tests_paths.items():
+        test = process_file_with_macros(path, local_env_yaml)
+        local_tests[name] = test
+    return local_tests
 
 
 def get_cpe_of_tested_os(test_env, log_file):
