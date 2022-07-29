@@ -15,7 +15,6 @@ import itertools
 import math
 
 from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
-from ssg.jinja import process_file_with_macros
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
