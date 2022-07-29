@@ -377,7 +377,7 @@ guide open, and see for yourself.
     that the numerical value is "number of seconds." Edit the
     remediation file:
 
-    1.  Press `Ctrl+P` and search for `accounts_tmout/bash/shared.sh`.
+    1.  Press `Ctrl+P` and search for `accounts-session/accounts_tmout/bash/shared.sh`.
 
         You can see that there are some extra lines, but the script
         corresponds to the content displayed in the HTML guide. The
@@ -395,15 +395,16 @@ guide open, and see for yourself.
 
             for f in /etc/profile /etc/profile.d/*.sh; do
                 if grep --silent '^\s*TMOUT' $f; then
-                    sed -i -E "s/^(\s*)TMOUT\s*=\s*(\w|\$)*(.*)$/\1TMOUT=$var_accounts_tmout\3/g" $f
+                    sed -i -E "s/^(\s*)TMOUT\s*=\s*(\w|\$)*(.*)$/declare -xr TMOUT=$var_accounts_tmout\3/g" $f
                     tmout_found=1
                 fi
             done
 
             if [ $tmout_found -eq 0 ]; then
                     echo -e "\n# Set TMOUT to $var_accounts_tmout per security requirements" >> /etc/profile.d/tmout.sh
-                    echo "TMOUT=$var_accounts_tmout" >> /etc/profile.d/tmout.sh
+                    echo "declare -xr TMOUT=$var_accounts_tmout" >> /etc/profile.d/tmout.sh
             fi
+
 
 1.  After you are done, press `Ctrl+S` to save the file.
 
