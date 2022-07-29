@@ -386,7 +386,7 @@ class RuleChecker(oscap.Checker):
                 templated_tests_paths.pop(filename, None)
             self.used_templated_test_scenarios[rule.template] |= set(
                 templated_tests_paths.keys())
-        return templated_tests_paths, local_tests_paths
+        return templated_tests_paths.values(), local_tests_paths.values()
 
     def _load_all_tests(self, rule):
         product_yaml = common.get_product_context(self.test_env.product)
@@ -406,10 +406,10 @@ class RuleChecker(oscap.Checker):
         # templating system.
         all_tests = dict()
         templated_tests = common.load_templated_tests(
-            templated_tests_paths.values(), template_builder, rule.rule.template,
+            templated_tests_paths, template_builder, rule.rule.template,
             rule.local_env_yaml)
         local_tests = common.load_local_tests(
-            local_tests_paths.values(), rule.local_env_yaml)
+            local_tests_paths, rule.local_env_yaml)
         all_tests.update(templated_tests)
         all_tests.update(local_tests)
         return all_tests
