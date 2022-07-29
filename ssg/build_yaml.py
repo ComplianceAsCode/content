@@ -1640,8 +1640,8 @@ class Rule(XCCDFEntity):
             check_content_ref.set("href", "oval-unlinked.xml")
             check_content_ref.set("name", self.id_)
 
-        oval_content_only = self.oval_external_content is not None
-        if (self.ocil or self.ocil_clause) and not oval_content_only:
+        patches_up_to_date = (self.id_ == "security_patches_up_to_date")
+        if (self.ocil or self.ocil_clause) and not patches_up_to_date:
             ocil_check = ET.SubElement(check_parent, "check")
             ocil_check.set("system", ocil_cs)
             ocil_check_ref = ET.SubElement(ocil_check, "check-content-ref")
