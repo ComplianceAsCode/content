@@ -368,7 +368,7 @@ RHEL8-only remediation and cannot be used to remediate RHEL7 systems.
 This naming convention is relevant for all types of additional content.
 
 Unlike checks, you can review remediations in the guide - there is a
-clickable `(show)` link to do so. Bring back the browser window with the
+clickable `Remediation Schell Script` link to do so. Bring back the browser window with the
 guide open, and see for yourself.
 
 ![Bash remediation snippet in the HTML guide](images/0-03-remediation.png)
