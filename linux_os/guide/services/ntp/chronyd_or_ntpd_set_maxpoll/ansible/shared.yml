@@ -42,6 +42,7 @@
     find ${CHRONY_PATH}.* -type f -name '*.conf'
   register: update_chrony_files
   when: chrony_conf_exist_result.stat.exists
+  changed_when: False
 
 - name: Update the maxpoll values in {{{ chrony_conf_path }}}
   replace:
