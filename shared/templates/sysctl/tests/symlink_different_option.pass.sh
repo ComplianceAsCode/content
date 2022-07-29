@@ -19,4 +19,4 @@ echo "net.ipv4.conf.default.accept_source_route = 0" >> /etc/sysctl.d/90-test.co
 # Add a symlink
 ln -s /etc/sysctl.d/90-test.conf /etc/sysctl.d/99-sysctl.conf
 
-sysctl -w {{{ SYSCTLVAR }}}={{{ SYSCTL_CORRECT_VALUE }}}
+sysctl -w {{{ SYSCTLVAR }}}="{{{ SYSCTL_CORRECT_VALUE }}}"

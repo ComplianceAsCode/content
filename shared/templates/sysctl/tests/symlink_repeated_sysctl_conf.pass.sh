@@ -11,4 +11,4 @@ echo "{{{ SYSCTLVAR }}} = {{{ SYSCTL_CORRECT_VALUE }}}" >> /etc/sysctl.conf
 
 ln -s /etc/sysctl.conf /etc/sysctl.d/99-sysctl.conf
 
-sysctl -w {{{ SYSCTLVAR }}}={{{ SYSCTL_CORRECT_VALUE }}}
+sysctl -w {{{ SYSCTLVAR }}}="{{{ SYSCTL_CORRECT_VALUE }}}"
