@@ -527,6 +527,12 @@ macro(ssg_build_sds PRODUCT)
         )
     endif()
 
+    add_test(
+        NAME "xccdf-values-${PRODUCT}"
+        COMMAND "${CMAKE_SOURCE_DIR}/tests/test_xccdf_values_in_ds.sh" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+    )
+    set_tests_properties("xccdf-values-${PRODUCT}" PROPERTIES LABELS "quick")
+
     if("${PRODUCT}" MATCHES "rhel(7|8|9)|sle(12|15)")
         if("${PRODUCT}" MATCHES "sle(12|15)")
             add_test(
