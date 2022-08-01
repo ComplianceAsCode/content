@@ -405,13 +405,13 @@ selections:
 - sysctl_net_core_bpf_jit_harden
 - sysctl_net_ipv4_conf_all_accept_redirects
 - sysctl_net_ipv4_conf_all_accept_source_route
+- sysctl_net_ipv4_conf_all_forwarding
 - sysctl_net_ipv4_conf_all_rp_filter
 - sysctl_net_ipv4_conf_all_send_redirects
 - sysctl_net_ipv4_conf_default_accept_redirects
 - sysctl_net_ipv4_conf_default_accept_source_route
 - sysctl_net_ipv4_conf_default_send_redirects
 - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-- sysctl_net_ipv4_ip_forward
 - sysctl_net_ipv6_conf_all_accept_ra
 - sysctl_net_ipv6_conf_all_accept_redirects
 - sysctl_net_ipv6_conf_all_accept_source_route

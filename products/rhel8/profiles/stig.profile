@@ -1127,7 +1127,7 @@ selections:
     - sysctl_net_ipv6_conf_default_accept_source_route
 
     # RHEL-08-040259
-    - sysctl_net_ipv4_ip_forward
+    - sysctl_net_ipv4_conf_all_forwarding
 
     # RHEL-08-040260
     - sysctl_net_ipv6_conf_all_forwarding
