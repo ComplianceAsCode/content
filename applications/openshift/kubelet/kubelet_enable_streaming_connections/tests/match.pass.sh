@@ -1,5 +1,6 @@
 #!/bin/bash
 # remediation = none
+# variables = var_streaming_connection_timeouts=5m0s
 
 yum install -y jq
 
@@ -45,7 +46,7 @@ cat << EOF > /etc/kubernetes/kubelet.conf
   "clusterDNS": [
     "172.30.0.10"
   ],
-  "streamingConnectionIdleTimeout": "5m",
+  "streamingConnectionIdleTimeout": "5m0s",
   "nodeStatusUpdateFrequency": "0s",
   "nodeStatusReportFrequency": "0s",
   "imageMinimumGCAge": "0s",
