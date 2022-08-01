@@ -1,7 +1,7 @@
 title: DISA STIG with GUI for Red Hat Enterprise Linux 8
 description: 'This profile contains configuration checks that align to the
 
-    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R6.
+    DISA STIG with GUI for Red Hat Enterprise Linux 8 V1R7.
 
 
     In addition to being applicable to Red Hat Enterprise Linux 8, DISA recognizes
@@ -34,7 +34,7 @@ description: 'This profile contains configuration checks that align to the
     standard DISA STIG for Red Hat Enterprise Linux 8 profile.'
 extends: null
 metadata:
-    version: V1R6
+    version: V1R7
     SMEs:
     - mab879
     - ggbecker
