@@ -583,8 +583,18 @@ class Scenario():
                 self.contents, re.MULTILINE)
             if found is None:
                 continue
-            splitted = found.group(1).split(',')
-            params[parameter] = [value.strip() for value in splitted]
+            if parameter == "variables":
+                variables = []
+                for token in found.group(1).split(','):
+                    token = token.strip()
+                    if '=' in token:
+                        variables.append(token)
+                    else:
+                        variables[-1] += "," + token
+                params["variables"] = variables
+            else:
+                splitted = found.group(1).split(',')
+                params[parameter] = [value.strip() for value in splitted]
 
         if not params["profiles"]:
             params["profiles"].append(OSCAP_PROFILE_ALL_ID)
