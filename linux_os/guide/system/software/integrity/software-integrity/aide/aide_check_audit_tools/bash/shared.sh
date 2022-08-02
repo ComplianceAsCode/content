@@ -18,12 +18,11 @@
 {{% set auditfiles = auditfiles + ["/usr/sbin/audispd"] %}}
 {{% endif %}}
 
-{{% if product == 'ol8' %}}
+{{% if product == 'ol8' or 'rhel' in product %}}
 {{% set auditfiles = auditfiles + ["/usr/sbin/rsyslogd"] %}}
 {{% endif %}}
 
 {{% for file in auditfiles %}}
-
 if grep -i '^.*{{{file}}}.*$' {{{ aide_conf_path }}}; then
 sed -i "s#.*{{{file}}}.*#{{{file}}} {{{ aide_string() }}}#" {{{ aide_conf_path }}}
 else

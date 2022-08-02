@@ -22,6 +22,7 @@
       - /usr/sbin/aureport
       - /usr/sbin/ausearch
       - /usr/sbin/autrace
+      {{% if product == 'ol8' or 'rhel' in product %}}- /usr/sbin/rsyslogd{{% endif %}}
 
 - name: Ensure existing AIDE configuration for audit tools are correct
   lineinfile:
