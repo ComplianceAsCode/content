@@ -11,24 +11,12 @@
     path: /etc/ntp.conf
   register: ntp_conf_exist_result
 
-- name: Check that {{{ chrony_conf_path }}} exist
-  stat:
-    path: {{{ chrony_conf_path }}}
-  register: chrony_conf_exist_result
-
 - name: Update the maxpoll values in /etc/ntp.conf
   replace:
     path: /etc/ntp.conf
     regexp: '^(server.*maxpoll)[ ]+[0-9]+(.*)$'
     replace: '\1 {{ var_time_service_set_maxpoll }}\2'
   when: ntp_conf_exist_result.stat.exists
-
-- name: Update the maxpoll values in {{{ chrony_conf_path }}}
-  replace:
-    path: {{{ chrony_conf_path }}}
-    regexp: '^((?:server|pool|peer).*maxpoll)[ ]+[0-9]+(.*)$'
-    replace: '\1 {{ var_time_service_set_maxpoll }}\2'
-  when: chrony_conf_exist_result.stat.exists
 
 - name: Set the maxpoll values in /etc/ntp.conf
   replace:
@@ -37,9 +25,37 @@
     replace: '\1 maxpoll {{ var_time_service_set_maxpoll }}\n'
   when: ntp_conf_exist_result.stat.exists
 
+# Chrony, need to hand chrony.conf and any file in chrony.d
+# since chrony_conf_path is the full path to chrony.conf
+# and includes chrony.conf, that must be handled as well
+
+- name: Check that {{{ chrony_conf_path }}} exist
+  stat:
+    path: {{{ chrony_conf_path }}}
+  register: chrony_conf_exist_result
+
+- name: Get get conf files from {{{ chrony_conf_path }}}
+  shell: |
+    set -o pipefail
+    CHRONY_NAME={{{ chrony_conf_path }}}
+    CHRONY_PATH=${CHRONY_NAME%%.*}
+    find ${CHRONY_PATH}.* -type f -name '*.conf'
+  register: update_chrony_files
+  when: chrony_conf_exist_result.stat.exists
+  changed_when: False
+
+- name: Update the maxpoll values in {{{ chrony_conf_path }}}
+  replace:
+    path: "{{ item }}"
+    regexp: '^((?:server|pool|peer).*maxpoll)[ ]+[0-9]+(.*)$'
+    replace: '\1 {{ var_time_service_set_maxpoll }}\2'
+  loop: "{{ update_chrony_files.stdout_lines|list|flatten|unique }}"
+  when: chrony_conf_exist_result.stat.exists
+
 - name: Set the maxpoll values in {{{ chrony_conf_path }}}
   replace:
-    path: {{{ chrony_conf_path }}}
+    path: "{{ item }}"
     regexp: '(^(?:server|pool|peer)\s+((?!maxpoll).)*)$'
     replace: '\1 maxpoll {{ var_time_service_set_maxpoll }}\n'
+  loop: "{{ update_chrony_files.stdout_lines|list|flatten|unique }}"
   when: chrony_conf_exist_result.stat.exists
