@@ -1067,6 +1067,7 @@ selections:
     - service_fapolicyd_enabled
 
     # OL08-00-040137
+    - fapolicy_default_deny
 
     # OL08-00-040139
     - package_usbguard_installed
