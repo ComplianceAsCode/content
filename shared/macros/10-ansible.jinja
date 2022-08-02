@@ -864,8 +864,10 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
 
   :param parameter:         The pam_faillock.so parameter name.
   :param faillock_var_name: If the parameter expects a value from a variable, the variable name is informed here.
+  :param authfail: check the pam_faillock.so conf line with authfail
+
 #}}
-{{%- macro ansible_pam_faillock_parameter_value(parameter, faillock_var_name='') -%}}
+{{%- macro ansible_pam_faillock_parameter_value(parameter, faillock_var_name='', authfail=True) -%}}
 
 {{%- if faillock_var_name != '' %}}
 {{{ ansible_instantiate_variables( faillock_var_name ) }}}
@@ -926,6 +928,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found == 0
 
+    {{%- if authfail %}}
     - name: {{{ rule_title }}} - Ensure the inclusion of pam_faillock.so authfail {{{ parameter }}} parameter in auth section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
@@ -942,6 +945,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - /etc/pam.d/password-auth
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found == 0
+    {{%- endif %}}
 
     {{%- if faillock_var_name != '' %}}
     - name: {{{ rule_title }}} - Ensure the desired value for pam_faillock.so preauth {{{ parameter }}} parameter in auth section
@@ -957,6 +961,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found > 0
 
+    {{%- if authfail %}}
     - name: {{{ rule_title }}} - Ensure the desired value for pam_faillock.so authfail {{{ parameter }}} parameter in auth section
       ansible.builtin.lineinfile:
         path: "{{ item }}"
@@ -969,6 +974,7 @@ The following macro remediates Audit syscall rule in :code:`/etc/audit/audit.rul
         - /etc/pam.d/password-auth
       when:
         - result_pam_faillock_{{{ parameter }}}_parameter_is_present.found > 0
+    {{%- endif %}}
     {{%- endif %}}
   when:
     - not result_faillock_conf_check.stat.exists
