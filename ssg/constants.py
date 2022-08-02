@@ -193,8 +193,8 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 }
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
-    "Alinux 2": "alinux2",
-    "Alinux 3": "alinux3",
+    "Alibaba Cloud Linux 2": "alinux2",
+    "Alibaba Cloud Linux 3": "alinux3",
     "Chromium": "chromium",
     "Debian 9": "debian9",
     "Debian 10": "debian10",
