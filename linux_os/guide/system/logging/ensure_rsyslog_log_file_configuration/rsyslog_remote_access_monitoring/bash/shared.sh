@@ -19,7 +19,7 @@ do
 			# Add selector to file
 			sed -r -i "0,/^(\S+\s+\/var\/log\/secure$)/s//\1\n${K} \/var\/log\/secure/" /etc/rsyslog.conf
 		else
-			echo "${K} \/var\/log\/secure/" >> /etc/rsyslog.conf
+			echo "${K} /var/log/secure" >> /etc/rsyslog.conf
 		fi
 	fi
 done
