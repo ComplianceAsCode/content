@@ -513,9 +513,8 @@ selections:
     # OL08-00-020024
     - accounts_max_concurrent_login_sessions
 
-    # OL08-00-020027
-
-    # OL08-00-020028
+    # OL08-00-020027, OL08-00-020028
+    - account_password_selinux_faillock_dir
 
     # OL08-00-020030, OL08-00-020082
     - dconf_gnome_screensaver_lock_enabled
