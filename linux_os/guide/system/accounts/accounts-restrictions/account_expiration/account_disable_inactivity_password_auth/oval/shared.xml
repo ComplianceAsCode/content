@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("The accounts should be configured to expire automatically following"
+    ~ " password expiration.") }}}
+    <criteria
+    comment="the value for the inactive parameter should be set appropriately in /etc/pam.d/password-auth">
+      <criterion test_ref="test_password_auth_inactive" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" id="test_password_auth_inactive" version="1"
+  comment="the value for the inactive parameter should be set appropriately in /etc/pam.d/password-auth">
+    <ind:object object_ref="obj_password_auth_inactive" />
+    <ind:state state_ref="state_password_auth_inactive" />
+    <ind:state state_ref="state_password_auth_inactive_positive" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_password_auth_inactive" version="1">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^auth\s*(?:required|requisite)\s*pam_lastlog\.so[^#]*inactive=(\d+)[\s\S]*^\s*auth\s*sufficient\s*pam_unix\.so</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_password_auth_inactive" version="1">
+    <ind:subexpression operation="less than or equal" var_ref="var_account_disable_post_pw_expiration"
+    datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_password_auth_inactive_positive" version="1">
+    <ind:subexpression operation="greater than" datatype="int">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="inactive days expiration" datatype="int" id="var_account_disable_post_pw_expiration" version="1" />
+
+</def-group>

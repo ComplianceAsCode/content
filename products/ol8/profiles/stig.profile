@@ -51,6 +51,7 @@ selections:
     - var_ssh_client_rekey_limit_time=1hour
     - var_accounts_fail_delay=4
     - var_account_disable_post_pw_expiration=35
+    - var_account_disable_inactivity=35
     - var_auditd_action_mail_acct=root
     - var_time_service_set_maxpoll=18_hours
     - var_accounts_maximum_age_login_defs=60
@@ -627,8 +628,10 @@ selections:
 
     # OL08-00-020260
     - account_disable_post_pw_expiration
+    - account_disable_inactivity_system_auth
 
     # OL08-00-020261
+    - account_disable_inactivity_password_auth
 
     # OL08-00-020262
     - file_permissions_lastlog
