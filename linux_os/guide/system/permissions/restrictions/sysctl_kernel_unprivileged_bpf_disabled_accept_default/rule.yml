@@ -1,0 +1,82 @@
+documentation_complete: true
+
+prodtype: rhel9
+
+title: 'Disable Access to Network bpf() Syscall From Unprivileged Processes'
+
+description: |-
+    To prevent unprivileged processes from using the <code>bpf()</code> syscall
+    the <code>kernel.unprivileged_bpf_disabled</code> kernel parameter must
+    be set to <code>1</code> or <code>2</code>.
+
+    Writing <code>1</code> to this entry will disable unprivileged calls to <code>bpf()</code>; once
+    disabled, calling <code>bpf()</code> without <code>CAP_SYS_ADMIN</code> or <code>CAP_BPF</code> will return <code>-EPERM</code>.
+    Once set to <code>1</code>, this can't be cleared from the running kernel anymore.
+
+    {{{ describe_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
+
+    Writing <code>2</code> to this entry will also disable unprivileged calls to <code>bpf()</code>,
+    however, an admin can still change this setting later on, if needed, by
+    writing <code>0</code> or <code>1</code> to this entry.
+
+    {{{ describe_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="2") }}}
+
+rationale: |-
+    Loading and accessing the packet filters programs and maps using the bpf()
+    syscall has the potential of revealing sensitive information about the kernel state.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-87712-6
+
+references:
+    disa: CCI-000366
+    nist: AC-6,SC-7(10)
+    ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000132-GPOS-00067,SRG-OS-000480-GPOS-00227
+
+ocil: |-
+    The runtime status of the <code>kernel.unprivileged_bpf_disabled</code>
+    kernel parameter can be queried by running the following command:
+    <pre>$ sysctl kernel.unprivileged_bpf_disabled</pre>
+    The output of the command should indicate either:
+    kernel.unprivileged_bpf_disabled = 1
+    or:
+    kernel.unprivileged_bpf_disabled = 2
+    The output of the command should not indicate:
+    kernel.unprivileged_bpf_disabled = 0
+
+    The preferable way how to assure the runtime compliance is to have
+    correct persistent configuration, and rebooting the system.
+
+    The persistent kernel parameter configuration is performed by specifying the appropriate
+    assignment in any file located in the <pre>/etc/sysctl.d</pre> directory.
+    Verify that there is not any existing incorrect configuration by executing the following command:
+    <pre>$ grep -r '^\s*{{{ sysctl }}}\s*=' /etc/sysctl.conf /etc/sysctl.d</pre>
+    The command should not find any assignments other than:
+    kernel.unprivileged_bpf_disabled = 1
+    or:
+    kernel.unprivileged_bpf_disabled = 2
+
+    Duplicate assignments are not allowed. Empty output is allowed, because the system default is 2.
+
+ocil_clause: "the kernel.unprivileged_bpf_disabled is not set to 1 or 2 or is configured to be 0"
+
+fixtext: |-
+    Configure {{{ full_name }}} to prevent privilege escalation through the kernel by disabling access to the bpf syscall.
+
+srg_requirement: '{{{ full_name }}} must disable access to network bpf syscall from unprivileged processes.'
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.unprivileged_bpf_disabled
+        sysctlval:
+        - '1'
+        - '2'
+        wrong_sysctlval_for_testing: "0"
+        missing_parameter_pass: "true"
+        datatype: int

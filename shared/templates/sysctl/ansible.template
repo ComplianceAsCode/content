@@ -21,7 +21,7 @@
     replace: '#{{{ SYSCTLVAR }}}'
   loop: "{{ find_sysctl_d.files }}"
 
-{{%- if SYSCTLVAL == "" %}}
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string  %}}
 - (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set

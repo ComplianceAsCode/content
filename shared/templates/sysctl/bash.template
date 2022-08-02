@@ -20,7 +20,7 @@ for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf; do
   fi
 done
 
-{{%- if SYSCTLVAL == "" %}}
+{{%- if SYSCTLVAL == "" or SYSCTLVAL is not string %}}
 {{{ bash_instantiate_variables("sysctl_" + SYSCTLID + "_value") }}}
 
 #
