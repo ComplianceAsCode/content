@@ -59,8 +59,10 @@ template:
     name: sysctl
     vars:
         sysctlvar: net.ipv4.conf.all.rp_filter
+        {{% if 'ol' in product or 'rhel' in product %}}
         sysctlval:
         - '1'
         - '2'
         wrong_sysctlval_for_testing: "0"
+        {{% endif %}}
         datatype: int
