@@ -1,10 +1,16 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Check if sudo includes only the default includedir") }}}
-    <criteria operator="AND">
-      <criterion comment="Check /etc/sudoers for #includedir" test_ref="test_sudoers_default_includedir" />
-      <criterion comment="Check /etc/sudoers for #include" test_ref="test_sudoers_without_include" />
-      <criterion comment="Check /etc/sudoers.d for includes" test_ref="test_sudoersd_without_includes" />
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <criterion comment="Check /etc/sudoers doesn't have any #include" test_ref="test_sudoers_without_include" />
+        <criterion comment="Check /etc/sudoers doesn't have any #includedir" test_ref="test_sudoers_without_includedir" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="Check /etc/sudoers for #includedir" test_ref="test_sudoers_default_includedir" />
+        <criterion comment="Check /etc/sudoers doesn't have any #include" test_ref="test_sudoers_without_include" />
+        <criterion comment="Check /etc/sudoers.d doesn't have any #include or #includedir" test_ref="test_sudoersd_without_includes" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -29,6 +35,16 @@
   <ind:textfilecontent54_object id="object_sudoers_without_include" version="1">
     <ind:filepath>/etc/sudoers</ind:filepath>
     <ind:pattern operation="pattern match">^#include[\s]+.*$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+      comment="audit augenrules rmmod" id="test_sudoers_without_includedir" version="1">
+    <ind:object object_ref="object_sudoers_without_includedir" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_sudoers_without_includedir" version="1">
+    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^#includedir[\s]+.*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

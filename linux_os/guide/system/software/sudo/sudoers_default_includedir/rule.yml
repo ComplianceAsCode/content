@@ -8,9 +8,11 @@ description: |-
     Administrators can configure authorized <tt>sudo</tt> users via drop-in files, and it is possible to include
     other directories and configuration files from the file currently being parsed.
   
-    Make sure that <tt>/etc/sudoers</tt> only includes drop-in configuration files from <tt>/etc/sudoers.d</tt>.
-    The <tt>/etc/sudoers</tt> should contain only one <tt>#includedir</tt> directive pointing to
-    <tt>/etc/sudoers.d</tt>, and no file in <tt>/etc/sudoers.d/</tt> should include other files or directories.
+    Make sure that <tt>/etc/sudoers</tt> only includes drop-in configuration files from <tt>/etc/sudoers.d</tt>,
+    or that no drop-in file is included.
+    Either the <tt>/etc/sudoers</tt> should contain only one <tt>#includedir</tt> directive pointing to
+    <tt>/etc/sudoers.d</tt>, and no file in <tt>/etc/sudoers.d/</tt> should include other files or directories;
+    Or the <tt>/etc/sudoers</tt> should not contain any <tt>#include</tt> or <tt>#includedir</tt> directives.
     Note that the '#' character doesn't denote a comment in the configuration file.
 
 rationale: |-
