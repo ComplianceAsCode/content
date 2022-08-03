@@ -42,6 +42,10 @@ template:
     name: sysctl
     vars:
         sysctlvar: kernel.kptr_restrict
+        sysctlval:
+        - '1'
+        - '2'
+        wrong_sysctlval_for_testing: "0"
         datatype: int
 
 fixtext: |-
