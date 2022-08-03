@@ -11,7 +11,7 @@
       {{% if 'rhel' not in product and product != 'ol8' %}}
       <criterion comment="audispd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_audispd" />
       {{% endif %}}
-      {{% if product == 'ol8' %}}
+      {{% if product == 'ol8' or 'rhel' in product %}}
       <criterion comment="rsyslogd is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_rsyslogd" />
       {{% endif %}}
       <criterion comment="augenrules is checked in {{{ aide_conf_path }}}" test_ref="test_aide_verify_augenrules" />
