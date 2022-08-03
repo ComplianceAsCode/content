@@ -8,8 +8,8 @@
       </criteria>
       <criteria operator="AND">
         <criterion comment="Check /etc/sudoers for #includedir" test_ref="test_sudoers_default_includedir" />
-        <criterion comment="Check /etc/sudoers for #include" test_ref="test_sudoers_without_include" />
-        <criterion comment="Check /etc/sudoers.d for includes" test_ref="test_sudoersd_without_includes" />
+        <criterion comment="Check /etc/sudoers doesn't have any #include" test_ref="test_sudoers_without_include" />
+        <criterion comment="Check /etc/sudoers.d doesn't have any #include or #includedir" test_ref="test_sudoersd_without_includes" />
       </criteria>
     </criteria>
   </definition>
