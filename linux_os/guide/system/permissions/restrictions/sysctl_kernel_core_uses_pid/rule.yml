@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: fedora,ol8,ol9,rhcos4,rhel8,rhel9
+
+title: 'Configure file name of core dumps'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.core_uses_pid", value=0) }}}'
+
+rationale: |-
+    The default coredump filename is <pre>core</pre>. By setting
+    <pre>core_uses_pid</pre> to <pre>1</pre>, the coredump filename becomes
+    <pre>core.PID</pre>. If <pre>core_pattern</pre> does not include
+    <pre>%p</pre> (default does not) and <pre>core_uses_pid</pre> is set, then
+    <pre>.PID</pre> will be appended to the filename.
+
+severity: medium
+
+identifiers:
+    cce@rhel9: CCE-86003-1
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'the returned line does not have a value of 0, or a line is not returned and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement'
+
+ocil: |-
+    {{{ ocil_sysctl_option_value(sysctl="kernel.core_pattern", value=0) }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: kernel.core_uses_pid
+        datatype: int
+        sysctlval: '0'
