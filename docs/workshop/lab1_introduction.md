@@ -429,4 +429,4 @@ source compliance content repositories available.
     Standard^](https://www.pcisecuritystandards.org/merchants/process)
 
 -   The OVAL language: [Open Vulnerability and Assessment Language v5.11
-    hub^](https://oval.mitre.org/language/version5.11/)
+    hub^](https://oval-community-guidelines.readthedocs.io/en/latest/index.html)
