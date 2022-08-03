@@ -583,10 +583,10 @@ macro(ssg_build_profile_bash_scripts PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bash"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/bash" --template "urn:xccdf:fix:script:sh" --extension "sh" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/bash" --template "urn:xccdf:fix:script:sh" --extension "sh" build
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        COMMENT "[${PRODUCT}-bash-scripts] generating Bash remediation scripts for all profiles in ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}-bash-scripts] generating Bash remediation scripts for all profiles in ssg-${PRODUCT}-ds.xml"
     )
     add_custom_target(
         generate-all-profile-bash-scripts-${PRODUCT}
@@ -600,10 +600,10 @@ macro(ssg_build_profile_playbooks PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/ansible"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/ansible" --template "urn:xccdf:fix:script:ansible" --extension "yml" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/ansible" --template "urn:xccdf:fix:script:ansible" --extension "yml" build
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        COMMENT "[${PRODUCT}-playbooks] generating Ansible Playbooks for all profiles in ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}-playbooks] generating Ansible Playbooks for all profiles in ssg-${PRODUCT}-ds.xml"
     )
     add_custom_target(
         generate-all-profile-playbooks-${PRODUCT}
