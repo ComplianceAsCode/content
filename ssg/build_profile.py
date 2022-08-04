@@ -774,6 +774,16 @@ class XCCDFBenchmark(object):
 
             return profile_stats
 
+
+    def show_all_profile_stats(self, options):
+        all_profile_elems = self.tree.findall("./{%s}Profile" % (xccdf_ns))
+        ret = []
+        for elem in all_profile_elems:
+            profile = elem.get('id')
+            if profile is not None:
+                ret.append(self.show_profile_stats(profile, options))
+        return ret
+
     def console_print(self, content, width):
         """Prints the 'content' array left aligned, each time 45 characters
            long, each row 'width' characters wide"""

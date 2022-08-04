@@ -220,12 +220,7 @@ def main():
     if args.profile:
         ret.append(benchmark.show_profile_stats(args.profile, args))
     else:
-        all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (ssg.constants.XCCDF11_NS))
-        ret = []
-        for elem in all_profile_elems:
-            profile = elem.get('id')
-            if profile is not None:
-                ret.append(benchmark.show_profile_stats(profile, args))
+        ret.extend(benchmark.show_all_profile_stats(args))
 
     if args.format == "json":
         print(json.dumps(ret, indent=4))
