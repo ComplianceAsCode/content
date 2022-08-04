@@ -40,8 +40,8 @@ def parse_args():
                         "available profiles.")
     parser_stats.add_argument("--benchmark", "-b", required=True,
                         action="store",
-                        help="Specify XCCDF file to act on. Must be a plain "
-                        "XCCDF file, doesn't work on source datastreams yet!")
+                        help="Specify XCCDF file or a SCAP source data "
+                        "stream file to act on.")
     parser_stats.add_argument("--implemented-ovals", default=False,
                         action="store_true", dest="implemented_ovals",
                         help="Show IDs of implemented OVAL checks.")
