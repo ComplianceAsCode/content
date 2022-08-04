@@ -6,7 +6,7 @@ import sys
 
 from .build_yaml import ProfileWithInlinePolicies
 from .xml import ElementTree
-from .constants import XCCDF11_NS as xccdf_ns
+from .constants import XCCDF11_NS, XCCDF12_NS
 from .constants import oval_namespace as oval_ns
 from .constants import SCE_SYSTEM as sce_ns
 from .constants import bash_system as bash_rem_system
@@ -103,7 +103,12 @@ class XCCDFBenchmark(object):
                 file_string = xccdf_file.read()
                 tree = ElementTree.fromstring(file_string)
                 self.tree = tree
-                self.xccdf_ns = xccdf_ns
+                if tree.tag == "{%s}Benchmark" % XCCDF11_NS:
+                    self.xccdf_ns = XCCDF11_NS
+                elif tree.tag == "{%s}Benchmark" % XCCDF12_NS:
+                    self.xccdf_ns = XCCDF12_NS
+                else:
+                    raise ValueError("Unknown root element '%s'" % tree.tag)
         except IOError as ioerr:
             print("%s" % ioerr)
             sys.exit(1)
