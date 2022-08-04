@@ -21,7 +21,8 @@ function check_missing_references() {
         refs_argument="--missing-$profile-refs"
     fi
 
-    profile_stats="$("$PYTHON_EXECUTABLE" "$PROJECT_ROOT/build-scripts/profile_tool.py" stats --benchmark "$BENCHMARK" --profile $profile $refs_argument --skip-stats)"
+    full_profile_id="xccdf_org.ssgproject.content_profile_$profile"
+    profile_stats="$("$PYTHON_EXECUTABLE" "$PROJECT_ROOT/build-scripts/profile_tool.py" stats --benchmark "$BENCHMARK" --profile $full_profile_id $refs_argument --skip-stats)"
 
     if [ ! -z "$profile_stats" ]; then
         printf '%s\n' "$profile_stats" >&2
