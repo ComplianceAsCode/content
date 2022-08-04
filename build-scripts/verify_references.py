@@ -102,7 +102,8 @@ def get_ovalfiles(checks):
             # and https:// formatted URLs) or a file known as mapped to remote file
             if not checkcontentref_hrefattr.startswith("http://") and \
                not checkcontentref_hrefattr.startswith("https://") and \
-               not checkcontentref_hrefattr.startswith("security-data-oval-com.redhat.rhsa-"):
+               not checkcontentref_hrefattr.startswith("security-data-oval-com.redhat.rhsa-") and \
+               not checkcontentref_hrefattr.startswith("pub-projects-security-oval-suse"):
                 ovalfiles.add(checkcontentref_hrefattr)
         elif check.get("system") != ocil_cs and check.get("system") != sce_cs:
             print("ERROR: Non-OVAL checking system found: %s"
@@ -207,7 +208,8 @@ def main():
             # these two cases)
             if check_content_ref_href_attr.startswith("http://") or \
                check_content_ref_href_attr.startswith("https://") or \
-               check_content_ref_href_attr.startswith("security-data-oval-com.redhat.rhsa-"):
+               check_content_ref_href_attr.startswith("security-data-oval-com.redhat.rhsa-") or \
+               check_content_ref_href_attr.startswith("pub-projects-security-oval-suse"):
                 continue
 
             if check_system == sce_cs:
