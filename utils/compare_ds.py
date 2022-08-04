@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import os
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -56,11 +57,26 @@ def parse_args():
         help="Print only removals from rule set."
     )
     parser.add_argument(
+        "--output-dir", metavar="OUTPUT_DIR",
+        type=str, action="store", default="compare_ds-diffs",
+        help="Directory where diff files will be saved. Only used with --stig-benchmark option. "
+             "If the directory doesn't exist, it will be created."
+    )
+    parser.add_argument(
         "--stig-benchmark", action="store_true",
         help="This compares the content in the STIG Benchmark mode. "
              "A file is generated for each STIGID that changed."
     )
     return parser.parse_args()
+
+
+def ensure_output_dir_exists(output_dir):
+    if os.path.exists(output_dir):
+        if not os.path.isdir(output_dir):
+            print("Output path '%s' exists and it is not a directory." % output_dir)
+            sys.exit(1)
+    else:
+        os.mkdir(output_dir)
 
 
 def get_tag_without_ns(tag):
@@ -260,7 +276,7 @@ def join_text_elements(element):
     return text
 
 
-def compare_texts(old_rule, new_rule, show_diffs, stig_benchmark):
+def compare_texts(old_rule, new_rule, show_diffs, stig_benchmark, output_dir):
     old_rule_text = join_text_elements(old_rule)
     new_rule_text = join_text_elements(new_rule)
 
@@ -286,7 +302,8 @@ def compare_texts(old_rule, new_rule, show_diffs, stig_benchmark):
                 "%s:version" % (content_xccdf_ns), ns)
             diff = compare_fix_texts(old_rule_text, new_rule_text,
                                      fromfile=stig_id.text, tofile=stig_id.text, n=200)
-            with open("%s" % stig_id.text, "w") as f:
+
+            with open("%s/%s" % (output_dir, stig_id.text), "w") as f:
                 f.write(diff)
         else:
             diff = compare_fix_texts(old_rule_text, new_rule_text)
@@ -415,8 +432,8 @@ def get_rules_to_compare(benchmark, rule_id):
 
 def compare_rules(
         old_rule, new_rule, old_oval_defs, new_oval_defs, old_ocils, new_ocils,
-        show_diffs, stig_benchmark):
-    compare_texts(old_rule, new_rule, show_diffs, stig_benchmark)
+        show_diffs, stig_benchmark, output_dir):
+    compare_texts(old_rule, new_rule, show_diffs, stig_benchmark, output_dir)
     compare_checks(
         old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs, "OVAL")
     compare_checks(
@@ -427,7 +444,7 @@ def compare_rules(
 
 def process_benchmarks(
         old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
-        old_ocils, new_ocils, rule_id, show_diffs, only_rules, stig_benchmark):
+        old_ocils, new_ocils, rule_id, show_diffs, only_rules, stig_benchmark, output_dir):
     missing_rules = []
     try:
         rules_in_old_benchmark = get_rules_to_compare(old_benchmark, rule_id)
@@ -438,6 +455,8 @@ def process_benchmarks(
             # This creates map the SV numbers to their equivalent full IDs in the new Benchmark.
             new_rule_mapping = {get_stig_rule_SV(rule.get("id")): rule.get("id")
                                 for rule in rules_in_new_benchmark}
+
+            ensure_output_dir_exists(output_dir)
 
     except ValueError as e:
         print(str(e))
@@ -457,7 +476,7 @@ def process_benchmarks(
             continue
         compare_rules(old_rule, new_rule,
                       old_oval_defs, new_oval_defs,
-                      old_ocils, new_ocils, show_diffs, stig_benchmark)
+                      old_ocils, new_ocils, show_diffs, stig_benchmark, output_dir)
         compare_platforms(old_rule, new_rule,
                           old_benchmark, new_benchmark)
 
@@ -533,7 +552,7 @@ def main():
         process_benchmarks(
             old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
             old_ocils, new_ocils,
-            args.rule, not args.no_diffs, args.only_rules, args.stig_benchmark)
+            args.rule, not args.no_diffs, args.only_rules, args.stig_benchmark, args.output_dir)
     return 0
 
 
