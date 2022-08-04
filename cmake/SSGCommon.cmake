@@ -631,13 +631,13 @@ endmacro()
 # As above
 macro(ssg_make_html_stats_for_product PRODUCT)
     add_custom_target(${PRODUCT}-html-stats
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --profile all --output "${CMAKE_BINARY_DIR}/${PRODUCT}/product-statistics/"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --profile all --output "${CMAKE_BINARY_DIR}/${PRODUCT}/product-statistics/"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}-html-stats] generating benchmark html statistics"
     )
     add_custom_target(${PRODUCT}-html-profile-stats
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/profile-statistics/"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/profile_tool.py" stats --format html --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/${PRODUCT}/profile-statistics/"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}-html-profile-stats] generating per profile html statistics"
     )
 endmacro()
