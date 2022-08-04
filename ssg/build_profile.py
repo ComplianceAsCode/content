@@ -103,12 +103,13 @@ class XCCDFBenchmark(object):
                 file_string = xccdf_file.read()
                 tree = ElementTree.fromstring(file_string)
                 self.tree = tree
+                self.xccdf_ns = xccdf_ns
         except IOError as ioerr:
             print("%s" % ioerr)
             sys.exit(1)
 
         self.indexed_rules = {}
-        for rule in self.tree.findall(".//{%s}Rule" % (xccdf_ns)):
+        for rule in self.tree.findall(".//{%s}Rule" % (self.xccdf_ns)):
             rule_id = rule.get("id")
             if rule_id is None:
                 raise RuntimeError("Can't index a rule with no id attribute!")
@@ -189,7 +190,7 @@ class XCCDFBenchmark(object):
 
         rule_stats = []
         ssg_version_elem = self.tree.find("./{%s}version[@update=\"%s\"]" %
-                                          (xccdf_ns, ssg_version_uri))
+                                          (self.xccdf_ns, ssg_version_uri))
 
         rules = []
 
@@ -198,12 +199,13 @@ class XCCDFBenchmark(object):
             rules = self.indexed_rules.values()
         else:
             xccdf_profile = self.tree.find("./{%s}Profile[@id=\"%s\"]" %
-                                           (xccdf_ns, profile))
+                                           (self.xccdf_ns, profile))
             if xccdf_profile is None:
                 print("No such profile \"%s\" found in the benchmark!"
                       % profile)
                 print("* Available profiles:")
-                profiles_avail = self.tree.findall("./{%s}Profile" % (xccdf_ns))
+                profiles_avail = self.tree.findall(
+                    "./{%s}Profile" % (self.xccdf_ns))
                 for _profile in profiles_avail:
                     print("** %s" % _profile.get('id'))
                 sys.exit(1)
@@ -212,7 +214,7 @@ class XCCDFBenchmark(object):
             # selected rule. If you want to reuse this for custom content, you
             # need to change this to look into Rule/@selected
             selects = xccdf_profile.findall("./{%s}select[@selected=\"true\"]" %
-                                            xccdf_ns)
+                                            self.xccdf_ns)
 
             for select in selects:
                 rule_id = select.get('idref')
@@ -224,35 +226,35 @@ class XCCDFBenchmark(object):
         for rule in rules:
             if rule is not None:
                 oval = rule.find("./{%s}check[@system=\"%s\"]" %
-                                 (xccdf_ns, oval_ns))
+                                 (self.xccdf_ns, oval_ns))
                 sce = rule.find("./{%s}check[@system=\"%s\"]" %
-                                (xccdf_ns, sce_ns))
+                                (self.xccdf_ns, sce_ns))
                 bash_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                     (xccdf_ns, bash_rem_system))
+                                     (self.xccdf_ns, bash_rem_system))
                 ansible_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                        (xccdf_ns, ansible_rem_system))
+                                        (self.xccdf_ns, ansible_rem_system))
                 ignition_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                        (xccdf_ns, ignition_rem_system))
+                                        (self.xccdf_ns, ignition_rem_system))
                 kubernetes_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                           (xccdf_ns, kubernetes_rem_system))
+                                           (self.xccdf_ns, kubernetes_rem_system))
                 puppet_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                       (xccdf_ns, puppet_rem_system))
+                                       (self.xccdf_ns, puppet_rem_system))
                 anaconda_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                         (xccdf_ns, anaconda_rem_system))
+                                         (self.xccdf_ns, anaconda_rem_system))
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
-                                (xccdf_ns, cce_uri))
+                                (self.xccdf_ns, cce_uri))
                 stig_id = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, self.stig_ns))
+                                    (self.xccdf_ns, self.stig_ns))
                 cis_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, self.cis_ns))
+                                    (self.xccdf_ns, self.cis_ns))
                 hipaa_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, hipaa_ns))
+                                    (self.xccdf_ns, hipaa_ns))
                 anssi_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, anssi_ns))
+                                    (self.xccdf_ns, anssi_ns))
                 ospp_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                     (xccdf_ns, ospp_ns))
+                                     (self.xccdf_ns, ospp_ns))
                 cui_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (xccdf_ns, cui_ns))
+                                    (self.xccdf_ns, cui_ns))
 
                 rule_stats.append(
                     RuleStats(rule.get("id"), oval, sce,
@@ -776,7 +778,7 @@ class XCCDFBenchmark(object):
 
 
     def show_all_profile_stats(self, options):
-        all_profile_elems = self.tree.findall("./{%s}Profile" % (xccdf_ns))
+        all_profile_elems = self.tree.findall("./{%s}Profile" % (self.xccdf_ns))
         ret = []
         for elem in all_profile_elems:
             profile = elem.get('id')
