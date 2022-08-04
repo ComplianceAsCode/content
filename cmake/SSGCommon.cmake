@@ -395,12 +395,6 @@ macro(ssg_build_xccdf_final PRODUCT)
         generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
-    add_test(
-        NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --base-dir "${CMAKE_BINARY_DIR}" --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-    )
-    set_tests_properties("verify-references-ssg-${PRODUCT}-xccdf.xml" PROPERTIES LABELS quick)
-
     if("${PRODUCT}" MATCHES "rhel")
         if("${PRODUCT}" MATCHES "rhel7")
             set(REFERENCES_CHECK_PROFILE_LIST "cis anssi_nt28_high hipaa")
@@ -555,6 +549,11 @@ macro(ssg_build_sds PRODUCT)
         PROPERTIES
         WILL_FAIL true
     )
+    add_test(
+        NAME "verify-references-ssg-${PRODUCT}-ds.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/verify_references.py" --rules-with-invalid-checks --base-dir "${CMAKE_BINARY_DIR}" --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+    )
+    set_tests_properties("verify-references-ssg-${PRODUCT}-ds.xml" PROPERTIES LABELS quick)
 endmacro()
 
 # Build per-product HTML guides to see the status of various profiles and
