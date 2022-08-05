@@ -8,7 +8,7 @@
 - name: Ensure {{{ OPTION }}} is enabled with the appropriate value in /etc/sudoers
   lineinfile:
     path: /etc/sudoers
-    regexp: '^[\s]*Defaults\s(.*)\b{{{ OPTION }}}=[-]?\w+\b(.*)$'
+    regexp: '^[\s]*Defaults\s(.*)\b{{{ OPTION }}}=[-]?.+\b(.*)$'
     line: 'Defaults \1{{{ OPTION }}}={{ {{{ VARIABLE_NAME }}} }}\2'
     validate: /usr/sbin/visudo -cf %s
     backrefs: yes
