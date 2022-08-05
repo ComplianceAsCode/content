@@ -141,7 +141,7 @@ def parse_args():
     parser.add_argument("-o", "--output", default=outfile,
                         action="store", dest="output_file",
                         help="STIG overlay XML content file \
-                             [default: %default]")
+                             [default: %s]" % outfile)
     parser.add_argument("-q", "--quiet", dest="quiet", default=False,
                       action="store_true", help="Do not print anything and assume yes for everything")
 
