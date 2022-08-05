@@ -43,6 +43,7 @@ def element_value(element, element_obj):
     except UnboundLocalError as e:
         return ""
 
+
 def determine_xccdf_tree_namespace(tree):
     root = tree.getroot()
     if root.tag == "{%s}Benchmark" % XCCDF11_NS:
