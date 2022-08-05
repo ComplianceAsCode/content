@@ -29,7 +29,7 @@ ocil_clause: 'logfile is not enabled in sudo'
 
 ocil: |-
     To determine if <tt>logfile</tt> has been configured for sudo, run the following command:
-    <pre>$ sudo grep -ri "^[\s]*Defaults.*\blogfile\b.*" /etc/sudoers /etc/sudoers.d/</pre>
+    <pre>$ sudo grep -ri "^[\s]*Defaults\s*\blogfile\b.*" /etc/sudoers /etc/sudoers.d/</pre>
     The command should return a matching output.
 
 template:
