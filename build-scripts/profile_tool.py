@@ -38,10 +38,9 @@ def parse_args():
                         help="Show statistics for this XCCDF Profile only. If "
                         "not provided the script will show stats for all "
                         "available profiles.")
-    parser_stats.add_argument("--benchmark", "-b", required=True,
-                        action="store",
-                        help="Specify XCCDF file or a SCAP source data "
-                        "stream file to act on.")
+    parser_stats.add_argument(
+        "--benchmark", "-b", required=True, action="store",
+        help="Specify XCCDF file or a SCAP source data stream file to act on.")
     parser_stats.add_argument("--implemented-ovals", default=False,
                         action="store_true", dest="implemented_ovals",
                         help="Show IDs of implemented OVAL checks.")

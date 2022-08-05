@@ -244,7 +244,7 @@ class XCCDFBenchmark(object):
                 ansible_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
                                         (self.xccdf_ns, ansible_rem_system))
                 ignition_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
-                                        (self.xccdf_ns, ignition_rem_system))
+                                         (self.xccdf_ns, ignition_rem_system))
                 kubernetes_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
                                            (self.xccdf_ns, kubernetes_rem_system))
                 puppet_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
@@ -258,9 +258,9 @@ class XCCDFBenchmark(object):
                 cis_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (self.xccdf_ns, self.cis_ns))
                 hipaa_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (self.xccdf_ns, hipaa_ns))
+                                      (self.xccdf_ns, hipaa_ns))
                 anssi_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
-                                    (self.xccdf_ns, anssi_ns))
+                                      (self.xccdf_ns, anssi_ns))
                 ospp_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
                                      (self.xccdf_ns, ospp_ns))
                 cui_ref = rule.find("./{%s}reference[@href=\"%s\"]" %
@@ -785,7 +785,6 @@ class XCCDFBenchmark(object):
             del profile_stats['rules']
 
             return profile_stats
-
 
     def show_all_profile_stats(self, options):
         all_profile_elems = self.tree.findall("./{%s}Profile" % (self.xccdf_ns))
