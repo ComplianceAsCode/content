@@ -17,9 +17,9 @@ description: |-
     via a cache side channel attack.
 
     Select the appropriate mitigation by adding the argument
-    <tt>mds={{{ xccdf_value(var_mds_options) }}}</tt> to the default
+    <tt>mds={{{ xccdf_value("var_mds_options") }}}</tt> to the default
     GRUB 2 command line for the Linux operating system.
-    {{{ describe_grub2_argument("mds=xccdf_value(var_mds_options)") | indent(4) }}}
+    {{{ describe_grub2_argument("mds=" + xccdf_value("var_mds_options")) | indent(4) }}}
 
     Not all processors are affected by all variants of MDS, but the mitigation mechanism is
     identical for all of them.
@@ -45,7 +45,7 @@ identifiers:
 ocil_clause: 'MDS mitigations are not configured appropriately'
 
 ocil: |-
-    {{{ ocil_grub2_argument("mds=xccdf_value(var_mds_options)") | indent(4) }}}
+    {{{ ocil_grub2_argument("mds=" + xccdf_value(var_mds_options)) | indent(4) }}}
 
 platform: machine
 

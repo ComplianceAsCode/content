@@ -17,9 +17,9 @@ description: |-
     on all hardware random number generators.
 
     Select the appropriate confidence by adding the argument
-    <tt>rng_core.default_quality={{{ xccdf_value(var_rng_core_default_quality_options) }}}</tt> to the default
+    <tt>rng_core.default_quality={{{ xccdf_value("var_rng_core_default_quality") }}}</tt> to the default
     GRUB 2 command line for the Linux operating system.
-    {{{ describe_grub2_argument("rng_core.default_quality=xccdf_value(var_rng_core_default_quality)") | indent(4) }}}
+    {{{ describe_grub2_argument("rng_core.default_quality=" + xccdf_value("var_rng_core_default_quality")) | indent(4) }}}
 
 rationale: |-
     A system may struggle to initialize its entropy pool and end up starving. Crediting entropy
@@ -34,7 +34,7 @@ identifiers:
 ocil_clause: 'trust on hardware random number generator is not configured appropriately'
 
 ocil: |-
-    {{{ ocil_grub2_argument("rng_core.default_quality=xccdf_value(var_rng_core_default_quality)") | indent(4) }}}
+    {{{ ocil_grub2_argument("rng_core.default_quality=" + xccdf_value("var_rng_core_default_quality")) | indent(4) }}}
 
 platform: machine
 
