@@ -115,7 +115,7 @@ selections:
     - coredump_disable_storage
     - coredump_disable_backtraces
     - service_systemd-coredump_disabled
-    - var_authselect_profile=sssd
+    - var_authselect_profile=minimal
     - enable_authselect
     - use_pam_wheel_for_su
 
