@@ -90,3 +90,20 @@ fixtext: |-
     *.* @@[remoteloggingserver]:[port]"
 
 srg_requirement: 'The {{{ full_name }}} audit records must be off-loaded onto a different system or storage media from the system being audited.'
+
+warnings:
+    - functionality: |-
+        It is important to configure queues in case the client is sending log
+        messages to a remote server. If queues are not configured, there is a
+        danger that the system will stop functioning in case that the connection
+        to the remote server is not available. Please consult Rsyslog
+        documentation for more information about configuration of queues. The
+        example configuration which should go into <tt>/etc/rsyslog.conf</tt>
+        can look like the following lines:
+        <pre>
+        $ActionQueueType LinkedList
+        $ActionQueueFileName somenameforprefix
+        $ActionQueueMaxDiskSpace 1g
+        $ActionQueueSaveOnShutdown on
+        $ActionResumeRetryCount -1
+        </pre>
