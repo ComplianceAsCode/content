@@ -67,3 +67,12 @@ fixtext: |-
     Then, run the following command to load all audit rules:
 
     $ sudo augenrules --load
+
+warnings:
+    - performance:
+        It might happen that Audit buffer configured by this rule is not large
+        enough for certain use cases. If that is the case, the buffer size can
+        be overridden by placing <pre>-b larger_buffer_size</pre> into a file
+        within <tt>/etc/audit/rules.d</tt> directory, replacing
+        <tt>larger_file_size</tt> with the desired value. The file name should
+        start with a number higher than 10 and lower than 99.
