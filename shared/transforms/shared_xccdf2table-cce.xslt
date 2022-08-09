@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.2" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://scap.nist.gov/schema/scap/source/1.2">
 
 <!-- This style sheet takes as input a XCCDF file.  It outputs each Rule and CCE ident element, in document order.  
      If provided parameter $ref, this style sheet will display the referenced CCE file side-by-side for comparison -->
@@ -11,17 +11,17 @@
 	<xsl:template match="/">
 		<html>
 		<head>
-			<title> CCE Identifiers in <xsl:value-of select="/cdf:Benchmark/cdf:title" /><xsl:if test="$ref"> with references common to <xsl:value-of select="$ref"/></xsl:if></title>
+			<title> CCE Identifiers in <xsl:value-of select="ds:data-stream-collection/ds:component/cdf:Benchmark/cdf:title" /><xsl:if test="$ref"> with references common to <xsl:value-of select="$ref"/></xsl:if></title>
 		</head>
 		<body>
 			<br/>
 			<br/>
 			<div style="text-align: center; font-size: x-large; font-weight:bold">
-			CCE Identifiers in <xsl:value-of select="/cdf:Benchmark/cdf:title" /><xsl:if test="$ref"> with references common to <xsl:value-of select="$ref"/></xsl:if>
+			CCE Identifiers in <xsl:value-of select="ds:data-stream-collection/ds:component/cdf:Benchmark/cdf:title" /><xsl:if test="$ref"> with references common to <xsl:value-of select="$ref"/></xsl:if>
 			</div>
 			<br/>
 			<br/>
-			<xsl:apply-templates select="cdf:Benchmark"/>
+			<xsl:apply-templates select="ds:data-stream-collection/ds:component/cdf:Benchmark"/>
 		</body>
 		</html>
 	</xsl:template>
