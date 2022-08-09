@@ -96,15 +96,15 @@ def get_ovalfiles(checks):
     for check in checks:
         if check.get("system") == oval_ns:
             checkcontentref = check.find("./{%s}check-content-ref" % xccdf_ns)
-            checkcontentref_hrefattr = checkcontentref.get("href")
+            href = checkcontentref.get("href")
             # Include the file in the particular check system only if it's NOT
             # a remotely located file (to allow OVAL checks to reference http://
             # and https:// formatted URLs) or a file known as mapped to remote file
-            if not checkcontentref_hrefattr.startswith("http://") and \
-                    not checkcontentref_hrefattr.startswith("https://") and \
-                    not checkcontentref_hrefattr.startswith("security-data-oval-com.redhat.rhsa-") and \
-                    not checkcontentref_hrefattr.startswith("pub-projects-security-oval-suse"):
-                ovalfiles.add(checkcontentref_hrefattr)
+            if not href.startswith("http://") and \
+                    not href.startswith("https://") and \
+                    not href.startswith("security-data-oval-com.redhat.rhsa-") and \
+                    not href.startswith("pub-projects-security-oval-suse"):
+                ovalfiles.add(href)
         elif check.get("system") != ocil_cs and check.get("system") != sce_cs:
             print("ERROR: Non-OVAL checking system found: %s"
                   % (check.get("system")))
@@ -200,21 +200,21 @@ def main():
 
             # Obtain the value of the 'href' attribute of particular
             # <check-content-ref> element
-            check_content_ref_href_attr = check_content_ref.get("href")
+            href = check_content_ref.get("href")
 
             # Don't attempt to obtain refname on <check-content-ref> element
             # having its "href" attribute set either to "http://" or to
             # "https://" values (since the "name" attribute will be empty for
             # these two cases)
             # Also, skip known remote data files with CVE feeds.
-            if check_content_ref_href_attr.startswith("http://") or \
-                    check_content_ref_href_attr.startswith("https://") or \
-                    check_content_ref_href_attr.startswith("security-data-oval-com.redhat.rhsa-") or \
-                    check_content_ref_href_attr.startswith("pub-projects-security-oval-suse"):
+            if href.startswith("http://") or \
+                    href.startswith("https://") or \
+                    href.startswith("security-data-oval-com.redhat.rhsa-") or \
+                    href.startswith("pub-projects-security-oval-suse"):
                 continue
 
             if check_system == sce_cs:
-                check_path = os.path.join(options.base_dir, check_content_ref_href_attr)
+                check_path = os.path.join(options.base_dir, href)
                 if not os.path.exists(check_path):
                     msg = "ERROR: Invalid or missing SCE definition (%s) "
                     msg += "referenced by XCCDF Rule: %s"
