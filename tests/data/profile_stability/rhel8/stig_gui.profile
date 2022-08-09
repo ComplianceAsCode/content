@@ -379,6 +379,8 @@ selections:
 - sshd_enable_warning_banner
 - sshd_print_last_log
 - sshd_rekey_limit
+- sshd_set_idle_timeout
+- sshd_set_keepalive_0
 - sshd_use_strong_rng
 - sshd_x11_use_localhost
 - sssd_certificate_verification
