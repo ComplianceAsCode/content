@@ -24,10 +24,10 @@ identifiers:
 references:
     ospp: FMT_SMF_EXT.1
 
-ocil_clause: 'the returned line does not have a value of 0, or a line is not returned and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement'
+ocil_clause: 'the returned line does not have a value of 0'
 
 ocil: |-
-    {{{ ocil_sysctl_option_value(sysctl="kernel.core_pattern", value=0) }}}
+    {{{ ocil_sysctl_option_value(sysctl="kernel.core_uses_pid", value=0) }}}
 
 platform: machine
 
