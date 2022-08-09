@@ -110,10 +110,8 @@ selections:
     - package_gnutls-utils_installed
 
     ### Login
-    - disable_users_coredumps
-    - sysctl_kernel_core_pattern
-    - coredump_disable_storage
-    - coredump_disable_backtraces
+    - sysctl_kernel_core_pattern_empty_string
+    - sysctl_kernel_core_uses_pid
     - service_systemd-coredump_disabled
     - var_authselect_profile=minimal
     - enable_authselect
