@@ -1,11 +1,9 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("All interactive user's Home Directories must be group-owned by its user") }}}
-    <criteria operator="AND">
+    <criteria>
       <criterion test_ref="test_file_groupownership_home_directories"
                  comment="All interactive user's Home Directories must be group-owned by its user"/>
-      <criterion test_ref="test_file_groupownership_home_directories_duplicated"
-                 comment="Interactive users should group-own only one Home Directory"/>
     </criteria>
   </definition>
 
@@ -13,12 +11,12 @@
        "file_ownership_home_directories" rule. -->
   <unix:password_object id="object_file_groupownership_home_directories_objects" version="1">
     <unix:username datatype="string" operation="pattern match">.*</unix:username>
-    <filter action="include">state_file_groupownership_home_directories_interactive_gids</filter>
+    <filter action="include">state_file_groupownership_home_directories_interactive_uids</filter>
     <filter action="exclude">state_file_permissions_groupownership_user_list</filter>
   </unix:password_object>
 
-  <unix:password_state id="state_file_groupownership_home_directories_interactive_gids" version="1">
-    <unix:group_id datatype="int" operation="greater than or equal">{{{ gid_min }}}</unix:group_id>
+  <unix:password_state id="state_file_groupownership_home_directories_interactive_uids" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ uid_min }}}</unix:user_id>
   </unix:password_state>
 
   <unix:password_state id="state_file_permissions_groupownership_user_list" version="1">
@@ -55,40 +53,4 @@
     <unix:state state_ref="state_file_groupownership_home_directories_gids"/>
   </unix:file_test>
 
-  <!-- #### prepare for test_file_groupownership_home_directories_duplicated #### -->
-  <local_variable id="var_file_groupownership_home_directories_gids_count" datatype="int" version="1"
-                  comment="Variable including count of gids from interactive group-owners">
-    <count>
-      <object_component item_field="group_id" object_ref="object_file_groupownership_home_directories_dirs"/>
-    </count>
-  </local_variable>
-
-  <local_variable id="var_file_groupownership_home_directories_gids_count_uniq" datatype="int" version="1"
-                  comment="Variable including count of uniq gids from interactive group-owners">
-    <count>
-      <unique>
-        <object_component item_field="group_id" object_ref="object_file_groupownership_home_directories_dirs"/>
-      </unique>
-    </count>
-  </local_variable>
-
-  <!-- #### creation of object #### -->
-  <ind:variable_object id="object_file_groupownership_home_directories_gids_count" version="1">
-    <ind:var_ref>var_file_groupownership_home_directories_gids_count</ind:var_ref>
-  </ind:variable_object>
-
-  <!-- #### creation of state #### -->
-  <!-- #### creation of state_no_duplicate_groupowners #### -->
-  <ind:variable_state id="state_file_groupownership_home_directories_gids_count_uniq" version="1">
-    <ind:value datatype="int" operation="equals" var_check="at least one"
-               var_ref="var_file_groupownership_home_directories_gids_count_uniq"/>
-  </ind:variable_state>
-
-  <!-- #### creation of test #### -->
-  <ind:variable_test id="test_file_groupownership_home_directories_duplicated" check="all"
-                     check_existence="any_exist" version="1"
-                     comment="It should not exist duplicated group-owners of home dirs">
-    <ind:object object_ref="object_file_groupownership_home_directories_gids_count"/>
-    <ind:state state_ref="state_file_groupownership_home_directories_gids_count_uniq"/>
-  </ind:variable_test>
 </def-group>
