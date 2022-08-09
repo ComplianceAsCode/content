@@ -206,6 +206,7 @@ def main():
             # having its "href" attribute set either to "http://" or to
             # "https://" values (since the "name" attribute will be empty for
             # these two cases)
+            # Also, skip known remote data files with CVE feeds.
             if check_content_ref_href_attr.startswith("http://") or \
                check_content_ref_href_attr.startswith("https://") or \
                check_content_ref_href_attr.startswith("security-data-oval-com.redhat.rhsa-") or \
