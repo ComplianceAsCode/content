@@ -89,7 +89,7 @@ selections:
 - ensure_redhat_gpgkey_installed
 - grub2_audit_argument
 - grub2_audit_backlog_limit_argument
-- grub2_disable_interactive_boot
+- grub2_disable_recovery
 - grub2_kernel_trust_cpu_rng
 - grub2_page_poison_argument
 - grub2_pti_argument
