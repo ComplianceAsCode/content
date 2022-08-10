@@ -1,6 +1,10 @@
-== Lab 1
+= Lab Exercise 1: Say Hello to ComplianceAsCode
+:toc2:
+:linkattrs:
+:experimental:
+:imagesdir: images
 
-=== Introduction
+== Introduction
 
 In this lab, you will become familiar with the `ComplianceAsCode` project. The purpose of this project is to help content authors create security policy content for various platforms. The `ComplianceAsCode` project enables content authors to efficiently develop and share security content.
 
@@ -35,7 +39,7 @@ potential, and is therefore different from the content in
 ComplianceAsCode upstream repository.
 
 
-=== Hands-on Lab
+== Hands-on Lab
 
 The `ComplianceAsCode` project consists of human-readable files that are compiled into standard-compliant files that are difficult to read and edit directly.
 
@@ -48,7 +52,7 @@ To start the hands-on section, take the following steps:
 // . Go to: link:https://gitpod.io/#WORKSHOP=lab1_introduction/https://github.com/ComplianceAsCode/content[Lab 1 Environment]
 . Wait until all the steps being executed in the terminal are complete.
 
-==== Viewing the HTML Guides for the `ComplianceAsCode` Project
+=== Viewing the HTML Guides for the `ComplianceAsCode` Project
 
 The `ComplianceAsCode` project provides HTML guides that are a great resource for those interested in the rules that make up a policy.
 HTML guides are located in the respective `build/guides` of each lab
@@ -65,16 +69,16 @@ profile) is `ssg-rhel8-guide-ospp.html`.
 . Right click the `ssg-rhel8-guide-ospp.html` file and select `Open with Live Server` to preview the file. Note: Your browser can block the pop-up. You must allow it when asked.
 +
 .OSPP Profile Guide
-image::images/navigateospp.png[]
+image::navigateospp.png[]
 +
 . Viewing the HTML report in your browser.
 .. Rules are organized in a system of hierarchical groups. Take a look through this HTML guide to see the various rules of the RHEL 8 OSPP profile.
 +
 .HTML guide showing all of the rules of the RHEL 8 Protection Profile for General Purpose Operating Systems (OSPP) profile
-image::images/html_guide.png[]
+image::html_guide.png[]
 
 
-==== Updating a Rule Description to Find the Source of a Specific Rule
+=== Updating a Rule Description to Find the Source of a Specific Rule
 
 You will now take a closer look at a specific rule in the HTML guide of the RHEL 8 OSPP profile.
 For example, take a closer look at the *Set Interactive Session Timeout* rule entry.
@@ -82,7 +86,7 @@ For example, take a closer look at the *Set Interactive Session Timeout* rule en
 . In the HTML guide of the RHEL 8 OSPP profile that you opened in Firefox, press `Ctrl+F` and search for `session timeout`.
 +
 .The *Set Interactive Session Timeout* rule in the RHEL 8 OSPP profile HTML guide
-image::images/session_timeout.png[]
+image::session_timeout.png[]
 
 . Review the description just below the *Set Interactive Session Timeout* rule:
 +
@@ -133,7 +137,7 @@ In general, you can run `./build_product <product>` to build only the content fo
 The `<product>` is the lowercase form of the product, so you run `./build_product rhel8` to build content for RHEL 8, `./build_product fedora` to build content for Fedora, and so on.
 +
 .Completed build of security content for RHEL 8 in the Terminal window
-image::images/0-02-post_build.png[]
+image::0-02-post_build.png[]
 
 . Refresh the tab with the guide `ssg-rhel8-guide-ospp.html` or right click the file in `build/guides` and select `Open with Live Server`.
 
@@ -141,7 +145,7 @@ image::images/0-02-post_build.png[]
 Expect to now see the fixed description, without the duplicate *Setting the TMOUT option in /etc/profile ensures that* text, if you scroll down to the *Set Interactive Session Timeout* rule.
 
 
-==== Customizing a Parameterized Rule
+=== Customizing a Parameterized Rule
 
 In this lab exercise, you will learn about parameterized rules.
 Parameterization can be used to set timeout durations, password length, umask, and other settings.
@@ -212,7 +216,7 @@ NOTE: The set of values a variable can have is discrete--all values have to be d
 Therefore, it is possible to specify `var_accounts_tmout=20_min` in the profile only after adding `20_min: 1200` to the `options:` key of the variable definition.
 
 
-=== Associated Content
+== Associated Content
 
 A rule needs more than a description to be of any use. Other functions are:
 
@@ -228,12 +232,12 @@ In the terminal, run the following commands:
 . Press `Ctrl+P` and a pop up window will appear, type `accounts_tmout/rule.yml` and the first file you will see is the one we are looking for.
 +
 .`accounts_tmout` folder
-image::images/accounts_tmout_folder.png[]
+image::accounts_tmout_folder.png[]
 
 The following sections describe the currently supported associated content types.
 
 
-==== Macros
+=== Macros
 
 You have probably noticed strange snippets in the project's code s.a. `{{{ xccdf_value("var_accounts_tmout") }}}` in the `accounts_tmout` rule yaml.
 Those are link:https://palletsprojects.com/p/jinja/[jinja2 macros] with one minor syntax difference -- there is an additional layer of curly brackets to link:https://jinja.palletsprojects.com/en/latest/templates/#synopsis[regular jinja2 macros].
@@ -246,7 +250,7 @@ Macros are defined in various `.jinja` files, and they are documented online on 
 Usage of macros in the content is shown in subsequent chapters.
 
 
-==== Checks
+=== Checks
 
 Checks can be found under the `oval` directory.
 They are written in an standardized, declarative, XML-based language called OVAL (Open Vulnerability and Assessment Language).
@@ -259,7 +263,7 @@ If you are familiar with the language, you can take this opportunity to examine 
 The `shared.xml` file features a shorthand OVAL, which is much simpler than the full version of OVAL that you otherwise have to write.
 
 
-==== Remediations
+=== Remediations
 
 If the system is not set up according to the rule description, the scanner reports that the rule has failed, and the system administrator is supposed to fix it.
 The `ComplianceAsCode` content provides users with snippets that they can run to make the system compliant again or at least to provide administrators with hints about what they need to do.
@@ -282,7 +286,7 @@ Unlike checks, you can review remediations in the guide--there is a clickable `R
 Bring back the browser window with the guide open, and see for yourself.
 
 .Bash remediation snippet in the HTML guide
-image::images/0-03-remediation.png[]
+image::0-03-remediation.png[]
 
 . Now you improve the remediation script by adding a comment stating that the numerical value is "number of seconds."
 Edit the remediation file:
@@ -325,8 +329,12 @@ fi
 Congratulations, by completing the lab exercise, you became familiar with a comprehensive content creation tool and one of the largest open source compliance content repositories available.
 
 
-=== References
+== References
 
 * The OSPP profile: link:https://www.niap-ccevs.org/Profile/Info.cfm?PPID=424&id=424[Protection Profile for General Purpose Operating Systems^]
 * The PCI-DSS profile: link:https://www.pcisecuritystandards.org/merchants/process[Payment Card Industry Data Security Standard^]
 * The OVAL language: link:https://oval-community-guidelines.readthedocs.io/en/latest/index.html[Open Vulnerability and Assessment Language v5.11 hub^]
+
+<<top>>
+
+link:README.adoc#table-of-contents[ Table of Contents ] | link:lab2_openscap.adoc[Lab exercise 2 - Automated Security Scanning Using ComplianceAsCode]
