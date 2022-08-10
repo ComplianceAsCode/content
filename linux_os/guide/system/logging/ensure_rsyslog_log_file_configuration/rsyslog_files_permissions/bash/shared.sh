@@ -14,11 +14,14 @@ readarray -t RSYSLOG_INCLUDE < <(for INCPATH in "${NEW_INC[@]}"; do eval printf 
 declare -a LOG_FILE_PATHS
 
 # Array to hold all rsyslog config entries
-declare -a RSYSLOG_CONFIGS
-RSYSLOG_CONFIGS+=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
+RSYSLOG_CONFIGS=()
+RSYSLOG_CONFIGS=("${RSYSLOG_ETC_CONFIG}" "${RSYSLOG_INCLUDE_CONFIG[@]}" "${RSYSLOG_INCLUDE[@]}")
 
-# Array to hold all rsyslog config files
-declare -a RSYSLOG_CONFIG_FILES
+# Get full list of files to be checked
+# RSYSLOG_CONFIGS may contain globs such as 
+# /etc/rsyslog.d/*.conf /etc/rsyslog.d/*.frule
+# So, loop over the entries in RSYSLOG_CONFIGS and use find to get the list of included files.
+RSYSLOG_CONFIG_FILES=()
 for ENTRY in "${RSYSLOG_CONFIGS[@]}"
 do
 	# If directory, rsyslog will search for config files in recursively.
