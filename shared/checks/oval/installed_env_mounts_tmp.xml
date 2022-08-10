@@ -1,0 +1,10 @@
+<def-group>
+  <definition class="inventory" id="installed_env_mounts_tmp" version="1">
+    {{{ oval_metadata("", title="Partition /tmp exists", affected_platforms=[full_name]) }}}
+    <criteria>
+       {{{ partition_exists_criterion("/tmp") }}}
+    </criteria>
+  </definition>
+
+  {{{ partition_exists_test_object("/tmp") }}}
+</def-group>
