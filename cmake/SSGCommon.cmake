@@ -1137,7 +1137,7 @@ macro(ssg_build_html_stig_tables PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${DISA_STIG_REF}"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig-manual.xslt" "${DISA_STIG_REF}"
         DEPENDS "${DISA_STIG_REF}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML MANUAL STIG table"
@@ -1152,9 +1152,9 @@ macro(ssg_build_html_stig_tables PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml" --stringparam ocil-document "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ocil-linked.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml" --stringparam ocil-document "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ocil-linked.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
         DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
         COMMENT "[${PRODUCT}-tables] generating unlinked STIG XCCDF XML file"
