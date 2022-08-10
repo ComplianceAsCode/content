@@ -40,6 +40,7 @@
   shell: find {{ item }} -not -path "*/.*" -type f
   loop: "{{ include_config_output.results|map(attribute='stdout_lines')|list|flatten }}"
   register: rsyslog_config_files
+  failed_when: False
   changed_when: False
 
 - name: "Extract log files"
