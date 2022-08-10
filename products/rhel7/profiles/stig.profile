@@ -230,6 +230,7 @@ selections:
     - audit_rules_privileged_commands_postqueue
     - audit_rules_privileged_commands_ssh_keysign
     - audit_rules_privileged_commands_crontab
+    - audit_rules_privileged_commands_kmod
     - audit_rules_privileged_commands_pam_timestamp_check
     - audit_rules_kernel_module_loading_init
     - audit_rules_kernel_module_loading_finit
