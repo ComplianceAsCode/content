@@ -304,7 +304,7 @@ selections:
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_UAU.1
     - require_singleuser_auth
-    - grub2_disable_interactive_boot
+    - grub2_disable_recovery
     - grub2_uefi_password
     - no_empty_passwords
 
