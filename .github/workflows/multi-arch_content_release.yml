@@ -1,0 +1,77 @@
+name: Build and push a multi-arch manifest for Content
+
+on:
+  push:
+    tags:
+      - v**
+
+env:
+  IMAGE_NAME: compliance-operator-content
+  IMAGE_REGISTRY: ghcr.io
+  IMAGE_NAMESPACE: complianceascode
+
+jobs:
+  build:
+    name: Build and push multi-arch image
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: add checkout action...
+        uses: actions/checkout@v2
+      - name: Fetch latest release version
+        uses: reloc8/action-latest-release-version@1.0.0
+        id: fetch-latest-release
+      - name: Set Env Tags
+        run: echo RELEASE_TAG=${{ steps.fetch-latest-release.outputs.latest-release }} >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Build image linux/amd64
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.RELEASE_TAG }}-linux-amd64
+          arch: amd64
+          containerfiles: |
+            ./Dockerfiles/ocp4_content
+            
+      - name: Build image linux/ppc64le
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.RELEASE_TAG }}-linux-ppc64le
+          arch: ppc64le
+          containerfiles: |
+            ./Dockerfiles/ocp4_content
+            
+      - name: Build image linux/s390x
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.RELEASE_TAG }}-linux-s390x
+          arch: s390x
+          containerfiles: |
+            ./Dockerfiles/ocp4_content
+            
+      - name: Check images created
+        run: buildah images | grep '${{ env.IMAGE_NAME }}'
+
+      - name: Create and add to manifest
+        run: |
+          buildah manifest create ${{ env.IMAGE_NAME }}
+          buildah manifest add ${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}-linux-amd64
+          buildah manifest add ${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}-linux-ppc64le
+          buildah manifest add ${{ env.IMAGE_NAME }} ${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}-linux-s390x
+          
+     # Authenticate to container image registry to push the image
+      - name: Podman Login
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Push manifest
+        run: |
+            podman manifest push ${{ env.IMAGE_NAME }}  ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}  --all
