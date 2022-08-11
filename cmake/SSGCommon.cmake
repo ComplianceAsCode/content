@@ -1041,8 +1041,7 @@ macro(ssg_build_html_ref_tables PRODUCT OUTPUT_TEMPLATE REFERENCES)
         OUTPUT ${OUTPUTS_LIST}
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_multiple_reference_tables.py" --build-dir "${CMAKE_BINARY_DIR}" "${PRODUCT}" "${CMAKE_BINARY_DIR}/tables/${OUTPUT_TEMPLATE}.html" ${REFERENCES}
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS ${PRODUCT}-compile-all
         COMMENT "[${PRODUCT}-tables] generating HTML refs table for ${REFS_STR} references"
     )
     add_custom_target(
@@ -1065,8 +1064,7 @@ macro(ssg_build_html_profile_table BASENAME PRODUCT PROFILE REFERENCE)
         OUTPUT "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/gen_profile_table.py" --build-dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/tables/${BASENAME}.html" "${PRODUCT}" "${REFERENCE}" "${PROFILE}"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS ${PRODUCT}-compile-all
         COMMENT "[${PRODUCT}-tables] generating HTML refs table for ${PROFILE} profile"
     )
     add_custom_target(
