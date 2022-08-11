@@ -501,9 +501,8 @@ selections:
     # OL08-00-020016, OL08-00-020017
     - accounts_passwords_pam_faillock_dir
 
-    # OL08-00-020018
-
-    # OL08-00-020019
+    # OL08-00-020018, OL08-00-020019
+    - accounts_passwords_pam_faillock_silent
 
     # OL08-00-020020, OL08-00-020021
     - account_passwords_pam_faillock_audit
