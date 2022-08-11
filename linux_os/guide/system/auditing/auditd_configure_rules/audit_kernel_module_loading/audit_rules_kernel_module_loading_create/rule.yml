@@ -32,3 +32,8 @@ references:
     stigid@rhel7: RHEL-07-030819
 
 {{{ complete_ocil_entry_audit_syscall(syscall="create_module") }}}
+
+fixtext: |-
+    {{{ fixtext_audit_rules("create_module", "module_chng") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_command("create_module") }}}'
