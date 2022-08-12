@@ -19,6 +19,7 @@ from .constants import (DEFAULT_PRODUCT, product_directories,
                         DEFAULT_SSH_DISTRIBUTED_CONFIG,
                         DEFAULT_CHRONY_CONF_PATH,
                         DEFAULT_AUDISP_CONF_PATH,
+                        DEFAULT_FAILLOCK_PATH,
                         PKG_MANAGER_TO_SYSTEM,
                         PKG_MANAGER_TO_CONFIG_FILE,
                         XCCDF_PLATFORM_TO_PACKAGE,
@@ -93,6 +94,9 @@ def _get_implied_properties(existing_properties):
 
     if "audisp_conf_path" not in existing_properties:
         result["audisp_conf_path"] = DEFAULT_AUDISP_CONF_PATH
+
+    if "faillock_path" not in existing_properties:
+        result["faillock_path"] = DEFAULT_FAILLOCK_PATH
 
     return result
 
