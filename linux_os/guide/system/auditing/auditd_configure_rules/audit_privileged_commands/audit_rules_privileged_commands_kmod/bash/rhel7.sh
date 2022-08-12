@@ -1,7 +1,7 @@
 # platform = multi_platform_rhel
 
-ACTION_ARCH_FILTERS="-a always,exit"
-OTHER_FILTERS="-F path=/usr/bin/kmod -p x"
+ACTION_ARCH_FILTERS=""
+OTHER_FILTERS="-w /usr/bin/kmod -p x"
 AUID_FILTERS="-F auid!=unset"
 SYSCALL=""
 KEY="module-change"
