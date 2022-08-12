@@ -15,6 +15,10 @@ init_system: "systemd"
 grub2_boot_path: "/boot/grub2"
 grub2_uefi_boot_path: "/boot/grub2"
 
+groups:
+  dedicated_ssh_keyowner:
+    name: ssh_keys
+
 sshd_distributed_config: "true"
 
 dconf_gdm_dir: "distro.d"
