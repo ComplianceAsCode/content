@@ -26,10 +26,13 @@ references:
     cis@sle15: 5.2.22
     cis@ubuntu2004: 5.2.22
 
-ocil_clause: "MaxSessions is not configured or not configured correctly"
+{{{ complete_ocil_entry_sshd_option(default="no", option="MaxSessions", xccdf_variable="var_sshd_max_sessions")}}}
 
-ocil: |-
-    Run the following command to see what the max sessions number is:
-    <pre>$ sudo grep MaxSessions /etc/ssh/sshd_config</pre>
-    If properly configured, the output should be:
-    <pre>MaxSessions {{{ xccdf_value("var_sshd_max_sessions") }}}</pre>
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: MaxSessions
+        rule_id: sshd_set_max_sessions
+        value: ''
+        xccdf_variable: var_sshd_max_sessions
