@@ -33,12 +33,14 @@
 
   <unix:shadow_state id="min_max_password_change_interval" version="1"
     comment="change passwords every minimum interval or more">
+    <unix:password operation="pattern match" mask="true">.*</unix:password>
     <unix:chg_req operation="greater than or equal" datatype="int"
       var_ref="var_accounts_minimum_age_login_defs"/>
   </unix:shadow_state>
 
   <unix:shadow_state id="max_password_change_interval" version="1"
     comment="change passwords at the recommended interval or less">
+    <unix:password operation="pattern match" mask="true">.*</unix:password>
     <unix:chg_req operation="less than or equal" datatype="int"
       var_ref="var_accounts_maximum_age_login_defs"/>
   </unix:shadow_state>
