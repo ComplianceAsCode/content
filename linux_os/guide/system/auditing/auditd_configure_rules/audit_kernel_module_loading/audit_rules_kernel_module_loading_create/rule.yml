@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure auditd Collects Information on Kernel Module Unloading - create_module'
+
+description: |-
+    To capture kernel module unloading events, use following line, setting ARCH to
+    either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S create_module -F key=module-change</pre>
+
+    Place to add the line depends on a way <tt>auditd</tt> daemon is configured. If it is configured
+    to use the <tt>augenrules</tt> program (the default), add the line to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility,
+    add the line to file <tt>/etc/audit/audit.rules</tt>.
+
+rationale: |-
+    The removal of kernel modules can be used to alter the behavior of
+    the kernel and potentially introduce malicious code into kernel space. It is important
+    to have an audit trail of modules that have been introduced into the kernel.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-86115-3
+
+references:
+    disa: CCI-000172
+    srg: SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222
+    stigid@rhel7: RHEL-07-030819
+
+{{{ complete_ocil_entry_audit_syscall(syscall="create_module") }}}
+
+fixtext: |-
+    {{{ fixtext_audit_rules("create_module", "module_chng") | indent(4) }}}
+
+srg_requirement: '{{{ srg_requirement_audit_command("create_module") }}}'
