@@ -1442,5 +1442,5 @@ Part of the grub2_bootloader_argument_absent template.
 
 
 {{%- macro ansible_partition_conditional(path) -%}}
-"ansible_facts.ansible_mounts | json_query(\"[?mount=='{{{ path }}}'].mount\") | length == 1"
+"ansible_mounts | json_query(\"[?mount=='{{{ path }}}'].mount\") | length == 1"
 {{%- endmacro -%}}
