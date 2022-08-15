@@ -877,6 +877,38 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif %}}
 {{%- set case_insensitivity_kwargs = dict(prefix_regex="^[ \\t]*(?i)", separator_regex = "(?-i)[ \\t]+") -%}}
 
+{{%- set sshd_parameter = dict() -%}}
+{{%- set _ = sshd_parameter.__setitem__('name', parameter) -%}}
+{{%- if xccdf_variable is none or xccdf_variable is not defined %}}
+  {{%- set _ = sshd_parameter.__setitem__('xccdf_variable', none) -%}}
+{{%- else -%}}
+  {{%- set _ = sshd_parameter.__setitem__('xccdf_variable', xccdf_variable) -%}}
+{{%- endif -%}}
+{{%- set _ = sshd_parameter.__setitem__('type', 'string') -%}}
+{{%- set _ = sshd_parameter.__setitem__('subtype', 'string') -%}}
+{{%- if ('LoginGraceTime' | lower) == (parameter | lower) -%}}
+  {{%- set _ = sshd_parameter.__setitem__('type', 'int') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('subtype', 'int') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('lower_bound_value', 0) -%}}
+  {{%- set _ = sshd_parameter.__setitem__('lower_bound_test', 'greater than') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('upper_bound_test', 'less than or equal') -%}}
+{{%- elif ('MaxAuthTries' | lower) == (parameter | lower) -%}}
+  {{%- set _ = sshd_parameter.__setitem__('type', 'int') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('subtype', 'int') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('lower_bound_value', 0) -%}}
+  {{%- set _ = sshd_parameter.__setitem__('lower_bound_test', 'greater than') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('upper_bound_test', 'less than or equal') -%}}
+{{%- elif ('MaxSessions' | lower) == (parameter | lower) -%}}
+  {{%- set _ = sshd_parameter.__setitem__('type', 'int') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('subtype', 'int') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('lower_bound_value', 0) -%}}
+  {{%- set _ = sshd_parameter.__setitem__('lower_bound_test', 'greater than or equal') -%}}
+  {{%- set _ = sshd_parameter.__setitem__('upper_bound_test', 'less than or equal') -%}}
+{{%- elif ('MaxStartups' | lower) == (parameter | lower) -%}}
+  {{%- set _ = sshd_parameter.__setitem__('subtype', 'maxstartups') -%}}
+{{%- endif -%}}
+<!-- sshd_parameter '{{{ sshd_parameter }}}' -->
+
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
    {{{ oval_metadata(description) }}}
@@ -893,10 +925,27 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
         <extend_definition comment="rpm package openssh-server installed"
           definition_ref="package_openssh-server_installed" />
         <criteria comment="sshd is configured correctly" operator="OR">
+{{%- if sshd_parameter.subtype == 'maxstartups' -%}}
+  {{%- set id_stem = rule_id -%}}
+          <criteria comment="Each part or MaxStartups needs to pass" operator="AND">
+            <criterion test_ref="test_{{{ id_stem }}}_start_parameter" comment="SSH MaxStartups start parameter" />
+            <criterion test_ref="test_{{{ id_stem }}}_rate_parameter" comment="SSH MaxStartups rate parameter" />
+            <criterion test_ref="test_{{{ id_stem }}}_full_parameter" comment="SSH MaxStartups full parameter" />
+          </criteria>
+  {{%- if config_is_distributed == "true" %}}
+    {{%- set id_stem = rule_id ~ "_config_dir" -%}}
+          <criteria comment="Each part or MaxStartups needs to pass" operator="AND">
+            <criterion test_ref="test_{{{ id_stem }}}_start_parameter" comment="SSH MaxStartups start parameter" />
+            <criterion test_ref="test_{{{ id_stem }}}_rate_parameter" comment="SSH MaxStartups rate parameter" />
+            <criterion test_ref="test_{{{ id_stem }}}_full_parameter" comment="SSH MaxStartups full parameter" />
+          </criteria>
+  {{%- endif -%}}
+{{%- else -%}}
           {{{- oval_line_in_file_criterion(sshd_config_path, parameter) | indent(8) }}}
           {{%- if config_is_distributed == "true" %}}
           {{{- oval_line_in_directory_criterion(sshd_config_dir, parameter) | indent(8) }}}
           {{%- endif %}}
+{{%- endif -%}}
           {{%- if missing_parameter_pass %}}
           <criteria comment="sshd is not configured incorrectly" operator="AND">
           {{{- oval_line_in_file_criterion(sshd_config_path, parameter, missing_parameter_pass) | indent(10)}}}
@@ -923,14 +972,12 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{{ oval_line_in_directory_state(value) | indent (2) }}}
   {{%- endif %}}
 {{%- else %}}
-  <external_variable comment="Compare {{{ parameter }}} value to value of this variable" datatype="string" id="{{{ xccdf_variable }}}" version="1" />
+  {{{ sshd_external_variable_ref(sshd_parameter) }}}
 
-  {{{ oval_line_in_file_test(sshd_config_path, parameter) | indent (2) }}}
-  {{{ oval_line_in_file_state_ref(xccdf_variable) | indent (2) }}}
+  {{{ sshd_per_type_test_state_ref(sshd_parameter, sshd_config_path, rule_id) | indent (2) }}}
 
   {{%- if config_is_distributed == "true" %}}
-  {{{ oval_line_in_directory_test(sshd_config_dir, parameter) | indent (2) }}}
-  {{{ oval_line_in_directory_state_ref(xccdf_variable) | indent (2) }}}
+  {{{ sshd_per_type_test_state_ref(sshd_parameter, sshd_config_dir, rule_id ~ "_config_dir") | indent (2) }}}
   {{%- endif %}}
 {{%- endif %}}
 
@@ -944,6 +991,188 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
   {{%- endif %}}
   {{%- endif %}}
 </def-group>
+{{%- endmacro %}}
+
+{{%- macro sshd_per_type_test_state_ref(sshd_parameter, path, id_stem) -%}}
+{{%- if sshd_parameter.type == 'int' %}}
+{{{ sshd_int_test_state_ref(sshd_parameter, id_stem) }}}
+{{%- elif sshd_parameter.subtype == 'maxstartups' -%}}
+{{{ sshd_maxstartups_test_state_ref(sshd_parameter, id_stem) }}}
+{{%- else -%}}
+{{{ sshd_string_test_state_ref(sshd_parameter, path, id_stem) }}}
+{{%- endif %}}
+{{%- endmacro %}}
+
+{{%- macro sshd_per_type_compare_comment(sshd_parameter) -%}}
+{{%- if sshd_parameter.type == 'int' -%}}
+  {{%- if 'lower_bound_test' in sshd_parameter -%}}
+    {{{- "" }}} {{{ sshd_parameter.lower_bound_test -}}}
+    {{%- if 'lower_bound_value' in sshd_parameter -%}}
+      {{{- "" }}} to {{{ sshd_parameter.lower_bound_value -}}}
+    {{%- else -%}}
+      {{{- "" }}} value of variable {{{ sshd_parameter.xccdf_variable -}}}
+    {{%- endif -%}}
+  {{%- else -%}}
+    {{%- if 'upper_bound_test' not in sshd_parameter -%}}
+      {{{- "" }}} equal to value of variable {{{ sshd_parameter.xccdf_variable -}}}
+    {{%- endif -%}}
+  {{%- endif -%}}
+  {{%- if 'upper_bound_test' in sshd_parameter -%}}
+    {{%- if 'lower_bound_test' in sshd_parameter -%}}
+      {{{- "" }}} and
+    {{%- endif -%}}
+    {{{- "" }}} {{{ sshd_parameter.upper_bound_test -}}}
+    {{%- if 'upper_bound_value' in sshd_parameter -%}}
+      {{{- "" }}} to {{{ sshd_parameter.upper_bound_value -}}}
+    {{%- else -%}}
+      {{{- "" }}} value of variable {{{ sshd_parameter.xccdf_variable -}}}
+    {{%- endif -%}}
+  {{%- endif -%}}
+{{%- elif sshd_parameter.subtype == 'maxstartups' -%}}
+  {{{- "" }}} comparable to value of variable {{{ sshd_parameter.xccdf_variable }}} using per variable compare method
+{{%- else -%}}
+  {{{- "" }}} equal to value of variable {{{ sshd_parameter.xccdf_variable -}}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+{{%- macro sshd_external_variable_ref(sshd_parameter) -%}}
+<external_variable comment="Ensure {{{ sshd_parameter.name }}} value is {{{ sshd_per_type_compare_comment(sshd_parameter) }}}" datatype="{{{ sshd_parameter.type }}}" id="{{{ sshd_parameter.xccdf_variable }}}" version="1" />
+{{%- endmacro %}}
+
+{{%- macro sshd_int_test_state_ref(sshd_parameter, id_stem) -%}}
+<ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="{{{ sshd_parameter.name }}} is configured" id="test_{{{ id_stem }}}" version="1">
+    <ind:object object_ref="obj_{{{ id_stem }}}" />
+{{%- if 'upper_bound_test' in sshd_parameter %}}
+    <ind:state state_ref="state_{{{ id_stem }}}_value_upper_bound" />
+{{%- endif %}}
+{{%- if 'lower_bound_test' in sshd_parameter %}}
+    <ind:state state_ref="state_{{{ id_stem }}}_value_lower_bound" />
+{{%- endif %}}
+</ind:textfilecontent54_test>
+
+{{%- if 'upper_bound_test' in sshd_parameter %}}
+
+<ind:textfilecontent54_state comment="upper bound value of {{{ sshd_parameter.name }}}"
+  id="state_{{{ id_stem }}}_value_upper_bound" version="1">
+    <ind:subexpression datatype="int" operation="{{{ sshd_parameter.upper_bound_test }}}"
+{{%- if 'upper_bound_value' in sshd_parameter -%}}
+>{{{- sshd_parameter.upper_bound_value -}}}</ind:subexpression>
+{{%- else %}}
+    var_check="all" var_ref="{{{ sshd_parameter.xccdf_variable }}}" />
+{{%- endif %}}
+</ind:textfilecontent54_state>
+{{%- endif %}}
+
+{{%- if 'lower_bound_test' in sshd_parameter %}}
+
+<ind:textfilecontent54_state comment="lower bound value of {{{ sshd_parameter.name }}}"
+  id="state_{{{ id_stem }}}_value_lower_bound" version="1">
+    <ind:subexpression datatype="int" operation="{{{ sshd_parameter.lower_bound_test }}}"
+{{%- if 'lower_bound_value' in sshd_parameter -%}}
+>{{{- sshd_parameter.lower_bound_value -}}}</ind:subexpression>
+{{%- else %}}
+    var_check="all" var_ref="{{{ sshd_parameter.xccdf_variable }}}" />
+{{%- endif %}}
+</ind:textfilecontent54_state>
+{{%- endif %}}
+{{%- endmacro %}}
+
+{{%- macro sshd_string_test_state_ref(sshd_parameter, path, id_stem) -%}}
+{{{ oval_line_in_file_test(path, sshd_parameter.name, id_stem=id_stem) }}}
+{{{ oval_line_in_file_state_ref(sshd_parameter.xccdf_variable, id_stem=id_stem) }}}
+{{%- endmacro %}}
+
+{{#- Unique type only for this parameter -#}}
+{{%- macro sshd_maxstartups_test_state_ref(sshd_parameter, id_stem) -%}}
+<local_variable comment="Match start parameter from xccdf variable"
+  id="varx_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_start_parameter"
+  version="1" datatype="int">
+  <regex_capture pattern="^(\d+):\d+:\d+$">
+    <variable_component var_ref="{{{ sshd_parameter.xccdf_variable }}}"/>
+  </regex_capture>
+</local_variable>
+<local_variable comment="Match rate parameter from xccdf variable"
+  id="varx_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_rate_parameter"
+  version="1" datatype="int">
+  <regex_capture pattern="^\d+:(\d+):\d+$">
+    <variable_component var_ref="{{{ sshd_parameter.xccdf_variable }}}"/>
+  </regex_capture>
+</local_variable>
+<local_variable comment="Match full parameter from xccdf variable"
+  id="varx_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_full_parameter"
+  version="1" datatype="int">
+  <regex_capture pattern="^\d+:\d+:(\d+)$">
+    <variable_component var_ref="{{{ sshd_parameter.xccdf_variable }}}"/>
+  </regex_capture>
+</local_variable>
+
+<local_variable comment="Match start parameter from file object subexpression"
+  id="varr_{{{ id_stem }}}_start_parameter"
+  version="1" datatype="int">
+  <regex_capture pattern="^(\d+):\d+:\d+$">
+    <object_component object_ref="obj_{{{ id_stem }}}" item_field="subexpression"/>
+  </regex_capture>
+</local_variable>
+<local_variable comment="Match rate parameter from file object subexpression"
+  id="varr_{{{ id_stem }}}_rate_parameter"
+  version="1" datatype="int">
+  <regex_capture pattern="^\d+:(\d+):\d+$">
+    <object_component object_ref="obj_{{{ id_stem }}}" item_field="subexpression"/>
+  </regex_capture>
+</local_variable>
+<local_variable comment="Match full parameter from file object subexpression"
+  id="varr_{{{ id_stem }}}_full_parameter"
+  version="1" datatype="int">
+  <regex_capture pattern="^\d+:\d+:(\d+)$">
+    <object_component object_ref="obj_{{{ id_stem }}}" item_field="subexpression"/>
+  </regex_capture>
+</local_variable>
+
+<ind:variable_state comment="Comparison state of xccdf variable"
+  id="state_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_start_parameter_valid" version="1">
+  <ind:value datatype="int" operation="less than or equal"
+    var_ref="varx_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_start_parameter"/>
+</ind:variable_state>
+<ind:variable_state comment="Comparison state of xccdf variable"
+  id="state_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_rate_parameter_valid" version="1">
+  <ind:value datatype="int" operation="greater than or equal"
+    var_ref="varx_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_rate_parameter"/>
+</ind:variable_state>
+<ind:variable_state comment="Comparison state of xccdf variable"
+  id="state_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_full_parameter_valid" version="1">
+  <ind:value datatype="int" operation="less than or equal"
+    var_ref="varx_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_full_parameter"/>
+</ind:variable_state>
+
+<ind:variable_object comment="Indirection to get right type from var to object"
+  id="objr_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_start_parameter" version="1">
+  <ind:var_ref>varr_{{{ id_stem }}}_start_parameter</ind:var_ref>
+</ind:variable_object>
+<ind:variable_object comment="Indirection to get right type from var to object"
+  id="objr_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_rate_parameter" version="1">
+  <ind:var_ref>varr_{{{ id_stem }}}_rate_parameter</ind:var_ref>
+</ind:variable_object>
+<ind:variable_object comment="Indirection to get right type from var to object"
+  id="objr_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_full_parameter" version="1">
+  <ind:var_ref>varr_{{{ id_stem }}}_full_parameter</ind:var_ref>
+</ind:variable_object>
+
+<ind:variable_test comment="Test start part against start part of xccdf variable"
+  id="test_{{{ id_stem }}}_start_parameter" version="1" check="all" check_existence="only_one_exists">
+  <ind:object object_ref="objr_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_start_parameter"/>
+  <ind:state state_ref="state_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_start_parameter_valid"/>
+</ind:variable_test>
+<ind:variable_test comment="Test rate part against rate part of xccdf variable"
+  id="test_{{{ id_stem }}}_rate_parameter" version="1" check="all" check_existence="only_one_exists">
+  <ind:object object_ref="objr_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_rate_parameter"/>
+  <ind:state state_ref="state_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_rate_parameter_valid"/>
+</ind:variable_test>
+<ind:variable_test comment="Test full part against full part of xccdf variable"
+  id="test_{{{ id_stem }}}_full_parameter" version="1" check="all" check_existence="only_one_exists">
+  <ind:object object_ref="objr_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_full_parameter"/>
+  <ind:state state_ref="state_{{{ sshd_parameter.xccdf_variable }}}_{{{ id_stem }}}_full_parameter_valid"/>
+</ind:variable_test>
 {{%- endmacro %}}
 
 {{#
