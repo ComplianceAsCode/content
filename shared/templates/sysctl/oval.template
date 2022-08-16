@@ -121,8 +121,11 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}_static" version="3">
     {{{ oval_metadata("The kernel '" + SYSCTLVAR + "' parameter should be set to " + COMMENT_VALUE + " in the system configuration.") }}}
+
+{{% if target_oval_version >= [5, 11] %}}
 {{% if MISSING_PARAMETER_PASS == "true" %}}
     <criteria operator="OR">
+{{% endif %}}
 {{% endif %}}
     <criteria operator="AND">
       <criteria operator="OR">
@@ -141,15 +144,11 @@
 {{% if target_oval_version >= [5, 11] %}}
       <criterion comment="Check that {{{ SYSCTLID }}} is defined in only one file" test_ref="test_{{{ rule_id }}}_defined_in_one_file" />
 {{% if MISSING_PARAMETER_PASS == "true" %}}
+    </criteria>
       <criterion comment="Check that {{{ SYSCTLID }}} is not defined in any file" test_ref="test_{{{ rule_id }}}_not_defined" />
+{{% endif %}}
+{{% endif %}}
     </criteria>
-{{% endif %}}
-{{% else %}}
-{{% if MISSING_PARAMETER_PASS == "true" %}}
-    </criteria>
-{{% endif %}}
-{{% endif %}}
-  </criteria>
   </definition>
 
 {{% if target_oval_version >= [5, 11] %}}
