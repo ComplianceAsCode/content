@@ -119,7 +119,7 @@ Generates the :code:`<affected>` tag for OVAL check using correct product platfo
 {{%- endif %}}
 {{%- if not comment -%}}
 {{%- set comment = prefix_text ~ " " ~ parameter ~ " in " ~ path -%}}
-{{%- endif -%}}
+{{%- endif %}}
 <criterion comment="{{{ comment }}}"
   test_ref="test_{{{ id_stem }}}{{{ suffix_id }}}" />
 {{%- endmacro %}}
