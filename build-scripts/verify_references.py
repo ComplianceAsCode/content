@@ -133,7 +133,7 @@ def is_remote_feed(href):
     return href.startswith("http://") or \
             href.startswith("https://") or \
             href.startswith("security-data-oval-com.redhat.rhsa-") or \
-            href.startswith("security-data-oval-com.oracle") or \
+            href.startswith("security-oval-com.oracle") or \
             href.startswith("-ubuntu-security-oval-com.ubuntu") or \
             href.startswith("pub-projects-security-oval-suse")
 
