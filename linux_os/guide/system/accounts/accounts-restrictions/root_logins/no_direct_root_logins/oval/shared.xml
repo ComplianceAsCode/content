@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="no_direct_root_logins" version="1">
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
     {{{ oval_metadata("Preventing direct root logins help ensure accountability for actions
       taken on the system using the root account.") }}}
     <criteria operator="AND">
@@ -8,19 +8,25 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="/etc/securetty file exists" id="test_etc_securetty_exists" version="1">
+  <ind:textfilecontent54_test id="test_etc_securetty_exists" version="1"
+      check="all" check_existence="all_exist" comment="/etc/securetty file exists">
     <ind:object object_ref="object_etc_securetty_exists" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="/etc/securetty file exists" id="object_etc_securetty_exists" version="1">
+
+  <ind:textfilecontent54_object id="object_etc_securetty_exists" version="1"
+      comment="/etc/securetty file exists">
     <ind:filepath>/etc/securetty</ind:filepath>
     <ind:pattern operation="pattern match">^.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="no entries in /etc/securetty" id="test_no_direct_root_logins" version="1">
+  <ind:textfilecontent54_test id="test_no_direct_root_logins" version="1"
+      check="all" check_existence="all_exist" comment="no entries in /etc/securetty">
     <ind:object object_ref="object_no_direct_root_logins" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object comment="no entries /etc/securetty" id="object_no_direct_root_logins" version="1">
+
+  <ind:textfilecontent54_object id="object_no_direct_root_logins" version="1"
+      comment="no entries /etc/securetty">
     <ind:filepath>/etc/securetty</ind:filepath>
     <ind:pattern operation="pattern match">^$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
