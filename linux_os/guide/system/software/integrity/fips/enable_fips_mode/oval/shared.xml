@@ -7,9 +7,16 @@
       <extend_definition comment="Dracut FIPS module is enabled" definition_ref="enable_dracut_fips_module" />
       <extend_definition comment="system cryptography policy is configured" definition_ref="configure_crypto_policy" />
       <criterion comment="check if system crypto policy selection in var_system_crypto_policy in the profile is set to FIPS" test_ref="test_system_crypto_policy_value" />
-      {{% if product in ["ol8","rhel8"] %}}
+      {{% if product in ["ol8"] %}}
       <criterion comment="check if the kernel boot parameter is configured for FIPS mode"
       test_ref="test_grubenv_fips_mode" />
+      {{% elif product in ["rhel8"] %}}
+      <criteria operator="OR">
+        <extend_definition comment="Generic test for s390x architecture"
+        definition_ref="system_info_architecture_s390_64" />
+        <criterion comment="check if the kernel boot parameter is configured for FIPS mode"
+        test_ref="test_grubenv_fips_mode" />
+      </criteria>
       {{% endif %}}
     </criteria>
   </definition>
