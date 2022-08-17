@@ -100,10 +100,7 @@ def get_ovalfiles(checks):
             # Include the file in the particular check system only if it's NOT
             # a remotely located file (to allow OVAL checks to reference http://
             # and https:// formatted URLs) or a file known as mapped to remote file
-            if not href.startswith("http://") and \
-                    not href.startswith("https://") and \
-                    not href.startswith("security-data-oval-com.redhat.rhsa-") and \
-                    not href.startswith("pub-projects-security-oval-suse"):
+            if not is_remote_feed(href):
                 ovalfiles.add(href)
         elif check.get("system") != ocil_cs and check.get("system") != sce_cs:
             print("ERROR: Non-OVAL checking system found: %s"
@@ -130,6 +127,15 @@ def get_profileruleids(xccdftree, profile_name):
         profile_name = profile.get("extends")
 
     return ruleids
+
+
+def is_remote_feed(href):
+    return href.startswith("http://") or \
+            href.startswith("https://") or \
+            href.startswith("security-data-oval-com.redhat.rhsa-") or \
+            href.startswith("security-oval-com.oracle") or \
+            href.startswith("-ubuntu-security-oval-com.ubuntu") or \
+            href.startswith("pub-projects-security-oval-suse")
 
 
 def main():
@@ -207,10 +213,7 @@ def main():
             # "https://" values (since the "name" attribute will be empty for
             # these two cases)
             # Also, skip known remote data files with CVE feeds.
-            if href.startswith("http://") or \
-                    href.startswith("https://") or \
-                    href.startswith("security-data-oval-com.redhat.rhsa-") or \
-                    href.startswith("pub-projects-security-oval-suse"):
+            if is_remote_feed(href):
                 continue
 
             if check_system == sce_cs:
