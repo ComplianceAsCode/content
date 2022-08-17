@@ -1,5 +1,9 @@
 #!/bin/bash
+
 # platform = Red Hat Enterprise Linux 9
+# packages = grub2,grubby
+
+source common.sh
 
 # Removes argument from kernel command line in /boot/loader/entries/*.conf
 
