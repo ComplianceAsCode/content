@@ -5,7 +5,7 @@ import collections
 import os
 
 
-from .constants import oval_namespace, XCCDF11_NS, cce_uri, ocil_cs, ocil_namespace
+from .constants import OSCAP_RULE, OSCAP_VALUE, oval_namespace, XCCDF12_NS, cce_uri, ocil_cs, ocil_namespace
 from .constants import OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
 from .parse_oval import resolve_definition, find_extending_defs, get_container_groups
 from .xml import parse_file, map_elements_to_their_ids
@@ -94,7 +94,7 @@ class FileLinker(object):
 
             self.add_missing_check_exports(check, checkcontentref)
 
-            checkexports = check.findall("./{%s}check-export" % XCCDF11_NS)
+            checkexports = check.findall("./{%s}check-export" % XCCDF12_NS)
 
             self._link_xccdf_checkcontentref(checkcontentref, checkexports)
 
@@ -229,9 +229,9 @@ class OVALFileLinker(FileLinker):
                 continue
             all_vars |= resolve_definition(self.oval_groups, extended_def)
         for varname in sorted(all_vars):
-            export = ET.Element("{%s}check-export" % XCCDF11_NS)
+            export = ET.Element("{%s}check-export" % XCCDF12_NS)
             export.attrib["export-name"] = varname
-            export.attrib["value-id"] = varname
+            export.attrib["value-id"] = OSCAP_VALUE + varname
             check.insert(0, export)
 
     def _ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
@@ -249,7 +249,7 @@ class OVALFileLinker(FileLinker):
                 # The OVAL check was found, we can continue
                 continue
 
-            for check in rule.findall(".//{%s}check" % (XCCDF11_NS)):
+            for check in rule.findall(".//{%s}check" % (XCCDF12_NS)):
                 if check.get("system") != oval_cs:
                     continue
 
@@ -275,7 +275,7 @@ class OCILFileLinker(FileLinker):
         self.tree = self.translator.translate(self.tree, store_defname=True)
 
 
-def _find_identcce(rule, namespace=XCCDF11_NS):
+def _find_identcce(rule, namespace=XCCDF12_NS):
     for ident in rule.findall("./{%s}ident" % namespace):
         if ident.get("system") == cce_uri:
             return ident
@@ -283,9 +283,9 @@ def _find_identcce(rule, namespace=XCCDF11_NS):
 
 
 def rules_with_ids_generator(xccdftree):
-    xccdfrules = xccdftree.findall(".//{%s}Rule" % XCCDF11_NS)
+    xccdfrules = xccdftree.findall(".//{%s}Rule" % XCCDF12_NS)
     for rule in xccdfrules:
-        xccdfid = rule.get("id")
+        xccdfid = rule.get("id").replace(OSCAP_RULE, "")
         if xccdfid is None:
             continue
         yield xccdfid, rule
@@ -382,7 +382,7 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
     http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
     """
     indexed_xccdf_values = map_elements_to_their_ids(
-        xccdftree, ".//{%s}Value" % (XCCDF11_NS))
+        xccdftree, ".//{%s}Value" % (XCCDF12_NS))
 
     # Loop through all <external_variables> in the OVAL document
     ovalextvars = ovaltree.findall(".//{%s}external_variable" % oval_ns)
@@ -444,7 +444,7 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
     If this is the case for specific SSG product, drop such CCE identifiers from the XCCDF
     since they are in invalid format!
     """
-    xccdfrules = xccdftree.findall(".//{%s}Rule" % XCCDF11_NS)
+    xccdfrules = xccdftree.findall(".//{%s}Rule" % XCCDF12_NS)
     for rule in xccdfrules:
         identcce = _find_identcce(rule)
         if identcce is not None:
