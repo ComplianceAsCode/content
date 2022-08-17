@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}-node
+platform: {{{ product }}}
 
 {{%- if product == "eks" %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
@@ -41,7 +41,7 @@ ocil_clause: 'no client CA certificate has been configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 x509 {{{ kubeletconf_path }}}</pre>
+    <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep -A1 x509; done</pre>
     The output should contain a configured certificate like <tt>{{{ ca_path}}}</tt>.
 
 identifiers:
@@ -54,11 +54,10 @@ references:
     nist: CM-6,CM-6(1)
     srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
+
 template:
-  name: yamlfile_value
-  vars:
-    filepath: {{{ kubeletconf_path }}}
-    yamlpath: ".authentication.x509.clientCAFile"
-    values:
-      - value: "{{{ ca_path}}}"
-        operation: "equals"
+    name: kubelet_combine

@@ -1,5 +1,9 @@
 ---
 # platform = multi_platform_ocp
-{{{ kubelet_config(path='kubeletConfig.evictionHard',parameter='memory.available', value='var_kubelet_evictionhard_memory_available') }}}
+{{{ kubelet_config(path='kubeletConfig.evictionHard',parameter='memory.available', value='var_kubelet_evictionhard_memory_available', role='var_role_worker') }}}
 ---
-{{{ kubelet_config_fixed(path='kubeletConfig',parameter='evictionPressureTransitionPeriod', value='0s') }}}
+{{{ kubelet_config_fixed(path='kubeletConfig',parameter='evictionPressureTransitionPeriod', value='0s', role='var_role_worker') }}}
+---
+{{{ kubelet_config(path='kubeletConfig.evictionHard',parameter='memory.available', value='var_kubelet_evictionhard_memory_available', role='var_role_master') }}}
+---
+{{{ kubelet_config_fixed(path='kubeletConfig',parameter='evictionPressureTransitionPeriod', value='0s', role='var_role_master') }}}

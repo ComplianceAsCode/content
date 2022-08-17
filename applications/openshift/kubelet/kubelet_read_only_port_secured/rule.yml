@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: eks,ocp4
 
-platform: {{{ product }}}-node
+platform: {{{ product }}}
 
 {{%- if product == "eks"  %}}
 {{%- set kubeletconf_path = "/etc/kubernetes/kubelet/kubelet-config.json" %}}
@@ -25,24 +25,19 @@ severity: medium
 ocil_clause: 'readOnlyPort is not secured'
 
 ocil: |-
-  First, SSH to the relevant node.
-
-  Open the Kubelet config file:
-
-    cat {{{ kubeletconf_path }}}
-
-  Verify that the "readOnlyPort" argument exists and is set to 0
+  Run the following command on the kubelet node(s):
+  <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1"' | grep readOnlyPort; done</pre>
+  and make sure it outputs 0.
 
 references:
     cis@eks: 3.2.4
     nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
     nist: CM-6,CM-6(1)
 
+warnings:
+- general: |-
+    {{{ openshift_cluster_setting_kubeletconfig() | indent(4) }}}
+
+
 template:
-  name: yamlfile_value
-  vars:
-    filepath: {{{ kubeletconf_path }}}
-    yamlpath: ".readOnlyPort"
-    values:
-      - value: "0"
-        operation: "equals"
+    name: kubelet_combine

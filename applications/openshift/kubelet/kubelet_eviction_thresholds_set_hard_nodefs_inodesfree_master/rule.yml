@@ -1,0 +1,75 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Ensure Eviction threshold Settings Are Set - evictionHard: nodefs.inodesFree'
+
+description: |-
+  <p>Two types of garbage collection are performed on an OpenShift Container Platform node:</p>
+
+  <ul>
+    <li>Container garbage collection: Removes terminated containers.</li>
+    <li>Image garbage collection: Removes images not referenced by any running pods.</li>
+  </ul>
+
+  <p>
+  Container garbage collection can be performed using eviction thresholds.
+  Image garbage collection relies on disk usage as reported by cAdvisor on the
+  node to decide which images to remove from the node.
+  </p>
+
+  <p>
+  The OpenShift administrator can configure how OpenShift Container Platform
+  performs garbage collection by creating a kubeletConfig object for each
+  Machine Config Pool using any combination of the following:
+  </p>
+
+  <ul>
+    <li>soft eviction for containers</li>
+    <li>hard eviction for containers</li>
+    <li>eviction for images</li>
+  </ul>
+
+  <p>
+  To configure, follow the directions in
+  {{{ weblink(link="https://docs.openshift.com/container-platform/4.5/nodes/nodes/nodes-nodes-garbage-collection.html#nodes-nodes-garbage-collection-configuring_nodes-nodes-configuring",
+              text="the documentation") }}}
+  </p>
+
+  <p>
+  This rule pertains to the <tt>nodefs.inodesFree</tt> setting of the <tt>evictionHard</tt>
+  section.
+  </p>
+
+rationale: |-
+  Garbage collection is important to ensure sufficient resource availability
+  and avoiding degraded performance and availability. In the worst case, the
+  system might crash or just be unusable for a long period of time.
+  Based on your system resources and tests, choose an appropriate threshold
+  value to activate garbage collection.
+
+severity: medium
+
+references:
+  cis@ocp4: 1.3.1
+  nerc-cip: CIP-003-8 R6,CIP-004-6 R3,CIP-007-3 R6.1
+  nist: CM-6,CM-6(1)
+  srg: SRG-APP-000516-CTR-001325,SRG-APP-000516-CTR-001330,SRG-APP-000516-CTR-001335
+
+ocil_clause: '<tt>nodefs.inodesFree</tt> is not set in <tt>evictionHard</tt> section'
+
+ocil: |-
+  Run the following command on the kubelet node(s):
+  <pre>$ for NODE_NAME in $(oc get nodes -ojsonpath='{.items[*].metadata.name}'); do oc get --raw /api/v1/nodes/$NODE_NAME/proxy/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubelet.config.k8s.io/v1beta1" | .evictionHard."nodefs.inodesFree"'; done</pre>
+  and make sure it outputs {{.var_kubelet_evictionhard_nodefs_inodesfree}}.
+
+template:
+  name: yamlfile_value
+  vars:
+    ocp_data: "true"
+    filepath: '/kubeletconfig/role'
+    filepath_suffix: var_role_master
+    yamlpath: ".evictionHard['nodefs.inodesFree']"
+    check_existence: "all_exist"
+    xccdf_variable: var_kubelet_evictionhard_nodefs_inodesfree
+

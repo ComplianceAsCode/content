@@ -23,8 +23,20 @@
     <concat>
       <variable_component var_ref="ocp_data_root"/>
       <literal_component>{{{ FILEPATH }}}</literal_component>
+      {{% if FILEPATH_SUFFIX %}}
+      <literal_component>/</literal_component>
+      <variable_component var_ref="{{{ FILEPATH_SUFFIX }}}"/>
+      {{% endif %}}
     </concat>
-    {{% else %}}
+    {{% endif %}}
+    {{% if FILEPATH_SUFFIX and not OCP_DATA%}}
+    <concat>
+      <literal_component>{{{ FILEPATH }}}</literal_component>
+      <literal_component>/</literal_component>
+      <variable_component var_ref="{{{ FILEPATH_SUFFIX }}}"/>
+    </concat>
+    {{% endif %}}
+    {{% if not OCP_DATA and not FILEPATH_SUFFIX%}}
     <literal_component>{{{ FILEPATH }}}</literal_component>
     {{% endif %}}
   </local_variable>
@@ -129,6 +141,9 @@
 
   {{% if OCP_DATA %}}
   <external_variable comment="Root of OCP data dump" datatype="string" id="ocp_data_root" version="1" />
+  {{% endif %}}
+  {{% if FILEPATH_SUFFIX %}}
+  <external_variable comment="File Path Suffix" datatype="string" id="{{{ FILEPATH_SUFFIX }}}" version="1" />
   {{% endif %}}
 
 </def-group>
