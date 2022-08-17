@@ -23,16 +23,18 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="This script finds check-content files (currently, "
         "OVAL and OCIL) referenced from XCCDF and synchronizes all IDs.")
-    parser.add_argument("xccdf_file")
-    parser.add_argument("new_xccdf_file")
-    parser.add_argument("id_name", help="ID naming scheme")
+    parser.add_argument("--input-xccdf", help="Input XCCDF file")
+    parser.add_argument("--output-xccdf", help="Output XCCDF file")
+    parser.add_argument("--output-oval", help="Output OVAL file")
+    parser.add_argument("--output-ocil", help="Output OCIL file")
+    parser.add_argument("--id-name", help="ID naming scheme")
 
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    xccdffile = args.xccdf_file
+    xccdffile = args.input_xccdf
     idname = args.id_name
 
     # Step over xccdf file, and find referenced check files
@@ -45,19 +47,19 @@ def main():
 
     translator = ssg.id_translate.IDTranslator(idname)
 
-    oval_linker = ssg.build_renumber.OVALFileLinker(translator, xccdftree,
-                                                    checks)
+    oval_linker = ssg.build_renumber.OVALFileLinker(
+        translator, xccdftree, checks, args.output_oval)
     oval_linker.link()
     oval_linker.save_linked_tree()
     oval_linker.link_xccdf()
 
-    ocil_linker = ssg.build_renumber.OCILFileLinker(translator, xccdftree,
-                                                    checks)
+    ocil_linker = ssg.build_renumber.OCILFileLinker(
+        translator, xccdftree, checks, args.output_ocil)
     ocil_linker.link()
     ocil_linker.save_linked_tree()
     ocil_linker.link_xccdf()
 
-    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.new_xccdf_file)
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(args.output_xccdf)
     sys.exit(0)
 
 

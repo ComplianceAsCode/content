@@ -366,7 +366,7 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml" ssg
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" --input-xccdf "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --output-xccdf "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml" --output-oval "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml" --output-ocil "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml" --id-name "ssg"
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
         COMMENT "[${PRODUCT}-content] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
