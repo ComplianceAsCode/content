@@ -23,11 +23,15 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="This script finds check-content files (currently, "
         "OVAL and OCIL) referenced from XCCDF and synchronizes all IDs.")
-    parser.add_argument("--input-xccdf", help="Input XCCDF file")
-    parser.add_argument("--output-xccdf", help="Output XCCDF file")
-    parser.add_argument("--output-oval", help="Output OVAL file")
-    parser.add_argument("--output-ocil", help="Output OCIL file")
-    parser.add_argument("--id-name", help="ID naming scheme")
+    parser.add_argument(
+        "--input-xccdf", required=True, help="Input XCCDF file")
+    parser.add_argument(
+        "--output-xccdf", required=True, help="Output XCCDF file")
+    parser.add_argument(
+        "--output-oval", required=True, help="Output OVAL file")
+    parser.add_argument(
+        "--output-ocil", required=True, help="Output OCIL file")
+    parser.add_argument("--id-name", required=True, help="ID naming scheme")
 
     return parser.parse_args()
 
