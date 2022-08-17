@@ -55,6 +55,9 @@ class ElementFinder(object):
             if _attr_group is not None:
                 ref_attribute_name, entity_id = _attr_group
                 reference_target = REFERENCE_TO_GROUP[ref_attribute_name]
+                assert entity_id in self.oval_groups[reference_target], \
+                    ('Missing definition: "%s" in "%s" "%s"' %
+                     (entity_id, reference_target, element))
                 new_root = self.oval_groups[reference_target][entity_id]
 
         if new_root is not None:

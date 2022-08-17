@@ -411,6 +411,9 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
 
         # This is the required XCCDF 'type' for <xccdf:Value> derived
         # from OVAL variable 'datatype' and mapping above
+        assert ovalvartype in OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS, \
+            ('datatype not known: "%s" "%s known types "%s"' %
+             (ovalvarid, ovalvartype, OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS))
         reqxccdftype = OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS[ovalvartype]
         # Compare the actual value of 'type' of <xccdf:Value> with the requirement
         if xccdfvartype != reqxccdftype:
