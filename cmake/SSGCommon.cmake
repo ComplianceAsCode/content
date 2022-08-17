@@ -363,32 +363,29 @@ endmacro()
 # non-existing checks/references.
 macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" --input-xccdf "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --output-xccdf "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml" --output-oval "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml" --output-ocil "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml" --id-name "ssg"
-        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/relabel_ids.py" --input-xccdf "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" --output-xccdf "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output-oval "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" --output-ocil "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --id-name "ssg"
         DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS ${PRODUCT}-shorthand.xml-ocil-unlinked.xml
-        COMMENT "[${PRODUCT}-content] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
+        COMMENT "[${PRODUCT}-content] linking IDs"
     )
     add_custom_target(
-        generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
+        generate-internal-${PRODUCT}-linked
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
     )
 endmacro()
 
-# Apply a final pass (including XSLT) over the linked XCCDF document to build
-# the output XCCDF document for the product.
+# Apply a final xmllint pass over the XCCDF document to pretty-format the output
+# XCCDF document for the product. Then, generate XCCDF 1.2 version as well.
 macro(ssg_build_xccdf_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
-        COMMAND "${SED_EXECUTABLE}" -i "s/oval-linked.xml/ssg-${PRODUCT}-oval.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${SED_EXECUTABLE}" -i "s/ocil-linked.xml/ssg-${PRODUCT}-ocil.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
+        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-internal-${PRODUCT}-linked
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf.xml"
     )
     add_custom_target(
@@ -408,13 +405,13 @@ macro(ssg_build_xccdf_final PRODUCT)
     )
 endmacro()
 
-# Apply a final pass over the linked OVAL document to build the output OVAL
-# document for the product.
+# Apply a final xmllint pass over the OVAL document to pretty-format the output
+# OVAL document for the product.
 macro(ssg_build_oval_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
-        DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
+        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        DEPENDS generate-internal-${PRODUCT}-linked
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-oval.xml"
     )
     add_custom_target(
@@ -430,13 +427,13 @@ macro(ssg_build_oval_final PRODUCT)
     endif()
 endmacro()
 
-# Apply a final pass over the linked OVAL document to build the output OVAL
-# document for the product.
+# Apply a final xmllint pass over the OCIL document to pretty-format the output
+# OCIL document for the product.
 macro(ssg_build_ocil_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
-        DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
+        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${CMAKE_CURRENT_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+        DEPENDS generate-internal-${PRODUCT}-linked
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
     )
     add_custom_target(
@@ -1151,12 +1148,12 @@ macro(ssg_build_html_stig_tables PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml" --stringparam ocil-document "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml" --stringparam ocil-document "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
         DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         COMMENT "[${PRODUCT}-tables] generating unlinked STIG XCCDF XML file"
     )
     add_custom_command(
@@ -1187,10 +1184,10 @@ macro(ssg_build_html_stig_tables_per_profile PRODUCT STIG_PROFILE)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" -stringparam ocil-document "${CMAKE_BINARY_DIR}/${PRODUCT}/ocil-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" -stringparam ocil-document "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${STIG_PROFILE}-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-        DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/ocil-linked.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML STIG test info document for ${STIG_PROFILE}"
     )
