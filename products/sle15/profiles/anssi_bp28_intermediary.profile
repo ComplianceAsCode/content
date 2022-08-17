@@ -28,6 +28,7 @@ selections:
   - file_permissions_etc_shadow
   - file_permissions_unauthorized_world_writable
   - mount_option_nodev_nonroot_local_partitions
+  - package_chrony_installed
   - sysctl_kernel_exec_shield
   - sysctl_kernel_kptr_restrict
   - sysctl_kernel_randomize_va_space
