@@ -1,3 +1,14 @@
+{{% set rx_beg = "^[\s]*-a[\s]+always,exit[\s]+" %}}
+{{% set rx_b32 = "-F[\s]+arch=b32[\s]+" %}}
+{{% set rx_b64 = "-F[\s]+arch=b64[\s]+" %}}
+{{% if product == "ol8" %}}
+{{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+" %}}
+{{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=guid[\s]+" %}}
+{{% else %}}
+{{% set rx_uid = "-S[\s]+execve[\s]+-C[\s]+uid!=euid[\s]+-F[\s]+euid=0[\s]+" %}}
+{{% set rx_gid = "-S[\s]+execve[\s]+-C[\s]+gid!=egid[\s]+-F[\s]+egid=0[\s]+" %}}
+{{% endif %}}
+{{% set rx_end = "(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$" %}}
 <def-group>
   <definition class="compliance" id="audit_rules_suid_privilege_function" version="1">
     {{{ oval_metadata("Ensure audit rule for all uses of privileged functions is enabled") }}}
@@ -30,11 +41,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_uid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b32 + rx_uid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -43,11 +50,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_uid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b64 + rx_uid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -56,11 +59,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_uid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b32 + rx_uid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -69,11 +68,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_uid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]uid!=euid[\s]+-F[\s]euid=0[\s]+(-k[\s]+|-F[\s]+key=)setuid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b64 + rx_uid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -82,11 +77,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_gid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b32 + rx_gid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -95,11 +86,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_gid_privileged_function_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b64 + rx_gid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -108,11 +95,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_gid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b32 + rx_gid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -121,11 +104,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_gid_privileged_function_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    {{% if product == "ol8" %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+(?:-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+execve[\s]+-C[\s]gid!=egid[\s]+-F[\s]egid=0[\s]+(-k[\s]+|-F[\s]+key=)setgid[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">{{{ rx_beg + rx_b64 + rx_gid + rx_end }}}</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
