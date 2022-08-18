@@ -54,3 +54,21 @@ selections:
     - firefox_preferences-extension_recommendation
     - firefox_preferences-fingerprinting-protection
     - firefox_preferences-telemetry-archive
+    - firefox_policy-addons_permission
+    - firefox_policy-autoplay_video
+    - firefox_policy-disable_form_history
+    - firefox_policy-dns_over_https
+    - firefox_policy-encrypted_media_extensions
+    - firefox_policy-extension_recommendation
+    - firefox_policy-extension_update
+    - firefox_policy-feedback_reporting
+    - firefox_policy-forget_button
+    - firefox_policy-new_tab_highlights
+    - firefox_policy-new_tab_snippets
+    - firefox_policy-no_sanitize_on_shutdown
+    - firefox_policy-password_manager
+    - firefox_policy-pocket
+    - firefox_policy-private_browsing
+    - firefox_policy-search_suggestion
+    - firefox_policy-sync
+    - firefox_policy-top_sites

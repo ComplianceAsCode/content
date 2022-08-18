@@ -2090,3 +2090,23 @@ fi
 {{%- macro bash_partition_conditional(path) -%}}
 'findmnt --mountpoint "{{{ path }}}" > /dev/null'
 {{%- endmacro -%}}
+
+
+{{#
+    Macro to insert script to find a Python interpreter on the target system.
+#}}
+{{% macro find_python() -%}}
+
+declare __REMEDIATE_PYTHON
+if [ -x /usr/bin/python ]; then
+    __REMEDIATE_PYTHON=/usr/bin/python
+elif [ -x /usr/bin/python3 ]; then
+    __REMEDIATE_PYTHON=/usr/bin/python3
+elif [ -x /usr/bin/python2 ]; then
+    __REMEDIATE_PYTHON=/usr/bin/python2
+else
+    echo "Python required and no python interpreter found."
+    exit 1
+fi
+{{%- endmacro %}}
+
