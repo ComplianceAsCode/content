@@ -2,6 +2,10 @@
 
 # platform = Red Hat Enterprise Linux 9
 # packages = grub2,grubby
+{{%- if ARG_VARIABLE %}}
+# variables = {{{ ARG_VARIABLE }}}=correct_value
+{{%- set ARG_NAME_VALUE= ARG_NAME ~ "=correct_value" %}}
+{{%- endif %}}
 
 source common.sh
 
