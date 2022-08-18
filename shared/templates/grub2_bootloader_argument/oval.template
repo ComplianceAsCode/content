@@ -12,7 +12,7 @@
 {{% set system_with_expanded_kernel_options_in_grub_cfg = false -%}}
 {{% set system_with_bios_and_uefi_support = false -%}}
 
-{{% if product in ["ol9", "rhel9"] -%}}
+{{% if product in ["fedora", "ol9", "rhel9"] -%}}
 {{% set system_with_expanded_kernel_options_in_loader_entries = true %}}
 {{%- endif -%}}
 
