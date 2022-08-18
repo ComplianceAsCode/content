@@ -23,3 +23,4 @@ description: |-
 
 selections:
   - anssi_sle:all:enhanced
+  - selinux_policytype
