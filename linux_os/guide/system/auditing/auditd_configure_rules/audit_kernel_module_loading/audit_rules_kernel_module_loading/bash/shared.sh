@@ -12,7 +12,7 @@ for ARCH in "${RULE_ARCHS[@]}"
 do
         ACTION_ARCH_FILTERS="-a always,exit -F arch=$ARCH"
         OTHER_FILTERS=""
-        {{% if product in ["ol8", "rhel8"] %}}
+        {{% if product in ["ol8"] or 'rhel' in product %}}
         AUID_FILTERS="-F auid>={{{ auid }}} -F auid!=unset"
         {{% else %}}
         AUID_FILTERS=""
