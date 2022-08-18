@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 9,multi_platform_fedora
+# platform = multi_platform_fedora,multi_platform_rhel
 # packages = grub2,grubby
 
 source common.sh
