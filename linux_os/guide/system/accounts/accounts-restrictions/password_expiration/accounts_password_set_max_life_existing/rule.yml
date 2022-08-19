@@ -52,7 +52,7 @@ ocil: |-
 fixtext: |-
     Configure non-compliant accounts to enforce a 60-day maximum password lifetime restriction.
 
-    passwd -x {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} [user]
+    chage -M {{{ xccdf_value("var_accounts_maximum_age_login_defs") }}} [user]
 
 srg_requirement: |-
     {{{ full_name }}} user account passwords must have a 60-day maximum password lifetime restriction.
