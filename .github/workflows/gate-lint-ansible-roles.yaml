@@ -10,7 +10,7 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y cmake make ninja-build openscap-utils python3-pyyaml python3-setuptools python3-jinja2 python3-pygithub ansible ansible-lint expat libxslt
+        run: dnf install -y cmake make ninja-build openscap-utils python3-pyyaml python3-setuptools python3-jinja2 python3-pygithub ansible ansible-lint expat libxslt git
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
@@ -21,5 +21,8 @@ jobs:
         working-directory: ./build
       - name: Build Ansible Roles
         run: PYTHONPATH=. python3 utils/ansible_playbook_to_role.py --build-playbooks-dir ./build/ansible/ --dry-run ./build/ansible_roles
+      # https://github.com/actions/checkout/issues/766
+      - name: Set git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Lint Ansible Roles
         run: ansible-lint -x 204 -x experimental -x command-instead-of-module ./build/ansible_roles/*
