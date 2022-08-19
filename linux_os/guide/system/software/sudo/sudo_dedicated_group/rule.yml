@@ -6,7 +6,7 @@ title: 'Ensure a dedicated group owns sudo'
 
 description: |-
     Restrict the execution of privilege escalated commands to a dedicated group of users.
-    Ensure the group owner of /usr/bin/sudo is {{{ sub_var_value("var_sudo_dedicated_group") }}}.
+    Ensure the group owner of /usr/bin/sudo is {{{ xccdf_value("var_sudo_dedicated_group") }}}.
 
 rationale: |-
     Restricting the set of users able to execute commands as privileged user reduces the attack surface.
@@ -30,7 +30,7 @@ identifiers:
 references:
   anssi: BP28(R57)
 
-ocil_clause: '{{{ ocil_clause_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}'
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/usr/bin/sudo", group=xccdf_value("var_sudo_dedicated_group")) }}}'
 
 ocil: |-
-    {{{ ocil_file_group_owner(file="/usr/bin/sudo", group=sub_var_value("var_sudo_dedicated_group")) }}}
+    {{{ ocil_file_group_owner(file="/usr/bin/sudo", group=xccdf_value("var_sudo_dedicated_group")) }}}
