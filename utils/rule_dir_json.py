@@ -102,6 +102,7 @@ def handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir):
     rule_products = sorted(rule_products)
     rule_obj['products'] = rule_products
     rule_obj['title'] = rule_yaml.title
+    rule_obj['identifiers'] = rule_yaml.identifiers
 
     return rule_obj
 
