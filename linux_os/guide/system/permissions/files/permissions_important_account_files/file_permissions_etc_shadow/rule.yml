@@ -58,7 +58,11 @@ ocil: |-
 
 fixtext: '{{{ fixtext_file_permissions(file="/etc/shadow", mode=target_perms_octal) }}}'
 
-srg_requirement: 'The {{{ full_name }}} /etc/shadow file must have 0000 to prevent unauthorized access.'
+{{% if target_perms_octal == "0000" %}}
+srg_requirement: 'The {{{ full_name }}} /etc/shadow file must have a mode of 0000 to prevent unauthorized access.'
+{{% else %}}
+srg_requirement: '{{{ srg_requirement_file_permission(file="/etc/shadow", mode=target_perms_octal) }}}'
+{{% endif %}}
 
 template:
     name: file_permissions
