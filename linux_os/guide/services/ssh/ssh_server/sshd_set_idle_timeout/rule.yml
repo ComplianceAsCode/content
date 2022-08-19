@@ -65,7 +65,7 @@ references:
     vmmsrg: SRG-OS-000480-VMM-002000
 
 requires:
-  {{% if product == 'ubuntu2004' %}}
+  {{% if product in ['ubuntu2004', 'ubuntu2204'] %}}
     - sshd_set_keepalive
   {{% else %}}
     - sshd_set_keepalive_0

@@ -106,7 +106,7 @@
 
   <unix:file_state id="state_rsyslog_files_groupownership" version="1">
     <unix:type operation="equals">regular</unix:type>
-    {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu2004"] %}}
+    {{% if product in ["debian9", "debian10", "debian11", "ubuntu1604", "ubuntu2004", "ubuntu2204"] %}}
     <unix:group_id datatype="int">4</unix:group_id>
     {{% else %}}
     <unix:group_id datatype="int">0</unix:group_id>
