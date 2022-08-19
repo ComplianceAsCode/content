@@ -37,14 +37,18 @@ def make_json_boolean_remediate(json_value):
 # Remove the moment that OpenSCAP/OVAL spec supports a JSON configuration probe.
 OVAL_MATCH_ANY_FOLLOWING = r"[^}]*\}"
 OVAL_MATCH_OPEN_BRACES_FOR_BLOCK = r"(\{?(\{[^}]*\}?)*|[^}]*)[\s]*"
-OVAL_MATCH_ANYTHING_AFTER_OPEN_BRACE = r"\{.*[\s]*"
+OVAL_MATCH_ANYTHING_AFTER_OPEN_BRACE = r"\{[\s\S]*"
 
 # Note: str.format() notation.
-OVAL_MATCH_JSON_KEY = r'"{0}"[\s]*:[\s]*'
+OVAL_MATCH_JSON_KEY = r'(?="{0}")"{0}"[\s]*:[\s]*'
+
+
+def regex_escape(_search_string):
+    return re.escape(_search_string)
 
 
 def build_oval_search_regex_for_json_parameter(_path, parameter, value):
-    parameter = r'"{0}"[\s]*:[\s]*{1},?'.format(parameter,
+    parameter = r'(?=[^"]){0}"[\s]*:[\s]*{1},?'.format(parameter,
                                                 make_json_boolean_match_regex(value))
     _result = parameter
     for p in reversed(_path):
@@ -52,10 +56,10 @@ def build_oval_search_regex_for_json_parameter(_path, parameter, value):
         if p == "policies":
             depth_match_block = OVAL_MATCH_ANYTHING_AFTER_OPEN_BRACE
 
-        _result = ''.join([OVAL_MATCH_JSON_KEY.format(p),
+        _result = ''.join([OVAL_MATCH_JSON_KEY.format(regex_escape(p)),
                            depth_match_block,
-                           _result,
-                           OVAL_MATCH_ANY_FOLLOWING])
+                           _result])
+    _result = r'^(?i)\{\s*' + _result + r'\s*'
     return _result
 
 

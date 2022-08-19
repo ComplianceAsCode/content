@@ -30,7 +30,7 @@ selections:
     - firefox_preferences-autofill_forms
     - firefox_preferences-autofill_passwords
     - firefox_preferences-background_data
-    - firefox_preferences-development_tools
+    - firefox_policy-development_tools
     - firefox_preferences-dod_root_certificate_installed
     - firefox_preferences-enable_ca_trust
     - firefox_preferences-install_extensions
