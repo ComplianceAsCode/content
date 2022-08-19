@@ -17,6 +17,16 @@ references:
     nist: CM-7
     stigid@firefox: FFOX-00-000005
 
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To verify that certificate verification is enabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"ExtensionUpdate": false</pre>
+    <pre>Status: "locked"</pre>
+
 template:
     name: firefox_policy-setting
     vars:

@@ -17,9 +17,16 @@ references:
     nist: CM-7
     stigid@firefox: FFOX-00-000019
 
+ocil: |-
+    To verify that private browsing is disabled
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following uder dom.disable_window_move_resize:
+    <pre>"DisablePrivateBrowsing"&colon; true</pre>
+
 template:
     name: firefox_policy-setting
     vars:
-        name: Disable addon and plugin automatic update
+        name: Disable Private Browsing feature 
         policies:
           - {path: "policies", parameter: "DisablePrivateBrowsing", value: true}

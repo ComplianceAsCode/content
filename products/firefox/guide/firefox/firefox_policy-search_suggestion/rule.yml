@@ -17,9 +17,16 @@ references:
     nist: CM-7
     stigid@firefox: FFOX-00-000020
 
+ocil: |-
+    To verify that search suggestions are disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"SearchSuggestEnabled"&colon; false</pre>
+
 template:
     name: firefox_policy-setting
     vars:
-        name: Disable addon and plugin automatic update
+        name: Disable search suggestion
         policies:
           - {path: "policies", parameter: "SearchSuggestEnabled", value: false}

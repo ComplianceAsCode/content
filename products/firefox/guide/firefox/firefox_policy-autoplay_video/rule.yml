@@ -18,9 +18,16 @@ references:
     nist: CM-7
     stigid@firefox: FFOX-00-000021
 
+ocil: |-
+    To verify that search suggestions are disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following under Permissions -> Autoplay:
+    <pre>"Default"&colon; "block-audio-video"</pre>
+
 template:
     name: firefox_policy-setting
     vars:
-        name: Disable addon and plugin automatic update
+        name: Disable autoplay for videos with audio content
         policies:
           - {path: "Permissions Autoplay", parameter: "Default", value: "block-audio-video"}

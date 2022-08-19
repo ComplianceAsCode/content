@@ -26,11 +26,11 @@ references:
 ocil_clause: 'it is not disabled'
 
 ocil: |-
-    To verify that Autofill Form Assistance is disabled,
-    run the following command:
-    <pre>$ grep 'DisableDevelopmentTools' <i>FIREFOX_INSTALL_DIR</i>/distribution/policies.json /etc/firefox/policies/policies.json</pre>
-    The output should return:
-    <pre>"DisableDevelopmentTools"&colon; true,</pre>
+    To verify that Firefox Development Tools are disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"DisableDeveloperTools"&colon; true,</pre>
 
 template:
     name: firefox_policy-setting
