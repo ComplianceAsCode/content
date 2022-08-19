@@ -8,12 +8,9 @@ permissions=644
 {{{ find_python() }}}
 # Check the possible Firefox install directories
 for firefox_dir in ${firefox_dirs}; do
-    # If the Firefox directory exists, then Firefox is installed
     if [ -d "${firefox_dir}" ]; then
-        if ! [ -d "${firefox_dir}/distribution" ]; then
-            mkdir -p "${firefox_dir}/distribution"
-            chmod 755 "${firefox_dir}/distribution"
-        fi
+        mkdir -p "${firefox_dir}"
+        chmod 755 "${firefox_dir}"
         # Make sure the Firefox .cfg file exists and has the appropriate permissions
         if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
             echo "{" > "${firefox_dir}/${firefox_cfg}"
