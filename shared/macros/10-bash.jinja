@@ -2110,3 +2110,18 @@ else
 fi
 {{%- endmacro %}}
 
+{{#
+    Macro to insert script to find Mozilla Firefox location on the target system.
+#}}
+{{% macro find_firefox() -%}}
+
+declare __FIREFOX_DISTRIBUTION
+if find /usr -iname firefox\* -type f -print | grep -qe "firefox.sh$\|firefox-bin$"; then
+   __FIREFOX_DISTRIBUTION=$(dirname $(find /usr -iname firefox\* -type f -print | grep -e "firefox.sh$\|firefox-bin$" | head -n1))/distribution
+else
+    echo "No Firefox install directory found."
+    exit 1
+fi
+{{%- endmacro %}}
+
+

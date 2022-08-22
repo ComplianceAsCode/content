@@ -2,10 +2,16 @@
 # strategy = policy
 
 firefox_cfg="policies.json"
+# Default to /etc/firefox/policies to use for remediations.
 firefox_dirs="/etc/firefox/policies"
 permissions=644
 
 {{{ find_python() }}}
+{{{ find_firefox() }}}
+# If there's a policies file in the distribution directory already, modify it.
+if [ -f ${__FIREFOX_DISTRIBUTION}/policies.json ]; then
+        firefox_dirs="${__FIREFOX_DISTRIBUTION}"
+fi
 # Check the possible Firefox install directories
 for firefox_dir in ${firefox_dirs}; do
     if [ -d "${firefox_dir}" ]; then
