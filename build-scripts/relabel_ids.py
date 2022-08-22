@@ -12,8 +12,7 @@ import ssg.id_translate
 import ssg.xml
 
 
-# This script requires two arguments: an "unlinked" XCCDF file and an ID name
-# scheme. This script is designed to convert and synchronize check IDs
+# This script is designed to convert and synchronize check IDs
 # referenced from the XCCDF document for the supported checksystems, which are
 # currently OVAL and OCIL.  The IDs are to be converted from strings to
 # meaningless numbers.
