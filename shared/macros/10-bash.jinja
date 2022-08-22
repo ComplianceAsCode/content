@@ -2117,7 +2117,7 @@ fi
 
 declare __FIREFOX_DISTRIBUTION
 if find /usr -iname firefox\* -type f -print | grep -qe "firefox.sh$\|firefox-bin$"; then
-   __FIREFOX_DISTRIBUTION=$(dirname $(find /usr -iname firefox\* -type f -print | grep -e "firefox.sh$\|firefox-bin$" | head -n1))/distribution
+   __FIREFOX_DISTRIBUTION=$(dirname "$(find /usr -iname firefox\* -type f -print | grep -e "firefox.sh$\|firefox-bin$" | head -n1)")/distribution
 fi
 {{%- endmacro %}}
 
