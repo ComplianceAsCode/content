@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004
+prodtype: ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle15,ubuntu2004,ubuntu2204
 
 title: 'Disable Ctrl-Alt-Del Burst Action'
 
@@ -92,7 +92,7 @@ fixtext: |-
 
 srg_requirement: 'The systemd Ctrl-Alt-Delete burst key sequence in {{{ full_name }}} must be disabled.'
 
-{{% if product != "ubuntu2004" %}}
+{{% if product not in ["ubuntu2004", "ubuntu2204"] %}}
 warnings:
     - functionality: |-
         Disabling the <tt>Ctrl-Alt-Del</tt> key sequence

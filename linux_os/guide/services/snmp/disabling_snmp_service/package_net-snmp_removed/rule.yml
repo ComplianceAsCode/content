@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: debian10,debian11,debian9,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: debian10,debian11,debian9,fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Uninstall net-snmp Package'
 
@@ -31,6 +31,7 @@ references:
     cis@sle12: 2.2.13
     cis@sle15: 2.2.15
     cis@ubuntu2004: 2.2.14
+    cis@ubuntu2204: 2.2.14
 
 {{% if pkg_manager != "apt_get" %}}
 {{{ complete_ocil_entry_package(package="net-snmp") }}}

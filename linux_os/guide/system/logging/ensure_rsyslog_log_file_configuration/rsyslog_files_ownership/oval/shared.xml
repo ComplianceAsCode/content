@@ -104,7 +104,7 @@
   <unix:file_state id="state_rsyslog_files_ownership" version="1">
     <unix:type operation="equals">regular</unix:type>
 
-    {{% if product in ["ubuntu2004"] %}}
+    {{% if product in ["ubuntu2004", "ubuntu2204"] %}}
     <unix:user_id datatype="int">104</unix:user_id>
     {{% else %}}
     <unix:user_id datatype="int">0</unix:user_id>

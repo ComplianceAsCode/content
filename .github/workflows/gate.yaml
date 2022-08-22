@@ -45,7 +45,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_product alinux2 alinux3 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 uos20
+        run: ./build_product alinux2 alinux3 chromium fedora firefox fuse6 rhcos4 rhel7 rhel8 rhel9 sle12 sle15 ubuntu2004 ubuntu2204 uos20
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
         working-directory: ./build
@@ -99,6 +99,7 @@ jobs:
               sle12 \
               sle15 \
               ubuntu2004 \
+              ubuntu2204 \
               uos20
       - name: Test
         run: ctest -j2 --output-on-failure -E unique-stigids
@@ -132,6 +133,7 @@ jobs:
               sle12 \
               sle15 \
               ubuntu2004 \
+              ubuntu2204 \
               uos20 \
               ocp4 \
               eks
@@ -186,6 +188,7 @@ jobs:
                 sle12 \
                 sle15 \
                 ubuntu2004 \
+                ubuntu2204 \
                 uos20 \
                 ocp4
       -   name: Test

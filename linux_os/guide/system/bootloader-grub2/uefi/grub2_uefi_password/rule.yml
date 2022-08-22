@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+prodtype: alinux3,fedora,ol7,ol8,ol9,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004,ubuntu2204
 
 title: 'Set the UEFI Boot Loader Password'
 
@@ -10,14 +10,14 @@ description: |-
     <br /><br />
     Since plaintext passwords are a security risk, generate a hash for the password
     by running the following command:
-    {{% if product in ["sle12", "sle15", "ubuntu2004"] %}}
+    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
     <pre># grub2-mkpasswd-pbkdf2</pre>
     {{% else %}}
     <pre># grub2-setpassword</pre>
     {{% endif %}}
     When prompted, enter the password that was selected.
     <br /><br />
-    {{% if product in ["sle12", "sle15", "ubuntu2004"] %}}
+    {{% if product in ["sle12", "sle15", "ubuntu2004", "ubuntu2204"] %}}
     Using the hash from the output, modify the <tt>/etc/grub.d/40_custom</tt>
     file with the following content:
     <pre>set superusers="boot"
