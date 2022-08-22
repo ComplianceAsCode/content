@@ -47,6 +47,9 @@ ocil: |-
 
 fixtext: |-
     Configure Libreswan to use the system cryptographic policy.
+
+    If the ipsec service is not installed is not applicable.
+
     Add the following line to "/etc/ipsec.conf":
     include /etc/crypto-policies/back-ends/libreswan.config
 
