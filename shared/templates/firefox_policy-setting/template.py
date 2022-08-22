@@ -36,7 +36,7 @@ def make_json_boolean_remediate(json_value):
 # No JSON arrays are supported.
 # Remove the moment that OpenSCAP/OVAL spec supports a JSON configuration probe.
 OVAL_MATCH_ANY_FOLLOWING = r"[^}]*\}"
-OVAL_MATCH_OPEN_BRACES_FOR_BLOCK = r"(\{?(\{[^}]*\}?)*|[^}]*)[\s]*"
+OVAL_MATCH_OPEN_BRACES_FOR_BLOCK = r"\{[\s\S]*?"
 OVAL_MATCH_ANYTHING_AFTER_OPEN_BRACE = r"\{[\s\S]*"
 
 # Note: str.format() notation.
@@ -47,9 +47,8 @@ def regex_escape(_search_string):
     return re.escape(_search_string)
 
 
-def build_oval_search_regex_for_json_parameter(_path, parameter, value):
-    parameter = r'(?=[^"]){0}"[\s]*:[\s]*{1},?'.format(parameter,
-                                                make_json_boolean_match_regex(value))
+def build_oval_search_regex_for_json_parameter(_path, parameter):
+    parameter = r'(?=[^"]){0}"[\s]*:[\s]*([^,}}]+),?'.format(parameter)
     _result = parameter
     for p in reversed(_path):
         depth_match_block = OVAL_MATCH_OPEN_BRACES_FOR_BLOCK
@@ -106,6 +105,14 @@ def build_test_json(policy, _test, missing=False, wrong=False):
 
 
 def preprocess(data, lang):
+    """Generate the appropriate regex for each policy path, search values, etc.
+       Expects a dict of template arguments:
+           path - Space-separated path in JSON to dictate where the parameter is. "policies" is 
+                  added to the front if not present or used if path is not present.
+           parameter - Parameter name to search for the state of the value.
+           value - Expected value to use for remediation.
+           search_value (optional) - custom regular expression to use in the match for value.
+    """
     _test_correct_config = {"policies": {}}
     _test_bad_missing = {"policies": {}}
     _test_bad_wrong = {"policies": {}}
@@ -114,8 +121,11 @@ def preprocess(data, lang):
 
         # regex used in OVAL for detection
         _policy["oval_regex"] = build_oval_search_regex_for_json_parameter(_path,
-                                                                           _policy["parameter"],
-                                                                           _policy["value"])
+                                                                           _policy["parameter"])
+        _policy["oval_state"] = make_json_boolean_match_regex(_policy["value"])
+        # Implement override for search_value
+        if _policy.get("search_value", None):
+            _policy["oval_state"] = _policy["search_value"]
 
         # path without "policies"
         _policy["subpath"] = _path[1:]
