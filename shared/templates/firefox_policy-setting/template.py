@@ -107,7 +107,7 @@ def build_test_json(policy, _test, missing=False, wrong=False):
 def preprocess(data, lang):
     """Generate the appropriate regex for each policy path, search values, etc.
        Expects a dict of template arguments:
-           path - Space-separated path in JSON to dictate where the parameter is. "policies" is 
+           path - Space-separated path in JSON to dictate where the parameter is. "policies" is
                   added to the front if not present or used if path is not present.
            parameter - Parameter name to search for the state of the value.
            value - Expected value to use for remediation.
