@@ -1,0 +1,62 @@
+documentation_complete: true
+
+prodtype: ol8
+
+title: 'Do Not Show System Messages When Unsuccessful Logon Attempts Occur'
+
+description: |-
+    This rule ensures the system prevents informative messages from being presented to the user
+    pertaining to logon information after a number of incorrect login attempts using
+    <tt>pam_faillock.so</tt>.
+
+    pam_faillock.so module requires multiple entries in pam files. These entries must be carefully
+    defined to work as expected. In order to avoid errors when manually editing these files, it is
+    recommended to use the appropriate tools, such as <tt>authselect</tt> or <tt>authconfig</tt>,
+    depending on the OS version.
+
+rationale: |-
+   The pam_faillock module without the silent option will leak information about the existence or
+   non-existence of a user account in the system because the failures are not recorded for unknown
+   users. The message about the user account being locked is never displayed for non-existing user
+   accounts allowing the adversary to infer that a particular account exists or not on the system.
+
+severity: medium
+
+references:
+    disa: CCI-002238,CCI-000044
+    srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
+    stigid@ol8: OL08-00-020019
+
+ocil_clause: 'the system shows messages when three unsuccessful logon attempts occur'
+
+ocil: |-
+    To ensure that the system prevents messages from being shown when three unsuccessful logon
+    attempts occur, run the following command:
+    <pre>$ grep silent /etc/security/faillock.conf</pre>
+    The output should show <tt>silent</tt>.
+
+fixtext: |-
+    To configure the system to prevent messages from being shown when three unsuccessful logon
+    attempts occur using <tt>pam_faillock.so</tt>, first enable the faillock feature using the
+    following command:
+    
+    $ sudo authselect enable-feature with-faillock
+
+    Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
+    add or uncomment the following line:
+    <pre>silent</pre>
+
+platform: pam
+
+warnings:
+    - general: |-
+        If the system relies on <tt>authselect</tt> tool to manage PAM settings, the remediation
+        will also use <tt>authselect</tt> tool. However, if any manual modification was made in
+        PAM files, the <tt>authselect</tt> integrity check will fail and the remediation will be
+        aborted in order to preserve intentional changes. In this case, an informative message will
+        be shown in the remediation report.
+        If the system supports the <tt>/etc/security/faillock.conf</tt> file, the pam_faillock
+        parameters should be defined in <tt>faillock.conf</tt> file.
+
+srg_requirement: |-
+    {{{ full_name }}} must prevent from showing any messages when unsuccessful logon attempts occur.
