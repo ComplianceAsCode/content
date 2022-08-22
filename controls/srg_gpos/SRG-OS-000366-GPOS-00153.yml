@@ -12,4 +12,8 @@ controls:
             - ensure_gpgcheck_globally_activated
             - ensure_gpgcheck_local_packages
             - ensure_gpgcheck_never_disabled
+            {{% if 'rhel' in product %}}
+            - ensure_redhat_gpgkey_installed
+            {{% endif %}}
+
         status: automated
