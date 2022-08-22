@@ -23,4 +23,4 @@ template:
     vars:
       name: Disable Firefox Sync
       policies:
-        - {path: "policies", parameter: "SSLVersionMin", value: "tls1.2"}
+        - {path: "policies", parameter: "SSLVersionMin", search_value: "tls1\\.[23]", value: "tls1.2"}
