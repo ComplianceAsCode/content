@@ -42,8 +42,7 @@ SMARTCARD_AUTH_SECTION="auth        [success=done ignore=ignore default=die] pam
 # Define expected 'pam_permit.so' row in $SMARTCARD_AUTH_CONF
 PAM_PERMIT_SO="account.*required.*pam_permit.so"
 # Define 'pam_pkcs11.so' password section
-SMARTCARD_PASSWORD_SECTION="\
-password    required      pam_pkcs11.so"
+SMARTCARD_PASSWORD_SECTION="password    required      pam_pkcs11.so"
 
 # First Correct the SYSTEM_AUTH_CONF configuration
 if ! grep -q 'pam_pkcs11.so' "$SYSTEM_AUTH_CONF"
@@ -73,8 +72,16 @@ else
         sed -i --follow-symlinks -e 's/^auth.*pam_pkcs11.so.*/'"$SMARTCARD_AUTH_SECTION"'/' "$SMARTCARD_AUTH_CONF"
     fi
 fi
+if ! grep -q 'password.*pam_pkcs11.so' "$SMARTCARD_AUTH_CONF"
+then
 	# Append (expected) SMARTCARD_PASSWORD_SECTION row past the pam_permit.so into SMARTCARD_AUTH_CONF file
-	sed -i --follow-symlinks -e '/^'"$PAM_PERMIT_SO"'/a '"$SMARTCARD_PASSWORD_SECTION" "$SMARTCARD_AUTH_CONF"
+	sed -i --follow-symlinks -e '/^'"$PAM_PERMIT_SO"'/a \
+        '"$SMARTCARD_PASSWORD_SECTION" "$SMARTCARD_AUTH_CONF"
+else
+    if ! grep -q 'password.*required.*pam_pkcs11.so' "$SMARTCARD_AUTH_CONF"
+    then
+        sed -i --follow-symlinks -e 's/password.*pam_pkcs11.so.*/'"$SMARTCARD_PASSWORD_SECTION"'/' "$SMARTCARD_AUTH_CONF"
+    fi
 fi
 
 # Perform /etc/pam_pkcs11/pam_pkcs11.conf settings below
