@@ -46,6 +46,7 @@
   comment="Regular expression to check if smartcard authentication is enabled in /etc/pam.d/system-auth" version="1">
     <concat>
       <literal_component>\nauth[\s]+required[\s]+pam_env.so</literal_component>
+      <literal_component>(\nauth[\s]+required[\s]+pam_faildelay.so[\s]+delay=2000000)?</literal_component>
       <literal_component>\nauth[\s]+\[success=1[\s]default=ignore\][\s]pam_succeed_if.so[\s]service[\s]notin[\s]</literal_component>
       <literal_component>login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver[\s]quiet[\s]use_uid</literal_component>
       <literal_component>\nauth[\s]+\[success=done[\s]authinfo_unavail=ignore[\s]ignore=ignore[\s]default=die\][\s]</literal_component>
@@ -70,6 +71,7 @@
   comment="Regular expressiion to check if smartcard authentication is required in /etc/pam.d/system-auth" version="1">
     <concat>
       <literal_component>\nauth[\s]+required[\s]+pam_env.so</literal_component>
+      <literal_component>(\nauth[\s]+required[\s]+pam_faildelay.so[\s]+delay=2000000)?</literal_component>
       <literal_component>\nauth[\s]+\[success=1[\s]default=ignore\][\s]pam_succeed_if.so[\s]service[\s]notin[\s]</literal_component>
       <literal_component>login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver[\s]quiet[\s]use_uid</literal_component>
       <literal_component>\nauth[\s]+\[success=done[\s]ignore=ignore[\s]default=die\][\s]</literal_component>

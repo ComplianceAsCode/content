@@ -23,6 +23,7 @@
 SYSTEM_AUTH_CONF="/etc/pam.d/system-auth"
 # Define expected 'pam_env.so' row in $SYSTEM_AUTH_CONF
 PAM_ENV_SO="auth.*required.*pam_env.so"
+PAM_FAIL_DELAY="auth.*required.*pam_faildelay.so"
 
 # Define 'pam_succeed_if.so' row to be appended past $PAM_ENV_SO row into $SYSTEM_AUTH_CONF
 SYSTEM_AUTH_PAM_SUCCEED="\
@@ -48,11 +49,17 @@ password    required      pam_pkcs11.so"
 # First Correct the SYSTEM_AUTH_CONF configuration
 if ! grep -q 'pam_pkcs11.so' "$SYSTEM_AUTH_CONF"
 then
-	# Append (expected) pam_succeed_if.so row past the pam_env.so into SYSTEM_AUTH_CONF file
-	# and append (expected) pam_pkcs11.so row right after the pam_succeed_if.so we just added
-	# in SYSTEM_AUTH_CONF file
-	# This will preserve any other already existing row equal to "$SYSTEM_AUTH_PAM_SUCCEED"
-	echo "$(awk '/^'"$PAM_ENV_SO"'/{print $0 RS "'"$SYSTEM_AUTH_PAM_SUCCEED"'" RS "'"$SYSTEM_AUTH_PAM_PKCS11"'";next}1' "$SYSTEM_AUTH_CONF")" > "$SYSTEM_AUTH_CONF"
+    # Append pam_succeed_if.so row after pam_env.so or after pam_faildelay.so when it exists.
+    # Then append pam_pkcs11.so row right after the pam_succeed_if.so we just added
+    # in SYSTEM_AUTH_CONF file
+    # This will preserve any other already existing row equal to "$SYSTEM_AUTH_PAM_SUCCEED"
+    if ! grep -q 'pam_faildelay.so' "$SYSTEM_AUTH_CONF"
+    then
+        echo "$(awk '/^'"$PAM_ENV_SO"'/{print $0 RS "'"$SYSTEM_AUTH_PAM_SUCCEED"'" RS "'"$SYSTEM_AUTH_PAM_PKCS11"'";next}1' "$SYSTEM_AUTH_CONF")" > "$SYSTEM_AUTH_CONF"
+    else
+        echo "$(awk '/^'"$PAM_FAIL_DELAY"'/{print $0 RS "'"$SYSTEM_AUTH_PAM_SUCCEED"'" RS "'"$SYSTEM_AUTH_PAM_PKCS11"'";next}1' "$SYSTEM_AUTH_CONF")" > "$SYSTEM_AUTH_CONF"
+    fi
+
 fi
 
 # Then also correct the SMARTCARD_AUTH_CONF
