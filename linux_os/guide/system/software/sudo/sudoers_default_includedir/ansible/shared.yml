@@ -5,17 +5,18 @@
 # disruption = low
 
 {{{ ansible_only_lineinfile(msg='Ensure sudo only has the default includedir', line_regex='^#includedir.*$', path='/etc/sudoers', new_line='#includedir /etc/sudoers.d') }}}
-{{{ ansible_lineinfile(msg='Ensure sudoers doesn\'t include other non-default file', regex='^#include[\s]+.*$', path='/etc/sudoers', state='absent') }}}
+{{{ ansible_lineinfile(msg='Ensure sudoers doesn\'t include other non-default file', regex='^[#@]include[\s]+.*$', path='/etc/sudoers', state='absent') }}}
+{{{ ansible_lineinfile(msg='Ensure sudoers doesn\'t have non-default includedir', regex='^@includedir[\s]+.*$', path='/etc/sudoers', state='absent') }}}
 - name: "Find out if /etc/sudoers.d/* files contain file or directory includes"
   find:
     path: "/etc/sudoers.d"
     patterns: "*"
-    contains: '^#include(dir)?\s.*$'
+    contains: '^[#@]include(dir)?\s.*$'
   register: sudoers_d_includes
 
 - name: "Remove found occurrences of file and directory includes from /etc/sudoers.d/* files"
   lineinfile:
     path: "{{ item.path }}"
-    regexp: '^#include(dir)?\s.*$'
+    regexp: '^[#@]include(dir)?\s.*$'
     state: absent
   with_items: "{{ sudoers_d_includes.files }}"

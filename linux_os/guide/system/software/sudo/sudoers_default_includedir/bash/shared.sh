@@ -16,6 +16,6 @@ fi
 
 sed -i "/^#include\s\+.*/d" "$sudoers_config_file"
 
-if grep -Pr "^#include(dir)? .*" "$sudoers_config_dir" ; then
-    sed -i "/^#include\(dir\)\?\s\+.*/d" "$sudoers_config_dir"/*
+if grep -Pr "^[#@]include(dir)?\s" "$sudoers_config_dir" ; then
+    sed -Ei "/^[#@]include(dir)?\s/d" "$sudoers_config_dir"/*
 fi
