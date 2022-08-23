@@ -110,7 +110,7 @@ selections:
     - package_gnutls-utils_installed
 
     ### Login
-    - sysctl_kernel_core_pattern_empty_string
+    - sysctl_kernel_core_pattern
     - sysctl_kernel_core_uses_pid
     - service_systemd-coredump_disabled
     - var_authselect_profile=minimal
