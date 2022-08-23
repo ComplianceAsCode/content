@@ -38,8 +38,7 @@ pam_pkcs11.so nodebug"
 # Define smartcard-auth config location
 SMARTCARD_AUTH_CONF="/etc/pam.d/smartcard-auth"
 # Define 'pam_pkcs11.so' auth section to be appended past $PAM_ENV_SO into $SMARTCARD_AUTH_CONF
-SMARTCARD_AUTH_SECTION="\
-auth        [success=done ignore=ignore default=die] pam_pkcs11.so nodebug wait_for_card"
+SMARTCARD_AUTH_SECTION="auth        [success=done ignore=ignore default=die] pam_pkcs11.so nodebug wait_for_card"
 # Define expected 'pam_permit.so' row in $SMARTCARD_AUTH_CONF
 PAM_PERMIT_SO="account.*required.*pam_permit.so"
 # Define 'pam_pkcs11.so' password section
@@ -63,10 +62,17 @@ then
 fi
 
 # Then also correct the SMARTCARD_AUTH_CONF
-if ! grep -q 'pam_pkcs11.so' "$SMARTCARD_AUTH_CONF"
+if ! grep -q 'auth.*pam_pkcs11.so' "$SMARTCARD_AUTH_CONF"
 then
 	# Append (expected) SMARTCARD_AUTH_SECTION row past the pam_env.so into SMARTCARD_AUTH_CONF file
-	sed -i --follow-symlinks -e '/^'"$PAM_ENV_SO"'/a '"$SMARTCARD_AUTH_SECTION" "$SMARTCARD_AUTH_CONF"
+	sed -i --follow-symlinks -e '/^'"$PAM_ENV_SO"'/a \
+        '"$SMARTCARD_AUTH_SECTION" "$SMARTCARD_AUTH_CONF"
+else
+    if ! grep -q 'auth.*pam_pkcs11.so.*no_debug.*wait_for_card' "$SMARTCARD_AUTH_CONF"
+    then
+        sed -i --follow-symlinks -e 's/^auth.*pam_pkcs11.so.*/'"$SMARTCARD_AUTH_SECTION"'/' "$SMARTCARD_AUTH_CONF"
+    fi
+fi
 	# Append (expected) SMARTCARD_PASSWORD_SECTION row past the pam_permit.so into SMARTCARD_AUTH_CONF file
 	sed -i --follow-symlinks -e '/^'"$PAM_PERMIT_SO"'/a '"$SMARTCARD_PASSWORD_SECTION" "$SMARTCARD_AUTH_CONF"
 fi
