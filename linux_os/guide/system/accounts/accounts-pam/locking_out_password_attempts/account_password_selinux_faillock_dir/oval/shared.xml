@@ -2,37 +2,41 @@
                           "/etc/pam.d/system-auth",
                           "/etc/security/faillock.conf"] %}}
 <def-group>
-    <definition class="compliance" id="{{{ rule_id }}}" version="1">
-    {{{ oval_metadata("An SELinux Context must be configued for the Faillock directory.") }}}
-        <criteria operator="AND">
-            <criterion comment="the faillock directory should have faillog_t as context"
-            test_ref="test_selinux_faillock_dir" />
-        </criteria>
-    </definition>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+  {{{ oval_metadata("An SELinux Context must be configued for the Faillock directory.") }}}
+    <criteria operator="AND">
+      <criterion test_ref="test_account_password_selinux_faillock_dir"
+                 comment="the faillock directory should have faillog_t as context"/>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_object id="object_account_password_selinux_faillock_dir_collector" version="1">
+    <ind:filepath operation="pattern match">{{{ faillock_files | join("|")}}}</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
 
-    <ind:textfilecontent54_object id="obj_faillock_dir_collector" version="1">
-        <ind:filepath operation="pattern match">{{{ faillock_files | join("|")}}}</ind:filepath>
-        <ind:pattern operation="pattern match">^\s*(?:auth.*pam_faillock.so.*)?dir\s*=\s*(\S+)</ind:pattern>
-        <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-    </ind:textfilecontent54_object>
+  <local_variable id="var_account_password_selinux_faillock_dir_collector" version="1"
+    datatype="string" comment="List of directories defined in pam_faillock.so dir parameters">
+    <object_component item_field="subexpression"
+                      object_ref="object_account_password_selinux_faillock_dir_collector"/>
+  </local_variable>
 
-    <local_variable id="var_faillock_dir_collector" datatype="string" version="1" comment="File hash for etcd CA">
-      <object_component item_field="subexpression" object_ref="obj_faillock_dir_collector" />
-    </local_variable>
+  <linux:selinuxsecuritycontext_test id="test_account_password_selinux_faillock_dir" version="2"
+    check="all" check_existence="all_exist"
+    comment="faillog_t context is set in pam_faillock.so tally directories">
+    <linux:object object_ref="object_account_password_selinux_faillock_dir"/>
+    <linux:state state_ref="state_account_password_selinux_faillock_dir"/>
+  </linux:selinuxsecuritycontext_test>
 
-    <linux:selinuxsecuritycontext_test check="all" check_existence="all_exist" comment="device_t in /dev"
-    id="test_selinux_faillock_dir" version="1">
-        <linux:object object_ref="obj_selinux_faillock_dir" />
-        <linux:state state_ref="state_selinux_faillock_dir" />
-    </linux:selinuxsecuritycontext_test>
-    
-    <linux:selinuxsecuritycontext_object comment="device_t in /dev" 
-    id="obj_selinux_faillock_dir" version="1">
-        <linux:path operation="equals" var_ref="var_faillock_dir_collector"  var_check="all"/>
-        <linux:filename xsi:nil="true" />
-    </linux:selinuxsecuritycontext_object>
-    <linux:selinuxsecuritycontext_state comment="device_t label" id="state_selinux_faillock_dir" version="1">
-        <linux:type datatype="string" operation="equals">faillog_t</linux:type>
-    </linux:selinuxsecuritycontext_state>
+  <linux:selinuxsecuritycontext_object id="object_account_password_selinux_faillock_dir"
+    comment="SELinux context information from pam_faillock.so tally directories" version="1">
+    <linux:path operation="equals" var_check="all"
+                var_ref="var_account_password_selinux_faillock_dir_collector"/>
+    <linux:filename xsi:nil="true"/>
+  </linux:selinuxsecuritycontext_object>
 
+  <linux:selinuxsecuritycontext_state id="state_account_password_selinux_faillock_dir" version="1"
+    comment="faillog_t context is set">
+    <linux:type datatype="string" operation="equals">faillog_t</linux:type>
+  </linux:selinuxsecuritycontext_state>
 </def-group>
