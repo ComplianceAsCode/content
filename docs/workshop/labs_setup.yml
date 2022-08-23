@@ -42,8 +42,15 @@
 
   - name: "Ex. 4: Remove the Ansible content from rule accounts_tmout so that the attendees can create them themselves"
     file:
-      path: "l{{ LAB_DIR }}/inux_os/guide/system/accounts/accounts-session/accounts_tmout/ansible/"
+      path: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/ansible/"
       state: absent
+    when: EXERCISE == TRACK_4_LABEL
+
+  - name: "Ex. 4: Remove machine platform from accounts_tmout"
+    replace:
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml"
+      regexp: '^platform: machine'
+      replace: ''
     when: EXERCISE == TRACK_4_LABEL
 
   - name: "Ex. 5: Remove tests"
