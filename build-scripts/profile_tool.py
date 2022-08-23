@@ -38,10 +38,9 @@ def parse_args():
                         help="Show statistics for this XCCDF Profile only. If "
                         "not provided the script will show stats for all "
                         "available profiles.")
-    parser_stats.add_argument("--benchmark", "-b", required=True,
-                        action="store",
-                        help="Specify XCCDF file to act on. Must be a plain "
-                        "XCCDF file, doesn't work on source datastreams yet!")
+    parser_stats.add_argument(
+        "--benchmark", "-b", required=True, action="store",
+        help="Specify XCCDF file or a SCAP source data stream file to act on.")
     parser_stats.add_argument("--implemented-ovals", default=False,
                         action="store_true", dest="implemented_ovals",
                         help="Show IDs of implemented OVAL checks.")
@@ -220,12 +219,7 @@ def main():
     if args.profile:
         ret.append(benchmark.show_profile_stats(args.profile, args))
     else:
-        all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (ssg.constants.XCCDF11_NS))
-        ret = []
-        for elem in all_profile_elems:
-            profile = elem.get('id')
-            if profile is not None:
-                ret.append(benchmark.show_profile_stats(profile, args))
+        ret.extend(benchmark.show_all_profile_stats(args))
 
     if args.format == "json":
         print(json.dumps(ret, indent=4))
