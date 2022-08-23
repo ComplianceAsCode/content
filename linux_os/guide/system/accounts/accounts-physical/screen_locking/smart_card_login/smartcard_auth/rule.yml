@@ -28,7 +28,8 @@ rationale: |-
 
 severity: medium
 
-platform: machine  # The check uses service_... extended definition, which doesnt support offline mode
+platforms:
+    - not_s390x_arch
 
 identifiers:
     cce@rhel7: CCE-80207-4
