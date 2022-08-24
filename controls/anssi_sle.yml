@@ -192,34 +192,58 @@ controls:
     title: Partitioning type
     status: partial
     rules:
+    # this covers nodev options
+    - mount_option_nodev_nonroot_local_partitions
     # The recommended partitioning type is as follows:
     # / <without option> Root partition, contains the rest of the tree
     # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader. No access required once the boot finished (except update)
     - partition_for_boot
+    - mount_option_boot_nosuid
+    - mount_option_boot_noexec
+    # The noauto option rule breaks checking of the other mount options
+    # Commented until rules for /boot mount_option handles this use case
+    # - mount_option_boot_noauto
 
     # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
     - partition_for_opt
+    - mount_option_opt_nosuid
 
     # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
     - partition_for_tmp
+    - mount_option_tmp_nosuid
+    - mount_option_tmp_noexec
 
     # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
     - partition_for_srv
+    - mount_option_srv_nosuid
 
     # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
     - partition_for_home
+    - mount_option_home_nosuid
+    - mount_option_home_noexec
 
     # /usr nodev Contains the majority of utilities and system files
     - partition_for_usr
 
     # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
     - partition_for_var
+    - mount_option_var_nosuid
+    - mount_option_var_noexec
 
     # /var/log nosuid, nodev, noexec Contains system logs
     - partition_for_var_log
+    - mount_option_var_log_noexec
+    - mount_option_var_log_nosuid
 
     # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
     - partition_for_var_tmp
+    - mount_option_var_tmp_nosuid
+    - mount_option_var_tmp_noexec
+
+    related_rules:
+    # /proc hidepid = 2 Contains process information and the system
+    - mount_option_proc_hidepid
+    - var_mount_option_proc_hidepid=2
 
   - id: R13
     levels:
