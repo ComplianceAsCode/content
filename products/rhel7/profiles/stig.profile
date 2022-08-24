@@ -331,3 +331,4 @@ selections:
     - sebool_ssh_sysadm_login
     - sudoers_default_includedir
     - package_aide_installed
+    - selinux_context_electation_for_sudo
