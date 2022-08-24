@@ -785,6 +785,18 @@ controls:
       be customized for the systems deployment requirements.
     status: partial
     rules:
+    # Based on DAT-NT-012 R3
+    - package_chrony_installed
+    - chronyd_specify_remote_server
+
+    # Derived from DAT-NT-012 R4
+    - partition_for_var_log_audit
+
+    # Derived from DAT-NT-012 R5, these are also covered in R7
+    # The default remote loghost is logcollector.
+    # Change the default value to the hostname or IP of the system to send the logs to
+    - rsyslog_remote_loghost
+
     # Derived from DAT-NT-012 R12
     - package_rsyslog-gnutls_installed
     - rsyslog_remote_tls
@@ -832,7 +844,9 @@ controls:
     levels:
     - intermediary
     title: Configuring the local messaging service
-    # rules: TBD
+    status: automated
+    rules:
+    - postfix_network_listening_disabled
 
   - id: R49
     levels:
@@ -841,7 +855,8 @@ controls:
     status: partial # it is hard to define what are "service accounts"
     notes: >-
       Only the alias for root user is currently covered.
-    # rules: TBD
+    rules:
+    - postfix_client_configure_mail_alias
 
   - id: R50
     levels:
