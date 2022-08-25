@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 import argparse
 from utils.gen_tables_common import create_table
-from ssg.constants import XCCDF11_NS, XCCDF12_NS
 from ssg.xml import ElementTree as ET
+from ssg.xml import determine_xccdf_tree_namespace
 
 
 def parse_args():
@@ -11,17 +11,6 @@ def parse_args():
     parser.add_argument("input", help="Input XCCDF file")
     parser.add_argument("output", help="Output HTML file")
     return parser.parse_args()
-
-
-def determine_xccdf_tree_namespace(tree):
-    root = tree.getroot()
-    if root.tag == "{%s}Benchmark" % XCCDF11_NS:
-        xccdf_ns = XCCDF11_NS
-    elif root.tag == "{%s}Benchmark" % XCCDF12_NS:
-        xccdf_ns = XCCDF12_NS
-    else:
-        raise ValueError("Unknown root element '%s'" % root.tag)
-    return xccdf_ns
 
 
 def get_stats(root, ns):
