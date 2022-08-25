@@ -90,7 +90,7 @@ def parse_affected(cur_dir, env_yaml):
 
                 except ValueError as e:
                     print("No <affected> element found in file {}. "
-                        " Parsed XML was:\n{}".format(oval, item))
+                          " Parsed XML was:\n{}".format(oval, item))
                     raise e
 
 
