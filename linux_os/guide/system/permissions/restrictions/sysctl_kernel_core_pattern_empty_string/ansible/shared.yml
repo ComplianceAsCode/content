@@ -24,8 +24,8 @@
 - name: Comment out any occurrences of kernel.core_pattern with value from /etc/sysctl.conf files
   replace:
     path: /etc/sysctl.conf
-    regexp: ^[\s]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*\S+
-    replace: '#kernel.core_pattern'
+    regexp: '^[\s]*kernel.core_pattern([ \t]*=[ \t]*\S+)'
+    replace: '#kernel.core_pattern\1'
 
 - name: Ensure sysctl kernel.core_pattern is set to empty
   sysctl:
