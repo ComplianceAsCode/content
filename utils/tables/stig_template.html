@@ -1,0 +1,58 @@
+{{% extends "tables_template_common.html" %}}
+{{% block table %}}
+<div>
+	<table>
+		<thead>
+		<tr>
+			<th>Total</th>
+			<th>Missing</th>
+			<th>Implemented</th>
+			<th>Coverage</th>
+			<th>STIG ids missing rule</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>{{{ stats["total"] }}}</td>
+			<td>{{{ stats["missing"] }}}</td>
+			<td>{{{ stats["implemented"] }}}</td>
+			<td>{{{ "%.2f%%"|format(stats["coverage"]) }}}</td>
+			<td>
+				{{% for rule in stats["missing_rules"] %}}
+					{{{ rule }}}
+				{{% endfor %}}
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<table>
+	<thead>
+		<td>V-ID</td>
+		<td>CCI</td>
+		<td>CAT</td>
+		<td>Title</td>
+		<td>SRG</td>
+		<td>Description</td>
+		<td>Check Procedures</td>
+		<td>Fixtext</td>
+		<td>Version</td>
+		<td>Mapped Rule</td>
+	</thead>
+{{% for rule in rules %}}
+<tr>
+	<td>{{{ rule["V-ID"] }}}</td>
+	<td>{{{ rule["CCI"] }}}</td>
+	<td>{{{ rule["CAT"] }}}</td>
+	<td>{{{ rule["title"] }}}</td>
+	<td>{{{ rule["SRG"] }}}</td>
+	<td><pre>{{{ rule["description"] }}}</pre></td>
+	<td><pre>{{{ rule["check"] }}}</pre></td>
+	<td><pre>{{{ rule["fixtext"] }}}</pre></td>
+	<td>{{{ rule["version"] }}}</td>
+	<td>{{{ rule["mapped_rule"] }}}</td>
+</tr>
+{{% endfor %}}
+</table>
+{{% endblock %}}
