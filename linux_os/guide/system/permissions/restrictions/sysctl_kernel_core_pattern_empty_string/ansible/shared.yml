@@ -12,6 +12,7 @@
     patterns: '*.conf'
     file_type: any
   register: find_sysctl_d
+
 - name: Comment out any occurrences of kernel.core_pattern from /etc/sysctl.d/*.conf
     files
   replace:
@@ -19,11 +20,13 @@
     regexp: ^[\s]*kernel.core_pattern
     replace: '#kernel.core_pattern'
   loop: '{{ find_sysctl_d.files }}'
+
 - name: Comment out any occurrences of kernel.core_pattern with value from /etc/sysctl.conf files
   replace:
     path: /etc/sysctl.conf
     regexp: ^[\s]*kernel.core_pattern[[:blank:]]*=[[:blank:]]*\S+
     replace: '#kernel.core_pattern'
+
 - name: Ensure sysctl kernel.core_pattern is set to empty
   sysctl:
     name: kernel.core_pattern
