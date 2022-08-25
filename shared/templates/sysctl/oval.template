@@ -1,9 +1,9 @@
 {{%- if SYSCTLVAL == "" %}}
 {{%- set COMMENT_VALUE="the appropriate value" %}}
-{{%- elif SYSCTLVAL is sequence %}}
-{{%- set COMMENT_VALUE = SYSCTLVAL | join(" or " ) %}}
-{{%- else %}}
+{{%- elif SYSCTLVAL is string %}}
 {{%- set COMMENT_VALUE=SYSCTLVAL %}}
+{{%- else %}}
+{{%- set COMMENT_VALUE = SYSCTLVAL | join(" or " ) %}}
 {{%- endif %}}
 
 {{% macro state_static_sysctld(prefix) -%}}
