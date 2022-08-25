@@ -51,6 +51,18 @@ def subtree_texts(el):
         return "".join(el.itertext())
 
 
+def parse_description(rule_el, ns):
+    description = subtree_texts(rule_el.find("./xccdf:description", ns))
+    if description is None:
+        return ""
+    elif "<VulnDiscussion>" in description:
+        _, _, after_open = description.partition("<VulnDiscussion>")
+        before_close, _, _ = after_open.partition("</VulnDiscussion>")
+        return before_close
+    else:
+        return description
+
+
 def get_rules(root, ns):
     rules = []
     for group in root.findall(".//xccdf:Group", ns):
@@ -62,15 +74,7 @@ def get_rules(root, ns):
         rule["CAT"] = rule_el.get("severity")
         rule["title"] = rule_el.find("./xccdf:title", ns).text
         rule["SRG"] = group.find("./xccdf:title", ns).text
-        description = subtree_texts(rule_el.find("./xccdf:description", ns))
-        if description is None:
-            rule["description"] = ""
-        elif "<VulnDiscussion>" in description:
-            _, _, after_open = description.partition("<VulnDiscussion>")
-            before_close, _, _ = after_open.partition("</VulnDiscussion>")
-            rule["description"] = before_close
-        else:
-            rule["description"] = description
+        rule["description"] = parse_description(rule_el, ns)
         check = rule_el.find("./xccdf:check/xccdf:check-content", ns)
         rule["check"] = check.text if check.text is not None else ""
         rule["fixtext"] = subtree_texts(rule_el.find("./xccdf:fixtext", ns))
