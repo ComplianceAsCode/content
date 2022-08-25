@@ -19,6 +19,7 @@ from .constants import cce_uri
 from .constants import ssg_version_uri
 from .constants import stig_ns, cis_ns, generic_stig_ns, hipaa_ns, anssi_ns
 from .constants import ospp_ns, cui_ns, xslt_ns
+from .constants import OSCAP_PROFILE
 from .yaml import DocumentationNotComplete
 console_width = 80
 
@@ -283,7 +284,7 @@ class XCCDFBenchmark(object):
         for rule in rule_stats:
             profile_stats['rules'].append(rule.dict['id'])
 
-        profile_stats['profile_id'] = profile
+        profile_stats['profile_id'] = profile.replace(OSCAP_PROFILE, "")
         if ssg_version_elem is not None:
             profile_stats['ssg_version'] = \
                 'SCAP Security Guide %s' % ssg_version_elem.text
@@ -443,7 +444,7 @@ class XCCDFBenchmark(object):
 
         if options.format == "plain":
             if not options.skip_overall_stats:
-                print("\nProfile %s:" % profile)
+                print("\nProfile %s:" % profile.replace(OSCAP_PROFILE, ""))
                 print("* rules:              %d" % rules_count)
                 print("* checks (OVAL):      %d\t[%d%% complete]" %
                       (impl_ovals_count,
