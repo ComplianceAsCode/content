@@ -228,7 +228,7 @@ class OVALFileLinker(FileLinker):
                       "out which variables it needs." % (def_id), file=sys.stderr)
                 continue
             all_vars |= resolve_definition(self.oval_groups, extended_def)
-        for varname in all_vars:
+        for varname in sorted(all_vars):
             export = ET.Element("{%s}check-export" % XCCDF11_NS)
             export.attrib["export-name"] = varname
             export.attrib["value-id"] = varname
