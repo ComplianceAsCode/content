@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Disable Firefox network prediction'
+
+description: |-
+    Firefox has a feature where it predicts and caches DNS requests.
+    This can be disabled by
+    setting <tt>NetworkPrediction</tt> to <tt>true</tt> in the policy file.
+
+rationale: |-
+    With network prediction enabled, URL requests are made without user consent.
+    Browsers should always make a direct DNS request with prefetching. 
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid: FFOX-00-000022
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that network prediction is disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"NetworkPrediction": false</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable addon and plugin automatic update
+        policies:
+          - {path: "policies", parameter: "NetworkPrediction", value: false}

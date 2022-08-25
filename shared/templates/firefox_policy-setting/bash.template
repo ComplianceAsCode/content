@@ -1,0 +1,51 @@
+# platform = Mozilla Firefox
+# strategy = policy
+
+firefox_cfg="policies.json"
+# Default to /etc/firefox/policies to use for remediations.
+firefox_dirs="/etc/firefox/policies"
+permissions=644
+
+{{{ find_python() }}}
+{{{ find_firefox() }}}
+# If there's a policies file in the distribution directory already, modify it.
+if [ -f ${__FIREFOX_DISTRIBUTION}/policies.json ]; then
+        firefox_dirs="${__FIREFOX_DISTRIBUTION}"
+fi
+# Check the possible Firefox install directories
+for firefox_dir in ${firefox_dirs}; do
+    if [ -d "${firefox_dir}" ]; then
+        mkdir -p "${firefox_dir}"
+        chmod 755 "${firefox_dir}"
+        # Make sure the Firefox .cfg file exists and has the appropriate permissions
+        if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
+            echo "{" > "${firefox_dir}/${firefox_cfg}"
+            echo "    \"policies\": {" >> "${firefox_dir}/${firefox_cfg}"
+            echo "    }" >> "${firefox_dir}/${firefox_cfg}"
+            echo "}" >> "${firefox_dir}/${firefox_cfg}"
+            chmod ${permissions} "${firefox_dir}/${firefox_cfg}"
+        fi
+        # If the key exists, change it. Otherwise, add it to the config_file.
+        if [ -x ${__REMEDIATE_PYTHON} ]; then
+            echo """
+import json
+_file=open('${firefox_dir}/${firefox_cfg}', 'r')
+_tree=json.load(_file)
+_file.close()
+{{% for policy_item in POLICIES %}}
+{{% for p in policy_item.subpath %}}
+if '{{{ p }}}' in _tree{{{ policy_item.path_python[loop.revindex] }}}:
+   pass
+else:
+   _tree{{{ policy_item.path_python[loop.revindex0] }}} = dict()
+{{% endfor %}}
+_tree{{{ policy_item.path_python[0] }}}['{{{ policy_item.parameter }}}'] = {{{ policy_item.value_escaped }}}
+{{% endfor %}}
+_file=open('${firefox_dir}/${firefox_cfg}', 'w')
+json.dump(_tree, _file, indent=4, sort_keys=True)
+_file.close()
+""" | ${__REMEDIATE_PYTHON}
+        fi
+        chmod ${permissions} "${firefox_dir}/${firefox_cfg}"
+    fi
+done

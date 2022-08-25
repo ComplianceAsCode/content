@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Disable Firefox Pocket'
+
+description: |-
+    Pocket may be disabled by setting
+    <tt>DisablePocket</tt> to <tt>true</tt>
+    in the policies file.
+
+rationale: |-
+    Pocket is a social bookmarking service for storing, sharing, and discovering web bookmarks.
+    Data gathering cloud services such as Pocket are generally disabled in the DoD.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000038
+
+ocil: |-
+    To verify that Pocket is disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"DisablePocket": true</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable Firefox Pocket
+        policies:
+          - {path: "policies", parameter: "DisablePocket", value: true}

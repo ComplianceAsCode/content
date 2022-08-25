@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Enable Certificate Verification'
+
+description: |-
+    Firefox can be configured to prompt the user to choose a certificate
+    to present to a website when asked. To enable certificate verification,
+    set <tt>security.default_personal_cert</tt> to <tt>Ask Every Time</tt>
+    in an administrative policies file
+
+rationale: |-
+    Websites within DoD require user authentication for access which increases
+    security for DoD information. Access will be denied to the user if
+    certificate management is not configured.
+
+severity: medium
+
+references:
+    disa: CCI-000187
+    nist: IA-5(2)
+    stigid@firefox: FFOX-00-000003
+
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To verify that certificate verification is enabled, type the following into the browser address bar:
+        <pre>about:policies</pre>
+    The output should have the following under security.default_personal_cert:
+    <pre>Value: "Ask Every Time"</pre>
+    <pre>Status: "locked"</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+      name: Configure Default Personal Certificate to Ask Every Time
+      policies:
+        - {path: "Preferences security.default_personal_cert", parameter: "Value", value: "Ask Every Time"}
+        - {path: "Preferences security.default_personal_cert", parameter: "Status", value: "locked"}

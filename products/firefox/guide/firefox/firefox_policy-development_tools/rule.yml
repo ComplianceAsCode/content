@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Disable Firefox Development Tools'
+
+description: |-
+    Firefox provides development tools which identify detailed information 
+    about the browser and its configuration. These details are often also 
+    recorded into a log file, giving an attacker the ability to capture 
+    detailed information about the system.
+    This can be disabled by setting <tt>DisableDeveloperTools</tt> to
+    <tt>true</tt> in <tt>policies.json</tt>
+
+rationale: |-
+    In order to protect privacy and sensitive data, Mozilla provides
+    the ability to configure Firefox so that development tools are prevented from being used.
+
+severity: low
+
+references:
+    disa: CCI-001312
+    nist: SI-11 b
+    stigid: FFOX-00-000015
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that Firefox Development Tools are disabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"DisableDeveloperTools": true,</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable developer tools
+        policies:
+          - {path: "policies", parameter: "DisableDeveloperTools", value: true}

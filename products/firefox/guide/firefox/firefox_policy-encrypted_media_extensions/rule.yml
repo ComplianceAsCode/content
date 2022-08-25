@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox encrypted media extensions must be disabled.'
+
+description: |-
+    Firefox's Encrypted Media Extensions support playback of media content that is subject to Digital Right Management.
+    These extensions may be disabled completely by setting
+    <ul>
+    <li><tt>Enabled</tt> under <tt>EncryptedMediaExtensions</tt> to <tt>false</tt></li>
+    <li><tt>Locked</tt> under <tt>EncryptedMediaExtensions</tt> to <tt>true</tt></li>
+    </ul>.
+
+rationale: |-
+    Enable or disable Encrypted Media Extensions and optionally lock it.
+    If "Enabled" is set to "false", Firefox does not download encrypted media extensions (such as Widevine) unless the user consents to installing them.
+    If "Locked" is set to "true" and "Enabled" is set to "false", Firefox will not download encrypted media extensions (such as Widevine) or ask the user to install them.
+    It is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.
+    Applications are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).
+    Examples of non-essential capabilities include but are not limited to advertising software or browser plug-ins that are not related to requirements or provide a wide array of functionality not required for every mission but that cannot be disabled.
+
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000037
+
+template:
+    name: firefox_policy-setting
+    vars:
+      name: Disable Firefox Site Feedback
+      policies:
+        - {path: "EncryptedMediaExtensions", parameter: "Enabled", value: false}
+        - {path: "EncryptedMediaExtensions", parameter: "Locked", value: true}

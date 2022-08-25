@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox private browsing must be disabled.'
+
+description: |-
+    Private browsing may be disabled in an administrative policy by setting
+    the <tt>DisablePrivateBrowsing</tt> key under <tt>policies</tt> to <tt>true</tt>.
+
+rationale: |-
+    Private browsing allows the user to browse the internet without recording their browsing history/activity. From a forensics perspective, this is unacceptable. Best practice requires that browser history is retained.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000019
+
+ocil: |-
+    To verify that private browsing is disabled
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following uder dom.disable_window_move_resize:
+    <pre>"DisablePrivateBrowsing": true</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable Private Browsing feature 
+        policies:
+          - {path: "policies", parameter: "DisablePrivateBrowsing", value: true}

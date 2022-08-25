@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    {{{ oval_metadata("Check setting of " + NAME + " in Firefox policy", affected_platforms=['Mozilla Firefox']) }}} 
+    <criteria operator="AND" comment="Test conditions - Firefox policy item is set.">
+     {{% for policy_item in POLICIES %}}
+      <criterion comment="Check that Firefox administrative policy setting {{{ policy_item.subpath | join('.') }}}.{{{ policy_item.parameter }}} to '{{{policy_item.value}}}'." test_ref="test_{{{ rule_id }}}_{{{ policy_item.subpath_string }}}_{{{ policy_item.parameter }}}" />
+     {{% endfor %}}
+    </criteria>
+  </definition>
+
+{{% for policy_item in POLICIES %}}
+  <ind:textfilecontent54_test check="all"
+  comment="Check setting of {{{ policy_item.subpath | join('.') }}}.{{{ policy_item.parameter }}} in Firefox policy file" 
+  id="test_{{{ rule_id }}}_{{{ policy_item.subpath_string }}}_{{{ policy_item.parameter }}}" version="1">
+  <ind:object object_ref="obj_{{{ rule_id }}}_{{{ policy_item.subpath_string }}}_{{{ policy_item.parameter }}}" />
+  <ind:state state_ref="state_{{{ rule_id }}}_{{{ policy_item.subpath_string }}}_{{{ policy_item.parameter }}}" />
+  </ind:textfilecontent54_test>
+
+{{% endfor %}}
+  <unix:file_object id="obj_{{{ rule_id }}}_firefox_path" version="1" comment="Find all installations of Firefox">
+    <unix:behaviors recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path>/usr</unix:path>
+    <unix:filename operation="pattern match">^firefox.sh$|^firefox-bin$</unix:filename>
+  </unix:file_object>
+  <local_variable id="var_{{{ rule_id }}}_firefox_path" version="1" datatype="string" comment="policies.json path for Firefox.">
+      <unique>
+      <literal_component>/etc/firefox/policies</literal_component>
+      <concat>
+          <object_component object_ref="obj_{{{ rule_id}}}_firefox_path" item_field="path" />
+          <literal_component>/distribution</literal_component>
+      </concat>
+      </unique>
+  </local_variable>
+  {{% for policy_item in POLICIES %}}
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}_{{{ policy_item.subpath_string }}}_{{{ policy_item.parameter }}}" version="1">
+    <ind:path var_ref="var_{{{ rule_id }}}_firefox_path" var_check="at least one" datatype="string" />
+    <ind:filename datatype="string">policies.json</ind:filename>
+    <ind:pattern operation="pattern match">{{{ policy_item.oval_regex }}}</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}_{{{ policy_item.subpath_string }}}_{{{ policy_item.parameter }}}" version="1">
+      <ind:subexpression datatype="string" entity_check="all" operation="pattern match">{{{ policy_item.oval_state }}}</ind:subexpression>
+  </ind:textfilecontent54_state>
+  {{% endfor %}}
+</def-group>

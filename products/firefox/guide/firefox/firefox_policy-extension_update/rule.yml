@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: firefox
+
+title: 'Firefox must be configured to not automatically update installed add-ons and plugins.'
+
+description: |-
+    Firefox has a feature to permit installed add-ons and plugins to automatically update. The check may be disabled in an
+    administrative policy by setting the <tt>ExtensionUpdate</tt> key under <tt>policies</tt> to <tt>false</tt>.
+
+rationale: |-
+    Automatic updates from untrusted sites puts the entire enclave at risk and may override existing security settings.
+severity: medium
+
+references:
+    disa: CCI-000381
+    nist: CM-7
+    stigid@firefox: FFOX-00-000005
+
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To verify that certificate verification is enabled,
+    type the following into the browser address bar:
+    <pre>about:policies</pre>
+    The output should have the following:
+    <pre>"ExtensionUpdate": false</pre>
+    <pre>Status: "locked"</pre>
+
+template:
+    name: firefox_policy-setting
+    vars:
+        name: Disable addon and plugin automatic update
+        policies:
+          - {path: "policies", parameter: "ExtensionUpdate", value: false}

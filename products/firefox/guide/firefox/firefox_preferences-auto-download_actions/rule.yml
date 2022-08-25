@@ -1,31 +1,57 @@
 documentation_complete: true
 
-title: 'Disable Automatic Downloads of MIME Types'
+prodtype: firefox
+
+title: 'Disable auto-download for proscribed MIME types.'
 
 description: |-
-    MIME type files are automatically downloaded or executed in Firefox. This
-    can be disabled by setting <tt>browser.helperApps.alwaysAsk.force</tt> to
-    <tt>true</tt>.
+    Firefox must be configured to not automatically execute or download MIME types that are not
+    authorized for auto-download.
 
 rationale: |-
-    The default action for file types for which a plugin is installed is to
-    automatically download and execute the file using the associated plugin.
-    Firefox allows users to change the specified download action so that the
-    file is opened with a selected external application or saved to disk
-    instead.
+    This setting ensures that some file types that may be downloaded or executed without user interaction
+    are not downloaded and/or executed.
 
 severity: medium
 
 references:
     disa: CCI-001242
-    nist: SI-3
-    stigid: DTBF100
-
-ocil_clause: 'it is not disabled'
+    nist: SI-3 c
+    stigid: FFOX-00-000006
 
 ocil: |-
-    To verify that user interaction is required for the downloading of MIME types,
-    run the following command:
-    <pre>$ grep 'browser.helperApps.alwaysAsk.force' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
-    The output should return:
-    <pre>lockPref("browser.helperApps.alwaysAsk.force", "true");</pre>
+    To verify that any proscribed file types are configured for automatic download,
+    type "about:preferences" into the search bar,  then
+    type "Applications" in the Find bar in the upper-right corner.
+    If any of the following file extensions are listed and the Action item associated with it 
+    is an application that does or can execute the code, this is a finding.
+    If the entry exists and the "Action" is "Save File" or "Always Ask", this is not a finding.
+    <ul>
+      <li>HTA</li>
+      <li>JSE</li>
+      <li>JS</li>
+      <li>MOCHA</li>
+      <li>SHS</li>
+      <li>VBE</li>
+      <li>VBS</li>
+      <li>SCT</li>
+      <li>WSC</li>
+      <li>FDF</li>
+      <li>XFDF</li>
+      <li>LSL</li>
+      <li>LSO</li>
+      <li>LSS</li>
+      <li>IQY</li>
+      <li>RQY</li>
+      <li>DOS</li>
+      <li>BAT</li>
+      <li>PS</li>
+      <li>EPS</li>
+      <li>WCH</li>
+      <li>WCM</li>
+      <li>WB1</li>
+      <li>WB3</li>
+      <li>WCH</li>
+      <li>WCM</li>
+      <li>AD</li>
+    </ul>
