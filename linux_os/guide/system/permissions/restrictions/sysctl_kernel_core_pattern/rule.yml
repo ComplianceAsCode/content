@@ -13,8 +13,10 @@ rationale: |-
 
 severity: medium
 
+{{% if product in ["rhel9"] %}}
 conflicts:
     - sysctl_kernel_core_pattern_empty_string
+{{% endif %}}
 
 identifiers:
     cce@rhcos4: CCE-82527-3
