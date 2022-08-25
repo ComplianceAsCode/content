@@ -134,14 +134,14 @@ def get_results(xml: ElementTree.ElementTree) -> dict:
     return rules
 
 
-def get_identifiers(rule: ElementTree.ElementTree) -> dict:
+def get_identifiers(rule: ElementTree.ElementTree) -> str:
     try:
         return rule.find('xccdf-1.2:ident', PREFIX_TO_NS).text
     except AttributeError:
         return "MISSING_IDREF"
 
 
-def get_check_ids(rule: ElementTree.ElementTree) -> dict:
+def get_check_ids(rule: ElementTree.ElementTree) -> str:
     try:
         check_content_ref = rule.find('xccdf-1.2:check/xccdf-1.2:check-content-ref', PREFIX_TO_NS)
         check_name = check_content_ref.get('name', "")
