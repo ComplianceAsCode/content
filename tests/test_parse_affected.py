@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import os
+import re
 import sys
 
 import ssg.constants
@@ -73,19 +74,24 @@ def parse_affected(cur_dir, env_yaml):
             if not xml_content:
                 continue
 
-            oval_contents = ssg.utils.split_string_content(xml_content)
+            # split multiple def group into a list so multiple definitions in one OVAL also work
+            # this findall does not preserv the <def-group> tag but it's not necessary for the
+            # purpose of the test
+            xml_content_list = re.findall(r'<def-group>(.+?)</def-group>', xml_content, re.DOTALL)
+            for item in xml_content_list:
+                oval_contents = ssg.utils.split_string_content(item)
 
-            try:
-                results = ssg.oval.parse_affected(oval_contents)
+                try:
+                    results = ssg.oval.parse_affected(oval_contents)
 
-                assert len(results) == 3
-                assert isinstance(results[0], int)
-                assert isinstance(results[1], int)
+                    assert len(results) == 3
+                    assert isinstance(results[0], int)
+                    assert isinstance(results[1], int)
 
-            except ValueError as e:
-                print("No <affected> element found in file {}. "
-                      " Parsed XML was:\n{}".format(oval, xml_content))
-                raise e
+                except ValueError as e:
+                    print("No <affected> element found in file {}. "
+                          " Parsed XML was:\n{}".format(oval, item))
+                    raise e
 
 
 if __name__ == "__main__":
