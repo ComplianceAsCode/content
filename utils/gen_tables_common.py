@@ -4,6 +4,7 @@ import os
 import ssg.jinja
 from utils.template_renderer import FlexibleLoader
 
+
 def create_table(data, template_name, output_filename):
     html_jinja_template = os.path.join(
         os.path.dirname(__file__), "tables", template_name)
