@@ -1,4 +1,9 @@
 #!/bin/bash
+{{% if "ol" in product %}}
+# platform = multi_platform_example
+{{% else %}}
+# platform = multi_platform_all
+{{% endif %}}
 
 . $SHARED/partition.sh
 
