@@ -39,7 +39,7 @@ fixtext: '{{{ fixtext_mount_option("/home", "noexec") }}}'
 
 srg_requirement: '{{{ srg_requirement_mount_option("/home", "noexec") }}}'
 
-{{% if product != "ol8" %}}
+{{% if "ol" not in product %}}
 template:
     name: mount_option
     vars:

@@ -1,7 +1,8 @@
 # platform = multi_platform_all
 # reboot = false
 
-{{% set non_allowed_partitions = ["/lib",
+{{% set non_allowed_partitions = ["/",
+                                  "/lib",
                                   "/opt",
                                   "/usr",
                                   "/bin",
@@ -12,19 +13,22 @@
 
 function perform_remediation (){
 
-    {{{ bash_ensure_mount_option_in_fstab( "$1" , MOUNTOPTION , FILESYSTEM , TYPE ) | indent(4) }}}
+    {{{ bash_ensure_mount_option_in_fstab( "$1", MOUNTOPTION, FILESYSTEM, TYPE ) | indent(4) }}}
 
     {{{ bash_ensure_partition_is_mounted( "$1" ) | indent(4) }}}
 }
 
-readarray -t all_fstab_partitions  < \
-    <(awk -F':' '{if ($3>=1000 && $3!= 65534) print $6}' /etc/passwd \
-        | xargs df \
-        | awk '/^\/dev/ {print $6}')
+readarray -t home_directories  < \
+    <(awk -F':' '{if ($3>=1000 && $3!= 65534) print $6}' /etc/passwd )
 
-for fstab_partition in "${all_fstab_partitions[@]}"
+
+for home_directory in "${home_directories[@]}"
 do
-    if  ! grep -qP "^{{{ non_allowed_partitions | join("$|^") }}}$" <<< $fstab_partition ; then
-        perform_remediation "$fstab_partition"
+    if [ -d $home_directory ]; then
+        fstab_mount_point=$(df $home_directory | awk '/^\/dev/ {print $6}')
+        if  ! grep -qP "^{{{ non_allowed_partitions | join("$|^") }}}$" <<< $fstab_mount_point
+        then
+            perform_remediation "$fstab_mount_point"
+        fi
     fi
 done
