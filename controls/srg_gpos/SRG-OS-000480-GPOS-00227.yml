@@ -50,6 +50,9 @@ controls:
             - file_permissions_cron_monthly
             - file_permissions_cron_weekly
             - file_permissions_crontab
+            - file_permissions_cron_allow
+            - file_owner_cron_allow
+            - file_groupowner_cron_allow
             - file_groupowner_sshd_config
             - file_owner_sshd_config
             - file_permissions_sshd_config
@@ -84,6 +87,7 @@ controls:
             - package_iprutils_removed
             - package_tuned_removed
             - package_gdm_removed
+            - package_xorg-x11-server-common_removed
 
             # package installed
             - package_openssh-clients_installed
@@ -182,6 +186,7 @@ controls:
             - dconf_gnome_disable_automount_open
             - dconf_gnome_disable_autorun
             - dconf_gnome_disable_ctrlaltdel_reboot
+            - dconf_db_up_to_date
 
             # partition
             - partition_for_home
@@ -211,12 +216,15 @@ controls:
             # grub2
             - grub2_vsyscall_argument
             - grub2_page_poison_argument
+            - grub2_disable_interactive_boot
 
             # network
             - configured_firewalld_default_deny
             - network_configure_name_resolution
             - network_sniffer_disabled
             - postfix_prevent_unrestricted_relay
+            - set_firewalld_default_zone
+            - firewalld_sshd_port_enabled
             
             # misc
             - no_host_based_files
@@ -226,5 +234,6 @@ controls:
             - installed_OS_is_vendor_supported
             - rpm_verify_hashes
             - security_patches_up_to_date
+            - grub2_kernel_trust_cpu_rng
 
         status: automated
