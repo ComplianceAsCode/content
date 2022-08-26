@@ -4,6 +4,6 @@
 
 source common.sh
 
-sed -i '/^\s*auth.*sufficient.*pam_unix.so/i auth required pam_lastlog.so inactive=35' $CUSTOM_PAM_FILE
+sed -i '/^\s*auth.*sufficient.*pam_unix\.so/i auth required pam_lastlog.so inactive=35' $CUSTOM_PAM_FILE
 
 authselect apply-changes

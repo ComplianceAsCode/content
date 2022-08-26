@@ -63,7 +63,7 @@ ocil: |-
 
     {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9"] %}}
     To verify that smart cards are enabled in PAM files, run the following command:
-    <pre>$ sudo grep -e "auth.*pam_sss.so.*\(allow_missing_name\|try_cert_auth\)" /etc/pam.d/smartcard-auth /etc/pam.d/system-auth</pre>
+    <pre>$ sudo grep -e "auth.*pam_sss\.so.*\(allow_missing_name\|try_cert_auth\)" /etc/pam.d/smartcard-auth /etc/pam.d/system-auth</pre>
     If configured properly, output should be
     <pre>
     /etc/pam.d/smartcard-auth:auth        sufficient                                   pam_sss.so allow_missing_name

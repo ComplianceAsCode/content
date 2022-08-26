@@ -9,8 +9,8 @@ authselect create-profile hardening -b sssd
 CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 CUSTOM_SYSTEM_AUTH="/etc/authselect/$CUSTOM_PROFILE/system-auth"
-if ! $(grep -q "^[^#].*pam_pwhistory.so.*remember=" $CUSTOM_SYSTEM_AUTH); then
-    sed -i --follow-symlinks "/^password.*required.*pam_pwquality.so/a password    $control     pam_pwhistory.so remember=$remember_cnt use_authtok" $CUSTOM_SYSTEM_AUTH
+if ! $(grep -q "^[^#].*pam_pwhistory\.so.*remember=" $CUSTOM_SYSTEM_AUTH); then
+    sed -i --follow-symlinks "/^password.*required.*pam_pwquality\.so/a password    $control     pam_pwhistory.so remember=$remember_cnt use_authtok" $CUSTOM_SYSTEM_AUTH
 else
     sed -r -i --follow-symlinks "s/(^password.*)(required|requisite)(.*pam_pwhistory\.so.*)$/\1$control\3/" $CUSTOM_SYSTEM_AUTH
 fi

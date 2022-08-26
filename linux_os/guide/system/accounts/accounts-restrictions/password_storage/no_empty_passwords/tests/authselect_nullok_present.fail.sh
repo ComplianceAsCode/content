@@ -5,7 +5,7 @@
 SYSTEM_AUTH_FILE="/etc/pam.d/system-auth"
 
 authselect select sssd --force
-if ! $(grep -q "^[^#].*pam_unix.so.*nullok" $SYSTEM_AUTH_FILE); then
+if ! $(grep -q "^[^#].*pam_unix\.so.*nullok" $SYSTEM_AUTH_FILE); then
     authselect disable-feature without-nullok
     authselect apply-changes
 fi

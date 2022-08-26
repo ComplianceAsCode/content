@@ -13,8 +13,8 @@ if [ -f $FAILLOCK_CONF ]; then
 else
     for pam_file in "${AUTH_FILES[@]}"
     do
-        if ! grep -qE '^\s*auth.*pam_faillock.so\s*preauth.*silent' "$pam_file"; then
-            sed -i --follow-symlinks '/^\s*auth.*pam_faillock.so.*preauth/ s/$/ silent/' "$pam_file"
+        if ! grep -qE '^\s*auth.*pam_faillock\.so\s*preauth.*silent' "$pam_file"; then
+            sed -i --follow-symlinks '/^\s*auth.*pam_faillock\.so.*preauth/ s/$/ silent/' "$pam_file"
         fi
     done
 fi
