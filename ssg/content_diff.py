@@ -3,6 +3,7 @@
 import difflib
 import os
 import re
+import sys
 
 import ssg.xml
 from ssg.constants import FIX_TYPE_TO_SYSTEM
@@ -334,7 +335,12 @@ class StigContentDiffer(StandardContentDiffer):
             os.mkdir(self.output_dir)
 
     def get_stig_rule_SV(self, rule_id):
-        return re.search(r'(SV-\d+)r\d+_rule', rule_id).group(1)
+        stig_rule_id = re.search(r'(SV-\d+)r\d+_rule', rule_id)
+        if not stig_rule_id:
+            print("The rule '%s' doesn't have the usual STIG format: 'SV-XXXXXXrXXXXXX_rule.\n"
+                  "Please make sure the input contents are DISA STIG Benchmarks." % rule_id)
+            sys.exit(1)
+        return stig_rule_id.group(1)
 
     def compare_rules(self, old_benchmark, new_benchmark):
         missing_rules = []
