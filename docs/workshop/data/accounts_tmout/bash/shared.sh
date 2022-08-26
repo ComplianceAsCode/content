@@ -1,6 +1,5 @@
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol
-. /usr/share/scap-security-guide/remediation_functions
-populate var_accounts_tmout
+{{{ bash_instantiate_variables("var_accounts_tmout") }}}
 
 if grep --silent ^TMOUT /etc/profile ; then
         sed -i "s/^TMOUT.*/TMOUT=$var_accounts_tmout/g" /etc/profile

@@ -99,7 +99,7 @@
     command: "./build_product rhel8"
     args:
       chdir: "{{ LAB_DIR }}"
-    when: EXERCISE == TRACK_1_LABEL or EXERCISE == TRACK_2_LABEL
+    when: EXERCISE == TRACK_1_LABEL or EXERCISE == TRACK_2_LABEL or EXERCISE == TRACK_5_LABEL
 
   # - name: "Copy our Fedora OSPP profile to the target system"
   #   copy:

@@ -173,7 +173,7 @@ The command builds the human-readable HTML guide that can be displayed in a web 
 
 . Check the resulting HTML guide to see your new profile.
 . This is the same thing you did in the first lab--you navigate to the `build/guides` folder.:
-. Right click the `ssg-rhel8-guide-travel.html` file and select `Open with Live Server` to preview the file. Note: Your browser can block the pop-up. You must allow it when asked.
+. Right click the `ssg-rhel8-guide-travel.html` file and select `Open with Live Server` to preview the file. Note: Your browser may block the pop-up. You must allow it when asked.
 +
 .Travel Profile Guide
 image::navigatetravel.png[]
@@ -640,11 +640,9 @@ It is called `ssg-rhel8-ds.xml` and is located in the `build` directory.
 `oscap` is the command line tool that you use to scan the machine.
 You need to give `oscap` the name of the profile (`travel`) and the path to the built datastream (`ssg-rhel8-ds.xml`) as arguments.
 You also add arguments to turn on full reporting, which generates XML and HTML results that you can review later.
-
-.. Use `sudo` to run the command as the privileged user, to scan the parts of the system that common users are not able to access.
 +
 ----
-[... ]$ tests/automatus.py profile \
+[... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py profile \
             --docker fedora_container \
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
@@ -656,7 +654,7 @@ You also add arguments to turn on full reporting, which generates XML and HTML r
 +
 . Review the details in the HTML report.
 . The report is located in the `profile-log` directory, so you can locate it using the file explorer as you did in previous exercises:
-.. Right click the `xccdf_org.ssgproject.content_profile_travel-initial.html` file and select `Open with Live Server` to preview the file. Note: Your browser can block the pop-up. You must allow it when asked.
+.. Right click the `xccdf_org.ssgproject.content_profile_travel-initial.html` file and select `Open with Live Server` to preview the file. Note: Your browser may block the pop-up. You must allow it when asked.
 +
 The structure of the HTML report is similar to the HTML guide, but it contains the evaluation results.
 .. After clicking the rule title, you can see the detailed rule results.
@@ -671,7 +669,7 @@ To fix this problem, you would need to insert `declare TMOUT=300` into `/etc/pro
 image::2-03-report.png[Report]
 
 . Check the results of remediation.
-.. In the directory `profile-log`, Right click the `xccdf_org.ssgproject.content_profile_travel-final.html` file and select `Open with Live Server` to preview the file. Note: Your browser can block the pop-up. You must allow it when asked.
+.. In the directory `profile-log`, Right click the `xccdf_org.ssgproject.content_profile_travel-final.html` file and select `Open with Live Server` to preview the file. Note: Your browser may block the pop-up. You must allow it when asked.
 .. The rules should be now passing.
 +
 .Details of profile evaluation displayed in the HTML report after remediation
