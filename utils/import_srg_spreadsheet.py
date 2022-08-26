@@ -11,7 +11,6 @@ from openpyxl import load_workbook
 
 from ssg.rule_yaml import find_section_lines, get_yaml_contents
 
-
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 SEVERITY = {'CAT III': 'low', 'CAT II': 'medium', 'CAT I': 'high'}
@@ -46,7 +45,7 @@ class Row:
         self.SRGID = sheet[f'C{row_number}'].value
         self.STIGID = sheet[f'D{row_number}'].value
         self.SRG_Requirement = sheet[f'E{row_number}'].value
-        self.Requirement = sheet[f'F{row_number}'].value\
+        self.Requirement = sheet[f'F{row_number}'].value \
             .replace('Red Hat Enterprise Linux 9', 'RHEL 9')
         self.SRG_VulDiscussion = sheet[f'H{row_number}'].value
         self.Vul_Discussion = sheet[f'G{row_number}'].value
@@ -131,10 +130,10 @@ def get_cac_status(disa: str) -> str:
     return SEVERITY.get(disa, 'Unknown')
 
 
-def replace_yaml_key(rule_id: str, key: str, replacement: str, rule_dir: dict) -> None:
-    path_dir = rule_dir[rule_id]['dir']
+def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
+    path_dir = rule_dir['dir']
     path = f'{path_dir}/rule.yml'
-    lines = get_yaml_contents(rule_dir[rule_id])
+    lines = get_yaml_contents(rule_dir)
     section_ranges = find_section_lines(lines.contents, key)
     replacement_line = f"{key}: {replacement}"
     if section_ranges:
@@ -153,10 +152,10 @@ def replace_yaml_key(rule_id: str, key: str, replacement: str, rule_dir: dict) -
             f.write('\n')
 
 
-def replace_yaml_section(rule_id: str, section: str, replacement: str,  rule_dir: dict) -> None:
-    path_dir = rule_dir[rule_id]['dir']
+def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
+    path_dir = rule_dir['dir']
     path = f'{path_dir}/rule.yml'
-    lines = get_yaml_contents(rule_dir[rule_id])
+    lines = get_yaml_contents(rule_dir)
     replacement = replacement.replace('RHEL 9', '{{{ full_name }}}')
     section_ranges = find_section_lines(lines.contents, section)
     if section_ranges:
@@ -192,45 +191,57 @@ def fix_cac_cells(content: str, full_name: str, changed_name: str) -> str:
     return ""
 
 
+def get_common_set(changed_sheet: Worksheet, current_sheet: Worksheet):
+    changed_set = get_stigid_set(changed_sheet)
+    current_set = get_stigid_set(current_sheet)
+    common_set = current_set - (current_set - changed_set)
+    return common_set
+
+
+def update_severity(changed, current, rule_dir_json):
+    if changed.Severity != current.Severity and changed.Severity is not None and \
+            current.Severity is not None:
+        cac_severity = get_cac_status(changed.Severity)
+        replace_yaml_key('severity', cac_severity, rule_dir_json)
+
+
+def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
+    if changed != current and changed:
+        replace_yaml_section(section, changed, rule_dir_json)
+
+
 def main() -> None:
     args = parse_args()
     changed_wb = load_workbook(args.changed)
     current_wb = load_workbook(args.current)
-    changed_set = get_stigid_set(changed_wb['Sheet'])
     current_sheet = current_wb['Sheet']
     changed_sheet = changed_wb['Sheet']
-    current_set = get_stigid_set(current_sheet)
-    common_set = current_set - (current_set - changed_set)
-    full_name = get_full_name(args.root, args.product)
+    common_set = get_common_set(changed_sheet, current_sheet)
 
     cac_cce_dict = get_cce_dict_to_row_dict(current_sheet)
     disa_cce_dict = get_cce_dict_to_row_dict(changed_sheet)
 
-    rule_dir = get_rule_dir_json(args.json)
-    cce_dict = get_cce_dict(rule_dir, args.product)
+    rule_dir_json = get_rule_dir_json(args.json)
+    cce_rule_id_dict = get_cce_dict(rule_dir_json, args.product)
+    full_name = get_full_name(args.root, args.product)
 
     for cce in common_set:
         changed = disa_cce_dict[cce]
         current = cac_cce_dict[cce]
-        rule_id = cce_dict[cce]
+        rule_id = cce_rule_id_dict[cce]
+        rule_obj = rule_dir_json[rule_id]
 
-        if changed.Requirement != current.Requirement:
-            replace_yaml_section(rule_id, 'srg_requirement', changed.Requirement, rule_dir)
+        update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement')
 
-        if changed.Vul_Discussion != current.Vul_Discussion:
-            replace_yaml_section(rule_id, 'vuldiscussion', changed.Vul_Discussion, rule_dir)
+        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vulndiscussion')
 
-        if changed.Check != fix_cac_cells(current.Check, full_name, args.changed_name):
-            replace_yaml_section(rule_id, 'checktext', changed.Check, rule_dir)
+        cleand_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
+        update_row(changed.Check, cleand_current_check, rule_obj, 'checktext')
 
-        if changed.Fix != fix_cac_cells(current.Fix, full_name, args.changed_name):
-            if current.Fix is not None and changed.Fix is not None:
-                replace_yaml_section(rule_id, 'fixtext', changed.Fix, rule_dir)
+        cleand_current_fix = fix_cac_cells(current.Fix, full_name, args.changed_name)
+        update_row(changed.Fix, cleand_current_fix, rule_obj, 'fixtext')
 
-        if changed.Severity != current.Severity:
-            if changed.Severity is not None and current.Severity is not None:
-                cac_severity = get_cac_status(changed.Severity)
-                replace_yaml_key(rule_id, 'severity', cac_severity, rule_dir)
+        update_severity(changed, current, rule_obj)
 
 
 if __name__ == "__main__":

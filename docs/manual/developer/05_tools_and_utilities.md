@@ -349,17 +349,20 @@ To execute:
 
     $ ./utils/compare_results.py ssg_results.xml disa_results.xml
 
+
 ### `utils/import_srg_spreadsheet.py` - Import changes made to an SRG Spreadsheet into the project
+
 This script will import changes from a SRG export spreadsheet.
 This script is designed to be run then each file reviewed carefully before being committed.
 
 It supports the following arguments:
-- `-b`, `--current` - Path to the current XLSX export (required)
-- `-c`, `--changed` - Path to the XLSX that was changed, defaults to RHEL 9
-- `-j`, `--json` - Path to the `rules_dir.json ` file.
-- `-n`, `--changed-name` - The name of the current in the changed file (required)
-- `-p`, `--product` - What product to produce the tailoring file for (required)
-- `-r`, `--root` - Path to SSG root directory
+
+- `-b`, `--current` &mdash; Path to the current XLSX export (required)
+- `-c`, `--changed` &mdash; Path to the XLSX that was changed, defaults to RHEL 9
+- `-j`, `--json` &mdash; Path to the `rules_dir.json ` file.
+- `-n`, `--changed-name` &mdash; The name of the current in the changed file (required)
+- `-p`, `--product` &mdash; What product to produce the tailoring file for (required)
+- `-r`, `--root` &mdash; Path to SSG root directory
 
 To execute:
 
