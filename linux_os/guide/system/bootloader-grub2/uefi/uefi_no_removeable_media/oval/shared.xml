@@ -15,7 +15,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_uefi_no_removeable_media" version="1">
-    <ind:filepath>{{{ grub2_uefi_boot_path + "/grub.cfg" }}}</ind:filepath>
+    <ind:filepath>{{{ grub2_uefi_boot_path }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[ \t]*set root=(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
