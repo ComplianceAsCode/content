@@ -1106,7 +1106,7 @@ Part of the grub2_bootloader_argument(_absent) templates.
     {{%- set grub_helper_args = [] -%}}
 {{%- elif product in ["sle12", "sle15"] -%}}
     {{%- set grub_helper_executable = "grub2-mkconfig" -%}}
-    {{%- set grub_helper_args = ["-o " + grub2_boot_path + "/grub2.cfg"] -%}}
+    {{%- set grub_helper_args = ["-o " ~ grub2_boot_path ~ "/grub2.cfg"] -%}}
 {{%- else -%}}
     {{%- set grub_helper_executable = "grubby" -%}}
     {{%- if action == "update" -%}}
