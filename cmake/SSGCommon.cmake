@@ -1156,6 +1156,7 @@ macro(ssg_build_html_stig_tables PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
         DEPENDS "${CMAKE_BINARY_DIR}/${PRODUCT}/overlays/stig_overlay.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
         COMMENT "[${PRODUCT}-tables] generating unlinked STIG XCCDF XML file"
     )
     add_custom_command(
