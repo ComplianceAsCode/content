@@ -4,9 +4,11 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
   {{{ oval_metadata("An SELinux Context must be configued for the Faillock directory.") }}}
-    <criteria operator="AND">
+    <criteria operator="OR">
       <criterion test_ref="test_account_password_selinux_faillock_dir"
-                 comment="the faillock directory should have faillog_t as context"/>
+                 comment="The faillock directories should have faillog_t as context"/>
+      <criterion test_ref="test_account_password_selinux_faillock_dir_not_set"
+                 comment="There is no faillock directory set in pam_faillock.so settings"/>
     </criteria>
   </definition>
   <ind:textfilecontent54_object id="object_account_password_selinux_faillock_dir_collector" version="1">
@@ -39,4 +41,9 @@
     comment="faillog_t context is set">
     <linux:type datatype="string" operation="equals">faillog_t</linux:type>
   </linux:selinuxsecuritycontext_state>
+
+  <ind:textfilecontent54_test id="test_account_password_selinux_faillock_dir_not_set" version="1"
+    check="all" check_existence="none_exist" comment="No faillock tally dir was found">
+    <ind:object object_ref="object_account_password_selinux_faillock_dir_collector"/>
+  </ind:textfilecontent54_test>
 </def-group>
