@@ -359,10 +359,11 @@ It supports the following arguments:
 
 - `-b`, `--current` &mdash; Path to the current XLSX export (required)
 - `-c`, `--changed` &mdash; Path to the XLSX that was changed, defaults to RHEL 9
-- `-j`, `--json` &mdash; Path to the `rules_dir.json ` file.
+- `-j`, `--json` &mdash; Path to the `rules_dir.json` file.
 - `-n`, `--changed-name` &mdash; The name of the current in the changed file (required)
 - `-p`, `--product` &mdash; What product to produce the tailoring file for (required)
 - `-r`, `--root` &mdash; Path to SSG root directory
+
 
 To execute:
 
