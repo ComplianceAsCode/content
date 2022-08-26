@@ -3,7 +3,7 @@
 # make sure that the option is not configured through boot parameter
 {{% if product == "rhel8" %}}
 file="/boot/grub2/grubenv"
-if grep -q '^.*random.trust_cpu=.*'  "$file" ; then
+if grep -q '^.*random\.trust_cpu=.*'  "$file" ; then
 	sed -i 's/\(^.*\)random.trust_cpu=[^[:space:]]*\(.*\)/\1 \2/'  "$file"
 fi
 {{% else %}}
