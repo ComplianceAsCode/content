@@ -298,18 +298,18 @@ To execute:
 
 ### `utils/create_scap_delta_tailoring.py` - Create tailoring files for rules not covered by other content
 The goal of this tool is to create a tailoring file that enable rules that are not covered by other SCAP content and disables rules that are covered by the given content.
-It supports the following arguments: 
+It supports the following arguments:
 
 - `-r`, `--root` - Path to SSG root directory
 - `-p`, `--product` - What product to produce the tailoring file for (required)
 - `-m`, `--manual` - Path to the XCCDF XML file of the SCAP content (required)
-- `-j`, `--json` - Path to the `rules_dir.json ` file. 
+- `-j`, `--json` - Path to the `rules_dir.json ` file.
   - Defaults to `build/stig_control.json`
 - `-c`, `--build-config-yaml` - YAML file with information about the build configuration.
   - Defaults to `build/build_config.yml`
-- `-b`, `--profile` - What profile to use. 
+- `-b`, `--profile` - What profile to use.
   - Defaults to stig
-- `-ref`, `--reference` - What reference system to check for. 
+- `-ref`, `--reference` - What reference system to check for.
   - Defaults to `stigid`
   - `-o`, `--output` - Defaults `build/PRODUCT_PROFILE_tailoring.xml`, where `PRODUCT` and `PROFILE` are respective parameters given to the script.
   - `--profile-id` - The id of the created profile. Defaults to PROFILE_delta
@@ -348,6 +348,23 @@ Examples:
 To execute:
 
     $ ./utils/compare_results.py ssg_results.xml disa_results.xml
+
+### `utils/import_srg_spreadsheet.py` - Import changes made to an SRG Spreadsheet into the project
+This script will import changes from a SRG export spreadsheet.
+This script is designed to be run then each file reviewed carefully before being committed.
+
+It supports the following arguments:
+- `-b`, `--current` - Path to the current XLSX export (required)
+- `-c`, `--changed` - Path to the XLSX that was changed, defaults to RHEL 9
+- `-j`, `--json` - Path to the `rules_dir.json ` file.
+- `-n`, `--changed-name` - The name of the current in the changed file (required)
+- `-p`, `--product` - What product to produce the tailoring file for (required)
+- `-r`, `--root` - Path to SSG root directory
+
+To execute:
+
+    $ ./utils/import_srg_spreadsheet.py --changed 20220811_submission.xlsx --current build/cac_stig_output.xlsx -p rhel9
+
 
 ## Profiling the buildsystem
 
