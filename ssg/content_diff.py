@@ -116,6 +116,16 @@ class StandardContentDiffer(object):
                 "New content has different text for rule '%s':" % (rule_id))
             print(diff)
 
+    def _get_rule_description_text(self, el):
+        desc_text = el.text if el.text else ""
+        # If a 'sub' element is found, lets replace it with the id of the variable it references
+        if ssg.xml.get_element_tag_without_ns(el.tag) == "sub":
+            desc_text += "'%s'" % el.attrib['idref']
+        for desc_el in el:
+            desc_text += self._get_rule_description_text(desc_el)
+        desc_text += el.tail if el.tail else ""
+        return desc_text
+
     def join_text_elements(self, xml_rule):
         """
         This function collects the text of almost all subelements.
@@ -137,7 +147,11 @@ class StandardContentDiffer(object):
                 if ssg.constants.stig_ns == el.get("href"):
                     continue
             text += "\n[%s]:\n" % el_tag
-            text += "".join(el.itertext()) + "\n"
+            if el_tag == "description":
+                desc_text = self._get_rule_description_text(el)
+                text += desc_text + "\n"
+            else:
+                text += "".join(el.itertext()) + "\n"
         return text
 
     def compare_checks(self, old_rule, new_rule, old_checks, new_checks, system):
