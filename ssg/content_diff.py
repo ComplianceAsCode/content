@@ -147,12 +147,15 @@ class StandardContentDiffer(object):
                 # and can change for non-text related changes
                 if ssg.constants.stig_ns == el.get("href"):
                     continue
-            text += "\n[%s]:\n" % el_tag
             if el_tag == "description":
-                desc_text = self._get_rule_description_text(el)
-                text += desc_text + "\n"
+                temp_text = self._get_rule_description_text(el)
             else:
-                text += "".join(el.itertext()) + "\n"
+                temp_text = "".join(el.itertext())
+            temp_text = temp_text.strip()
+            if temp_text:
+                text += "\n[%s]:\n" % el_tag
+                text += temp_text + "\n"
+
         return text
 
     def compare_checks(self, old_rule, new_rule, old_checks, new_checks, system):
