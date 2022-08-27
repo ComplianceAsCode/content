@@ -22,20 +22,4 @@ description: |-
     Manual review is required to assess if the installed services are minimal.
 
 selections:
-  - anssi_sle:all:intermediary
-  - dir_perms_world_writable_root_owned
-  - dir_perms_world_writable_sticky_bits
-  - file_permissions_etc_shadow
-  - file_permissions_unauthorized_world_writable
-  - mount_option_nodev_nonroot_local_partitions
-  - package_chrony_installed
-  - selinux_state
-  - sysctl_kernel_exec_shield
-  - sysctl_kernel_kptr_restrict
-  - sysctl_kernel_randomize_va_space
-  - sysctl_net_ipv4_conf_default_accept_redirects
-  - sysctl_net_ipv4_conf_default_rp_filter
-  - sysctl_net_ipv4_tcp_syncookies
-  - sysctl_net_ipv4_conf_all_send_redirects
-  - sysctl_net_ipv4_conf_default_send_redirects
-  - sysctl_net_ipv4_ip_forward
+  - anssi:all:intermediary
