@@ -44,19 +44,8 @@ def element_value(element, element_obj):
         return ""
 
 
-def determine_xccdf_tree_namespace(tree):
-    root = tree.getroot()
-    if root.tag == "{%s}Benchmark" % XCCDF11_NS:
-        xccdf_ns = XCCDF11_NS
-    elif root.tag == "{%s}Benchmark" % XCCDF12_NS:
-        xccdf_ns = XCCDF12_NS
-    else:
-        raise ValueError("Unknown root element '%s'" % root.tag)
-    return xccdf_ns
-
-
 def ssg_xccdf_stigid_mapping(ssgtree):
-    xccdf_ns = determine_xccdf_tree_namespace(ssgtree)
+    xccdf_ns = ssg.xml.determine_xccdf_tree_namespace(ssgtree)
     xccdftostig_idmapping = {}
 
     for rule in ssgtree.findall(".//{%s}Rule" % xccdf_ns):

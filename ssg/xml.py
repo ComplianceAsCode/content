@@ -4,7 +4,8 @@ from __future__ import print_function
 import platform
 import re
 
-from .constants import xml_version, oval_header, timestamp, PREFIX_TO_NS
+from .constants import (
+    xml_version, oval_header, timestamp, PREFIX_TO_NS, XCCDF11_NS, XCCDF12_NS)
 
 
 try:
@@ -93,3 +94,14 @@ def add_xhtml_namespace(data):
                   lambda m: r'<' + (m.group(1) or '') + 'xhtml:' +
                   (m.group(2) or '') + (m.group(3) or '') + '>',
                   data)
+
+
+def determine_xccdf_tree_namespace(tree):
+    root = tree.getroot()
+    if root.tag == "{%s}Benchmark" % XCCDF11_NS:
+        xccdf_ns = XCCDF11_NS
+    elif root.tag == "{%s}Benchmark" % XCCDF12_NS:
+        xccdf_ns = XCCDF12_NS
+    else:
+        raise ValueError("Unknown root element '%s'" % root.tag)
+    return xccdf_ns
