@@ -51,7 +51,9 @@
                    test_ref="test_sysctl_kernel_core_pattern_empty_string_static_run_sysctld"/>
       </criteria>
 
+{{% if target_oval_version >= [5, 11] %}}
       <criterion comment="Check that kernel_core_pattern is defined in only one file" test_ref="test_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" />
+{{% endif %}}
     </criteria>
   </definition>
 
@@ -75,6 +77,7 @@
     <ind:state state_ref="state_static_sysctld_sysctl_kernel_core_pattern_empty_string"/>
 
   </ind:textfilecontent54_test>
+{{% if target_oval_version >= [5, 11] %}}
   <ind:variable_test check="all" check_existence="all_exist" comment="Check that only one file contains kernel_core_pattern"
   id="test_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" version="1">
     <ind:object object_ref="object_sysctl_kernel_core_pattern_empty_string_defined_in_one_file" />
@@ -159,7 +162,7 @@
   <unix:symlink_state comment="State that matches symlinks referencing files not in the default dirs" id="state_symlink_points_outside_usual_dirs_sysctl_kernel_core_pattern_empty_string" version="1">
     <unix:canonical_path operation="pattern match">^(?!(\/etc\/sysctl\.conf$|(\/etc|\/run|\/usr\/lib)\/sysctl\.d\/)).*$</unix:canonical_path>
   </unix:symlink_state>
-
+{{% endif %}}
   <local_variable comment="List of conf files" datatype="string" id="local_var_conf_files_sysctl_kernel_core_pattern_empty_string" version="1">
     <object_component object_ref="object_sysctl_kernel_core_pattern_empty_string_static_set_sysctls_unfiltered" item_field="filepath" />
   </local_variable>
