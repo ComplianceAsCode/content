@@ -1,0 +1,50 @@
+# platform = multi_platform_sle,multi_platform_ubuntu
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+{{{ ansible_instantiate_variables("var_accounts_passwords_pam_tally2_unlock_time") }}}
+
+- name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-auth
+  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-auth || true
+  register: check_pam_tally2_result
+
+- name: Configure pam_tally2.so module in /etc/pam.d/common-auth
+  lineinfile:
+    path: /etc/pam.d/common-auth
+    line: 'auth required pam_tally2.so'
+    state: present
+  when: '"pam_tally2" not in check_pam_tally2_result.stdout'
+
+- name: Check to see if 'unlock_time' parameter is present
+  shell: grep -e '^\s*auth\s\+required\s\+pam_tally2\.so.*\sunlock_time=.*' /etc/pam.d/common-auth || true
+  register: check_unlock_time_result
+
+- name: Make sure pam_tally2.so has 'unlock_time' parameter set to {{var_accounts_passwords_pam_tally2_unlock_time }}
+  replace:
+    path: /etc/pam.d/common-auth
+    regexp: ^(\s*auth\s+required\s+pam_tally2\.so\s+[^\n]*)unlock_time=(\d+)(\s*.*)
+    replace: '\1unlock_time={{ var_accounts_passwords_pam_tally2_unlock_time }}\3'
+
+  when: '"unlock_time=" in check_unlock_time_result.stdout'
+
+- name: Add 'unlock_time' parameter for pam_tally2.so module in /etc/pam.d/common-auth
+  lineinfile:
+    path: /etc/pam.d/common-auth
+    regexp: ^(\s*auth\s+required\s+pam_tally2\.so)((\s+\S+)*\s*(\\)*$)
+    line: '\1 unlock_time={{ var_accounts_passwords_pam_tally2_unlock_time }}\2'
+    backrefs: yes
+    state: present
+  when: '"unlock_time=" not in check_unlock_time_result.stdout'
+
+- name: Check to see if pam_tally2.so is configured in /etc/pam.d/common-account
+  shell: grep -e '^\s*account\s\+required\s\+pam_tally2\.so' /etc/pam.d/common-account || true
+  register: check_account_pam_tally2_result
+
+- name: Configure pam_tally2.so module in /etc/pam.d/common-account
+  lineinfile:
+    path: /etc/pam.d/common-account
+    line: 'account required pam_tally2.so'
+    state: present
+  when: '"pam_tally2" not in check_account_pam_tally2_result.stdout'
