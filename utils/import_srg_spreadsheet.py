@@ -15,6 +15,9 @@ SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RULES_JSON = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 SEVERITY = {'CAT III': 'low', 'CAT II': 'medium', 'CAT I': 'high'}
 
+# The start row is 2, to avoid importing the header
+START_ROW = 2
+
 
 class Row:
     row_id = 0
@@ -37,7 +40,7 @@ class Row:
     Status_Justification = ""
 
     @staticmethod
-    def from_row(sheet: Worksheet, row_number: int) -> Row:
+    def from_row(sheet: Worksheet, row_number: int, full_name: str, changed_name: str) -> Row:
         self = Row()
         self.row_id = row_number
         self.IA_Control = sheet[f'A{row_number}'].value
@@ -45,8 +48,7 @@ class Row:
         self.SRGID = sheet[f'C{row_number}'].value
         self.STIGID = sheet[f'D{row_number}'].value
         self.SRG_Requirement = sheet[f'E{row_number}'].value
-        self.Requirement = sheet[f'F{row_number}'].value \
-            .replace('Red Hat Enterprise Linux 9', 'RHEL 9')
+        self.Requirement = sheet[f'F{row_number}'].value.replace(full_name, changed_name)
         self.SRG_VulDiscussion = sheet[f'H{row_number}'].value
         self.Vul_Discussion = sheet[f'G{row_number}'].value
         self.Status = sheet[f'I{row_number}'].value
@@ -77,12 +79,15 @@ def parse_args() -> argparse.Namespace:
                         help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
                         help="What product tofix_cac_cells")
+    parser.add_argument("-e", '--end-row', type=int, action="store", default=600,
+                        help="What row to end on, defaults to 600")
     return parser.parse_args()
 
 
-def get_stigid_set(sheet: Worksheet) -> set[str]:
+def get_stigid_set(sheet: Worksheet, end_row: int) -> set[str]:
     result = set()
-    for i in range(2, 600):
+    start_row = 2
+    for i in range(start_row, end_row):
         cci_raw = sheet[f'D{i}'].value
 
         if cci_raw is None or cci_raw == "":
@@ -91,14 +96,15 @@ def get_stigid_set(sheet: Worksheet) -> set[str]:
     return result
 
 
-def get_cce_dict_to_row_dict(sheet: Worksheet) -> dict:
+def get_cce_dict_to_row_dict(sheet: Worksheet, full_name: str, changed_name: str,
+                             end_row: int) -> dict:
     result = dict()
-    for i in range(2, 600):
+    for i in range(START_ROW, end_row):
         cci_raw = sheet[f'D{i}'].value
         if cci_raw is None or cci_raw == "":
             continue
         cci = cci_raw.strip()
-        result[cci] = Row.from_row(sheet, i)
+        result[cci] = Row.from_row(sheet, i, full_name, changed_name)
 
     return result
 
@@ -132,7 +138,7 @@ def get_cac_status(disa: str) -> str:
 
 def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
     path_dir = rule_dir['dir']
-    path = f'{path_dir}/rule.yml'
+    path = os.path.join(path_dir, 'rule.yml')
     lines = get_yaml_contents(rule_dir)
     section_ranges = find_section_lines(lines.contents, key)
     replacement_line = f"{key}: {replacement}"
@@ -154,7 +160,7 @@ def replace_yaml_key(key: str, replacement: str, rule_dir: dict) -> None:
 
 def replace_yaml_section(section: str, replacement: str, rule_dir: dict) -> None:
     path_dir = rule_dir['dir']
-    path = f'{path_dir}/rule.yml'
+    path = os.path.join(path_dir, 'rule.yml')
     lines = get_yaml_contents(rule_dir)
     replacement = replacement.replace('RHEL 9', '{{{ full_name }}}')
     section_ranges = find_section_lines(lines.contents, section)
@@ -191,9 +197,9 @@ def fix_cac_cells(content: str, full_name: str, changed_name: str) -> str:
     return ""
 
 
-def get_common_set(changed_sheet: Worksheet, current_sheet: Worksheet):
-    changed_set = get_stigid_set(changed_sheet)
-    current_set = get_stigid_set(current_sheet)
+def get_common_set(changed_sheet: Worksheet, current_sheet: Worksheet, end_row: int):
+    changed_set = get_stigid_set(changed_sheet, end_row)
+    current_set = get_stigid_set(current_sheet, end_row)
     common_set = current_set - (current_set - changed_set)
     return common_set
 
@@ -212,18 +218,20 @@ def update_row(changed: str, current: str, rule_dir_json: dict, section: str):
 
 def main() -> None:
     args = parse_args()
+    full_name = get_full_name(args.root, args.product)
     changed_wb = load_workbook(args.changed)
     current_wb = load_workbook(args.current)
     current_sheet = current_wb['Sheet']
     changed_sheet = changed_wb['Sheet']
-    common_set = get_common_set(changed_sheet, current_sheet)
+    common_set = get_common_set(changed_sheet, current_sheet, args.end_row)
 
-    cac_cce_dict = get_cce_dict_to_row_dict(current_sheet)
-    disa_cce_dict = get_cce_dict_to_row_dict(changed_sheet)
+    cac_cce_dict = get_cce_dict_to_row_dict(current_sheet, full_name, args.changed_name,
+                                            args.end_row)
+    disa_cce_dict = get_cce_dict_to_row_dict(changed_sheet, full_name, args.changed_name,
+                                             args.end_row)
 
     rule_dir_json = get_rule_dir_json(args.json)
     cce_rule_id_dict = get_cce_dict(rule_dir_json, args.product)
-    full_name = get_full_name(args.root, args.product)
 
     for cce in common_set:
         changed = disa_cce_dict[cce]
