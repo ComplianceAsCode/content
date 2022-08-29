@@ -1,4 +1,5 @@
 # platform = multi_platform_all
+# variables = var_rekey_limit_time=1h
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing

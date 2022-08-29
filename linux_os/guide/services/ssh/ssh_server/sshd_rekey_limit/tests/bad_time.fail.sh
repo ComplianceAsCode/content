@@ -1,4 +1,5 @@
 # platform = multi_platform_all
+# variables = var_rekey_limit_size=512M
 
 mkdir -p /etc/ssh/sshd_config.d
 touch /etc/ssh/sshd_config.d/nothing
