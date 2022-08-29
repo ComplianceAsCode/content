@@ -1,3 +1,3 @@
 # platform = multi_platform_all
 
-sed -e '/RekeyLimit/d' /etc/ssh/sshd_config
+sed -i '/RekeyLimit/d' /etc/ssh/sshd_config
