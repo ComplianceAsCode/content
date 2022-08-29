@@ -7,5 +7,5 @@ authselect create-profile hardening -b sssd
 CUSTOM_PROFILE="custom/hardening"
 authselect select $CUSTOM_PROFILE --force
 CUSTOM_SYSTEM_AUTH="/etc/authselect/$CUSTOM_PROFILE/system-auth"
-sed -i --follow-symlinks '/.*pam_pwhistory.so/d' $CUSTOM_SYSTEM_AUTH
+sed -i --follow-symlinks '/.*pam_pwhistory\.so/d' $CUSTOM_SYSTEM_AUTH
 authselect apply-changes -b

@@ -84,7 +84,7 @@ ocil: |-
     and ensure that the <tt>pam_unix.so</tt> module  is configured to use the argument
     <tt>sha512</tt>:
 
-    <pre>$ sudo grep "^password.*pam_unix.so.*sha512" {{{ pam_passwd_file_path }}}
+    <pre>$ sudo grep "^password.*pam_unix\.so.*sha512" {{{ pam_passwd_file_path }}}
     {{% if product in ["sle12", "sle15"] -%}}
     password required pam_unix.so sha512
     {{% else %}}

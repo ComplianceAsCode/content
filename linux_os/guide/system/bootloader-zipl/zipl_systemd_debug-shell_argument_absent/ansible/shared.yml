@@ -9,7 +9,7 @@
     - name: "Check how many boot entries set systemd.debug-shell"
       find:
         paths: "/boot/loader/entries/"
-        contains: "^options .*systemd.debug-shell.*$"
+        contains: "^options .*systemd\\.debug-shell.*$"
         patterns: "*.conf"
       register: n_entries
 
@@ -26,7 +26,7 @@
       find:
         paths: "/etc/kernel/"
         patterns: "cmdline"
-        contains: "^.*systemd.debug-shell.*$"
+        contains: "^.*systemd\\.debug-shell.*$"
       register: cmdline_find
 
     - name: "Remove systemd.debug-shell from /etc/kernel/cmdline"

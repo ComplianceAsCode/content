@@ -74,7 +74,7 @@ ocil: |-
     {{% if product not in ["ol8", "rhel8"] %}}
     Then, verify that the rescue service is in the runlevel1.target.
     Run the following command:
-    <pre>$ sudo grep "^Requires=.*rescue.service" /usr/lib/systemd/system/runlevel1.target</pre>
+    <pre>$ sudo grep "^Requires=.*rescue\.service" /usr/lib/systemd/system/runlevel1.target</pre>
     The output should be the following:
     <pre>Requires=sysinit.target rescue.service</pre>
 

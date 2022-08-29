@@ -4,7 +4,7 @@
 
 # Removes audit argument from kernel command line in /boot/grub2/grubenv
 file="/boot/grub2/grubenv"
-if grep -q '^.*random.trust_cpu=.*'  "$file" ; then
+if grep -q '^.*random\.trust_cpu=.*'  "$file" ; then
 	sed -i 's/\(^.*\)random.trust_cpu=[^[:space:]]*\(.*\)/\1 \2/'  "$file"
 fi
 
