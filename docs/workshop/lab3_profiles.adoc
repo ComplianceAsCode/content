@@ -4,6 +4,10 @@
 :experimental:
 :imagesdir: images
 
+// Variables
+:container_name: fedora_container
+:cpe_identifier: cpe:/o:fedoraproject:fedora:34
+
 == Introduction
 
 Imagine that your company has approved an internal security policy that enforces certain configurations for laptops being used outside the company site.
@@ -641,13 +645,14 @@ It is called `ssg-rhel8-ds.xml` and is located in the `build` directory.
 You need to give `oscap` the name of the profile (`travel`) and the path to the built datastream (`ssg-rhel8-ds.xml`) as arguments.
 You also add arguments to turn on full reporting, which generates XML and HTML results that you can review later.
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py profile \
-            --docker fedora_container \
+            --docker {container_name} \
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             --logdir profile-log \
             travel
 ----

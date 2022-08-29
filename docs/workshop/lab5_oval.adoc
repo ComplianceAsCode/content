@@ -4,6 +4,11 @@
 :experimental:
 :imagesdir: images
 
+// Variables
+:container_name: fedora_container
+:cpe_identifier: cpe:/o:fedoraproject:fedora:34
+
+
 == Introduction
 
 OVAL stands for Open Vulnerability and Assessment Language.
@@ -266,13 +271,14 @@ As we have already seen earlier, the initial build of the content including buil
 . You test the `accounts_tmout` rule included in the `ospp` profile of the RHEL 8 datastream.
 With that in mind, execute the test suite:
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
-            --docker fedora_container \
+            --docker {container_name} \
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             accounts_tmout
 ----
 +
@@ -296,13 +302,13 @@ You supplied the following arguments to it:
 +
 The alternative mode is `profile` mode, which is simpler--there are no test scenarios and the system is scanned.
 
-* You want to use `docker` with the `fedora_container` image as the back end, so you supply the `--docker fedora_container` arguments.
+* You want to use `docker` with the `fedora_container` image as the back end, so you supply the `--docker {container_name}` arguments.
 
 * Of course you have to specify which datastream to use for testing--you use the built one, so you specify `--datastream build/ssg-rhel8-ds.xml` arguments.
 
 * Finally, you specify what to test--a rule regular expression: `accounts_tmout` or `^accounts_tmout$`.
 
-* Other parameters are also used for supporting running tests in this kind of environment. For example, you use `--add-platform "cpe:/o:fedoraproject:fedora:34"` to make the RHEL8 content applicable to Fedora images.
+* Other parameters are also used for supporting running tests in this kind of environment. For example, you use `--add-platform "{cpe_identifier}"` to make the RHEL8 content applicable to Fedora images.
 ====
 
 The output tells you the following:
@@ -421,13 +427,14 @@ TIP: You can use the `Up` arrow key to browse the command history so you do not 
 [... ]$ ./build_product rhel8 --datastream-only
 ----
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
-            --docker fedora_container \
+            --docker {container_name} \
             --datastream build/ssg-rhel8-ds.xml \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             accounts_tmout
 ----
 +
@@ -561,12 +568,13 @@ This way, you do not have to worry about possibly introducing those link:https:/
 [... ]$ ./build_product rhel8 --datastream-only
 ----
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
-            --docker fedora_container \
+            --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             accounts_tmout
 ----
 +
@@ -643,12 +651,13 @@ fi
 
 . Now go back to the tests and run them:
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
-            --docker fedora_container \
+            --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             accounts_tmout
 ----
 +
@@ -691,12 +700,13 @@ This time, when rebuilt and executed again, the tests pass:
 [... ]$ ./build_product rhel8 --datastream-only
 ----
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
-            --docker fedora_container \
+            --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             accounts_tmout
 ----
 +
@@ -742,12 +752,13 @@ fi
 You do not have to rebuild the product, as you have changed only the test definition, and you can rerun the test suite without the prior rebuild.
 Execute the test suite again and expect the `ERROR - Script correct_value.pass.sh using profile xccdf_org.ssgproject.content_profile_ospp found issue:` line to appear in the output.
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
-            --docker fedora_container \
+            --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             accounts_tmout
 ----
 +
@@ -788,12 +799,13 @@ The non-capturing group that consists of `export` followed by at least one white
 [... ]$ ./build_product rhel8 --datastream-only
 ----
 +
+[subs="attributes"]
 ----
 [... ]$ SSH_ADDITIONAL_OPTIONS="-o IdentityFile=/workspace/content/.ssh/id_rsa" tests/automatus.py rule \
-            --docker fedora_container \
+            --docker {container_name} \
             --remediate-using bash \
             --remove-machine-only \
-            --add-platform "cpe:/o:fedoraproject:fedora:34" \
+            --add-platform "{cpe_identifier}" \
             accounts_tmout
 ----
 +
