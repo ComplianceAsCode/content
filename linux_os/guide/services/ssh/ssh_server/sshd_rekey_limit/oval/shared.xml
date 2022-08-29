@@ -1,7 +1,7 @@
 {{%- set parameter = "RekeyLimit" %}}
 {{%- set sshd_config_path = "/etc/ssh/sshd_config" %}}
 {{%- set sshd_config_dir = "/etc/ssh/sshd_config.d" -%}}
-{{%- set description = "Ensure {{{ parameter }}} is configured with the appropriate value in " ~ sshd_config_path %}}
+{{%- set description = "Ensure " ~ parameter ~ " is configured with the appropriate value in " ~ sshd_config_path %}}
 {{%- if sshd_distributed_config == "true" %}}
 {{%- set description = description  ~ " or in " ~ sshd_config_dir -%}}
 {{%- endif %}}

@@ -3,7 +3,7 @@
     {{{ oval_metadata("Ensure the system is not configured to use a boot loader on removable media.") }}}
     <criteria comment="The respective application or service is configured correctly or system boot mode is not UEFI" operator="OR">
       <criterion comment="Check the set root in {{{ grub2_uefi_boot_path }}}/grub.cfg" test_ref="test_uefi_no_removeable_media" />
-      {{{ oval_file_absent_criterion(grub2_uefi_boot_path + "/grub.cfg") }}}
+      {{{ oval_file_absent_criterion(grub2_uefi_boot_path ~ "/grub.cfg") }}}
     </criteria>
   </definition>
 
@@ -15,7 +15,7 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="obj_uefi_no_removeable_media" version="1">
-    <ind:filepath>{{{ grub2_uefi_boot_path + "/grub.cfg" }}}</ind:filepath>
+    <ind:filepath>{{{ grub2_uefi_boot_path }}}/grub.cfg</ind:filepath>
     <ind:pattern operation="pattern match">^[ \t]*set root=(.+?)[ \t]*(?:$|#)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -24,5 +24,5 @@
     <ind:subexpression datatype="string" operation="pattern match">^['|\(](?!fd)(?!cd)(?!usb).*['|\)]$</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  {{{ oval_file_absent(grub2_uefi_boot_path + "/grub.cfg") }}}
+  {{{ oval_file_absent(grub2_uefi_boot_path ~ "/grub.cfg") }}}
 </def-group>

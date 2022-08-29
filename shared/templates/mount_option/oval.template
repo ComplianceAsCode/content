@@ -1,6 +1,6 @@
 <def-group>
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="2">
-    {{{ oval_metadata(MOUNTPOINT + " should be mounted with mount option " + MOUNTOPTION + ".") }}}
+    {{{ oval_metadata(MOUNTPOINT ~ " should be mounted with mount option " ~ MOUNTOPTION ~ ".") }}}
     <criteria operator="OR">
       <criterion comment="{{{ MOUNTOPTION }}} on {{{ MOUNTPOINT }}}"
         test_ref="test_{{{ POINTID }}}_partition_{{{ MOUNTOPTIONID }}}_optional_{{{ MOUNT_HAS_TO_EXIST }}}"/>
