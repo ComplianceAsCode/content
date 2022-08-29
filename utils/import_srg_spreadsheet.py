@@ -78,7 +78,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-j", "--json", type=str, action="store", default=RULES_JSON,
                         help=f"Path to the rules_dir.json (defaults to {RULES_JSON})")
     parser.add_argument("-p", "--product", type=str, action="store", required=True,
-                        help="What product tofix_cac_cells")
+                        help="What product product id to use.")
     parser.add_argument("-e", '--end-row', type=int, action="store", default=600,
                         help="What row to end on, defaults to 600")
     return parser.parse_args()
