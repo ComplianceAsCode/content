@@ -4,9 +4,11 @@
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
   {{{ oval_metadata("An SELinux Context must be configued for the Faillock directory.") }}}
-    <criteria operator="AND">
+    <criteria operator="OR">
       <criterion test_ref="test_account_password_selinux_faillock_dir"
-                 comment="the faillock directory should have faillog_t as context"/>
+                 comment="The faillock directories should have faillog_t as context"/>
+      <criterion test_ref="test_account_password_selinux_faillock_dir_not_set"
+                 comment="There is no faillock directory set in pam_faillock.so settings"/>
     </criteria>
   </definition>
   <ind:textfilecontent54_object id="object_account_password_selinux_faillock_dir_collector" version="1">
@@ -30,7 +32,7 @@
 
   <linux:selinuxsecuritycontext_object id="object_account_password_selinux_faillock_dir"
     comment="SELinux context information from pam_faillock.so tally directories" version="1">
-    <linux:path operation="equals" var_check="all"
+    <linux:path operation="equals" var_check="at least one"
                 var_ref="var_account_password_selinux_faillock_dir_collector"/>
     <linux:filename xsi:nil="true"/>
   </linux:selinuxsecuritycontext_object>
@@ -39,4 +41,14 @@
     comment="faillog_t context is set">
     <linux:type datatype="string" operation="equals">faillog_t</linux:type>
   </linux:selinuxsecuritycontext_state>
+
+  <ind:variable_test id="test_account_password_selinux_faillock_dir_not_set" check="all"
+                     check_existence="none_exist" version="1"
+                     comment="Check the existence of faillock tally dirs">
+    <ind:object object_ref="object_account_password_selinux_faillock_dir_not_set"/>
+  </ind:variable_test>
+
+  <ind:variable_object id="object_account_password_selinux_faillock_dir_not_set" version="1">
+    <ind:var_ref>var_account_password_selinux_faillock_dir_collector</ind:var_ref>
+  </ind:variable_object>
 </def-group>
