@@ -10,6 +10,7 @@ from .constants import (
 from .constants import (
     datastream_namespace,
     oval_namespace,
+    stig_ns,
     cat_namespace,
     xlink_namespace,
     ocil_namespace,
@@ -296,6 +297,51 @@ class XMLRule(XMLElement):
 
     def get_all_platform_elements(self):
         return self.root.findall(".//%s:platform" % (self.content_xccdf_ns), self.ns)
+
+    def _get_description_text(self, el):
+        desc_text = el.text if el.text else ""
+        # If a 'sub' element is found, lets replace it with the id of the variable it references
+        if get_element_tag_without_ns(el.tag) == "sub":
+            desc_text += "'%s'" % el.attrib['idref']
+        for desc_el in el:
+            desc_text += self._get_description_text(desc_el)
+        desc_text += el.tail if el.tail else ""
+        return desc_text
+
+    def get_element_text(self, el):
+        el_tag = get_element_tag_without_ns(el.tag)
+        if el_tag == "description":
+            temp_text = self._get_description_text(el)
+        else:
+            temp_text = "".join(el.itertext())
+        return temp_text
+
+    def join_text_elements(self):
+        """
+        This function collects the text of almost all subelements.
+        Similar to what itertext() would do, except that this function skips some elements that
+        are not relevant for comparison.
+
+        This function also injects a line for each element whose text was collected, to
+        facilitate tracking of where in the rule the text came from.
+        """
+        text = ""
+        for el in self.root:
+            el_tag = get_element_tag_without_ns(el.tag)
+            if el_tag == "fix":
+                # We ignore the fix element because it has its own dedicated differ
+                continue
+            if el_tag == "reference" and el.get("href" == stig_ns):
+                # We ignore references to DISA Benchmark Rules, they have a format of SV-\d+r\d+_rule
+                # and can change for non-text related changes
+                continue
+            el_text = self.get_element_text(el).strip()
+            if el_text:
+                text += "\n[%s]:\n" % el_tag
+                text += el_text + "\n"
+
+        return text
+
 
 
 class XMLComponent(XMLElement):

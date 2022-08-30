@@ -101,8 +101,8 @@ class StandardContentDiffer(object):
             print("+{}".format(repr(entries[1]["cpe"])))
 
     def compare_rule_texts(self, old_rule, new_rule):
-        old_rule_text = self.join_text_elements(old_rule)
-        new_rule_text = self.join_text_elements(new_rule)
+        old_rule_text = old_rule.join_text_elements()
+        new_rule_text = new_rule.join_text_elements()
 
         if old_rule_text == new_rule_text:
             return
@@ -116,47 +116,6 @@ class StandardContentDiffer(object):
             print(
                 "New content has different text for rule '%s':" % (rule_id))
             print(diff)
-
-    def _get_rule_description_text(self, el):
-        desc_text = el.text if el.text else ""
-        # If a 'sub' element is found, lets replace it with the id of the variable it references
-        if ssg.xml.get_element_tag_without_ns(el.tag) == "sub":
-            desc_text += "'%s'" % el.attrib['idref']
-        for desc_el in el:
-            desc_text += self._get_rule_description_text(desc_el)
-        desc_text += el.tail if el.tail else ""
-        return desc_text
-
-    def join_text_elements(self, xml_rule):
-        """
-        This function collects the text of almost all subelements.
-        Similar to what itertext() would do, except that this function skips some elements that
-        are not relevant for comparison.
-
-        This function also injects a line for each element whose text was collected, to
-        facilitate tracking of where in the rule the text came from.
-        """
-        text = ""
-        for el in xml_rule.root:
-            el_tag = ssg.xml.get_element_tag_without_ns(el.tag)
-            if el_tag == "fix":
-                # We ignore the fix xml_rule because it has its own dedicated differ
-                continue
-            if el_tag == "reference":
-                # We ignore references to DISA Benchmark Rules, they have a format of SV-\d+r\d+_rule
-                # and can change for non-text related changes
-                if ssg.constants.stig_ns == el.get("href"):
-                    continue
-            if el_tag == "description":
-                temp_text = self._get_rule_description_text(el)
-            else:
-                temp_text = "".join(el.itertext())
-            temp_text = temp_text.strip()
-            if temp_text:
-                text += "\n[%s]:\n" % el_tag
-                text += temp_text + "\n"
-
-        return text
 
     def compare_checks(self, old_rule, new_rule, old_checks, new_checks, system):
         check_system_uri = check_system_to_uri[system]
@@ -358,8 +317,8 @@ class StigContentDiffer(StandardContentDiffer):
                                    old_benchmark, new_benchmark)
 
     def compare_rule_texts(self, old_rule, new_rule):
-        old_rule_text = self.join_text_elements(old_rule)
-        new_rule_text = self.join_text_elements(new_rule)
+        old_rule_text = old_rule.join_text_elements()
+        new_rule_text = new_rule.join_text_elements()
 
         if old_rule_text == new_rule_text:
             return
