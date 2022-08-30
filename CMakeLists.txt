@@ -132,6 +132,7 @@ find_python_module(pytest)
 find_python_module(pytest_cov)
 find_python_module(json2html)
 find_python_module(yamlpath)
+find_python_module(mypy)
 
 # sphinx documentation requirements
 find_python_module(sphinx)
@@ -232,6 +233,7 @@ message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABL
 message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
 message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
 message(STATUS "yamlpath module (optional): ${PY_YAMLPATH}")
+message(STATUS "python mypy module (optional): ${PY_MYPY}")
 message(STATUS "BATS framework (optional): ${BATS_EXECUTABLE}")
 message(STATUS "python sphinx module (optional): ${PY_SPHINX}")
 message(STATUS "python sphinxcontrib.autojinja module (optional): ${PY_SPHINXCONTRIB.AUTOJINJA}")
