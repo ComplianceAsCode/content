@@ -1,8 +1,8 @@
 #!/bin/bash
-# platform = multi_platform_ubuntu,multi_platform_rhel
+# platform = multi_platform_ol,multi_platform_rhel,multi_platform_ubuntu
 {{% if "ubuntu" in product %}}
 # packages = libpam-pkcs11
-{{% elif "rhel7" == product %}}
+{{% elif product in ["ol7", "rhel7"] %}}
 # packages = pam_pkcs11
 {{% else %}}
 # packages = openssl-pkcs11

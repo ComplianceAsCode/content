@@ -1,5 +1,6 @@
 #! /bin/bash
-# platform = multi_platform_rhel
+# platform = multi_platform_ol,multi_platform_rhel
+# variables = var_accounts_authorized_local_users_regex=^(root|bin|daemon|adm|lp|sync|shutdown|halt|mail|operator|games|ftp|nobody|pegasus|systemd-bus-proxy|systemd-network|dbus|polkitd|abrt|unbound|tss|libstoragemgmt|rpc|colord|usbmuxd$|pcp|saslauth|geoclue|setroubleshoot|rtkit|chrony|qemu|radvd|rpcuser|nfsnobody|pulse|gdm|gnome-initial-setup|postfix|avahi|ntp|sshd|tcpdump|oprofile|uuidd)$
 
 var_accounts_authorized_local_users_regex="^(root|bin|daemon|adm|lp|sync|shutdown|halt|mail|operator|games|ftp|nobody|pegasus|systemd-bus-proxy|systemd-network|dbus|polkitd|abrt|unbound|tss|libstoragemgmt|rpc|colord|usbmuxd$|pcp|saslauth|geoclue|setroubleshoot|rtkit|chrony|qemu|radvd|rpcuser|nfsnobody|pulse|gdm|gnome-initial-setup|postfix|avahi|ntp|sshd|tcpdump|oprofile|uuidd)$"
 
@@ -11,6 +12,6 @@ default_os_user="root"
 for username in $( sed 's/:.*//' /etc/passwd ) ; do
 	if [[ ! "$username" =~ ($default_os_user|$var_accounts_authorized_local_users_regex) ]];
         then
-		echo $username ;
+		userdel $username ;
 	fi
 done

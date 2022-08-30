@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# platform = multi_platform_fedora,multi_platform_rhel
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 # packages = grub2,grubby
 
 source common.sh
