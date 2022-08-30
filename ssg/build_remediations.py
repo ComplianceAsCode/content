@@ -16,6 +16,7 @@ from . import constants
 from .jinja import process_file_with_macros as jinja_process_file
 
 from .xml import ElementTree
+from .constants import XCCDF11_NS
 
 REMEDIATION_TO_EXT_MAP = {
     'anaconda': '.anaconda',
@@ -663,7 +664,7 @@ def expand_xccdf_subs(fix, remediation_type):
 
         # we cannot combine elements and text easily
         # so text is in ".tail" of element
-        xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
+        xccdfvarsub = ElementTree.SubElement(fix, "{%s}sub" % XCCDF11_NS, idref=varname)
         xccdfvarsub.tail = text_between_vars
 
 
