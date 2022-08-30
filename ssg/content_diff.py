@@ -216,8 +216,8 @@ class StandardContentDiffer(object):
     def compare_oval_definitions(self, old_oval_def_doc, old_oval_def_id, new_oval_def_doc, new_oval_def_id):
         old_def = old_oval_def_doc.find_oval_definition(old_oval_def_id)
         new_def = new_oval_def_doc.find_oval_definition(new_oval_def_id)
-        old_els = self._oval_definition_to_elements(old_def)
-        new_els = self._oval_definition_to_elements(new_def)
+        old_els = old_def.get_elements()
+        new_els = new_def.get_elements()
         for x in old_els.copy():
             for y in new_els.copy():
                 if x[0] == y[0] and x[1] == y[1]:
@@ -230,22 +230,6 @@ class StandardContentDiffer(object):
             print("+++ new datastream")
             self.print_offending_elements(old_els, "-")
             self.print_offending_elements(new_els, "+")
-
-    def _oval_definition_to_elements(self, definition):
-        criteria = definition.get_criteria_element()
-        elements = []
-        for child in criteria.iter():  # iter recurses
-            el_tag = ssg.xml.get_element_tag_without_ns(child.tag)
-            if el_tag == "criteria":
-                operator = child.get("operator")
-                elements.append(("criteria", operator))
-            elif el_tag == "criterion":
-                test_id = child.get("test_ref")
-                elements.append(("criterion", test_id))
-            elif el_tag == "extend_definition":
-                extend_def_id = child.get("definition_ref")
-                elements.append(("extend_definition", extend_def_id))
-        return elements
 
     def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id):
         try:

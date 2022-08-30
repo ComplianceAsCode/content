@@ -338,6 +338,22 @@ class XMLOvalDefinition(XMLComponent):
     def get_criteria_element(self):
         return self.root.find("oval:criteria", self.ns)
 
+    def get_elements(self):
+        criteria = self.get_criteria_element()
+        elements = []
+        for child in criteria.iter():  # iter recurses
+            el_tag = get_element_tag_without_ns(child.tag)
+            if el_tag == "criteria":
+                operator = child.get("operator")
+                elements.append(("criteria", operator))
+            elif el_tag == "criterion":
+                test_id = child.get("test_ref")
+                elements.append(("criterion", test_id))
+            elif el_tag == "extend_definition":
+                extend_def_id = child.get("definition_ref")
+                elements.append(("extend_definition", extend_def_id))
+        return elements
+
 
 class XMLOcilQuestionnaire(XMLComponent):
     def __init__(self, root):
