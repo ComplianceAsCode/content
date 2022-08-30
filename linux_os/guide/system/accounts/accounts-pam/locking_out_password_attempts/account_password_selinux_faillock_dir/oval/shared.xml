@@ -32,7 +32,7 @@
 
   <linux:selinuxsecuritycontext_object id="object_account_password_selinux_faillock_dir"
     comment="SELinux context information from pam_faillock.so tally directories" version="1">
-    <linux:path operation="equals" var_check="all"
+    <linux:path operation="equals" var_check="at least one"
                 var_ref="var_account_password_selinux_faillock_dir_collector"/>
     <linux:filename xsi:nil="true"/>
   </linux:selinuxsecuritycontext_object>
