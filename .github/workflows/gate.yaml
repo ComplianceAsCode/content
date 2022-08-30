@@ -159,6 +159,9 @@ jobs:
               rhel7 \
               rhel8 \
               rhel9
+      - name: Validate OVAL Build 5.10
+        working-directory: ./build
+        run: ctest -j2 -R validate-ssg-rhel[0-9]+-oval.xml --output-on-failure -E unique-stigids
 
   validate-fedora-rawhide:
     name: Build, Test on Fedora Rawhide (Container)
