@@ -42,8 +42,13 @@
     <linux:type datatype="string" operation="equals">faillog_t</linux:type>
   </linux:selinuxsecuritycontext_state>
 
-  <ind:textfilecontent54_test id="test_account_password_selinux_faillock_dir_not_set" version="1"
-    check="all" check_existence="none_exist" comment="No faillock tally dir was found">
-    <ind:object object_ref="object_account_password_selinux_faillock_dir_collector"/>
-  </ind:textfilecontent54_test>
+  <ind:variable_test id="test_account_password_selinux_faillock_dir_not_set" check="all"
+                     check_existence="none_exist" version="1"
+                     comment="Check the existence of faillock tally dirs">
+    <ind:object object_ref="object_account_password_selinux_faillock_dir_not_set"/>
+  </ind:variable_test>
+
+  <ind:variable_object id="object_account_password_selinux_faillock_dir_not_set" version="1">
+    <ind:var_ref>var_account_password_selinux_faillock_dir_collector</ind:var_ref>
+  </ind:variable_object>
 </def-group>
