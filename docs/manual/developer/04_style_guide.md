@@ -325,6 +325,7 @@ Value must be low, medium, or high.
 * Shall follow all the rules in the [YAML](manual/developer/04_style_guide:yaml) section
 * Should prefer using Ansible modules over just calling system commands
 * Shall be written to pass [`ansible-lint`](https://github.com/ansible-community/ansible-lint)
+* Task names should be prefixed by `{{{ rule_title }}}`, e.g. `- name: "{{{ rule_title }}} - ensure correct banner"`
 
 ### Bash
 
