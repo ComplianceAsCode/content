@@ -59,7 +59,7 @@ class StandardContentDiffer(object):
         self.compare_checks(old_rule, new_rule, "OVAL")
         self.compare_checks(old_rule, new_rule, "OCIL")
         for remediation_type in FIX_TYPE_TO_SYSTEM.keys():
-            self.compare_remediations(old_rule, new_rule, remediation_type, self.show_diffs)
+            self.compare_remediations(old_rule, new_rule, remediation_type)
 
     def compare_platforms(self, old_rule, new_rule, old_benchmark, new_benchmark):
         entries = [{
@@ -217,7 +217,7 @@ class StandardContentDiffer(object):
         question_text = question.get_question_test_element()
         return question_text.text
 
-    def compare_remediations(self, old_rule, new_rule, remediation_type, show_diffs):
+    def compare_remediations(self, old_rule, new_rule, remediation_type):
         system = FIX_TYPE_TO_SYSTEM[remediation_type]
         old_fix = old_rule.get_fix_element(system)
         new_fix = new_rule.get_fix_element(system)
@@ -230,9 +230,9 @@ class StandardContentDiffer(object):
                 remediation_type, rule_id))
         elif (old_fix is not None and new_fix is not None):
             self._compare_fix_elements(
-                old_fix, new_fix, remediation_type, rule_id, show_diffs)
+                old_fix, new_fix, remediation_type, rule_id)
 
-    def _compare_fix_elements(self, old_fix, new_fix, remediation_type, rule_id, show_diffs):
+    def _compare_fix_elements(self, old_fix, new_fix, remediation_type, rule_id):
         old_fix_id = old_fix.get("id")
         new_fix_id = new_fix.get("id")
         if old_fix_id != new_fix_id:
@@ -241,7 +241,7 @@ class StandardContentDiffer(object):
                 "'%s' to '%s'." % (
                     remediation_type, rule_id, old_fix_id, new_fix_id)
             )
-        if show_diffs:
+        if self.show_diffs:
             old_fix_text = "".join(old_fix.itertext())
             new_fix_text = "".join(new_fix.itertext())
             diff = self.compare_fix_texts(old_fix_text, new_fix_text)
