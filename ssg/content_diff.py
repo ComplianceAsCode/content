@@ -61,6 +61,21 @@ class StandardContentDiffer(object):
         for remediation_type in FIX_TYPE_TO_SYSTEM.keys():
             self.compare_remediations(old_rule, new_rule, remediation_type)
 
+    def _get_list_of_platforms(self, cpe_platforms):
+        cpe_list = []
+        if len(cpe_platforms) == 0:
+            print("Platform {0} not defined in platform specification".format(idref))
+            return cpe_list
+        elif len(cpe_platforms) > 1:
+            print("Platform {0} defined more than once".format(idref))
+            for cpe_p in cpe_platforms:
+                ET.dump(cpe_p)
+        for cpe_platform in cpe_platforms:
+            fact_refs = cpe_platform.find_all_fact_ref_elements()
+            for fact_ref in fact_refs:
+                cpe_list.append(fact_ref.get("name"))
+        return cpe_list
+
     def compare_platforms(self, old_rule, new_rule, old_benchmark, new_benchmark):
         entries = [{
                 "benchmark": old_benchmark,
@@ -77,17 +92,7 @@ class StandardContentDiffer(object):
                 idref = platform.get("idref")
                 if idref.startswith("#"):
                     cpe_platforms = entry["benchmark"].find_all_cpe_platforms(idref)
-                    if len(cpe_platforms) > 1:
-                        print("Platform {0} defined more than once".format(idref))
-                        for cpe_p in cpe_platforms:
-                            ET.dump(cpe_p)
-                    if len(cpe_platforms) == 0:
-                        print("Platform {0} not defined in platform specification".format(idref))
-                        break
-                    for cpe_platform in cpe_platforms:
-                        fact_refs = cpe_platform.find_all_fact_ref_elements()
-                        for fact_ref in fact_refs:
-                            entry["cpe"].append(fact_ref.get("name"))
+                    entry["cpe"] += self._get_list_of_platforms(cpe_platforms)
                 else:
                     entry["cpe"].append(idref)
 
