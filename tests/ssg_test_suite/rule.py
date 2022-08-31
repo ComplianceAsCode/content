@@ -255,10 +255,11 @@ class RuleChecker(oscap.Checker):
     def _ensure_package_present_for_all_scenarios(
             self, test_content_by_rule_id):
         packages_required = set()
-
-        for rule_test_content in test_content_by_rule_id.values():
+        for rule_id, rule_test_content in test_content_by_rule_id.items():
             for s in rule_test_content.scenarios:
                 scenario_packages = s.script_params["packages"]
+                logging.debug("Scenario packages {0} {1} {2}".format(
+                    rule_id, s.script, scenario_packages))
                 packages_required.update(scenario_packages)
         if packages_required:
             packages_to_install = self._replace_platform_specific_packages(packages_required)
