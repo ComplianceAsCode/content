@@ -376,6 +376,25 @@ class XMLComponent(XMLElement):
             "ocil:boolean_question[@id='%s']" % question_id, self.ns)
         return XMLOcilQuestion(question)
 
+    def find_boolean_question(self, ocil_id):
+        questionnaire = self.find_ocil_questionnaire(ocil_id)
+        if questionnaire is None:
+            raise ValueError("OCIL questionnaire %s doesn't exist" % ocil_id)
+        test_action_ref = questionnaire.get_test_action_ref_element().text
+        test_action = self.find_ocil_test_action(test_action_ref)
+        if test_action is None:
+            raise ValueError(
+                "OCIL boolean_question_test_action %s doesn't exist" % (
+                    test_action_ref))
+        question_id = test_action.get_attr("question_ref")
+        question = self.find_ocil_boolean_question(question_id)
+        if question is None:
+            raise ValueError(
+                "OCIL boolean_question %s doesn't exist" % question_id)
+        question_text = question.get_question_test_element()
+        return question_text.text
+
+
 
 class XMLOvalDefinition(XMLComponent):
     def __init__(self, root):

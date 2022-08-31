@@ -190,32 +190,14 @@ class StandardContentDiffer(object):
 
     def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id):
         try:
-            old_question = self._find_boolean_question(old_ocil_doc, old_ocil_id)
-            new_question = self._find_boolean_question(new_ocil_doc, new_ocil_id)
+            old_question = old_ocil_doc.find_boolean_question(old_ocil_id)
+            new_question = new_ocil_doc.find_boolean_question(new_ocil_id)
         except ValueError as e:
             print("Rule '%s' OCIL can't be found: %s" % (self.rule_id, str(e)))
             return
         diff = self.compare_fix_texts(old_question, new_question)
         if diff:
             print("OCIL for rule '%s' differs:\n%s" % (self.rule_id, diff))
-
-    def _find_boolean_question(self, doc, ocil_id):
-        questionnaire = doc.find_ocil_questionnaire(ocil_id)
-        if questionnaire is None:
-            raise ValueError("OCIL questionnaire %s doesn't exist" % ocil_id)
-        test_action_ref = questionnaire.get_test_action_ref_element().text
-        test_action = doc.find_ocil_test_action(test_action_ref)
-        if test_action is None:
-            raise ValueError(
-                "OCIL boolean_question_test_action %s doesn't exist" % (
-                    test_action_ref))
-        question_id = test_action.get_attr("question_ref")
-        question = doc.find_ocil_boolean_question(question_id)
-        if question is None:
-            raise ValueError(
-                "OCIL boolean_question %s doesn't exist" % question_id)
-        question_text = question.get_question_test_element()
-        return question_text.text
 
     def compare_remediations(self, old_rule, new_rule, remediation_type):
         system = FIX_TYPE_TO_SYSTEM[remediation_type]
