@@ -39,7 +39,7 @@ EOF
     {{{ bash_os_linux_conditional("rhel", "10", "<", "$os_release_path") }}}
     {{{ bash_os_linux_conditional("rhel", "10.2", "<", "$os_release_path") }}}
 
-    ! ( {{{ bash_os_linux_conditional("fedora", "36", "==", "$os_release_path") }}} )
+    ! ( {{{ bash_os_linux_conditional("fedora", "38", "==", "$os_release_path") }}} )
     ! ( {{{ bash_os_linux_conditional("fedora", "9.2", "==", "$os_release_path") }}} )
     ! ( {{{ bash_os_linux_conditional("fedora", "9.4", "<", "$os_release_path") }}} )
 
@@ -80,7 +80,7 @@ EOF
     ! ( {{{ bash_os_linux_conditional("ubuntu", "20.10", "<", "$os_release_path") }}} )
     ! ( {{{ bash_os_linux_conditional("ubuntu", "22.10", ">", "$os_release_path") }}} )
 
-    ! ( {{{ bash_os_linux_conditional("fedora", "36", "==", "$os_release_path") }}} )
+    ! ( {{{ bash_os_linux_conditional("fedora", "38", "==", "$os_release_path") }}} )
     ! ( {{{ bash_os_linux_conditional("fedora", "22.10", "<", "$os_release_path") }}} )
 
     rm -rf "$os_release_path"
