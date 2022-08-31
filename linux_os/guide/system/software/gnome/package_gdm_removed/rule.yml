@@ -1,3 +1,5 @@
+{{%- set package = "gdm" -%}}
+
 documentation_complete: true
 
 prodtype: fedora,rhel7,rhel8,rhel9,rhv4,ubuntu2004,ubuntu2204
@@ -5,19 +7,11 @@ prodtype: fedora,rhel7,rhel8,rhel9,rhv4,ubuntu2004,ubuntu2204
 title: 'Remove the GDM Package Group'
 
 description: |-
-    {{% if 'ubuntu' not in product %}}
-    By removing the <tt>gdm</tt> package, the system no longer has GNOME installed
-    {{% else %}}
-    By removing the <tt>gdm3</tt> package, the system no longer has GNOME installed
-    {{% endif %}}
+    By removing the <tt>{{{ package }}}</tt> package, the system no longer has GNOME installed
     installed. If X Windows is not installed then the system cannot boot into graphical user mode.
     This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
     mode. To do so, run the following command:
-    {{% if 'ubuntu' not in product %}}
-    <pre>$ sudo yum remove gdm</pre>
-    {{% else %}}
-    <pre>$ sudo apt remove gdm3</pre>
-    {{% endif %}}
+    {{{ describe_package_remove(package=package) }}}
 
 rationale: |-
     Unnecessary service packages must not be installed to decrease the attack surface of the system.
@@ -37,34 +31,13 @@ references:
     nist: CM-7(a),CM-7(b),CM-6(a)
     srg: SRG-OS-000480-GPOS-00227
 
-{{% if 'ubuntu' not in product %}}
-ocil_clause: 'gdm has not been removed'
+{{{ complete_ocil_entry_package(package=package) }}}
 
-ocil: |-
-    To ensure the gdm package group is removed, run the following command:
-    <pre>$ rpm -qi gdm</pre>
-    The output should be:
-    <pre>package gdm is not installed</pre>
-{{% else %}}
-ocil_clause: 'gdm3 has not been removed'
+fixtext: '{{{ fixtext_package_removed(package) }}}'
 
-ocil: |-
-    To ensure the gdm3 package group is removed, run the following command:
-    <pre>$ dpkg -l gdm3</pre>
-    The output should begin with:
-    <pre>rc gdm3</pre>
-    Or
-    <pre>dpkg-query: no packages found matching gdm3</pre>
-{{% endif %}}
-
-fixtext: '{{{ fixtext_package_removed("gdm") }}}'
-
-srg_requirement: '{{{ srg_requirement_package_removed("gdm") }}}'
+srg_requirement: '{{{ srg_requirement_package_removed(package) }}}'
 
 template:
     name: package_removed
     vars:
-        pkgname: gdm
-        pkgname@ubuntu1604: gdm3
-        pkgname@ubuntu1804: gdm3
-        pkgname@ubuntu2004: gdm3
+        pkgname: {{{ package }}}
