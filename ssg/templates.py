@@ -58,7 +58,7 @@ class Template():
                 "but the implementation file is missing.".format(self.name, lang))
             self.langs.append(lang)
 
-    def preprocess(self, parameters, lang):
+    def preprocess(self, parameters, lang, platform_package_overrides):
         # if no template.py file exists, skip this preprocessing part
         if self.preprocessing_file_path is not None:
             unique_dummy_module_name = "template_" + self.name
@@ -71,7 +71,9 @@ class Template():
                     .format(name=self.name, preprocessing_file=self.preprocessing_file_path)
                 )
                 raise ValueError(msg)
-            parameters = preprocess_mod.preprocess(parameters.copy(), lang)
+            preprocess_parameters = parameters.copy()
+            preprocess_parameters['platform_package_overrides'] = platform_package_overrides.copy()
+            parameters = preprocess_mod.preprocess(preprocess_parameters, lang)
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
         uppercases = dict()
@@ -142,7 +144,8 @@ class Builder(object):
 
         template_file_name = lang + ".template"
         template_file_path = os.path.join(self.templates_dir, template_name, template_file_name)
-        template_parameters = templates[template_name].preprocess(template_vars, lang)
+        template_parameters = templates[template_name].preprocess(
+            template_vars, lang, self.env_yaml.get('platform_package_overrides', {}))
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             template_file_path, jinja_dict)
@@ -190,7 +193,7 @@ class Builder(object):
         template_vars = rule_template['vars']
         # Load template parameters and apply it to the test case.
         template_parameters = templates[template_name].preprocess(
-            template_vars, "tests")
+            template_vars, "tests", self.env_yaml.get('platform_package_overrides', {}))
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             absolute_path, jinja_dict)

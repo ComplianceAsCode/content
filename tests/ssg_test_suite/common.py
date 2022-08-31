@@ -530,6 +530,17 @@ def install_packages(test_env, packages):
         platform_cpe = get_cpe_of_tested_os(test_env, log_file)
     platform = cpes_to_platform([platform_cpe])
 
+    fixed_packages = []
+    product = test_env.product
+    product_yaml = get_product_context(product)
+    platform_package_overrides = product_yaml["platform_package_overrides"]
+    for package in packages:
+        package = platform_package_overrides.get(package, package)
+        if package is None:
+            continue
+        fixed_packages.append(package)
+    packages = set(fixed_packages)
+
     command_str = " ".join(INSTALL_COMMANDS[platform] + tuple(packages))
 
     with open(log_file_name, 'a') as log_file:

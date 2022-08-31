@@ -2,6 +2,9 @@ import re
 
 
 def preprocess(data, lang):
+    package = data["platform_package_overrides"].get(data["pkgname"], data["pkgname"])
+    if package is not None:
+        data["pkgname"] = package
     if "evr" in data:
         evr = data["evr"]
         if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):

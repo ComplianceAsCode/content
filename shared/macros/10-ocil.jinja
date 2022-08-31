@@ -196,6 +196,7 @@ ocil: |
 
 #}}
 {{% macro ocil_package(package) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
   {{% if pkg_system is defined %}}
     {{%- if pkg_system == "rpm" -%}}
         {{{ rpm_ocil_package(package) }}}
@@ -246,6 +247,7 @@ ocil_clause: "the package is installed"
 
 #}}
 {{% macro complete_ocil_entry_package(package) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
   {{% if pkg_system is defined %}}
     {{%- if pkg_system == "rpm" %}}
         {{{ rpm_complete_ocil_entry_package(package) }}}

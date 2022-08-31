@@ -397,11 +397,14 @@ The audit daemon must be restarted for the changes to take effect.
 {{#
 Fixtext for removing a package
 
+The macro respects `platform_package_overrides` variable.
+
 :param package: The package to remove
 :type package: str
 
 #}}
 {{% macro fixtext_package_removed(package) %}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
 To remove the {{{ full_name }}} package {{{ package }}} run the following command:
 
 {{{ package_remove(package) }}}
@@ -410,11 +413,14 @@ To remove the {{{ full_name }}} package {{{ package }}} run the following comman
 {{#
 Fixtext for installing a package
 
+The macro respects `platform_package_overrides` variable.
+
 :param package: The package to install
 :type package: str
 
 #}}
 {{% macro fixtext_package_installed(package) %}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
 To install the {{{ full_name }}} package {{{ package }}} run the following command:
 
 {{{ package_install(package) }}}

@@ -529,6 +529,22 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
+Do platform_package_overrides replacement if needed
+
+:param package: name of package
+:type package: str
+
+#}}
+{{%- macro apply_platform_package_overrides(package) -%}}
+{{%- if package in platform_package_overrides and platform_package_overrides[package] is not none -%}}
+{{{- platform_package_overrides[package] -}}}
+{{%- else -%}}
+{{{- package -}}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
+{{#
     Show how to install a package with apt-get.
 
     Example output::
@@ -665,6 +681,7 @@ management software.
 
 #}}
 {{%- macro package_install(package) -%}}
+  {{%- set package = apply_platform_package_overrides(package) -%}}
   {{% if pkg_manager is defined %}}
     {{%- if pkg_manager == "apt_get" -%}}
         {{{ apt_get_package_install(package) }}}
@@ -690,6 +707,7 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_package_install(package) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
     The <code>{{{ package }}}</code> package can be installed with the following command:
     <pre>{{{ package_install(package) }}}</pre>
 {{%- endmacro %}}
@@ -700,6 +718,7 @@ Outputs a command for removing a package, substituting the correct package
 management software.
 #}}
 {{%- macro package_remove(package) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
   {{% if pkg_manager is defined %}}
     {{%- if pkg_manager == "apt_get" -%}}
         {{{ apt_get_package_remove(package) }}}
@@ -725,6 +744,7 @@ substituting the correct package management software.
 
 #}}
 {{%- macro describe_package_remove(package) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>{{{ package_remove(package) }}}</pre>
 {{%- endmacro %}}

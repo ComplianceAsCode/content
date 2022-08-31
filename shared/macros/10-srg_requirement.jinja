@@ -45,11 +45,14 @@ Successful/unsuccessful uses of the {{{ command }}} command in {{{ full_name }}}
 {{#
     Generate a SRG requirement text for package removal.
 
+    The macro respects `platform_package_overrides` variable.
+
 :param package: Name of the package to be removed
 :type package: str
 
 #}}
 {{% macro srg_requirement_package_removed(package) %}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
 The package {{{ package }}} must be removed in {{{ full_name }}}.
 {{%- endmacro %}}
 
@@ -67,11 +70,14 @@ The kernel module {{{ module }}} must be disabled in {{{ full_name }}}.
 {{#
     Generate a SRG requirement text for package installed.
 
+    The macro respects `platform_package_overrides` variable.
+
 :param package: Name of the package to be installed
 :type package: str
 
 #}}
 {{% macro srg_requirement_package_installed(package) %}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
 The {{{ full_name }}} package {{{ package }}} must be installed.
 {{%- endmacro %}}
 

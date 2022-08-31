@@ -568,12 +568,14 @@ done
     Install a package
 
     Uses the right command based on pkg_manager property defined in product.yml.
+    The macro respects `platform_package_overrides` variable.
 
 :param package: name of the package
 :type package: str
 
 #}}
 {{%- macro bash_package_install(package) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
 {{%- if pkg_manager is defined -%}}
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if ! rpm -q --quiet "{{{ package }}}" ; then
@@ -597,12 +599,14 @@ zypper install -y "{{{ package }}}"
 
     Uses the right command based on pkg_manager property defined in product.yml.
     When used in a test scenario, the macro will remove even protected packages.
+    The macro respects `platform_package_overrides` variable.
 
 :param package: name of the package
 :type package: str
 
 #}}
 {{%- macro bash_package_remove(package) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
 {{%- if pkg_manager is defined -%}}
 {{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
 if rpm -q --quiet "{{{ package }}}" ; then
@@ -1021,7 +1025,7 @@ fi
 
 :param option: faillock option eg. deny, unlock_time, fail_interval
 :param value: value of option
-:param authfail: check the pam_faillock.so conf line with authfail 
+:param authfail: check the pam_faillock.so conf line with authfail
 
 #}}
 {{%- macro bash_pam_faillock_parameter_value(option, value='', authfail=True) -%}}
@@ -1302,8 +1306,10 @@ fi
 
 {{#
   # Check whether or not a package is installed.
+  # The macro respects `platform_package_overrides` variable.
   #}}
 {{%- macro bash_package_installed(pkgname) -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
 {{%- if pkg_manager == "apt_get" -%}}
 dpkg-query --show --showformat='${db:Status-Status}\n' "{{{ pkgname }}}" 2>/dev/null | grep -q installed
 {{%- else -%}}
@@ -1751,9 +1757,7 @@ Part of the grub2_bootloader_argument_absent template.
   The macro respects `platform_package_overrides` variable.
 #}}
 {{%- macro bash_pkg_conditional(package) -%}}
-{{%- if package in platform_package_overrides -%}}
-  {{%- set package = platform_package_overrides[package] -%}}
-{{%- endif -%}}
+{{%- set package = apply_platform_package_overrides(package) -%}}
   {{% if pkg_system is defined %}}
     {{%- if pkg_system == "rpm" -%}}
         {{{ bash_pkg_conditional_rpm(package) }}}
