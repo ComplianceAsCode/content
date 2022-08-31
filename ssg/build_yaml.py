@@ -507,7 +507,7 @@ class Profile(XCCDFEntity, SelectionHandler):
             element.append(unselect)
 
         for selection in self.unselected_groups:
-            unselect = ET.Element("select")
+            unselect = ET.Element("{%s}select" % XCCDF11_NS)
             unselect.set("idref", selection)
             unselect.set("selected", "false")
             element.append(unselect)
