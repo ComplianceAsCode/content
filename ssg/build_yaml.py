@@ -187,6 +187,7 @@ class SelectionHandler(object):
         self.refine_rules = defaultdict(list)
         self.variables = dict()
         self.unselected = []
+        self.unselected_groups = []
         self.selected = []
 
     @property
@@ -432,6 +433,7 @@ class Profile(XCCDFEntity, SelectionHandler):
         metadata=lambda: None,
         reference=lambda: None,
         selections=lambda: list(),
+        unselected_groups=lambda: list(),
         platforms=lambda: set(),
         cpe_names=lambda: set(),
         platform=lambda: None,
@@ -500,6 +502,12 @@ class Profile(XCCDFEntity, SelectionHandler):
 
         for selection in self.unselected:
             unselect = ET.Element("{%s}select" % XCCDF11_NS)
+            unselect.set("idref", selection)
+            unselect.set("selected", "false")
+            element.append(unselect)
+
+        for selection in self.unselected_groups:
+            unselect = ET.Element("select")
             unselect.set("idref", selection)
             unselect.set("selected", "false")
             element.append(unselect)
@@ -605,6 +613,32 @@ class Profile(XCCDFEntity, SelectionHandler):
                     .format(rule_id=id_, profile_id=self.id_)
                 )
                 raise ValueError(msg)
+
+    def _find_empty_groups(self, group, profile_rules):
+        is_empty = True
+        empty_groups = []
+        for child in group.groups.values():
+            child_empty, child_empty_groups = self._find_empty_groups(child, profile_rules)
+            if not child_empty:
+                is_empty = False
+            empty_groups.extend(child_empty_groups)
+        if is_empty:
+            group_rules = set(group.rules.keys())
+            if profile_rules & group_rules:
+                is_empty = False
+        if is_empty:
+            empty_groups.append(group.id_)
+        return is_empty, empty_groups
+
+    def unselect_empty_groups(self, root_group):
+        # Unselecting empty groups is necessary to make HTML guides shorter
+        # and the XCCDF more usable in tools such as SCAP Workbench.
+        profile_rules = set(self.selected)
+        is_empty, empty_groups = self._find_empty_groups(root_group, profile_rules)
+        if is_empty:
+            msg = "Profile {0} unselects all groups.".format(self.id_)
+            raise ValueError(msg)
+        self.unselected_groups.extend(sorted(empty_groups))
 
     def __sub__(self, other):
         profile = Profile(self.id_)
@@ -912,6 +946,10 @@ class Benchmark(XCCDFEntity):
                 continue
 
             self.profiles.append(new_profile)
+
+    def unselect_empty_groups(self):
+        for p in self.profiles:
+            p.unselect_empty_groups(self)
 
     def to_xml_element(self, env_yaml=None, product_cpes=None):
         root = ET.Element('{%s}Benchmark' % XCCDF11_NS)
@@ -1816,6 +1854,8 @@ class DirectoryLoader(object):
             prodtypes = parse_prodtype(group.prodtype)
             if "all" in prodtypes or self.product in prodtypes:
                 self.all_groups[group.id_] = group
+            else:
+                return None
 
         return group
 
@@ -1996,6 +2036,7 @@ class LinearLoader(object):
             except KeyError as exc:
                 # Add only the groups we have compiled and loaded
                 pass
+        self.benchmark.unselect_empty_groups()
 
     def load_compiled_content(self):
         self.fixes = ssg.build_remediations.load_compiled_remediations(self.fixes_dir)
