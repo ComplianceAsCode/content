@@ -162,7 +162,7 @@ class XMLContent(XMLElement):
     Can represent a Data Stream or an XCCDF Benchmark read from an XML file.
     '''
 
-    check_engines = [("oval", "oval:oval_definitions"), ("ocil", "ocil:ocil")]
+    check_engines = [("OVAL", "oval:oval_definitions"), ("OCIL", "ocil:ocil")]
 
     def __init__(self, root):
         super(XMLContent, self).__init__(root)

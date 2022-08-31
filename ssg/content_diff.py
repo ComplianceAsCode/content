@@ -25,17 +25,18 @@ class StandardContentDiffer(object):
         self.show_diffs = show_diffs
         self.only_rules = only_rules
 
-    def _get_rules_to_compare(self, benchmark, rule_id):
-        if rule_id:
-            if not rule_id.startswith(ssg.constants.OSCAP_RULE):
-                rule_id = ssg.constants.OSCAP_RULE + rule_id
-        rules = benchmark.find_rules(rule_id)
+    def _get_rules_to_compare(self, benchmark):
+        rule_to_find = self.rule_id
+        if self.rule_id:
+            if not self.rule_id.startswith(ssg.constants.OSCAP_RULE):
+                rule_to_find = ssg.constants.OSCAP_RULE + self.rule_id
+        rules = benchmark.find_rules(rule_to_find)
         return rules
 
     def compare_rules(self, old_benchmark, new_benchmark):
         missing_rules = []
         try:
-            rules_in_old_benchmark = self._get_rules_to_compare(old_benchmark, self.rule_id)
+            rules_in_old_benchmark = self._get_rules_to_compare(old_benchmark)
         except ValueError as e:
             print(str(e))
             return
@@ -49,17 +50,14 @@ class StandardContentDiffer(object):
                 continue
             if self.only_rules:
                 continue
-            self.compare_rule(old_rule, new_rule, self.old_content, self.new_content)
+            self.compare_rule(old_rule, new_rule)
             self.compare_platforms(old_rule, new_rule,
                                    old_benchmark, new_benchmark)
 
-    def compare_rule(
-            self, old_rule, new_rule, old_xml_content, new_xml_content):
+    def compare_rule(self, old_rule, new_rule):
         self.compare_rule_texts(old_rule, new_rule)
-        self.compare_checks(
-            old_rule, new_rule, old_xml_content.components.get("oval"), new_xml_content.components.get("oval"), "OVAL")
-        self.compare_checks(
-            old_rule, new_rule, old_xml_content.components.get("ocil"), new_xml_content.components.get("ocil"), "OCIL")
+        self.compare_checks(old_rule, new_rule, "OVAL")
+        self.compare_checks(old_rule, new_rule, "OCIL")
         for remediation_type in FIX_TYPE_TO_SYSTEM.keys():
             self.compare_remediations(old_rule, new_rule, remediation_type, self.show_diffs)
 
@@ -117,7 +115,7 @@ class StandardContentDiffer(object):
                 "New content has different text for rule '%s':" % (rule_id))
             print(diff)
 
-    def compare_checks(self, old_rule, new_rule, old_checks, new_checks, system):
+    def compare_checks(self, old_rule, new_rule, system):
         check_system_uri = check_system_to_uri[system]
         old_check = old_rule.get_check_element(check_system_uri)
         new_check = new_rule.get_check_element(check_system_uri)
@@ -148,14 +146,14 @@ class StandardContentDiffer(object):
                 )
             if self.show_diffs and rule_id != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date":
                 try:
-                    old_check_doc = old_checks[old_check_file_name]
+                    old_check_doc = self.old_content.components.get(system)[old_check_file_name]
                 except KeyError:
                     print(
                         "Rule '%s' points to '%s' which isn't a part of the "
                         "old datastream" % (rule_id, old_check_file_name))
                     return
                 try:
-                    new_check_doc = new_checks[new_check_file_name]
+                    new_check_doc = self.new_content.components.get(system)[new_check_file_name]
                 except KeyError:
                     print(
                         "Rule '%s' points to '%s' which isn't a part of the "
@@ -291,8 +289,8 @@ class StigContentDiffer(StandardContentDiffer):
     def compare_rules(self, old_benchmark, new_benchmark):
         missing_rules = []
         try:
-            rules_in_old_benchmark = self._get_rules_to_compare(old_benchmark, self.rule_id)
-            rules_in_new_benchmark = self._get_rules_to_compare(new_benchmark, self.rule_id)
+            rules_in_old_benchmark = self._get_rules_to_compare(old_benchmark)
+            rules_in_new_benchmark = self._get_rules_to_compare(new_benchmark)
         except ValueError as e:
             print(str(e))
             return
@@ -312,7 +310,7 @@ class StigContentDiffer(StandardContentDiffer):
                 continue
             if self.only_rules:
                 continue
-            self.compare_rule(old_rule, new_rule, self.old_content, self.new_content)
+            self.compare_rule(old_rule, new_rule)
             self.compare_platforms(old_rule, new_rule,
                                    old_benchmark, new_benchmark)
 
