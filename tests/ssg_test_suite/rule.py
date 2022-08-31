@@ -524,6 +524,11 @@ class RuleChecker(oscap.Checker):
         os.unlink(xslt_filename)
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
+        if self.test_env.name in scenario.script_params["skip_test_env"]:
+            logging.warning('Script {0} is not applicable on given test_env {1}'
+                            .format(scenario.script, self.test_env.name))
+            return
+
         if not _apply_script(
                 remote_rule_dir, self.test_env, scenario.script):
             logging.error("Environment failed to prepare, skipping test")
@@ -584,6 +589,7 @@ class Scenario():
             'platform': ['multi_platform_all'],
             'remediation': ['all'],
             'variables': [],
+            'skip_test_env': [],
         }
 
         for parameter in params:

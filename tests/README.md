@@ -188,6 +188,15 @@ The header consists of comments (starting by `#`). Possible keys are:
   remediation breaks test environment (for example unmounting /tmp in a test
   scenario would break test runs, because OpenSCAP generates reports into the
   /tmp directory).
+- `skip_test_env` is a string specifying comma separated list of `test_env`
+  names where the running a test is skipped. Possible values are:
+  `libvirt-based`, `docker-based`, `podman-based`. Main usage is a test case
+  where feature-under-test uses something where there is some kind of (security)
+  limitation in place in testing environment. And the limitation is impossible
+  or not a good idea to remove. Especially you should not give unlimited
+  permissions to containerized testing environments, environments are not
+  superprivileged containers. For example currently containers do not have
+  SELinux, so any test trying to `restorecon` is going to fail.
 - `templates` has no effect at the moment.
 - `variables` is a comma-separated list of XCCDF values that sets a different
   default value for XCCDF variables in a form `<variable name>=<value>`.
