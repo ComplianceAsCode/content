@@ -556,7 +556,7 @@ class PodmanTestEnv(ContainerTestEnv):
             "--publish={internal_ssh_port}".format(** self.__dict__),
             "--detach",
             image_name,
-            "/usr/sbin/sshd", "-p", "{internal_ssh_port}".format(** self.__dict__), "-D",
+            "systemd.setenv=TEST_SSHD_PORT={internal_ssh_port}".format(** self.__dict__),
         ]
         podman_output = self.run_podman_cmd(podman_cmd)
         container_id = podman_output.stdout.decode("utf-8").strip()

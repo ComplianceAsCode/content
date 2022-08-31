@@ -23,3 +23,19 @@ RUN true \
         && sed -i '/session\s\+required\s\+pam_loginuid.so/d' /etc/pam.d/sshd \
 && true
 
+RUN set -ex; \
+    sed '\
+s/^EnvironmentFile=.*/PassEnvironment=TEST_SSHD_PORT/;\
+/ExecStart=/ s,=.*,=/usr/sbin/sshd -p $TEST_SSHD_PORT -D,;\
+' /usr/lib/systemd/system/sshd.service > /etc/systemd/system/test-sshd.service; \
+    systemctl mask systemd-remount-fs.service dev-hugepages.mount sys-fs-fuse-connections.mount getty.target console-getty.service systemd-udev-trigger.service systemd-udevd.service systemd-random-seed.service systemd-machine-id-commit.service systemd-resolved.service proc-sys-fs-binfmt_misc.mount systemd-oomd.service systemd-userdbd.service; \
+    systemctl enable test-sshd.service; \
+    :
+
+STOPSIGNAL SIGRTMIN+3
+
+RUN set -ex; \
+    [ -e /sbin/init ] || ln -s ../lib/systemd/systemd /sbin/init; \
+    :
+
+ENTRYPOINT ["/sbin/init"]
