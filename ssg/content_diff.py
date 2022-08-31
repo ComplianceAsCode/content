@@ -97,7 +97,8 @@ class StandardContentDiffer(object):
                     entry["cpe"].append(idref)
 
         if entries[0]["cpe"] != entries[1]["cpe"]:
-            print("Platform has been changed for rule '{0}'".format(entries[0]["rule"].get_attr("id")))
+            print("Platform has been changed for rule "
+                  "'{0}'".format(entries[0]["rule"].get_attr("id")))
             print("--- old datastream")
             print("+++ new datastream")
             print("-{}".format(repr(entries[0]["cpe"])))
@@ -149,7 +150,8 @@ class StandardContentDiffer(object):
                     "'%s' to '%s'." % (
                         system, rule_id, old_check_id, new_check_id)
                 )
-            if self.show_diffs and rule_id != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date":
+            if (self.show_diffs and
+               rule_id != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"):
                 try:
                     old_check_doc = self.old_content.components.get(system)[old_check_file_name]
                 except KeyError:
@@ -175,7 +177,8 @@ class StandardContentDiffer(object):
                 else:
                     raise RuntimeError("Unknown check system '%s'" % system)
 
-    def compare_oval_definitions(self, old_oval_def_doc, old_oval_def_id, new_oval_def_doc, new_oval_def_id):
+    def compare_oval_definitions(self, old_oval_def_doc, old_oval_def_id,
+                                 new_oval_def_doc, new_oval_def_id):
         old_def = old_oval_def_doc.find_oval_definition(old_oval_def_id)
         new_def = new_oval_def_doc.find_oval_definition(new_oval_def_id)
         old_els = old_def.get_elements()
@@ -236,7 +239,8 @@ class StandardContentDiffer(object):
                 print("%s remediation for rule '%s' differs:\n%s" % (
                     remediation_type, rule_id, diff))
 
-    def compare_fix_texts(self, old_r, new_r, fromfile="old datastream", tofile="new datastream", n=3):
+    def compare_fix_texts(self, old_r, new_r,
+                          fromfile="old datastream", tofile="new datastream", n=3):
         if old_r != new_r:
             diff = "".join(difflib.unified_diff(
                 old_r.splitlines(keepends=True), new_r.splitlines(keepends=True),
@@ -252,7 +256,8 @@ class StandardContentDiffer(object):
 class StigContentDiffer(StandardContentDiffer):
 
     def __init__(self, old_content, new_content, rule_id, show_diffs, only_rules, output_dir):
-        super(StigContentDiffer, self).__init__(old_content, new_content, rule_id, show_diffs, only_rules)
+        super(StigContentDiffer, self).__init__(old_content, new_content,
+                                                rule_id, show_diffs, only_rules)
         self.output_dir = output_dir
 
         self._ensure_output_dir_exists()

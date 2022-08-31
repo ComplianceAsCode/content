@@ -215,7 +215,8 @@ class XMLContent(XMLElement):
             if self.is_benchmark():
                 return XMLBenchmark(self.root)
         for component in ds_components:
-            benchmark = component.find("%s:Benchmark[@id='%s']" % (self.content_xccdf_ns, id_), self.ns)
+            benchmark = component.find("%s:Benchmark[@id='%s']"
+                                       % (self.content_xccdf_ns, id_), self.ns)
             if benchmark is not None:
                 return XMLBenchmark(benchmark)
         return None
@@ -289,8 +290,8 @@ class XMLRule(XMLElement):
         return check_element.find(
             "%s:check-content-ref" % (self.content_xccdf_ns), self.ns)
 
-    def get_fix_element(self, remediation_type_uri):
-        return self.root.find("%s:fix[@system='%s']" % (self.content_xccdf_ns, remediation_type_uri), self.ns)
+    def get_fix_element(self, fix_uri):
+        return self.root.find("%s:fix[@system='%s']" % (self.content_xccdf_ns, fix_uri), self.ns)
 
     def get_version_element(self):
         return self.root.find("%s:version" % (self.content_xccdf_ns), self.ns)
@@ -332,7 +333,8 @@ class XMLRule(XMLElement):
                 # We ignore the fix element because it has its own dedicated differ
                 continue
             if el_tag == "reference" and el.get("href" == stig_ns):
-                # We ignore references to DISA Benchmark Rules, they have a format of SV-\d+r\d+_rule
+                # We ignore references to DISA Benchmark Rules,
+                # they have a format of SV-\d+r\d+_rule
                 # and can change for non-text related changes
                 continue
             el_text = self.get_element_text(el).strip()
@@ -341,7 +343,6 @@ class XMLRule(XMLElement):
                 text += el_text + "\n"
 
         return text
-
 
 
 class XMLComponent(XMLElement):
@@ -393,7 +394,6 @@ class XMLComponent(XMLElement):
                 "OCIL boolean_question %s doesn't exist" % question_id)
         question_text = question.get_question_test_element()
         return question_text.text
-
 
 
 class XMLOvalDefinition(XMLComponent):
