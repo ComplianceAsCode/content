@@ -3,11 +3,8 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-# Remediation is applicable only in certain platforms
-if [ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]; then
 
 # Comment out any occurrences of kernel.core_pattern from /etc/sysctl.d/*.conf files
-
 for f in /etc/sysctl.d/*.conf /run/sysctl.d/*.conf; do
 
   matching_list=$(grep -P '^(?!#).*[\s]*kernel.core_pattern.*$' $f | uniq )
@@ -53,8 +50,4 @@ else
     # \n is precaution for case where file ends without trailing newline
 
     printf '%s\n' "$formatted_output" >> "/etc/sysctl.conf"
-fi
-
-else
-    >&2 echo 'Remediation is not applicable, nothing was done'
 fi
