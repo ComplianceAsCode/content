@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = Oracle Linux 8
+# platform = Oracle Linux 7,Oracle Linux 8
 . set_cron_logging.sh
 
 RSYSLOG_CONF='/etc/rsyslog.conf'
