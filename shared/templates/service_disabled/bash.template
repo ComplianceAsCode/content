@@ -19,10 +19,6 @@ fi
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
 "$SYSTEMCTL_EXEC" reset-failed '{{{ DAEMONNAME }}}.service' || true
-{{% elif init_system == "upstart" %}}
-
-/sbin/service '{{{ DAEMONNAME }}}' stop
-/sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
 {{%- else %}}
 
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'

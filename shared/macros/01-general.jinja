@@ -255,10 +255,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{%- endmacro %}}
 
 
-{{%- macro upstart_describe_socket_disable(socket) %}}
-{{%- endmacro %}}
-
-
 {{#
     Describe how to enable a socket in systemd.
 
@@ -309,8 +305,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_socket_disable(socket) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_socket_disable(socket) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -397,19 +391,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
-    Describe how to disable a service in upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_describe_service_disable(service) %}}
-    The <code>{{{ service }}}</code> service can be disabled with the following command:
-    <pre>$ sudo chkconfig {{{ service }}} off</pre>
-{{%- endmacro %}}
-
-
-{{#
     Describe how to enable a service in upstart.
 
 :param service: The service to check
@@ -480,8 +461,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_service_disable(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_service_disable(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
