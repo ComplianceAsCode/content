@@ -122,6 +122,40 @@ class StandardContentDiffer(object):
                 "New content has different text for rule '%s':" % (rule_id))
             print(diff)
 
+    def compare_check_ids(self, system, rule_id, old_check_id, new_check_id):
+        if old_check_id != new_check_id:
+            print(
+                "%s definition ID for rule '%s' has changed from "
+                "'%s' to '%s'." % (
+                    system, rule_id, old_check_id, new_check_id)
+            )
+
+    def compare_check_file_names(self, system, rule_id,
+                                 old_check_file_name, new_check_file_name):
+        if old_check_file_name != new_check_file_name:
+            print(
+                "%s definition file for rule '%s' has changed from "
+                "'%s' to '%s'." % (
+                    system, rule_id, old_check_file_name, new_check_file_name)
+            )
+
+    def get_check_docs(self, system, old_check_file_name, new_check_file_name):
+        try:
+            old_check_doc = self.old_content.components.get(system)[old_check_file_name]
+        except KeyError:
+            print(
+                "Rule '%s' points to '%s' which isn't a part of the "
+                "old datastream" % (rule_id, old_check_file_name))
+            old_check_doc = None
+        try:
+            new_check_doc = self.new_content.components.get(system)[new_check_file_name]
+        except KeyError:
+            print(
+                "Rule '%s' points to '%s' which isn't a part of the "
+                "new datastream" % (rule_id, new_check_file_name))
+            new_check_doc = None
+        return old_check_doc, new_check_doc
+
     def compare_checks(self, old_rule, new_rule, system):
         check_system_uri = check_system_to_uri[system]
         old_check = old_rule.get_check_element(check_system_uri)
@@ -139,34 +173,18 @@ class StandardContentDiffer(object):
             new_check_id = new_check_content_ref.get("name")
             old_check_file_name = old_check_content_ref.get("href")
             new_check_file_name = new_check_content_ref.get("href")
-            if old_check_file_name != new_check_file_name:
-                print(
-                    "%s definition file for rule '%s' has changed from "
-                    "'%s' to '%s'." % (
-                        system, rule_id, old_check_file_name, new_check_file_name)
-                )
-            if old_check_id != new_check_id:
-                print(
-                    "%s definition ID for rule '%s' has changed from "
-                    "'%s' to '%s'." % (
-                        system, rule_id, old_check_id, new_check_id)
-                )
+
+            self.compare_check_ids(system, rule_id, old_check_id, new_check_id)
+            self.compare_check_file_names(system, rule_id,
+                                          old_check_file_name, new_check_file_name)
+
             if (self.show_diffs and
                rule_id != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"):
-                try:
-                    old_check_doc = self.old_content.components.get(system)[old_check_file_name]
-                except KeyError:
-                    print(
-                        "Rule '%s' points to '%s' which isn't a part of the "
-                        "old datastream" % (rule_id, old_check_file_name))
+
+                old_check_doc, new_check_doc = self.get_check_docs(system, old_check_file_name, new_check_file_name)
+                if not old_check_doc or not new_check_doc:
                     return
-                try:
-                    new_check_doc = self.new_content.components.get(system)[new_check_file_name]
-                except KeyError:
-                    print(
-                        "Rule '%s' points to '%s' which isn't a part of the "
-                        "new datastream" % (rule_id, new_check_file_name))
-                    return
+
                 if system == "OVAL":
                     self.compare_ovals(old_check_doc, old_check_id, new_check_doc, new_check_id, rule_id)
                 elif system == "OCIL":
