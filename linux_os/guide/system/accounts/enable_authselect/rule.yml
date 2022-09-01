@@ -45,3 +45,11 @@ fixtext: |-
     sudo authselect select {{{ xccdf_value("var_authselect_profile") }}}
 
 srg_requirement: '{{{ full_name }}} must use authselect to manage PAM settings'
+
+warnings:
+    - general: |-
+       If the <tt>sudo authselect select</tt> command returns an error informing that the chosen
+       profile cannot be selected, it is probably because PAM files have already been modified by
+       the administrator. If this is the case, in order to not overwrite the desired changes made
+       by the administrator, the current PAM settings should be investigated before forcing the
+       selection of the chosen authselect profile.
