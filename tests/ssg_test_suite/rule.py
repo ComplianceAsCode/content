@@ -437,6 +437,10 @@ class RuleChecker(oscap.Checker):
         for rule in rules_to_test:
             rule_test_content = self._get_rule_test_content(rule)
             test_content_by_rule_id[rule.id] = rule_test_content
+
+        if self.slice_total == 1:
+            return test_content_by_rule_id
+
         sliced_test_content_by_rule_id = self._slice_sbr(
             test_content_by_rule_id, self.slice_current, self.slice_total)
         return sliced_test_content_by_rule_id
