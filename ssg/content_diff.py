@@ -76,6 +76,7 @@ class StandardContentDiffer(object):
         return cpe_list
 
     def compare_platforms(self, old_rule, new_rule, old_benchmark, new_benchmark):
+        rule_id = old_rule.get_attr("id")
         entries = [{
                 "benchmark": old_benchmark,
                 "rule": old_rule,
@@ -97,11 +98,11 @@ class StandardContentDiffer(object):
 
         if entries[0]["cpe"] != entries[1]["cpe"]:
             print("Platform has been changed for rule "
-                  "'{0}'".format(entries[0]["rule"].get_attr("id")))
-            print("--- old datastream")
-            print("+++ new datastream")
-            print("-{}".format(repr(entries[0]["cpe"])))
-            print("+{}".format(repr(entries[1]["cpe"])))
+                  "'{0}'".format(rule_id))
+            diff = self.generate_diff_text("\n".join(entries[0]["cpe"])+"\n",
+                                           "\n".join(entries[1]["cpe"])+"\n",
+                                           fromfile=rule_id, tofile=rule_id)
+            print(diff)
 
     def compare_rule_texts(self, old_rule, new_rule):
         old_rule_text = old_rule.join_text_elements()
