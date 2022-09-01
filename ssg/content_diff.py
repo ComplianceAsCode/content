@@ -168,13 +168,13 @@ class StandardContentDiffer(object):
                         "new datastream" % (rule_id, new_check_file_name))
                     return
                 if system == "OVAL":
-                    self.compare_ovals(old_check_doc, old_check_id, new_check_doc, new_check_id)
+                    self.compare_ovals(old_check_doc, old_check_id, new_check_doc, new_check_id, rule_id)
                 elif system == "OCIL":
-                    self.compare_ocils(old_check_doc, old_check_id, new_check_doc, new_check_id)
+                    self.compare_ocils(old_check_doc, old_check_id, new_check_doc, new_check_id, rule_id)
                 else:
                     raise RuntimeError("Unknown check system '%s'" % system)
 
-    def compare_ovals(self, old_oval_def_doc, old_oval_def_id, new_oval_def_doc, new_oval_def_id):
+    def compare_ovals(self, old_oval_def_doc, old_oval_def_id, new_oval_def_doc, new_oval_def_id, rule_id):
         old_def = old_oval_def_doc.find_oval_definition(old_oval_def_id)
         new_def = new_oval_def_doc.find_oval_definition(new_oval_def_id)
         old_els = old_def.get_elements()
@@ -186,19 +186,19 @@ class StandardContentDiffer(object):
                                        fromfile=old_oval_def_id, tofile=new_oval_def_id)
 
         if diff:
-            print("OVAL deffinition '%s' differs:\n%s" % (old_oval_def_id, diff))
+            print("OVAL for rule '%s' differs:\n%s" % (rule_id, diff))
 
-    def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id):
+    def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id, rule_id):
         try:
             old_question = old_ocil_doc.find_boolean_question(old_ocil_id)
             new_question = new_ocil_doc.find_boolean_question(new_ocil_id)
         except ValueError as e:
-            print("Rule '%s' OCIL can't be found: %s" % (self.rule_id, str(e)))
+            print("Rule '%s' OCIL can't be found: %s" % (rule_id, str(e)))
             return
         diff = self.generate_diff_text(old_question, new_question,
                                        fromfile=old_ocil_id, tofile=new_ocil_id)
         if diff:
-            print("OCIL for rule '%s' differs:\n%s" % (self.rule_id, diff))
+            print("OCIL for rule '%s' differs:\n%s" % (rule_id, diff))
 
     def compare_remediations(self, old_rule, new_rule, remediation_type):
         system = FIX_TYPE_TO_SYSTEM[remediation_type]
