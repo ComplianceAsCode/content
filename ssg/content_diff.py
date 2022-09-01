@@ -167,18 +167,13 @@ class StandardContentDiffer(object):
                         "new datastream" % (rule_id, new_check_file_name))
                     return
                 if system == "OVAL":
-                    self.compare_oval_definitions(
-                        old_check_doc, old_check_id, new_check_doc,
-                        new_check_id)
+                    self.compare_ovals(old_check_doc, old_check_id, new_check_doc, new_check_id)
                 elif system == "OCIL":
-                    self.compare_ocils(
-                        old_check_doc, old_check_id, new_check_doc,
-                        new_check_id)
+                    self.compare_ocils(old_check_doc, old_check_id, new_check_doc, new_check_id)
                 else:
                     raise RuntimeError("Unknown check system '%s'" % system)
 
-    def compare_oval_definitions(self, old_oval_def_doc, old_oval_def_id,
-                                 new_oval_def_doc, new_oval_def_id):
+    def compare_ovals(self, old_oval_def_doc, old_oval_def_id, new_oval_def_doc, new_oval_def_id):
         old_def = old_oval_def_doc.find_oval_definition(old_oval_def_id)
         new_def = new_oval_def_doc.find_oval_definition(new_oval_def_id)
         old_els = old_def.get_elements()
