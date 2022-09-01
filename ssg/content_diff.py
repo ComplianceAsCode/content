@@ -179,18 +179,14 @@ class StandardContentDiffer(object):
         new_def = new_oval_def_doc.find_oval_definition(new_oval_def_id)
         old_els = old_def.get_elements()
         new_els = new_def.get_elements()
-        for x in old_els.copy():
-            for y in new_els.copy():
-                if x[0] == y[0] and x[1] == y[1]:
-                    old_els.remove(x)
-                    new_els.remove(y)
-                    break
-        if old_els or new_els:
-            print("OVAL definition %s differs:" % (old_oval_def_id))
-            print("--- old datastream")
-            print("+++ new datastream")
-            self.print_offending_elements(old_els, "-")
-            self.print_offending_elements(new_els, "+")
+
+        old_els_text = self.serialize_elements(old_els)
+        new_els_text = self.serialize_elements(new_els)
+        diff = self.compare_fix_texts(old_els_text, new_els_text,
+                                      fromfile=old_oval_def_id,tofile=new_oval_def_id)
+
+        if diff:
+            print("OVAL deffinition '%s' differs:\n%s" % (old_oval_def_id, diff))
 
     def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id):
         try:
@@ -246,9 +242,11 @@ class StandardContentDiffer(object):
             return diff
         return None
 
-    def print_offending_elements(self, elements, sign):
+    def serialize_elements(self, elements):
+        text = ""
         for thing, atrribute in elements:
-            print("%s %s %s" % (sign, thing, atrribute))
+            text += "%s %s\n" % (thing, atrribute)
+        return text
 
 
 class StigContentDiffer(StandardContentDiffer):
