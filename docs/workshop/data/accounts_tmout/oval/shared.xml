@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="accounts_tmout" version="2">
+    <metadata>
+      <title>Set Interactive Session Timeout</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Checks interactive shell timeout</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="TMOUT value in /etc/profile >= var_accounts_tmout" test_ref="test_etc_profile_tmout" />
+      <criterion comment="TMOUT value in /etc/profile.d/*.sh >= var_accounts_tmout" test_ref="test_etc_profiled_tmout" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="TMOUT in /etc/profile" id="test_etc_profile_tmout" version="1">
+    <ind:object object_ref="object_etc_profile_tmout" />
+    <ind:state state_ref="state_etc_profile_tmout" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="TMOUT in /etc/profile.d/*.sh" id="test_etc_profiled_tmout" version="1">
+    <ind:object object_ref="object_etc_profiled_tmout" />
+    <ind:state state_ref="state_etc_profile_tmout" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_etc_profile_tmout" version="1">
+    <ind:filepath>/etc/profile</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*TMOUT[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_etc_profiled_tmout" version="1">
+    <ind:path>/etc/profile.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.sh$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*TMOUT[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_etc_profile_tmout" version="1">
+    <ind:subexpression datatype="int" operation="greater than or equal" var_check="all" var_ref="var_accounts_tmout" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="external variable for TMOUT" datatype="int" id="var_accounts_tmout" version="1" />
+</def-group>

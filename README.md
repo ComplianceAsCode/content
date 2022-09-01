@@ -269,6 +269,7 @@ The SSG homepage is [https://www.open-scap.org/security-policies/scap-security-g
 * [SSG User Manual](docs/manual/user_guide.adoc)
 * [SSG Developer Guide](https://complianceascode.readthedocs.io/)
 * [Compliance As Code Blog](https://complianceascode.github.io/)
+* [Online Workshops - Perfect as a starting point](docs/workshop/README.adoc)
 
 ## Contributors
 This project is welcome to new contributors. We are continually trying to remove the complexities to make contributions easier and more enjoyable for everyone. This is a nice project and a friendly community.

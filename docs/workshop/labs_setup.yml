@@ -1,0 +1,119 @@
+---
+
+# Run me as a verification-only playbook:
+# ansible-playbook ... -e VERIFICATION_RUN=true --check --diff
+
+- hosts: all
+
+  vars:
+    EXERCISE: "lab1_introduction"
+    TRACK_1_LABEL: "lab1_introduction"
+    TRACK_2_LABEL: "lab2_openscap"
+    TRACK_3_LABEL: "lab3_profiles"
+    TRACK_4_LABEL: "lab4_ansible"
+    TRACK_5_LABEL: "lab5_oval"
+    LAB_DIR: /workspace/content
+  tasks:
+  - name: "Ex. 1: Copy rule file from v0.1.43"
+    copy:
+      src: "data/accounts_tmout/rule_yml"
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml"
+    when: EXERCISE == TRACK_1_LABEL
+
+  - name: "Ex. 1: Introduce a typo 1/2"
+    replace:
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-pam/password_quality/password_quality_pwquality/accounts_password_pam_minlen/rule.yml"
+      regexp: '(    after pam_pwquality to set minimum password length requirements.)'
+      replace: '\1\n\1'
+    when: EXERCISE == TRACK_1_LABEL
+
+  - name: "Ex. 1: Introduce a typo 2/2"
+    replace:
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml"
+      regexp: '(    Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that)'
+      replace: '\1\n\1'
+    when: EXERCISE == TRACK_1_LABEL
+
+  - name: "Ex. 3: Remove the RHEL8 OSPP stability test"
+    file:
+      path: "{{ LAB_DIR }}/tests/data/profile_stability/rhel8/ospp.profile"
+      state: absent
+    when: EXERCISE == TRACK_3_LABEL
+
+  - name: "Ex. 4: Remove the Ansible content from rule accounts_tmout so that the attendees can create them themselves"
+    file:
+      path: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/ansible/"
+      state: absent
+    when: EXERCISE == TRACK_4_LABEL
+
+  - name: "Ex. 4: Remove machine platform from accounts_tmout"
+    replace:
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml"
+      regexp: '^platform: machine'
+      replace: ''
+    when: EXERCISE == TRACK_4_LABEL
+
+  - name: "Ex. 5: Remove tests"
+    file:
+      path: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/tests"
+      state: absent
+    when: EXERCISE == TRACK_5_LABEL
+
+  - name: "Ex. 5: Copy bad tests"
+    copy:
+      src: "data/rule_accounts_tmout/"
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/tests/"
+    when: EXERCISE == TRACK_5_LABEL
+
+  - name: "Ex. 5: Copy rule from v0.1.43"
+    copy:
+      src: "data/accounts_tmout"
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/"
+    when: EXERCISE == TRACK_5_LABEL
+
+  - name: "Ex. 5: Copy rule file from v0.1.43"
+    copy:
+      src: "data/accounts_tmout/rule_yml"
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule.yml"
+    when: EXERCISE == TRACK_5_LABEL
+
+  - name: "Ex. 5: Remove bogus rule yaml file"
+    file:
+      path: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/rule_yml"
+      state: absent
+    when: EXERCISE == TRACK_5_LABEL
+
+  - name: "Ex. 5: Bust the OVAL"
+    replace:
+      dest: "{{ LAB_DIR }}/linux_os/guide/system/accounts/accounts-session/accounts_tmout/oval/shared.xml"
+      regexp: '(operation=")greater than or equal(")'
+      replace: '\1equals\2'
+    when: EXERCISE == TRACK_5_LABEL
+
+  - name: "Copy our RHEL8 OSPP profile to the target system"
+    copy:
+      src: "data/ospp-rhel8.profile"
+      dest: "{{ LAB_DIR }}/products/rhel8/profiles/ospp.profile"
+
+  - name: "Build the rhel8 content to be used in exercises"
+    command: "./build_product rhel8"
+    args:
+      chdir: "{{ LAB_DIR }}"
+    when: EXERCISE == TRACK_1_LABEL or EXERCISE == TRACK_5_LABEL
+
+  - name: "Build the ubuntu2004 content to be used in exercise 2"
+    command: "./build_product ubuntu2004"
+    args:
+      chdir: "{{ LAB_DIR }}"
+    when: EXERCISE == TRACK_2_LABEL
+
+  # - name: "Copy our Fedora OSPP profile to the target system"
+  #   copy:
+  #     src: "data/ospp-fedora.profile"
+  #     dest: "{{ LAB_DIR }}/products/fedora/profiles/ospp.profile"
+
+  # - name: "Build the fedora content to be used in exercises"
+  #   command: "./build_product fedora"
+  #   args:
+  #     chdir: "{{ LAB_DIR }}"
+  #   when: EXERCISE == TRACK_1_LABEL or EXERCISE == TRACK_2_LABEL

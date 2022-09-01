@@ -1,0 +1,70 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhcos4,rhel7,rhel8,rhel9,rhv4,sle12,sle15,ubuntu2004
+
+title: 'Set Interactive Session Timeout'
+
+description: |-
+    Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
+    all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
+    setting in <tt>/etc/profile</tt> should read as follows:
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+
+rationale: |-
+    Terminating an idle session within a short time period reduces
+    the window of opportunity for unauthorized personnel to take control of a
+    management session enabled on the console or console port that has been
+    left unattended.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-27557-8
+    cce@rhel8: CCE-80673-7
+    cce@rhel9: CCE-83633-8
+    cce@sle12: CCE-83011-7
+    cce@sle15: CCE-83269-1
+
+references:
+    anssi: BP28(R29)
+    cis-csc: 1,12,15,16
+    cis@rhel7: 5.5.4
+    cis@rhel8: 5.5.3
+    cis@sle12: 5.5.4
+    cis@sle15: 5.4.4
+    cis@ubuntu2004: 5.4.5
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    cui: 3.1.11
+    disa: CCI-000057,CCI-001133,CCI-002361
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    nerc-cip: CIP-004-6 R2.2.3,CIP-007-3 R5.1,CIP-007-3 R5.2,CIP-007-3 R5.3.1,CIP-007-3 R5.3.2,CIP-007-3 R5.3.3
+    nist: AC-12,SC-10,AC-2(5),CM-6(a)
+    nist-csf: PR.AC-7
+    nist@sle12: AC-11(a)
+    ospp: FMT_MOF_EXT.1
+    srg: SRG-OS-000163-GPOS-00072,SRG-OS-000029-GPOS-00010
+    stigid@ol7: OL07-00-040160
+    stigid@rhel7: RHEL-07-040160
+    stigid@sle12: SLES-12-010090
+    stigid@sle15: SLES-15-010130
+    stigid@ubuntu2004: UBTU-20-010013
+    vmmsrg: SRG-OS-000163-VMM-000700,SRG-OS-000279-VMM-001010
+
+ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
+
+ocil: |-
+    Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
+    on the system:
+    {{% if product in ["sle12", "sle15"] %}}
+    <pre>$ sudo grep TMOUT /etc/profile.d/autologout.sh</pre>
+    {{% else %}}
+    <pre>$ sudo grep TMOUT /etc/profile /etc/profile.d/*.sh</pre>
+    {{% endif %}}
+    The output should return the following:
+    <pre>TMOUT={{{ xccdf_value("var_accounts_tmout") }}}</pre>
+    {{% if product in ["sle12", "sle15"] %}}
+    readonly TMOUT
+    export TMOUT
+    {{% endif %}}

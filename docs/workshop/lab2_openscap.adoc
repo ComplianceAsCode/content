@@ -1,0 +1,298 @@
+= Lab Exercise 2: Automated Security Scanning Using ComplianceAsCode
+:toc2:
+:linkattrs:
+:experimental:
+:imagesdir: images
+
+== Introduction
+
+As you already know from `Lab Exercise 1`, the `ComplianceAsCode` project provides security content that can be used for automated security scanning of your system.
+
+The lab environment is provided with OpenSCAP Scanner, which is a security scanner that works with `ComplianceAsCode` content.
+The built content in `ComplianceAsCode` can be simply passed to OpenSCAP Scanner and the scan can be started right away.
+
+OpenSCAP Scanner allows you to perform security compliance checks in a fully automated way.
+It is possible to run the scan using either the `oscap` command line tool or the SCAP Workbench graphical application.
+Several integrations for continuous scanning also exist, but in this lab exercise, you focus on one-off scanning.
+
+.*Goals*
+
+* Learn the basics of automated security scanning
+* Learn how to use `ComplianceAsCode` for automated security scanning
+* Learn how to do lightweight customization of a predefined security policy using a GUI tool
+* Explore the possibilities for remediations of failing rules
+
+
+.*Preconfigured Lab Environment*
+
+* The `ComplianceAsCode` repository was cloned.
+* The dependencies required for the `ComplianceAsCode` content build were installed using `yum install`:
+** Generic build utilities: `cmake` and `make`
+** Utilities for generating SCAP content: `openscap-scanner`
+** Python dependencies for putting content together: `python3-pyyaml` and `python3-jinja2`
+* The following OpenSCAP ecosystem packages were installed using `yum install`:
+** The scanner: `openscap-scanner`
+// ** Utilities for scanning remote systems: `openscap-utils`
+// ** The GUI front end and datastream tool: `scap-workbench`
+
+IMPORTANT: Content used in this lab has been altered to increase its educative potential, and is therefore different from the content in ComplianceAsCode upstream repository or the content in the scap-security-guide package shipped in Red Hat^(R)^ products for example.
+
+== Hands-on Lab
+
+The `ComplianceAsCode` project consists of human-readable files that are compiled into standard-compliant files that are difficult to read and edit directly.
+
+For your convenience, the environment is already set up, so the content is built and ready to be used.
+No worries, though--you get to rebuild it later in the exercise.
+
+To start the hands-on section, take the following steps:
+
+. Go to: link:https://gitpod.io/#WORKSHOP=lab2_openscap/https://github.com/ComplianceAsCode/content[Lab 2 Environment]
+. Wait until all the steps being executed in the terminal are complete.
+
+
+== Introduction to OpenSCAP Command Line Tool
+
+OpenSCAP provides a command line tool called `oscap` that can be used for automated security scanning.
+
+. You can verify a successful installation of `oscap` by running the following commands:
++
+----
+[... ]$ oscap --version
+
+OpenSCAP command line tool (oscap) 1.3.6
+Copyright 2009--2021 Red Hat Inc., Durham, North Carolina.
+
+==== Supported specifications ====
+SCAP Version: 1.3
+XCCDF Version: 1.2
+OVAL Version: 5.11.1
+CPE Version: 2.3
+CVSS Version: 2.0
+CVE Version: 2.0
+Asset Identification Version: 1.1
+Asset Reporting Format Version: 1.1
+CVRF Version: 1.1
+...
+----
++
+Note that this command outputs the OpenSCAP version and versions of supported standards.
+
+== Using `ComplianceAsCode` Content with OpenSCAP Command Line Tool
+
+In this section, you find the security content for Ubuntu 20.04 from `ComplianceAsCode` source code and then you use the built content with the OpenSCAP command line tool to scan your machine.
+
+. The content has been built, so you can take a look at the generated files in the `build` directory right away:
++
+----
+[... ]$ cd build
+[... build]$ ls -1
+build_config.yml
+build.ninja
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CTestTestfile.cmake
+docs
+jinja2_cache
+rules.ninja
+ssg-ubuntu2004-cpe-dictionary.xml
+ssg-ubuntu2004-cpe-oval.xml
+ssg-ubuntu2004-ds-1.2.xml
+ssg-ubuntu2004-ds.xml
+ssg-ubuntu2004-ocil.xml
+ssg-ubuntu2004-oval.xml
+ssg-ubuntu2004-xccdf-1.2.xml
+ssg-ubuntu2004-xccdf.xml
+tests
+ubuntu2004
+----
++
+There are multiple files produced by the build. The file that is going to be used with the OpenSCAP scanner is `ssg-ubuntu2004-ds.xml`. This file is called a SCAP Datastream.
++
+. Check which compliance profiles are available for Ubuntu 20.04.
++
+----
+[... build]$ oscap info ssg-ubuntu2004-ds.xml
+...
+    Profiles:
+        Title: CIS Ubuntu 20.04 Level 1 Server Benchmark
+            Id: xccdf_org.ssgproject.content_profile_cis_level1_server
+        Title: CIS Ubuntu 20.04 Level 1 Workstation Benchmark
+            Id: xccdf_org.ssgproject.content_profile_cis_level1_workstation
+        Title: CIS Ubuntu 20.04 Level 2 Server Benchmark
+            Id: xccdf_org.ssgproject.content_profile_cis_level2_server
+        Title: CIS Ubuntu 20.04 Level 2 Workstation Benchmark
+            Id: xccdf_org.ssgproject.content_profile_cis_level2_workstation
+        Title: Standard System Security Profile for Ubuntu 20.04
+            Id: xccdf_org.ssgproject.content_profile_standard
+        Title: Canonical Ubuntu 20.04 LTS Security Technical Implementation Guide (STIG) V1R1
+            Id: xccdf_org.ssgproject.content_profile_stig
+...
+----
++
+In the "Profiles:" section, you can see a list of profiles contained in the datastream.
+The datastream contains multiple profiles that cover different security baselines for different purposes.
+Each profile is identified by a profile ID.
++
+The built `ComplianceAsCode` content is available as `scap-security-guide` package in Linux distributions (e.g. RHEL, Ubuntu, Suse, etc).
+Unlike the upstream repository that you work with now, the package contains only content that is officially tested and supported.
+Therefore, the `scap-security-guide` package in Linux distributions may contain less profiles that are available in the upstream repository.
++
+. Perform your first baseline testing scan with the vanilla CIS Workstation Level 1 profile.
++
+Note in the command below that you can skip the profile ID prefix to make the command simpler.
+The real ID is `xccdf_org.ssgproject.content_profile_cis_level1_workstation`.
++
+The scanning command has to be executed by a privileged user using `sudo`, so the scanner can access parts of the system that are off-limits to common users.
+The simplest scanner invocation can look like this:
++
+----
+sudo oscap xccdf eval --profile cis_level1_workstation ssg-ubuntu2004-ds.xml 
+----
++
+However, you also want to store the scan results so you can process them later.
+Therefore, you have to supply additional arguments:
+
+* Use `--results-arf` to get a machine-readable results archive that includes results of the OVAL scan
+* Use `--report` to get a human-readable report (this can also be generated from ARF after the scan, as you see in the next optional step)
++
+Now execute the following to run the scan and generate the HTML report as a side-effect:
++
+----
+[... build]$ sudo oscap xccdf eval --profile cis_level1_workstation --results-arf /tmp/arf.xml --report lab2_report.html --oval-results ssg-ubuntu2004-ds.xml
+...
+----
++
+[NOTE]
+====
+You can also generate the HTML report later by executing these commands:
+
+----
+[... build]$ sudo rm -f lab2_report.html
+[... build]$ oscap xccdf generate report /tmp/arf.xml > lab2_report.html
+----
+====
+
+. On the lab environment, you navigate to the `build` folder.
+
+. Right click the `lab2_report.html` file and select `Open with Live Server` to preview the file. Note: Your browser may block the pop-up. You must allow it when asked.
++
+.Lab 2 HTML Report
+image::lab2_html_report_folder.png[]
++
+You see the compliance scan results for every security control in the CIS Workstation Level 1 security baseline profile in HTML format.
++
+image:lab1.1-scapreport.png[]
++
+Rules can have several types of results, but the most common ones are *pass* and *fail*, which indicate whether a particular security control has passed or failed the scan.
+Other results you frequently encounter are *notapplicable* for rules that have been skipped as not relevant to the scanned system, and *notchecked* for rules without an automated check.
+
+. Click the rule title in the HTML report to bring up a pop-up dialog that allows you to examine why a particular rule failed or passed.
++
+For example, if a rule is testing file permissions on a list of files, it specifies which files failed and what their permission bits are.
++
+image::scap_report_pass.png[]
++
+image::scap_report_fail.png[]
+
+
+== Customizing Existing SCAP Security Content Using SCAP Workbench
+
+. This part can only be performed on you local machine if the SCAP Workbench is available to be installed, see instruction on how to install it on your Linux distribution.
+If you are unable to install SCAP-Workbench on your machine then you can skip to the next section
+.. link:https://www.open-scap.org/tools/scap-workbench/#download[Download SCAP Workbench].
+
+. Download the `ssg-ubuntu2004-ds.xml` file to your own machine by clicking `Download...` on the file as shown in the following picture:
++
+image:download_datastream.png[]
+
+. Launch SCAP Workbench after installed.
+
+. After Workbench starts, select `Other SCAP content` in the drop-down list and click `Load Content`. A file browser window appears.
+. Locate the download `ssg-ubuntu2004-ds.xml` file and click `Open` to open the security compliance content.
++
+image:load_content.png[]
++
+image::scap_workbench_opened.png[SCAP Workbench opened, profile selected]
+
+. Customize the `CIS Ubuntu 20.04 Level 1 Workstation Benchmark` baseline.
+.. Select this profile from the `Profile` drop-down list.
+.. Click `Customize`.
++
+image:select_profile.png[]
+
+.. In the `Customize Profile` pop-up window, leave the name generated by default for `New Profile ID` and click `OK`.
++
+image:lab1.2-newprofileID.png[600,600]
+
+.. Now you can select and deselect rules according to your organization's needs, and change values such as minimum password length, to tailor the compliance profile.
+
+// .. *IMPORTANT*: Search for `verify file hash` and deselect the following rules, these rules can take a long time to process and might cause problems on systems with limited resources:
+
+// * *Verify File Hashes with RPM*
+// * *Verify and Correct File Permissions with RPM*
+
+. After you are done customizing, click `OK` to save the profile.
+You have now created a new custom profile.
++
+image::scap_workbench_tailoring.png[SCAP Workbench content customization]
+
+. You can run a test scan if you have all the dependencies installed on your machine.
+But it will most likely end in `notapplicable` depending on your Linux Distribution.
+.. Click `Scan` and inspect the results.
+.. If there are errors thrown, you can just skip this test scan and move forward.
++
+image:lab1.2-scapworkbenchscan.png[500,500]
+
+[TIP]
+====
+You can save the customization to a tailoring file by selecting `File->Save Customization Only`.
+
+image:lab1.2-savecustomization.png[300,300]
+====
+
+== Security Remediations with OpenSCAP, Red Hat Ansible Automation, and Bash
+Putting the machine into compliance (for example, by changing its configuration) is called *remediation* in the SCAP terminology.
+Remediation changes the configuration of the machine, and it is possible to lock yourself out or disable important workloads!
+As a result, it is a best practice to test the remediation changes before deploying.
+
+Go back to the Lab Environment in the browser.
+
+. Generate an Ansible^(R)^ Playbook that puts your machine into compliance.
+.. Generate a playbook from the scan results.
+Use the `--fix-type ansible` option to request an Ansible Playbook with the fixes:
++
+----
+[... build]$ oscap xccdf generate fix --fix-type ansible --result-id "" /tmp/arf.xml > playbook.yml
+----
++
+You specified the empty `result-id` because `oscap` supports generation of fixes from a result file that has results from multiple scans. However, as there is only one result from a single scan, you do not have to specify the result ID explicitly.
+
+. Check the output:
++
+----
+[... build]$ open playbook.yml
+----
+
+. Generate a Bash remediation script from the scan results.
+.. Run the following command, using `--fix-type bash` to request a bash script with the fixes:
++
+----
+[... build]$ oscap xccdf generate fix --fix-type bash --result-id "" /tmp/arf.xml > bash-fix.sh
+----
+
+. Check the output :
++
+----
+[... build]$ open bash-fix.sh
+----
+
+The Ansible Playbook can be used to configure a system to meet a compliant state. Using Ansible Playbooks is discussed in `Lab Exercise 4`.
+The Bash remediation script also can be used to change the configuration of the system.
+It is recommended that you review the contents of these scripts and test them in a testing environment first, as they have the potential to make unexpected or harmful changes.
+
+<<top>>
+
+link:README.adoc#table-of-contents[ Table of Contents ] | link:lab3_profiles.adoc[Lab exercise 3 - Create Your Own Security Policy From Scratch]
