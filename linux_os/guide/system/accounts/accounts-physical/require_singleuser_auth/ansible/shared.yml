@@ -4,7 +4,6 @@
 # complexity = low
 # disruption = low
 
-{{% if init_system == "systemd" -%}}
 - name: require single user mode password
   lineinfile:
       create: yes
@@ -17,11 +16,3 @@
       {{%- else -%}}
       line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
       {{%- endif %}}
-{{%- else -%}}
-- name: require single user mode password
-  lineinfile:
-      create: yes
-      dest: /etc/sysconfig/init
-      regexp: "^#?SINGLE="
-      line: "SINGLE=/sbin/sulogin"
-{{%- endif %}}
