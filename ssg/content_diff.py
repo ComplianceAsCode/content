@@ -116,7 +116,8 @@ class StandardContentDiffer(object):
             "New content has different text for rule '%s':" % (rule_id))
 
         if self.show_diffs:
-            diff = self.compare_fix_texts(old_rule_text, new_rule_text)
+            diff = self.compare_fix_texts(old_rule_text, new_rule_text,
+                                          fromfile=rule_id,tofile=rule_id)
             print(
                 "New content has different text for rule '%s':" % (rule_id))
             print(diff)
@@ -198,7 +199,8 @@ class StandardContentDiffer(object):
         except ValueError as e:
             print("Rule '%s' OCIL can't be found: %s" % (self.rule_id, str(e)))
             return
-        diff = self.compare_fix_texts(old_question, new_question)
+        diff = self.compare_fix_texts(old_question, new_question,
+                                      fromfile=old_ocil_id, tofile=new_ocil_id)
         if diff:
             print("OCIL for rule '%s' differs:\n%s" % (self.rule_id, diff))
 
@@ -229,7 +231,8 @@ class StandardContentDiffer(object):
         if self.show_diffs:
             old_fix_text = "".join(old_fix.itertext())
             new_fix_text = "".join(new_fix.itertext())
-            diff = self.compare_fix_texts(old_fix_text, new_fix_text)
+            diff = self.compare_fix_texts(old_fix_text, new_fix_text,
+                                          fromfile=rule_id, tofile=rule_id)
             if diff:
                 print("%s remediation for rule '%s' differs:\n%s" % (
                     remediation_type, rule_id, diff))
