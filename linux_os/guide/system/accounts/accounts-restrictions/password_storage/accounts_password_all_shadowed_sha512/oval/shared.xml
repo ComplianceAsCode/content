@@ -18,7 +18,7 @@
     <filter action="exclude">state_accounts_password_all_shadowed_sha512</filter>
   </unix:shadow_object>
   <unix:shadow_state id="state_accounts_password_all_shadowed_has_no_password" version="1">
-      <unix:password operation="pattern match">^(!|!!|\*|!locked)$</unix:password>
+      <unix:password operation="pattern match">^(!|!!|!\*|\*|!locked)$</unix:password>
   </unix:shadow_state>
   <unix:shadow_state id="state_accounts_password_all_shadowed_sha512" version="1">
       <unix:encrypt_method operation="equals">SHA-512</unix:encrypt_method>
