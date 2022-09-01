@@ -2,7 +2,7 @@
 
 {{%- set package_installed_test_id = "test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_installed" -%}}
 
-{{% if init_system == "systemd" and target_oval_version >= [5, 11] %}}
+{{% if target_oval_version >= [5, 11] %}}
 
   <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     {{{ oval_metadata("The " + SERVICENAME + " service should be enabled if possible.") }}}

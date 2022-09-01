@@ -280,21 +280,6 @@ ocil: |-
 
 
 {{#
-    Describe how to check if a service is enabled via upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_ocil_service_enabled(service) %}}
-    Run the following command to determine the current status of the
-    <code>{{{ service }}}</code> service:
-    <pre>$ sudo service {{{ service }}} status</pre>
-    If the service is enabled, it should return the following: <pre>{{{ service }}} is running...</pre>
-{{%- endmacro %}}
-
-
-{{#
     Inserts an OCIL for a case when a service should be enabled,
     substituting the correct init system.
 
@@ -306,8 +291,6 @@ ocil: |-
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_ocil_service_enabled(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_ocil_service_enabled(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
