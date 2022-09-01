@@ -116,8 +116,8 @@ class StandardContentDiffer(object):
             "New content has different text for rule '%s':" % (rule_id))
 
         if self.show_diffs:
-            diff = self.compare_fix_texts(old_rule_text, new_rule_text,
-                                          fromfile=rule_id,tofile=rule_id)
+            diff = self.generate_diff_text(old_rule_text, new_rule_text,
+                                           fromfile=rule_id, tofile=rule_id)
             print(
                 "New content has different text for rule '%s':" % (rule_id))
             print(diff)
@@ -182,8 +182,8 @@ class StandardContentDiffer(object):
 
         old_els_text = self.serialize_elements(old_els)
         new_els_text = self.serialize_elements(new_els)
-        diff = self.compare_fix_texts(old_els_text, new_els_text,
-                                      fromfile=old_oval_def_id,tofile=new_oval_def_id)
+        diff = self.generate_diff_text(old_els_text, new_els_text,
+                                       fromfile=old_oval_def_id, tofile=new_oval_def_id)
 
         if diff:
             print("OVAL deffinition '%s' differs:\n%s" % (old_oval_def_id, diff))
@@ -195,8 +195,8 @@ class StandardContentDiffer(object):
         except ValueError as e:
             print("Rule '%s' OCIL can't be found: %s" % (self.rule_id, str(e)))
             return
-        diff = self.compare_fix_texts(old_question, new_question,
-                                      fromfile=old_ocil_id, tofile=new_ocil_id)
+        diff = self.generate_diff_text(old_question, new_question,
+                                       fromfile=old_ocil_id, tofile=new_ocil_id)
         if diff:
             print("OCIL for rule '%s' differs:\n%s" % (self.rule_id, diff))
 
@@ -227,14 +227,14 @@ class StandardContentDiffer(object):
         if self.show_diffs:
             old_fix_text = "".join(old_fix.itertext())
             new_fix_text = "".join(new_fix.itertext())
-            diff = self.compare_fix_texts(old_fix_text, new_fix_text,
-                                          fromfile=rule_id, tofile=rule_id)
+            diff = self.generate_diff_text(old_fix_text, new_fix_text,
+                                           fromfile=rule_id, tofile=rule_id)
             if diff:
                 print("%s remediation for rule '%s' differs:\n%s" % (
                     remediation_type, rule_id, diff))
 
-    def compare_fix_texts(self, old_r, new_r,
-                          fromfile="old datastream", tofile="new datastream", n=3):
+    def generate_diff_text(self, old_r, new_r,
+                           fromfile="old datastream", tofile="new datastream", n=3):
         if old_r != new_r:
             diff = "".join(difflib.unified_diff(
                 old_r.splitlines(keepends=True), new_r.splitlines(keepends=True),
@@ -314,8 +314,8 @@ class StigContentDiffer(StandardContentDiffer):
             "New content has different text for '%s'." % (stig_id.text))
 
         if self.show_diffs:
-            diff = self.compare_fix_texts(old_rule_text, new_rule_text,
-                                          fromfile=stig_id.text, tofile=stig_id.text, n=200)
+            diff = self.generate_diff_text(old_rule_text, new_rule_text,
+                                           fromfile=stig_id.text, tofile=stig_id.text, n=200)
 
             with open("%s/%s" % (self.output_dir, stig_id.text), "w") as f:
                 f.write(diff)
