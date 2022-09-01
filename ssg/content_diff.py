@@ -9,12 +9,6 @@ import ssg.xml
 from ssg.constants import FIX_TYPE_TO_SYSTEM
 
 
-check_system_to_uri = {
-    "OVAL": ssg.constants.oval_namespace,
-    "OCIL": ssg.constants.ocil_cs
-}
-
-
 class StandardContentDiffer(object):
 
     def __init__(self, old_content, new_content, rule_id, show_diffs, only_rules):
@@ -24,6 +18,11 @@ class StandardContentDiffer(object):
         self.rule_id = rule_id
         self.show_diffs = show_diffs
         self.only_rules = only_rules
+
+        self.check_system_map = {
+            "OVAL": {"uri": ssg.constants.oval_namespace, "comp_func": self.compare_ovals},
+            "OCIL": {"uri": ssg.constants.ocil_cs, "comp_func": self.compare_ocils}
+        }
 
     def _get_rules_to_compare(self, benchmark):
         rule_to_find = self.rule_id
@@ -157,7 +156,7 @@ class StandardContentDiffer(object):
         return old_check_doc, new_check_doc
 
     def compare_checks(self, old_rule, new_rule, system):
-        check_system_uri = check_system_to_uri[system]
+        check_system_uri = self.check_system_map[system]["uri"]
         old_check = old_rule.get_check_element(check_system_uri)
         new_check = new_rule.get_check_element(check_system_uri)
         rule_id = old_rule.get_attr("id")
@@ -181,16 +180,13 @@ class StandardContentDiffer(object):
             if (self.show_diffs and
                rule_id != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"):
 
-                old_check_doc, new_check_doc = self.get_check_docs(system, old_check_file_name, new_check_file_name)
+                old_check_doc, new_check_doc = self.get_check_docs(system, old_check_file_name,
+                                                                   new_check_file_name)
                 if not old_check_doc or not new_check_doc:
                     return
 
-                if system == "OVAL":
-                    self.compare_ovals(old_check_doc, old_check_id, new_check_doc, new_check_id, rule_id)
-                elif system == "OCIL":
-                    self.compare_ocils(old_check_doc, old_check_id, new_check_doc, new_check_id, rule_id)
-                else:
-                    raise RuntimeError("Unknown check system '%s'" % system)
+                self.check_system_map[system]["comp_func"](old_check_doc, old_check_id,
+                                                           new_check_doc, new_check_id, rule_id)
 
     def compare_ovals(self, old_oval_def_doc, old_oval_def_id, new_oval_def_doc, new_oval_def_id, rule_id):
         old_def = old_oval_def_doc.find_oval_definition(old_oval_def_id)
