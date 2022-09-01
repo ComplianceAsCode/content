@@ -17,18 +17,10 @@
   <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_audit_rules_augenrules" version="1">
     <ind:object object_ref="object_audit_rules_augenrules" />
   </ind:textfilecontent54_test>
-{{% if init_system == "systemd" %}}
   <ind:textfilecontent54_object id="object_audit_rules_augenrules" version="1">
     <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
     <ind:pattern operation="pattern match">^(ExecStartPost=\-\/sbin\/augenrules.*$|Requires=augenrules.service)</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-{{% else %}}
-  <ind:textfilecontent54_object id="object_audit_rules_augenrules" version="1">
-    <ind:filepath>/etc/sysconfig/auditd</ind:filepath>
-    <ind:pattern operation="pattern match">^USE_AUGENRULES="yes"$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-{{% endif %}}
 
 </def-group>
