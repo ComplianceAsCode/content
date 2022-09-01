@@ -188,7 +188,8 @@ class StandardContentDiffer(object):
                 self.check_system_map[system]["comp_func"](old_check_doc, old_check_id,
                                                            new_check_doc, new_check_id, rule_id)
 
-    def compare_ovals(self, old_oval_def_doc, old_oval_def_id, new_oval_def_doc, new_oval_def_id, rule_id):
+    def compare_ovals(self, old_oval_def_doc, old_oval_def_id,
+                      new_oval_def_doc, new_oval_def_id, rule_id):
         old_def = old_oval_def_doc.find_oval_definition(old_oval_def_id)
         new_def = new_oval_def_doc.find_oval_definition(new_oval_def_id)
         old_els = old_def.get_elements()
