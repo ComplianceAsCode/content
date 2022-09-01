@@ -1,18 +1,38 @@
+{{%- set basedir="/var/tmp" -%}}
 documentation_complete: true
 
-title: Configure Polyinstantiation of /var/tmp Directories
+title: Configure Polyinstantiation of {{{ basedir }}} Directories
 
 description: |-
-  To configure polyinstantiated /tmp directories, first create the parent directories
-  which will hold the polyinstantiation child directories. Use the following command:
-  <pre>$ sudo mkdir --mode 000 /var/tmp/tmp-inst</pre>
+  To configure polyinstantiated
+  <tt>{{{ basedir }}}</tt>
+  directories, first create the parent directories which will hold the
+  polyinstantiation child directories. Use the following command:
+  <pre>$ sudo mkdir --mode 000 {{{ basedir }}}/tmp-inst</pre>
   Then, add the following entry to <tt>/etc/security/namespace.conf</tt>:
-  <pre>/var/tmp /var/tmp/tmp-inst/    level      root,adm</pre>
+  <pre>{{{ basedir }}} {{{ basedir }}}/tmp-inst/    level      root,adm</pre>
 
-rationale: |- 
+rationale: |-
   Polyinstantiation of temporary directories is a proactive security measure
-  which reduces chances of attacks that are made possible by /var/tmp
+  which reduces chances of attacks that are made possible by
+  <tt>{{{ basedir }}}</tt>
   directories being world-writable.
+
+warnings:
+  - general: |-
+      Test any mitigations at test machine with working <em>rescue</em>
+      method.
+
+      Consider adding: <tt>ignore_config_error</tt> as
+      <tt>pam_namespace.so</tt> option during testing.
+
+      If SELinux is used and you are adding new files under:
+      <tt>/etc/security/namespace.d</tt> ensure you create file with right
+      context from start. Mistake will make system unable to accept new logins
+      and you need to reboot to rescue mode and trigger relabel.
+
+      Typo in <tt>namespace.conf</tt> can cause severe issues that require
+      rescue mode to recover.
 
 severity: low
 
@@ -29,8 +49,9 @@ references:
 ocil_clause: is not configured
 
 ocil: |-
-  Run the following command to ensure that <tt>/var/tmp</tt> is configured as a
-  polyinstantiated directory:
-  <pre>$ sudo grep /var/tmp /etc/security/namespace.conf</pre>
+  Run the following command to ensure that
+  <tt>{{{ basedir }}}</tt>
+  is configured as a polyinstantiated directory:
+  <pre>$ sudo grep -hr '^[^#]' /etc/security/namespace.conf /etc/security/namespace.d</pre>
   The output should return the following:
-  <pre>/var/tmp /var/tmp/tmp-inst/    level      root,adm</pre>
+  <pre>{{{ basedir }}} {{{ basedir }}}/tmp-inst/    level      root,adm</pre>
