@@ -37,3 +37,11 @@ ocil: |-
     Verify that <tt>authselect</tt> is enabled by running
     <pre>authselect current</pre>
     If authselect is enabled on the system, the output should show the ID of the profile which is currently in use.
+
+fixtext: |-
+    Configure {{{ full_name }}} to select an authselect profile if one is not already selected.
+    Use the following command to enable the {{{ xccdf_value("var_authselect_profile") }}} profile:
+
+    sudo authselect select {{{ xccdf_value("var_authselect_profile") }}}
+
+srg_requirement: '{{{ full_name }}} must use authselect to manage PAM settings'
