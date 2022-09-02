@@ -1,12 +1,13 @@
+{{%- set basedir="/tmp" -%}}
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_sle
 # reboot = false
 # strategy = restrict
 # complexity = low
 # disruption = low
 
-- name: Create /tmp/tmp-inst directory
+- name: Create {{{ basedir }}}/tmp-inst directory
   file:
-    path: /tmp/tmp-inst
+    path: {{{ basedir }}}/tmp-inst
     state: directory
     mode: '000'
     seuser: _default
@@ -16,7 +17,7 @@
 {{{ ansible_lineinfile(
   msg="Make changes to /etc/security/namespace.conf",
   path="/etc/security/namespace.conf",
-  regex="^\s*/tmp\s+/tmp/tmp-inst/\s+level\s+root,adm$",
-  new_line="/tmp     /tmp/tmp-inst/        level      root,adm",
+  regex="^\s*{{{ basedir }}}\s+{{{ basedir }}}/tmp-inst/\s+level\s+root,adm\s*$",
+  new_line="{{{ basedir }}} {{{ basedir }}}/tmp-inst/    level      root,adm",
   selinux_default=True,
 ) }}}
