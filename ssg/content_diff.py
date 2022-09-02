@@ -20,6 +20,8 @@ class StandardContentDiffer(object):
         self.rule_diffs = rule_diffs
         self.only_rules = only_rules
 
+        self.context_lines = 3
+
         self.check_system_map = {
             "OVAL": {"uri": ssg.constants.oval_namespace, "comp_func": self.compare_ovals},
             "OCIL": {"uri": ssg.constants.ocil_cs, "comp_func": self.compare_ocils}
@@ -37,12 +39,12 @@ class StandardContentDiffer(object):
         else:
             os.mkdir(self.output_dir)
 
-    def output_diff(self, rule_id, diff, mode="a"):
+    def output_diff(self, identifier, diff, mode="a"):
         if not diff:
             return
 
         if self.rule_diffs:
-            with open("%s/%s" % (self.output_dir, rule_id), mode) as f:
+            with open("%s/%s" % (self.output_dir, identifier), mode) as f:
                 f.write(diff)
         else:
             print(diff)
@@ -72,16 +74,16 @@ class StandardContentDiffer(object):
                 continue
             if self.only_rules:
                 continue
-            self.compare_rule(old_rule, new_rule)
+            self.compare_rule(old_rule, new_rule, rule_id)
             self.compare_platforms(old_rule, new_rule,
-                                   old_benchmark, new_benchmark)
+                                   old_benchmark, new_benchmark, rule_id)
 
-    def compare_rule(self, old_rule, new_rule):
-        self.compare_rule_texts(old_rule, new_rule)
-        self.compare_checks(old_rule, new_rule, "OVAL")
-        self.compare_checks(old_rule, new_rule, "OCIL")
+    def compare_rule(self, old_rule, new_rule, identifier):
+        self.compare_rule_texts(old_rule, new_rule, identifier)
+        self.compare_checks(old_rule, new_rule, "OVAL", identifier)
+        self.compare_checks(old_rule, new_rule, "OCIL", identifier)
         for remediation_type in FIX_TYPE_TO_SYSTEM.keys():
-            self.compare_remediations(old_rule, new_rule, remediation_type)
+            self.compare_remediations(old_rule, new_rule, remediation_type, identifier)
 
     def _get_list_of_platforms(self, cpe_platforms):
         cpe_list = []
@@ -98,8 +100,7 @@ class StandardContentDiffer(object):
                 cpe_list.append(fact_ref.get("name"))
         return cpe_list
 
-    def compare_platforms(self, old_rule, new_rule, old_benchmark, new_benchmark):
-        rule_id = old_rule.get_attr("id")
+    def compare_platforms(self, old_rule, new_rule, old_benchmark, new_benchmark, identifier):
         entries = [{
                 "benchmark": old_benchmark,
                 "rule": old_rule,
@@ -120,47 +121,46 @@ class StandardContentDiffer(object):
                     entry["cpe"].append(idref)
 
         if entries[0]["cpe"] != entries[1]["cpe"]:
-            print("Platform has been changed for rule '{0}'".format(rule_id))
+            print("Platform has been changed for rule '{0}'".format(identifier))
 
             if self.show_diffs:
                 diff = self.generate_diff_text("\n".join(entries[0]["cpe"])+"\n",
                                                "\n".join(entries[1]["cpe"])+"\n",
-                                               fromfile=rule_id, tofile=rule_id)
-                self.output_diff(rule_id, diff)
+                                               fromfile=identifier, tofile=identifier)
+                self.output_diff(identifier, diff)
 
-    def compare_rule_texts(self, old_rule, new_rule):
+    def compare_rule_texts(self, old_rule, new_rule, identifier):
         old_rule_text = old_rule.join_text_elements()
         new_rule_text = new_rule.join_text_elements()
 
         if old_rule_text == new_rule_text:
             return
 
-        rule_id = old_rule.get_attr("id")
-
         print(
-            "New content has different text for rule '%s'." % (rule_id))
+            "New content has different text for rule '%s'." % (identifier))
 
         if self.show_diffs:
             diff = self.generate_diff_text(old_rule_text, new_rule_text,
-                                           fromfile=rule_id, tofile=rule_id)
+                                           fromfile=identifier, tofile=identifier,
+                                           n=self.context_lines)
 
-            self.output_diff(rule_id, diff, mode="w")
+            self.output_diff(identifier, diff, mode="w")
 
-    def compare_check_ids(self, system, rule_id, old_check_id, new_check_id):
+    def compare_check_ids(self, system, identifier, old_check_id, new_check_id):
         if old_check_id != new_check_id:
             print(
                 "%s definition ID for rule '%s' has changed from "
                 "'%s' to '%s'." % (
-                    system, rule_id, old_check_id, new_check_id)
+                    system, identifier, old_check_id, new_check_id)
             )
 
-    def compare_check_file_names(self, system, rule_id,
+    def compare_check_file_names(self, system, identifier,
                                  old_check_file_name, new_check_file_name):
         if old_check_file_name != new_check_file_name:
             print(
                 "%s definition file for rule '%s' has changed from "
                 "'%s' to '%s'." % (
-                    system, rule_id, old_check_file_name, new_check_file_name)
+                    system, identifier, old_check_file_name, new_check_file_name)
             )
 
     def get_check_docs(self, system, old_check_file_name, new_check_file_name):
@@ -180,16 +180,15 @@ class StandardContentDiffer(object):
             new_check_doc = None
         return old_check_doc, new_check_doc
 
-    def compare_checks(self, old_rule, new_rule, system):
+    def compare_checks(self, old_rule, new_rule, system, identifier):
         check_system_uri = self.check_system_map[system]["uri"]
         old_check = old_rule.get_check_element(check_system_uri)
         new_check = new_rule.get_check_element(check_system_uri)
-        rule_id = old_rule.get_attr("id")
         if (old_check is None and new_check is not None):
-            print("New datastream adds %s for rule '%s'." % (system, rule_id))
+            print("New datastream adds %s for rule '%s'." % (system, identifier))
         elif (old_check is not None and new_check is None):
             print(
-                "New datastream is missing %s for rule '%s'." % (system, rule_id))
+                "New datastream is missing %s for rule '%s'." % (system, identifier))
         elif (old_check is not None and new_check is not None):
             old_check_content_ref = old_rule.get_check_content_ref_element(old_check)
             new_check_content_ref = new_rule.get_check_content_ref_element(new_check)
@@ -198,12 +197,12 @@ class StandardContentDiffer(object):
             old_check_file_name = old_check_content_ref.get("href")
             new_check_file_name = new_check_content_ref.get("href")
 
-            self.compare_check_ids(system, rule_id, old_check_id, new_check_id)
-            self.compare_check_file_names(system, rule_id,
+            self.compare_check_ids(system, identifier, old_check_id, new_check_id)
+            self.compare_check_file_names(system, identifier,
                                           old_check_file_name, new_check_file_name)
 
             if (self.show_diffs and
-               rule_id != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"):
+               identifier != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"):
 
                 old_check_doc, new_check_doc = self.get_check_docs(system, old_check_file_name,
                                                                    new_check_file_name)
@@ -211,10 +210,10 @@ class StandardContentDiffer(object):
                     return
 
                 self.check_system_map[system]["comp_func"](old_check_doc, old_check_id,
-                                                           new_check_doc, new_check_id, rule_id)
+                                                           new_check_doc, new_check_id, identifier)
 
     def compare_ovals(self, old_oval_def_doc, old_oval_def_id,
-                      new_oval_def_doc, new_oval_def_id, rule_id):
+                      new_oval_def_doc, new_oval_def_id, identifier):
         old_def = old_oval_def_doc.find_oval_definition(old_oval_def_id)
         new_def = new_oval_def_doc.find_oval_definition(new_oval_def_id)
         old_els = old_def.get_elements()
@@ -225,54 +224,53 @@ class StandardContentDiffer(object):
         diff = self.generate_diff_text(old_els_text, new_els_text,
                                        fromfile=old_oval_def_id, tofile=new_oval_def_id)
 
-        print("OVAL for rule '%s' differs." % (rule_id))
-        self.output_diff(rule_id, diff)
+        print("OVAL for rule '%s' differs." % (identifier))
+        self.output_diff(identifier, diff)
 
-    def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id, rule_id):
+    def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id, identifier):
         try:
             old_question = old_ocil_doc.find_boolean_question(old_ocil_id)
             new_question = new_ocil_doc.find_boolean_question(new_ocil_id)
         except ValueError as e:
-            print("Rule '%s' OCIL can't be found: %s" % (rule_id, str(e)))
+            print("Rule '%s' OCIL can't be found: %s" % (identifier, str(e)))
             return
         diff = self.generate_diff_text(old_question, new_question,
                                        fromfile=old_ocil_id, tofile=new_ocil_id)
 
-        print("OCIL for rule '%s' differs." % rule_id)
-        self.output_diff(rule_id, diff)
+        print("OCIL for rule '%s' differs." % identifier)
+        self.output_diff(identifier, diff)
 
-    def compare_remediations(self, old_rule, new_rule, remediation_type):
+    def compare_remediations(self, old_rule, new_rule, remediation_type, identifier):
         system = FIX_TYPE_TO_SYSTEM[remediation_type]
         old_fix = old_rule.get_fix_element(system)
         new_fix = new_rule.get_fix_element(system)
-        rule_id = old_rule.get_attr("id")
         if (old_fix is None and new_fix is not None):
             print("New datastream adds %s remediation for rule '%s'." % (
-                remediation_type, rule_id))
+                remediation_type, identifier))
         elif (old_fix is not None and new_fix is None):
             print("New datastream is missing %s remediation for rule '%s'." % (
-                remediation_type, rule_id))
+                remediation_type, identifier))
         elif (old_fix is not None and new_fix is not None):
             self._compare_fix_elements(
-                old_fix, new_fix, remediation_type, rule_id)
+                old_fix, new_fix, remediation_type, identifier)
 
-    def _compare_fix_elements(self, old_fix, new_fix, remediation_type, rule_id):
+    def _compare_fix_elements(self, old_fix, new_fix, remediation_type, identifier):
         old_fix_id = old_fix.get("id")
         new_fix_id = new_fix.get("id")
         if old_fix_id != new_fix_id:
             print(
                 "%s remediation ID for rule '%s' has changed from "
                 "'%s' to '%s'." % (
-                    remediation_type, rule_id, old_fix_id, new_fix_id)
+                    remediation_type, identifier, old_fix_id, new_fix_id)
             )
         if self.show_diffs:
             old_fix_text = "".join(old_fix.itertext())
             new_fix_text = "".join(new_fix.itertext())
             diff = self.generate_diff_text(old_fix_text, new_fix_text,
-                                           fromfile=rule_id, tofile=rule_id)
+                                           fromfile=identifier, tofile=identifier)
 
-            print("%s remediation for rule '%s' differs." % (remediation_type, rule_id))
-            self.output_diff(rule_id, diff)
+            print("%s remediation for rule '%s' differs." % (remediation_type, identifier))
+            self.output_diff(identifier, diff)
 
     def generate_diff_text(self, old_r, new_r,
                            fromfile="old datastream", tofile="new datastream", n=3):
@@ -295,6 +293,8 @@ class StigContentDiffer(StandardContentDiffer):
     def __init__(self, old_content, new_content, rule_id, show_diffs, rule_diffs, only_rules, output_dir):
         super(StigContentDiffer, self).__init__(old_content, new_content,
                                                 rule_id, show_diffs, rule_diffs, only_rules, output_dir)
+
+        self.context_lines = 200
 
     def get_stig_rule_SV(self, rule_id):
         stig_rule_id = re.search(r'(SV-\d+)r\d+_rule', rule_id)
@@ -328,22 +328,7 @@ class StigContentDiffer(StandardContentDiffer):
                 continue
             if self.only_rules:
                 continue
-            self.compare_rule(old_rule, new_rule)
+            stig_id = new_rule.get_version_element()
+            self.compare_rule(old_rule, new_rule, stig_id.text)
             self.compare_platforms(old_rule, new_rule,
-                                   old_benchmark, new_benchmark)
-
-    def compare_rule_texts(self, old_rule, new_rule):
-        old_rule_text = old_rule.join_text_elements()
-        new_rule_text = new_rule.join_text_elements()
-
-        if old_rule_text == new_rule_text:
-            return
-
-        stig_id = new_rule.get_version_element()
-        print(
-            "New content has different text for '%s'." % (stig_id.text))
-
-        if self.show_diffs:
-            diff = self.generate_diff_text(old_rule_text, new_rule_text,
-                                           fromfile=stig_id.text, tofile=stig_id.text, n=200)
-            self.output_diff(stig_id.text, diff)
+                                   old_benchmark, new_benchmark, stig_id)

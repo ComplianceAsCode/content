@@ -43,9 +43,9 @@ def parse_args():
              "If the directory doesn't exist, it will be created."
     )
     parser.add_argument(
-        "--stig-benchmark", action="store_true",
-        help="This compares the content in the STIG Benchmark mode. "
-             "A file is generated for each STIGID that changed."
+        "--disa-content", action="store_true",
+        help="This option enables comparison betwween DISA contents by ignoring the release "
+             "number in rule IDs."
     )
     return parser.parse_args()
 
@@ -60,7 +60,7 @@ def main():
     old_xml_content = XMLContent(old_root)
     new_xml_content = XMLContent(new_root)
 
-    if args.stig_benchmark:
+    if args.disa_content:
         content_differ = StigContentDiffer(old_xml_content, new_xml_content, args.rule,
                                            not args.no_diffs, args.rule_diffs, args.only_rules, args.output_dir)
     else:
