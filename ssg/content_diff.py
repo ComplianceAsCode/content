@@ -163,20 +163,20 @@ class StandardContentDiffer(object):
                     system, identifier, old_check_file_name, new_check_file_name)
             )
 
-    def get_check_docs(self, system, old_check_file_name, new_check_file_name):
+    def get_check_docs(self, system, identifier, old_check_file_name, new_check_file_name):
         try:
             old_check_doc = self.old_content.components.get(system)[old_check_file_name]
-        except KeyError:
+        except (KeyError, TypeError):
             print(
                 "Rule '%s' points to '%s' which isn't a part of the "
-                "old datastream" % (rule_id, old_check_file_name))
+                "old datastream" % (identifier, old_check_file_name))
             old_check_doc = None
         try:
             new_check_doc = self.new_content.components.get(system)[new_check_file_name]
-        except KeyError:
+        except (KeyError, TypeError):
             print(
                 "Rule '%s' points to '%s' which isn't a part of the "
-                "new datastream" % (rule_id, new_check_file_name))
+                "new datastream" % (identifier, new_check_file_name))
             new_check_doc = None
         return old_check_doc, new_check_doc
 
@@ -204,7 +204,8 @@ class StandardContentDiffer(object):
             if (self.show_diffs and
                identifier != "xccdf_org.ssgproject.content_rule_security_patches_up_to_date"):
 
-                old_check_doc, new_check_doc = self.get_check_docs(system, old_check_file_name,
+                old_check_doc, new_check_doc = self.get_check_docs(system, identifier,
+                                                                   old_check_file_name,
                                                                    new_check_file_name)
                 if not old_check_doc or not new_check_doc:
                     return
