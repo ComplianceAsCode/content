@@ -1048,10 +1048,6 @@ class Benchmark(XCCDFEntity):
 class Group(XCCDFEntity):
     """Represents XCCDF Group
     """
-    ATTRIBUTES_TO_PASS_ON = (
-        "platforms",
-        "cpe_platform_names",
-    )
 
     GENERIC_FILENAME = "group.yml"
 
@@ -1067,6 +1063,7 @@ class Group(XCCDFEntity):
         rules=lambda: dict(),
         platform=lambda: "",
         platforms=lambda: set(),
+        inherited_platforms=lambda: set(),
         cpe_platform_names=lambda: set(),
         ** XCCDFEntity.KEYS
     )
@@ -1229,25 +1226,17 @@ class Group(XCCDFEntity):
     def add_group(self, group, env_yaml=None, product_cpes=None):
         self._add_child(group, self.groups, env_yaml, product_cpes)
 
-    def _pass_our_properties_on_to(self, obj):
-        for attr in self.ATTRIBUTES_TO_PASS_ON:
-            if hasattr(obj, attr) and getattr(obj, attr) is None:
-                setattr(obj, attr, getattr(self, attr))
-
     def add_rule(self, rule, env_yaml=None, product_cpes=None):
         self._add_child(rule, self.rules, env_yaml, product_cpes)
 
     def _add_child(self, child, childs, env_yaml=None, product_cpes=None):
         if child is None:
             return
-        if self.platforms and not child.platforms:
-            child.platforms = self.platforms
+        child.inherited_platforms.update(self.platforms, self.inherited_platforms)
         childs[child.id_] = child
-        self._pass_our_properties_on_to(child)
-
-        # Once the child has inherited properties, update cpe_names
+        # Once the child has inherited platforms, update cpe_names
         if env_yaml:
-            for platform in child.platforms:
+            for platform in child.inherited_platforms:
                 cpe_platform = Platform.from_text(platform, product_cpes)
                 cpe_platform = add_platform_if_not_defined(cpe_platform, product_cpes)
                 child.cpe_platform_names.add(cpe_platform.id_)
@@ -1292,7 +1281,7 @@ class Rule(XCCDFEntity):
         platform=lambda: None,
         platforms=lambda: set(),
         sce_metadata=lambda: dict(),
-        inherited_platforms=lambda: list(),
+        inherited_platforms=lambda: set(),
         template=lambda: None,
         cpe_platform_names=lambda: set(),
         inherited_cpe_platform_names=lambda: list(),

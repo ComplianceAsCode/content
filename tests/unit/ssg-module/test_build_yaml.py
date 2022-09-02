@@ -42,6 +42,19 @@ TEST_TEMPLATE_DICT = {
 }
 
 
+def test_rule_platforms_inheritance():
+    group1 = ssg.build_yaml.Group('gr1_id')
+    group1.platforms = {'pl0', 'pl1'}
+    group2 = ssg.build_yaml.Group('gr2_id')
+    group2.platforms = {'pl1', 'pl2'}
+    rule = ssg.build_yaml.Rule('rul_id')
+    rule.platforms = {'plX'}
+    group1.add_group(group2)
+    group2.add_rule(rule)
+    assert rule.inherited_platforms == {'pl0', 'pl1', 'pl2'}
+    assert rule.platforms == {'plX'}
+
+
 def test_make_items_product_specific():
     rule = ssg.build_yaml.Rule("something")
 
