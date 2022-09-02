@@ -38,9 +38,50 @@
   <ind:object object_ref="obj_{{{ basename }}}_in_namespace_conf" />
   </ind:textfilecontent54_test>
 
+{{#-
+   man adduser(8)
+
+   Usernames may contain only lower and upper case letters, digits,
+   underscores, or dashes. They can end with a dollar sign. Dashes are
+   not allowed at the beginning of the username. Fully numeric usernames
+   and usernames . or .. are also disallowed. It is not recommended to
+   use usernames beginning with . character as their home directories
+   will be hidden in the ls output.
+
+   Usernames may only be up to 32 characters long.
+-#}}
+{{%- set rx_username="(?:[[:alpha:]_][\w-]{0,30}[\w$-]?)" -%}}
+{{#-
+   man namespace.conf(5)
+   ...
+   The fields are separated by spaces but can be quoted by " characters
+   also escape sequences \b, \n, and \t are recognized. The fields are
+   as follows:
+
+   polydir instance_prefix method list_of_uids
+   ...
+
+   Some situations not supported here:
+   -  quotation
+   -  escapes
+   - `mntopts` with `context` directive
+
+   This regexp implementation only somewhat resembles what parser accepts.
+
+   Deny `shared` method.
+-#}}
+{{%- set rx_sep="\s+" -%}}
+{{%- set rx_flag_create="(?:create(=\d*(?:,\d*(?:,\d+)?)?)?)" -%}}
+{{%- set rx_flag_iscript="(?:iscript=[^\s:]+)" -%}}
+{{%- set rx_flag_noinit="(?:noinit)" -%}}
+{{%- set rx_flag_mntopts="(?:mntopts=[^\s:]+)" -%}}
+{{%- set rx_methods_rest="(?:user|level|context|tmpdir)(?::(?:" ~ rx_flag_create ~ "|" ~ rx_flag_iscript ~ "|" ~ rx_flag_noinit ~ "))*" -%}}
+{{%- set rx_method_tmpfs="tmpfs(?::(?:" ~ rx_flag_create ~ "|" ~ rx_flag_iscript ~ "|" ~ rx_flag_noinit~ "|" ~ rx_flag_mntopts ~ "))*" -%}}
+{{%- set rx_method="(?:" ~ rx_methods_rest ~ "|" ~ rx_method_tmpfs ~ ")" -%}}
+{{%- set rx_list_of_uids="(?:[~]?" ~ rx_username ~ "(?:," ~ rx_username ~ ")*)?" -%}}
   <ind:textfilecontent54_object id="obj_{{{ basename }}}_in_namespace_conf" version="1">
     <ind:filepath operation="pattern match">^/etc/security/namespace(?:|\.d/[^/]*)\.conf$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*{{{ basedir }}}\s+{{{ basedir }}}/tmp-inst/\s+\S+\s+\S+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*{{{ basedir }}}{{{ rx_sep }}}{{{ basedir }}}/tmp-inst/{{{ rx_sep }}}{{{ rx_method }}}{{{ rx_sep }}}{{{ rx_list_of_uids }}}\s*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
