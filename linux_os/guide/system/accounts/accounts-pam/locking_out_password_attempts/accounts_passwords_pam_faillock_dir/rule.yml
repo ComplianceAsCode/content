@@ -44,7 +44,7 @@ fixtext: |-
 
     Then edit the <tt>/etc/security/faillock.conf</tt> file as follows:
     add, uncomment or edit the following line:
-    <pre>dir = /var/log/faillock</pre>
+    <pre>dir = {{{ xccdf_value("var_accounts_passwords_pam_faillock_dir") }}}</pre>
 
 platform: pam
 
