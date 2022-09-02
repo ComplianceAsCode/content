@@ -78,6 +78,9 @@ class StandardContentDiffer(object):
             self.compare_platforms(old_rule, new_rule,
                                    old_benchmark, new_benchmark, rule_id)
 
+        if self.rule_diffs:
+            print("Diff files saved at %s." % self.output_dir)
+
     def compare_rule(self, old_rule, new_rule, identifier):
         self.compare_rule_texts(old_rule, new_rule, identifier)
         self.compare_checks(old_rule, new_rule, "OVAL", identifier)
@@ -333,3 +336,6 @@ class StigContentDiffer(StandardContentDiffer):
             self.compare_rule(old_rule, new_rule, stig_id.text)
             self.compare_platforms(old_rule, new_rule,
                                    old_benchmark, new_benchmark, stig_id)
+
+        if self.rule_diffs:
+            print("Diff files saved at %s." % self.output_dir)

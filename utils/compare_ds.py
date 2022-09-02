@@ -38,7 +38,7 @@ def parse_args():
     )
     parser.add_argument(
         "--output-dir", metavar="OUTPUT_DIR",
-        type=str, action="store", default="compare_ds-diffs",
+        type=str, action="store", default="./compare_ds-diffs",
         help="Directory where rule diff files will be saved. Only used with --rule-diffs option. "
              "If the directory doesn't exist, it will be created."
     )
