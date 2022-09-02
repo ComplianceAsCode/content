@@ -296,11 +296,11 @@ class StigContentDiffer(StandardContentDiffer):
 
         self.context_lines = 200
 
-    def get_stig_rule_SV(self, rule_id):
-        stig_rule_id = re.search(r'(SV-\d+)r\d+_rule', rule_id)
+    def get_stig_rule_SV(self, sv_rule_id):
+        stig_rule_id = re.search(r'(SV-\d+)r\d+_rule', sv_rule_id)
         if not stig_rule_id:
             print("The rule '%s' doesn't have the usual STIG format: 'SV-XXXXXXrXXXXXX_rule.\n"
-                  "Please make sure the input contents are DISA STIG Benchmarks." % rule_id)
+                  "Please make sure the input contents are DISA STIG Benchmarks." % sv_rule_id)
             sys.exit(1)
         return stig_rule_id.group(1)
 
@@ -320,11 +320,11 @@ class StigContentDiffer(StandardContentDiffer):
                             for rule in rules_in_new_benchmark}
 
         for old_rule in rules_in_old_benchmark:
-            rule_id = new_rule_mapping[self.get_stig_rule_SV(old_rule.get_attr("id"))]
-            new_rule = new_benchmark.find_rule(rule_id)
+            sv_rule_id = new_rule_mapping[self.get_stig_rule_SV(old_rule.get_attr("id"))]
+            new_rule = new_benchmark.find_rule(sv_rule_id)
             if new_rule is None:
-                missing_rules.append(rule_id)
-                print("%s is missing in new datastream." % (rule_id))
+                missing_rules.append(sv_rule_id)
+                print("%s is missing in new datastream." % (sv_rule_id))
                 continue
             if self.only_rules:
                 continue
