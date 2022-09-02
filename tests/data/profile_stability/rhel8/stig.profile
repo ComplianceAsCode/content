@@ -31,7 +31,6 @@ reference: https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-s
 selections:
 - account_disable_post_pw_expiration
 - account_emergency_expire_date
-- account_passwords_pam_faillock_audit
 - account_temp_expire_date
 - account_unique_id
 - accounts_authorized_local_users
@@ -59,6 +58,7 @@ selections:
 - accounts_password_pam_ucredit
 - accounts_password_set_max_life_existing
 - accounts_password_set_min_life_existing
+- accounts_passwords_pam_faillock_audit
 - accounts_passwords_pam_faillock_deny
 - accounts_passwords_pam_faillock_deny_root
 - accounts_passwords_pam_faillock_interval
@@ -467,6 +467,7 @@ selections:
 - var_sudo_timestamp_timeout=always_prompt
 - var_slub_debug_options=P
 - var_screensaver_lock_delay=5_seconds
+unselected_groups: []
 platforms: !!set {}
 cpe_names: !!set {}
 platform: null
