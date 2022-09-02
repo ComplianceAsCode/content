@@ -241,7 +241,7 @@ def main() -> None:
 
         update_row(changed.Requirement, current.Requirement, rule_obj, 'srg_requirement')
 
-        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vulndiscussion')
+        update_row(changed.Vul_Discussion, current.Vul_Discussion, rule_obj, 'vuldiscussion')
 
         cleand_current_check = fix_cac_cells(current.Check, full_name, args.changed_name)
         update_row(changed.Check, cleand_current_check, rule_obj, 'checktext')
