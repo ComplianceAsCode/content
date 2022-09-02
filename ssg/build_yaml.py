@@ -1148,7 +1148,7 @@ class Group(XCCDFEntity):
 
     def to_xml_element(self, env_yaml=None):
         group = ET.Element('{%s}Group' % XCCDF12_NS)
-        group.set('id', OSCAP_GROUP +  self.id_)
+        group.set('id', OSCAP_GROUP + self.id_)
         title = ET.SubElement(group, '{%s}title' % XCCDF12_NS)
         title.text = self.title
         add_sub_element(group, 'description', XCCDF12_NS, self.description)

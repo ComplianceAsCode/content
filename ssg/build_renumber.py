@@ -5,8 +5,10 @@ import collections
 import os
 
 
-from .constants import OSCAP_RULE, OSCAP_VALUE, oval_namespace, XCCDF12_NS, cce_uri, ocil_cs, ocil_namespace
-from .constants import OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
+from .constants import (
+    OSCAP_RULE, OSCAP_VALUE, oval_namespace, XCCDF12_NS, cce_uri, ocil_cs,
+    ocil_namespace, OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
+)
 from .parse_oval import resolve_definition, find_extending_defs, get_container_groups
 from .xml import parse_file, map_elements_to_their_ids
 
