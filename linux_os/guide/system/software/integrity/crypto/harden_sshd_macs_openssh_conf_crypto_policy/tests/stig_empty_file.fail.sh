@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_fedora,Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8,multi_platform_fedora
 # profiles = xccdf_org.ssgproject.content_profile_stig
 
 configfile=/etc/crypto-policies/back-ends/openssh.config

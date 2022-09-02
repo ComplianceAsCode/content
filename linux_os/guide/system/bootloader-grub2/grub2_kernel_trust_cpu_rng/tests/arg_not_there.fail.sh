@@ -1,6 +1,6 @@
 #!/bin/bash
 # Based on shared/templates/grub2_bootloader_argument/tests/arg_not_there.fail.sh
-# platform = Red Hat Enterprise Linux 8
+# platform = Oracle Linux 8,Red Hat Enterprise Linux 8
 
 # Removes audit argument from kernel command line in /boot/grub2/grubenv
 file="/boot/grub2/grubenv"
