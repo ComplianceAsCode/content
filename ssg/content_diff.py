@@ -11,18 +11,41 @@ from ssg.constants import FIX_TYPE_TO_SYSTEM
 
 class StandardContentDiffer(object):
 
-    def __init__(self, old_content, new_content, rule_id, show_diffs, only_rules):
+    def __init__(self, old_content, new_content, rule_id, show_diffs, rule_diffs, only_rules, output_dir):
         self.old_content = old_content
         self.new_content = new_content
 
         self.rule_id = rule_id
         self.show_diffs = show_diffs
+        self.rule_diffs = rule_diffs
         self.only_rules = only_rules
 
         self.check_system_map = {
             "OVAL": {"uri": ssg.constants.oval_namespace, "comp_func": self.compare_ovals},
             "OCIL": {"uri": ssg.constants.ocil_cs, "comp_func": self.compare_ocils}
         }
+
+        self.output_dir = output_dir
+        if self.rule_diffs:
+            self._ensure_output_dir_exists()
+
+    def _ensure_output_dir_exists(self):
+        if os.path.exists(self.output_dir):
+            if not os.path.isdir(self.output_dir):
+                print("Output path '%s' exists and it is not a directory." % self.output_dir)
+                sys.exit(1)
+        else:
+            os.mkdir(self.output_dir)
+
+    def output_diff(self, rule_id, diff, mode="a"):
+        if not diff:
+            return
+
+        if self.rule_diffs:
+            with open("%s/%s" % (self.output_dir, rule_id), mode) as f:
+                f.write(diff)
+        else:
+            print(diff)
 
     def _get_rules_to_compare(self, benchmark):
         rule_to_find = self.rule_id
@@ -97,12 +120,13 @@ class StandardContentDiffer(object):
                     entry["cpe"].append(idref)
 
         if entries[0]["cpe"] != entries[1]["cpe"]:
-            print("Platform has been changed for rule "
-                  "'{0}'".format(rule_id))
-            diff = self.generate_diff_text("\n".join(entries[0]["cpe"])+"\n",
-                                           "\n".join(entries[1]["cpe"])+"\n",
-                                           fromfile=rule_id, tofile=rule_id)
-            print(diff)
+            print("Platform has been changed for rule '{0}'".format(rule_id))
+
+            if self.show_diffs:
+                diff = self.generate_diff_text("\n".join(entries[0]["cpe"])+"\n",
+                                               "\n".join(entries[1]["cpe"])+"\n",
+                                               fromfile=rule_id, tofile=rule_id)
+                self.output_diff(rule_id, diff)
 
     def compare_rule_texts(self, old_rule, new_rule):
         old_rule_text = old_rule.join_text_elements()
@@ -112,15 +136,15 @@ class StandardContentDiffer(object):
             return
 
         rule_id = old_rule.get_attr("id")
+
         print(
-            "New content has different text for rule '%s':" % (rule_id))
+            "New content has different text for rule '%s'." % (rule_id))
 
         if self.show_diffs:
             diff = self.generate_diff_text(old_rule_text, new_rule_text,
                                            fromfile=rule_id, tofile=rule_id)
-            print(
-                "New content has different text for rule '%s':" % (rule_id))
-            print(diff)
+
+            self.output_diff(rule_id, diff, mode="w")
 
     def compare_check_ids(self, system, rule_id, old_check_id, new_check_id):
         if old_check_id != new_check_id:
@@ -201,8 +225,8 @@ class StandardContentDiffer(object):
         diff = self.generate_diff_text(old_els_text, new_els_text,
                                        fromfile=old_oval_def_id, tofile=new_oval_def_id)
 
-        if diff:
-            print("OVAL for rule '%s' differs:\n%s" % (rule_id, diff))
+        print("OVAL for rule '%s' differs." % (rule_id))
+        self.output_diff(rule_id, diff)
 
     def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id, rule_id):
         try:
@@ -213,8 +237,9 @@ class StandardContentDiffer(object):
             return
         diff = self.generate_diff_text(old_question, new_question,
                                        fromfile=old_ocil_id, tofile=new_ocil_id)
-        if diff:
-            print("OCIL for rule '%s' differs:\n%s" % (rule_id, diff))
+
+        print("OCIL for rule '%s' differs." % rule_id)
+        self.output_diff(rule_id, diff)
 
     def compare_remediations(self, old_rule, new_rule, remediation_type):
         system = FIX_TYPE_TO_SYSTEM[remediation_type]
@@ -245,9 +270,9 @@ class StandardContentDiffer(object):
             new_fix_text = "".join(new_fix.itertext())
             diff = self.generate_diff_text(old_fix_text, new_fix_text,
                                            fromfile=rule_id, tofile=rule_id)
-            if diff:
-                print("%s remediation for rule '%s' differs:\n%s" % (
-                    remediation_type, rule_id, diff))
+
+            print("%s remediation for rule '%s' differs." % (remediation_type, rule_id))
+            self.output_diff(rule_id, diff)
 
     def generate_diff_text(self, old_r, new_r,
                            fromfile="old datastream", tofile="new datastream", n=3):
@@ -267,20 +292,9 @@ class StandardContentDiffer(object):
 
 class StigContentDiffer(StandardContentDiffer):
 
-    def __init__(self, old_content, new_content, rule_id, show_diffs, only_rules, output_dir):
+    def __init__(self, old_content, new_content, rule_id, show_diffs, rule_diffs, only_rules, output_dir):
         super(StigContentDiffer, self).__init__(old_content, new_content,
-                                                rule_id, show_diffs, only_rules)
-        self.output_dir = output_dir
-
-        self._ensure_output_dir_exists()
-
-    def _ensure_output_dir_exists(self):
-        if os.path.exists(self.output_dir):
-            if not os.path.isdir(self.output_dir):
-                print("Output path '%s' exists and it is not a directory." % self.output_dir)
-                sys.exit(1)
-        else:
-            os.mkdir(self.output_dir)
+                                                rule_id, show_diffs, rule_diffs, only_rules, output_dir)
 
     def get_stig_rule_SV(self, rule_id):
         stig_rule_id = re.search(r'(SV-\d+)r\d+_rule', rule_id)
@@ -332,6 +346,4 @@ class StigContentDiffer(StandardContentDiffer):
         if self.show_diffs:
             diff = self.generate_diff_text(old_rule_text, new_rule_text,
                                            fromfile=stig_id.text, tofile=stig_id.text, n=200)
-
-            with open("%s/%s" % (self.output_dir, stig_id.text), "w") as f:
-                f.write(diff)
+            self.output_diff(stig_id.text, diff)
