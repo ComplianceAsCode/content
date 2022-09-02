@@ -38,3 +38,6 @@ fixtext: |-
     dir = /var/log/faillock
 
 srg_requirement: '{{{ full_name }}} must ensure account lockouts persist.'
+
+warnings:
+{{{ warning_rule_deprecated_by("accounts_passwords_pam_faillock_dir", "0.1.65") | indent(4) }}}
