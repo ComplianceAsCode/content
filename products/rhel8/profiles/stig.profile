@@ -506,7 +506,7 @@ selections:
     # RHEL-08-020020
 
     # RHEL-08-020021
-    - account_passwords_pam_faillock_audit
+    - accounts_passwords_pam_faillock_audit
 
     # RHEL-08-020022, RHEL-08-020023
     - accounts_passwords_pam_faillock_deny_root
