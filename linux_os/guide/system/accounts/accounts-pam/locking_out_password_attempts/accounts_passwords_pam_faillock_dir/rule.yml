@@ -30,12 +30,12 @@ references:
     stigid@ol8: OL08-00-020016
     stigid@rhel8: RHEL-08-020016
 
-ocil_clause: 'dir is not set or is set to /var/run/faillock'
+ocil_clause: 'the "dir" option is not set to a non-default documented tally log directory, is missing or commented out'
 
 ocil: |-
     To ensure the tally directory is configured correctly, run the following command:
-    <pre>$ grep 'dir =' /etc/security/faillock.conf</pre>
-    The output should show that dir is set to something different to "/var/run/faillock"
+    <pre>$ sudo grep 'dir =' /etc/security/faillock.conf</pre>
+    The output should show that dir is set to something other than "/var/run/faillock"
 
 fixtext: |-
     To configure {{{ full_name }}} to persist locked out accounts after reboot using
