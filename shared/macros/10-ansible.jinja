@@ -26,7 +26,7 @@ value: :code:`Setting={{ varname1 }}`
 
   Note that all string-like parameters are single quoted in the YAML.
 #}}
-{{%- macro ansible_lineinfile(msg='', path='', mode='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False) -%}}
+{{%- macro ansible_lineinfile(msg='', path='', mode='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='', check_mode=False, selinux_default=False) -%}}
 - name: "{{{ msg or rule_title }}}"
   lineinfile:
     path: '{{{ path }}}'
@@ -50,6 +50,11 @@ value: :code:`Setting={{ varname1 }}`
     {{%- endif %}}
     {{%- if validate %}}
     validate: '{{{ validate }}}'
+    {{%- endif %}}
+    {{%- if selinux_default %}}
+    seuser: _default
+    serole: _default
+    setype: _default
     {{%- endif %}}
   {{%- if with_items %}}
   with_items: '{{{ with_items }}}'
