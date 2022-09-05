@@ -4,5 +4,6 @@
 # use auditctl
 sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
 
-rm -rf /etc/audit/rules.d/*
-rm /etc/audit/audit.rules
+rm -f /etc/audit/rules.d/*
+> /etc/audit/audit.rules
+true
