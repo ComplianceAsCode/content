@@ -228,8 +228,8 @@ class StandardContentDiffer(object):
         new_els_text = self.serialize_elements(new_els)
         diff = self.generate_diff_text(old_els_text, new_els_text,
                                        fromfile=old_oval_def_id, tofile=new_oval_def_id)
-
-        print("OVAL for rule '%s' differs." % (identifier))
+        if diff:
+            print("OVAL for rule '%s' differs." % (identifier))
         self.output_diff(identifier, diff)
 
     def compare_ocils(self, old_ocil_doc, old_ocil_id, new_ocil_doc, new_ocil_id, identifier):
@@ -241,8 +241,8 @@ class StandardContentDiffer(object):
             return
         diff = self.generate_diff_text(old_question, new_question,
                                        fromfile=old_ocil_id, tofile=new_ocil_id)
-
-        print("OCIL for rule '%s' differs." % identifier)
+        if diff:
+            print("OCIL for rule '%s' differs." % identifier)
         self.output_diff(identifier, diff)
 
     def compare_remediations(self, old_rule, new_rule, remediation_type, identifier):
@@ -273,8 +273,8 @@ class StandardContentDiffer(object):
             new_fix_text = "".join(new_fix.itertext())
             diff = self.generate_diff_text(old_fix_text, new_fix_text,
                                            fromfile=identifier, tofile=identifier)
-
-            print("%s remediation for rule '%s' differs." % (remediation_type, identifier))
+            if diff:
+                print("%s remediation for rule '%s' differs." % (remediation_type, identifier))
             self.output_diff(identifier, diff)
 
     def generate_diff_text(self, old_r, new_r,
