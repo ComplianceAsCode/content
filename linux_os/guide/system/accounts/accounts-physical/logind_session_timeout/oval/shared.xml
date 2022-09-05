@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="logind_session_timeout" version="1">
+    {{{ oval_metadata("Ensure 'StopIdleSessionSec' is configured with desired value in section 'Login' in /etc/systemd/logind.conf") }}}
+    <criteria comment="logind is configured correctly and configuration file exists" operator="AND">
+      <criterion comment="Check the StopIdleSessionSec in /etc/systemd/logind.conf" test_ref="test_logind_session_timeout"/>
+      <criterion comment="test if configuration file /etc/systemd/logind.conf exists for logind_session_timeout" test_ref="test_logind_session_timeout_config_file_exists"/>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="tests the value of StopIdleSessionSec setting in the /etc/systemd/logind.conf file" id="test_logind_session_timeout" version="1">
+    <ind:object object_ref="obj_logind_session_timeout"/>
+    <ind:state state_ref="state_logind_session_timeout"/>
+  </ind:textfilecontent54_test>
+
+  <unix:file_test id="test_logind_session_timeout_config_file_exists" check="all" check_existence="all_exist" comment="The configuration file /etc/systemd/logind.conf exists for logind_session_timeout" version="1">
+    <unix:object object_ref="obj_logind_session_timeout_config_file"/>
+  </unix:file_test>
+
+  <ind:textfilecontent54_object id="obj_logind_session_timeout" version="1">
+    <ind:filepath>/etc/systemd/logind.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*\[Login\].*(?:\n\s*[^[\s].*)*\n^\s*StopIdleSessionSec[ \t]*=[ \t]*(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_object id="obj_logind_session_timeout_config_file" comment="The configuration file /etc/systemd/logind.conf for logind_session_timeout" version="1">
+    <unix:filepath operation="pattern match">^/etc/systemd/logind.conf</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_state id="state_logind_session_timeout" version="1">
+    <ind:subexpression datatype="int" operation="equals" var_ref="var_logind_session_timeout" />
+  </ind:textfilecontent54_state>
+
+  <external_variable id="var_logind_session_timeout" datatype="int"
+  comment="idle session timeout in seconds" version="1" />
+
+</def-group>
