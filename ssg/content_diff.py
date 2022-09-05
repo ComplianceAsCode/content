@@ -11,7 +11,8 @@ from ssg.constants import FIX_TYPE_TO_SYSTEM
 
 class StandardContentDiffer(object):
 
-    def __init__(self, old_content, new_content, rule_id, show_diffs, rule_diffs, only_rules, output_dir):
+    def __init__(self, old_content, new_content, rule_id, show_diffs, rule_diffs,
+                 only_rules, output_dir):
         self.old_content = old_content
         self.new_content = new_content
 
@@ -294,9 +295,10 @@ class StandardContentDiffer(object):
 
 class StigContentDiffer(StandardContentDiffer):
 
-    def __init__(self, old_content, new_content, rule_id, show_diffs, rule_diffs, only_rules, output_dir):
-        super(StigContentDiffer, self).__init__(old_content, new_content,
-                                                rule_id, show_diffs, rule_diffs, only_rules, output_dir)
+    def __init__(self, old_content, new_content, rule_id, show_diffs, rule_diffs,
+                 only_rules, output_dir):
+        super(StigContentDiffer, self).__init__(old_content, new_content, rule_id,
+                                                show_diffs, rule_diffs, only_rules, output_dir)
 
         self.context_lines = 200
 

@@ -34,7 +34,7 @@ def parse_args():
     parser.add_argument(
         "--rule-diffs", action="store_true",
         help="Output diffs per rule, instead of a single diff. "
-             "The rule diffs are outptu to directory './compare_ds-diffs/'."
+             "The rule diffs are output to directory './compare_ds-diffs/'."
     )
     parser.add_argument(
         "--output-dir", metavar="OUTPUT_DIR",
@@ -44,7 +44,7 @@ def parse_args():
     )
     parser.add_argument(
         "--disa-content", action="store_true",
-        help="This option enables comparison betwween DISA contents by ignoring the release "
+        help="This option enables comparison between DISA contents by ignoring the release "
              "number in rule IDs."
     )
     return parser.parse_args()
@@ -62,10 +62,12 @@ def main():
 
     if args.disa_content:
         content_differ = StigContentDiffer(old_xml_content, new_xml_content, args.rule,
-                                           not args.no_diffs, args.rule_diffs, args.only_rules, args.output_dir)
+                                           not args.no_diffs, args.rule_diffs,
+                                           args.only_rules, args.output_dir)
     else:
         content_differ = StandardContentDiffer(old_xml_content, new_xml_content, args.rule,
-                                               not args.no_diffs, args.rule_diffs, args.only_rules, args.output_dir)
+                                               not args.no_diffs, args.rule_diffs,
+                                               args.only_rules, args.output_dir)
 
     for old_benchmark in old_xml_content.get_benchmarks():
         old_benchmark_id = old_benchmark.get_attr("id")
