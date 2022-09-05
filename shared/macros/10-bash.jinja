@@ -1235,12 +1235,12 @@ if grep -qzosP '[[:space:]]*\[{{{ section }}}]([^\n\[]*\n+)+?[[:space:]]*{{{ key
     {{% elif '/' in value %}}
     {{{ raise("value (" + value + ") uses sed path separator (/) in " + rule_id) }}}
     {{% endif %}}
-    sed -i 's/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/' '{{{ filename }}}'
+    sed -i "s/{{{ key }}}[^(\n)]*/{{{ key }}}={{{ value }}}/" '{{{ filename }}}'
 elif grep -qs '[[:space:]]*\[{{{ section }}}]' '{{{ filename }}}'; then
-    sed -i '/[[:space:]]*\[{{{ section }}}]/a {{{ key }}}={{{ value }}}' '{{{ filename }}}'
+    sed -i "/[[:space:]]*\[{{{ section }}}]/a {{{ key }}}={{{ value }}}" '{{{ filename }}}'
 else
     if test -d "{{{ config_dir }}}"; then
-        printf '%s\n' '[{{{ section }}}]' '{{{ key }}}={{{ value }}}' >> '{{{ filename }}}'
+        printf '%s\n' '[{{{ section }}}]' "{{{ key }}}={{{ value }}}" >> '{{{ filename }}}'
     else
         echo "Config file directory '{{{ config_dir }}}' doesnt exist, not remediating, assuming non-applicability." >&2
     fi
