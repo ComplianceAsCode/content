@@ -16,7 +16,7 @@
 
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
     <ind:filepath>{{{ PATH }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^(?!#).*(-oCiphers=\S+).*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?!#).*(-oCiphers=[^\s']+).*$</ind:pattern>
     <ind:instance operation="equals" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
