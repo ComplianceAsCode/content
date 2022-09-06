@@ -1,8 +1,10 @@
 #!/bin/bash
 # platform = multi_platform_all
 
+touch /etc/sudoers.d/empty
 # Code taken from macro bash_sudo_remove_config()
-for f in $( ls /etc/sudoers /etc/sudoers.d/* 2> /dev/null ) ; do
+for f in /etc/sudoers /etc/sudoers.d/*; do
+  [ -e "$f" ] || continue
   matching_list=$(grep -P '^(?!#).*[\s]+use_pty.*$' $f | uniq )
   if ! test -z "$matching_list"; then
     while IFS= read -r entry; do
