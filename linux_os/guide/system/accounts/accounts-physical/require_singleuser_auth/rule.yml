@@ -94,7 +94,6 @@ platform: machine
 fixtext: |-
     Configure {{{ full_name }}} to require authentication in single user mode.
 
-    {{% if init_system == "systemd" -%}}
     Add or update the following line in "/usr/lib/systemd/system/rescue.service":
     {{% if product in ["fedora", "ol8", "ol9", "rhel8", "rhel9", "sle12", "sle15"] -%}}
     ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue
@@ -102,10 +101,6 @@ fixtext: |-
     ExecStart=-/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"
     {{%- else -%}}
     ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"
-    {{%- endif %}}
-    {{%- else -%}}
-    Add or update the following line in "/etc/sysconfig/init":
-    SINGLE=/sbin/sulogin
     {{%- endif %}}
 
 srg_requirement: '{{{ full_name }}} must require authentication upon booting into rescue mode.'

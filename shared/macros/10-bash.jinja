@@ -779,14 +779,6 @@ dconf update
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
 /usr/bin/systemctl reset-failed "{{{ service }}}"
-{{%- elif init_system == "upstart" -%}}
-  {{%- if service_state == "disable" -%}}
-/sbin/service "{{{ service }}}" disable
-/sbin/chkconfig --level 0123456 "{{{ service }}}" off
-  {{%- else -%}}
-/sbin/service "{{{ service }}}" enable
-/sbin/chkconfig --level 0123456 "{{{ service }}}" on
-  {{%- endif -%}}
 {{%- endif -%}}
 
 {{%- if xinetd != "" -%}}

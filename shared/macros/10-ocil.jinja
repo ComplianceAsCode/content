@@ -280,21 +280,6 @@ ocil: |-
 
 
 {{#
-    Describe how to check if a service is enabled via upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_ocil_service_enabled(service) %}}
-    Run the following command to determine the current status of the
-    <code>{{{ service }}}</code> service:
-    <pre>$ sudo service {{{ service }}} status</pre>
-    If the service is enabled, it should return the following: <pre>{{{ service }}} is running...</pre>
-{{%- endmacro %}}
-
-
-{{#
     Inserts an OCIL for a case when a service should be enabled,
     substituting the correct init system.
 
@@ -306,8 +291,6 @@ ocil: |-
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_ocil_service_enabled(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_ocil_service_enabled(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -367,29 +350,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 
 
 {{#
-    Describe how to check if a service is disabled via upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_ocil_service_disabled(service) %}}
-    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
-    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list</pre>
-    Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
-    or has been disabled at all runlevels, as shown in the example below:
-    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list
-    <code>{{{ service }}}</code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</pre>
-
-    Run the following command to verify <code>{{{ service }}}</code> is disabled through current runtime configuration:
-    <pre>$ sudo service {{{ service }}} status</pre>
-
-    If the service is disabled the command will return the following output:
-    <pre>{{{ service }}} is stopped</pre>
-{{%- endmacro %}}
-
-
-{{#
     Inserts an OCIL for a case when a service should be disabled,
     substituting the correct init system.
 
@@ -401,8 +361,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_ocil_service_disabled(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_ocil_service_disabled(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -496,20 +454,6 @@ ocil_clause: "service and/or socket are running"
 
 
 {{#
-    OCIL and OCIL clause for ensure socket is disabled in systemd.
-
-:param name: The socket to check
-:type name: str
-
-#}}
-{{%- macro upstart_complete_ocil_entry_socket_and_service_disabled(name) %}}
-ocil:
-
-ocil_clause: "service and/or socket are running"
-{{%- endmacro %}}
-
-
-{{#
     Inserts an OCIL for a case when a service and a corresponding socket should be
     disabled, substituting the correct init system.
 
@@ -521,8 +465,6 @@ ocil_clause: "service and/or socket are running"
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_complete_ocil_entry_socket_and_service_disabled(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_complete_ocil_entry_socket_and_service_disabled(service) }}}
     {{%- else -%}}
 ocil: |-
     JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
@@ -876,7 +818,7 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{# Timer enabled macros #}}
 
 {{#
-    Describe how to check if timer is enabled in upstart.
+    Describe how to check if timer is enabled in systemd.
 
 :param service: The service to check
 :type service: str

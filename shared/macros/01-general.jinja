@@ -255,10 +255,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{%- endmacro %}}
 
 
-{{%- macro upstart_describe_socket_disable(socket) %}}
-{{%- endmacro %}}
-
-
 {{#
     Describe how to enable a socket in systemd.
 
@@ -269,10 +265,6 @@ Therefore, you need to use a tool that can query the OCP API, retrieve the follo
 {{%- macro systemd_describe_socket_enable(socket) %}}
     The <code>{{{ socket }}}</code> socket can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ socket }}}.socket</pre>
-{{%- endmacro %}}
-
-
-{{%- macro upstart_describe_socket_enable(socket) %}}
 {{%- endmacro %}}
 
 
@@ -288,8 +280,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_socket_enable(socket) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_socket_enable(socket) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -309,8 +299,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_socket_disable(socket) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_socket_disable(socket) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -396,32 +384,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
 {{%- endmacro %}}
 
 
-{{#
-    Describe how to disable a service in upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_describe_service_disable(service) %}}
-    The <code>{{{ service }}}</code> service can be disabled with the following command:
-    <pre>$ sudo chkconfig {{{ service }}} off</pre>
-{{%- endmacro %}}
-
-
-{{#
-    Describe how to enable a service in upstart.
-
-:param service: The service to check
-:type service: str
-
-#}}
-{{%- macro upstart_describe_service_enable(service) %}}
-    The <code>{{{ service }}}</code> service can be enabled with the following command:
-    <pre>$ sudo chkconfig --level 2345 {{{ service }}} on</pre>
-{{%- endmacro %}}
-
-
 {{%- macro systemd_describe_timer_enable(timer) %}}
     The <code>{{{ timer }}}</code> timer can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ timer }}}.timer</pre>
@@ -459,8 +421,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_service_enable(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_service_enable(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
@@ -480,8 +440,6 @@ substituting the correct init system.
   {{% if init_system is defined %}}
     {{%- if init_system == "systemd" -%}}
         {{{ systemd_describe_service_disable(service) }}}
-    {{%- elif init_system == "upstart" -%}}
-        {{{ upstart_describe_service_disable(service) }}}
     {{%- else -%}}
 JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
