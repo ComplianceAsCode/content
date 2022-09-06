@@ -25,12 +25,12 @@ references:
     stigid@ol8: OL08-00-040135
     stigid@rhel8: RHEL-08-040135
 
-ocil_clause: 'the package is not installed'
+ocil_clause: 'the fapolicyd package is not installed'
 
 ocil: '{{{ ocil_package(package="fapolicyd") }}}'
 
 fixtext: |-
-    {{{ describe_package_install("fapolicyd") }}}
+    {{{ fixtext_package_installed("fapolicyd") | indent(4) }}}
 
 srg_requirement: '{{{ srg_requirement_package_installed("fapolicyd") }}}'
 
