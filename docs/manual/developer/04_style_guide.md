@@ -138,7 +138,7 @@ The following elements are not allowed:
 
 ### Rule
 
-This section describes the styleguide around the `rule.yml` files.
+This section describes the style guide around the `rule.yml` files.
 * All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 * A rule should only address one configuration item change.
 * A variable should be when a configuration change can be multiple different values.
@@ -186,7 +186,7 @@ Rules sections must be in the following order, if they are present.
 
 ### Group
 
-This section describes the styleguide around the `group.yml` files.
+This section describes the style guide around the `group.yml` files.
 
 * All the above [YAML](manual/developer/04_style_guide:yaml) rules apply
 * A group should only contain rules that effect the same software or service
@@ -203,7 +203,7 @@ Group sections must be in the following order, if present.
 
 ### Benchmark
 
-This section describes the styleguide around the `benchmark.yml` files.
+This section describes the style guide around the `benchmark.yml` files.
 All the above [YAML](manual/developer/04_style_guide:yaml) rules apply.
 
 #### Benchmark Sections
