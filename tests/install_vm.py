@@ -39,7 +39,18 @@ def parse_args():
         "--disk-dir",
         dest="disk_dir",
         default=None,
-        help="Location of the VM qcow2 file."
+        help="Location of the VM qcow2 disk file (ignored when --disk is specified)."
+    )
+    parser.add_argument(
+        "--disk-size",
+        dest="disk_size",
+        default=20,
+        help="Size of the VM qcow2 disk, default is 20 GiB (ignored when --disk is specified)."
+    )
+    parser.add_argument(
+        "--disk",
+        dest="disk",
+        help="Full disk type/spec, ie. pool=MyPool,bus=sata,cache=unsafe."
     )
     parser.add_argument(
         "--ram",
@@ -59,11 +70,6 @@ def parse_args():
         "--network",
         dest="network",
         help="Network type/spec, ie. bridge=br0 or network=name."
-    )
-    parser.add_argument(
-        "--disk",
-        dest="disk",
-        help="Disk type/spec, ie. pool=MyPool,bus=sata,cache=unsafe."
     )
     parser.add_argument(
         "--url",
@@ -170,9 +176,9 @@ def main():
     elif data.disk_dir:
         disk_path = os.path.join(data.disk_dir, data.domain) + ".qcow2"
         print("Location of VM disk: {0}".format(disk_path))
-        data.disk_spec = "path={0},format=qcow2,size=20".format(disk_path)
+        data.disk_spec = "path={0},format=qcow2,size={1}".format(disk_path, data.disk_size)
     else:
-        data.disk_spec = "size=20,format=qcow2"
+        data.disk_spec = "size={0},format=qcow2".format(data.disk_size)
 
     data.ks_basename = os.path.basename(data.kickstart)
 
