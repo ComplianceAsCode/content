@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -i '/UMASK/d' /etc/bashrc
-echo "UMASK 077" >> /etc/bashrc
-echo "UMASK 077" >> /etc/bashrc
-echo "UMASK 077" >> /etc/bashrc
+sed -i '/UMASK/d' /etc/login.defs
+echo "UMASK 077" >> /etc/login.defs
+echo "UMASK 077" >> /etc/login.defs
+echo "UMASK 077" >> /etc/login.defs

@@ -1,2 +1,2 @@
 #!/bin/bash
-sed -i '/^UMASK.*/d' /etc/profile
+sed -i '/^UMASK.*/d' /etc/login.defs
