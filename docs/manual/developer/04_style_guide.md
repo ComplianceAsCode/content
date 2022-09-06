@@ -169,6 +169,7 @@ Rules sections must be in the following order, if they are present.
 * `ocil_clause`
 * `ocil` (HTML Like)
 * `fixtext` (HTML Like)
+* `checktext` (HTML Like)
 * `srg_requirement`
 * `warnings`
     * All subsections are HTML-Like
