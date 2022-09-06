@@ -293,9 +293,14 @@ The header should start on the first line.
 
 #### `platform`
 
-Unless there is a good reason this should be `multi_platform_all`. 
-But if the rule only applies to a specific operating system or family of operating then should be used. 
+Unless there is a good reason this should be `multi_platform_all`.
+But if the rule only applies to a specific operating system or family of operating then should be used.
 The values can be product names or values from `MULTI_PLATFORM_LIST` or `MULTI_PLATFORM_LIST` in [ssg/constants.py](https://github.com/ComplianceAsCode/content/blob/master/ssg/constants.py).
+
+
+The `platform` key should first list specific products, then list the `multi_platform`.
+Products and `multi_platform` shall be placed in alphabetical order.
+For example, Oracle Linux 9, Red Hat Enterprise Linux 9, multi_platform_fedora.
 
 #### `reboot`
 
