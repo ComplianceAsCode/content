@@ -270,7 +270,7 @@ Control sections must be in the following order, all sections are required unles
     * `version`
     * `SMEs`
 * `title`
-    * Shall be short and descriptive 
+    * Shall be short and descriptive
 * `description` (HTML-Like)
 * `extends` (Optional)
     * Must be valid id of another profile id
