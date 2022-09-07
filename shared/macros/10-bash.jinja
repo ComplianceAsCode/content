@@ -2080,7 +2080,7 @@ fi
 
 
 {{%- macro bash_partition_conditional(path) -%}}
-'findmnt --mountpoint "{{{ path }}}" > /dev/null'
+'findmnt --kernel "{{{ path }}}" > /dev/null'
 {{%- endmacro -%}}
 
 
