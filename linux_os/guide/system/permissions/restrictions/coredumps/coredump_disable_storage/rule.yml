@@ -41,8 +41,11 @@ references:
 ocil_clause: Storage is not set to none or is commented out and the need for core dumps is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the "core" item assigned
 
 ocil: |-
-    Verify that storing core dumps are disabled, run the following command:
-    <pre>$ grep Storage /etc/systemd/coredump.conf</pre>
+    Verify {{{ full_name }}} disables storing core dumps for all users by issuing the following command:
+
+    $ grep -i storage /etc/systemd/coredump.conf
+
+    Storage=none
 
 fixtext: |-
     Configure {{{ full_name }}} to disable storing core dumps for all users.
