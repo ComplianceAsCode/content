@@ -52,7 +52,8 @@ references:
 
 {{{ complete_ocil_entry_separate_partition(part="/home") }}}
 
-fixtext: '{{{ fixtext_separate_partition(part="/home") }}}'
+fixtext: |-
+    Migrate the "/home" directory onto a separate file system.
 
 srg_requirement: 'A separate {{{ full_name }}} filesystem must be used for user home directories (such as /home or an equivalent).'
 
