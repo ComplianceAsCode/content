@@ -63,3 +63,12 @@ template:
     vars:
         mountpoint: /home
         min_size: 1073741824
+
+checktext: |-
+    Verify that a separate file system/partition has been created for "/home" with the following command:
+
+    $ mount | grep /home
+
+    UUID=fba5000f-2ffa-4417-90eb-8c54ae74a32f on /home type ext4 (rw,nodev,nosuid,noexec,seclabel)
+
+    If a separate entry for "/home" is not in use, this is a finding.
