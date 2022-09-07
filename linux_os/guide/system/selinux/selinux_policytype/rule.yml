@@ -59,16 +59,18 @@ references:
     stigid@rhel8: RHEL-08-010450
     vmmsrg: SRG-OS-000445-VMM-001780
 
-ocil_clause: 'SELINUXTYPE is set to the wrong value'
+ocil_clause: 'the loaded policy name is not "{{{ xccdf_value("var_selinux_policy_name") }}}"'
 
 ocil: |-
-    Ensure that {{{ full_name }}} verifies correct operation of security functions.
+    Verify the SELINUX on {{{ full_name }}} is using the {{{ xccdf_value("var_selinux_policy_name") }}} policy with the following command:
 
-    Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
-    <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>
+    $ sestatus | grep policy
+
+    Loaded policy name:             {{{ xccdf_value("var_selinux_policy_name") }}}
+
 
 fixtext: |-
-    Configure {{{ full_name }}} to verify correct operation of security functions.
+    Configure {{{ full_name }}} to use the {{{ xccdf_value("var_selinux_policy_name") }}} SELINUX policy.
 
     Edit the file <tt>/etc/selinux/config</tt> and add or modify the following line:
     <pre>SELINUXTYPE={{{ xccdf_value("var_selinux_policy_name") }}}</pre>
@@ -76,4 +78,3 @@ fixtext: |-
     A reboot is required for the changes to take effect.
 
 srg_requirement: '{{{ full_name }}} must enable the SELinux targeted policy.'
-
