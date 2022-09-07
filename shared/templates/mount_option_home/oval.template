@@ -1,0 +1,56 @@
+<def-group>
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
+    {{{ oval_metadata("Home mount points should be mounted with mount option " +
+    MOUNTOPTION + ".") }}}
+    <criteria operator="AND"
+    comment="All mount points which contain home directories are in expected location and {{{
+    MOUNTOPTION }}} is set">
+      <criterion comment="{{{ MOUNTOPTION }}} on Home mount points"
+      test_ref="test_home_partition_{{{ MOUNTOPTION }}}" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_object id="object_home_partitions_mount_points_{{{ MOUNTOPTION }}}"
+  version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern operation="pattern match" var_check="at least one"
+    var_ref="var_home_partitions_mount_points_{{{ MOUNTOPTION }}}_regex"/>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <linux:partition_object id="object_home_partition_all_partitions_{{{ MOUNTOPTION }}}"
+  version="1">
+    <linux:mount_point operation="not equal">/</linux:mount_point>
+  </linux:partition_object>
+
+  <local_variable id="var_home_partitions_mount_points_{{{ MOUNTOPTION }}}_regex"
+  datatype="string" version="1"
+  comment="Variable including all home dirs from interactive users">
+    <concat>
+      <literal_component>^(?:(?!nobody).*)?:.*?:[1-9]\d{3,}:.*?:.*?:(</literal_component>
+      <object_component item_field="mount_point"
+      object_ref="object_home_partition_all_partitions_{{{ MOUNTOPTION }}}" />
+      <literal_component>).*?:.*</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="var_home_partitions_mount_points_{{{ MOUNTOPTION }}}" datatype="string"
+  version="1" comment="This variable collects all partition mount points for interactive users">
+    <object_component item_field="subexpression"
+    object_ref="object_home_partitions_mount_points_{{{ MOUNTOPTION }}}" />
+  </local_variable>
+
+  <linux:partition_test check="all" check_existence="any_exist" version="1"
+  id="test_home_partition_{{{ MOUNTOPTION }}}" comment="{{{ MOUNTOPTION }}} on Home mount points">
+    <linux:object object_ref="object_home_partitions_{{{ MOUNTOPTION }}}" />
+    <linux:state state_ref="state_home_partition_{{{ MOUNTOPTION }}}" />
+  </linux:partition_test>
+  <linux:partition_object id="object_home_partitions_{{{ MOUNTOPTION }}}" version="1">
+    <linux:mount_point operation="equals" var_check="at least one"
+    var_ref="var_home_partitions_mount_points_{{{ MOUNTOPTION }}}" />
+  </linux:partition_object>
+  <linux:partition_state id="state_home_partition_{{{ MOUNTOPTION }}}" version="1">
+    <linux:mount_options entity_check="at least one"
+    datatype="string" operation="equals">{{{ MOUNTOPTION }}}</linux:mount_options>
+  </linux:partition_state>
+</def-group>
