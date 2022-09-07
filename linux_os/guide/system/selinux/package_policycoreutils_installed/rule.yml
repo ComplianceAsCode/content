@@ -34,7 +34,7 @@ references:
     stigid@ol8: OL08-00-010171
     stigid@rhel8: RHEL-08-010171
 
-ocil_clause: 'the package is not installed'
+ocil_clause: 'the policycoreutils package is not installed'
 
 ocil: '{{{ ocil_package(package="policycoreutils") }}}'
 
@@ -43,8 +43,7 @@ template:
     vars:
         pkgname: policycoreutils
 
-fixtext: |-
-    {{{ describe_package_install(package="policycoreutils") }}}
+fixtext: '{{{ fixtext_package_installed("policycoreutils") }}}'
 
 srg_requirement:
     {{{ full_name }}} must have policycoreutils package installed.
