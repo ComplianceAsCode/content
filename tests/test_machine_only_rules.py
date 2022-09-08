@@ -10,11 +10,15 @@ import io
 import re
 
 
-BASH_MACHINE_CONDITIONAL = re.compile('^.*\[ ! -f /.dockerenv \] && \[ ! -f /run/.containerenv \].*$', re.M)
-ANSIBLE_MACHINE_CONDITIONAL = re.compile(r'ansible_virtualization_type not in \["docker", "lxc", "openvz", "podman", "container"\]', re.M)
-MACHINE_PLATFORM_ONE_LINE = re.compile(r'^\s*platform:\s+machine\s*$', re.M)
-MACHINE_PLATFORM_MULTILINE = re.compile(r'^\s*platforms:\s*\n(\s+-\s+.*machine.*)+', re.M)
-
+BASH_MACHINE_CONDITIONAL = re.compile(
+    r'^.*\[ ! -f /.dockerenv \] && \[ ! -f /run/.containerenv \].*$', re.M)
+ANSIBLE_MACHINE_CONDITIONAL = re.compile(
+    r'ansible_virtualization_type not in \["docker", "lxc", "openvz", "podman", "container"\]',
+    re.M)
+MACHINE_PLATFORM_ONE_LINE = re.compile(
+    r'^\s*platform:\s+machine\s*$', re.M)
+MACHINE_PLATFORM_MULTILINE = re.compile(
+    r'^\s*platforms:\s*\n(\s+-\s+.*machine.*)+', re.M)
 
 
 def main():
@@ -27,11 +31,13 @@ def main():
         guide_dir = os.path.abspath(
             os.path.join(product_dir, product_yaml['benchmark_root']))
         additional_content_directories = product_yaml.get("additional_content_directories", [])
-        add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+        add_content_dirs = [os.path.abspath(
+            os.path.join(product_dir, rd)) for rd in additional_content_directories]
         if not check_product(args.build_dir, product, [guide_dir] + add_content_dirs):
             test_result = 1
     if test_result:
         sys.exit(1)
+
 
 def check_product(build_dir, product, rules_dirs):
     input_groups, input_rules = scan_rules_groups(rules_dirs, False)
@@ -44,16 +50,13 @@ def check_product(build_dir, product, rules_dirs):
 def check_ds(ds_path, input_elems):
     try:
         tree = ET.parse(ds_path)
-    except IOError as e:
+    except IOError:
         sys.stderr.write("The product datastream '%s' hasn't been build, "
                          "skipping the test.\n" % (ds_path))
         return True
 
     platform_missing = False
     root = tree.getroot()
-    # if what == "Group":
-        # replacement = "xccdf_org.ssgproject.content_group_"
-        # xpath_query = ".//{%s}Group" % ssg.constants.XCCDF12_NS
     replacement = "xccdf_org.ssgproject.content_rule_"
     xpath_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
     benchmark = root.find(".//{%s}Benchmark" % ssg.constants.XCCDF12_NS)
@@ -79,12 +82,14 @@ def check_ds(ds_path, input_elems):
                     bash_fix_has_machine_conditional = True
 
         if ansible_fix_present and not ansible_fix_has_machine_conditional:
-            sys.stderr.write("Rule %s in %s is missing a machine conditional in Ansible remediation\n" %
-                             (elem_short_id, ds_path))
+            sys.stderr.write(
+                "Rule %s in %s is missing a machine conditional in Ansible remediation\n" %
+                (elem_short_id, ds_path))
             platform_missing = True
         if bash_fix_present and not bash_fix_has_machine_conditional:
-            sys.stderr.write("Rule %s in %s is missing a machine conditional in Bash remediation\n" %
-                             (elem_short_id, ds_path))
+            sys.stderr.write(
+                "Rule %s in %s is missing a machine conditional in Bash remediation\n" %
+                (elem_short_id, ds_path))
             platform_missing = True
     return not platform_missing
 
