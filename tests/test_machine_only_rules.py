@@ -42,56 +42,82 @@ def main():
 def check_product(build_dir, product, rules_dirs):
     input_groups, input_rules = scan_rules_groups(rules_dirs, False)
     ds_path = os.path.join(build_dir, "ssg-" + product + "-ds.xml")
-    if not check_ds(ds_path, input_rules):
+    if machine_platform_missing_in_rules(ds_path, input_rules):
         return False
     return True
 
 
-def check_ds(ds_path, input_elems):
+def shorten_id(full_id):
+    id_prefix = "xccdf_org.ssgproject.content_rule_"
+    return full_id.replace(id_prefix, "")
+
+
+def get_only_elements_to_check_from_benchmark(benchmark, element_query, short_ids_to_check):
+    elements = []
+    for elem in benchmark.findall(element_query):
+        elem_short_id = shorten_id(elem.get("id"))
+        if elem_short_id in short_ids_to_check:
+            elements.append(elem)
+    return elements
+
+
+def get_element_fix_text_by_system(element):
+    all_fixes = element.findall("{%s}fix" % ssg.constants.XCCDF12_NS)
+    fixes_by_system = dict()
+    for f in all_fixes:
+        system = f.get("system")
+        fixes_by_system[system] = "".join(f.itertext())
+    return fixes_by_system
+
+
+def machine_platform_missing_in_rules(ds_path, short_ids_to_check):
     try:
         tree = ET.parse(ds_path)
     except IOError:
         sys.stderr.write("The product datastream '%s' hasn't been build, "
                          "skipping the test.\n" % (ds_path))
-        return True
+        return False
 
-    platform_missing = False
     root = tree.getroot()
-    replacement = "xccdf_org.ssgproject.content_rule_"
-    xpath_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
+    only_rules_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
     benchmark = root.find(".//{%s}Benchmark" % ssg.constants.XCCDF12_NS)
-    for elem in benchmark.findall(xpath_query):
-        elem_id = elem.get("id")
-        elem_short_id = elem_id.replace(replacement, "")
-        if elem_short_id not in input_elems:
-            continue
-        fixes = elem.findall("{%s}fix" % ssg.constants.XCCDF12_NS)
-        ansible_fix_present = False
-        ansible_fix_has_machine_conditional = False
-        bash_fix_present = False
-        bash_fix_has_machine_conditional = False
-        for f in fixes:
-            system = f.get("system")
-            if system == ssg.constants.ansible_system:
-                ansible_fix_present = True
-                if ANSIBLE_MACHINE_CONDITIONAL.search("".join(f.itertext())):
-                    ansible_fix_has_machine_conditional = True
-            elif system == ssg.constants.bash_system:
-                bash_fix_present = True
-                if BASH_MACHINE_CONDITIONAL.search("".join(f.itertext())):
-                    bash_fix_has_machine_conditional = True
+    elements_to_check = get_only_elements_to_check_from_benchmark(
+            benchmark, only_rules_query, short_ids_to_check)
 
+    for elem in elements_to_check:
+        element_fixes = get_element_fix_text_by_system(elem)
+
+        maybe_bash_fix_text = element_fixes.get(ssg.constants.bash_system)
+        if maybe_bash_fix_text is None:
+            bash_fix_present = False
+            bash_fix_has_machine_conditional = False
+        else:
+            bash_fix_present = True
+            bash_fix_has_machine_conditional = BASH_MACHINE_CONDITIONAL.search(
+                    maybe_bash_fix_text)
+
+        maybe_ansible_fix_text = element_fixes.get(ssg.constants.ansible_system)
+        if maybe_ansible_fix_text is None:
+            ansible_fix_present = False
+            ansible_fix_has_machine_conditional = False
+        else:
+            ansible_fix_present = True
+            ansible_fix_has_machine_conditional = ANSIBLE_MACHINE_CONDITIONAL.search(
+                    maybe_ansible_fix_text)
+
+        machine_platform_missing = False
+        elem_short_id = shorten_id(elem.get("id"))
         if ansible_fix_present and not ansible_fix_has_machine_conditional:
             sys.stderr.write(
                 "Rule %s in %s is missing a machine conditional in Ansible remediation\n" %
                 (elem_short_id, ds_path))
-            platform_missing = True
+            machine_platform_missing = True
         if bash_fix_present and not bash_fix_has_machine_conditional:
             sys.stderr.write(
                 "Rule %s in %s is missing a machine conditional in Bash remediation\n" %
                 (elem_short_id, ds_path))
-            platform_missing = True
-    return not platform_missing
+            machine_platform_missing = True
+    return machine_platform_missing
 
 
 def parse_command_line_args():
