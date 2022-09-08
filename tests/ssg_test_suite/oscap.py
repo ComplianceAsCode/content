@@ -159,7 +159,7 @@ def run_stage_remediation_ansible(run_type, test_env, formatting, verbose_path):
                            '/' + formatting['output_file']):
         return False
     command = (
-        'ansible-playbook', '-v', '-i', '{0},'.format(formatting['domain_ip']),
+        'ansible-playbook', '-vvv', '-i', '{0},'.format(formatting['domain_ip']),
         '-u' 'root', '--ssh-common-args={0}'.format(' '.join(test_env.ssh_additional_options)),
         formatting['playbook'])
     command_string = ' '.join(command)
